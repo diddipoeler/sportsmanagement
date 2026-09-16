@@ -55,52 +55,115 @@ final class MatchesSliderHelper
 
         $pictureType = (string) $params->get('picture_type', 'logo_big');
         $logoSelect = match ($pictureType) {
-            'logo_small' => ['c1.logo_small AS logohome', 'c2.logo_small AS logoaway'],
-            'logo_middle' => ['c1.logo_middle AS logohome', 'c2.logo_middle AS logoaway'],
-            'team_picture' => ['pt1.picture AS logohome', 'pt2.picture AS logoaway'],
-            'country' => ['co1.picture AS logohome', 'co2.picture AS logoaway'],
-            default => ['c1.logo_big AS logohome', 'c2.logo_big AS logoaway'],
+            'logo_small' => [
+                $db->quoteName('c1.logo_small', 'logohome'),
+                $db->quoteName('c2.logo_small', 'logoaway'),
+            ],
+            'logo_middle' => [
+                $db->quoteName('c1.logo_middle', 'logohome'),
+                $db->quoteName('c2.logo_middle', 'logoaway'),
+            ],
+            'team_picture' => [
+                $db->quoteName('pt1.picture', 'logohome'),
+                $db->quoteName('pt2.picture', 'logoaway'),
+            ],
+            'country' => [
+                $db->quoteName('co1.picture', 'logohome'),
+                $db->quoteName('co2.picture', 'logoaway'),
+            ],
+            default => [
+                $db->quoteName('c1.logo_big', 'logohome'),
+                $db->quoteName('c2.logo_big', 'logoaway'),
+            ],
         };
 
         $query = $db->createQuery()
             ->select([
-                'm.id AS match_id',
-                'm.match_date',
-                'm.match_timestamp',
-                'm.match_number',
-                'm.team1_result',
-                'm.team2_result',
-                'p.id AS project_id',
-                'p.season_id',
-                'r.id AS round_id',
-                'st1.team_id AS team1_id',
-                'st2.team_id AS team2_id',
-                't1.' . $nameColumn . ' AS teamhome',
-                't2.' . $nameColumn . ' AS teamaway',
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                $db->quoteName('m.id', 'match_id'),
+                $db->quoteName('m.match_date'),
+                $db->quoteName('m.match_timestamp'),
+                $db->quoteName('m.match_number'),
+                $db->quoteName('m.team1_result'),
+                $db->quoteName('m.team2_result'),
+                $db->quoteName('p.id', 'project_id'),
+                $db->quoteName('p.season_id'),
+                $db->quoteName('r.id', 'round_id'),
+                $db->quoteName('st1.team_id', 'team1_id'),
+                $db->quoteName('st2.team_id', 'team2_id'),
+                $db->quoteName('t1.' . $nameColumn, 'teamhome'),
+                $db->quoteName('t2.' . $nameColumn, 'teamaway'),
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
                 $logoSelect[0],
                 $logoSelect[1],
             ])
-            ->from('#__sportsmanagement_match AS m')
-            ->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id')
-            ->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id')
-            ->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id')
-            ->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id')
-            ->join('LEFT', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id')
-            ->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id')
-            ->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id')
-            ->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id')
-            ->join('LEFT', '#__sportsmanagement_club AS c1 ON c1.id = t1.club_id')
-            ->join('LEFT', '#__sportsmanagement_club AS c2 ON c2.id = t2.club_id')
-            ->join('LEFT', '#__sportsmanagement_countries AS co1 ON co1.alpha3 = c1.country')
-            ->join('LEFT', '#__sportsmanagement_countries AS co2 ON co2.alpha3 = c2.country')
-            ->where('m.published = 1')
-            ->where('p.published = 1')
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt1')
+                . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt2')
+                . ' ON ' . $db->quoteName('pt2.id') . ' = ' . $db->quoteName('m.projectteam2_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st1')
+                . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st2')
+                . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_team', 't1')
+                . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_team', 't2')
+                . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_club', 'c1')
+                . ' ON ' . $db->quoteName('c1.id') . ' = ' . $db->quoteName('t1.club_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_club', 'c2')
+                . ' ON ' . $db->quoteName('c2.id') . ' = ' . $db->quoteName('t2.club_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_countries', 'co1')
+                . ' ON ' . $db->quoteName('co1.alpha3') . ' = ' . $db->quoteName('c1.country')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_countries', 'co2')
+                . ' ON ' . $db->quoteName('co2.alpha3') . ' = ' . $db->quoteName('c2.country')
+            )
+            ->where($db->quoteName('m.published') . ' = 1')
+            ->where($db->quoteName('p.published') . ' = 1')
             ->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER);
 
         if (!(int) $params->get('project_season', 1)) {
-            $query->where('r.id = p.current_round');
+            $query->where($db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round'));
         }
 
         $teams = $this->ids($params->get('teams', []));
@@ -116,12 +179,17 @@ final class MatchesSliderHelper
 
         if ((int) $params->get('use_fav', 0) === 1) {
             $query->where(
-                "(FIND_IN_SET(st1.team_id, REPLACE(COALESCE(p.fav_team, ''), ' ', '')) > 0"
-                . " OR FIND_IN_SET(st2.team_id, REPLACE(COALESCE(p.fav_team, ''), ' ', '')) > 0)"
+                '(FIND_IN_SET(' . $db->quoteName('st1.team_id')
+                . ', REPLACE(COALESCE(' . $db->quoteName('p.fav_team') . ", ''), ' ', '')) > 0"
+                . ' OR FIND_IN_SET(' . $db->quoteName('st2.team_id')
+                . ', REPLACE(COALESCE(' . $db->quoteName('p.fav_team') . ", ''), ' ', '')) > 0)"
             );
         }
 
-        $query->order('m.match_date ASC, m.match_number ASC');
+        $query->order([
+            $db->quoteName('m.match_date') . ' ASC',
+            $db->quoteName('m.match_number') . ' ASC',
+        ]);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
         $pictureServer = $this->pictureServer($databaseMode);
