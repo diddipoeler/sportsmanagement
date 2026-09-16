@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 abstract class SportsManagementPredictionReadModel extends SportsManagementPredictionModel
 {
@@ -46,7 +47,8 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :predictionProjectId')
+            ->bind(':predictionProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $project = $db->loadObject();
 
@@ -58,7 +60,8 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
             $query = $db->createQuery()
                 ->select('MIN(' . $db->quoteName('round_date_first') . ')')
                 ->from($db->quoteName('#__sportsmanagement_round'))
-                ->where($db->quoteName('project_id') . ' = ' . $projectId);
+                ->where($db->quoteName('project_id') . ' = :predictionProjectRoundId')
+                ->bind(':predictionProjectRoundId', $projectId, ParameterType::INTEGER);
             $db->setQuery($query);
             $project->start_date = $db->loadResult();
         }
@@ -79,12 +82,13 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
             ->select("CONCAT_WS(':',id,alias) AS value")
             ->select($db->quoteName('name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :roundNamesProjectId')
+            ->bind(':roundNamesProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('id') . ' ' . $ordering);
 
         $ids = array_values(array_filter(array_map('intval', (array) $roundIds)));
         if ($ids) {
-            $query->where($db->quoteName('id') . ' IN (' . implode(',', $ids) . ')');
+            $query->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -110,6 +114,7 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
             return [];
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $name = empty($config['show_full_name']) ? 'username' : 'name';
         $query = $db->createQuery()
@@ -128,11 +133,14 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
             ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
             ->join('INNER', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pm.user_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_prediction_groups', 'pg') . ' ON ' . $db->quoteName('pg.id') . ' = ' . $db->quoteName('pm.group_id'))
-            ->where($db->quoteName('pm.prediction_id') . ' = ' . $this->predictionGameId)
+            ->where($db->quoteName('pm.prediction_id') . ' = :membersPredictionId')
+            ->bind(':membersPredictionId', $predictionGameId, ParameterType::INTEGER)
             ->order($db->quoteName('pm.id') . ' ASC');
 
         if ($this->groupId > 0) {
-            $query->where($db->quoteName('pm.group_id') . ' = ' . $this->groupId);
+            $groupId = $this->groupId;
+            $query->where($db->quoteName('pm.group_id') . ' = :membersGroupId')
+                ->bind(':membersGroupId', $groupId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -148,6 +156,8 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
 
         $db = $this->getDatabase();
         $roundFrom = max(1, $roundFrom);
+        $memberPredictionId = $this->predictionGameId;
+        $resultPredictionId = $this->predictionGameId;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'matchID'),
@@ -179,20 +189,26 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_prediction_result', 'pr') . ' ON ' . $db->quoteName('pr.match_id') . ' = ' . $db->quoteName('m.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_prediction_member', 'pm') . ' ON ' . $db->quoteName('pm.user_id') . ' = ' . $db->quoteName('pr.user_id'))
-            ->where($db->quoteName('r.id') . ' >= ' . $roundFrom)
-            ->where($db->quoteName('pm.prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('pr.prediction_id') . ' = ' . $this->predictionGameId)
+            ->where($db->quoteName('r.id') . ' >= :resultsRoundFrom')
+            ->where($db->quoteName('pm.prediction_id') . ' = :resultsMemberPredictionId')
+            ->where($db->quoteName('pr.prediction_id') . ' = :resultsPredictionId')
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
+            ->bind(':resultsRoundFrom', $roundFrom, ParameterType::INTEGER)
+            ->bind(':resultsMemberPredictionId', $memberPredictionId, ParameterType::INTEGER)
+            ->bind(':resultsPredictionId', $resultPredictionId, ParameterType::INTEGER)
             ->order($db->quoteName('pm.id') . ' ASC, ' . $db->quoteName('m.match_date') . ' ASC, ' . $db->quoteName('m.id') . ' ASC');
 
         if ($projectId > 0) {
-            $query->where($db->quoteName('r.project_id') . ' = ' . $projectId);
+            $query->where($db->quoteName('r.project_id') . ' = :resultsProjectId')
+                ->bind(':resultsProjectId', $projectId, ParameterType::INTEGER);
         }
         if ($roundTo > 0) {
-            $query->where($db->quoteName('r.id') . ' <= ' . $roundTo);
+            $query->where($db->quoteName('r.id') . ' <= :resultsRoundTo')
+                ->bind(':resultsRoundTo', $roundTo, ParameterType::INTEGER);
         }
         if ($userId > 0) {
-            $query->where($db->quoteName('pr.user_id') . ' = ' . $userId);
+            $query->where($db->quoteName('pr.user_id') . ' = :resultsUserId')
+                ->bind(':resultsUserId', $userId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -224,7 +240,8 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+            ->where($db->quoteName('pt.id') . ' = :projectTeamInfoId')
+            ->bind(':projectTeamInfoId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -335,8 +352,9 @@ abstract class SportsManagementPredictionReadModel extends SportsManagementPredi
                 'points_correct_tendence',
             ])
             ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $predictionId)
-            ->where($db->quoteName('published') . ' = 1');
+            ->where($db->quoteName('prediction_id') . ' = :roundRatingsPredictionId')
+            ->where($db->quoteName('published') . ' = 1')
+            ->bind(':roundRatingsPredictionId', $predictionId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList('round_id') ?: [];
