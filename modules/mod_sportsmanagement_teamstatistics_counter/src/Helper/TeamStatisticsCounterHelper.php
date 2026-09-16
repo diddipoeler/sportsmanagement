@@ -93,8 +93,10 @@ final class TeamStatisticsCounterHelper
         }
 
         $query = $db->createQuery()
-            ->select('t.*')
-            ->select("CONCAT_WS(':', t.id, t.alias) AS slug")
+            ->select($db->quoteName('t') . '.*')
+            ->select(
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('slug')
+            )
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where($db->quoteName('t.id') . ' = :teamId')
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
@@ -110,8 +112,10 @@ final class TeamStatisticsCounterHelper
         }
 
         $query = $db->createQuery()
-            ->select('p.*')
-            ->select("CONCAT_WS(':', p.id, p.alias) AS slug")
+            ->select($db->quoteName('p') . '.*')
+            ->select(
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('slug')
+            )
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
