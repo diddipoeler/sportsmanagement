@@ -59,26 +59,51 @@ final class AllteamsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
         $query = $db->createQuery()
-            ->select('v.id,v.name,v.picture,v.website')
-            ->select("CONCAT_WS(':', v.id, v.alias) AS slug")
-            ->select("CONCAT_WS(':', p.id, p.alias) AS projectslug")
-            ->select('c.name AS club,c.address,c.zipcode,c.country,c.location')
-            ->from('#__sportsmanagement_team AS v')
-            ->join('INNER', '#__sportsmanagement_club AS c ON c.id = v.club_id')
-            ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = v.id')
-            ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
-            ->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id');
+            ->select([
+                $db->quoteName('v.id'),
+                $db->quoteName('v.name'),
+                $db->quoteName('v.picture'),
+                $db->quoteName('v.website'),
+                "CONCAT_WS(':', " . $db->quoteName('v.id') . ', ' . $db->quoteName('v.alias') . ') AS ' . $db->quoteName('slug'),
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('projectslug'),
+                $db->quoteName('c.name', 'club'),
+                $db->quoteName('c.address'),
+                $db->quoteName('c.zipcode'),
+                $db->quoteName('c.country'),
+                $db->quoteName('c.location'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_team', 'v'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_club', 'c')
+                . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('v.club_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('v.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
+            );
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
             $searchValue = '%' . strtolower($search) . '%';
-            $query->where('LOWER(v.name) LIKE :teamSearch')
+            $query->where('LOWER(' . $db->quoteName('v.name') . ') LIKE :teamSearch')
                 ->bind(':teamSearch', $searchValue, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
         if ($nation !== '') {
-            $query->where('c.country = :nation')
+            $query->where($db->quoteName('c.country') . ' = :nation')
                 ->bind(':nation', $nation, ParameterType::STRING);
         }
 
@@ -91,9 +116,20 @@ final class AllteamsModel extends SportsManagementListModel
             }
         }
 
-        $query->group('v.id')
-            ->order($db->escape((string) $this->getState('filter_order', 'v.name')) . ' '
-                . $db->escape((string) $this->getState('filter_order_Dir', 'ASC')));
+        $orderMap = [
+            'v.name' => $db->quoteName('v.name'),
+            'v.picture' => $db->quoteName('v.picture'),
+            'v.website' => $db->quoteName('v.website'),
+            'c.address' => $db->quoteName('c.address'),
+            'c.zipcode' => $db->quoteName('c.zipcode'),
+            'c.location' => $db->quoteName('c.location'),
+            'c.country' => $db->quoteName('c.country'),
+        ];
+        $ordering = (string) $this->getState('filter_order', 'v.name');
+        $direction = strtoupper((string) $this->getState('filter_order_Dir', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+
+        $query->group($db->quoteName('v.id'))
+            ->order(($orderMap[$ordering] ?? $orderMap['v.name']) . ' ' . $direction);
 
         return $query;
     }
