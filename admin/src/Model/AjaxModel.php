@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 option-provider model for administrator AJAX endpoints.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -9,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 option-provider model for administrator AJAX endpoints.
@@ -51,6 +60,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false): array
     {
+        $predictionId = max(0, (int) $prediction_id);
         $db = self::database((bool) $dabse);
         $query = $db->createQuery()
             ->select($slug
@@ -63,8 +73,9 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_prediction_project', 'prpro')
                 . ' ON ' . $db->quoteName('prpro.project_id') . ' = ' . $db->quoteName('p.id')
             )
-            ->where($db->quoteName('prpro.prediction_id') . ' = ' . (int) $prediction_id)
+            ->where($db->quoteName('prpro.prediction_id') . ' = :predictionId')
             ->where($db->quoteName('prpro.published') . ' = 1')
+            ->bind(':predictionId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('p.name') . ' ASC');
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -136,11 +147,13 @@ final class AjaxModel extends BaseDatabaseModel
             ->select($db->quoteName('l.id', 'value'))
             ->select("CONCAT(" . $db->quoteName('l.name') . ", ' (', " . $db->quoteName('l.id') . ", ')') AS " . $db->quoteName('text'))
             ->from($db->quoteName('#__sportsmanagement_league', 'l'))
-            ->where($db->quoteName('l.country') . ' = ' . $db->quote($country))
+            ->where($db->quoteName('l.country') . ' = :leagueCountry')
+            ->bind(':leagueCountry', $country, ParameterType::STRING)
             ->order($db->quoteName('l.name') . ' ASC');
 
         if ($association > 0) {
-            $query->where($db->quoteName('l.associations') . ' = ' . $association);
+            $query->where($db->quoteName('l.associations') . ' = :leagueAssociation')
+                ->bind(':leagueAssociation', $association, ParameterType::INTEGER);
         }
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -168,7 +181,8 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_club', 'c')
                 . ' ON ' . $db->quoteName('c.country') . ' = ' . $db->quoteName('a.country')
             )
-            ->where($db->quoteName('c.id') . ' = ' . $clubId)
+            ->where($db->quoteName('c.id') . ' = :ageGroupClubId')
+            ->bind(':ageGroupClubId', $clubId, ParameterType::INTEGER)
             ->order($db->quoteName('a.name') . ' ASC');
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -176,6 +190,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getassociationsoptions($country = null, $required = false, $slug = false, $dabse = false): array
     {
+        $country = trim((string) $country);
         $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([
@@ -183,7 +198,8 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('t.name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_associations', 't'))
-            ->where($db->quoteName('t.country') . ' = ' . $db->quote((string) $country))
+            ->where($db->quoteName('t.country') . ' = :associationCountry')
+            ->bind(':associationCountry', $country, ParameterType::STRING)
             ->order($db->quoteName('t.name') . ' ASC');
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -238,12 +254,14 @@ final class AjaxModel extends BaseDatabaseModel
             );
 
         if ($zipcode !== '') {
-            $query->where($db->quoteName('a.postal_code') . ' = ' . $db->quote($zipcode))
+            $query->where($db->quoteName('a.postal_code') . ' = :postalCode')
+                ->bind(':postalCode', $zipcode, ParameterType::STRING)
                 ->order($db->quoteName('a.postal_code') . ' ASC');
         }
 
         if ($country !== '') {
-            $query->where($db->quoteName('c.alpha3') . ' = ' . $db->quote($country))
+            $query->where($db->quoteName('c.alpha3') . ' = :postalCountry')
+                ->bind(':postalCountry', $country, ParameterType::STRING)
                 ->order($db->quoteName('a.place_name') . ' ASC');
         }
 
@@ -252,11 +270,13 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getCcountryName($country): array
     {
+        $country = trim((string) $country);
         $db = self::database(false);
         $query = $db->createQuery()
             ->select($db->quoteName('c.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_countries', 'c'))
-            ->where($db->quoteName('c.alpha3') . ' = ' . $db->quote((string) $country));
+            ->where($db->quoteName('c.alpha3') . ' = :countryAlpha3')
+            ->bind(':countryAlpha3', $country, ParameterType::STRING);
         $rows = self::loadRows($db, $query);
 
         foreach ($rows as $row) {
@@ -268,11 +288,13 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getCcountryAlpha2($country): array
     {
+        $country = trim((string) $country);
         $db = self::database(false);
         $query = $db->createQuery()
             ->select($db->quoteName('c.alpha2', 'text'))
             ->from($db->quoteName('#__sportsmanagement_countries', 'c'))
-            ->where($db->quoteName('c.alpha3') . ' = ' . $db->quote((string) $country));
+            ->where($db->quoteName('c.alpha3') . ' = :countryAlpha3')
+            ->bind(':countryAlpha3', $country, ParameterType::STRING);
 
         return self::loadRows($db, $query);
     }
@@ -295,7 +317,8 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_countries', 'c')
                 . ' ON ' . $db->quoteName('c.alpha2') . ' = ' . $db->quoteName('a.country_code')
             )
-            ->where($db->quoteName('c.alpha3') . ' = ' . $db->quote($country))
+            ->where($db->quoteName('c.alpha3') . ' = :zipcodeCountry')
+            ->bind(':zipcodeCountry', $country, ParameterType::STRING)
             ->group([
                 $db->quoteName('a.postal_code'),
                 $db->quoteName('a.country_code'),
@@ -308,6 +331,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getProjectRoundOptions($project_id, $required = false, $slug = false, $ordering = 'ASC', $round_ids = null, $dabse = false): array
     {
+        $projectId = max(0, (int) $project_id);
         $db = self::database((bool) $dabse);
         $direction = strtoupper((string) $ordering) === 'DESC' ? 'DESC' : 'ASC';
         $query = $db->createQuery()
@@ -323,13 +347,14 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('roundcode'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . (int) $project_id)
-            ->where($db->quoteName('published') . ' = 1');
+            ->where($db->quoteName('project_id') . ' = :roundProjectId')
+            ->where($db->quoteName('published') . ' = 1')
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER);
 
         $roundIds = self::ids($round_ids);
 
         if ($roundIds) {
-            $query->where($db->quoteName('id') . ' IN (' . implode(',', $roundIds) . ')');
+            $query->whereIn($db->quoteName('id'), $roundIds, ParameterType::INTEGER);
         }
 
         $query->order($db->quoteName('roundcode') . ' ' . $direction);
@@ -339,6 +364,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
+        $sportsTypeId = max(0, (int) $sports_type_id);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select([
@@ -348,8 +374,9 @@ final class AjaxModel extends BaseDatabaseModel
             ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
             ->order($db->quoteName('pos.name') . ' ASC');
 
-        if ((int) $sports_type_id > 0) {
-            $query->where($db->quoteName('pos.sports_type_id') . ' = ' . (int) $sports_type_id);
+        if ($sportsTypeId > 0) {
+            $query->where($db->quoteName('pos.sports_type_id') . ' = :positionSportsTypeId')
+                ->bind(':positionSportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         $rows = self::loadRows($db, $query);
@@ -363,6 +390,9 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getpersonagegroupoptions($sports_type_id = 0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = ''): array
     {
+        $sportsTypeId = max(0, (int) $sports_type_id);
+        $projectId = max(0, (int) $project_id);
+        $country = trim((string) $country);
         $db = self::geoDatabase((bool) $dabse);
         $query = $db->createQuery()
             ->select($db->quoteName('a.id', 'value'))
@@ -370,7 +400,7 @@ final class AjaxModel extends BaseDatabaseModel
             ->from($db->quoteName('#__sportsmanagement_agegroup', 'a'))
             ->order($db->quoteName('a.name') . ' ASC');
 
-        if ((int) $project_id > 0) {
+        if ($projectId > 0) {
             $query->join(
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_league', 'l')
@@ -379,15 +409,18 @@ final class AjaxModel extends BaseDatabaseModel
                 'LEFT',
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.league_id') . ' = ' . $db->quoteName('l.id')
-            )->where($db->quoteName('p.id') . ' = ' . (int) $project_id);
+            )->where($db->quoteName('p.id') . ' = :ageGroupProjectId')
+                ->bind(':ageGroupProjectId', $projectId, ParameterType::INTEGER);
         }
 
-        if ((int) $sports_type_id > 0) {
-            $query->where($db->quoteName('a.sportstype_id') . ' = ' . (int) $sports_type_id);
+        if ($sportsTypeId > 0) {
+            $query->where($db->quoteName('a.sportstype_id') . ' = :ageGroupSportsTypeId')
+                ->bind(':ageGroupSportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
-        if ((string) $country !== '') {
-            $query->where($db->quoteName('a.country') . ' = ' . $db->quote((string) $country));
+        if ($country !== '') {
+            $query->where($db->quoteName('a.country') . ' = :ageGroupCountry')
+                ->bind(':ageGroupCountry', $country, ParameterType::STRING);
         }
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -395,6 +428,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getpredictionmembersoptions($prgame_id, $required = false, $slug = false, $dbase = false): array
     {
+        $predictionId = max(0, (int) $prgame_id);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select($db->quoteName('a.user_id', 'value'))
@@ -405,7 +439,8 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__users', 'u')
                 . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('a.user_id')
             )
-            ->where($db->quoteName('a.prediction_id') . ' = ' . (int) $prgame_id)
+            ->where($db->quoteName('a.prediction_id') . ' = :memberPredictionId')
+            ->bind(':memberPredictionId', $predictionId, ParameterType::INTEGER)
             ->order($db->quoteName('u.name') . ' ASC');
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -430,9 +465,11 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getpersonlistoptionsprojectteam($person_art = 0, $required = false, $slug = false, $dbase = false): array
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
-        $projectId = (int) $app->getUserState('teamplayer.pid', 0);
-        $seasonId = (int) $app->getUserState('teamplayer.season_id', 0);
-        $teamId = (int) $app->getUserState('teamplayer.team_id', 0);
+        $projectId = max(0, (int) $app->getUserState('teamplayer.pid', 0));
+        $seasonId = max(0, (int) $app->getUserState('teamplayer.season_id', 0));
+        $teamId = max(0, (int) $app->getUserState('teamplayer.team_id', 0));
+        $personType = 1;
+        $personArt = 1;
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select($db->quoteName('stp.id', 'value'))
@@ -453,14 +490,21 @@ final class AjaxModel extends BaseDatabaseModel
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('st.season_id') . ' = ' . $seasonId)
-            ->where($db->quoteName('stp.season_id') . ' = ' . $seasonId)
-            ->where($db->quoteName('st.team_id') . ' = ' . $teamId)
-            ->where($db->quoteName('stp.team_id') . ' = ' . $teamId)
+            ->where($db->quoteName('pt.project_id') . ' = :projectTeamProjectId')
+            ->where($db->quoteName('st.season_id') . ' = :seasonTeamSeasonId')
+            ->where($db->quoteName('stp.season_id') . ' = :seasonPersonSeasonId')
+            ->where($db->quoteName('st.team_id') . ' = :seasonTeamId')
+            ->where($db->quoteName('stp.team_id') . ' = :seasonPersonTeamId')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->where($db->quoteName('stp.persontype') . ' = 1')
-            ->where($db->quoteName('stp.person_art') . ' = 1')
+            ->where($db->quoteName('stp.persontype') . ' = :personType')
+            ->where($db->quoteName('stp.person_art') . ' = :personArt')
+            ->bind(':projectTeamProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':seasonTeamSeasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':seasonPersonSeasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':seasonTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':seasonPersonTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':personType', $personType, ParameterType::INTEGER)
+            ->bind(':personArt', $personArt, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('stp.id'),
                 $db->quoteName('p.lastname'),
@@ -495,12 +539,16 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getProjectTeamsByDivisionOptions($project_id, $required = false, $slug = false, $dbase = false, $division_id = 0): array
     {
+        $projectId = max(0, (int) $project_id);
+        $divisionId = max(0, (int) $division_id);
         $db = self::database((bool) $dbase);
         $query = self::projectTeamBaseQuery($db, true)
-            ->where($db->quoteName('pt.project_id') . ' = ' . (int) $project_id);
+            ->where($db->quoteName('pt.project_id') . ' = :divisionProjectId')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
 
-        if ((int) $division_id > 0) {
-            $query->where($db->quoteName('pt.division_id') . ' = ' . (int) $division_id);
+        if ($divisionId > 0) {
+            $query->where($db->quoteName('pt.division_id') . ' = :divisionId')
+                ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
         }
 
         $query->order($db->quoteName('t.name') . ' ASC');
@@ -510,7 +558,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getProjectsByClubOptions($club_id, $required = false, $slug = false, $dbase = false): array
     {
-        $clubId = (int) $club_id;
+        $clubId = max(0, (int) $club_id);
 
         if ($clubId <= 0) {
             return self::getProjects(0, $required, $slug, $dbase);
@@ -524,7 +572,8 @@ final class AjaxModel extends BaseDatabaseModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
-            ->where($db->quoteName('t.club_id') . ' = ' . $clubId)
+            ->where($db->quoteName('t.club_id') . ' = :projectClubId')
+            ->bind(':projectClubId', $clubId, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.alias'),
@@ -550,7 +599,7 @@ final class AjaxModel extends BaseDatabaseModel
         $ids = self::ids($season_id);
 
         if ($ids) {
-            $query->where($db->quoteName('p.season_id') . ' IN (' . implode(',', $ids) . ')');
+            $query->whereIn($db->quoteName('p.season_id'), $ids, ParameterType::INTEGER);
         } else {
             $query->where($db->quoteName('p.season_id') . ' = 0');
         }
@@ -583,7 +632,7 @@ final class AjaxModel extends BaseDatabaseModel
         $clubIds = self::ids($club_id);
 
         if ($clubIds) {
-            $query->where($db->quoteName('c.id') . ' IN (' . implode(',', $clubIds) . ')');
+            $query->whereIn($db->quoteName('c.id'), $clubIds, ParameterType::INTEGER);
         }
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -625,6 +674,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
+        $projectId = max(0, (int) $project_id);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('et.id') . ', ' . $db->quoteName('et.alias') . ') AS ' . $db->quoteName('value'))
@@ -633,7 +683,8 @@ final class AjaxModel extends BaseDatabaseModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_match_event', 'me') . ' ON ' . $db->quoteName('me.event_type_id') . ' = ' . $db->quoteName('et.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('me.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('r.project_id') . ' = ' . (int) $project_id)
+            ->where($db->quoteName('r.project_id') . ' = :eventProjectId')
+            ->bind(':eventProjectId', $projectId, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.alias'),
@@ -695,6 +746,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
+        $projectId = max(0, (int) $project_id);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select([
@@ -703,7 +755,8 @@ final class AjaxModel extends BaseDatabaseModel
             ])
             ->from($db->quoteName('#__sportsmanagement_treeto', 'tt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('tt.project_id'))
-            ->where($db->quoteName('tt.project_id') . ' = ' . (int) $project_id)
+            ->where($db->quoteName('tt.project_id') . ' = :treeProjectId')
+            ->bind(':treeProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('tt.id') . ' ASC');
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -711,13 +764,15 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
+        $sportsTypeId = max(0, (int) $sports_type_id);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value'))
             ->select($db->quoteName('p.name', 'text'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('p.sports_type_id'))
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . (int) $sports_type_id)
+            ->where($db->quoteName('p.sports_type_id') . ' = :projectSportsTypeId')
+            ->bind(':projectSportsTypeId', $sportsTypeId, ParameterType::INTEGER)
             ->order($db->quoteName('p.name') . ' ASC');
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -725,6 +780,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
+        $sportsTypeId = max(0, (int) $sports_type_id);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('a.id') . ', ' . $db->quoteName('a.alias') . ') AS ' . $db->quoteName('value'))
@@ -733,8 +789,9 @@ final class AjaxModel extends BaseDatabaseModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('a.sportstype_id'))
             ->order($db->quoteName('a.name') . ' ASC');
 
-        if ((int) $sports_type_id > 0) {
-            $query->where($db->quoteName('a.sportstype_id') . ' = ' . (int) $sports_type_id);
+        if ($sportsTypeId > 0) {
+            $query->where($db->quoteName('a.sportstype_id') . ' = :sportsTypeAgeGroupId')
+                ->bind(':sportsTypeAgeGroupId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -742,6 +799,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
+        $projectId = max(0, (int) $project_id);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select($slug
@@ -752,7 +810,8 @@ final class AjaxModel extends BaseDatabaseModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . (int) $project_id)
+            ->where($db->quoteName('pt.project_id') . ' = :projectTeamPtidProjectId')
+            ->bind(':projectTeamPtidProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('t.name') . ' ASC');
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -773,7 +832,7 @@ final class AjaxModel extends BaseDatabaseModel
         $projectIds = self::ids($project_id);
 
         if ($projectIds) {
-            $query->where($db->quoteName('pr.project_id') . ' IN (' . implode(',', $projectIds) . ')');
+            $query->whereIn($db->quoteName('pr.project_id'), $projectIds, ParameterType::INTEGER);
         }
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -781,6 +840,8 @@ final class AjaxModel extends BaseDatabaseModel
 
     private static function getProjectPersonsOptions($project_id, int $personType, $required, $dbase): array
     {
+        $projectId = max(0, (int) $project_id);
+        $personType = max(0, $personType);
         $db = self::database((bool) $dbase);
         $query = $db->createQuery()
             ->select("CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('value'))
@@ -790,7 +851,8 @@ final class AjaxModel extends BaseDatabaseModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('stp.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
             ->where($db->quoteName('p.published') . ' = 1')
-            ->where($db->quoteName('stp.persontype') . ' = ' . $personType)
+            ->where($db->quoteName('stp.persontype') . ' = :projectPersonType')
+            ->bind(':projectPersonType', $personType, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('p.id'),
                 $db->quoteName('p.alias'),
@@ -800,8 +862,9 @@ final class AjaxModel extends BaseDatabaseModel
             ])
             ->order($db->quoteName('text') . ' ASC');
 
-        if ((int) $project_id > 0) {
-            $query->where($db->quoteName('pt.project_id') . ' = ' . (int) $project_id);
+        if ($projectId > 0) {
+            $query->where($db->quoteName('pt.project_id') . ' = :projectPersonProjectId')
+                ->bind(':projectPersonProjectId', $projectId, ParameterType::INTEGER);
         }
 
         return self::loadOptions($db, $query, (bool) $required);
@@ -843,7 +906,7 @@ final class AjaxModel extends BaseDatabaseModel
         $ids = self::ids($value);
 
         if ($ids) {
-            $query->where($column . ' IN (' . implode(',', $ids) . ')');
+            $query->whereIn($column, $ids, ParameterType::INTEGER);
         } else {
             $query->where($column . ' = 0');
         }
