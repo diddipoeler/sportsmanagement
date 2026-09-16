@@ -51,8 +51,10 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
 
         $query = $db->createQuery()
-            ->select('c.*')
-            ->select("CONCAT_WS(':', c.id, c.alias) AS slug")
+            ->select($db->quoteName('c') . '.*')
+            ->select(
+                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('slug')
+            )
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->where($db->quoteName('c.id') . ' = :clubId')
             ->bind(':clubId', $clubId, ParameterType::INTEGER);
@@ -73,7 +75,7 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         $query = $db->createQuery()
-            ->select('a.*')
+            ->select($db->quoteName('a') . '.*')
             ->from($db->quoteName('#__sportsmanagement_associations', 'a'))
             ->where($db->quoteName('a.id') . ' = :associationId')
             ->bind(':associationId', $associationId, ParameterType::INTEGER);
@@ -93,36 +95,55 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
 
         $db = $this->getDatabase();
-        $latestProject = '(SELECT MAX(pt2.project_id)'
-            . ' FROM #__sportsmanagement_project_team AS pt2'
-            . ' INNER JOIN #__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id'
-            . ' WHERE st2.team_id = t.id)';
-        $latestProjectTeamId = '(SELECT pt3.id'
-            . ' FROM #__sportsmanagement_project_team AS pt3'
-            . ' INNER JOIN #__sportsmanagement_season_team_id AS st3 ON st3.id = pt3.team_id'
-            . ' WHERE st3.team_id = t.id'
-            . ' ORDER BY pt3.project_id DESC, pt3.id DESC LIMIT 1)';
-        $latestProjectTeamPicture = '(SELECT pt3.picture'
-            . ' FROM #__sportsmanagement_project_team AS pt3'
-            . ' INNER JOIN #__sportsmanagement_season_team_id AS st3 ON st3.id = pt3.team_id'
-            . ' WHERE st3.team_id = t.id'
-            . ' ORDER BY pt3.project_id DESC, pt3.id DESC LIMIT 1)';
-        $latestHomeKit = '(SELECT pt3.trikot_home'
-            . ' FROM #__sportsmanagement_project_team AS pt3'
-            . ' INNER JOIN #__sportsmanagement_season_team_id AS st3 ON st3.id = pt3.team_id'
-            . ' WHERE st3.team_id = t.id'
-            . ' ORDER BY pt3.project_id DESC, pt3.id DESC LIMIT 1)';
-        $latestAwayKit = '(SELECT pt3.trikot_away'
-            . ' FROM #__sportsmanagement_project_team AS pt3'
-            . ' INNER JOIN #__sportsmanagement_season_team_id AS st3 ON st3.id = pt3.team_id'
-            . ' WHERE st3.team_id = t.id'
-            . ' ORDER BY pt3.project_id DESC, pt3.id DESC LIMIT 1)';
-        $latestProjectSlug = '(SELECT CONCAT_WS(\':\', p3.id, p3.alias)'
-            . ' FROM #__sportsmanagement_project_team AS pt3'
-            . ' INNER JOIN #__sportsmanagement_season_team_id AS st3 ON st3.id = pt3.team_id'
-            . ' INNER JOIN #__sportsmanagement_project AS p3 ON p3.id = pt3.project_id'
-            . ' WHERE st3.team_id = t.id'
-            . ' ORDER BY pt3.project_id DESC, pt3.id DESC LIMIT 1)';
+        $latestProject = $db->createQuery()
+            ->select('MAX(' . $db->quoteName('pt2.project_id') . ')')
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt2'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st2')
+                . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id')
+            )
+            ->where($db->quoteName('st2.team_id') . ' = ' . $db->quoteName('t.id'));
+
+        $latestProjectTeamSubquery = static function (string $column) use ($db) {
+            return $db->createQuery()
+                ->select($db->quoteName($column))
+                ->from($db->quoteName('#__sportsmanagement_project_team', 'pt3'))
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_season_team_id', 'st3')
+                    . ' ON ' . $db->quoteName('st3.id') . ' = ' . $db->quoteName('pt3.team_id')
+                )
+                ->where($db->quoteName('st3.team_id') . ' = ' . $db->quoteName('t.id'))
+                ->order($db->quoteName('pt3.project_id') . ' DESC')
+                ->order($db->quoteName('pt3.id') . ' DESC')
+                ->setLimit(1);
+        };
+
+        $latestProjectSlug = $db->createQuery()
+            ->select(
+                "CONCAT_WS(':', " . $db->quoteName('p3.id') . ', ' . $db->quoteName('p3.alias') . ')'
+            )
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt3'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st3')
+                . ' ON ' . $db->quoteName('st3.id') . ' = ' . $db->quoteName('pt3.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p3')
+                . ' ON ' . $db->quoteName('p3.id') . ' = ' . $db->quoteName('pt3.project_id')
+            )
+            ->where($db->quoteName('st3.team_id') . ' = ' . $db->quoteName('t.id'))
+            ->order($db->quoteName('pt3.project_id') . ' DESC')
+            ->order($db->quoteName('pt3.id') . ' DESC')
+            ->setLimit(1);
+
+        $latestProjectTeamId = $latestProjectTeamSubquery('pt3.id');
+        $latestProjectTeamPicture = $latestProjectTeamSubquery('pt3.picture');
+        $latestHomeKit = $latestProjectTeamSubquery('pt3.trikot_home');
+        $latestAwayKit = $latestProjectTeamSubquery('pt3.trikot_away');
 
         $query = $db->createQuery()
             ->select([
@@ -130,18 +151,18 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
                 $db->quoteName('t.name', 'team_name'),
                 $db->quoteName('t.short_name', 'team_shortcut'),
                 $db->quoteName('t.info', 'team_description'),
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
-                $latestProject . ' AS project_id',
-                $latestProjectTeamId . ' AS ptid',
-                $latestProjectTeamPicture . ' AS project_team_picture',
-                $latestHomeKit . ' AS trikot_home',
-                $latestAwayKit . ' AS trikot_away',
-                $latestProjectSlug . ' AS pid',
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
+                '(' . $latestProject . ') AS ' . $db->quoteName('project_id'),
+                '(' . $latestProjectTeamId . ') AS ' . $db->quoteName('ptid'),
+                '(' . $latestProjectTeamPicture . ') AS ' . $db->quoteName('project_team_picture'),
+                '(' . $latestHomeKit . ') AS ' . $db->quoteName('trikot_home'),
+                '(' . $latestAwayKit . ') AS ' . $db->quoteName('trikot_away'),
+                '(' . $latestProjectSlug . ') AS ' . $db->quoteName('pid'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where($db->quoteName('t.club_id') . ' = :teamsClubId')
             ->bind(':teamsClubId', $clubId, ParameterType::INTEGER)
-            ->order('project_id ASC, ' . $db->quoteName('t.name') . ' ASC');
+            ->order($db->quoteName('project_id') . ' ASC, ' . $db->quoteName('t.name') . ' ASC');
 
         if ($mode === 2) {
             $seasonIds = $this->normaliseIds(
@@ -151,12 +172,14 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
                 return [];
             }
 
-            $seasonKeys = $query->bindArray($seasonIds, ParameterType::INTEGER);
-            $query->where(
-                'EXISTS (SELECT 1 FROM #__sportsmanagement_season_team_id AS st_filter'
-                . ' WHERE st_filter.team_id = t.id'
-                . ' AND st_filter.season_id IN (' . implode(',', $seasonKeys) . '))'
-            );
+            $query
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_season_team_id', 'st_filter')
+                    . ' ON ' . $db->quoteName('st_filter.team_id') . ' = ' . $db->quoteName('t.id')
+                )
+                ->whereIn($db->quoteName('st_filter.season_id'), $seasonIds, ParameterType::INTEGER)
+                ->distinct();
         }
 
         try {
@@ -246,8 +269,8 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
             ->select([
                 $db->quoteName('pl.id', 'value'),
                 $db->quoteName('pl.name', 'text'),
-                'pl.*',
-                "CONCAT_WS(':', pl.id, pl.alias) AS slug",
+                $db->quoteName('pl') . '.*',
+                "CONCAT_WS(':', " . $db->quoteName('pl.id') . ', ' . $db->quoteName('pl.alias') . ') AS ' . $db->quoteName('slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_playground', 'pl'))
             ->whereIn($db->quoteName('pl.id'), array_values($ids), ParameterType::INTEGER)
