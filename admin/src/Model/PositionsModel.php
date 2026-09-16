@@ -63,6 +63,14 @@ final class PositionsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
+        $eventCount = $db->createQuery()
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_position_eventtype', 'pe_count'))
+            ->where($db->quoteName('pe_count.position_id') . ' = ' . $db->quoteName('po.id'));
+        $statCount = $db->createQuery()
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_position_statistic', 'ps_count'))
+            ->where($db->quoteName('ps_count.position_id') . ' = ' . $db->quoteName('po.id'));
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('po.id'),
@@ -81,10 +89,8 @@ final class PositionsModel extends SportsManagementListModel
                 $db->quoteName('pop.name', 'parent_name'),
                 $db->quoteName('st.name', 'sportstype'),
                 $db->quoteName('u.name', 'editor'),
-                '(SELECT COUNT(*) FROM ' . $db->quoteName('#__sportsmanagement_position_eventtype') . ' WHERE '
-                    . $db->quoteName('position_id') . ' = ' . $db->quoteName('po.id') . ') AS ' . $db->quoteName('countEvents'),
-                '(SELECT COUNT(*) FROM ' . $db->quoteName('#__sportsmanagement_position_statistic') . ' WHERE '
-                    . $db->quoteName('position_id') . ' = ' . $db->quoteName('po.id') . ') AS ' . $db->quoteName('countStats'),
+                '(' . $eventCount . ') AS ' . $db->quoteName('countEvents'),
+                '(' . $statCount . ') AS ' . $db->quoteName('countStats'),
             ])
             ->from($db->quoteName('#__sportsmanagement_position', 'po'))
             ->join(
