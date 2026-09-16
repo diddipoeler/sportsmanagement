@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchAdminService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchWriteService;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchSingleTable;
@@ -74,15 +75,22 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
         $projectId = (int) $projectId;
         $projectTeamId = (int) $projectTeamId;
         $seasonTeamPersonId = (int) $seasonTeamPersonId;
-        if ($projectId <= 0 || $projectTeamId <= 0 || $seasonTeamPersonId <= 0) return [];
+
+        if ($projectId <= 0 || $projectTeamId <= 0 || $seasonTeamPersonId <= 0) {
+            return [];
+        }
 
         $db = self::sportsDatabase();
         $side = strtoupper((string) $homeAway) === 'AWAY' ? 2 : 1;
         $matchType = (string) $matchType;
         $query = $db->createQuery()
-            ->select('ms.*')
+            ->select($db->quoteName('ms') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match_single', 'ms'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON r.id = ms.round_id')
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('ms.round_id')
+            )
             ->where($db->quoteName('r.project_id') . ' = :projectId')
             ->where($db->quoteName('ms.projectteam' . $side . '_id') . ' = :projectTeamId')
             ->where($db->quoteName('ms.teamplayer' . $side . '_id') . ' = :seasonTeamPersonId')
@@ -91,18 +99,12 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
             ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
             ->bind(':seasonTeamPersonId', $seasonTeamPersonId, ParameterType::INTEGER)
             ->bind(':matchType', $matchType, ParameterType::STRING);
+
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
     private static function sportsDatabase(): DatabaseInterface
     {
-        if (!class_exists('sportsmanagementHelper', false)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php';
-        }
-        $db = \sportsmanagementHelper::getDBConnection();
-        if (!$db instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement database connection is unavailable.');
-        }
-        return $db;
+        return (new SportsManagementDatabaseResolver())->resolve();
     }
 }
