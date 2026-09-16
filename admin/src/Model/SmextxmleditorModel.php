@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -124,7 +124,7 @@ final class SmextxmleditorModel extends AdminModel
 
     private function administratorApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     private function normaliseFileName(string $fileName): ?string
