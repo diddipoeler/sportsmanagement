@@ -205,7 +205,7 @@ final class RquotesHelper
             ->order($db->quoteName('obj.id') . ' ASC');
 
         if ($categoryIds) {
-            $query->where($db->quoteName('obj.catid') . ' IN (' . implode(',', $categoryIds) . ')');
+            $query->whereIn($db->quoteName('obj.catid'), $categoryIds, ParameterType::INTEGER);
         }
         if ($dailyNumber !== null) {
             $query
