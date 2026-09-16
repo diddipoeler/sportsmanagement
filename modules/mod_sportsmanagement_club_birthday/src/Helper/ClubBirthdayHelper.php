@@ -94,40 +94,56 @@ final class ClubBirthdayHelper
         $seasonIds = self::normaliseIds($seasonIds);
         $query = $db->createQuery()
             ->select([
-                'c.id',
-                'c.country',
-                'c.founded',
-                'c.name',
-                'c.alias',
-                'c.founded_year',
-                'c.logo_big AS picture',
-                'c.founded_timestamp',
-                'pt.project_id',
-                'co.alpha2 AS country_alpha2',
-                'co.picture AS country_picture',
+                $db->quoteName('c.id'),
+                $db->quoteName('c.country'),
+                $db->quoteName('c.founded'),
+                $db->quoteName('c.name'),
+                $db->quoteName('c.alias'),
+                $db->quoteName('c.founded_year'),
+                $db->quoteName('c.logo_big', 'picture'),
+                $db->quoteName('c.founded_timestamp'),
+                $db->quoteName('pt.project_id'),
+                $db->quoteName('co.alpha2', 'country_alpha2'),
+                $db->quoteName('co.picture', 'country_picture'),
             ])
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = t.id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
             ->join(
                 'INNER',
                 $db->quoteName('#__sportsmanagement_project', 'pro')
-                . ' ON pro.id = pt.project_id AND pro.season_id = st.season_id'
+                . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
+                . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('st.season_id')
             )
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON co.alpha3 = c.country')
-            ->where('c.published = 1')
-            ->where('t.published = 1')
-            ->where('pt.published = 1')
-            ->where('pro.published = 1')
-            ->where("c.founded <> '0000-00-00'")
-            ->where("c.founded_year <> '0000'")
-            ->where("c.founded_year <> ''")
-            ->order('c.name ASC');
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_countries', 'co')
+                . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('c.country')
+            )
+            ->where($db->quoteName('c.published') . ' = 1')
+            ->where($db->quoteName('t.published') . ' = 1')
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('pro.published') . ' = 1')
+            ->where($db->quoteName('c.founded') . ' <> ' . $db->quote('0000-00-00'))
+            ->where($db->quoteName('c.founded_year') . ' <> ' . $db->quote('0000'))
+            ->where($db->quoteName('c.founded_year') . ' <> ' . $db->quote(''))
+            ->order($db->quoteName('c.name') . ' ASC');
 
         if ($seasonIds !== []) {
-            $seasonPlaceholders = $query->bindArray($seasonIds, ParameterType::INTEGER);
-            $query->where('st.season_id IN (' . implode(',', $seasonPlaceholders) . ')');
+            $query->whereIn($db->quoteName('st.season_id'), $seasonIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
