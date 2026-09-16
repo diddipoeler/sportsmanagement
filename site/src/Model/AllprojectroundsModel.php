@@ -63,8 +63,8 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
-                'm.*',
-                'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
+                $db->quoteName('m') . '.*',
+                'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', "%H:%i") AS ' . $db->quoteName('time_present'),
                 $db->quoteName('playground.name', 'playground_name'),
                 $db->quoteName('playground.short_name', 'playground_short_name'),
                 $db->quoteName('r.name', 'round_name'),
@@ -78,7 +78,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
                 $db->quoteName('pt1.project_id'),
                 $db->quoteName('d1.name', 'divhome'),
                 $db->quoteName('d2.name', 'divaway'),
-                "CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(':', m.id, CONCAT_WS('_', t1.alias, t2.alias)) ELSE m.id END AS slug",
+                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('t1.alias') . ') AND CHAR_LENGTH(' . $db->quoteName('t2.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) ELSE ' . $db->quoteName('m.id') . ' END AS ' . $db->quoteName('slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -378,7 +378,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
-                'ev.*',
+                $db->quoteName('ev') . '.*',
                 $db->quoteName('p.firstname'),
                 $db->quoteName('p.lastname'),
                 $db->quoteName('et.name', 'event_name'),
@@ -439,8 +439,8 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
                 $db->quoteName('pos.name', 'position_name'),
                 $db->quoteName('mr.project_position_id'),
                 $db->quoteName('pref.picture'),
-                "CONCAT_WS(':', p.id, p.alias) AS person_slug",
-                "CONCAT(p.firstname, ' - ', p.lastname) AS text",
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('person_slug'),
+                'CONCAT(' . $db->quoteName('p.firstname') . ", ' - ', " . $db->quoteName('p.lastname') . ') AS ' . $db->quoteName('text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_referee', 'pref') . ' ON ' . $db->quoteName('pref.id') . ' = ' . $db->quoteName('mr.project_referee_id'))
