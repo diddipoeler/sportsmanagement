@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 prediction tip persistence model.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
+ * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
+use Joomla\Database\ParameterType;
 
 final class PredictiontipModel extends PredictionentryModel
 {
@@ -114,13 +123,20 @@ final class PredictiontipModel extends PredictionentryModel
 
             if ($change['delete']) {
                 if ($existingId > 0) {
+                    $predictionId = $this->predictionGameId;
+                    $matchId = (int) $match->id;
                     $query = $db->createQuery()
                         ->delete($db->quoteName('#__sportsmanagement_prediction_result'))
-                        ->where($db->quoteName('id') . ' = ' . $existingId)
-                        ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-                        ->where($db->quoteName('user_id') . ' = ' . $memberUserId)
-                        ->where($db->quoteName('project_id') . ' = ' . $projectId)
-                        ->where($db->quoteName('match_id') . ' = ' . (int) $match->id);
+                        ->where($db->quoteName('id') . ' = :deleteResultId')
+                        ->where($db->quoteName('prediction_id') . ' = :deletePredictionId')
+                        ->where($db->quoteName('user_id') . ' = :deleteUserId')
+                        ->where($db->quoteName('project_id') . ' = :deleteProjectId')
+                        ->where($db->quoteName('match_id') . ' = :deleteMatchId')
+                        ->bind(':deleteResultId', $existingId, ParameterType::INTEGER)
+                        ->bind(':deletePredictionId', $predictionId, ParameterType::INTEGER)
+                        ->bind(':deleteUserId', $memberUserId, ParameterType::INTEGER)
+                        ->bind(':deleteProjectId', $projectId, ParameterType::INTEGER)
+                        ->bind(':deleteMatchId', $matchId, ParameterType::INTEGER);
                     $db->setQuery($query)->execute();
                     $changed = true;
                 }
@@ -188,14 +204,19 @@ final class PredictiontipModel extends PredictionentryModel
         int $actorId,
         string $modified
     ): void {
+        $predictionId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_result_round'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('user_id') . ' = ' . $memberUserId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('round_id') . ' = ' . $roundId);
+            ->where($db->quoteName('prediction_id') . ' = :roundExtraPredictionId')
+            ->where($db->quoteName('user_id') . ' = :roundExtraUserId')
+            ->where($db->quoteName('project_id') . ' = :roundExtraProjectId')
+            ->where($db->quoteName('round_id') . ' = :roundExtraRoundId')
+            ->bind(':roundExtraPredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':roundExtraUserId', $memberUserId, ParameterType::INTEGER)
+            ->bind(':roundExtraProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':roundExtraRoundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $existingId = (int) $db->loadResult();
 
@@ -231,8 +252,9 @@ final class PredictiontipModel extends PredictionentryModel
         $query = $db->createQuery()
             ->select([$db->quoteName('email'), $db->quoteName('name')])
             ->from($db->quoteName('#__users'))
-            ->where($db->quoteName('id') . ' = ' . $userId)
-            ->where($db->quoteName('block') . ' = 0');
+            ->where($db->quoteName('id') . ' = :receiptUserId')
+            ->where($db->quoteName('block') . ' = 0')
+            ->bind(':receiptUserId', $userId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $user = $db->loadObject();
         if (!$user || empty($user->email)) {
