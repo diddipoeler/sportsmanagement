@@ -79,8 +79,8 @@ final class AllprojectsModel extends SportsManagementListModel
                 $db->quoteName('l.country'),
                 $db->quoteName('l.name', 'leaguename'),
                 $db->quoteName('s.name', 'seasonname'),
-                "CONCAT_WS(':', v.id, v.alias) AS slug",
-                "CONCAT_WS(':', l.id, l.alias) AS leagueslug",
+                "CONCAT_WS(':', " . $db->quoteName('v.id') . ', ' . $db->quoteName('v.alias') . ') AS ' . $db->quoteName('slug'),
+                "CONCAT_WS(':', " . $db->quoteName('l.id') . ', ' . $db->quoteName('l.alias') . ') AS ' . $db->quoteName('leagueslug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'v'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('v.league_id'))
