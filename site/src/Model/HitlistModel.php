@@ -49,9 +49,15 @@ final class HitlistModel extends SportsManagementModel
         $query = $db->createQuery();
 
         if ($table === 'person') {
-            $query->select("CONCAT_WS(' - ', firstname, lastname) AS name, hits");
+            $query->select([
+                "CONCAT_WS(' - ', " . $db->quoteName('firstname') . ', ' . $db->quoteName('lastname') . ') AS ' . $db->quoteName('name'),
+                $db->quoteName('hits'),
+            ]);
         } else {
-            $query->select('name, hits');
+            $query->select([
+                $db->quoteName('name'),
+                $db->quoteName('hits'),
+            ]);
         }
 
         $query->from($db->quoteName('#__sportsmanagement_' . $table))
