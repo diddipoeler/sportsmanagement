@@ -17,6 +17,12 @@ use Joomla\Database\ParameterType;
 
 final class AllleaguesModel extends SportsManagementListModel
 {
+    private const ORDER_FIELDS = [
+        'v.name' => 'v.name',
+        'v.picture' => 'v.picture',
+        'v.country' => 'v.country',
+    ];
+
     protected $_identifier = 'allleagues';
     public int $limitstart = 0;
     public int $limit = 0;
@@ -28,11 +34,7 @@ final class AllleaguesModel extends SportsManagementListModel
         $this->use_current_season = (bool) $input->getInt('use_current_season', 0);
         $this->limitstart = $input->getInt('limitstart', 0);
 
-        $config['filter_fields'] = [
-            'v.name',
-            'v.picture',
-            'v.country',
-        ];
+        $config['filter_fields'] = array_keys(self::ORDER_FIELDS);
 
         parent::__construct($config, $factory);
     }
@@ -65,21 +67,26 @@ final class AllleaguesModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
         $query = $db->createQuery()
-            ->select('v.id,v.name,v.picture,v.country')
-            ->from('#__sportsmanagement_league AS v');
+            ->select($db->quoteName([
+                'v.id',
+                'v.name',
+                'v.picture',
+                'v.country',
+            ]))
+            ->from($db->quoteName('#__sportsmanagement_league', 'v'));
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
             $searchValue = '%' . strtolower($search) . '%';
-            $query->where('LOWER(v.name) LIKE :leagueSearch')
+            $query->where('LOWER(' . $db->quoteName('v.name') . ') LIKE :leagueSearch')
                 ->bind(':leagueSearch', $searchValue, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
 
         if ($nation !== '') {
-            $query->where('v.country = :nation')
+            $query->where($db->quoteName('v.country') . ' = :nation')
                 ->bind(':nation', $nation, ParameterType::STRING);
         }
 
@@ -87,16 +94,22 @@ final class AllleaguesModel extends SportsManagementListModel
             $seasonIds = $this->getCurrentSeasonIds();
 
             if ($seasonIds) {
-                $query->join('INNER', '#__sportsmanagement_project AS p ON v.id = p.league_id')
-                    ->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER);
+                $query->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_project', 'p')
+                    . ' ON ' . $db->quoteName('v.id') . ' = ' . $db->quoteName('p.league_id')
+                )->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER);
             }
         }
 
-        $query->group('v.id')
-            ->order(
-                $db->escape((string) $this->getState('filter_order', 'v.name')) . ' '
-                . $db->escape((string) $this->getState('filter_order_Dir', 'ASC'))
-            );
+        $requestedOrder = (string) $this->getState('filter_order', 'v.name');
+        $orderColumn = self::ORDER_FIELDS[$requestedOrder] ?? self::ORDER_FIELDS['v.name'];
+        $direction = strtoupper((string) $this->getState('filter_order_Dir', 'ASC')) === 'DESC'
+            ? 'DESC'
+            : 'ASC';
+
+        $query->group($db->quoteName('v.id'))
+            ->order($db->quoteName($orderColumn) . ' ' . $direction);
 
         return $query;
     }
@@ -111,13 +124,18 @@ final class AllleaguesModel extends SportsManagementListModel
         $this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
         $this->setState('filter.search_nation', $this->getUserStateFromRequest($this->context . '.filter.search_nation', 'filter_search_nation', ''));
 
-        $filterOrder = $this->getUserStateFromRequest($this->context . '.filter_order', 'filter_order', '', 'string');
+        $filterOrder = (string) $this->getUserStateFromRequest(
+            $this->context . '.filter_order',
+            'filter_order',
+            'v.name',
+            'string'
+        );
 
-        if (!in_array($filterOrder, $this->filter_fields, true)) {
+        if (!isset(self::ORDER_FIELDS[$filterOrder])) {
             $filterOrder = 'v.name';
         }
 
-        $filterOrderDir = strtoupper((string) $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd'));
+        $filterOrderDir = strtoupper((string) $this->getUserStateFromRequest($this->context . '.filter_order_Dir', 'filter_order_Dir', 'ASC', 'cmd'));
 
         if (!in_array($filterOrderDir, ['ASC', 'DESC'], true)) {
             $filterOrderDir = 'ASC';
