@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 trait NativeQueryTrait
@@ -56,46 +57,73 @@ trait NativeQueryTrait
             ->join('LEFT', '#__sportsmanagement_countries AS co1 ON co1.alpha3 = c1.country')
             ->join('LEFT', '#__sportsmanagement_countries AS co2 ON co2.alpha3 = c2.country')
             ->join('LEFT', '#__sportsmanagement_playground AS pg ON pg.id = m.playground_id')
-            ->where('p.published = 1')->where('m.published = 1')
-            ->where('p.id IN (' . implode(',', $projectIds) . ')');
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->where($db->quoteName('m.published') . ' = 1')
+            ->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER);
 
         $excluded = $this->ids($params->get('project_not_used', []));
         if ($excluded) {
-            $q->where('p.id NOT IN (' . implode(',', $excluded) . ')');
+            $q->whereNotIn($db->quoteName('p.id'), $excluded, ParameterType::INTEGER);
         }
+
         $teams = $this->ids($params->get('teams', []));
         if ($teams) {
-            $ids = implode(',', $teams);
-            $q->where('(st1.team_id IN (' . $ids . ') OR st2.team_id IN (' . $ids . '))');
+            $homeTeamParameters = $q->bindArray($teams, ParameterType::INTEGER);
+            $awayTeamParameters = $q->bindArray($teams, ParameterType::INTEGER);
+            $q->where(
+                '(' . $db->quoteName('st1.team_id') . ' IN (' . implode(',', $homeTeamParameters) . ')'
+                . ' OR ' . $db->quoteName('st2.team_id') . ' IN (' . implode(',', $awayTeamParameters) . '))'
+            );
         }
+
         $clubs = $this->ids($params->get('club_ids', []));
         if ($clubs) {
-            $ids = implode(',', $clubs);
-            $q->where('(c1.id IN (' . $ids . ') OR c2.id IN (' . $ids . '))');
+            $homeClubParameters = $q->bindArray($clubs, ParameterType::INTEGER);
+            $awayClubParameters = $q->bindArray($clubs, ParameterType::INTEGER);
+            $q->where(
+                '(' . $db->quoteName('c1.id') . ' IN (' . implode(',', $homeClubParameters) . ')'
+                . ' OR ' . $db->quoteName('c2.id') . ' IN (' . implode(',', $awayClubParameters) . '))'
+            );
         }
+
         if ((int) $params->get('use_fav', 0) === 1) {
             $favorites = $this->favoriteTeams($db, $projectIds);
             if ($favorites) {
-                $ids = implode(',', $favorites);
-                $q->where('(st1.team_id IN (' . $ids . ') OR st2.team_id IN (' . $ids . '))');
+                $homeFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
+                $awayFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
+                $q->where(
+                    '(' . $db->quoteName('st1.team_id') . ' IN (' . implode(',', $homeFavoriteParameters) . ')'
+                    . ' OR ' . $db->quoteName('st2.team_id') . ' IN (' . implode(',', $awayFavoriteParameters) . '))'
+                );
             }
         }
 
         $now = time();
         $showPlayed = (int) $params->get('show_played', 0) === 1;
         $showNext = (int) $params->get('show_nextmatches', 0) === 1;
+
         if ($showPlayed) {
             $from = $now - $this->seconds((int) $params->get('result_add_time', 0), (string) $params->get('result_add_unit', 'DAY'));
         }
+
         if ($showNext) {
             $to = $now + $this->seconds((int) $params->get('period_int', 0), (string) $params->get('period_string', 'DAY'));
         }
+
         if ($showPlayed && !$showNext) {
-            $q->where('m.team1_result IS NOT NULL')->where('m.match_timestamp BETWEEN ' . $from . ' AND ' . $now);
+            $q->where($db->quoteName('m.team1_result') . ' IS NOT NULL')
+                ->where($db->quoteName('m.match_timestamp') . ' BETWEEN :playedFrom AND :playedNow')
+                ->bind(':playedFrom', $from, ParameterType::INTEGER)
+                ->bind(':playedNow', $now, ParameterType::INTEGER);
         } elseif (!$showPlayed && $showNext) {
-            $q->where('m.team1_result IS NULL')->where('m.match_timestamp BETWEEN ' . $now . ' AND ' . $to);
+            $q->where($db->quoteName('m.team1_result') . ' IS NULL')
+                ->where($db->quoteName('m.match_timestamp') . ' BETWEEN :upcomingNow AND :upcomingTo')
+                ->bind(':upcomingNow', $now, ParameterType::INTEGER)
+                ->bind(':upcomingTo', $to, ParameterType::INTEGER);
         } elseif ($showPlayed && $showNext) {
-            $q->where('m.match_timestamp BETWEEN ' . $from . ' AND ' . $to);
+            $q->where($db->quoteName('m.match_timestamp') . ' BETWEEN :windowFrom AND :windowTo')
+                ->bind(':windowFrom', $from, ParameterType::INTEGER)
+                ->bind(':windowTo', $to, ParameterType::INTEGER);
         }
 
         $order = (int) $params->get('order_by_project', 0) === 1
@@ -103,27 +131,38 @@ trait NativeQueryTrait
             : 'm.match_date ' . (strtolower((string) $params->get('lastsortorder', 'asc')) === 'desc' ? 'DESC' : 'ASC');
         $q->order($order);
         $db->setQuery($q, 0, max(1, (int) $params->get('limit', 1)));
+
         return $db->loadObjectList() ?: [];
     }
 
     /** @param array<int,int> $projectIds @return array<int,int> */
     private function favoriteTeams(DatabaseInterface $db, array $projectIds): array
     {
-        $q = $db->createQuery()->select('fav_team')->from('#__sportsmanagement_project')
-            ->where("fav_team != ''")->where('id IN (' . implode(',', $projectIds) . ')');
+        $q = $db->createQuery()
+            ->select($db->quoteName('fav_team'))
+            ->from($db->quoteName('#__sportsmanagement_project'))
+            ->where($db->quoteName('fav_team') . " != ''")
+            ->whereIn($db->quoteName('id'), $projectIds, ParameterType::INTEGER);
         $db->setQuery($q);
         $out = [];
+
         foreach ($db->loadColumn() ?: [] as $value) {
             foreach ($this->ids($value) as $id) {
                 $out[$id] = $id;
             }
         }
+
         return array_values($out);
     }
 
     private function seconds(int $amount, string $unit): int
     {
-        return max(0, $amount) * match (strtoupper($unit)) {'SECOND' => 1, 'MINUTE' => 60, 'HOUR' => 3600, default => 86400};
+        return max(0, $amount) * match (strtoupper($unit)) {
+            'SECOND' => 1,
+            'MINUTE' => 60,
+            'HOUR' => 3600,
+            default => 86400,
+        };
     }
 
     /** @return array<int,int> */
@@ -131,11 +170,13 @@ trait NativeQueryTrait
     {
         $values = is_array($value) ? $value : preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
         $ids = [];
+
         foreach ((array) $values as $value) {
             if (($id = (int) $value) > 0) {
                 $ids[$id] = $id;
             }
         }
+
         return array_values($ids);
     }
 
