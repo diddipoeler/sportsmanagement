@@ -102,51 +102,91 @@ final class AllpersonsModel extends SportsManagementListModel
             foreach ($selectColumns as $column) {
                 $query->select($db->quoteName('v.' . $column));
             }
+
             $query->select($db->quoteName('v.id'));
         } else {
-            $query->select('v.*');
+            $query->select($db->quoteName('v') . '.*');
         }
 
-        $query->select("CONCAT_WS(':', v.id, v.alias) AS slug")
-            ->select("CONCAT_WS(':', p.id, p.alias) AS projectslug")
-            ->select("CONCAT_WS(':', t.id, t.alias) AS teamslug")
-            ->select('po.name AS position_name')
-            ->from('#__sportsmanagement_person AS v')
-            ->join('INNER', '#__sportsmanagement_season_team_person_id AS stp ON stp.person_id = v.id')
-            ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id')
-            ->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id')
-            ->join('INNER', '#__sportsmanagement_project AS p ON p.id = pt.project_id')
-            ->join('INNER', '#__sportsmanagement_team AS t ON t.id = stp.team_id')
-            ->join('LEFT', '#__sportsmanagement_position AS po ON po.id = v.position_id');
+        $query->select([
+                "CONCAT_WS(':', " . $db->quoteName('v.id') . ', ' . $db->quoteName('v.alias') . ') AS ' . $db->quoteName('slug'),
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('projectslug'),
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('teamslug'),
+                $db->quoteName('po.name', 'position_name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_person', 'v'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_person_id', 'stp')
+                . ' ON ' . $db->quoteName('stp.person_id') . ' = ' . $db->quoteName('v.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('stp.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('stp.team_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_position', 'po')
+                . ' ON ' . $db->quoteName('po.id') . ' = ' . $db->quoteName('v.position_id')
+            );
 
         $search = trim((string) $this->getState('filter.search'));
         if ($search !== '') {
             $searchToken = '%' . strtolower($search) . '%';
-            $query->where('LOWER(v.lastname) LIKE :personSearch')
+            $query->where('LOWER(' . $db->quoteName('v.lastname') . ') LIKE :personSearch')
                 ->bind(':personSearch', $searchToken, ParameterType::STRING);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation'));
         if ($nation !== '') {
-            $query->where('v.country = :personCountry')
+            $query->where($db->quoteName('v.country') . ' = :personCountry')
                 ->bind(':personCountry', $nation, ParameterType::STRING);
         }
 
         if ($this->use_current_season) {
             $currentSeason = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
             $seasonIds = is_array($currentSeason) ? $currentSeason : [$currentSeason];
-            $seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn($id) => $id > 0));
+            $seasonIds = array_values(array_filter(array_map('intval', $seasonIds), static fn ($id) => $id > 0));
 
             if ($seasonIds) {
-                $query->whereIn('p.season_id', $seasonIds, ParameterType::INTEGER);
+                $query->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER);
             }
         }
 
-        $query->group('v.id')
-            ->order(
-                $db->escape((string) $this->getState('filter_order', 'v.lastname')) . ' '
-                . $db->escape((string) $this->getState('filter_order_Dir', 'ASC'))
-            );
+        $orderMap = [
+            'v.lastname' => $db->quoteName('v.lastname'),
+            'v.firstname' => $db->quoteName('v.firstname'),
+            'v.picture' => $db->quoteName('v.picture'),
+            'v.website' => $db->quoteName('v.website'),
+            'v.address' => $db->quoteName('v.address'),
+            'v.zipcode' => $db->quoteName('v.zipcode'),
+            'v.city' => $db->quoteName('v.city'),
+            'v.country' => $db->quoteName('v.country'),
+            'v.birthday' => $db->quoteName('v.birthday'),
+            'v.deathday' => $db->quoteName('v.deathday'),
+            'v.position_id' => $db->quoteName('v.position_id'),
+        ];
+        $ordering = (string) $this->getState('filter_order', 'v.lastname');
+        $direction = strtoupper((string) $this->getState('filter_order_Dir', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+
+        $query->group($db->quoteName('v.id'))
+            ->order(($orderMap[$ordering] ?? $orderMap['v.lastname']) . ' ' . $direction);
 
         return $query;
     }
@@ -185,6 +225,7 @@ final class AllpersonsModel extends SportsManagementListModel
     private function normaliseSelectColumns($columns): array
     {
         $requested = array_map('strval', (array) $columns);
+
         return array_values(array_unique(array_intersect($requested, self::SELECTABLE_COLUMNS)));
     }
 }
