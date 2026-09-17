@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -49,7 +50,10 @@ class JlxmlexportsModel extends \sportsmanagementModelJLXMLExports
         $this->user = $this->app->getIdentity();
         $this->jinput = $this->app->getInput();
         $this->option = $this->jinput->getCmd('option', 'com_sportsmanagement');
-        $this->jsmdb = \sportsmanagementHelper::getDBConnection();
+        $this->jsmdb = SportsManagementDatabaseResolver::resolve(
+            $this->getDatabase(),
+            max(0, $this->jinput->getInt('cfg_which_database', 0))
+        );
         $this->setDatabase($this->jsmdb);
         $this->query = $this->jsmdb->createQuery();
     }
