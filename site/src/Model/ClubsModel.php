@@ -43,10 +43,6 @@ final class ClubsModel extends SportsManagementProjectModel
             static fn (int $id): bool => $id > 0
         ));
         $clubQuery = $db->createQuery();
-        $clubDivisionIds = $divisionIds;
-        $clubDivisionPlaceholders = $clubDivisionIds !== []
-            ? $clubQuery->bindArray($clubDivisionIds, ParameterType::INTEGER)
-            : [];
 
         $exists = $db->createQuery()
             ->select('1')
@@ -56,12 +52,15 @@ final class ClubsModel extends SportsManagementProjectModel
             ->where($db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
             ->where($db->quoteName('pt.project_id') . ' = :clubProjectId');
 
-        if ($clubDivisionPlaceholders !== []) {
-            $exists->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', $clubDivisionPlaceholders) . ')');
+        if ($divisionIds !== []) {
+            $exists->whereIn($db->quoteName('pt.division_id'), $divisionIds, ParameterType::INTEGER);
         }
 
         $clubQuery
-            ->select(['c.*', "CONCAT_WS(':', c.id, c.alias) AS club_slug"])
+            ->select([
+                $db->quoteName('c') . '.*',
+                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('club_slug'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->where('EXISTS (' . $exists . ')')
             ->order($this->normaliseOrdering($ordering, 'c.name'))
@@ -75,11 +74,11 @@ final class ClubsModel extends SportsManagementProjectModel
 
         $teamQuery = $db->createQuery()
             ->select([
-                't.*',
+                $db->quoteName('t') . '.*',
                 $db->quoteName('t.picture', 'team_picture'),
                 $db->quoteName('pt.picture', 'projectteam_picture'),
                 $db->quoteName('pt.division_id'),
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id'))
@@ -89,9 +88,7 @@ final class ClubsModel extends SportsManagementProjectModel
             ->bind(':teamProjectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionIds !== []) {
-            $teamDivisionIds = $divisionIds;
-            $teamDivisionPlaceholders = $teamQuery->bindArray($teamDivisionIds, ParameterType::INTEGER);
-            $teamQuery->where($db->quoteName('pt.division_id') . ' IN (' . implode(',', $teamDivisionPlaceholders) . ')');
+            $teamQuery->whereIn($db->quoteName('pt.division_id'), $divisionIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($teamQuery);
