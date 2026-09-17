@@ -62,7 +62,7 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
-            ->select("CONCAT_WS(':', id, alias)")
+            ->select("CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = :roundSlugId')
             ->where($db->quoteName('project_id') . ' = :roundSlugProjectId')
@@ -90,9 +90,9 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
         $query = $db->createQuery()
             ->select([
-                "CONCAT_WS(':', id, alias) AS slug",
+                "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('slug'),
                 $db->quoteName('id', 'value'),
-                "CASE LENGTH(name) WHEN 0 THEN CONCAT(" . $db->quote($matchdayName) . ", ' ', id) ELSE CONCAT(name, ' (', round_date_first, ')') END AS text",
+                'CASE LENGTH(' . $db->quoteName('name') . ') WHEN 0 THEN CONCAT(' . $db->quote($matchdayName) . ", ' ', " . $db->quoteName('id') . ') ELSE CONCAT(' . $db->quoteName('name') . ", ' (', " . $db->quoteName('round_date_first') . ", ')') END AS " . $db->quoteName('text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = :roundOptionsProjectId')
@@ -122,17 +122,17 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
-            ->select('*')
-            ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('project_id') . ' = :divisionProjectId')
-            ->where($db->quoteName('published') . ' = 1')
-            ->order($db->quoteName('ordering') . ' ASC')
+            ->select($db->quoteName('d') . '.*')
+            ->from($db->quoteName('#__sportsmanagement_division', 'd'))
+            ->where($db->quoteName('d.project_id') . ' = :divisionProjectId')
+            ->where($db->quoteName('d.published') . ' = 1')
+            ->order($db->quoteName('d.ordering') . ' ASC')
             ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
 
         if ($divisionLevel === 1) {
-            $query->where('(' . $db->quoteName('parent_id') . ' = 0 OR ' . $db->quoteName('parent_id') . ' IS NULL)');
+            $query->where('(' . $db->quoteName('d.parent_id') . ' = 0 OR ' . $db->quoteName('d.parent_id') . ' IS NULL)');
         } elseif ($divisionLevel === 2) {
-            $query->where($db->quoteName('parent_id') . ' > 0');
+            $query->where($db->quoteName('d.parent_id') . ' > 0');
         }
 
         try {
