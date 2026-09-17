@@ -57,7 +57,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         $treeToId = $this->treetoid;
         $query = $db->createQuery()
             ->select([
-                'ttn.*',
+                $db->quoteName('ttn') . '.*',
                 $db->quoteName('ttn.id', 'ttnid'),
                 $db->quoteName('ttm.match_id'),
                 $db->quoteName('c.country', 'country'),
@@ -117,7 +117,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('mc.id', 'value'),
-                "CONCAT(t1.name, '_vs_', t2.name, ' [round:', r.roundcode, ']') AS text",
+                'CONCAT(' . $db->quoteName('t1.name') . ", '_vs_', " . $db->quoteName('t2.name') . ", ' [round:', " . $db->quoteName('r.roundcode') . ", ']') AS " . $db->quoteName('text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'mc'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('mc.projectteam1_id'))
@@ -146,7 +146,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $projectId = $this->projectid;
         $query = $db->createQuery()
-            ->select('*')
+            ->select($db->quoteName('r') . '.*')
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = :roundProjectId')
             ->where($db->quoteName('r.tournement') . ' = 1')
