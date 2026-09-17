@@ -53,10 +53,10 @@ final class RankingModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
-                'm.*',
+                $db->quoteName('m') . '.*',
                 $db->quoteName('r.roundcode'),
-                "CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(':', m.id, CONCAT_WS('_', t1.alias, t2.alias)) ELSE m.id END AS slug",
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('t1.alias') . ') AND CHAR_LENGTH(' . $db->quoteName('t2.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) ELSE ' . $db->quoteName('m.id') . ' END AS ' . $db->quoteName('slug'),
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -130,9 +130,9 @@ final class RankingModel extends SportsManagementProjectModel
         $matchdayName = Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME');
         $query = $db->createQuery()
             ->select([
-                "CONCAT_WS(':', id, alias) AS slug",
+                "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('slug'),
                 $db->quoteName('id', 'value'),
-                "CASE LENGTH(name) WHEN 0 THEN CONCAT(" . $db->quote($matchdayName) . ", ' ', id) ELSE CONCAT(name, ' (', round_date_first, ')') END AS text",
+                'CASE LENGTH(' . $db->quoteName('name') . ') WHEN 0 THEN CONCAT(' . $db->quote($matchdayName) . ", ' ', " . $db->quoteName('id') . ') ELSE CONCAT(' . $db->quoteName('name') . ", ' (', " . $db->quoteName('round_date_first') . ", ')') END AS " . $db->quoteName('text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = :roundOptionsProjectId')
@@ -261,7 +261,7 @@ final class RankingModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
-                'cl.*',
+                $db->quoteName('cl') . '.*',
                 $db->quoteName('se.name', 'seasonname'),
             ])
             ->from($db->quoteName('#__sportsmanagement_club_logos', 'cl'))
@@ -330,7 +330,7 @@ final class RankingModel extends SportsManagementProjectModel
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('roundcode'),
-                "CONCAT_WS(':', id, alias) AS round_slug",
+                "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('round_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = :requestedRoundId')
@@ -359,7 +359,7 @@ final class RankingModel extends SportsManagementProjectModel
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('roundcode'),
-                "CONCAT_WS(':', id, alias) AS round_slug",
+                "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('round_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = :fallbackRoundId')
