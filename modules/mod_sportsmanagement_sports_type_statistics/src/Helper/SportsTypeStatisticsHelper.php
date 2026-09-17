@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class SportsTypeStatisticsHelper
@@ -29,7 +30,8 @@ final class SportsTypeStatisticsHelper
                     $db->quoteName('icon'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_sports_type'))
-                ->where($db->quoteName('id') . ' = ' . $sportTypeId);
+                ->where($db->quoteName('id') . ' = :sportTypeId')
+                ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $sportType = $db->loadObject() ?: null;
         }
@@ -73,7 +75,8 @@ final class SportsTypeStatisticsHelper
         $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('sports_type_id') . ' = ' . $sportTypeId);
+            ->where($db->quoteName('sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -99,7 +102,8 @@ final class SportsTypeStatisticsHelper
             ->select('COUNT(*)')
             ->from($db->quoteName($table, 'rel'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('rel.project_id'))
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sportTypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -116,7 +120,8 @@ final class SportsTypeStatisticsHelper
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sportTypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -134,7 +139,8 @@ final class SportsTypeStatisticsHelper
             ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('child.match_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
-            ->where($db->quoteName('p.sports_type_id') . ' = ' . $sportTypeId);
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
