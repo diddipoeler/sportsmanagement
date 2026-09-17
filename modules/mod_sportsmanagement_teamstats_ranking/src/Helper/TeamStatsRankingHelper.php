@@ -272,15 +272,35 @@ final class TeamStatsRankingHelper
 
         $query = $db->createQuery();
         $statPlaceholders = $query->bindArray($statIds, ParameterType::INTEGER);
-        $query->select(['SUM(ms.value) AS total', 'st.team_id'])
+        $query->select([
+            'SUM(' . $db->quoteName('ms.value') . ') AS ' . $db->quoteName('total'),
+            $db->quoteName('st.team_id'),
+        ])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
-                . ' ON ms.teamplayer_id = tp.id AND ms.statistic_id IN (' . implode(',', $statPlaceholders) . ')')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON m.id = ms.match_id AND m.published = 1')
-            ->where('pt.project_id = :projectId')
-            ->group('st.team_id')
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
+                . ' ON ' . $db->quoteName('ms.teamplayer_id') . ' = ' . $db->quoteName('tp.id')
+                . ' AND ' . $db->quoteName('ms.statistic_id') . ' IN (' . implode(',', $statPlaceholders) . ')'
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match', 'm')
+                . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('ms.match_id')
+                . ' AND ' . $db->quoteName('m.published') . ' = 1'
+            )
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->group($db->quoteName('st.team_id'))
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
@@ -295,16 +315,36 @@ final class TeamStatsRankingHelper
 
         $query = $db->createQuery();
         $eventPlaceholders = $query->bindArray($eventIds, ParameterType::INTEGER);
-        $query->select(['SUM(me.event_sum) AS total', 'st.team_id'])
+        $query->select([
+            'SUM(' . $db->quoteName('me.event_sum') . ') AS ' . $db->quoteName('total'),
+            $db->quoteName('st.team_id'),
+        ])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match_event', 'me')
-                . ' ON me.teamplayer_id = tp.id AND me.event_type_id IN (' . implode(',', $eventPlaceholders) . ')')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON m.id = me.match_id AND m.published = 1')
-            ->where('pt.project_id = :projectId')
-            ->where('tp.published = 1')
-            ->group('st.team_id')
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match_event', 'me')
+                . ' ON ' . $db->quoteName('me.teamplayer_id') . ' = ' . $db->quoteName('tp.id')
+                . ' AND ' . $db->quoteName('me.event_type_id') . ' IN (' . implode(',', $eventPlaceholders) . ')'
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match', 'm')
+                . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('me.match_id')
+                . ' AND ' . $db->quoteName('m.published') . ' = 1'
+            )
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->where($db->quoteName('tp.published') . ' = 1')
+            ->group($db->quoteName('st.team_id'))
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
@@ -322,15 +362,39 @@ final class TeamStatsRankingHelper
 
         $query = $db->createQuery();
         $statPlaceholders = $query->bindArray($ids, ParameterType::INTEGER);
-        $query->select(['SUM(ms.value) AS total', 'ms.statistic_id', 'st.team_id'])
+        $query->select([
+            'SUM(' . $db->quoteName('ms.value') . ') AS ' . $db->quoteName('total'),
+            $db->quoteName('ms.statistic_id'),
+            $db->quoteName('st.team_id'),
+        ])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = tp.team_id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON pt.team_id = st.id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
-                . ' ON ms.teamplayer_id = tp.id AND ms.statistic_id IN (' . implode(',', $statPlaceholders) . ')')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON m.id = ms.match_id AND m.published = 1')
-            ->where('pt.project_id = :projectId')
-            ->group(['st.team_id', 'ms.statistic_id'])
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
+                . ' ON ' . $db->quoteName('ms.teamplayer_id') . ' = ' . $db->quoteName('tp.id')
+                . ' AND ' . $db->quoteName('ms.statistic_id') . ' IN (' . implode(',', $statPlaceholders) . ')'
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match', 'm')
+                . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('ms.match_id')
+                . ' AND ' . $db->quoteName('m.published') . ' = 1'
+            )
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->group([
+                $db->quoteName('st.team_id'),
+                $db->quoteName('ms.statistic_id'),
+            ])
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
@@ -350,15 +414,26 @@ final class TeamStatsRankingHelper
     private function playedMatches(DatabaseInterface $db, int $projectId): array
     {
         $query = $db->createQuery()
-            ->select(['COUNT(DISTINCT m.id) AS total', 'st.team_id'])
+            ->select([
+                'COUNT(DISTINCT ' . $db->quoteName('m.id') . ') AS ' . $db->quoteName('total'),
+                $db->quoteName('st.team_id'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm')
-                . ' ON (m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id)')
-            ->where('pt.project_id = :projectId')
-            ->where('m.published = 1')
-            ->where('m.team1_result IS NOT NULL')
-            ->group('st.team_id')
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match', 'm')
+                . ' ON (' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt.id')
+                . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt.id') . ')'
+            )
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->where($db->quoteName('m.published') . ' = 1')
+            ->where($db->quoteName('m.team1_result') . ' IS NOT NULL')
+            ->group($db->quoteName('st.team_id'))
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
@@ -368,17 +443,32 @@ final class TeamStatsRankingHelper
     private function wonMatches(DatabaseInterface $db, int $projectId): array
     {
         $query = $db->createQuery()
-            ->select(['COUNT(DISTINCT m.id) AS total', 'st.team_id'])
+            ->select([
+                'COUNT(DISTINCT ' . $db->quoteName('m.id') . ') AS ' . $db->quoteName('total'),
+                $db->quoteName('st.team_id'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm')
-                . ' ON (m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id)')
-            ->where('pt.project_id = :projectId')
-            ->where('m.published = 1')
-            ->where('m.team1_result IS NOT NULL')
-            ->where('((pt.id = m.projectteam1_id AND m.team1_result > m.team2_result)'
-                . ' OR (pt.id = m.projectteam2_id AND m.team2_result > m.team1_result))')
-            ->group('st.team_id')
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match', 'm')
+                . ' ON (' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt.id')
+                . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt.id') . ')'
+            )
+            ->where($db->quoteName('pt.project_id') . ' = :projectId')
+            ->where($db->quoteName('m.published') . ' = 1')
+            ->where($db->quoteName('m.team1_result') . ' IS NOT NULL')
+            ->where(
+                '((' . $db->quoteName('pt.id') . ' = ' . $db->quoteName('m.projectteam1_id')
+                . ' AND ' . $db->quoteName('m.team1_result') . ' > ' . $db->quoteName('m.team2_result') . ')'
+                . ' OR (' . $db->quoteName('pt.id') . ' = ' . $db->quoteName('m.projectteam2_id')
+                . ' AND ' . $db->quoteName('m.team2_result') . ' > ' . $db->quoteName('m.team1_result') . '))'
+            )
+            ->group($db->quoteName('st.team_id'))
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
