@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementUefaWertung\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class UefaWertungHelper
@@ -68,7 +69,8 @@ final class UefaWertungHelper
         $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_season'))
-            ->where($db->quoteName('id') . ' = ' . $seasonId);
+            ->where($db->quoteName('id') . ' = :seasonId')
+            ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return trim((string) $db->loadResult());
@@ -80,7 +82,8 @@ final class UefaWertungHelper
         $query = $db->createQuery()
             ->select($db->quoteName('season'))
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
-            ->where($db->quoteName('season') . ' <= ' . $db->quote($seasonName))
+            ->where($db->quoteName('season') . ' <= :seasonName')
+            ->bind(':seasonName', $seasonName, ParameterType::STRING)
             ->group($db->quoteName('season'))
             ->order($db->quoteName('season') . ' DESC');
         $db->setQuery($query, 0, 5);
@@ -100,7 +103,6 @@ final class UefaWertungHelper
      */
     private function rankings(DatabaseInterface $db, array $seasons): array
     {
-        $quotedSeasons = array_map([$db, 'quote'], $seasons);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('country'),
@@ -108,7 +110,7 @@ final class UefaWertungHelper
                 $db->quoteName('points'),
             ])
             ->from($db->quoteName('#__sportsmanagement_uefawertung'))
-            ->where($db->quoteName('season') . ' IN (' . implode(',', $quotedSeasons) . ')')
+            ->whereIn($db->quoteName('season'), $seasons, ParameterType::STRING)
             ->order([
                 $db->quoteName('country') . ' ASC',
                 $db->quoteName('season') . ' ASC',
