@@ -35,7 +35,7 @@ final class ProjectRoundReader
         $query = $db->createQuery();
 
         if ($slug) {
-            $query->select("CONCAT_WS(':', r.id, r.alias) AS id");
+            $query->select("CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('id'));
         } else {
             $query->select($db->quoteName('r.id'));
         }
@@ -43,7 +43,7 @@ final class ProjectRoundReader
         $query->select([
                 $db->quoteName('r.round_date_first'),
                 $db->quoteName('r.round_date_last'),
-                'CASE LENGTH(r.name) WHEN 0 THEN r.roundcode ELSE r.name END AS name',
+                'CASE LENGTH(' . $db->quoteName('r.name') . ') WHEN 0 THEN ' . $db->quoteName('r.roundcode') . ' ELSE ' . $db->quoteName('r.name') . ' END AS ' . $db->quoteName('name'),
                 $db->quoteName('r.roundcode'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
@@ -111,7 +111,7 @@ final class ProjectRoundReader
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = :autoRoundProjectId')
@@ -170,7 +170,7 @@ final class ProjectRoundReader
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = :roundProjectId')
@@ -189,7 +189,7 @@ final class ProjectRoundReader
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = :fallbackProjectId')
