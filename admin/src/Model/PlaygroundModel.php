@@ -256,6 +256,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
 
         $matchPlaygroundId = (int) $playground->id;
+        $matchTimestamp = time();
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -303,8 +304,9 @@ final class PlaygroundModel extends SportsManagementAdminModel
             ->where(
                 $db->quoteName('m.match_timestamp')
                 . ($played ? ' < ' : ' > ')
-                . time()
+                . ' :matchTimestamp'
             )
+            ->bind(':matchTimestamp', $matchTimestamp, ParameterType::INTEGER)
             ->order($db->quoteName('m.match_date') . ' ASC');
 
         if ($projectId > 0 && !$allproject) {
