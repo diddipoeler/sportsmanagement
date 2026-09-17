@@ -16,6 +16,7 @@ use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
@@ -58,11 +59,13 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             $field = in_array((string) $teamFormat, ['name', 'middle_name', 'short_name'], true)
                 ? (string) $teamFormat
                 : 'name';
+            $teamId = (int) $teamId;
             $db = self::database();
             $query = $db->createQuery()
                 ->select($db->quoteName($field))
                 ->from($db->quoteName('#__sportsmanagement_team'))
-                ->where($db->quoteName('id') . ' = ' . (int) $teamId);
+                ->where($db->quoteName('id') . ' = :teamId')
+                ->bind(':teamId', $teamId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
 
             return (string) ($db->loadResult() ?? '');
@@ -73,6 +76,7 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             $field = in_array((string) $logo, ['logo_small', 'logo_middle', 'logo_big'], true)
                 ? (string) $logo
                 : 'logo_big';
+            $teamId = (int) $teamId;
             $db = self::database();
             $query = $db->createQuery()
                 ->select($db->quoteName('c.' . $field))
@@ -82,7 +86,8 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
                     $db->quoteName('#__sportsmanagement_club', 'c')
                     . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
                 )
-                ->where($db->quoteName('t.id') . ' = ' . (int) $teamId);
+                ->where($db->quoteName('t.id') . ' = :teamId')
+                ->bind(':teamId', $teamId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $value = trim((string) ($db->loadResult() ?? ''));
 
