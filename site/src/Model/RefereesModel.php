@@ -55,14 +55,14 @@ final class RefereesModel extends SportsManagementProjectModel
 
         $query = $db->createQuery()
             ->select([
-                'p.*',
+                $db->quoteName('p') . '.*',
                 $db->quoteName('p.id', 'pid'),
                 $db->quoteName('pr.id', 'prid'),
                 $db->quoteName('pr.notes', 'description'),
                 $db->quoteName('ppos.position_id'),
                 $db->quoteName('pos.name', 'position'),
                 $db->quoteName('pos.parent_id'),
-                '(' . $subquery . ') AS countGames',
+                '(' . $subquery . ') AS ' . $db->quoteName('countGames'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_person_id', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('pr.person_id'))
