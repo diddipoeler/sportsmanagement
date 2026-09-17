@@ -221,18 +221,32 @@ final class TeamstatsModel extends SportsManagementProjectModel
         $db = self::database();
         $query = $db->createQuery()
             ->select([
-                'COUNT(m.id) AS totalmatches',
-                'COUNT(m.team1_result) AS playedmatches',
-                'COUNT(m.crowd) AS attendedmatches',
-                'SUM(m.crowd) AS sumspectators',
+                'COUNT(' . $db->quoteName('m.id') . ') AS ' . $db->quoteName('totalmatches'),
+                'COUNT(' . $db->quoteName('m.team1_result') . ') AS ' . $db->quoteName('playedmatches'),
+                'COUNT(' . $db->quoteName('m.crowd') . ') AS ' . $db->quoteName('attendedmatches'),
+                'SUM(' . $db->quoteName('m.crowd') . ') AS ' . $db->quoteName('sumspectators'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'));
 
         if ($mode === 'HOME') {
-            $query->select('IFNULL(SUM(m.team1_result),0) AS goalsfor, IFNULL(SUM(m.team2_result),0) AS goalsagainst, IFNULL(SUM(m.team1_result + m.team2_result),0) AS totalgoals, IFNULL(SUM(IF(m.team1_result=m.team2_result,1,0)),0) AS totaldraw, IFNULL(SUM(IF(m.team1_result<m.team2_result,1,0)),0) AS totalloss, IFNULL(SUM(IF(m.team1_result>m.team2_result,1,0)),0) AS totalwin')
+            $query->select([
+                'IFNULL(SUM(' . $db->quoteName('m.team1_result') . '), 0) AS ' . $db->quoteName('goalsfor'),
+                'IFNULL(SUM(' . $db->quoteName('m.team2_result') . '), 0) AS ' . $db->quoteName('goalsagainst'),
+                'IFNULL(SUM(' . $db->quoteName('m.team1_result') . ' + ' . $db->quoteName('m.team2_result') . '), 0) AS ' . $db->quoteName('totalgoals'),
+                'IFNULL(SUM(IF(' . $db->quoteName('m.team1_result') . ' = ' . $db->quoteName('m.team2_result') . ', 1, 0)), 0) AS ' . $db->quoteName('totaldraw'),
+                'IFNULL(SUM(IF(' . $db->quoteName('m.team1_result') . ' < ' . $db->quoteName('m.team2_result') . ', 1, 0)), 0) AS ' . $db->quoteName('totalloss'),
+                'IFNULL(SUM(IF(' . $db->quoteName('m.team1_result') . ' > ' . $db->quoteName('m.team2_result') . ', 1, 0)), 0) AS ' . $db->quoteName('totalwin'),
+            ])
                 ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.id') . ' = ' . $db->quoteName('m.projectteam1_id'));
         } else {
-            $query->select('IFNULL(SUM(m.team2_result),0) AS goalsfor, IFNULL(SUM(m.team1_result),0) AS goalsagainst, IFNULL(SUM(m.team2_result + m.team1_result),0) AS totalgoals, IFNULL(SUM(IF(m.team2_result=m.team1_result,1,0)),0) AS totaldraw, IFNULL(SUM(IF(m.team2_result<m.team1_result,1,0)),0) AS totalloss, IFNULL(SUM(IF(m.team2_result>m.team1_result,1,0)),0) AS totalwin')
+            $query->select([
+                'IFNULL(SUM(' . $db->quoteName('m.team2_result') . '), 0) AS ' . $db->quoteName('goalsfor'),
+                'IFNULL(SUM(' . $db->quoteName('m.team1_result') . '), 0) AS ' . $db->quoteName('goalsagainst'),
+                'IFNULL(SUM(' . $db->quoteName('m.team2_result') . ' + ' . $db->quoteName('m.team1_result') . '), 0) AS ' . $db->quoteName('totalgoals'),
+                'IFNULL(SUM(IF(' . $db->quoteName('m.team2_result') . ' = ' . $db->quoteName('m.team1_result') . ', 1, 0)), 0) AS ' . $db->quoteName('totaldraw'),
+                'IFNULL(SUM(IF(' . $db->quoteName('m.team2_result') . ' < ' . $db->quoteName('m.team1_result') . ', 1, 0)), 0) AS ' . $db->quoteName('totalloss'),
+                'IFNULL(SUM(IF(' . $db->quoteName('m.team2_result') . ' > ' . $db->quoteName('m.team1_result') . ', 1, 0)), 0) AS ' . $db->quoteName('totalwin'),
+            ])
                 ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.id') . ' = ' . $db->quoteName('m.projectteam2_id'));
         }
 
@@ -501,17 +515,25 @@ final class TeamstatsModel extends SportsManagementProjectModel
             ->bind(':matchDayAwayTeamId', $teamId, ParameterType::INTEGER);
 
         if ($chart) {
-            $query->select('SUM(CASE WHEN st1.team_id = :chartGoalsForTeamId THEN m.team1_result ELSE m.team2_result END) AS goalsfor')
-                ->select('SUM(CASE WHEN st1.team_id = :chartGoalsAgainstTeamId THEN m.team2_result ELSE m.team1_result END) AS goalsagainst')
+            $query->select(
+                'SUM(CASE WHEN ' . $db->quoteName('st1.team_id') . ' = :chartGoalsForTeamId THEN '
+                . $db->quoteName('m.team1_result') . ' ELSE ' . $db->quoteName('m.team2_result') . ' END) AS '
+                . $db->quoteName('goalsfor')
+            )
+                ->select(
+                    'SUM(CASE WHEN ' . $db->quoteName('st1.team_id') . ' = :chartGoalsAgainstTeamId THEN '
+                    . $db->quoteName('m.team2_result') . ' ELSE ' . $db->quoteName('m.team1_result') . ' END) AS '
+                    . $db->quoteName('goalsagainst')
+                )
                 ->where($db->quoteName('m.team1_result') . ' IS NOT NULL')
                 ->bind(':chartGoalsForTeamId', $teamId, ParameterType::INTEGER)
                 ->bind(':chartGoalsAgainstTeamId', $teamId, ParameterType::INTEGER);
         } else {
             $query->select([
-                'COUNT(m.round_id) AS totalmatchespd',
-                'COUNT(m.id) AS playedmatchespd',
-                'SUM(m.team1_result) AS homegoalspd',
-                'SUM(m.team2_result) AS guestgoalspd',
+                'COUNT(' . $db->quoteName('m.round_id') . ') AS ' . $db->quoteName('totalmatchespd'),
+                'COUNT(' . $db->quoteName('m.id') . ') AS ' . $db->quoteName('playedmatchespd'),
+                'SUM(' . $db->quoteName('m.team1_result') . ') AS ' . $db->quoteName('homegoalspd'),
+                'SUM(' . $db->quoteName('m.team2_result') . ') AS ' . $db->quoteName('guestgoalspd'),
             ]);
         }
         return $query;
