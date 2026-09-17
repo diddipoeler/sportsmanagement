@@ -65,15 +65,23 @@ final class TeamStatsRankingHelper
     {
         $query = $db->createQuery()
             ->select([
-                'p.id', 'p.name', 'p.alias', 'p.season_id', 'p.sports_type_id',
-                's.alias AS season_alias',
-                "CONCAT_WS(':', p.id, p.alias) AS slug",
-                "CONCAT_WS(':', s.id, s.alias) AS season_slug",
+                $db->quoteName('p.id'),
+                $db->quoteName('p.name'),
+                $db->quoteName('p.alias'),
+                $db->quoteName('p.season_id'),
+                $db->quoteName('p.sports_type_id'),
+                $db->quoteName('s.alias', 'season_alias'),
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('slug'),
+                "CONCAT_WS(':', " . $db->quoteName('s.id') . ', ' . $db->quoteName('s.alias') . ') AS ' . $db->quoteName('season_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_season', 's') . ' ON s.id = p.season_id')
-            ->where('p.id = :projectId')
-            ->where('p.published = 1')
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_season', 's')
+                . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id')
+            )
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->where($db->quoteName('p.published') . ' = 1')
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
@@ -84,17 +92,35 @@ final class TeamStatsRankingHelper
     {
         $query = $db->createQuery()
             ->select([
-                'stat.id', 'stat.name', 'stat.short', 'stat.class', 'stat.icon',
-                'stat.params', 'stat.baseparams', 'stat.calculated',
+                $db->quoteName('stat.id'),
+                $db->quoteName('stat.name'),
+                $db->quoteName('stat.short'),
+                $db->quoteName('stat.class'),
+                $db->quoteName('stat.icon'),
+                $db->quoteName('stat.params'),
+                $db->quoteName('stat.baseparams'),
+                $db->quoteName('stat.calculated'),
             ])
             ->from($db->quoteName('#__sportsmanagement_statistic', 'stat'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_position_statistic', 'ps') . ' ON ps.statistic_id = stat.id')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'pp')
-                . ' ON pp.position_id = ps.position_id AND pp.project_id = :projectId')
-            ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON pos.id = ps.position_id')
-            ->where('stat.id = :statId')
-            ->where('stat.published = 1')
-            ->where('pos.published = 1')
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_position_statistic', 'ps')
+                . ' ON ' . $db->quoteName('ps.statistic_id') . ' = ' . $db->quoteName('stat.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_position', 'pp')
+                . ' ON ' . $db->quoteName('pp.position_id') . ' = ' . $db->quoteName('ps.position_id')
+                . ' AND ' . $db->quoteName('pp.project_id') . ' = :projectId'
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_position', 'pos')
+                . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ps.position_id')
+            )
+            ->where($db->quoteName('stat.id') . ' = :statId')
+            ->where($db->quoteName('stat.published') . ' = 1')
+            ->where($db->quoteName('pos.published') . ' = 1')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->bind(':statId', $statId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
@@ -368,13 +394,27 @@ final class TeamStatsRankingHelper
 
         $query = $db->createQuery()
             ->select([
-                't.id', 't.name', 't.short_name', 't.middle_name', 't.alias', 't.club_id',
-                'c.name AS club_name', 'c.alias AS club_alias', 'c.logo_small', 'c.logo_middle', 'c.logo_big', 'c.country',
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
-                "CONCAT_WS(':', c.id, c.alias) AS club_slug",
+                $db->quoteName('t.id'),
+                $db->quoteName('t.name'),
+                $db->quoteName('t.short_name'),
+                $db->quoteName('t.middle_name'),
+                $db->quoteName('t.alias'),
+                $db->quoteName('t.club_id'),
+                $db->quoteName('c.name', 'club_name'),
+                $db->quoteName('c.alias', 'club_alias'),
+                $db->quoteName('c.logo_small'),
+                $db->quoteName('c.logo_middle'),
+                $db->quoteName('c.logo_big'),
+                $db->quoteName('c.country'),
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('club_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON c.id = t.club_id')
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_club', 'c')
+                . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
+            )
             ->whereIn($db->quoteName('t.id'), $teamIds, ParameterType::INTEGER);
         $db->setQuery($query);
 
