@@ -117,15 +117,23 @@ class modJSMRankingHelper extends stdClass
         $projectId = (int) $projectid;
         $matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);
 
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_match AS m ');
-        $query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
-        $query->join('INNER', '#__sportsmanagement_project AS p on p.id = r.project_id ');
-        $query->where('p.id = :projectId');
-        $query->where('m.team1_result IS NULL ');
-        $query->where('m.match_timestamp < :matchTimestamp');
-        $query->bind(':projectId', $projectId, ParameterType::INTEGER);
-        $query->bind(':matchTimestamp', $matchTimestamp, ParameterType::INTEGER);
+        $query->select('COUNT(*) AS ' . $db->quoteName('count'))
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
+            )
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->where($db->quoteName('m.team1_result') . ' IS NULL')
+            ->where($db->quoteName('m.match_timestamp') . ' < :matchTimestamp')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
+            ->bind(':matchTimestamp', $matchTimestamp, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
