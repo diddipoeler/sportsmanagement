@@ -216,6 +216,8 @@ final class TeamstatsModel extends SportsManagementProjectModel
             return self::$totalsaway;
         }
 
+        $projectId = self::$projectid;
+        $teamId = (int) $team->id;
         $db = self::database();
         $query = $db->createQuery()
             ->select([
@@ -236,10 +238,12 @@ final class TeamstatsModel extends SportsManagementProjectModel
 
         $query->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('pt.project_id') . ' = :seasonTotalsProjectId')
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where($db->quoteName('t.id') . ' = ' . (int) $team->id)
-            ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)');
+            ->where($db->quoteName('t.id') . ' = :seasonTotalsTeamId')
+            ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
+            ->bind(':seasonTotalsProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':seasonTotalsTeamId', $teamId, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, 1);
         $result = $db->loadObject() ?: false;
@@ -276,11 +280,13 @@ final class TeamstatsModel extends SportsManagementProjectModel
             return 0;
         }
 
+        $projectId = self::$projectid;
         $db = self::database();
         $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('id') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . self::$projectid);
+            ->where($db->quoteName('project_id') . ' = :roundProjectId')
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         self::$totalrounds = (int) ($db->loadResult() ?: 0);
         if (!self::$totalrounds) {
@@ -304,17 +310,21 @@ final class TeamstatsModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = self::$projectid;
+        $teamId = self::$teamid;
         $db = self::database();
         $query = $db->createQuery()
             ->select($db->quoteName('m.crowd'))
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st1') . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . self::$projectid)
-            ->where($db->quoteName('st1.team_id') . ' = ' . self::$teamid)
+            ->where($db->quoteName('pt1.project_id') . ' = :attendanceProjectId')
+            ->where($db->quoteName('st1.team_id') . ' = :attendanceTeamId')
             ->where($db->quoteName('m.crowd') . ' > 0')
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)');
+            ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
+            ->bind(':attendanceProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':attendanceTeamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query);
         self::$attendanceranking = array_map('intval', $db->loadColumn() ?: []);
         return self::$attendanceranking;
@@ -363,12 +373,14 @@ final class TeamstatsModel extends SportsManagementProjectModel
         if (self::$teamid <= 0) {
             return '';
         }
+        $teamId = self::$teamid;
         $db = self::database();
         $query = $db->createQuery()
             ->select($db->quoteName('c.logo_big'))
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id'))
-            ->where($db->quoteName('t.id') . ' = ' . self::$teamid);
+            ->where($db->quoteName('t.id') . ' = :logoTeamId')
+            ->bind(':logoTeamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $logo = (string) ($db->loadResult() ?: '');
         return $logo === '' ? '' : Uri::root() . ltrim($logo, '/');
@@ -380,6 +392,8 @@ final class TeamstatsModel extends SportsManagementProjectModel
             return self::emptyResults();
         }
 
+        $projectId = self::$projectid;
+        $teamId = self::$teamid;
         $db = self::database();
         $query = $db->createQuery()
             ->select([
@@ -403,10 +417,13 @@ final class TeamstatsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . self::$projectid)
-            ->where('((' . $db->quoteName('st1.team_id') . ' = ' . self::$teamid . ') OR (' . $db->quoteName('st2.team_id') . ' = ' . self::$teamid . '))')
+            ->where($db->quoteName('pt1.project_id') . ' = :resultsProjectId')
+            ->where('((' . $db->quoteName('st1.team_id') . ' = :resultsHomeTeamId) OR (' . $db->quoteName('st2.team_id') . ' = :resultsAwayTeamId))')
             ->where('(' . $db->quoteName('m.team1_result') . ' IS NOT NULL OR ' . $db->quoteName('m.alt_decision') . ' > 0)')
-            ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)');
+            ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
+            ->bind(':resultsProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':resultsHomeTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':resultsAwayTeamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query);
         $matches = $db->loadObjectList() ?: [];
         $results = self::emptyResults();
@@ -464,6 +481,8 @@ final class TeamstatsModel extends SportsManagementProjectModel
 
     private static function matchDayQuery(DatabaseInterface $db, bool $chart)
     {
+        $projectId = self::$projectid;
+        $teamId = self::$teamid;
         $query = $db->createQuery()
             ->select([$db->quoteName('r.id'), $db->quoteName('r.roundcode')])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
@@ -472,16 +491,21 @@ final class TeamstatsModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('pt2.id') . ' = ' . $db->quoteName('m.projectteam2_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st1') . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
-            ->where($db->quoteName('r.project_id') . ' = ' . self::$projectid)
-            ->where('((' . $db->quoteName('st1.team_id') . ' = ' . self::$teamid . ') OR (' . $db->quoteName('st2.team_id') . ' = ' . self::$teamid . '))')
+            ->where($db->quoteName('r.project_id') . ' = :matchDayProjectId')
+            ->where('((' . $db->quoteName('st1.team_id') . ' = :matchDayHomeTeamId) OR (' . $db->quoteName('st2.team_id') . ' = :matchDayAwayTeamId))')
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
             ->group([$db->quoteName('r.id'), $db->quoteName('r.roundcode')])
-            ->order($db->quoteName('r.roundcode') . ' ASC');
+            ->order($db->quoteName('r.roundcode') . ' ASC')
+            ->bind(':matchDayProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':matchDayHomeTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':matchDayAwayTeamId', $teamId, ParameterType::INTEGER);
 
         if ($chart) {
-            $query->select('SUM(CASE WHEN st1.team_id = ' . self::$teamid . ' THEN m.team1_result ELSE m.team2_result END) AS goalsfor')
-                ->select('SUM(CASE WHEN st1.team_id = ' . self::$teamid . ' THEN m.team2_result ELSE m.team1_result END) AS goalsagainst')
-                ->where($db->quoteName('m.team1_result') . ' IS NOT NULL');
+            $query->select('SUM(CASE WHEN st1.team_id = :chartGoalsForTeamId THEN m.team1_result ELSE m.team2_result END) AS goalsfor')
+                ->select('SUM(CASE WHEN st1.team_id = :chartGoalsAgainstTeamId THEN m.team2_result ELSE m.team1_result END) AS goalsagainst')
+                ->where($db->quoteName('m.team1_result') . ' IS NOT NULL')
+                ->bind(':chartGoalsForTeamId', $teamId, ParameterType::INTEGER)
+                ->bind(':chartGoalsAgainstTeamId', $teamId, ParameterType::INTEGER);
         } else {
             $query->select([
                 'COUNT(m.round_id) AS totalmatchespd',
