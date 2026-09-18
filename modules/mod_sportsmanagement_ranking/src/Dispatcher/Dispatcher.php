@@ -30,7 +30,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['params']->set('layout', 'native');
         $app = $this->getApplication();
 
-        if (!$app->isClient('site')) {
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
         }
 
