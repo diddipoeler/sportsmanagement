@@ -45,7 +45,7 @@ final class ExtrafieldsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('obj.id'),
                 $db->quoteName('obj.name'),
@@ -102,7 +102,7 @@ final class ExtrafieldsModel extends SportsManagementListModel
     {
         $projectTemplate = 'project';
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('ef.name'))
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev'))
             ->join(
@@ -123,7 +123,7 @@ final class ExtrafieldsModel extends SportsManagementListModel
     public function getExtraFields(string $templateBackend = '', string $templateFrontend = ''): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('name')])
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
             ->order($db->quoteName('name') . ' ASC');
