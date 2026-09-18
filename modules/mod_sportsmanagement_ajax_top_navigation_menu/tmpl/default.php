@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.00
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage mod_sportsmanagement_ajax_top_navigation_menu
  * @file       default.php
