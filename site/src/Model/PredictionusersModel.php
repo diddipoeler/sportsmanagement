@@ -238,10 +238,6 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
                 ->bind(':pointsProjectId', $selectedProjectId, ParameterType::INTEGER);
         }
 
-        if ($projectId > 0) {
-            $query->bind(':rankProjectId', $projectId, ParameterType::INTEGER);
-        }
-
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
         $multipleProjects = $selectedProjectId <= 0;
@@ -415,6 +411,10 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
             ->group($db->quoteName('pm.id'))
             ->bind(':rankResultPredictionId', $predictionGameId, ParameterType::INTEGER)
             ->bind(':rankMemberPredictionId', $predictionGameId, ParameterType::INTEGER);
+
+        if ($projectId > 0) {
+            $query->bind(':rankProjectId', $projectId, ParameterType::INTEGER);
+        }
 
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
