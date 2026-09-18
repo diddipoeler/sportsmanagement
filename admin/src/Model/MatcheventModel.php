@@ -47,7 +47,7 @@ final class MatcheventModel extends SportsManagementAdminModel
             . $db->quote("' ") . ', '
             . $db->quoteName('t1.lastname') . ') AS '
             . $db->quoteName('player1');
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'me.*',
                 $db->quoteName('t.name', 'team'),
