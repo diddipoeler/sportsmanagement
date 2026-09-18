@@ -47,6 +47,12 @@ jobs:
           if namespace is None or (namespace.text or '').strip() != expected_namespace:
               raise SystemExit('Google Calendar manifest namespace is not native')
 
+          if root.findtext('version') != '5.6.0':
+              raise SystemExit('Google Calendar manifest version is not 5.6.0')
+          extension_versions = [field.get('version') for field in root.findall(".//field[@type='extensionversion']")]
+          if '5.6.0' not in extension_versions:
+              raise SystemExit('Google Calendar extensionversion metadata is not 5.6.0')
+
           provider = (base / 'services/provider.php').read_text(encoding='utf-8')
           dispatcher = (base / 'src/Dispatcher/Dispatcher.php').read_text(encoding='utf-8')
           helper = (base / 'src/Helper/GoogleCalendarHelper.php').read_text(encoding='utf-8')
@@ -63,7 +69,8 @@ jobs:
               'false render guard': (dispatcher, 'if ($data === false)'),
               'helper factory': (dispatcher, "getHelper('GoogleCalendarHelper')"),
               'application-aware helper': (helper, 'CMSApplicationInterface $app'),
-              'public cache container': (helper, 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)'),
+              'dispatcher public cache container': (dispatcher, 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)'),
+              'cache factory injection': (helper, 'CacheControllerFactoryInterface $cacheFactory'),
               'framework HTTP factory': (helper, 'use Joomla\\Http\\HttpFactory;'),
               'framework HTTP driver': (helper, '(new HttpFactory())->getAvailableDriver()'),
               'PSR-7 response status': (helper, '$response->getStatusCode()'),

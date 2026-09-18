@@ -5,7 +5,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/views/editperson/tmpl/assignperson.php'
+      - 'site/assets/js/assignperson.js'
       - 'admin/views/match/tmpl/editstats.php'
+      - 'admin/assets/js/matchstats.js'
       - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.xml'
       - 'modules/mod_sportsmanagement_matchesslider/update-server.xml'
       - '.github/workflows/joomla5-6-site-admin-modules-batch108.yml'
@@ -13,7 +15,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/views/editperson/tmpl/assignperson.php'
+      - 'site/assets/js/assignperson.js'
       - 'admin/views/match/tmpl/editstats.php'
+      - 'admin/assets/js/matchstats.js'
       - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.xml'
       - 'modules/mod_sportsmanagement_matchesslider/update-server.xml'
       - '.github/workflows/joomla5-6-site-admin-modules-batch108.yml'
@@ -43,26 +47,40 @@ jobs:
 
           for file in "${php_files[@]}"; do
             php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
           done
 
+          node --check site/assets/js/assignperson.js
+          node --check admin/assets/js/matchstats.js
+
           site_layout=site/views/editperson/tmpl/assignperson.php
-          grep -Fq "window.SportsManagementAssignPerson.assign" "$site_layout"
-          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$site_layout"
-          grep -Fq "window.parent.bootstrap?.Modal" "$site_layout"
-          if grep -Fq 'SqueezeBox' "$site_layout"; then
-            echo 'Assign person layout regressed to SqueezeBox' >&2
+          site_js=site/assets/js/assignperson.js
+          grep -Fq "registerAndUseScript(" "$site_layout"
+          grep -Fq "'com_sportsmanagement.site.assignperson'" "$site_layout"
+          grep -Fq 'data-jsm-assign-person-form' "$site_layout"
+          grep -Fq 'data-jsm-assign-person' "$site_layout"
+          grep -Fq 'window.SportsManagementAssignPerson' "$site_js"
+          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$site_js"
+          grep -Fq "window.parent.bootstrap?.Modal" "$site_js"
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=|SqueezeBox|class="adminform"' "$site_layout"; then
+            echo 'Assign person layout regressed to inline JavaScript or Joomla 3 markup' >&2
             exit 1
           fi
 
           admin_layout=admin/views/match/tmpl/editstats.php
-          grep -Fq "window.SportsManagementMatchStats.closeParentDialog" "$admin_layout"
-          grep -Fq "document.getElementById('close').value = 1" "$admin_layout"
-          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$admin_layout"
-          grep -Fq "window.parent.bootstrap?.Modal" "$admin_layout"
-          if grep -Fq 'SqueezeBox' "$admin_layout" || \
-             grep -Fq "useScript('jquery')" "$admin_layout" || \
-             grep -Fq 'jquery.framework' "$admin_layout"; then
-            echo 'Match stats layout regressed to legacy modal/jquery handling' >&2
+          admin_js=admin/assets/js/matchstats.js
+          grep -Fq "registerAndUseScript(" "$admin_layout"
+          grep -Fq "'com_sportsmanagement.admin.matchstats'" "$admin_layout"
+          grep -Fq '$this->app->getInput()' "$admin_layout"
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$admin_layout"
+          grep -Fq 'data-jsm-match-stats-form' "$admin_layout"
+          grep -Fq 'window.SportsManagementMatchStats' "$admin_js"
+          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$admin_js"
+          grep -Fq "window.parent.bootstrap?.Modal" "$admin_js"
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=|Factory::getApplication\(|SqueezeBox|jquery\.framework|fltrt' "$admin_layout"; then
+            echo 'Match stats layout regressed to legacy application, modal, markup or inline JavaScript handling' >&2
             exit 1
           fi
 
@@ -74,6 +92,7 @@ jobs:
 
           grep -Fq '<version>5.6.0</version>' "$manifest"
           grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagementMatchesSlider</namespace>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
           grep -Fq '<folder module="mod_sportsmanagement_matchesslider">services</folder>' "$manifest"
           grep -Fq '<folder>src</folder>' "$manifest"
 

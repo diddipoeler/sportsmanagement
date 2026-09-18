@@ -1,0 +1,85 @@
+name: Joomla 5/6 popup assets and CI alignment batch 125
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/editperson/tmpl/assignperson.php'
+      - 'site/assets/js/assignperson.js'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'admin/assets/js/matchstats.js'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-allpersons-seasonperson-birthday-batch97.yml'
+      - '.github/workflows/joomla5-6-module-google-calendar.yml'
+      - '.github/workflows/joomla5-6-module-eventsranking.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch108.yml'
+      - '.github/workflows/joomla5-6-allprojects-eventsranking-contracts-batch124.yml'
+      - '.github/workflows/joomla5-6-popup-assets-ci-alignment-batch125.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/editperson/tmpl/assignperson.php'
+      - 'site/assets/js/assignperson.js'
+      - 'admin/views/match/tmpl/editstats.php'
+      - 'admin/assets/js/matchstats.js'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-popup-assets-ci-alignment-batch125.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP metadata and syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/editperson/tmpl/assignperson.php
+            admin/views/match/tmpl/editstats.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate JavaScript and WebAsset contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check site/assets/js/assignperson.js
+          node --check admin/assets/js/matchstats.js
+
+          grep -Fq "'com_sportsmanagement.site.assignperson'" site/views/editperson/tmpl/assignperson.php
+          grep -Fq 'data-jsm-assign-person' site/views/editperson/tmpl/assignperson.php
+          grep -Fq "'com_sportsmanagement.admin.matchstats'" admin/views/match/tmpl/editstats.php
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" admin/views/match/tmpl/editstats.php
+          grep -Fq '$this->app->getInput()' admin/views/match/tmpl/editstats.php
+
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=' \
+            site/views/editperson/tmpl/assignperson.php \
+            admin/views/match/tmpl/editstats.php; then
+            echo 'Popup layouts regressed to inline JavaScript.' >&2
+            exit 1
+          fi
+
+      - name: Validate public service container contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/helper.php
+          ! grep -Fq '$app->getContainer()' modules/mod_sportsmanagement_eventsranking/helper.php
+          echo 'Joomla 5/6 batch 125 contracts OK.'

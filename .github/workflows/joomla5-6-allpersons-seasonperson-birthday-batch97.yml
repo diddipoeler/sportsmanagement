@@ -9,6 +9,8 @@ on:
       - 'site/src/Model/AllpersonsModel.php'
       - 'site/views/allpersons/tmpl/**/*.php'
       - 'site/tmpl/allpersons/**/*.php'
+      - 'site/assets/js/allpersons.js'
+      - 'site/assets/js/allpersons.js'
       - 'admin/tables/player.php'
       - 'admin/src/Table/PersonTable.php'
       - 'admin/tables/seasonperson.php'
@@ -135,8 +137,15 @@ jobs:
           grep -Fq '#__sportsmanagement_person AS v' "$site_model"
           grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/allpersons/default.php';" "$legacy_layout"
           grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/allpersons/default_items.php';" "$legacy_items"
-          grep -Fq "getWebAssetManager()->useScript('jquery')" "$native_layout"
+          grep -Fq "registerAndUseScript(" "$native_layout"
+          grep -Fq "'com_sportsmanagement.site.allpersons'" "$native_layout"
+          grep -Fq 'data-jsm-allpersons-form' "$native_layout"
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;' "$native_items"
+          node --check site/assets/js/allpersons.js
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=' "$native_layout"; then
+            echo 'All-persons layout regressed to inline JavaScript.' >&2
+            exit 1
+          fi
 
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Table\PersonTable;' "$player_bridge"
           grep -Fq "class_alias(PersonTable::class, 'sportsmanagementTableplayer')" "$player_bridge"

@@ -64,14 +64,14 @@ jobs:
             exit 1
           fi
 
-      - name: Validate EventsRanking application container bridge
+      - name: Validate EventsRanking public service container bridge
         shell: bash
         run: |
           set -euo pipefail
 
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_eventsranking/helper.php
-          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/helper.php
-          ! grep -Fq 'use Joomla\CMS\Factory;' modules/mod_sportsmanagement_eventsranking/helper.php
-          ! grep -Fq 'Factory::getContainer()' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -Fq 'use Joomla\CMS\Factory;' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/helper.php
+          ! grep -Fq '$app->getContainer()' modules/mod_sportsmanagement_eventsranking/helper.php
 
           echo 'Joomla 5/6 batch 124 contracts OK.'
