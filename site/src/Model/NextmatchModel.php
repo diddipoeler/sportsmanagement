@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 model for the public next-match view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -94,7 +103,8 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->where($db->quoteName('m.cancel') . ' = 0');
 
         if ($matchId > 0) {
-            $query->where($db->quoteName('m.id') . ' = ' . $matchId);
+            $query->where($db->quoteName('m.id') . ' = :specifiedMatchId')
+                ->bind(':specifiedMatchId', $matchId, ParameterType::INTEGER);
         } else {
             $query->where(
                 '(' . $db->quoteName('m.team1_result') . ' IS NULL'
@@ -103,8 +113,12 @@ final class NextmatchModel extends SportsManagementProjectModel
 
             if ($projectTeamId > 0) {
                 $query->where(
-                    '(' . $db->quoteName('m.projectteam1_id') . ' = ' . $projectTeamId
-                    . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = ' . $projectTeamId . ')'
+                    '(' . $db->quoteName('m.projectteam1_id') . ' = :specifiedHomeProjectTeamId'
+                    . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = :specifiedAwayProjectTeamId)'
+                )->bind(
+                    [':specifiedHomeProjectTeamId', ':specifiedAwayProjectTeamId'],
+                    $projectTeamId,
+                    ParameterType::INTEGER
                 );
             } else {
                 $query->where(
@@ -115,7 +129,8 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
 
         if ($projectId > 0) {
-            $query->where($db->quoteName('pt1.project_id') . ' = ' . $projectId);
+            $query->where($db->quoteName('pt1.project_id') . ' = :specifiedProjectId')
+                ->bind(':specifiedProjectId', $projectId, ParameterType::INTEGER);
         }
 
         $query->order($db->quoteName('m.match_date') . ' ASC');
@@ -165,7 +180,10 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_playground', 'pl')
                 . ' ON ' . $db->quoteName('pl.id') . ' = ' . $db->quoteName('m.playground_id')
             )
-            ->where($db->quoteName('m.id') . ' = ' . $this->matchId);
+            ->where($db->quoteName('m.id') . ' = :matchId');
+
+        $matchId = $this->matchId;
+        $query->bind(':matchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -250,8 +268,11 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_position', 'pos')
                 . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
             )
-            ->where($db->quoteName('mr.match_id') . ' = ' . (int) $match->id)
+            ->where($db->quoteName('mr.match_id') . ' = :refereeMatchId')
             ->where($db->quoteName('p.published') . ' = 1');
+
+        $refereeMatchId = (int) $match->id;
+        $query->bind(':refereeMatchId', $refereeMatchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
@@ -306,6 +327,7 @@ final class NextmatchModel extends SportsManagementProjectModel
         $whichTeam = strtoupper($whichTeam) === 'AWAY' ? 'AWAY' : 'HOME';
         $gameType = strtoupper($gameType) === 'LOST' ? 'LOST' : 'WIN';
         $db = $this->getDatabase();
+        $projectId = $this->projectId;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'mid'),
@@ -326,19 +348,22 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
-            ->where($db->quoteName('pt1.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('pt1.project_id') . ' = :highestProjectId')
             ->where($db->quoteName('m.published') . ' = 1')
-            ->where($db->quoteName('m.alt_decision') . ' = 0');
+            ->where($db->quoteName('m.alt_decision') . ' = 0')
+            ->bind(':highestProjectId', $projectId, ParameterType::INTEGER);
 
         if ($whichTeam === 'HOME') {
-            $query->where($db->quoteName('t1.id') . ' = ' . $teamId);
+            $query->where($db->quoteName('t1.id') . ' = :highestHomeTeamId')
+                ->bind(':highestHomeTeamId', $teamId, ParameterType::INTEGER);
             if ($gameType === 'WIN') {
                 $query->where('(m.team1_result - m.team2_result > 0)')->order('(m.team1_result - m.team2_result) DESC');
             } else {
                 $query->where('(m.team1_result - m.team2_result < 0)')->order('(m.team1_result - m.team2_result) ASC');
             }
         } else {
-            $query->where($db->quoteName('t2.id') . ' = ' . $teamId);
+            $query->where($db->quoteName('t2.id') . ' = :highestAwayTeamId')
+                ->bind(':highestAwayTeamId', $teamId, ParameterType::INTEGER);
             if ($gameType === 'WIN') {
                 $query->where('(m.team2_result - m.team1_result > 0)')->order('(m.team2_result - m.team1_result) DESC');
             } else {
@@ -424,7 +449,7 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.id') . ' IN (' . implode(',', array_values($ids)) . ')');
+            ->whereIn($db->quoteName('pt.id'), array_values($ids), ParameterType::INTEGER);
 
         switch ((string) ($config['show_picture'] ?? '')) {
             case 'team_picture':
@@ -585,13 +610,19 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c2') . ' ON ' . $db->quoteName('c2.id') . ' = ' . $db->quoteName('t2.club_id'))
-            ->where($db->quoteName('r.roundcode') . ' < ' . $currentRoundCode)
+            ->where($db->quoteName('r.roundcode') . ' < :previousRoundCode')
             ->where(
-                '(' . $db->quoteName('m.projectteam1_id') . ' = ' . $projectTeamId
-                . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = ' . $projectTeamId . ')'
+                '(' . $db->quoteName('m.projectteam1_id') . ' = :previousHomeProjectTeamId'
+                . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = :previousAwayProjectTeamId)'
             )
             ->where($db->quoteName('m.published') . ' = 1')
-            ->order($db->quoteName('r.roundcode') . ' DESC');
+            ->order($db->quoteName('r.roundcode') . ' DESC')
+            ->bind(':previousRoundCode', $currentRoundCode, ParameterType::INTEGER)
+            ->bind(
+                [':previousHomeProjectTeamId', ':previousAwayProjectTeamId'],
+                $projectTeamId,
+                ParameterType::INTEGER
+            );
 
         switch ((string) ($config['show_picture'] ?? '')) {
             case 'team_picture':
@@ -697,7 +728,8 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+            ->where($db->quoteName('pt.id') . ' = :projectTeamLookupId')
+            ->bind(':projectTeamLookupId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -743,11 +775,13 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
-            ->where($db->quoteName('st1.team_id') . ' = ' . $homeTeamId)
-            ->where($db->quoteName('st2.team_id') . ' = ' . $awayTeamId)
+            ->where($db->quoteName('st1.team_id') . ' = :historyHomeTeamId')
+            ->where($db->quoteName('st2.team_id') . ' = :historyAwayTeamId')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('m.published') . ' = 1')
-            ->order([$db->quoteName('s.name') . ' DESC', $db->quoteName('m.match_date') . ' ASC']);
+            ->order([$db->quoteName('s.name') . ' DESC', $db->quoteName('m.match_date') . ' ASC'])
+            ->bind(':historyHomeTeamId', $homeTeamId, ParameterType::INTEGER)
+            ->bind(':historyAwayTeamId', $awayTeamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -761,6 +795,7 @@ final class NextmatchModel extends SportsManagementProjectModel
     private function loadSharedProjectsWithoutMatches(int $homeTeamId, int $awayTeamId, array $excludedProjectIds): array
     {
         $db = $this->getDatabase();
+        $projectType = 'SIMPLE_LEAGUE';
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt1.project_id'),
@@ -789,14 +824,22 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt1.project_id') . ' AND ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt2.project_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('p.season_id'))
-            ->where($db->quoteName('st1.team_id') . ' = ' . $homeTeamId)
-            ->where($db->quoteName('st2.team_id') . ' = ' . $awayTeamId)
+            ->where($db->quoteName('st1.team_id') . ' = :sharedHomeTeamId')
+            ->where($db->quoteName('st2.team_id') . ' = :sharedAwayTeamId')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->where($db->quoteName('p.project_type') . ' = ' . $db->quote('SIMPLE_LEAGUE'));
+            ->where($db->quoteName('p.project_type') . ' = :sharedProjectType')
+            ->bind(':sharedHomeTeamId', $homeTeamId, ParameterType::INTEGER)
+            ->bind(':sharedAwayTeamId', $awayTeamId, ParameterType::INTEGER)
+            ->bind(':sharedProjectType', $projectType, ParameterType::STRING);
 
         if ($excludedProjectIds !== []) {
-            $ids = implode(',', array_map('intval', $excludedProjectIds));
-            $query->where($db->quoteName('p.id') . ' NOT IN (' . $ids . ')');
+            $excludedProjectIds = array_values(array_filter(array_map('intval', $excludedProjectIds)));
+            if ($excludedProjectIds !== []) {
+                $excludedProjectPlaceholders = $query->bindArray($excludedProjectIds, ParameterType::INTEGER);
+                $query->where(
+                    $db->quoteName('p.id') . ' NOT IN (' . implode(',', $excludedProjectPlaceholders) . ')'
+                );
+            }
         }
 
         $query->order($db->quoteName('s.name') . ' DESC');
