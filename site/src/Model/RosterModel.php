@@ -61,9 +61,6 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $pictureAlias = strtolower((string) $team_picture_which) === 't' ? 't' : 'pt';
-        $seasonId = self::$seasonid;
-        $seasonTeamId = (int) $projectTeam->season_team_id;
-        $projectId = self::$projectid;
         $db = self::database();
         $query = $db->createQuery()
             ->select([
@@ -218,6 +215,9 @@ final class RosterModel extends SportsManagementProjectModel
             return [];
         }
 
+        $seasonId = self::$seasonid;
+        $seasonTeamId = (int) $projectTeam->season_team_id;
+        $projectId = self::$projectid;
         $db = self::database();
         $query = $db->createQuery()
             ->select([
