@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator projects list model. */
 final class ProjectsModel extends SportsManagementListModel
@@ -61,8 +62,9 @@ final class ProjectsModel extends SportsManagementListModel
         $query = $db->createQuery()
             ->select($db->quoteName('p.id'))
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.league_id') . ' = ' . $leagueId)
-            ->where($db->quoteName('p.season_id') . ' IN (' . implode(',', $seasonIds) . ')');
+            ->where($db->quoteName('p.league_id') . ' = :currentSeasonLeagueId')
+            ->whereIn($db->quoteName('p.season_id'), $seasonIds, ParameterType::INTEGER)
+            ->bind(':currentSeasonLeagueId', $leagueId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -254,43 +256,51 @@ final class ProjectsModel extends SportsManagementListModel
                     $db->quoteName('#__sportsmanagement_user_extra_fields', 'ef')
                     . ' ON ' . $db->quoteName('ef.id') . ' = ' . $db->quoteName('ev.field_id')
                 )
-                ->where($db->quoteName('ef.id') . ' = ' . $userFieldId)
-                ->where($db->quoteName('ef.template_backend') . ' = ' . $db->quote('project'));
+                ->where($db->quoteName('ef.id') . ' = :userFieldId')
+                ->where($db->quoteName('ef.template_backend') . ' = :userFieldTemplate')
+                ->bind(':userFieldId', $userFieldId, ParameterType::INTEGER)
+                ->bind(':userFieldTemplate', 'project', ParameterType::STRING);
         }
 
         $search = trim((string) $this->getState('filter.search', ''));
         if ($search !== '') {
-            $token = $db->quote('%' . $db->escape($search, true) . '%', false);
-            $query->where('LOWER(' . $db->quoteName('p.name') . ') LIKE LOWER(' . $token . ')');
+            $token = '%' . $db->escape($search, true) . '%';
+            $query->where('LOWER(' . $db->quoteName('p.name') . ') LIKE LOWER(:projectSearch)')
+                ->bind(':projectSearch', $token, ParameterType::STRING);
         }
 
         foreach ([
-            'search_league' => 'p.league_id',
-            'sports_type' => 'p.sports_type_id',
-            'season' => 'p.season_id',
-            'search_agegroup' => 'p.agegroup_id',
-            'search_association' => 'l.associations',
-            'search_associations_leagues' => 'l.associations',
-        ] as $state => $column) {
+            'search_league' => ['p.league_id', ':filterLeagueId'],
+            'sports_type' => ['p.sports_type_id', ':filterSportsTypeId'],
+            'season' => ['p.season_id', ':filterSeasonId'],
+            'search_agegroup' => ['p.agegroup_id', ':filterAgegroupId'],
+            'search_association' => ['l.associations', ':filterAssociationId'],
+            'search_associations_leagues' => ['l.associations', ':filterAssociationLeagueId'],
+        ] as $state => [$column, $placeholder]) {
             $value = (int) $this->getState('filter.' . $state, 0);
             if ($value > 0) {
-                $query->where($db->quoteName($column) . ' = ' . $value);
+                $query->where($db->quoteName($column) . ' = ' . $placeholder)
+                    ->bind($placeholder, $value, ParameterType::INTEGER);
             }
         }
 
         $published = $this->getState('filter.state');
         if ($published !== '' && is_numeric($published)) {
-            $query->where($db->quoteName('p.published') . ' = ' . (int) $published);
+            $published = (int) $published;
+            $query->where($db->quoteName('p.published') . ' = :projectPublished')
+                ->bind(':projectPublished', $published, ParameterType::INTEGER);
         }
 
         $nation = trim((string) $this->getState('filter.search_nation', ''));
         if ($nation !== '' && $nation !== '0') {
-            $query->where($db->quoteName('l.country') . ' = ' . $db->quote($nation));
+            $query->where($db->quoteName('l.country') . ' = :projectNation')
+                ->bind(':projectNation', $nation, ParameterType::STRING);
         }
 
         $projectType = trim((string) $this->getState('filter.project_type', ''));
         if ($projectType !== '' && $projectType !== '0') {
-            $query->where($db->quoteName('p.project_type') . ' = ' . $db->quote($projectType));
+            $query->where($db->quoteName('p.project_type') . ' = :projectType')
+                ->bind(':projectType', $projectType, ParameterType::STRING);
         }
 
         if ((int) $this->getState('filter.show_notassign', 0) === 1) {
