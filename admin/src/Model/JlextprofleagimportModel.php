@@ -43,7 +43,7 @@ final class JlextprofleagimportModel extends \sportsmanagementModeljlextprofleag
         BaseDatabaseModel::__construct($config, $factory);
 
         $this->jsmdb = \sportsmanagementHelper::getDBConnection();
-        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmquery = $this->jsmdb->createQuery();
         $this->jsmapp = Factory::getContainer()->get(AdministratorApplication::class);
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option', 'com_sportsmanagement');
