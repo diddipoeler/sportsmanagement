@@ -16,6 +16,7 @@ use DateTimeZone;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Filesystem\File;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class PredictionrankingModel extends SportsManagementPredictionReadModel
@@ -108,6 +109,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             return null;
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -123,17 +125,21 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             ])
             ->from($db->quoteName('#__sportsmanagement_prediction_project', 'pp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pp.project_id'))
-            ->where($db->quoteName('pp.prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('pp.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('pp.published') . ' = 1');
+            ->where($db->quoteName('pp.prediction_id') . ' = :rankingPredictionId')
+            ->where($db->quoteName('pp.project_id') . ' = :rankingProjectId')
+            ->where($db->quoteName('pp.published') . ' = 1')
+            ->bind(':rankingPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':rankingProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $project = $db->loadObject() ?: null;
 
         if ($project && ($project->start_date ?? '') === '0000-00-00') {
+            $roundProjectId = (int) $project->project_id;
             $roundQuery = $db->createQuery()
                 ->select('MIN(' . $db->quoteName('round_date_first') . ')')
                 ->from($db->quoteName('#__sportsmanagement_round'))
-                ->where($db->quoteName('project_id') . ' = ' . (int) $project->project_id);
+                ->where($db->quoteName('project_id') . ' = :rankingRoundProjectId')
+                ->bind(':rankingRoundProjectId', $roundProjectId, ParameterType::INTEGER);
             $db->setQuery($roundQuery);
             $project->start_date = $db->loadResult();
         }
@@ -153,7 +159,8 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         $query = $db->createQuery()
             ->select($db->quoteName('current_round'))
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :currentRoundProjectId')
+            ->bind(':currentRoundProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return (int) $db->loadResult();
     }
@@ -339,6 +346,7 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             return null;
         }
 
+        $predictionGameId = $this->predictionGameId;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.id'),
@@ -349,7 +357,8 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
             ->join('INNER', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pm.user_id'))
             ->join('LEFT', $db->quoteName('#__cbe_users', 'cbe') . ' ON ' . $db->quoteName('cbe.userid') . ' = ' . $db->quoteName('u.id'))
-            ->where($db->quoteName('pm.prediction_id') . ' = ' . $this->predictionGameId);
+            ->where($db->quoteName('pm.prediction_id') . ' = :kmlPredictionId')
+            ->bind(':kmlPredictionId', $predictionGameId, ParameterType::INTEGER);
         $db->setQuery($query);
         $members = $db->loadObjectList() ?: [];
 
@@ -386,13 +395,16 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     {
         $teamId = $this->extractTipTeamId($tip, $projectId);
         $points = false;
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([$db->quoteName('league_champ'), $db->quoteName('points_tipp_champ')])
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('champ') . ' = 1');
+            ->where($db->quoteName('prediction_id') . ' = :championPredictionId')
+            ->where($db->quoteName('project_id') . ' = :championProjectId')
+            ->where($db->quoteName('champ') . ' = 1')
+            ->bind(':championPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':championProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $evaluation = $db->loadObject();
         if ($evaluation && (int) $evaluation->league_champ > 0) {
@@ -410,13 +422,16 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
 
     private function getFinal4TipData(int $projectId, string $tips): array
     {
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([$db->quoteName('league_final4'), $db->quoteName('points_tipp_final4')])
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('final4') . ' = 1');
+            ->where($db->quoteName('prediction_id') . ' = :final4PredictionId')
+            ->where($db->quoteName('project_id') . ' = :final4ProjectId')
+            ->where($db->quoteName('final4') . ' = 1')
+            ->bind(':final4PredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':final4ProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $evaluation = $db->loadObject();
         $evaluatedTeams = $evaluation && !empty($evaluation->league_final4)
@@ -512,7 +527,8 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             $query = $db->createQuery()
                 ->select($db->quoteName('master_template'))
                 ->from($db->quoteName('#__sportsmanagement_project'))
-                ->where($db->quoteName('id') . ' = ' . $projectId);
+                ->where($db->quoteName('id') . ' = :templateProjectId')
+                ->bind(':templateProjectId', $projectId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $masterId = (int) $db->loadResult();
             if ($masterId > 0 && $masterId !== $projectId) {
@@ -539,8 +555,10 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('template') . ' = ' . $db->quote($template))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('template') . ' = :templateName')
+            ->where($db->quoteName('project_id') . ' = :templateConfigProjectId')
+            ->bind(':templateName', $template, ParameterType::STRING)
+            ->bind(':templateConfigProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $value = $db->loadResult();
         return $value === null ? null : (string) $value;
@@ -579,8 +597,10 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :belongsRoundId')
+            ->where($db->quoteName('project_id') . ' = :belongsProjectId')
+            ->bind(':belongsRoundId', $roundId, ParameterType::INTEGER)
+            ->bind(':belongsProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         return (int) $db->loadResult() > 0;
     }
