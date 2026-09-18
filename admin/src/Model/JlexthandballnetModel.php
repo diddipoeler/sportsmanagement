@@ -64,7 +64,7 @@ final class JlexthandballnetModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('l.country'))
             ->from($db->quoteName('#__sportsmanagement_league', 'l'))
             ->join(
