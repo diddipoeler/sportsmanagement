@@ -21,6 +21,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 final class NavigationDataHelper
@@ -111,7 +112,7 @@ final class NavigationDataHelper
         }
 
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'p.id',
                 'p.name',
@@ -190,7 +191,7 @@ final class NavigationDataHelper
     public function getFederations(): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['name', 'id'])
             ->from('#__sportsmanagement_federations')
             ->where('published = 1');
@@ -201,7 +202,7 @@ final class NavigationDataHelper
     public function getCountrySubSubAssocSelect($assoc_id): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
             ->where('s.parent_id = ' . (int) $assoc_id)
@@ -219,7 +220,7 @@ final class NavigationDataHelper
     public function getCountrySubAssocSelect($assoc_id): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
             ->where('s.parent_id = ' . (int) $assoc_id)
@@ -236,14 +237,16 @@ final class NavigationDataHelper
 
     public function getCountryAssocSelect($country): array
     {
+        $country = (string) $country;
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
-            ->where('s.country = ' . $db->quote((string) $country))
+            ->where('s.country = :countryAssocCountry')
             ->where('s.parent_id = 0')
             ->where('s.published = 1')
-            ->order('s.name');
+            ->order('s.name')
+            ->bind(':countryAssocCountry', $country, ParameterType::STRING);
         $db->setQuery($query);
         $res = $db->loadObjectList() ?: [];
 
@@ -256,7 +259,7 @@ final class NavigationDataHelper
     public function getFederationSelect($federation = '', $federationid = 0): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('s.alpha3 AS value, s.name AS text')
             ->from('#__sportsmanagement_countries AS s')
             ->join('INNER', '#__sportsmanagement_league AS l ON l.country = s.alpha3')
@@ -326,7 +329,7 @@ final class NavigationDataHelper
         }
 
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('parent_id')
             ->from('#__sportsmanagement_associations')
             ->where('id = ' . (int) $assoc_id);
@@ -343,7 +346,7 @@ final class NavigationDataHelper
         }
 
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('associations')
             ->from('#__sportsmanagement_league')
             ->where('id = ' . (int) $this->_league_id);
@@ -366,7 +369,7 @@ final class NavigationDataHelper
     public function getFavTeams($project_id)
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('fav_team')
             ->from('#__sportsmanagement_project')
             ->where('id = ' . (int) $project_id);
@@ -381,7 +384,7 @@ final class NavigationDataHelper
             return false;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.id AS team_id, t.name, t.club_id')
             ->from('#__sportsmanagement_team AS t')
             ->where('t.id IN (' . implode(',', $ids) . ')');
@@ -392,7 +395,7 @@ final class NavigationDataHelper
     public function getTeamId($project_id, $club_id)
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('pt.team_id')
             ->from('#__sportsmanagement_project_team AS pt')
             ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id')
@@ -417,7 +420,7 @@ final class NavigationDataHelper
     public function getSeasonSelect(): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_season AS s')
             ->where('s.published = 1')
@@ -438,7 +441,7 @@ final class NavigationDataHelper
     public function getDivisionSelect($project_id): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('d.id AS value, d.name AS text')
             ->from('#__sportsmanagement_division AS d')
             ->where('d.project_id = ' . (int) $project_id);
@@ -459,18 +462,22 @@ final class NavigationDataHelper
 
     public function getAssocLeagueSelect($country_id, $associd): array
     {
+        $countryId = (string) $country_id;
+        $associationId = (int) $associd;
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('l.id AS value, l.name AS text')
             ->from('#__sportsmanagement_league AS l')
             ->join('INNER', '#__sportsmanagement_project AS p ON l.id = p.league_id')
             ->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id')
-            ->where('l.country = ' . $db->quote((string) $country_id))
+            ->where('l.country = :assocLeagueCountry')
             ->group('l.name')
-            ->order('l.name');
+            ->order('l.name')
+            ->bind(':assocLeagueCountry', $countryId, ParameterType::STRING);
 
-        if ((int) $associd > 0) {
-            $query->where('l.associations = ' . (int) $associd);
+        if ($associationId > 0) {
+            $query->where('l.associations = :assocLeagueAssociationId')
+                ->bind(':assocLeagueAssociationId', $associationId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -489,7 +496,7 @@ final class NavigationDataHelper
         }
 
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('l.country')
             ->from('#__sportsmanagement_league AS l')
             ->join('INNER', '#__sportsmanagement_project AS p ON l.id = p.league_id')
@@ -501,7 +508,7 @@ final class NavigationDataHelper
     public function getLeagueSelect($season): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('l.id AS value, l.name AS text')
             ->from('#__sportsmanagement_league AS l')
             ->join('INNER', '#__sportsmanagement_project AS p ON l.id = p.league_id')
@@ -522,7 +529,7 @@ final class NavigationDataHelper
     public function getProjectSelect($league_id): array
     {
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('p.id AS value, p.name AS text')
             ->from('#__sportsmanagement_project AS p')
             ->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id')
@@ -553,7 +560,7 @@ final class NavigationDataHelper
         }
 
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.id AS value, t.name AS text')
             ->from('#__sportsmanagement_project_team AS pt')
             ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id')
@@ -634,7 +641,7 @@ final class NavigationDataHelper
         }
 
         $db = $this->_db;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 't.club_id',
                 "CONCAT_WS(':',t.id,t.alias) AS team_slug",
