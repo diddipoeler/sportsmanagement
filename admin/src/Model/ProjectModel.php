@@ -19,6 +19,7 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /** Native Joomla 5/6 administrator form model for projects. */
@@ -152,9 +153,11 @@ final class ProjectModel extends SportsManagementAdminModel
                 $db->quoteName('picture'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('season_id') . ' = ' . $seasonId)
-            ->where($db->quoteName('league_id') . ' = ' . $leagueId)
-            ->order($db->quoteName('name') . ' ASC');
+            ->where($db->quoteName('season_id') . ' = :projectsSeasonId')
+            ->where($db->quoteName('league_id') . ' = :projectsLeagueId')
+            ->order($db->quoteName('name') . ' ASC')
+            ->bind(':projectsSeasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':projectsLeagueId', $leagueId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -194,7 +197,8 @@ final class ProjectModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_league', 'l')
                 . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -229,7 +233,8 @@ final class ProjectModel extends SportsManagementAdminModel
                 $db->quoteName('#__sportsmanagement_project_team', 'pt')
                 . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
             )
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+            ->where($db->quoteName('pt.id') . ' = :projectTeamId')
+            ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -292,10 +297,13 @@ final class ProjectModel extends SportsManagementAdminModel
                 );
         }
 
-        $query->where($db->quoteName('pt.project_id') . ' = ' . $projectId);
+        $query->where($db->quoteName('pt.project_id') . ' = :projectTeamsProjectId')
+            ->bind(':projectTeamsProjectId', $projectId, ParameterType::INTEGER);
 
-        if ((int) $iDivisionId > 0) {
-            $query->where($db->quoteName('pt.division_id') . ' = ' . (int) $iDivisionId);
+        $divisionId = (int) $iDivisionId;
+        if ($divisionId > 0) {
+            $query->where($db->quoteName('pt.division_id') . ' = :projectTeamsDivisionId')
+                ->bind(':projectTeamsDivisionId', $divisionId, ParameterType::INTEGER);
         }
 
         if ($individual) {
@@ -433,7 +441,8 @@ final class ProjectModel extends SportsManagementAdminModel
                 $query = $db->createQuery()
                     ->select('*')
                     ->from($db->quoteName('#__sportsmanagement_project'))
-                    ->where($db->quoteName('id') . ' = ' . $id);
+                    ->where($db->quoteName('id') . ' = :copyProjectId')
+                    ->bind(':copyProjectId', $id, ParameterType::INTEGER);
                 $db->setQuery($query, 0, 1);
                 $source = $db->loadObject();
 
@@ -552,18 +561,22 @@ final class ProjectModel extends SportsManagementAdminModel
     private function ensureExtraFieldRows(int $projectId): void
     {
         $db = $this->getDatabase();
+        $templateBackend = 'project';
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
-            ->where($db->quoteName('template_backend') . ' = ' . $db->quote('project'));
+            ->where($db->quoteName('template_backend') . ' = :extraFieldTemplateBackend')
+            ->bind(':extraFieldTemplateBackend', $templateBackend, ParameterType::STRING);
         $db->setQuery($query);
 
         foreach (array_map('intval', $db->loadColumn() ?: []) as $fieldId) {
             $check = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
-                ->where($db->quoteName('field_id') . ' = ' . $fieldId)
-                ->where($db->quoteName('jl_id') . ' = ' . $projectId);
+                ->where($db->quoteName('field_id') . ' = :extraFieldId')
+                ->where($db->quoteName('jl_id') . ' = :extraFieldProjectId')
+                ->bind(':extraFieldId', $fieldId, ParameterType::INTEGER)
+                ->bind(':extraFieldProjectId', $projectId, ParameterType::INTEGER);
             $db->setQuery($check);
 
             if ((int) $db->loadResult() === 0) {
@@ -584,7 +597,8 @@ final class ProjectModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
-            ->where($db->quoteName('jl_id') . ' = ' . $sourceProjectId);
+            ->where($db->quoteName('jl_id') . ' = :sourceExtraFieldProjectId')
+            ->bind(':sourceExtraFieldProjectId', $sourceProjectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         foreach ($db->loadObjectList() ?: [] as $row) {
@@ -604,7 +618,8 @@ final class ProjectModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_season'))
-            ->where($db->quoteName('id') . ' = ' . $seasonId);
+            ->where($db->quoteName('id') . ' = :seasonNameId')
+            ->bind(':seasonNameId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return (string) $db->loadResult();
@@ -628,10 +643,15 @@ final class ProjectModel extends SportsManagementAdminModel
             return [];
         }
 
+        $ids = $this->normaliseIds($ids);
+        if (!$ids) {
+            return [];
+        }
+
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName($table))
-            ->where($db->quoteName($field) . ' IN (' . implode(',', $ids) . ')');
+            ->whereIn($db->quoteName($field), $ids, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $this->normaliseIds($db->loadColumn() ?: []);
@@ -650,9 +670,14 @@ final class ProjectModel extends SportsManagementAdminModel
             return;
         }
 
+        $ids = $this->normaliseIds($ids);
+        if (!$ids) {
+            return;
+        }
+
         $query = $db->createQuery()
             ->delete($db->quoteName($table))
-            ->where($db->quoteName($field) . ' IN (' . implode(',', $ids) . ')');
+            ->whereIn($db->quoteName($field), $ids, ParameterType::INTEGER);
         $db->setQuery($query);
         $db->execute();
         self::$db_num_rows += (int) $db->getAffectedRows();
@@ -663,8 +688,10 @@ final class ProjectModel extends SportsManagementAdminModel
         $query = $db->createQuery()
             ->select($db->quoteName('params'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('template') . ' = ' . $db->quote($template));
+            ->where($db->quoteName('project_id') . ' = :templateProjectId')
+            ->where($db->quoteName('template') . ' = :templateName')
+            ->bind(':templateProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':templateName', $template, ParameterType::STRING);
         $db->setQuery($query, 0, 1);
 
         return trim((string) $db->loadResult());
