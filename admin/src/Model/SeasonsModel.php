@@ -104,7 +104,7 @@ final class SeasonsModel extends SportsManagementListModel
     private function getDefaultSeasonsQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id'),
                 $db->quoteName('s.name'),
@@ -169,12 +169,12 @@ final class SeasonsModel extends SportsManagementListModel
     private function getAssignTeamsQuery(int $seasonId)
     {
         $db = $this->getDatabase();
-        $subQuery = $db->getQuery(true)
+        $subQuery = $db->createQuery()
             ->select($db->quoteName('stp.team_id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_id', 'stp'))
             ->where($db->quoteName('stp.season_id') . ' = :assignedTeamSeasonId');
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('t') . '.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join(
@@ -209,12 +209,12 @@ final class SeasonsModel extends SportsManagementListModel
     private function getAssignPersonsQuery(int $seasonId)
     {
         $db = $this->getDatabase();
-        $subQuery = $db->getQuery(true)
+        $subQuery = $db->createQuery()
             ->select($db->quoteName('stp.person_id'))
             ->from($db->quoteName('#__sportsmanagement_season_person_id', 'stp'))
             ->where($db->quoteName('stp.season_id') . ' = :assignedPersonSeasonId');
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('p') . '.*')
             ->from($db->quoteName('#__sportsmanagement_person', 'p'))
             ->where($db->quoteName('p.id') . ' NOT IN (' . $subQuery . ')')
@@ -265,7 +265,7 @@ final class SeasonsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
         $seasonId = (int) $seasonId;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id', 'value'),
                 $db->quoteName('t.name', 'text'),
@@ -289,7 +289,7 @@ final class SeasonsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
         $seasonId = (int) $seasonId;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_season'))
             ->where($db->quoteName('id') . ' = :seasonNameId')
@@ -303,7 +303,7 @@ final class SeasonsModel extends SportsManagementListModel
     public function getSeasons(bool $selectOptions = false): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(
                 $selectOptions
                     ? [$db->quoteName('id', 'value'), $db->quoteName('name', 'text')]
