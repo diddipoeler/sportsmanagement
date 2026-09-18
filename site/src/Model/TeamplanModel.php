@@ -299,18 +299,18 @@ final class TeamplanModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
-                'm.*',
-                'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
+                $db->quoteName('m') . '.*',
+                'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', "%H:%i") AS ' . $db->quoteName('time_present'),
                 $db->quoteName('r.roundcode'),
                 $db->quoteName('r.id', 'roundid'),
                 $db->quoteName('r.project_id'),
                 $db->quoteName('r.name'),
                 $db->quoteName('t1.id', 'team1'),
                 $db->quoteName('t2.id', 'team2'),
-                'CONCAT_WS(\':\', m.id, CONCAT_WS("_", t1.alias, t2.alias)) AS match_slug',
-                'CONCAT_WS(\':\', r.id, r.alias) AS round_slug',
-                'CONCAT_WS(\':\', p.id, p.alias) AS project_slug',
-                'CONCAT_WS(\':\', d.id, d.alias) AS division_slug',
+                "CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) AS ' . $db->quoteName('match_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('d.id') . ', ' . $db->quoteName('d.alias') . ') AS ' . $db->quoteName('division_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -382,11 +382,13 @@ final class TeamplanModel extends SportsManagementProjectModel
 
         $divisionTeamIds = $this->getDirectChildDivisionIds();
         if ($divisionTeamIds !== []) {
-            $ids = implode(',', $divisionTeamIds);
+            $homeDivisionKeys = $query->bindArray($divisionTeamIds, ParameterType::INTEGER);
+            $awayDivisionKeys = $query->bindArray($divisionTeamIds, ParameterType::INTEGER);
+            $matchDivisionKeys = $query->bindArray($divisionTeamIds, ParameterType::INTEGER);
             $query->where(
-                '(' . $db->quoteName('pt1.division_id') . ' IN (' . $ids . ')'
-                . ' OR ' . $db->quoteName('pt2.division_id') . ' IN (' . $ids . ')'
-                . ' OR ' . $db->quoteName('m.division_id') . ' IN (' . $ids . '))'
+                '(' . $db->quoteName('pt1.division_id') . ' IN (' . implode(',', $homeDivisionKeys) . ')'
+                . ' OR ' . $db->quoteName('pt2.division_id') . ' IN (' . implode(',', $awayDivisionKeys) . ')'
+                . ' OR ' . $db->quoteName('m.division_id') . ' IN (' . implode(',', $matchDivisionKeys) . '))'
             );
         }
 
@@ -431,7 +433,7 @@ final class TeamplanModel extends SportsManagementProjectModel
                 ->select([
                     $db->quoteName('playground.name', 'playground_name'),
                     $db->quoteName('playground.short_name', 'playground_short_name'),
-                    'CONCAT_WS(\':\', playground.id, playground.alias) AS playground_slug',
+                    "CONCAT_WS(':', " . $db->quoteName('playground.id') . ', ' . $db->quoteName('playground.alias') . ') AS ' . $db->quoteName('playground_slug'),
                 ])
                 ->join(
                     'LEFT',
