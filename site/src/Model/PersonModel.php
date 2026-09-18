@@ -19,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class PersonModel extends SportsManagementProjectModel
 {
@@ -167,10 +168,11 @@ final class PersonModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st1')
                 . ' ON ' . $db->quoteName('st1.team_id') . ' = ' . $db->quoteName('tp.team_id')
                 . ' AND ' . $db->quoteName('st1.season_id') . ' = ' . $db->quoteName('tp.season_id'))
-            ->where($db->quoteName('pr.user_id') . ' = ' . $userId)
+            ->where($db->quoteName('pr.user_id') . ' = :personProjectUserId')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('tp.published') . ' = 1')
-            ->where($db->quoteName('tp.persontype') . ' IN (1,2)');
+            ->where($db->quoteName('tp.persontype') . ' IN (1,2)')
+            ->bind(':personProjectUserId', $userId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -212,10 +214,11 @@ final class PersonModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('pj.league_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('pr.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('p.id') . ' = ' . $personId)
+            ->where($db->quoteName('p.id') . ' = :personHistoryPersonId')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('pj.published') . ' = 1')
+            ->bind(':personHistoryPersonId', $personId, ParameterType::INTEGER)
             ->group([
                 $db->quoteName('p.id'),
                 $db->quoteName('pr.project_id'),
@@ -251,8 +254,10 @@ final class PersonModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__contact_details'))
-            ->where($db->quoteName('user_id') . ' = ' . $userId)
-            ->where($db->quoteName('catid') . ' = ' . $categoryId);
+            ->where($db->quoteName('user_id') . ' = :contactUserId')
+            ->where($db->quoteName('catid') . ' = :contactCategoryId')
+            ->bind(':contactUserId', $userId, ParameterType::INTEGER)
+            ->bind(':contactCategoryId', $categoryId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return (int) $db->loadResult();
@@ -309,7 +314,8 @@ final class PersonModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_person'))
             ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
-            ->where($db->quoteName('id') . ' = ' . $personId);
+            ->where($db->quoteName('id') . ' = :personHitId')
+            ->bind(':personHitId', $personId, ParameterType::INTEGER);
         $db->setQuery($query);
         $db->execute();
     }
@@ -340,7 +346,7 @@ final class PersonModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_eventtype', 'et'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_eventtype', 'pet') . ' ON ' . $db->quoteName('pet.eventtype_id') . ' = ' . $db->quoteName('et.id'))
             ->where($db->quoteName('et.published') . ' = 1')
-            ->where($db->quoteName('pet.position_id') . ' IN (' . implode(',', array_values($positionIds)) . ')')
+            ->whereIn($db->quoteName('pet.position_id'), array_values($positionIds), ParameterType::INTEGER)
             ->order($db->quoteName('et.ordering') . ' ASC');
         $db->setQuery($query);
 
@@ -354,19 +360,23 @@ final class PersonModel extends SportsManagementProjectModel
             return 0;
         }
 
+        $personId = self::$personid;
         $db = $this->getDatabase();
         $aggregate = $show_events_as_sum ? 'SUM' : 'COUNT';
         $query = $db->createQuery()
             ->select($aggregate . '(' . $db->quoteName('me.event_sum') . ') AS total')
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp1') . ' ON ' . $db->quoteName('tp1.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
-            ->where($db->quoteName('me.event_type_id') . ' = ' . $eventId)
-            ->where($db->quoteName('tp1.person_id') . ' = ' . self::$personid)
-            ->group($db->quoteName('tp1.person_id'));
+            ->where($db->quoteName('me.event_type_id') . ' = :playerEventTypeId')
+            ->where($db->quoteName('tp1.person_id') . ' = :playerEventPersonId')
+            ->group($db->quoteName('tp1.person_id'))
+            ->bind(':playerEventTypeId', $eventId, ParameterType::INTEGER)
+            ->bind(':playerEventPersonId', $personId, ParameterType::INTEGER);
 
         $projectTeamId = max(0, (int) $projectteamid);
         if ($projectTeamId > 0) {
-            $query->where($db->quoteName('me.projectteam_id') . ' = ' . $projectTeamId);
+            $query->where($db->quoteName('me.projectteam_id') . ' = :playerEventProjectTeamId')
+                ->bind(':playerEventProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
