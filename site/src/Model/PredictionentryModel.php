@@ -375,11 +375,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return [];
         }
         if ($allowedProjectTeams) {
-            $homeTeamFilter = $db->createQuery()
-                ->whereIn($db->quoteName('m.projectteam1_id'), $allowedProjectTeams, ParameterType::INTEGER);
-            $awayTeamFilter = $db->createQuery()
-                ->whereIn($db->quoteName('m.projectteam2_id'), $allowedProjectTeams, ParameterType::INTEGER);
-            $query->extendWhere('AND', [$homeTeamFilter, $awayTeamFilter], 'OR');
+            $homeProjectTeamPlaceholders = $query->bindArray($allowedProjectTeams, ParameterType::INTEGER);
+            $awayProjectTeamPlaceholders = $query->bindArray($allowedProjectTeams, ParameterType::INTEGER);
+            $query->extendWhere('AND', [
+                $db->quoteName('m.projectteam1_id') . ' IN (' . implode(',', $homeProjectTeamPlaceholders) . ')',
+                $db->quoteName('m.projectteam2_id') . ' IN (' . implode(',', $awayProjectTeamPlaceholders) . ')',
+            ], 'OR');
         }
 
         $db->setQuery($query);
