@@ -1,0 +1,82 @@
+name: Joomla 5/6 site admin teamstats batch 128
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/settings/default/allclubs.xml'
+      - 'site/settings/default/allteams.xml'
+      - 'site/settings/default/allleagues.xml'
+      - 'admin/models/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/mod_sportsmanagement_teamstats_ranking.xml'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-teamstats-batch128.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/settings/default/allclubs.xml'
+      - 'site/settings/default/allteams.xml'
+      - 'site/settings/default/allleagues.xml'
+      - 'admin/models/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/**'
+      - '.github/workflows/joomla5-6-site-admin-teamstats-batch128.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php -l admin/models/sportsmanagement.php
+          php -l modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+
+          for file in             admin/models/sportsmanagement.php             modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+          do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          php -r 'foreach (array_slice($argv, 1) as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: {$file}\n"); exit(1); } }'             site/settings/default/allclubs.xml             site/settings/default/allteams.xml             site/settings/default/allleagues.xml             modules/mod_sportsmanagement_teamstats_ranking/mod_sportsmanagement_teamstats_ranking.xml
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             site/settings/default/allclubs.xml             site/settings/default/allteams.xml             site/settings/default/allleagues.xml
+          do
+            grep -Fq 'value="table table-sm"' "$file"
+
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          admin_model=admin/models/sportsmanagement.php
+          grep -Fq "\\defined('_JEXEC') or die;" "$admin_model"
+          grep -Fq 'SportsManagement native administrator model could not be loaded.' "$admin_model"
+
+          manifest=modules/mod_sportsmanagement_teamstats_ranking/mod_sportsmanagement_teamstats_ranking.xml
+          dispatcher=modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+          grep -Fq 'use Joomla\\CMS\\Factory;' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+
+          echo 'Joomla 5/6 batch 128 contracts OK.'
