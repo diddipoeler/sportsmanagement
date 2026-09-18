@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list model for project template settings.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use DirectoryIterator;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator list model for project template settings. */
 final class TemplatesModel extends SportsManagementListModel
@@ -75,7 +84,7 @@ final class TemplatesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -86,7 +95,8 @@ final class TemplatesModel extends SportsManagementListModel
                 $db->quoteName('extension'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :templateProjectId')
+            ->bind(':templateProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -95,7 +105,7 @@ final class TemplatesModel extends SportsManagementListModel
     public function getMasterTemplates(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -118,14 +128,15 @@ final class TemplatesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $currentQuery = $db->getQuery(true)
+        $currentQuery = $db->createQuery()
             ->select($db->quoteName('template'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :currentTemplateProjectId')
+            ->bind(':currentTemplateProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($currentQuery);
         $current = array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
 
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ((int) $getAll === 1) {
             $query->select([
@@ -157,17 +168,12 @@ final class TemplatesModel extends SportsManagementListModel
                 $db->quoteName('#__users', 'u1')
                 . ' ON ' . $db->quoteName('u1.id') . ' = ' . $db->quoteName('t.modified_by')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $projectId)
-            ->where(
-                $db->quoteName('t.template') . ' NOT IN ('
-                . implode(',', array_map([$db, 'quote'], self::LEGACY_TEMPLATES)) . ')'
-            );
+            ->where($db->quoteName('p.id') . ' = :masterTemplateProjectId')
+            ->whereNotIn($db->quoteName('t.template'), self::LEGACY_TEMPLATES, ParameterType::STRING)
+            ->bind(':masterTemplateProjectId', $projectId, ParameterType::INTEGER);
 
         if ($current) {
-            $query->where(
-                $db->quoteName('t.template') . ' NOT IN ('
-                . implode(',', array_map([$db, 'quote'], $current)) . ')'
-            );
+            $query->whereNotIn($db->quoteName('t.template'), $current, ParameterType::STRING);
         }
 
         $query->order($db->quoteName('t.title') . ' ASC');
@@ -185,7 +191,7 @@ final class TemplatesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('master.name'))
             ->from($db->quoteName('#__sportsmanagement_project', 'master'))
             ->join(
@@ -193,7 +199,8 @@ final class TemplatesModel extends SportsManagementListModel
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.master_template') . ' = ' . $db->quoteName('master.id')
             )
-            ->where($db->quoteName('p.id') . ' = ' . $projectId);
+            ->where($db->quoteName('p.id') . ' = :masterNameProjectId')
+            ->bind(':masterNameProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -212,7 +219,7 @@ final class TemplatesModel extends SportsManagementListModel
         $this->checklist($projectId);
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('tmpl.template'),
                 $db->quoteName('tmpl.title'),
@@ -236,20 +243,20 @@ final class TemplatesModel extends SportsManagementListModel
                 $db->quoteName('#__users', 'u1')
                 . ' ON ' . $db->quoteName('u1.id') . ' = ' . $db->quoteName('tmpl.modified_by')
             )
-            ->where($db->quoteName('tmpl.project_id') . ' = ' . $projectId)
-            ->where(
-                $db->quoteName('tmpl.template') . ' NOT IN ('
-                . implode(',', array_map([$db, 'quote'], self::LEGACY_TEMPLATES)) . ')'
-            );
+            ->where($db->quoteName('tmpl.project_id') . ' = :listTemplateProjectId')
+            ->whereNotIn($db->quoteName('tmpl.template'), self::LEGACY_TEMPLATES, ParameterType::STRING)
+            ->bind(':listTemplateProjectId', $projectId, ParameterType::INTEGER);
 
         $search = trim((string) $this->getState('filter.search'));
 
         if ($search !== '') {
-            $needle = $db->quote('%' . $db->escape(mb_strtolower($search), true) . '%', false);
+            $needle = '%' . $db->escape(mb_strtolower($search), true) . '%';
             $query->where(
-                '(LOWER(' . $db->quoteName('tmpl.title') . ') LIKE ' . $needle
-                . ' OR LOWER(' . $db->quoteName('tmpl.template') . ') LIKE ' . $needle . ')'
-            );
+                '(LOWER(' . $db->quoteName('tmpl.title') . ') LIKE :templateTitleSearch'
+                . ' OR LOWER(' . $db->quoteName('tmpl.template') . ') LIKE :templateNameSearch)'
+            )
+                ->bind(':templateTitleSearch', $needle, ParameterType::STRING)
+                ->bind(':templateNameSearch', $needle, ParameterType::STRING);
         }
 
         $orderMap = [
@@ -291,13 +298,14 @@ final class TemplatesModel extends SportsManagementListModel
         $db = $this->getDatabase();
 
         try {
-            $projectQuery = $db->getQuery(true)
+            $projectQuery = $db->createQuery()
                 ->select([
                     $db->quoteName('master_template'),
                     $db->quoteName('extension'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_project'))
-                ->where($db->quoteName('id') . ' = ' . $projectId);
+                ->where($db->quoteName('id') . ' = :checklistProjectId')
+                ->bind(':checklistProjectId', $projectId, ParameterType::INTEGER);
             $db->setQuery($projectQuery, 0, 1);
             $project = $db->loadObject();
 
@@ -305,13 +313,14 @@ final class TemplatesModel extends SportsManagementListModel
                 return true;
             }
 
-            $recordQuery = $db->getQuery(true)
+            $recordQuery = $db->createQuery()
                 ->select([
                     $db->quoteName('id'),
                     $db->quoteName('template'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_template_config'))
-                ->where($db->quoteName('project_id') . ' = ' . $projectId);
+                ->where($db->quoteName('project_id') . ' = :checklistTemplateProjectId')
+                ->bind(':checklistTemplateProjectId', $projectId, ParameterType::INTEGER);
             $db->setQuery($recordQuery);
             $rows = $db->loadObjectList() ?: [];
             $records = [];
