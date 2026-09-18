@@ -345,12 +345,21 @@ final class RosterModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectTeamId = (int) $projectTeam->id;
+        $projectId = self::$projectid;
         $db = self::database();
         $query = $db->createQuery();
         if ($dart) {
-            $query->select($sumeventid ? 'COUNT(me.event_type_id) AS total' : 'me.event_sum AS total, me.event_type_id AS event_type_id');
+            if ($sumeventid) {
+                $query->select('COUNT(' . $db->quoteName('me.event_type_id') . ') AS ' . $db->quoteName('total'));
+            } else {
+                $query->select([
+                    $db->quoteName('me.event_sum', 'total'),
+                    $db->quoteName('me.event_type_id', 'event_type_id'),
+                ]);
+            }
         } else {
-            $query->select('SUM(me.event_sum) AS total');
+            $query->select('SUM(' . $db->quoteName('me.event_sum') . ') AS ' . $db->quoteName('total'));
         }
 
         $query->select($db->quoteName('tp.person_id'))
@@ -367,15 +376,20 @@ final class RosterModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro')
                 . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id')
                 . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('st.season_id'))
-            ->where($db->quoteName('me.event_type_id') . ' = ' . $eventTypeId)
-            ->where($db->quoteName('pt.id') . ' = ' . (int) $projectTeam->id)
-            ->where($db->quoteName('pt.project_id') . ' = ' . self::$projectid)
-            ->where($db->quoteName('r.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('me.event_type_id') . ' = :eventTypeId')
+            ->where($db->quoteName('pt.id') . ' = :eventProjectTeamId')
+            ->where($db->quoteName('pt.project_id') . ' = :eventProjectId1')
+            ->where($db->quoteName('r.project_id') . ' = :eventProjectId2')
             ->where($db->quoteName('tp.published') . ' = 1')
             ->where($db->quoteName('pt.published') . ' = 1')
             ->where($db->quoteName('pro.published') . ' = 1')
             ->where($db->quoteName('ma.published') . ' = 1')
-            ->where($db->quoteName('pro.id') . ' = ' . self::$projectid);
+            ->where($db->quoteName('pro.id') . ' = :eventProjectId3')
+            ->bind(':eventTypeId', $eventTypeId, ParameterType::INTEGER)
+            ->bind(':eventProjectTeamId', $projectTeamId, ParameterType::INTEGER)
+            ->bind(':eventProjectId1', $projectId, ParameterType::INTEGER)
+            ->bind(':eventProjectId2', $projectId, ParameterType::INTEGER)
+            ->bind(':eventProjectId3', $projectId, ParameterType::INTEGER);
 
         if (!$dart || $sumeventid) {
             $query->group($db->quoteName('tp.person_id'));
@@ -419,11 +433,16 @@ final class RosterModel extends SportsManagementProjectModel
         if (self::$projectid <= 0) {
             return '0000-00-00';
         }
+        $projectId = self::$projectid;
         $db = self::database();
         $query = $db->createQuery()
-            ->select(['MAX(' . $db->quoteName('round_date_first') . ') AS firstday', 'MAX(' . $db->quoteName('round_date_last') . ') AS lastday'])
+            ->select([
+                'MAX(' . $db->quoteName('round_date_first') . ') AS ' . $db->quoteName('firstday'),
+                'MAX(' . $db->quoteName('round_date_last') . ') AS ' . $db->quoteName('lastday'),
+            ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . self::$projectid);
+            ->where($db->quoteName('project_id') . ' = :lastSeasonProjectId')
+            ->bind(':lastSeasonProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $roundDate = $db->loadObject();
         if (!$roundDate || (!$roundDate->firstday && !$roundDate->lastday)) {
