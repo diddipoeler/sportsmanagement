@@ -91,7 +91,7 @@ final class TeamstaffsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         if ($this->useNewTable) {
             $teamId = (int) $this->getState('context.team_id');
@@ -208,13 +208,13 @@ final class TeamstaffsModel extends SportsManagementListModel
 
         try {
             foreach (['#__sportsmanagement_match_staff', '#__sportsmanagement_match_staff_statistic'] as $table) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName($table))
                     ->whereIn($db->quoteName('team_staff_id'), $ids, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_team_staff'))
                 ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER);
             $db->setQuery($query)->execute();
