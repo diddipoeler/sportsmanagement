@@ -68,7 +68,7 @@ final class MatchModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m') . '.*',
                 $db->quoteName('r.project_id'),
@@ -122,7 +122,7 @@ final class MatchModel extends SportsManagementAdminModel
 
         $db = $this->getDatabase();
         $excludeMatchIds = array_values(array_unique(array_filter(array_map('intval', $excludeMatchIds), static fn (int $id): bool => $id > 0)));
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id', 'value'),
                 $db->quoteName('m.match_date'),
@@ -171,7 +171,7 @@ final class MatchModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('roundcode'),
@@ -194,7 +194,7 @@ final class MatchModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('projectteam1_id'),
@@ -219,7 +219,7 @@ final class MatchModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('ppos.id', 'value'),
                 $db->quoteName('pos.id', 'position_id'),
@@ -252,7 +252,7 @@ final class MatchModel extends SportsManagementAdminModel
         $assignedIds = $this->getAssignedRefereeIds($matchId);
 
         if ($teamsAsReferees) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('pt.id', 'value'),
                     $db->quoteName('t.name', 'team_name'),
@@ -265,7 +265,7 @@ final class MatchModel extends SportsManagementAdminModel
                 ->order($db->quoteName('t.name') . ' ASC')
                 ->bind(':projectId', $projectId, ParameterType::INTEGER);
         } else {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('pref.id', 'value'),
                     $db->quoteName('p.firstname'),
@@ -323,7 +323,7 @@ final class MatchModel extends SportsManagementAdminModel
 
         $db = $this->getDatabase();
         if ($teamsAsReferees) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('mr.project_referee_id', 'value'),
                     $db->quoteName('mr.project_position_id'),
@@ -339,7 +339,7 @@ final class MatchModel extends SportsManagementAdminModel
                 ->order($db->quoteName('mr.project_position_id') . ' ASC, ' . $db->quoteName('mr.ordering') . ' ASC')
                 ->bind(':matchId', $matchId, ParameterType::INTEGER);
         } else {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('mr.project_referee_id', 'value'),
                     $db->quoteName('mr.project_position_id'),
@@ -392,7 +392,7 @@ final class MatchModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('project_referee_id'))
             ->from($db->quoteName('#__sportsmanagement_match_referee'))
             ->where($db->quoteName('match_id') . ' = :matchId')
@@ -433,7 +433,7 @@ final class MatchModel extends SportsManagementAdminModel
                     continue;
                 }
 
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName($table))
                     ->whereIn($db->quoteName('match_id'), $ids, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
