@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 model for the public prediction entry view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use DateInterval;
 use DateTimeImmutable;
 use DateTimeZone;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 class PredictionentryModel extends SportsManagementPredictionReadModel
 {
@@ -159,12 +168,15 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return false;
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('user_id') . ' = ' . $identityId);
+            ->where($db->quoteName('prediction_id') . ' = :currentMemberPredictionId')
+            ->where($db->quoteName('user_id') . ' = :currentMemberUserId')
+            ->bind(':currentMemberPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':currentMemberUserId', $identityId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return (bool) $db->loadResult();
     }
@@ -176,12 +188,15 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return false;
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('approved'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('user_id') . ' = ' . $identityId);
+            ->where($db->quoteName('prediction_id') . ' = :approvalPredictionId')
+            ->where($db->quoteName('user_id') . ' = :approvalUserId')
+            ->bind(':approvalPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':approvalUserId', $identityId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $approved = $db->loadResult();
         return $approved !== null && (int) $approved !== 1;
@@ -212,6 +227,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
 
         $config = $this->getPredictionTemplateConfig('predictionusers');
         $nameField = !empty($config['show_full_name']) ? 'name' : 'username';
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -221,8 +237,9 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             ])
             ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
             ->join('INNER', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pm.user_id'))
-            ->where($db->quoteName('pm.prediction_id') . ' = ' . $this->predictionGameId)
-            ->order($db->quoteName('u.' . $nameField) . ' ASC');
+            ->where($db->quoteName('pm.prediction_id') . ' = :memberOptionsPredictionId')
+            ->order($db->quoteName('u.' . $nameField) . ' ASC')
+            ->bind(':memberOptionsPredictionId', $predictionGameId, ParameterType::INTEGER);
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
     }
@@ -256,12 +273,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
                 $db->quoteName('name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->order($db->quoteName('id') . ' ASC');
+            ->where($db->quoteName('project_id') . ' = :roundOptionsProjectId')
+            ->order($db->quoteName('id') . ' ASC')
+            ->bind(':roundOptionsProjectId', $projectId, ParameterType::INTEGER);
 
         $allowedRoundIds = $this->allowedRoundIds();
         if ($allowedRoundIds) {
-            $query->where($db->quoteName('id') . ' IN (' . implode(',', $allowedRoundIds) . ')');
+            $query->whereIn($db->quoteName('id'), $allowedRoundIds, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
@@ -275,6 +293,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         $projectId = $this->getProjectId();
         $roundId = $this->getRoundId();
         $memberUserId = (int) ($member->user_id ?? 0);
+        $predictionGameId = $this->predictionGameId;
 
         if (!$project || $projectId <= 0 || $roundId <= 0 || $memberUserId <= 0) {
             return [];
@@ -317,9 +336,9 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_prediction_result', 'pr')
                 . ' ON ' . $db->quoteName('pr.match_id') . ' = ' . $db->quoteName('m.id')
-                . ' AND ' . $db->quoteName('pr.prediction_id') . ' = ' . $this->predictionGameId
-                . ' AND ' . $db->quoteName('pr.user_id') . ' = ' . $memberUserId
-                . ' AND ' . $db->quoteName('pr.project_id') . ' = ' . $projectId)
+                . ' AND ' . $db->quoteName('pr.prediction_id') . ' = :entryPredictionId'
+                . ' AND ' . $db->quoteName('pr.user_id') . ' = :entryUserId'
+                . ' AND ' . $db->quoteName('pr.project_id') . ' = :entryProjectId')
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pth') . ' ON ' . $db->quoteName('pth.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'sth') . ' ON ' . $db->quoteName('sth.id') . ' = ' . $db->quoteName('pth.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 'th') . ' ON ' . $db->quoteName('th.id') . ' = ' . $db->quoteName('sth.team_id'))
@@ -328,12 +347,16 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'sta') . ' ON ' . $db->quoteName('sta.id') . ' = ' . $db->quoteName('pta.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 'ta') . ' ON ' . $db->quoteName('ta.id') . ' = ' . $db->quoteName('sta.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'ca') . ' ON ' . $db->quoteName('ca.id') . ' = ' . $db->quoteName('ta.club_id'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('r.id') . ' = ' . $roundId)
+            ->where($db->quoteName('r.project_id') . ' = :entryProjectId')
+            ->where($db->quoteName('r.id') . ' = :entryRoundId')
             ->where($db->quoteName('m.published') . ' = 1')
             ->where($db->quoteName('m.match_date') . " <> '0000-00-00 00:00:00'")
             ->where('(' . $db->quoteName('m.cancel') . ' IS NULL OR ' . $db->quoteName('m.cancel') . ' = 0)')
-            ->order([$db->quoteName('m.match_date') . ' ASC', $db->quoteName('m.id') . ' ASC']);
+            ->order([$db->quoteName('m.match_date') . ' ASC', $db->quoteName('m.id') . ' ASC'])
+            ->bind(':entryPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':entryUserId', $memberUserId, ParameterType::INTEGER)
+            ->bind(':entryProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':entryRoundId', $roundId, ParameterType::INTEGER);
 
         $allowedMatchIds = !empty($config['use_pred_select_matches'])
             ? $this->normaliseIdList($config['predictionmatchid'] ?? null)
@@ -342,7 +365,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return [];
         }
         if ($allowedMatchIds) {
-            $query->where($db->quoteName('m.id') . ' IN (' . implode(',', $allowedMatchIds) . ')');
+            $query->whereIn($db->quoteName('m.id'), $allowedMatchIds, ParameterType::INTEGER);
         }
 
         $allowedProjectTeams = !empty($config['use_pred_select_proteams'])
@@ -352,9 +375,11 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return [];
         }
         if ($allowedProjectTeams) {
-            $ids = implode(',', $allowedProjectTeams);
-            $query->where('(' . $db->quoteName('m.projectteam1_id') . ' IN (' . $ids . ') OR '
-                . $db->quoteName('m.projectteam2_id') . ' IN (' . $ids . '))');
+            $homeTeamFilter = $db->createQuery()
+                ->whereIn($db->quoteName('m.projectteam1_id'), $allowedProjectTeams, ParameterType::INTEGER);
+            $awayTeamFilter = $db->createQuery()
+                ->whereIn($db->quoteName('m.projectteam2_id'), $allowedProjectTeams, ParameterType::INTEGER);
+            $query->extendWhere('AND', [$homeTeamFilter, $awayTeamFilter], 'OR');
         }
 
         $db->setQuery($query);
@@ -395,14 +420,19 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return $empty;
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_result_round'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('user_id') . ' = ' . $userId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('round_id') . ' = ' . $roundId);
+            ->where($db->quoteName('prediction_id') . ' = :roundResultPredictionId')
+            ->where($db->quoteName('user_id') . ' = :roundResultUserId')
+            ->where($db->quoteName('project_id') . ' = :roundResultProjectId')
+            ->where($db->quoteName('round_id') . ' = :roundResultRoundId')
+            ->bind(':roundResultPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':roundResultUserId', $userId, ParameterType::INTEGER)
+            ->bind(':roundResultProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':roundResultRoundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return $db->loadObject() ?: $empty;
     }
@@ -416,13 +446,17 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return 0;
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('COALESCE(SUM(' . $db->quoteName('joker') . '), 0)')
             ->from($db->quoteName('#__sportsmanagement_prediction_result'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('user_id') . ' = ' . $userId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('prediction_id') . ' = :jokerPredictionId')
+            ->where($db->quoteName('user_id') . ' = :jokerUserId')
+            ->where($db->quoteName('project_id') . ' = :jokerProjectId')
+            ->bind(':jokerPredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':jokerUserId', $userId, ParameterType::INTEGER)
+            ->bind(':jokerProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         return (int) $db->loadResult();
     }
@@ -538,8 +572,10 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . $roundId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :belongsRoundId')
+            ->where($db->quoteName('project_id') . ' = :belongsProjectId')
+            ->bind(':belongsRoundId', $roundId, ParameterType::INTEGER)
+            ->bind(':belongsProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return (bool) $db->loadResult();
     }
@@ -575,14 +611,18 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         if ($roundId <= 0 || $projectId <= 0) {
             return 'BEGIN_OF_MATCH';
         }
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('rien_ne_va_plus'))
             ->from($db->quoteName('#__sportsmanagement_prediction_tippround'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('round_id') . ' = ' . $roundId)
-            ->where($db->quoteName('published') . ' = 1');
+            ->where($db->quoteName('prediction_id') . ' = :deadlinePredictionId')
+            ->where($db->quoteName('project_id') . ' = :deadlineProjectId')
+            ->where($db->quoteName('round_id') . ' = :deadlineRoundId')
+            ->where($db->quoteName('published') . ' = 1')
+            ->bind(':deadlinePredictionId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':deadlineProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':deadlineRoundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return (string) ($db->loadResult() ?: 'BEGIN_OF_MATCH');
     }
@@ -596,9 +636,10 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         $query = $db->createQuery()
             ->select('MIN(' . $db->quoteName('match_date') . ')')
             ->from($db->quoteName('#__sportsmanagement_match'))
-            ->where($db->quoteName('round_id') . ' = ' . $roundId)
+            ->where($db->quoteName('round_id') . ' = :firstRoundMatchId')
             ->where($db->quoteName('published') . ' = 1')
-            ->where('(' . $db->quoteName('cancel') . ' IS NULL OR ' . $db->quoteName('cancel') . ' = 0)');
+            ->where('(' . $db->quoteName('cancel') . ' IS NULL OR ' . $db->quoteName('cancel') . ' = 0)')
+            ->bind(':firstRoundMatchId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query);
         return (string) ($db->loadResult() ?: '');
     }
@@ -660,6 +701,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return [];
         }
 
+        $predictionGameId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -668,10 +710,11 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
                 'COUNT(*) AS total',
             ])
             ->from($db->quoteName('#__sportsmanagement_prediction_result'))
-            ->where($db->quoteName('prediction_id') . ' = ' . $this->predictionGameId)
-            ->where($db->quoteName('match_id') . ' IN (' . implode(',', $ids) . ')')
+            ->where($db->quoteName('prediction_id') . ' = :tendencyPredictionId')
+            ->whereIn($db->quoteName('match_id'), $ids, ParameterType::INTEGER)
             ->where($db->quoteName('tipp') . ' IS NOT NULL')
-            ->group([$db->quoteName('match_id'), $db->quoteName('tipp')]);
+            ->group([$db->quoteName('match_id'), $db->quoteName('tipp')])
+            ->bind(':tendencyPredictionId', $predictionGameId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         $stats = [];
