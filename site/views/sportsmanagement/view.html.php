@@ -1,45 +1,31 @@
 <?php
 /**
+ * Joomla 5/6 compatibility view for the SportsManagement frontend root view.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage sportsmanagement
- * @file       view.html.php
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @copyright  Copyright (C) 2013-2026 Fussball in Europa
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\View\HtmlView;
 
-use Joomla\CMS\Log\Log;
-
-// Import Joomla view library
-jimport('joomla.application.component.view');
-
 /**
- * HTML View class for the HelloWorld Component
+ * Legacy class name retained for compatibility with historic frontend dispatchers.
  */
 class sportsmanagementViewsportsmanagement extends HtmlView
 {
-	// Overwriting JViewLegacy display method
-	function display($tpl = null)
-	{
-		// Assign data to the view
-		$this->item = $this->get('Item');
+    public $item;
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			Log::add(implode('<br />', $errors));
+    public function display($tpl = null)
+    {
+        $this->item = $this->get('Item');
 
-			return false;
-		}
+        if ($errors = $this->get('Errors')) {
+            throw new \RuntimeException(implode("\n", $errors), 500);
+        }
 
-		// Display the view
-		parent::display($tpl);
-	}
+        parent::display($tpl);
+    }
 }
