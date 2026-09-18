@@ -40,9 +40,9 @@ if (!class_exists('modJSMTeamStatisticsCounter', false)) {
         public static function getData($params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = SportsManagementSiteApplicationResolver::resolve();
+            SportsManagementSiteApplicationResolver::resolve();
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
             return (new TeamStatisticsCounterHelper())->getData($registry, $joomlaDatabase);
         }
