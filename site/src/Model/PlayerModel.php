@@ -56,8 +56,6 @@ final class PlayerModel extends SportsManagementProjectModel
             return null;
         }
 
-        $personId = $this->personId;
-        $personType = max(1, $personType);
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -219,6 +217,8 @@ final class PlayerModel extends SportsManagementProjectModel
             return [];
         }
 
+        $personId = $this->personId;
+        $personType = max(1, $personType);
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
