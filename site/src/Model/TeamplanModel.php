@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Native Joomla 5/6 MVC model for the team plan.
@@ -70,6 +71,7 @@ final class TeamplanModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -88,12 +90,13 @@ final class TeamplanModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_project_position', 'ppos')
                 . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id')
             )
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = :planEventsProjectId')
             ->group([
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
                 $db->quoteName('et.icon'),
-            ]);
+            ])
+            ->bind(':planEventsProjectId', $projectId, ParameterType::INTEGER);
 
         $db->setQuery($query);
 
@@ -112,6 +115,8 @@ final class TeamplanModel extends SportsManagementProjectModel
             return 0;
         }
 
+        $projectId = $this->projectId;
+        $teamId = $this->teamId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('pt.id'))
@@ -126,8 +131,10 @@ final class TeamplanModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_team', 't')
                 . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
             )
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('t.id') . ' = ' . $this->teamId);
+            ->where($db->quoteName('pt.project_id') . ' = :projectTeamProjectId')
+            ->where($db->quoteName('t.id') . ' = :projectTeamTeamId')
+            ->bind(':projectTeamProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':projectTeamTeamId', $teamId, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, 1);
         $this->projectTeamId = (int) $db->loadResult();
