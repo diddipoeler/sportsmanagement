@@ -11,65 +11,33 @@
 
 use Joomla\CMS\Language\Text;
 
-$this->getDocument()->getWebAssetManager()->useScript('keepalive');
+$assets = $this->getDocument()->getWebAssetManager();
+$assets->useScript('keepalive');
+$assets->registerAndUseScript(
+    'com_sportsmanagement.site.allpersons',
+    'components/com_sportsmanagement/assets/js/allpersons.js',
+    ['version' => 'auto'],
+    ['defer' => true],
+    ['core']
+);
 
 $startRange = (int) $this->params->get('character_filter_start_hex', 0);
 $endRange = (int) $this->params->get('character_filter_end_hex', 0);
 ?>
-<script>
-window.tableOrdering = function (order, dir) {
-    const form = document.getElementById('adminForm');
 
-    if (!form) {
-        return;
-    }
-
-    form.filter_order.value = order;
-    form.filter_order_Dir.value = dir;
-    form.submit();
-};
-
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('adminForm');
-    const search = document.getElementById('filter_search');
-    const clearButton = document.getElementById('clear-person-search');
-
-    if (!form || !search) {
-        return;
-    }
-
-    search.addEventListener('change', function () {
-        form.submit();
-    });
-
-    if (clearButton) {
-        clearButton.addEventListener('click', function () {
-            search.value = '';
-            form.submit();
-        });
-    }
-
-    form.querySelectorAll('[data-character-filter]').forEach(function (button) {
-        button.addEventListener('click', function () {
-            search.value = button.dataset.characterFilter || '';
-            form.submit();
-        });
-    });
-});
-</script>
 <div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="allpersons">
-    <form name="adminForm" id="adminForm"
+    <form name="adminForm" id="adminForm" data-jsm-allpersons-form
           action="<?php echo htmlspecialchars($this->uri->toString(), ENT_QUOTES, 'UTF-8'); ?>"
           method="post">
         <fieldset class="filters">
             <legend class="hidelabeltxt"><?php echo Text::_('JGLOBAL_FILTER_LABEL'); ?></legend>
             <div class="filter-search">
                 <input type="text" name="filter_search" id="filter_search"
-                       value="<?php echo $this->escape($this->filter); ?>" class="inputbox">
+                       value="<?php echo $this->escape($this->filter); ?>" class="form-control w-auto" data-jsm-auto-submit>
                 <button type="submit" class="btn">
                     <span class="icon-search" aria-hidden="true"></span><?php echo Text::_('JGLOBAL_FILTER_BUTTON'); ?>
                 </button>
-                <button type="button" class="btn" id="clear-person-search">
+                <button type="button" class="btn btn-outline-secondary" id="clear-person-search" data-jsm-clear-filter>
                     <span class="icon-remove" aria-hidden="true"></span><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?>
                 </button>
 
