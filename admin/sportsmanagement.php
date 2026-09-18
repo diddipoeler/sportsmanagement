@@ -15,6 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtensionLanguageHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Language\Text;
@@ -22,7 +23,7 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
-$app = Factory::getApplication();
+$app = Factory::getContainer()->get(AdministratorApplication::class);
 
 if (!$app->isClient('administrator')) {
     throw new \RuntimeException('SportsManagement requires the Joomla administrator application.', 500);
