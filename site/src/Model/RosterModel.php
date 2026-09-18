@@ -485,14 +485,16 @@ final class RosterModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('pt.project_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('stp.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('r.id') . ' = ' . $roundId)
-            ->where($db->quoteName('stp.id') . ' = ' . $playerId)
+            ->where($db->quoteName('r.id') . ' = :teamPlayerRoundId')
+            ->where($db->quoteName('stp.id') . ' = :teamPlayerId')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
             ->where($db->quoteName('stp.published') . ' = 1')
             ->where($db->quoteName('pt.published') . ' = 1')
             ->where($db->quoteName('pro.published') . ' = 1')
-            ->where($db->quoteName('t.published') . ' = 1');
+            ->where($db->quoteName('t.published') . ' = 1')
+            ->bind(':teamPlayerRoundId', $roundId, ParameterType::INTEGER)
+            ->bind(':teamPlayerId', $playerId, ParameterType::INTEGER);
         $db->setQuery($query);
         return $db->loadObjectList() ?: [];
     }
