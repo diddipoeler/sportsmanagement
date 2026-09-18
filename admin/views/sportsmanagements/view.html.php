@@ -1,112 +1,28 @@
 <?php
 /**
+ * Legacy compatibility bridge for the native Joomla 5/6 SportsManagement administrator list view.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage sportsmanagements
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) 2013-2026 Fussball in Europa
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Administrator\View\Sportsmanagements\HtmlView;
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Log\Log;
+if (!class_exists(HtmlView::class)) {
+    $nativeView = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Sportsmanagements/HtmlView.php';
 
-/**
- * sportsmanagementViewsportsmanagements
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewsportsmanagements extends sportsmanagementView
-{
-	/**
-	 * SportsManagements view display method
-	 *
-	 * @return void
-	 */
-	function display($tpl = null)
-	{
-		// Get data from the model
-		$items      = $this->get('Items');
-		$pagination = $this->get('Pagination');
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
+}
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			Log::add(implode('<br />', $errors));
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator list view could not be loaded.', 500);
+}
 
-			return false;
-		}
-
-		// Assign data to the view
-		$this->items      = $items;
-		$this->pagination = $pagination;
-
-		// Set the toolbar
-		$this->addToolBar();
-
-		// Display the template
-		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
-	}
-
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar()
-	{
-		$this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-			'com_sportsmanagement.sportsmanagements',
-			'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-			['version' => 'auto']
-		);
-		$canDo = sportsmanagementHelper::getActions();
-		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
-
-		if ($canDo->get('core.create'))
-		{
-			ToolbarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
-		}
-
-		if ($canDo->get('core.edit'))
-		{
-			ToolbarHelper::editList('sportsmanagement.edit', 'JTOOLBAR_EDIT');
-		}
-
-		if ($canDo->get('core.delete'))
-		{
-			ToolbarHelper::deleteList('', 'sportsmanagements.delete', 'JTOOLBAR_DELETE');
-		}
-
-		if ($canDo->get('core.admin'))
-		{
-			ToolbarHelper::divider();
-			ToolbarHelper::preferences('com_sportsmanagement');
-		}
-	}
-
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	 /**
-	public function setDocument($document)
-	{
-		$document = Factory::getDocument();
-		$document->setTitle(Text::_('COM_HELLOWORLD_ADMINISTRATION'));
-	}
-	*/
+if (!class_exists('sportsmanagementViewsportsmanagements', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewsportsmanagements');
 }
