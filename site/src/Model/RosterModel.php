@@ -17,6 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class RosterModel extends SportsManagementProjectModel
 {
@@ -80,7 +81,9 @@ final class RosterModel extends SportsManagementProjectModel
             ->where($db->quoteName('pro.published') . ' = 1');
 
         if (self::$projectteamid > 0) {
-            $query->where($db->quoteName('pt.id') . ' = ' . self::$projectteamid);
+            $projectTeamId = self::$projectteamid;
+            $query->where($db->quoteName('pt.id') . ' = :projectTeamId')
+                ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
         } else {
             if (self::$teamid <= 0) {
                 Log::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_TEAM_ID'), Log::WARNING, 'jsmerror');
@@ -90,8 +93,12 @@ final class RosterModel extends SportsManagementProjectModel
                 Log::add(Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_ID'), Log::WARNING, 'jsmerror');
                 return false;
             }
-            $query->where($db->quoteName('st.team_id') . ' = ' . self::$teamid)
-                ->where($db->quoteName('pt.project_id') . ' = ' . self::$projectid);
+            $teamId = self::$teamid;
+            $projectId = self::$projectid;
+            $query->where($db->quoteName('st.team_id') . ' = :projectTeamSourceId')
+                ->where($db->quoteName('pt.project_id') . ' = :projectTeamProjectId')
+                ->bind(':projectTeamSourceId', $teamId, ParameterType::INTEGER)
+                ->bind(':projectTeamProjectId', $projectId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query, 0, 1);
@@ -115,13 +122,15 @@ final class RosterModel extends SportsManagementProjectModel
             return false;
         }
 
+        $teamId = self::$teamid;
         $db = self::database();
         $query = $db->createQuery()
-            ->select(['t.*', $db->quoteName('c.logo_big'), "CONCAT_WS(':', t.id, t.alias) AS slug"])
+            ->select([$db->quoteName('t') . '.*', $db->quoteName('c.logo_big'), "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('slug')])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->where($db->quoteName('t.id') . ' = ' . self::$teamid)
-            ->where($db->quoteName('t.published') . ' = 1');
+            ->where($db->quoteName('t.id') . ' = :teamId')
+            ->where($db->quoteName('t.published') . ' = 1')
+            ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         self::$team = $db->loadObject() ?: null;
 
@@ -134,6 +143,7 @@ final class RosterModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -146,12 +156,13 @@ final class RosterModel extends SportsManagementProjectModel
             ])
             ->from($db->quoteName('#__sportsmanagement_project_position', 'ppos'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('ppos.project_id') . ' = :projectPositionsProjectId')
             ->where($db->quoteName('pos.published') . ' = 1')
             ->order([
                 $db->quoteName('pos.persontype') . ' ASC',
                 $db->quoteName('pos.ordering') . ' ASC',
-            ]);
+            ])
+            ->bind(':projectPositionsProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         return $db->loadObjectList('id') ?: [];
     }
