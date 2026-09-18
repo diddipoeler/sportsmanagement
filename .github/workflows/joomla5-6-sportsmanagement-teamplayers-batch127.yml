@@ -1,0 +1,116 @@
+name: Joomla 5/6 sportsmanagement teamplayers batch 127
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/sportsmanagement/view.html.php'
+      - 'site/models/sportsmanagement.php'
+      - 'admin/views/sportsmanagement/view.html.php'
+      - 'admin/src/View/Sportsmanagement/HtmlView.php'
+      - 'admin/tmpl/sportsmanagement/edit.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml'
+      - '.github/workflows/joomla5-6-sportsmanagement-teamplayers-batch127.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/sportsmanagement/view.html.php'
+      - 'site/models/sportsmanagement.php'
+      - 'admin/views/sportsmanagement/view.html.php'
+      - 'admin/src/View/Sportsmanagement/HtmlView.php'
+      - 'admin/tmpl/sportsmanagement/edit.php'
+      - 'modules/mod_sportsmanagement_teamplayers/**'
+      - '.github/workflows/joomla5-6-sportsmanagement-teamplayers-batch127.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/views/sportsmanagement/view.html.php
+            site/models/sportsmanagement.php
+            admin/views/sportsmanagement/view.html.php
+            admin/src/View/Sportsmanagement/HtmlView.php
+            admin/tmpl/sportsmanagement/edit.php
+            modules/mod_sportsmanagement_teamplayers/helper.php
+            modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 component contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_view=site/views/sportsmanagement/view.html.php
+          site_model=site/models/sportsmanagement.php
+          admin_bridge=admin/views/sportsmanagement/view.html.php
+          admin_native=admin/src/View/Sportsmanagement/HtmlView.php
+          admin_layout=admin/tmpl/sportsmanagement/edit.php
+
+          grep -Fq '@version    5.6.0' "$site_view"
+          grep -Fq "\\defined('_JEXEC') or die;" "$site_view"
+          grep -Fq 'throw new \\RuntimeException' "$site_view"
+          grep -Fq 'public $item;' "$site_view"
+
+          if grep -Fq 'jimport(' "$site_view"; then
+            echo 'Frontend SportsManagement view regressed to jimport.' >&2
+            exit 1
+          fi
+
+          grep -Fq '@version    5.6.0' "$site_model"
+          grep -Fq 'LegacySportsmanagementTable::class' "$site_model"
+          grep -Fq "SportsManagement legacy table bridge could not be loaded." "$site_model"
+
+          grep -Fq 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\View\\Sportsmanagement\\HtmlView;' "$admin_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewsportsmanagement')" "$admin_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement edit view.' "$admin_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement edit layout.' "$admin_layout"
+
+      - name: Validate Joomla 5/6 TeamPlayers contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          helper=modules/mod_sportsmanagement_teamplayers/helper.php
+          dispatcher=modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+          manifest=modules/mod_sportsmanagement_teamplayers/mod_sportsmanagement_teamplayers.xml
+
+          php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$manifest"
+
+          grep -Fq 'use Joomla\\CMS\\Factory;' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq 'use Joomla\\CMS\\Factory;' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          grep -Fq '<option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>' "$manifest"
+
+          if grep -Fq 'table table-condensed' "$manifest"; then
+            echo 'TeamPlayers manifest regressed to Bootstrap 3 table-condensed.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 127 contracts OK.'
