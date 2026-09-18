@@ -524,11 +524,10 @@ final class DatabasetoolModel extends BaseDatabaseModel
             return true;
         }
 
-        $countryPlaceholders = $db->createQuery()->bindArray($countries, ParameterType::STRING);
         $query = $db->createQuery()
-            ->delete($db->quoteName('#__sportsmanagement_associations'))
-            ->where($db->quoteName('country') . ' NOT IN (' . implode(',', $countryPlaceholders) . ')');
-        $query->bind($countryPlaceholders, $countries, ParameterType::STRING);
+            ->delete($db->quoteName('#__sportsmanagement_associations'));
+        $countryPlaceholders = $query->bindArray($countries, ParameterType::STRING);
+        $query->where($db->quoteName('country') . ' NOT IN (' . implode(',', $countryPlaceholders) . ')');
         $db->setQuery($query);
         self::runJoomlaQuery(self::class, $db);
 
