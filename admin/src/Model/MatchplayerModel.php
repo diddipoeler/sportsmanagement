@@ -58,7 +58,7 @@ final class MatchplayerModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.id', 'table_id'),
                 $db->quoteName('mp.match_id'),
@@ -153,7 +153,7 @@ final class MatchplayerModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.id'),
                 $db->quoteName('mp.came_in'),
@@ -244,7 +244,7 @@ final class MatchplayerModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mp.teamplayer_id', 'tpid'),
                 $db->quoteName('mp.teamplayer_id'),
