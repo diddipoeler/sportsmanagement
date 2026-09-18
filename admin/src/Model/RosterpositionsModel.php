@@ -65,7 +65,7 @@ final class RosterpositionsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('obj.id'),
                 $db->quoteName('obj.name'),
