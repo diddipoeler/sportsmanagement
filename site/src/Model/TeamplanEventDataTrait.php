@@ -34,7 +34,7 @@ trait TeamplanEventDataTrait
                 $db->quoteName('me.notice'),
                 $db->quoteName('me.projectteam_id', 'ptid'),
                 $db->quoteName('me.event_sum'),
-                "CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(':', t.id, t.alias) ELSE t.id END AS team_id",
+                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('t.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') ELSE ' . $db->quoteName('t.id') . ' END AS ' . $db->quoteName('team_id'),
                 $db->quoteName('et.name', 'eventtype_name'),
                 $db->quoteName('t.name', 'team_name'),
                 $db->quoteName('tp.picture', 'tppicture1'),
@@ -42,7 +42,7 @@ trait TeamplanEventDataTrait
                 $db->quoteName('p.nickname', 'nickname1'),
                 $db->quoteName('p.lastname', 'lastname1'),
                 $db->quoteName('p.picture', 'picture1'),
-                "CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(':', p.id, p.alias) ELSE p.id END AS playerid",
+                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('p.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') ELSE ' . $db->quoteName('p.id') . ' END AS ' . $db->quoteName('playerid'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $db->quoteName('me.event_type_id') . ' = ' . $db->quoteName('et.id'))
@@ -133,18 +133,18 @@ trait TeamplanEventDataTrait
                 $db->quoteName('pin.nickname', 'nickname'),
                 $db->quoteName('pin.lastname', 'lastname'),
                 $db->quoteName('pin.id', 'playerid'),
-                "CASE WHEN CHAR_LENGTH(pin.alias) THEN CONCAT_WS(':', pin.id, pin.alias) ELSE pin.id END AS person_id",
+                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('pin.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('pin.id') . ', ' . $db->quoteName('pin.alias') . ') ELSE ' . $db->quoteName('pin.id') . ' END AS ' . $db->quoteName('person_id'),
                 $db->quoteName('posin.name', 'in_position'),
                 $db->quoteName('pposin.id', 'pposid1'),
                 $db->quoteName('pout.firstname', 'out_firstname'),
                 $db->quoteName('pout.nickname', 'out_nickname'),
                 $db->quoteName('pout.lastname', 'out_lastname'),
                 $db->quoteName('pout.id', 'out_ptid'),
-                "CASE WHEN CHAR_LENGTH(pout.alias) THEN CONCAT_WS(':', pout.id, pout.alias) ELSE pout.id END AS out_person_id",
+                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('pout.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('pout.id') . ', ' . $db->quoteName('pout.alias') . ') ELSE ' . $db->quoteName('pout.id') . ' END AS ' . $db->quoteName('out_person_id'),
                 $db->quoteName('posout.name', 'out_position'),
                 $db->quoteName('pposout.id', 'pposid2'),
                 $db->quoteName('pt.id', 'ptid'),
-                "CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(':', t.id, t.alias) ELSE t.id END AS team_id",
+                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('t.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') ELSE ' . $db->quoteName('t.id') . ' END AS ' . $db->quoteName('team_id'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join(
