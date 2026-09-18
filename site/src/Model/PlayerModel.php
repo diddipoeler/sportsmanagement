@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Throwable;
 
 /**
@@ -55,6 +56,8 @@ final class PlayerModel extends SportsManagementProjectModel
             return null;
         }
 
+        $personId = $this->personId;
+        $personType = max(1, $personType);
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -73,10 +76,12 @@ final class PlayerModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('tp.project_position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('tp.person_id') . ' = ' . $personId)
+            ->where($db->quoteName('pt.project_id') . ' = :staffProjectId')
+            ->where($db->quoteName('tp.person_id') . ' = :staffPersonId')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->where($db->quoteName('tp.persontype') . ' = 2');
+            ->where($db->quoteName('tp.persontype') . ' = 2')
+            ->bind(':staffProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':staffPersonId', $personId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -120,16 +125,19 @@ final class PlayerModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'ps') . ' ON ' . $db->quoteName('ps.id') . ' = ' . $db->quoteName('tp.person_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('pt.project_id') . ' = :teamPlayerProjectId')
             ->where($db->quoteName('p.published') . ' = 1')
-            ->where($db->quoteName('tp.persontype') . ' = 1');
+            ->where($db->quoteName('tp.persontype') . ' = 1')
+            ->bind(':teamPlayerProjectId', $projectId, ParameterType::INTEGER);
 
         if ($personId > 0) {
-            $query->where($db->quoteName('tp.person_id') . ' = ' . $personId);
+            $query->where($db->quoteName('tp.person_id') . ' = :teamPlayerPersonId')
+                ->bind(':teamPlayerPersonId', $personId, ParameterType::INTEGER);
         }
 
         if ($teamPlayerId > 0) {
-            $query->where($db->quoteName('tp.id') . ' = ' . $teamPlayerId);
+            $query->where($db->quoteName('tp.id') . ' = :teamPlayerRowId')
+                ->bind(':teamPlayerRowId', $teamPlayerId, ParameterType::INTEGER);
         }
 
         try {
@@ -188,10 +196,13 @@ final class PlayerModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'rsuspto') . ' ON ' . $db->quoteName('pe.suspension_end') . ' = ' . $db->quoteName('rsuspto.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'rawayfrom') . ' ON ' . $db->quoteName('pe.away_date') . ' = ' . $db->quoteName('rawayfrom.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'rawayto') . ' ON ' . $db->quoteName('pe.away_end') . ' = ' . $db->quoteName('rawayto.id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->where($db->quoteName('tp.person_id') . ' = ' . $personId)
-            ->where($db->quoteName('pe.id') . ' = ' . $personId)
-            ->where($db->quoteName('p.published') . ' = 1');
+            ->where($db->quoteName('pt.project_id') . ' = :teamPlayersProjectId')
+            ->where($db->quoteName('tp.person_id') . ' = :teamPlayersPersonId')
+            ->where($db->quoteName('pe.id') . ' = :teamPlayersPersonRowId')
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->bind(':teamPlayersProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':teamPlayersPersonId', $personId, ParameterType::INTEGER)
+            ->bind(':teamPlayersPersonRowId', $personId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -257,14 +268,17 @@ final class PlayerModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_person_project_position', 'perpos') . ' ON ' . $db->quoteName('perpos.project_id') . ' = ' . $db->quoteName('p.id') . ' AND ' . $db->quoteName('perpos.person_id') . ' = ' . $db->quoteName('pr.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('perpos.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('pr.id') . ' = ' . $this->personId)
+            ->where($db->quoteName('pr.id') . ' = :historyPersonId')
             ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('perpos.published') . ' = 1')
             ->where($db->quoteName('pr.published') . ' = 1')
-            ->where($db->quoteName('tp.persontype') . ' = ' . max(1, $personType));
+            ->where($db->quoteName('tp.persontype') . ' = :historyPersonType')
+            ->bind(':historyPersonId', $personId, ParameterType::INTEGER)
+            ->bind(':historyPersonType', $personType, ParameterType::INTEGER);
 
         if ($sportsTypeId > 0) {
-            $query->where($db->quoteName('p.sports_type_id') . ' = ' . $sportsTypeId);
+            $query->where($db->quoteName('p.sports_type_id') . ' = :historySportsTypeId')
+                ->bind(':historySportsTypeId', $sportsTypeId, ParameterType::INTEGER);
         }
 
         // Preserve the legacy view's effective ordering, which ignored $order.
@@ -279,11 +293,15 @@ final class PlayerModel extends SportsManagementProjectModel
         }
 
         foreach ($history as $row) {
+            $leagueId = (int) $row->pro_league_id;
+            $seasonId = (int) $row->pro_season_id;
             $logoQuery = $db->createQuery()
                 ->select($db->quoteName('logo_big'))
                 ->from($db->quoteName('#__sportsmanagement_league_logos'))
-                ->where($db->quoteName('league_id') . ' = ' . (int) $row->pro_league_id)
-                ->where($db->quoteName('season_id') . ' = ' . (int) $row->pro_season_id);
+                ->where($db->quoteName('league_id') . ' = :historyLeagueId')
+                ->where($db->quoteName('season_id') . ' = :historySeasonId')
+                ->bind(':historyLeagueId', $leagueId, ParameterType::INTEGER)
+                ->bind(':historySeasonId', $seasonId, ParameterType::INTEGER);
             $db->setQuery($logoQuery, 0, 1);
             $seasonLogo = $db->loadResult();
 
@@ -317,7 +335,7 @@ final class PlayerModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_eventtype', 'et'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_eventtype', 'pet') . ' ON ' . $db->quoteName('pet.eventtype_id') . ' = ' . $db->quoteName('et.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id'))
-            ->where($db->quoteName('pet.position_id') . ' IN (' . implode(',', $positionIds) . ')')
+            ->whereIn($db->quoteName('pet.position_id'), array_values($positionIds), ParameterType::INTEGER)
             ->where($db->quoteName('et.published') . ' = 1')
             ->order($db->quoteName('pet.ordering') . ' ASC');
 
