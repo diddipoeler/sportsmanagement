@@ -6,6 +6,8 @@ on:
     paths:
       - 'site/tmpl/allclubs/default.php'
       - 'admin/views/match/tmpl/editstats.php'
+      - 'admin/assets/js/matchstats.js'
+      - 'admin/assets/js/matchstats.js'
       - 'modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml'
       - 'modules/mod_sportsmanagement_rquotes/update-server.xml'
       - '.github/workflows/joomla5-6-site-admin-modules-batch110.yml'
@@ -56,14 +58,15 @@ jobs:
             exit 1
           fi
 
-          grep -Fq 'window.SportsManagementMatchStats.submit' "$admin_layout"
+          admin_js=admin/assets/js/matchstats.js
+          grep -Fq "'com_sportsmanagement.admin.matchstats'" "$admin_layout"
           grep -Fq 'data-match-stats-task' "$admin_layout"
           grep -Fq 'data-match-stats-cancel' "$admin_layout"
-          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$admin_layout"
-          grep -Fq "bootstrap.startTabSet" "$admin_layout"
-          if grep -Fq 'onclick=' "$admin_layout" || \
-             grep -Fq 'jquery.framework' "$admin_layout" || \
-             grep -Fq 'version_compare' "$admin_layout"; then
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$admin_layout"
+          grep -Fq 'window.SportsManagementMatchStats' "$admin_js"
+          grep -Fq "postMessage({messageType: 'joomla:cancel'}" "$admin_js"
+          node --check "$admin_js"
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=|jquery\.framework|version_compare' "$admin_layout"; then
             echo 'Match stats layout regressed to inline or legacy Joomla handling' >&2
             exit 1
           fi

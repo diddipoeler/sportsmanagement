@@ -7,6 +7,8 @@ on:
       - 'site/tmpl/hitlist/default.php'
       - 'site/tmpl/rosteralltime/default.php'
       - 'admin/views/match/tmpl/editstats.php'
+      - 'admin/assets/js/matchstats.js'
+      - 'admin/assets/js/matchstats.js'
       - 'modules/mod_sportsmanagement_firstleagueoverview/mod_sportsmanagement_firstleagueoverview.xml'
       - 'modules/mod_sportsmanagement_firstleagueoverview/update-server.xml'
       - '.github/workflows/joomla5-6-site-admin-modules-batch107.yml'
@@ -59,9 +61,17 @@ jobs:
           done
 
           admin_layout=admin/views/match/tmpl/editstats.php
-          grep -Fq "getWebAssetManager()->useScript('jquery');" "$admin_layout"
-          if grep -Fq "jquery.framework" "$admin_layout" || grep -Fq "version_compare(JVERSION" "$admin_layout"; then
-            echo 'Match stats layout regressed to a legacy Joomla version/jquery helper branch' >&2
+          admin_js=admin/assets/js/matchstats.js
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$admin_layout"
+          done
+          grep -Fq "'com_sportsmanagement.admin.matchstats'" "$admin_layout"
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$admin_layout"
+          grep -Fq 'data-jsm-match-stats-form' "$admin_layout"
+          grep -Fq 'window.SportsManagementMatchStats' "$admin_js"
+          node --check "$admin_js"
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=|jquery\.framework|version_compare\(JVERSION' "$admin_layout"; then
+            echo 'Match stats layout regressed to inline JavaScript or a legacy Joomla/jQuery branch' >&2
             exit 1
           fi
 
