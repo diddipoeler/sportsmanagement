@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator controller for project-team records.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
@@ -9,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationN
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 form controller for a project-team record. */
 final class ProjectteamController extends SportsManagementFormController
@@ -67,7 +76,7 @@ final class ProjectteamController extends SportsManagementFormController
                 continue;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('st.season_id'),
                     $db->quoteName('t.name', 'old_name'),
@@ -83,7 +92,8 @@ final class ProjectteamController extends SportsManagementFormController
                     $db->quoteName('#__sportsmanagement_team', 't')
                     . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
                 )
-                ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId);
+                ->where($db->quoteName('pt.id') . ' = :currentProjectTeamId')
+                ->bind(':currentProjectTeamId', $projectTeamId, ParameterType::INTEGER);
 
             try {
                 $db->setQuery($query, 0, 1);
@@ -139,7 +149,7 @@ final class ProjectteamController extends SportsManagementFormController
         }
 
         $db = $this->database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('st.id', 'season_team_id'),
                 $db->quoteName('st.team_id'),
@@ -152,7 +162,8 @@ final class ProjectteamController extends SportsManagementFormController
                 $db->quoteName('#__sportsmanagement_team', 't')
                 . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
             )
-            ->where($db->quoteName('st.id') . ' = ' . $selectedId);
+            ->where($db->quoteName('st.id') . ' = :selectedSeasonTeamId')
+            ->bind(':selectedSeasonTeamId', $selectedId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
@@ -177,10 +188,11 @@ final class ProjectteamController extends SportsManagementFormController
                 return null;
             }
 
-            $nameQuery = $db->getQuery(true)
+            $nameQuery = $db->createQuery()
                 ->select($db->quoteName('name'))
                 ->from($db->quoteName('#__sportsmanagement_team'))
-                ->where($db->quoteName('id') . ' = ' . $selectedId);
+                ->where($db->quoteName('id') . ' = :selectedTeamNameId')
+                ->bind(':selectedTeamNameId', $selectedId, ParameterType::INTEGER);
             $db->setQuery($nameQuery, 0, 1);
 
             return (object) [
@@ -202,11 +214,13 @@ final class ProjectteamController extends SportsManagementFormController
         }
 
         $db = $this->database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_id'))
-            ->where($db->quoteName('team_id') . ' = ' . $teamId)
-            ->where($db->quoteName('season_id') . ' = ' . $seasonId);
+            ->where($db->quoteName('team_id') . ' = :seasonTeamId')
+            ->where($db->quoteName('season_id') . ' = :seasonId')
+            ->bind(':seasonTeamId', $teamId, ParameterType::INTEGER)
+            ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
