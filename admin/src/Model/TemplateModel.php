@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator form model for project templates.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
@@ -7,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 administrator form model for project templates. */
 final class TemplateModel extends SportsManagementAdminModel
@@ -77,29 +86,28 @@ final class TemplateModel extends SportsManagementAdminModel
         $masterId = (int) $master_id;
         $db = $this->getDatabase();
 
-        $currentQuery = $db->getQuery(true)
+        $currentQuery = $db->createQuery()
             ->select($db->quoteName('template'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :currentProjectId')
+            ->bind(':currentProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($currentQuery);
         $current = array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
 
         $masterTemplates = [];
 
         if ($masterId > 0) {
-            $masterQuery = $db->getQuery(true)
+            $masterQuery = $db->createQuery()
                 ->select([
                     $db->quoteName('id', 'value'),
                     $db->quoteName('title', 'text'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_template_config'))
-                ->where($db->quoteName('project_id') . ' = ' . $masterId);
+                ->where($db->quoteName('project_id') . ' = :masterProjectId')
+                ->bind(':masterProjectId', $masterId, ParameterType::INTEGER);
 
             if ($current) {
-                $masterQuery->where(
-                    $db->quoteName('template') . ' NOT IN ('
-                    . implode(',', array_map([$db, 'quote'], $current)) . ')'
-                );
+                $masterQuery->whereNotIn($db->quoteName('template'), $current, ParameterType::STRING);
             }
 
             $masterQuery->order($db->quoteName('title') . ' ASC');
@@ -107,14 +115,15 @@ final class TemplateModel extends SportsManagementAdminModel
             $masterTemplates = $db->loadObjectList() ?: [];
         }
 
-        $ownQuery = $db->getQuery(true)
+        $ownQuery = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('title', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
-            ->order($db->quoteName('title') . ' ASC');
+            ->where($db->quoteName('project_id') . ' = :ownProjectId')
+            ->order($db->quoteName('title') . ' ASC')
+            ->bind(':ownProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($ownQuery);
         $ownTemplates = $db->loadObjectList() ?: [];
 
@@ -136,10 +145,11 @@ final class TemplateModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('id') . ' = ' . $templateId);
+            ->where($db->quoteName('id') . ' = :importTemplateId')
+            ->bind(':importTemplateId', $templateId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $row = $db->loadObject();
 
@@ -174,7 +184,7 @@ final class TemplateModel extends SportsManagementAdminModel
         $userId = (int) Factory::getApplication()->getIdentity()->id;
 
         foreach ($ids as $id) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('id'),
                     $db->quoteName('template'),
@@ -182,7 +192,8 @@ final class TemplateModel extends SportsManagementAdminModel
                     $db->quoteName('project_id'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_template_config'))
-                ->where($db->quoteName('id') . ' = ' . $id);
+                ->where($db->quoteName('id') . ' = :updateTemplateId')
+                ->bind(':updateTemplateId', $id, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $row = $db->loadObject();
 
@@ -301,7 +312,7 @@ final class TemplateModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -312,7 +323,8 @@ final class TemplateModel extends SportsManagementAdminModel
                 $db->quoteName('extension'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :templateProjectId')
+            ->bind(':templateProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -325,10 +337,11 @@ final class TemplateModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('id') . ')')
             ->from($db->quoteName('#__sportsmanagement_project_team'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :teamCountProjectId')
+            ->bind(':teamCountProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -341,10 +354,11 @@ final class TemplateModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('project_id'))
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('id') . ' = ' . $id);
+            ->where($db->quoteName('id') . ' = :templateConfigId')
+            ->bind(':templateConfigId', $id, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return (int) $db->loadResult();
