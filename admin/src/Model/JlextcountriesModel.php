@@ -47,7 +47,7 @@ final class JlextcountriesModel extends SportsManagementListModel
     {
         $app = $this->administratorApplication();
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -97,7 +97,7 @@ final class JlextcountriesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('objcountry') . '.*',
                 $db->quoteName('f.name', 'federation_name'),
