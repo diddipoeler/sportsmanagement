@@ -47,7 +47,7 @@ final class JlextassociationsModel extends SportsManagementListModel
     public function getAssociations(int $federation = 0): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -140,7 +140,7 @@ final class JlextassociationsModel extends SportsManagementListModel
         $db->transactionStart();
 
         try {
-            $delete = $db->getQuery(true)
+            $delete = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_associations'))
                 ->whereNotIn($db->quoteName('country'), $countries, ParameterType::STRING);
             $db->setQuery($delete)->execute();
@@ -206,7 +206,7 @@ final class JlextassociationsModel extends SportsManagementListModel
                         $parentId = (int) $associationIds[$parentMain];
                     }
 
-                    $lookup = $db->getQuery(true)
+                    $lookup = $db->createQuery()
                         ->select($db->quoteName('id'))
                         ->from($db->quoteName('#__sportsmanagement_associations'))
                         ->where($db->quoteName('country') . ' = :lookupCountry')
@@ -279,7 +279,7 @@ final class JlextassociationsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('objassoc') . '.*',
                 $db->quoteName('uc.name', 'editor'),
