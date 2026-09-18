@@ -134,7 +134,7 @@ jobs:
           grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Model\AllpersonsModel;' "$site_bridge"
           grep -Fq "class_alias(AllpersonsModel::class, 'sportsmanagementModelallpersons')" "$site_bridge"
           grep -Fq 'final class AllpersonsModel extends SportsManagementListModel' "$site_model"
-          grep -Fq '#__sportsmanagement_person AS v' "$site_model"
+          grep -Fq "->from(\$db->quoteName('#__sportsmanagement_person', 'v'))" "$site_model"
           grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/allpersons/default.php';" "$legacy_layout"
           grep -Fq "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/allpersons/default_items.php';" "$legacy_items"
           grep -Fq "registerAndUseScript(" "$native_layout"
