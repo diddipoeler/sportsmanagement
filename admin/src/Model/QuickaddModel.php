@@ -33,7 +33,7 @@ final class QuickaddModel extends SportsManagementListModel
         $db = $this->getDatabase();
         $query = $this->personSearchQuery($db, (string) $searchterm, $searchinfo)
             ->select($db->quoteName('pl.id', 'id2'));
-        $subquery = $db->getQuery(true)
+        $subquery = $db->createQuery()
             ->select($db->quoteName('tp.person_id'))
             ->from($db->quoteName('#__sportsmanagement_team_player', 'tp'))
             ->where($db->quoteName('tp.projectteam_id') . ' = :assignedPlayerProjectTeamId')
@@ -49,7 +49,7 @@ final class QuickaddModel extends SportsManagementListModel
         $projectTeamId = (int) $projectteam_id;
         $db = $this->getDatabase();
         $query = $this->personSearchQuery($db, (string) $searchterm, $searchinfo);
-        $subquery = $db->getQuery(true)
+        $subquery = $db->createQuery()
             ->select($db->quoteName('ts.person_id'))
             ->from($db->quoteName('#__sportsmanagement_team_staff', 'ts'))
             ->where($db->quoteName('ts.projectteam_id') . ' = :assignedStaffProjectTeamId')
@@ -65,7 +65,7 @@ final class QuickaddModel extends SportsManagementListModel
         $projectId = (int) $projectid;
         $db = $this->getDatabase();
         $query = $this->personSearchQuery($db, (string) $searchterm, $searchinfo);
-        $subquery = $db->getQuery(true)
+        $subquery = $db->createQuery()
             ->select($db->quoteName('pr.person_id'))
             ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
             ->where($db->quoteName('pr.project_id') . ' = :assignedRefereeProjectId')
@@ -93,11 +93,11 @@ final class QuickaddModel extends SportsManagementListModel
             $search[] = $db->quoteName('t.id') . ' = :teamNumericId';
         }
 
-        $subquery = $db->getQuery(true)
+        $subquery = $db->createQuery()
             ->select($db->quoteName('pt.team_id'))
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->where($db->quoteName('pt.project_id') . ' = :assignedTeamProjectId');
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('t') . '.*')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->where('(' . implode(' OR ', $search) . ')')
@@ -198,7 +198,7 @@ final class QuickaddModel extends SportsManagementListModel
             $search[] = $db->quoteName('pl.id') . ' = :personNumericId';
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('pl') . '.*')
             ->from($db->quoteName('#__sportsmanagement_person', 'pl'))
             ->where('(' . implode(' OR ', $search) . ')')
