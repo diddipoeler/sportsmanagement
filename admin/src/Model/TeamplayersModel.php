@@ -91,7 +91,7 @@ final class TeamplayersModel extends SportsManagementListModel
             . ' WHERE ppp.person_id = ppl.id AND ppp.project_id = :publishedProjectId AND ppp.persontype = :publishedPersonType'
             . ' ORDER BY ppp.published DESC, ppp.project_position_id ASC LIMIT 1)';
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('tp.id'), $db->quoteName('tp.id', 'tpid'), $db->quoteName('tp.person_id'),
                 $db->quoteName('tp.team_id'), $db->quoteName('tp.season_id'), $db->quoteName('tp.persontype'),
@@ -192,7 +192,7 @@ final class TeamplayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('ppp') . '.*')
             ->from($db->quoteName('#__sportsmanagement_person_project_position', 'ppp'))
             ->where($db->quoteName('ppp.project_id') . ' = :projectId')
@@ -217,7 +217,7 @@ final class TeamplayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('stp.person_id, ppos.id AS project_position_id')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'stp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON p.id = stp.person_id')
@@ -245,7 +245,7 @@ final class TeamplayersModel extends SportsManagementListModel
             foreach ($rows as $row) {
                 $personId = (int) $row->person_id;
                 $projectPositionId = (int) $row->project_position_id;
-                $check = $db->getQuery(true)
+                $check = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_person_project_position'))
                     ->where($db->quoteName('person_id') . ' = :checkPersonId')
@@ -336,7 +336,7 @@ final class TeamplayersModel extends SportsManagementListModel
                 if ($basePositionId > 0) {
                     $matchTable = $personType === 2 ? '#__sportsmanagement_match_staff' : '#__sportsmanagement_match_player';
                     $memberField = $personType === 2 ? 'team_staff_id' : 'teamplayer_id';
-                    $query = $db->getQuery(true)
+                    $query = $db->createQuery()
                         ->update($db->quoteName($matchTable))
                         ->set($db->quoteName('project_position_id') . ' = :basePositionId')
                         ->where($db->quoteName('project_position_id') . ' = 0')
@@ -383,7 +383,7 @@ final class TeamplayersModel extends SportsManagementListModel
                     'id'
                 );
                 $personId = (int) $row->person_id;
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_person_project_position'))
                     ->set($db->quoteName('published') . ' = :state')
                     ->set($db->quoteName('modified') . ' = :modified')
@@ -418,7 +418,7 @@ final class TeamplayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('c.country'))
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id')
@@ -429,7 +429,7 @@ final class TeamplayersModel extends SportsManagementListModel
             return false;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('person_id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
             ->where($db->quoteName('team_id') . ' = :relationTeamId')
@@ -490,14 +490,14 @@ final class TeamplayersModel extends SportsManagementListModel
                 ['#__sportsmanagement_match_event', 'teamplayer_id'],
                 ['#__sportsmanagement_match_event', 'teamplayer_id2'],
             ] as [$table, $column]) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName($table))
                     ->whereIn($db->quoteName($column), $relationIds, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             }
 
             if ($projectId > 0) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName('#__sportsmanagement_person_project_position'))
                     ->whereIn($db->quoteName('person_id'), $personIds, ParameterType::INTEGER)
                     ->where($db->quoteName('project_id') . ' = :projectId')
@@ -507,7 +507,7 @@ final class TeamplayersModel extends SportsManagementListModel
                 $db->setQuery($query)->execute();
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_season_team_person_id'))
                 ->whereIn($db->quoteName('id'), $relationIds, ParameterType::INTEGER);
             $db->setQuery($query)->execute();
@@ -530,7 +530,7 @@ final class TeamplayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('tp.id'))
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id=tp.team_id AND st.season_id=tp.season_id')
@@ -545,7 +545,7 @@ final class TeamplayersModel extends SportsManagementListModel
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('mp.teamplayer_id, mp.project_position_id, pos.name AS project_position_name')
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON pos.id=mp.project_position_id')
@@ -567,7 +567,7 @@ final class TeamplayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('ppl.*, tp.id AS season_team_person_id')
             ->from($db->quoteName('#__sportsmanagement_person', 'ppl'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON tp.person_id=ppl.id')
@@ -587,7 +587,7 @@ final class TeamplayersModel extends SportsManagementListModel
                 ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER);
         }
         if ((int) $generate && $projectId) {
-            $sub = $db->getQuery(true)
+            $sub = $db->createQuery()
                 ->select($db->quoteName('ppp.project_position_id'))
                 ->from($db->quoteName('#__sportsmanagement_person_project_position', 'ppp'))
                 ->where('ppp.person_id=ppl.id')
@@ -614,7 +614,7 @@ final class TeamplayersModel extends SportsManagementListModel
     private function replaceProjectPosition(int $personId, int $projectId, int $projectPositionId, int $personType, int $published, string $now, int $userId): void
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_person_project_position'))
             ->where($db->quoteName('person_id') . ' = :personId')
             ->where($db->quoteName('project_id') . ' = :projectId')
@@ -640,7 +640,7 @@ final class TeamplayersModel extends SportsManagementListModel
     private function loadValidatedRelation(int $relationId, int $teamId, int $seasonId, int $personType): ?object
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id, person_id')
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
             ->where($db->quoteName('id') . ' = :relationId')
