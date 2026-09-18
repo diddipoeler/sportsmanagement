@@ -106,13 +106,13 @@ class NavigationMenuHelper
                 $this->db->quoteName('p.season_id'),
                 $this->db->quoteName('p.league_id'),
                 $this->db->quoteName('p.project_type'),
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', l.id, l.alias) AS league_slug",
-                "CONCAT_WS(':', s.id, s.alias) AS season_slug",
+                "CONCAT_WS(':', " . $this->db->quoteName('p.id') . ', ' . $this->db->quoteName('p.alias') . ') AS ' . $this->db->quoteName('project_slug'),
+                "CONCAT_WS(':', " . $this->db->quoteName('l.id') . ', ' . $this->db->quoteName('l.alias') . ') AS ' . $this->db->quoteName('league_slug'),
+                "CONCAT_WS(':', " . $this->db->quoteName('s.id') . ', ' . $this->db->quoteName('s.alias') . ') AS ' . $this->db->quoteName('season_slug'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_project', 'p'))
-            ->join('LEFT', $this->db->quoteName('#__sportsmanagement_league', 'l') . ' ON p.league_id = l.id')
-            ->join('LEFT', $this->db->quoteName('#__sportsmanagement_season', 's') . ' ON p.season_id = s.id')
+            ->join('LEFT', $this->db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $this->db->quoteName('p.league_id') . ' = ' . $this->db->quoteName('l.id'))
+            ->join('LEFT', $this->db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $this->db->quoteName('p.season_id') . ' = ' . $this->db->quoteName('s.id'))
             ->where($this->db->quoteName('p.id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
@@ -130,9 +130,12 @@ class NavigationMenuHelper
             ],
         ];
         $query = $this->db->createQuery()
-            ->select('s.id AS value, s.name AS text')
+            ->select([
+                $this->db->quoteName('s.id', 'value'),
+                $this->db->quoteName('s.name', 'text'),
+            ])
             ->from($this->db->quoteName('#__sportsmanagement_season', 's'))
-            ->order('s.name DESC');
+            ->order($this->db->quoteName('s.name') . ' DESC');
         $this->db->setQuery($query);
         $options = array_merge($options, $this->db->loadObjectList() ?: []);
 
@@ -162,17 +165,17 @@ class NavigationMenuHelper
         $projectId = (int) $project->id;
         $query = $this->db->createQuery()
             ->select([
-                'd.id AS value',
-                'd.name AS text',
-                "CONCAT_WS(':', d.id, d.alias) AS division_slug",
+                $this->db->quoteName('d.id', 'value'),
+                $this->db->quoteName('d.name', 'text'),
+                "CONCAT_WS(':', " . $this->db->quoteName('d.id') . ', ' . $this->db->quoteName('d.alias') . ') AS ' . $this->db->quoteName('division_slug'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_division', 'd'))
             ->where($this->db->quoteName('d.project_id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
-            ->order('d.name');
+            ->order($this->db->quoteName('d.name'));
 
         if ((int) $this->getParam('show_only_subdivisions', 0) === 1) {
-            $query->where('d.parent_id > 0');
+            $query->where($this->db->quoteName('d.parent_id') . ' > 0');
         }
 
         $this->db->setQuery($query);
@@ -196,12 +199,12 @@ class NavigationMenuHelper
         ];
         $query = $this->db->createQuery()
             ->select([
-                'l.id AS value',
-                'l.name AS text',
-                "CONCAT_WS(':', l.id, l.alias) AS league_slug",
+                $this->db->quoteName('l.id', 'value'),
+                $this->db->quoteName('l.name', 'text'),
+                "CONCAT_WS(':', " . $this->db->quoteName('l.id') . ', ' . $this->db->quoteName('l.alias') . ') AS ' . $this->db->quoteName('league_slug'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_league', 'l'))
-            ->order('l.name');
+            ->order($this->db->quoteName('l.name'));
         $this->db->setQuery($query);
         $options = array_merge($options, $this->db->loadObjectList() ?: []);
 
@@ -225,17 +228,17 @@ class NavigationMenuHelper
         ];
         $query = $this->db->createQuery()
             ->select([
-                'p.id AS value',
-                'p.name AS text',
-                's.name AS season_name',
-                'st.name AS sports_type_name',
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+                $this->db->quoteName('p.id', 'value'),
+                $this->db->quoteName('p.name', 'text'),
+                $this->db->quoteName('s.name', 'season_name'),
+                $this->db->quoteName('st.name', 'sports_type_name'),
+                "CONCAT_WS(':', " . $this->db->quoteName('p.id') . ', ' . $this->db->quoteName('p.alias') . ') AS ' . $this->db->quoteName('project_slug'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_project', 'p'))
-            ->join('INNER', $this->db->quoteName('#__sportsmanagement_season', 's') . ' ON s.id = p.season_id')
-            ->join('INNER', $this->db->quoteName('#__sportsmanagement_league', 'l') . ' ON l.id = p.league_id')
-            ->join('INNER', $this->db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON st.id = p.sports_type_id')
-            ->where('p.published = 1');
+            ->join('INNER', $this->db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $this->db->quoteName('s.id') . ' = ' . $this->db->quoteName('p.season_id'))
+            ->join('INNER', $this->db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $this->db->quoteName('l.id') . ' = ' . $this->db->quoteName('p.league_id'))
+            ->join('INNER', $this->db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $this->db->quoteName('st.id') . ' = ' . $this->db->quoteName('p.sports_type_id'))
+            ->where($this->db->quoteName('p.published') . ' = 1');
 
         $project = $this->getProject();
         if ((string) $this->getParam('show_project_dropdown') === 'season') {
@@ -257,14 +260,14 @@ class NavigationMenuHelper
         }
 
         $order = match ((int) $this->getParam('project_ordering', 0)) {
-            1 => 'p.ordering DESC',
-            2 => 's.ordering ASC, l.ordering ASC, p.ordering ASC',
-            3 => 's.ordering DESC, l.ordering DESC, p.ordering DESC',
-            4 => 'p.name ASC',
-            5 => 'p.name DESC',
-            6 => 'l.ordering ASC, p.ordering ASC, s.ordering ASC',
-            7 => 'l.ordering DESC, p.ordering DESC, s.ordering DESC',
-            default => 'p.ordering ASC',
+            1 => $this->db->quoteName('p.ordering') . ' DESC',
+            2 => $this->db->quoteName('s.ordering') . ' ASC, ' . $this->db->quoteName('l.ordering') . ' ASC, ' . $this->db->quoteName('p.ordering') . ' ASC',
+            3 => $this->db->quoteName('s.ordering') . ' DESC, ' . $this->db->quoteName('l.ordering') . ' DESC, ' . $this->db->quoteName('p.ordering') . ' DESC',
+            4 => $this->db->quoteName('p.name') . ' ASC',
+            5 => $this->db->quoteName('p.name') . ' DESC',
+            6 => $this->db->quoteName('l.ordering') . ' ASC, ' . $this->db->quoteName('p.ordering') . ' ASC, ' . $this->db->quoteName('s.ordering') . ' ASC',
+            7 => $this->db->quoteName('l.ordering') . ' DESC, ' . $this->db->quoteName('p.ordering') . ' DESC, ' . $this->db->quoteName('s.ordering') . ' DESC',
+            default => $this->db->quoteName('p.ordering') . ' ASC',
         };
         $query->order($order);
         $this->db->setQuery($query);
@@ -315,13 +318,16 @@ class NavigationMenuHelper
 
         $projectId = $this->projectId;
         $query = $this->db->createQuery()
-            ->select('t.id AS value, t.name AS text')
+            ->select([
+                $this->db->quoteName('t.id', 'value'),
+                $this->db->quoteName('t.name', 'text'),
+            ])
             ->from($this->db->quoteName('#__sportsmanagement_project_team', 'pt'))
-            ->join('INNER', $this->db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.id = pt.team_id')
-            ->join('INNER', $this->db->quoteName('#__sportsmanagement_team', 't') . ' ON st.team_id = t.id')
+            ->join('INNER', $this->db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $this->db->quoteName('st.id') . ' = ' . $this->db->quoteName('pt.team_id'))
+            ->join('INNER', $this->db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $this->db->quoteName('st.team_id') . ' = ' . $this->db->quoteName('t.id'))
             ->where($this->db->quoteName('pt.project_id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
-            ->order('t.name ASC');
+            ->order($this->db->quoteName('t.name') . ' ASC');
 
         if ($this->divisionId > 0) {
             $divisionId = $this->divisionId;
