@@ -55,7 +55,7 @@ final class SmquotesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('obj') . '.*',
                 $db->quoteName('obj.author', 'name'),
