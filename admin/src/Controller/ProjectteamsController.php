@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 administrator controller for project-team lists.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
@@ -11,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 final class ProjectteamsController extends SportsManagementAdminController
 {
@@ -152,14 +161,15 @@ final class ProjectteamsController extends SportsManagementAdminController
 
         $model = $this->model();
         $db = $this->database();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' <> ' . $projectId)
-            ->order($db->quoteName('name') . ' ASC');
+            ->where($db->quoteName('id') . ' <> :sourceProjectId')
+            ->order($db->quoteName('name') . ' ASC')
+            ->bind(':sourceProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
