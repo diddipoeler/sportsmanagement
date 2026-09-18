@@ -33,10 +33,10 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		
 		<field name="button_style" 
     type="list" 
-    default="btn btn-default" 
+    default="btn btn-secondary" 
 					label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE"
 					description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE_DESC">
-					<option value="btn btn-default">Default</option> 
+					<option value="btn btn-secondary">Default</option> 
 					<option value="btn btn-primary">Primary</option>
 					<option value="btn btn-success">Success</option> -->
 					<option value="btn btn-info">Info</option>
@@ -467,7 +467,7 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_LINK_LOGO">
 			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
 			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
 			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			<option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
 
