@@ -1,0 +1,77 @@
+name: Joomla 5/6 allclubs clubs firstleagueoverview batch 126
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allclubs/default_items.php'
+      - 'admin/tmpl/clubs/default.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php'
+      - '.github/workflows/joomla5-6-allclubs-clubs-firstleagueoverview-batch126.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/allclubs/default_items.php'
+      - 'admin/tmpl/clubs/default.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php'
+      - '.github/workflows/joomla5-6-allclubs-clubs-firstleagueoverview-batch126.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 PHP files and headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/tmpl/allclubs/default_items.php
+            admin/tmpl/clubs/default.php
+            modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          site_layout=site/tmpl/allclubs/default_items.php
+          admin_layout=admin/tmpl/clubs/default.php
+          module_layout=modules/mod_sportsmanagement_firstleagueoverview/tmpl/default.php
+
+          grep -Fq '@version    5.6.0' "$site_layout"
+          grep -Fq "\\defined('_JEXEC') or die;" "$site_layout"
+
+          grep -Fq 'Native Joomla 5/6 administrator clubs list layout.' "$admin_layout"
+          grep -Fq '@version    5.6.0' "$admin_layout"
+
+          grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$module_layout"
+          grep -Fq "HTMLHelper::_('uitab.addTab'" "$module_layout"
+          grep -Fq "HTMLHelper::_('uitab.endTab')" "$module_layout"
+          grep -Fq "HTMLHelper::_('uitab.endTabSet')" "$module_layout"
+
+          if grep -Fq "HTMLHelper::_('bootstrap.startTabSet'" "$module_layout"; then
+            echo 'First league overview module regressed to bootstrap tab helpers.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 126 contracts OK.'
