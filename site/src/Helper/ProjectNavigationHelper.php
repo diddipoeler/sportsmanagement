@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Resolve adjacent projects without relying on the legacy static project model.
@@ -39,15 +40,17 @@ final class ProjectNavigationHelper
 
         $operator = $next ? '>' : '<';
         $direction = $next ? 'ASC' : 'DESC';
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p') . '.*',
                 "CONCAT_WS(':', p.id, p.alias) AS slug",
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
-            ->where($db->quoteName('p.league_id') . ' = ' . $leagueId)
-            ->where($db->quoteName('p.name') . ' ' . $operator . ' ' . $db->quote($name))
-            ->order($db->quoteName('p.name') . ' ' . $direction);
+            ->where($db->quoteName('p.league_id') . ' = :navigationLeagueId')
+            ->where($db->quoteName('p.name') . ' ' . $operator . ' :navigationProjectName')
+            ->order($db->quoteName('p.name') . ' ' . $direction)
+            ->bind(':navigationLeagueId', $leagueId, ParameterType::INTEGER)
+            ->bind(':navigationProjectName', $name, ParameterType::STRING);
 
         $db->setQuery($query, 0, 1);
 
