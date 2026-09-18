@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage ranking
  * @file       ranking.php
@@ -133,7 +133,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$option = $app->input->getCmd('option');
 		$jinput                 = $app->input;
 		$db        = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		
 //echo '<pre>'.print_r($current_ranking,true).'</pre>';
       foreach ($current_ranking as $division => $cu_rk) 
@@ -206,7 +206,7 @@ try
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		$starttime = microtime();
         $division = array();
         $prevgames = array();
@@ -699,7 +699,7 @@ try
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 
 		$query->select('id');
