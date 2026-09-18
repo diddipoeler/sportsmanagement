@@ -73,7 +73,7 @@ final class MatchesModel extends SportsManagementListModel
         $projectTeamId = (int) $this->getState('context.project_team_id');
         $divisionId = (int) $this->getState('filter.division');
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mc') . '.*',
                 $db->quoteName('u.name', 'editor'),
@@ -224,7 +224,7 @@ final class MatchesModel extends SportsManagementListModel
             );
 
             $db = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     'COUNT(' . $db->quoteName('id') . ') AS ' . $db->quoteName('total'),
                     'MIN(' . $db->quoteName('project_referee_id') . ') AS ' . $db->quoteName('referee_id'),
@@ -260,7 +260,7 @@ final class MatchesModel extends SportsManagementListModel
         $projectId = (int) $projectId;
         $projectTeamId = (int) $projectTeamId;
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('m.id') . ')')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -292,7 +292,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('m') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->where($db->quoteName('m.round_id') . ' = :roundId')
@@ -310,7 +310,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p') . '.*',
                 $db->quoteName('st.name', 'sport_type_name'),
@@ -335,7 +335,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('r') . '.*')
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.id') . ' = :roundId')
@@ -352,7 +352,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.name'),
@@ -377,7 +377,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'value'),
                 $db->quoteName('t.name', 'text'),
@@ -414,7 +414,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('d.id', 'value'),
                 $db->quoteName('d.name', 'text'),
@@ -450,7 +450,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('p.id', 'value'),
                 'CONCAT(' . $db->quoteName('p.name') . ', ' . $db->quote(' (') . ', '
@@ -520,7 +520,7 @@ final class MatchesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('mr.id') . ')')
             ->from($db->quoteName($matchTable, 'mr'))
             ->join(
