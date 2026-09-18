@@ -500,11 +500,12 @@ final class TeamplanModel extends SportsManagementProjectModel
                         $db->quoteName('#__sportsmanagement_position', 'pos')
                         . ' ON ' . $db->quoteName('mr.project_position_id') . ' = ' . $db->quoteName('pos.id')
                     )
-                    ->where($db->quoteName('mr.match_id') . ' = ' . $matchId)
+                    ->where($db->quoteName('mr.match_id') . ' = :refereeMatchId')
                     ->order([
                         $db->quoteName('pos.name'),
                         $db->quoteName('mr.ordering') . ' ASC',
-                    ]);
+                    ])
+                    ->bind(':refereeMatchId', $matchId, ParameterType::INTEGER);
             } else {
                 $query
                     ->select([
@@ -542,9 +543,10 @@ final class TeamplanModel extends SportsManagementProjectModel
                         $db->quoteName('#__sportsmanagement_position', 'pos')
                         . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
                     )
-                    ->where($db->quoteName('link.match_id') . ' = ' . $matchId)
+                    ->where($db->quoteName('link.match_id') . ' = :refereeMatchId')
                     ->where($db->quoteName('ref.published') . ' = 1')
-                    ->order($db->quoteName('link.ordering'));
+                    ->order($db->quoteName('link.ordering'))
+                    ->bind(':refereeMatchId', $matchId, ParameterType::INTEGER);
             }
 
             $db->setQuery($query);
@@ -558,11 +560,13 @@ final class TeamplanModel extends SportsManagementProjectModel
             return [];
         }
 
+        $divisionId = $this->divisionId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_division'))
-            ->where($db->quoteName('parent_id') . ' = ' . $this->divisionId);
+            ->where($db->quoteName('parent_id') . ' = :childDivisionParentId')
+            ->bind(':childDivisionParentId', $divisionId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return array_values(array_filter(array_map('intval', $db->loadColumn() ?: [])));
