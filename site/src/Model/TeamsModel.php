@@ -71,11 +71,11 @@ final class TeamsModel extends SportsManagementProjectModel
                 'c.trikot_home', 'c.trikot_away',
                 'd.name AS division_name', 'd.shortname AS division_shortname', 'd.parent_id AS parent_division_id',
                 'plg.name AS playground_name', 'plg.short_name AS playground_short_name',
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
-                "CONCAT_WS(':', tl.id, t.alias) AS projectteam_slug",
-                "CONCAT_WS(':', d.id, d.alias) AS division_slug",
-                "CONCAT_WS(':', c.id, c.alias) AS club_slug",
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('tl.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('projectteam_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('d.id') . ', ' . $db->quoteName('d.alias') . ') AS ' . $db->quoteName('division_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('club_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'tl'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('tl.team_id'))
@@ -93,7 +93,7 @@ final class TeamsModel extends SportsManagementProjectModel
         if ($includePlayground) {
             $query->select([
                 $db->quoteName('plg.picture', 'playground_picture'),
-                "CONCAT_WS(':', plg.id, plg.alias) AS playground_slug",
+                "CONCAT_WS(':', " . $db->quoteName('plg.id') . ', ' . $db->quoteName('plg.alias') . ') AS ' . $db->quoteName('playground_slug'),
             ]);
         }
 
@@ -131,8 +131,8 @@ final class TeamsModel extends SportsManagementProjectModel
                 $db->quoteName('t.name', 'team_name'),
                 $db->quoteName('t.short_name'),
                 $db->quoteName('t.notes'),
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
+                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
+                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join(
