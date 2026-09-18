@@ -61,6 +61,9 @@ final class RosterModel extends SportsManagementProjectModel
         }
 
         $pictureAlias = strtolower((string) $team_picture_which) === 't' ? 't' : 'pt';
+        $seasonId = self::$seasonid;
+        $seasonTeamId = (int) $projectTeam->season_team_id;
+        $projectId = self::$projectid;
         $db = self::database();
         $query = $db->createQuery()
             ->select([
@@ -230,7 +233,7 @@ final class RosterModel extends SportsManagementProjectModel
                 $db->quoteName('pr.suspension'),
                 $db->quoteName('pr.away'),
                 $db->quoteName('pr.injury'),
-                "CONCAT_WS(':', pr.id, pr.alias) AS person_slug",
+                "CONCAT_WS(':', " . $db->quoteName('pr.id') . ', ' . $db->quoteName('pr.alias') . ') AS ' . $db->quoteName('person_slug'),
                 $db->quoteName('ppos.position_id', 'position_id'),
                 $db->quoteName('ppos.id', 'pposid'),
                 $db->quoteName('pos.name', 'position'),
@@ -258,16 +261,16 @@ final class RosterModel extends SportsManagementProjectModel
                 . ' AND ' . $db->quoteName('perpos.person_id') . ' = ' . $db->quoteName('pr.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('perpos.project_position_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_position', 'pos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
-            ->where($db->quoteName('tp.persontype') . ' = ' . $personType)
-            ->where($db->quoteName('tp.season_id') . ' = ' . self::$seasonid)
-            ->where($db->quoteName('tp.team_id') . ' = ' . (int) $projectTeam->season_team_id)
+            ->where($db->quoteName('tp.persontype') . ' = :personType')
+            ->where($db->quoteName('tp.season_id') . ' = :seasonId')
+            ->where($db->quoteName('tp.team_id') . ' = :seasonTeamId')
             ->where($db->quoteName('pr.published') . ' = 1')
             ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
             ->where($db->quoteName('tp.published') . ' = 1')
             ->where($db->quoteName('pt.published') . ' = 1')
             ->where($db->quoteName('t.published') . ' = 1')
             ->where($db->quoteName('pro.published') . ' = 1')
-            ->where($db->quoteName('pro.id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('pro.id') . ' = :teamPlayersProjectId')
             ->order([
                 $db->quoteName('pos.ordering') . ' ASC',
                 $db->quoteName('ppos.position_id') . ' ASC',
@@ -275,7 +278,11 @@ final class RosterModel extends SportsManagementProjectModel
                 $db->quoteName('tp.jerseynumber') . ' ASC',
                 $db->quoteName('pr.lastname') . ' ASC',
                 $db->quoteName('pr.firstname') . ' ASC',
-            ]);
+            ])
+            ->bind(':personType', $personType, ParameterType::INTEGER)
+            ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
+            ->bind(':seasonTeamId', $seasonTeamId, ParameterType::INTEGER)
+            ->bind(':teamPlayersProjectId', $projectId, ParameterType::INTEGER);
 
         if ($personType === 2) {
             $query->select($db->quoteName('posparent.name', 'parentname'))
@@ -299,19 +306,22 @@ final class RosterModel extends SportsManagementProjectModel
 
     public static function getPositionEventTypes($positionId = 0): array
     {
+        $projectId = self::$projectid;
         $db = self::database();
         $query = $db->createQuery()
-            ->select(['pet.*', $db->quoteName('ppos.id', 'pposid'), $db->quoteName('ppos.position_id'), $db->quoteName('et.name'), $db->quoteName('et.icon')])
+            ->select([$db->quoteName('pet') . '.*', $db->quoteName('ppos.id', 'pposid'), $db->quoteName('ppos.position_id'), $db->quoteName('et.name'), $db->quoteName('et.icon')])
             ->from($db->quoteName('#__sportsmanagement_position_eventtype', 'pet'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_eventtype', 'et') . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('pet.eventtype_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pet.position_id'))
-            ->where($db->quoteName('ppos.project_id') . ' = ' . self::$projectid)
+            ->where($db->quoteName('ppos.project_id') . ' = :eventTypesProjectId')
             ->where($db->quoteName('et.published') . ' = 1')
-            ->order([$db->quoteName('pet.ordering') . ' ASC', $db->quoteName('et.ordering') . ' ASC']);
+            ->order([$db->quoteName('pet.ordering') . ' ASC', $db->quoteName('et.ordering') . ' ASC'])
+            ->bind(':eventTypesProjectId', $projectId, ParameterType::INTEGER);
 
         $positionId = max(0, (int) $positionId);
         if ($positionId > 0) {
-            $query->where($db->quoteName('pet.position_id') . ' = ' . $positionId);
+            $query->where($db->quoteName('pet.position_id') . ' = :eventTypesPositionId')
+                ->bind(':eventTypesPositionId', $positionId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query);
