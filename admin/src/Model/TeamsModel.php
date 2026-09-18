@@ -90,7 +90,7 @@ final class TeamsModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('t') . '.*',
                 $db->quoteName('st.name', 'sportstype'),
@@ -177,7 +177,7 @@ final class TeamsModel extends SportsManagementListModel
             $seasonId = (int) $this->getState('season.id');
 
             if ($seasonId > 0) {
-                $subQuery = $db->getQuery(true)
+                $subQuery = $db->createQuery()
                     ->select($db->quoteName('stp.team_id'))
                     ->from($db->quoteName('#__sportsmanagement_season_team_id', 'stp'))
                     ->where($db->quoteName('stp.season_id') . ' = :teamSeasonId');
@@ -241,7 +241,7 @@ final class TeamsModel extends SportsManagementListModel
         $db = $this->getDatabase();
 
         $load = static function ($db, string $table): array {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select([
                     $db->quoteName('id', 'value'),
                     $db->quoteName('name', 'text'),
@@ -262,7 +262,7 @@ final class TeamsModel extends SportsManagementListModel
     public function getTeamListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('id', 'value'),
@@ -294,7 +294,7 @@ final class TeamsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id'),
                 $db->quoteName('st.team_id'),
@@ -371,7 +371,7 @@ final class TeamsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
