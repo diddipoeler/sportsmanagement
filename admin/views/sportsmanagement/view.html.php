@@ -1,125 +1,28 @@
 <?php
 /**
+ * Legacy compatibility bridge for the native Joomla 5/6 SportsManagement administrator view.
  *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage sportsmanagement
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) 2013-2026 Fussball in Europa
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Administrator\View\Sportsmanagement\HtmlView;
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Log\Log;
+if (!class_exists(HtmlView::class)) {
+    $nativeView = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Sportsmanagement/HtmlView.php';
 
-/**
- * SportsManagement View
- */
-class sportsmanagementViewsportsmanagement extends sportsmanagementView
-{
-	/**
-	 * display method of Hello view
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
-		// Get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
-		$errors = $this->get('Errors');
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
+}
 
-		// Check for errors.
-		if (count($errors)) {
-			Log::add(implode('<br />', $errors));
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator view could not be loaded.', 500);
+}
 
-			return false;
-		}
-
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-
-		// Set the toolbar
-		$this->addToolBar();
-
-		// Display the template
-		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
-	}
-
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar()
-	{
-		$this->document->getWebAssetManager()->registerAndUseStyle(
-			'com_sportsmanagement.sportsmanagement',
-			'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-			['version' => 'auto']
-		);
-		$jinput = $this->app->getInput();
-		$jinput->set('hidemainmenu', true);
-		$user = $this->app->getIdentity();
-		$userId = $user->id;
-		$isNew = $this->item->id == 0;
-		$canDo = sportsmanagementHelper::getActions($this->item->id);
-		ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT__NEW') : Text::_('COM_SPORTSMANAGEMENT__EDIT'), 'helloworld');
-
-		// Built the actions for new and existing records.
-		if ($isNew) {
-			// For new records, check the create permission.
-			if ($canDo->get('core.create')) {
-				ToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
-				ToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
-				ToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-
-			ToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CANCEL');
-		} else {
-			if ($canDo->get('core.edit')) {
-				// We can save the new record
-				ToolbarHelper::apply('sportsmanagement.apply', 'JTOOLBAR_APPLY');
-				ToolbarHelper::save('sportsmanagement.save', 'JTOOLBAR_SAVE');
-
-				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) {
-					ToolbarHelper::custom('sportsmanagement.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-				}
-			}
-
-			if ($canDo->get('core.create')) {
-				ToolbarHelper::custom('sportsmanagement.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-			}
-
-			ToolbarHelper::cancel('sportsmanagement.cancel', 'JTOOLBAR_CLOSE');
-		}
-	}
-
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	 /**
-	public function setDocument($document)
-	{
-		$isNew = $this->item->id == 0;
-		$document = Factory::getDocument();
-		$document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$document->addScript(Uri::root() . $this->script);
-		$document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}
-	*/
+if (!class_exists('sportsmanagementViewsportsmanagement', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewsportsmanagement');
 }
