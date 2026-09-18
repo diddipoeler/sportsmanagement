@@ -51,7 +51,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('project_type'))
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('id') . ' = :projectId')
@@ -79,7 +79,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'value'),
                 $db->quoteName('t.name', 'text'),
@@ -134,7 +134,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         $number += $number % 2;
         $mode = strtoupper((string) $matchdays);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->from($db->quoteName('#__sportsmanagement_dfbkey'))
             ->where($db->quoteName('schluessel') . ' = :keyNumber')
             ->where($db->quoteName('country') . ' = :country')
@@ -181,7 +181,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('l.country'))
             ->from($db->quoteName('#__sportsmanagement_league', 'l'))
             ->join(
@@ -213,7 +213,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = :projectId')
@@ -242,7 +242,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         $db = $this->getDatabase();
 
         try {
-            $roundQuery = $db->getQuery(true)
+            $roundQuery = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_round'))
                 ->where($db->quoteName('project_id') . ' = :projectId')
@@ -254,7 +254,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
                 return 0;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_match'))
                 ->whereIn($db->quoteName('round_id'), $roundIds, ParameterType::INTEGER);
@@ -292,7 +292,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
             $teamName = '';
 
             if ($projectTeamId > 0) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('team.name'))
                     ->from($db->quoteName('#__sportsmanagement_team', 'team'))
                     ->join(
@@ -333,7 +333,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
 
         $number += $number % 2;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('dfb') . '.*',
                 $db->quoteName('jr.id'),
@@ -388,7 +388,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id', 'value'),
                 $db->quoteName('name', 'text'),
@@ -405,7 +405,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
     public function checkTable(): bool
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_dfbkey'));
         $db->setQuery($query);
