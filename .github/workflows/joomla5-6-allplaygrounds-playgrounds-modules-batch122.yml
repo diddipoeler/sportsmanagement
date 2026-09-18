@@ -1,0 +1,104 @@
+name: Joomla 5/6 allplaygrounds playgrounds modules batch 122
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allplaygrounds/default.php'
+      - 'site/assets/js/allplaygrounds.js'
+      - 'admin/tmpl/playgrounds/default.php'
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.xml'
+      - 'modules/mod_sportsmanagement_eventsranking/update-server.xml'
+      - 'modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml'
+      - 'modules/mod_sportsmanagement_matches/update-server.xml'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.xml'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/update-server.xml'
+      - '.github/workflows/joomla5-6-allplaygrounds-playgrounds-modules-batch122.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/allplaygrounds/default.php'
+      - 'site/assets/js/allplaygrounds.js'
+      - 'admin/tmpl/playgrounds/default.php'
+      - 'modules/mod_sportsmanagement_eventsranking/**'
+      - 'modules/mod_sportsmanagement_matches/**'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
+      - '.github/workflows/joomla5-6-allplaygrounds-playgrounds-modules-batch122.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in site/tmpl/allplaygrounds/default.php admin/tmpl/playgrounds/default.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          node --check site/assets/js/allplaygrounds.js
+
+      - name: Validate Joomla 5/6 frontend contract
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq "registerAndUseScript(" site/tmpl/allplaygrounds/default.php
+          grep -Fq "'com_sportsmanagement.site.allplaygrounds'" site/tmpl/allplaygrounds/default.php
+          grep -Fq 'data-jsm-allplaygrounds-form' site/tmpl/allplaygrounds/default.php
+          grep -Fq 'data-jsm-auto-submit' site/tmpl/allplaygrounds/default.php
+          grep -Fq 'data-jsm-clear-filter' site/tmpl/allplaygrounds/default.php
+          grep -Fq 'data-character-filter' site/tmpl/allplaygrounds/default.php
+          grep -Fq "window.tableOrdering = submitOrdering" site/assets/js/allplaygrounds.js
+
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=' site/tmpl/allplaygrounds/default.php; then
+            echo 'All-playgrounds template regressed to inline JavaScript.' >&2
+            exit 1
+          fi
+
+      - name: Validate Joomla 5/6 module metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          manifests=(
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.xml
+            modules/mod_sportsmanagement_matches/mod_sportsmanagement_matches.xml
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/mod_sportsmanagement_ajax_top_navigation_menu.xml
+          )
+          updates=(
+            modules/mod_sportsmanagement_eventsranking/update-server.xml
+            modules/mod_sportsmanagement_matches/update-server.xml
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/update-server.xml
+          )
+
+          php -r 'foreach (array_slice($argv, 1) as $file) { if (simplexml_load_file($file) === false) { fwrite(STDERR, "Invalid XML: {$file}\n"); exit(1); } }' "${manifests[@]}" "${updates[@]}"
+
+          for manifest in "${manifests[@]}"; do
+            grep -Fq '<version>5.6.0</version>' "$manifest"
+            grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+            grep -Fq '<namespace path="src">Diddipoeler\Module\SportsManagement' "$manifest"
+          done
+
+          for update in "${updates[@]}"; do
+            grep -Fq '<version>5.6.0</version>' "$update"
+            grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update"
+            grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update"
+          done
+
+          echo 'Joomla 5/6 batch 122 contracts OK.'

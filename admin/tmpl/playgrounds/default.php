@@ -2,6 +2,11 @@
 /**
  * Native Joomla 5/6 administrator playgrounds list layout.
  *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ *
  * @package     SportsManagement
  * @subpackage  Administrator
  * @since       5.6.0
