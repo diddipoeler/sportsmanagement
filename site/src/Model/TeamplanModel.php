@@ -293,6 +293,9 @@ final class TeamplanModel extends SportsManagementProjectModel
         }
 
         $this->ensureProjectTeamId();
+        $projectId = $this->projectId;
+        $projectTeamId = $this->projectTeamId;
+        $teamId = $this->teamId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -357,22 +360,24 @@ final class TeamplanModel extends SportsManagementProjectModel
             )
             ->where($db->quoteName('m.published') . ' = 1');
 
-        if ($this->mode === 1 && $this->projectTeamId > 0) {
+        if ($this->mode === 1 && $projectTeamId > 0) {
             $query->where(
-                '((' . $db->quoteName('m.projectteam1_id') . ' = ' . $this->projectTeamId
+                '((' . $db->quoteName('m.projectteam1_id') . ' = :modeWinProjectTeamId1'
                 . ' AND ' . $db->quoteName('m.team1_result') . ' > ' . $db->quoteName('m.team2_result') . ')'
-                . ' OR (' . $db->quoteName('m.projectteam2_id') . ' = ' . $this->projectTeamId
+                . ' OR (' . $db->quoteName('m.projectteam2_id') . ' = :modeWinProjectTeamId2'
                 . ' AND ' . $db->quoteName('m.team1_result') . ' < ' . $db->quoteName('m.team2_result') . '))'
-            );
+            )
+                ->bind([':modeWinProjectTeamId1', ':modeWinProjectTeamId2'], $projectTeamId, ParameterType::INTEGER);
         } elseif ($this->mode === 2) {
             $query->where($db->quoteName('m.team1_result') . ' = ' . $db->quoteName('m.team2_result'));
-        } elseif ($this->mode === 3 && $this->projectTeamId > 0) {
+        } elseif ($this->mode === 3 && $projectTeamId > 0) {
             $query->where(
-                '((' . $db->quoteName('m.projectteam1_id') . ' = ' . $this->projectTeamId
+                '((' . $db->quoteName('m.projectteam1_id') . ' = :modeLossProjectTeamId1'
                 . ' AND ' . $db->quoteName('m.team1_result') . ' < ' . $db->quoteName('m.team2_result') . ')'
-                . ' OR (' . $db->quoteName('m.projectteam2_id') . ' = ' . $this->projectTeamId
+                . ' OR (' . $db->quoteName('m.projectteam2_id') . ' = :modeLossProjectTeamId2'
                 . ' AND ' . $db->quoteName('m.team1_result') . ' > ' . $db->quoteName('m.team2_result') . '))'
-            );
+            )
+                ->bind([':modeLossProjectTeamId1', ':modeLossProjectTeamId2'], $projectTeamId, ParameterType::INTEGER);
         }
 
         $divisionTeamIds = $this->getDirectChildDivisionIds();
@@ -395,20 +400,24 @@ final class TeamplanModel extends SportsManagementProjectModel
                     $db->quoteName('#__sportsmanagement_match_referee', 'mref')
                     . ' ON ' . $db->quoteName('mref.match_id') . ' = ' . $db->quoteName('m.id')
                 )
-                ->where($db->quoteName('mref.project_referee_id') . ' = ' . $refereeProjectTeamId);
+                ->where($db->quoteName('mref.project_referee_id') . ' = :refereeProjectTeamId')
+                ->bind(':refereeProjectTeamId', $refereeProjectTeamId, ParameterType::INTEGER);
 
             if ($seasonId > 0) {
-                $query->where($db->quoteName('p.season_id') . ' = ' . $seasonId);
+                $query->where($db->quoteName('p.season_id') . ' = :refereeSeasonId')
+                    ->bind(':refereeSeasonId', $seasonId, ParameterType::INTEGER);
             }
         } else {
-            $query->where($db->quoteName('r.project_id') . ' = ' . $this->projectId);
+            $query->where($db->quoteName('r.project_id') . ' = :planProjectId')
+                ->bind(':planProjectId', $projectId, ParameterType::INTEGER);
         }
 
-        if ($this->teamId > 0 && $this->projectTeamId > 0) {
+        if ($teamId > 0 && $projectTeamId > 0) {
             $query->where(
-                '(' . $db->quoteName('m.projectteam1_id') . ' = ' . $this->projectTeamId
-                . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = ' . $this->projectTeamId . ')'
-            );
+                '(' . $db->quoteName('m.projectteam1_id') . ' = :planTeamProjectTeamId1'
+                . ' OR ' . $db->quoteName('m.projectteam2_id') . ' = :planTeamProjectTeamId2)'
+            )
+                ->bind([':planTeamProjectTeamId1', ':planTeamProjectTeamId2'], $projectTeamId, ParameterType::INTEGER);
         }
 
         $query->order([
