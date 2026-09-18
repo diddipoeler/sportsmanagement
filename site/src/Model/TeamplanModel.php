@@ -196,28 +196,34 @@ final class TeamplanModel extends SportsManagementProjectModel
             return [];
         }
 
+        $projectId = $this->projectId;
+        $projectTeamId = $this->projectTeamId;
+        $divisionId = $this->divisionId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
-            ->select('matches.*')
+            ->select($db->quoteName('matches') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match', 'matches'))
             ->join(
                 'INNER',
                 $db->quoteName('#__sportsmanagement_round', 'r')
                 . ' ON ' . $db->quoteName('matches.round_id') . ' = ' . $db->quoteName('r.id')
             )
-            ->where($db->quoteName('r.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('r.roundcode') . ' = ' . $roundCode)
+            ->where($db->quoteName('r.project_id') . ' = :roundProjectId')
+            ->where($db->quoteName('r.roundcode') . ' = :roundCode')
             ->where($db->quoteName('matches.published') . ' = 1')
-            ->order($db->quoteName('matches.match_date') . ' ' . $ordering . ', ' . $db->quoteName('matches.match_number'));
+            ->order($db->quoteName('matches.match_date') . ' ' . $ordering . ', ' . $db->quoteName('matches.match_number'))
+            ->bind(':roundProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':roundCode', $roundCode, ParameterType::INTEGER);
 
-        if ($this->projectTeamId > 0) {
+        if ($projectTeamId > 0) {
             $query->where(
-                '(' . $db->quoteName('matches.projectteam1_id') . ' = ' . $this->projectTeamId
-                . ' OR ' . $db->quoteName('matches.projectteam2_id') . ' = ' . $this->projectTeamId . ')'
-            );
+                '(' . $db->quoteName('matches.projectteam1_id') . ' = :roundProjectTeamId1'
+                . ' OR ' . $db->quoteName('matches.projectteam2_id') . ' = :roundProjectTeamId2)'
+            )
+                ->bind([':roundProjectTeamId1', ':roundProjectTeamId2'], $projectTeamId, ParameterType::INTEGER);
         }
 
-        if ($this->divisionId > 0) {
+        if ($divisionId > 0) {
             $query
                 ->join(
                     'LEFT',
@@ -240,11 +246,16 @@ final class TeamplanModel extends SportsManagementProjectModel
                     . ' ON ' . $db->quoteName('d2.id') . ' = ' . $db->quoteName('pt2.division_id')
                 )
                 ->where(
-                    '(' . $db->quoteName('d1.id') . ' = ' . $this->divisionId
-                    . ' OR ' . $db->quoteName('d1.parent_id') . ' = ' . $this->divisionId
-                    . ' OR ' . $db->quoteName('d2.id') . ' = ' . $this->divisionId
-                    . ' OR ' . $db->quoteName('d2.parent_id') . ' = ' . $this->divisionId
-                    . ' OR ' . $db->quoteName('matches.division_id') . ' = ' . $this->divisionId . ')'
+                    '(' . $db->quoteName('d1.id') . ' = :roundDivisionId1'
+                    . ' OR ' . $db->quoteName('d1.parent_id') . ' = :roundDivisionId2'
+                    . ' OR ' . $db->quoteName('d2.id') . ' = :roundDivisionId3'
+                    . ' OR ' . $db->quoteName('d2.parent_id') . ' = :roundDivisionId4'
+                    . ' OR ' . $db->quoteName('matches.division_id') . ' = :roundDivisionId5)'
+                )
+                ->bind(
+                    [':roundDivisionId1', ':roundDivisionId2', ':roundDivisionId3', ':roundDivisionId4', ':roundDivisionId5'],
+                    $divisionId,
+                    ParameterType::INTEGER
                 );
         }
 
