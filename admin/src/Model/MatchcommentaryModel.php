@@ -28,7 +28,7 @@ final class MatchcommentaryModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('mc') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match_commentary', 'mc'))
             ->where($db->quoteName('mc.match_id') . ' = :matchId')
