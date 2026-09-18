@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage prediction
  * @file       prediction.php
@@ -144,7 +144,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('roundcode');
 		$query->from('#__sportsmanagement_round');
@@ -212,7 +212,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$ChampPoints = 0;
 
@@ -289,7 +289,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$Final4Points = 0;
 
@@ -374,7 +374,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if (!self::$_predictionMember)
 		{
@@ -407,7 +407,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			}
 			else
 			{
-				$user = Factory::getUser();
+				$user = Factory::getApplication()->getIdentity();
 
 				if ($user->id > 0)
 				{
@@ -471,7 +471,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$picture = '';
 		$query->select('avatar');
@@ -585,7 +585,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	{
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($predictionProject->prediction_id > 0)
 		{
@@ -629,7 +629,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	{
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($predictionProject->prediction_id > 0)
 		{
@@ -695,7 +695,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($pid > 0)
 		{
@@ -743,7 +743,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($pid > 0)
 		{
@@ -776,12 +776,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('id');
 		$query->from('#__sportsmanagement_prediction_member');
 		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('user_id = ' . Factory::getUser()->id);
+		$query->where('user_id = ' . Factory::getApplication()->getIdentity()->id);
 		$query->where('approved = 1');
 
 		$db->setQuery($query, 0, 1);
@@ -810,12 +810,12 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('user_id,approved');
 		$query->from('#__sportsmanagement_prediction_member');
 		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('user_id = ' . Factory::getUser()->id);
+		$query->where('user_id = ' . Factory::getApplication()->getIdentity()->id);
 
 		$db->setQuery($query, 0, 1);
 
@@ -850,7 +850,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$allowed    = false;
 		$groupNames = '';
@@ -859,9 +859,9 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$app = Factory::getApplication();
 
 		// JUserobjekt holen
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
-		$authorised = Access::getAuthorisedViewLevels(Factory::getUser()->get('id'));
+		$authorised = Access::getAuthorisedViewLevels(Factory::getApplication()->getIdentity()->get('id'));
 
 		$authorisedgroups = $user->getAuthorisedGroups();
 
@@ -939,7 +939,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if (!self::$_predictionGame)
 		{
@@ -984,7 +984,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('user_id');
 		$query->from('#__sportsmanagement_prediction_admin');
@@ -1374,7 +1374,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->clear();
 		$query->select('t.params');
@@ -1485,7 +1485,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($project_id > 0)
 		{
@@ -1534,7 +1534,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($predictionGameID)
 		{
@@ -1597,7 +1597,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('user_id');
 		$query->from('#__sportsmanagement_prediction_member');
@@ -1654,7 +1654,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		// $teamName='name';
 		if ($teamID == 0)
@@ -1699,7 +1699,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($teamID == 0)
 		{
@@ -1743,7 +1743,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($teamID == 0)
 		{
@@ -1966,7 +1966,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('id AS value, name AS text');
 		$query->from('#__sportsmanagement_prediction_groups ');
@@ -1997,7 +1997,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($config['show_full_name'] == 0)
 		{
@@ -2047,7 +2047,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('count(id)');
 		$query->from('#__sportsmanagement_prediction_result');
@@ -2120,7 +2120,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ((int) $round1ID == 0)
 		{
@@ -2254,7 +2254,7 @@ $recipient = array();
 	{
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('ppj.id,pj.id AS prediction_id,pj.name AS pjName,CONCAT_WS(\':\',pj.id,pj.alias) AS slug');
 		$query->from('#__sportsmanagement_project AS pj');
@@ -2287,7 +2287,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		// $show_debug = $this->getDebugInfo();
 		// [matchID] => 14501
@@ -2443,7 +2443,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if (empty(self::$_roundNames))
 		{
@@ -2594,7 +2594,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if ($config['show_full_name'] == 0)
 		{
@@ -2827,7 +2827,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('u.email');
 		$query->from('#__users AS u');
@@ -2881,7 +2881,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('u.email');
 		$query->from('#__users AS u');
@@ -2925,7 +2925,7 @@ $recipient = array();
 
 		// Create a new query object.
 		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('count(*)');
 		$query->from('#__sportsmanagement_prediction_result AS pr');
