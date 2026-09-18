@@ -111,6 +111,8 @@ final class NavigationDataHelper
             return false;
         }
 
+        $leagueId = (int) $league_id;
+        $projectId = (int) self::$_project_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select([
@@ -130,10 +132,12 @@ final class NavigationDataHelper
             ->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id')
             ->join('LEFT', '#__sportsmanagement_round AS r ON p.current_round = r.id');
 
-        if ((int) $league_id > 0) {
-            $query->where('p.league_id = ' . (int) $league_id);
+        if ($leagueId > 0) {
+            $query->where('p.league_id = :navigationLeagueId')
+                ->bind(':navigationLeagueId', $leagueId, ParameterType::INTEGER);
         } else {
-            $query->where('p.id = ' . (int) self::$_project_id);
+            $query->where('p.id = :navigationProjectId')
+                ->bind(':navigationProjectId', $projectId, ParameterType::INTEGER);
         }
 
         $db->setQuery($query, 0, 1);
@@ -201,13 +205,15 @@ final class NavigationDataHelper
 
     public function getCountrySubSubAssocSelect($assoc_id): array
     {
+        $associationId = (int) $assoc_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
-            ->where('s.parent_id = ' . (int) $assoc_id)
+            ->where('s.parent_id = :subSubAssociationId')
             ->where('s.published = 1')
-            ->order('s.name');
+            ->order('s.name')
+            ->bind(':subSubAssociationId', $associationId, ParameterType::INTEGER);
         $db->setQuery($query);
         $res = $db->loadObjectList() ?: [];
 
@@ -219,13 +225,15 @@ final class NavigationDataHelper
 
     public function getCountrySubAssocSelect($assoc_id): array
     {
+        $associationId = (int) $assoc_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('s.id AS value, s.name AS text')
             ->from('#__sportsmanagement_associations AS s')
-            ->where('s.parent_id = ' . (int) $assoc_id)
+            ->where('s.parent_id = :subAssociationId')
             ->where('s.published = 1')
-            ->order('s.name');
+            ->order('s.name')
+            ->bind(':subAssociationId', $associationId, ParameterType::INTEGER);
         $db->setQuery($query);
         $res = $db->loadObjectList() ?: [];
 
@@ -258,14 +266,16 @@ final class NavigationDataHelper
 
     public function getFederationSelect($federation = '', $federationid = 0): array
     {
+        $federationId = (int) $federationid;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('s.alpha3 AS value, s.name AS text')
             ->from('#__sportsmanagement_countries AS s')
             ->join('INNER', '#__sportsmanagement_league AS l ON l.country = s.alpha3')
-            ->where('s.federation = ' . (int) $federationid)
+            ->where('s.federation = :federationId')
             ->group('s.name')
-            ->order('s.name DESC');
+            ->order('s.name DESC')
+            ->bind(':federationId', $federationId, ParameterType::INTEGER);
         $db->setQuery($query);
         $res = $db->loadObjectList() ?: [];
 
@@ -328,11 +338,13 @@ final class NavigationDataHelper
             return false;
         }
 
+        $associationId = (int) $assoc_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('parent_id')
             ->from('#__sportsmanagement_associations')
-            ->where('id = ' . (int) $assoc_id);
+            ->where('id = :associationParentId')
+            ->bind(':associationParentId', $associationId, ParameterType::INTEGER);
         $db->setQuery($query);
         $result = (int) $db->loadResult();
 
@@ -345,11 +357,13 @@ final class NavigationDataHelper
             return false;
         }
 
+        $leagueId = (int) $this->_league_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('associations')
             ->from('#__sportsmanagement_league')
-            ->where('id = ' . (int) $this->_league_id);
+            ->where('id = :leagueAssociationId')
+            ->bind(':leagueAssociationId', $leagueId, ParameterType::INTEGER);
         $db->setQuery($query);
         $result = (int) $db->loadResult();
 
@@ -368,11 +382,13 @@ final class NavigationDataHelper
 
     public function getFavTeams($project_id)
     {
+        $projectId = (int) $project_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('fav_team')
             ->from('#__sportsmanagement_project')
-            ->where('id = ' . (int) $project_id);
+            ->where('id = :favoriteTeamsProjectId')
+            ->bind(':favoriteTeamsProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $teams = trim((string) $db->loadResult());
         if ($teams === '') {
@@ -387,21 +403,25 @@ final class NavigationDataHelper
         $query = $db->createQuery()
             ->select('t.id AS team_id, t.name, t.club_id')
             ->from('#__sportsmanagement_team AS t')
-            ->where('t.id IN (' . implode(',', $ids) . ')');
+            ->whereIn('t.id', $ids, ParameterType::INTEGER);
         $db->setQuery($query);
         return $db->loadObjectList() ?: false;
     }
 
     public function getTeamId($project_id, $club_id)
     {
+        $projectId = (int) $project_id;
+        $clubId = (int) $club_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('pt.team_id')
             ->from('#__sportsmanagement_project_team AS pt')
             ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id')
             ->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id')
-            ->where('pt.project_id = ' . (int) $project_id)
-            ->where('t.club_id = ' . (int) $club_id);
+            ->where('pt.project_id = :teamProjectId')
+            ->where('t.club_id = :teamClubId')
+            ->bind(':teamProjectId', $projectId, ParameterType::INTEGER)
+            ->bind(':teamClubId', $clubId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $result = (int) $db->loadResult();
         if ($result <= 0) {
@@ -440,11 +460,13 @@ final class NavigationDataHelper
 
     public function getDivisionSelect($project_id): array
     {
+        $projectId = (int) $project_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('d.id AS value, d.name AS text')
             ->from('#__sportsmanagement_division AS d')
-            ->where('d.project_id = ' . (int) $project_id);
+            ->where('d.project_id = :divisionProjectId')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
 
         if ((int) $this->getParam('show_only_subdivisions', 0) === 1) {
             $query->where('d.parent_id > 0');
@@ -491,7 +513,8 @@ final class NavigationDataHelper
 
     public function getProjectCountry($project_id)
     {
-        if ((int) $project_id <= 0) {
+        $projectId = (int) $project_id;
+        if ($projectId <= 0) {
             return false;
         }
 
@@ -500,24 +523,27 @@ final class NavigationDataHelper
             ->select('l.country')
             ->from('#__sportsmanagement_league AS l')
             ->join('INNER', '#__sportsmanagement_project AS p ON l.id = p.league_id')
-            ->where('p.id = ' . (int) $project_id);
+            ->where('p.id = :countryProjectId')
+            ->bind(':countryProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         return $db->loadResult() ?: false;
     }
 
     public function getLeagueSelect($season): array
     {
+        $seasonId = (int) $season;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('l.id AS value, l.name AS text')
             ->from('#__sportsmanagement_league AS l')
             ->join('INNER', '#__sportsmanagement_project AS p ON l.id = p.league_id')
             ->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id')
-            ->where('s.id = ' . (int) $season)
+            ->where('s.id = :leagueSeasonId')
             ->where('s.published = 1')
             ->where('l.published = 1')
             ->group('l.name')
-            ->order('l.name');
+            ->order('l.name')
+            ->bind(':leagueSeasonId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return array_merge(
@@ -528,6 +554,7 @@ final class NavigationDataHelper
 
     public function getProjectSelect($league_id): array
     {
+        $leagueId = (int) $league_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('p.id AS value, p.name AS text')
@@ -535,8 +562,9 @@ final class NavigationDataHelper
             ->join('INNER', '#__sportsmanagement_season AS s ON s.id = p.season_id')
             ->join('INNER', '#__sportsmanagement_league AS l ON l.id = p.league_id')
             ->where('p.published = 1')
-            ->where('p.league_id = ' . (int) $league_id)
-            ->order('s.name DESC, p.name ASC');
+            ->where('p.league_id = :projectLeagueId')
+            ->order('s.name DESC, p.name ASC')
+            ->bind(':projectLeagueId', $leagueId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return array_merge(
@@ -559,14 +587,16 @@ final class NavigationDataHelper
             return $this->_teamoptions;
         }
 
+        $projectId = (int) $project_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('t.id AS value, t.name AS text')
             ->from('#__sportsmanagement_project_team AS pt')
             ->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id')
             ->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id')
-            ->where('pt.project_id = ' . (int) $project_id)
-            ->order('t.name ASC');
+            ->where('pt.project_id = :teamOptionsProjectId')
+            ->order('t.name ASC')
+            ->bind(':teamOptionsProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -640,6 +670,7 @@ final class NavigationDataHelper
             return false;
         }
 
+        $teamId = (int) $this->_team_id;
         $db = $this->_db;
         $query = $db->createQuery()
             ->select([
@@ -649,7 +680,8 @@ final class NavigationDataHelper
             ])
             ->from('#__sportsmanagement_team AS t')
             ->join('INNER', '#__sportsmanagement_club AS c ON t.club_id = c.id')
-            ->where('t.id = ' . (int) $this->_team_id);
+            ->where('t.id = :clubTeamId')
+            ->bind(':clubTeamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $res = $db->loadObject();
         if (!$res) {
