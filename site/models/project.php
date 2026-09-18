@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage project
  * @file       project.php
@@ -140,7 +140,7 @@ $app    = Factory::getApplication();
     $totalresult = 0;
 		
 	$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-	$query     = $db->getQuery(true);
+	$query     = $db->createQuery();
 		
 		$query->clear();
     $query->select('COUNT(distinct m.id) as totalmatch');
@@ -183,7 +183,7 @@ $app    = Factory::getApplication();
 $app    = Factory::getApplication();
 	$option = $app->input->getCmd('option');
 	$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-	$query     = $db->getQuery(true);	
+	$query     = $db->createQuery();	
 $query->select('p.*');
 $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
 $query->from('#__sportsmanagement_project AS p ');
@@ -217,7 +217,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 $app    = Factory::getApplication();
 	$option = $app->input->getCmd('option');
 	$db        = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-	$query     = $db->getQuery(true);
+	$query     = $db->createQuery();
 $query->select('p.*');
 $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
 $query->from('#__sportsmanagement_project AS p ');
@@ -292,7 +292,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 
 			// Get a db connection.
 			$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-			$query     = $db->getQuery(true);
+			$query     = $db->createQuery();
 			$starttime = microtime();
 
 			if (!self::$projectid)
@@ -392,7 +392,7 @@ self::$_project->leaguepicture = $result;
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query  = $db->getQuery(true);
+		$query  = $db->createQuery();
 
 		if ($inserthits)
 		{
@@ -451,7 +451,7 @@ try{
 
 		// Get a db connection.
 		$db      = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query   = $db->getQuery(true);
+		$query   = $db->createQuery();
 		$result  = '';
 		$project = self::getProject($cfg_which_database, __METHOD__);
         $project->auto_time = $project->auto_time ? $project->auto_time : 7200 ;
@@ -578,7 +578,7 @@ try{
 				try
 				{
 					// Update their details in the users table using id as the primary key.
-					$resultupdate = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+					$resultupdate = $db->updateObject('#__sportsmanagement_project', $object, 'id');
 				}
 				catch (Exception $e)
 				{
@@ -695,7 +695,7 @@ try{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$project = self::getProject($cfg_which_database, __METHOD__);
 
@@ -758,7 +758,7 @@ try{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('id');
 		$query->from('#__sportsmanagement_division');
@@ -810,7 +810,7 @@ try{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 
 		if (!self::$projectid)
@@ -870,7 +870,7 @@ try{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 
 		if (!self::$projectid)
@@ -915,7 +915,7 @@ try{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 
 		if ($projectteamid)
@@ -1024,7 +1024,7 @@ try{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 
 		$query->select('tl.id AS projectteamid,tl.division_id,tl.standard_playground,tl.admin,tl.start_points,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally');
@@ -1169,7 +1169,7 @@ try{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select('et.id AS etid,et.name,et.icon');
 		$query->select('me.event_type_id AS id');
 		$query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
@@ -1229,7 +1229,7 @@ try{
 		}
 
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select('id');
 		$query->from('#__sportsmanagement_project_team');
 		$query->where('team_id = ' . (int) $teamid);
@@ -1271,7 +1271,7 @@ try{
 		$option        = $app->input->getCmd('option');
 		$view          = $app->input->getVar("view");
 		$db            = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query         = $db->getQuery(true);
+		$query         = $db->createQuery();
 		$checktemplate = false;
 
 		switch ($view)
@@ -1405,7 +1405,7 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('et.id,et.name,et.icon');
 		$query->from('#__sportsmanagement_eventtype AS et');
@@ -1452,7 +1452,7 @@ $events = false;
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if (empty(self::$_stats))
 		{
@@ -1545,7 +1545,7 @@ $events = false;
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if (empty(self::$_positions))
 		{
@@ -1631,7 +1631,7 @@ $events = false;
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->clear();
 		$query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for,mp.project_position_id');
@@ -1798,7 +1798,7 @@ $inout->pposid2 = 0;
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		if (is_null(self::$_match))
 		{
@@ -1846,7 +1846,7 @@ try{
 
 		// Get a db connection.
 		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 
 		if ($showcomments == 1)
@@ -1913,7 +1913,7 @@ try{
 		{
 		}
 
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->clear();
 
 		$query->select('*');
@@ -1967,7 +1967,7 @@ try{
 		$app     = Factory::getApplication();
 		$option  = $app->input->getCmd('option');
 		$allowed = false;
-		$user    = Factory::getUser();
+		$user    = $app->getIdentity();
 
 		// Ist der user der einer gruppe zugeordnet ?
 		$groups = UserHelper::getUserGroups($user->get('id'));
@@ -2062,7 +2062,7 @@ try{
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select('id AS value,name AS text');
 		$query->from('#__sportsmanagement_playground');
 		$query->order('text ASC');
@@ -2094,7 +2094,7 @@ try{
 
 		// Get a db connection.
 		$db              = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query           = $db->getQuery(true);
+		$query           = $db->createQuery();
 		$gameprojecttime = 0;
 		$query->select('game_regular_time');
 		$query->from('#__sportsmanagement_project');
@@ -2132,7 +2132,7 @@ try{
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$project = self::getProject($cfg_which_database, __METHOD__);
 
@@ -2194,7 +2194,7 @@ try{
 
 		// Get a db connection.
 		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 
 		$query->select('l.country');
 		$query->from('#__sportsmanagement_league as l');
