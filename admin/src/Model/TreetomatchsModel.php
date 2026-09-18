@@ -85,7 +85,7 @@ final class TreetomatchsModel extends SportsManagementListModel
         $db->transactionStart();
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_treeto_match'))
                 ->where($db->quoteName('node_id') . ' = :storeNodeId')
                 ->bind(':storeNodeId', $nodeId, ParameterType::INTEGER);
@@ -123,7 +123,7 @@ final class TreetomatchsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $homeChildTeams = $db->getQuery(true)
+        $homeChildTeams = $db->createQuery()
             ->select($db->quoteName('ttn.team_id'))
             ->from($db->quoteName('#__sportsmanagement_treeto_node', 'ttn'))
             ->join(
@@ -134,7 +134,7 @@ final class TreetomatchsModel extends SportsManagementListModel
             )
             ->where($db->quoteName('ttn2.id') . ' = :homeChildNodeId')
             ->where($db->quoteName('ttn.treeto_id') . ' = :homeChildTreeId');
-        $awayChildTeams = $db->getQuery(true)
+        $awayChildTeams = $db->createQuery()
             ->select($db->quoteName('ttn.team_id'))
             ->from($db->quoteName('#__sportsmanagement_treeto_node', 'ttn'))
             ->join(
@@ -197,7 +197,7 @@ final class TreetomatchsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -218,7 +218,7 @@ final class TreetomatchsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_treeto_node'))
             ->where($db->quoteName('id') . ' = :nodeId')
@@ -260,7 +260,7 @@ final class TreetomatchsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
 
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->select([
                 $db->quoteName('mc.id', 'value'),
                 "CONCAT(" . $db->quoteName('t1.name') . ", '_vs_', " . $db->quoteName('t2.name')
@@ -281,7 +281,7 @@ final class TreetomatchsModel extends SportsManagementListModel
     {
         $db = $this->getDatabase();
 
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->select([
                 $db->quoteName('mc.id', 'mid'),
                 $db->quoteName('mc.match_number'),
