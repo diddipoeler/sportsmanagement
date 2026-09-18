@@ -60,7 +60,7 @@ final class SportstypesModel extends SportsManagementListModel
     protected function getListQuery()
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('s.id'),
                 $db->quoteName('s.name'),
@@ -130,7 +130,7 @@ final class SportstypesModel extends SportsManagementListModel
     public function getSportsTypes(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -158,7 +158,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.sports_type_id') . ' = :projectSportsTypeId')
@@ -195,7 +195,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(DISTINCT ' . $db->quoteName('p.league_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.sports_type_id') . ' = :leagueSportsTypeId')
@@ -218,7 +218,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(DISTINCT ' . $db->quoteName('p.season_id') . ')')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.sports_type_id') . ' = :seasonSportsTypeId')
@@ -246,7 +246,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join(
@@ -298,7 +298,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -325,7 +325,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 'COUNT(' . $db->quoteName('me.id') . ') AS ' . $db->quoteName('total'),
                 $db->quoteName('me.event_type_id'),
@@ -380,7 +380,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join(
@@ -412,7 +412,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_match_statistic', 'ms'))
             ->join(
@@ -439,7 +439,7 @@ final class SportstypesModel extends SportsManagementListModel
     private function countTable(string $table): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName($table));
 
@@ -454,7 +454,7 @@ final class SportstypesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join(
