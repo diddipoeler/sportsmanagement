@@ -51,7 +51,7 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('pl.*')
             ->select('pl.id AS id2')
             ->select('ag.name AS agegroup_name')
@@ -125,7 +125,7 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         if ($assignLayout && !$assignClub && $seasonId > 0) {
-            $sub = $db->getQuery(true)->select('stp.person_id');
+            $sub = $db->createQuery()->select('stp.person_id');
 
             switch ($personType) {
                 case 1:
@@ -158,7 +158,7 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         if ($assignLayout && $assignClub && $seasonId > 0 && in_array($personType, [1, 2, 3], true)) {
-            $sub = $db->getQuery(true)->select('stp.person_id');
+            $sub = $db->createQuery()->select('stp.person_id');
 
             if ($personType === 3) {
                 $sub->from($db->quoteName('#__sportsmanagement_season_person_id', 'stp'))
@@ -207,7 +207,7 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select(['pl.id', 'pl.firstname', 'pl.nickname', 'pl.lastname'])
             ->from($db->quoteName('#__sportsmanagement_person', 'pl'))
             ->whereIn($db->quoteName('pl.id'), $ids, ParameterType::INTEGER)
@@ -220,7 +220,7 @@ final class PlayersModel extends SportsManagementListModel
     {
         $projectId = (int) $this->administratorApplication()->getUserState('com_sportsmanagement.pid', 0);
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.id AS value, t.name AS text')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = t.id')
@@ -240,7 +240,7 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('name')
             ->from($db->quoteName('#__sportsmanagement_team'))
             ->where('id = :teamNameId')
@@ -256,7 +256,7 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('t.name')
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON st.team_id = t.id')
@@ -269,7 +269,7 @@ final class PlayersModel extends SportsManagementListModel
     public function getPersons(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id AS value, lastname, firstname, info, weight, height, picture, birthday, notes, nickname, knvbnr, country, phone, mobile, email')
             ->from($db->quoteName('#__sportsmanagement_person'))
             ->where('published = 1')
@@ -280,7 +280,7 @@ final class PlayersModel extends SportsManagementListModel
     public function getPersonListSelect(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id, id AS value, firstname, lastname, nickname, birthday, info')
             ->select('LOWER(lastname) AS low_lastname, LOWER(firstname) AS low_firstname, LOWER(nickname) AS low_nickname')
             ->from($db->quoteName('#__sportsmanagement_person'))
@@ -307,7 +307,7 @@ final class PlayersModel extends SportsManagementListModel
     public function getPositionOptions(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id AS value, name AS text')
             ->from($db->quoteName('#__sportsmanagement_position'))
             ->where('published = 1')
@@ -318,7 +318,7 @@ final class PlayersModel extends SportsManagementListModel
     public function getAgeGroupOptions(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('id AS value, name AS text')
             ->from($db->quoteName('#__sportsmanagement_agegroup'))
             ->where('published = 1')
@@ -333,7 +333,7 @@ final class PlayersModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('name')
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where('id = :playerProjectNameId')
