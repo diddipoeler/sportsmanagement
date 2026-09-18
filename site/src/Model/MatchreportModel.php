@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 model for the public match report view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use stdClass;
 use Throwable;
@@ -136,9 +145,12 @@ final class MatchreportModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('p.id'))
-            ->where($db->quoteName('pt.id') . ' = ' . $projectTeamId)
-            ->where($db->quoteName('mp.match_id') . ' = ' . $matchId)
-            ->where($db->quoteName('pos.name') . ' = ' . $db->quote($positionName));
+            ->where($db->quoteName('pt.id') . ' = :billardProjectTeamId')
+            ->where($db->quoteName('mp.match_id') . ' = :billardMatchId')
+            ->where($db->quoteName('pos.name') . ' = :billardPositionName')
+            ->bind(':billardProjectTeamId', $projectTeamId, ParameterType::INTEGER)
+            ->bind(':billardMatchId', $matchId, ParameterType::INTEGER)
+            ->bind(':billardPositionName', $positionName, ParameterType::STRING);
 
         try {
             $db->setQuery($query);
@@ -155,6 +167,8 @@ final class MatchreportModel extends SportsManagementProjectModel
             return;
         }
 
+        $matchId = $this->matchId;
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -162,11 +176,13 @@ final class MatchreportModel extends SportsManagementProjectModel
                 $db->quoteName('teamplayer_id'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_player'))
-            ->where($db->quoteName('match_id') . ' = ' . $this->matchId)
-            ->where($db->quoteName('project_position_id') . ' = 0');
+            ->where($db->quoteName('match_id') . ' = :positionCheckMatchId')
+            ->where($db->quoteName('project_position_id') . ' = 0')
+            ->bind(':positionCheckMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         foreach ($db->loadObjectList() ?: [] as $row) {
+            $teamPlayerId = (int) $row->teamplayer_id;
             $positionQuery = $db->createQuery()
                 ->select($db->quoteName('ppp.project_position_id'))
                 ->from($db->quoteName('#__sportsmanagement_person_project_position', 'ppp'))
@@ -175,8 +191,10 @@ final class MatchreportModel extends SportsManagementProjectModel
                     $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp')
                     . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('ppp.person_id')
                 )
-                ->where($db->quoteName('ppp.project_id') . ' = ' . $this->projectId)
-                ->where($db->quoteName('tp.id') . ' = ' . (int) $row->teamplayer_id);
+                ->where($db->quoteName('ppp.project_id') . ' = :positionCheckProjectId')
+                ->where($db->quoteName('tp.id') . ' = :positionCheckTeamPlayerId')
+                ->bind(':positionCheckProjectId', $projectId, ParameterType::INTEGER)
+                ->bind(':positionCheckTeamPlayerId', $teamPlayerId, ParameterType::INTEGER);
             $db->setQuery($positionQuery, 0, 1);
             $positionId = (int) $db->loadResult();
 
@@ -202,7 +220,8 @@ final class MatchreportModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_club'))
-            ->where($db->quoteName('id') . ' = ' . $clubId);
+            ->where($db->quoteName('id') . ' = :clubInfoId')
+            ->bind(':clubInfoId', $clubId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -215,11 +234,13 @@ final class MatchreportModel extends SportsManagementProjectModel
             return null;
         }
 
+        $roundId = (int) $match->round_id;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('id') . ' = ' . (int) $match->round_id);
+            ->where($db->quoteName('id') . ' = :matchRoundId')
+            ->bind(':matchRoundId', $roundId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $round = $db->loadObject();
 
@@ -285,6 +306,8 @@ final class MatchreportModel extends SportsManagementProjectModel
             return [];
         }
 
+        $matchId = $this->matchId;
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -296,8 +319,8 @@ final class MatchreportModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id'))
             ->join('INNER', $db->quoteName($table, 'mp') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('mp.project_position_id'))
-            ->where($db->quoteName('mp.match_id') . ' = ' . $this->matchId)
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
+            ->where($db->quoteName('mp.match_id') . ' = :matchPositionsMatchId')
+            ->where($db->quoteName('ppos.project_id') . ' = :matchPositionsProjectId')
             ->group([
                 $db->quoteName('pos.id'),
                 $db->quoteName('pos.name'),
@@ -305,7 +328,9 @@ final class MatchreportModel extends SportsManagementProjectModel
                 $db->quoteName('ppos.id'),
                 $db->quoteName('pos.ordering'),
             ])
-            ->order($db->quoteName('pos.ordering') . ' ASC');
+            ->order($db->quoteName('pos.ordering') . ' ASC')
+            ->bind(':matchPositionsMatchId', $matchId, ParameterType::INTEGER)
+            ->bind(':matchPositionsProjectId', $projectId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -322,6 +347,8 @@ final class MatchreportModel extends SportsManagementProjectModel
             return [];
         }
 
+        $matchId = $this->matchId;
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -373,10 +400,16 @@ final class MatchreportModel extends SportsManagementProjectModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_person', 'p') . ' ON ' . $db->quoteName('tp.person_id') . ' = ' . $db->quoteName('p.id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.id') . ' = ' . $db->quoteName('mp.project_position_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('ppos.project_id') . ' = ' . $this->projectId)
-            ->where($db->quoteName('mp.match_id') . ' = ' . $this->matchId)
-            ->where($db->quoteName('p.published') . ' = 1');
+            ->where($db->quoteName('pt.project_id') . ' = :matchPersonsTeamProjectId')
+            ->where($db->quoteName('ppos.project_id') . ' = :matchPersonsPositionProjectId')
+            ->where($db->quoteName('mp.match_id') . ' = :matchPersonsMatchId')
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->bind(
+                [':matchPersonsTeamProjectId', ':matchPersonsPositionProjectId'],
+                $projectId,
+                ParameterType::INTEGER
+            )
+            ->bind(':matchPersonsMatchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -393,6 +426,7 @@ final class MatchreportModel extends SportsManagementProjectModel
             return [];
         }
 
+        $matchId = $this->matchId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select([
@@ -403,14 +437,15 @@ final class MatchreportModel extends SportsManagementProjectModel
             ->from($db->quoteName('#__sportsmanagement_eventtype', 'et'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_position_eventtype', 'pet') . ' ON ' . $db->quoteName('pet.eventtype_id') . ' = ' . $db->quoteName('et.id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_match_event', 'me') . ' ON ' . $db->quoteName('et.id') . ' = ' . $db->quoteName('me.event_type_id'))
-            ->where($db->quoteName('me.match_id') . ' = ' . $this->matchId)
+            ->where($db->quoteName('me.match_id') . ' = :eventTypesMatchId')
             ->group([
                 $db->quoteName('pet.ordering'),
                 $db->quoteName('et.id'),
                 $db->quoteName('et.name'),
                 $db->quoteName('et.icon'),
             ])
-            ->order($db->quoteName('pet.ordering'));
+            ->order($db->quoteName('pet.ordering'))
+            ->bind(':eventTypesMatchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query);
@@ -435,23 +470,30 @@ final class MatchreportModel extends SportsManagementProjectModel
         if ($component === 'com_k2') {
             $query->from($db->quoteName('#__k2_items', 'c'));
             if ($articleId > 0) {
-                $query->where($db->quoteName('c.id') . ' = ' . $articleId);
+                $query->where($db->quoteName('c.id') . ' = :k2ArticleId')
+                    ->bind(':k2ArticleId', $articleId, ParameterType::INTEGER);
             }
         } else {
             $query->from($db->quoteName('#__content', 'c'));
 
             if ($articleId > 0) {
-                $query->where($db->quoteName('c.id') . ' = ' . $articleId);
+                $query->where($db->quoteName('c.id') . ' = :contentArticleId')
+                    ->bind(':contentArticleId', $articleId, ParameterType::INTEGER);
             } elseif ($matchId > 0) {
+                $fieldTitle = 'jsmmatchid';
+                $matchValue = (string) $matchId;
                 $query
                     ->join('INNER', $db->quoteName('#__fields_values', 'fv') . ' ON ' . $db->quoteName('fv.item_id') . ' = ' . $db->quoteName('c.id'))
                     ->join('INNER', $db->quoteName('#__fields', 'f') . ' ON ' . $db->quoteName('f.id') . ' = ' . $db->quoteName('fv.field_id'))
-                    ->where($db->quoteName('f.title') . ' = ' . $db->quote('jsmmatchid'))
-                    ->where($db->quoteName('fv.value') . ' = ' . $db->quote((string) $matchId));
+                    ->where($db->quoteName('f.title') . ' = :matchArticleFieldTitle')
+                    ->where($db->quoteName('fv.value') . ' = :matchArticleMatchId')
+                    ->bind(':matchArticleFieldTitle', $fieldTitle, ParameterType::STRING)
+                    ->bind(':matchArticleMatchId', $matchValue, ParameterType::STRING);
             }
 
             if ($categoryId > 0) {
-                $query->where($db->quoteName('c.catid') . ' = ' . $categoryId);
+                $query->where($db->quoteName('c.catid') . ' = :matchArticleCategoryId')
+                    ->bind(':matchArticleCategoryId', $categoryId, ParameterType::INTEGER);
             }
         }
 
@@ -502,11 +544,13 @@ final class MatchreportModel extends SportsManagementProjectModel
             return $this->playersEvents = [];
         }
 
+        $matchId = $this->matchId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_event'))
-            ->where($db->quoteName('match_id') . ' = ' . $this->matchId);
+            ->where($db->quoteName('match_id') . ' = :playerEventsMatchId')
+            ->bind(':playerEventsMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         $events = [];
@@ -533,11 +577,13 @@ final class MatchreportModel extends SportsManagementProjectModel
             return $this->staffBasicStats = [];
         }
 
+        $matchId = $this->matchId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_staff_statistic'))
-            ->where($db->quoteName('match_id') . ' = ' . $this->matchId);
+            ->where($db->quoteName('match_id') . ' = :staffStatsMatchId')
+            ->bind(':staffStatsMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         $stats = [];
@@ -565,8 +611,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select($db->quoteName('extended'))
             ->from($db->quoteName('#__sportsmanagement_rosterposition'))
-            ->where($db->quoteName('name') . ' = ' . $db->quote($schema))
-            ->where($db->quoteName('short_name') . ' = ' . $db->quote($shortName));
+            ->where($db->quoteName('name') . ' = :playgroundSchemaName')
+            ->where($db->quoteName('short_name') . ' = :playgroundSchemaShortName')
+            ->bind(':playgroundSchemaName', $schema, ParameterType::STRING)
+            ->bind(':playgroundSchemaShortName', $shortName, ParameterType::STRING);
         $db->setQuery($query, 0, 1);
         $extended = $db->loadResult();
 
@@ -616,11 +664,13 @@ final class MatchreportModel extends SportsManagementProjectModel
             return null;
         }
 
+        $matchId = $this->matchId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match'))
-            ->where($db->quoteName('id') . ' = ' . $this->matchId);
+            ->where($db->quoteName('id') . ' = :loadMatchId')
+            ->bind(':loadMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $this->match = $db->loadObject() ?: null;
 
@@ -633,11 +683,13 @@ final class MatchreportModel extends SportsManagementProjectModel
             return [];
         }
 
+        $matchId = $this->matchId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_match_statistic'))
-            ->where($db->quoteName('match_id') . ' = ' . $this->matchId);
+            ->where($db->quoteName('match_id') . ' = :matchStatisticMatchId')
+            ->bind(':matchStatisticMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
