@@ -19,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 /**
@@ -176,7 +177,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
     public function getJoomleagueImportTables(): array
     {
         $db = self::sportsDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_jl_tables'));
 
@@ -194,10 +195,11 @@ final class DatabasetoolModel extends BaseDatabaseModel
         sort($tables, SORT_NATURAL | SORT_FLAG_CASE);
 
         foreach ($tables as $table) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_jl_tables'))
-                ->where($db->quoteName('name') . ' = ' . $db->quote($table));
+                ->where($db->quoteName('name') . ' = :joomleagueTableName')
+                ->bind(':joomleagueTableName', $table, ParameterType::STRING);
             $db->setQuery($query, 0, 1);
 
             if ((int) $db->loadResult() > 0) {
@@ -219,11 +221,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
     public function setParamstoJSON(): void
     {
         $db = self::sportsDatabase();
-        $query = $db->getQuery(true)
+        $emptyParams = '';
+        $query = $db->createQuery()
             ->select([$db->quoteName('template'), $db->quoteName('params')])
             ->from($db->quoteName('#__sportsmanagement_template_config'))
-            ->where($db->quoteName('params') . ' <> ' . $db->quote(''))
+            ->where($db->quoteName('params') . ' <> :emptyParams')
             ->where($db->quoteName('import_id') . ' <> 0')
+            ->bind(':emptyParams', $emptyParams, ParameterType::STRING)
             ->group([$db->quoteName('template'), $db->quoteName('params')]);
 
         foreach ($this->loadObjectList($db, $query) as $row) {
@@ -250,10 +254,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
                 }
             }
 
-            $update = $db->getQuery(true)
+            $encodedValues = (string) json_encode($values);
+            $update = $db->createQuery()
                 ->update($db->quoteName('#__sportsmanagement_template_config'))
-                ->set($db->quoteName('params') . ' = ' . $db->quote((string) json_encode($values)))
-                ->where($db->quoteName('template') . ' = ' . $db->quote($template));
+                ->set($db->quoteName('params') . ' = :templateParams')
+                ->where($db->quoteName('template') . ' = :templateName')
+                ->bind(':templateParams', $encodedValues, ParameterType::STRING)
+                ->bind(':templateName', $template, ParameterType::STRING);
             $db->setQuery($update);
             self::runJoomlaQuery(self::class, $db);
         }
@@ -359,10 +366,11 @@ final class DatabasetoolModel extends BaseDatabaseModel
                 continue;
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_rquote'))
-                ->where($db->quoteName('daily_number') . ' = ' . $dailyNumber);
+                ->where($db->quoteName('daily_number') . ' = :quoteDailyNumber')
+                ->bind(':quoteDailyNumber', $dailyNumber, ParameterType::INTEGER);
             $db->setQuery($query);
             $exists = (int) $db->loadResult() > 0;
             $version = (string) ($xml->version ?? '');
@@ -426,10 +434,11 @@ final class DatabasetoolModel extends BaseDatabaseModel
         $db = self::sportsDatabase();
         $country = strtoupper(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $search_nation) ?? '');
         $sportTypeId = (int) $filter_sports_type;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
-            ->where($db->quoteName('id') . ' = ' . $sportTypeId);
+            ->where($db->quoteName('id') . ' = :agegroupSportTypeId')
+            ->bind(':agegroupSportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $sportTypeName = (string) $db->loadResult();
         $parts = explode('_', $sportTypeName);
@@ -458,12 +467,15 @@ final class DatabasetoolModel extends BaseDatabaseModel
             }
 
             $attrs = $node->agegroup->attributes();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_agegroup'))
-                ->where($db->quoteName('name') . ' = ' . $db->quote($name))
-                ->where($db->quoteName('country') . ' = ' . $db->quote($country))
-                ->where($db->quoteName('sportstype_id') . ' = ' . $sportTypeId);
+                ->where($db->quoteName('name') . ' = :agegroupName')
+                ->where($db->quoteName('country') . ' = :agegroupCountry')
+                ->where($db->quoteName('sportstype_id') . ' = :agegroupSportstypeId')
+                ->bind(':agegroupName', $name, ParameterType::STRING)
+                ->bind(':agegroupCountry', $country, ParameterType::STRING)
+                ->bind(':agegroupSportstypeId', $sportTypeId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
 
             if ((int) $db->loadResult() > 0) {
@@ -512,9 +524,11 @@ final class DatabasetoolModel extends BaseDatabaseModel
             return true;
         }
 
-        $query = $db->getQuery(true)
+        $countryPlaceholders = $db->createQuery()->bindArray($countries, ParameterType::STRING);
+        $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_associations'))
-            ->where($db->quoteName('country') . ' NOT IN (' . implode(',', array_map([$db, 'quote'], $countries)) . ')');
+            ->where($db->quoteName('country') . ' NOT IN (' . implode(',', $countryPlaceholders) . ')');
+        $query->bind($countryPlaceholders, $countries, ParameterType::STRING);
         $db->setQuery($query);
         self::runJoomlaQuery(self::class, $db);
 
@@ -560,11 +574,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
                     'alias' => OutputFilter::stringURLSafe($name),
                 ];
 
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__sportsmanagement_associations'))
-                    ->where($db->quoteName('country') . ' = ' . $db->quote($country))
-                    ->where($db->quoteName('name') . ' = ' . $db->quote($name));
+                    ->where($db->quoteName('country') . ' = :associationCountry')
+                    ->where($db->quoteName('name') . ' = :associationName')
+                    ->bind(':associationCountry', $country, ParameterType::STRING)
+                    ->bind(':associationName', $name, ParameterType::STRING);
                 $db->setQuery($query, 0, 1);
                 $id = (int) $db->loadResult();
 
@@ -640,10 +656,11 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
         $db = self::sportsDatabase();
         $name = 'COM_SPORTSMANAGEMENT_ST_' . strtoupper($token);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
-            ->where($db->quoteName('name') . ' = ' . $db->quote($name));
+            ->where($db->quoteName('name') . ' = :sportTypeName')
+            ->bind(':sportTypeName', $name, ParameterType::STRING);
         $db->setQuery($query, 0, 1);
         $id = (int) $db->loadResult();
         $isNew = $id <= 0;
@@ -809,11 +826,16 @@ final class DatabasetoolModel extends BaseDatabaseModel
         $table = $this->allowedBootstrapTable((string) $tablename, ['eventtype', 'position']);
         $db = self::sportsDatabase();
 
-        return $db->getQuery(true)
+        $name = (string) $param1;
+        $sportTypeId = (int) $st_id;
+
+        return $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_' . $table))
-            ->where($db->quoteName('name') . ' = ' . $db->quote((string) $param1))
-            ->where($db->quoteName('sports_type_id') . ' = ' . (int) $st_id);
+            ->where($db->quoteName('name') . ' = :bootstrapName')
+            ->where($db->quoteName('sports_type_id') . ' = :bootstrapSportTypeId')
+            ->bind(':bootstrapName', $name, ParameterType::STRING)
+            ->bind(':bootstrapSportTypeId', $sportTypeId, ParameterType::INTEGER);
     }
 
     public function build_InsertQuery_Event($tablename, $param1, $param2, $sports_type_id, $order_count)
@@ -822,7 +844,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
         $db = self::sportsDatabase();
         $this->ensureImportIdColumn($db, '#__sportsmanagement_' . $table);
 
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->insert($db->quoteName('#__sportsmanagement_' . $table))
             ->columns($db->quoteName(['name', 'alias', 'icon', 'sports_type_id', 'published', 'ordering', 'import_id']))
             ->values(implode(',', [
@@ -849,7 +871,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
             throw new \InvalidArgumentException('Invalid position switch column.');
         }
 
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->insert($db->quoteName($fullTable))
             ->columns($db->quoteName(['name', 'alias', $switchColumn, 'parent_id', 'sports_type_id', 'published', 'ordering', 'import_id']))
             ->values(implode(',', [
@@ -870,7 +892,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
         $table = '#__sportsmanagement_position_eventtype';
         $this->ensureImportIdColumn($db, $table);
 
-        return $db->getQuery(true)
+        return $db->createQuery()
             ->insert($db->quoteName($table))
             ->columns($db->quoteName(['position_id', 'eventtype_id', 'import_id']))
             ->values(implode(',', [(int) $param1, (int) $param2, 0]));
@@ -893,13 +915,17 @@ final class DatabasetoolModel extends BaseDatabaseModel
     private function replaceFieldValue(string $table, string $field, string $search, string $replace): int
     {
         $db = self::sportsDatabase();
-        $query = $db->getQuery(true)
+        $likeSearch = '%' . $search . '%';
+        $query = $db->createQuery()
             ->update($db->quoteName($table))
             ->set(
                 $db->quoteName($field) . ' = REPLACE('
-                . $db->quoteName($field) . ', ' . $db->quote($search) . ', ' . $db->quote($replace) . ')'
+                . $db->quoteName($field) . ', :replaceSearch, :replaceValue)'
             )
-            ->where($db->quoteName($field) . ' LIKE ' . $db->quote('%' . $search . '%'));
+            ->where($db->quoteName($field) . ' LIKE :replaceLike')
+            ->bind(':replaceSearch', $search, ParameterType::STRING)
+            ->bind(':replaceValue', $replace, ParameterType::STRING)
+            ->bind(':replaceLike', $likeSearch, ParameterType::STRING);
         $db->setQuery($query);
 
         if (!self::runJoomlaQuery(self::class, $db)) {
@@ -958,11 +984,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     private function findNamedSportRow(DatabaseInterface $db, string $table, string $name, int $sportTypeId): int
     {
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName($table))
-            ->where($db->quoteName('name') . ' = ' . $db->quote($name))
-            ->where($db->quoteName('sports_type_id') . ' = ' . $sportTypeId);
+            ->where($db->quoteName('name') . ' = :namedSportName')
+            ->where($db->quoteName('sports_type_id') . ' = :namedSportTypeId')
+            ->bind(':namedSportName', $name, ParameterType::STRING)
+            ->bind(':namedSportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return (int) $db->loadResult();
