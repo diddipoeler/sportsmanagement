@@ -81,7 +81,7 @@ jobs:
           grep -Fq "where('pro.published = 1')" "$native_helper"
           grep -q 'DatabaseInterface' "$native_helper"
           grep -q 'SportsManagementDatabaseResolver::resolve' "$native_helper"
-          grep -q 'Route::_(' "$native_helper"
+          grep -Fq 'Route::_(' "$native_helper"
           grep -Fq 'Joomla\Filesystem\File' "$native_helper"
           grep -q 'File::exists' "$native_helper"
 
