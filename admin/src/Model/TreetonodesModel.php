@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 list model for tournament-tree nodes.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 list model for tournament-tree nodes. */
 final class TreetonodesModel extends SportsManagementListModel
@@ -124,16 +133,17 @@ final class TreetonodesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $roundQuery = $db->getQuery(true)
+        $roundQuery = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :bracketRoundProjectId')
             ->where($db->quoteName('tournement') . ' = 1')
-            ->order($db->quoteName('roundcode') . ' ASC');
+            ->order($db->quoteName('roundcode') . ' ASC')
+            ->bind(':bracketRoundProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($roundQuery);
         $rounds = $db->loadObjectList() ?: [];
 
-        $matchQuery = $db->getQuery(true)
+        $matchQuery = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.projectteam1_id'),
@@ -144,10 +154,11 @@ final class TreetonodesModel extends SportsManagementListModel
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
-            ->where($db->quoteName('r.project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('r.project_id') . ' = :bracketMatchProjectId')
             ->where($db->quoteName('r.tournement') . ' = 1')
             ->order($db->quoteName('r.roundcode') . ' DESC')
-            ->order($db->quoteName('m.id') . ' ASC');
+            ->order($db->quoteName('m.id') . ' ASC')
+            ->bind(':bracketMatchProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($matchQuery);
         $results = $db->loadObjectList('id') ?: [];
 
@@ -282,10 +293,11 @@ final class TreetonodesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(' . $db->quoteName('roundcode') . ')')
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId);
+            ->where($db->quoteName('project_id') . ' = :maxRoundProjectId')
+            ->bind(':maxRoundProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -304,23 +316,25 @@ final class TreetonodesModel extends SportsManagementListModel
         $db->transactionStart();
 
         try {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_treeto_node'))
-                ->where($db->quoteName('treeto_id') . ' = ' . $treeId);
+                ->where($db->quoteName('treeto_id') . ' = :removeTreeId')
+                ->bind(':removeTreeId', $treeId, ParameterType::INTEGER);
             $db->setQuery($query);
             $nodeIds = $this->normaliseIds($db->loadColumn() ?: []);
 
             if ($nodeIds) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->delete($db->quoteName('#__sportsmanagement_treeto_match'))
-                    ->where($db->quoteName('node_id') . ' IN (' . implode(',', $nodeIds) . ')');
+                    ->whereIn($db->quoteName('node_id'), $nodeIds, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_treeto_node'))
-                ->where($db->quoteName('treeto_id') . ' = ' . $treeId);
+                ->where($db->quoteName('treeto_id') . ' = :deleteTreeId')
+                ->bind(':deleteTreeId', $treeId, ParameterType::INTEGER);
             $db->setQuery($query)->execute();
 
             $record = (object) [
@@ -363,16 +377,18 @@ final class TreetonodesModel extends SportsManagementListModel
 
         try {
             foreach ($ids as $nodeId) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->update($db->quoteName('#__sportsmanagement_treeto_node'))
                     ->set($db->quoteName('is_leaf') . ' = 1')
-                    ->where($db->quoteName('id') . ' = ' . $nodeId);
+                    ->where($db->quoteName('id') . ' = :leafNodeId')
+                    ->bind(':leafNodeId', $nodeId, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
 
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName('node'))
                     ->from($db->quoteName('#__sportsmanagement_treeto_node'))
-                    ->where($db->quoteName('id') . ' = ' . $nodeId);
+                    ->where($db->quoteName('id') . ' = :leafLookupNodeId')
+                    ->bind(':leafLookupNodeId', $nodeId, ParameterType::INTEGER);
                 $db->setQuery($query, 0, 1);
                 $leafNodeNumber = (int) $db->loadResult();
 
@@ -386,11 +402,13 @@ final class TreetonodesModel extends SportsManagementListModel
                     $lastNode = (int) pow(2, $depth + 1);
 
                     for ($child = $left; $child <= $right && $child < $lastNode; $child++) {
-                        $query = $db->getQuery(true)
+                        $query = $db->createQuery()
                             ->update($db->quoteName('#__sportsmanagement_treeto_node'))
                             ->set($db->quoteName('published') . ' = 0')
-                            ->where($db->quoteName('node') . ' = ' . $child)
-                            ->where($db->quoteName('treeto_id') . ' = ' . $treeId);
+                            ->where($db->quoteName('node') . ' = :childNodeNumber')
+                            ->where($db->quoteName('treeto_id') . ' = :childTreeId')
+                            ->bind(':childNodeNumber', $child, ParameterType::INTEGER)
+                            ->bind(':childTreeId', $treeId, ParameterType::INTEGER);
                         $db->setQuery($query)->execute();
                     }
                 }
@@ -398,11 +416,14 @@ final class TreetonodesModel extends SportsManagementListModel
 
             $firstBottomNode = (int) pow(2, $depth);
             $lastBottomNode = (int) pow(2, $depth + 1) - 1;
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->update($db->quoteName('#__sportsmanagement_treeto_node'))
                 ->set($db->quoteName('is_leaf') . ' = 1')
-                ->where($db->quoteName('treeto_id') . ' = ' . $treeId)
-                ->where($db->quoteName('node') . ' BETWEEN ' . $firstBottomNode . ' AND ' . $lastBottomNode);
+                ->where($db->quoteName('treeto_id') . ' = :bottomTreeId')
+                ->where($db->quoteName('node') . ' BETWEEN :firstBottomNode AND :lastBottomNode')
+                ->bind(':bottomTreeId', $treeId, ParameterType::INTEGER)
+                ->bind(':firstBottomNode', $firstBottomNode, ParameterType::INTEGER)
+                ->bind(':lastBottomNode', $lastBottomNode, ParameterType::INTEGER);
             $db->setQuery($query)->execute();
 
             $tree = (object) ['id' => $treeId, 'leafed' => 3];
@@ -454,7 +475,7 @@ final class TreetonodesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id', 'value'),
                 $db->quoteName('t.name'),
@@ -463,8 +484,9 @@ final class TreetonodesModel extends SportsManagementListModel
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('pt.project_id') . ' = ' . $projectId)
-            ->order($db->quoteName('t.name') . ' ASC');
+            ->where($db->quoteName('pt.project_id') . ' = :teamListProjectId')
+            ->order($db->quoteName('t.name') . ' ASC')
+            ->bind(':teamListProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
 
@@ -524,14 +546,15 @@ final class TreetonodesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
                 $db->quoteName('project_type'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project'))
-            ->where($db->quoteName('id') . ' = ' . $projectId);
+            ->where($db->quoteName('id') . ' = :treeProjectId')
+            ->bind(':treeProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -549,10 +572,11 @@ final class TreetonodesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_treeto'))
-            ->where($db->quoteName('id') . ' = ' . $treeId);
+            ->where($db->quoteName('id') . ' = :treeDataId')
+            ->bind(':treeDataId', $treeId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -563,12 +587,12 @@ final class TreetonodesModel extends SportsManagementListModel
         $this->getState();
         $treeId = (int) $this->getState('context.tree_id', $this->treeId);
         $db = $this->getDatabase();
-        $matchCount = $db->getQuery(true)
+        $matchCount = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_treeto_match', 'ttm_count'))
             ->where($db->quoteName('ttm_count.node_id') . ' = ' . $db->quoteName('a.id'));
 
-        return $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('a') . '.*',
                 $db->quoteName('t.name', 'team_name'),
@@ -580,9 +604,12 @@ final class TreetonodesModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_treeto', 'tt') . ' ON ' . $db->quoteName('tt.id') . ' = ' . $db->quoteName('a.treeto_id'))
-            ->where($db->quoteName('a.treeto_id') . ' = ' . $treeId)
+            ->where($db->quoteName('a.treeto_id') . ' = :listTreeId')
             ->order($db->quoteName('a.row') . ' ASC')
-            ->order($db->quoteName('a.node') . ' ASC');
+            ->order($db->quoteName('a.node') . ' ASC')
+            ->bind(':listTreeId', $treeId, ParameterType::INTEGER);
+
+        return $query;
     }
 
     protected function getStoreId($id = '')
@@ -596,11 +623,13 @@ final class TreetonodesModel extends SportsManagementListModel
     private function hasNodeMatch(int $nodeId, int $matchId): bool
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_treeto_match'))
-            ->where($db->quoteName('node_id') . ' = ' . $nodeId)
-            ->where($db->quoteName('match_id') . ' = ' . $matchId);
+            ->where($db->quoteName('node_id') . ' = :nodeMatchNodeId')
+            ->where($db->quoteName('match_id') . ' = :nodeMatchMatchId')
+            ->bind(':nodeMatchNodeId', $nodeId, ParameterType::INTEGER)
+            ->bind(':nodeMatchMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
 
         return (int) $db->loadResult() > 0;
@@ -649,7 +678,7 @@ final class TreetonodesModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pt.id'),
                 $db->quoteName('t.name'),
@@ -657,7 +686,7 @@ final class TreetonodesModel extends SportsManagementListModel
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->where($db->quoteName('pt.id') . ' IN (' . implode(',', $ids) . ')');
+            ->whereIn($db->quoteName('pt.id'), $ids, ParameterType::INTEGER);
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
         $names = [];
