@@ -22,7 +22,7 @@ $activeTab = $federations ? 'federation-' . (int) array_key_first($federations) 
     </div>
 
     <?php if ($federations) : ?>
-        <?php echo HTMLHelper::_('bootstrap.startTabSet', $tabSetId, ['active' => $activeTab]); ?>
+        <?php echo HTMLHelper::_('uitab.startTabSet', $tabSetId, ['active' => $activeTab]); ?>
         <?php foreach ($federations as $federationId => $federation) : ?>
             <?php
             $tabId = 'federation-' . (int) $federationId;
@@ -35,7 +35,7 @@ $activeTab = $federations ? 'federation-' . (int) array_key_first($federations) 
                     . '" width="50" loading="lazy">';
             }
             ?>
-            <?php echo HTMLHelper::_('bootstrap.addTab', $tabSetId, $tabId, $label); ?>
+            <?php echo HTMLHelper::_('uitab.addTab', $tabSetId, $tabId, $label); ?>
 
             <?php $hasProjects = false; ?>
             <?php foreach ($firstleagueoverview as $project) : ?>
@@ -53,8 +53,8 @@ $activeTab = $federations ? 'federation-' . (int) array_key_first($federations) 
                 <div class="text-muted"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></div>
             <?php endif; ?>
 
-            <?php echo HTMLHelper::_('bootstrap.endTab'); ?>
+            <?php echo HTMLHelper::_('uitab.endTab'); ?>
         <?php endforeach; ?>
-        <?php echo HTMLHelper::_('bootstrap.endTabSet'); ?>
+        <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
     <?php endif; ?>
 </div>
