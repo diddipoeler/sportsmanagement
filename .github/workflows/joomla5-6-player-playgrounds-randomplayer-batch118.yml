@@ -43,7 +43,7 @@ jobs:
 
       - name: Validate native player template migration
         run: |
-          grep -q "defined('_JEXEC') or die;" site/tmpl/player/default.php
+          grep -Fq "\\defined('_JEXEC') or die;" site/tmpl/player/default.php
           grep -q "alert alert-danger" site/tmpl/player/default.php
           grep -q "sportsmanagementHelper::addTemplatePaths" site/tmpl/player/default.php
           grep -q "components/com_sportsmanagement/tmpl/player/default.php" site/views/player/tmpl/default.php

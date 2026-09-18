@@ -79,9 +79,10 @@ jobs:
               'provider helper': (provider, 'HelperFactory'),
               'passive template data': (template, "$rankingData['eventtypes']"),
               'compatibility entry helper': (entry, 'new EventsRankingHelper()'),
-              'entry site application': (entry, 'Factory::getContainer()->get(SiteApplication::class)'),
-              'entry public container': (entry, 'Factory::getContainer()->get(DatabaseInterface::class)'),
-              'legacy helper site application': (legacy_helper, 'Factory::getContainer()->get(SiteApplication::class)'),
+              'entry site application resolver': (entry, 'SportsManagementSiteApplicationResolver::resolve()'),
+              'entry application container': (entry, '$app->getContainer()->get(DatabaseInterface::class)'),
+              'legacy helper site application resolver': (legacy_helper, 'SportsManagementSiteApplicationResolver::resolve()'),
+              'legacy helper application container': (legacy_helper, '$app->getContainer()->get(DatabaseInterface::class)'),
               'native namespace': (manifest, '<namespace path="src">Diddipoeler\\Module\\SportsManagementEventsRanking</namespace>'),
               'central site route signature': (site_route, 'public static function view(string $view, array $parameters = []): string'),
           }
@@ -101,7 +102,6 @@ jobs:
                   'Factory::getApplication()',
                   'Factory::getDbo(',
                   'Factory::getDBO(',
-                  '$app->getContainer(',
                   '$app->input',
                   'getVar(',
                   'JLoader::import(',
@@ -115,6 +115,9 @@ jobs:
           for needle in ('use Joomla\\CMS\\Router\\Route;', 'http_build_query(', 'sportsmanagementHelperRoute::'):
               if needle in helper:
                   raise SystemExit(f'EventsRanking manual/legacy routing regression: {needle}')
+
+          if 'use Joomla\\CMS\\Factory;' in legacy_helper or 'Factory::getContainer()' in legacy_helper:
+              raise SystemExit('EventsRanking legacy helper regressed to the static Factory container')
 
           if "method_exists($document, 'getWebAssetManager')" in dispatcher:
               raise SystemExit('EventsRanking dispatcher regressed to legacy WebAsset feature detection')

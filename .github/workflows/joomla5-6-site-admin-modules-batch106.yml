@@ -5,7 +5,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/tmpl/allplaygrounds/default.php'
+      - 'site/assets/js/allplaygrounds.js'
       - 'site/tmpl/allprojects/default.php'
+      - 'site/assets/js/allprojects.js'
       - 'admin/tmpl/smquotetxt/default.php'
       - 'admin/tmpl/smextxmleditor/default.php'
       - 'modules/mod_sportsmanagement_rquotes/helper.php'
@@ -14,7 +16,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/tmpl/allplaygrounds/default.php'
+      - 'site/assets/js/allplaygrounds.js'
       - 'site/tmpl/allprojects/default.php'
+      - 'site/assets/js/allprojects.js'
       - 'admin/tmpl/smquotetxt/default.php'
       - 'admin/tmpl/smextxmleditor/default.php'
       - 'modules/mod_sportsmanagement_rquotes/helper.php'
@@ -54,12 +58,23 @@ jobs:
             site/tmpl/allplaygrounds/default.php \
             site/tmpl/allprojects/default.php; do
             grep -Fq -- "->useScript('keepalive')" "$site_layout"
-            grep -Fq -- "->useScript('jquery')" "$site_layout"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$site_layout"
+            done
             if grep -Fq "behavior.keepalive" "$site_layout" || grep -Fq "jquery.framework" "$site_layout"; then
               echo "$site_layout regressed to legacy Joomla behavior helpers" >&2
               exit 1
             fi
+            if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=' "$site_layout"; then
+              echo "$site_layout regressed to inline JavaScript" >&2
+              exit 1
+            fi
           done
+
+          grep -Fq "'com_sportsmanagement.site.allplaygrounds'" site/tmpl/allplaygrounds/default.php
+          grep -Fq "'com_sportsmanagement.site.allprojects'" site/tmpl/allprojects/default.php
+          node --check site/assets/js/allplaygrounds.js
+          node --check site/assets/js/allprojects.js
 
           for admin_layout in \
             admin/tmpl/smquotetxt/default.php \

@@ -1,0 +1,77 @@
+name: Joomla 5/6 allprojects EventsRanking contracts batch 124
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allprojects/default.php'
+      - 'site/assets/js/allprojects.js'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-module-eventsranking.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch106.yml'
+      - '.github/workflows/joomla5-6-player-playgrounds-randomplayer-batch118.yml'
+      - '.github/workflows/joomla5-6-allprojects-eventsranking-contracts-batch124.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/allprojects/default.php'
+      - 'site/assets/js/allprojects.js'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-allprojects-eventsranking-contracts-batch124.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate migrated PHP and JavaScript
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in site/tmpl/allprojects/default.php modules/mod_sportsmanagement_eventsranking/helper.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          node --check site/assets/js/allprojects.js
+
+      - name: Validate all-projects WebAsset migration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq "registerAndUseScript(" site/tmpl/allprojects/default.php
+          grep -Fq "'com_sportsmanagement.site.allprojects'" site/tmpl/allprojects/default.php
+          grep -Fq 'data-jsm-allprojects-form' site/tmpl/allprojects/default.php
+          grep -Fq 'data-jsm-auto-submit' site/tmpl/allprojects/default.php
+          grep -Fq 'data-jsm-clear-filter' site/tmpl/allprojects/default.php
+          grep -Fq "window.tableOrdering = submitOrdering" site/assets/js/allprojects.js
+
+          if grep -Eiq '<script[[:space:]>]|onclick[[:space:]]*=|onchange[[:space:]]*=' site/tmpl/allprojects/default.php; then
+            echo 'All-projects template regressed to inline JavaScript.' >&2
+            exit 1
+          fi
+
+      - name: Validate EventsRanking application container bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/helper.php
+          ! grep -Fq 'use Joomla\CMS\Factory;' modules/mod_sportsmanagement_eventsranking/helper.php
+          ! grep -Fq 'Factory::getContainer()' modules/mod_sportsmanagement_eventsranking/helper.php
+
+          echo 'Joomla 5/6 batch 124 contracts OK.'
