@@ -73,7 +73,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
 
         foreach ($memberIds as $memberId) {
             try {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('COUNT(*)')
                     ->from($db->quoteName('#__sportsmanagement_prediction_member'))
                     ->where($db->quoteName('prediction_id') . ' = :memberPredictionId')
@@ -301,7 +301,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     public function getPredictionGroups(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name', 'text'),
@@ -326,7 +326,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $userId = (int) $app->getIdentity()->id;
         $approved = (int) $publish === 1 ? 1 : 0;
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_prediction_member'))
             ->set($db->quoteName('approved') . ' = :approved')
             ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
@@ -368,7 +368,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('user_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_member'))
             ->whereIn($db->quoteName('id'), $memberIds, ParameterType::INTEGER)
@@ -381,7 +381,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             return true;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_prediction_result'))
             ->whereIn($db->quoteName('user_id'), $userIds, ParameterType::INTEGER)
             ->where($db->quoteName('prediction_id') . ' = :deleteResultPredictionId')
@@ -446,7 +446,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getPredictionMemberContact(int $memberId): ?object
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('pm.user_id'),
                 $db->quoteName('u.email'),
@@ -476,7 +476,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getSystemMailRecipients(): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('email'))
             ->from($db->quoteName('#__users'))
             ->where($db->quoteName('sendEmail') . ' = 1')
@@ -494,7 +494,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('u.email'))
             ->from($db->quoteName('#__sportsmanagement_prediction_admin', 'pa'))
             ->join(
@@ -514,7 +514,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getFirstPredictionProject(int $predictionId): ?object
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = :projectPredictionId')
@@ -528,7 +528,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getPredictionProjectSettings(int $predictionId, int $projectId): ?object
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = :settingsPredictionId')
@@ -543,7 +543,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getPredictionGame(int $predictionId): ?object
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_prediction_game'))
             ->where($db->quoteName('id') . ' = :gamePredictionId')
@@ -556,7 +556,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getPredictionProjectIds(int $predictionId): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('project_id'))
             ->from($db->quoteName('#__sportsmanagement_prediction_project'))
             ->where($db->quoteName('prediction_id') . ' = :projectPredictionId')
@@ -575,7 +575,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 return '';
             }
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('params'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_template'))
                 ->where($db->quoteName('template') . ' = :templateName')
@@ -590,7 +590,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $params = $loadParams($predictionId);
 
         if ($params === '') {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('master_template'))
                 ->from($db->quoteName('#__sportsmanagement_prediction_game'))
                 ->where($db->quoteName('id') . ' = :masterPredictionId')
@@ -622,7 +622,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getPredictionGamesMatches(int $predictionId, int $projectId, int $userId): array
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('m.id'),
                 $db->quoteName('m.match_date'),
@@ -673,7 +673,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function getTippCount(int $predictionId, int $projectId, int $matchId, int $type): int
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_prediction_result'))
             ->where($db->quoteName('prediction_id') . ' = :tipPredictionId')
@@ -766,7 +766,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     private function deleteByIds(string $table, string $column, array $ids): bool
     {
         $db = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->delete($db->quoteName($table))
             ->whereIn($db->quoteName($column), $ids, ParameterType::INTEGER);
 
