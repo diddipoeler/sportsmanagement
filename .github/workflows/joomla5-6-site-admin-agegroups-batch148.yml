@@ -1,0 +1,86 @@
+name: Joomla 5/6 site admin Agegroups batch 148
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Predictionresults/HtmlView.php'
+      - 'site/src/View/Predictionentry/HtmlView.php'
+      - 'admin/views/agegroup/view.html.php'
+      - 'admin/src/View/Agegroup/HtmlView.php'
+      - 'admin/tmpl/agegroup/edit.php'
+      - 'admin/views/agegroups/view.html.php'
+      - 'admin/tmpl/agegroups/default.php'
+      - '.github/workflows/joomla5-6-site-admin-agegroups-batch148.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Predictionresults/HtmlView.php'
+      - 'site/src/View/Predictionentry/HtmlView.php'
+      - 'admin/views/agegroup/view.html.php'
+      - 'admin/src/View/Agegroup/HtmlView.php'
+      - 'admin/tmpl/agegroup/edit.php'
+      - 'admin/views/agegroups/view.html.php'
+      - 'admin/tmpl/agegroups/default.php'
+      - '.github/workflows/joomla5-6-site-admin-agegroups-batch148.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Predictionresults/HtmlView.php
+            site/src/View/Predictionentry/HtmlView.php
+            admin/views/agegroup/view.html.php
+            admin/src/View/Agegroup/HtmlView.php
+            admin/tmpl/agegroup/edit.php
+            admin/views/agegroups/view.html.php
+            admin/tmpl/agegroups/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Predictionresults view.' site/src/View/Predictionresults/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Predictionentry view.' site/src/View/Predictionentry/HtmlView.php
+
+          agegroup_bridge=admin/views/agegroup/view.html.php
+          agegroup_native=admin/src/View/Agegroup/HtmlView.php
+          agegroup_layout=admin/tmpl/agegroup/edit.php
+          agegroups_bridge=admin/views/agegroups/view.html.php
+          agegroups_layout=admin/tmpl/agegroups/default.php
+
+          grep -Fq 'SportsManagement native administrator Agegroup view could not be loaded.' "$agegroup_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewagegroup')" "$agegroup_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Agegroup edit view.' "$agegroup_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Agegroup edit layout.' "$agegroup_layout"
+
+          grep -Fq 'SportsManagement native administrator Agegroups view could not be loaded.' "$agegroups_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewagegroups')" "$agegroups_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Agegroups list layout.' "$agegroups_layout"
+
+          echo 'Joomla 5/6 batch 148 contracts OK.'
