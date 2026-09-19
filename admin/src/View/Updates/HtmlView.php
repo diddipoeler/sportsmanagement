@@ -11,8 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Updates;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\UpdatesModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -30,7 +31,13 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement Updates view requires the Joomla administrator application.', 500);
+        }
+
         $model = $this->getModel();
 
         if (!$model instanceof UpdatesModel) {
