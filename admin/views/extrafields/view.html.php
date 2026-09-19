@@ -1,28 +1,24 @@
 <?php
 /**
- * SportsManagement administrator extra-fields list view.
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Extrafields view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Extrafields\HtmlView;
 
-class sportsmanagementViewextrafields extends sportsmanagementView
-{
-    public function init()
-    {
-        // Preserve the historic view contract: templates expect a club table here.
-        $this->table = new ClubTable($this->model->getDatabase());
-    }
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Extrafields/HtmlView.php';
+}
 
-    protected function addToolbar()
-    {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
-        ToolbarHelper::addNew('extrafield.add');
-        ToolbarHelper::editList('extrafield.edit');
-        ToolbarHelper::custom('extrafield.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::archiveList('extrafield.export', Text::_('JTOOLBAR_EXPORT'));
-        parent::addToolbar();
-    }
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Extrafields view could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementViewextrafields', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewextrafields');
 }
