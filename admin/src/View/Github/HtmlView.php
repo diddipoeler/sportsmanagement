@@ -11,13 +11,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Github;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Uri\Uri;
 
 /** Native Joomla 5/6 administrator view for the GitHub helper. */
 final class HtmlView extends BaseHtmlView
@@ -31,7 +31,13 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null): void
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement Github view requires the Joomla administrator application.', 500);
+        }
+
         $input = $app->getInput();
         $layout = preg_replace('/_(3|4)$/', '', (string) $this->getLayout()) ?: 'default';
 
@@ -55,9 +61,10 @@ final class HtmlView extends BaseHtmlView
         } elseif ($layout === 'github_result') {
             $this->setLayout('github_result');
         } else {
-            Factory::getApplication()->getDocument()->getWebAssetManager()->registerAndUseStyle(
+            $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
                 'com_sportsmanagement.octicons',
-                Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/octicons.css'
+                'administrator/components/com_sportsmanagement/assets/css/octicons.css',
+                ['version' => 'auto']
             );
 
             $model = $this->getModel();

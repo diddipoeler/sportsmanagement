@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matrix
  * @file       view.html.php
@@ -9,10 +9,8 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewMatrix
@@ -122,9 +120,12 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 
 		$this->document->setTitle($pageTitle);
 
-		// $view = $jinput->getVar( "view") ;
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
-		$this->document->addCustomTag($stylelink);
+		$assets = $this->document->getWebAssetManager();
+		$assets->registerAndUseStyle(
+			'com_sportsmanagement.matrix.style',
+			'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
+			['version' => 'auto']
+		);
 
 	}
 }
