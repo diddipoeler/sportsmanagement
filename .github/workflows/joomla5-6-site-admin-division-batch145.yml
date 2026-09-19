@@ -1,0 +1,85 @@
+name: Joomla 5/6 site admin Division batch 145
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Ranking/HtmlView.php'
+      - 'site/src/View/Eventsranking/HtmlView.php'
+      - 'admin/views/division/view.html.php'
+      - 'admin/src/View/Division/HtmlView.php'
+      - 'admin/tmpl/division/edit.php'
+      - 'admin/src/View/Projects/HtmlView.php'
+      - '.github/workflows/joomla5-6-site-admin-division-batch145.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Ranking/HtmlView.php'
+      - 'site/src/View/Eventsranking/HtmlView.php'
+      - 'admin/views/division/view.html.php'
+      - 'admin/src/View/Division/HtmlView.php'
+      - 'admin/tmpl/division/edit.php'
+      - 'admin/src/View/Projects/HtmlView.php'
+      - '.github/workflows/joomla5-6-site-admin-division-batch145.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Ranking/HtmlView.php
+            site/src/View/Eventsranking/HtmlView.php
+            admin/views/division/view.html.php
+            admin/src/View/Division/HtmlView.php
+            admin/tmpl/division/edit.php
+            admin/src/View/Projects/HtmlView.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Ranking view.' site/src/View/Ranking/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Eventsranking view.' site/src/View/Eventsranking/HtmlView.php
+
+          bridge=admin/views/division/view.html.php
+          native=admin/src/View/Division/HtmlView.php
+          layout=admin/tmpl/division/edit.php
+          projects=admin/src/View/Projects/HtmlView.php
+
+          grep -Fq 'SportsManagement native administrator Division view could not be loaded.' "$bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewDivision')" "$bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Division edit view.' "$native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Division edit layout.' "$layout"
+
+          grep -Fq 'use Joomla\CMS\Factory;' "$projects"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$projects"
+          if grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$projects"; then
+            echo 'Projects view regressed to application container access.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 145 contracts OK.'
