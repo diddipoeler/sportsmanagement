@@ -87,9 +87,9 @@ jobs:
           helper=modules/mod_sportsmanagement_teamstatistics_counter/helper.php
           dispatcher=modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
 
-          grep -Fq 'use Joomla\\CMS\\Factory;' "$helper"
+          grep -Fq 'use Joomla\CMS\Factory;' "$helper"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
-          grep -Fq 'use Joomla\\CMS\\Factory;' "$dispatcher"
+          grep -Fq 'use Joomla\CMS\Factory;' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
 
           echo 'Joomla 5/6 batch 130 contracts OK.'
