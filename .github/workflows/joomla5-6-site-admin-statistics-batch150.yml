@@ -1,0 +1,97 @@
+name: Joomla 5/6 site admin Statistics batch 150
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Allpersons/HtmlView.php'
+      - 'site/src/View/Allteams/HtmlView.php'
+      - 'site/src/View/Allprojects/HtmlView.php'
+      - 'site/src/View/Results/HtmlView.php'
+      - 'admin/views/statistic/view.html.php'
+      - 'admin/src/View/Statistic/HtmlView.php'
+      - 'admin/tmpl/statistic/edit.php'
+      - 'admin/views/statistics/view.html.php'
+      - 'admin/tmpl/statistics/default.php'
+      - '.github/workflows/joomla5-6-site-admin-statistics-batch150.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Allpersons/HtmlView.php'
+      - 'site/src/View/Allteams/HtmlView.php'
+      - 'site/src/View/Allprojects/HtmlView.php'
+      - 'site/src/View/Results/HtmlView.php'
+      - 'admin/views/statistic/view.html.php'
+      - 'admin/src/View/Statistic/HtmlView.php'
+      - 'admin/tmpl/statistic/edit.php'
+      - 'admin/views/statistics/view.html.php'
+      - 'admin/tmpl/statistics/default.php'
+      - '.github/workflows/joomla5-6-site-admin-statistics-batch150.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Allpersons/HtmlView.php
+            site/src/View/Allteams/HtmlView.php
+            site/src/View/Allprojects/HtmlView.php
+            site/src/View/Results/HtmlView.php
+            admin/views/statistic/view.html.php
+            admin/src/View/Statistic/HtmlView.php
+            admin/tmpl/statistic/edit.php
+            admin/views/statistics/view.html.php
+            admin/tmpl/statistics/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             site/src/View/Allpersons/HtmlView.php             site/src/View/Allteams/HtmlView.php             site/src/View/Allprojects/HtmlView.php             site/src/View/Results/HtmlView.php
+          do
+            if grep -Fq 'row-fluid' "$file"; then
+              echo "$file still contains Bootstrap 2/3 row-fluid." >&2
+              exit 1
+            fi
+          done
+
+          statistic_bridge=admin/views/statistic/view.html.php
+          statistic_native=admin/src/View/Statistic/HtmlView.php
+          statistic_layout=admin/tmpl/statistic/edit.php
+          statistics_bridge=admin/views/statistics/view.html.php
+          statistics_layout=admin/tmpl/statistics/default.php
+
+          grep -Fq 'SportsManagement native administrator Statistic view could not be loaded.' "$statistic_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewstatistic')" "$statistic_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Statistic edit view.' "$statistic_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Statistic edit layout.' "$statistic_layout"
+
+          grep -Fq 'SportsManagement native administrator Statistics view could not be loaded.' "$statistics_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewStatistics')" "$statistics_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Statistics list layout.' "$statistics_layout"
+
+          echo 'Joomla 5/6 batch 150 contracts OK.'
