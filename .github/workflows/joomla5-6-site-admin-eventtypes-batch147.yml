@@ -1,0 +1,87 @@
+name: Joomla 5/6 site admin Eventtypes batch 147
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Results/HtmlView.php'
+      - 'site/src/View/Predictionranking/HtmlView.php'
+      - 'admin/views/eventtype/view.html.php'
+      - 'admin/src/View/Eventtype/HtmlView.php'
+      - 'admin/tmpl/eventtype/edit.php'
+      - 'admin/views/eventtypes/view.html.php'
+      - '.github/workflows/joomla5-6-site-admin-eventtypes-batch147.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Results/HtmlView.php'
+      - 'site/src/View/Predictionranking/HtmlView.php'
+      - 'admin/views/eventtype/view.html.php'
+      - 'admin/src/View/Eventtype/HtmlView.php'
+      - 'admin/tmpl/eventtype/edit.php'
+      - 'admin/views/eventtypes/view.html.php'
+      - '.github/workflows/joomla5-6-site-admin-eventtypes-batch147.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Results/HtmlView.php
+            site/src/View/Predictionranking/HtmlView.php
+            admin/views/eventtype/view.html.php
+            admin/src/View/Eventtype/HtmlView.php
+            admin/tmpl/eventtype/edit.php
+            admin/views/eventtypes/view.html.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Results view.' site/src/View/Results/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Predictionranking view.' site/src/View/Predictionranking/HtmlView.php
+
+          eventtype_bridge=admin/views/eventtype/view.html.php
+          eventtype_native=admin/src/View/Eventtype/HtmlView.php
+          eventtype_layout=admin/tmpl/eventtype/edit.php
+          eventtypes_bridge=admin/views/eventtypes/view.html.php
+
+          grep -Fq "\defined('_JEXEC') or die;" "$eventtype_bridge"
+          if grep -Fq "die('Restricted access')" "$eventtype_bridge"; then
+            echo 'Eventtype bridge regressed to legacy restricted-access guard.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'SportsManagement native administrator Eventtype view could not be loaded.' "$eventtype_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementVieweventtype')" "$eventtype_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Eventtype edit view.' "$eventtype_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Eventtype edit layout.' "$eventtype_layout"
+
+          grep -Fq 'SportsManagement native administrator Eventtypes view could not be loaded.' "$eventtypes_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewEventtypes')" "$eventtypes_bridge"
+
+          echo 'Joomla 5/6 batch 147 contracts OK.'
