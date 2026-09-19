@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectsViewDat
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -75,7 +76,7 @@ final class HtmlView extends BaseHtmlView
          * database connection here that the MVC factory injects into models.
          */
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $sportsManagementDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
         $service = new ProjectsViewDataService($sportsManagementDatabase);
         $this->projectData = $service;
