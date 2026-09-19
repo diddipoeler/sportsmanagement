@@ -17,7 +17,7 @@ if (!class_exists(TreetosModel::class)) {
 }
 
 if (!class_exists(TreetosModel::class)) {
-    throw new \\RuntimeException('SportsManagement native Treetos model could not be loaded.', 500);
+    throw new \RuntimeException('SportsManagement native Treetos model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelTreetos', false)) {
