@@ -74,7 +74,7 @@ jobs:
 
           grep -Fq '@version    5.6.0' "$site_view"
           grep -Fq "\\defined('_JEXEC') or die;" "$site_view"
-          grep -Fq 'throw new \\RuntimeException' "$site_view"
+          grep -Fq 'throw new \RuntimeException' "$site_view"
           grep -Fq 'public $item;' "$site_view"
 
           if grep -Fq 'jimport(' "$site_view"; then
@@ -86,7 +86,7 @@ jobs:
           grep -Fq 'LegacySportsmanagementTable::class' "$site_model"
           grep -Fq "SportsManagement legacy table bridge could not be loaded." "$site_model"
 
-          grep -Fq 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\View\\Sportsmanagement\\HtmlView;' "$admin_bridge"
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\View\Sportsmanagement\HtmlView;' "$admin_bridge"
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewsportsmanagement')" "$admin_bridge"
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement edit view.' "$admin_native"
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement edit layout.' "$admin_layout"
@@ -102,9 +102,9 @@ jobs:
 
           php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$manifest"
 
-          grep -Fq 'use Joomla\\CMS\\Factory;' "$helper"
+          grep -Fq 'use Joomla\CMS\Factory;' "$helper"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
-          grep -Fq 'use Joomla\\CMS\\Factory;' "$dispatcher"
+          grep -Fq 'use Joomla\CMS\Factory;' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
           grep -Fq '<option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>' "$manifest"
 
