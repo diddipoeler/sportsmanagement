@@ -94,7 +94,7 @@ class CalendarRuntime extends \PHPCalendar
     {
         $month = max(1, min(12, (int) $month));
         $year = max(1970, (int) $year);
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $timezoneName = trim((string) self::$params->get('time_zone', $app->get('offset', 'UTC')));
 
         try {
@@ -182,7 +182,7 @@ class CalendarRuntime extends \PHPCalendar
 
     public function matches_output($month, $year): array
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $offset = (string) $app->get('offset', 'UTC');
         $language = $app->getLanguage();
         $language->load('mod_sportsmanagement_calendar');
