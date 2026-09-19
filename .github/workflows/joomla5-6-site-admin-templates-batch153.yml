@@ -1,0 +1,101 @@
+name: Joomla 5/6 site admin Templates batch 153
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Allleagues/HtmlView.php'
+      - 'site/src/View/Allplaygrounds/HtmlView.php'
+      - 'site/src/View/Allprojectrounds/HtmlView.php'
+      - 'admin/views/template/view.html.php'
+      - 'admin/src/View/Template/HtmlView.php'
+      - 'admin/tmpl/template/edit.php'
+      - 'admin/views/templates/view.html.php'
+      - 'admin/src/View/Templates/HtmlView.php'
+      - 'admin/tmpl/templates/default.php'
+      - '.github/workflows/joomla5-6-site-admin-templates-batch153.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Allleagues/HtmlView.php'
+      - 'site/src/View/Allplaygrounds/HtmlView.php'
+      - 'site/src/View/Allprojectrounds/HtmlView.php'
+      - 'admin/views/template/view.html.php'
+      - 'admin/src/View/Template/HtmlView.php'
+      - 'admin/tmpl/template/edit.php'
+      - 'admin/views/templates/view.html.php'
+      - 'admin/src/View/Templates/HtmlView.php'
+      - 'admin/tmpl/templates/default.php'
+      - '.github/workflows/joomla5-6-site-admin-templates-batch153.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Allleagues/HtmlView.php
+            site/src/View/Allplaygrounds/HtmlView.php
+            site/src/View/Allprojectrounds/HtmlView.php
+            admin/views/template/view.html.php
+            admin/src/View/Template/HtmlView.php
+            admin/tmpl/template/edit.php
+            admin/views/templates/view.html.php
+            admin/src/View/Templates/HtmlView.php
+            admin/tmpl/templates/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             site/src/View/Allleagues/HtmlView.php             site/src/View/Allplaygrounds/HtmlView.php
+          do
+            if grep -Fq 'row-fluid' "$file"; then
+              echo "$file still contains Bootstrap 2/3 row-fluid." >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Allprojectrounds view.' site/src/View/Allprojectrounds/HtmlView.php
+
+          template_bridge=admin/views/template/view.html.php
+          template_native=admin/src/View/Template/HtmlView.php
+          template_layout=admin/tmpl/template/edit.php
+          templates_bridge=admin/views/templates/view.html.php
+          templates_native=admin/src/View/Templates/HtmlView.php
+          templates_layout=admin/tmpl/templates/default.php
+
+          grep -Fq 'SportsManagement native administrator Template view could not be loaded.' "$template_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewTemplate')" "$template_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Template edit view.' "$template_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Template edit layout.' "$template_layout"
+
+          grep -Fq 'SportsManagement native administrator Templates view could not be loaded.' "$templates_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewTemplates')" "$templates_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Templates list view.' "$templates_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Templates list layout.' "$templates_layout"
+
+          echo 'Joomla 5/6 batch 153 contracts OK.'
