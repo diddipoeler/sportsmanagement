@@ -125,8 +125,8 @@
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PICTURE_STYLE" 
       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PICTURE_STYLE">
       <option value="">COM_SPORTSMANAGEMENT_FES_PICTURE_NOTHING</option>
-      <option value="img-rounded">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_ROUNDED</option>
-      <option value="img-circle">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_CIRCLE</option>
+      <option value="rounded">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_ROUNDED</option>
+      <option value="rounded-circle">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_CIRCLE</option>
       <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
 
@@ -220,7 +220,7 @@ description="COM_SPORTSMANAGEMENT_FES_PARAM_DESC_SHOW_PICTURE">
 			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
 			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
 			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			<option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
     		
