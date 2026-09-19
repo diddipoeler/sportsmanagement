@@ -1,16 +1,23 @@
 <?php
 /**
- * SportsManagement legacy compatibility bridge.
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Eventtype view.
  *
- * The active Joomla 5/6 implementation lives in admin/src/View/Eventtype/HtmlView.php.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\View\Eventtype\HtmlView;
 
 if (!class_exists(HtmlView::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Eventtype/HtmlView.php';
+}
+
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Eventtype view could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementVieweventtype', false)) {
