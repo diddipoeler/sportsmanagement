@@ -15,6 +15,10 @@ if (!class_exists(TopTipperHelper::class)) {
     require_once __DIR__ . '/src/Helper/TopTipperHelper.php';
 }
 
+if (!class_exists(TopTipperHelper::class)) {
+    throw new \RuntimeException('SportsManagement Top Tipper helper could not be loaded.', 500);
+}
+
 if (!class_exists('modJSMTopTipper', false)) {
     class_alias(TopTipperHelper::class, 'modJSMTopTipper');
 }
