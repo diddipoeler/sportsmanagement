@@ -1,31 +1,24 @@
 <?php
 /**
- * Joomla 5/6 compatibility view for the SportsManagement frontend root view.
+ * Legacy compatibility bridge for the native Joomla 5/6 frontend SportsManagement root view.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright (C) 2013-2026 Fussball in Europa
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\View\HtmlView;
+use Diddipoeler\Component\SportsManagement\Site\View\Sportsmanagement\HtmlView;
 
-/**
- * Legacy class name retained for compatibility with historic frontend dispatchers.
- */
-class sportsmanagementViewsportsmanagement extends HtmlView
-{
-    public $item;
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Sportsmanagement/HtmlView.php';
+}
 
-    public function display($tpl = null)
-    {
-        $this->item = $this->get('Item');
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native frontend root view could not be loaded.', 500);
+}
 
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
-        }
-
-        parent::display($tpl);
-    }
+if (!class_exists('sportsmanagementViewsportsmanagement', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewsportsmanagement');
 }
