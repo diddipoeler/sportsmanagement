@@ -76,7 +76,7 @@ jobs:
 
           grep -Fq '<version>5.6.0</version>' "$manifest"
           grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
-          grep -Fq 'use Joomla\\CMS\\Factory;' "$dispatcher"
+          grep -Fq 'use Joomla\CMS\Factory;' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
 
           echo 'Joomla 5/6 batch 128 contracts OK.'
