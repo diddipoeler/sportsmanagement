@@ -26,7 +26,7 @@ final class PlaygroundPlanHelper
     public function getData(Registry $params, CMSApplicationInterface $app, object $module): array
     {
         try {
-            if (!$app instanceof SiteApplication) {
+            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement PlaygroundPlan requires the Joomla site application.', 500);
             }
 

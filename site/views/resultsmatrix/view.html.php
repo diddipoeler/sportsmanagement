@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage resultsmatrix
  * @file       view.html.php
@@ -9,13 +9,11 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatrixModel;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'results' . DIRECTORY_SEPARATOR . 'view.html.php';
 
@@ -35,7 +33,12 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
         $this->params = $this->app->getParams();
         $databaseSelector = $this->jinput->getInt('cfg_which_database', 0);
 
-        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+        $assets = $this->document->getWebAssetManager();
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.resultsmatrix.script',
+            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
+        );
         $this->pagination = $this->get('Pagination');
 
         $matrixModel = new MatrixModel();
@@ -93,7 +96,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 
         $routeparameter = [];
         $routeparameter['cfg_which_database'] = $databaseSelector;
-        $routeparameter['s'] = Factory::getApplication()->input->getInt('s', 0);
+        $routeparameter['s'] = $this->jinput->getInt('s', 0);
         $routeparameter['p'] = $project->slug;
         if ($selectedRound) {
             $routeparameter['r'] = (int) $selectedRound->id . ':' . (string) ($selectedRound->alias ?? '');
@@ -128,8 +131,11 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
         }
 
         $this->document->setTitle($pageTitle);
-        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
-        $this->document->addCustomTag($stylelink);
+        $assets->registerAndUseStyle(
+            'com_sportsmanagement.resultsmatrix.style',
+            'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
+            ['version' => 'auto']
+        );
 
         sportsmanagementHelperHtml::$project = $project;
         sportsmanagementHelperHtml::$teams = $this->teams;
@@ -161,7 +167,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 
     public function getRoundSelectNavigation(&$rounds)
     {
-        $jinput = Factory::getApplication()->input;
+        $jinput = $this->jinput;
         $options = [];
 
         foreach ($rounds as $round) {
