@@ -29,9 +29,9 @@ final class LivescoreConnector extends JSMCalendar
 
     private function getRows(array $caldates, string $ordering = 'ASC'): array
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
-        if (!$app instanceof SiteApplication) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Calendar LiveScore requires the Joomla site application.', 500);
         }
 

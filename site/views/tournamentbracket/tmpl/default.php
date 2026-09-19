@@ -6,6 +6,8 @@
  * @package    Sportsmanagement
  * @subpackage tournamentbracket
  * @file       default.php
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
@@ -78,7 +80,7 @@ $wa->registerAndUseStyle(
 ?>
 
 <div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="tournamentbracket">
-    <div class="row-fluid">
+    <div class="row">
         <div style="margin-bottom: 5px; font-size: 16px;"><span id="matchCallback"></span></div>
 
         <div id="resize" class="col-12">

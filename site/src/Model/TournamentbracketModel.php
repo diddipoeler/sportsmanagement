@@ -16,8 +16,8 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Database\ParameterType;
 use Throwable;
 
-if (!class_exists(SportsManagementModel::class)) {
-    require_once __DIR__ . '/SportsManagementModel.php';
+if (!class_exists(SportsManagementProjectModel::class)) {
+    require_once __DIR__ . '/SportsManagementProjectModel.php';
 }
 
 if (!class_exists(TournamentbracketResultNormalizer::class)) {
@@ -30,7 +30,7 @@ if (!class_exists(TournamentbracketResultNormalizer::class)) {
  * The historic bracket ordering and double-leg aggregation are preserved, but
  * database access now runs entirely through SportsManagementModel.
  */
-final class TournamentbracketModel extends SportsManagementModel
+final class TournamentbracketModel extends SportsManagementProjectModel
 {
     private TournamentbracketResultNormalizer $resultNormalizer;
 

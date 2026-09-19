@@ -1,44 +1,24 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * Legacy compatibility bridge for the native Joomla 5/6 frontend Tournamentbracket view.
  *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tournamentbracket
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\View\Tournamentbracket\HtmlView;
 
-use Diddipoeler\Component\SportsManagement\Site\Model\TournamentbracketModel;
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Tournamentbracket/HtmlView.php';
+}
 
-class sportsmanagementViewtournamentbracket extends sportsmanagementView
-{
-    function init()
-    {
-        if (!class_exists(TournamentbracketModel::class)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/TournamentbracketModel.php';
-        }
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native frontend Tournamentbracket view could not be loaded.', 500);
+}
 
-        $model = new TournamentbracketModel();
-        $this->model = $model;
-
-        $bracket = $model->gettournamentbracket($this->jinput->getInt('p', 0));
-        $defaults = [
-            'elfmeter' => ['[null,null,null,""]'],
-            'teams' => '[]',
-            'results' => '[]',
-            'runden' => '[]',
-        ];
-
-        $this->bracket = is_array($bracket) ? array_replace($defaults, $bracket) : $defaults;
-
-        if (empty($this->bracket['elfmeter']) || !is_array($this->bracket['elfmeter'])) {
-            $this->bracket['elfmeter'] = $defaults['elfmeter'];
-        }
-    }
+if (!class_exists('sportsmanagementViewtournamentbracket', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewtournamentbracket');
 }

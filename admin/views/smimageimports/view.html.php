@@ -1,45 +1,24 @@
 <?php
-/** Native Joomla 5/6 administrator view for image-package imports. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Smimageimports view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\View\Smimageimports\HtmlView;
 
-class sportsmanagementViewsmimageimports extends sportsmanagementView
-{
-    public function init()
-    {
-        // Refresh and synchronize the package manifest before rendering the list.
-        $this->model->getimagesxml();
-        $this->model->getXMLFiles();
-        $this->items = $this->model->getItems();
-        $this->total = $this->model->getTotal();
-        $this->pagination = $this->model->getPagination();
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Smimageimports/HtmlView.php';
+}
 
-        $folders = [
-            HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'), 'id', 'name'),
-        ];
-        $folders = array_merge($folders, $this->model->getXMLFolder());
-        $this->lists = [
-            'folders' => HTMLHelper::_(
-                'select.genericList',
-                $folders,
-                'filter_image_folder',
-                'class="form-select" onchange="this.form.submit();"',
-                'id',
-                'name',
-                (string) $this->state->get('filter.image_folder')
-            ),
-        ];
-    }
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Smimageimports view could not be loaded.', 500);
+}
 
-    protected function addToolbar()
-    {
-        $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
-        $this->icon = 'images-import';
-        ToolbarHelper::custom('smimageimports.import', 'upload', 'upload', Text::_('JTOOLBAR_UPLOAD'), false);
-        ToolbarHelper::divider();
-        parent::addToolbar();
-    }
+if (!class_exists('sportsmanagementViewsmimageimports', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewsmimageimports');
 }

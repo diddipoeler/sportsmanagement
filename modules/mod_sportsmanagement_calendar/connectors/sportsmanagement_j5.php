@@ -488,9 +488,9 @@ final class SportsmanagementConnector extends JSMCalendar
 
     private static function siteApplication(): SiteApplication
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
 
-        if (!$app instanceof SiteApplication) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Calendar requires the Joomla site application.', 500);
         }
 
