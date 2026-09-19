@@ -32,6 +32,7 @@
     <config>
         <fields name="params" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
             <fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+                <field type="extensionversion" version="5.6.0" />
                 <field name="calendarids" type="gcalendar" default="" multiple="true"
                        label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_IDS_LABEL"
                        description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_IDS_DESC" />
