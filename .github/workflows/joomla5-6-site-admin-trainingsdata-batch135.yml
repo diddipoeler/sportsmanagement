@@ -1,0 +1,122 @@
+name: Joomla 5/6 site admin TrainingsData batch 135
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/settings/default/predictionentry.xml'
+      - 'site/settings/default/clubplan.xml'
+      - 'site/settings/default/statsranking.xml'
+      - 'admin/views/team/view.html.php'
+      - 'admin/src/View/Team/HtmlView.php'
+      - 'admin/tmpl/team/edit.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.xml'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-trainingsdata-batch135.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/settings/default/predictionentry.xml'
+      - 'site/settings/default/clubplan.xml'
+      - 'site/settings/default/statsranking.xml'
+      - 'admin/views/team/view.html.php'
+      - 'admin/src/View/Team/HtmlView.php'
+      - 'admin/tmpl/team/edit.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/**'
+      - '.github/workflows/joomla5-6-site-admin-trainingsdata-batch135.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/team/view.html.php
+            admin/src/View/Team/HtmlView.php
+            admin/tmpl/team/edit.php
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/settings/default/predictionentry.xml
+            site/settings/default/clubplan.xml
+            site/settings/default/statsranking.xml
+            modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.xml
+            modules/mod_sportsmanagement_trainingsdata/update-server.xml
+          )
+
+          for file in "${files[@]}"; do
+            php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$file"
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in site/settings/default/predictionentry.xml site/settings/default/clubplan.xml site/settings/default/statsranking.xml; do
+            grep -Fq 'value="table table-sm"' "$file"
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'value="btn btn-secondary"' site/settings/default/clubplan.xml
+          if grep -Fq 'value="btn btn-default"' site/settings/default/clubplan.xml; then
+            echo 'Clubplan regressed to Bootstrap 3 btn-default.' >&2
+            exit 1
+          fi
+
+          admin_bridge=admin/views/team/view.html.php
+          admin_native=admin/src/View/Team/HtmlView.php
+          admin_layout=admin/tmpl/team/edit.php
+          manifest=modules/mod_sportsmanagement_trainingsdata/mod_sportsmanagement_trainingsdata.xml
+          dispatcher=modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+
+          grep -Fq 'SportsManagement native administrator Team view could not be loaded.' "$admin_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Team edit view.' "$admin_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Team edit layout.' "$admin_layout"
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+          grep -Fq 'value="table table-sm"' "$manifest"
+          if grep -Fq 'table-condensed' "$manifest"; then
+            echo 'TrainingsData manifest regressed to Bootstrap 3 table-condensed.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'use Joomla\CMS\Factory;' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          if grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"; then
+            echo 'TrainingsData dispatcher regressed to application container access.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 135 contracts OK.'
