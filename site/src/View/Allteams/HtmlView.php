@@ -30,7 +30,7 @@ final class HtmlView extends SportsManagementHtmlView
     public string $sortColumn = 'v.name';
     public array $lists = [];
     public string $divclasscontainer = 'container-fluid';
-    public string $divclassrow = 'row-fluid';
+    public string $divclassrow = 'row';
     public int $modalheight = 600;
     public int $modalwidth = 900;
 
