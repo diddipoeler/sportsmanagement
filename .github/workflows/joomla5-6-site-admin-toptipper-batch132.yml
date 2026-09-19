@@ -1,0 +1,107 @@
+name: Joomla 5/6 site admin top tipper batch 132
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/settings/default/stats.xml'
+      - 'site/settings/default/playground.xml'
+      - 'site/settings/default/referee.xml'
+      - 'admin/views/smquote/view.html.php'
+      - 'admin/src/View/Smquote/HtmlView.php'
+      - 'admin/tmpl/smquote/edit.php'
+      - 'modules/mod_sportsmanagement_top_tipper/mod_sportsmanagement_top_tipper.xml'
+      - 'modules/mod_sportsmanagement_top_tipper/helper.php'
+      - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-toptipper-batch132.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/settings/default/stats.xml'
+      - 'site/settings/default/playground.xml'
+      - 'site/settings/default/referee.xml'
+      - 'admin/views/smquote/view.html.php'
+      - 'admin/src/View/Smquote/HtmlView.php'
+      - 'admin/tmpl/smquote/edit.php'
+      - 'modules/mod_sportsmanagement_top_tipper/**'
+      - '.github/workflows/joomla5-6-site-admin-toptipper-batch132.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/smquote/view.html.php
+            admin/src/View/Smquote/HtmlView.php
+            admin/tmpl/smquote/edit.php
+            modules/mod_sportsmanagement_top_tipper/helper.php
+            modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/settings/default/stats.xml
+            site/settings/default/playground.xml
+            site/settings/default/referee.xml
+            modules/mod_sportsmanagement_top_tipper/mod_sportsmanagement_top_tipper.xml
+            modules/mod_sportsmanagement_top_tipper/update-server.xml
+          )
+
+          for file in "${files[@]}"; do
+            php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$file"
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in site/settings/default/stats.xml site/settings/default/playground.xml site/settings/default/referee.xml; do
+            grep -Fq 'value="table table-sm"' "$file"
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'SportsManagement native administrator Smquote view could not be loaded.' admin/views/smquote/view.html.php
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement quote edit view.' admin/src/View/Smquote/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement quote edit layout.' admin/tmpl/smquote/edit.php
+
+          manifest=modules/mod_sportsmanagement_top_tipper/mod_sportsmanagement_top_tipper.xml
+          helper=modules/mod_sportsmanagement_top_tipper/helper.php
+          dispatcher=modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+          grep -Fq 'SportsManagement Top Tipper helper could not be loaded.' "$helper"
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"
+          grep -Fq "SportsManagement Top Tipper requires the Joomla site application." "$dispatcher"
+
+          echo 'Joomla 5/6 batch 132 contracts OK.'
