@@ -1,0 +1,109 @@
+name: Joomla 5/6 site admin PlaygroundTicker batch 139
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/allleagues/tmpl/default.xml'
+      - 'site/views/allprojects/tmpl/default.xml'
+      - 'site/views/allpersons/tmpl/default.xml'
+      - 'site/views/allprojectrounds/tmpl/default.xml'
+      - 'admin/views/league/view.html.php'
+      - 'admin/src/View/League/HtmlView.php'
+      - 'admin/tmpl/league/edit.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/mod_sportsmanagement_playground_ticker.xml'
+      - 'modules/mod_sportsmanagement_playground_ticker/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-playgroundticker-batch139.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/allleagues/tmpl/default.xml'
+      - 'site/views/allprojects/tmpl/default.xml'
+      - 'site/views/allpersons/tmpl/default.xml'
+      - 'site/views/allprojectrounds/tmpl/default.xml'
+      - 'admin/views/league/view.html.php'
+      - 'admin/src/View/League/HtmlView.php'
+      - 'admin/tmpl/league/edit.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/**'
+      - '.github/workflows/joomla5-6-site-admin-playgroundticker-batch139.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/league/view.html.php
+            admin/src/View/League/HtmlView.php
+            admin/tmpl/league/edit.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/views/allleagues/tmpl/default.xml
+            site/views/allprojects/tmpl/default.xml
+            site/views/allpersons/tmpl/default.xml
+            site/views/allprojectrounds/tmpl/default.xml
+            modules/mod_sportsmanagement_playground_ticker/mod_sportsmanagement_playground_ticker.xml
+            modules/mod_sportsmanagement_playground_ticker/update-server.xml
+          )
+
+          for file in "${files[@]}"; do
+            php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$file"
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             site/views/allleagues/tmpl/default.xml             site/views/allprojects/tmpl/default.xml             site/views/allpersons/tmpl/default.xml             site/views/allprojectrounds/tmpl/default.xml
+          do
+            grep -Fq 'value="table table-sm"' "$file"
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          admin_bridge=admin/views/league/view.html.php
+          admin_native=admin/src/View/League/HtmlView.php
+          admin_layout=admin/tmpl/league/edit.php
+          manifest=modules/mod_sportsmanagement_playground_ticker/mod_sportsmanagement_playground_ticker.xml
+          update=modules/mod_sportsmanagement_playground_ticker/update-server.xml
+
+          grep -Fq 'SportsManagement native administrator League view could not be loaded.' "$admin_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement League edit view.' "$admin_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement League edit layout.' "$admin_layout"
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+          grep -Fq '<version>5.6.0</version>' "$update"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update"
+
+          echo 'Joomla 5/6 batch 139 contracts OK.'
