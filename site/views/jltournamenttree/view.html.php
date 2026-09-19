@@ -1,9 +1,15 @@
 <?php
 /**
  * SportsManagement tournament tree legacy view for Joomla 5/6.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 
@@ -57,9 +63,16 @@ class sportsmanagementViewjltournamenttree extends sportsmanagementView
             );
 
         if (ComponentHelper::getParams($this->option)->get('show_debug_info_frontend')) {
-            Factory::getApplication()->enqueueMessage(
+            /** @var SiteApplication $app */
+            $app = Factory::getContainer()->get(SiteApplication::class);
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement tournament tree requires the Joomla site application.', 500);
+            }
+
+            $app->enqueueMessage(
                 __METHOD__ . ' ' . __LINE__ . ' config <pre>' . print_r($this->config, true) . '</pre>',
-                ''
+                'notice'
             );
         }
     }

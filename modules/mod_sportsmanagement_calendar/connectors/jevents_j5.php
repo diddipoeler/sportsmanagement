@@ -7,7 +7,7 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
@@ -69,6 +69,11 @@ final class JEventsConnector extends JSMCalendar
     {
         /** @var SiteApplication $app */
         $app = Factory::getContainer()->get(SiteApplication::class);
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Calendar JEvents connector requires the Joomla site application.', 500);
+        }
+
         $app->enqueueMessage($message, 'warning');
     }
 
