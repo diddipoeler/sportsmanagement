@@ -1,0 +1,87 @@
+name: Joomla 5/6 site admin GitHub Close batch 156
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Treetonode/HtmlView.php'
+      - 'admin/views/github/view.html.php'
+      - 'admin/src/View/Github/HtmlView.php'
+      - 'admin/tmpl/github/default.php'
+      - 'admin/views/close/view.html.php'
+      - 'admin/src/View/Close/HtmlView.php'
+      - 'admin/tmpl/close/default.php'
+      - '.github/workflows/joomla5-6-site-admin-github-close-batch156.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Treetonode/HtmlView.php'
+      - 'admin/views/github/view.html.php'
+      - 'admin/src/View/Github/HtmlView.php'
+      - 'admin/tmpl/github/default.php'
+      - 'admin/views/close/view.html.php'
+      - 'admin/src/View/Close/HtmlView.php'
+      - 'admin/tmpl/close/default.php'
+      - '.github/workflows/joomla5-6-site-admin-github-close-batch156.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Treetonode/HtmlView.php
+            admin/views/github/view.html.php
+            admin/src/View/Github/HtmlView.php
+            admin/tmpl/github/default.php
+            admin/views/close/view.html.php
+            admin/src/View/Close/HtmlView.php
+            admin/tmpl/close/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Treetonode view.' site/src/View/Treetonode/HtmlView.php
+
+          github_bridge=admin/views/github/view.html.php
+          github_native=admin/src/View/Github/HtmlView.php
+          github_layout=admin/tmpl/github/default.php
+          close_bridge=admin/views/close/view.html.php
+          close_native=admin/src/View/Close/HtmlView.php
+          close_layout=admin/tmpl/close/default.php
+
+          grep -Fq 'SportsManagement native administrator GitHub view could not be loaded.' "$github_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewgithub')" "$github_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement GitHub helper view.' "$github_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement GitHub list layout.' "$github_layout"
+
+          grep -Fq 'SportsManagement native administrator Close view could not be loaded.' "$close_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewClose')" "$close_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Close view.' "$close_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Close layout.' "$close_layout"
+
+          echo 'Joomla 5/6 batch 156 contracts OK.'
