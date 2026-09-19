@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementLiveticker\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -28,11 +29,17 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
+        $app = $this->getApplication();
+
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
+        }
+
         $result = $this->getHelperFactory()
             ->getHelper('LivetickerHelper')
-            ->getData($data['params'], $data['module'], $this->getApplication());
+            ->getData($data['params'], $data['module'], $app);
 
-        $assets = $this->getApplication()->getDocument()->getWebAssetManager();
+        $assets = $app->getDocument()->getWebAssetManager();
         $assets->registerAndUseScript(
             'mod_sportsmanagement_liveticker',
             'modules/mod_sportsmanagement_liveticker/js/turtushout.js',
