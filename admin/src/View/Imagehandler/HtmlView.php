@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator image selector and upload view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Imagehandler;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagehandlerModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ImageSelectHelper;
 use Joomla\CMS\Client\ClientHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -40,7 +49,7 @@ final class HtmlView extends BaseHtmlView
     {
         $this->ensureImageSelectHelper();
 
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $model = $this->getModel();
 
@@ -100,7 +109,7 @@ final class HtmlView extends BaseHtmlView
 
     private function prepareUpload(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = self::administratorApplication()->getInput();
         $this->option = $input->getCmd('option', 'com_sportsmanagement');
         $type = $input->getCmd('type');
 
@@ -130,4 +139,16 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('SportsManagement image select helper is unavailable.', 500);
         }
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement Imagehandler view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

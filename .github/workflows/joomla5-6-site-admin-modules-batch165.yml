@@ -1,0 +1,67 @@
+name: Joomla 5/6 site admin modules batch 165
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/results/view.html.php'
+      - 'admin/src/View/Imagehandler/HtmlView.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch165.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/results/view.html.php'
+      - 'admin/src/View/Imagehandler/HtmlView.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch165.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/results/view.html.php
+            admin/src/View/Imagehandler/HtmlView.php
+            modules/mod_sportsmanagement_teamplayers/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- 'private static function siteApplication(): SiteApplication' site/views/results/view.html.php
+          grep -Fq -- 'Factory::getContainer()->get(SiteApplication::class)' site/views/results/view.html.php
+          grep -Fq -- 'SportsManagement Results view requires the Joomla site application.' site/views/results/view.html.php
+          ! grep -Fq -- 'Factory::getApplication()' site/views/results/view.html.php
+
+          grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Imagehandler/HtmlView.php
+          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Imagehandler/HtmlView.php
+          grep -Fq -- 'SportsManagement Imagehandler view requires the Joomla administrator application.' admin/src/View/Imagehandler/HtmlView.php
+          ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Imagehandler/HtmlView.php
+
+          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_teamplayers/helper.php
+          grep -Fq -- 'SportsManagement TeamPlayers legacy bridge requires the Joomla site application.' modules/mod_sportsmanagement_teamplayers/helper.php
+
+          echo 'Joomla 5/6 batch 165 contracts OK.'

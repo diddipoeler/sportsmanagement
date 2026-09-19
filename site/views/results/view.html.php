@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage results
  * @file       view.html.php
@@ -9,7 +9,8 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -123,7 +124,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 	public static function getTeamClubIcon($team, $type = 1, $attribs = array(), $modalwidth = '100', $modalheight = '200', $use_jquery_modal = 0)
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		if ($team)
 		{
@@ -302,11 +303,11 @@ class sportsmanagementViewResults extends sportsmanagementView
 		{
 			if ($project->teams_as_referees)
 			{
-				$referees = sportsmanagementModelResults::getMatchRefereeTeams($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+				$referees = sportsmanagementModelResults::getMatchRefereeTeams($game->id, self::siteApplication()->getInput()->getInt('cfg_which_database', 0));
 			}
 			else
 			{
-				$referees = sportsmanagementHelper::getMatchReferees($game->id, Factory::getApplication()->input->getInt('cfg_which_database', 0));
+				$referees = sportsmanagementHelper::getMatchReferees($game->id, self::siteApplication()->getInput()->getInt('cfg_which_database', 0));
 			}
 
 			if (!empty($referees))
@@ -372,8 +373,8 @@ class sportsmanagementViewResults extends sportsmanagementView
 	{
 		$output                               = '';
 		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+		$routeparameter['cfg_which_database'] = self::siteApplication()->getInput()->getInt('cfg_which_database', 0);
+		$routeparameter['s']                  = self::siteApplication()->getInput()->getInt('s', 0);
 		$routeparameter['p']                  = $game->project_id;
 		$routeparameter['mid']                = $game->id;
 		$report_link                          = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport', $routeparameter);
@@ -420,7 +421,7 @@ class sportsmanagementViewResults extends sportsmanagementView
 	 */
 	public static function showEventsContainerInResults($matchInfo, $projectevents, $matchevents, $substitutions = null, $config = array(), $project = array())
 	{
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		$output = '';
 		$result = '';
@@ -1051,8 +1052,8 @@ class sportsmanagementViewResults extends sportsmanagementView
       $limit = $this->state->get('list.limit');
       sportsmanagementModelResults::$limit = $limit;
       
-      //Factory::getApplication()->enqueueMessage(__LINE__.' limitstart<pre>'.print_r($limitStart,true).'</pre>', 'notice');
-      //Factory::getApplication()->enqueueMessage(__LINE__.' limit<pre>'.print_r($limit,true).'</pre>', 'notice');
+      //self::siteApplication()->enqueueMessage(__LINE__.' limitstart<pre>'.print_r($limitStart,true).'</pre>', 'notice');
+      //self::siteApplication()->enqueueMessage(__LINE__.' limit<pre>'.print_r($limit,true).'</pre>', 'notice');
 		
 		//$matches = $this->get('Items');
 		$matches = $this->get('Data');
@@ -1355,4 +1356,17 @@ class sportsmanagementViewResults extends sportsmanagementView
 		*/
 		return $game->summary;
 	}
+	private static function siteApplication(): SiteApplication
+	{
+		/** @var SiteApplication $app */
+		$app = Factory::getContainer()->get(SiteApplication::class);
+
+		if (!$app->isClient('site'))
+		{
+			throw new \RuntimeException('SportsManagement Results view requires the Joomla site application.', 500);
+		}
+
+		return $app;
+	}
+
 }
