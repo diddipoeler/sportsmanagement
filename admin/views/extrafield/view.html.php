@@ -1,71 +1,24 @@
 <?php
 /**
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Extrafield view.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage extrafield
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Administrator\View\Extrafield\HtmlView;
 
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Log\Log;
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Extrafield/HtmlView.php';
+}
 
-/**
- * sportsmanagementViewextrafield
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementViewextrafield extends sportsmanagementView
-{
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Extrafield view could not be loaded.', 500);
+}
 
-
-	/**
-	 * sportsmanagementViewextrafield::init()
-	 *
-	 * @return
-	 */
-	public function init()
-	{
-
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			Log::add(implode('<br />', $errors));
-
-			return false;
-		}
-
-		$this->cfg_which_media_tool = ComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
-
-	}
-
-	/**
-	 * Setting the toolbar
-	 */
-	protected function addToolBar()
-	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$jinput->set('hidemainmenu', true);
-
-		$isNew      = $this->item->id ? $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_EDIT') : $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELD_NEW');
-		$this->icon = 'extrafield';
-
-		parent::addToolbar();
-	}
-
-
+if (!class_exists('sportsmanagementViewextrafield', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewextrafield');
 }
