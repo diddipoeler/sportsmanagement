@@ -1,36 +1,24 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage listheader
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Listheader view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementViewlistheader
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewlistheader extends sportsmanagementView
-{
+use Diddipoeler\Component\SportsManagement\Administrator\View\Listheader\HtmlView;
 
-	/**
-	 * sportsmanagementViewlistheader::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Listheader/HtmlView.php';
+}
 
-	}
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Listheader view could not be loaded.', 500);
+}
 
+if (!class_exists('sportsmanagementViewlistheader', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewlistheader');
 }
