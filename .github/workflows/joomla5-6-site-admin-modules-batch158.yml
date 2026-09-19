@@ -1,0 +1,90 @@
+name: Joomla 5/6 site admin modules batch 158
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Json/HtmlView.php'
+      - 'site/views/json/view.html.php'
+      - 'site/src/View/Sportsmanagement/HtmlView.php'
+      - 'site/views/sportsmanagement/view.html.php'
+      - 'site/views/jsonfeed/view.html.php'
+      - 'site/views/sishandball/view.html.php'
+      - 'admin/src/View/Footer/HtmlView.php'
+      - 'admin/views/footer/view.html.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch158.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Json/HtmlView.php'
+      - 'site/views/json/view.html.php'
+      - 'site/src/View/Sportsmanagement/HtmlView.php'
+      - 'site/views/sportsmanagement/view.html.php'
+      - 'site/views/jsonfeed/view.html.php'
+      - 'site/views/sishandball/view.html.php'
+      - 'admin/src/View/Footer/HtmlView.php'
+      - 'admin/views/footer/view.html.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch158.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Json/HtmlView.php
+            site/views/json/view.html.php
+            site/src/View/Sportsmanagement/HtmlView.php
+            site/views/sportsmanagement/view.html.php
+            site/views/jsonfeed/view.html.php
+            site/views/sishandball/view.html.php
+            admin/src/View/Footer/HtmlView.php
+            admin/views/footer/view.html.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement JSON view.' site/src/View/Json/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewjson')" site/views/json/view.html.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement root view.' site/src/View/Sportsmanagement/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewsportsmanagement')" site/views/sportsmanagement/view.html.php
+
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Footer view.' admin/src/View/Footer/HtmlView.php
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewFooter')" admin/views/footer/view.html.php
+
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/views/sishandball/view.html.php
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' site/views/sishandball/view.html.php
+          ! grep -Fq 'Factory::getApplication()' site/views/sishandball/view.html.php
+
+          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          ! grep -Fq 'Factory::getApplication()' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+
+          echo 'Joomla 5/6 batch 158 contracts OK.'
