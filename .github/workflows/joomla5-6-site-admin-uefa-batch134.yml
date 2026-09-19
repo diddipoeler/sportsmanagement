@@ -1,0 +1,112 @@
+name: Joomla 5/6 site admin UEFA batch 134
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/settings/default/teaminfo.xml'
+      - 'site/settings/default/player.xml'
+      - 'site/settings/default/roster.xml'
+      - 'admin/views/playground/view.html.php'
+      - 'admin/src/View/Playground/HtmlView.php'
+      - 'admin/tmpl/playground/edit.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-uefa-batch134.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/settings/default/teaminfo.xml'
+      - 'site/settings/default/player.xml'
+      - 'site/settings/default/roster.xml'
+      - 'admin/views/playground/view.html.php'
+      - 'admin/src/View/Playground/HtmlView.php'
+      - 'admin/tmpl/playground/edit.php'
+      - 'modules/mod_sportsmanagement_uefawertung/**'
+      - '.github/workflows/joomla5-6-site-admin-uefa-batch134.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/playground/view.html.php
+            admin/src/View/Playground/HtmlView.php
+            admin/tmpl/playground/edit.php
+            modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/settings/default/teaminfo.xml
+            site/settings/default/player.xml
+            site/settings/default/roster.xml
+            modules/mod_sportsmanagement_uefawertung/mod_sportsmanagement_uefawertung.xml
+          )
+
+          for file in "${files[@]}"; do
+            php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$file"
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in site/settings/default/teaminfo.xml site/settings/default/player.xml site/settings/default/roster.xml; do
+            grep -Fq 'value="table table-sm"' "$file"
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'value="rounded"' site/settings/default/teaminfo.xml
+          grep -Fq 'value="rounded-circle"' site/settings/default/teaminfo.xml
+          if grep -Fq 'value="img-rounded"' site/settings/default/teaminfo.xml || grep -Fq 'value="img-circle"' site/settings/default/teaminfo.xml; then
+            echo 'Teaminfo regressed to Bootstrap 3 image classes.' >&2
+            exit 1
+          fi
+
+          admin_bridge=admin/views/playground/view.html.php
+          admin_native=admin/src/View/Playground/HtmlView.php
+          admin_layout=admin/tmpl/playground/edit.php
+          dispatcher=modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+
+          grep -Fq 'SportsManagement native administrator Playground view could not be loaded.' "$admin_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Playground edit view.' "$admin_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Playground edit layout.' "$admin_layout"
+
+          grep -Fq 'use Joomla\CMS\Factory;' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          if grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"; then
+            echo 'UEFA dispatcher regressed to application container access.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 134 contracts OK.'
