@@ -1,7 +1,13 @@
 <?php
 /**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
+ * Native Joomla 5/6 administrator SportsManagement Divisions list layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    SportsManagement
+ * @subpackage com_sportsmanagement
  */
 
 \defined('_JEXEC') or die;
