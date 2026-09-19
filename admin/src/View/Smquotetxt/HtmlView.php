@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator editor view for random-quote source files.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Smquotetxt;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -18,7 +27,13 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null): void
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement Smquotetxt view requires the Joomla administrator application.', 500);
+        }
+
         $app->getInput()->set('hidemainmenu', true);
 
         $this->file_name = $app->getInput()->getString('file_name');

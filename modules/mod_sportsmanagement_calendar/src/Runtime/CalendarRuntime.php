@@ -95,7 +95,7 @@ class CalendarRuntime extends \PHPCalendar
     {
         $month = max(1, min(12, (int) $month));
         $year = max(1970, (int) $year);
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = self::siteApplication();
         $timezoneName = trim((string) self::$params->get('time_zone', $app->get('offset', 'UTC')));
 
         try {
@@ -183,7 +183,7 @@ class CalendarRuntime extends \PHPCalendar
 
     public function matches_output($month, $year): array
     {
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = self::siteApplication();
         $offset = (string) $app->get('offset', 'UTC');
         $language = $app->getLanguage();
         $language->load('mod_sportsmanagement_calendar');
@@ -299,5 +299,17 @@ class CalendarRuntime extends \PHPCalendar
         );
 
         return $array;
+    }
+
+    private static function siteApplication(): SiteApplication
+    {
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Calendar runtime requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 }

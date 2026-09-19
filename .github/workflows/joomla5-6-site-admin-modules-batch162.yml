@@ -1,0 +1,74 @@
+name: Joomla 5/6 site admin modules batch 162
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/rankingmatrix/view.html.php'
+      - 'admin/src/View/Smquotetxt/HtmlView.php'
+      - 'admin/src/View/Smquotestxt/HtmlView.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch162.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/rankingmatrix/view.html.php'
+      - 'admin/src/View/Smquotetxt/HtmlView.php'
+      - 'admin/src/View/Smquotestxt/HtmlView.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch162.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/views/rankingmatrix/view.html.php
+            admin/src/View/Smquotetxt/HtmlView.php
+            admin/src/View/Smquotestxt/HtmlView.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- "getWebAssetManager()" site/views/rankingmatrix/view.html.php
+          grep -Fq -- "registerAndUseScript(" site/views/rankingmatrix/view.html.php
+          grep -Fq -- "registerAndUseStyle(" site/views/rankingmatrix/view.html.php
+          ! grep -Fq -- "addCustomTag(" site/views/rankingmatrix/view.html.php
+          ! grep -Fq -- "->addScript(" site/views/rankingmatrix/view.html.php
+
+          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Smquotetxt/HtmlView.php
+          ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Smquotetxt/HtmlView.php
+          grep -Fq -- 'Native Joomla 5/6 administrator list view for random-quote source files.' admin/src/View/Smquotestxt/HtmlView.php
+
+          grep -Fq -- 'private static function siteApplication(): SiteApplication' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq -- 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq -- 'SportsManagement Calendar runtime requires the Joomla site application.' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq -- 'self::siteApplication()' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+
+          echo 'Joomla 5/6 batch 162 contracts OK.'
