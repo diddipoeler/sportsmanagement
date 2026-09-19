@@ -1,6 +1,11 @@
 <?php
 /**
- * SportsManagement SIS handball legacy view for Joomla 5/6.
+ * SportsManagement SIS handball compatibility view for Joomla 5/6.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 
@@ -26,7 +31,7 @@ class sportsmanagementViewsishandball extends HtmlView
 
     public function display($tpl = null): void
     {
-        $app = Factory::getApplication();
+        $app = Factory::getContainer()->get(SiteApplication::class);
         $params = $app->getParams();
         $paramsComponent = ComponentHelper::getParams('com_sportsmanagement');
         $model = $this->getModel();
