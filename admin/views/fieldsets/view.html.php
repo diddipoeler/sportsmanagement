@@ -1,37 +1,24 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage fieldsets
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Fieldsets view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementViewFieldsets
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewFieldsets extends sportsmanagementView
-{
+use Diddipoeler\Component\SportsManagement\Administrator\View\Fieldsets\HtmlView;
 
-	/**
-	 * sportsmanagementViewFieldsets::init()
-	 *
-	 * @return void
-	 */
-	public function init()
-	{
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Fieldsets/HtmlView.php';
+}
 
-	}
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Fieldsets view could not be loaded.', 500);
+}
 
+if (!class_exists('sportsmanagementViewFieldsets', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewFieldsets');
 }
