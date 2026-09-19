@@ -1,0 +1,98 @@
+name: Joomla 5/6 site admin GCalendar batch 149
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Predictionusers/HtmlView.php'
+      - 'site/src/View/Predictionuser/HtmlView.php'
+      - 'admin/views/sportstype/view.html.php'
+      - 'admin/src/View/Sportstype/HtmlView.php'
+      - 'admin/tmpl/sportstype/edit.php'
+      - 'admin/views/sportstypes/view.html.php'
+      - 'admin/tmpl/sportstypes/default.php'
+      - 'modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml'
+      - '.github/workflows/joomla5-6-site-admin-gcalendar-batch149.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Predictionusers/HtmlView.php'
+      - 'site/src/View/Predictionuser/HtmlView.php'
+      - 'admin/views/sportstype/view.html.php'
+      - 'admin/src/View/Sportstype/HtmlView.php'
+      - 'admin/tmpl/sportstype/edit.php'
+      - 'admin/views/sportstypes/view.html.php'
+      - 'admin/tmpl/sportstypes/default.php'
+      - 'modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml'
+      - '.github/workflows/joomla5-6-site-admin-gcalendar-batch149.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Predictionusers/HtmlView.php
+            site/src/View/Predictionuser/HtmlView.php
+            admin/views/sportstype/view.html.php
+            admin/src/View/Sportstype/HtmlView.php
+            admin/tmpl/sportstype/edit.php
+            admin/views/sportstypes/view.html.php
+            admin/tmpl/sportstypes/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Predictionusers view.' site/src/View/Predictionusers/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Predictionuser view.' site/src/View/Predictionuser/HtmlView.php
+
+          sportstype_bridge=admin/views/sportstype/view.html.php
+          sportstype_native=admin/src/View/Sportstype/HtmlView.php
+          sportstype_layout=admin/tmpl/sportstype/edit.php
+          sportstypes_bridge=admin/views/sportstypes/view.html.php
+          sportstypes_layout=admin/tmpl/sportstypes/default.php
+          manifest=modules/mod_sportsmanagement_gcalendar/mod_sportsmanagement_gcalendar.xml
+
+          grep -Fq 'SportsManagement native administrator Sportstype view could not be loaded.' "$sportstype_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewSportsType')" "$sportstype_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Sportstype edit view.' "$sportstype_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Sportstype edit layout.' "$sportstype_layout"
+
+          grep -Fq 'SportsManagement native administrator Sportstypes view could not be loaded.' "$sportstypes_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewSportsTypes')" "$sportstypes_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Sportstypes list layout.' "$sportstypes_layout"
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq '<field type="extensionversion" version="5.6.0" />' "$manifest"
+
+          echo 'Joomla 5/6 batch 149 contracts OK.'
