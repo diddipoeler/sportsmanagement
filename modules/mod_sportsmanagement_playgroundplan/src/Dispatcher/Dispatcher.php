@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -28,6 +29,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $app = $this->getApplication();
+
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement PlaygroundPlan requires the Joomla site application.', 500);
+        }
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
         $data['list'] = $this->getHelperFactory()
