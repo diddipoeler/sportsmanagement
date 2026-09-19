@@ -1,0 +1,84 @@
+name: Joomla 5/6 site admin AJAX Top Navigation batch 140
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Teams/HtmlView.php'
+      - 'site/src/View/Clubs/HtmlView.php'
+      - 'admin/views/season/view.html.php'
+      - 'admin/src/View/Season/HtmlView.php'
+      - 'admin/tmpl/season/edit.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-ajaxtopnav-batch140.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Teams/HtmlView.php'
+      - 'site/src/View/Clubs/HtmlView.php'
+      - 'admin/views/season/view.html.php'
+      - 'admin/src/View/Season/HtmlView.php'
+      - 'admin/tmpl/season/edit.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
+      - '.github/workflows/joomla5-6-site-admin-ajaxtopnav-batch140.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Teams/HtmlView.php
+            site/src/View/Clubs/HtmlView.php
+            admin/views/season/view.html.php
+            admin/src/View/Season/HtmlView.php
+            admin/tmpl/season/edit.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Teams view.' site/src/View/Teams/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Clubs view.' site/src/View/Clubs/HtmlView.php
+
+          admin_bridge=admin/views/season/view.html.php
+          admin_native=admin/src/View/Season/HtmlView.php
+          admin_layout=admin/tmpl/season/edit.php
+          helper=modules/mod_sportsmanagement_ajax_top_navigation_menu/helper.php
+          dispatcher=modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+
+          grep -Fq 'SportsManagement native administrator Season view could not be loaded.' "$admin_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Season edit view.' "$admin_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Season edit layout.' "$admin_layout"
+
+          grep -Fq 'SportsManagement AJAX Top Navigation helper could not be loaded.' "$helper"
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"
+          grep -Fq 'SportsManagement AJAX Top Navigation requires the Joomla site application.' "$dispatcher"
+
+          echo 'Joomla 5/6 batch 140 contracts OK.'
