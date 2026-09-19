@@ -1,0 +1,112 @@
+name: Joomla 5/6 site admin Navigation batch 138
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/settings/default/predictionranking.xml'
+      - 'site/views/allplaygrounds/tmpl/default.xml'
+      - 'site/views/allteams/tmpl/default.xml'
+      - 'site/views/allclubs/tmpl/default.xml'
+      - 'admin/views/clubs/view.html.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/mod_sportsmanagement_navigation_menu.xml'
+      - 'modules/mod_sportsmanagement_navigation_menu/update-server.xml'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-navigation-batch138.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/settings/default/predictionranking.xml'
+      - 'site/views/allplaygrounds/tmpl/default.xml'
+      - 'site/views/allteams/tmpl/default.xml'
+      - 'site/views/allclubs/tmpl/default.xml'
+      - 'admin/views/clubs/view.html.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/**'
+      - '.github/workflows/joomla5-6-site-admin-navigation-batch138.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/clubs/view.html.php
+            modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/settings/default/predictionranking.xml
+            site/views/allplaygrounds/tmpl/default.xml
+            site/views/allteams/tmpl/default.xml
+            site/views/allclubs/tmpl/default.xml
+            modules/mod_sportsmanagement_navigation_menu/mod_sportsmanagement_navigation_menu.xml
+            modules/mod_sportsmanagement_navigation_menu/update-server.xml
+          )
+
+          for file in "${files[@]}"; do
+            php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$file"
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             site/settings/default/predictionranking.xml             site/views/allplaygrounds/tmpl/default.xml             site/views/allteams/tmpl/default.xml             site/views/allclubs/tmpl/default.xml
+          do
+            grep -Fq 'value="table table-sm"' "$file"
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq 'version="5.6.0"' site/views/allclubs/tmpl/default.xml
+
+          admin_bridge=admin/views/clubs/view.html.php
+          manifest=modules/mod_sportsmanagement_navigation_menu/mod_sportsmanagement_navigation_menu.xml
+          update=modules/mod_sportsmanagement_navigation_menu/update-server.xml
+          dispatcher=modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+
+          grep -Fq 'SportsManagement native administrator Clubs view could not be loaded.' "$admin_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewClubs')" "$admin_bridge"
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+          grep -Fq '<version>5.6.0</version>' "$update"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update"
+
+          grep -Fq 'use Joomla\CMS\Factory;' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+          if grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$dispatcher"; then
+            echo 'Navigation dispatcher regressed to application container access.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 138 contracts OK.'
