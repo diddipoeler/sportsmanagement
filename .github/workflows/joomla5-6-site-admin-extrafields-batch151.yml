@@ -1,0 +1,96 @@
+name: Joomla 5/6 site admin Extrafields batch 151
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Leaguechampionoverview/HtmlView.php'
+      - 'site/src/View/Statsranking/HtmlView.php'
+      - 'admin/views/extrafield/view.html.php'
+      - 'admin/src/View/Extrafield/HtmlView.php'
+      - 'admin/tmpl/extrafield/edit.php'
+      - 'admin/views/extrafields/view.html.php'
+      - 'admin/src/View/Extrafields/HtmlView.php'
+      - 'admin/tmpl/extrafields/default.php'
+      - '.github/workflows/joomla5-6-site-admin-extrafields-batch151.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Leaguechampionoverview/HtmlView.php'
+      - 'site/src/View/Statsranking/HtmlView.php'
+      - 'admin/views/extrafield/view.html.php'
+      - 'admin/src/View/Extrafield/HtmlView.php'
+      - 'admin/tmpl/extrafield/edit.php'
+      - 'admin/views/extrafields/view.html.php'
+      - 'admin/src/View/Extrafields/HtmlView.php'
+      - 'admin/tmpl/extrafields/default.php'
+      - '.github/workflows/joomla5-6-site-admin-extrafields-batch151.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Leaguechampionoverview/HtmlView.php
+            site/src/View/Statsranking/HtmlView.php
+            admin/views/extrafield/view.html.php
+            admin/src/View/Extrafield/HtmlView.php
+            admin/tmpl/extrafield/edit.php
+            admin/views/extrafields/view.html.php
+            admin/src/View/Extrafields/HtmlView.php
+            admin/tmpl/extrafields/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Leaguechampionoverview view.' site/src/View/Leaguechampionoverview/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Statsranking view.' site/src/View/Statsranking/HtmlView.php
+
+          extrafield_bridge=admin/views/extrafield/view.html.php
+          extrafield_native=admin/src/View/Extrafield/HtmlView.php
+          extrafield_layout=admin/tmpl/extrafield/edit.php
+          extrafields_bridge=admin/views/extrafields/view.html.php
+          extrafields_native=admin/src/View/Extrafields/HtmlView.php
+          extrafields_layout=admin/tmpl/extrafields/default.php
+
+          grep -Fq 'SportsManagement native administrator Extrafield view could not be loaded.' "$extrafield_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewextrafield')" "$extrafield_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Extrafield edit view.' "$extrafield_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Extrafield edit layout.' "$extrafield_layout"
+
+          grep -Fq 'SportsManagement native administrator Extrafields view could not be loaded.' "$extrafields_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewextrafields')" "$extrafields_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Extrafields list view.' "$extrafields_native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Extrafields list layout.' "$extrafields_layout"
+
+          if grep -Fq 'extends sportsmanagementView' "$extrafield_bridge" || grep -Fq 'extends sportsmanagementView' "$extrafields_bridge"; then
+            echo 'Legacy Extrafield view implementation is still active.' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 151 contracts OK.'
