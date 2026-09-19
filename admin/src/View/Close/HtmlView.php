@@ -1,7 +1,13 @@
 <?php
 /**
- * @package     SportsManagement
- * @subpackage  com_sportsmanagement
+ * Native Joomla 5/6 administrator SportsManagement Close view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    SportsManagement
+ * @subpackage com_sportsmanagement
  */
 
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Close;
