@@ -1,0 +1,83 @@
+name: Joomla 5/6 site admin New Project batch 142
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Referee/HtmlView.php'
+      - 'site/src/View/Teamplan/HtmlView.php'
+      - 'site/src/View/Clubplan/HtmlView.php'
+      - 'site/src/View/Hitlist/HtmlView.php'
+      - 'admin/views/seasons/view.html.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-newproject-batch142.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Referee/HtmlView.php'
+      - 'site/src/View/Teamplan/HtmlView.php'
+      - 'site/src/View/Clubplan/HtmlView.php'
+      - 'site/src/View/Hitlist/HtmlView.php'
+      - 'admin/views/seasons/view.html.php'
+      - 'modules/mod_sportsmanagement_new_project/**'
+      - '.github/workflows/joomla5-6-site-admin-newproject-batch142.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Referee/HtmlView.php
+            site/src/View/Teamplan/HtmlView.php
+            site/src/View/Clubplan/HtmlView.php
+            site/src/View/Hitlist/HtmlView.php
+            admin/views/seasons/view.html.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Referee view.' site/src/View/Referee/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Teamplan view.' site/src/View/Teamplan/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Clubplan view.' site/src/View/Clubplan/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Hitlist view.' site/src/View/Hitlist/HtmlView.php
+
+          seasons=admin/views/seasons/view.html.php
+          dispatcher=modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+
+          grep -Fq '@version    5.6.0' "$seasons"
+          grep -Fq "\defined('_JEXEC') or die;" "$seasons"
+          if grep -Fq "die('Restricted access')" "$seasons"; then
+            echo 'Seasons view regressed to the legacy restricted-access guard.' >&2
+            exit 1
+          fi
+
+          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"
+          grep -Fq 'SportsManagement New Project requires the Joomla site application.' "$dispatcher"
+
+          echo 'Joomla 5/6 batch 142 contracts OK.'
