@@ -1,58 +1,24 @@
 <?php
 /**
- * Legacy JSON view kept for compatibility with older SportsManagement links.
+ * Legacy compatibility bridge for the native Joomla 5/6 frontend JSON view.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Site\View\Json\HtmlView;
 
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
-use Joomla\CMS\Log\Log;
-use Joomla\CMS\MVC\View\HtmlView;
-
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
-
-    if (is_file($resolverFile)) {
-        require_once $resolverFile;
-    }
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Json/HtmlView.php';
 }
 
-class sportsmanagementViewjson extends HtmlView
-{
-    public function display($tpl = null)
-    {
-        // Keep the historical model access for this compatibility-only view,
-        // but do not bootstrap removed Joomla 3 view/HTML libraries.
-        $state = $this->get('State');
-        $this->form = $this->get('Form');
-        $this->state = $state;
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native frontend JSON view could not be loaded.', 500);
+}
 
-        if (count($errors = $this->get('Errors'))) {
-            Log::add(implode('<br />', $errors));
-
-            return false;
-        }
-
-        $this->addDocStyle();
-
-        return parent::display($tpl);
-    }
-
-    protected function addDocStyle(): void
-    {
-        $app = SportsManagementSiteApplicationResolver::resolve();
-
-        $app->getDocument()
-            ->getWebAssetManager()
-            ->registerAndUseStyle(
-                'com_sportsmanagement.site',
-                'media/com_sportsmanagement/css/site.stylesheet.css',
-                ['version' => 'auto']
-            );
-    }
+if (!class_exists('sportsmanagementViewjson', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewjson');
 }
