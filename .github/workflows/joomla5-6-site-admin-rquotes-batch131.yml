@@ -1,0 +1,114 @@
+name: Joomla 5/6 site admin rquotes batch 131
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/settings/default/teamstree.xml'
+      - 'site/settings/default/hitlist.xml'
+      - 'site/settings/default/leaguechampionoverview.xml'
+      - 'admin/models/smquote.php'
+      - 'admin/models/smquotes.php'
+      - 'admin/views/smquotes/view.html.php'
+      - 'admin/src/View/Smquotes/HtmlView.php'
+      - 'modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-rquotes-batch131.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/settings/default/teamstree.xml'
+      - 'site/settings/default/hitlist.xml'
+      - 'site/settings/default/leaguechampionoverview.xml'
+      - 'admin/models/smquote.php'
+      - 'admin/models/smquotes.php'
+      - 'admin/views/smquotes/view.html.php'
+      - 'admin/src/View/Smquotes/HtmlView.php'
+      - 'modules/mod_sportsmanagement_rquotes/**'
+      - '.github/workflows/joomla5-6-site-admin-rquotes-batch131.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/smquote.php
+            admin/models/smquotes.php
+            admin/views/smquotes/view.html.php
+            admin/src/View/Smquotes/HtmlView.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/settings/default/teamstree.xml
+            site/settings/default/hitlist.xml
+            site/settings/default/leaguechampionoverview.xml
+            modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml
+            modules/mod_sportsmanagement_rquotes/update-server.xml
+          )
+
+          for file in "${files[@]}"; do
+            php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$file"
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in site/settings/default/teamstree.xml site/settings/default/hitlist.xml site/settings/default/leaguechampionoverview.xml; do
+            grep -Fq 'value="table table-sm"' "$file"
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          grep -Fq "\defined('_JEXEC') or die;" admin/models/smquote.php
+          grep -Fq 'SportsManagement native administrator quote form model could not be loaded.' admin/models/smquote.php
+          grep -Fq "\defined('_JEXEC') or die;" admin/models/smquotes.php
+          grep -Fq 'SportsManagement native administrator quotes list model could not be loaded.' admin/models/smquotes.php
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement quotes list view.' admin/src/View/Smquotes/HtmlView.php
+          grep -Fq 'SportsManagement native administrator Smquotes view could not be loaded.' admin/views/smquotes/view.html.php
+
+          manifest=modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml
+          helper=modules/mod_sportsmanagement_rquotes/helper.php
+          dispatcher=modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+          grep -Fq 'use Joomla\CMS\Factory;' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq 'use Joomla\CMS\Factory;' "$dispatcher"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
+
+          echo 'Joomla 5/6 batch 131 contracts OK.'
