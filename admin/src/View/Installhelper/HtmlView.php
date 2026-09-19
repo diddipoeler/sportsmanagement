@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator installation-helper wizard.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Installhelper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -18,7 +27,14 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $input = Factory::getApplication()->getInput();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement Installhelper view requires the Joomla administrator application.', 500);
+        }
+
+        $input = $app->getInput();
         $step = $input->getInt('step', 1);
         $this->install_step = in_array($step, [1, 2], true) ? $step : 1;
         $this->selectedSportstype = $input->getCmd('filter_sports_type', '');
