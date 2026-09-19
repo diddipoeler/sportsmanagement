@@ -1,0 +1,106 @@
+name: Joomla 5/6 site admin Sports Type Statistics batch 137
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/settings/default/statsrankingteams.xml'
+      - 'site/settings/default/rosteralltime.xml'
+      - 'site/settings/default/matchreport.xml'
+      - 'admin/views/club/view.html.php'
+      - 'admin/tmpl/club/edit.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/mod_sportsmanagement_sports_type_statistics.xml'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/update-server.xml'
+      - '.github/workflows/joomla5-6-site-admin-sportstypestats-batch137.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/settings/default/statsrankingteams.xml'
+      - 'site/settings/default/rosteralltime.xml'
+      - 'site/settings/default/matchreport.xml'
+      - 'admin/views/club/view.html.php'
+      - 'admin/tmpl/club/edit.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/**'
+      - '.github/workflows/joomla5-6-site-admin-sportstypestats-batch137.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/club/view.html.php
+            admin/tmpl/club/edit.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/settings/default/statsrankingteams.xml
+            site/settings/default/rosteralltime.xml
+            site/settings/default/matchreport.xml
+            modules/mod_sportsmanagement_sports_type_statistics/mod_sportsmanagement_sports_type_statistics.xml
+            modules/mod_sportsmanagement_sports_type_statistics/update-server.xml
+          )
+
+          for file in "${files[@]}"; do
+            php -r 'if (simplexml_load_file($argv[1]) === false) { exit(1); }' "$file"
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in site/settings/default/statsrankingteams.xml site/settings/default/rosteralltime.xml site/settings/default/matchreport.xml; do
+            grep -Fq 'value="table table-sm"' "$file"
+            if grep -Fq 'table-condensed' "$file"; then
+              echo "$file regressed to Bootstrap 3 table-condensed." >&2
+              exit 1
+            fi
+          done
+
+          admin_bridge=admin/views/club/view.html.php
+          admin_layout=admin/tmpl/club/edit.php
+          manifest=modules/mod_sportsmanagement_sports_type_statistics/mod_sportsmanagement_sports_type_statistics.xml
+          update=modules/mod_sportsmanagement_sports_type_statistics/update-server.xml
+
+          grep -Fq 'SportsManagement native administrator Club view could not be loaded.' "$admin_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Club edit layout.' "$admin_layout"
+
+          grep -Fq '<version>5.6.0</version>' "$manifest"
+          grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
+          grep -Fq 'value="table table-sm"' "$manifest"
+          if grep -Fq 'table-condensed' "$manifest"; then
+            echo 'Sports Type Statistics manifest regressed to Bootstrap 3 table-condensed.' >&2
+            exit 1
+          fi
+
+          grep -Fq '<version>5.6.0</version>' "$update"
+          grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update"
+
+          echo 'Joomla 5/6 batch 137 contracts OK.'
