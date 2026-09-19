@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementCalendar\Site\Runtime;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
