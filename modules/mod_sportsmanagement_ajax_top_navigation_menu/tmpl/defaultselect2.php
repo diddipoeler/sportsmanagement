@@ -120,13 +120,13 @@ input[type="button"] {
     border-color: #1e5f1e;
 }
 
-.btn.btn-default.btn-sm.Other {
+.btn.btn-secondary.btn-sm.Other {
     border: 1px solid #292b2c;
     border: 1px solid rgba(0, 0, 0, 0.17);
     background: #464646;
     color: white;
 }
-.btn.btn-default.btn-sm.Other:hover {
+.btn.btn-secondary.btn-sm.Other:hover {
     background: #333333;
 }
 input.clearSelect2, input.Submit {
