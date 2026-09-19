@@ -9,6 +9,7 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView;
