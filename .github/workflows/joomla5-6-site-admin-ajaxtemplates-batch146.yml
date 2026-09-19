@@ -1,0 +1,98 @@
+name: Joomla 5/6 site admin AJAX templates batch 146
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Rankingalltime/HtmlView.php'
+      - 'site/src/View/Teamstree/HtmlView.php'
+      - 'site/src/View/Allprojects/HtmlView.php'
+      - 'admin/views/position/view.html.php'
+      - 'admin/src/View/Position/HtmlView.php'
+      - 'admin/tmpl/position/edit.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php'
+      - '.github/workflows/joomla5-6-site-admin-ajaxtemplates-batch146.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Rankingalltime/HtmlView.php'
+      - 'site/src/View/Teamstree/HtmlView.php'
+      - 'site/src/View/Allprojects/HtmlView.php'
+      - 'admin/views/position/view.html.php'
+      - 'admin/src/View/Position/HtmlView.php'
+      - 'admin/tmpl/position/edit.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php'
+      - '.github/workflows/joomla5-6-site-admin-ajaxtemplates-batch146.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Rankingalltime/HtmlView.php
+            site/src/View/Teamstree/HtmlView.php
+            site/src/View/Allprojects/HtmlView.php
+            admin/views/position/view.html.php
+            admin/src/View/Position/HtmlView.php
+            admin/tmpl/position/edit.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Rankingalltime view.' site/src/View/Rankingalltime/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Teamstree view.' site/src/View/Teamstree/HtmlView.php
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Allprojects view.' site/src/View/Allprojects/HtmlView.php
+
+          bridge=admin/views/position/view.html.php
+          native=admin/src/View/Position/HtmlView.php
+          layout=admin/tmpl/position/edit.php
+          ajax_default=modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php
+          ajax_select2=modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php
+
+          grep -Fq 'SportsManagement native administrator Position view could not be loaded.' "$bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewPosition')" "$bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Position edit view.' "$native"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Position edit layout.' "$layout"
+
+          for file in "$ajax_default" "$ajax_select2"; do
+            grep -Fq "\defined('_JEXEC') or die;" "$file"
+            if grep -Fq 'btn-default' "$file"; then
+              echo "$file still contains Bootstrap 3 btn-default." >&2
+              exit 1
+            fi
+            if grep -Fq "die('Restricted access')" "$file"; then
+              echo "$file still contains the legacy restricted-access guard." >&2
+              exit 1
+            fi
+          done
+
+          echo 'Joomla 5/6 batch 146 contracts OK.'
