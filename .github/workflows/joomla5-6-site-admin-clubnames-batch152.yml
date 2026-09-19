@@ -1,0 +1,77 @@
+name: Joomla 5/6 site admin Clubnames batch 152
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Statsrankingteams/HtmlView.php'
+      - 'admin/views/clubname/view.html.php'
+      - 'admin/tmpl/clubname/edit.php'
+      - 'admin/views/clubnames/view.html.php'
+      - 'admin/tmpl/clubnames/default.php'
+      - '.github/workflows/joomla5-6-site-admin-clubnames-batch152.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Statsrankingteams/HtmlView.php'
+      - 'admin/views/clubname/view.html.php'
+      - 'admin/tmpl/clubname/edit.php'
+      - 'admin/views/clubnames/view.html.php'
+      - 'admin/tmpl/clubnames/default.php'
+      - '.github/workflows/joomla5-6-site-admin-clubnames-batch152.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/src/View/Statsrankingteams/HtmlView.php
+            admin/views/clubname/view.html.php
+            admin/tmpl/clubname/edit.php
+            admin/views/clubnames/view.html.php
+            admin/tmpl/clubnames/default.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq 'Native Joomla 5/6 frontend SportsManagement Statsrankingteams view.' site/src/View/Statsrankingteams/HtmlView.php
+
+          clubname_bridge=admin/views/clubname/view.html.php
+          clubname_layout=admin/tmpl/clubname/edit.php
+          clubnames_bridge=admin/views/clubnames/view.html.php
+          clubnames_layout=admin/tmpl/clubnames/default.php
+
+          grep -Fq 'SportsManagement native administrator Clubname view could not be loaded.' "$clubname_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewclubname')" "$clubname_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Clubname edit layout.' "$clubname_layout"
+
+          grep -Fq 'SportsManagement native administrator Clubnames view could not be loaded.' "$clubnames_bridge"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewClubnames')" "$clubnames_bridge"
+          grep -Fq 'Native Joomla 5/6 administrator SportsManagement Clubnames list layout.' "$clubnames_layout"
+
+          echo 'Joomla 5/6 batch 152 contracts OK.'
