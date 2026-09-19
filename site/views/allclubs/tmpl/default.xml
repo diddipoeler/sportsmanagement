@@ -18,7 +18,7 @@
             
             <field 
                 type="extensionversion" 
-                version="1.1.0" 
+                version="5.6.0" 
             />
             
             <field
@@ -96,7 +96,7 @@
                 <option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
                 <option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
                 <option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-                <option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>	
+                <option value="table table-sm">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>	
             </field>
 			
 			<field	name="use_jquery_modal" type="radio" default="2"
