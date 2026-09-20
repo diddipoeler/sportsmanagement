@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator DFB.net player/import view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextdfbnetplayerimport;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -54,7 +63,7 @@ final class HtmlView extends BaseHtmlView
 
     private function prepareDefault(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
 
         $this->project = $app->getUserState($option . 'project');
@@ -67,7 +76,7 @@ final class HtmlView extends BaseHtmlView
 
     private function prepareUpdate(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
         $model = $this->getModel();
 
@@ -85,7 +94,7 @@ final class HtmlView extends BaseHtmlView
 
     private function buildFilters(): array
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $seasonsModel = $app
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
@@ -166,7 +175,7 @@ final class HtmlView extends BaseHtmlView
     {
         $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
             'com_sportsmanagement.jlextdfbnetplayerimport',
-            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
             ['version' => 'auto']
         );
 
@@ -175,4 +184,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::divider();
         ToolbarHelper::preferences('com_sportsmanagement');
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement DFB.net player import view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

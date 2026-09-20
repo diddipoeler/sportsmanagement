@@ -57,6 +57,11 @@ class modJSMRankingHelper extends stdClass
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Ranking legacy helper requires the Joomla site application.', 500);
+        }
+
         $data = (new NativeRankingHelper())->getData($registry, (object) ['id' => 0], $app);
 
         return [
