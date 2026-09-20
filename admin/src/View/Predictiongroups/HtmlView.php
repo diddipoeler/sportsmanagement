@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list view for prediction groups.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiongroups;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -27,7 +36,7 @@ final class HtmlView extends BaseHtmlView
         $this->state = $this->get('State');
         $this->filterForm = $this->get('FilterForm');
         $this->activeFilters = $this->get('ActiveFilters') ?: [];
-        $this->user = Factory::getApplication()->getIdentity();
+        $this->user = self::administratorApplication()->getIdentity();
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
         $this->sortColumn = (string) $this->state->get('list.ordering', 's.name');
 
@@ -36,7 +45,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         if (!$this->items) {
-            Factory::getApplication()->enqueueMessage(
+            self::administratorApplication()->enqueueMessage(
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),
                 'warning'
             );
@@ -54,4 +63,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::deleteList('', 'predictiongroups.delete', 'JTOOLBAR_DELETE');
         ToolbarHelper::checkin('predictiongroups.checkin');
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction groups view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
