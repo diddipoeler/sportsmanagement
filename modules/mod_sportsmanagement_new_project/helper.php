@@ -12,6 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementNewProject\Site\Helper\NewProjectHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\Registry\Registry;
 
 $nativeDependencies = [
@@ -43,6 +44,10 @@ if (!class_exists('modJSMNewProjectHelper', false)) {
                 'mycategory' => (int) $categoryId,
             ]);
             $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement New Project legacy helper requires the Joomla site application.', 500);
+            }
 
             $rows = (new NewProjectHelper())->getData($params, $app);
             $result = [];
