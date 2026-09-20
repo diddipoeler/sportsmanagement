@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator LMO import view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextlmoimports;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -42,7 +51,7 @@ final class HtmlView extends BaseHtmlView
 
     public function init(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $language = $app->getLanguage();
         $db = Factory::getContainer()->get(DatabaseInterface::class);
 
@@ -98,8 +107,20 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=extensions');
         ToolbarHelper::divider();
 
-        if (Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+        if (self::administratorApplication()->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
             ToolbarHelper::preferences('com_sportsmanagement');
         }
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement LMO imports view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
