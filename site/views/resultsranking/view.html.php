@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\ClubLogoHistoryAdapter;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
@@ -17,7 +17,6 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsrankingDataModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'results' . DIRECTORY_SEPARATOR . 'view.html.php';
 
@@ -59,7 +58,12 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
      */
     public function init()
     {
-        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+        $assets = $this->document->getWebAssetManager();
+        $assets->registerAndUseScript(
+            'com_sportsmanagement.resultsranking.script',
+            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
+        );
         $this->pagination = $this->get('Pagination');
 
         $cfgWhichDatabase = $this->jinput->getInt('cfg_which_database', 0);
@@ -200,8 +204,11 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
         $this->document->setTitle($pageTitle);
 
-        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $this->view . '.css' . '" type="text/css" />' . "\n";
-        $this->document->addCustomTag($stylelink);
+        $assets->registerAndUseStyle(
+            'com_sportsmanagement.resultsranking.style',
+            'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
+            ['version' => 'auto']
+        );
 
         $this->allteams = $dataModel->getProjectTeams(0);
 

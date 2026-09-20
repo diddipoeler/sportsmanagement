@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator SIS import view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextsisimport;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -48,7 +57,7 @@ final class HtmlView extends BaseHtmlView
 
     public function _displayDefault(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
 
         $this->project = $app->getUserState($option . 'project');
@@ -58,7 +67,7 @@ final class HtmlView extends BaseHtmlView
 
     public function _displayDefaultUpdate(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
         $model = $this->getModel();
 
@@ -70,4 +79,16 @@ final class HtmlView extends BaseHtmlView
         $this->uploadArray = (array) $app->getUserState($option . 'uploadArray', []);
         $this->importData = $model->getUpdateData();
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement SIS import view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

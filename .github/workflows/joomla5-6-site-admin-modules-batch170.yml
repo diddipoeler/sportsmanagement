@@ -1,0 +1,67 @@
+name: Joomla 5/6 site admin modules batch 170
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/resultsranking/view.html.php'
+      - 'admin/src/View/Jlextsisimport/HtmlView.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch170.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/resultsranking/view.html.php'
+      - 'admin/src/View/Jlextsisimport/HtmlView.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch170.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/resultsranking/view.html.php
+            admin/src/View/Jlextsisimport/HtmlView.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- 'registerAndUseScript(' site/views/resultsranking/view.html.php
+          grep -Fq -- 'registerAndUseStyle(' site/views/resultsranking/view.html.php
+          ! grep -Fq -- '->addScript(' site/views/resultsranking/view.html.php
+          ! grep -Fq -- 'addCustomTag(' site/views/resultsranking/view.html.php
+          ! grep -Fq -- 'Joomla\\CMS\\Uri\\Uri' site/views/resultsranking/view.html.php
+
+          grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Jlextsisimport/HtmlView.php
+          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Jlextsisimport/HtmlView.php
+          ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Jlextsisimport/HtmlView.php
+          grep -Fq -- 'SportsManagement SIS import view requires the Joomla administrator application.' admin/src/View/Jlextsisimport/HtmlView.php
+
+          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_randomplayer/helper.php
+          grep -Fq -- 'SportsManagement RandomPlayer legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_randomplayer/helper.php
+
+          echo 'Joomla 5/6 batch 170 contracts OK.'
