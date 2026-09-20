@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage rankingalltime
  * @file       view.html.php
@@ -9,14 +9,14 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingalltimeCalculatorModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingalltimeModel;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 if (!class_exists(RankingalltimeModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
@@ -37,7 +37,13 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
         $this->ranking_order = [];
         $comeFromMenu = false;
 
-        $app = Factory::getApplication();
+        /** @var SiteApplication $app */
+        $app = Factory::getContainer()->get(SiteApplication::class);
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement RankingAllTime view requires the Joomla site application.', 500);
+        }
+
         $input = $app->getInput();
         $menu = $app->getMenu();
         $item = $menu->getActive();
@@ -65,7 +71,11 @@ class sportsmanagementViewRankingAllTime extends sportsmanagementView
         $calculator->setDatabaseSelector($databaseSelector);
         $this->model = $calculator;
 
-        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+        $this->document->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.rankingalltime.script',
+            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
+        );
 
         $this->projectids = $dataModel->getProjectIds();
         $this->projectnames = $dataModel->getProjectNames();
