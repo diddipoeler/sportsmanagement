@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage treetonode
  * @file       view.html.php
@@ -12,10 +12,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
 /**
  * sportsmanagementViewTreetonode
@@ -56,7 +55,7 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 			$titleInfo->seasonName  = $this->project->season_name;
 		}
 
-		$division = sportsmanagementModelProject::getDivision(Factory::getApplication()->input->getInt('division', 0));
+		$division = sportsmanagementModelProject::getDivision($this->jinput->getInt('division', 0));
 
 		if (!empty($division) && $division->id != 0)
 		{

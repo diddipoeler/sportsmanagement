@@ -70,6 +70,10 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
 
+            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement Birthday legacy facade requires the Joomla site application.', 500);
+            }
+
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
 
