@@ -1,0 +1,66 @@
+name: Joomla 5/6 site admin modules batch 169
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/player/view.html.php'
+      - 'admin/src/View/Sportsmanagement/HtmlView.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch169.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/player/view.html.php'
+      - 'admin/src/View/Sportsmanagement/HtmlView.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch169.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/player/view.html.php
+            admin/src/View/Sportsmanagement/HtmlView.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- '@version    5.6.0' site/views/player/view.html.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" site/views/player/view.html.php
+          ! grep -Fq -- "die('Restricted access')" site/views/player/view.html.php
+
+          grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Sportsmanagement/HtmlView.php
+          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Sportsmanagement/HtmlView.php
+          ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Sportsmanagement/HtmlView.php
+          ! grep -Fq -- 'Joomla\\CMS\\Uri\\Uri' admin/src/View/Sportsmanagement/HtmlView.php
+          grep -Fq -- 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' admin/src/View/Sportsmanagement/HtmlView.php
+
+          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_projectmap/helper.php
+          grep -Fq -- 'SportsManagement ProjectMap legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_projectmap/helper.php
+
+          echo 'Joomla 5/6 batch 169 contracts OK.'

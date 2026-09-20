@@ -11,11 +11,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Sportsmanage
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\CMS\Uri\Uri;
 
 /** Native Joomla 5/6 administrator edit view for the SportsManagement sample record. */
 final class HtmlView extends BaseHtmlView
@@ -26,7 +26,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
@@ -48,7 +48,7 @@ final class HtmlView extends BaseHtmlView
 
     protected function addToolbar(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $identity = $app->getIdentity();
         $itemId = (int) ($this->item->id ?? 0);
         $isNew = $itemId === 0;
@@ -59,7 +59,7 @@ final class HtmlView extends BaseHtmlView
 
         $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
             'com_sportsmanagement.admin.user-icons',
-            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
             ['version' => 'auto']
         );
 
@@ -86,4 +86,16 @@ final class HtmlView extends BaseHtmlView
             $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE'
         );
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement administrator edit view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
