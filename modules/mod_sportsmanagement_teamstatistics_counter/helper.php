@@ -11,6 +11,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementTeamStatisticsCounter\Site\Helper\TeamStatisticsCounterHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -41,7 +42,12 @@ if (!class_exists('modJSMTeamStatisticsCounter', false)) {
         public static function getData($params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            SportsManagementSiteApplicationResolver::resolve();
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement Team Statistics Counter legacy helper requires the Joomla site application.', 500);
+            }
+
             /** @var DatabaseInterface $joomlaDatabase */
             $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 

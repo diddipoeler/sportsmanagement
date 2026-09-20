@@ -20,10 +20,10 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-defined('_JEXEC') or die();
-use Joomla\CMS\MVC\View\HtmlView;
-
+\defined('_JEXEC') or die;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\View\HtmlView;
 
 JLoader::import('joomla.application.component.view');
 
@@ -36,10 +36,18 @@ class sportsmanagementViewJSONFeed extends HtmlView
 
 	public function display($tpl = null)
 	{
-		$start = jsmGCalendarUtil::getDate(Factory::getApplication()->input->getInt('start'));
-		Factory::getApplication()->input->setVar('start', $start->format('U') - $start->getTimezone()->getOffset($start));
-		$end = jsmGCalendarUtil::getDate(Factory::getApplication()->input->getInt('end'));
-		Factory::getApplication()->input->setVar('end', $end->format('U') - $end->getTimezone()->getOffset($end));
+		/** @var SiteApplication $app */
+		$app = Factory::getContainer()->get(SiteApplication::class);
+
+		if (!$app->isClient('site')) {
+			throw new \RuntimeException('SportsManagement JSON feed view requires the Joomla site application.', 500);
+		}
+
+		$input = $app->getInput();
+		$start = jsmGCalendarUtil::getDate($input->getInt('start'));
+		$input->set('start', $start->format('U') - $start->getTimezone()->getOffset($start));
+		$end = jsmGCalendarUtil::getDate($input->getInt('end'));
+		$input->set('end', $end->format('U') - $end->getTimezone()->getOffset($end));
 
 		parent::display($tpl);
 	}

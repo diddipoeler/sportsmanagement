@@ -1,0 +1,63 @@
+name: Joomla 5/6 site admin modules batch 177
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/jsonfeed/view.html.php'
+      - 'admin/src/View/Jlxmlimport/HtmlView.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch177.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/jsonfeed/view.html.php'
+      - 'admin/src/View/Jlxmlimport/HtmlView.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch177.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/jsonfeed/view.html.php
+            admin/src/View/Jlxmlimport/HtmlView.php
+            modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- 'Factory::getContainer()->get(SiteApplication::class)' site/views/jsonfeed/view.html.php
+          grep -Fq -- 'SportsManagement JSON feed view requires the Joomla site application.' site/views/jsonfeed/view.html.php
+          ! grep -Fq -- 'Factory::getApplication()' site/views/jsonfeed/view.html.php
+          ! grep -Fq -- 'setVar(' site/views/jsonfeed/view.html.php
+
+          grep -Fq -- 'Native Joomla 5/6 administrator XML import view.' admin/src/View/Jlxmlimport/HtmlView.php
+
+          grep -Fq -- 'SportsManagement Team Statistics Counter legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+
+          echo 'Joomla 5/6 batch 177 contracts OK.'
