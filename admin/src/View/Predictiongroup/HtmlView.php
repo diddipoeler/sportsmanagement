@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator edit view for a prediction group.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiongroup;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -17,7 +26,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
@@ -51,4 +60,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::save2new('predictiongroup.save2new');
         ToolbarHelper::cancel('predictiongroup.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction group view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

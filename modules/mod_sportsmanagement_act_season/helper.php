@@ -11,6 +11,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
@@ -79,7 +80,7 @@ class modJSMActSeasonHelper
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
 
-        if (!$app->isClient('site')) {
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement ActSeason requires the Joomla site application.', 500);
         }
 

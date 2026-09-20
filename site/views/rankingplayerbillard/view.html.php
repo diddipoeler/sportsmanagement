@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage rankingplayerbillard
  * @file       view.html.php
@@ -19,7 +19,7 @@
  * excel
  * https://cdnjs.com/libraries/xlsx
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
