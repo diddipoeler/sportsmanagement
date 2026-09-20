@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -122,8 +122,11 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
         $this->document->setTitle($pageTitle);
         $view = $this->jinput->getCmd('view', 'matchreport');
-        $stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'components/' . $this->option . '/assets/css/' . $view . '.css' . '" type="text/css" />' . "\n";
-        $this->document->addCustomTag($stylelink);
+        $this->document->getWebAssetManager()->registerAndUseStyle(
+            'com_sportsmanagement.' . $view,
+            'components/' . $this->option . '/assets/css/' . $view . '.css',
+            ['version' => 'auto']
+        );
     }
 
     /**

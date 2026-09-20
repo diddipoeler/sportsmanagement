@@ -17,6 +17,18 @@ use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
+if (!class_exists(SiteRouteHelper::class)) {
+    $routeHelper = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
+
+    if (is_file($routeHelper)) {
+        require_once $routeHelper;
+    }
+}
+
+if (!class_exists(SiteRouteHelper::class)) {
+    throw new \RuntimeException('SportsManagement SiteRouteHelper could not be loaded for Team Stats Ranking.', 500);
+}
+
 if (!class_exists(TeamStatsRankingHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/TeamStatsRankingHelper.php';
 

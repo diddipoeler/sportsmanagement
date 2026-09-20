@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictionga
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiongamesModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -49,7 +50,7 @@ final class HtmlView extends BaseHtmlView
         $this->prediction_id = (int) $this->state->get('filter.prediction_id', 0);
         $this->pred_project = $model->getPredictionGame($this->prediction_id);
         $this->predictionOptions = $model->getPredictionGames();
-        $this->user = Factory::getApplication()->getIdentity();
+        $this->user = self::administratorApplication()->getIdentity();
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
         $this->sortColumn = (string) $this->state->get('list.ordering', 'pre.name');
 
@@ -76,7 +77,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         if (!$this->items) {
-            Factory::getApplication()->enqueueMessage(
+            self::administratorApplication()->enqueueMessage(
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),
                 'warning'
             );
@@ -94,4 +95,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::editList('predictiongame.edit');
         ToolbarHelper::addNew('predictiongame.add');
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction games view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
