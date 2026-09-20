@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator DFB-key schedule import view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextdfbkeyimport;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextdfbkeyimportModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -37,7 +46,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $storedProjectId = (int) $app->getUserState(
             'com_sportsmanagement.pid',
@@ -73,7 +82,7 @@ final class HtmlView extends BaseHtmlView
 
     private function prepareDefault(JlextdfbkeyimportModel $model): bool
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $projectType = $model->getProjectType($this->project_id);
 
         if ($projectType === 'DIVISIONS_LEAGUE' && !$this->division_id) {
@@ -178,7 +187,7 @@ final class HtmlView extends BaseHtmlView
 
     private function prepareSaveMatchdays(JlextdfbkeyimportModel $model): bool
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $post = $app->getUserState('com_sportsmanagement.first_post', []);
         $post = is_array($post) ? $post : [];
         $this->division_id = $app->getInput()->getInt(
@@ -221,8 +230,20 @@ final class HtmlView extends BaseHtmlView
     {
         $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
             'com_sportsmanagement.admin.dfbkey',
-            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
             ['version' => 'auto']
         );
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement DFB-key import view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
