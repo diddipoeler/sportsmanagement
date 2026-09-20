@@ -11,6 +11,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementGcalendar\Site\Helper\GcalendarHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -48,6 +49,11 @@ if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
         {
             $registry = $params instanceof Registry ? $params : new Registry($params);
             $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement GCalendar legacy helper requires the Joomla site application.', 500);
+            }
+
             /** @var DatabaseInterface $db */
             $db = Factory::getContainer()->get(DatabaseInterface::class);
 
