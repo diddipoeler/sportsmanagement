@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage predictionuser
  * @file       view.html.php
@@ -9,11 +9,11 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Uri\Uri;
+\defined('_JEXEC') or die;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
@@ -40,8 +40,17 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	function init()
 	{
 		
-		$js = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js';
-		$this->document->addScript($js);
+		/** @var SiteApplication $app */
+		$app = Factory::getContainer()->get(SiteApplication::class);
+
+		if (!$app->isClient('site')) {
+			throw new \RuntimeException('SportsManagement prediction user view requires the Joomla site application.', 500);
+		}
+
+		$this->document->getWebAssetManager()->registerAndUseScript(
+			'com_sportsmanagement.predictionuser.chartjs',
+			'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js'
+		);
 		sportsmanagementModelProject::$projectid = $this->jinput->getint("pj", 0);
 		$this->predictionMemberID                = $this->jinput->getint('uid', '0');
 		$this->predictionGameID                  = $this->jinput->getint('prediction_id', '0');
@@ -81,7 +90,7 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 
-			$this->actJoomlaUser      = Factory::getUser();
+			$this->actJoomlaUser      = $app->getIdentity();
 			$this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
 			$this->memberData         = sportsmanagementModelPredictionUsers::memberPredictionData();
 			$this->allowedAdmin       = sportsmanagementModelPrediction::getAllowed();

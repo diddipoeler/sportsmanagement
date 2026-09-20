@@ -1,10 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator editor for prediction games.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiongame;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiongameModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiongamesModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -50,7 +59,7 @@ final class HtmlView extends BaseHtmlView
             $this->form->setValue('s', null, PredictiongameModel::$seasonid);
         }
 
-        Factory::getApplication()->getInput()->set('hidemainmenu', true);
+        self::administratorApplication()->getInput()->set('hidemainmenu', true);
         $this->addToolbar();
         parent::display($tpl);
     }
@@ -69,4 +78,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::save('predictiongame.save');
         ToolbarHelper::cancel('predictiongame.cancel');
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction game view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
