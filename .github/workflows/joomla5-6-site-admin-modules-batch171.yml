@@ -1,0 +1,67 @@
+name: Joomla 5/6 site admin modules batch 171
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/nextmatch/view.html.php'
+      - 'admin/src/View/Jlextdbbimport/HtmlView.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch171.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/nextmatch/view.html.php'
+      - 'admin/src/View/Jlextdbbimport/HtmlView.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch171.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/nextmatch/view.html.php
+            admin/src/View/Jlextdbbimport/HtmlView.php
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- '@version    5.6.0' site/views/nextmatch/view.html.php
+          grep -Fq -- 'registerAndUseScript(' site/views/nextmatch/view.html.php
+          ! grep -Fq -- '->addScript(' site/views/nextmatch/view.html.php
+          ! grep -Fq -- 'Joomla\\CMS\\Uri\\Uri' site/views/nextmatch/view.html.php
+
+          grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Jlextdbbimport/HtmlView.php
+          grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Jlextdbbimport/HtmlView.php
+          ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Jlextdbbimport/HtmlView.php
+          grep -Fq -- 'SportsManagement DBB import view requires the Joomla administrator application.' admin/src/View/Jlextdbbimport/HtmlView.php
+          grep -Fq -- 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' admin/src/View/Jlextdbbimport/HtmlView.php
+
+          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_playground_ticker/helper.php
+          grep -Fq -- 'SportsManagement PlaygroundTicker legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_playground_ticker/helper.php
+
+          echo 'Joomla 5/6 batch 171 contracts OK.'

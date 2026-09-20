@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage nextmatch
  * @file       view.html.php
@@ -9,14 +9,13 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchTimeHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\NextmatchViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
 if (!class_exists(NextmatchViewDataModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
@@ -64,7 +63,11 @@ class sportsmanagementViewNextMatch extends sportsmanagementView
         $playgroundModel = new PlaygroundModel();
         $playgroundModel->setDatabaseSelector($databaseSelector);
 
-        $this->document->addScript(Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js');
+        $this->document->getWebAssetManager()->registerAndUseScript(
+            'com_sportsmanagement.nextmatch.script',
+            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+            ['version' => 'auto']
+        );
 
         $config = $model->getTemplateConfig($this->getName());
         $tableconfig = $model->getTemplateConfig('ranking');

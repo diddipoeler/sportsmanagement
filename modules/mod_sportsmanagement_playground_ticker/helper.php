@@ -7,10 +7,11 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -39,6 +40,10 @@ class modJSMPlaygroundTicker
     public static function getData($params): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement PlaygroundTicker legacy helper requires the Joomla site application.', 500);
+        }
 
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);

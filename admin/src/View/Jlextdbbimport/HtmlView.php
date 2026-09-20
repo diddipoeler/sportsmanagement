@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator DBB import view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextdbbimport;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -53,7 +62,7 @@ final class HtmlView extends BaseHtmlView
 
     public function init(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
 
         $this->project = $app->getUserState($option . 'project');
@@ -70,7 +79,7 @@ final class HtmlView extends BaseHtmlView
 
     public function _displayDefaultUpdate(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
         $model = $this->getModel();
 
@@ -89,10 +98,22 @@ final class HtmlView extends BaseHtmlView
     {
         $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
             'com_sportsmanagement.jlextdbbimport',
-            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
             ['version' => 'auto']
         );
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement DBB import view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
