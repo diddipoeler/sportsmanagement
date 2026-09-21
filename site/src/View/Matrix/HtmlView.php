@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Matrix;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatrixModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -88,13 +89,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
         if (!empty($this->project->name)) {
             $pageTitle .= ': ' . $this->project->name;
         }
-        $this->getDocument()->setTitle($pageTitle);
+        $document = $this->getDocument();
+        $document->setTitle($pageTitle);
 
-        $base = Uri::root(true);
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.site.matrix',
-            $base . '/components/com_sportsmanagement/assets/css/matrix.css'
-        );
+        if ($document instanceof HtmlDocument) {
+            $base = Uri::root(true);
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.site.matrix',
+                $base . '/components/com_sportsmanagement/assets/css/matrix.css'
+            );
+        }
     }
 
     private function attachDivisionRankingNotes(): void
