@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator form view for persons/players.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Player;
 
 \defined('_JEXEC') or die;
@@ -8,6 +16,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadH
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\PersonAgeHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlayerModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -34,7 +44,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 
@@ -122,8 +132,11 @@ final class HtmlView extends BaseHtmlView
         }
 
         $document = $this->getDocument();
-        $document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
-        $document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/editgeocode.js');
+
+        if ($document instanceof HtmlDocument) {
+            $document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+            $document->addScript(Uri::root() . 'administrator/components/com_sportsmanagement/assets/js/editgeocode.js');
+        }
 
         $language = $app->getLanguage();
         $language->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
@@ -135,6 +148,18 @@ final class HtmlView extends BaseHtmlView
 
         $this->addToolbar();
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement player view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void
