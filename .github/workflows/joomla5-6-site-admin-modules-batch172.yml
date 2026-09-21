@@ -51,9 +51,9 @@ jobs:
           set -euo pipefail
 
           grep -Fq -- '@version    5.6.0' site/views/rivals/view.html.php
-          grep -Fq -- 'registerAndUseScript(' site/views/rivals/view.html.php
+          grep -Fq -- "class_alias(HtmlView::class, 'sportsmanagementViewRivals')" site/views/rivals/view.html.php
+          grep -Fq -- "require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Rivals/HtmlView.php';" site/views/rivals/view.html.php
           ! grep -Fq -- '->addScript(' site/views/rivals/view.html.php
-          ! grep -Fq -- 'Joomla\\CMS\\Uri\\Uri' site/views/rivals/view.html.php
 
           grep -Fq -- 'private static function administratorApplication(): AdministratorApplication' admin/src/View/Jlextlmoimports/HtmlView.php
           grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Jlextlmoimports/HtmlView.php
