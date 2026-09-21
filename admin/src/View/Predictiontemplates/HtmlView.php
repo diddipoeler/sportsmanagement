@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator list view for prediction template settings.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiontemplates;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiontemplatesModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -27,6 +36,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
+        $app = self::administratorApplication();
         $model = $this->getModel();
 
         if (!$model instanceof PredictiontemplatesModel) {
@@ -37,7 +47,7 @@ final class HtmlView extends BaseHtmlView
         $this->prediction_id = (int) $this->state->get('filter.prediction_id', 0);
 
         if ($this->prediction_id > 0 && !$model->checklist($this->prediction_id)) {
-            Factory::getApplication()->enqueueMessage(
+            $app->enqueueMessage(
                 $model->getError() ?: Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'),
                 'error'
             );
@@ -48,7 +58,7 @@ final class HtmlView extends BaseHtmlView
         $this->filterForm = $this->get('FilterForm');
         $this->activeFilters = $this->get('ActiveFilters') ?: [];
         $this->predictiongame = $model->getPredictionGame($this->prediction_id);
-        $this->user = Factory::getApplication()->getIdentity();
+        $this->user = $app->getIdentity();
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
         $this->sortColumn = (string) $this->state->get('list.ordering', 'tmpl.title');
 
@@ -65,6 +75,18 @@ final class HtmlView extends BaseHtmlView
 
         $this->addToolbar();
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction templates view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void

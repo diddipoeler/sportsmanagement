@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Legacy\ClubLogoHistoryAdapter;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatrixModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 
 require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'matrix' . DIRECTORY_SEPARATOR . 'view.html.php';
@@ -52,12 +53,16 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
         $this->matchdaysoptions = [];
         $databaseSelector = $this->jinput->getInt('cfg_which_database', 0);
 
-        $assets = $this->document->getWebAssetManager();
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.rankingmatrix.script',
-            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
+        $assets = null;
+
+        if ($this->document instanceof HtmlDocument) {
+            $assets = $this->document->getWebAssetManager();
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.rankingmatrix.script',
+                'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                ['version' => 'auto']
+            );
+        }
         $this->pagination = $this->get('Pagination');
 
         $matrixModel = new MatrixModel();
@@ -133,11 +138,13 @@ class sportsmanagementViewRankingmatrix extends sportsmanagementView
 
         $this->document->setTitle($pageTitle);
 
-        $assets->registerAndUseStyle(
-            'com_sportsmanagement.rankingmatrix.style',
-            'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
-            ['version' => 'auto']
-        );
+        if ($assets !== null) {
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.rankingmatrix.style',
+                'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
+                ['version' => 'auto']
+            );
+        }
 
         sportsmanagementHelperHtml::$project = $project;
         sportsmanagementHelperHtml::$teams = $this->teams;
