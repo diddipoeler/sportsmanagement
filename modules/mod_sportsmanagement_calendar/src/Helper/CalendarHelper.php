@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\WebAsset\WebAssetManager;
@@ -65,11 +66,14 @@ final class CalendarHelper
         $year = max(1970, $year);
         $month = max(1, min(12, $month));
         $document = $app->getDocument();
-        $this->registerAssets(
-            $document->getWebAssetManager(),
-            (string) $module->module,
-            $layout
-        );
+
+        if ($document instanceof HtmlDocument) {
+            $this->registerAssets(
+                $document->getWebAssetManager(),
+                (string) $module->module,
+                $layout
+            );
+        }
 
         $lightbox = (int) $params->get('lightbox', 1);
         $injectContainer = (int) $params->get('inject', 0) === 1

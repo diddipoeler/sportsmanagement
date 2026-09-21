@@ -12,17 +12,22 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Close;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 
 final class HtmlView extends SportsManagementHtmlView
 {
     public function display($tpl = null)
     {
-        $this->getDocument()->getWebAssetManager()->addInlineScript(<<<'JS'
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->addInlineScript(<<<'JS'
 if (window.parent && window.parent !== window) {
     window.parent.location.reload();
 } else if (window.history.length > 1) {
     window.history.back();
 }
 JS);
+        }
     }
 }

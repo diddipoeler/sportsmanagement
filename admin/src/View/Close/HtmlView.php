@@ -14,6 +14,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Close;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -24,14 +26,24 @@ class HtmlView extends BaseHtmlView
 {
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement close view requires the Joomla administrator application.', 500);
+        }
+
         $onlyModal = $app->getInput()->getBool('onlymodal');
 
         $script = $onlyModal
             ? 'if (window.parent && window.parent !== window) { window.parent.postMessage({type:"sportsmanagement:close-modal"}, "*"); }'
             : 'if (window.parent && window.parent !== window) { window.parent.location.reload(); }';
 
-        $app->getDocument()->getWebAssetManager()->addInlineScript($script);
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->addInlineScript($script);
+        }
 
         parent::display($tpl);
     }
