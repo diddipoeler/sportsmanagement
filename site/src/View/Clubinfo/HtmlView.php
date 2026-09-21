@@ -21,6 +21,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -225,25 +226,28 @@ final class HtmlView extends SportsManagementProjectHtmlView
                 );
             }
 
-            $assets = $this->document->getWebAssetManager();
-            if ($treeMode > 0) {
-                $assets->registerAndUseStyle(
-                    'com_sportsmanagement.clubinfo.familytree',
-                    'components/com_sportsmanagement/assets/css/bootstrap-familytree.css',
-                    ['version' => 'auto']
-                );
-            } else {
-                $assets->registerAndUseScript(
-                    'com_sportsmanagement.clubinfo.familytree',
-                    Uri::root(true) . '/components/com_sportsmanagement/assets/js/clubinfo-familytree.js',
-                    ['version' => 'auto'],
-                    ['defer' => true]
-                );
-                $assets->registerAndUseStyle(
-                    'com_sportsmanagement.clubinfo.tree',
-                    'components/com_sportsmanagement/assets/css/bootstrap-tree2.css',
-                    ['version' => 'auto']
-                );
+            if ($this->document instanceof HtmlDocument) {
+                $assets = $this->document->getWebAssetManager();
+
+                if ($treeMode > 0) {
+                    $assets->registerAndUseStyle(
+                        'com_sportsmanagement.clubinfo.familytree',
+                        'components/com_sportsmanagement/assets/css/bootstrap-familytree.css',
+                        ['version' => 'auto']
+                    );
+                } else {
+                    $assets->registerAndUseScript(
+                        'com_sportsmanagement.clubinfo.familytree',
+                        Uri::root(true) . '/components/com_sportsmanagement/assets/js/clubinfo-familytree.js',
+                        ['version' => 'auto'],
+                        ['defer' => true]
+                    );
+                    $assets->registerAndUseStyle(
+                        'com_sportsmanagement.clubinfo.tree',
+                        'components/com_sportsmanagement/assets/css/bootstrap-tree2.css',
+                        ['version' => 'auto']
+                    );
+                }
             }
         }
 
