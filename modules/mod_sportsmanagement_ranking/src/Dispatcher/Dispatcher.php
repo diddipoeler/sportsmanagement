@@ -11,7 +11,9 @@ namespace Diddipoeler\Module\SportsManagementRanking\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -44,10 +46,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $moduleName = (string) ($data['module']->module ?? 'mod_sportsmanagement_ranking');
         $style = 'modules/' . $moduleName . '/css/' . $moduleName . '.css';
-        $assets = $app->getDocument()->getWebAssetManager();
+        $document = $app->getDocument();
 
-        if (is_file(JPATH_ROOT . '/' . $style)) {
-            $assets->registerAndUseStyle(
+        if ($document instanceof HtmlDocument && is_file(JPATH_ROOT . '/' . $style)) {
+            $document->getWebAssetManager()->registerAndUseStyle(
                 $moduleName,
                 $style,
                 ['version' => 'auto']
