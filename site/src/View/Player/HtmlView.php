@@ -20,6 +20,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\PlayerModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerStatisticsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlayerTimeModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\ParameterType;
@@ -221,10 +222,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $title;
         $document = $this->getDocument();
         $document->setTitle($title);
-        $document->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.player',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/css/player.css'
-        );
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.player',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/css/player.css'
+            );
+        }
 
         $this->config['table_class'] = $this->config['table_class'] ?? 'table';
 

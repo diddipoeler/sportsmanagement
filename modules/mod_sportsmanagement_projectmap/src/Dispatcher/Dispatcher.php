@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementProjectMap\Site\Dispatcher;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -57,29 +58,32 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $data['projects'] = $mapData['projects'];
 
             $document = $app->getDocument();
-            $document->addScriptOptions(
-                'mod_sportsmanagement_projectmap.mapdata',
-                $mapData['options']
-            );
 
-            $assets = $document->getWebAssetManager();
-            $initAsset = 'mod_sportsmanagement_projectmap.init';
-            $worldMapAsset = 'mod_sportsmanagement_projectmap.worldmap';
+            if ($document instanceof HtmlDocument) {
+                $document->addScriptOptions(
+                    'mod_sportsmanagement_projectmap.mapdata',
+                    $mapData['options']
+                );
 
-            $assets->registerAndUseScript(
-                $initAsset,
-                'modules/mod_sportsmanagement_projectmap/htmlworldmap/projectmap-init.js',
-                [],
-                [],
-                ['core']
-            );
-            $assets->registerAndUseScript(
-                $worldMapAsset,
-                'modules/mod_sportsmanagement_projectmap/htmlworldmap/worldmap.js',
-                [],
-                [],
-                [$initAsset]
-            );
+                $assets = $document->getWebAssetManager();
+                $initAsset = 'mod_sportsmanagement_projectmap.init';
+                $worldMapAsset = 'mod_sportsmanagement_projectmap.worldmap';
+
+                $assets->registerAndUseScript(
+                    $initAsset,
+                    'modules/mod_sportsmanagement_projectmap/htmlworldmap/projectmap-init.js',
+                    [],
+                    [],
+                    ['core']
+                );
+                $assets->registerAndUseScript(
+                    $worldMapAsset,
+                    'modules/mod_sportsmanagement_projectmap/htmlworldmap/worldmap.js',
+                    [],
+                    [],
+                    [$initAsset]
+                );
+            }
         } catch (\Throwable $exception) {
             $data['projects'] = [];
             Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');

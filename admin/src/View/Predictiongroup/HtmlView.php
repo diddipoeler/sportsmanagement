@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiongr
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -41,7 +42,11 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('Prediction group form could not be loaded.', 500);
         }
 
-        $this->getDocument()->getWebAssetManager()->useScript('form.validate');
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->useScript('form.validate');
+        }
         $this->addToolbar();
         parent::display($tpl);
     }
