@@ -16,7 +16,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Log\Log;
 
@@ -167,7 +166,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	function _displaySavePressebericht()
 	{
-		$app        = Factory::getApplication();
+		$app        = $this->app;
 		$jinput     = $app->input;
 		$option     = $jinput->getCmd('option');
 		$post       = $app->input->post->getArray(array());
@@ -187,7 +186,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function initPressebericht()
 	{
-		$app    = Factory::getApplication();
+		$app    = $this->app;
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
@@ -305,7 +304,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function initEditReferees()
 	{
-		$app                 = Factory::getApplication();
+		$app                 = $this->app;
 		$jinput              = $app->input;
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
@@ -464,7 +463,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditEevents()
 	{
-		$app                              = Factory::getApplication();
+		$app                              = $this->app;
 		$jinput                           = $app->input;
 		$option                           = $jinput->getCmd('option');
 		$this->useeventtime               = $jinput->get('useeventtime');
@@ -554,7 +553,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditEeventsBB()
 	{
-		$app                 = Factory::getApplication();
+		$app                 = $this->app;
 		$jinput              = $app->input;
 		$option              = $jinput->getCmd('option');
 		$project_id          = $app->getUserState("$option.pid", '0');
@@ -607,7 +606,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditStats()
 	{
-		$app    = Factory::getApplication();
+		$app    = $this->app;
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
@@ -670,7 +669,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditLineup()
 	{
-		$app                 = Factory::getApplication();
+		$app                 = $this->app;
 		$jinput              = $app->input;
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
@@ -681,7 +680,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-		$tid                       = Factory::getApplication()->input->getVar('team', '0');
+		$tid                       = $this->app->input->getVar('team', '0');
 		$match                     = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
         if ( $match )
         {
@@ -971,7 +970,7 @@ $mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanag
 	 */
 	function _displayPressebericht()
 	{
-		$app        = Factory::getApplication();
+		$app        = $this->app;
 		$jinput     = $app->input;
 		$option     = $jinput->getCmd('option');
 		$project_id = $app->getUserState("$option.pid", '0');;
@@ -1068,9 +1067,9 @@ $mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanag
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-		$jinput = Factory::getApplication()->input;
+		$jinput = $this->app->input;
 		$jinput->set('hidemainmenu', true);
-		$user   = Factory::getUser();
+		$user   = $this->app->getIdentity();
 		$userId = $user->id;
 		$isNew  = $this->item->id == 0;
 		$canDo  = sportsmanagementHelper::getActions($this->item->id);
