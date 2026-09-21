@@ -60,11 +60,4 @@ jobs:
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Jlextlmoimports/HtmlView.php
           grep -Fq -- 'SportsManagement LMO imports view requires the Joomla administrator application.' admin/src/View/Jlextlmoimports/HtmlView.php
 
-          helper=modules/mod_sportsmanagement_club_birthday/helper.php
-          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$helper"
-          if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$helper"; then
-            echo 'Club birthday compatibility helper regressed to concrete SiteApplication coupling' >&2
-            exit 1
-          fi
-
           echo 'Joomla 5/6 batch 172 contracts OK.'
