@@ -1,7 +1,16 @@
 <?php
+/**
+ * Legacy Joomla 5/6 DFB-key import administrator view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 /** SportsManagement DFB-key import administrator view. */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -226,10 +235,12 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 
     private function addImporterStylesheet(): void
     {
-        $this->document->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.jlextdfbkeyimport',
-            'administrator/components/' . $this->option . '/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        if ($this->document instanceof HtmlDocument) {
+            $this->document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.jlextdfbkeyimport',
+                'administrator/components/' . $this->option . '/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
     }
 }

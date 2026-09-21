@@ -1,9 +1,18 @@
 <?php
 /**
+ * Legacy Joomla 5/6 LMO import administrator view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+/**
  * SportsManagement LMO import view compatibility implementation.
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -14,7 +23,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 {
     public function init()
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $language = $app->getLanguage();
         $this->config = ComponentHelper::getParams('com_media');
 
@@ -79,4 +88,16 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
         ToolbarHelper::divider();
         parent::addToolbar();
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement LMO import view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

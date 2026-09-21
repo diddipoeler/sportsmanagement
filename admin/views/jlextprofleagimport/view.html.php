@@ -1,10 +1,19 @@
 <?php
 /**
+ * Legacy Joomla 5/6 professional league import administrator view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+/**
  * SportsManagement professional league import view.
  */
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -33,11 +42,13 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 
     protected function addToolbar()
     {
-        $this->document->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.jlextprofleagimport',
-            'administrator/components/' . $this->option . '/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        if ($this->document instanceof HtmlDocument) {
+            $this->document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.jlextprofleagimport',
+                'administrator/components/' . $this->option . '/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
 
         ToolbarHelper::title(
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),
