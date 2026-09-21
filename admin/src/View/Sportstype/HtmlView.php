@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Sportstype;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -25,7 +26,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        Factory::getApplication()->getInput()->set('hidemainmenu', true);
+        self::administratorApplication()->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
@@ -51,5 +52,17 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::cancel('sportstype.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement sports type view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 }

@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Statistic;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -28,7 +29,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
@@ -75,13 +76,25 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement statistic view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
     private function loadStatisticParameters(string $class, string $stored): ?Form
     {
         $class = preg_replace('/[^A-Za-z0-9_-]/', '', trim($class)) ?: 'basic';
         $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/statistics/' . $class . '.xml';
 
         if (!is_file($path)) {
-            Factory::getApplication()->enqueueMessage(
+            self::administratorApplication()->enqueueMessage(
                 Text::sprintf('JLIB_FORM_ERROR_XML_FILE_DID_NOT_LOAD', $path),
                 'warning'
             );
@@ -114,7 +127,7 @@ final class HtmlView extends BaseHtmlView
 
             return $form;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            self::administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
