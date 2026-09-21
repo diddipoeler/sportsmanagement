@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Clubplan;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubplanModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubplanViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -68,12 +69,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $document = $this->getDocument();
-        $document->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.clubplan.filters',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/clubplan-filters.js',
-            ['version' => 'auto'],
-            ['defer' => true]
-        );
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.clubplan.filters',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/js/clubplan-filters.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
+        }
 
         $this->databaseSelector = ClubplanModel::$cfg_which_database === 1 ? 1 : 0;
         $this->seasonId = $this->input->getInt('s', 0);
@@ -138,12 +142,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $clubId = $this->club && !empty($this->club->id) ? '&cid=' . (int) $this->club->id : '';
         $rssVar = $clubId !== '' ? $clubId : $projectId;
         $feed = 'index.php?option=com_sportsmanagement&view=clubplan' . $rssVar . '&format=feed';
-        $document->addHeadLink(
-            Route::_($feed . '&type=rss'),
-            'alternate',
-            'rel',
-            ['type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED')]
-        );
+        if ($document instanceof HtmlDocument) {
+            $document->addHeadLink(
+                Route::_($feed . '&type=rss'),
+                'alternate',
+                'rel',
+                ['type' => 'application/rss+xml', 'title' => Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED')]
+            );
+        }
 
         $clubName = $this->club && isset($this->club->name) ? (string) $this->club->name : '';
         $this->headertitle = trim(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE') . ' ' . $clubName);

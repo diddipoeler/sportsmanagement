@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Division;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DivisionModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -31,7 +32,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 
@@ -97,6 +98,18 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::cancel('division.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
 
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement division view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function loadProject(int $projectId): ?object
