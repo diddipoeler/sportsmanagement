@@ -1,49 +1,24 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * Legacy compatibility bridge for the native Joomla 5/6 frontend Uefawertung view.
  *
  * @version    5.6.0
- * @package    Sportsmanagement
- * @subpackage uefawertung
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\View\Uefawertung\HtmlView;
 
-class sportsmanagementViewuefawertung extends sportsmanagementView
-{
-    public function init()
-    {
-        $this->project = sportsmanagementModelProject::getProject();
-        $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
-        $this->config = sportsmanagementModelProject::getTemplateConfig('uefawertung');
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Uefawertung/HtmlView.php';
+}
 
-        $selectYear = (string) ($this->model->coefficientyear ?? '');
-        $coefficientYears = [
-            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON')),
-        ];
-        $coefficientYears = array_merge($coefficientYears, $this->model->getcoefficientyears());
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native frontend Uefawertung view could not be loaded.', 500);
+}
 
-        $this->lists = [
-            'coefficientyears' => HTMLHelper::_(
-                'select.genericList',
-                $coefficientYears,
-                'coefficientyear',
-                'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-                'id',
-                'name',
-                $selectYear
-            ),
-        ];
-
-        $this->uefapoints = $this->model->getcoefficientyearspoints($selectYear);
-        $this->seasonnames = $this->model->getSeasonNames($selectYear);
-        asort($this->seasonnames);
-
-        $this->document->setTitle($this->pagetitle);
-    }
+if (!class_exists('sportsmanagementViewuefawertung', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewuefawertung');
 }

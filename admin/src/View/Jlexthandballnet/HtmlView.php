@@ -1,8 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for the handball.net import screen.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlexthandballnet;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -34,17 +44,33 @@ final class HtmlView extends BaseHtmlView
 
     protected function addToolbar(): void
     {
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.admin.handballnet',
-            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.admin.handballnet',
+                Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT'), 'dbb-cpanel');
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=extensions');
 
-        if (Factory::getApplication()->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+        if (self::administratorApplication()->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
             ToolbarHelper::preferences('com_sportsmanagement');
         }
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement handball.net import view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 }

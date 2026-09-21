@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementLiveticker\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Uri\Uri;
@@ -39,21 +40,25 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('LivetickerHelper')
             ->getData($data['params'], $data['module'], $app);
 
-        $assets = $app->getDocument()->getWebAssetManager();
-        $assets->registerAndUseScript(
-            'mod_sportsmanagement_liveticker',
-            'modules/mod_sportsmanagement_liveticker/js/turtushout.js',
-            ['version' => 'auto'],
-            ['defer' => true]
-        );
+        $document = $app->getDocument();
 
-        $cssFile = basename((string) ($result['cssFile'] ?? ''));
-        if ($cssFile !== '') {
-            $assets->registerAndUseStyle(
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->registerAndUseScript(
                 'mod_sportsmanagement_liveticker',
-                'modules/mod_sportsmanagement_liveticker/css/' . $cssFile,
-                ['version' => 'auto']
+                'modules/mod_sportsmanagement_liveticker/js/turtushout.js',
+                ['version' => 'auto'],
+                ['defer' => true]
             );
+
+            $cssFile = basename((string) ($result['cssFile'] ?? ''));
+            if ($cssFile !== '') {
+                $assets->registerAndUseStyle(
+                    'mod_sportsmanagement_liveticker',
+                    'modules/mod_sportsmanagement_liveticker/css/' . $cssFile,
+                    ['version' => 'auto']
+                );
+            }
         }
 
         $result['refreshUrl'] = rtrim((string) Uri::base(), '/')
