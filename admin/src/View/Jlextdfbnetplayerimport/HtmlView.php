@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextdfbnetp
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -173,11 +174,15 @@ final class HtmlView extends BaseHtmlView
 
     protected function addToolbar(): void
     {
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.jlextdfbnetplayerimport',
-            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.jlextdfbnetplayerimport',
+                'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT'), 'dfbnet');
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=extensions');

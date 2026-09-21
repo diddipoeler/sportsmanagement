@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -55,18 +56,22 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $data[$key] = $value;
         }
 
-        $assets = $app->getDocument()->getWebAssetManager();
-        $assets->registerAndUseStyle(
-            'mod_sportsmanagement_navigation_menu',
-            'modules/mod_sportsmanagement_navigation_menu/css/mod_sportsmanagement_navigation_menu.css',
-            ['version' => 'auto']
-        );
-        $assets->registerAndUseScript(
-            'mod_sportsmanagement_navigation_menu',
-            'modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js',
-            ['version' => 'auto'],
-            ['defer' => true]
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->registerAndUseStyle(
+                'mod_sportsmanagement_navigation_menu',
+                'modules/mod_sportsmanagement_navigation_menu/css/mod_sportsmanagement_navigation_menu.css',
+                ['version' => 'auto']
+            );
+            $assets->registerAndUseScript(
+                'mod_sportsmanagement_navigation_menu',
+                'modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
+        }
 
         return $data;
     }
