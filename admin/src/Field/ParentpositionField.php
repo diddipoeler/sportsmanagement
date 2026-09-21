@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 
 /**
@@ -24,7 +24,7 @@ final class ParentpositionField extends SportsManagementListField
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
-        $currentId = Factory::getApplication()->getInput()->getInt('id', 0);
+        $currentId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getInt('id', 0);
         $query = $db->getQuery(true)
             ->select([
                 $db->quoteName('id', 'value'),

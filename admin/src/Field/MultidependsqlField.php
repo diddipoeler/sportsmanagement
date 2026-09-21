@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -224,8 +225,12 @@ JS;
             throw new \RuntimeException('SportsManagement administrator application is unavailable.');
         }
 
-        $app->getDocument()->getWebAssetManager()->addInlineScript(
-            str_replace('__CONFIG__', $config, $script)
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->addInlineScript(
+                str_replace('__CONFIG__', $config, $script)
+            );
+        }
     }
 }

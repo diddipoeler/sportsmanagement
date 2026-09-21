@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Language\Text;
 
@@ -30,7 +30,7 @@ final class NameformatField extends ListField
 
     protected function getOptions(): array
     {
-        $language = Factory::getApplication()->getLanguage();
+        $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
         $extension = 'com_sportsmanagement';
         $source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 

@@ -1,0 +1,65 @@
+name: Joomla 5/6 fields batch 248
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/src/Field/NameformatField.php'
+      - 'admin/src/Field/PagetitleformatField.php'
+      - 'admin/src/Field/ParentdivisionField.php'
+      - 'admin/src/Field/ParentpositionField.php'
+      - '.github/workflows/joomla5-6-fields-batch248.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/src/Field/NameformatField.php'
+      - 'admin/src/Field/PagetitleformatField.php'
+      - 'admin/src/Field/ParentdivisionField.php'
+      - 'admin/src/Field/ParentpositionField.php'
+      - '.github/workflows/joomla5-6-fields-batch248.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Field/MultidependsqlField.php
+            admin/src/Field/NameformatField.php
+            admin/src/Field/PagetitleformatField.php
+            admin/src/Field/ParentdivisionField.php
+            admin/src/Field/ParentpositionField.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- 'if ($document instanceof HtmlDocument)' admin/src/Field/MultidependsqlField.php
+          ! grep -Fq -- '$app->getDocument()->getWebAssetManager()' admin/src/Field/MultidependsqlField.php
+
+          for file in admin/src/Field/NameformatField.php admin/src/Field/PagetitleformatField.php admin/src/Field/ParentdivisionField.php admin/src/Field/ParentpositionField.php; do
+            grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' "$file"
+            ! grep -Fq -- 'Factory::getApplication()' "$file"
+          done
+          echo 'Joomla 5/6 batch 248 contracts OK.'
