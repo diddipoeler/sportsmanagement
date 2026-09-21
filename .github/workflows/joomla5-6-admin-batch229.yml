@@ -1,0 +1,60 @@
+name: Joomla 5/6 admin batch 229
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Treeto/HtmlView.php'
+      - 'admin/src/View/Treetomatchs/HtmlView.php'
+      - 'admin/src/View/Treetonode/HtmlView.php'
+      - 'admin/src/View/Treetonodes/HtmlView.php'
+      - 'admin/src/View/Treetos/HtmlView.php'
+      - '.github/workflows/joomla5-6-admin-batch229.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Treeto/HtmlView.php'
+      - 'admin/src/View/Treetomatchs/HtmlView.php'
+      - 'admin/src/View/Treetonode/HtmlView.php'
+      - 'admin/src/View/Treetonodes/HtmlView.php'
+      - 'admin/src/View/Treetos/HtmlView.php'
+      - '.github/workflows/joomla5-6-admin-batch229.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/View/Treeto/HtmlView.php
+            admin/src/View/Treetomatchs/HtmlView.php
+            admin/src/View/Treetonode/HtmlView.php
+            admin/src/View/Treetonodes/HtmlView.php
+            admin/src/View/Treetos/HtmlView.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in admin/src/View/Treeto/HtmlView.php admin/src/View/Treetonode/HtmlView.php admin/src/View/Treetonodes/HtmlView.php admin/src/View/Treetos/HtmlView.php; do
+            grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' "$file"
+            ! grep -Fq -- 'Factory::getApplication()' "$file"
+          done
+          echo 'Joomla 5/6 batch 229 contracts OK.'

@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for tournament trees.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Treetos;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TreetosModel;
 use Joomla\CMS\Language\Text;
@@ -24,7 +33,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $model = $this->getModel();
 
         if (!$model instanceof TreetosModel) {
@@ -89,4 +98,16 @@ final class HtmlView extends BaseHtmlView
             'treeto.remove'
         );
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement treetos view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
