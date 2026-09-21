@@ -161,7 +161,7 @@ jobs:
             done
           done
 
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' site/sportsmanagement.php
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' site/router.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/helpers/route.php
           grep -Fq 'class_alias(JSMSportsmanagementPagination::class' site/helpers/jsmpagination.php

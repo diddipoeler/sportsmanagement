@@ -11,9 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -219,13 +218,7 @@ final class MultidependsqlField extends FormField
 })();
 JS;
 
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app instanceof AdministratorApplication) {
-            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
-        }
-
-        $document = $app->getDocument();
+        $document = SportsManagementAdministratorApplicationResolver::resolve()->getDocument();
 
         if ($document instanceof HtmlDocument) {
             $document->getWebAssetManager()->addInlineScript(

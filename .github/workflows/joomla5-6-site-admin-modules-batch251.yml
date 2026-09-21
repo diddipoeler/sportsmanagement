@@ -1,0 +1,70 @@
+name: Joomla 5/6 site admin modules batch 251
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/results/tmpl/form.php'
+      - 'admin/src/Field/DependsqlField.php'
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
+      - '.github/workflows/joomla5-6-admin-dependent-selectors.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch251.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/results/tmpl/form.php'
+      - 'admin/src/Field/DependsqlField.php'
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-legacy-entrypoints.yml'
+      - '.github/workflows/joomla5-6-admin-dependent-selectors.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch251.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/results/tmpl/form.php
+            admin/src/Field/DependsqlField.php
+            admin/src/Field/MultidependsqlField.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' site/views/results/tmpl/form.php
+          ! grep -Fq 'Factory::getApplication()' site/views/results/tmpl/form.php
+
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/Field/DependsqlField.php
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/Field/MultidependsqlField.php
+          ! grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Field/DependsqlField.php
+          ! grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Field/MultidependsqlField.php
+
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_club_birthday/helper.php
+          ! grep -Fq 'use Joomla\CMS\Application\SiteApplication;' modules/mod_sportsmanagement_club_birthday/helper.php
+
+          echo 'Joomla 5/6 batch 251 contracts OK.'

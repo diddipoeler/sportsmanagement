@@ -4,12 +4,27 @@ on:
   push:
     branches:
       - joomla5-6
+    paths:
+      - 'admin/src/Field/DependsqlField.php'
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/src/Model/AjaxModel.php'
+      - 'modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.xml'
+      - 'site/views/statsranking/tmpl/default.xml'
+      - '.github/workflows/joomla5-6-admin-dependent-selectors.yml'
   pull_request:
     branches:
       - master
+      - joomla5-6
+    paths:
+      - 'admin/src/Field/DependsqlField.php'
+      - 'admin/src/Field/MultidependsqlField.php'
+      - 'admin/src/Model/AjaxModel.php'
+      - 'modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.xml'
+      - 'site/views/statsranking/tmpl/default.xml'
+      - '.github/workflows/joomla5-6-admin-dependent-selectors.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   dependent-selectors:
@@ -19,47 +34,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Apply AjaxModel application resolver migration
-        if: github.event_name == 'push'
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 <<'PY'
-          from pathlib import Path
-
-          path = Path('admin/src/Model/AjaxModel.php')
-          text = path.read_text(encoding='utf-8')
-
-          database_import = 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Helper\\SportsManagementDatabaseResolver;\n'
-          resolver_import = 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Helper\\SportsManagementAdministratorApplicationResolver;\n'
-
-          if resolver_import not in text:
-              if database_import not in text:
-                  raise SystemExit('AjaxModel database resolver import anchor not found')
-              text = text.replace(database_import, resolver_import + database_import, 1)
-
-          old_assignment = '$app = Factory::getApplication();'
-          new_assignment = '$app = SportsManagementAdministratorApplicationResolver::resolve();'
-          assignment_count = text.count(old_assignment)
-          if assignment_count not in (0, 2):
-              raise SystemExit(f'Unexpected AjaxModel application assignment count: {assignment_count}')
-          text = text.replace(old_assignment, new_assignment)
-
-          old_message = "Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');"
-          new_message = "SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');"
-          message_count = text.count(old_message)
-          if message_count not in (0, 1):
-              raise SystemExit(f'Unexpected AjaxModel message application count: {message_count}')
-          text = text.replace(old_message, new_message)
-
-          if 'Factory::getApplication()' in text:
-              raise SystemExit('AjaxModel still contains Factory::getApplication()')
-
-          path.write_text(text, encoding='utf-8')
-          PY
 
       - name: Validate dependent selectors
         shell: bash
@@ -72,9 +46,12 @@ jobs:
           calendar_xml=modules/mod_sportsmanagement_calendar/mod_sportsmanagement_calendar.xml
           statsranking_xml=site/views/statsranking/tmpl/default.xml
 
-          php -l "$dependsql"
-          php -l "$multidependsql"
-          php -l "$ajax_model"
+          for file in "$dependsql" "$multidependsql" "$ajax_model"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
 
           grep -Fq 'extends SportsManagementListField' "$dependsql"
           grep -Fq "\$element['class'] = 'form-select';" "$dependsql"
@@ -84,10 +61,12 @@ jobs:
           grep -Fq "\$element['onchange'] = 'this.form.submit();';" "$dependsql"
           grep -Fq 'return parent::getInput();' "$dependsql"
           grep -Fq 'private function registerDependencyScript' "$dependsql"
-          grep -Fq '$this->administratorApplication()->getDocument()->getWebAssetManager()->addInlineScript($script);' "$dependsql"
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;' "$dependsql"
+          grep -Fq 'return SportsManagementAdministratorApplicationResolver::resolve();' "$dependsql"
+          grep -Fq 'instanceof HtmlDocument' "$dependsql"
 
-          if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField' "$dependsql"; then
-            echo "$dependsql regressed to manual legacy list rendering" >&2
+          if grep -E -- 'HTMLHelper::|select\.genericlist|extends FormField|Factory::getApplication\(|Factory::getContainer\(' "$dependsql"; then
+            echo "$dependsql regressed to a legacy list renderer/application accessor" >&2
             exit 1
           fi
 
@@ -98,13 +77,12 @@ jobs:
           grep -Fq "'text' => (string) (\$row->{\$valueField} ?? \$row->{\$keyField})" "$multidependsql"
           grep -Fq "htmlspecialchars(implode('|', \$selected)" "$multidependsql"
           grep -Fq "hidden.value = selectedValues().join('|');" "$multidependsql"
-          grep -Fq 'use Joomla\CMS\Application\AdministratorApplication;' "$multidependsql"
-          grep -Fq '$app = Factory::getContainer()->get(AdministratorApplication::class);' "$multidependsql"
-          grep -Fq 'if (!$app instanceof AdministratorApplication)' "$multidependsql"
-          grep -Fq '$app->getDocument()->getWebAssetManager()->addInlineScript(' "$multidependsql"
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;' "$multidependsql"
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()->getDocument()' "$multidependsql"
+          grep -Fq 'instanceof HtmlDocument' "$multidependsql"
 
-          if grep -Fq "'select.option'" "$multidependsql"; then
-            echo 'Multi dependent field regressed to the legacy select.option adapter' >&2
+          if grep -E -- "Factory::getApplication\(|Factory::getContainer\(|'select.option'" "$multidependsql"; then
+            echo 'Multi dependent field regressed to legacy application or select.option access' >&2
             exit 1
           fi
 
@@ -114,8 +92,8 @@ jobs:
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$ajax_model"
           grep -Fq '$db = Factory::getContainer()->get(DatabaseInterface::class);' "$ajax_model"
 
-          if grep -E -- 'HTMLHelper::|\$app->getContainer\(' "$ajax_model"; then
-            echo 'Administrator AjaxModel regressed to legacy option/protected container access' >&2
+          if grep -E -- 'HTMLHelper::|\$app->getContainer\(|Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$ajax_model"; then
+            echo 'Administrator AjaxModel regressed to a removed Joomla API' >&2
             exit 1
           fi
 
@@ -124,22 +102,4 @@ jobs:
           grep -Fq 'type="dependsql"' "$statsranking_xml"
           grep -Fq 'multiple="multiple"' "$statsranking_xml"
 
-          if grep -E -- 'Factory::getApplication\(|Factory::getDbo\(|Factory::getDBO\(|Factory::getUser\(|Factory::getDocument\(|Factory::getConfig\(|->getCfg\(' "$dependsql" "$multidependsql" "$ajax_model"; then
-            echo 'Dependent selector migration regressed to a removed Joomla API' >&2
-            exit 1
-          fi
-
-      - name: Commit AjaxModel migration
-        if: github.event_name == 'push'
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git diff --quiet -- admin/src/Model/AjaxModel.php; then
-            echo 'AjaxModel application access is already migrated.'
-            exit 0
-          fi
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add admin/src/Model/AjaxModel.php
-          git commit -m "Migrate AjaxModel application access for Joomla 5/6"
-          git push origin HEAD:joomla5-6
+          echo 'Joomla 5/6 dependent selector contracts OK.'

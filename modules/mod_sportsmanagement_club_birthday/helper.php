@@ -13,7 +13,6 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementClubBirthday\Site\Helper\ClubBirthdayHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -48,10 +47,6 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
         public static function getData(Registry $params): array
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
-
-            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement Club Birthday legacy helper requires the Joomla site application.', 500);
-            }
 
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);

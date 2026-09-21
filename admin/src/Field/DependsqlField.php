@@ -12,9 +12,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\AjaxModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
 
 final class DependsqlField extends SportsManagementListField
 {
@@ -355,13 +355,6 @@ JS;
 
     private function administratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
-        if (!$app instanceof AdministratorApplication) {
-            throw new \RuntimeException('SportsManagement administrator application is unavailable.');
-        }
-
-        return $app;
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 }
