@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementNewProject\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -41,18 +42,22 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['list'] = $helper->getData($data['params'], $app);
         $data['canCreateArticles'] = $helper->canCreateArticles($data['params'], $app);
 
-        $assets = $app->getDocument()->getWebAssetManager();
-        $assets->registerAndUseStyle(
-            'mod_sportsmanagement_new_project',
-            'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css',
-            ['version' => 'auto']
-        );
-        $assets->registerAndUseScript(
-            'mod_sportsmanagement_new_project.native',
-            'modules/mod_sportsmanagement_new_project/js/native.js',
-            ['version' => 'auto'],
-            ['defer' => true]
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->registerAndUseStyle(
+                'mod_sportsmanagement_new_project',
+                'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css',
+                ['version' => 'auto']
+            );
+            $assets->registerAndUseScript(
+                'mod_sportsmanagement_new_project.native',
+                'modules/mod_sportsmanagement_new_project/js/native.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
+        }
 
         return $data;
     }

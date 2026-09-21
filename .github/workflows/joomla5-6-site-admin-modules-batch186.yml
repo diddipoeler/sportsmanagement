@@ -1,0 +1,61 @@
+name: Joomla 5/6 site admin modules batch 186
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/ranking/view.html.php'
+      - 'admin/src/View/Jlxmlimports/HtmlView.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch186.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/ranking/view.html.php'
+      - 'admin/src/View/Jlxmlimports/HtmlView.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch186.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/ranking/view.html.php
+            admin/src/View/Jlxmlimports/HtmlView.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- 'SportsManagement native Ranking view could not be loaded.' site/views/ranking/view.html.php
+          grep -Fq -- "class_alias(HtmlView::class, 'sportsmanagementViewRanking')" site/views/ranking/view.html.php
+
+          grep -Fq -- 'Native Joomla 5/6 administrator XML import workflow view.' admin/src/View/Jlxmlimports/HtmlView.php
+
+          grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          grep -Fq -- 'if ($document instanceof HtmlDocument)' modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+
+          echo 'Joomla 5/6 batch 186 contracts OK.'
