@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
 
 /**
@@ -25,7 +26,7 @@ final class FederationslistField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $input = $app->getInput();
         $view = $input->getCmd('view');
         $selectedId = $input->get('id', 0, 'raw');

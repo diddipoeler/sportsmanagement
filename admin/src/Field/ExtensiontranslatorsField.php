@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
@@ -36,7 +37,7 @@ final class ExtensiontranslatorsField extends FormField
 
     protected function getLabel(): string
     {
-        $language = Factory::getApplication()->getLanguage();
+        $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
         $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $language->getTag(), true);
 
         return '<div style="clear: both;">'

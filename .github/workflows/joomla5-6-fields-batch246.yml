@@ -1,0 +1,71 @@
+name: Joomla 5/6 fields batch 246
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Field/CountryassociationField.php'
+      - 'admin/src/Field/CurrentroundField.php'
+      - 'admin/src/Field/DependsqlField.php'
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - 'admin/src/Field/ExtensiontranslatorsField.php'
+      - 'admin/src/Field/ExtensionversionField.php'
+      - 'admin/src/Field/FederationslistField.php'
+      - '.github/workflows/joomla5-6-fields-batch246.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Field/CountryassociationField.php'
+      - 'admin/src/Field/CurrentroundField.php'
+      - 'admin/src/Field/DependsqlField.php'
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - 'admin/src/Field/ExtensiontranslatorsField.php'
+      - 'admin/src/Field/ExtensionversionField.php'
+      - 'admin/src/Field/FederationslistField.php'
+      - '.github/workflows/joomla5-6-fields-batch246.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Field/CountryassociationField.php
+            admin/src/Field/CurrentroundField.php
+            admin/src/Field/DependsqlField.php
+            admin/src/Field/ExtensionauthorField.php
+            admin/src/Field/ExtensiontranslatorsField.php
+            admin/src/Field/ExtensionversionField.php
+            admin/src/Field/FederationslistField.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in             admin/src/Field/CountryassociationField.php             admin/src/Field/CurrentroundField.php             admin/src/Field/ExtensionauthorField.php             admin/src/Field/ExtensiontranslatorsField.php             admin/src/Field/ExtensionversionField.php             admin/src/Field/FederationslistField.php; do
+            grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' "$file"
+            ! grep -Fq -- 'Factory::getApplication()' "$file"
+          done
+
+          grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' admin/src/Field/DependsqlField.php
+          grep -Fq -- 'if ($document instanceof HtmlDocument)' admin/src/Field/DependsqlField.php
+          ! grep -Fq -- 'getDocument()->getWebAssetManager()' admin/src/Field/DependsqlField.php
+          echo 'Joomla 5/6 batch 246 contracts OK.'

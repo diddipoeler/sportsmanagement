@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -27,7 +28,7 @@ final class CountryassociationField extends SportsManagementListField
             return parent::getOptions();
         }
 
-        $selectedId = Factory::getApplication()->getInput()->get($varname, null, 'raw');
+        $selectedId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->get($varname, null, 'raw');
 
         if (is_array($selectedId)) {
             $selectedId = reset($selectedId) ?: 0;
@@ -59,7 +60,7 @@ final class CountryassociationField extends SportsManagementListField
             $db->setQuery($query);
             $items = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage(
+            SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage(
                 Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                 'notice'
             );

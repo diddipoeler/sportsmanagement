@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 
@@ -20,7 +21,7 @@ final class CurrentroundField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $projectId = Factory::getApplication()->getInput()->getInt('id', 0);
+        $projectId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getInt('id', 0);
 
         if ($projectId <= 0) {
             return parent::getOptions();

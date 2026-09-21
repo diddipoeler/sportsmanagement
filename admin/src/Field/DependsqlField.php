@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\AjaxModel;
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 
 final class DependsqlField extends SportsManagementListField
@@ -345,7 +346,11 @@ final class DependsqlField extends SportsManagementListField
 })();
 JS;
         $script = str_replace('__CONFIG__', $json, $script);
-        $this->administratorApplication()->getDocument()->getWebAssetManager()->addInlineScript($script);
+        $document = $this->administratorApplication()->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->addInlineScript($script);
+        }
     }
 
     private function administratorApplication(): AdministratorApplication
