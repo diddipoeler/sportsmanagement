@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextproflea
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -70,11 +71,15 @@ final class HtmlView extends BaseHtmlView
 
     protected function addToolbar(): void
     {
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.admin.user-icons',
-            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.admin.user-icons',
+                'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
 
         ToolbarHelper::title(
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),

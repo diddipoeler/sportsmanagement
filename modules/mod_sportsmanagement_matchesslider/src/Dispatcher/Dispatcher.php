@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -44,18 +45,22 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('MatchesSliderHelper')
             ->getData($data['params'], $data['module'], $app, $database);
 
-        $wam = $app->getDocument()->getWebAssetManager();
-        $wam->registerAndUseScript(
-            'mod_sportsmanagement_matchesslider',
-            'modules/mod_sportsmanagement_matchesslider/assets/js/matchesslider.js',
-            ['version' => 'auto'],
-            ['defer' => true]
-        );
-        $wam->registerAndUseStyle(
-            'mod_sportsmanagement_matchesslider',
-            'modules/mod_sportsmanagement_matchesslider/assets/css/mod_sportsmanagement_matchesslider.css',
-            ['version' => 'auto']
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $wam = $document->getWebAssetManager();
+            $wam->registerAndUseScript(
+                'mod_sportsmanagement_matchesslider',
+                'modules/mod_sportsmanagement_matchesslider/assets/js/matchesslider.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
+            $wam->registerAndUseStyle(
+                'mod_sportsmanagement_matchesslider',
+                'modules/mod_sportsmanagement_matchesslider/assets/css/mod_sportsmanagement_matchesslider.css',
+                ['version' => 'auto']
+            );
+        }
 
         return $data;
     }
