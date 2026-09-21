@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 
 final class UserfieldsField extends SportsManagementListField
 {
@@ -29,7 +29,7 @@ final class UserfieldsField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $view = Factory::getApplication()->getInput()->getCmd('view');
+        $view = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getCmd('view');
         $db = $this->getSportsManagementDatabase();
         $query = $db->createQuery()
             ->select([

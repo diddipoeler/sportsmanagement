@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -24,7 +24,7 @@ final class SeasonteampersonField extends FormField
 
     protected function getInput(): string
     {
-        $selectedId = Factory::getApplication()->getInput()->getInt('id', 0);
+        $selectedId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getInt('id', 0);
         $targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targettable'] ?? ''));
         $targetId = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targetid'] ?? ''));
 

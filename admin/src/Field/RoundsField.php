@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 
 final class RoundsField extends SportsManagementListField
@@ -83,7 +83,7 @@ final class RoundsField extends SportsManagementListField
             }
         }
 
-        $input = Factory::getApplication()->getInput();
+        $input = SportsManagementAdministratorApplicationResolver::resolve()->getInput();
 
         return $input->getInt('project_id', 0) ?: $input->getInt('p', 0);
     }

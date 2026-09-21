@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 
 final class ProjectdivisionField extends SportsManagementListField
 {
@@ -19,7 +19,7 @@ final class ProjectdivisionField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $projectId = $app->getInput()->getInt('pid', 0)
             ?: (int) $app->getUserState('com_sportsmanagement.pid', 0);
 
