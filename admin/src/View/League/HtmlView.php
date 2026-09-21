@@ -12,6 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\League;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\LeagueModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -34,7 +36,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
@@ -119,7 +121,13 @@ final class HtmlView extends BaseHtmlView
 
     private function registerLeagueScript(): void
     {
-        $assets = $this->getDocument()->getWebAssetManager();
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $assets = $document->getWebAssetManager();
         $assets->useScript('form.validate');
         $assets->registerAndUseScript(
             'com_sportsmanagement.admin.league',
@@ -156,7 +164,7 @@ final class HtmlView extends BaseHtmlView
 
             return $form;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            self::administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
@@ -178,10 +186,22 @@ final class HtmlView extends BaseHtmlView
 
             return $form->loadFile($path, false) ? $form : null;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'warning');
+            self::administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
 
             return null;
         }
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement league view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function createForm(string $name, array $options): Form

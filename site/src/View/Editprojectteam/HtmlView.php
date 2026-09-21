@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editprojectteam;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\EditprojectteamModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -58,15 +59,19 @@ final class HtmlView extends SportsManagementHtmlView
         $this->projectId = $this->input->getInt('p', 0);
         $this->teamId = $this->input->getInt('tid', 0);
 
-        $webAssetManager = $this->getDocument()->getWebAssetManager();
-        $webAssetManager->useScript('form.validate');
-        $webAssetManager->registerAndUseScript(
-            'com_sportsmanagement.editprojectteam',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/editprojectteam.js',
-            [],
-            ['defer' => true],
-            ['core']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $webAssetManager = $document->getWebAssetManager();
+            $webAssetManager->useScript('form.validate');
+            $webAssetManager->registerAndUseScript(
+                'com_sportsmanagement.editprojectteam',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/js/editprojectteam.js',
+                [],
+                ['defer' => true],
+                ['core']
+            );
+        }
 
         parent::display($tpl);
     }
