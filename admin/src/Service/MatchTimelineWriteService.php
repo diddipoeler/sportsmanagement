@@ -239,7 +239,7 @@ final class MatchTimelineWriteService
     /** @return array{0:string,1:int} */
     private function auditData(): array
     {
-        return [Factory::getDate()->toSql(), (int) Factory::getApplication()->getIdentity()->id];
+        return [Factory::getDate()->toSql(), (int) SportsManagementAdministratorApplicationResolver::resolve()->getIdentity()->id];
     }
 
     private function transaction(callable $callback): mixed

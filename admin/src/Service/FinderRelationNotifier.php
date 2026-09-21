@@ -54,7 +54,7 @@ final class FinderRelationNotifier
         }
 
         try {
-            $dispatcher = Factory::getApplication()->getDispatcher();
+            $dispatcher = SportsManagementAdministratorApplicationResolver::resolve()->getDispatcher();
             PluginHelper::importPlugin('finder', null, true, $dispatcher);
 
             foreach ($contexts as $entity => $context) {

@@ -318,7 +318,7 @@ final class MatchWriteService
     /** @return array{0:string,1:int} */
     private function auditData(): array
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         return [Factory::getDate()->toSql(), (int) $app->getIdentity()->id];
     }
 

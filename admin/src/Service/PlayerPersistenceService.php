@@ -86,7 +86,7 @@ final class PlayerPersistenceService
             return;
         }
 
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $app->setUserState('com_sportsmanagement.person_id', $personId);
         $app->getInput()->set('person_id', $personId);
 
@@ -116,7 +116,7 @@ final class PlayerPersistenceService
     {
         $seasonIds = $this->normaliseIds($seasonIds);
         $now = Factory::getDate()->toSql();
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) SportsManagementAdministratorApplicationResolver::resolve()->getIdentity()->id;
 
         $query = $this->db->createQuery()
             ->select([$this->db->quoteName('id'), $this->db->quoteName('season_id')])
