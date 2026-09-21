@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for persons and assignment workflows.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Players;
 
 \defined('_JEXEC') or die;
@@ -6,6 +14,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Players;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlayersModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -49,7 +59,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $this->app = Factory::getApplication();
+        $this->app = self::administratorApplication();
         $this->document = $this->getDocument();
         $this->user = $this->app->getIdentity();
         $this->request_url = Uri::getInstance()->toString();
@@ -152,7 +162,9 @@ final class HtmlView extends BaseHtmlView
             $this->app->enqueueMessage($e->getMessage(), 'warning');
         }
 
-        $this->document->getWebAssetManager()->useScript('multiselect');
+        if ($this->document instanceof HtmlDocument) {
+            $this->document->getWebAssetManager()->useScript('multiselect');
+        }
 
         if ($this->assign) {
             $this->prj_name = $model->getProjectName($this->project_id);
@@ -164,6 +176,18 @@ final class HtmlView extends BaseHtmlView
         }
 
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement players view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void

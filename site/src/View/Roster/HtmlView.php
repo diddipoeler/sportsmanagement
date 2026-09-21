@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Roster;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\RosterModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -57,6 +58,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->config['show_players_layout'] = $this->type;
         $this->config['show_staff_layout'] = $this->typestaff;
 
+        $document = $this->getDocument();
+
         if ($this->projectteam) {
             $this->team = $model->getTeam();
             $this->rows = (array) $model->getTeamPlayers(1);
@@ -79,9 +82,9 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
             $this->stafflist = (array) $model->getTeamPlayers(2);
             $teamName = is_object($this->team) ? (string) ($this->team->name ?? '') : '';
-            $this->getDocument()->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', $teamName));
+            $document->setTitle(Text::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', $teamName));
         } else {
-            $this->getDocument()->setTitle(
+            $document->setTitle(
                 Text::sprintf(
                     'COM_SPORTSMANAGEMENT_ROSTER_TITLE',
                     Text::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM')
@@ -89,11 +92,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
             );
         }
 
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.roster',
-            'components/com_sportsmanagement/assets/css/roster.css',
-            ['version' => 'auto']
-        );
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.roster',
+                'components/com_sportsmanagement/assets/css/roster.css',
+                ['version' => 'auto']
+            );
+        }
 
         $this->lists['type'] = [
             HTMLHelper::_('select.option', 'player_standard', Text::_('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION1_PLAYER_STANDARD')),
