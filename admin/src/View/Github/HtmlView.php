@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Github;
 
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -61,11 +62,15 @@ final class HtmlView extends BaseHtmlView
         } elseif ($layout === 'github_result') {
             $this->setLayout('github_result');
         } else {
-            $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
-                'com_sportsmanagement.octicons',
-                'administrator/components/com_sportsmanagement/assets/css/octicons.css',
-                ['version' => 'auto']
-            );
+            $document = $app->getDocument();
+
+            if ($document instanceof HtmlDocument) {
+                $document->getWebAssetManager()->registerAndUseStyle(
+                    'com_sportsmanagement.octicons',
+                    'administrator/components/com_sportsmanagement/assets/css/octicons.css',
+                    ['version' => 'auto']
+                );
+            }
 
             $model = $this->getModel();
             $this->commitlist = $model && method_exists($model, 'getGithubList')
