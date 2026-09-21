@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator edit view for a roster position.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Rosterposition;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -31,7 +40,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 
@@ -102,6 +111,18 @@ final class HtmlView extends BaseHtmlView
 
         $this->configureToolbar($id <= 0);
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement roster position view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     /** @return array<int, array{top:int,left:int}> */

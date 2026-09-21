@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Leaguechampionovervie
 
 use Diddipoeler\Component\SportsManagement\Site\Model\LeaguechampionoverviewModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -58,11 +59,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->tips = array_merge($this->tips, $data['tips']);
         $this->warnings = array_merge($this->warnings, $data['warnings']);
 
-        $this->document->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.league-champion-overview',
-            Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
+        if ($this->document instanceof HtmlDocument) {
+            $this->document->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.league-champion-overview',
+                Uri::root(true) . '/components/' . $this->option . '/assets/js/smsportsmanagement.js',
+                ['version' => 'auto']
+            );
+        }
 
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_LEAGUECHAMPIONOVERVIEW_PAGE_TITLE');
         $this->document->setTitle($this->headertitle);
