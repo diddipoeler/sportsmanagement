@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator editor view for extended XML/PHP files.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Smextxmleditor;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -17,7 +26,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->file_name = $app->getInput()->getString('file_name');
@@ -43,5 +52,17 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CLOSE');
 
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement extended XML editor requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 }
