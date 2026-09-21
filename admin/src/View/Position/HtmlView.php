@@ -12,6 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Position;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PositionModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -38,7 +40,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
@@ -82,7 +84,13 @@ final class HtmlView extends BaseHtmlView
 
     private function registerAssignmentScript(): void
     {
-        $this->getDocument()->getWebAssetManager()->addInlineScript(<<<'JS'
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $document->getWebAssetManager()->addInlineScript(<<<'JS'
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('position-form');
 
@@ -163,5 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 JS);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement position view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 }

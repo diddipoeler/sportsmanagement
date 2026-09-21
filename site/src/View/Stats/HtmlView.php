@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Stats;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\StatsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 
 final class HtmlView extends SportsManagementProjectHtmlView
@@ -46,16 +47,19 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $document = $this->getDocument();
-        $assets = $document->getWebAssetManager();
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.stats.chartjs',
-            'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . rawurlencode($this->chart_version) . '/Chart.js'
-        );
-        $assets->registerAndUseStyle(
-            'com_sportsmanagement.stats',
-            'components/com_sportsmanagement/assets/css/stats.css',
-            ['version' => 'auto']
-        );
+
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.stats.chartjs',
+                'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . rawurlencode($this->chart_version) . '/Chart.js'
+            );
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.stats',
+                'components/com_sportsmanagement/assets/css/stats.css',
+                ['version' => 'auto']
+            );
+        }
 
         if ($this->project) {
             $this->division = $model->getDivision();
