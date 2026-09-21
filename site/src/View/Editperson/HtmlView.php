@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Editperson;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditpersonModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\PersonExtraFieldReadService;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -64,15 +65,19 @@ final class HtmlView extends SportsManagementHtmlView
         $this->teamId = $this->input->getInt('tid', 0);
         $this->personId = $this->input->getInt('id', 0);
 
-        $webAssetManager = $this->getDocument()->getWebAssetManager();
-        $webAssetManager->useScript('form.validate');
-        $webAssetManager->registerAndUseScript(
-            'com_sportsmanagement.editperson',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/editperson.js',
-            [],
-            ['defer' => true],
-            ['core']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $webAssetManager = $document->getWebAssetManager();
+            $webAssetManager->useScript('form.validate');
+            $webAssetManager->registerAndUseScript(
+                'com_sportsmanagement.editperson',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/js/editperson.js',
+                [],
+                ['defer' => true],
+                ['core']
+            );
+        }
 
         parent::display($tpl);
     }

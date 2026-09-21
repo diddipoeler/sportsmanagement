@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Imagelist;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagelistModel;
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -89,13 +90,17 @@ final class HtmlView extends BaseHtmlView
         $this->limit = (int) $this->state->get('list.limit', 0);
         $this->uri = Uri::getInstance();
 
-        $assets = $this->getDocument()->getWebAssetManager();
-        $assets->registerAndUseStyle(
-            'com_sportsmanagement.media-browser',
-            'administrator/components/com_sportsmanagement/assets/css/media-browser.css',
-            ['version' => 'auto']
-        );
-        $assets->addInlineScript($this->selectionScript());
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.media-browser',
+                'administrator/components/com_sportsmanagement/assets/css/media-browser.css',
+                ['version' => 'auto']
+            );
+            $assets->addInlineScript($this->selectionScript());
+        }
 
         parent::display($tpl);
     }
