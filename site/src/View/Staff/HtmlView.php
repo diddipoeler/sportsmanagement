@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
 use Diddipoeler\Component\SportsManagement\Site\Model\PersonModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\StaffModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -64,9 +65,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $this->title;
         $document = $this->getDocument();
         $document->setTitle($this->title);
-        $document->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.staff',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/css/staff.css'
-        );
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.staff',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/css/staff.css'
+            );
+        }
     }
 }

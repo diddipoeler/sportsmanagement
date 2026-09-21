@@ -15,6 +15,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelp
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlaygroundModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -40,7 +42,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
@@ -155,11 +157,29 @@ final class HtmlView extends BaseHtmlView
 
     private function registerDetailRowScript(): void
     {
-        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $document->getWebAssetManager()->registerAndUseScript(
             'com_sportsmanagement.admin.playground-detail',
             'administrator/components/com_sportsmanagement/assets/js/playground-detail.js',
             ['version' => 'auto'],
             ['defer' => true]
         );
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement playground view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 }
