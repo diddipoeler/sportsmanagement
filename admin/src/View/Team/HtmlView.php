@@ -15,6 +15,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelp
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -41,7 +43,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
         $this->option = 'com_sportsmanagement';
@@ -132,7 +134,13 @@ final class HtmlView extends BaseHtmlView
 
     private function registerTeamScript(): void
     {
-        $assets = $this->getDocument()->getWebAssetManager();
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $assets = $document->getWebAssetManager();
         $assets->useScript('form.validate');
         $assets->registerAndUseScript(
             'com_sportsmanagement.admin.team',
@@ -141,6 +149,18 @@ final class HtmlView extends BaseHtmlView
             ['defer' => true],
             ['core', 'form.validate']
         );
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement team view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void

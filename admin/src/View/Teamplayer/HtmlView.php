@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 compatibility bridge for team-player editing.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Teamplayer;
 
 \defined('_JEXEC') or die;
