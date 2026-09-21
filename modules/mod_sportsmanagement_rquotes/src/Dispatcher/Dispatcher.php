@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementRquotes\Site\Dispatcher;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -52,12 +53,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['textLine'] = $result['textLine'];
         $data['pictureServer'] = $result['pictureServer'];
 
-        $app->getDocument()
-            ->getWebAssetManager()
-            ->registerAndUseStyle(
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
                 'mod_sportsmanagement_rquotes',
                 'modules/mod_sportsmanagement_rquotes/assets/rquote.css'
             );
+        }
 
         return $data;
     }

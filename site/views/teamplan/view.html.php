@@ -17,6 +17,10 @@ if (!class_exists(HtmlView::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Teamplan/HtmlView.php';
 }
 
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native Teamplan view could not be loaded.', 500);
+}
+
 if (!class_exists('sportsmanagementViewTeamPlan', false)) {
     class_alias(HtmlView::class, 'sportsmanagementViewTeamPlan');
 }

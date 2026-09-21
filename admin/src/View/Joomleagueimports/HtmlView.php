@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for the JoomLeague import workflow.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Joomleagueimports;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JoomleagueimportsModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -27,7 +36,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $model = $this->getModel();
 
@@ -107,7 +116,7 @@ final class HtmlView extends BaseHtmlView
 
     private function createAdminModel(string $name): object
     {
-        $model = Factory::getApplication()
+        $model = self::administratorApplication()
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel($name, 'Administrator', ['ignore_request' => true]);
@@ -118,4 +127,16 @@ final class HtmlView extends BaseHtmlView
 
         return $model;
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement JoomLeague imports view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
