@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementClubicons\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -56,7 +57,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return $data;
         }
 
-        $wam = $app->getDocument()->getWebAssetManager();
+        $document = $app->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return $data;
+        }
+
+        $wam = $document->getWebAssetManager();
 
         if ($template === 'default_carousel') {
             $wam->useScript('bootstrap.carousel');
