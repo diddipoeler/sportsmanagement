@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\PlaygroundKmlHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -141,21 +142,24 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $document->setTitle($pageTitle);
-        $document->addCustomTag(
-            '<meta property="og:title" content="'
-            . htmlspecialchars($name, ENT_QUOTES, 'UTF-8')
-            . '"/>'
-        );
-        $document->addCustomTag(
-            '<meta property="og:street-address" content="'
-            . htmlspecialchars($this->address_string, ENT_QUOTES, 'UTF-8')
-            . '"/>'
-        );
 
-        $document->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.playground',
-            'components/com_sportsmanagement/assets/css/playground.css',
-            ['version' => 'auto']
-        );
+        if ($document instanceof HtmlDocument) {
+            $document->addCustomTag(
+                '<meta property="og:title" content="'
+                . htmlspecialchars($name, ENT_QUOTES, 'UTF-8')
+                . '"/>'
+            );
+            $document->addCustomTag(
+                '<meta property="og:street-address" content="'
+                . htmlspecialchars($this->address_string, ENT_QUOTES, 'UTF-8')
+                . '"/>'
+            );
+
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.playground',
+                'components/com_sportsmanagement/assets/css/playground.css',
+                ['version' => 'auto']
+            );
+        }
     }
 }
