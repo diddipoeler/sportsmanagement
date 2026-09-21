@@ -16,6 +16,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Log\Log;
 
 JLoader::import('components.com_sportsmanagement.models.predictionusers', JPATH_SITE);
@@ -47,10 +48,13 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			throw new \RuntimeException('SportsManagement prediction user view requires the Joomla site application.', 500);
 		}
 
-		$this->document->getWebAssetManager()->registerAndUseScript(
-			'com_sportsmanagement.predictionuser.chartjs',
-			'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js'
-		);
+		if ($this->document instanceof HtmlDocument)
+		{
+			$this->document->getWebAssetManager()->registerAndUseScript(
+				'com_sportsmanagement.predictionuser.chartjs',
+				'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js'
+			);
+		}
 		sportsmanagementModelProject::$projectid = $this->jinput->getint("pj", 0);
 		$this->predictionMemberID                = $this->jinput->getint('uid', '0');
 		$this->predictionGameID                  = $this->jinput->getint('prediction_id', '0');

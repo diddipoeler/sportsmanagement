@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementUefaWertung\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -47,10 +48,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['seasons'] = $result['seasons'];
         $data['rankings'] = $result['rankings'];
 
-        $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'mod_sportsmanagement_uefawertung',
-            'modules/mod_sportsmanagement_uefawertung/css/mod_sportsmanagement_uefawertung.css'
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'mod_sportsmanagement_uefawertung',
+                'modules/mod_sportsmanagement_uefawertung/css/mod_sportsmanagement_uefawertung.css'
+            );
+        }
 
         return $data;
     }

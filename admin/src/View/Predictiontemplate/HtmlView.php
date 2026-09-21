@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator editor for prediction template settings.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictiontemplate;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiontemplateModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
@@ -61,11 +70,12 @@ final class HtmlView extends BaseHtmlView
 
         $form->bind(is_array($params) ? $params : []);
         $this->form = $form;
-        $this->prediction_id = (int) ($this->item->prediction_id ?? Factory::getApplication()->getInput()->getInt('predid'));
+        $app = self::administratorApplication();
+        $this->prediction_id = (int) ($this->item->prediction_id ?? $app->getInput()->getInt('predid'));
         $this->predictionGame = $model->getPredictionGame($this->prediction_id);
 
-        Factory::getApplication()->setUserState('com_sportsmanagement.prediction_id', $this->prediction_id);
-        Factory::getApplication()->getInput()->set('hidemainmenu', true);
+        $app->setUserState('com_sportsmanagement.prediction_id', $this->prediction_id);
+        $app->getInput()->set('hidemainmenu', true);
 
         $layout = strtolower((string) $this->getLayout());
 
@@ -75,6 +85,18 @@ final class HtmlView extends BaseHtmlView
 
         $this->addToolbar();
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction template view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void
