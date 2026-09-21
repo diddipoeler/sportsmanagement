@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\ProjectTitleHelper;
 use Diddipoeler\Component\SportsManagement\Site\Helper\TeamLogoHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\RivalsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -82,11 +83,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $this->pagetitle;
         $this->document->setTitle($this->pagetitle);
 
-        $this->document->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.rivals',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
+        if ($this->document instanceof HtmlDocument) {
+            $this->document->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.rivals',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                ['version' => 'auto']
+            );
+        }
     }
 
     public function renderClubIcon(object $team, string $clubIcon): string
