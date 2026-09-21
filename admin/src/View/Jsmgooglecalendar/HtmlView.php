@@ -1,4 +1,12 @@
 <?php
+/**
+ * Joomla 5/6 Google Calendar administration landing page.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jsmgooglecalendar;
 
 \defined('_JEXEC') or die;

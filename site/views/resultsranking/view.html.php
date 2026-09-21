@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Legacy\ClubLogoHistoryAdapter;
 use Diddipoeler\Component\SportsManagement\Site\Model\ClubinfoModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsrankingDataModel;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -58,12 +59,16 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
      */
     public function init()
     {
-        $assets = $this->document->getWebAssetManager();
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.resultsranking.script',
-            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
+        $assets = null;
+
+        if ($this->document instanceof HtmlDocument) {
+            $assets = $this->document->getWebAssetManager();
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.resultsranking.script',
+                'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                ['version' => 'auto']
+            );
+        }
         $this->pagination = $this->get('Pagination');
 
         $cfgWhichDatabase = $this->jinput->getInt('cfg_which_database', 0);
@@ -204,11 +209,13 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 
         $this->document->setTitle($pageTitle);
 
-        $assets->registerAndUseStyle(
-            'com_sportsmanagement.resultsranking.style',
-            'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
-            ['version' => 'auto']
-        );
+        if ($assets !== null) {
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.resultsranking.style',
+                'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
+                ['version' => 'auto']
+            );
+        }
 
         $this->allteams = $dataModel->getProjectTeams(0);
 

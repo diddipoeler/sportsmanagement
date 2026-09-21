@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementEventsRanking\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -50,11 +51,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('EventsRankingHelper')
             ->getData($data['params'], $app, $database);
 
-        $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'mod_sportsmanagement_eventsranking',
-            'modules/mod_sportsmanagement_eventsranking/css/mod_sportsmanagement_eventsranking.css',
-            ['version' => 'auto']
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'mod_sportsmanagement_eventsranking',
+                'modules/mod_sportsmanagement_eventsranking/css/mod_sportsmanagement_eventsranking.css',
+                ['version' => 'auto']
+            );
+        }
 
         return $data;
     }
