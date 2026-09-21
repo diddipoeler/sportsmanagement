@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Curve;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\CurveModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -51,8 +52,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->season_id = $model->getRequestSeasonId();
         $this->cfg_which_database = $model->getDatabaseSelector();
 
-        if (!empty($this->config['which_curve'])) {
-            $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument && !empty($this->config['which_curve'])) {
+            $document->getWebAssetManager()->registerAndUseScript(
                 'com_sportsmanagement.curve.chartjs',
                 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . rawurlencode($this->chart_version) . '/Chart.js'
             );
@@ -146,7 +149,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $this->_setChartdata(array_merge($model->getTemplateConfig('flash'), $this->config));
-        $this->getDocument()->setTitle(Text::_('COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE'));
+        $document->setTitle(Text::_('COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE'));
     }
 
     public function _setChartdata($config): void

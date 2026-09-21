@@ -21,6 +21,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -195,7 +196,13 @@ final class HtmlView extends BaseHtmlView
 
     private function registerAddressSummaryScript(): void
     {
-        $assets = $this->getDocument()->getWebAssetManager();
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $assets = $document->getWebAssetManager();
         $assets->useScript('showon');
         $assets->registerAndUseScript(
             'com_sportsmanagement.admin.club-address-summary',
