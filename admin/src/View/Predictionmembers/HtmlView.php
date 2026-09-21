@@ -1,9 +1,18 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for prediction-game members.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictionmembers;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictionmembersModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -33,7 +42,7 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('PredictionmembersModel is unavailable.', 500);
         }
 
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $this->user = $app->getIdentity();
         $this->state = $this->get('State');
         $layout = strtolower((string) $this->getLayout());
@@ -60,7 +69,7 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
-    private function prepareList($app): void
+    private function prepareList(AdministratorApplication $app): void
     {
         $this->items = $this->get('Items') ?: [];
         $this->pagination = $this->get('Pagination');
@@ -73,7 +82,7 @@ final class HtmlView extends BaseHtmlView
         $app->setUserState('com_sportsmanagement.prediction_id', $this->prediction_id);
     }
 
-    private function prepareEditList(PredictionmembersModel $model, $app): void
+    private function prepareEditList(PredictionmembersModel $model, AdministratorApplication $app): void
     {
         $this->prediction_id = (int) $app->getUserState('com_sportsmanagement.prediction_id', 0);
 
@@ -88,6 +97,18 @@ final class HtmlView extends BaseHtmlView
         $this->prediction_name = (string) $model->getPredictionProjectName($this->prediction_id);
         $this->assignedMembers = $model->getPredictionMembers($this->prediction_id);
         $this->availableMembers = $model->getJLUsers($this->prediction_id);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction members view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void

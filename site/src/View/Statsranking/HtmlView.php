@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Statsranking;
 use Diddipoeler\Component\SportsManagement\Site\Helper\ProjectTitleHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\StatsrankingModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 
 final class HtmlView extends SportsManagementProjectHtmlView
@@ -82,10 +83,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = $this->pagetitle;
         $document = $this->getDocument();
         $document->setTitle($this->pagetitle);
-        $document->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.statsranking',
-            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.statsranking',
+                'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                ['version' => 'auto']
+            );
+        }
     }
 }
