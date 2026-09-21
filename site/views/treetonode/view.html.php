@@ -1,78 +1,24 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
+ * Legacy compatibility bridge for the native Joomla 5/6 frontend Treetonode view.
  *
  * @version    5.6.0
- * @package    Sportsmanagement
- * @subpackage treetonode
- * @file       view.html.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\View\Treetonode\HtmlView;
 
-/**
- * sportsmanagementViewTreetonode
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2017
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementViewTreetonode extends sportsmanagementView
-{
+if (!class_exists(HtmlView::class)) {
+    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Treetonode/HtmlView.php';
+}
 
-	/**
-	 * sportsmanagementViewTreetonode::init()
-	 *
-	 * @return void
-	 */
-	function init()
-	{
-		
-		$config = sportsmanagementModelProject::getTemplateConfig('treetonode');
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native frontend Treetonode view could not be loaded.', 500);
+}
 
-		$this->project       = sportsmanagementModelProject::getProject();
-		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
-		$this->config        = $config;
-		$this->node          = $this->model->getTreetonode();
-		$this->roundname     = $this->model->getRoundName();
-
-		// Set page title
-		// TODO: treeto name, no project name
-		$titleInfo = sportsmanagementHelper::createTitleInfo(Text::_('COM_SPORTSMANAGEMENT_TREETO_PAGE_TITLE'));
-
-		if (!empty($this->project))
-		{
-			$titleInfo->projectName = $this->project->name;
-			$titleInfo->leagueName  = $this->project->league_name;
-			$titleInfo->seasonName  = $this->project->season_name;
-		}
-
-		$division = sportsmanagementModelProject::getDivision($this->jinput->getInt('division', 0));
-
-		if (!empty($division) && $division->id != 0)
-		{
-			$titleInfo->divisionName = $division->name;
-		}
-
-		if (isset($this->config["page_title_format"]))
-		{
-			$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
-		}
-		else
-		{
-			$this->pagetitle = '';
-		}
-
-		$this->document->setTitle($this->pagetitle);
-
-	}
-	// $this->app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>'.print_r($this->node,true).'</pre>'  , '');
+if (!class_exists('sportsmanagementViewTreetonode', false)) {
+    class_alias(HtmlView::class, 'sportsmanagementViewTreetonode');
 }

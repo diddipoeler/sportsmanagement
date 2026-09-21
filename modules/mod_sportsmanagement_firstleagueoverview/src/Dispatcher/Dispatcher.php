@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementFirstLeagueOverview\Site\Dispatcher
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -53,7 +54,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['firstleagueoverview'] = $overview['projects'];
         $data['federations'] = $overview['federations'];
 
-        $wam = $app->getDocument()->getWebAssetManager();
+        $document = $app->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return $data;
+        }
+
+        $wam = $document->getWebAssetManager();
         $wam->useScript('bootstrap.tab');
         $wam->registerAndUseStyle(
             'mod_sportsmanagement_firstleagueoverview',

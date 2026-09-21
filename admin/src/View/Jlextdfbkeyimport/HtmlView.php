@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlextdfbkeyi
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextdfbkeyimportModel;
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -228,11 +229,15 @@ final class HtmlView extends BaseHtmlView
 
     private function addImporterStylesheet(): void
     {
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.admin.dfbkey',
-            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.admin.dfbkey',
+                'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
     }
     private static function administratorApplication(): AdministratorApplication
     {
