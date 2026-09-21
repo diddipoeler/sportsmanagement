@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\NextmatchViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PlaygroundModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\NextmatchRankingCalculator;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -98,11 +99,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $playgroundModel = new PlaygroundModel();
         $playgroundModel->setDatabaseSelector($databaseSelector);
 
-        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.nextmatch',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.nextmatch',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                ['version' => 'auto']
+            );
+        }
 
         $projectId = (int) ($this->project->id ?? 0);
         $this->tableconfig = $model->getTemplateConfig('ranking');

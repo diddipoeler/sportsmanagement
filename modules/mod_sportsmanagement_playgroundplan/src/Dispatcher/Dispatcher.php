@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -39,17 +40,21 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('PlaygroundPlanHelper')
             ->getData($data['params'], $app, $data['module']);
 
-        $wam = $app->getDocument()->getWebAssetManager();
-        $wam->registerAndUseStyle(
-            'mod_sportsmanagement_playgroundplan',
-            'modules/mod_sportsmanagement_playgroundplan/css/mod_sportsmanagement_playgroundplan.css'
-        );
+        $document = $app->getDocument();
 
-        if ((int) $data['params']->get('mode', 0) === 0) {
-            $wam->registerAndUseScript(
-                'mod_sportsmanagement_playgroundplan.ticker',
-                'modules/mod_sportsmanagement_playgroundplan/js/ticker.js'
+        if ($document instanceof HtmlDocument) {
+            $wam = $document->getWebAssetManager();
+            $wam->registerAndUseStyle(
+                'mod_sportsmanagement_playgroundplan',
+                'modules/mod_sportsmanagement_playgroundplan/css/mod_sportsmanagement_playgroundplan.css'
             );
+
+            if ((int) $data['params']->get('mode', 0) === 0) {
+                $wam->registerAndUseScript(
+                    'mod_sportsmanagement_playgroundplan.ticker',
+                    'modules/mod_sportsmanagement_playgroundplan/js/ticker.js'
+                );
+            }
         }
 
         return $data;
