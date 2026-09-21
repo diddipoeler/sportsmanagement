@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -55,15 +56,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $template = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $data['params']->get('template', 'default_tableless'));
         $template = $template !== '' ? $template : 'default_tableless';
-        $wam = $app->getDocument()->getWebAssetManager();
-        $wam->registerAndUseStyle(
-            'mod_sportsmanagement_matches.native',
-            'modules/mod_sportsmanagement_matches/assets/css/native.css'
-        );
+        $document = $app->getDocument();
 
-        $templateCss = 'modules/mod_sportsmanagement_matches/tmpl/' . $template . '/mod_sportsmanagement_matches.css';
-        if (is_file(JPATH_ROOT . '/' . $templateCss)) {
-            $wam->registerAndUseStyle('mod_sportsmanagement_matches.template.' . $template, $templateCss);
+        if ($document instanceof HtmlDocument) {
+            $wam = $document->getWebAssetManager();
+            $wam->registerAndUseStyle(
+                'mod_sportsmanagement_matches.native',
+                'modules/mod_sportsmanagement_matches/assets/css/native.css'
+            );
+
+            $templateCss = 'modules/mod_sportsmanagement_matches/tmpl/' . $template . '/mod_sportsmanagement_matches.css';
+            if (is_file(JPATH_ROOT . '/' . $templateCss)) {
+                $wam->registerAndUseStyle('mod_sportsmanagement_matches.template.' . $template, $templateCss);
+            }
         }
 
         return $data;

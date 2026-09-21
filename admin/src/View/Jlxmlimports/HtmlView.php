@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Jlxmlimports
 use DateTimeZone;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -88,7 +89,7 @@ final class HtmlView extends BaseHtmlView
 
     private function init($tpl = null): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $lang = $app->getLanguage();
         $input = $app->getInput();
         $this->option = $input->getCmd('option', 'com_sportsmanagement');
@@ -169,7 +170,7 @@ final class HtmlView extends BaseHtmlView
     private function displayForm(): void
     {
         $this->starttime = microtime(true);
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $post = $input->post->getArray();
         $model = $this->createAdminModel('Jlxmlimport');
@@ -269,7 +270,7 @@ final class HtmlView extends BaseHtmlView
 
     private function displayUpdate(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $post = $app->getInput()->post->getArray();
         $model = $this->createAdminModel('Jlxmlimport');
         $data = $model->getData($post);
@@ -287,7 +288,7 @@ final class HtmlView extends BaseHtmlView
 
     private function displayInfo(): void
     {
-        $input = Factory::getApplication()->getInput();
+        $input = self::administratorApplication()->getInput();
         $data = $input->post->getArray();
         $model = $this->createAdminModel('Jlxmlimport');
 
@@ -302,7 +303,7 @@ final class HtmlView extends BaseHtmlView
 
     private function displaySelectpage(): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $model = $this->createAdminModel('Jlxmlimport');
         $lists = [];
 
@@ -438,7 +439,7 @@ final class HtmlView extends BaseHtmlView
 
     private function createAdminModel(string $name, array $config = []): object
     {
-        $model = Factory::getApplication()
+        $model = self::administratorApplication()
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel($name, 'Administrator', $config);
@@ -449,4 +450,16 @@ final class HtmlView extends BaseHtmlView
 
         return $model;
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement XML imports view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
