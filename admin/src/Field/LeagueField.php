@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 
 final class LeagueField extends SportsManagementListField
 {
@@ -19,7 +19,7 @@ final class LeagueField extends SportsManagementListField
 
     protected function getOptions(): array
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementAdministratorApplicationResolver::resolve();
         $input = $app->getInput();
         $filter = $input->post->get('filter', [], 'array');
         $country = trim((string) ($filter['search_nation'] ?? $app->getUserState('com_sportsmanagement.projects_search_nation', '')));

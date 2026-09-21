@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptionsHelper;
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -134,7 +135,7 @@ final class JsmcolorsrankingField extends FormField
         $app = Factory::getContainer()->get(AdministratorApplication::class);
         $document = $app->getDocument();
 
-        if (!method_exists($document, 'getWebAssetManager')) {
+        if (!$document instanceof HtmlDocument) {
             return;
         }
 

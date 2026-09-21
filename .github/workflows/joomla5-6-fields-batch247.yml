@@ -1,0 +1,70 @@
+name: Joomla 5/6 fields batch 247
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Field/GooglecolorchooserField.php'
+      - 'admin/src/Field/JsmcolorsrankingField.php'
+      - 'admin/src/Field/LanguagecharacterField.php'
+      - 'admin/src/Field/LeagueField.php'
+      - 'admin/src/Field/MatchdaylistField.php'
+      - '.github/workflows/joomla5-6-fields-batch247.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Field/GooglecolorchooserField.php'
+      - 'admin/src/Field/JsmcolorsrankingField.php'
+      - 'admin/src/Field/LanguagecharacterField.php'
+      - 'admin/src/Field/LeagueField.php'
+      - 'admin/src/Field/MatchdaylistField.php'
+      - '.github/workflows/joomla5-6-fields-batch247.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Field/GooglecolorchooserField.php
+            admin/src/Field/JsmcolorsrankingField.php
+            admin/src/Field/LanguagecharacterField.php
+            admin/src/Field/LeagueField.php
+            admin/src/Field/MatchdaylistField.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()->getDocument()' admin/src/Field/GooglecolorchooserField.php
+          grep -Fq -- 'if (!$document instanceof HtmlDocument)' admin/src/Field/GooglecolorchooserField.php
+          ! grep -Fq -- 'Factory::getApplication()' admin/src/Field/GooglecolorchooserField.php
+          ! grep -Fq -- 'getDocument()->getWebAssetManager()' admin/src/Field/GooglecolorchooserField.php
+
+          grep -Fq -- 'if (!$document instanceof HtmlDocument)' admin/src/Field/JsmcolorsrankingField.php
+          ! grep -Fq -- "method_exists($document, 'getWebAssetManager')" admin/src/Field/JsmcolorsrankingField.php
+
+          for file in admin/src/Field/LanguagecharacterField.php admin/src/Field/LeagueField.php admin/src/Field/MatchdaylistField.php; do
+            grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' "$file"
+            ! grep -Fq -- 'Factory::getApplication()' "$file"
+          done
+          echo 'Joomla 5/6 batch 247 contracts OK.'

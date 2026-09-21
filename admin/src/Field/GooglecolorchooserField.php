@@ -11,7 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\FormField;
 
 final class GooglecolorchooserField extends FormField
@@ -60,8 +61,14 @@ final class GooglecolorchooserField extends FormField
             return;
         }
 
+        $document = SportsManagementAdministratorApplicationResolver::resolve()->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
         $registered = true;
-        Factory::getApplication()->getDocument()->getWebAssetManager()->addInlineScript(<<<'JS'
+        $document->getWebAssetManager()->addInlineScript(<<<'JS'
 document.addEventListener('click', (event) => {
     const button = event.target.closest('.jsm-google-color');
     if (!button) return;

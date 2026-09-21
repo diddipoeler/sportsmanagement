@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 
 final class MatchdaylistField extends SportsManagementListField
 {
@@ -25,7 +25,7 @@ final class MatchdaylistField extends SportsManagementListField
             return parent::getOptions();
         }
 
-        $projectId = Factory::getApplication()->getInput()->get($varname, null, 'raw');
+        $projectId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->get($varname, null, 'raw');
 
         if (is_array($projectId)) {
             $projectId = reset($projectId) ?: 0;

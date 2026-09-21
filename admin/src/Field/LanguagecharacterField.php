@@ -11,7 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Form\Field\ListField;
 
 final class LanguagecharacterField extends ListField
@@ -20,7 +20,7 @@ final class LanguagecharacterField extends ListField
 
     protected function getOptions(): array
     {
-        $tag = Factory::getApplication()->getLanguage()->getTag();
+        $tag = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage()->getTag();
         [$start, $end] = match ($tag) {
             'ru-RU' => [hexdec('0410'), hexdec('042F')],
             'el-GR' => [hexdec('0391'), hexdec('03A9')],
