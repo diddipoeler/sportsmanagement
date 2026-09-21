@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RankingalltimeCalculatorMo
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingalltimeModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 
 /** Joomla 5/6 site view for the all-time ranking. */
@@ -58,10 +59,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $calculator = new RankingalltimeCalculatorModel();
         $calculator->setDatabaseSelector($databaseSelector);
 
-        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.site.core',
-            'components/com_sportsmanagement/assets/js/smsportsmanagement.js'
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.site.core',
+                'components/com_sportsmanagement/assets/js/smsportsmanagement.js'
+            );
+        }
 
         $this->projectids = $dataModel->getProjectIds();
         $this->projectnames = $dataModel->getProjectNames();
@@ -101,7 +106,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
         $this->action = $this->uri->toString();
         $this->colors = $dataModel->parseColors((string) ($this->config['colors'] ?? ''));
-        $this->getDocument()->setTitle(Text::_('COM_SPORTSMANAGEMENT_RANKINGALLTIME_PAGE_TITLE'));
+        $document->setTitle(Text::_('COM_SPORTSMANAGEMENT_RANKINGALLTIME_PAGE_TITLE'));
 
         $this->warnings = RankingalltimeCalculatorModel::$rankingalltimewarnings;
         $this->tips = RankingalltimeCalculatorModel::$rankingalltimetips;

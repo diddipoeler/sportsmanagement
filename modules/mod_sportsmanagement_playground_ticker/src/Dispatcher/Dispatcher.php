@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -42,15 +43,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['playgrounds'] = $helper->getData($data['params'], $app, $database);
         $data['module']->picture_server = $helper->getPictureServer($data['params'], $app);
 
-        $assets = $app->getDocument()->getWebAssetManager();
-        $assets->registerAndUseStyle(
-            'mod_sportsmanagement_playground_ticker',
-            'modules/mod_sportsmanagement_playground_ticker/css/mod_sportsmanagement_playground_ticker.css',
-            ['version' => 'auto']
-        );
+        $document = $app->getDocument();
 
-        if (strtoupper((string) $data['params']->get('mode', 'L')) === 'B') {
-            $assets->useScript('bootstrap.carousel');
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->registerAndUseStyle(
+                'mod_sportsmanagement_playground_ticker',
+                'modules/mod_sportsmanagement_playground_ticker/css/mod_sportsmanagement_playground_ticker.css',
+                ['version' => 'auto']
+            );
+
+            if (strtoupper((string) $data['params']->get('mode', 'L')) === 'B') {
+                $assets->useScript('bootstrap.carousel');
+            }
         }
 
         return $data;
