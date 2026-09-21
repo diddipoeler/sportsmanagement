@@ -20,6 +20,7 @@
  * https://cdnjs.com/libraries/xlsx
  */
 \defined('_JEXEC') or die;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -42,6 +43,8 @@ class sportsmanagementViewrankingplayerbillard extends sportsmanagementView
 	
 	public function init()
 	{
+if ($this->document instanceof HtmlDocument)
+{
 $assets = $this->document->getWebAssetManager();
 $assets->registerAndUseScript(
     'com_sportsmanagement.rankingplayerbillard.jspdf',
@@ -58,6 +61,7 @@ $assets->registerAndUseScript(
     'com_sportsmanagement.rankingplayerbillard.html2canvas',
     'https://html2canvas.hertzen.com/dist/html2canvas.min.js'
 );
+}
 		
 // echo '<pre>'.print_r($this->jinput->getInt('p', 0),true).'</pre>';
 $this->ranking = array();

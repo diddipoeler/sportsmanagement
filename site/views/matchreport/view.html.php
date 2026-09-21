@@ -11,6 +11,7 @@
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -122,11 +123,13 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 
         $this->document->setTitle($pageTitle);
         $view = $this->jinput->getCmd('view', 'matchreport');
-        $this->document->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.' . $view,
-            'components/' . $this->option . '/assets/css/' . $view . '.css',
-            ['version' => 'auto']
-        );
+        if ($this->document instanceof HtmlDocument) {
+            $this->document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.' . $view,
+                'components/' . $this->option . '/assets/css/' . $view . '.css',
+                ['version' => 'auto']
+            );
+        }
     }
 
     /**

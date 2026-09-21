@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 
 class sportsmanagementViewjltournamenttree extends sportsmanagementView
@@ -49,18 +50,20 @@ class sportsmanagementViewjltournamenttree extends sportsmanagementView
         $this->jl_tree_bracket_teamb_width = $this->model->getTreeBracketTeambWidth();
         $this->jl_tree_bracket_width = $this->model->getTreeBracketWidth();
 
-        $assets = $this->document->getWebAssetManager();
-        $assets
-            ->registerAndUseScript(
-                'com_sportsmanagement.tournament-bracket',
-                'components/com_sportsmanagement/assets/js/jquery.bracket.min.js',
-                ['version' => 'auto']
-            )
-            ->registerAndUseStyle(
-                'com_sportsmanagement.tournament-bracket',
-                'components/com_sportsmanagement/assets/css/jquery.bracket.min.css',
-                ['version' => 'auto']
-            );
+        if ($this->document instanceof HtmlDocument) {
+            $assets = $this->document->getWebAssetManager();
+            $assets
+                ->registerAndUseScript(
+                    'com_sportsmanagement.tournament-bracket',
+                    'components/com_sportsmanagement/assets/js/jquery.bracket.min.js',
+                    ['version' => 'auto']
+                )
+                ->registerAndUseStyle(
+                    'com_sportsmanagement.tournament-bracket',
+                    'components/com_sportsmanagement/assets/css/jquery.bracket.min.css',
+                    ['version' => 'auto']
+                );
+        }
 
         if (ComponentHelper::getParams($this->option)->get('show_debug_info_frontend')) {
             /** @var SiteApplication $app */
