@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Sportsmanage
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -42,17 +44,21 @@ final class HtmlView extends BaseHtmlView
 
     protected function addToolbar(): void
     {
-        $identity = Factory::getApplication()->getIdentity();
+        $identity = self::administratorApplication()->getIdentity();
         $canCreate = $identity->authorise('core.create', 'com_sportsmanagement');
         $this->canEdit = $identity->authorise('core.edit', 'com_sportsmanagement');
         $canDelete = $identity->authorise('core.delete', 'com_sportsmanagement');
         $canAdmin = $identity->authorise('core.admin', 'com_sportsmanagement');
 
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.admin.user-icons',
-            Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.admin.user-icons',
+                Uri::root(true) . '/administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'sportsmanagement');
 
@@ -71,5 +77,17 @@ final class HtmlView extends BaseHtmlView
         if ($canAdmin) {
             ToolbarHelper::preferences('com_sportsmanagement');
         }
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement list view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 }

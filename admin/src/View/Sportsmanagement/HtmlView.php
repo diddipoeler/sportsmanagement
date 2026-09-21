@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Sportsmanage
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -57,11 +58,15 @@ final class HtmlView extends BaseHtmlView
         $canEdit = $identity->authorise('core.edit', $asset)
             || $identity->authorise('core.edit', 'com_sportsmanagement');
 
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.admin.user-icons',
-            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.admin.user-icons',
+                'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
 
         ToolbarHelper::title(
             Text::_($isNew ? 'COM_SPORTSMANAGEMENT__NEW' : 'COM_SPORTSMANAGEMENT__EDIT'),
