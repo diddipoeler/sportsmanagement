@@ -1,14 +1,20 @@
 <?php
 /**
  * Compact-by-day JSON output for the SportsManagement Google Calendar module.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Router\Route;
 
-Factory::getApplication()->getDocument()->setMimeEncoding('application/json');
+$document = SportsManagementSiteApplicationResolver::resolve()->getDocument();
+$document->setMimeEncoding('application/json');
 
 $grouped = [];
 

@@ -1,0 +1,75 @@
+name: Joomla 5/6 site admin modules batch 250
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/jsonfeed/tmpl/module.php'
+      - 'site/views/event/tmpl/default.php'
+      - 'site/sportsmanagement.php'
+      - 'admin/layouts/joomla/searchtools/defaultjsm/filters.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch250.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/jsonfeed/tmpl/module.php'
+      - 'site/views/event/tmpl/default.php'
+      - 'site/sportsmanagement.php'
+      - 'admin/layouts/joomla/searchtools/defaultjsm/filters.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch250.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/jsonfeed/tmpl/module.php
+            site/views/event/tmpl/default.php
+            site/sportsmanagement.php
+            admin/layouts/joomla/searchtools/defaultjsm/filters.php
+            modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Fq -- 'Factory::getApplication()' site/views/jsonfeed/tmpl/module.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' site/views/jsonfeed/tmpl/module.php
+
+          grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' site/views/event/tmpl/default.php
+          grep -Fq -- 'instanceof HtmlDocument' site/views/event/tmpl/default.php
+
+          ! grep -Fq -- 'Factory::getContainer()->get(SiteApplication::class)' site/sportsmanagement.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' site/sportsmanagement.php
+          grep -Fq -- 'instanceof HtmlDocument' site/sportsmanagement.php
+
+          ! grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/layouts/joomla/searchtools/defaultjsm/filters.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' admin/layouts/joomla/searchtools/defaultjsm/filters.php
+          grep -Fq -- 'instanceof HtmlDocument' admin/layouts/joomla/searchtools/defaultjsm/filters.php
+
+          ! grep -Fq -- 'Factory::getApplication()' modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php
+
+          echo 'Joomla 5/6 batch 250 contracts OK.'

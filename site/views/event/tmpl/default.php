@@ -1,18 +1,27 @@
 <?php
 /**
  * Native Joomla 5/6 Google Calendar event layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 $event = is_array($this->event ?? null) ? $this->event : null;
-$wa = $this->getDocument()->getWebAssetManager();
-$wa->registerAndUseStyle(
-    'com_sportsmanagement.event',
-    'components/com_sportsmanagement/views/event/tmpl/default.css'
-);
+$document = $this->getDocument();
+
+if ($document instanceof HtmlDocument) {
+    $document->getWebAssetManager()->registerAndUseStyle(
+        'com_sportsmanagement.event',
+        'components/com_sportsmanagement/views/event/tmpl/default.css'
+    );
+}
 
 if (!$event) {
     echo '<div class="alert alert-info">' . htmlspecialchars(Text::_('JGLOBAL_NO_MATCHING_RESULTS'), ENT_QUOTES, 'UTF-8') . '</div>';

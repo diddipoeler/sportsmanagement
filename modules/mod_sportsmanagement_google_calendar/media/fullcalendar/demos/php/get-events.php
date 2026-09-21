@@ -14,7 +14,7 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 
 //--------------------------------------------------------------------------------------------------
 // This script reads event data from a JSON file and outputs those events which are within the range
@@ -28,7 +28,19 @@ use Joomla\CMS\Factory;
 // Require our Event class and datetime utilities
 require dirname(__FILE__) . '/utils.php';
 
-$input = Factory::getApplication()->getInput();
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+}
+
+$input = SportsManagementSiteApplicationResolver::resolve()->getInput();
 
 // Short-circuit if the client did not give us a date range.
 $start = $input->getString('start');

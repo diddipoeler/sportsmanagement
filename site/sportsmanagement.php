@@ -15,15 +15,11 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Filter\InputFilter;
 
-$app = Factory::getContainer()->get(SiteApplication::class);
-
-if (!$app->isClient('site')) {
-    throw new \RuntimeException('SportsManagement requires the Joomla site application.', 500);
-}
+$app = SportsManagementSiteApplicationResolver::resolve();
 
 $input = $app->getInput();
 $document = $app->getDocument();
@@ -40,12 +36,14 @@ $language->load(
     true
 );
 
-$document->getWebAssetManager()
-    ->registerAndUseScript(
-        'com_sportsmanagement.legacy',
-        'components/com_sportsmanagement/assets/js/sm_functions.js',
-        ['version' => 'auto']
-    );
+if ($document instanceof HtmlDocument) {
+    $document->getWebAssetManager()
+        ->registerAndUseScript(
+            'com_sportsmanagement.legacy',
+            'components/com_sportsmanagement/assets/js/sm_functions.js',
+            ['version' => 'auto']
+        );
+}
 
 $metaKeys = [];
 $configuredMetaKeys = trim((string) $app->get('MetaKeys', ''));
