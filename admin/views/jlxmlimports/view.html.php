@@ -1,10 +1,20 @@
 <?php
 /**
+ * Legacy Joomla 5/6 XML import administrator view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+/**
  * SportsManagement XML import view compatibility implementation for Joomla 5/6.
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -15,16 +25,18 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 {
     public function init($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $lang = $app->getLanguage();
         $jinput = $app->getInput();
         $option = $jinput->getCmd('option', 'com_sportsmanagement');
         $this->filter_season = $jinput->getInt('filter_season', 0);
 
         $model = $this->createAdminModel('Jlxmlimport');
-        $this->document->addScript(
-            Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js'
-        );
+        if ($this->document instanceof HtmlDocument) {
+            $this->document->addScript(
+                Uri::root(true) . '/administrator/components/' . $option . '/assets/js/jlxmlimports.js'
+            );
+        }
 
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
         $this->icon = 'xmlimports';
@@ -117,7 +129,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
     private function _displayForm($tpl)
     {
         $starttime = microtime(true);
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $post = $app->getInput()->post->getArray();
         $jinput = $app->getInput();
         $option = $jinput->getCmd('option', 'com_sportsmanagement');
@@ -229,7 +241,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     private function _displayUpdate($tpl)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $post = $app->getInput()->post->getArray();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
         $model = $this->createAdminModel('Jlxmlimport');
@@ -252,7 +264,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     private function _displayInfo($tpl)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $jinput = $app->getInput();
         $option = $jinput->getCmd('option', 'com_sportsmanagement');
         $starttime = microtime(true);
@@ -276,7 +288,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     private function _displaySelectpage($tpl)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $option = $app->getInput()->getCmd('option', 'com_sportsmanagement');
         $uri = Uri::getInstance();
         $model = $this->createAdminModel('Jlxmlimport');
@@ -468,7 +480,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
     private function createAdminModel(string $name, array $config = []): object
     {
-        $model = Factory::getApplication()
+        $model = self::administratorApplication()
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory()
             ->createModel($name, 'Administrator', $config);
@@ -479,4 +491,16 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
         return $model;
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement XML import view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
