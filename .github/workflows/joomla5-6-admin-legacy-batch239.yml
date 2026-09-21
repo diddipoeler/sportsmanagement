@@ -1,0 +1,49 @@
+name: Joomla 5/6 admin legacy batch 239
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/rosterpositions/view.html.php'
+      - 'admin/views/round/view.html.php'
+      - 'admin/views/smextxmleditor/view.html.php'
+      - 'admin/views/smextxmleditors/view.html.php'
+      - '.github/workflows/joomla5-6-admin-legacy-batch239.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/views/rosterpositions/view.html.php'
+      - 'admin/views/round/view.html.php'
+      - 'admin/views/smextxmleditor/view.html.php'
+      - 'admin/views/smextxmleditors/view.html.php'
+      - '.github/workflows/joomla5-6-admin-legacy-batch239.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/views/rosterpositions/view.html.php
+            admin/views/round/view.html.php
+            admin/views/smextxmleditor/view.html.php
+            admin/views/smextxmleditors/view.html.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+          echo 'Joomla 5/6 batch 239 contracts OK.'
