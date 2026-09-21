@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamstats;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamstatsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 
 final class HtmlView extends SportsManagementProjectHtmlView
@@ -56,8 +57,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
             $this->overallconfig['seperator'] = ':';
         }
 
-        if (!empty($this->config['show_goals_stats_flash'])) {
-            $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument && !empty($this->config['show_goals_stats_flash'])) {
+            $document->getWebAssetManager()->registerAndUseScript(
                 'com_sportsmanagement.teamstats.chartjs',
                 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/' . rawurlencode($this->chart_version) . '/Chart.js'
             );
@@ -101,7 +104,7 @@ final class HtmlView extends SportsManagementProjectHtmlView
         if ($this->team && isset($this->team->name)) {
             $pageTitle .= ': ' . $this->team->name;
         }
-        $this->getDocument()->setTitle($pageTitle);
+        $document->setTitle($pageTitle);
 
         $teamName = $this->team && isset($this->team->name) ? (string) $this->team->name : '';
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_TITLE')
