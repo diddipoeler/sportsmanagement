@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementTopTipper\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -42,10 +43,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'mod_sportsmanagement_top_tipper',
-            'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css'
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'mod_sportsmanagement_top_tipper',
+                'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css'
+            );
+        }
 
         $helper = $this->getHelperFactory()->getHelper('TopTipperHelper');
 

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator view for the database tool.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Databasetool;
 
 \defined('_JEXEC') or die;
@@ -24,6 +32,10 @@ final class HtmlView extends BaseHtmlView
     {
         /** @var AdministratorApplication $app */
         $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement database tool view requires the Joomla administrator application.', 500);
+        }
 
         $this->request_url = Uri::getInstance()->toString();
         $this->task = $app->getInput()->getCmd('task');

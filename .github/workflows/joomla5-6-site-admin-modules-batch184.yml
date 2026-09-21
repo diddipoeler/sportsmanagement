@@ -1,0 +1,62 @@
+name: Joomla 5/6 site admin modules batch 184
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/teaminfo/view.html.php'
+      - 'admin/src/View/Databasetool/HtmlView.php'
+      - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch184.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/teaminfo/view.html.php'
+      - 'admin/src/View/Databasetool/HtmlView.php'
+      - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch184.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/teaminfo/view.html.php
+            admin/src/View/Databasetool/HtmlView.php
+            modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- 'SportsManagement native Teaminfo view could not be loaded.' site/views/teaminfo/view.html.php
+          grep -Fq -- "class_alias(HtmlView::class, 'sportsmanagementViewTeamInfo')" site/views/teaminfo/view.html.php
+
+          grep -Fq -- 'SportsManagement database tool view requires the Joomla administrator application.' admin/src/View/Databasetool/HtmlView.php
+          grep -Fq -- "if (!\$app->isClient('administrator'))" admin/src/View/Databasetool/HtmlView.php
+
+          grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+          grep -Fq -- 'if ($document instanceof HtmlDocument)' modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+
+          echo 'Joomla 5/6 batch 184 contracts OK.'

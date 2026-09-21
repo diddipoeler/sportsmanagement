@@ -17,6 +17,10 @@ if (!class_exists(HtmlView::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Teaminfo/HtmlView.php';
 }
 
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native Teaminfo view could not be loaded.', 500);
+}
+
 if (!class_exists('sportsmanagementViewTeamInfo', false)) {
     class_alias(HtmlView::class, 'sportsmanagementViewTeamInfo');
 }
