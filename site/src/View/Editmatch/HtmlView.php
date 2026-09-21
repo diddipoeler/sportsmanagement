@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -164,10 +165,14 @@ final class HtmlView extends SportsManagementHtmlView
                 (int) $this->match->projectteam2_id,
                 $matchId
             );
-            $this->getDocument()->getWebAssetManager()->registerAndUseScript(
-                'com_sportsmanagement.editmatch-singlematch',
-                'components/com_sportsmanagement/assets/js/editmatch-singlematch.js'
-            );
+            $document = $this->getDocument();
+
+            if ($document instanceof HtmlDocument) {
+                $document->getWebAssetManager()->registerAndUseScript(
+                    'com_sportsmanagement.editmatch-singlematch',
+                    'components/com_sportsmanagement/assets/js/editmatch-singlematch.js'
+                );
+            }
         }
 
         $this->pagination = (object) ['total' => count($this->singlematches)];
@@ -247,10 +252,14 @@ final class HtmlView extends SportsManagementHtmlView
         }
 
         $this->positions = array_values($projectPositions);
-        $this->getDocument()->getWebAssetManager()->registerAndUseScript(
-            'com_sportsmanagement.editmatch-lists',
-            'components/com_sportsmanagement/assets/js/editmatch-lists.js'
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseScript(
+                'com_sportsmanagement.editmatch-lists',
+                'components/com_sportsmanagement/assets/js/editmatch-lists.js'
+            );
+        }
     }
 
     private function prepareMatchRelationLists(EditmatchViewDataService $service): void

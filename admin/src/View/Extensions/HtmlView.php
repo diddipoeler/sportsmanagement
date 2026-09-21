@@ -11,7 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Extensions;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -27,11 +29,15 @@ final class HtmlView extends BaseHtmlView
         $sporttypes = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_sport_types', []);
         $this->sporttypes = is_array($sporttypes) ? array_values($sporttypes) : array_values((array) $sporttypes);
 
-        $this->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'com_sportsmanagement.extensions.icons',
-            'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
-            ['version' => 'auto']
-        );
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'com_sportsmanagement.extensions.icons',
+                'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css',
+                ['version' => 'auto']
+            );
+        }
 
         $this->addToolbar();
         parent::display($tpl);
@@ -39,7 +45,7 @@ final class HtmlView extends BaseHtmlView
 
     public function addIcon(string $image, string $url, string $text, bool $newWindow = false): string
     {
-        $language = Factory::getApplication()->getLanguage();
+        $language = self::administratorApplication()->getLanguage();
         $float = $language->isRTL() ? 'right' : 'left';
         $target = $newWindow ? ' target="_blank" rel="noopener noreferrer"' : '';
         $icon = HTMLHelper::_(
@@ -52,6 +58,18 @@ final class HtmlView extends BaseHtmlView
         return '<div style="float:' . $float . ';"><div class="icon"><a href="'
             . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '"' . $target . '>'
             . $icon . '<span>' . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</span></a></div></div>';
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement extensions view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void
