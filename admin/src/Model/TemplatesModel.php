@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use DirectoryIterator;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -60,7 +61,7 @@ final class TemplatesModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $app = Factory::getApplication();
+        $app = self::resolveAdministratorApplication();
         $input = $app->getInput();
         $projectId = $input->getInt('pid') ?: (int) $app->getUserState('com_sportsmanagement.pid', 0);
         $this->setState('filter.pid', $projectId);
@@ -207,7 +208,7 @@ final class TemplatesModel extends SportsManagementListModel
 
             return $db->loadResult() ?: false;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -395,7 +396,7 @@ final class TemplatesModel extends SportsManagementListModel
                 }
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -437,4 +438,16 @@ final class TemplatesModel extends SportsManagementListModel
 
         return (string) ($xml->layout->attributes()->title ?? '');
     }
+    private static function resolveAdministratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement templates model requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

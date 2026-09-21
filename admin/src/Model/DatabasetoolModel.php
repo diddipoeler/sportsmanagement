@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
@@ -211,7 +212,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
             try {
                 $db->insertObject('#__sportsmanagement_jl_tables', $record);
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
             }
         }
 
@@ -282,7 +283,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
             return true;
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -496,7 +497,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
                     . Text::_('Installierte Altersgruppen') . '</strong></span><br />'
                     . Text::sprintf('Die Altersgruppe %1$s wurde angelegt!!', $name) . '<br />';
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
             }
         }
 
@@ -506,7 +507,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
     public function checkAssociations(): bool
     {
         $db = self::sportsDatabase();
-        $app = Factory::getApplication();
+        $app = self::resolveAdministratorApplication();
         $configured = (array) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_country_associations', []);
         $countries = [];
 
@@ -633,7 +634,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
                 $db->execute();
             }
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return $this->countryStatus(false);
         }
@@ -677,7 +678,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
                     . Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS', strtoupper($token))
                     . '</strong></span><br />';
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+                self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
                 return false;
             }
@@ -932,7 +933,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
 
         $affected = (int) $db->getAffectedRows();
-        Factory::getApplication()->enqueueMessage(Text::_('Wir haben ' . $affected . ' Datensätze aktualisiert.'), 'notice');
+        self::resolveAdministratorApplication()->enqueueMessage(Text::_('Wir haben ' . $affected . ' Datensätze aktualisiert.'), 'notice');
 
         return $affected;
     }
@@ -975,7 +976,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -1028,4 +1029,16 @@ final class DatabasetoolModel extends BaseDatabaseModel
             Factory::getContainer()->get(DatabaseInterface::class)
         );
     }
+    private static function resolveAdministratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement database tool model requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
@@ -35,7 +36,7 @@ final class TemplateModel extends SportsManagementAdminModel
      */
     public function getForm($data = [], $loadData = true)
     {
-        $input = Factory::getApplication()->getInput();
+        $input = self::resolveAdministratorApplication()->getInput();
         $id = (int) ($data['id'] ?? $input->getInt('id'));
 
         if ($id <= 0) {
@@ -162,7 +163,7 @@ final class TemplateModel extends SportsManagementAdminModel
         $row->checked_out = 0;
         $row->checked_out_time = $db->getNullDate();
         $row->modified = Factory::getDate()->toSql();
-        $row->modified_by = (int) Factory::getApplication()->getIdentity()->id;
+        $row->modified_by = (int) self::resolveAdministratorApplication()->getIdentity()->id;
 
         try {
             return (bool) $db->insertObject('#__sportsmanagement_template_config', $row, 'id');
@@ -181,7 +182,7 @@ final class TemplateModel extends SportsManagementAdminModel
     {
         $ids = array_values(array_unique(array_filter(array_map('intval', (array) $pks))));
         $db = $this->getDatabase();
-        $userId = (int) Factory::getApplication()->getIdentity()->id;
+        $userId = (int) self::resolveAdministratorApplication()->getIdentity()->id;
 
         foreach ($ids as $id) {
             $query = $db->createQuery()
@@ -204,7 +205,7 @@ final class TemplateModel extends SportsManagementAdminModel
             $xmlFile = $this->findTemplateXml((string) $row->template, (int) $row->project_id);
 
             if ($xmlFile === null) {
-                Factory::getApplication()->enqueueMessage(
+                self::resolveAdministratorApplication()->enqueueMessage(
                     'Template settings XML not found: ' . (string) $row->template,
                     'notice'
                 );
@@ -241,7 +242,7 @@ final class TemplateModel extends SportsManagementAdminModel
                 ];
                 $db->updateObject('#__sportsmanagement_template_config', $update, 'id');
             } catch (\Throwable $e) {
-                Factory::getApplication()->enqueueMessage(
+                self::resolveAdministratorApplication()->enqueueMessage(
                     Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
                     'notice'
                 );
@@ -290,7 +291,7 @@ final class TemplateModel extends SportsManagementAdminModel
             'id' => $id,
             'params' => $encoded,
             'modified' => Factory::getDate()->toSql(),
-            'modified_by' => (int) Factory::getApplication()->getIdentity()->id,
+            'modified_by' => (int) self::resolveAdministratorApplication()->getIdentity()->id,
         ];
 
         try {
@@ -412,4 +413,16 @@ final class TemplateModel extends SportsManagementAdminModel
 
         return null;
     }
+    private static function resolveAdministratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement template model requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

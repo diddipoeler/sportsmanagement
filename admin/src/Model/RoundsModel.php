@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -346,7 +347,7 @@ final class RoundsModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return false;
         }
@@ -635,7 +636,7 @@ final class RoundsModel extends SportsManagementListModel
 
             return $db->loadAssocList() ?: [];
         } catch (\Throwable $e) {
-            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -662,4 +663,16 @@ final class RoundsModel extends SportsManagementListModel
             Factory::getContainer()->get(DatabaseInterface::class)
         );
     }
+    private static function resolveAdministratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement rounds model requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

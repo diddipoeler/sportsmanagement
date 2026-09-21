@@ -15,6 +15,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use DirectoryIterator;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
@@ -34,7 +35,7 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         parent::__construct($config);
 
-        $app    = Factory::getApplication();
+        $app    = self::resolveAdministratorApplication();
         $input  = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $limit  = (int) $app->getUserStateFromRequest(
@@ -344,4 +345,16 @@ final class ImagehandlerModel extends BaseDatabaseModel
 
         return implode('/', $parts);
     }
+    private static function resolveAdministratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement image handler model requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }
