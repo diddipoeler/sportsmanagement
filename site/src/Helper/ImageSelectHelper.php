@@ -11,8 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
@@ -31,7 +31,7 @@ final class ImageSelectHelper
 
     public function __construct()
     {
-        $input = Factory::getApplication()->getInput();
+        $input = SportsManagementSiteApplicationResolver::resolve()->getInput();
         self::$_foldertype = $input->getCmd('type', '');
         self::$_view = $input->getCmd('view', '');
     }
@@ -45,7 +45,7 @@ final class ImageSelectHelper
         $controlName = '',
         $fieldid = ''
     ): string {
-        $app = Factory::getApplication();
+        $app = SportsManagementSiteApplicationResolver::resolve();
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $modalHeight = (int) $params->get('modal_popup_height', 600);
         $modalWidth = (int) $params->get('modal_popup_width', 900);

@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -41,7 +41,7 @@ final class RoundPaginationHelper
             return '';
         }
 
-        $app = Factory::getApplication();
+        $app = SportsManagementSiteApplicationResolver::resolve();
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $currentRoundId = $input->getInt('r', (int) ($project->current_round ?? 0));
@@ -155,7 +155,7 @@ final class RoundPaginationHelper
             return '';
         }
 
-        $input = Factory::getApplication()->getInput();
+        $input = SportsManagementSiteApplicationResolver::resolve()->getInput();
         $params = self::buildBaseParams($project, $cfgWhichDatabase, $seasonId);
         $params['view'] = 'results';
         $params['layout'] = $layout;
@@ -218,7 +218,7 @@ final class RoundPaginationHelper
 
     private static function buildBaseParams($project, int $databaseSelector, int $seasonId): array
     {
-        $input = Factory::getApplication()->getInput();
+        $input = SportsManagementSiteApplicationResolver::resolve()->getInput();
         $params = [
             'option' => $input->getCmd('option', 'com_sportsmanagement'),
             'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,

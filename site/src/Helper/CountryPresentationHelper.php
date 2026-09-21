@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -141,7 +142,7 @@ final class CountryPresentationHelper
             return null;
         }
 
-        $app = Factory::getApplication();
+        $app = SportsManagementSiteApplicationResolver::resolve();
         $databaseSelector = $app->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         $cacheKey = $databaseSelector . ':' . $countryCode;
 

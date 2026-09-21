@@ -11,8 +11,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\AdministratorApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 
@@ -24,11 +22,7 @@ final class ActionLogHelper
     public static function record(object $user, array $transaction, bool $isNew, ?string $view = null): void
     {
         if ($view === null || $view === '') {
-            $app = Factory::getApplication();
-
-            if (!$app instanceof AdministratorApplication) {
-                throw new \RuntimeException('SportsManagement administrator application is unavailable.');
-            }
+            $app = SportsManagementAdministratorApplicationResolver::resolve();
 
             $view = $app->getInput()->getCmd('view', 'cpanel');
         }
