@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Teamplan;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamplanViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
@@ -73,9 +74,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->teamId = max(0, $this->input->getInt('tid', 0));
         $model->setDatabaseSelector($this->databaseSelector);
 
-        $assets = $this->document->getWebAssetManager();
+        $assets = $this->document instanceof HtmlDocument
+            ? $this->document->getWebAssetManager()
+            : null;
         $actionDependencies = [];
-        if (!empty($this->config['show_teamplan_print_option'])) {
+
+        if ($assets !== null && !empty($this->config['show_teamplan_print_option'])) {
             $assets->registerAndUseScript(
                 'com_sportsmanagement.teamplan.print-preview',
                 Uri::root(true) . '/components/com_sportsmanagement/assets/js/printPreview.js',
@@ -93,15 +97,17 @@ final class HtmlView extends SportsManagementProjectHtmlView
             ];
         }
 
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.teamplan.actions',
-            Uri::root(true) . '/components/com_sportsmanagement/assets/js/teamplan-actions.js',
-            ['version' => 'auto'],
-            ['defer' => true],
-            $actionDependencies
-        );
+        if ($assets !== null) {
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.teamplan.actions',
+                Uri::root(true) . '/components/com_sportsmanagement/assets/js/teamplan-actions.js',
+                ['version' => 'auto'],
+                ['defer' => true],
+                $actionDependencies
+            );
+        }
 
-        if (!empty($this->config['show_date_image'])) {
+        if ($assets !== null && !empty($this->config['show_date_image'])) {
             $assets->registerAndUseStyle(
                 'com_sportsmanagement.teamplan.calendar',
                 Uri::root(true) . '/components/com_sportsmanagement/assets/css/calendar.css',

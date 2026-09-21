@@ -1,4 +1,12 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator project edit and control-panel view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Project;
 
 \defined('_JEXEC') or die;
@@ -8,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadH
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectPanelService;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -40,7 +49,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $this->user = $app->getIdentity();
         $this->tmpl = $input->getCmd('tmpl', '');
@@ -65,7 +74,7 @@ final class HtmlView extends BaseHtmlView
 
     private function displayPanel(ProjectModel $model): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
@@ -113,7 +122,7 @@ final class HtmlView extends BaseHtmlView
 
     private function displayEdit(ProjectModel $model): void
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $input->set('hidemainmenu', true);
 
@@ -220,6 +229,18 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::save2new('project.save2new');
         ToolbarHelper::save2copy('project.save2copy');
         ToolbarHelper::cancel('project.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement project view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function resolveDatabase(mixed $databaseSelector = null): DatabaseInterface
