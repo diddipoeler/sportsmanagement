@@ -60,7 +60,7 @@ jobs:
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Jlextlmoimports/HtmlView.php
           grep -Fq -- 'SportsManagement LMO imports view requires the Joomla administrator application.' admin/src/View/Jlextlmoimports/HtmlView.php
 
-          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_club_birthday/helper.php
-          grep -Fq -- 'SportsManagement Club Birthday legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_club_birthday/helper.php
+          ! grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' modules/mod_sportsmanagement_club_birthday/helper.php
 
           echo 'Joomla 5/6 batch 172 contracts OK.'
