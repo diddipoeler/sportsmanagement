@@ -1,0 +1,66 @@
+name: Joomla 5/6 site admin modules batch 196
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Results/HtmlView.php'
+      - 'admin/src/View/Jsmgcalendar/HtmlView.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch196.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/View/Results/HtmlView.php'
+      - 'admin/src/View/Jsmgcalendar/HtmlView.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch196.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/View/Results/HtmlView.php
+            admin/src/View/Jsmgcalendar/HtmlView.php
+            modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' site/src/View/Results/HtmlView.php
+          grep -Fq -- 'if (!$document instanceof HtmlDocument)' site/src/View/Results/HtmlView.php
+          grep -Fq -- 'if ($document instanceof HtmlDocument && !$editLayout' site/src/View/Results/HtmlView.php
+          ! grep -Fq -- '$this->getDocument()->getWebAssetManager()' site/src/View/Results/HtmlView.php
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" admin/src/View/Jsmgcalendar/HtmlView.php
+          done
+
+          grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+          grep -Fq -- 'if ($document instanceof HtmlDocument)' modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+          ! grep -Fq -- '$app->getDocument()->getWebAssetManager()' modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+
+          echo 'Joomla 5/6 batch 196 contracts OK.'

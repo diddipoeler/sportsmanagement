@@ -19,6 +19,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\ResultsModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsViewDataModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -302,7 +303,21 @@ final class HtmlView extends SportsManagementHtmlView
     private function prepareAssets(bool $editLayout): void
     {
         $base = Uri::root(true);
-        $wa = $this->getDocument()->getWebAssetManager();
+        $document = $this->getDocument();
+
+        if (!\defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {
+            $external = $this->params->get('cfg_dbprefix') || $this->params->get('cfg_which_database');
+            \define(
+                'COM_SPORTSMANAGEMENT_PICTURE_SERVER',
+                $external ? (string) $this->params->get('cfg_which_database_server', '') : Uri::root()
+            );
+        }
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $wa = $document->getWebAssetManager();
         $wa->registerAndUseStyle(
             'com_sportsmanagement.results',
             $base . '/components/com_sportsmanagement/assets/css/results.css'
@@ -333,13 +348,6 @@ final class HtmlView extends SportsManagementHtmlView
             }
         }
 
-        if (!\defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')) {
-            $external = $this->params->get('cfg_dbprefix') || $this->params->get('cfg_which_database');
-            \define(
-                'COM_SPORTSMANAGEMENT_PICTURE_SERVER',
-                $external ? (string) $this->params->get('cfg_which_database_server', '') : Uri::root()
-            );
-        }
     }
 
     private function prepareDocument(bool $editLayout): void
@@ -351,11 +359,12 @@ final class HtmlView extends SportsManagementHtmlView
         if ($this->project && trim((string) ($this->project->name ?? '')) !== '') {
             $title .= ': ' . (string) $this->project->name;
         }
-        $this->getDocument()->setTitle($title);
+        $document = $this->getDocument();
+        $document->setTitle($title);
 
-        if (!$editLayout && $this->project) {
+        if ($document instanceof HtmlDocument && !$editLayout && $this->project) {
             $feed = 'index.php?option=com_sportsmanagement&view=results&p=' . (int) $this->project->id . '&format=feed&type=rss';
-            $this->getDocument()->addHeadLink(
+            $document->addHeadLink(
                 Route::_($feed),
                 'alternate',
                 'rel',

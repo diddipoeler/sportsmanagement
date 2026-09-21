@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementTeamPlayers\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -52,20 +53,24 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['players'] = $payload['players'];
         $data['roster'] = $payload['roster'];
 
-        $assets = $app->getDocument()->getWebAssetManager();
-        $assets->registerAndUseStyle(
-            'mod_sportsmanagement_teamplayers.native',
-            'modules/mod_sportsmanagement_teamplayers/css/native.css',
-            ['version' => 'auto']
-        );
+        $document = $app->getDocument();
 
-        if ((string) $data['params']->get('template', 'L') === 'C') {
-            $assets->registerAndUseScript(
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->registerAndUseStyle(
                 'mod_sportsmanagement_teamplayers.native',
-                'modules/mod_sportsmanagement_teamplayers/js/native.js',
-                ['version' => 'auto'],
-                ['defer' => true]
+                'modules/mod_sportsmanagement_teamplayers/css/native.css',
+                ['version' => 'auto']
             );
+
+            if ((string) $data['params']->get('template', 'L') === 'C') {
+                $assets->registerAndUseScript(
+                    'mod_sportsmanagement_teamplayers.native',
+                    'modules/mod_sportsmanagement_teamplayers/js/native.js',
+                    ['version' => 'auto'],
+                    ['defer' => true]
+                );
+            }
         }
 
         return $data;
