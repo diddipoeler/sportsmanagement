@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -44,10 +45,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $app->getDocument()->getWebAssetManager()->registerAndUseStyle(
-            'mod_sportsmanagement_teamstats_ranking',
-            'modules/mod_sportsmanagement_teamstats_ranking/css/mod_sportsmanagement_teamstats_ranking.css'
-        );
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->registerAndUseStyle(
+                'mod_sportsmanagement_teamstats_ranking',
+                'modules/mod_sportsmanagement_teamstats_ranking/css/mod_sportsmanagement_teamstats_ranking.css'
+            );
+        }
 
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);

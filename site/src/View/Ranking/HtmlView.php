@@ -18,6 +18,7 @@ use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingHelperFacade;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingMapModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
@@ -290,7 +291,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     private function prepareAssets(): void
     {
-        $wa = $this->getDocument()->getWebAssetManager();
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $wa = $document->getWebAssetManager();
 
         if (!empty($this->config['show_button_download_excel']) || !empty($this->config['show_button_download_mediawiki'])) {
             $wa->registerAndUseScript(

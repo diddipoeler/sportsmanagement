@@ -1,8 +1,17 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator edit view for prediction projects.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Predictionproject;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -26,7 +35,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         $this->item->name = '';
-        Factory::getApplication()->setUserState(
+        self::administratorApplication()->setUserState(
             'com_sportsmanagement.pid',
             (int) ($this->item->project_id ?? 0)
         );
@@ -38,5 +47,17 @@ final class HtmlView extends BaseHtmlView
         }
 
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement prediction project view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 }
