@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Template;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TemplateModel;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -33,7 +34,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $app->getInput()->set('hidemainmenu', true);
 
         $this->form = $this->get('Form');
@@ -124,7 +125,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         if (ComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_backend')) {
-            Factory::getApplication()->enqueueMessage(
+            self::administratorApplication()->enqueueMessage(
                 __METHOD__ . ' colors_ranking entries: ' . count($colorsRanking),
                 'notice'
             );
@@ -147,4 +148,16 @@ final class HtmlView extends BaseHtmlView
             (int) ($this->item->id ?? 0)
         );
     }
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement template view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
+    }
+
 }

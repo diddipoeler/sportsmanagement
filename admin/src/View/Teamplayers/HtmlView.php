@@ -1,9 +1,19 @@
 <?php
+/**
+ * Native Joomla 5/6 administrator roster view for team players and staff.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 namespace Diddipoeler\Component\SportsManagement\Administrator\View\Teamplayers;
 
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;
+use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -33,7 +43,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = self::administratorApplication();
         $model = $this->getModel();
 
         if (!$model instanceof TeamplayersModel) {
@@ -70,11 +80,27 @@ final class HtmlView extends BaseHtmlView
         $this->modalheight = (int) $params->get('modal_popup_height', 600);
         $this->modalwidth = (int) $params->get('modal_popup_width', 900);
 
-        $this->getDocument()->getWebAssetManager()->useScript('multiselect');
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $document->getWebAssetManager()->useScript('multiselect');
+        }
         $this->addToolbar();
         $this->prepareModals((bool) $params->get('assign_club_position_to_player', 0));
 
         parent::display($tpl);
+    }
+
+    private static function administratorApplication(): AdministratorApplication
+    {
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement team players view requires the Joomla administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private function addToolbar(): void
