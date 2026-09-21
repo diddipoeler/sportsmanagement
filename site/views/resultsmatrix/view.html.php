@@ -12,6 +12,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatrixModel;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
@@ -33,12 +34,16 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
         $this->params = $this->app->getParams();
         $databaseSelector = $this->jinput->getInt('cfg_which_database', 0);
 
-        $assets = $this->document->getWebAssetManager();
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.resultsmatrix.script',
-            'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
-            ['version' => 'auto']
-        );
+        $assets = null;
+
+        if ($this->document instanceof HtmlDocument) {
+            $assets = $this->document->getWebAssetManager();
+            $assets->registerAndUseScript(
+                'com_sportsmanagement.resultsmatrix.script',
+                'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                ['version' => 'auto']
+            );
+        }
         $this->pagination = $this->get('Pagination');
 
         $matrixModel = new MatrixModel();
@@ -131,11 +136,13 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
         }
 
         $this->document->setTitle($pageTitle);
-        $assets->registerAndUseStyle(
-            'com_sportsmanagement.resultsmatrix.style',
-            'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
-            ['version' => 'auto']
-        );
+        if ($assets !== null) {
+            $assets->registerAndUseStyle(
+                'com_sportsmanagement.resultsmatrix.style',
+                'components/com_sportsmanagement/assets/css/' . $this->view . '.css',
+                ['version' => 'auto']
+            );
+        }
 
         sportsmanagementHelperHtml::$project = $project;
         sportsmanagementHelperHtml::$teams = $this->teams;

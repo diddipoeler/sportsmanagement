@@ -11,6 +11,7 @@ namespace Diddipoeler\Module\SportsManagementClubBirthday\Site\Dispatcher;
 
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -51,8 +52,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['clubs'] = $result['clubs'];
         $data['mode'] = $result['mode'];
 
-        if ($data['mode'] === 'BC') {
-            $app->getDocument()->getWebAssetManager()->useScript('bootstrap.carousel');
+        $document = $app->getDocument();
+
+        if ($document instanceof HtmlDocument && $data['mode'] === 'BC') {
+            $document->getWebAssetManager()->useScript('bootstrap.carousel');
         }
 
         return $data;
