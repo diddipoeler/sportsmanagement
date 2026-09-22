@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementCountRekord\Site\Helper\CountRekordHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -34,7 +33,7 @@ if (!class_exists(CountRekordHelper::class)) {
 if (!class_exists('modJSMStatistikRekordHelper', false)) {
     final class modJSMStatistikRekordHelper
     {
-        public static function getData($params, $module): array
+        public static function getData($params, $module, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = SportsManagementSiteApplicationResolver::resolve();
@@ -43,8 +42,10 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
                 throw new \RuntimeException('SportsManagement CountRekord legacy helper requires the Joomla site application.', 500);
             }
 
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = $app->getContainer()->get(DatabaseInterface::class);
+            }
 
             return (new CountRekordHelper())->getData($registry, $module, $database);
         }

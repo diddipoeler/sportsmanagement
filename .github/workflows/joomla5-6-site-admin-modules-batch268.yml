@@ -1,0 +1,113 @@
+name: Joomla 5/6 site admin modules batch 268
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/ranking/default.php'
+      - 'site/tmpl/billardlivegames/default.php'
+      - 'site/tmpl/allleagues/default.php'
+      - 'site/tmpl/allprojectrounds/default.php'
+      - 'admin/tmpl/jsmgcalendarimport/default.php'
+      - 'admin/views/jsmgcalendarimport/tmpl/default.php'
+      - 'admin/views/update/tmpl/default.php'
+      - 'admin/views/updates/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch268.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/tmpl/ranking/default.php'
+      - 'site/tmpl/billardlivegames/default.php'
+      - 'site/tmpl/allleagues/default.php'
+      - 'site/tmpl/allprojectrounds/default.php'
+      - 'admin/tmpl/jsmgcalendarimport/default.php'
+      - 'admin/views/jsmgcalendarimport/tmpl/default.php'
+      - 'admin/views/update/tmpl/default.php'
+      - 'admin/views/updates/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch268.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/ranking/default.php
+            site/tmpl/billardlivegames/default.php
+            site/tmpl/allleagues/default.php
+            site/tmpl/allprojectrounds/default.php
+            admin/tmpl/jsmgcalendarimport/default.php
+            admin/views/jsmgcalendarimport/tmpl/default.php
+            admin/views/update/tmpl/default.php
+            admin/views/updates/tmpl/default.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+            modules/mod_sportsmanagement_gcalendar/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate administrator bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/jsmgcalendarimport/default.php' admin/views/jsmgcalendarimport/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/update/default.php' admin/views/update/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/updates/default.php' admin/views/updates/tmpl/default.php
+
+      - name: Validate legacy helper service contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          helpers=(
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+            modules/mod_sportsmanagement_gcalendar/helper.php
+          )
+
+          for file in "${helpers[@]}"; do
+            grep -Fq -- '?DatabaseInterface $database = null' "$file"
+
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+
+            grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+          done
+
+          echo 'Joomla 5/6 batch 268 contracts OK.'
