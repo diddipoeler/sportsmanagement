@@ -1,0 +1,140 @@
+name: Joomla 5/6 site admin modules batch 265
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/event/default.php'
+      - 'site/tmpl/ical/default.php'
+      - 'site/tmpl/scoresheet/default.php'
+      - 'site/views/event/tmpl/default.php'
+      - 'site/views/ical/tmpl/default.php'
+      - 'site/views/scoresheet/tmpl/default.php'
+      - 'admin/tmpl/predictiongroups/default.php'
+      - 'admin/tmpl/predictionmembers/default.php'
+      - 'admin/tmpl/predictionrounds/default.php'
+      - 'admin/tmpl/predictions/default.php'
+      - 'admin/tmpl/projectteams/default.php'
+      - 'admin/tmpl/rounds/default.php'
+      - 'admin/views/predictiongroups/tmpl/default.php'
+      - 'admin/views/predictionmembers/tmpl/default.php'
+      - 'admin/views/predictionrounds/tmpl/default.php'
+      - 'admin/views/predictions/tmpl/default.php'
+      - 'admin/views/projectteams/tmpl/default.php'
+      - 'admin/views/rounds/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch265.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/event/default.php'
+      - 'site/tmpl/ical/default.php'
+      - 'site/tmpl/scoresheet/default.php'
+      - 'site/views/event/tmpl/default.php'
+      - 'site/views/ical/tmpl/default.php'
+      - 'site/views/scoresheet/tmpl/default.php'
+      - 'admin/tmpl/predictiongroups/default.php'
+      - 'admin/tmpl/predictionmembers/default.php'
+      - 'admin/tmpl/predictionrounds/default.php'
+      - 'admin/tmpl/predictions/default.php'
+      - 'admin/tmpl/projectteams/default.php'
+      - 'admin/tmpl/rounds/default.php'
+      - 'admin/views/predictiongroups/tmpl/default.php'
+      - 'admin/views/predictionmembers/tmpl/default.php'
+      - 'admin/views/predictionrounds/tmpl/default.php'
+      - 'admin/views/predictions/tmpl/default.php'
+      - 'admin/views/projectteams/tmpl/default.php'
+      - 'admin/views/rounds/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch265.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/event/default.php
+            site/tmpl/ical/default.php
+            site/tmpl/scoresheet/default.php
+            site/views/event/tmpl/default.php
+            site/views/ical/tmpl/default.php
+            site/views/scoresheet/tmpl/default.php
+            admin/tmpl/predictiongroups/default.php
+            admin/tmpl/predictionmembers/default.php
+            admin/tmpl/predictionrounds/default.php
+            admin/tmpl/predictions/default.php
+            admin/tmpl/projectteams/default.php
+            admin/tmpl/rounds/default.php
+            admin/views/predictiongroups/tmpl/default.php
+            admin/views/predictionmembers/tmpl/default.php
+            admin/views/predictionrounds/tmpl/default.php
+            admin/views/predictions/tmpl/default.php
+            admin/views/projectteams/tmpl/default.php
+            admin/views/rounds/tmpl/default.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native template bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/event/default.php" site/views/event/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/ical/default.php" site/views/ical/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/scoresheet/default.php" site/views/scoresheet/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictiongroups/default.php" admin/views/predictiongroups/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictionmembers/default.php" admin/views/predictionmembers/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictionrounds/default.php" admin/views/predictionrounds/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictions/default.php" admin/views/predictions/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/projectteams/default.php" admin/views/projectteams/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/rounds/default.php" admin/views/rounds/tmpl/default.php
+
+      - name: Validate dispatcher application contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          dispatchers=(
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${dispatchers[@]}"; do
+            grep -Fq -- "$app->isClient('site')" "$file"
+            if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+              echo "$file still imports SiteApplication" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+              echo "$file still contains a concrete SiteApplication runtime check" >&2
+              exit 1
+            fi
+          done
+          echo 'Joomla 5/6 batch 265 contracts OK.'
