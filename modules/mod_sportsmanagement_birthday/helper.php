@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Diddipoeler\Module\SportsManagementBirthday\Site\Helper\BirthdayHelper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -48,14 +47,16 @@ if (!function_exists('jsm_birthday_sort')) {
 if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
     final class modSportsmanagementBirthdayDataHelper
     {
-        public function getData(Registry $params, Registry $componentParams, CMSApplicationInterface $app): array
+        public function getData(Registry $params, Registry $componentParams, CMSApplicationInterface $app, ?DatabaseInterface $database = null): array
         {
             if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement Birthday requires the Joomla site application.', 500);
             }
 
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = $app->getContainer()->get(DatabaseInterface::class);
+            }
 
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
         }
@@ -65,7 +66,7 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
 if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
     final class modSportsmanagementBirthdayHelper
     {
-        public static function getData(Registry $params): array
+        public static function getData(Registry $params, ?DatabaseInterface $database = null): array
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
 
@@ -73,8 +74,10 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
                 throw new \RuntimeException('SportsManagement Birthday legacy facade requires the Joomla site application.', 500);
             }
 
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = $app->getContainer()->get(DatabaseInterface::class);
+            }
 
             return (new BirthdayHelper())->getData(
                 $params,

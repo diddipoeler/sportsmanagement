@@ -9,10 +9,18 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementTeamStatisticsCounter\Site\Helper\TeamStatisticsCounterHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
 
 if (!class_exists(TeamStatisticsCounterHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/TeamStatisticsCounterHelper.php';
@@ -29,14 +37,21 @@ if (!class_exists(TeamStatisticsCounterHelper::class)) {
 if (!class_exists('modJSMTeamStatisticsCounter', false)) {
     final class modJSMTeamStatisticsCounter
     {
-        public static function getData($params): array
+        public static function getData($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $app = SportsManagementSiteApplicationResolver::resolve();
 
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement Team Statistics Counter legacy helper requires the Joomla site application.', 500);
+            }
 
-            return (new TeamStatisticsCounterHelper())->getData($registry, $joomlaDatabase);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = $app->getContainer()->get(DatabaseInterface::class);
+            }
+
+            return (new TeamStatisticsCounterHelper())->getData($registry, $database);
         }
     }
 }

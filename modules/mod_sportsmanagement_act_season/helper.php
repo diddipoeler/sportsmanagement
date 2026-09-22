@@ -12,7 +12,6 @@
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(ActSeasonHelper::class)) {
@@ -29,9 +28,9 @@ if (!class_exists(ActSeasonHelper::class)) {
 
 class modJSMActSeasonHelper
 {
-    public static function getData($seasonIds): array
+    public static function getData($seasonIds, ?DatabaseInterface $database = null): array
     {
-        return self::result($seasonIds)['list'];
+        return self::result($seasonIds, $database)['list'];
     }
 
     public static function getDataFederation($data): array
@@ -57,10 +56,10 @@ class modJSMActSeasonHelper
         return $federations;
     }
 
-    public static function getDataCcountryFederation(): array
+    public static function getDataCcountryFederation(?DatabaseInterface $database = null): array
     {
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
-        $result = self::result($componentParams->get('current_season', []));
+        $result = self::result($componentParams->get('current_season', []), $database);
         $rows = [];
 
         foreach ($result['countriesByFederation'] as $federationId => $countries) {
@@ -75,13 +74,16 @@ class modJSMActSeasonHelper
         return $rows;
     }
 
-    private static function result($seasonIds): array
+    private static function result($seasonIds, ?DatabaseInterface $database = null): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
 
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if ($database === null) {
+            /** @var DatabaseInterface $database */
+            $database = $app->getContainer()->get(DatabaseInterface::class);
+        }
 
         return (new ActSeasonHelper())->getData(
             $seasonIds,

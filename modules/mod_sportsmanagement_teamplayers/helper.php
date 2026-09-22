@@ -9,10 +9,18 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper\TeamPlayersHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
 
 if (!class_exists(TeamPlayersHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/TeamPlayersHelper.php';
@@ -29,12 +37,19 @@ if (!class_exists(TeamPlayersHelper::class)) {
 if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
     final class modSportsmanagementTeamPlayersHelper
     {
-        public static function getData(&$params): array
+        public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $app = SportsManagementSiteApplicationResolver::resolve();
 
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement TeamPlayers legacy helper requires the Joomla site application.', 500);
+            }
+
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = $app->getContainer()->get(DatabaseInterface::class);
+            }
             $data = (new TeamPlayersHelper())->getData($registry, $database);
 
             return ['project' => $data['project'], 'roster' => $data['roster']];

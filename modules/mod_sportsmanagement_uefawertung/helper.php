@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementUefaWertung\Site\Helper\UefaWertungHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -37,17 +36,17 @@ if (!class_exists(UefaWertungHelper::class)) {
 
 class modJSMUefaWERTUNG
 {
-    public static function getData($params): array
+    public static function getData($params, ?DatabaseInterface $database = null): array
     {
-        return self::result($params)['rankings'];
+        return self::result($params, $database)['rankings'];
     }
 
-    public static function getSeasonNames($params): array
+    public static function getSeasonNames($params, ?DatabaseInterface $database = null): array
     {
-        return self::result($params)['seasons'];
+        return self::result($params, $database)['seasons'];
     }
 
-    private static function result($params): array
+    private static function result($params, ?DatabaseInterface $database = null): array
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $app = SportsManagementSiteApplicationResolver::resolve();
@@ -56,8 +55,10 @@ class modJSMUefaWERTUNG
             throw new \RuntimeException('SportsManagement UEFA ranking legacy helper requires the Joomla site application.', 500);
         }
 
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        if ($database === null) {
+            /** @var DatabaseInterface $database */
+            $database = $app->getContainer()->get(DatabaseInterface::class);
+        }
 
         return (new UefaWertungHelper())->getData($registry, $app, $database);
     }
