@@ -1,0 +1,113 @@
+name: Joomla 5/6 site admin modules batch 273
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/editmatch/tmpl/edit_scoredetails.php'
+      - 'site/views/editmatch/tmpl/edit_singlematchbillard.php'
+      - 'site/views/editmatch/tmpl/editevents.php'
+      - 'site/views/editmatch/tmpl/editeventsbb.php'
+      - 'site/views/editmatch/tmpl/editeventsbb_away.php'
+      - 'site/views/editmatch/tmpl/editeventsbb_home.php'
+      - 'site/views/editmatch/tmpl/editlineup.php'
+      - 'site/views/editmatch/tmpl/editlineup_golfbillardplayer.php'
+      - 'site/views/editmatch/tmpl/editlineup_players.php'
+      - 'site/views/editmatch/tmpl/editlineup_players_trikot_numbers.php'
+      - 'admin/views/predictiongames/tmpl/default.php'
+      - 'admin/views/predictiongames/tmpl/default_data.php'
+      - 'admin/views/predictiongroups/tmpl/default_data.php'
+      - 'admin/views/predictionmembers/tmpl/default_data.php'
+      - 'admin/views/predictionmembers/tmpl/editlist.php'
+      - 'admin/views/predictionrounds/tmpl/default_data.php'
+      - 'admin/views/predictiontemplate/tmpl/edit.php'
+      - 'admin/views/predictiontemplates/tmpl/default.php'
+      - 'admin/views/predictiontemplates/tmpl/default_data.php'
+      - 'admin/views/templates/tmpl/default_data.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch273.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/views/editmatch/tmpl/edit_scoredetails.php'
+      - 'site/views/editmatch/tmpl/edit_singlematchbillard.php'
+      - 'site/views/editmatch/tmpl/editevents.php'
+      - 'site/views/editmatch/tmpl/editeventsbb.php'
+      - 'site/views/editmatch/tmpl/editeventsbb_away.php'
+      - 'site/views/editmatch/tmpl/editeventsbb_home.php'
+      - 'site/views/editmatch/tmpl/editlineup.php'
+      - 'site/views/editmatch/tmpl/editlineup_golfbillardplayer.php'
+      - 'site/views/editmatch/tmpl/editlineup_players.php'
+      - 'site/views/editmatch/tmpl/editlineup_players_trikot_numbers.php'
+      - 'admin/views/predictiongames/tmpl/default.php'
+      - 'admin/views/predictiongames/tmpl/default_data.php'
+      - 'admin/views/predictiongroups/tmpl/default_data.php'
+      - 'admin/views/predictionmembers/tmpl/default_data.php'
+      - 'admin/views/predictionmembers/tmpl/editlist.php'
+      - 'admin/views/predictionrounds/tmpl/default_data.php'
+      - 'admin/views/predictiontemplate/tmpl/edit.php'
+      - 'admin/views/predictiontemplates/tmpl/default.php'
+      - 'admin/views/predictiontemplates/tmpl/default_data.php'
+      - 'admin/views/templates/tmpl/default_data.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch273.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/editmatch/tmpl/edit_scoredetails.php
+            site/views/editmatch/tmpl/edit_singlematchbillard.php
+            site/views/editmatch/tmpl/editevents.php
+            site/views/editmatch/tmpl/editeventsbb.php
+            site/views/editmatch/tmpl/editeventsbb_away.php
+            site/views/editmatch/tmpl/editeventsbb_home.php
+            site/views/editmatch/tmpl/editlineup.php
+            site/views/editmatch/tmpl/editlineup_golfbillardplayer.php
+            site/views/editmatch/tmpl/editlineup_players.php
+            site/views/editmatch/tmpl/editlineup_players_trikot_numbers.php
+            admin/views/predictiongames/tmpl/default.php
+            admin/views/predictiongames/tmpl/default_data.php
+            admin/views/predictiongroups/tmpl/default_data.php
+            admin/views/predictionmembers/tmpl/default_data.php
+            admin/views/predictionmembers/tmpl/editlist.php
+            admin/views/predictionrounds/tmpl/default_data.php
+            admin/views/predictiontemplate/tmpl/edit.php
+            admin/views/predictiontemplates/tmpl/default.php
+            admin/views/predictiontemplates/tmpl/default_data.php
+            admin/views/templates/tmpl/default_data.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate bridge targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/edit_scoredetails.php' site/views/editmatch/tmpl/edit_scoredetails.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/edit_singlematchbillard.php' site/views/editmatch/tmpl/edit_singlematchbillard.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/editlineup_players.php' site/views/editmatch/tmpl/editlineup_players.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/predictiongames/default.php' admin/views/predictiongames/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/predictionmembers/editlist.php' admin/views/predictionmembers/tmpl/editlist.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/predictiontemplate/edit.php' admin/views/predictiontemplate/tmpl/edit.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/templates/default_data.php' admin/views/templates/tmpl/default_data.php
+          echo 'Joomla 5/6 batch 273 bridge contracts OK.'
