@@ -1,0 +1,112 @@
+name: Joomla 5/6 site admin modules batch 260
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/editclub/tmpl/default.php'
+      - 'site/views/editmatch/tmpl/default.php'
+      - 'site/views/editperson/tmpl/default.php'
+      - 'site/views/editprojectteam/tmpl/default.php'
+      - 'site/views/editteam/tmpl/default.php'
+      - 'admin/views/extensions/tmpl/default.php'
+      - 'admin/views/github/tmpl/default.php'
+      - 'admin/views/githubinstall/tmpl/default.php'
+      - 'admin/views/imagehandler/tmpl/default.php'
+      - 'admin/views/imagelist/tmpl/default.php'
+      - 'site/tmpl/editperson/default.php'
+      - 'site/tmpl/editteam/default.php'
+      - 'admin/tmpl/imagehandler/default.php'
+      - 'admin/tmpl/imagelist/default.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch260.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/editclub/tmpl/default.php'
+      - 'site/views/editmatch/tmpl/default.php'
+      - 'site/views/editperson/tmpl/default.php'
+      - 'site/views/editprojectteam/tmpl/default.php'
+      - 'site/views/editteam/tmpl/default.php'
+      - 'admin/views/extensions/tmpl/default.php'
+      - 'admin/views/github/tmpl/default.php'
+      - 'admin/views/githubinstall/tmpl/default.php'
+      - 'admin/views/imagehandler/tmpl/default.php'
+      - 'admin/views/imagelist/tmpl/default.php'
+      - 'site/tmpl/editperson/default.php'
+      - 'site/tmpl/editteam/default.php'
+      - 'admin/tmpl/imagehandler/default.php'
+      - 'admin/tmpl/imagelist/default.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch260.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/editclub/tmpl/default.php
+            site/views/editmatch/tmpl/default.php
+            site/views/editperson/tmpl/default.php
+            site/views/editprojectteam/tmpl/default.php
+            site/views/editteam/tmpl/default.php
+            admin/views/extensions/tmpl/default.php
+            admin/views/github/tmpl/default.php
+            admin/views/githubinstall/tmpl/default.php
+            admin/views/imagehandler/tmpl/default.php
+            admin/views/imagelist/tmpl/default.php
+            site/tmpl/editperson/default.php
+            site/tmpl/editteam/default.php
+            admin/tmpl/imagehandler/default.php
+            admin/tmpl/imagelist/default.php
+            modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 EventsRanking contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          helper='modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+          legacy='modules/mod_sportsmanagement_eventsranking/helper.php'
+          dispatcher='modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+          entry='modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+
+          if grep -Fq -- 'CMSApplicationInterface' "$helper"; then
+            echo "$helper still couples data loading to the application interface" >&2
+            exit 1
+          fi
+          if grep -Fq -- 'SportsManagementSiteApplicationResolver' "$legacy"; then
+            echo "$legacy still resolves an unused site application" >&2
+            exit 1
+          fi
+          grep -Fq -- "getData(\$data['params'], \$database)" "$dispatcher"
+          grep -Fq -- 'getData($params, $database)' "$entry"
+          echo 'Joomla 5/6 batch 260 contracts OK.'

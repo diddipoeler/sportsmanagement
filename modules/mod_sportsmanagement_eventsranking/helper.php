@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -21,7 +20,6 @@ use Joomla\Database\DatabaseInterface;
 $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
-    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -52,11 +50,9 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
          */
         public static function getData(&$params): array
         {
-            $app = SportsManagementSiteApplicationResolver::resolve();
-
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
-            $data = (new EventsRankingHelper())->getData($params, $app, $database);
+            $data = (new EventsRankingHelper())->getData($params, $database);
 
             return [
                 'project' => $data['project'] ?? null,

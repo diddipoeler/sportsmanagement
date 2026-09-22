@@ -14,7 +14,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\Database\DatabaseInterface;
 
@@ -34,8 +33,8 @@ if (!class_exists(EventsRankingHelper::class)) {
 }
 
 /** @var DatabaseInterface $database */
-$database = Factory::getContainer()->get(DatabaseInterface::class);
-$rankingData = (new EventsRankingHelper())->getData($params, $app, $database);
+$database = $app->getContainer()->get(DatabaseInterface::class);
+$rankingData = (new EventsRankingHelper())->getData($params, $database);
 $style = 'modules/' . $module->module . '/css/' . $module->module . '.css';
 
 if (is_file(JPATH_ROOT . '/' . $style)) {

@@ -13,7 +13,6 @@ namespace Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -22,7 +21,7 @@ use Joomla\Registry\Registry;
 
 final class EventsRankingHelper
 {
-    public function getData(Registry $params, CMSApplicationInterface $app, DatabaseInterface $fallbackDatabase): array
+    public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $db = $this->database($params, $fallbackDatabase);
         $projectIds = $this->normaliseIds($params->get('p'));

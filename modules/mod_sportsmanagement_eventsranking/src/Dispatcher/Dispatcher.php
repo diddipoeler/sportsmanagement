@@ -14,7 +14,6 @@ namespace Diddipoeler\Module\SportsManagementEventsRanking\Site\Dispatcher;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -46,10 +45,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $data['rankingData'] = $this->getHelperFactory()
             ->getHelper('EventsRankingHelper')
-            ->getData($data['params'], $app, $database);
+            ->getData($data['params'], $database);
 
         $document = $app->getDocument();
 
