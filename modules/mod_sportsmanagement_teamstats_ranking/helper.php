@@ -44,13 +44,15 @@ if (!class_exists(TeamStatsRankingHelper::class)) {
 if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
     final class modSportsmanagementTeamStatHelper
     {
-        public static function getData(&$params): array
+        public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = Factory::getApplication()->getContainer()->get(DatabaseInterface::class);
+            }
 
-            return (new TeamStatsRankingHelper())->getData($registry, $joomlaDatabase);
+            return (new TeamStatsRankingHelper())->getData($registry, $database);
         }
 
         public static function getLogo(object $item, int $type = 1): string

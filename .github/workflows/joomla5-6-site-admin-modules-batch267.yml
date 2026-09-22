@@ -1,0 +1,133 @@
+name: Joomla 5/6 site admin modules batch 267
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/clubs/default.php'
+      - 'site/tmpl/curve/default.php'
+      - 'site/tmpl/rivals/default.php'
+      - 'site/tmpl/rosteralltime/default.php'
+      - 'admin/tmpl/projectpositions/default.php'
+      - 'admin/tmpl/projectpositions/default_data.php'
+      - 'admin/tmpl/projectreferees/default.php'
+      - 'admin/tmpl/projectreferees/default_data.php'
+      - 'admin/views/projectpositions/tmpl/default.php'
+      - 'admin/views/projectreferees/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch267.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/tmpl/clubs/default.php'
+      - 'site/tmpl/curve/default.php'
+      - 'site/tmpl/rivals/default.php'
+      - 'site/tmpl/rosteralltime/default.php'
+      - 'admin/tmpl/projectpositions/default.php'
+      - 'admin/tmpl/projectpositions/default_data.php'
+      - 'admin/tmpl/projectreferees/default.php'
+      - 'admin/tmpl/projectreferees/default_data.php'
+      - 'admin/views/projectpositions/tmpl/default.php'
+      - 'admin/views/projectreferees/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch267.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/clubs/default.php
+            site/tmpl/curve/default.php
+            site/tmpl/rivals/default.php
+            site/tmpl/rosteralltime/default.php
+            admin/tmpl/projectpositions/default.php
+            admin/tmpl/projectpositions/default_data.php
+            admin/tmpl/projectreferees/default.php
+            admin/tmpl/projectreferees/default_data.php
+            admin/views/projectpositions/tmpl/default.php
+            admin/views/projectreferees/tmpl/default.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+            modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native admin bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/projectpositions/default.php' admin/views/projectpositions/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/projectreferees/default.php' admin/views/projectreferees/tmpl/default.php
+          grep -Fq -- "require __DIR__ . '/default_data.php';" admin/tmpl/projectpositions/default.php
+          grep -Fq -- "require __DIR__ . '/default_data.php';" admin/tmpl/projectreferees/default.php
+
+      - name: Validate Joomla 5/6 cleanup contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if grep -Fq -- 'sportsmanagementHelper::addTemplatePaths' site/tmpl/rosteralltime/default.php; then
+            echo 'rosteralltime still uses the legacy template path bootstrap' >&2
+            exit 1
+          fi
+
+          if grep -Fq -- 'sportsmanagementHelper::addTemplatePaths' admin/tmpl/projectpositions/default_data.php; then
+            echo 'projectpositions native data layout still uses the legacy template path bootstrap' >&2
+            exit 1
+          fi
+
+          helpers=(
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+          )
+
+          for file in "${helpers[@]}"; do
+            grep -Fq -- '?DatabaseInterface $database = null' "$file"
+
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+
+            grep -Fq -- 'getApplication()->getContainer()->get(DatabaseInterface::class)' "$file"
+          done
+
+          playground=modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+
+          if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$playground"; then
+            echo 'playgroundplan still imports SiteApplication' >&2
+            exit 1
+          fi
+
+          if grep -Fq -- 'instanceof SiteApplication' "$playground"; then
+            echo 'playgroundplan still checks concrete SiteApplication' >&2
+            exit 1
+          fi
+
+          echo 'Joomla 5/6 batch 267 contracts OK.'

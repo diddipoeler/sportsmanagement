@@ -29,11 +29,14 @@ if (!class_exists(SportsTypeStatisticsHelper::class)) {
 if (!class_exists('modJSMSportsHelper', false)) {
     final class modJSMSportsHelper
     {
-        public static function getData(&$params): array
+        public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = Factory::getApplication()->getContainer()->get(DatabaseInterface::class);
+            }
+
             $data = (new SportsTypeStatisticsHelper())->getData($registry, $database);
             $sportTypeId = (int) $registry->get('sportstypes', 0);
             $legacy = ['sportstype' => []];
