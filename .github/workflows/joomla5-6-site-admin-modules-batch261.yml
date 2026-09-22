@@ -1,0 +1,134 @@
+name: Joomla 5/6 site admin modules batch 261
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/eventsranking/default.php'
+      - 'site/tmpl/leaguechampionoverview/default.php'
+      - 'site/tmpl/playground/default.php'
+      - 'site/tmpl/results/default.php'
+      - 'site/views/eventsranking/tmpl/default.php'
+      - 'site/views/leaguechampionoverview/tmpl/default.php'
+      - 'site/views/playground/tmpl/default.php'
+      - 'site/views/results/tmpl/default.php'
+      - 'admin/tmpl/jlextdbbimport/default.php'
+      - 'admin/tmpl/jlextdfbnetplayerimport/default.php'
+      - 'admin/tmpl/jlextfederations/default.php'
+      - 'admin/views/jlextassociations/tmpl/default.php'
+      - 'admin/views/jlextcountries/tmpl/default.php'
+      - 'admin/views/jlextdbbimport/tmpl/default.php'
+      - 'admin/views/jlextdfbkeyimport/tmpl/default.php'
+      - 'admin/views/jlextdfbnetplayerimport/tmpl/default.php'
+      - 'admin/views/jlextfederations/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch261.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/eventsranking/default.php'
+      - 'site/tmpl/leaguechampionoverview/default.php'
+      - 'site/tmpl/playground/default.php'
+      - 'site/tmpl/results/default.php'
+      - 'site/views/eventsranking/tmpl/default.php'
+      - 'site/views/leaguechampionoverview/tmpl/default.php'
+      - 'site/views/playground/tmpl/default.php'
+      - 'site/views/results/tmpl/default.php'
+      - 'admin/tmpl/jlextdbbimport/default.php'
+      - 'admin/tmpl/jlextdfbnetplayerimport/default.php'
+      - 'admin/tmpl/jlextfederations/default.php'
+      - 'admin/views/jlextassociations/tmpl/default.php'
+      - 'admin/views/jlextcountries/tmpl/default.php'
+      - 'admin/views/jlextdbbimport/tmpl/default.php'
+      - 'admin/views/jlextdfbkeyimport/tmpl/default.php'
+      - 'admin/views/jlextdfbnetplayerimport/tmpl/default.php'
+      - 'admin/views/jlextfederations/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch261.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/eventsranking/default.php
+            site/tmpl/leaguechampionoverview/default.php
+            site/tmpl/playground/default.php
+            site/tmpl/results/default.php
+            site/views/eventsranking/tmpl/default.php
+            site/views/leaguechampionoverview/tmpl/default.php
+            site/views/playground/tmpl/default.php
+            site/views/results/tmpl/default.php
+            admin/tmpl/jlextdbbimport/default.php
+            admin/tmpl/jlextdfbnetplayerimport/default.php
+            admin/tmpl/jlextfederations/default.php
+            admin/views/jlextassociations/tmpl/default.php
+            admin/views/jlextcountries/tmpl/default.php
+            admin/views/jlextdbbimport/tmpl/default.php
+            admin/views/jlextdfbkeyimport/tmpl/default.php
+            admin/views/jlextdfbnetplayerimport/tmpl/default.php
+            admin/views/jlextfederations/tmpl/default.php
+            modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native template bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/eventsranking/default.php" site/views/eventsranking/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/leaguechampionoverview/default.php" site/views/leaguechampionoverview/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/playground/default.php" site/views/playground/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/results/default.php" site/views/results/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlextdbbimport/default.php" admin/views/jlextdbbimport/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlextdfbnetplayerimport/default.php" admin/views/jlextdfbnetplayerimport/tmpl/default.php
+
+      - name: Validate Joomla 5/6 application contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          dispatchers=(
+            modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${dispatchers[@]}"; do
+            grep -Fq -- '$app->getContainer()->get(DatabaseInterface::class)' "$file"
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still uses the global Factory container" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+              echo "$file still couples to concrete SiteApplication" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+              echo "$file still contains a concrete SiteApplication runtime check" >&2
+              exit 1
+            fi
+          done
+          if grep -Fq -- 'Factory::getApplication()' admin/tmpl/jlextdbbimport/default.php; then
+            echo 'DBB import layout still uses deprecated Factory::getApplication()' >&2
+            exit 1
+          fi
+          echo 'Joomla 5/6 batch 261 contracts OK.'

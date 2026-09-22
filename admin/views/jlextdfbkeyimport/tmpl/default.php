@@ -1,23 +1,12 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage jlextdfbkeyimport
- * @file       default.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Legacy compatibility bridge for the native Joomla 5/6 DFB key import administrator layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+\defined('_JEXEC') or die;
 
-// Set toolbar items for the page
-ToolbarHelper::title(Text::_(Text::_('DFB-Keys Mass-Add')));
-
-
-echo 'projekt ->' . $this->project_id . '<br>';
-
-
+require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/jlextdfbkeyimport/default.php';

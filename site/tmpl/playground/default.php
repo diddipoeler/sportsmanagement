@@ -1,5 +1,12 @@
 <?php
-/** SportsManagement playground template for Joomla 5/6. */
+/**
+ * Native Joomla 5/6 playground layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 defined('_JEXEC') or die('Restricted access');
 
 if (!$this->playground) {

@@ -11,10 +11,8 @@ namespace Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -33,7 +31,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app = $this->getApplication();
 
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Team Stats Ranking requires the Joomla site application.', 500);
         }
 
@@ -55,7 +53,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $helper = $this->getHelperFactory()->getHelper('TeamStatsRankingHelper');
 
         return array_merge(
