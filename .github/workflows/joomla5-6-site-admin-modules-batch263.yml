@@ -1,0 +1,154 @@
+name: Joomla 5/6 site admin modules batch 263
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/predictionranking/default.php'
+      - 'site/tmpl/statsranking/default.php'
+      - 'site/tmpl/statsrankingteams/default.php'
+      - 'site/views/predictionranking/tmpl/default.php'
+      - 'site/views/statsranking/tmpl/default.php'
+      - 'site/views/statsrankingteams/tmpl/default.php'
+      - 'admin/tmpl/jlxmlexports/default.php'
+      - 'admin/tmpl/jlxmlimports/default.php'
+      - 'admin/tmpl/joomleagueimport/default.php'
+      - 'admin/views/jlxmlexports/tmpl/default.php'
+      - 'admin/views/jlxmlimports/tmpl/default.php'
+      - 'admin/views/joomleagueimport/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch263.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/predictionranking/default.php'
+      - 'site/tmpl/statsranking/default.php'
+      - 'site/tmpl/statsrankingteams/default.php'
+      - 'site/views/predictionranking/tmpl/default.php'
+      - 'site/views/statsranking/tmpl/default.php'
+      - 'site/views/statsrankingteams/tmpl/default.php'
+      - 'admin/tmpl/jlxmlexports/default.php'
+      - 'admin/tmpl/jlxmlimports/default.php'
+      - 'admin/tmpl/joomleagueimport/default.php'
+      - 'admin/views/jlxmlexports/tmpl/default.php'
+      - 'admin/views/jlxmlimports/tmpl/default.php'
+      - 'admin/views/joomleagueimport/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch263.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/predictionranking/default.php
+            site/tmpl/statsranking/default.php
+            site/tmpl/statsrankingteams/default.php
+            site/views/predictionranking/tmpl/default.php
+            site/views/statsranking/tmpl/default.php
+            site/views/statsrankingteams/tmpl/default.php
+            admin/tmpl/jlxmlexports/default.php
+            admin/tmpl/jlxmlimports/default.php
+            admin/tmpl/joomleagueimport/default.php
+            admin/views/jlxmlexports/tmpl/default.php
+            admin/views/jlxmlimports/tmpl/default.php
+            admin/views/joomleagueimport/tmpl/default.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native template bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictionranking/default.php" site/views/predictionranking/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/statsranking/default.php" site/views/statsranking/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/statsrankingteams/default.php" site/views/statsrankingteams/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlxmlexports/default.php" admin/views/jlxmlexports/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlxmlimports/default.php" admin/views/jlxmlimports/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/joomleagueimport/default.php" admin/views/joomleagueimport/tmpl/default.php
+
+      - name: Validate Joomla 5/6 dispatcher contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          dispatchers=(
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${dispatchers[@]}"; do
+            if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+              echo "$file still couples to concrete SiteApplication" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+              echo "$file still contains a concrete SiteApplication runtime check" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses the global Factory container" >&2
+              exit 1
+            fi
+          done
+
+          container_dispatchers=(
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${container_dispatchers[@]}"; do
+            grep -Fq -- '$app->getContainer()->get(' "$file"
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+          done
+          echo 'Joomla 5/6 batch 263 contracts OK.'
