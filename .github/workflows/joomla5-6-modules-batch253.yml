@@ -1,0 +1,68 @@
+name: Joomla 5/6 modules batch 253
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_new_project/helper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-modules-batch253.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_new_project/helper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-modules-batch253.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate module helpers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_act_season/helper.php
+            modules/mod_sportsmanagement_new_project/helper.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+            modules/mod_sportsmanagement_teamplayers/helper.php
+            modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+              echo "$file regressed to concrete SiteApplication coupling" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+              echo "$file contains a redundant SiteApplication runtime check" >&2
+              exit 1
+            fi
+          done
+          echo 'Joomla 5/6 module batch 253 contracts OK.'

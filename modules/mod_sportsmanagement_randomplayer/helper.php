@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper\RandomPlayerHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -43,10 +42,6 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = SportsManagementSiteApplicationResolver::resolve();
-
-            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement RandomPlayer legacy helper requires the Joomla site application.', 500);
-            }
 
             /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);

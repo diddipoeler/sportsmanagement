@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
@@ -149,10 +148,6 @@ class modRquotesHelper
     private static function nativeData(Registry $params): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
-
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement Rquotes legacy helper requires the Joomla site application.', 500);
-        }
 
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
