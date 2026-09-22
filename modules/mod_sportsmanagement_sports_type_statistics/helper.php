@@ -9,10 +9,18 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper\SportsTypeStatisticsHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
 
 if (!class_exists(SportsTypeStatisticsHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/SportsTypeStatisticsHelper.php';
@@ -33,8 +41,14 @@ if (!class_exists('modJSMSportsHelper', false)) {
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             if ($database === null) {
+                $app = SportsManagementSiteApplicationResolver::resolve();
+
+                if (!$app->isClient('site')) {
+                    throw new \RuntimeException('SportsManagement legacy module helper requires the Joomla site application.', 500);
+                }
+
                 /** @var DatabaseInterface $database */
-                $database = Factory::getApplication()->getContainer()->get(DatabaseInterface::class);
+                $database = $app->getContainer()->get(DatabaseInterface::class);
             }
 
             $data = (new SportsTypeStatisticsHelper())->getData($registry, $database);

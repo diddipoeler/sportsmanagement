@@ -1,0 +1,136 @@
+name: Joomla 5/6 site admin modules batch 271
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/allleagues/tmpl/default_items.php'
+      - 'site/views/allplaygrounds/tmpl/default_items.php'
+      - 'site/views/allprojectrounds/tmpl/default_results_all.php'
+      - 'site/views/allprojects/tmpl/default_items.php'
+      - 'site/views/allteams/tmpl/default_items.php'
+      - 'site/views/clubs/tmpl/default_clubs.php'
+      - 'site/views/curve/tmpl/default_colorlegend.php'
+      - 'site/views/curve/tmpl/default_curvejs.php'
+      - 'admin/views/divisions/tmpl/massadd.php'
+      - 'admin/views/imagehandler/tmpl/default_image.php'
+      - 'admin/views/imagehandler/tmpl/upload.php'
+      - 'admin/views/imagehandler/tmpl/uploaddraganddrop.php'
+      - 'admin/views/imagelist/tmpl/default_image.php'
+      - 'admin/views/imagelist/tmpl/default_image_4.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_generate.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_matches.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch271.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/views/allleagues/tmpl/default_items.php'
+      - 'site/views/allplaygrounds/tmpl/default_items.php'
+      - 'site/views/allprojectrounds/tmpl/default_results_all.php'
+      - 'site/views/allprojects/tmpl/default_items.php'
+      - 'site/views/allteams/tmpl/default_items.php'
+      - 'site/views/clubs/tmpl/default_clubs.php'
+      - 'site/views/curve/tmpl/default_colorlegend.php'
+      - 'site/views/curve/tmpl/default_curvejs.php'
+      - 'admin/views/divisions/tmpl/massadd.php'
+      - 'admin/views/imagehandler/tmpl/default_image.php'
+      - 'admin/views/imagehandler/tmpl/upload.php'
+      - 'admin/views/imagehandler/tmpl/uploaddraganddrop.php'
+      - 'admin/views/imagelist/tmpl/default_image.php'
+      - 'admin/views/imagelist/tmpl/default_image_4.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_generate.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_matches.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch271.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/allleagues/tmpl/default_items.php
+            site/views/allplaygrounds/tmpl/default_items.php
+            site/views/allprojectrounds/tmpl/default_results_all.php
+            site/views/allprojects/tmpl/default_items.php
+            site/views/allteams/tmpl/default_items.php
+            site/views/clubs/tmpl/default_clubs.php
+            site/views/curve/tmpl/default_colorlegend.php
+            site/views/curve/tmpl/default_curvejs.php
+            admin/views/divisions/tmpl/massadd.php
+            admin/views/imagehandler/tmpl/default_image.php
+            admin/views/imagehandler/tmpl/upload.php
+            admin/views/imagehandler/tmpl/uploaddraganddrop.php
+            admin/views/imagelist/tmpl/default_image.php
+            admin/views/imagelist/tmpl/default_image_4.php
+            admin/views/jlextindividualsportes/tmpl/default_generate.php
+            admin/views/jlextindividualsportes/tmpl/default_matches.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate legacy bridge targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/allleagues/default_items.php' site/views/allleagues/tmpl/default_items.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/allplaygrounds/default_items.php' site/views/allplaygrounds/tmpl/default_items.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/allprojectrounds/default_results_all.php' site/views/allprojectrounds/tmpl/default_results_all.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/allprojects/default_items.php' site/views/allprojects/tmpl/default_items.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/allteams/default_items.php' site/views/allteams/tmpl/default_items.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/clubs/default_clubs.php' site/views/clubs/tmpl/default_clubs.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/curve/default_colorlegend.php' site/views/curve/tmpl/default_colorlegend.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/curve/default_curvejs.php' site/views/curve/tmpl/default_curvejs.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/divisions/massadd.php' admin/views/divisions/tmpl/massadd.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/imagehandler/default_image.php' admin/views/imagehandler/tmpl/default_image.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/imagehandler/upload.php' admin/views/imagehandler/tmpl/upload.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/imagehandler/uploaddraganddrop.php' admin/views/imagehandler/tmpl/uploaddraganddrop.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/imagelist/default_image.php' admin/views/imagelist/tmpl/default_image.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/jlextindividualsportes/default_generate.php' admin/views/jlextindividualsportes/tmpl/default_generate.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/jlextindividualsportes/default_matches.php' admin/views/jlextindividualsportes/tmpl/default_matches.php
+
+      - name: Validate Joomla 5/6 module application contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          helpers=(
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          )
+          for file in "${helpers[@]}"; do
+            if grep -Fq -- 'Factory::getApplication()' "$file"; then
+              echo "$file still uses Factory::getApplication()" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+          done
+          echo 'Joomla 5/6 batch 271 contracts OK.'
