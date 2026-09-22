@@ -1,0 +1,103 @@
+name: Joomla 5/6 site admin modules batch 258
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/referee/tmpl/default.php'
+      - 'site/views/hitlist/tmpl/default.php'
+      - 'site/views/ranking/tmpl/default.php'
+      - 'site/views/referees/tmpl/default.php'
+      - 'site/views/allprojects/tmpl/default.php'
+      - 'admin/views/seasons/tmpl/default.php'
+      - 'admin/views/agegroups/tmpl/default.php'
+      - 'admin/views/clubnames/tmpl/default.php'
+      - 'admin/views/divisions/tmpl/default.php'
+      - 'admin/views/projectteams/tmpl/copy.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_uefawertung/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch258.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/referee/tmpl/default.php'
+      - 'site/views/hitlist/tmpl/default.php'
+      - 'site/views/ranking/tmpl/default.php'
+      - 'site/views/referees/tmpl/default.php'
+      - 'site/views/allprojects/tmpl/default.php'
+      - 'admin/views/seasons/tmpl/default.php'
+      - 'admin/views/agegroups/tmpl/default.php'
+      - 'admin/views/clubnames/tmpl/default.php'
+      - 'admin/views/divisions/tmpl/default.php'
+      - 'admin/views/projectteams/tmpl/copy.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_uefawertung/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch258.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/referee/tmpl/default.php
+            site/views/hitlist/tmpl/default.php
+            site/views/ranking/tmpl/default.php
+            site/views/referees/tmpl/default.php
+            site/views/allprojects/tmpl/default.php
+            admin/views/seasons/tmpl/default.php
+            admin/views/agegroups/tmpl/default.php
+            admin/views/clubnames/tmpl/default.php
+            admin/views/divisions/tmpl/default.php
+            admin/views/projectteams/tmpl/copy.php
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_uefawertung/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 module application contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          helpers=(
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_uefawertung/helper.php
+          )
+          for file in "${helpers[@]}"; do
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+              echo "$file regressed to concrete SiteApplication coupling" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+              echo "$file contains a concrete SiteApplication runtime check" >&2
+              exit 1
+            fi
+          done
+          grep -Fq -- 'CMSApplicationInterface' modules/mod_sportsmanagement_playgroundplan/helper.php
+          echo 'Joomla 5/6 batch 258 contracts OK.'

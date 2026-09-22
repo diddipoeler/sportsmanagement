@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementUefaWertung\Site\Helper\UefaWertungHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -53,7 +52,7 @@ class modJSMUefaWERTUNG
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $app = SportsManagementSiteApplicationResolver::resolve();
 
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement UEFA ranking legacy helper requires the Joomla site application.', 500);
         }
 

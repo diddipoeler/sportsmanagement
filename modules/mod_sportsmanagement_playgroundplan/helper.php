@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper\PlaygroundPlanHelper;
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
@@ -104,11 +104,11 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             };
         }
 
-        private static function siteApplication(): SiteApplication
+        private static function siteApplication(): CMSApplicationInterface
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
 
-            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement PlaygroundPlan legacy bridge requires the Joomla site application.', 500);
             }
 

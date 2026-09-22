@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementProjectMap\Site\Helper\ProjectMapHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -50,7 +49,7 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
 
-            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement ProjectMap legacy helper requires the Joomla site application.', 500);
             }
 
