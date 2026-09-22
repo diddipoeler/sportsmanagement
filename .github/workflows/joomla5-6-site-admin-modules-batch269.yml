@@ -1,0 +1,126 @@
+name: Joomla 5/6 site admin modules batch 269
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/tmpl/hitlist/default.php'
+      - 'site/tmpl/allteams/default.php'
+      - 'site/tmpl/results/form_dfcday.php'
+      - 'site/tmpl/predictionentry/default_view_tippentry_done.php'
+      - 'admin/views/specialextensions/tmpl/default.php'
+      - 'admin/views/specialextensions/tmpl/default_3.php'
+      - 'admin/views/sportstypes/tmpl/default.php'
+      - 'admin/views/teamplayers/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch269.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/tmpl/hitlist/default.php'
+      - 'site/tmpl/allteams/default.php'
+      - 'site/tmpl/results/form_dfcday.php'
+      - 'site/tmpl/predictionentry/default_view_tippentry_done.php'
+      - 'admin/views/specialextensions/tmpl/default.php'
+      - 'admin/views/specialextensions/tmpl/default_3.php'
+      - 'admin/views/sportstypes/tmpl/default.php'
+      - 'admin/views/teamplayers/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch269.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/View/SportsManagementHtmlView.php
+            site/tmpl/hitlist/default.php
+            site/tmpl/allteams/default.php
+            site/tmpl/results/form_dfcday.php
+            site/tmpl/predictionentry/default_view_tippentry_done.php
+            admin/views/specialextensions/tmpl/default.php
+            admin/views/specialextensions/tmpl/default_3.php
+            admin/views/sportstypes/tmpl/default.php
+            admin/views/teamplayers/tmpl/default.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+            modules/mod_sportsmanagement_ranking/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native template path and administrator bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/globalviews" site/src/View/SportsManagementHtmlView.php
+          if grep -Fq -- 'sportsmanagementHelper::addTemplatePaths' site/tmpl/hitlist/default.php; then
+            echo 'hitlist still uses the legacy template path bootstrap' >&2
+            exit 1
+          fi
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/specialextensions/default.php' admin/views/specialextensions/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/sportstypes/default.php' admin/views/sportstypes/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/teamplayers/default.php' admin/views/teamplayers/tmpl/default.php
+
+      - name: Validate Joomla 5/6 module service contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          helpers=(
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+            modules/mod_sportsmanagement_ranking/helper.php
+          )
+          for file in "${helpers[@]}"; do
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+          done
+          grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_playground_ticker/helper.php
+          grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_projectmap/helper.php
+          grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_randomplayer/helper.php
+          echo 'Joomla 5/6 batch 269 contracts OK.'

@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
@@ -36,7 +35,7 @@ if (!class_exists(PlaygroundTickerHelper::class)) {
 
 class modJSMPlaygroundTicker
 {
-    public static function getData($params): array
+    public static function getData($params, ?DatabaseInterface $database = null): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
 
@@ -44,14 +43,16 @@ class modJSMPlaygroundTicker
             throw new \RuntimeException('SportsManagement PlaygroundTicker legacy helper requires the Joomla site application.', 500);
         }
 
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        if ($database === null) {
+            /** @var DatabaseInterface $database */
+            $database = $app->getContainer()->get(DatabaseInterface::class);
+        }
 
         return (new PlaygroundTickerHelper())->getData($params, $app, $database);
     }
 
-    public static function getEstadios_Proyecto($params): array
+    public static function getEstadios_Proyecto($params, ?DatabaseInterface $database = null): array
     {
-        return self::getData($params);
+        return self::getData($params, $database);
     }
 }

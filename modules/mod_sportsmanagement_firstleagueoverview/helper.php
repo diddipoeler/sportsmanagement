@@ -13,7 +13,6 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementFirstLeagueOverview\Site\Helper\FirstLeagueOverviewHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -44,17 +43,17 @@ if (!class_exists(FirstLeagueOverviewHelper::class)) {
 if (!class_exists('modjsmfirstleagueoverview', false)) {
     final class modjsmfirstleagueoverview
     {
-        public static function getData($params): array
+        public static function getData($params, ?DatabaseInterface $database = null): array
         {
-            return self::result($params)['projects'];
+            return self::result($params, $database)['projects'];
         }
 
-        public static function getfederations($params = null): array
+        public static function getfederations($params = null, ?DatabaseInterface $database = null): array
         {
-            return self::result($params)['federations'];
+            return self::result($params, $database)['federations'];
         }
 
-        private static function result($params): array
+        private static function result($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
             $app = SportsManagementSiteApplicationResolver::resolve();
@@ -63,8 +62,10 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
                 throw new \RuntimeException('SportsManagement FirstLeagueOverview legacy bridge requires the Joomla site application.', 500);
             }
 
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = $app->getContainer()->get(DatabaseInterface::class);
+            }
 
             return (new FirstLeagueOverviewHelper())->getData($registry, $database);
         }

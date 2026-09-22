@@ -15,7 +15,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRanking\Site\Helper\RankingHelper as NativeRankingHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -103,11 +102,10 @@ class modJSMRankingHelper extends stdClass
      */
     public static function getCountGames($projectid, $ishd_update_hour)
     {
-        $container = Factory::getContainer();
         $app = SportsManagementSiteApplicationResolver::resolve();
 
         /** @var DatabaseInterface $db */
-        $db = $container->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery();
         $matchestoupdate = 0;
         $projectId = (int) $projectid;

@@ -11,7 +11,6 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementProjectMap\Site\Helper\ProjectMapHelper;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
@@ -45,7 +44,7 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
             return $helper->toJavascriptObjectBody($helper->getMainSettings());
         }
 
-        public static function getData($seasonIds): array
+        public static function getData($seasonIds, ?DatabaseInterface $database = null): array
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
 
@@ -53,10 +52,12 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
                 throw new \RuntimeException('SportsManagement ProjectMap legacy helper requires the Joomla site application.', 500);
             }
 
-            /** @var DatabaseInterface $db */
-            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = $app->getContainer()->get(DatabaseInterface::class);
+            }
 
-            return self::helper()->getData($seasonIds, $db);
+            return self::helper()->getData($seasonIds, $database);
         }
 
         public static function createregions($projects): string

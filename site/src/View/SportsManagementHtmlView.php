@@ -2,7 +2,7 @@
 /**
  * Base Joomla 5/6 HTML view for the SportsManagement site application.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -29,6 +29,7 @@ abstract class SportsManagementHtmlView extends HtmlView
     {
         $this->option = 'com_sportsmanagement';
         parent::__construct($config);
+        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
 
         $this->app = SportsManagementSiteApplicationResolver::resolve();
         $this->input = $this->app->getInput();

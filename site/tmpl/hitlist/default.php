@@ -21,8 +21,6 @@ $assets->registerAndUseScript(
     ['core']
 );
 
-$templatesToLoad = ['globalviews'];
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $uri = Uri::getInstance();
 ?>
 <div class="row">
