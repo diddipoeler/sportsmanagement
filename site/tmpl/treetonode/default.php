@@ -1,5 +1,12 @@
 <?php
-/** Native Joomla 5/6 tree-to-node layout. */
+/**
+ * Native Joomla 5/6 tree-to-node layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 \defined('_JEXEC') or die;
 
 $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');

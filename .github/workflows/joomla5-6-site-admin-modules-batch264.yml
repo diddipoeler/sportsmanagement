@@ -1,0 +1,150 @@
+name: Joomla 5/6 site admin modules batch 264
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/teamplan/default.php'
+      - 'site/tmpl/teamstats/default.php'
+      - 'site/tmpl/teamstree/default.php'
+      - 'site/tmpl/treetonode/default.php'
+      - 'site/views/teamplan/tmpl/default.php'
+      - 'site/views/teamstats/tmpl/default.php'
+      - 'site/views/teamstree/tmpl/default.php'
+      - 'site/views/treetonode/tmpl/default.php'
+      - 'admin/tmpl/jsmgooglecalendar/default.php'
+      - 'admin/tmpl/smimageimports/default.php'
+      - 'admin/views/jsmgcalendars/tmpl/default.php'
+      - 'admin/views/jsmgooglecalendar/tmpl/default.php'
+      - 'admin/views/smimageimports/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch264.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/teamplan/default.php'
+      - 'site/tmpl/teamstats/default.php'
+      - 'site/tmpl/teamstree/default.php'
+      - 'site/tmpl/treetonode/default.php'
+      - 'site/views/teamplan/tmpl/default.php'
+      - 'site/views/teamstats/tmpl/default.php'
+      - 'site/views/teamstree/tmpl/default.php'
+      - 'site/views/treetonode/tmpl/default.php'
+      - 'admin/tmpl/jsmgooglecalendar/default.php'
+      - 'admin/tmpl/smimageimports/default.php'
+      - 'admin/views/jsmgcalendars/tmpl/default.php'
+      - 'admin/views/jsmgooglecalendar/tmpl/default.php'
+      - 'admin/views/smimageimports/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch264.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/teamplan/default.php
+            site/tmpl/teamstats/default.php
+            site/tmpl/teamstree/default.php
+            site/tmpl/treetonode/default.php
+            site/views/teamplan/tmpl/default.php
+            site/views/teamstats/tmpl/default.php
+            site/views/teamstree/tmpl/default.php
+            site/views/treetonode/tmpl/default.php
+            admin/tmpl/jsmgooglecalendar/default.php
+            admin/tmpl/smimageimports/default.php
+            admin/views/jsmgcalendars/tmpl/default.php
+            admin/views/jsmgooglecalendar/tmpl/default.php
+            admin/views/smimageimports/tmpl/default.php
+            modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native template bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/teamplan/default.php" site/views/teamplan/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/teamstats/default.php" site/views/teamstats/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/teamstree/default.php" site/views/teamstree/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/treetonode/default.php" site/views/treetonode/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jsmgcalendars/default.php" admin/views/jsmgcalendars/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jsmgooglecalendar/default.php" admin/views/jsmgooglecalendar/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/smimageimports/default.php" admin/views/smimageimports/tmpl/default.php
+
+      - name: Validate Joomla 5/6 dispatcher contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          dispatchers=(
+            modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${dispatchers[@]}"; do
+            if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+              echo "$file still couples to concrete SiteApplication" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+              echo "$file still contains a concrete SiteApplication runtime check" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses the global Factory container" >&2
+              exit 1
+            fi
+          done
+          echo 'Joomla 5/6 batch 264 contracts OK.'

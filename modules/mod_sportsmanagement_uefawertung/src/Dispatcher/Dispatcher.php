@@ -11,10 +11,8 @@ namespace Diddipoeler\Module\SportsManagementUefaWertung\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -33,14 +31,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app = $this->getApplication();
 
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement UEFA ranking requires the Joomla site application.', 500);
         }
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $result = $this->getHelperFactory()
             ->getHelper('UefaWertungHelper')
             ->getData($data['params'], $app, $database);

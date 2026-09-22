@@ -11,7 +11,6 @@ namespace Diddipoeler\Module\SportsManagementRanking\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
@@ -32,7 +31,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['params']->set('layout', 'native');
         $app = $this->getApplication();
 
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
         }
 
