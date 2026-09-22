@@ -1,0 +1,43 @@
+name: Joomla 5/6 ranking helper batch 255
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-ranking-helper-batch255.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-ranking-helper-batch255.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate ranking helper
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=modules/mod_sportsmanagement_ranking/helper.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+          for forbidden in             'use Joomla\CMS\Application\SiteApplication;'             'instanceof SiteApplication'             'SiteApplication::class'; do
+            if grep -Fq -- "$forbidden" "$file"; then
+              echo "Ranking helper contains obsolete coupling: $forbidden" >&2
+              exit 1
+            fi
+          done
+          echo 'Joomla 5/6 ranking helper batch 255 contracts OK.'

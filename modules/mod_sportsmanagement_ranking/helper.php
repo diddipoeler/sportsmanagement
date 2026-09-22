@@ -15,7 +15,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRanking\Site\Helper\RankingHelper as NativeRankingHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -57,10 +56,6 @@ class modJSMRankingHelper extends stdClass
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $app = SportsManagementSiteApplicationResolver::resolve();
-
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement Ranking legacy helper requires the Joomla site application.', 500);
-        }
 
         $data = (new NativeRankingHelper())->getData($registry, (object) ['id' => 0], $app);
 
@@ -109,11 +104,7 @@ class modJSMRankingHelper extends stdClass
     public static function getCountGames($projectid, $ishd_update_hour)
     {
         $container = Factory::getContainer();
-        $app = $container->get(SiteApplication::class);
-
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
-        }
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         /** @var DatabaseInterface $db */
         $db = $container->get(DatabaseInterface::class);
