@@ -47,6 +47,10 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
 
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement Club Birthday legacy helper requires the Joomla site application.', 500);
+            }
+
             if ($database === null) {
                 /** @var DatabaseInterface $database */
                 $database = $app->getContainer()->get(DatabaseInterface::class);

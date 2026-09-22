@@ -1,0 +1,127 @@
+name: Joomla 5/6 site admin modules batch 272
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/editclub/tmpl/default_details.php'
+      - 'site/views/editclub/tmpl/default_extended.php'
+      - 'site/views/editclub/tmpl/default_picture.php'
+      - 'site/views/editmatch/tmpl/edit.php'
+      - 'site/views/editmatch/tmpl/edit_altdecision.php'
+      - 'site/views/editmatch/tmpl/edit_matchdetails.php'
+      - 'site/views/editmatch/tmpl/edit_matchextended.php'
+      - 'site/views/editmatch/tmpl/edit_matchpreview.php'
+      - 'site/views/editmatch/tmpl/edit_matchrelation.php'
+      - 'site/views/editmatch/tmpl/edit_matchreport.php'
+      - 'admin/views/matches/tmpl/default_massadd.php'
+      - 'admin/views/matches/tmpl/default_matrix.php'
+      - 'admin/views/matches/tmpl/default_roundselect.php'
+      - 'admin/views/matches/tmpl/default_teamselect.php'
+      - 'admin/views/projectteams/tmpl/changeteams.php'
+      - 'admin/views/projectteams/tmpl/editlist.php'
+      - 'admin/views/rounds/tmpl/massadd.php'
+      - 'admin/views/rounds/tmpl/populate.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch272.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/views/editclub/tmpl/default_details.php'
+      - 'site/views/editclub/tmpl/default_extended.php'
+      - 'site/views/editclub/tmpl/default_picture.php'
+      - 'site/views/editmatch/tmpl/edit.php'
+      - 'site/views/editmatch/tmpl/edit_altdecision.php'
+      - 'site/views/editmatch/tmpl/edit_matchdetails.php'
+      - 'site/views/editmatch/tmpl/edit_matchextended.php'
+      - 'site/views/editmatch/tmpl/edit_matchpreview.php'
+      - 'site/views/editmatch/tmpl/edit_matchrelation.php'
+      - 'site/views/editmatch/tmpl/edit_matchreport.php'
+      - 'admin/views/matches/tmpl/default_massadd.php'
+      - 'admin/views/matches/tmpl/default_matrix.php'
+      - 'admin/views/matches/tmpl/default_roundselect.php'
+      - 'admin/views/matches/tmpl/default_teamselect.php'
+      - 'admin/views/projectteams/tmpl/changeteams.php'
+      - 'admin/views/projectteams/tmpl/editlist.php'
+      - 'admin/views/rounds/tmpl/massadd.php'
+      - 'admin/views/rounds/tmpl/populate.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch272.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/editclub/tmpl/default_details.php
+            site/views/editclub/tmpl/default_extended.php
+            site/views/editclub/tmpl/default_picture.php
+            site/views/editmatch/tmpl/edit.php
+            site/views/editmatch/tmpl/edit_altdecision.php
+            site/views/editmatch/tmpl/edit_matchdetails.php
+            site/views/editmatch/tmpl/edit_matchextended.php
+            site/views/editmatch/tmpl/edit_matchpreview.php
+            site/views/editmatch/tmpl/edit_matchrelation.php
+            site/views/editmatch/tmpl/edit_matchreport.php
+            admin/views/matches/tmpl/default_massadd.php
+            admin/views/matches/tmpl/default_matrix.php
+            admin/views/matches/tmpl/default_roundselect.php
+            admin/views/matches/tmpl/default_teamselect.php
+            admin/views/projectteams/tmpl/changeteams.php
+            admin/views/projectteams/tmpl/editlist.php
+            admin/views/rounds/tmpl/massadd.php
+            admin/views/rounds/tmpl/populate.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate site and administrator bridge targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editclub/default_details.php' site/views/editclub/tmpl/default_details.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/edit.php' site/views/editmatch/tmpl/edit.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/edit_matchreport.php' site/views/editmatch/tmpl/edit_matchreport.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/matches/default_massadd.php' admin/views/matches/tmpl/default_massadd.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/matches/default_matrix.php' admin/views/matches/tmpl/default_matrix.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/projectteams/changeteams.php' admin/views/projectteams/tmpl/changeteams.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/rounds/populate.php' admin/views/rounds/tmpl/populate.php
+
+      - name: Validate Joomla site application contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          helpers=(
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+          )
+          for file in "${helpers[@]}"; do
+            grep -Fq -- "isClient('site')" "$file"
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+          done
+          echo 'Joomla 5/6 batch 272 contracts OK.'

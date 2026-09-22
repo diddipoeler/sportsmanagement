@@ -51,8 +51,13 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
          */
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement EventsRanking legacy helper requires the Joomla site application.', 500);
+            }
+
             if ($database === null) {
-                $app = SportsManagementSiteApplicationResolver::resolve();
                 /** @var DatabaseInterface $database */
                 $database = $app->getContainer()->get(DatabaseInterface::class);
             }
