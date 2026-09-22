@@ -2,7 +2,7 @@
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage ranking
  * @file       view.pdf.php
@@ -14,7 +14,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -38,7 +38,7 @@ class sportsmanagementViewRanking extends HtmlView
      */
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = SportsManagementSiteApplicationResolver::resolve();
         $input = $app->getInput();
         $document = $app->getDocument();
         $uri = Uri::getInstance();

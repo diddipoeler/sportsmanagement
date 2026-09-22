@@ -1,0 +1,58 @@
+name: Joomla 5/6 site raw ranking batch 256
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/curve/view.raw.php'
+      - 'site/views/ical/view.raw.php'
+      - 'site/views/jsonfeed/view.raw.php'
+      - 'site/views/scoresheet/view.raw.php'
+      - 'site/views/ranking/view.pdf.php'
+      - '.github/workflows/joomla5-6-site-raw-ranking-batch256.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/curve/view.raw.php'
+      - 'site/views/ical/view.raw.php'
+      - 'site/views/jsonfeed/view.raw.php'
+      - 'site/views/scoresheet/view.raw.php'
+      - 'site/views/ranking/view.pdf.php'
+      - '.github/workflows/joomla5-6-site-raw-ranking-batch256.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site views
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/curve/view.raw.php
+            site/views/ical/view.raw.php
+            site/views/jsonfeed/view.raw.php
+            site/views/scoresheet/view.raw.php
+            site/views/ranking/view.pdf.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+          grep -Fq -- '@version    5.6.0' site/views/ranking/view.pdf.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' site/views/ranking/view.pdf.php
+          if grep -Fq -- 'Factory::getApplication()' site/views/ranking/view.pdf.php; then
+            echo 'Ranking PDF view regressed to Factory::getApplication()' >&2
+            exit 1
+          fi
+          echo 'Joomla 5/6 site batch 256 contracts OK.'
