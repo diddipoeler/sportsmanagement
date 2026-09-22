@@ -13,7 +13,6 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementFirstLeagueOverview\Site\Helper\FirstLeagueOverviewHelper;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -60,7 +59,7 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
             $app = SportsManagementSiteApplicationResolver::resolve();
 
-            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement FirstLeagueOverview legacy bridge requires the Joomla site application.', 500);
             }
 
