@@ -1,0 +1,122 @@
+name: Joomla 5/6 site admin modules batch 266
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/about/default.php'
+      - 'site/tmpl/referees/default.php'
+      - 'site/tmpl/staff/default.php'
+      - 'site/tmpl/stats/default.php'
+      - 'site/tmpl/teaminfo/default.php'
+      - 'admin/tmpl/smquotes/default.php'
+      - 'admin/tmpl/smquotestxt/default.php'
+      - 'admin/tmpl/smquotetxt/default.php'
+      - 'admin/tmpl/smextxmleditor/default.php'
+      - 'admin/tmpl/smextxmleditors/default.php'
+      - 'admin/views/smquotes/tmpl/default.php'
+      - 'admin/views/smquotestxt/tmpl/default.php'
+      - 'admin/views/smquotetxt/tmpl/default.php'
+      - 'admin/views/smextxmleditor/tmpl/default.php'
+      - 'admin/views/smextxmleditors/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch265.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch266.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/about/default.php'
+      - 'site/tmpl/referees/default.php'
+      - 'site/tmpl/staff/default.php'
+      - 'site/tmpl/stats/default.php'
+      - 'site/tmpl/teaminfo/default.php'
+      - 'admin/tmpl/smquotes/default.php'
+      - 'admin/tmpl/smquotestxt/default.php'
+      - 'admin/tmpl/smquotetxt/default.php'
+      - 'admin/tmpl/smextxmleditor/default.php'
+      - 'admin/tmpl/smextxmleditors/default.php'
+      - 'admin/views/smquotes/tmpl/default.php'
+      - 'admin/views/smquotestxt/tmpl/default.php'
+      - 'admin/views/smquotetxt/tmpl/default.php'
+      - 'admin/views/smextxmleditor/tmpl/default.php'
+      - 'admin/views/smextxmleditors/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch265.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch266.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/about/default.php
+            site/tmpl/referees/default.php
+            site/tmpl/staff/default.php
+            site/tmpl/stats/default.php
+            site/tmpl/teaminfo/default.php
+            admin/tmpl/smquotes/default.php
+            admin/tmpl/smquotestxt/default.php
+            admin/tmpl/smquotetxt/default.php
+            admin/tmpl/smextxmleditor/default.php
+            admin/tmpl/smextxmleditors/default.php
+            admin/views/smquotes/tmpl/default.php
+            admin/views/smquotestxt/tmpl/default.php
+            admin/views/smquotetxt/tmpl/default.php
+            admin/views/smextxmleditor/tmpl/default.php
+            admin/views/smextxmleditors/tmpl/default.php
+            modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate legacy bridges and native layouts
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/smquotes/default.php" admin/views/smquotes/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/smquotestxt/default.php" admin/views/smquotestxt/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/smquotetxt/default.php" admin/views/smquotetxt/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/smextxmleditor/default.php" admin/views/smextxmleditor/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/smextxmleditors/default.php" admin/views/smextxmleditors/tmpl/default.php
+          if grep -Fq -- 'sportsmanagementHelper::addTemplatePaths' site/tmpl/stats/default.php; then
+            echo 'Native stats layout still uses legacy template path bootstrap' >&2
+            exit 1
+          fi
+
+      - name: Validate application contracts and batch 265 fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+          grep -Fq -- "\$app->isClient('site')" "$file"
+          if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+            echo "$file still imports SiteApplication" >&2
+            exit 1
+          fi
+          if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+            echo "$file still contains a concrete SiteApplication runtime check" >&2
+            exit 1
+          fi
+          if grep -Fq -- '"$app->isClient' .github/workflows/joomla5-6-site-admin-modules-batch265.yml; then
+            echo 'Batch 265 workflow still expands $app as a shell variable' >&2
+            exit 1
+          fi
+          grep -Fq -- "\$app->isClient" .github/workflows/joomla5-6-site-admin-modules-batch265.yml
+          echo 'Joomla 5/6 batch 266 contracts OK.'

@@ -127,7 +127,7 @@ jobs:
             modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
           )
           for file in "${dispatchers[@]}"; do
-            grep -Fq -- "$app->isClient('site')" "$file"
+            grep -Fq -- '$app->isClient('\''site'\'')' "$file"
             if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
               echo "$file still imports SiteApplication" >&2
               exit 1
