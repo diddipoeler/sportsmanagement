@@ -1,16 +1,21 @@
 <?php
 /**
  * SportsManagement DFC results edit form.
+ 
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\Helper\RoundPaginationHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-$app = Factory::getApplication();
+$app = SportsManagementSiteApplicationResolver::resolve();
 $input = $app->getInput();
 $uri = Uri::getInstance();
 $databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;

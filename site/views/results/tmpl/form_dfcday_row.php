@@ -1,16 +1,22 @@
 <?php
 /**
  * SportsManagement DFC results edit row.
+ 
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
-$app = Factory::getApplication();
+$app = SportsManagementSiteApplicationResolver::resolve();
 $input = $app->getInput();
 $user = $app->getIdentity();
 $match = $this->game;

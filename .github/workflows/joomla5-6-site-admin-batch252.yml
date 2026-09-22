@@ -1,0 +1,74 @@
+name: Joomla 5/6 site admin batch 252
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/results/tmpl/form_row.php'
+      - 'site/views/results/tmpl/form_bootstrap_row.php'
+      - 'site/views/results/tmpl/form_dfcday.php'
+      - 'site/views/results/tmpl/form_dfcday_row.php'
+      - 'site/views/teaminfo/tmpl/default_teaminfo.php'
+      - 'admin/views/project/tmpl/panel.php'
+      - 'admin/views/players/tmpl/default.php'
+      - '.github/workflows/joomla5-6-site-admin-batch252.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/results/tmpl/form_row.php'
+      - 'site/views/results/tmpl/form_bootstrap_row.php'
+      - 'site/views/results/tmpl/form_dfcday.php'
+      - 'site/views/results/tmpl/form_dfcday_row.php'
+      - 'site/views/teaminfo/tmpl/default_teaminfo.php'
+      - 'admin/views/project/tmpl/panel.php'
+      - 'admin/views/players/tmpl/default.php'
+      - '.github/workflows/joomla5-6-site-admin-batch252.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/results/tmpl/form_row.php
+            site/views/results/tmpl/form_bootstrap_row.php
+            site/views/results/tmpl/form_dfcday.php
+            site/views/results/tmpl/form_dfcday_row.php
+            site/views/teaminfo/tmpl/default_teaminfo.php
+            admin/views/project/tmpl/panel.php
+            admin/views/players/tmpl/default.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 5/6 contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in             site/views/results/tmpl/form_row.php             site/views/results/tmpl/form_bootstrap_row.php             site/views/results/tmpl/form_dfcday.php             site/views/results/tmpl/form_dfcday_row.php; do
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            if grep -Fq -- 'Factory::getApplication()' "$file"; then
+              echo "$file regressed to Factory::getApplication()" >&2
+              exit 1
+            fi
+          done
+          grep -Fq -- "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/teaminfo/default_teaminfo.php';" site/views/teaminfo/tmpl/default_teaminfo.php
+          grep -Fq -- "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/project/panel.php';" admin/views/project/tmpl/panel.php
+          grep -Fq -- "require JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/tmpl/players/default.php';" admin/views/players/tmpl/default.php
+          echo 'Joomla 5/6 batch 252 contracts OK.'
