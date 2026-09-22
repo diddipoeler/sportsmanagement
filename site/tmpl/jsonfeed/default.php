@@ -1,8 +1,12 @@
 <?php
 /**
- * Individual-event JSON output for SportsManagement Google Calendar feeds.
+ * Native Joomla 5/6 JSON feed layout for SportsManagement Google Calendar events.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;

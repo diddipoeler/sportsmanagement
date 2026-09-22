@@ -11,10 +11,8 @@ namespace Diddipoeler\Module\SportsManagementActSeason\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -33,7 +31,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app = $this->getApplication();
 
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Act Season requires the Joomla site application.', 500);
         }
 
@@ -48,7 +46,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $seasonIds = $componentParams->get('current_season', []);
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $app->getContainer()->get(DatabaseInterface::class);
         $result = $this->getHelperFactory()
             ->getHelper('ActSeasonHelper')
             ->getData($seasonIds, $componentParams, $app, $database);

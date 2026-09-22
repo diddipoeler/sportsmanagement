@@ -1,0 +1,155 @@
+name: Joomla 5/6 site admin modules batch 262
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/predictionentry/default.php'
+      - 'site/tmpl/predictionresults/default.php'
+      - 'site/tmpl/predictionrules/default.php'
+      - 'site/tmpl/predictionusers/default.php'
+      - 'site/tmpl/jsonfeed/default.php'
+      - 'site/views/predictionentry/tmpl/default.php'
+      - 'site/views/predictionresults/tmpl/default.php'
+      - 'site/views/predictionrules/tmpl/default.php'
+      - 'site/views/predictionusers/tmpl/default.php'
+      - 'site/views/jsonfeed/tmpl/default.php'
+      - 'admin/tmpl/jlexthandballnet/default.php'
+      - 'admin/tmpl/jlextindividualsportes/default.php'
+      - 'admin/tmpl/jlextlmoimports/default.php'
+      - 'admin/tmpl/jlextprofleagimport/default.php'
+      - 'admin/tmpl/jlextsisimport/default.php'
+      - 'admin/views/jlexthandballnet/tmpl/default.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default.php'
+      - 'admin/views/jlextlmoimports/tmpl/default.php'
+      - 'admin/views/jlextprofleagimport/tmpl/default.php'
+      - 'admin/views/jlextsisimport/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch262.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/predictionentry/default.php'
+      - 'site/tmpl/predictionresults/default.php'
+      - 'site/tmpl/predictionrules/default.php'
+      - 'site/tmpl/predictionusers/default.php'
+      - 'site/tmpl/jsonfeed/default.php'
+      - 'site/views/predictionentry/tmpl/default.php'
+      - 'site/views/predictionresults/tmpl/default.php'
+      - 'site/views/predictionrules/tmpl/default.php'
+      - 'site/views/predictionusers/tmpl/default.php'
+      - 'site/views/jsonfeed/tmpl/default.php'
+      - 'admin/tmpl/jlexthandballnet/default.php'
+      - 'admin/tmpl/jlextindividualsportes/default.php'
+      - 'admin/tmpl/jlextlmoimports/default.php'
+      - 'admin/tmpl/jlextprofleagimport/default.php'
+      - 'admin/tmpl/jlextsisimport/default.php'
+      - 'admin/views/jlexthandballnet/tmpl/default.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default.php'
+      - 'admin/views/jlextlmoimports/tmpl/default.php'
+      - 'admin/views/jlextprofleagimport/tmpl/default.php'
+      - 'admin/views/jlextsisimport/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch262.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/predictionentry/default.php
+            site/tmpl/predictionresults/default.php
+            site/tmpl/predictionrules/default.php
+            site/tmpl/predictionusers/default.php
+            site/tmpl/jsonfeed/default.php
+            site/views/predictionentry/tmpl/default.php
+            site/views/predictionresults/tmpl/default.php
+            site/views/predictionrules/tmpl/default.php
+            site/views/predictionusers/tmpl/default.php
+            site/views/jsonfeed/tmpl/default.php
+            admin/tmpl/jlexthandballnet/default.php
+            admin/tmpl/jlextindividualsportes/default.php
+            admin/tmpl/jlextlmoimports/default.php
+            admin/tmpl/jlextprofleagimport/default.php
+            admin/tmpl/jlextsisimport/default.php
+            admin/views/jlexthandballnet/tmpl/default.php
+            admin/views/jlextindividualsportes/tmpl/default.php
+            admin/views/jlextlmoimports/tmpl/default.php
+            admin/views/jlextprofleagimport/tmpl/default.php
+            admin/views/jlextsisimport/tmpl/default.php
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native template bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictionentry/default.php" site/views/predictionentry/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictionresults/default.php" site/views/predictionresults/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictionrules/default.php" site/views/predictionrules/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/predictionusers/default.php" site/views/predictionusers/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jsonfeed/default.php" site/views/jsonfeed/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlexthandballnet/default.php" admin/views/jlexthandballnet/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlextindividualsportes/default.php" admin/views/jlextindividualsportes/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlextlmoimports/default.php" admin/views/jlextlmoimports/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlextprofleagimport/default.php" admin/views/jlextprofleagimport/tmpl/default.php
+          grep -Fq -- "/components/com_sportsmanagement/tmpl/jlextsisimport/default.php" admin/views/jlextsisimport/tmpl/default.php
+
+      - name: Validate Joomla 5/6 dispatcher contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          dispatchers=(
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${dispatchers[@]}"; do
+            grep -Fq -- '$app->getContainer()->get(DatabaseInterface::class)' "$file"
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still uses the global Factory container" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
+              echo "$file still couples to concrete SiteApplication" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'instanceof SiteApplication' "$file"; then
+              echo "$file still contains a concrete SiteApplication runtime check" >&2
+              exit 1
+            fi
+          done
+          if grep -Fq -- 'Factory::getApplication()' admin/tmpl/jlextsisimport/default.php; then
+            echo 'SIS import layout still uses Factory::getApplication()' >&2
+            exit 1
+          fi
+          echo 'Joomla 5/6 batch 262 contracts OK.'
