@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\RankingEngine;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -32,13 +31,17 @@ final class ClubiconsHelper
 
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Clubicons requires the Joomla site application.', 500);
+        }
+
         $projectId = $this->projectId($params, $app);
         if ($projectId <= 0) {
             return ['project' => null, 'ranking' => [], 'teams' => []];
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $divisionId = $this->firstId($params->get('division_id', 0));
         $result = (new RankingEngine($db))->calculate($projectId, $divisionId);

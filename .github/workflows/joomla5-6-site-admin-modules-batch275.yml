@@ -1,0 +1,131 @@
+name: Joomla 5/6 site admin modules batch 275
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/playground/tmpl/default_picture.php'
+      - 'site/views/playground/tmpl/default_played_matches.php'
+      - 'site/views/playground/tmpl/default_playground.php'
+      - 'site/views/referee/tmpl/default_career.php'
+      - 'site/views/referee/tmpl/default_description.php'
+      - 'site/views/referee/tmpl/default_gameshistory.php'
+      - 'site/views/referees/tmpl/default_referees.php'
+      - 'site/views/staff/tmpl/default_careerstats.php'
+      - 'site/views/staff/tmpl/default_description.php'
+      - 'site/views/staff/tmpl/default_status.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_massadd.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_matches_small_bore_rifle.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_matrix.php'
+      - 'admin/views/jlxmlimport/tmpl/default.php'
+      - 'admin/views/joomleagueimports/tmpl/default.php'
+      - 'admin/views/joomleagueimports/tmpl/import.php'
+      - 'admin/views/joomleagueimports/tmpl/infofield.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch275.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/views/playground/tmpl/default_picture.php'
+      - 'site/views/playground/tmpl/default_played_matches.php'
+      - 'site/views/playground/tmpl/default_playground.php'
+      - 'site/views/referee/tmpl/default_career.php'
+      - 'site/views/referee/tmpl/default_description.php'
+      - 'site/views/referee/tmpl/default_gameshistory.php'
+      - 'site/views/referees/tmpl/default_referees.php'
+      - 'site/views/staff/tmpl/default_careerstats.php'
+      - 'site/views/staff/tmpl/default_description.php'
+      - 'site/views/staff/tmpl/default_status.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_massadd.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_matches_small_bore_rifle.php'
+      - 'admin/views/jlextindividualsportes/tmpl/default_matrix.php'
+      - 'admin/views/jlxmlimport/tmpl/default.php'
+      - 'admin/views/joomleagueimports/tmpl/default.php'
+      - 'admin/views/joomleagueimports/tmpl/import.php'
+      - 'admin/views/joomleagueimports/tmpl/infofield.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch275.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/playground/tmpl/default_picture.php
+            site/views/playground/tmpl/default_played_matches.php
+            site/views/playground/tmpl/default_playground.php
+            site/views/referee/tmpl/default_career.php
+            site/views/referee/tmpl/default_description.php
+            site/views/referee/tmpl/default_gameshistory.php
+            site/views/referees/tmpl/default_referees.php
+            site/views/staff/tmpl/default_careerstats.php
+            site/views/staff/tmpl/default_description.php
+            site/views/staff/tmpl/default_status.php
+            admin/views/jlextindividualsportes/tmpl/default_massadd.php
+            admin/views/jlextindividualsportes/tmpl/default_matches_small_bore_rifle.php
+            admin/views/jlextindividualsportes/tmpl/default_matrix.php
+            admin/views/jlxmlimport/tmpl/default.php
+            admin/views/joomleagueimports/tmpl/default.php
+            admin/views/joomleagueimports/tmpl/import.php
+            admin/views/joomleagueimports/tmpl/infofield.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate legacy bridge targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/playground/default_picture.php' site/views/playground/tmpl/default_picture.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/referee/default_gameshistory.php' site/views/referee/tmpl/default_gameshistory.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/staff/default_status.php' site/views/staff/tmpl/default_status.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/jlextindividualsportes/default_matrix.php' admin/views/jlextindividualsportes/tmpl/default_matrix.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/jlxmlimport/default.php' admin/views/jlxmlimport/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/joomleagueimports/infofield.php' admin/views/joomleagueimports/tmpl/infofield.php
+
+      - name: Validate Joomla application container usage
+        shell: bash
+        run: |
+          set -euo pipefail
+          helpers=(
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
+          )
+          for file in "${helpers[@]}"; do
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+            grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+          done
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
+          echo 'Joomla 5/6 batch 275 contracts OK.'
