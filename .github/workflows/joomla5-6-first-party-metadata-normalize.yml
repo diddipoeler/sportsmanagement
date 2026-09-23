@@ -67,7 +67,15 @@ jobs:
               if not path.is_file():
                   continue
 
-              text = path.read_text(encoding='utf-8')
+              raw = path.read_bytes()
+
+              try:
+                  text = raw.decode('utf-8')
+                  encoding = 'utf-8'
+              except UnicodeDecodeError:
+                  text = raw.decode('latin-1')
+                  encoding = 'latin-1'
+
               missing = [tag for tag in required if tag not in text]
 
               if not missing:
@@ -89,7 +97,7 @@ jobs:
               block = '\n'.join(lines) + '\n'
 
               text = text[:insert_at] + block + text[insert_at:]
-              path.write_text(text, encoding='utf-8')
+              path.write_bytes(text.encode(encoding))
               changed.append(str(path))
 
           print(f'Normalized metadata in {len(changed)} first-party PHP files.')
