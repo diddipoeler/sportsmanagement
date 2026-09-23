@@ -1,4 +1,13 @@
 <?php
+/**
+ * Native Joomla 5/6 tournament tree node data layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
@@ -63,14 +72,15 @@ $renderCheckbox = static function (object $node, int $rowIndex, bool $checked = 
                     }
                 ?>
                     <td <?php echo $nodeCell ? $this->style : ''; ?>>
-                        <?php for ($level = 0; $level <= $depth; $level++) :
+                        <?php
+                        for ($level = 0; $level <= $depth; $level++) {
                             $power = (int) pow(2, $level);
 
-                            if ($column === 1 + ($level * 2) && $row % (2 * $power) === $power) :
-                                if ((int) $this->treetows->leafed === 1) :
+                            if ($column === 1 + ($level * 2) && $row % (2 * $power) === $power) {
+                                if ((int) $this->treetows->leafed === 1) {
                                     echo (int) $node->node . ' ';
 
-                                    if ((int) $node->team_id > 0) :
+                                    if ((int) $node->team_id > 0) {
                                         echo $renderCheckbox($node, $row - 1, true);
                                         ?>
                                         <input type="hidden" id="team_id<?php echo (int) $node->id; ?>" name="team_id<?php echo (int) $node->id; ?>" value="<?php echo (int) $node->team_id; ?>">
@@ -93,7 +103,8 @@ $renderCheckbox = static function (object $node, int $rowIndex, bool $checked = 
                                         <span class="mx-1"><?php echo htmlspecialchars((string) $node->team_name, ENT_QUOTES, 'UTF-8'); ?></span>
                                         <a href="<?php echo $matchesUrl; ?>" class="me-1" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'); ?>"><span class="icon-list" aria-hidden="true"></span></a>
                                         <a href="<?php echo $assignUrl; ?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN'); ?>"><span class="icon-link" aria-hidden="true"></span></a>
-                                    <?php else :
+                                        <?php
+                                    } else {
                                         echo $renderCheckbox($node, $row - 1);
                                         $selectAttributes = 'class="form-select form-select-sm select-hometeam d-inline-block w-auto" '
                                             . 'onchange="const cb=document.getElementById(\'cb' . ($row - 1) . '\');'
@@ -107,28 +118,31 @@ $renderCheckbox = static function (object $node, int $rowIndex, bool $checked = 
                                             'text',
                                             (int) $node->team_id
                                         );
-                                    endif;
-                                elseif ((int) $node->is_leaf === 1) : ?>
+                                    }
+                                } elseif ((int) $node->is_leaf === 1) {
+                                    ?>
                                     <span class="icon-cog" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_TREETONODES_SAVE_LEAF'); ?>"></span>
-                                <?php else :
+                                    <?php
+                                } else {
                                     echo $renderCheckbox($node, $row - 1);
-                                endif;
-                            elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === $power) :
+                                }
+                            } elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === $power) {
                                 echo $dl;
-                            elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === 2 * $power) :
+                            } elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === 2 * $power) {
                                 if ((int) $node->is_leaf !== 1) {
                                     echo $cl;
                                 }
-                            elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === 3 * $power) :
+                            } elseif ($column === 2 + ($level * 2) && $row % (4 * $power) === 3 * $power) {
                                 echo $ul;
-                            elseif (
+                            } elseif (
                                 $column === 2 + ($level * 2)
                                 && $row % (4 * $power) > $power
                                 && $row % (4 * $power) < 3 * $power
-                            ) :
+                            ) {
                                 echo $p;
-                            endif;
-                        endfor; ?>
+                            }
+                        }
+                        ?>
                     </td>
                 <?php endfor; ?>
             </tr>

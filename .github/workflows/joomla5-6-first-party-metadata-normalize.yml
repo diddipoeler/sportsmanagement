@@ -117,16 +117,27 @@ jobs:
             exit 0
           fi
 
+          syntax_errors=0
+          metadata_errors=0
+
           for file in "${files[@]}"; do
-            php -l "$file"
+            if ! php -l "$file"; then
+              echo "SYNTAX_BLOCKER|$file"
+              syntax_errors=1
+              continue
+            fi
 
             for tag in '@version' '@author' '@copyright' '@license'; do
-              grep -Fq -- "$tag" "$file" || {
-                echo "$file is still missing $tag" >&2
-                exit 1
-              }
+              if ! grep -Fq -- "$tag" "$file"; then
+                echo "METADATA_BLOCKER|$file|$tag"
+                metadata_errors=1
+              fi
             done
           done
+
+          if (( syntax_errors != 0 || metadata_errors != 0 )); then
+            exit 1
+          fi
 
           echo "Validated ${#files[@]} normalized PHP files."
 
