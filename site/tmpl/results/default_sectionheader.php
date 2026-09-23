@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Native Joomla 5/6 results section header.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -8,8 +8,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-/** Native results section header for Joomla 5/6. */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -34,6 +33,15 @@ $projectReference = (string) ($this->project->slug ?? $this->project->id ?? '');
 $divisionId = (int) ($this->division->id ?? $this->input->getInt('division', 0));
 $mode = $this->input->getInt('mode', 0);
 $order = $this->input->getInt('order', 0);
+
+if (!empty($this->config['show_matchday_dropdown']) && $this->roundsoption) {
+    $this->getDocument()->getWebAssetManager()->registerAndUseScript(
+        'com_sportsmanagement.results.round',
+        'components/com_sportsmanagement/assets/js/results-round.js',
+        ['version' => 'auto'],
+        ['defer' => true]
+    );
+}
 ?>
 <div class="<?php echo $this->escape($this->divclassrow); ?>" id="sectionheader">
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
@@ -69,8 +77,8 @@ $order = $this->input->getInt('order', 0);
             <form method="get" class="d-flex align-items-center gap-2">
                 <input type="hidden" name="option" value="com_sportsmanagement">
                 <input type="hidden" name="view" value="results">
-                <input type="hidden" name="cfg_which_database" value="<?php echo $this->cfg_which_database; ?>">
-                <input type="hidden" name="s" value="<?php echo $this->season_id; ?>">
+                <input type="hidden" name="cfg_which_database" value="<?php echo (int) $this->cfg_which_database; ?>">
+                <input type="hidden" name="s" value="<?php echo (int) $this->season_id; ?>">
                 <input type="hidden" name="p" value="<?php echo $this->escape($projectReference); ?>">
                 <?php if ($divisionId > 0) : ?>
                     <input type="hidden" name="division" value="<?php echo $divisionId; ?>">
@@ -82,7 +90,7 @@ $order = $this->input->getInt('order', 0);
                     id="results-round-select"
                     name="r"
                     class="form-select form-select-sm"
-                    onchange="this.form.submit()"
+                    data-jsm-results-round
                 >
                     <?php foreach ($this->roundsoption as $round) : ?>
                         <?php $value = (int) ($round->value ?? 0); ?>
