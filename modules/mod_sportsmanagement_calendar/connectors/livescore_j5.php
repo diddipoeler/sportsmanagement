@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -47,7 +48,7 @@ final class LivescoreConnector extends JSMCalendar
         }
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $table = $this->connectorPrefix !== ''
             ? str_replace('#__', $this->connectorPrefix, '#__livescore_games')
             : '#__livescore_games';

@@ -18,6 +18,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -500,7 +501,7 @@ final class SportsmanagementConnector extends JSMCalendar
     {
         $app = self::siteApplication();
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $selector = (int) self::$xparams->get('cfg_which_database', 0) === 1 ? 1 : 0;
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
