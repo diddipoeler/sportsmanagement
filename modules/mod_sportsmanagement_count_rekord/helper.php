@@ -9,6 +9,8 @@
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementCountRekord\Site\Helper\CountRekordHelper;
 use Joomla\Database\DatabaseInterface;
@@ -44,7 +46,7 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
 
             if ($database === null) {
                 /** @var DatabaseInterface $database */
-                $database = $app->getContainer()->get(DatabaseInterface::class);
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
             return (new CountRekordHelper())->getData($registry, $module, $database);

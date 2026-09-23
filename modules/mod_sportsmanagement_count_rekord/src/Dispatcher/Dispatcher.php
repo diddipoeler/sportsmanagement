@@ -11,6 +11,8 @@ namespace Diddipoeler\Module\SportsManagementCountRekord\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -35,7 +37,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $data['list'] = $this->getHelperFactory()
             ->getHelper('CountRekordHelper')
             ->getData($data['params'], $data['module'], $database);

@@ -1,0 +1,66 @@
+name: Joomla 5/6 site admin modules batch 289
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - 'modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch289.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - 'modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch289.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+            modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+            modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' "$file"
+            ! grep -Fq -- '$app->getContainer()' "$file"
+          done
+
+      - name: Validate migrated module contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_playground_ticker/helper.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -Fq -- 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
+          echo 'Joomla 5/6 batch 289 contracts OK.'

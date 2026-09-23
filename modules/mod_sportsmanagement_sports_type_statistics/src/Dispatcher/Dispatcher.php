@@ -9,6 +9,8 @@ namespace Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Dispatche
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
@@ -42,7 +44,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $data['statistics'] = $this->getHelperFactory()
             ->getHelper('SportsTypeStatisticsHelper')
             ->getData($data['params'], $database);

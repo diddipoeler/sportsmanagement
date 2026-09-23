@@ -9,6 +9,8 @@
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
 use Joomla\Database\DatabaseInterface;
@@ -45,7 +47,7 @@ class modJSMPlaygroundTicker
 
         if ($database === null) {
             /** @var DatabaseInterface $database */
-            $database = $app->getContainer()->get(DatabaseInterface::class);
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
         }
 
         return (new PlaygroundTickerHelper())->getData($params, $app, $database);

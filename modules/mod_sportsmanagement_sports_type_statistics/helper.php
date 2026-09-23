@@ -9,6 +9,8 @@
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper\SportsTypeStatisticsHelper;
 use Joomla\Database\DatabaseInterface;
@@ -48,7 +50,7 @@ if (!class_exists('modJSMSportsHelper', false)) {
                 }
 
                 /** @var DatabaseInterface $database */
-                $database = $app->getContainer()->get(DatabaseInterface::class);
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
             $data = (new SportsTypeStatisticsHelper())->getData($registry, $database);
