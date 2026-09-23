@@ -7,36 +7,22 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 ?>
-<div class="<?php echo $this->divclasscontainer; ?>" id="curve">
-	<?php
-	echo $this->loadTemplate('projectheading');
+<div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="curve">
+    <?php echo $this->loadTemplate('projectheading'); ?>
 
-	if ($this->config['show_sectionheader'])
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+    <?php if (!empty($this->config['show_sectionheader'])) : ?>
+        <?php echo $this->loadTemplate('sectionheader'); ?>
+    <?php endif; ?>
 
-	// If ( $this->config['show_curve'] )
-	// {
-	if ($this->config['which_curve'])
-	{
-		echo $this->loadTemplate('curvejs');
-	}
+    <?php if (!empty($this->config['which_curve'])) : ?>
+        <?php echo $this->loadTemplate('curvejs'); ?>
+    <?php endif; ?>
 
-	// Else
-	// {
-	// echo $this->loadTemplate('curve');
-	// }
-	// }
+    <?php if (!empty($this->config['show_colorlegend'])) : ?>
+        <?php echo $this->loadTemplate('colorlegend'); ?>
+    <?php endif; ?>
 
-	if ($this->config['show_colorlegend'])
-	{
-		echo $this->loadTemplate('colorlegend');
-	}
-
-	echo $this->loadTemplate('jsminfo');
-	?>
-
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>

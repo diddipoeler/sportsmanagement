@@ -1,0 +1,90 @@
+name: Joomla 5/6 site admin modules batch 285
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/ical/default.php'
+      - 'site/tmpl/scoresheet/default.php'
+      - 'site/tmpl/statsranking/default.php'
+      - 'site/tmpl/statsrankingteams/default.php'
+      - 'site/tmpl/allprojectrounds/default.php'
+      - 'site/tmpl/curve/default.php'
+      - 'admin/tmpl/jlextdfbkeyimport/default.php'
+      - 'admin/tmpl/jlexthandballnet/default.php'
+      - 'admin/tmpl/joomleagueimport/import.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-timezones.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch285.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/tmpl/ical/default.php'
+      - 'site/tmpl/scoresheet/default.php'
+      - 'site/tmpl/statsranking/default.php'
+      - 'site/tmpl/statsrankingteams/default.php'
+      - 'site/tmpl/allprojectrounds/default.php'
+      - 'site/tmpl/curve/default.php'
+      - 'admin/tmpl/jlextdfbkeyimport/default.php'
+      - 'admin/tmpl/jlexthandballnet/default.php'
+      - 'admin/tmpl/joomleagueimport/import.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-timezones.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch285.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/ical/default.php
+            site/tmpl/scoresheet/default.php
+            site/tmpl/statsranking/default.php
+            site/tmpl/statsrankingteams/default.php
+            site/tmpl/allprojectrounds/default.php
+            site/tmpl/curve/default.php
+            admin/tmpl/jlextdfbkeyimport/default.php
+            admin/tmpl/jlexthandballnet/default.php
+            admin/tmpl/joomleagueimport/import.php
+            modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php
+            modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-timezones.php
+            modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- "die('Restricted access')" "$file"
+            ! grep -Fq -- 'die("Restricted access")' "$file"
+          done
+
+      - name: Validate Joomla 5/6 compatibility cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "@version    5.6.0" admin/tmpl/jlextdfbkeyimport/default.php
+          grep -Fq -- "@version    5.6.0" admin/tmpl/joomleagueimport/import.php
+          grep -Fq -- "require __DIR__ . '/utils.php';" modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php
+          grep -Fq -- "public const ALL_DAY_REGEX" modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php
+          grep -Fq -- "JSON_UNESCAPED_SLASHES" modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-timezones.php
+          echo 'Joomla 5/6 batch 285 contracts OK.'

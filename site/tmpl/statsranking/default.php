@@ -7,20 +7,14 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-
+\defined('_JEXEC') or die;
 ?>
-<div class="">
-	<?php
-	if ($this->config['show_sectionheader'] == 1)
-	{
-		echo $this->loadTemplate('sectionheader');
-	}
+<div>
+    <?php if (!empty($this->config['show_sectionheader'])) : ?>
+        <?php echo $this->loadTemplate('sectionheader'); ?>
+    <?php endif; ?>
 
-	echo $this->loadTemplate('projectheading');
-
-	echo $this->loadTemplate('stats');
-	echo $this->loadTemplate('jsminfo');
-	?>
-
+    <?php echo $this->loadTemplate('projectheading'); ?>
+    <?php echo $this->loadTemplate('stats'); ?>
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>

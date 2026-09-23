@@ -1,32 +1,18 @@
 <?php
 /**
- *
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * FullCalendar event feed retained for the Joomla 5/6 Google Calendar module.
  *
  * @version    5.6.0
- * @package    Sportsmanagement
- * @subpackage mod_sportsmanagement_google_calendar
- * @file       get-events.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 
-//--------------------------------------------------------------------------------------------------
-// This script reads event data from a JSON file and outputs those events which are within the range
-// supplied by the "start" and "end" GET parameters.
-//
-// An optional "timezone" GET parameter will force all ISO8601 date stings to a given timezone.
-//
-// Requires PHP 5.2.0 or higher.
-//--------------------------------------------------------------------------------------------------
-
-// Require our Event class and datetime utilities
-require dirname(__FILE__) . '/utils.php';
+require __DIR__ . '/utils.php';
 
 if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
     $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
@@ -41,49 +27,37 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
 }
 
 $input = SportsManagementSiteApplicationResolver::resolve()->getInput();
-
-// Short-circuit if the client did not give us a date range.
 $start = $input->getString('start');
 $end = $input->getString('end');
 
-if ($start === '' || $end === '')
-{
-	die("Please provide a date range.");
+if ($start === '' || $end === '') {
+    throw new \InvalidArgumentException('Please provide a date range.');
 }
 
-// Parse the start/end parameters.
-// These are assumed to be ISO8601 strings with no time nor timezone, like "2013-12-29".
-// Since no timezone will be present, they will parsed as UTC.
-$range_start = parseDateTime($start);
-$range_end   = parseDateTime($end);
-
-// Parse the timezone parameter if it is present.
+$rangeStart = parseDateTime($start);
+$rangeEnd = parseDateTime($end);
 $timezone = null;
 $timezoneName = $input->getString('timezone');
 
-if ($timezoneName !== '')
-{
-	$timezone = new DateTimeZone($timezoneName);
+if ($timezoneName !== '') {
+    $timezone = new \DateTimeZone($timezoneName);
 }
 
-// Read and parse our events JSON file into an array of event data arrays.
-$json         = file_get_contents(dirname(__FILE__) . '/../json/events.json');
-$input_arrays = json_decode($json, true);
+$json = file_get_contents(__DIR__ . '/../json/events.json');
+$inputArrays = json_decode((string) $json, true);
 
-// Accumulate an output array of event data arrays.
-$output_arrays = array();
-foreach ($input_arrays as $array)
-{
-
-	// Convert the input array into a useful Event object
-	$event = new Event($array, $timezone);
-
-	// If the event is in-bounds, add it to the output
-	if ($event->isWithinDayRange($range_start, $range_end))
-	{
-		$output_arrays[] = $event->toArray();
-	}
+if (!is_array($inputArrays)) {
+    $inputArrays = [];
 }
 
-// Send JSON to the client.
-echo json_encode($output_arrays);
+$outputArrays = [];
+
+foreach ($inputArrays as $array) {
+    $event = new Event($array, $timezone);
+
+    if ($event->isWithinDayRange($rangeStart, $rangeEnd)) {
+        $outputArrays[] = $event->toArray();
+    }
+}
+
+echo json_encode($outputArrays, JSON_UNESCAPED_SLASHES);
