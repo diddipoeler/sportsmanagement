@@ -280,7 +280,7 @@ final class HtmlView extends BaseHtmlView
                 'select.genericlist',
                 $options,
                 'rid',
-                'class="form-select" onchange="document.getElementById(\'short_act\').value=\'rounds\';document.roundForm.submit();"',
+                'class="form-select" data-jsm-round-select',
                 'value',
                 'text',
                 $selected
@@ -317,7 +317,7 @@ final class HtmlView extends BaseHtmlView
             'select.genericlist',
             $createOptions,
             'ct[]',
-            'class="form-select" onchange="displayTypeView();"',
+            'class="form-select" data-jsm-create-type',
             'value',
             'text',
             1,

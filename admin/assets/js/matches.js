@@ -87,16 +87,17 @@ function addmatches() {
 }
 
 function displayTypeView() {
-	if (document.getElementById('ct').value == 0) {
-		document.getElementById('massadd_standard').style.display = 'none';
-		document.getElementById('massadd_type2').style.display = 'none';
-	} else if (document.getElementById('ct').value == 1) {
-		document.getElementById('massadd_standard').style.display = 'block';
-		document.getElementById('massadd_type2').style.display = 'none';
-	} else if (document.getElementById('ct').value == 2) {
-		document.getElementById('massadd_standard').style.display = 'none';
-		document.getElementById('massadd_type2').style.display = 'block';
+	const typeSelect = document.getElementById('ct');
+	const standard = document.getElementById('massadd_standard');
+	const typeTwo = document.getElementById('massadd_type2');
+
+	if (!typeSelect || !standard || !typeTwo) {
+		return;
 	}
+
+	const type = Number(typeSelect.value);
+	standard.style.display = type === 1 ? 'block' : 'none';
+	typeTwo.style.display = type === 2 ? 'block' : 'none';
 }
 
 function SaveMatch(a, b) {
@@ -119,7 +120,7 @@ function copyValue(from) {
 			} else {
 				ele.value = default_time;
 			}
-			ele.onchange();
+			ele.dispatchEvent(new Event('change', { bubbles: true }));
 		}
 	}
 }
@@ -152,6 +153,9 @@ function askPrefillRosterByProjectTeamPlayer(alert2) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+	const roundSelect = document.querySelector('[data-jsm-round-select]');
+	const projectTeamSelect = document.querySelector('[data-jsm-project-team-select]');
+	const createTypeSelect = document.querySelector('[data-jsm-create-type]');
 	const addType = document.getElementById('addtype');
 	const addCount = document.getElementById('addmatchescount');
 	const tempCount = document.getElementById('tempaddmatchescount');
@@ -159,6 +163,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	const copyStartTime = document.getElementById('copyStartTime');
 	const createMatches = document.getElementById('create-matches');
 	const copyMatches = document.getElementById('copy-matches');
+
+	if (roundSelect) {
+		roundSelect.addEventListener('change', () => {
+			const action = document.getElementById('short_act');
+			const form = document.forms.roundForm;
+
+			if (action) {
+				action.value = 'rounds';
+			}
+			if (form) {
+				form.requestSubmit ? form.requestSubmit() : form.submit();
+			}
+		});
+	}
+
+	if (projectTeamSelect) {
+		projectTeamSelect.addEventListener('change', () => {
+			const form = projectTeamSelect.form;
+			if (form) {
+				form.requestSubmit ? form.requestSubmit() : form.submit();
+			}
+		});
+	}
+
+	if (createTypeSelect) {
+		createTypeSelect.addEventListener('change', displayTypeView);
+		displayTypeView();
+	}
 
 	if (createMatches && addType && addCount && tempCount) {
 		createMatches.addEventListener('click', () => {

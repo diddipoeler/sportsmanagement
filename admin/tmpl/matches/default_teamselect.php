@@ -27,7 +27,7 @@ if (empty($this->lists['projectteams'])) {
         'select.genericlist',
         $this->lists['projectteams'],
         'projectteam',
-        'class="form-select" onchange="this.form.submit();"',
+        'class="form-select" data-jsm-project-team-select',
         'value',
         'text',
         $this->projectteamsel

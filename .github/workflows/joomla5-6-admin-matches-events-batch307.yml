@@ -1,0 +1,50 @@
+name: Joomla 5/6 admin matches events batch 307
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Matches/HtmlView.php'
+      - 'admin/tmpl/matches/default_teamselect.php'
+      - 'admin/assets/js/matches.js'
+      - '.github/workflows/joomla5-6-admin-matches-events-batch307.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Matches/HtmlView.php'
+      - 'admin/tmpl/matches/default_teamselect.php'
+      - 'admin/assets/js/matches.js'
+      - '.github/workflows/joomla5-6-admin-matches-events-batch307.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate native matches event binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l admin/src/View/Matches/HtmlView.php
+          php -l admin/tmpl/matches/default_teamselect.php
+          node --check admin/assets/js/matches.js
+          for file in admin/src/View/Matches/HtmlView.php admin/tmpl/matches/default_teamselect.php; do
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            ! grep -Fqi -- 'onchange=' "$file"
+          done
+          grep -Fq -- 'data-jsm-round-select' admin/src/View/Matches/HtmlView.php
+          grep -Fq -- 'data-jsm-create-type' admin/src/View/Matches/HtmlView.php
+          grep -Fq -- 'data-jsm-project-team-select' admin/tmpl/matches/default_teamselect.php
+          grep -Fq -- "document.querySelector('[data-jsm-round-select]')" admin/assets/js/matches.js
+          grep -Fq -- "document.querySelector('[data-jsm-project-team-select]')" admin/assets/js/matches.js
+          grep -Fq -- "document.querySelector('[data-jsm-create-type]')" admin/assets/js/matches.js
+          grep -Fq -- "dispatchEvent(new Event('change'" admin/assets/js/matches.js
