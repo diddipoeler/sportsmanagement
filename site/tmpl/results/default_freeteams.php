@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Native Joomla 5/6 results not-playing-teams layout.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -8,8 +8,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-/** Native results not-playing-teams output. */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\ResultsPresentationHelper;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Native Joomla 5/6 prediction templates administrator list layout.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -8,14 +8,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-/** Native Joomla 5/6 prediction templates list layout. */
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
-
-HTMLHelper::_('behavior.multiselect');
 ?>
 
 <?php if ($this->masterPredictionGame) : ?>

@@ -1,0 +1,68 @@
+name: Joomla 5/6 site admin modules batch 286
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/results/default_freeteams.php'
+      - 'admin/tmpl/predictionrounds/default.php'
+      - 'admin/tmpl/predictiontemplates/default.php'
+      - 'modules/mod_sportsmanagement_clubicons/tmpl/default2.php'
+      - 'modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch286.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/tmpl/results/default_freeteams.php'
+      - 'admin/tmpl/predictionrounds/default.php'
+      - 'admin/tmpl/predictiontemplates/default.php'
+      - 'modules/mod_sportsmanagement_clubicons/tmpl/default2.php'
+      - 'modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch286.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/results/default_freeteams.php
+            admin/tmpl/predictionrounds/default.php
+            admin/tmpl/predictiontemplates/default.php
+            modules/mod_sportsmanagement_clubicons/tmpl/default2.php
+            modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate Joomla 6 compatibility cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Fq -- "behavior.multiselect" admin/tmpl/predictionrounds/default.php
+          ! grep -Fq -- "behavior.multiselect" admin/tmpl/predictiontemplates/default.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" site/tmpl/results/default_freeteams.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" modules/mod_sportsmanagement_clubicons/tmpl/default2.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" modules/mod_sportsmanagement_matchesslider/connectors/sportsmanagement.php
+          ! grep -Fq -- "Restricted access" site/tmpl/results/default_freeteams.php
+          ! grep -Fq -- "Restricted access" modules/mod_sportsmanagement_clubicons/tmpl/default2.php
+          echo 'Joomla 5/6 batch 286 contracts OK.'

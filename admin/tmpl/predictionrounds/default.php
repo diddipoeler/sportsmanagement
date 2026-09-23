@@ -12,8 +12,6 @@
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
-
-HTMLHelper::_('behavior.multiselect');
 ?>
 <form
     action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=predictionrounds'); ?>"
