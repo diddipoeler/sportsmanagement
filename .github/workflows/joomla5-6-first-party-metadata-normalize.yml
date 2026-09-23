@@ -1,0 +1,139 @@
+name: Joomla 5/6 first-party PHP metadata normalize
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - '.github/workflows/joomla5-6-first-party-metadata-normalize.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Add missing first-party PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          required = {
+              '@version': ' * @version    5.6.0',
+              '@author': ' * @author     diddipoeler',
+              '@copyright': ' * @copyright  Copyright (C) diddipoeler',
+              '@license': ' * @license    GNU General Public License version 2 or later; see LICENSE.txt',
+          }
+
+          exact_files = {
+              Path('admin/helpers/icaljsm.php'),
+              Path('admin/helpers/jinstallationhelper.php'),
+              Path('site/assets/images/shirt_php8.php'),
+          }
+
+          roots = (
+              Path('admin/modules/mod_sportsmanagement_quickicon'),
+              Path('admin/tables'),
+              Path('admin/tmpl'),
+              Path('admin/views'),
+              Path('site/libraries/sportsmanagement'),
+              Path('site/models'),
+              Path('site/src'),
+              Path('site/tmpl'),
+              Path('site/views'),
+          )
+
+          candidates = set(exact_files)
+          for root in roots:
+              if root.exists():
+                  candidates.update(root.rglob('*.php'))
+
+          changed = []
+
+          for path in sorted(candidates):
+              if not path.is_file():
+                  continue
+
+              text = path.read_text(encoding='utf-8')
+              missing = [tag for tag in required if tag not in text]
+
+              if not missing:
+                  continue
+
+              php_index = text.find('<?php')
+              if php_index < 0:
+                  raise SystemExit(f'No PHP opening tag found in {path}')
+
+              insert_at = php_index + len('<?php')
+              lines = [
+                  '',
+                  '/**',
+                  ' * SportsManagement Joomla 5/6 file metadata.',
+                  ' *',
+              ]
+              lines.extend(required[tag] for tag in missing)
+              lines.append(' */')
+              block = '\n'.join(lines) + '\n'
+
+              text = text[:insert_at] + block + text[insert_at:]
+              path.write_text(text, encoding='utf-8')
+              changed.append(str(path))
+
+          print(f'Normalized metadata in {len(changed)} first-party PHP files.')
+          for path in changed:
+              print(f'NORMALIZED_METADATA|{path}')
+          PY
+
+      - name: Validate changed PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t files < <(git diff --name-only --diff-filter=ACMR -- '*.php')
+
+          if (( ${#files[@]} == 0 )); then
+            echo 'No first-party PHP metadata changes required.'
+            exit 0
+          fi
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "$file is still missing $tag" >&2
+                exit 1
+              }
+            done
+          done
+
+          echo "Validated ${#files[@]} normalized PHP files."
+
+      - name: Commit normalized metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- site admin modules; then
+            echo 'No metadata normalization changes to commit.'
+            exit 0
+          fi
+
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add site admin modules
+          git commit -m "Normalize first-party PHP metadata for Joomla 5/6"
+          git push origin HEAD:joomla5-6
