@@ -9,6 +9,8 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
@@ -37,7 +39,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
         /** @var DatabaseInterface $database */
-        $database = $app->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $data['playgrounds'] = $helper->getData($data['params'], $app, $database);
         $data['module']->picture_server = $helper->getPictureServer($data['params'], $app);
 

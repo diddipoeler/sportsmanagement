@@ -130,8 +130,8 @@ jobs:
               echo "$file still contains a concrete SiteApplication runtime check" >&2
               exit 1
             fi
-            if grep -Fq -- 'Factory::getContainer()' "$file"; then
-              echo "$file still uses the global Factory container" >&2
+            if grep -Fq -- '$app->getContainer()->get(' "$file"; then
+              echo "$file still calls protected CMSApplication::getContainer()" >&2
               exit 1
             fi
           done
@@ -145,9 +145,10 @@ jobs:
             modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
           )
           for file in "${container_dispatchers[@]}"; do
-            grep -Fq -- '$app->getContainer()->get(' "$file"
-            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
-              echo "$file still imports Factory" >&2
+            grep -Fq -- 'Factory::getContainer()->get(' "$file"
+            grep -Fq -- 'use Joomla\CMS\Factory;' "$file"
+            if grep -Fq -- '$app->getContainer()->get(' "$file"; then
+              echo "$file still calls protected CMSApplication::getContainer()" >&2
               exit 1
             fi
           done

@@ -11,6 +11,8 @@ namespace Diddipoeler\Module\SportsManagementGcalendar\Site\Dispatcher;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
@@ -35,7 +37,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $data = array_merge(
             $data,
             $this->getHelperFactory()
