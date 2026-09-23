@@ -11,10 +11,11 @@ namespace Diddipoeler\Module\SportsManagementMatchesSlider\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -30,7 +31,7 @@ final class MatchesSliderHelper
         CMSApplicationInterface $app,
         ?DatabaseInterface $joomlaDatabase = null
     ): array {
-        if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+        if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Matches Slider requires the Joomla site application.', 500);
         }
 
@@ -44,7 +45,7 @@ final class MatchesSliderHelper
             return [];
         }
 
-        $joomlaDatabase ??= $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($databaseMode, $joomlaDatabase);
         $nameColumn = (string) $params->get('team_names', 'short_name');
 

@@ -9,6 +9,8 @@
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper\PlaygroundPlanHelper;
@@ -118,7 +120,7 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
         {
             $app = self::siteApplication();
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
             $selector = $app->getInput()->getInt(
                 'cfg_which_database',
                 (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)

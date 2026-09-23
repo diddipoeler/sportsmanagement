@@ -9,6 +9,8 @@
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper\RandomPlayerHelper;
 use Joomla\Database\DatabaseInterface;
@@ -48,7 +50,7 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
 
             if ($database === null) {
                 /** @var DatabaseInterface $database */
-                $database = $app->getContainer()->get(DatabaseInterface::class);
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
             return (new RandomPlayerHelper())->getData($registry, $database);

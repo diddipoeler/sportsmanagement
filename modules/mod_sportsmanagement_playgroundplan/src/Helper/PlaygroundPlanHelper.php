@@ -11,10 +11,11 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundPlan\Site\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -25,12 +26,12 @@ final class PlaygroundPlanHelper
     public function getData(Registry $params, CMSApplicationInterface $app, object $module): array
     {
         try {
-            if (!$app instanceof SiteApplication || !$app->isClient('site')) {
+            if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement PlaygroundPlan requires the Joomla site application.', 500);
             }
 
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
             $db = $this->database($params, $joomlaDatabase);
             $projectIds = $this->ids($params->get('projects', []));
             $playgroundIds = $this->ids($params->get('playground', []));

@@ -93,7 +93,7 @@ jobs:
               'false render guard': (dispatcher, 'if ($data === false)'),
               'dispatcher public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve'),
-              'facade site application': (facade, 'Factory::getContainer()->get(SiteApplication::class)'),
+              'facade site application': (facade, 'SportsManagementSiteApplicationResolver::resolve()'),
               'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'native route helper': (template, 'SiteRouteHelper::view('),
           }
