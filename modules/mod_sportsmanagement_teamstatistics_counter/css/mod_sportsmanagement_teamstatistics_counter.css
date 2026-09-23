@@ -28,3 +28,49 @@
 .main_counter_area .main_counter_content .single_counter i {
 	font-size: 36px;
 }
+
+
+.jsm-teamstatistics-counter-project,
+.jsm-teamstatistics-counter-team {
+	text-align: center;
+}
+
+.jsm-teamstatistics-counter-icon {
+	width: auto;
+	height: 20px;
+	margin-bottom: 18px;
+}
+
+.jsm-teamstatistics-counter-sticker {
+	width: 250px;
+	margin: 0 0 30px;
+	padding: 1rem;
+	background: var(--jsm-counter-background, #eee);
+	border: var(--jsm-counter-border, 0);
+	border-radius: var(--jsm-counter-radius, 0);
+	box-shadow: var(--jsm-counter-shadow, none);
+	color: var(--jsm-counter-text-color, #000);
+	font-size: var(--jsm-counter-text-size, 14px);
+}
+
+.jsm-teamstatistics-counter-sticker .jsm-teamstatistics-counter-project,
+.jsm-teamstatistics-counter-sticker .jsm-teamstatistics-counter-team {
+	color: var(--jsm-counter-title-color, #000);
+	font-size: var(--jsm-counter-title-size, 18px);
+}
+
+.jsm-teamstatistics-counter-sticker-row {
+	display: flex;
+	align-items: center;
+	gap: .75rem;
+	margin-bottom: .75rem;
+}
+
+.jsm-teamstatistics-counter-sticker-row .jsm-teamstatistics-counter-icon {
+	flex: 0 0 auto;
+	margin-bottom: 0;
+}
+
+.jsm-teamstatistics-counter-sticker-row p {
+	margin: 0;
+}

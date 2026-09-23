@@ -1,0 +1,43 @@
+name: Joomla 5/6 Team Statistics Counter batch 308
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css'
+      - '.github/workflows/joomla5-6-module-teamstatistics-counter-batch308.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css'
+      - '.github/workflows/joomla5-6-module-teamstatistics-counter-batch308.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate native counter layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          done
+          grep -Fq -- "\\defined('_JEXEC') or die;" modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          ! grep -Fq -- 'Restricted access' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          grep -Fq -- '$metrics = [' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          grep -Fq -- "if ($mode === 'C')" modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          grep -Fq -- 'jsm-teamstatistics-counter-sticker' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          grep -Fq -- '.jsm-teamstatistics-counter-sticker' modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css
+          ! grep -Fq -- 'style="height: 20px;"' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php

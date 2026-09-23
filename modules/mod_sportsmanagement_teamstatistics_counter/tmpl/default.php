@@ -1,6 +1,6 @@
 <?php
 /**
- * Joomla 5/6 layout for the SportsManagement Team Statistics Counter module.
+ * Native Joomla 5/6 layout for the SportsManagement Team Statistics Counter module.
  *
  * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -8,531 +8,201 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
-/**
- * Offene Punkte
- *      - Counter
- *      - Language Files
- */
+$team = $data['team'] ?? null;
+$project = $data['project'] ?? null;
+$stats = is_array($data['stats'] ?? null) ? $data['stats'] : [];
 
-$team    = $data['team'];
-$project = $data['project'];
-$stats   = $data['stats'];
+if (!$team || !$project) {
+    return;
+}
 
-$mode = $params->get('mode');
+$home = $stats['totalshome'] ?? (object) [];
+$away = $stats['totalsaway'] ?? (object) [];
+$results = is_array($stats['results'] ?? null) ? $stats['results'] : [];
 
-switch ($mode)
-{
-	/**
-	 *
-	 * Classic mode template
-	 */
-	case 'C':
-		?>
+$playedMatches = (int) ($home->playedmatches ?? 0) + (int) ($away->playedmatches ?? 0);
+$totalGoals = (int) ($home->totalgoals ?? 0) + (int) ($away->totalgoals ?? 0);
+$goalsFor = (int) ($home->goalsfor ?? 0) + (int) ($away->goalsfor ?? 0);
+$goalsAgainst = (int) ($home->goalsagainst ?? 0) + (int) ($away->goalsagainst ?? 0);
 
+$perMatch = static fn (int $value, int $matches): float|int =>
+    $matches > 0 ? round($value / $matches, 2) : 0;
 
-<section id="counter" class="counter">
-    <div class="main_counter_area">
-        <div class="overlay p-y-3">
-            <div class="container">
-                <div class="row">
-					<?php if ($params->get('show_project_name'))
-						:
-						?>
-                        <div class="col-12 text-center">
-                            <h4><?php echo $project->name; ?></h4>
+$metrics = [
+    [
+        'enabled' => (bool) $params->get('show_round_numbers', 1),
+        'icon' => 'startroster.png',
+        'value' => (int) ($stats['totalrounds'] ?? 0),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_ROUND_NUMBERS',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_played_matches', 1),
+        'icon' => 'shirt.png',
+        'value' => $playedMatches,
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_PLAYED_MATCHES',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_wins', 1),
+        'icon' => 'win.png',
+        'value' => count($results['win'] ?? []),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_WINS',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_draws', 1),
+        'icon' => 'draw.png',
+        'value' => count($results['tie'] ?? []),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_DRAWS',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_loses', 1),
+        'icon' => 'lose.png',
+        'value' => count($results['loss'] ?? []),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_LOSES',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_goals', 1),
+        'icon' => 'goal.png',
+        'value' => $totalGoals,
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_goals_per_match', 1),
+        'icon' => 'goal.png',
+        'value' => $perMatch($totalGoals, $playedMatches),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS_PER_MATCH',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_scoring_goals', 1),
+        'icon' => 'goal.png',
+        'value' => $goalsFor,
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_scoring_goals_per_match', 1),
+        'icon' => 'goal.png',
+        'value' => $perMatch($goalsFor, $playedMatches),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS_PER_MATCH',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_against_goals', 1),
+        'icon' => 'own_goal.png',
+        'value' => $goalsAgainst,
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_against_goals_per_match', 1),
+        'icon' => 'own_goal.png',
+        'value' => $perMatch($goalsAgainst, $playedMatches),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS_PER_MATCH',
+    ],
+    [
+        'enabled' => (bool) $params->get('show_clean_sheets', 1),
+        'icon' => 'clean-sheets.png',
+        'value' => (int) (($stats['nogoals_against']->totalzero ?? 0)),
+        'label' => 'MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_CLEAN_SHEETS',
+    ],
+];
+
+$metrics = array_values(array_filter($metrics, static fn (array $metric): bool => $metric['enabled']));
+
+$escape = static fn (mixed $value): string =>
+    htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+
+$normaliseColor = static function (mixed $value, string $fallback): string {
+    $value = trim((string) $value);
+
+    return preg_match('/^(?:#[0-9a-fA-F]{3,8}|[a-zA-Z]+)$/', $value) ? $value : $fallback;
+};
+
+$mode = strtoupper((string) $params->get('mode', 'S'));
+$moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
+$moduleClass = $moduleClass !== '' ? ' ' . $escape($moduleClass) : '';
+
+$iconBase = 'images/com_sportsmanagement/database/events/';
+?>
+<div class="jsm-teamstatistics-counter<?php echo $moduleClass; ?>">
+    <?php if ((bool) $params->get('show_project_name', 1)) : ?>
+        <h4 class="jsm-teamstatistics-counter-project"><?php echo $escape($project->name ?? ''); ?></h4>
+    <?php endif; ?>
+
+    <?php if ((bool) $params->get('show_team_name', 1)) : ?>
+        <h4 class="jsm-teamstatistics-counter-team"><?php echo $escape($team->name ?? ''); ?></h4>
+    <?php endif; ?>
+
+    <?php if ($mode === 'C') : ?>
+        <section class="counter">
+            <div class="main_counter_area">
+                <div class="overlay p-y-3">
+                    <div class="container-fluid">
+                        <div class="row g-3 main_counter_content text-center">
+                            <?php foreach ($metrics as $metric) : ?>
+                                <div class="col-12 col-sm-6 col-lg-3">
+                                    <div class="single_counter p-y-2 h-100">
+                                        <img
+                                            src="<?php echo $escape($iconBase . $metric['icon']); ?>"
+                                            class="jsm-teamstatistics-counter-icon"
+                                            alt=""
+                                            loading="lazy"
+                                        >
+                                        <h2 class="statistic-counter"><?php echo $escape($metric['value']); ?></h2>
+                                        <p class="mb-0"><?php echo Text::_($metric['label']); ?></p>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-					<?php endif; ?>
-
-					<?php if ($params->get('show_team_name'))
-						:
-						?>
-                        <div class="col-12 text-center">
-                            <h4><?php echo $team->name; ?></h4>
-                        </div>
-					<?php endif; ?>
-                </div>
-
-                <div class="row">
-                    <div class="main_counter_content text-center white-text wow fadeInUp">
-
-						<?php if ($params->get('show_round_numbers'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/startroster.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter"><?php echo $stats['totalrounds']; ?></h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_ROUND_NUMBERS'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_played_matches'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/shirt.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter"><?php echo $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches; ?></h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_PLAYED_MATCHES'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_wins'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/win.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter"><?php echo count($stats['results']['win']); ?></h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_WINS'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_draws'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/draw.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter"><?php echo count($stats['results']['tie']); ?></h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_DRAWS'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_loses'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/lose.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter"><?php echo count($stats['results']['loss']); ?></h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_LOSES'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_goals'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter">
-										<?php echo $stats['totalshome']->totalgoals + $stats['totalsaway']->totalgoals; ?>
-                                    </h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_goals_per_match'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter">
-										<?php
-										$totalGoals         = $stats['totalshome']->totalgoals + $stats['totalsaway']->totalgoals;
-										$totalPlayedMatches = $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches;
-										echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2);
-										?>
-                                    </h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS_PER_MATCH'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_scoring_goals'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter">
-										<?php echo $stats['totalshome']->goalsfor + $stats['totalsaway']->goalsfor; ?>
-                                    </h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_scoring_goals_per_match'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter">
-										<?php
-										$totalGoals         = $stats['totalshome']->goalsfor + $stats['totalsaway']->goalsfor;
-										$totalPlayedMatches = $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches;
-										echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2);
-										?>
-                                    </h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS_PER_MATCH'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_against_goals'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/own_goal.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter">
-										<?php echo $stats['totalshome']->goalsagainst + $stats['totalsaway']->goalsagainst; ?>
-                                    </h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_against_goals_per_match'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/own_goal.png' class="m-b-1"
-                                         style="height: 20px;"/>
-                                    <h2 class="statistic-counter">
-										<?php
-										$totalGoals         = $stats['totalshome']->goalsagainst + $stats['totalsaway']->goalsagainst;
-										$totalPlayedMatches = $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches;
-										echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2);
-										?>
-                                    </h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS_PER_MATCH'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-						<?php if ($params->get('show_clean_sheets'))
-							:
-							?>
-                            <div class="col-md-3">
-                                <div class="single_counter p-y-2 m-t-1">
-                                    <img src='images/com_sportsmanagement/database/events/clean-sheets.png'
-                                         class="m-b-1" style="height: 20px;"/>
-                                    <h2 class="statistic-counter">
-										<?php echo empty($stats['nogoals_against']->totalzero) ? 0 : $stats['nogoals_against']->totalzero; ?>
-                                    </h2>
-                                    <p><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_CLEAN_SHEETS'); ?></p>
-                                </div>
-                            </div>
-						<?php endif; ?>
-
-
                     </div>
                 </div>
             </div>
+        </section>
+    <?php else : ?>
+        <?php
+        $borderColor = $normaliseColor($params->get('border_color', '#41008a'), '#41008a');
+        $backgroundColor = $normaliseColor($params->get('background_color', '#eeeeee'), '#eeeeee');
+        $titleColor = $normaliseColor($params->get('title_color', '#000000'), '#000000');
+        $textColor = $normaliseColor($params->get('text_color', '#000000'), '#000000');
+        $titleSize = max(1, min(72, (int) $params->get('title_size', 18)));
+        $textSize = max(1, min(72, (int) $params->get('text_size', 14)));
+
+        $stickerStyle = [
+            '--jsm-counter-background:' . $backgroundColor,
+            '--jsm-counter-title-color:' . $titleColor,
+            '--jsm-counter-text-color:' . $textColor,
+            '--jsm-counter-title-size:' . $titleSize . 'px',
+            '--jsm-counter-text-size:' . $textSize . 'px',
+        ];
+
+        if ((bool) $params->get('border', 0)) {
+            $stickerStyle[] = '--jsm-counter-border:1px solid ' . $borderColor;
+        }
+        if ((bool) $params->get('border_rounded', 0)) {
+            $stickerStyle[] = '--jsm-counter-radius:20px';
+        }
+        if ((bool) $params->get('border_shadow', 0)) {
+            $stickerStyle[] = '--jsm-counter-shadow:10px 10px 6px 3px #474747';
+        }
+        ?>
+        <div
+            class="jsm-teamstatistics-counter-sticker"
+            style="<?php echo $escape(implode(';', $stickerStyle)); ?>"
+        >
+            <?php foreach ($metrics as $metric) : ?>
+                <div class="jsm-teamstatistics-counter-sticker-row">
+                    <img
+                        src="<?php echo $escape($iconBase . $metric['icon']); ?>"
+                        class="jsm-teamstatistics-counter-icon"
+                        alt=""
+                        loading="lazy"
+                    >
+                    <p>
+                        <strong><?php echo $escape($metric['value']); ?></strong>
+                        <?php echo Text::_($metric['label']); ?>
+                    </p>
+                </div>
+            <?php endforeach; ?>
         </div>
-    </div>
-</section>
-
-		
-		
-	<?php
-	break;
-
-	/**
-	 *
-	 * Sticker mode template
-	 */
-	case 'S':
-	
-		$border = $params->get('border');
-		$border_color = $params->get('border_color');
-		$border_rounded = $params->get('border_rounded');
-		$border_shadow = $params->get('border_shadow');
-		$background_color = $params->get('background_color');
-		$text_color = $params->get('text_color');
-		$text_size = $params->get('text_size');
-		$title_color = $params->get('title_color');
-		$title_size = $params->get('title_size');
-		
-		$style = "";
-		
-		if ($border)
-		 {
-			$style = "border: 1px solid " . $border_color . "; " ;
-			$style = $style . "background-color: " . $background_color . "; " ;
-			if($border_rounded)
-			{
-				$style =  $style . 'border-radius: 20px ; ';
-			}
-			if($border_shadow)
-			{
-				$style =  $style . 'box-shadow: 10px 10px 6px 3px #474747; ';
-			}			
-			
-		 }	
-
-		$style = $style . 'width:250px; ';
-		$style = $style . 'margin: 0px 0px 30px 0px;';
-
-			?>	
-				
-		<div class="container-fluid" style="<?php echo $style;?>
-											">
-											
-			<?PHP	
-			
-				if ($params->get('show_project_name'))
-					{							
-					?> 	<div>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $title_size;?>px; 
-										">	<?php echo $project->name .'<br>'; ?>  </p></div>
-				
-					<?php
-					}
-					
-				if ($params->get('show_team_name'))
-					{							
-					?>  <div>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $title_size;?>px; 
-										">	<?php echo $team->name; ?> </p></div>
-				
-					<?php
-					}	
-
-				if ($params->get('show_round_numbers'))
-					{							
-					?>
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/startroster.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo $stats['totalrounds'] . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_ROUND_NUMBERS'); ?>
-						</p>
-						</div>
-				
-					<?php
-					}	
-					
-				if ($params->get('show_played_matches'))
-					{							
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/shirt.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_PLAYED_MATCHES'); ?>
-						</p>
-						</div>
-				
-					<?php
-					}	
-				// Show wins
-				if ($params->get('show_wins'))
-					{							
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/win.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo count($stats['results']['win']) . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_WINS'); ?>
-						</p>
-						</div>
-					<?php
-					}		
-				// Show draws
-				if ($params->get('show_draws'))
-					{							
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/draw.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo count($stats['results']['tie']) . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_DRAWS'); ?>
-						</p>
-						</div>
-					<?php
-					}
-				// Show loses
-				if ($params->get('show_loses'))
-					{							
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/lose.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo count($stats['results']['loss']) . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_LOSES'); ?>
-						</p>
-						</div>
-					<?php
-					}						
-				// Show goals
-				if ($params->get('show_goals'))
-					{							
-					?> 	
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo $stats['totalshome']->totalgoals + $stats['totalsaway']->totalgoals . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS'); ?>
-						</p>
-						</div>
-					<?php
-					}
-
-				// Show goals per match
-				if ($params->get('show_goals_per_match'))
-					{	
-						$totalGoals         = $stats['totalshome']->totalgoals + $stats['totalsaway']->totalgoals;
-						$totalPlayedMatches = $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches;
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2) . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_GOALS_PER_MATCH'); ?>
-										</p>
-						</div>
-				
-					<?php
-					}						
-				
-				// Show total goals for
-				if ($params->get('show_scoring_goals'))
-					{							
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo $stats['totalshome']->goalsfor + $stats['totalsaway']->goalsfor . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS'); ?>
-										</p>
-						</div>
-				
-					<?php
-					}
-				// Show goals for per match
-				if ($params->get('show_scoring_goals_per_match'))
-					{	
-						$totalGoals         = $stats['totalshome']->goalsfor + $stats['totalsaway']->goalsfor;
-						$totalPlayedMatches = $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches;
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/goal.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2) . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_SCORING_GOALS_PER_MATCH'); ?>
-										</p>
-						</div>
-					<?php
-					}	
-				
-				// Show total goals against
-				if ($params->get('show_against_goals'))
-					{							
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/own_goal.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo $stats['totalshome']->goalsagainst + $stats['totalsaway']->goalsagainst . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS'); ?>
-						</p>
-						</div>
-					<?php
-					}				
-				// Show total goals against per match
-				if ($params->get('show_against_goals_per_match'))
-					{	
-						$totalGoals         = $stats['totalshome']->goalsagainst + $stats['totalsaway']->goalsagainst;
-						$totalPlayedMatches = $stats['totalshome']->playedmatches + $stats['totalsaway']->playedmatches;				
-					?> 
-						<div style="display: flex;">
-						<img src='images/com_sportsmanagement/database/events/own_goal.png' class="m-b-1" style="height: 20px;"/>
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo empty($totalPlayedMatches) ? 0 : round(($totalGoals / $totalPlayedMatches), 2) . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_AGAINST_GOALS_PER_MATCH'); ?>
-						</p>
-						</div>
-				
-					<?php
-					}				
-				// Show clean sheets
-				if ($params->get('show_clean_sheets'))
-					{							
-					?> 
-						<p style="color: <?php echo $text_color;?> ; 
-						font-family: sans-serif;
-						width:180px; 
-						font-size: <?php echo $text_size;?>px; 
-										">	<?php echo empty($stats['nogoals_against']->totalzero) ? 0 : $stats['nogoals_against']->totalzero . ' '; 
-												  echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATISTICS_COUNTER_CLEAN_SHEETS'); ?>
-										</p>
-				
-					<?php
-					}	
-				
-				
-			?>
-			</div>
-
-	<?php
-
-	break;
-	
-
- }
-
+    <?php endif; ?>
+</div>
