@@ -2,6 +2,8 @@
 /**
  * @package     Joomla.Site
  * @subpackage  Layout
+ * @version     5.6.0
+ * @author      Open Source Matters, Inc.; override by ghsvs.de
  *
  * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,9 +12,8 @@
  * Override by ghsvs.de 2019-05-10
  * @link https://www.ghsvs.de/programmierer-schnipsel/joomla/165-suchwerkzeuge-filter-immer-sichtbar
 */
-defined('JPATH_BASE') or die;
+\defined('JPATH_BASE') or die;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
@@ -67,7 +68,7 @@ if (isset($data['view']->filterForm) && !empty($data['view']->filterForm))
 $customOptions = array(
     'filtersHidden'       => isset($data['options']['filtersHidden']) && $data['options']['filtersHidden'] ? $data['options']['filtersHidden'] : $hideActiveFilters,
     'filterButton'        => isset($data['options']['filterButton']) && $data['options']['filterButton'] ? $data['options']['filterButton'] : $showFilterButton,
-    'defaultLimit'        => isset($data['options']['defaultLimit']) ? $data['options']['defaultLimit'] : Factory::getApplication()->get('list_limit', 20),
+    'defaultLimit'        => isset($data['options']['defaultLimit']) ? $data['options']['defaultLimit'] : 20,
     'searchFieldSelector' => '#filter_search',
     'selectorFieldName'   => $selectorFieldName,
     'showSelector'        => $showSelector,

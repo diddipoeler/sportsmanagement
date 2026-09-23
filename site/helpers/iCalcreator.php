@@ -2,6 +2,12 @@
 /*********************************************************************************/
 /**
  * iCalcreator v2.18
+ *
+ * @version    2.18
+ * @author     Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @copyright  Copyright (c) 2007-2013 Kjell-Inge Gustafsson, kigkonsult
+ * @license    GNU Lesser General Public License version 2.1 or later
+ *
  * copyright (c) 2007-2013 Kjell-Inge Gustafsson, kigkonsult, All rights reserved
  * kigkonsult.se/iCalcreator/index.php
  * ical@kigkonsult.se

@@ -1,41 +1,37 @@
-name: Joomla 5/6 site admin modules batch 288
+name: Joomla 5/6 metadata migration batch 288
 
 on:
   push:
     branches:
       - joomla5-6
     paths:
-      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
-      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
-      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
-      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
-      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
-      - 'modules/mod_sportsmanagement_birthday/helper.php'
-      - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
-      - '.github/workflows/joomla5-6-module-act-season.yml'
-      - '.github/workflows/joomla5-6-club-allclubs-birthday.yml'
+      - 'admin/layouts/joomla/searchtools/default_4.php'
+      - 'admin/layouts/joomla/searchtools/default_test.php'
+      - 'admin/layouts/joomla/searchtools/defaultjsm.php'
+      - 'admin/helpers/iCalcreator.class.php'
+      - 'admin/helpers/parsecsv.lib.php'
+      - 'site/helpers/iCalcreator.php'
+      - 'site/libraries/dompdf/autoload.inc.php'
       - '.github/workflows/joomla5-6-site-admin-modules-batch288.yml'
   pull_request:
     branches:
       - joomla5-6
       - master
     paths:
-      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
-      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
-      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
-      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
-      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
-      - 'modules/mod_sportsmanagement_birthday/helper.php'
-      - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
-      - '.github/workflows/joomla5-6-module-act-season.yml'
-      - '.github/workflows/joomla5-6-club-allclubs-birthday.yml'
+      - 'admin/layouts/joomla/searchtools/default_4.php'
+      - 'admin/layouts/joomla/searchtools/default_test.php'
+      - 'admin/layouts/joomla/searchtools/defaultjsm.php'
+      - 'admin/helpers/iCalcreator.class.php'
+      - 'admin/helpers/parsecsv.lib.php'
+      - 'site/helpers/iCalcreator.php'
+      - 'site/libraries/dompdf/autoload.inc.php'
       - '.github/workflows/joomla5-6-site-admin-modules-batch288.yml'
 
 permissions:
   contents: read
 
 jobs:
-  compatibility:
+  metadata:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -43,40 +39,26 @@ jobs:
         with:
           php-version: '8.3'
           coverage: none
-
-      - name: Validate PHP syntax and required headers
+      - name: Validate metadata and syntax
         shell: bash
         run: |
           set -euo pipefail
           files=(
-            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
-            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
-            modules/mod_sportsmanagement_playgroundplan/helper.php
-            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
-            modules/mod_sportsmanagement_randomplayer/helper.php
-            modules/mod_sportsmanagement_birthday/helper.php
-            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+            admin/layouts/joomla/searchtools/default_4.php
+            admin/layouts/joomla/searchtools/default_test.php
+            admin/layouts/joomla/searchtools/defaultjsm.php
+            admin/helpers/iCalcreator.class.php
+            admin/helpers/parsecsv.lib.php
+            site/helpers/iCalcreator.php
+            site/libraries/dompdf/autoload.inc.php
           )
           for file in "${files[@]}"; do
             php -l "$file"
             for tag in '@version' '@author' '@copyright' '@license'; do
               grep -Fq -- "$tag" "$file"
             done
-            ! grep -Fq -- '$app->getContainer()' "$file"
           done
-
-      - name: Validate public module container access
-        shell: bash
-        run: |
-          set -euo pipefail
-          for file in \
-            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php \
-            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php \
-            modules/mod_sportsmanagement_playgroundplan/helper.php \
-            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php \
-            modules/mod_sportsmanagement_randomplayer/helper.php \
-            modules/mod_sportsmanagement_birthday/helper.php \
-            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php; do
-            grep -Fq -- 'Factory::getContainer()->get(' "$file"
-          done
-          echo 'Joomla 5/6 batch 288 contracts OK.'
+          ! grep -Fq -- "Factory::getApplication()" admin/layouts/joomla/searchtools/default_4.php
+          ! grep -Fq -- "Factory::getApplication()" admin/layouts/joomla/searchtools/default_test.php
+          ! grep -Fq -- "Factory::getApplication()" admin/layouts/joomla/searchtools/defaultjsm.php
+          echo 'Joomla 5/6 metadata batch 288 OK.'

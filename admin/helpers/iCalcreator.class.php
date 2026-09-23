@@ -2,6 +2,12 @@
 /*********************************************************************************/
 /**
  * iCalcreator class v2.10.5
+ *
+ * @version    2.10.5
+ * @author     Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @copyright  Copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
+ * @license    GNU Lesser General Public License version 2.1 or later
+ *
  * copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
  * www.kigkonsult.se/iCalcreator/index.php
  * ical@kigkonsult.se
@@ -48,7 +54,7 @@ if ($pos   !== false) {
 /*         date management, default timezone setting                             */
 /*         since 2.6.36 - 2010-12-31 */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 if (substr(phpversion(), 0, 3) >= '5.1')
 	// && ( 'UTC' == date_default_timezone_get()))

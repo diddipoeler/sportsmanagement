@@ -1,6 +1,10 @@
 <?php
 /**
  * Class: parseCSV v0.4.3 beta
+ *
+ * @version    0.4.3 beta
+ * @author     Jim Myhrberg <jim@zydev.info>
+ * @copyright  Copyright (c) 2007 Jim Myhrberg
  * http://code.google.com/p/parsecsv-for-php/
  *
  * Fully conforms to the specifications lined out on wikipedia:
@@ -72,7 +76,7 @@
  * @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 
