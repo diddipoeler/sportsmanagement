@@ -1,10 +1,18 @@
 <?php
+/**
+ * FPDM ASCII hexadecimal stream filter.
+ *
+ * @version    2.10
+ * @author     Olivier Plathey
+ * @copyright  Copyright (C) Olivier Plathey
+ * @license    FPDF License
+ */
+\defined('_JEXEC') or die;
 
 //
 //  FPDM - Filter ASCII Hex
 //  NOTE: Not tested but should work.
 //
-defined('_JEXEC') or die('Restricted access');
 
 if (isset($FPDM_FILTERS)) array_push($FPDM_FILTERS, "ASCIIHexDecode");
 
@@ -41,7 +49,7 @@ class FilterASCIIHex
      *Encodes a binary string to its hexadecimal representation
      *
      * @internal same as bin2hex
-     * @internal  dechex(ord($str{$i})); is buggy because for hex value of 0-15 heading 0 is missing! Using sprintf() to get it right.
+     * @internal  dechex(ord($str[$i])); is buggy because for hex value of 0-15 heading 0 is missing! Using sprintf() to get it right.
      * @param string $str a binary string
      * @return string hex the hexified string
      **/
@@ -51,7 +59,7 @@ class FilterASCIIHex
         $hex = "";
         $i = 0;
         do {
-            $hex .= sprintf("%02x", ord($str{$i}));
+            $hex .= sprintf("%02x", ord($str[$i]));
             $i++;
         } while ($i < strlen($str));
         return $hex;

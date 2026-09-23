@@ -1,4 +1,12 @@
 <?php
+/**
+ * FPDI LZW stream filter bundled with SportsManagement's FPDM copy.
+ *
+ * @version    1.3.4
+ * @author     Jan Slabon, Setasign
+ * @copyright  Copyright 2004-2010 Setasign - Jan Slabon
+ * @license    Apache License, Version 2.0
+ */
 //
 //  FPDI - Version 1.3.4
 //
@@ -16,7 +24,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 $__tmp = version_compare(phpversion(), "5") == -1 ? array('FilterLZW') : array('FilterLZW', false);
 if (!call_user_func_array('class_exists', $__tmp))

@@ -15,8 +15,8 @@ use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubLogoServ
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubTeamImportService;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyMatchImportService;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
@@ -47,7 +47,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
     public function getmatches($projectid = 0, $username = '', $password = ''): int
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->application()->getInput();
         $projectId = (int) $projectid;
 
         if ($projectId <= 0) {
@@ -96,7 +96,7 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
 
     public function getClubs(): int
     {
-        $input = Factory::getApplication()->getInput();
+        $input = $this->application()->getInput();
         $action = $input->post->getCmd('check', 'clubs');
         [$username, $password] = $this->credentials();
         $service = new InlineHockeyClubTeamImportService(
@@ -135,8 +135,19 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
     private function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $this->application()->getContainer()->get(DatabaseInterface::class);
 
         return $db;
+    }
+
+    private function application(): \Joomla\CMS\Application\CMSApplicationInterface
+    {
+        $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Inline Hockey legacy model requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 }

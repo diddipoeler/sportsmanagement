@@ -1,4 +1,13 @@
 <?php
+/**
+ * FPDI ASCII85 stream filter bundled with SportsManagement's FPDM copy.
+ *
+ * @version    1.4.4
+ * @author     Jan Slabon, Setasign
+ * @copyright  Copyright 2004-2013 Setasign - Jan Slabon
+ * @license    Apache License, Version 2.0
+ */
+\defined('_JEXEC') or die;
 //
 //  FPDI - Version 1.4.4
 //

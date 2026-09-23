@@ -1,9 +1,18 @@
 <?php
+/**
+ * FPDM Flate stream filter.
+ *
+ * @version    2.10
+ * @author     Olivier Plathey
+ * @copyright  Copyright (C) Olivier Plathey
+ * @license    FPDF License
+ */
+\defined('_JEXEC') or die;
+
 //
 //  FPDM - Filter Flate
 //  NOTE: requires ZLIB >= 1.0.9!
 //
-defined('_JEXEC') or die('Restricted access');
 
 $__tmp = version_compare(phpversion(), "5") == -1 ? array('FilterFlateDecode') : array('FilterFlateDecode', false);
 if (!call_user_func_array('class_exists', $__tmp))

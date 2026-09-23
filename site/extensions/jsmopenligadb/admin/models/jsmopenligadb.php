@@ -11,7 +11,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\OpenLigaDbPreviewService;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
 
@@ -40,8 +40,14 @@ class sportsmanagementModeljsmopenligadb extends BaseDatabaseModel
 
     private function service(): OpenLigaDbPreviewService
     {
+        $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement OpenLigaDB legacy model requires the Joomla site application.', 500);
+        }
+
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $app->getContainer()->get(DatabaseInterface::class);
 
         return new OpenLigaDbPreviewService($db);
     }
