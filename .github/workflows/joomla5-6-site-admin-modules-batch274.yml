@@ -1,0 +1,129 @@
+name: Joomla 5/6 site admin modules batch 274
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/editmatch/tmpl/editlineup_staff.php'
+      - 'site/views/editmatch/tmpl/editlineup_substitutions.php'
+      - 'site/views/editmatch/tmpl/editreferees.php'
+      - 'site/views/editmatch/tmpl/editstats.php'
+      - 'site/views/editmatch/tmpl/editstats_away.php'
+      - 'site/views/editmatch/tmpl/editstats_home.php'
+      - 'site/views/playground/tmpl/default_description.php'
+      - 'site/views/playground/tmpl/default_googlemap.php'
+      - 'site/views/playground/tmpl/default_googlemap_route.php'
+      - 'site/views/playground/tmpl/default_matches.php'
+      - 'admin/views/league/tmpl/edit.php'
+      - 'admin/views/match/tmpl/edit.php'
+      - 'admin/views/match/tmpl/editreferees.php'
+      - 'admin/views/playground/tmpl/edit.php'
+      - 'admin/views/position/tmpl/edit.php'
+      - 'admin/views/positions/tmpl/default.php'
+      - 'admin/views/rosterposition/tmpl/edit.php'
+      - 'admin/views/rounds/tmpl/default_data.php'
+      - 'admin/views/rounds/tmpl/default_4_data.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch274.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/views/editmatch/tmpl/editlineup_staff.php'
+      - 'site/views/editmatch/tmpl/editlineup_substitutions.php'
+      - 'site/views/editmatch/tmpl/editreferees.php'
+      - 'site/views/editmatch/tmpl/editstats.php'
+      - 'site/views/editmatch/tmpl/editstats_away.php'
+      - 'site/views/editmatch/tmpl/editstats_home.php'
+      - 'site/views/playground/tmpl/default_description.php'
+      - 'site/views/playground/tmpl/default_googlemap.php'
+      - 'site/views/playground/tmpl/default_googlemap_route.php'
+      - 'site/views/playground/tmpl/default_matches.php'
+      - 'admin/views/league/tmpl/edit.php'
+      - 'admin/views/match/tmpl/edit.php'
+      - 'admin/views/match/tmpl/editreferees.php'
+      - 'admin/views/playground/tmpl/edit.php'
+      - 'admin/views/position/tmpl/edit.php'
+      - 'admin/views/positions/tmpl/default.php'
+      - 'admin/views/rosterposition/tmpl/edit.php'
+      - 'admin/views/rounds/tmpl/default_data.php'
+      - 'admin/views/rounds/tmpl/default_4_data.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch274.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/editmatch/tmpl/editlineup_staff.php
+            site/views/editmatch/tmpl/editlineup_substitutions.php
+            site/views/editmatch/tmpl/editreferees.php
+            site/views/editmatch/tmpl/editstats.php
+            site/views/editmatch/tmpl/editstats_away.php
+            site/views/editmatch/tmpl/editstats_home.php
+            site/views/playground/tmpl/default_description.php
+            site/views/playground/tmpl/default_googlemap.php
+            site/views/playground/tmpl/default_googlemap_route.php
+            site/views/playground/tmpl/default_matches.php
+            admin/views/league/tmpl/edit.php
+            admin/views/match/tmpl/edit.php
+            admin/views/match/tmpl/editreferees.php
+            admin/views/playground/tmpl/edit.php
+            admin/views/position/tmpl/edit.php
+            admin/views/positions/tmpl/default.php
+            admin/views/rosterposition/tmpl/edit.php
+            admin/views/rounds/tmpl/default_data.php
+            admin/views/rounds/tmpl/default_4_data.php
+            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate bridge targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/editlineup_staff.php' site/views/editmatch/tmpl/editlineup_staff.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/editstats_home.php' site/views/editmatch/tmpl/editstats_home.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/playground/default_googlemap_route.php' site/views/playground/tmpl/default_googlemap_route.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/match/edit.php' admin/views/match/tmpl/edit.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/rosterposition/edit.php' admin/views/rosterposition/tmpl/edit.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/rounds/default_data.php' admin/views/rounds/tmpl/default_4_data.php
+
+      - name: Validate Calendar LiveScore Joomla service access
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          if grep -Fq -- 'Factory::getContainer()' "$file"; then
+            echo 'Legacy Factory::getContainer() remains in LiveScore connector' >&2
+            exit 1
+          fi
+          if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+            echo 'Legacy Factory import remains in LiveScore connector' >&2
+            exit 1
+          fi
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+          grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+          grep -Fq -- "isClient('site')" "$file"
+          echo 'Joomla 5/6 batch 274 contracts OK.'
