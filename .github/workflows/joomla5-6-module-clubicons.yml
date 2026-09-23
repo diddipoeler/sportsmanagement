@@ -65,7 +65,7 @@ jobs:
           carousel = Path('modules/mod_sportsmanagement_clubicons/tmpl/default_carousel.php').read_text(encoding='utf-8')
 
           checks = {
-              'facade site application': (facade, 'Factory::getContainer()->get(SiteApplication::class)'),
+              'facade site application': (facade, 'SportsManagementSiteApplicationResolver::resolve()'),
               'helper application': (helper, 'CMSApplicationInterface $app'),
               'helper public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
