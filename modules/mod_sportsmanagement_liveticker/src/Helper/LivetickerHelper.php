@@ -16,6 +16,7 @@ use DateTimeZone;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
@@ -32,7 +33,7 @@ final class LivetickerHelper
         }
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
@@ -69,7 +70,7 @@ final class LivetickerHelper
         $params = new Registry();
         $params->loadString((string) ($module->params ?? ''));
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $db = $this->database($params, $joomlaDatabase);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)

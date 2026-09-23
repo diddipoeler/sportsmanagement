@@ -70,9 +70,12 @@ jobs:
               'helper factory': (dispatcher, "getHelper('PlaygroundTickerHelper')"),
               'web asset manager': (dispatcher, 'getWebAssetManager()'),
               'bootstrap 5 carousel asset': (dispatcher, "useScript('bootstrap.carousel')"),
+              'dispatcher public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'application-aware helper': (helper, 'CMSApplicationInterface $app'),
-              'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
-              'facade site application': (facade, 'Factory::getContainer()'),
+              'injected fallback database': (helper, 'DatabaseInterface $fallbackDatabase'),
+              'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
+              'facade site application resolver': (facade, 'SportsManagementSiteApplicationResolver::resolve()'),
+              'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'bootstrap 5 carousel markup': (template, 'data-bs-ride="carousel"'),
           }
           for name, (text, needle) in expected.items():

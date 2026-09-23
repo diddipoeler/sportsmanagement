@@ -1,0 +1,58 @@
+name: Joomla 5/6 site admin modules batch 290
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-module-playground-ticker.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch290.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-module-playground-ticker.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch290.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            ! grep -Fq -- '$app->getContainer()' "$file"
+          done
+
+      - name: Validate migrated contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_sports_type_statistics/helper.php
+          ! grep -Fq -- 'SiteApplication' modules/mod_sportsmanagement_sports_type_statistics/helper.php
+          echo 'Joomla 5/6 batch 290 contracts OK.'
