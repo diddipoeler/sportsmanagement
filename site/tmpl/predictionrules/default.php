@@ -7,20 +7,20 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
 if (!$this->predictionGame) {
-    echo '<div class="alert alert-warning">' . Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING') . '</div>';
+    echo '<div class="alert alert-warning" role="alert">'
+        . Text::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING')
+        . '</div>';
     return;
 }
 ?>
-<div class="row-fluid">
-    <?php
-    echo $this->loadTemplate('predictionheading');
-    echo $this->loadTemplate('sectionheader');
-    echo $this->loadTemplate('info');
-    echo $this->loadTemplate('jsminfo');
-    ?>
+<div class="row">
+    <?php echo $this->loadTemplate('predictionheading'); ?>
+    <?php echo $this->loadTemplate('sectionheader'); ?>
+    <?php echo $this->loadTemplate('info'); ?>
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>

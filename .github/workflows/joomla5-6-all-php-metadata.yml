@@ -1,0 +1,55 @@
+name: Joomla 5/6 all PHP metadata audit
+
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  php-metadata:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Audit all first-party PHP metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          missing=0
+          checked=0
+
+          while IFS= read -r -d '' file; do
+            case "$file" in
+              */vendor/*|*/libraries/vendor/*)
+                continue
+                ;;
+            esac
+
+            checked=$((checked + 1))
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              if ! grep -Fq -- "$tag" "$file"; then
+                echo "::error file=$file::Missing $tag"
+                missing=1
+              fi
+            done
+          done < <(find site admin modules -type f -name '*.php' -print0 | sort -z)
+
+          echo "Checked $checked PHP files under site, admin and modules."
+
+          if (( missing != 0 )); then
+            exit 1
+          fi
