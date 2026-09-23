@@ -13,10 +13,9 @@ namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
@@ -68,13 +67,17 @@ final class NavigationDataHelper
     ) {
         $this->_params = $params instanceof Registry ? $params : new Registry($params);
 
-        $container = Factory::getContainer();
         /** @var CMSApplicationInterface $resolvedApp */
-        $resolvedApp = $app ?? $container->get(SiteApplication::class);
+        $resolvedApp = $app ?? SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$resolvedApp->isClient('site')) {
+            throw new \RuntimeException('SportsManagement AJAX navigation data requires the Joomla site application.', 500);
+        }
+
         $this->_app = $resolvedApp;
 
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $database ?? $container->get(DatabaseInterface::class);
+        $joomlaDatabase = $database ?? $resolvedApp->getContainer()->get(DatabaseInterface::class);
         $input = $this->_app->getInput();
         $selector = $input->getInt(
             'cfg_which_database',

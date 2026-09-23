@@ -1,0 +1,145 @@
+name: Joomla 5/6 site admin modules batch 276
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/stats/tmpl/default_attendance_stats.php'
+      - 'site/views/stats/tmpl/default_flashchart.php'
+      - 'site/views/stats/tmpl/default_goals_stats.php'
+      - 'site/views/stats/tmpl/default_ranking.php'
+      - 'site/views/teaminfo/tmpl/default_history_leagues.php'
+      - 'site/views/teaminfo/tmpl/default_simple_league.php'
+      - 'site/views/teaminfo/tmpl/default_tournament.php'
+      - 'site/views/teamstats/tmpl/default_attendance_stats.php'
+      - 'site/views/teamstats/tmpl/default_flashchart.php'
+      - 'site/views/teamstats/tmpl/default_homeaway_goals.php'
+      - 'admin/views/predictiontemplates/tmpl/default_import.php'
+      - 'admin/views/treeto/tmpl/default.php'
+      - 'admin/views/treeto/tmpl/edit.php'
+      - 'admin/views/treeto/tmpl/gennode.php'
+      - 'admin/views/treeto/tmpl/gennode_data.php'
+      - 'admin/views/treetomatchs/tmpl/default.php'
+      - 'admin/views/treetomatchs/tmpl/default_data.php'
+      - 'admin/views/treetomatchs/tmpl/editlist.php'
+      - 'admin/views/treetomatchs/tmpl/editlist_data.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch276.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/views/stats/tmpl/default_attendance_stats.php'
+      - 'site/views/stats/tmpl/default_flashchart.php'
+      - 'site/views/stats/tmpl/default_goals_stats.php'
+      - 'site/views/stats/tmpl/default_ranking.php'
+      - 'site/views/teaminfo/tmpl/default_history_leagues.php'
+      - 'site/views/teaminfo/tmpl/default_simple_league.php'
+      - 'site/views/teaminfo/tmpl/default_tournament.php'
+      - 'site/views/teamstats/tmpl/default_attendance_stats.php'
+      - 'site/views/teamstats/tmpl/default_flashchart.php'
+      - 'site/views/teamstats/tmpl/default_homeaway_goals.php'
+      - 'admin/views/predictiontemplates/tmpl/default_import.php'
+      - 'admin/views/treeto/tmpl/default.php'
+      - 'admin/views/treeto/tmpl/edit.php'
+      - 'admin/views/treeto/tmpl/gennode.php'
+      - 'admin/views/treeto/tmpl/gennode_data.php'
+      - 'admin/views/treetomatchs/tmpl/default.php'
+      - 'admin/views/treetomatchs/tmpl/default_data.php'
+      - 'admin/views/treetomatchs/tmpl/editlist.php'
+      - 'admin/views/treetomatchs/tmpl/editlist_data.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch276.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/stats/tmpl/default_attendance_stats.php
+            site/views/stats/tmpl/default_flashchart.php
+            site/views/stats/tmpl/default_goals_stats.php
+            site/views/stats/tmpl/default_ranking.php
+            site/views/teaminfo/tmpl/default_history_leagues.php
+            site/views/teaminfo/tmpl/default_simple_league.php
+            site/views/teaminfo/tmpl/default_tournament.php
+            site/views/teamstats/tmpl/default_attendance_stats.php
+            site/views/teamstats/tmpl/default_flashchart.php
+            site/views/teamstats/tmpl/default_homeaway_goals.php
+            admin/views/predictiontemplates/tmpl/default_import.php
+            admin/views/treeto/tmpl/default.php
+            admin/views/treeto/tmpl/edit.php
+            admin/views/treeto/tmpl/gennode.php
+            admin/views/treeto/tmpl/gennode_data.php
+            admin/views/treetomatchs/tmpl/default.php
+            admin/views/treetomatchs/tmpl/default_data.php
+            admin/views/treetomatchs/tmpl/editlist.php
+            admin/views/treetomatchs/tmpl/editlist_data.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate legacy bridge targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/stats/default_attendance_stats.php' site/views/stats/tmpl/default_attendance_stats.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/teaminfo/default_tournament.php' site/views/teaminfo/tmpl/default_tournament.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/teamstats/default_homeaway_goals.php' site/views/teamstats/tmpl/default_homeaway_goals.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/predictiontemplates/default_import.php' admin/views/predictiontemplates/tmpl/default_import.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/treeto/gennode_data.php' admin/views/treeto/tmpl/gennode_data.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/treetomatchs/editlist_data.php' admin/views/treetomatchs/tmpl/editlist_data.php
+
+      - name: Validate resolver-based Joomla application access
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          )
+          for file in "${files[@]}"; do
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+            grep -Fq -- 'SportsManagementSiteApplicationResolver' "$file"
+            grep -Fq -- "isClient('site')" "$file"
+          done
+          grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
+          echo 'Joomla 5/6 batch 276 contracts OK.'

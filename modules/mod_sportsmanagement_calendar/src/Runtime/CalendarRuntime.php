@@ -11,9 +11,9 @@ namespace Diddipoeler\Module\SportsManagementCalendar\Site\Runtime;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -301,10 +301,9 @@ class CalendarRuntime extends \PHPCalendar
         return $array;
     }
 
-    private static function siteApplication(): SiteApplication
+    private static function siteApplication(): CMSApplicationInterface
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Calendar runtime requires the Joomla site application.', 500);

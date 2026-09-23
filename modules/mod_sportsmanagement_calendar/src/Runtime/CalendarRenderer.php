@@ -11,8 +11,7 @@ namespace Diddipoeler\Module\SportsManagementCalendar\Site\Runtime;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 
 /**
  * Native Joomla 5/6 calendar month renderer.
@@ -93,8 +92,12 @@ class CalendarRenderer
 
     public function getMonthHTML($m, $y, $showYear = 1): array
     {
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Calendar renderer requires the Joomla site application.', 500);
+        }
+
         $s = '';
 
         [$month, $year] = $this->adjustDate((int) $m, (int) $y);
