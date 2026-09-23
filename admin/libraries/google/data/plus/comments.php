@@ -2,6 +2,8 @@
 /**
  * @package     Joomla.Platform
  * @subpackage  Google
+ * @version     5.6.0
+ * @author      Open Source Matters, Inc.
  *
  * @copyright   Copyright (C) 2005 - 2019 Open Source Matters, Inc. All rights reserved
  * @license     GNU General Public License version 2 or later; see LICENSE
