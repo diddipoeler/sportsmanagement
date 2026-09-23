@@ -1,0 +1,93 @@
+name: Joomla 5/6 site admin modules batch 282
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/View/Scoresheet/RawView.php'
+      - 'site/views/close/tmpl/default.php'
+      - 'site/views/close/tmpl/default_3.php'
+      - 'site/views/close/tmpl/default_4.php'
+      - 'site/tmpl/editmatch/edit_fieldsets.php'
+      - 'site/views/editmatch/tmpl/edit_fieldsets.php'
+      - 'admin/layouts/assignpersons.php'
+      - 'admin/layouts/assignpersonsclub.php'
+      - 'admin/modules/mod_sportsmanagement_quickicon/mod_sportsmanagement_quickicon.php'
+      - 'admin/tables/matchsingle.php'
+      - 'admin/views/close/tmpl/default_3.php'
+      - 'admin/views/close/tmpl/default_4.php'
+      - 'admin/views/fieldsets/tmpl/default_info_message.php'
+      - 'admin/models/fields/playgroundnotiz.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch282.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/src/View/Scoresheet/RawView.php'
+      - 'site/views/close/tmpl/default.php'
+      - 'site/views/close/tmpl/default_3.php'
+      - 'site/views/close/tmpl/default_4.php'
+      - 'site/tmpl/editmatch/edit_fieldsets.php'
+      - 'site/views/editmatch/tmpl/edit_fieldsets.php'
+      - 'admin/layouts/assignpersons.php'
+      - 'admin/layouts/assignpersonsclub.php'
+      - 'admin/modules/mod_sportsmanagement_quickicon/mod_sportsmanagement_quickicon.php'
+      - 'admin/tables/matchsingle.php'
+      - 'admin/views/close/tmpl/default_3.php'
+      - 'admin/views/close/tmpl/default_4.php'
+      - 'admin/views/fieldsets/tmpl/default_info_message.php'
+      - 'admin/models/fields/playgroundnotiz.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch282.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/View/Scoresheet/RawView.php
+            site/views/close/tmpl/default.php
+            site/views/close/tmpl/default_3.php
+            site/views/close/tmpl/default_4.php
+            site/tmpl/editmatch/edit_fieldsets.php
+            site/views/editmatch/tmpl/edit_fieldsets.php
+            admin/layouts/assignpersons.php
+            admin/layouts/assignpersonsclub.php
+            admin/modules/mod_sportsmanagement_quickicon/mod_sportsmanagement_quickicon.php
+            admin/tables/matchsingle.php
+            admin/views/close/tmpl/default_3.php
+            admin/views/close/tmpl/default_4.php
+            admin/views/fieldsets/tmpl/default_info_message.php
+            admin/models/fields/playgroundnotiz.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate passive layouts and compatibility aliases
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "require __DIR__ . '/default.php';" site/views/close/tmpl/default_3.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/editmatch/edit_fieldsets.php' site/views/editmatch/tmpl/edit_fieldsets.php
+          grep -Fq -- "require __DIR__ . '/default.php';" admin/views/close/tmpl/default_4.php
+          grep -Fq -- 'class_alias(MatchSingleTable::class' admin/tables/matchsingle.php
+          grep -Fq -- 'services/provider.php' admin/modules/mod_sportsmanagement_quickicon/mod_sportsmanagement_quickicon.php
+          echo 'Joomla 5/6 batch 282 contracts OK.'
