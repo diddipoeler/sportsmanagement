@@ -1,0 +1,81 @@
+name: Joomla 5/6 site admin modules batch 283
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/curve/default_sectionheader.php'
+      - 'site/tmpl/predictionentry/default_view_deny.php'
+      - 'site/tmpl/predictionentry/default_view_welcome.php'
+      - 'admin/layouts/assignteams.php'
+      - 'admin/layouts/changeteams.php'
+      - 'admin/tmpl/imagelist/default_image_4.php'
+      - 'admin/tmpl/jlextindividualsportes/default_matches_small_bore_rifle.php'
+      - 'admin/tmpl/joomleagueimports/import.php'
+      - 'admin/tmpl/players/assignpersonsclub.php'
+      - 'admin/tmpl/databasetools/default.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch283.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/tmpl/curve/default_sectionheader.php'
+      - 'site/tmpl/predictionentry/default_view_deny.php'
+      - 'site/tmpl/predictionentry/default_view_welcome.php'
+      - 'admin/layouts/assignteams.php'
+      - 'admin/layouts/changeteams.php'
+      - 'admin/tmpl/imagelist/default_image_4.php'
+      - 'admin/tmpl/jlextindividualsportes/default_matches_small_bore_rifle.php'
+      - 'admin/tmpl/joomleagueimports/import.php'
+      - 'admin/tmpl/players/assignpersonsclub.php'
+      - 'admin/tmpl/databasetools/default.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch283.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/curve/default_sectionheader.php
+            site/tmpl/predictionentry/default_view_deny.php
+            site/tmpl/predictionentry/default_view_welcome.php
+            admin/layouts/assignteams.php
+            admin/layouts/changeteams.php
+            admin/tmpl/imagelist/default_image_4.php
+            admin/tmpl/jlextindividualsportes/default_matches_small_bore_rifle.php
+            admin/tmpl/joomleagueimports/import.php
+            admin/tmpl/players/assignpersonsclub.php
+            admin/tmpl/databasetools/default.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate native compatibility targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- "require __DIR__ . '/default_image.php';" admin/tmpl/imagelist/default_image_4.php
+          grep -Fq -- "require __DIR__ . '/default_matches.php';" admin/tmpl/jlextindividualsportes/default_matches_small_bore_rifle.php
+          grep -Fq -- "require __DIR__ . '/assignpersons.php';" admin/tmpl/players/assignpersonsclub.php
+          grep -Fq -- "Route::_('index.php?option=com_sportsmanagement&view=databasetools')" admin/tmpl/databasetools/default.php
+          grep -Fq -- 'COM_SPORTSMANAGEMENT_PRED_ENTRY_DENY_INFO_01' site/tmpl/predictionentry/default_view_deny.php
+          echo 'Joomla 5/6 batch 283 contracts OK.'
