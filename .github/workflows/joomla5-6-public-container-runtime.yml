@@ -73,14 +73,14 @@ jobs:
 
           runtime_roots=(admin/src site/src modules)
 
-          protected_container_hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->getContainer\(|->getApplication\(\)->getContainer\(|->siteApplication\(\)->getContainer\(|->administratorApplication\(\)->getContainer\(' "${runtime_roots[@]}" || true)"
+          protected_container_hits="$(grep -R -n --include='*.php' -E '\$(app|[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*)->getContainer\(|->getApplication\(\)->getContainer\(|->siteApplication\(\)->getContainer\(|->administratorApplication\(\)->getContainer\(' "${runtime_roots[@]}" || true)"
           if [[ -n "$protected_container_hits" ]]; then
             printf '%s\n' "$protected_container_hits" >&2
             echo 'An active runtime path calls protected CMSApplication::getContainer(); use Factory::getContainer() for Joomla services.' >&2
             exit 1
           fi
 
-          application_input_hits="$(grep -R -n --include='*.php' -E '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->input\b|Factory::getApplication\(\)->input\b' "${runtime_roots[@]}" || true)"
+          application_input_hits="$(grep -R -n --include='*.php' -E '\$(app|[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*)->input\b|Factory::getApplication\(\)->input\b' "${runtime_roots[@]}" || true)"
           if [[ -n "$application_input_hits" ]]; then
             printf '%s\n' "$application_input_hits" >&2
             echo 'An active runtime path still accesses application input as a property instead of getInput().' >&2
