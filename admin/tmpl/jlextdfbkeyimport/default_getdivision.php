@@ -1,6 +1,15 @@
 <?php
+/**
+ * Native Joomla 5/6 DFB-key division selection layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 /** SportsManagement DFB-key division selection template. */
-defined('_JEXEC') or die('Restricted access');
+\\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 ?>

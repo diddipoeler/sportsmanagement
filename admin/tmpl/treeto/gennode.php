@@ -1,5 +1,14 @@
 <?php
-\defined('_JEXEC') or die;
+/**
+ * Native Joomla 5/6 tournament-tree node generation form.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+\\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;

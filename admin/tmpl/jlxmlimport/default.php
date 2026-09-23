@@ -1,6 +1,15 @@
 <?php
+/**
+ * Native Joomla 5/6 XML-import entry layout.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 /** Joomla 5/6 compatibility entry page for the XML import workflow. */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
