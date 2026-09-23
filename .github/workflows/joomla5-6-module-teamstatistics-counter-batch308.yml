@@ -37,7 +37,7 @@ jobs:
           grep -Fq -- "\\defined('_JEXEC') or die;" modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
           ! grep -Fq -- 'Restricted access' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
           grep -Fq -- '$metrics = [' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
-          grep -Fq -- "if ($mode === 'C')" modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
+          grep -Fq -- "if (\$mode === 'C')" modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
           grep -Fq -- 'jsm-teamstatistics-counter-sticker' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
           grep -Fq -- '.jsm-teamstatistics-counter-sticker' modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css
           ! grep -Fq -- 'style="height: 20px;"' modules/mod_sportsmanagement_teamstatistics_counter/tmpl/default.php
