@@ -56,7 +56,9 @@ foreach ($this->matches as $match) {
                                     <button
                                         type="button"
                                         class="btn btn-outline-primary btn-sm"
-                                        onclick="SaveMatch('<?php echo $homeId; ?>','<?php echo $awayId; ?>')"
+                                        data-jsm-save-match
+                                        data-home-id="<?php echo $homeId; ?>"
+                                        data-away-id="<?php echo $awayId; ?>"
                                         title="<?php echo $this->escape((string) $home->text . ' - ' . (string) $away->text); ?>"
                                     >+</button>
                                 <?php endif; ?>

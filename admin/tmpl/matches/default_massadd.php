@@ -150,22 +150,3 @@ $startTime = (string) ($this->projectws->start_time ?? '20:00');
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const type = document.getElementById('addtype');
-    const count = document.getElementById('addmatchescount');
-    const tempCount = document.getElementById('tempaddmatchescount');
-    const startTime = document.getElementById('startTime');
-    const copyStartTime = document.getElementById('copyStartTime');
-
-    document.getElementById('create-matches').addEventListener('click', () => {
-        type.value = '1';
-        count.value = tempCount.value;
-    });
-
-    document.getElementById('copy-matches').addEventListener('click', () => {
-        type.value = '2';
-        startTime.value = copyStartTime.value;
-    });
-});
-</script>

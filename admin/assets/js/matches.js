@@ -150,3 +150,33 @@ function askPrefillRosterByLastMatch(alert1) {
 function askPrefillRosterByProjectTeamPlayer(alert2) {
 	return confirm(alert2);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+	const addType = document.getElementById('addtype');
+	const addCount = document.getElementById('addmatchescount');
+	const tempCount = document.getElementById('tempaddmatchescount');
+	const startTime = document.getElementById('startTime');
+	const copyStartTime = document.getElementById('copyStartTime');
+	const createMatches = document.getElementById('create-matches');
+	const copyMatches = document.getElementById('copy-matches');
+
+	if (createMatches && addType && addCount && tempCount) {
+		createMatches.addEventListener('click', () => {
+			addType.value = '1';
+			addCount.value = tempCount.value;
+		});
+	}
+
+	if (copyMatches && addType && startTime && copyStartTime) {
+		copyMatches.addEventListener('click', () => {
+			addType.value = '2';
+			startTime.value = copyStartTime.value;
+		});
+	}
+
+	document.querySelectorAll('[data-jsm-save-match]').forEach((button) => {
+		button.addEventListener('click', () => {
+			SaveMatch(button.dataset.homeId || '', button.dataset.awayId || '');
+		});
+	});
+});
