@@ -14,6 +14,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper\TeamStatsRankingHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -63,7 +64,7 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
                 }
 
                 /** @var DatabaseInterface $database */
-                $database = $app->getContainer()->get(DatabaseInterface::class);
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
             return (new TeamStatsRankingHelper())->getData($registry, $database);
