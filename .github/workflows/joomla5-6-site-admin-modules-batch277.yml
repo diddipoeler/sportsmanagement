@@ -1,0 +1,108 @@
+name: Joomla 5/6 site admin modules batch 277
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/View/Predictionentry/tmpl/default_view_tippentry_done.php'
+      - 'site/extensions/jsmhandball/admin/controllers/jsmhandball.php'
+      - 'site/extensions/jsmhandball/admin/views/jsmhandball/tmpl/default.php'
+      - 'site/extensions/jsmopenligadb/admin/controllers/jsmopenligadb.php'
+      - 'admin/views/treetonode/tmpl/default.php'
+      - 'admin/views/treetonode/tmpl/edit.php'
+      - 'admin/views/treetonodes/tmpl/default.php'
+      - 'admin/views/treetonodes/tmpl/default_data.php'
+      - 'admin/views/treetos/tmpl/default.php'
+      - 'admin/views/treetos/tmpl/default_data.php'
+      - 'admin/views/updates/tmpl/default_data.php'
+      - 'admin/views/jsmgcalendars/tmpl/default_data.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch277.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/src/View/Predictionentry/tmpl/default_view_tippentry_done.php'
+      - 'site/extensions/jsmhandball/admin/controllers/jsmhandball.php'
+      - 'site/extensions/jsmhandball/admin/views/jsmhandball/tmpl/default.php'
+      - 'site/extensions/jsmopenligadb/admin/controllers/jsmopenligadb.php'
+      - 'admin/views/treetonode/tmpl/default.php'
+      - 'admin/views/treetonode/tmpl/edit.php'
+      - 'admin/views/treetonodes/tmpl/default.php'
+      - 'admin/views/treetonodes/tmpl/default_data.php'
+      - 'admin/views/treetos/tmpl/default.php'
+      - 'admin/views/treetos/tmpl/default_data.php'
+      - 'admin/views/updates/tmpl/default_data.php'
+      - 'admin/views/jsmgcalendars/tmpl/default_data.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch277.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/View/Predictionentry/tmpl/default_view_tippentry_done.php
+            site/extensions/jsmhandball/admin/controllers/jsmhandball.php
+            site/extensions/jsmhandball/admin/views/jsmhandball/tmpl/default.php
+            site/extensions/jsmopenligadb/admin/controllers/jsmopenligadb.php
+            admin/views/treetonode/tmpl/default.php
+            admin/views/treetonode/tmpl/edit.php
+            admin/views/treetonodes/tmpl/default.php
+            admin/views/treetonodes/tmpl/default_data.php
+            admin/views/treetos/tmpl/default.php
+            admin/views/treetos/tmpl/default_data.php
+            admin/views/updates/tmpl/default_data.php
+            admin/views/jsmgcalendars/tmpl/default_data.php
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate site and administrator compatibility bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- 'COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1' site/src/View/Predictionentry/tmpl/default_view_tippentry_done.php
+          grep -Fq -- 'AdminController' site/extensions/jsmhandball/admin/controllers/jsmhandball.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/treetonode/edit.php' admin/views/treetonode/tmpl/default.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/treetonodes/default_data.php' admin/views/treetonodes/tmpl/default_data.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/treetos/default_data.php' admin/views/treetos/tmpl/default_data.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/updates/default_data.php' admin/views/updates/tmpl/default_data.php
+
+      - name: Validate calendar SportsManagement connector service access
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+          if grep -Fq -- 'Factory::getContainer()' "$file"; then
+            echo 'Legacy Factory::getContainer() remains' >&2
+            exit 1
+          fi
+          if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+            echo 'Legacy Factory import remains' >&2
+            exit 1
+          fi
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+          grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+          grep -Fq -- "isClient('site')" "$file"
+          echo 'Joomla 5/6 batch 277 contracts OK.'

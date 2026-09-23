@@ -14,10 +14,9 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Joomla\CMS\Application\SiteApplication;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -486,9 +485,9 @@ final class SportsmanagementConnector extends JSMCalendar
         return trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big', ''));
     }
 
-    private static function siteApplication(): SiteApplication
+    private static function siteApplication(): \Joomla\CMS\Application\CMSApplicationInterface
     {
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = SportsManagementSiteApplicationResolver::resolve();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Calendar requires the Joomla site application.', 500);
@@ -499,8 +498,9 @@ final class SportsmanagementConnector extends JSMCalendar
 
     private static function database(): DatabaseInterface
     {
+        $app = self::siteApplication();
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
         $selector = (int) self::$xparams->get('cfg_which_database', 0) === 1 ? 1 : 0;
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
