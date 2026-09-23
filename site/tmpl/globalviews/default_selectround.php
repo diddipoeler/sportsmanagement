@@ -1,7 +1,8 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * Native Joomla 5/6 round selector layout.
+ *
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage resultsranking
  * @file       default_selectround.php
@@ -9,7 +10,8 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 

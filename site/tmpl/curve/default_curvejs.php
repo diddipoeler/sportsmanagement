@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Native Joomla 5/6 curve chart layout.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -8,23 +8,78 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-/** SportsManagement curve chart for Joomla 5/6. */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+
+$chartDivision = $this->divisions[0] ?? null;
+$chartDivisionId = (int) ($chartDivision->id ?? 0);
+$chartTeams = $this->teamranking[$chartDivisionId] ?? [];
+$datasets = [];
+
+foreach ($chartTeams as $team) {
+    $teamId = (int) ($team->team_id ?? $team->id ?? 0);
+    if ($teamId !== $this->selectedTeamId1 && $teamId !== $this->selectedTeamId2) {
+        continue;
+    }
+
+    $datasets[] = [
+        'label' => (string) ($team->name ?? ''),
+        'fill' => false,
+        'borderColor' => $teamId === $this->selectedTeamId1
+            ? (string) ($this->flashconfig['curve_team1_color'] ?? '#000000')
+            : (string) ($this->flashconfig['curve_team2_color'] ?? '#666666'),
+        'data' => array_values(array_map('intval', (array) ($team->rankings ?? []))),
+    ];
+}
+
+$labels = array_map(
+    static function (mixed $label): string {
+        $decoded = json_decode((string) $label, true);
+
+        return is_string($decoded) ? $decoded : (string) $label;
+    },
+    $this->round_labels
+);
+
+if ($chartTeams !== [] && $datasets !== []) {
+    $document = $this->getDocument();
+    $document->addScriptOptions('com_sportsmanagement.curve.chart', [
+        'type' => 'line',
+        'data' => [
+            'labels' => $labels,
+            'datasets' => $datasets,
+        ],
+        'options' => [
+            'responsive' => true,
+            'legend' => [
+                'display' => true,
+                'labels' => ['padding' => 20],
+            ],
+            'tooltips' => ['enabled' => true],
+            'scales' => [
+                'yAxes' => [[
+                    'ticks' => [
+                        'suggestedMin' => 1,
+                        'suggestedMax' => max(1, count($chartTeams)),
+                        'beginAtZero' => false,
+                        'reverse' => true,
+                        'stepSize' => 1,
+                    ],
+                ]],
+            ],
+        ],
+    ]);
+    $document->getWebAssetManager()->registerAndUseScript(
+        'com_sportsmanagement.curve.render',
+        'components/com_sportsmanagement/assets/js/curve-chart.js',
+        ['version' => 'auto'],
+        ['defer' => true],
+        ['core', 'com_sportsmanagement.curve.chartjs']
+    );
+}
 ?>
-<script>
-    window.chartColors = {
-        red: 'rgb(255, 99, 132)',
-        orange: 'rgb(255, 159, 64)',
-        yellow: 'rgb(255, 205, 86)',
-        green: 'rgb(75, 192, 192)',
-        blue: 'rgb(54, 162, 235)',
-        purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(201, 203, 207)'
-    };
-</script>
 <div class="<?php echo $this->escape($this->divclassrow); ?> table-responsive" id="curvejs">
     <?php foreach ($this->divisions as $division) : ?>
         <?php if (empty($this->allteams)) { continue; } ?>
@@ -63,78 +118,7 @@ use Joomla\CMS\Language\Text;
         </form>
     <?php endforeach; ?>
 
-    <?php
-    $chartDivision = $this->divisions[0] ?? null;
-    $chartDivisionId = (int) ($chartDivision->id ?? 0);
-    $chartTeams = $this->teamranking[$chartDivisionId] ?? [];
-    $datasets = [];
-
-    foreach ($chartTeams as $team) {
-        $teamId = (int) ($team->team_id ?? $team->id ?? 0);
-        if ($teamId !== $this->selectedTeamId1 && $teamId !== $this->selectedTeamId2) {
-            continue;
-        }
-
-        $datasets[] = [
-            'label' => (string) ($team->name ?? ''),
-            'fill' => false,
-            'borderColor' => $teamId === $this->selectedTeamId1
-                ? (string) ($this->flashconfig['curve_team1_color'] ?? '#000000')
-                : (string) ($this->flashconfig['curve_team2_color'] ?? '#666666'),
-            'data' => array_values(array_map('intval', (array) ($team->rankings ?? []))),
-        ];
-    }
-
-    $chartConfig = json_encode(
-        [
-            'labels' => array_map(
-                static fn (string $label): mixed => json_decode($label, true),
-                $this->round_labels
-            ),
-            'datasets' => $datasets,
-            'teamCount' => count($chartTeams),
-        ],
-        JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES
-    );
-    ?>
-    <?php if ($chartConfig !== false && $chartTeams !== []) : ?>
-        <canvas id="jsmchartcurve"></canvas>
-        <script>
-            (() => {
-                const curveData = <?php echo $chartConfig; ?>;
-                const canvas = document.getElementById('jsmchartcurve');
-                if (!canvas || typeof Chart === 'undefined') return;
-
-                new Chart(canvas.getContext('2d'), {
-                    type: 'line',
-                    data: {
-                        labels: curveData.labels,
-                        datasets: curveData.datasets
-                    },
-                    options: {
-                        responsive: true,
-                        legend: {
-                            display: true,
-                            labels: {padding: 20}
-                        },
-                        tooltips: {enabled: true},
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    suggestedMin: 1,
-                                    suggestedMax: curveData.teamCount,
-                                    beginAtZero: false,
-                                    reverse: true,
-                                    stepSize: 1,
-                                    callback: function (value) {
-                                        return value == 0 ? '' : value * 1;
-                                    }
-                                }
-                            }]
-                        }
-                    }
-                });
-            })();
-        </script>
+    <?php if ($chartTeams !== [] && $datasets !== []) : ?>
+        <canvas id="jsmchartcurve" data-jsm-curve-chart></canvas>
     <?php endif; ?>
 </div>

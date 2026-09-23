@@ -1,105 +1,89 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage stats
- * @file       default_flashchart.php
+ * Native Joomla 5/6 statistics chart layout.
+ *
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
 
-$this->tips = array();
-$this->tips[] = Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_STATISTIC');
+$this->tips = [Text::_('COM_SPORTSMANAGEMENT_TEAMSTATS_GOALS_STATISTIC')];
 echo $this->loadTemplate('jsm_tips');
+
+$labels = array_map(
+    static function (mixed $label): string {
+        $decoded = json_decode((string) $label, true);
+
+        return is_string($decoded) ? $decoded : (string) $label;
+    },
+    $this->round_labels
+);
+
+$document = $this->getDocument();
+$document->addScriptOptions('com_sportsmanagement.stats.goals', [
+    'type' => 'bar',
+    'data' => [
+        'labels' => $labels,
+        'datasets' => [
+            [
+                'label' => Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'),
+                'borderColor' => (string) ($this->flashconfig['stats_home_color'] ?? '#000000'),
+                'backgroundAlpha' => 0.5,
+                'borderWidth' => 1,
+                'data' => array_values(array_map('intval', $this->homeSum)),
+            ],
+            [
+                'label' => Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'),
+                'borderColor' => (string) ($this->flashconfig['stats_away_color'] ?? '#666666'),
+                'backgroundAlpha' => 0.5,
+                'borderWidth' => 1,
+                'data' => array_values(array_map('intval', $this->awaySum)),
+            ],
+            [
+                'label' => Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'),
+                'borderColor' => (string) ($this->flashconfig['stats_overall_color'] ?? '#999999'),
+                'backgroundAlpha' => 0.5,
+                'borderWidth' => 1,
+                'data' => array_values($this->matchDayGoalsCount),
+            ],
+        ],
+    ],
+    'options' => [
+        'responsive' => true,
+        'legend' => [
+            'display' => true,
+            'labels' => ['padding' => 20],
+        ],
+        'tooltips' => ['enabled' => true],
+        'scales' => [
+            'yAxes' => [[
+                'ticks' => [
+                    'suggestedMin' => 0,
+                    'suggestedMax' => max(1, (int) $this->matchDayGoalsCountMax),
+                    'beginAtZero' => true,
+                    'stepSize' => 1,
+                ],
+            ]],
+        ],
+    ],
+]);
+$document->getWebAssetManager()->registerAndUseScript(
+    'com_sportsmanagement.chart.renderer',
+    'components/com_sportsmanagement/assets/js/chart-renderer.js',
+    ['version' => 'auto'],
+    ['defer' => true],
+    ['core', 'com_sportsmanagement.stats.chartjs']
+);
 ?>
-<script>
-    window.chartColors = {
-        red: 'rgb(255, 99, 132)',
-        orange: 'rgb(255, 159, 64)',
-        yellow: 'rgb(255, 205, 86)',
-        green: 'rgb(75, 192, 192)',
-        blue: 'rgb(54, 162, 235)',
-        purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(201, 203, 207)'
-    };
-</script>
-<div class="<?php echo $this->divclassrow; ?> table-responsive" id="flashchart">
-    <canvas id="jsmchartcurve"></canvas>
-    <script>
-        var ctx = document.getElementById('jsmchartcurve').getContext('2d');
-        var color = Chart.helpers.color;
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',
-
-            // The data for our dataset
-            data: {
-                labels: [<?php echo implode(',', $this->round_labels); ?>],
-
-                datasets: [{
-                    label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_HOME'); ?>',
-                    backgroundColor: color('<?php echo $this->flashconfig['stats_home_color']; ?>').alpha(0.5).rgbString(),
-                    borderColor: '<?php echo $this->flashconfig['stats_home_color']; ?>',
-                    borderWidth: 1,
-                    data: [<?php echo implode(',', $this->homeSum); ?>
-                    ]
-                }, {
-                    label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_AWAY'); ?>',
-                    backgroundColor: color('<?php echo $this->flashconfig['stats_away_color']; ?>').alpha(0.5).rgbString(),
-                    borderColor: '<?php echo $this->flashconfig['stats_away_color']; ?>',
-                    borderWidth: 1,
-                    data: [<?php echo implode(',', $this->awaySum); ?>
-                    ]
-                }, {
-                    label: '<?php echo Text::_('COM_SPORTSMANAGEMENT_STATS_TOTAL'); ?>',
-                    backgroundColor: color('<?php echo $this->flashconfig['stats_overall_color']; ?>').alpha(0.5).rgbString(),
-                    borderColor: '<?php echo $this->flashconfig['stats_overall_color']; ?>',
-                    borderWidth: 1,
-                    data: [<?php echo implode(',', $this->matchDayGoalsCount); ?>
-                    ]
-                }
-
-                ]
-            },
-
-            // Configuration options go here
-            options: {
-                responsive: true,
-                legend: {
-                    display: true,
-                    labels: {
-                        padding: 20
-                    },
-                },
-                tooltips: {
-                    enabled: true,
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            suggestedMin: 0,
-                            suggestedMax: <?php echo $this->matchDayGoalsCountMax; ?>,
-                            beginAtZero: false,
-                            reverse: false,
-                            stepSize: 1,
-                            callback: function (value) {
-                                if (value == 0) {
-                                    return "";
-                                } else {
-                                    value = value * 1;
-                                    return value;
-                                }
-                            }
-                        }
-                    }]
-                }
-            }
-        });
-
-    </script>
+<div class="<?php echo $this->escape($this->divclassrow); ?> table-responsive" id="flashchart">
+    <canvas
+        id="jsm-stats-goals-chart"
+        data-jsm-chart
+        data-jsm-chart-options="com_sportsmanagement.stats.goals"
+    ></canvas>
 </div>

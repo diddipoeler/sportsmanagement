@@ -169,10 +169,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
 
     private function buildTeamSelect(array $options, string $name, int $selected, int $divisionId): string
     {
-        $onChange = !empty($this->config['which_curve'])
-            ? ''
-            : 'reload_curve_chart_' . $divisionId . '()';
-        $attributes = 'onchange="' . $onChange . '" class="inputbox" style="font-size:9px;"';
+        $attributes = 'class="form-select form-select-sm" data-jsm-curve-team';
+        if (empty($this->config['which_curve'])) {
+            $attributes .= ' data-jsm-submit-on-change="1"';
+        }
 
         return HTMLHelper::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $selected);
     }

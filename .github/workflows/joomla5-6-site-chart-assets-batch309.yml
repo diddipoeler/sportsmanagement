@@ -1,0 +1,68 @@
+name: Joomla 5/6 site chart assets batch 309
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/curve/default_curvejs.php'
+      - 'site/tmpl/stats/default_flashchart.php'
+      - 'site/tmpl/teamstats/default_flashchart.php'
+      - 'site/tmpl/globalviews/default_selectround.php'
+      - 'site/src/View/Curve/HtmlView.php'
+      - 'site/assets/js/chart-renderer.js'
+      - 'site/assets/js/curve-chart.js'
+      - '.github/workflows/joomla5-6-site-chart-assets-batch309.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/curve/default_curvejs.php'
+      - 'site/tmpl/stats/default_flashchart.php'
+      - 'site/tmpl/teamstats/default_flashchart.php'
+      - 'site/tmpl/globalviews/default_selectround.php'
+      - 'site/src/View/Curve/HtmlView.php'
+      - 'site/assets/js/chart-renderer.js'
+      - 'site/assets/js/curve-chart.js'
+      - '.github/workflows/joomla5-6-site-chart-assets-batch309.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate native site chart assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          php_files=(
+            site/tmpl/curve/default_curvejs.php
+            site/tmpl/stats/default_flashchart.php
+            site/tmpl/teamstats/default_flashchart.php
+            site/tmpl/globalviews/default_selectround.php
+            site/src/View/Curve/HtmlView.php
+          )
+          for file in "${php_files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+          node --check site/assets/js/chart-renderer.js
+          node --check site/assets/js/curve-chart.js
+          for file in site/tmpl/curve/default_curvejs.php site/tmpl/stats/default_flashchart.php site/tmpl/teamstats/default_flashchart.php; do
+            ! grep -Fqi -- '<script' "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+          done
+          ! grep -Fqi -- 'onchange=' site/src/View/Curve/HtmlView.php
+          grep -Fq -- 'data-jsm-submit-on-change' site/src/View/Curve/HtmlView.php
+          grep -Fq -- 'addScriptOptions' site/tmpl/curve/default_curvejs.php
+          grep -Fq -- 'data-jsm-chart' site/tmpl/stats/default_flashchart.php
+          grep -Fq -- 'data-jsm-chart' site/tmpl/teamstats/default_flashchart.php
+          grep -Fq -- '@version    5.6.0' site/tmpl/globalviews/default_selectround.php
