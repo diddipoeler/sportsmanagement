@@ -1,5 +1,12 @@
 <?php
 /**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ */
+
+/**
  * @package     Joomla.Platform
  * @subpackage  Utilities
  *

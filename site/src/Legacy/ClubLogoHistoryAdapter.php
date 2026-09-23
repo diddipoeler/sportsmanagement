@@ -1,5 +1,11 @@
 <?php
 /**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @copyright  Copyright (C) diddipoeler
+ */
+
+/**
  * Joomla 5/6 compatibility adapter for legacy ranking logo-history calls.
  *
  * @version    5.6.0

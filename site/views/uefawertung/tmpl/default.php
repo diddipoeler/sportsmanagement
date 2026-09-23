@@ -1,5 +1,12 @@
 <?php
 /**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ */
+
+/**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
  * @version    1.0.05

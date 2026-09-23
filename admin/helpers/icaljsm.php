@@ -1,4 +1,10 @@
 <?php
+/**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @copyright  Copyright (C) diddipoeler
+ */
+
 
 /**
  * This PHP class will read an ICS (`.ics`, `.ical`, `.ifb`) file, parse it and return an

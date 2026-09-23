@@ -1,5 +1,14 @@
 <?php
 /**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+/**
  * Shared Joomla 5/6 Bootstrap 5 tab layout.
  */
 \defined('_JEXEC') or die;

@@ -1,5 +1,11 @@
 <?php
 /**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @copyright  Copyright (C) diddipoeler
+ */
+
+/**
  * Joomla 5/6 altered-decision layout for SportsManagement matches.
  *
  * @version    5.6.0

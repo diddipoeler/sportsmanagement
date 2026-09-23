@@ -1,4 +1,13 @@
 <?php
+/**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 \defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper; use Joomla\CMS\Language\Text; use Joomla\CMS\Layout\LayoutHelper; use Joomla\CMS\Router\Route;
 $user=$this->getCurrentUser(); $listOrder=(string)$this->state->get('list.ordering','obj.name'); $listDirn=(string)$this->state->get('list.direction','ASC');

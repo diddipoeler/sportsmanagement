@@ -1,4 +1,13 @@
 <?php
+/**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
 /** Native project RSS feed rendering for results. */
 defined('_JEXEC') or die('Restricted access');
 

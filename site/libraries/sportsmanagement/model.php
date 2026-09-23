@@ -1,5 +1,13 @@
 <?php
 /**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ */
+
+/**
  * SportsManagement legacy model compatibility classes.
  *
  * @package    Sportsmanagement

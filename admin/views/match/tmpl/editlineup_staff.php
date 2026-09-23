@@ -1,5 +1,12 @@
 <?php
 /**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ */
+
+/**
  * SportsManagement administrator match lineup staff template for Joomla 5/6.
  *
  * @version    5.6.0
