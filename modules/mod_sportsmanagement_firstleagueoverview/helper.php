@@ -9,6 +9,8 @@
  */
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
@@ -64,7 +66,7 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
 
             if ($database === null) {
                 /** @var DatabaseInterface $database */
-                $database = $app->getContainer()->get(DatabaseInterface::class);
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
             return (new FirstLeagueOverviewHelper())->getData($registry, $database);

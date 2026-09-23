@@ -1,0 +1,41 @@
+name: Joomla 5/6 site admin modules batch 291
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch291.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch291.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 helper
+        shell: bash
+        run: |
+          set -euo pipefail
+          file='modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' "$file"
+          ! grep -Fq -- '$app->getContainer()' "$file"
+          echo 'Joomla 5/6 batch 291 contracts OK.'
