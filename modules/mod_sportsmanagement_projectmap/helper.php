@@ -11,6 +11,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementProjectMap\Site\Helper\ProjectMapHelper;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
@@ -54,7 +55,7 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
 
             if ($database === null) {
                 /** @var DatabaseInterface $database */
-                $database = $app->getContainer()->get(DatabaseInterface::class);
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
             return self::helper()->getData($seasonIds, $database);

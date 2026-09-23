@@ -18,6 +18,7 @@ use Diddipoeler\Module\SportsManagementRanking\Site\Helper\RankingHelper as Nati
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -105,7 +106,7 @@ class modJSMRankingHelper extends stdClass
         $app = SportsManagementSiteApplicationResolver::resolve();
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery();
         $matchestoupdate = 0;
         $projectId = (int) $projectid;

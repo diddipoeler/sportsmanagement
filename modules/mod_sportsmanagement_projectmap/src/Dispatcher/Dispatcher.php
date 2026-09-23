@@ -17,6 +17,7 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -47,7 +48,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         try {
             /** @var DatabaseInterface $db */
-            $db = $app->getContainer()->get(DatabaseInterface::class);
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
             $seasonIds = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
             $mapData = $this->getHelperFactory()
                 ->getHelper('ProjectMapHelper')

@@ -18,6 +18,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -137,7 +138,7 @@ final class RankingHelper
         }
 
         /** @var DatabaseInterface $joomlaDb */
-        $joomlaDb = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDb = Factory::getContainer()->get(DatabaseInterface::class);
         $moduleName = 'mod_sportsmanagement_ranking';
         $query = $joomlaDb->createQuery()
             ->select([$joomlaDb->quoteName('params'), $joomlaDb->quoteName('published')])
@@ -358,7 +359,7 @@ final class RankingHelper
     private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
     {
         /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $app->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,

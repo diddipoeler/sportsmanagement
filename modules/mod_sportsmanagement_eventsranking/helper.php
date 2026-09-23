@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
 $nativeDependencies = [
@@ -59,7 +60,7 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
 
             if ($database === null) {
                 /** @var DatabaseInterface $database */
-                $database = $app->getContainer()->get(DatabaseInterface::class);
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
             $data = (new EventsRankingHelper())->getData($params, $database);
