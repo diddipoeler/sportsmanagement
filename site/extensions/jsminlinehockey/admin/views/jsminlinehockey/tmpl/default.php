@@ -1,6 +1,13 @@
 <?php
-/** SportsManagement Inline Hockey administrator template. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * SportsManagement Inline Hockey administrator template.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;

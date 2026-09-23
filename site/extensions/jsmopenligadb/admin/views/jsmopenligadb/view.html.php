@@ -1,12 +1,16 @@
 <?php
 /**
  * SportsManagement OpenLigaDB administrator preview view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\OpenLigaDbPreviewService;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -59,7 +63,7 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
     private function previewService(): OpenLigaDbPreviewService
     {
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $this->app->getContainer()->get(DatabaseInterface::class);
 
         return new OpenLigaDbPreviewService($db);
     }

@@ -1,0 +1,73 @@
+name: Joomla 5/6 site admin modules batch 280
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/models/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php'
+      - 'site/extensions/jsmopenligadb/admin/views/jsmopenligadb/view.html.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch280.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/models/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php'
+      - 'site/extensions/jsmopenligadb/admin/views/jsmopenligadb/view.html.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch280.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php
+            site/extensions/jsminlinehockey/admin/models/jsminlinehockey.php
+            site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php
+            site/extensions/jsmopenligadb/admin/views/jsmopenligadb/view.html.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate extension application container access
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php
+            site/extensions/jsmopenligadb/admin/views/jsmopenligadb/view.html.php
+          )
+          for file in "${files[@]}"; do
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+            grep -Fq -- '$this->app->getContainer()->get(DatabaseInterface::class)' "$file"
+          done
+          echo 'Joomla 5/6 batch 280 contracts OK.'

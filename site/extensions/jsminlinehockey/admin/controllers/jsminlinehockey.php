@@ -1,9 +1,14 @@
 <?php
 /**
  * SportsManagement Inline Hockey legacy-extension controller bridge.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyApiClient;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubLogoService;
@@ -12,7 +17,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyMatchImportS
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\AdminController;
@@ -238,7 +242,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     private function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $this->app->getContainer()->get(DatabaseInterface::class);
 
         return $db;
     }
