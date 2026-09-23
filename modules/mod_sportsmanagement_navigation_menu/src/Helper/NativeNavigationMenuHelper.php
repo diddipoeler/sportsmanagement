@@ -12,9 +12,8 @@ namespace Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -50,9 +49,9 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
         $app = $this->application;
 
         if ($app === null) {
-            $resolvedApp = Factory::getContainer()->get(SiteApplication::class);
+            $resolvedApp = SportsManagementSiteApplicationResolver::resolve();
 
-            if (!$resolvedApp instanceof CMSApplicationInterface || !$resolvedApp->isClient('site')) {
+            if (!$resolvedApp->isClient('site')) {
                 throw new \RuntimeException('SportsManagement site application is unavailable.');
             }
 

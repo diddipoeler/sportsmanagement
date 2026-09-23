@@ -1,0 +1,100 @@
+name: Joomla 5/6 site admin modules batch 279
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/extensions/jsmhandball/admin/models/jsmhandball.php'
+      - 'site/extensions/jsmhandball/admin/views/jsmhandball/view.html.php'
+      - 'site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php'
+      - 'site/extensions/jsmopenligadb/admin/models/jsmopenligadb.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php'
+      - 'admin/views/footer/tmpl/default_footer.php'
+      - 'admin/views/predictiongame/tmpl/edit.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch279.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/extensions/jsmhandball/admin/models/jsmhandball.php'
+      - 'site/extensions/jsmhandball/admin/views/jsmhandball/view.html.php'
+      - 'site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php'
+      - 'site/extensions/jsmopenligadb/admin/models/jsmopenligadb.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php'
+      - 'admin/views/footer/tmpl/default_footer.php'
+      - 'admin/views/predictiongame/tmpl/edit.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch279.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/extensions/jsmhandball/admin/models/jsmhandball.php
+            site/extensions/jsmhandball/admin/views/jsmhandball/view.html.php
+            site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php
+            site/extensions/jsmopenligadb/admin/models/jsmopenligadb.php
+            site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
+            admin/views/footer/tmpl/default_footer.php
+            admin/views/predictiongame/tmpl/edit.php
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate site and administrator compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- 'BaseDatabaseModel' site/extensions/jsmhandball/admin/models/jsmhandball.php
+          grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
+          grep -Fq -- 'OpenLigaDbPreviewService' site/extensions/jsmopenligadb/admin/models/jsmopenligadb.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/footer/default_footer.php' admin/views/footer/tmpl/default_footer.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/predictiongame/edit.php' admin/views/predictiongame/tmpl/edit.php
+
+      - name: Validate resolver based module access
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          )
+          for file in "${files[@]}"; do
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            grep -Fq -- "isClient('site')" "$file"
+          done
+          grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          echo 'Joomla 5/6 batch 279 contracts OK.'

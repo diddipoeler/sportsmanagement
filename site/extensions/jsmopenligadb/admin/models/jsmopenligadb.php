@@ -1,9 +1,14 @@
 <?php
 /**
  * SportsManagement OpenLigaDB legacy model compatibility bridge.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\OpenLigaDbPreviewService;
 use Joomla\CMS\Factory;

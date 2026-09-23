@@ -1,9 +1,15 @@
 <?php
-/** SportsManagement Inline Hockey administrator view. */
-defined('_JEXEC') or die('Restricted access');
+/**
+ * SportsManagement Inline Hockey administrator view.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Database\DatabaseInterface;
@@ -19,7 +25,7 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
         }
 
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $this->app->getContainer()->get(DatabaseInterface::class);
         $this->matchlink = (new InlineHockeyProjectService($db))->getMatchLink($this->projectid);
         $this->app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_PROJECT_SELECT'), 'notice');
 
