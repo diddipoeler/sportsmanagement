@@ -18,6 +18,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -27,7 +28,7 @@ final class NewProjectHelper
     public function getData(Registry $params, CMSApplicationInterface $app): array
     {
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         [$start, $end] = $this->todayRange($app);
 
         $query = $db->createQuery()
@@ -98,7 +99,7 @@ final class NewProjectHelper
         }
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $module = $this->loadPublishedModule($db, $moduleId);
 
         if (!$module) {
