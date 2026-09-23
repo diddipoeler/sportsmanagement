@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Dispatcher;
 
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -36,7 +37,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         try {
             /** @var CacheControllerFactoryInterface $cacheFactory */
-            $cacheFactory = $app->getContainer()->get(CacheControllerFactoryInterface::class);
+            $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
             $data = array_merge(
                 $data,
                 $this->getHelperFactory()
