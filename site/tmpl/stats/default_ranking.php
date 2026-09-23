@@ -1,6 +1,6 @@
 <?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage stats
  * @file       default_ranking.php
@@ -9,7 +9,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 
