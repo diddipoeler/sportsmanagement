@@ -89,8 +89,8 @@ jobs:
           runtime='modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
           layout='modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php'
 
-          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementCalendar')" "$provider"
-          grep -Fq "new HelperFactory('Diddipoeler\\Module\\SportsManagementCalendar\\Site\\Helper')" "$provider"
+          grep -Fq "new ModuleDispatcherFactory('Diddipoeler\\\\Module\\\\SportsManagementCalendar')" "$provider"
+          grep -Fq "new HelperFactory('Diddipoeler\\\\Module\\\\SportsManagementCalendar\\\\Site\\\\Helper')" "$provider"
           grep -Fq 'new Module()' "$provider"
           grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
           grep -Fq "getHelper('CalendarHelper')" "$dispatcher"
