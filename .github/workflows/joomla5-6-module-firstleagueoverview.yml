@@ -86,7 +86,7 @@ jobs:
           checks = {
               'facade public database container': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'dispatcher application': (dispatcher, '$app = $this->getApplication();'),
-              'dispatcher site validation': (dispatcher, 'instanceof SiteApplication'),
+              'dispatcher site validation': (dispatcher, "isClient('site')"),
               'false-compatible signature': (dispatcher, 'getLayoutData(): array|false'),
               'false render guard': (dispatcher, 'if ($data === false)'),
               'dispatcher public database container': (dispatcher, 'Factory::getContainer()->get(DatabaseInterface::class)'),
@@ -115,6 +115,9 @@ jobs:
               'jimport(',
               'JError::',
           )
+          if 'instanceof SiteApplication' in dispatcher or 'use Joomla\\CMS\\Application\\SiteApplication;' in dispatcher:
+              raise SystemExit('First League Overview dispatcher should not couple to concrete SiteApplication')
+
           for name, text in {'facade': facade, 'dispatcher': dispatcher, 'helper': helper}.items():
               for needle in forbidden:
                   if needle in text:
