@@ -40,12 +40,17 @@ jobs:
 
             checked=$((checked + 1))
 
+            missing_tags=()
             for tag in '@version' '@author' '@copyright' '@license'; do
               if ! grep -Fq -- "$tag" "$file"; then
-                echo "::error file=$file::Missing $tag"
-                missing=1
+                missing_tags+=("$tag")
               fi
             done
+
+            if (( ${#missing_tags[@]} > 0 )); then
+              printf 'MISSING_METADATA|%s|%s\n' "$file" "${missing_tags[*]}"
+              missing=1
+            fi
           done < <(find site admin modules -type f -name '*.php' -print0 | sort -z)
 
           echo "Checked $checked PHP files under site, admin and modules."
