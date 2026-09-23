@@ -1,0 +1,109 @@
+name: Joomla 5/6 site admin modules batch 278
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/views/hitlist/tmpl/default_items.php'
+      - 'admin/views/installhelper/tmpl/install_step_1.php'
+      - 'admin/views/installhelper/tmpl/install_step_2.php'
+      - 'admin/views/predictionproject/tmpl/edit_3.php'
+      - 'admin/views/predictions/tmpl/default_3.php'
+      - 'admin/views/predictions/tmpl/default_4.php'
+      - 'admin/views/predictiontemplate/tmpl/edit_3.php'
+      - 'admin/views/template/tmpl/edit.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch278.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/views/hitlist/tmpl/default_items.php'
+      - 'admin/views/installhelper/tmpl/install_step_1.php'
+      - 'admin/views/installhelper/tmpl/install_step_2.php'
+      - 'admin/views/predictionproject/tmpl/edit_3.php'
+      - 'admin/views/predictions/tmpl/default_3.php'
+      - 'admin/views/predictions/tmpl/default_4.php'
+      - 'admin/views/predictiontemplate/tmpl/edit_3.php'
+      - 'admin/views/template/tmpl/edit.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch278.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/hitlist/tmpl/default_items.php
+            admin/views/installhelper/tmpl/install_step_1.php
+            admin/views/installhelper/tmpl/install_step_2.php
+            admin/views/predictionproject/tmpl/edit_3.php
+            admin/views/predictions/tmpl/default_3.php
+            admin/views/predictions/tmpl/default_4.php
+            admin/views/predictiontemplate/tmpl/edit_3.php
+            admin/views/template/tmpl/edit.php
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+      - name: Validate legacy bridge targets
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/hitlist/default_items.php' site/views/hitlist/tmpl/default_items.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/installhelper/install_step_1.php' admin/views/installhelper/tmpl/install_step_1.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/predictions/default.php' admin/views/predictions/tmpl/default_4.php
+          grep -Fq -- '/components/com_sportsmanagement/tmpl/template/edit.php' admin/views/template/tmpl/edit.php
+
+      - name: Validate application-container module services
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+          )
+          for file in "${files[@]}"; do
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              echo "$file still uses Factory::getContainer()" >&2
+              exit 1
+            fi
+            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
+              echo "$file still imports Factory" >&2
+              exit 1
+            fi
+            grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+            grep -Fq -- "isClient('site')" "$file"
+          done
+          echo 'Joomla 5/6 batch 278 contracts OK.'

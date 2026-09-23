@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -45,7 +44,7 @@ final class MatchesSliderHelper
             return [];
         }
 
-        $joomlaDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase ??= $app->getContainer()->get(DatabaseInterface::class);
         $db = $this->database($databaseMode, $joomlaDatabase);
         $nameColumn = (string) $params->get('team_names', 'short_name');
 
