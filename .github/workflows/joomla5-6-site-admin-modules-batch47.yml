@@ -61,7 +61,7 @@ jobs:
           clubicons='modules/mod_sportsmanagement_clubicons/helper.php'
           grep -Fq 'SportsManagement native Clubicons module helper could not be loaded.' "$clubicons"
           grep -Fq 'is_file($nativeHelper)' "$clubicons"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$clubicons"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$clubicons"
 
           native_clubicons='modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
           grep -Fq 'use Joomla\CMS\Factory;' "$native_clubicons"

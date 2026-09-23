@@ -116,15 +116,12 @@ jobs:
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
           )
           for file in "${helpers[@]}"; do
-            if grep -Fq -- 'Factory::getContainer()' "$file"; then
-              echo "$file still uses Factory::getContainer()" >&2
+            grep -Fq -- 'use Joomla\CMS\Factory;' "$file"
+            grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' "$file"
+            if grep -Fq -- '$app->getContainer(' "$file"; then
+              echo "$file still uses the application container directly" >&2
               exit 1
             fi
-            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
-              echo "$file still imports Factory" >&2
-              exit 1
-            fi
-            grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
           done
           grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
           grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
