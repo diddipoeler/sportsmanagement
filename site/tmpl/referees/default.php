@@ -7,22 +7,20 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 if (!isset($this->config['show_referees'])) {
     $this->config['show_referees'] = 1;
 }
 ?>
 <div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="referees">
-    <?php
-    if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
-        echo $this->loadTemplate('debug');
-    }
+    <?php if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) : ?>
+        <?php echo $this->loadTemplate('debug'); ?>
+    <?php endif; ?>
 
-    echo $this->loadTemplate('projectheading');
+    <?php echo $this->loadTemplate('projectheading'); ?>
 
-    if (!empty($this->config['show_sectionheader']) && $this->headertitle !== '') :
-        ?>
+    <?php if (!empty($this->config['show_sectionheader']) && $this->headertitle !== '') : ?>
         <div class="<?php echo $this->escape($this->divclassrow); ?>" id="sectionheader">
             <table class="table">
                 <tr>
@@ -30,13 +28,11 @@ if (!isset($this->config['show_referees'])) {
                 </tr>
             </table>
         </div>
-        <?php
-    endif;
+    <?php endif; ?>
 
-    if (!empty($this->config['show_referees'])) {
-        echo $this->loadTemplate('referees');
-    }
+    <?php if (!empty($this->config['show_referees'])) : ?>
+        <?php echo $this->loadTemplate('referees'); ?>
+    <?php endif; ?>
 
-    echo $this->loadTemplate('jsminfo');
-    ?>
+    <?php echo $this->loadTemplate('jsminfo'); ?>
 </div>

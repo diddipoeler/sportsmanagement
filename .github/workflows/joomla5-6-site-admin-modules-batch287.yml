@@ -1,0 +1,71 @@
+name: Joomla 5/6 site admin modules batch 287
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/tmpl/results/default.php'
+      - 'site/tmpl/referees/default.php'
+      - 'site/tmpl/teams/default.php'
+      - 'site/tmpl/teamstats/default.php'
+      - 'admin/tmpl/predictiongroups/default.php'
+      - 'admin/tmpl/season/edit.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch287.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+    paths:
+      - 'site/tmpl/results/default.php'
+      - 'site/tmpl/referees/default.php'
+      - 'site/tmpl/teams/default.php'
+      - 'site/tmpl/teamstats/default.php'
+      - 'admin/tmpl/predictiongroups/default.php'
+      - 'admin/tmpl/season/edit.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch287.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax and required headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/results/default.php
+            site/tmpl/referees/default.php
+            site/tmpl/teams/default.php
+            site/tmpl/teamstats/default.php
+            admin/tmpl/predictiongroups/default.php
+            admin/tmpl/season/edit.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- "Restricted access" "$file"
+          done
+
+      - name: Validate Joomla 6 template compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Fq -- "behavior.multiselect" admin/tmpl/predictiongroups/default.php
+          ! grep -Fq -- "behavior.keepalive" admin/tmpl/season/edit.php
+          grep -Fq -- "getWebAssetManager()->useScript('keepalive')" admin/tmpl/season/edit.php
+          grep -Fq -- "loadTemplate('results_native')" site/tmpl/results/default.php
+          grep -Fq -- "loadTemplate('attendance_stats')" site/tmpl/teamstats/default.php
+          echo 'Joomla 5/6 batch 287 contracts OK.'
