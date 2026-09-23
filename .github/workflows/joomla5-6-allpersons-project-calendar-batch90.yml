@@ -95,7 +95,7 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
           grep -Fq "getHelper('CalendarHelper')" "$dispatcher"
           grep -Fq 'getInput()' "$helper"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$helper"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$helper"
           grep -Fq 'class CalendarRuntime extends \PHPCalendar' "$runtime"
           grep -Fq 'data-refresh-url' "$layout"
           grep -Fq 'HTMLHelper::_' "$layout"

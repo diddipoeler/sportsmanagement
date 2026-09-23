@@ -76,8 +76,10 @@ jobs:
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement image-package imports view.' admin/src/View/Smimageimports/HtmlView.php
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewsmimageimports')" admin/views/smimageimports/view.html.php
 
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
           ! grep -Fq 'Factory::getApplication()' modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
           ! grep -Fq 'Factory::getApplication()' modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
 

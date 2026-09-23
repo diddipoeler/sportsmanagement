@@ -94,15 +94,12 @@ jobs:
         run: |
           set -euo pipefail
           file=modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
-          if grep -Fq -- 'Factory::getContainer()' "$file"; then
-            echo 'Legacy Factory::getContainer() remains' >&2
-            exit 1
-          fi
-          if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
-            echo 'Legacy Factory import remains' >&2
-            exit 1
-          fi
+          grep -Fq -- 'use Joomla\CMS\Factory;' "$file"
           grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
-          grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' "$file"
+          if grep -Fq -- '$app->getContainer(' "$file"; then
+            echo 'Protected application container access remains' >&2
+            exit 1
+          fi
           grep -Fq -- "isClient('site')" "$file"
           echo 'Joomla 5/6 batch 277 contracts OK.'
