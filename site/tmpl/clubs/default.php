@@ -7,7 +7,7 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 ?>
 <div class="<?php echo $this->escape($this->divclasscontainer); ?>" id="clubs">
     <?php echo $this->loadTemplate('projectheading'); ?>

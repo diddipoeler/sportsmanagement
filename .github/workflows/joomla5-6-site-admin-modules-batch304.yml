@@ -1,0 +1,49 @@
+name: Joomla 5/6 site admin modules batch 304
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/clubs/default.php'
+      - 'admin/tmpl/jsmgcalendars/default.php'
+      - 'admin/tmpl/joomleagueimport/default.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch304.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/clubs/default.php'
+      - 'admin/tmpl/jsmgcalendars/default.php'
+      - 'admin/tmpl/joomleagueimport/default.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch304.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 template cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/clubs/default.php
+            admin/tmpl/jsmgcalendars/default.php
+            admin/tmpl/joomleagueimport/default.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- "Restricted access" "$file"
+          done
+          grep -Fq -- 'htmlspecialchars((string) $this->request_url' admin/tmpl/joomleagueimport/default.php
+          grep -Fq -- '$barValue < 100' admin/tmpl/joomleagueimport/default.php
