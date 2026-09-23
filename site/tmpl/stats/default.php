@@ -7,53 +7,47 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 
-if (!isset($this->project))
-{
-	Log::add(Text::_('Error: ProjectID was not submitted in URL or project was not found in database!'));
+if (empty($this->project)) {
+    Log::add(
+        Text::_('Error: ProjectID was not submitted in URL or project was not found in database!'),
+        Log::WARNING,
+        'com_sportsmanagement'
+    );
+
+    return;
 }
-else
-{
-	?>
-    <div class="<?php echo $this->divclasscontainer; ?>" id="defaultstats">
-		<?php
-		echo $this->loadTemplate('projectheading');
+?>
+<div class="<?php echo $this->escape((string) $this->divclasscontainer); ?>" id="defaultstats">
+    <?php echo $this->loadTemplate('projectheading'); ?>
 
-		if ($this->config['show_sectionheader'])
-		{
-			echo $this->loadTemplate('sectionheader');
-		}
+    <?php if (!empty($this->config['show_sectionheader'])) : ?>
+        <?php echo $this->loadTemplate('sectionheader'); ?>
+    <?php endif; ?>
 
-		if ($this->config['show_general_stats'])
-		{
-			echo $this->loadTemplate('stats');
-		}
+    <?php if (!empty($this->config['show_general_stats'])) : ?>
+        <?php echo $this->loadTemplate('stats'); ?>
+    <?php endif; ?>
 
-		if ($this->config['show_goals_stats'])
-		{
-			echo $this->loadTemplate('goals_stats');
-		}
+    <?php if (!empty($this->config['show_goals_stats'])) : ?>
+        <?php echo $this->loadTemplate('goals_stats'); ?>
+    <?php endif; ?>
 
-		if ($this->config['show_attendance_stats'])
-		{
-			echo $this->loadTemplate('attendance_stats');
-		}
+    <?php if (!empty($this->config['show_attendance_stats'])) : ?>
+        <?php echo $this->loadTemplate('attendance_stats'); ?>
+    <?php endif; ?>
 
-		if ($this->config['show_goals_stats_flash'])
-		{
-			echo $this->loadTemplate('flashchart');
-		}
+    <?php if (!empty($this->config['show_goals_stats_flash'])) : ?>
+        <?php echo $this->loadTemplate('flashchart'); ?>
+    <?php endif; ?>
 
-		if ($this->config['show_attendance_ranking'])
-		{
-			echo $this->loadTemplate('ranking');
-		}
+    <?php if (!empty($this->config['show_attendance_ranking'])) : ?>
+        <?php echo $this->loadTemplate('ranking'); ?>
+    <?php endif; ?>
 
-		echo $this->loadTemplate('jsminfo');
-		?>
-    </div>
-	<?php
-}
+    <?php echo $this->loadTemplate('jsminfo'); ?>
+</div>

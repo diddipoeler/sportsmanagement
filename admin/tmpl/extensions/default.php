@@ -23,6 +23,7 @@ $sportTypeIcons = [
     ],
     'handball' => [
         ['sisimport.png', 'index.php?option=com_sportsmanagement&view=jlextsisimport', Text::_('COM_SPORTSMANAGEMENT_EXT_SIS_IMPORT')],
+        ['jsmhandball.png', 'index.php?option=com_sportsmanagement&view=jlexthandballnet', Text::_('COM_SPORTSMANAGEMENT_EXT_HANDBALLNET_IMPORT')],
     ],
 ];
 ?>

@@ -1,0 +1,62 @@
+name: Joomla 5/6 site admin modules batch 306
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/tmpl/allleagues/default.php'
+      - 'site/tmpl/stats/default.php'
+      - 'admin/tmpl/extensions/default.php'
+      - 'admin/tmpl/extensions/default_4.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+      - '.github/workflows/joomla5-6-module-eventsranking.yml'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch306.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/tmpl/allleagues/default.php'
+      - 'site/tmpl/stats/default.php'
+      - 'admin/tmpl/extensions/default.php'
+      - 'admin/tmpl/extensions/default_4.php'
+      - 'modules/mod_sportsmanagement_eventsranking/**'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch306.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/tmpl/allleagues/default.php
+            site/tmpl/stats/default.php
+            admin/tmpl/extensions/default.php
+            admin/tmpl/extensions/default_4.php
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+          ! grep -Fq -- 'Restricted access' site/tmpl/allleagues/default.php
+          ! grep -Fq -- 'Restricted access' site/tmpl/stats/default.php
+          grep -Fq -- "require __DIR__ . '/default.php';" admin/tmpl/extensions/default_4.php
+          grep -Fq -- 'COM_SPORTSMANAGEMENT_EXT_HANDBALLNET_IMPORT' admin/tmpl/extensions/default.php
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          ! grep -Fq -- '$app->getContainer(' modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          ! grep -Fq -- '$app->getContainer(' modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
