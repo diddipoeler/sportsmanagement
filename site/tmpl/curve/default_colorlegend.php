@@ -9,7 +9,7 @@
  */
 
 /** Native Joomla 5/6 curve color legend. */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 

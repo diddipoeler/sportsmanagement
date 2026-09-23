@@ -9,7 +9,7 @@
  */
 
 /** Joomla 5/6 team-plan section header. */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
