@@ -26,12 +26,24 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
     }
 }
 
-$app = SportsManagementSiteApplicationResolver::resolve();
-$app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+}
 
 if (!class_exists(EventsRankingHelper::class)) {
-    require_once __DIR__ . '/src/Helper/EventsRankingHelper.php';
+    $nativeHelper = __DIR__ . '/src/Helper/EventsRankingHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
 }
+
+if (!class_exists(EventsRankingHelper::class)) {
+    throw new \RuntimeException('SportsManagement native EventsRanking helper could not be loaded.', 500);
+}
+
+$app = SportsManagementSiteApplicationResolver::resolve();
+$app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 /** @var DatabaseInterface $database */
 $database = Factory::getContainer()->get(DatabaseInterface::class);

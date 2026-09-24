@@ -1,0 +1,68 @@
+name: Joomla 5/6 admin module bridges batch 331
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/projectreferee.php'
+      - 'admin/controllers/projectreferee.php'
+      - 'admin/controllers/predictiongame.php'
+      - 'admin/controllers/predictionmember.php'
+      - 'admin/controllers/jsmgcalendar.php'
+      - 'admin/controllers/jsmgcalendars.php'
+      - 'admin/controllers/jsmgcalendarimport.php'
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+      - '.github/workflows/joomla5-6-admin-module-bridges-batch331.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/projectreferee.php'
+      - 'admin/controllers/projectreferee.php'
+      - 'admin/controllers/predictiongame.php'
+      - 'admin/controllers/predictionmember.php'
+      - 'admin/controllers/jsmgcalendar.php'
+      - 'admin/controllers/jsmgcalendars.php'
+      - 'admin/controllers/jsmgcalendarimport.php'
+      - 'modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php'
+      - '.github/workflows/joomla5-6-admin-module-bridges-batch331.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator and module bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/models/projectreferee.php
+            admin/controllers/projectreferee.php
+            admin/controllers/predictiongame.php
+            admin/controllers/predictionmember.php
+            admin/controllers/jsmgcalendar.php
+            admin/controllers/jsmgcalendars.php
+            admin/controllers/jsmgcalendarimport.php
+            modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          for file in admin/models/projectreferee.php admin/controllers/projectreferee.php admin/controllers/predictiongame.php admin/controllers/predictionmember.php admin/controllers/jsmgcalendar.php admin/controllers/jsmgcalendars.php admin/controllers/jsmgcalendarimport.php; do
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+          done
+          grep -Fq -- 'SportsManagement native EventsRanking helper could not be loaded.' modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php

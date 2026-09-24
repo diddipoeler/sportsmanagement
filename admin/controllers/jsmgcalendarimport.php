@@ -7,12 +7,16 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JsmgcalendarimportController;
 
 if (!class_exists(JsmgcalendarimportController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JsmgcalendarimportController.php';
+}
+
+if (!class_exists(JsmgcalendarimportController::class)) {
+    throw new \RuntimeException('SportsManagement native Jsmgcalendarimport controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerjsmgcalendarImport', false)) {
