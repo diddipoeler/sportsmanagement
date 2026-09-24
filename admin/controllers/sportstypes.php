@@ -7,13 +7,17 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\SportstypesController;
 
 if (!class_exists(SportstypesController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportstypesController.php';
+}
+
+if (!class_exists(SportstypesController::class)) {
+    throw new \RuntimeException('SportsManagement native Sportstypes controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllersportstypes', false)) {

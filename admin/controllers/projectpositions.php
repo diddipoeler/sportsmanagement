@@ -7,13 +7,17 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\ProjectpositionsController;
 
 if (!class_exists(ProjectpositionsController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/ProjectpositionsController.php';
+}
+
+if (!class_exists(ProjectpositionsController::class)) {
+    throw new \RuntimeException('SportsManagement native Projectpositions controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerprojectpositions', false)) {
