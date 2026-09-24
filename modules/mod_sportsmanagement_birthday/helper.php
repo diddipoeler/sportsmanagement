@@ -35,6 +35,20 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
+foreach ([
+    PersonNameFormatter::class,
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Birthday dependencies could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
+}
+
 if (!class_exists(BirthdayHelper::class)) {
     throw new \RuntimeException('SportsManagement native Birthday module helper could not be loaded.', 500);
 }

@@ -29,6 +29,19 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Club Birthday dependencies could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
+}
+
 if (!class_exists(ClubBirthdayHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/ClubBirthdayHelper.php';
 

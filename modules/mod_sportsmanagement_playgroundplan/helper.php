@@ -28,6 +28,18 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
     }
 }
 
+if (!class_exists(SportsManagementDatabaseResolver::class)) {
+    $databaseResolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
+
+    if (is_file($databaseResolverFile)) {
+        require_once $databaseResolverFile;
+    }
+}
+
+if (!class_exists(SportsManagementDatabaseResolver::class)) {
+    throw new \RuntimeException('SportsManagement database resolver could not be loaded.', 500);
+}
+
 if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
     throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
 }
