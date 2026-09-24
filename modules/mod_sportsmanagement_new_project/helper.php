@@ -26,6 +26,15 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementSiteApplicationResolver::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException('SportsManagement New Project dependencies could not be loaded: ' . $requiredClass, 500);
+    }
+}
+
 if (!class_exists(NewProjectHelper::class)) {
     throw new \RuntimeException('SportsManagement New Project helper could not be loaded.', 500);
 }

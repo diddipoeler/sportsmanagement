@@ -37,6 +37,17 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
+foreach ([
+    SiteRouteHelper::class,
+    RankingEngine::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException('SportsManagement Ranking dependencies could not be loaded: ' . $requiredClass, 500);
+    }
+}
+
 if (!class_exists(NativeRankingHelper::class)) {
     throw new \RuntimeException('SportsManagement native Ranking module helper could not be loaded.', 500);
 }
