@@ -15,6 +15,18 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
+
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+}
+
 if (!class_exists(ActSeasonHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/ActSeasonHelper.php';
 

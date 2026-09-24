@@ -20,6 +20,10 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
 }
 
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+}
+
 if (!class_exists(CountRekordHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/CountRekordHelper.php';
 

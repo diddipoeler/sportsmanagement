@@ -38,6 +38,10 @@ if (!class_exists(SiteRouteHelper::class)) {
     throw new \RuntimeException('SportsManagement SiteRouteHelper could not be loaded for Team Stats Ranking.', 500);
 }
 
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+}
+
 if (!class_exists(TeamStatsRankingHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/TeamStatsRankingHelper.php';
 
