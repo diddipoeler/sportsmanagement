@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 JSM Google Calendar table.
+ * Legacy compatibility bridge for the native Joomla 5/6 Jsmgcalendar table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -14,6 +14,10 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarTable
 if (!class_exists(JsmgcalendarTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JsmgcalendarTable.php';
+}
+
+if (!class_exists(JsmgcalendarTable::class)) {
+    throw new \RuntimeException('SportsManagement native Jsmgcalendar table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTablejsmGCalendar', false)) {

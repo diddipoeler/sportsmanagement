@@ -1,19 +1,23 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 PredictionadminTable.
+ * Legacy compatibility bridge for the native Joomla 5/6 Predictionadmin table.
  *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionadminTable;
 
 if (!class_exists(PredictionadminTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictionadminTable.php';
+}
+
+if (!class_exists(PredictionadminTable::class)) {
+    throw new \RuntimeException('SportsManagement native Predictionadmin table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTablePredictionAdmin', false)) {

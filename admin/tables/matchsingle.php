@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy table alias for the native Joomla 5/6 MatchSingle table.
+ * Legacy compatibility bridge for the native Joomla 5/6 MatchSingle table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -10,6 +10,15 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchSingleTable;
+
+if (!class_exists(MatchSingleTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/MatchSingleTable.php';
+}
+
+if (!class_exists(MatchSingleTable::class)) {
+    throw new \RuntimeException('SportsManagement native MatchSingle table could not be loaded.', 500);
+}
 
 if (!class_exists('sportsmanagementTableMatchSingle', false)) {
     class_alias(MatchSingleTable::class, 'sportsmanagementTableMatchSingle');

@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 GCalendar comment table.
+ * Legacy compatibility bridge for the native Joomla 5/6 Jsmgcalendarcomment table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -16,6 +16,10 @@ if (!class_exists(JsmgcalendarcommentTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JsmgcalendarcommentTable.php';
 }
 
-if (class_exists(JsmgcalendarcommentTable::class) && !class_exists('sportsmanagementTablejsmgcalendarComment', false)) {
+if (!class_exists(JsmgcalendarcommentTable::class)) {
+    throw new \RuntimeException('SportsManagement native Jsmgcalendarcomment table could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementTablejsmgcalendarComment', false)) {
     class_alias(JsmgcalendarcommentTable::class, 'sportsmanagementTablejsmgcalendarComment');
 }
