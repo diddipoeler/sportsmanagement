@@ -1,0 +1,68 @@
+name: Joomla 5/6 site admin modules batch 319
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/globalviews/tmpl/default_show_tabs.php'
+      - 'site/views/globalviews/tmpl/default_show_slider.php'
+      - 'site/models/ranking.php'
+      - 'site/models/project.php'
+      - 'admin/elements/multidependsql.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php'
+      - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch319.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/globalviews/tmpl/default_show_tabs.php'
+      - 'site/views/globalviews/tmpl/default_show_slider.php'
+      - 'site/models/ranking.php'
+      - 'site/models/project.php'
+      - 'admin/elements/multidependsql.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php'
+      - 'modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch319.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 site admin module cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/globalviews/tmpl/default_show_tabs.php
+            site/views/globalviews/tmpl/default_show_slider.php
+            site/models/ranking.php
+            site/models/project.php
+            admin/elements/multidependsql.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php
+            modules/mod_sportsmanagement_matchesslider/mod_sportsmanagement_matchesslider.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          for file in             site/views/globalviews/tmpl/default_show_tabs.php             site/views/globalviews/tmpl/default_show_slider.php             modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php; do
+            ! grep -Fq -- 'JVERSION' "$file"
+          done
+          grep -Fq -- "\\defined('_JEXEC') or die;" admin/elements/multidependsql.php
+          grep -Fq -- "class_alias(MultidependsqlField::class, 'JFormFieldMultiDependSQL')" admin/elements/multidependsql.php
+          grep -Fq -- "require __DIR__ . '/native.php';" modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php
+          ! grep -Fq -- 'select2.min.js' modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php
+          ! grep -Fq -- 'alertify.min.js' modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/defaultselect2.php
+          ! grep -Fq -- 'Restricted access' site/models/ranking.php
+          ! grep -Fq -- 'Restricted access' site/models/project.php
