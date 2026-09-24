@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement legacy compatibility bridge for the native administrator Eventtype table.
+ * Legacy compatibility bridge for the native Joomla 5/6 Eventtype table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -12,7 +12,12 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\EventtypeTable;
 
 if (!class_exists(EventtypeTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/EventtypeTable.php';
+}
+
+if (!class_exists(EventtypeTable::class)) {
+    throw new \RuntimeException('SportsManagement native Eventtype table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableEventtype', false)) {

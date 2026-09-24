@@ -1,25 +1,23 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Legacy compatibility bridge for the native Joomla 5/6 Matchreferee table.
  *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-/** Legacy compatibility bridge for the native Matchreferee table. */
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchrefereeTable;
-use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable;
 
-if (!class_exists(SportsManagementTable::class)) {
+if (!class_exists(MatchrefereeTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/MatchrefereeTable.php';
 }
 
 if (!class_exists(MatchrefereeTable::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/MatchrefereeTable.php';
+    throw new \RuntimeException('SportsManagement native Matchreferee table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableMatchreferee', false)) {

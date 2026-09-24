@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 SeasonteampersonTable.
+ * Legacy compatibility bridge for the native Joomla 5/6 Seasonteamperson table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -14,6 +14,10 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\SeasonteampersonT
 if (!class_exists(SeasonteampersonTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SeasonteampersonTable.php';
+}
+
+if (!class_exists(SeasonteampersonTable::class)) {
+    throw new \RuntimeException('SportsManagement native Seasonteamperson table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableseasonteamperson', false)) {
