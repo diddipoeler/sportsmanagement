@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage models
  * @file       joomleagueimport.php
@@ -9,12 +9,13 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Filesystem\File;
+use Joomla\Database\DatabaseInterface;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectteamTable;
 
 $maxImportTime = 1920;
 
@@ -47,29 +48,15 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 	function newstructurjlimport($season_id, $jl_table, $jsm_table, $project_id)
 	{
 		$app       = Factory::getApplication();
-		$db        = Factory::getDbo();
+		$db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$option    = Factory::getApplication()->input->getCmd('option');
 		$starttime = microtime();
-		$query     = $db->getQuery(true);
+		$query     = $db->createQuery();
 
-		/**
-		 * hier muss auch wieder zwischen den joomla versionen unterschieden werden
-		 * felder für den import auslesen
-		 */
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			/** Joomla! 3.0 code here */
-			$jl_fields              = $db->getTableColumns($jl_table);
-			$jsm_fields             = $db->getTableColumns($jsm_table);
-			$jl_fields[$jl_table]   = $jl_fields;
-			$jsm_fields[$jsm_table] = $jsm_fields;
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			/** Joomla! 2.5 code here */
-			$jl_fields  = $db->getTableFields($jl_table);
-			$jsm_fields = $db->getTableFields($jsm_table);
-		}
+		$jl_fields = $db->getTableColumns($jl_table);
+		$jsm_fields = $db->getTableColumns($jsm_table);
+		$jl_fields[$jl_table] = $jl_fields;
+		$jsm_fields[$jsm_table] = $jsm_fields;
 
 		/** umsetzung der project teams */
 		if (preg_match("/project_team/i", $jsm_table))
@@ -132,7 +119,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 					$temp->season_id = $row->season_id;
 					$temp->team_id   = $row->team_id;
 
-					$result = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
+					$result = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_id', $temp);
 
 					if ($result)
 					{
@@ -153,7 +140,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 
 				/** Jetzt die neue team_id */
 				$object->team_id = $new_id;
-				$result2 = Factory::getDbo()->insertObject($jsm_table, $object);
+				$result2 = Factory::getContainer()->get(DatabaseInterface::class)->insertObject($jsm_table, $object);
 
 				if ($result2)
 				{
@@ -162,7 +149,16 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				else
 				{
 					/** Eintrag schon vorhanden, ein update */
-					$tblProjectteam = Table::getInstance('Projectteam', 'sportsmanagementtable');
+					if (!class_exists(ProjectteamTable::class)) {
+						require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+						require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/ProjectteamTable.php';
+					}
+
+					if (!class_exists(ProjectteamTable::class)) {
+						throw new \RuntimeException('SportsManagement native Projectteam table could not be loaded.', 500);
+					}
+
+					$tblProjectteam = new ProjectteamTable($db);
 					$tblProjectteam->load($row->id);
 
 					if (empty($tblProjectteam->team_id))
@@ -244,7 +240,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 					$temp->team_id    = $row->team_id;
 					$temp->picture    = $row->picture;
 					$temp->persontype = 1;
-					$result = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+					$result = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
 				}
 
 				/** Ist der spieler schon in der season team person tabelle ? */
@@ -268,7 +264,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 					$temp->persontype          = 1;
 					$temp->active              = 1;
 					$temp->published           = 1;
-					$result = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+					$result = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 
 					if ($result)
 					{
@@ -376,11 +372,11 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 					$temp->team_id    = $row->team_id;
 					$temp->picture    = $row->picture;
 					$temp->persontype = 2;
-					$result = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+					$result = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
 				}
 
 				/** Ist der spieler schon in der season team person tabelle ? */
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query->select('id');
 				$query->from('#__sportsmanagement_season_team_person_id');
@@ -401,7 +397,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 					$temp->persontype          = 2;
 					$temp->active              = 1;
 					$temp->published           = 1;
-					$result = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+					$result = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 
 					if ($result)
 					{
@@ -504,7 +500,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 					$temp->picture    = $row->picture;
 					$temp->persontype = 3;
 					$temp->published  = 1;
-					$result = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+					$result = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
 				}
 
 				if ($result)
@@ -515,7 +511,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				}
 				else
 				{
-					$query = $db->getQuery(true);
+					$query = $db->createQuery();
 					$query->clear();
 					$query->select('id');
 					$query->from('#__sportsmanagement_season_person_id');

@@ -1,0 +1,53 @@
+name: Joomla 5/6 legacy export import APIs batch 369
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/jlxmlexports.php'
+      - 'admin/models/joomleagueimport.php'
+      - '.github/workflows/joomla5-6-legacy-export-import-apis-batch369.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/jlxmlexports.php'
+      - 'admin/models/joomleagueimport.php'
+      - '.github/workflows/joomla5-6-legacy-export-import-apis-batch369.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate legacy export and import API migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(admin/models/jlxmlexports.php admin/models/joomleagueimport.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+            ! grep -Fq -- 'JVERSION' "$file"
+          done
+          grep -Fq -- 'public function __construct($config = [], ?MVCFactoryInterface $factory = null)' admin/models/jlxmlexports.php
+          grep -Fq -- '$this->setDatabase($database);' admin/models/jlxmlexports.php
+          grep -Fq -- '$this->user = $this->app->getIdentity();' admin/models/jlxmlexports.php
+          ! grep -Fq -- 'Factory::getUser' admin/models/jlxmlexports.php
+          ! grep -Fq -- 'setDbo(' admin/models/jlxmlexports.php
+          ! grep -Fq -- 'getDbo()' admin/models/jlxmlexports.php
+          ! grep -Fq -- 'getQuery(true)' admin/models/jlxmlexports.php
+          ! grep -Fq -- 'Factory::getDbo' admin/models/joomleagueimport.php
+          ! grep -Fq -- 'Table::getInstance' admin/models/joomleagueimport.php
+          grep -Fq -- 'new ProjectteamTable($db)' admin/models/joomleagueimport.php

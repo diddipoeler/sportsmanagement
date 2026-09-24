@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage models
  * @file       jlxmlexports.php
@@ -12,10 +12,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\Utilities\ArrayHelper;
@@ -242,18 +243,18 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
+		parent::__construct($config, $factory);
 
-		parent::__construct($config);
-		$getDBConnection = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($getDBConnection);
-		$this->app    = Factory::getApplication();
-		$this->user   = Factory::getUser();
-		$this->jinput = $this->app->input;
-		$this->option = $this->jinput->getCmd('option');
-		$this->jsmdb  = $this->getDbo();
-		$this->query  = $this->jsmdb->getQuery(true);
+		$database = sportsmanagementHelper::getDBConnection();
+		$this->setDatabase($database);
+		$this->app = Factory::getApplication();
+		$this->user = $this->app->getIdentity();
+		$this->jinput = $this->app->getInput();
+		$this->option = $this->jinput->getCmd('option', 'com_sportsmanagement');
+		$this->jsmdb = $this->getDatabase();
+		$this->query = $this->jsmdb->createQuery();
 	}
 
 	/**
@@ -268,8 +269,8 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 	 */
 	public function exportData()
 	{
-		$this->_project_id = $this->jinput->getVar('pid');
-		$this->_update     = $this->jinput->getVar('update');
+		$this->_project_id = $this->jinput->getInt('pid', 0);
+		$this->_update     = $this->jinput->getInt('update', 0);
 
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
@@ -654,14 +655,7 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 			$result[0]['exportDate']    = date('Y-m-d');
 			$result[0]['exportTime']    = date('H:i:s');
 
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
-			{
-				$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
-			}
-			else
-			{
-				$result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');
-			}
+			$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
 
 			$result[0]['object'] = 'SportsManagementVersion';
 
@@ -1578,11 +1572,10 @@ class sportsmanagementModelJLXMLExports extends BaseDatabaseModel
 		// JInput object
 		$jinput      = $app->input;
 		$option      = $jinput->getCmd('option');
-		$db          = $this->getDbo();
-		$this->query = $this->jsmdb->getQuery(true);
+		$db          = $this->getDatabase();
+		$this->query = $this->jsmdb->createQuery();
 
-		jimport('joomla.filter.output');
-		$filename = $this->_getIdFromData('name', $this->_project);
+				$filename = $this->_getIdFromData('name', $this->_project);
 
 		if (empty($filename))
 		{
