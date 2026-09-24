@@ -9,15 +9,15 @@
  */
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTrainingDataTable;
 
-if (!class_exists(SportsManagementTable::class)) {
+if (!class_exists(TeamTrainingDataTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TeamTrainingDataTable.php';
 }
 
 if (!class_exists(TeamTrainingDataTable::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TeamTrainingDataTable.php';
+    throw new \RuntimeException('SportsManagement native TeamTrainingData table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableTeamTrainingData', false)) {

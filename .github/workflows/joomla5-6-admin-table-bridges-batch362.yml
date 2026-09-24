@@ -1,0 +1,45 @@
+name: Joomla 5/6 admin table bridges batch 362
+
+on:
+  push:
+    branches: [joomla5-6]
+  pull_request:
+    branches: [joomla5-6, master]
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator table bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/tables/season.php
+            admin/tables/seasonperson.php
+            admin/tables/teamstaff.php
+            admin/tables/teamtrainingdata.php
+            admin/tables/statistic.php
+            admin/tables/treeto.php
+            admin/tables/treetomatch.php
+            admin/tables/treetonode.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+          done
