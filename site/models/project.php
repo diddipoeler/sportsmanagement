@@ -14,7 +14,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\ProjectModel as NativeProjectModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportDataModel as NativeMatchreportDataModel;
@@ -872,51 +871,34 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 */
 	function store($data, $table = '', $cfg_which_database = 0)
 	{
-		if ($table == '')
-		{
-			$row =& $this->getTable();
-		}
-		else
-		{
-			$row = Table::getInstance($table, 'Table');
-		}
+		try {
+			$row = $table === ''
+				? $this->getTable()
+				: $this->getTable((string) $table, 'Administrator');
 
-		// Bind the form fields to the items table
-		if (!$row->bind($data))
-		{
-			$this->setError(Text::_('Binding failed'));
+			if (!$row->bind((array) $data)) {
+				return false;
+			}
 
-			return false;
-		}
+			if (property_exists($row, 'checked_out_time')) {
+				$row->checked_out_time = gmdate('Y-m-d H:i:s');
+			}
 
-		// Create the timestamp for the date
-		$row->checked_out_time = gmdate('Y-m-d H:i:s');
-
-		// If new item,order last,but only if an ordering exist
-		if ((isset($row->id)) && (isset($row->ordering)))
-		{
-			if (!$row->id && $row->ordering != null)
-			{
+			if (isset($row->id, $row->ordering) && !$row->id && $row->ordering !== null) {
 				$row->ordering = $row->getNextOrder();
 			}
-		}
 
-		// Make sure the item is valid
-		if (!$row->check())
-		{
-			$this->setError($this->_db->getErrorMsg());
+			if (!$row->check()) {
+				return false;
+			}
 
+			if (!$row->store()) {
+				return false;
+			}
+
+			return (int) ($row->id ?? 0);
+		} catch (\Throwable $e) {
 			return false;
 		}
-
-		// Store the item to the database
-		if (!$row->store())
-		{
-			$this->setError($this->_db->getErrorMsg());
-
-			return false;
-		}
-
-		return $row->id;
 	}
 }
