@@ -7,13 +7,17 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\TreetoController;
 
 if (!class_exists(TreetoController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/TreetoController.php';
+}
+
+if (!class_exists(TreetoController::class)) {
+    throw new \RuntimeException('SportsManagement native Treeto controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerTreeto', false)) {
