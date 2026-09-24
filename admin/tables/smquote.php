@@ -1,26 +1,25 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Legacy compatibility bridge for the native Joomla 5/6 Smquote table.
  *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-/** Legacy compatibility bridge for the native SmquoteTable. */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\SmquoteTable;
 
 if (!class_exists(SmquoteTable::class)) {
-    $tableFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SmquoteTable.php';
-
-    if (is_file($tableFile)) {
-        require_once $tableFile;
-    }
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SmquoteTable.php';
 }
 
-if (class_exists(SmquoteTable::class) && !class_exists('sportsmanagementTablesmquote', false)) {
+if (!class_exists(SmquoteTable::class)) {
+    throw new \RuntimeException('SportsManagement native Smquote table could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementTablesmquote', false)) {
     class_alias(SmquoteTable::class, 'sportsmanagementTablesmquote');
 }

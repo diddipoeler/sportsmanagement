@@ -1,0 +1,50 @@
+name: Joomla 5/6 admin table cleanup batch 361
+
+on:
+  push:
+    branches: [joomla5-6]
+  pull_request:
+    branches: [joomla5-6, master]
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator table cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Table/UserextrafieldsvaluesTable.php
+            admin/tables/userextrafieldsvalues.php
+            admin/tables/smquotestxt.php
+            admin/tables/predictionmember.php
+            admin/tables/predictionresult.php
+            admin/tables/smquote.php
+            admin/tables/sportsmanagement.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+            ! grep -Fq -- 'extends JSMTable' "$file"
+            ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' "$file"
+          done
+          grep -Fq -- "parent::__construct('#__sportsmanagement_user_extra_fields_values', 'id', $db)" admin/src/Table/UserextrafieldsvaluesTable.php
+          grep -Fq -- 'class sportsmanagementTablesmquotestxt' admin/tables/smquotestxt.php
+          for file in admin/tables/userextrafieldsvalues.php admin/tables/predictionmember.php admin/tables/predictionresult.php admin/tables/smquote.php admin/tables/sportsmanagement.php; do
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+          done

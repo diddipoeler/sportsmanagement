@@ -1,24 +1,25 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 PredictionmemberTable.
+ * Legacy compatibility bridge for the native Joomla 5/6 Predictionmember table.
  *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictionmemberTable;
 
 if (!class_exists(PredictionmemberTable::class)) {
-    $tableFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictionmemberTable.php';
-
-    if (is_file($tableFile)) {
-        require_once $tableFile;
-    }
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictionmemberTable.php';
 }
 
-if (class_exists(PredictionmemberTable::class) && !class_exists('sportsmanagementTablePredictionMember', false)) {
+if (!class_exists(PredictionmemberTable::class)) {
+    throw new \RuntimeException('SportsManagement native Predictionmember table could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementTablePredictionMember', false)) {
     class_alias(PredictionmemberTable::class, 'sportsmanagementTablePredictionMember');
 }
