@@ -1,10 +1,10 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 extended XML editor model.
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Smextxmleditor model.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
@@ -13,6 +13,10 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\SmextxmleditorMod
 
 if (!class_exists(SmextxmleditorModel::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SmextxmleditorModel.php';
+}
+
+if (!class_exists(SmextxmleditorModel::class)) {
+    throw new \RuntimeException('SportsManagement native Smextxmleditor model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelsmextxmleditor', false)) {

@@ -1,0 +1,46 @@
+name: Joomla 5/6 admin model bridges batch 367
+
+on:
+  push:
+    branches: [joomla5-6]
+  pull_request:
+    branches: [joomla5-6, master]
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator model bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/models/predictionproject.php
+            admin/models/predictiontemplate.php
+            admin/models/projectteam.php
+            admin/models/quickadd.php
+            admin/models/rosterpositions.php
+            admin/models/season.php
+            admin/models/smextxmleditor.php
+            admin/models/smextxmleditors.php
+            admin/models/smimageimport.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+          done
