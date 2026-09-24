@@ -1,0 +1,69 @@
+name: Joomla 5/6 admin native tables batch 356
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Table/ProjectpositionTable.php'
+      - 'admin/src/Table/TeamplayerTable.php'
+      - 'admin/src/Table/TrainingdataTable.php'
+      - 'admin/tables/projectposition.php'
+      - 'admin/tables/rosterposition.php'
+      - 'admin/tables/teamplayer.php'
+      - 'admin/tables/trainingdata.php'
+      - '.github/workflows/joomla5-6-admin-native-tables-batch356.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Table/ProjectpositionTable.php'
+      - 'admin/src/Table/TeamplayerTable.php'
+      - 'admin/src/Table/TrainingdataTable.php'
+      - 'admin/tables/projectposition.php'
+      - 'admin/tables/rosterposition.php'
+      - 'admin/tables/teamplayer.php'
+      - 'admin/tables/trainingdata.php'
+      - '.github/workflows/joomla5-6-admin-native-tables-batch356.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate native administrator tables
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Table/ProjectpositionTable.php
+            admin/src/Table/TeamplayerTable.php
+            admin/src/Table/TrainingdataTable.php
+            admin/tables/projectposition.php
+            admin/tables/rosterposition.php
+            admin/tables/teamplayer.php
+            admin/tables/trainingdata.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          for file in admin/tables/projectposition.php admin/tables/rosterposition.php admin/tables/teamplayer.php admin/tables/trainingdata.php; do
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+            ! grep -Fq -- 'extends JSMTable' "$file"
+            ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' "$file"
+          done
+          grep -Fq -- "parent::__construct('#__sportsmanagement_project_position', 'id', $db)" admin/src/Table/ProjectpositionTable.php
+          grep -Fq -- "parent::__construct('#__sportsmanagement_season_team_person_id', 'id', $db)" admin/src/Table/TeamplayerTable.php
+          grep -Fq -- "parent::__construct('#__sportsmanagement_team_trainingdata', 'id', $db)" admin/src/Table/TrainingdataTable.php
