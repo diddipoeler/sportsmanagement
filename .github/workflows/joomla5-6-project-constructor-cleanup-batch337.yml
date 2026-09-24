@@ -1,0 +1,43 @@
+name: Joomla 5/6 project constructor cleanup batch 337
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/project.php'
+      - '.github/workflows/joomla5-6-project-constructor-cleanup-batch337.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/project.php'
+      - '.github/workflows/joomla5-6-project-constructor-cleanup-batch337.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate project constructor cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/models/project.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+          grep -Fq -- 'public function __construct($config = [], ?MVCFactoryInterface $factory = null)' "$file"
+          grep -Fq -- 'parent::__construct($config, $factory);' "$file"
+          ! grep -Fq -- 'JLoader::import' "$file"
+          ! grep -Fq -- 'getVar(' "$file"
+          ! grep -Fq -- 'use Joomla\CMS\User\UserHelper;' "$file"
+          ! grep -Fq -- 'use Joomla\Utilities\ArrayHelper;' "$file"

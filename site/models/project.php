@@ -10,63 +10,33 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
-use Joomla\CMS\User\UserHelper;
-use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\Registry\Registry;
-use Joomla\CMS\Log\Log;
 use Diddipoeler\Component\SportsManagement\Site\Model\ProjectModel as NativeProjectModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportDataModel as NativeMatchreportDataModel;
 
-if (!defined('JSM_PATH'))
-{
-	DEFINE('JSM_PATH', 'components/com_sportsmanagement');
+if (!defined('JSM_PATH')) {
+    define('JSM_PATH', 'components/com_sportsmanagement');
 }
 
-/**
- * prüft vor Benutzung ob die gewünschte Klasse definiert ist
- */
-if (!class_exists('sportsmanagementModeldatabasetool'))
-{
-	JLoader::import('components.com_sportsmanagement.models.databasetool', JPATH_ADMINISTRATOR);
+// Keep the historical constants available for direct legacy includes while
+// using Joomla 5/6 component parameters instead of importing administrator models.
+$paramscomponent = ComponentHelper::getParams('com_sportsmanagement');
 
-	// Sprachdatei aus dem backend laden
-	$langtag      = Factory::getLanguage();
-	$document     = Factory::getDocument();
-	$app          = Factory::getApplication();
-	$config       = Factory::getConfig();
-	$lang         = Factory::getLanguage();
-	$extension    = 'com_sportsmanagement';
-	$base_dir     = JPATH_ADMINISTRATOR;
-	$language_tag = $langtag->getTag();
-	$reload       = true;
-	$lang->load($extension, $base_dir, $language_tag, $reload);
+if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE')) {
+    define('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', (int) $paramscomponent->get('cfg_which_database', 0));
+}
 
-	// Welche tabelle soll genutzt werden
-	$paramscomponent           = ComponentHelper::getParams('com_sportsmanagement');
-	$database_table            = $paramscomponent->get('cfg_which_database_table');
-	$show_debug_info           = $paramscomponent->get('show_debug_info');
-	$show_query_debug_info     = $paramscomponent->get('show_query_debug_info');
-	$cfg_which_database_server = $paramscomponent->get('cfg_which_database_server');
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO')) {
+    define('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', (int) $paramscomponent->get('show_debug_info', 0));
+}
 
-	if (!defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-	{
-		DEFINE('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE', $paramscomponent->get('cfg_which_database'));
-	}
-
-	if (!defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
-	{
-		DEFINE('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO', $show_debug_info);
-	}
-
-	if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
-	{
-		DEFINE('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', $show_query_debug_info);
-	}
+if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO')) {
+    define('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO', (int) $paramscomponent->get('show_query_debug_info', 0));
 }
 
 /**
@@ -179,20 +149,15 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 * sportsmanagementModelProject::__construct()
 	 *
 	 * @return void
-	 */
-	function __construct()
+	 */	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
+		parent::__construct($config, $factory);
 
-		// JInput object
-		$jinput                   = $app->input;
-		self::$projectid          = $jinput->getVar('p', '0');
-		self::$cfg_which_database = $jinput->getVar('cfg_which_database', '0');
-		self::$matchid            = $jinput->getVar('mid', '0');
-		self::$layout             = $jinput->getVar('layout', '');
-
-		parent::__construct();
+		$input = Factory::getApplication()->getInput();
+		self::$projectid = $input->getInt('p', 0);
+		self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
+		self::$matchid = $input->getInt('mid', 0);
+		self::$layout = $input->getCmd('layout', '');
 	}
 
 
@@ -245,15 +210,12 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	public static function setProjectID($id = 0, $cfg_which_database = 0)
+		public static function setProjectID($id = 0, $cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		self::$projectid      = (int) $id;
-		self::$_project       = null;
-		self::$_current_round = 0;
-
+		self::$projectid = (int) $id;
+		self::$cfg_which_database = (int) $cfg_which_database;
+		self::$_project = null;
+		self::$_current_round = null;
 	}
 
 	/**
@@ -592,18 +554,15 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	public static function getTeamsIndexedByPtid($division = 0, $teamname = 'name', $cfg_which_database = 0, $call_function = '')
+		public static function getTeamsIndexedByPtid($division = 0, $teamname = 'name', $cfg_which_database = 0, $call_function = '')
 	{
-		$app = Factory::getApplication();
+		$teams = [];
 
-		$result = self::getTeams($division, $teamname, $cfg_which_database, $call_function);
-		$teams  = array();
+		foreach (self::getTeams($division, $teamname, $cfg_which_database, $call_function) as $team) {
+			$projectTeamId = (int) ($team->projectteamid ?? 0);
 
-		if (count($result))
-		{
-			foreach ($result as $r)
-			{
-				$teams[$r->projectteamid] = $r;
+			if ($projectTeamId > 0) {
+				$teams[$projectTeamId] = $team;
 			}
 		}
 
@@ -730,21 +689,16 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 *
 	 * @return
 	 */
-	public static function getClubIconHtml(&$team, $type = 1, $with_space = 0, $club_icon = 'logo_big', $cfg_which_database = 0, $roundcode = 0, $modalwidth = '100', $modalheight = '200', $use_jquery_modal = 0)
+		public static function getClubIconHtml(&$team, $type = 1, $with_space = 0, $club_icon = 'logo_big', $cfg_which_database = 0, $roundcode = 0, $modalwidth = '100', $modalheight = '200', $use_jquery_modal = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		if ($type == 1)
-		{
-			if (!sportsmanagementHelper::existPicture($team->$club_icon))
-			{
-				$team->$club_icon = sportsmanagementHelper::getDefaultPlaceholder($club_icon);
+		if ((int) $type === 1) {
+			if (!sportsmanagementHelper::existPicture($team->{$club_icon})) {
+				$team->{$club_icon} = sportsmanagementHelper::getDefaultPlaceholder($club_icon);
 			}
 
-			$image = sportsmanagementHelperHtml::getBootstrapModalImage(
+			return sportsmanagementHelperHtml::getBootstrapModalImage(
 				$roundcode . 'team' . $team->team_id,
-				$team->$club_icon,
+				$team->{$club_icon},
 				$team->name,
 				'20',
 				'',
@@ -752,13 +706,13 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 				$modalheight,
 				$use_jquery_modal
 			);
-
-			return $image;
 		}
-		elseif (($type == 2) && (isset($team->country)))
-		{
+
+		if ((int) $type === 2 && isset($team->country)) {
 			return JSMCountries::getCountryFlag($team->country);
 		}
+
+		return '';
 	}
 
 	/**
