@@ -7,13 +7,17 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\PredictiongroupController;
 
 if (!class_exists(PredictiongroupController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/PredictiongroupController.php';
+}
+
+if (!class_exists(PredictiongroupController::class)) {
+    throw new \RuntimeException('SportsManagement native Predictiongroup controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerpredictiongroup', false)) {

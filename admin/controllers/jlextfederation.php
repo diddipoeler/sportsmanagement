@@ -7,13 +7,17 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextfederationController;
 
 if (!class_exists(JlextfederationController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JlextfederationController.php';
+}
+
+if (!class_exists(JlextfederationController::class)) {
+    throw new \RuntimeException('SportsManagement native Jlextfederation controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerjlextfederation', false)) {
