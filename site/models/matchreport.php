@@ -9,7 +9,7 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportMatchDataModel;
@@ -31,6 +31,19 @@ if (!class_exists(MatchreportDataModel::class)) {
 
 if (!class_exists(MatchreportMatchDataModel::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportMatchDataModel.php';
+}
+
+foreach ([
+    MatchreportModel::class,
+    MatchreportDataModel::class,
+    MatchreportMatchDataModel::class,
+] as $requiredModel) {
+    if (!class_exists($requiredModel)) {
+        throw new \RuntimeException(
+            'SportsManagement native Matchreport model stack could not be loaded: ' . $requiredModel,
+            500
+        );
+    }
 }
 
 /**

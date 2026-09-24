@@ -1,0 +1,62 @@
+name: Joomla 5/6 site model bridges batch 354
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/editclub.php'
+      - 'site/models/statsrankingteams.php'
+      - 'site/models/person.php'
+      - 'site/models/editprojectteam.php'
+      - 'site/models/nextmatch.php'
+      - 'site/models/matchreport.php'
+      - '.github/workflows/joomla5-6-site-model-bridges-batch354.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/editclub.php'
+      - 'site/models/statsrankingteams.php'
+      - 'site/models/person.php'
+      - 'site/models/editprojectteam.php'
+      - 'site/models/nextmatch.php'
+      - 'site/models/matchreport.php'
+      - '.github/workflows/joomla5-6-site-model-bridges-batch354.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site model bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/editclub.php
+            site/models/statsrankingteams.php
+            site/models/person.php
+            site/models/editprojectteam.php
+            site/models/nextmatch.php
+            site/models/matchreport.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          for file in site/models/editclub.php site/models/statsrankingteams.php site/models/person.php site/models/editprojectteam.php site/models/nextmatch.php; do
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+          done
+          grep -Fq -- 'SportsManagement native Matchreport model stack could not be loaded:' site/models/matchreport.php

@@ -11,6 +11,22 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Model\PersonModel;
 
+if (!class_exists(PersonModel::class)) {
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/PersonModel.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
+}
+
+if (!class_exists(PersonModel::class)) {
+    throw new \RuntimeException('SportsManagement native Person model could not be loaded.', 500);
+}
+
 if (!class_exists('sportsmanagementModelPerson', false)) {
     class_alias(PersonModel::class, 'sportsmanagementModelPerson');
 }
