@@ -1,8 +1,6 @@
 <?php
 /**
- * SportsManagement legacy compatibility bridge.
- *
- * The active Joomla 5/6 implementation lives in admin/src/Table/TeamTable.php.
+ * Legacy compatibility bridge for the native Joomla 5/6 Team table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -14,7 +12,12 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable;
 
 if (!class_exists(TeamTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TeamTable.php';
+}
+
+if (!class_exists(TeamTable::class)) {
+    throw new \RuntimeException('SportsManagement native Team table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableTeam', false)) {

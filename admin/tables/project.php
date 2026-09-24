@@ -1,8 +1,6 @@
 <?php
 /**
- * SportsManagement legacy compatibility bridge.
- *
- * The active Joomla 5/6 implementation lives in admin/src/Table/ProjectTable.php.
+ * Legacy compatibility bridge for the native Joomla 5/6 Project table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -14,7 +12,12 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
 
 if (!class_exists(ProjectTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/ProjectTable.php';
+}
+
+if (!class_exists(ProjectTable::class)) {
+    throw new \RuntimeException('SportsManagement native Project table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableProject', false)) {

@@ -1,8 +1,6 @@
 <?php
 /**
- * SportsManagement legacy compatibility bridge for the native Round table.
- *
- * The active Joomla 5/6 implementation lives in admin/src/Table/RoundTable.php.
+ * Legacy compatibility bridge for the native Joomla 5/6 Round table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -16,6 +14,10 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable;
 if (!class_exists(RoundTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/RoundTable.php';
+}
+
+if (!class_exists(RoundTable::class)) {
+    throw new \RuntimeException('SportsManagement native Round table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableRound', false)) {

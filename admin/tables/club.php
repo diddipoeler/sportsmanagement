@@ -1,6 +1,6 @@
 <?php
 /**
- * SportsManagement legacy compatibility bridge for the native administrator Club table.
+ * Legacy compatibility bridge for the native Joomla 5/6 Club table.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -12,7 +12,12 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
 
 if (!class_exists(ClubTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/ClubTable.php';
+}
+
+if (!class_exists(ClubTable::class)) {
+    throw new \RuntimeException('SportsManagement native Club table could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementTableClub', false)) {
