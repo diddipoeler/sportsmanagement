@@ -1,7 +1,11 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * Legacy SportsManagement extended XML editor table compatibility class.
+ *
+ * This historical table does not map to a database table. It is retained only
+ * for third-party callers which still request the legacy class name.
+ *
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage tables
  * @file       smextxmleditor.php
@@ -9,30 +13,16 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 /**
- * sportsmanagementTableclubname
- *
- * @package
- * @author    Dieter Plöger
- * @copyright 2018
- * @version   $Id$
- * @access    public
+ * Legacy no-op table retained for compatibility.
  */
 class sportsmanagementTablesmextxmleditor extends JSMTable
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		// $db = sportsmanagementHelper::getDBConnection();
-		// parent :: __construct( '#__sportsmanagement_club_names', 'id', $db );
-	}
-
+    public function __construct(&$db)
+    {
+        // Intentionally no parent constructor: the historical XML editor table
+        // never represented a database table.
+    }
 }
