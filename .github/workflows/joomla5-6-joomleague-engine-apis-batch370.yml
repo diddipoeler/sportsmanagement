@@ -1,0 +1,45 @@
+name: Joomla 5/6 JoomLeague engine APIs batch 370
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/joomleagueimports.php'
+      - '.github/workflows/joomla5-6-joomleague-engine-apis-batch370.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/joomleagueimports.php'
+      - '.github/workflows/joomla5-6-joomleague-engine-apis-batch370.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate JoomLeague legacy engine API migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/models/joomleagueimports.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+          grep -Fq -- 'private static function createJoomLeagueDatabase(array $option): DatabaseInterface' "$file"
+          grep -Fq -- 'public function __construct($config = [], ?MVCFactoryInterface $factory = null)' "$file"
+          ! grep -Fq -- 'JVERSION' "$file"
+          ! grep -Fq -- 'JDatabaseDriver::getInstance' "$file"
+          ! grep -Fq -- 'JDatabase::getInstance' "$file"
+          ! grep -Fq -- 'Factory::getDbo' "$file"
+          ! grep -Fq -- 'Factory::getUser' "$file"
+          ! grep -Fq -- 'getQuery(true)' "$file"

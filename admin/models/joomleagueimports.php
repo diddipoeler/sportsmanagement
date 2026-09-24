@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage models
  * @file       joomleagueimports.php
@@ -9,16 +9,19 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\Data\DataObject;
 use Joomla\CMS\Exception\ExceptionHandler;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Filesystem\File;
+use Joomla\Database\DatabaseFactory;
+use Joomla\Database\DatabaseInterface;
 
 $maxImportTime = 1920;
 
@@ -45,6 +48,24 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
  */
 class sportsmanagementModeljoomleagueimports extends ListModel
 {
+    /**
+     * Create the configured JoomLeague source database using Joomla 5/6 drivers.
+     */
+    private static function createJoomLeagueDatabase(array $option): DatabaseInterface
+    {
+        $driver = strtolower(trim((string) ($option['driver'] ?? 'mysqli')));
+        $driver = match ($driver) {
+            'mysql' => 'mysqli',
+            'postgresql' => 'pgsql',
+            '' => 'mysqli',
+            default => $driver,
+        };
+
+        unset($option['driver']);
+
+        return (new DatabaseFactory())->getDriver($driver, $option);
+    }
+
 	static $db_num_rows = 0;
 	static $storeFailedColor = 'red';
     static $storeFailedText = 'nicht aktualisiert';
@@ -64,11 +85,11 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	 * @param mixed $config
 	 * @return void
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
+		parent::__construct($config, $factory);
 		$this->jsmapp = Factory::getApplication();
-		$this->jsmjinput = $this->jsmapp->input;
-		parent::__construct($config);
+		$this->jsmjinput = $this->jsmapp->getInput();
         
         
         }
@@ -87,13 +108,13 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 //		// JInput object
 //		$jinput = $app->input;
 		$post   = $this->jsmjinput->post->getArray(array());
-		$db     = Factory::getDbo();
-		$query  = $db->getQuery(true);
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$query  = $db->createQuery();
 		$a      = 0;
 
 		foreach ($post['agegroup'] as $key => $value)
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 
 			// Fields to update.
@@ -103,7 +124,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			// Conditions for which records should be updated.
 			$conditions = array(
-				$db->quoteName('info') . ' LIKE ' . $db->Quote('' . $key . '')
+				$db->quoteName('info') . ' LIKE ' . $db->quote('' . $key . '')
 			);
 
 			$query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
@@ -135,15 +156,15 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		$conf   = Factory::getConfig();
 		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$db     = Factory::getDbo();
-		$query  = $db->getQuery(true);
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$query  = $db->createQuery();
 
 		$query->clear();
 		$query->select('info,agegroup_id');
 		$query->from('#__sportsmanagement_team');
 
 		// $query->join('INNER', '#__joomleague_project_position AS pt ON pt.project_id = pr.project_id and pt.position_id = pr.position_id ');
-		$query->where('info NOT LIKE ' . $db->Quote('' . ''));
+		$query->where('info NOT LIKE ' . $db->quote('' . ''));
 		$query->group('info,agegroup_id');
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
@@ -165,20 +186,13 @@ class sportsmanagementModeljoomleagueimports extends ListModel
         $jl_dberror = 0;
         $jl_dbprefix   = $params->get('jl_dbprefix');
 		$jsm_prefix = $app->get('dbprefix');
-		//$db     = Factory::getDbo();
-		//$query  = $db->getQuery(true);
+		//$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		//$query  = $db->createQuery();
 
 		/**
 		 * welche joomla version ?
 		 */
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$debug = $conf->get('config.debug');
-		}
-		else
-		{
-			$debug = $conf->getValue('config.debug');
-		}
+		$debug = (bool) $conf->get('debug', false);
 
 		$option             = array(); // Prevent problems
 		$option['driver']   = $params->get('jl_dbtype');      //       Database driver name
@@ -191,17 +205,8 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		 *  zuerst noch überprüfen, ob der user
 		 *  überhaupt den zugriff auf die datenbank hat.
 		 */
-        if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-		//$jl_access = JDatabaseDriver::getInstance($option);
-        $db = JDatabaseDriver::getInstance($option);
-		}
-		else
-		{
-		//$jl_access = JDatabase::getInstance($option);
-        $db = JDatabase::getInstance($option);
-		}
-        $query  = $db->getQuery(true);
+        $db = self::createJoomLeagueDatabase($option);
+        $query  = $db->createQuery();
         
 //        Log::add('option <pre>'.print_r($option,true).'</pre>', Log::NOTICE, 'jsmerror'); 
 //        Log::add('db <pre>'.print_r($db,true).'</pre>', Log::NOTICE, 'jsmerror');
@@ -209,7 +214,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 		/** fehlende jl felder hinzufügen für alte versionen */
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_division ADD `tree_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -246,7 +251,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_player ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -261,7 +266,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_player ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -276,7 +281,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_referee ADD `referee_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -291,7 +296,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_referee ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -306,7 +311,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_referee ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -321,7 +326,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_staff ADD `staff_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -336,7 +341,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_staff ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -351,7 +356,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_staff ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -366,7 +371,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_project_referee ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -381,7 +386,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_team_player ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -396,7 +401,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_team_player ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -411,7 +416,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_team_staff ADD `position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -426,7 +431,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_team_staff ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -441,7 +446,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_team_trainingdata ADD `team_id_in_project` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -456,7 +461,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_project_team ADD `mark` int(11) DEFAULT NULL ";
 			$db->setQuery($query);
@@ -471,7 +476,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_project ADD `serveroffset` varchar(6) NOT NULL DEFAULT '-01:00' ";
 			$db->setQuery($query);
@@ -486,7 +491,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_project ADD `tree_id` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -501,7 +506,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_project ADD `admin` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -516,7 +521,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 		try
 		{
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query = "ALTER TABLE ".$jl_dbprefix."joomleague_project ADD `editor` INT(11) NOT NULL DEFAULT '0' ";
 			$db->setQuery($query);
@@ -560,7 +565,7 @@ return $jl_dberror;
 		$jinput      = $app->input;
 		$option      = $jinput->getCmd('option');
 		$date        = Factory::getDate();
-		$user        = Factory::getUser();
+		$user        = Factory::getApplication()->getIdentity();
 		$modified    = $date->toSql();
 		$modified_by = $user->get('id');
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -575,7 +580,7 @@ return $jl_dberror;
 
 		$jinput->set('filter_sports_type', $sports_type_id);
 
-//		$db    = Factory::getDbo();
+//		$db    = Factory::getContainer()->get(DatabaseInterface::class);
         $option             = array(); // Prevent problems
 		$option['driver']   = $params->get('jl_dbtype');      //       Database driver name
 		$option['host']     = $params->get('jl_host') ? $params->get('jl_host') : $conf->get('host');     // Database host name
@@ -587,20 +592,11 @@ return $jl_dberror;
 		 *  zuerst noch überprüfen, ob der user
 		 *  überhaupt den zugriff auf die datenbank hat.
 		 */
-        if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-		//$jl_access = JDatabaseDriver::getInstance($option);
-        $db = JDatabaseDriver::getInstance($option);
-		}
-		else
-		{
-		//$jl_access = JDatabase::getInstance($option);
-        $db = JDatabase::getInstance($option);
-		}
+        $db = self::createJoomLeagueDatabase($option);
         
-        $dbjsm    = Factory::getDbo();
-		$query = $db->getQuery(true);
-        $queryjsm = $dbjsm->getQuery(true);
+        $dbjsm    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery();
+        $queryjsm = $dbjsm->createQuery();
 
 		$exportfields1 = array();
 		$exportfields2 = array();
@@ -611,7 +607,7 @@ return $jl_dberror;
 		{
 			try
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_player ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
@@ -631,7 +627,7 @@ return $jl_dberror;
 
 			try
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_staff ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
@@ -651,7 +647,7 @@ return $jl_dberror;
 
 			try
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match_referee ADD INDEX `match_id` (`match_id`) ";
 				$db->setQuery($query);
@@ -671,7 +667,7 @@ return $jl_dberror;
 
 			try
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE ".$jl_dbprefix."joomleague_match ADD INDEX `round_id` (`round_id`) ";
 				$db->setQuery($query);
@@ -690,7 +686,7 @@ return $jl_dberror;
 			$my_text .= '<br />';
 
 			/** alle personen veröffentlichen */
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 
 			$fields = array(
@@ -732,7 +728,7 @@ return $jl_dberror;
 		if ($jl_table_import_step == 1)
 		{
 			/** die positionen bei den schiedsrichtern setzen */
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query->select('pr.id,pr.project_id,pr.position_id,pt.id as project_position_id');
 			$query->from('#__joomleague_project_referee as pr');
@@ -789,7 +785,7 @@ return $jl_dberror;
 		if ($jl_table_import_step == 2)
 		{
 			/** die positionen bei den betreuern setzen */
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query->select('pr.id,pr.position_id,pt.project_id');
 			$query->from('#__joomleague_team_staff as pr');
@@ -813,7 +809,7 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query->select('id');
 				$query->from('#__joomleague_project_position');
@@ -849,7 +845,7 @@ return $jl_dberror;
 		if ($jl_table_import_step == 3)
 		{
 			/** die positionen bei den spielern setzen */
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query->select('pr.id,pr.position_id,pt.project_id');
 			$query->from('#__joomleague_team_player as pr');
@@ -873,7 +869,7 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query->select('id');
 				$query->from('#__joomleague_project_position');
@@ -909,7 +905,7 @@ return $jl_dberror;
 		if ($jl_table_import_step == 4)
 		{
 			/** die positionen bei den spielen spieler setzen */
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query->select('mp.id,mp.position_id,r.project_id');
 			$query->from('#__joomleague_match_player as mp');
@@ -934,7 +930,7 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query->select('id');
 				$query->from('#__joomleague_project_position');
@@ -970,7 +966,7 @@ return $jl_dberror;
 		if ($jl_table_import_step == 5)
 		{
 			/** die positionen bei den spielen betreuern setzen */
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query->select('mp.id,mp.position_id,r.project_id');
 			$query->from('#__joomleague_match_staff as mp');
@@ -995,7 +991,7 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query->select('id');
 				$query->from('#__joomleague_project_position');
@@ -1030,7 +1026,7 @@ return $jl_dberror;
 		if ($jl_table_import_step == 6)
 		{
 			/** die positionen bei den spielen schiedsrichter setzen */
-			$query = $db->getQuery(true);
+			$query = $db->createQuery();
 			$query->clear();
 			$query->select('mp.id,mp.position_id,r.project_id,mp.referee_id');
 			$query->from('#__joomleague_match_referee as mp');
@@ -1055,7 +1051,7 @@ return $jl_dberror;
 
 			foreach ($result as $row)
 			{
-				$query = $db->getQuery(true);
+				$query = $db->createQuery();
 				$query->clear();
 				$query->select('id');
 				$query->from('#__joomleague_project_position');
@@ -1091,11 +1087,11 @@ return $jl_dberror;
 		if ($jl_table_import_step == 7)
 		{
 		  /** fehlerhafte daten in der tabelle match_event korrigieren */
-          $query = $db->getQuery(true);
+          $query = $db->createQuery();
 			$query->clear();
 			$query->select('me.id');
 			$query->from('#__joomleague_match_event as me');
-			$query->where('me.event_time LIKE '.$db->Quote('' . '' . ''));
+			$query->where('me.event_time LIKE '.$db->quote('' . '' . ''));
 			try
 			{
 			$db->setQuery($query);
@@ -1230,7 +1226,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
                 /** feld import_id einfügen */
 						try
 						{
-							$queryjsm = $dbjsm->getQuery(true);
+							$queryjsm = $dbjsm->createQuery();
 							//$queryjsm->clear();
 							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 							$dbjsm->setQuery($queryjsm);
@@ -1245,7 +1241,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 
 						try
 						{
-                        $queryjsm = $dbjsm->getQuery(true);
+                        $queryjsm = $dbjsm->createQuery();
 						//$queryjsm->clear();
 						/** löschen die das feld import_id gefüllt haben */
 						$conditions = array(
@@ -1266,17 +1262,10 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 				if ($key_table)
 				{
 					/** hier muss auch wieder zwischen den joomla versionen unterschieden werden */
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						/** Joomla! 3.0 code here */
-//						$jl_fields              = $db->getTableColumns('#__joomleague_' . $value);
-//						$jsm_fields             = $dbjsm->getTableColumns('#__sportsmanagement_' . $value);
-						$jl_fields              = $db->getTableColumns($jl_table);
-						$jsm_fields             = $dbjsm->getTableColumns($jsm_table);
-						
-						$jl_fields[$jl_table]   = $jl_fields;
-						$jsm_fields[$jsm_table] = $jsm_fields;
-					}
+					$jl_fields = $db->getTableColumns($jl_table);
+					$jsm_fields = $dbjsm->getTableColumns($jsm_table);
+					$jl_fields[$jl_table] = $jl_fields;
+					$jsm_fields[$jsm_table] = $jsm_fields;
 
 					/** importschritt 0 */
 					if (count($jl_fields[$jl_table]) === 0)
@@ -1289,7 +1278,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 //						/** feld import_id einfügen */
 //						try
 //						{
-//							$queryjsm = $dbjsm->getQuery(true);
+//							$queryjsm = $dbjsm->createQuery();
 //							//$queryjsm->clear();
 //							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 //							$dbjsm->setQuery($queryjsm);
@@ -1304,7 +1293,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 //
 //						try
 //						{
-//                        $queryjsm = $dbjsm->getQuery(true);
+//                        $queryjsm = $dbjsm->createQuery();
 //						//$queryjsm->clear();
 //						/** löschen die das feld import_id gefüllt haben */
 //						$conditions = array(
@@ -1346,7 +1335,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 							 */
 							/*
 							try {
-							$query = $db->getQuery(true);
+							$query = $db->createQuery();
 							$query->clear();
 							$query = "ALTER TABLE `".$jsm_table."` ADD UNIQUE `import_id` (`import_id`) "   ;
 							$db->setQuery($query);
@@ -1393,7 +1382,7 @@ $jsm_table = $jsm_prefix.'sportsmanagement_' . $value;
 
 							$select_fields_1 = implode(',', $exportfields1);
 							$select_fields_2 = implode(',', $exportfields2);
-							$queryjsm = $dbjsm->getQuery(true);
+							$queryjsm = $dbjsm->createQuery();
 							//$queryjsm->clear();
 							$queryjsm = 'INSERT INTO ' . $jsm_table . ' (' . $select_fields_1 . ') SELECT ' . $select_fields_2 . ' FROM ' . $jl_table;
 //$this->jsmapp->enqueueMessage(__LINE__.' '.$queryjsm, 'notice');
@@ -1419,7 +1408,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 
 							if ($value == 'position')
 							{
-								$queryjsm = $dbjsm->getQuery(true);
+								$queryjsm = $dbjsm->createQuery();
 								//$queryjsm->clear();
 								$fields = array(
 									$dbjsm->quoteName('sports_type_id') . ' = ' . $sports_type_id
@@ -1455,7 +1444,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 				 */
 				/*
                 try {
-                $query = $db->getQuery(true);
+                $query = $db->createQuery();
                 $query->clear();
                 $query = "ALTER TABLE `".$jsm_table."` DROP INDEX import_id "   ;
                 $db->setQuery($query);
@@ -1474,7 +1463,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
             $jsm_table = '#__sportsmanagement_prediction_result_round';
             try
 						{
-							$queryjsm = $dbjsm->getQuery(true);
+							$queryjsm = $dbjsm->createQuery();
 							//$queryjsm->clear();
 							$queryjsm = "ALTER TABLE `" . $jsm_table . "` ADD `division_id` INT(11) NOT NULL DEFAULT '0' ";
 							$dbjsm->setQuery($queryjsm);
@@ -1510,7 +1499,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 			 * nach der kopie der tabellen müssen wir die sportart bei den mannschaften setzen.
 			 * sonst gibt es in der übersicht der projektmannschaften eine fehlermeldung.
 			 */
-			$queryjsm   = $dbjsm->getQuery(true);
+			$queryjsm   = $dbjsm->createQuery();
 			$my_text = '';
 
 			$fields = array(
@@ -1580,7 +1569,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 
 			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$queryjsm = $dbjsm->getQuery(true);
+			$queryjsm = $dbjsm->createQuery();
 			$queryjsm->clear();
 			$queryjsm->select('name,id,import_id');
 			$queryjsm->from('#__sportsmanagement_club');
@@ -1599,7 +1588,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 					$dbjsm->quoteName('club_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$queryjsm      = $dbjsm->getQuery(true);
+				$queryjsm      = $dbjsm->createQuery();
 				$queryjsm->clear();
 				$queryjsm->update($dbjsm->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
 
@@ -1662,7 +1651,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 					$dbjsm->quoteName('standard_playground') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$queryjsm      = $dbjsm->getQuery(true);
+				$queryjsm      = $dbjsm->createQuery();
 				$queryjsm->clear();
 				
                 	try
@@ -1708,7 +1697,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 						$dbjsm->quoteName('associations') . ' = ' . $row->import_id,
 						$dbjsm->quoteName('import_id') . ' != 0'
 					);
-					$queryjsm  = $dbjsm->getQuery(true);
+					$queryjsm  = $dbjsm->createQuery();
 					$queryjsm->clear();
 					$queryjsm->update($dbjsm->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 					//$dbjsm->setQuery($queryjsm);
@@ -1761,7 +1750,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 
 			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$queryjsm = $dbjsm->getQuery(true);
+			$queryjsm = $dbjsm->createQuery();
 			$queryjsm->clear();
 			$queryjsm->select('name,id,import_id');
 			$queryjsm->from('#__sportsmanagement_season');
@@ -1778,7 +1767,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 					$dbjsm->quoteName('season_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$queryjsm      = $dbjsm->getQuery(true);
+				$queryjsm      = $dbjsm->createQuery();
 				$queryjsm->clear();
 				$queryjsm->update($dbjsm->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 				//$dbjsm->setQuery($queryjsm);
@@ -1820,7 +1809,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 			$my_text = '';
 			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$queryjsm = $dbjsm->getQuery(true);
+			$queryjsm = $dbjsm->createQuery();
 			$queryjsm->clear();
 			$queryjsm->select('name,id,import_id');
 			$queryjsm->from('#__sportsmanagement_league');
@@ -1837,7 +1826,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 					$dbjsm->quoteName('league_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$queryjsm      = $dbjsm->getQuery(true);
+				$queryjsm      = $dbjsm->createQuery();
 				$queryjsm->clear();
 				$queryjsm->update($dbjsm->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 
@@ -1878,7 +1867,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 
 			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('name,id,import_id');
 			$query->from('#__sportsmanagement_project');
@@ -1898,7 +1887,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 					$dbjsm->quoteName('project_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_round'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2044,7 +2033,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 		{
 			/** jetzt werden die positionen/events zugeordnet */
 			$my_text = '';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('name,id,import_id');
 			$query->from('#__sportsmanagement_position');
@@ -2056,14 +2045,14 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			{
 				$fields = array(
 					$dbjsm->quoteName('position_id') . ' = ' . $row->id,
-					$dbjsm->quoteName('modified') . ' = ' . $dbjsm->Quote('' . $date->toSql() . ''),
+					$dbjsm->quoteName('modified') . ' = ' . $dbjsm->quote('' . $date->toSql() . ''),
 					$dbjsm->quoteName('modified_by') . ' = ' . $user->get('id')
 				);
     			$conditions = array(
 					$dbjsm->quoteName('position_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2144,7 +2133,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('eventtype_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_position_eventtype'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2167,7 +2156,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('event_type_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_event'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2205,7 +2194,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('alias as name,id,import_id');
 			$query->from('#__sportsmanagement_person');
@@ -2225,7 +2214,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('person_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_team_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2261,7 +2250,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 // $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('pt.id,pt.team_id,t.name,t.id as new_team_id');
 			$query->from('#__sportsmanagement_project_team as pt');
@@ -2300,7 +2289,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('team_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2336,7 +2325,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 
 			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_project_team');
@@ -2356,7 +2345,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('projectteam_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_team_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2380,7 +2369,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			}
 
 			$my_text = '';
-			$query   = $dbjsm->getQuery(true);
+			$query   = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_project_position');
@@ -2400,7 +2389,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('project_position_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_team_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2448,7 +2437,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			/**
 			 * jetzt werden die spiele aktualisiert staff/player
 			 */
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_team_staff');
@@ -2469,7 +2458,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('team_staff_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_staff'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2483,7 +2472,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 				$my_text .= '<br />';
 			}
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_team_player');
@@ -2504,7 +2493,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('teamplayer_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2529,7 +2518,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('in_for') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2562,7 +2551,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 
 			// $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 			// $my_text .= '<br />';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_round');
@@ -2584,7 +2573,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('round_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2598,7 +2587,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>' . $zaehler . ' Runden in den Spielen aktualisiert !</strong>' . '</span>';
 			$my_text .= '<br />';
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_division');
@@ -2622,7 +2611,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('division_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2644,7 +2633,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>' . $zaehler . ' Gruppen in den Spielen/Projektteam aktualisiert !</strong>' . '</span>';
 			$my_text .= '<br />';
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_project_team');
@@ -2667,7 +2656,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('projectteam1_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2726,7 +2715,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 		{
 			/** jetzt werden die spiel id´s eingetragen */
 			$my_text = '';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_match');
@@ -2744,7 +2733,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 					$dbjsm->quoteName('match_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -2866,7 +2855,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 
 			try
 			{
-				$query = $dbjsm->getQuery(true);
+				$query = $dbjsm->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
@@ -2878,7 +2867,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
     $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			/**
 			 * löschen die das feld import_id gefüllt haben
@@ -2908,7 +2897,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			try
 			{
-				$query = $dbjsm->getQuery(true);
+				$query = $dbjsm->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
@@ -2920,7 +2909,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
     $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			/** löschen die das feld import_id gefüllt haben */
 			$conditions = array(
@@ -2948,7 +2937,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			try
 			{
-				$query = $dbjsm->getQuery(true);
+				$query = $dbjsm->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
@@ -2960,7 +2949,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
     $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			/** löschen die das feld import_id gefüllt haben */
 			$conditions = array(
@@ -2988,7 +2977,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			try
 			{
-				$query = $dbjsm->getQuery(true);
+				$query = $dbjsm->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE `" . $jsm_table . "` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ";
 				$dbjsm->setQuery($query);
@@ -3000,7 +2989,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
     $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			/**
 			 * löschen die das feld import_id gefüllt haben
@@ -3031,7 +3020,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			 */
 			try
 			{
-				$query = $dbjsm->getQuery(true);
+				$query = $dbjsm->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE `#__sportsmanagement_project_team` DROP INDEX combi ";
 				$dbjsm->setQuery($query);
@@ -3043,7 +3032,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
     $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
 			}
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('p.id,p.season_id,pt.id as pt_id,pt.team_id');
 			//$query->select('p.id,p.season_id,pt.id as pt_id,t.id as team_id');
@@ -3059,7 +3048,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 
 //$this->jsmapp->enqueueMessage(__LINE__.' <pre>'.print_r($result,true).'</pre>' );
-//$dbjsm->quoteName('modified') . ' = ' . $dbjsm->Quote('' . $date->toSql() . ''),
+//$dbjsm->quoteName('modified') . ' = ' . $dbjsm->quote('' . $date->toSql() . ''),
 //$dbjsm->quoteName('modified_by') . ' = ' . $user->get('id')
 
 
@@ -3081,12 +3070,12 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->team_id     = $row->team_id;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-//					$temp->modified    = $dbjsm->Quote('' . $date->toSql() . '');
+//					$temp->modified    = $dbjsm->quote('' . $date->toSql() . '');
 //					$temp->modified_by = $user->get('id');
 
 					try
 					{
-						$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
+						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3111,7 +3100,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$object->team_id = $new_id;
 
 				// Update their details in the users table using id as the primary key.
-				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+				$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_team', $object, 'id');
 			}
 
 			/**
@@ -3119,7 +3108,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			 */
 			try
 			{
-				$query = $dbjsm->getQuery(true);
+				$query = $dbjsm->createQuery();
 				$query->clear();
 				$query = "ALTER TABLE `#__sportsmanagement_project_team` ADD UNIQUE `combi` (`project_id`, `team_id`) ";
 				$dbjsm->setQuery($query);
@@ -3141,7 +3130,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			 * team_staff_id ist verknüpft mit der tabelle: sportsmanagement_team_staff
 			 * schlüsselfelder: projectteam_id, person_id, project_position_id
 			 */
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('ts.id as team_staff_id,ts.projectteam_id,ts.person_id');
 			$query->select('p.id as project_id,p.season_id');
@@ -3176,12 +3165,12 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->persontype  = 2;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-//					$temp->modified    = $dbjsm->Quote('' . $modified . '');
+//					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
 					try
 					{
-						$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3213,12 +3202,12 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->persontype  = 2;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-//					$temp->modified    = $dbjsm->Quote('' . $modified . '');
+//					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
 					try
 					{
-						$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3240,7 +3229,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('team_staff_id') . ' = ' . $row->team_staff_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_staff'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -3258,7 +3247,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			 * team_staff_id ist verknüpft mit der tabelle: sportsmanagement_team_layer
 			 * schlüsselfelder: projectteam_id, person_id, project_position_id
 			 */
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('ts.id as teamplayer_id,ts.projectteam_id,ts.person_id');
 			$query->select('p.id as project_id,p.season_id');
@@ -3295,12 +3284,12 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->persontype  = 1;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-//					$temp->modified    = $dbjsm->Quote('' . $modified . '');
+//					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
 					try
 					{
-						$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3334,13 +3323,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->persontype  = 1;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-//					$temp->modified    = $dbjsm->Quote('' . $modified . '');
+//					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
 					try
 					{
 						// Insert the object into table.
-						$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3365,7 +3354,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('teamplayer_id') . ' = ' . $row->teamplayer_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -3388,7 +3377,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('in_for') . ' = ' . $row->teamplayer_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -3397,7 +3386,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			/** jetzt werden die project referees umgesetzt */
 			$my_text = '';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_project_referee');
@@ -3414,7 +3403,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('project_referee_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_referee'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -3424,7 +3413,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				// $my_text .= '<br />';
 			}
 
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('pr.id,pr.project_id,pr.person_id,p.season_id');
 			$query->from('#__sportsmanagement_project_referee as pr');
@@ -3457,13 +3446,13 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$temp->persontype  = 3;
 					$temp->import_id   = 1;
 					$temp->published   = 1;
-//					$temp->modified    = $dbjsm->Quote('' . $modified . '');
+//					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
 					try
 					{
 						// Insert the object into table.
-						$result_insert = Factory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3483,7 +3472,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$object->person_id = $new_id;
 
 				// Update their details in the users table using id as the primary key.
-				$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project_referee', $object, 'id');
+				$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_referee', $object, 'id');
 			}
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong> Spieler wurden umgesetzt !</strong>' . '</span>';
@@ -3505,7 +3494,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 		{
 			/** statistic id umsetzen */
 			$my_text = '';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('id as name,id,import_id');
 			$query->from('#__sportsmanagement_statistic');
@@ -3524,7 +3513,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('statistic_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_match_staff_statistic'))->set($fields)->where($conditions);
 				$dbjsm->setQuery($query);
@@ -3561,7 +3550,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 		if ($jl_table_import_step == 25)
 		{
 			/** projekt positionen pro spieler einfügen */
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('p.id as project_id, p.season_id,st.team_id');
 			$query->from('#__sportsmanagement_project as p');
@@ -3615,7 +3604,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			/**
 			 * timestamp im projekt setzen
 			 */
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('p.id,p.modified');
 			$query->from('#__sportsmanagement_project as p');
@@ -3637,7 +3626,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$object->modified_timestamp = $projekt->modified_timestamp;
 
 					// Update their details in the table using id as the primary key.
-					$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+					$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project', $object, 'id');
 				}
 			}
 
@@ -3647,7 +3636,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			/**
 			 * timestamp in den spielen setzen
 			 */
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('m.id,m.match_date');
 			$query->from('#__sportsmanagement_match as m');
@@ -3669,7 +3658,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$object->match_timestamp = $match->match_timestamp;
 
 					// Update their details in the table using id as the primary key.
-					$result_update = Factory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+					$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_match', $object, 'id');
 				}
 			}
 
@@ -3749,7 +3738,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 		{
 			/** fix prediction game (prediction_ids && fav_team && champ tipps) */
 			$my_text = '';
-			$query = $dbjsm->getQuery(true);
+			$query = $dbjsm->createQuery();
 			$query->clear();
 			$query->select('name,id,import_id');
 			$query->from('#__sportsmanagement_prediction_game');
@@ -3768,7 +3757,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$dbjsm->quoteName('prediction_id') . ' = ' . $row->import_id,
 					$dbjsm->quoteName('import_id') . ' != 0'
 				);
-				$query      = $dbjsm->getQuery(true);
+				$query      = $dbjsm->createQuery();
 
 				$query->clear();
 				$query->update($dbjsm->quoteName('#__sportsmanagement_prediction_admin'))->set($fields)->where($conditions);
