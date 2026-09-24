@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage jlextdfbnetplayerimport
  * @file       jlextdfbnetplayerimport.php
@@ -9,10 +9,11 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filesystem\File;
@@ -40,7 +41,6 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 	@ini_set('memory_limit', $maxImportMemory);
 }
 
-jimport('joomla.html.pane');
 
 JLoader::import('components.com_sportsmanagement.models.seasons', JPATH_ADMINISTRATOR);
 //JLoader::import('components.com_sportsmanagement.helpers.icaljsm', JPATH_ADMINISTRATOR);
@@ -90,7 +90,6 @@ $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'Event.php';
 
 
 
-jimport('joomla.utilities.utility');
 
 
 /**
@@ -118,21 +117,12 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct()
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
-		$option          = Factory::getApplication()->input->getCmd('option');
-		$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
-		if ($show_debug_info)
-		{
-			$this->debug_info = true;
-		}
-		else
-		{
-			$this->debug_info = false;
-		}
+		parent::__construct($config, $factory);
 
-		parent::__construct();
-
+		$option = Factory::getApplication()->input->getCmd('option');
+		$this->debug_info = (bool) ComponentHelper::getParams($option)->get('show_debug_info', 0);
 	}
 
 	/**

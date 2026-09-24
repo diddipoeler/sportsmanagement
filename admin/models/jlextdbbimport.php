@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage models
  * @file       jlextdbbimport.php
@@ -12,11 +12,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 $option = Factory::getApplication()->input->getCmd('option');
@@ -48,7 +49,6 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 }
 
 
-jimport('joomla.html.pane');
 
 JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
@@ -57,7 +57,6 @@ JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE)
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filesystem\File;
 
-jimport('joomla.utilities.utility');
 
 
 /**
@@ -90,28 +89,17 @@ class sportsmanagementModeljlextdbbimport extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct()
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
-		$option          = Factory::getApplication()->input->getCmd('option');
-		$show_debug_info = ComponentHelper::getParams($option)->get('show_debug_info', 0);
+		parent::__construct($config, $factory);
 
-		if ($show_debug_info)
-		{
-			$this->debug_info = true;
-		}
-		else
-		{
-			$this->debug_info = false;
-		}
-
-		$this->jsmdb     = sportsmanagementHelper::getDBConnection();
-		$this->jsmquery  = $this->jsmdb->getQuery(true);
-		$this->jsmapp    = Factory::getApplication();
+		$option = Factory::getApplication()->input->getCmd('option');
+		$this->debug_info = (bool) ComponentHelper::getParams($option)->get('show_debug_info', 0);
+		$this->jsmdb = sportsmanagementHelper::getDBConnection();
+		$this->jsmquery = $this->jsmdb->createQuery();
+		$this->jsmapp = Factory::getApplication();
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
-
-		parent::__construct();
-
 	}
 
 	/**

@@ -1,0 +1,62 @@
+name: Joomla 5/6 legacy import bootstrap batch 368
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/jlextdbbimport.php'
+      - 'admin/models/jlextdfbnetplayerimport.php'
+      - 'admin/models/jlextlmoimports.php'
+      - 'admin/models/jlextprofleagimport.php'
+      - 'admin/models/jlextsisimport.php'
+      - '.github/workflows/joomla5-6-legacy-import-bootstrap-batch368.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/jlextdbbimport.php'
+      - 'admin/models/jlextdfbnetplayerimport.php'
+      - 'admin/models/jlextlmoimports.php'
+      - 'admin/models/jlextprofleagimport.php'
+      - 'admin/models/jlextsisimport.php'
+      - '.github/workflows/joomla5-6-legacy-import-bootstrap-batch368.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate legacy importer bootstrap migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/models/jlextdbbimport.php
+            admin/models/jlextdfbnetplayerimport.php
+            admin/models/jlextlmoimports.php
+            admin/models/jlextprofleagimport.php
+            admin/models/jlextsisimport.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- "jimport('joomla.html.pane')" "$file"
+            ! grep -Fq -- "jimport('joomla.utilities.utility')" "$file"
+          done
+          for file in admin/models/jlextdbbimport.php admin/models/jlextdfbnetplayerimport.php admin/models/jlextlmoimports.php admin/models/jlextprofleagimport.php; do
+            grep -Fq -- 'public function __construct($config = [], ?MVCFactoryInterface $factory = null)' "$file"
+            grep -Fq -- 'parent::__construct($config, $factory);' "$file"
+          done
+          ! grep -Fq -- 'parent::__construct($config);' admin/models/jlextprofleagimport.php
+          ! grep -Fq -- 'getQuery(true)' admin/models/jlextdbbimport.php
+          ! grep -Fq -- 'getQuery(true)' admin/models/jlextprofleagimport.php

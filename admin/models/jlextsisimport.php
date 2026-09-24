@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage models
  * @file       jlextsisimport.php
@@ -12,7 +12,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -50,13 +50,11 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 }
 
 
-jimport('joomla.html.pane');
 
 JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
 
-jimport('joomla.utilities.utility');
 
 
 /**

@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage models
  * @file       jlextprofleagimport.php
@@ -12,11 +12,12 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
@@ -52,8 +53,6 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 require_once JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'SofeeXmlParser.php';
 
 
-jimport('joomla.html.pane');
-jimport('joomla.utilities.utility');
 
 
 /**
@@ -84,25 +83,16 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 	 *
 	 * @return void
 	 */
-	function __construct()
+	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
-		parent::__construct($config);
-		$this->jsmdb     = sportsmanagementHelper::getDBConnection();
-		$this->jsmquery  = $this->jsmdb->getQuery(true);
-		$this->jsmapp    = Factory::getApplication();
+		parent::__construct($config, $factory);
+
+		$this->jsmdb = sportsmanagementHelper::getDBConnection();
+		$this->jsmquery = $this->jsmdb->createQuery();
+		$this->jsmapp = Factory::getApplication();
 		$this->jsmjinput = $this->jsmapp->input;
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
-		$show_debug_info = ComponentHelper::getParams($this->jsmoption)->get('show_debug_info', 0);
-
-		if ($show_debug_info)
-		{
-			$this->debug_info = true;
-		}
-		else
-		{
-			$this->debug_info = false;
-		}
-
+		$this->debug_info = (bool) ComponentHelper::getParams($this->jsmoption)->get('show_debug_info', 0);
 	}
 
 	/**
