@@ -1,39 +1,26 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       sportstype.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * SportsManagement legacy compatibility bridge for the native Sportstype table.
+ *
+ * The active Joomla 5/6 implementation lives in admin/src/Table/SportstypeTable.php.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementTableSportsType
- *
- * @package
- * @author    diddi
- * @copyright 2014
- * @version   $Id$
- * @access    public
- */
-class sportsmanagementTableSportsType extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\SportstypeTable;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_sports_type', 'id', $db);
-	}
+if (!class_exists(SportstypeTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportstypeTable.php';
+}
 
+if (!class_exists(SportstypeTable::class)) {
+    throw new \RuntimeException('SportsManagement native Sportstype table could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementTableSportsType', false)) {
+    class_alias(SportstypeTable::class, 'sportsmanagementTableSportsType');
 }

@@ -11,7 +11,7 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtensionLanguageHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Legacy\LegacyBootstrap;

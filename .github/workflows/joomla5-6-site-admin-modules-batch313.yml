@@ -1,0 +1,66 @@
+name: Joomla 5/6 site admin modules batch 313
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'site/models/scoresheet.php'
+      - 'admin/sportsmanagement.php'
+      - 'admin/models/smextxmleditor.php'
+      - 'admin/controllers/smextxmleditor.php'
+      - 'admin/tables/sportstype.php'
+      - 'modules/mod_sportsmanagement_google_calendar/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_matchesslider/tmpl/default.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch313.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'site/models/scoresheet.php'
+      - 'admin/sportsmanagement.php'
+      - 'admin/models/smextxmleditor.php'
+      - 'admin/controllers/smextxmleditor.php'
+      - 'admin/tables/sportstype.php'
+      - 'modules/mod_sportsmanagement_google_calendar/tmpl/default.php'
+      - 'modules/mod_sportsmanagement_matchesslider/tmpl/default.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch313.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 site admin modules batch
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/sportsmanagement.php
+            site/models/scoresheet.php
+            admin/sportsmanagement.php
+            admin/models/smextxmleditor.php
+            admin/controllers/smextxmleditor.php
+            admin/tables/sportstype.php
+            modules/mod_sportsmanagement_google_calendar/tmpl/default.php
+            modules/mod_sportsmanagement_matchesslider/tmpl/default.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          grep -Fq -- "class_alias(SportstypeTable::class, 'sportsmanagementTableSportsType')" admin/tables/sportstype.php
+          ! grep -Fq -- 'extends JSMTable' admin/tables/sportstype.php
+          ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' admin/tables/sportstype.php
