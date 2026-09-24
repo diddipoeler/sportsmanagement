@@ -540,4 +540,59 @@ final class ProjectModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+
+    /** Check component ACL, falling back to the historical project admin/editor assignment. */
+    public function hasEditPermission(?string $task = null): bool
+    {
+        $app = $this->siteApplication();
+        $user = $app->getIdentity();
+
+        if ((int) $user->id <= 0) {
+            return false;
+        }
+
+        $allowed = false;
+
+        if ($task !== null && $task !== '') {
+            $allowed = $user->authorise($task, 'com_sportsmanagement');
+
+            if (!$allowed) {
+                $app->enqueueMessage(
+                    Text::sprintf('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ACL_PERMISSION', $task),
+                    'error'
+                );
+            }
+        }
+
+        if (!$allowed && $this->isUserProjectAdminOrEditor((int) $user->id)) {
+            return true;
+        }
+
+        if (!$allowed) {
+            $app->enqueueMessage(
+                Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'),
+                'error'
+            );
+        }
+
+        return $allowed;
+    }
+
+    /** Check the historical per-project administrator/editor fields. */
+    public function isUserProjectAdminOrEditor(int $userId, ?object $project = null): bool
+    {
+        if ($userId <= 0) {
+            return false;
+        }
+
+        $project ??= $this->getProject();
+
+        if (!$project) {
+            return false;
+        }
+
+        return $userId === (int) ($project->admin ?? 0)
+            || $userId === (int) ($project->editor ?? 0);
+    }
+
 }

@@ -1,4 +1,4 @@
-name: Joomla 5/6 native project core data batch 330
+name: Joomla 5/6 native project config permissions batch 332
 
 on:
   push:
@@ -7,12 +7,14 @@ on:
       - 'site/models/project.php'
       - 'site/src/Model/ProjectModel.php'
       - '.github/workflows/joomla5-6-native-project-core-data-batch330.yml'
+      - '.github/workflows/joomla5-6-native-project-config-permissions-batch332.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'site/models/project.php'
       - 'site/src/Model/ProjectModel.php'
       - '.github/workflows/joomla5-6-native-project-core-data-batch330.yml'
+      - '.github/workflows/joomla5-6-native-project-config-permissions-batch332.yml'
 
 permissions:
   contents: read
@@ -26,7 +28,7 @@ jobs:
         with:
           php-version: '8.3'
           coverage: none
-      - name: Validate native project core data migration
+      - name: Validate native config and permission migration
         shell: bash
         run: |
           set -euo pipefail
@@ -39,8 +41,7 @@ jobs:
             grep -Fq -- '@version    5.6.0' "$file"
             grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
           done
-          for method in getProjectMatchCount getAdjacentProject updateProjectHits getProjectDivisions getProjectDivisionIds getProjectDivisionTreeIds getRoundOptions getProjectTeamInfo getProjectTeamId getRefereeOptions; do
-            grep -Fq -- "function $method" site/src/Model/ProjectModel.php
-          done
-          ! grep -Fq -- 'version_compare(JVERSION' <(sed -n '/function getDivisionsId/,/function getRounds/p' site/models/project.php)
-          ! grep -Fq -- '$this->_divisions' site/models/project.php
+          grep -Fq -- 'public function hasEditPermission' site/src/Model/ProjectModel.php
+          grep -Fq -- 'public function isUserProjectAdminOrEditor' site/src/Model/ProjectModel.php
+          ! grep -Fq -- 'version_compare(JVERSION' site/models/project.php
+          ! grep -Fq -- 'new Registry' site/models/project.php

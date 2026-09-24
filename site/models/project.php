@@ -858,7 +858,7 @@ try{
 	 */
 	public static function getOverallConfig($cfg_which_database = 0)
 	{
-		return self::getTemplateConfig('overall', $cfg_which_database, __METHOD__);
+		return self::nativeProjectModel($cfg_which_database)->getOverallConfig();
 	}
 
 	/**
@@ -870,128 +870,8 @@ try{
 	 */
 	public static function getTemplateConfig($template, $cfg_which_database = 0, $call_function = '')
 	{
-		$app           = Factory::getApplication();
-		$option        = $app->input->getCmd('option');
-		$view          = $app->input->getVar("view");
-		$db            = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query         = $db->createQuery();
-		$checktemplate = false;
-
-		switch ($view)
-		{
-			case 'editmatch':
-			case 'editprojectteam':
-			case 'editteam':
-			case 'editperson':
-			case 'editclub':
-			case 'jltournamenttree':
-				break;
-			default:
-				$checktemplate = true;
-				break;
-		}
-
-		/**
-		 *
-		 * first load the default settings from the default <template>.xml file
-		 */
-		$paramsdata          = "";
-		$arrStandardSettings = array();
-
-		$xmlfile = JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'settings' . DIRECTORY_SEPARATOR . 'default' . DIRECTORY_SEPARATOR . $template . '.xml';
-
-		if (self::$projectid == 0)
-		{
-			return $arrStandardSettings;
-		}
-
-		$query->select('t.params');
-		$query->from('#__sportsmanagement_template_config AS t');
-		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = t.project_id');
-		$query->where('t.template LIKE ' . $db->Quote($template));
-		$query->where('p.id = ' . (int) self::$projectid);
-
-		$starttime = microtime();
-        try{
-		$db->setQuery($query);
-		$result = $db->loadResult();
-}
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
-		}
-        
-		if ($checktemplate)
-		{
-			if (!$result)
-			{
-				$project = self::getProject($cfg_which_database, __METHOD__);
-
-				if (!empty($project) && $project->master_template > 0)
-				{
-					$query->clear();
-					$query->select('t.params');
-					$query->from('#__sportsmanagement_template_config AS t');
-					$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = t.project_id');
-					$query->where('t.template LIKE ' . $db->Quote($template));
-					$query->where('p.id = ' . $project->master_template);
-
-					$starttime = microtime();
-                    try{
-					$db->setQuery($query);
-					$result = $db->loadResult();
-}
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
-		}
-					if (!$result)
-					{
-self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING') . " " . $template;
-self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_MASTER_TEMPLATE_MISSING_PID') . $project->master_template;
-self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT');
-					
-
-						return $arrStandardSettings;
-					}
-				}
-				else
-				{
-					/**
-					 *
-					 * there are no saved settings found, use the standard xml file default values
-					 */
-					return $arrStandardSettings;
-				}
-			}
-		}
-
-		$jRegistry = new Registry;
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$jRegistry->loadString($result);
-		}
-		else
-		{
-			$jRegistry->loadJSON($result);
-		}
-
-		$configvalues = $jRegistry->toArray();
-
-		/**
-		 *
-		 * merge and overwrite standard settings with individual view settings
-		 */
-		$settings = array_merge($arrStandardSettings, $configvalues);
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $settings;
-
+		return self::nativeProjectModel($cfg_which_database)
+			->getTemplateConfig((string) $template);
 	}
 
 	/**
@@ -1161,47 +1041,8 @@ try{
 	 */
 	public static function hasEditPermission($task = null, $cfg_which_database = 0)
 	{
-		$app     = Factory::getApplication();
-		$option  = $app->input->getCmd('option');
-		$allowed = false;
-		$user    = $app->getIdentity();
-
-		// Ist der user der einer gruppe zugeordnet ?
-		$groups = UserHelper::getUserGroups($user->get('id'));
-
-		if ($user->id > 0)
-		{
-			if (!is_null($task))
-			{
-				if (!$user->authorise($task, $option))
-				{
-					$allowed = false;
-					$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ACL_PERMISSION', $task), 'Error');
-				}
-				else
-				{
-					$allowed = true;
-				}
-			}
-
-			// If no ACL permission, check for overruling permission by project admin/editor (compatibility < 2.5)
-			if (!$allowed)
-			{
-				// If not, then check if user is project admin or editor
-				$project = self::getProject($cfg_which_database, __METHOD__);
-
-				if (self::isUserProjectAdminOrEditor($user->id, $project))
-				{
-					$allowed = true;
-				}
-				else
-				{
-					$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_ERROR_ADMIN_EDITOR'), 'Error');
-				}
-			}
-		}
-
-		return $allowed;
+		return self::nativeProjectModel($cfg_which_database)
+			->hasEditPermission($task === null ? null : (string) $task);
 	}
 
 	
@@ -1215,14 +1056,10 @@ try{
 	 */
 	public static function isUserProjectAdminOrEditor($userId = 0, $project = array(), $cfg_which_database = 0)
 	{
-		$result = false;
+		$projectObject = is_object($project) ? $project : null;
 
-		if ($userId > 0)
-		{
-			$result = ($userId == $project->admin || $userId == $project->editor);
-		}
-
-		return $result;
+		return self::nativeProjectModel($cfg_which_database)
+			->isUserProjectAdminOrEditor((int) $userId, $projectObject);
 	}
 
 	/**
@@ -1280,7 +1117,7 @@ try{
 	 */
 	function getMapConfig($cfg_which_database = 0)
 	{
-		return self::getTemplateConfig('map', $cfg_which_database, __METHOD__);
+		return self::nativeProjectModel($cfg_which_database)->getTemplateConfig('map');
 	}
 
 	/**
