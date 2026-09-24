@@ -172,4 +172,84 @@ final class ProjectModel extends SportsManagementProjectModel
 
         return $project ? (string) ($project->country ?? '') : '';
     }
+
+    /**
+     * Return event types using the legacy id-keyed contract.
+     *
+     * @param mixed $eventIds Comma-separated ids, one id, or an array of ids.
+     */
+    public function getEventTypes($eventIds = 0, int $sportsTypeId = 0, int $projectId = 0, int $matchId = 0): array
+    {
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('et.id', 'etid'),
+                $db->quoteName('et.name'),
+                $db->quoteName('et.icon'),
+                $db->quoteName('et.id', 'id'),
+                "CONCAT_WS(':', et.id, et.alias) AS event_slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_eventtype', 'et'));
+
+        $needsMatchJoin = $matchId > 0 || $projectId > 0;
+        if ($needsMatchJoin) {
+            $query->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_match_event', 'me')
+                . ' ON ' . $db->quoteName('me.event_type_id') . ' = ' . $db->quoteName('et.id')
+            );
+        }
+
+        if ($matchId > 0) {
+            $query->where($db->quoteName('me.match_id') . ' = :eventTypeMatchId')
+                ->bind(':eventTypeMatchId', $matchId, ParameterType::INTEGER);
+        }
+
+        if ($projectId > 0) {
+            $query
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_match', 'mat')
+                    . ' ON ' . $db->quoteName('mat.id') . ' = ' . $db->quoteName('me.match_id')
+                )
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_round', 'r')
+                    . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('mat.round_id')
+                )
+                ->where($db->quoteName('r.project_id') . ' = :eventTypeProjectId')
+                ->bind(':eventTypeProjectId', $projectId, ParameterType::INTEGER);
+        }
+
+        $ids = [];
+        foreach (is_array($eventIds) ? $eventIds : explode(',', (string) $eventIds) as $value) {
+            $id = (int) trim((string) $value);
+            if ($id > 0) {
+                $ids[$id] = $id;
+            }
+        }
+
+        if ($ids) {
+            $query->whereIn($db->quoteName('et.id'), array_values($ids), ParameterType::INTEGER);
+        }
+
+        if ($sportsTypeId > 0) {
+            $query->where($db->quoteName('et.sports_type_id') . ' = :eventTypeSportsTypeId')
+                ->bind(':eventTypeSportsTypeId', $sportsTypeId, ParameterType::INTEGER);
+        }
+
+        $query
+            ->group([
+                $db->quoteName('et.id'),
+                $db->quoteName('et.name'),
+                $db->quoteName('et.icon'),
+                $db->quoteName('et.alias'),
+            ])
+            ->order($db->quoteName('et.name') . ' ASC');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList('etid') ?: [];
+    }
+
 }

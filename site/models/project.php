@@ -20,6 +20,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
 use Diddipoeler\Component\SportsManagement\Site\Model\ProjectModel as NativeProjectModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\MatchreportDataModel as NativeMatchreportDataModel;
 
 if (!defined('JSM_PATH'))
 {
@@ -139,6 +140,40 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 
 		return $model;
 	}
+
+	/**
+	 * Build the native Joomla 5/6 match-report data model for legacy callers.
+	 */
+	private static function nativeMatchreportDataModel($cfg_which_database = 0): NativeMatchreportDataModel
+	{
+		if (!class_exists(NativeMatchreportDataModel::class)) {
+			foreach ([
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportDataModel.php',
+			] as $nativeFile) {
+				if (is_file($nativeFile)) {
+					require_once $nativeFile;
+				}
+			}
+		}
+
+		if (!class_exists(NativeMatchreportDataModel::class)) {
+			throw new \RuntimeException('SportsManagement native MatchreportData model could not be loaded.', 500);
+		}
+
+		$model = new NativeMatchreportDataModel();
+		$model->setDatabaseSelector((int) $cfg_which_database);
+
+		if ((int) self::$projectid <= 0) {
+			self::$projectid = Factory::getApplication()->input->getInt('p', 0);
+		}
+
+		$model->setProjectId((int) self::$projectid);
+
+		return $model;
+	}
+
 
 	/**
 	 * sportsmanagementModelProject::__construct()
@@ -1051,49 +1086,12 @@ try{
 	public static function getEventTypes($evid = 0, $cfg_which_database = 0, $sports_type_id = 0,
 					    $p = 0,$tid = 0,$s = 0,$mid = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->createQuery();
-		$query->select('et.id AS etid,et.name,et.icon');
-		$query->select('me.event_type_id AS id');
-		$query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
-		$query->from('#__sportsmanagement_eventtype AS et');
-		$query->join('LEFT', '#__sportsmanagement_match_event AS me ON et.id = me.event_type_id');
-
-		if ( $mid )
-        {
-        $query->where('me.match_id = ' . $mid);
-        }
-      
-      if ( $p )
-      {
-      $query->join('LEFT', '#__sportsmanagement_match AS mat ON mat.id = me.match_id');  
-      $query->join('LEFT', '#__sportsmanagement_round AS r ON r.id = mat.round_id');    
-      $query->where('r.project_id = ' . $p);  
-      }
-		
-		if ($evid)
-		{
-		$query->where("me.event_type_id IN (" . $evid . ")");
-		}
-        if ( $sports_type_id )
-        {
-        $query->where('et.sports_type_id = ' . $sports_type_id);
-        }
-
-try{
-		$db->setQuery($query);
-		$result = $db->loadObjectList('etid');
-        }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
-		}
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-		return $result;
+		return self::nativeProjectModel($cfg_which_database)->getEventTypes(
+			$evid,
+			(int) $sports_type_id,
+			(int) $p,
+			(int) $mid
+		);
 	}
 
 	/**
@@ -1368,157 +1366,8 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 	 */
 	public static function getMatchSubstitutions($match_id, $cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->createQuery();
-
-		$query->clear();
-		$query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for,mp.project_position_id');
-		$query->from('#__sportsmanagement_match_player AS mp');
-		$query->where('mp.match_id = ' . (int) $match_id);
-		$query->where('mp.came_in > 0');
-		$query->order('mp.in_out_time');
-		$db->setQuery($query);
-		$result = $db->loadObjectList();
-
-		foreach ($result AS $inout)
-		{
-			$query->clear();
-			$query->select('p.firstname,p.nickname,p.lastname,p.id AS playerid');
-			$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
-			$query->from('#__sportsmanagement_person AS p');
-			$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
-			$query->where('tp1.id = ' . $inout->teamplayer_id);
-			$db->setQuery($query);
-			$result1 = $db->loadObject();
-
-			$inout->firstname       = $result1->firstname;
-			$inout->nickname        = $result1->nickname;
-			$inout->lastname        = $result1->lastname;
-			$inout->playerid        = $result1->playerid;
-			$inout->person_id       = $result1->person_slug;
-			$inout->sub_person_slug = $result1->person_slug;
-
-			$query->clear();
-			$query->select('pos.id,pos.name');
-			$query->from('#__sportsmanagement_position AS pos');
-			$query->where('pos.id = ' . $inout->project_position_id);
-			$db->setQuery($query);
-			$result1 = $db->loadObject();
-
-			$inout->in_position = $result1->name;
-
-			$query->clear();
-			$query->select('ppos.id');
-			$query->from('#__sportsmanagement_project_position AS ppos');
-			$query->where('ppos.position_id = ' . $result1->id);
-			$query->where('ppos.project_id = ' . (int) self::$projectid);
-
-			try
-			{
-				$db->setQuery($query);
-				$result2        = $db->loadObject();
-				$inout->pposid1 = $result2->id;
-                }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-$inout->pposid1 = 0;
-		}
-        
-		
-
-			$query->clear();
-			$query->select('p.firstname AS out_firstname,p.nickname AS out_nickname,p.lastname AS out_lastname,p.id AS out_ptid');
-			$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug');
-			$query->from('#__sportsmanagement_person AS p');
-			$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.person_id = p.id');
-			$query->where('tp1.id = ' . $inout->in_for);
-			try
-			{
-			$db->setQuery($query);
-			$result1 = $db->loadObject();
-			$inout->out_firstname = $result1->out_firstname;
-			$inout->out_nickname  = $result1->out_nickname;
-			$inout->out_lastname  = $result1->out_lastname;
-			$inout->out_ptid      = $result1->out_ptid;
-			$inout->out_person_id = $result1->person_slug;
-			$inout->person_slug   = $result1->person_slug;
-			}
-			catch (Exception $e)
-			{
-			// Catch any database errors.
-			$inout->out_firstname = '';
-			$inout->out_nickname  = '';
-			$inout->out_lastname  = '';
-			$inout->out_ptid      = 0;
-			$inout->out_person_id = '';
-			$inout->person_slug   = '';	
-			}
-
-			$query->clear();
-			$query->select('pos.id,pos.name');
-			$query->from('#__sportsmanagement_position AS pos');
-			$query->join('INNER', '#__sportsmanagement_match_player AS mp ON mp.project_position_id = pos.id ');
-			$query->where('mp.teamplayer_id = ' . $inout->in_for);
-			$query->where('mp.match_id = ' . (int) $match_id);
-			try
-			{
-			$db->setQuery($query);
-			$result1 = $db->loadObject();
-			$inout->out_position = $result1->name;
-			}
-			catch (Exception $e)
-			{
-			// Catch any database errors.
-			$inout->out_position = '';
-			}
-
-			$query->clear();
-			$query->select('ppos.id');
-			$query->from('#__sportsmanagement_project_position AS ppos');
-			$query->where('ppos.position_id = ' . $result1->id);
-			$query->where('ppos.project_id = ' . (int) self::$projectid);
-
-			try
-			{
-				$db->setQuery($query);
-				$result2 = $db->loadObject();
-
-				$inout->pposid2 = $result2->id;
-		 }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-$inout->pposid2 = 0;
-		}
-
-			$query->clear();
-			$query->select('pt.team_id,pt.id AS ptid');
-			$query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug');
-			$query->from('#__sportsmanagement_project_team AS pt');
-			$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id ');
-			$query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp1 ON tp1.team_id = st1.team_id');
-			$query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st1.team_id');
-			$query->where('pt.project_id = ' . (int) self::$projectid);
-			$query->where('tp1.id = ' . $inout->teamplayer_id);
-			$db->setQuery($query);
-			$result1          = $db->loadObject();
-			$inout->ptid      = $result1->ptid;
-			$inout->team_id   = $result1->team_slug;
-			$inout->team_slug = $result1->team_slug;
-		}
-
-		if (!$result)
-		{
-		}
-
-		return $result;
+		return self::nativeMatchreportDataModel($cfg_which_database)
+			->getMatchSubstitutions((int) $match_id);
 	}
 
 	/**
@@ -1576,125 +1425,11 @@ try{
 	 */
 	public static function getMatchEvents($match_id, $showcomments = 0, $sortdesc = 0, $cfg_which_database = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
-		$option   = $jinput->getCmd('option');
-
-		// Get a db connection.
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->createQuery();
-		$starttime = microtime();
-
-		if ($showcomments == 1)
-		{
-			$join = 'LEFT';
-
-			// $addline = ' me.notes,';
-			$query->select('me.notes');
-		}
-		else
-		{
-			$join = 'LEFT';
-
-			// $addline = '';
-		}
-
-		$esort           = '';
-		$arrayobjectsort = '1';
-
-		if ($sortdesc == 1)
-		{
-			$esort           = ' DESC';
-			$arrayobjectsort = '-1';
-		}
-
-		$query->select('me.event_type_id,me.id as event_id,me.event_time,me.notice,me.projectteam_id AS ptid,me.event_sum');
-		$query->select('CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_id');
-		$query->select('et.name AS eventtype_name');
-		$query->select('t.name AS team_name');
-		$query->select('tp.picture AS tppicture1');
-		$query->select('p.firstname AS firstname1,p.nickname AS nickname1,p.lastname AS lastname1,p.picture AS picture1');
-		$query->select('CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS playerid');
-
-		// From
-		$query->from('#__sportsmanagement_match_event AS me');
-		$query->join($join, '#__sportsmanagement_eventtype AS et ON me.event_type_id = et.id');
-		$query->join($join, '#__sportsmanagement_project_team AS pt ON me.projectteam_id = pt.id');
-		$query->join($join, '#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
-		$query->join($join, '#__sportsmanagement_team AS t ON st.team_id = t.id');
-		$query->join($join, '#__sportsmanagement_season_team_person_id AS tp ON tp.team_id = st.team_id AND tp.id = me.teamplayer_id');
-		$query->join($join, '#__sportsmanagement_person AS p ON tp.person_id = p.id');
-
-		// Where
-		$query->where('me.match_id = ' . (int) $match_id);
-		$query->where('COALESCE(p.published,1) = 1');
-		$query->group('me.event_type_id,me.id,me.event_time,me.notice,me.event_sum,me.projectteam_id,t.alias, t.id, et.name, t.name, p.picture, tp.picture,p.firstname, p.nickname, p.lastname, p.alias, p.id');
-
-		// Order
-		$query->order('(me.event_time + 0)' . $esort . ', me.event_type_id, me.id');
-
-		try
-		{
-			$db->setQuery($query);
-			$events = $db->loadObjectList();
-		}
-		catch (Exception $e)
-		{
-		$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-			$events = false;
-		}
-
-		if (!$events)
-		{
-		}
-
-		$query = $db->createQuery();
-		$query->clear();
-
-		$query->select('*');
-
-		// From
-		$query->from('#__sportsmanagement_match_commentary');
-
-		// Where
-		$query->where('match_id = ' . (int) $match_id);
-try{
-		$db->setQuery($query);
-		$commentary = $db->loadObjectList();
-}
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-		}
-		if ($commentary)
-		{
-			foreach ($commentary as $comment)
-			{
-				$temp                = new stdClass;
-				$temp->event_type_id = 0;
-				$temp->event_sum     = $comment->type;
-				$temp->event_time    = $comment->event_time;
-				$temp->notes         = $comment->notes;
-				$events[]            = $temp;
-			}
-		}
-
-		if ($events)
-		{
-			$events = ArrayHelper::sortObjects($events, 'event_time', $arrayobjectsort);
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $events;
+		return self::nativeMatchreportDataModel($cfg_which_database)->getMatchEvents(
+			(int) $match_id,
+			(int) $showcomments === 1,
+			(int) $sortdesc === 1
+		);
 	}
 
 	/**

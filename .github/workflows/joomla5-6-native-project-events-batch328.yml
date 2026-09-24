@@ -1,0 +1,51 @@
+name: Joomla 5/6 native project events batch 328
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/project.php'
+      - 'site/src/Model/ProjectModel.php'
+      - '.github/workflows/joomla5-6-native-project-events-batch328.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/project.php'
+      - 'site/src/Model/ProjectModel.php'
+      - '.github/workflows/joomla5-6-native-project-events-batch328.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate project event migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/project.php
+            site/src/Model/ProjectModel.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+          done
+          grep -Fq -- 'private static function nativeMatchreportDataModel' site/models/project.php
+          grep -Fq -- '->getMatchSubstitutions((int) $match_id)' site/models/project.php
+          grep -Fq -- '->getMatchEvents(' site/models/project.php
+          grep -Fq -- 'public function getEventTypes' site/src/Model/ProjectModel.php
+          ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' <(sed -n '/function getEventTypes/,/function getprojectteamID/p' site/models/project.php)
+          ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' <(sed -n '/function getMatchSubstitutions/,/function getMatch/p' site/models/project.php)
+          ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' <(sed -n '/function getMatchEvents/,/function hasEditPermission/p' site/models/project.php)
