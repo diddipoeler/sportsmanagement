@@ -1,6 +1,9 @@
 <?php
 /**
- * Legacy SportsManagement club icons layout retained for Joomla 5/6 compatibility.
+ * Legacy club-icons layout alias for Joomla 5/6.
+ *
+ * The historical default2 layout no longer maintains a separate empty table.
+ * Existing module selections now render through the native default layout.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -9,18 +12,4 @@
  */
 \defined('_JEXEC') or die;
 
-$pictureHeight = max(1, (int) $params->get('picture_height', 30));
-?>
-<style>
-.img-height {
-    width: auto;
-    height: <?php echo $pictureHeight; ?>px;
-}
-</style>
-
-<table id="clubicons<?php echo (int) $module->id; ?>" class="modjsmclubicons">
-    <tbody>
-        <tr>
-        </tr>
-    </tbody>
-</table>
+require __DIR__ . '/default.php';
