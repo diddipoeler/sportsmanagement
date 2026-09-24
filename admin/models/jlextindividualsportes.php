@@ -1,18 +1,22 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 administrator individual-sports list model.
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Jlextindividualsportes model.
  *
  * @version    5.6.0
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextindividualsportesModel;
 
 if (!class_exists(JlextindividualsportesModel::class)) {
-    require_once JPATH_COMPONENT_ADMINISTRATOR . '/src/Model/JlextindividualsportesModel.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlextindividualsportesModel.php';
+}
+
+if (!class_exists(JlextindividualsportesModel::class)) {
+    throw new \RuntimeException('SportsManagement native Jlextindividualsportes model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModeljlextindividualsportes', false)) {
