@@ -25,7 +25,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
 use Joomla\Utilities\ArrayHelper;
 
-$option        = Factory::getApplication()->input->getCmd('option');
+$option        = Factory::getApplication()->getInput()->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
 if (empty($maxImportTime))
@@ -87,7 +87,7 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 	{
 		parent::__construct($config, $factory);
 
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$this->debug_info = (bool) ComponentHelper::getParams($option)->get('show_debug_info', 0);
 	}
 
@@ -98,9 +98,9 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 	 */
 	function checkStartExtension()
 	{
-		$option        = Factory::getApplication()->input->getCmd('option');
+		$option        = Factory::getApplication()->getInput()->getCmd('option');
 		$app           = Factory::getApplication();
-		$user          = Factory::getUser();
+		$user          = Factory::getApplication()->getIdentity();
 		$fileextension = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'lmoimport-2-0.txt';
 		$xmlfile       = '';
 
@@ -196,19 +196,19 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 
 		global $app, $option;
 		$app      =& Factory::getApplication();
-		$document =& Factory::getDocument();
+		$document =& Factory::getApplication()->getDocument();
 
 		$lang  = Factory::getLanguage();
 		$teile = explode("-", $lang->getTag());
 
-		$post     = Factory::getApplication()->input->post->getArray(array());
+		$post     = Factory::getApplication()->getInput()->post->getArray(array());
 		$country  = $post['country'];
 		$agegroup = $post['agegroup'];
 		$template = $post['copyTemplate'];
 
 		$app->enqueueMessage(Text::_('land ' . $country . ''), '');
 
-		$option  = Factory::getApplication()->input->getCmd('option');
+		$option  = Factory::getApplication()->getInput()->getCmd('option');
 		$project = $app->getUserState($option . 'project', 0);
 
 		$tempprovorschlag = '';

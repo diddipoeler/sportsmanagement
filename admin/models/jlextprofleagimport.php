@@ -23,7 +23,7 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
 use Joomla\Utilities\ArrayHelper;
 
-$option        = Factory::getApplication()->input->getCmd('option');
+$option        = Factory::getApplication()->getInput()->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
 if (empty($maxImportTime))
@@ -90,7 +90,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 		$this->jsmdb = sportsmanagementHelper::getDBConnection();
 		$this->jsmquery = $this->jsmdb->createQuery();
 		$this->jsmapp = Factory::getApplication();
-		$this->jsmjinput = $this->jsmapp->input;
+		$this->jsmjinput = $this->jsmapp->getInput();
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 		$this->debug_info = (bool) ComponentHelper::getParams($this->jsmoption)->get('show_debug_info', 0);
 	}
@@ -282,22 +282,22 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 	 */
 	function getData()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 
 		$app      = Factory::getApplication();
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 
 		$lang  = Factory::getLanguage();
 		$teile = explode("-", $lang->getTag());
 
-		$post    = Factory::getApplication()->input->post->getArray(array());
+		$post    = Factory::getApplication()->getInput()->post->getArray(array());
 		$country = $post['country'];
 
 		// $country = JSMCountries::convertIso2to3($teile[1]);
 
 		$app->enqueueMessage(Text::_('land ' . $country . ''), '');
 
-		$option  = Factory::getApplication()->input->getCmd('option');
+		$option  = Factory::getApplication()->getInput()->getCmd('option');
 		$project = $app->getUserState($option . 'project', 0);
 
 		$temp                       = new stdClass;

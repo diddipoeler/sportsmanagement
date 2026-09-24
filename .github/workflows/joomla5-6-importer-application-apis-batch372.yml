@@ -1,0 +1,44 @@
+name: Joomla 5/6 importer application APIs batch 372
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/jlextlmoimports.php'
+      - 'admin/models/jlextprofleagimport.php'
+      - '.github/workflows/joomla5-6-importer-application-apis-batch372.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/jlextlmoimports.php'
+      - 'admin/models/jlextprofleagimport.php'
+      - '.github/workflows/joomla5-6-importer-application-apis-batch372.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate importer application API migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(admin/models/jlextlmoimports.php admin/models/jlextprofleagimport.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Factory::getApplication()->input' "$file"
+            ! grep -Fq -- 'Factory::getDocument()' "$file"
+          done
+          ! grep -Fq -- 'Factory::getUser()' admin/models/jlextlmoimports.php
