@@ -1,0 +1,62 @@
+name: Joomla 5/6 site helper legacy batch 345
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/helpers/comments.php'
+      - 'site/helpers/countries.php'
+      - 'site/helpers/imageselect.php'
+      - 'site/helpers/predictionroute.php'
+      - 'site/helpers/ranking.php'
+      - 'site/helpers/route.php'
+      - '.github/workflows/joomla5-6-site-helper-legacy-batch345.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/helpers/comments.php'
+      - 'site/helpers/countries.php'
+      - 'site/helpers/imageselect.php'
+      - 'site/helpers/predictionroute.php'
+      - 'site/helpers/ranking.php'
+      - 'site/helpers/route.php'
+      - '.github/workflows/joomla5-6-site-helper-legacy-batch345.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site helper legacy migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/helpers/comments.php
+            site/helpers/countries.php
+            site/helpers/imageselect.php
+            site/helpers/predictionroute.php
+            site/helpers/ranking.php
+            site/helpers/route.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          grep -Fq -- 'SportsManagement native MatchComments helper could not be loaded.' site/helpers/comments.php
+          grep -Fq -- 'SportsManagement database resolver could not be loaded.' site/helpers/countries.php
+          grep -Fq -- 'SportsManagement native SiteRouteHelper could not be loaded.' site/helpers/predictionroute.php
+          ! grep -Fq -- '@version    1.0.05' site/helpers/ranking.php
+          ! grep -Fq -- '@version    1.0.05' site/helpers/route.php

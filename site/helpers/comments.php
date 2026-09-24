@@ -7,12 +7,24 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchCommentsHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+
+if (!class_exists(MatchCommentsHelper::class)) {
+    $nativeHelper = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/MatchCommentsHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(MatchCommentsHelper::class)) {
+    throw new \RuntimeException('SportsManagement native MatchComments helper could not be loaded.', 500);
+}
 
 /**
  * Historical comments facade kept for legacy templates and Kunena integrations.

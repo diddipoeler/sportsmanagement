@@ -10,11 +10,23 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+
+if (!class_exists(SiteRouteHelper::class)) {
+    $nativeHelper = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
+
+    if (is_file($nativeHelper)) {
+        require_once $nativeHelper;
+    }
+}
+
+if (!class_exists(SiteRouteHelper::class)) {
+    throw new \RuntimeException('SportsManagement native SiteRouteHelper could not be loaded.', 500);
+}
 
 /**
  * Legacy class-name facade for prediction routes.

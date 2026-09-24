@@ -20,6 +20,10 @@ if (!class_exists(SportsManagementDatabaseResolver::class)) {
     require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
 }
 
+if (!class_exists(SportsManagementDatabaseResolver::class)) {
+    throw new \RuntimeException('SportsManagement database resolver could not be loaded.', 500);
+}
+
 $maxImportTime = 480;
 if ((int) ini_get('max_execution_time') < $maxImportTime) {
     @set_time_limit($maxImportTime);
