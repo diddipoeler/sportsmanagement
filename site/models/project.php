@@ -319,15 +319,13 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 */
 	public static function getCurrentRound($view = null, $cfg_which_database = 0)
 	{
-		$model = self::nativeProjectModel($cfg_which_database);
-		$roundId = $model->getCurrentRound();
-		self::$_current_round = $roundId;
+		$round = self::increaseRound($cfg_which_database);
 
 		if ($view === 'result' && class_exists('sportsmanagementModelResults')) {
-			sportsmanagementModelResults::$roundid = $roundId;
+			sportsmanagementModelResults::$roundid = $round ? (int) $round->id : 0;
 		}
 
-		return $roundId;
+		return $round ? (int) $round->id : 0;
 	}
 
 	/**
@@ -337,161 +335,10 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 */
 	public static function increaseRound($cfg_which_database = 0)
 	{
+		$round = self::nativeProjectModel($cfg_which_database)->getCurrentRoundData();
+		self::$_current_round = $round;
 
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db      = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query   = $db->createQuery();
-		$result  = '';
-		$project = self::getProject($cfg_which_database, __METHOD__);
-        $project->auto_time = $project->auto_time ? $project->auto_time : 7200 ;
-
-		if (!self::$_current_round && $project)
-		{
-			$current_date = date('Y-m-d', time());
-			$query->clear();
-			$query->select('r.id, r.roundcode, CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-			$query->from('#__sportsmanagement_round AS r ');
-
-			// Determine current round according to project settings
-			switch ($project->current_round_auto)
-			{
-				case 0 :     // Manual mode
-					$query->where('r.id = ' . $project->current_round);
-					$query->where('r.project_id = ' . $project->id);
-					break;
-
-				case 1 :     // Get current round from round_date_first
-					$query->where('r.project_id = ' . $project->id);
-					$query->where("(r.round_date_first - INTERVAL " . ($project->auto_time) . " MINUTE < '" . $current_date . "')");
-					$query->order('r.round_date_first DESC LIMIT 1');
-					break;
-
-				case 2 : // Get current round from round_date_last
-					$query->where('r.project_id = ' . $project->id);
-					$query->where("(r.round_date_last - INTERVAL " . ($project->auto_time) . " MINUTE < '" . $current_date . "')");
-					$query->order('r.round_date_first DESC LIMIT 1');
-					break;
-
-				case 3 : // Get current round from first game of the round
-					$query->join('INNER', '#__sportsmanagement_match AS m ON m.round_id = r.id');
-					$query->where('r.project_id = ' . $project->id);
-					$query->where("(m.match_date - INTERVAL " . ($project->auto_time) . " MINUTE < '" . $current_date . "')");
-					$query->order('m.match_date DESC LIMIT 1');
-					break;
-
-				case 4 : // Get current round from last game of the round
-					$query->join('INNER', '#__sportsmanagement_match AS m ON m.round_id = r.id');
-					$query->where('r.project_id = ' . $project->id);
-					$query->where("(m.match_date + INTERVAL " . ($project->auto_time) . " MINUTE < '" . $current_date . "')");
-					$query->order('m.match_date ASC LIMIT 1');
-					break;
-			}
-
-			try
-			{
-				$db->setQuery($query);
-				$result = $db->loadObject();
-			}
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' data <pre>'.print_r($query->dump(),true).'</pre>'  ), '');
-//$app->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' current_round_auto <pre>'.print_r($project->current_round_auto,true).'</pre>'  ), '');
-		}
-
-			// If result is empty, it probably means either this is not started, either this is over, depending on the mode.
-			// Either way, do not change current value
-			if (!$result)
-			{
-				$query->clear();
-				$query->select('r.id, r.roundcode,CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-				$query->from('#__sportsmanagement_round AS r ');
-				$query->where('r.id = ' . $project->current_round);
-				$query->where('r.project_id = ' . $project->id);
-
-				try
-				{
-					$db->setQuery($query);
-					$result = $db->loadObject();
-				}
-				catch (Exception $e)
-				{
-					echo $e->getMessage();
-				}
-
-				if (!$result)
-				{
-					$query->clear();
-					$query->select('r.id, r.roundcode,CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-					$query->from('#__sportsmanagement_round AS r ');
-					$query->where('r.project_id = ' . $project->id);
-
-					// Determine current round according to project settings
-					switch ($project->current_round_auto)
-					{
-						case 0 :     // Manual mode
-						case 2 : // get current round from round_date_last
-							// the current value is invalid... saison is over, just take the last round
-							$query->order('r.roundcode DESC');
-							break;
-						default:
-							// The current value is invalid... just take the first round
-							$query->order('r.roundcode ASC');
-							break;
-					}
-
-					try
-					{
-						$db->setQuery($query);
-						$result = $db->loadObject();
-					}
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
-		}
-				}
-			}
-
-			// Update the database if determined current round is different from that in the database
-
-			if ($result && ($project->current_round <> $result->id))
-			{
-				// Must be a valid primary key value.
-				$object                = new stdClass;
-				$object->id            = $project->id;
-				$object->current_round = $result->id;
-
-				try
-				{
-					// Update their details in the users table using id as the primary key.
-					$resultupdate = $db->updateObject('#__sportsmanagement_project', $object, 'id');
-				}
-				catch (Exception $e)
-				{
-					$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), 'error');
-					$app->enqueueMessage(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), 'error');
-				}
-			}
-
-			self::$_current_round = $result;
-		}
-
-		if (!isset(self::$_current_round->round_slug))
-		{
-			self::$roundslug = '';
-		}
-		else
-		{
-			self::$roundslug = self::$_current_round->round_slug;
-		}
-
-		return self::$_current_round;
+		return $round;
 	}
 
 	/**
@@ -503,7 +350,9 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 */
 	public static function getCurrentRoundNumber($cfg_which_database = 0)
 	{
-		return self::nativeProjectModel($cfg_which_database)->getCurrentRoundNumber();
+		$round = self::increaseRound($cfg_which_database);
+
+		return $round ? (int) $round->roundcode : 0;
 	}
 
 	/**
@@ -709,62 +558,17 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	 */
 	public static function & _getTeams($teamname = 'name', $cfg_which_database = 0, $call_function = '', $playground = 0)
 	{
-		$app       = Factory::getApplication();
-		$option    = $app->input->getCmd('option');
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->createQuery();
-		$starttime = microtime();
+		$teams = self::nativeProjectModel($cfg_which_database)
+			->getProjectTeams(0, (int) $playground);
 
-		$query->select('tl.id AS projectteamid,tl.division_id,tl.standard_playground,tl.admin,tl.start_points,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally');
-		$query->select('tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally,tl.info,tl.reason,tl.team_id as project_team_team_id,tl.checked_out,tl.checked_out_time,tl.is_in_score,tl.picture AS projectteam_picture');
-		$query->select('IF((ISNULL(tl.picture) OR (tl.picture="")),(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_small , t.picture)) , t.picture) as picture,tl.project_id');
-		$query->select('t.picture as team_picture,t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
-		$query->select('u.username,u.email');
-		$query->select('st.team_id');
-		$query->select('c.email as club_email,c.phone as club_phone,c.fax as club_fax,c.logo_small,c.logo_middle,c.logo_big,c.country,c.website,c.new_club_id,c.facebook,c.twitter,c.instagram');
-		$query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
-		$query->select('plg.name AS playground_name,plg.short_name AS playground_short_name, c.trikot_home, c.trikot_away');
-		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-		$query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-		$query->select('CONCAT_WS(\':\',tl.id,t.alias) AS projectteam_slug');
-		$query->select('CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
-		$query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
-
-		if ($playground)
-		{
-			$query->select('plg.picture as playground_picture');
-			$query->select('CONCAT_WS( \':\', plg.id, plg.alias ) AS playground_slug');
+		if ($teamname !== 'name') {
+			foreach ($teams as $team) {
+				if (isset($team->{$teamname})) {
+					$team->name = $team->{$teamname};
+				}
 		}
 
-		$query->select('t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture as team_picture,c.name as club_name,c.address as club_address');
-		$query->select('c.zipcode as club_zipcode,c.state as club_state,c.location as club_location,c.unique_id,c.country as club_country,c.website AS club_www');
-
-		$query->from('#__sportsmanagement_project_team AS tl ');
-		$query->join('LEFT', ' #__sportsmanagement_season_team_id st ON st.id = tl.team_id ');
-		$query->join('LEFT', ' #__sportsmanagement_team t ON st.team_id = t.id ');
-		$query->join('LEFT', ' #__users u ON tl.admin=u.id ');
-		$query->join('LEFT', ' #__sportsmanagement_club c ON t.club_id = c.id ');
-		$query->join('LEFT', ' #__sportsmanagement_division d ON d.id = tl.division_id ');
-		$query->join('LEFT', ' #__sportsmanagement_playground plg ON plg.id = tl.standard_playground ');
-		$query->join('LEFT', ' #__sportsmanagement_project AS p ON p.id = tl.project_id ');
-		$query->where('tl.project_id = ' . (int) self::$projectid);
-        $query->where('tl.is_in_score = 1' );
-
-
-try{
-		$db->setQuery($query);
-
-		self::$_teams = $db->loadObjectList();
-        }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
-		}
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return self::$_teams;
+		return $teams;
 	}
 
 	/**
@@ -977,38 +781,11 @@ try{
 	 */
 	public static function getMatch()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
+		if (self::$_match === null) {
+			self::$_match = self::nativeProjectModel(self::$cfg_which_database)
+				->getLegacyMatch((int) self::$matchid);
 
-		// JInput object
-		$jinput = $app->input;
-
-		// Get a refrence of the page instance in joomla
-		$document = Factory::getDocument();
-		$option   = $jinput->getCmd('option');
-
-		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, self::$cfg_which_database);
-		$query = $db->createQuery();
-
-		if (is_null(self::$_match))
-		{
-			$query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present, r.project_id, p.timezone, p.game_parts ');
-			$query->from('#__sportsmanagement_match AS m ');
-			$query->join('INNER', '#__sportsmanagement_round AS r on r.id = m.round_id ');
-			$query->join('INNER', '#__sportsmanagement_project AS p on r.project_id = p.id ');
-			$query->where('m.id = ' . (int) self::$matchid);
-try{
-			$db->setQuery($query, 0, 1);
-			self::$_match = $db->loadObject();
- }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-		}
-			if (self::$_match)
-			{
+			if (self::$_match && class_exists('sportsmanagementHelper')) {
 				sportsmanagementHelper::convertMatchDateToTimezone(self::$_match);
 			}
 		}

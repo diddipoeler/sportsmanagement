@@ -595,4 +595,68 @@ final class ProjectModel extends SportsManagementProjectModel
             || $userId === (int) ($project->editor ?? 0);
     }
 
+
+    /** Return the resolved current round as the historical round object. */
+    public function getCurrentRoundData(): ?object
+    {
+        $roundId = $this->getCurrentRound();
+
+        if ($roundId <= 0 || $this->projectId <= 0) {
+            return null;
+        }
+
+        $projectId = $this->projectId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('r.id'),
+                $db->quoteName('r.roundcode'),
+                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.id') . ' = :currentRoundDataId')
+            ->where($db->quoteName('r.project_id') . ' = :currentRoundDataProjectId')
+            ->bind(':currentRoundDataId', $roundId, ParameterType::INTEGER)
+            ->bind(':currentRoundDataProjectId', $projectId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    /** Return the historical project match object without legacy DB helpers. */
+    public function getLegacyMatch(int $matchId): ?object
+    {
+        if ($matchId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                'm.*',
+                'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
+                $db->quoteName('r.project_id'),
+                $db->quoteName('p.timezone'),
+                $db->quoteName('p.game_parts'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
+            )
+            ->where($db->quoteName('m.id') . ' = :legacyMatchId')
+            ->bind(':legacyMatchId', $matchId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
 }
