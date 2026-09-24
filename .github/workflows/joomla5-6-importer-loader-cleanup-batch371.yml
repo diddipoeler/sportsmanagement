@@ -1,0 +1,54 @@
+name: Joomla 5/6 importer loader cleanup batch 371
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/jlextdbbimport.php'
+      - 'admin/models/jlextdfbnetplayerimport.php'
+      - 'admin/models/jlextsisimport.php'
+      - '.github/workflows/joomla5-6-importer-loader-cleanup-batch371.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/jlextdbbimport.php'
+      - 'admin/models/jlextdfbnetplayerimport.php'
+      - 'admin/models/jlextsisimport.php'
+      - '.github/workflows/joomla5-6-importer-loader-cleanup-batch371.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate importer loader migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/models/jlextdbbimport.php
+            admin/models/jlextdfbnetplayerimport.php
+            admin/models/jlextsisimport.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'JLoader::import' "$file"
+            ! grep -Fq -- 'JLoader::register' "$file"
+            ! grep -Fq -- 'Factory::getApplication()->input' "$file"
+            ! grep -Fq -- 'Factory::getDocument()' "$file"
+          done
+          ! grep -Fq -- 'getQuery(true)' admin/models/jlextsisimport.php
+          grep -Fq -- "require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/csvhelper.php';" admin/models/jlextdbbimport.php
+          grep -Fq -- "require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/seasons.php';" admin/models/jlextdfbnetplayerimport.php

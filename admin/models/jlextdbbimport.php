@@ -20,7 +20,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-$option = Factory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->getInput()->getCmd('option');
 
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
@@ -50,9 +50,9 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 
 
-JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/csvhelper.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/ical.php';
+require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
 
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filesystem\File;
@@ -93,12 +93,12 @@ class sportsmanagementModeljlextdbbimport extends BaseDatabaseModel
 	{
 		parent::__construct($config, $factory);
 
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$this->debug_info = (bool) ComponentHelper::getParams($option)->get('show_debug_info', 0);
 		$this->jsmdb = sportsmanagementHelper::getDBConnection();
 		$this->jsmquery = $this->jsmdb->createQuery();
 		$this->jsmapp = Factory::getApplication();
-		$this->jsmjinput = $this->jsmapp->input;
+		$this->jsmjinput = $this->jsmapp->getInput();
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 	}
 
@@ -223,13 +223,13 @@ class sportsmanagementModeljlextdbbimport extends BaseDatabaseModel
 	function getUpdateData()
 	{
 		$app      = Factory::getApplication();
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 
 		$lang                = Factory::getLanguage();
 		$this->_success_text = '';
 		$my_text             = '';
 		$country             = "DEU"; // Gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
-		$option              = Factory::getApplication()->input->getCmd('option');
+		$option              = Factory::getApplication()->getInput()->getCmd('option');
 		$project             = $app->getUserState($option . 'project', 0);
 
 		if (!$project)
@@ -343,9 +343,9 @@ class sportsmanagementModeljlextdbbimport extends BaseDatabaseModel
 	 */
 	function getData()
 	{
-		$option   = Factory::getApplication()->input->getCmd('option');
+		$option   = Factory::getApplication()->getInput()->getCmd('option');
 		$app      = Factory::getApplication();
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 
 		$country   = "DEU"; // Gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 		$project   = $app->getUserState($option . 'project', 0);
@@ -353,7 +353,7 @@ class sportsmanagementModeljlextdbbimport extends BaseDatabaseModel
 		$app->enqueueMessage(Text::_('Welches Land? ' . $country), '');
 		$app->enqueueMessage(Text::_('Welche Art von Datei? ' . $whichfile), '');
 
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$post = Factory::getApplication()->getInput()->post->getArray(array());
 
 		$this->_league_new_country = $country;
 
@@ -2002,7 +2002,7 @@ class sportsmanagementModeljlextdbbimport extends BaseDatabaseModel
 	{
 		// Global $app, $option;
 		$app         = Factory::getApplication();
-		$document    = Factory::getDocument();
+		$document    = Factory::getApplication()->getDocument();
 		$exportmatch = array();
 
 		foreach ($csvdata as $row)

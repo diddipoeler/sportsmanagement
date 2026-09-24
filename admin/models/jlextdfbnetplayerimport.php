@@ -19,7 +19,7 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filter\OutputFilter;
 
-$option = Factory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->getInput()->getCmd('option');
 
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 if (empty($maxImportTime))
@@ -42,10 +42,8 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 }
 
 
-JLoader::import('components.com_sportsmanagement.models.seasons', JPATH_ADMINISTRATOR);
-//JLoader::import('components.com_sportsmanagement.helpers.icaljsm', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
-//JLoader::register('icaljsm', 'administrator/components/com_sportsmanagement' . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'icaljsm.php');
+require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/seasons.php';
+require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
 
 
 // Derive the class name from the driver.
@@ -53,7 +51,7 @@ $class_name = 'icaljsm';
 $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
 // Require the driver file
      if (File::exists($class_file)) {
-         JLoader::register($class_name, $class_file);
+         require_once $class_file;
        //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
      }
 
@@ -67,7 +65,7 @@ $class_name = 'Event';
 $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'Event.php';
 // Require the driver file
      if (File::exists($class_file)) {
-         JLoader::register($class_name, $class_file);
+         require_once $class_file;
        //throw new RuntimeException(sprintf('Driver not load: %s', $class_file));
      }
 
@@ -121,7 +119,7 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 	{
 		parent::__construct($config, $factory);
 
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$this->debug_info = (bool) ComponentHelper::getParams($option)->get('show_debug_info', 0);
 	}
 
@@ -240,13 +238,13 @@ class sportsmanagementModeljlextdfbnetplayerimport extends BaseDatabaseModel
 	 */
 	function getUpdateData()
 	{
-		$option   = Factory::getApplication()->input->getCmd('option');
+		$option   = Factory::getApplication()->getInput()->getCmd('option');
 		$app      = Factory::getApplication();
-		$document = Factory::getDocument();
+		$document = Factory::getApplication()->getDocument();
 		$lang                = Factory::getLanguage();
 		$this->_success_text = '';
 		$my_text             = '';
-$post = Factory::getApplication()->input->post->getArray(array());
+$post = Factory::getApplication()->getInput()->post->getArray(array());
 		$country = $post['filter_nation'];
 		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 
@@ -375,10 +373,10 @@ and ma.projectteam2_id = '$row->projectteam2_id'
 	 */
 	function getData()
 	{
-		$option   = Factory::getApplication()->input->getCmd('option');
+		$option   = Factory::getApplication()->getInput()->getCmd('option');
 		$app      = Factory::getApplication();
-		$document = Factory::getDocument();
-		$post = Factory::getApplication()->input->post->getArray(array());
+		$document = Factory::getApplication()->getDocument();
+		$post = Factory::getApplication()->getInput()->post->getArray(array());
 
 		//$country = "DEU"; // DFBNet gibt es nur in D, also ist die eingestellte Joomla Sprache nicht relevant
 		$project = $app->getUserState("$option.pid", '0');
@@ -2525,7 +2523,7 @@ $projectname = $events[$a]->description;
 	{
 		//global $app, $option;
 		$app         = Factory::getApplication();
-		$document    = Factory::getDocument();
+		$document    = Factory::getApplication()->getDocument();
 		$exportmatch = array();
 
 

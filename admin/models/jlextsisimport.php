@@ -21,7 +21,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Filesystem\File;
 
-$option = Factory::getApplication()->input->getCmd('option');
+$option = Factory::getApplication()->getInput()->getCmd('option');
 
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
@@ -51,9 +51,9 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 
 
-JLoader::import('components.com_sportsmanagement.helpers.csvhelper', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.helpers.ical', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.helpers.countries', JPATH_SITE);
+require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/csvhelper.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/ical.php';
+require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
 
 
 
@@ -94,10 +94,10 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
 	function getData()
 	{
 		// Global $app, $option;
-		$option   = Factory::getApplication()->input->getCmd('option');
+		$option   = Factory::getApplication()->getInput()->getCmd('option');
 		$app      = Factory::getApplication();
-		$document = Factory::getDocument();
-		$post     = Factory::getApplication()->input->get('post');
+		$document = Factory::getApplication()->getDocument();
+		$post     = Factory::getApplication()->getInput()->get('post');
 
 		$country                       = '';
 		$exportpositioneventtype       = array();
@@ -163,14 +163,14 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
 		$db = sportsmanagementHelper::getDBConnection();
 
 		// Create a new query object.
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select(array('id'))
 			->from('#__sportsmanagement_sports_type')
 			->where('name LIKE ' . "'COM_SPORTSMANAGEMENT_ST_HANDBALL'");
 		$db->setQuery($query);
 		$sp_id = $db->loadResult();
 
-		$query = $db->getQuery(true);
+		$query = $db->createQuery();
 		$query->select(array('id,name'))
 			->from('#__sportsmanagement_agegroup')
 			->where('info LIKE ' . "'" . $teamart . "'")
@@ -781,7 +781,7 @@ class sportsmanagementModeljlextsisimport extends BaseDatabaseModel
 	 */
 	function getSpielplan($linkresults, $liganummer, $sis_art)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$app    = Factory::getApplication();
 		/**
 		 *
