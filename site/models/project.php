@@ -1285,41 +1285,8 @@ self::$projectwarnings[] = Text::_('COM_SPORTSMANAGEMENT_TEMPLATE_MISSING_HINT')
 	 */
 	public static function getProjectEvents($position_id = 0, $cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->createQuery();
-
-		$query->select('et.id,et.name,et.icon');
-		$query->from('#__sportsmanagement_eventtype AS et');
-		$query->join('INNER', '#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id ');
-		$query->join('INNER', '#__sportsmanagement_project_position AS ppos ON ppos.position_id = pet.position_id ');
-		$query->where('ppos.project_id = ' . (int) self::$projectid);
-
-		if ($position_id)
-		{
-			$query->where('ppos.position_id = ' . (int) $position_id);
-		}
-
-		$query->group('et.id,et.name,et.icon');
-
-		try
-		{
-			$db->setQuery($query);
-			$events = $db->loadObjectList('id');
-		}
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-$events = false;
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $events;
+		return self::nativeProjectModel($cfg_which_database)
+			->getProjectEvents((int) $position_id);
 	}
 
 	/**
@@ -1343,36 +1310,8 @@ $events = false;
 	 */
 	public static function getProjectPositions($cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->createQuery();
-
-		if (empty(self::$_positions))
-		{
-			$query->select('pos.id,pos.persontype,pos.name,pos.ordering,pos.published');
-			$query->select('ppos.id AS pposid');
-			$query->from('#__sportsmanagement_project_position AS ppos');
-			$query->join('INNER', '#__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
-			$query->where('ppos.project_id = ' . (int) self::$projectid);
-			$query->order('pos.persontype,pos.ordering');
-
-			try
-			{
-				$db->setQuery($query);
-				self::$_positions = $db->loadObjectList('id');
-			}
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-
-		}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$_positions = self::nativeProjectModel($cfg_which_database)
+			->getProjectPositions();
 
 		return self::$_positions;
 	}
@@ -1838,17 +1777,8 @@ try{
 	 */
 	function getTeamIds($division = 0, $cfg_which_database = 0)
 	{
-		$teams = array();
-
-		foreach ((array) self::_getTeams($teamname, $cfg_which_database, __METHOD__) as $t)
-		{
-			if (!$division || $t->division_id == $division)
-			{
-				$teams[] = $t->id;
-			}
-		}
-
-		return $teams;
+		return self::nativeProjectModel($cfg_which_database)
+			->getTeamIds((int) $division);
 	}
 
 	/**
@@ -1860,27 +1790,7 @@ try{
 	 */
 	function getPlaygrounds($cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->createQuery();
-		$query->select('id AS value,name AS text');
-		$query->from('#__sportsmanagement_playground');
-		$query->order('text ASC');
-try{
-		$db->setQuery($query);
-		$result = $db->loadObjectList();
-        }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-		}
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $result;
+		return self::nativeProjectModel($cfg_which_database)->getPlaygrounds();
 	}
 
 	/**
@@ -1892,35 +1802,8 @@ try{
 	 */
 	function getProjectGameRegularTime($project_id, $cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db              = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query           = $db->createQuery();
-		$gameprojecttime = 0;
-		$query->select('game_regular_time');
-		$query->from('#__sportsmanagement_project');
-		$query->where('id = ' . (int) $project_id);
-        try{
-		$db->setQuery($query);
-		$result = $db->loadObject();
-        }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-		}
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		$gameprojecttime += $result->game_regular_time;
-
-		if ($result->allow_add_time)
-		{
-			$gameprojecttime += $result->add_time;
-		}
-
-		return $gameprojecttime;
+		return self::nativeProjectModel($cfg_which_database)
+			->getProjectGameRegularTime((int) $project_id);
 	}
 
 	/**
@@ -1992,27 +1875,7 @@ try{
 	 */
 	function getProjectCountry($cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-
-		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query = $db->createQuery();
-
-		$query->select('l.country');
-		$query->from('#__sportsmanagement_league as l');
-		$query->join('INNER', '#__sportsmanagement_project as pro ON pro.league_id = l.id ');
-		$query->where('pro.id = ' . (int) self::$projectid);
-try{
-		$db->setQuery($query);
-		$this->country = $db->loadResult();
-        }
-		catch (Exception $e)
-		{
-	$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-   $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-		}
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$this->country = self::nativeProjectModel($cfg_which_database)->getProjectCountry();
 
 		return $this->country;
 	}
