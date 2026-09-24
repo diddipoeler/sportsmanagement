@@ -7,21 +7,13 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\CpanelModel;
 
 if (!class_exists(CpanelModel::class)) {
-    $nativeModels = [
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/CpanelModel.php',
-    ];
-
-    foreach ($nativeModels as $nativeModel) {
-        if (is_file($nativeModel)) {
-            require_once $nativeModel;
-        }
-    }
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/CpanelModel.php';
 }
 
 if (!class_exists(CpanelModel::class)) {
