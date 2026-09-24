@@ -1,0 +1,60 @@
+name: Joomla 5/6 admin native table batch 360
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Table/MatchcommentaryTable.php'
+      - 'admin/tables/matchcommentary.php'
+      - 'admin/tables/matchstaffstatistic.php'
+      - 'admin/tables/matchstatistic.php'
+      - 'admin/tables/positioneventtype.php'
+      - 'admin/tables/positionstatistic.php'
+      - 'admin/tables/jlextassociation.php'
+      - 'admin/tables/jsmgcalendarap.php'
+      - '.github/workflows/joomla5-6-admin-native-table-batch360.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator table migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Table/MatchcommentaryTable.php
+            admin/tables/matchcommentary.php
+            admin/tables/matchstaffstatistic.php
+            admin/tables/matchstatistic.php
+            admin/tables/positioneventtype.php
+            admin/tables/positionstatistic.php
+            admin/tables/jlextassociation.php
+            admin/tables/jsmgcalendarap.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          grep -Fq -- "parent::__construct('#__sportsmanagement_match_commentary', 'id', $db)" admin/src/Table/MatchcommentaryTable.php
+          for file in admin/tables/matchcommentary.php admin/tables/matchstaffstatistic.php admin/tables/matchstatistic.php admin/tables/positioneventtype.php admin/tables/positionstatistic.php admin/tables/jlextassociation.php admin/tables/jsmgcalendarap.php; do
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+            ! grep -Fq -- 'extends JSMTable' "$file"
+            ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' "$file"
+          done

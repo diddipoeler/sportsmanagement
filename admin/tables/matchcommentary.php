@@ -1,40 +1,25 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage tables
- * @file       matchcommentary.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * Legacy compatibility bridge for the native Joomla 5/6 Matchcommentary table.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
-/**
- * sportsmanagementTableMatchCommentary
- *
- * @package
- * @author
- * @copyright diddi
- * @version   2014
- * @access    public
- */
-class sportsmanagementTableMatchCommentary extends JSMTable
-{
+use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchcommentaryTable;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object Database connector object
-	 *
-	 * @since 1.0
-	 */
-	function __construct(&$db)
-	{
-		$db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__sportsmanagement_match_commentary', 'id', $db);
-	}
+if (!class_exists(MatchcommentaryTable::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/MatchcommentaryTable.php';
+}
 
+if (!class_exists(MatchcommentaryTable::class)) {
+    throw new \RuntimeException('SportsManagement native Matchcommentary table could not be loaded.', 500);
+}
 
+if (!class_exists('sportsmanagementTableMatchCommentary', false)) {
+    class_alias(MatchcommentaryTable::class, 'sportsmanagementTableMatchCommentary');
 }

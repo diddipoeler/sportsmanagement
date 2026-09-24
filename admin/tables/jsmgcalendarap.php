@@ -1,15 +1,13 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Legacy compatibility bridge for the native Joomla 5/6 Jsmgcalendarap table.
  *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-/** Legacy compatibility bridge for the native JsmgcalendarapTable. */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\JsmgcalendarapTable;
 
@@ -18,6 +16,10 @@ if (!class_exists(JsmgcalendarapTable::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JsmgcalendarapTable.php';
 }
 
-if (class_exists(JsmgcalendarapTable::class) && !class_exists('sportsmanagementTablejsmGCalendarAP', false)) {
+if (!class_exists(JsmgcalendarapTable::class)) {
+    throw new \RuntimeException('SportsManagement native Jsmgcalendarap table could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementTablejsmGCalendarAP', false)) {
     class_alias(JsmgcalendarapTable::class, 'sportsmanagementTablejsmGCalendarAP');
 }

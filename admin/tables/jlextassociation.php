@@ -1,26 +1,25 @@
 <?php
 /**
- * SportsManagement Joomla 5/6 file metadata.
+ * Legacy compatibility bridge for the native Joomla 5/6 Jlextassociation table.
  *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-/** Legacy compatibility bridge for the native JlextassociationTable. */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextassociationTable;
 
 if (!class_exists(JlextassociationTable::class)) {
-    $tableFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JlextassociationTable.php';
-
-    if (is_file($tableFile)) {
-        require_once $tableFile;
-    }
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JlextassociationTable.php';
 }
 
-if (class_exists(JlextassociationTable::class) && !class_exists('sportsmanagementTablejlextassociation', false)) {
+if (!class_exists(JlextassociationTable::class)) {
+    throw new \RuntimeException('SportsManagement native Jlextassociation table could not be loaded.', 500);
+}
+
+if (!class_exists('sportsmanagementTablejlextassociation', false)) {
     class_alias(JlextassociationTable::class, 'sportsmanagementTablejlextassociation');
 }
