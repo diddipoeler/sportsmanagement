@@ -1,0 +1,64 @@
+name: Joomla 5/6 admin special models batch 351
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/predictiongroup.php'
+      - 'admin/models/predictionround.php'
+      - 'admin/models/projectposition.php'
+      - 'admin/models/jlextfederation.php'
+      - 'admin/models/rosterposition.php'
+      - 'admin/models/currentseasons.php'
+      - 'admin/models/smimageimports.php'
+      - '.github/workflows/joomla5-6-admin-special-models-batch351.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/predictiongroup.php'
+      - 'admin/models/predictionround.php'
+      - 'admin/models/projectposition.php'
+      - 'admin/models/jlextfederation.php'
+      - 'admin/models/rosterposition.php'
+      - 'admin/models/currentseasons.php'
+      - 'admin/models/smimageimports.php'
+      - '.github/workflows/joomla5-6-admin-special-models-batch351.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator special model bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/models/predictiongroup.php
+            admin/models/predictionround.php
+            admin/models/projectposition.php
+            admin/models/jlextfederation.php
+            admin/models/rosterposition.php
+            admin/models/currentseasons.php
+            admin/models/smimageimports.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+            grep -Fq -- 'class_alias(' "$file"
+            grep -Fq -- 'throw new \\RuntimeException' "$file"
+          done
+          ! grep -Fq -- '@version    4.24.00' admin/models/projectposition.php
+          ! grep -Fq -- '@version    4.24.00' admin/models/jlextfederation.php

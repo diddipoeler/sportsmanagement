@@ -7,13 +7,17 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SmimageimportsModel;
 
 if (!class_exists(SmimageimportsModel::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SmimageimportsModel.php';
+}
+
+if (!class_exists(SmimageimportsModel::class)) {
+    throw new \RuntimeException('SportsManagement native Smimageimports model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelsmimageimports', false)) {
