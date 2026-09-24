@@ -15,6 +15,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\Database\ParameterType;
 
 final class ProjectModel extends SportsManagementProjectModel
@@ -250,6 +251,293 @@ final class ProjectModel extends SportsManagementProjectModel
         $db->setQuery($query);
 
         return $db->loadObjectList('etid') ?: [];
+    }
+
+
+    /** Count matches for one project or for all projects in one league/season. */
+    public function getProjectMatchCount(
+        int $projectId = 0,
+        bool $allOverLeagueId = false,
+        int $leagueId = 0,
+        int $seasonId = 0
+    ): int {
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('COUNT(DISTINCT ' . $db->quoteName('m.id') . ')')
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+            );
+
+        if ($allOverLeagueId && $leagueId > 0 && $seasonId > 0) {
+            $query
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_project', 'p')
+                    . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id')
+                )
+                ->where($db->quoteName('p.league_id') . ' = :matchCountLeagueId')
+                ->where($db->quoteName('p.season_id') . ' = :matchCountSeasonId')
+                ->bind(':matchCountLeagueId', $leagueId, ParameterType::INTEGER)
+                ->bind(':matchCountSeasonId', $seasonId, ParameterType::INTEGER);
+        } else {
+            $projectId = $projectId > 0 ? $projectId : $this->projectId;
+            if ($projectId <= 0) {
+                return 0;
+            }
+            $query->where($db->quoteName('r.project_id') . ' = :matchCountProjectId')
+                ->bind(':matchCountProjectId', $projectId, ParameterType::INTEGER);
+        }
+
+        $db->setQuery($query);
+
+        return (int) $db->loadResult();
+    }
+
+    /** Return the next or previous project by name inside the same league. */
+    public function getAdjacentProject(string $name, int $leagueId, bool $next = true): ?object
+    {
+        if ($leagueId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                'p.*',
+                "CONCAT_WS(':', p.id, p.alias) AS slug",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
+            ->where($db->quoteName('p.league_id') . ' = :adjacentLeagueId')
+            ->where($db->quoteName('p.name') . ($next ? ' > ' : ' < ') . ':adjacentProjectName')
+            ->bind(':adjacentLeagueId', $leagueId, ParameterType::INTEGER)
+            ->bind(':adjacentProjectName', $name, ParameterType::STRING)
+            ->order($db->quoteName('p.name') . ($next ? ' ASC' : ' DESC'));
+
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    /** Increment project hits when requested. */
+    public function updateProjectHits(int $projectId, bool $increment): void
+    {
+        if (!$increment || $projectId <= 0) {
+            return;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->update($db->quoteName('#__sportsmanagement_project'))
+            ->set($db->quoteName('hits') . ' = ' . $db->quoteName('hits') . ' + 1')
+            ->where($db->quoteName('id') . ' = :hitProjectId')
+            ->bind(':hitProjectId', $projectId, ParameterType::INTEGER);
+        $db->setQuery($query)->execute();
+    }
+
+    /** Return published divisions for the active divisions project, keyed by division id. */
+    public function getProjectDivisions(int $level = 0): array
+    {
+        $project = $this->getProject();
+        if (!$project || (string) ($project->project_type ?? '') !== 'DIVISIONS_LEAGUE') {
+            return [];
+        }
+
+        $projectId = $this->projectId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_division'))
+            ->where($db->quoteName('project_id') . ' = :divisionProjectId')
+            ->where($db->quoteName('published') . ' = 1')
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER)
+            ->order($db->quoteName('ordering') . ' ASC');
+
+        if ($level === 1) {
+            $query->where('(' . $db->quoteName('parent_id') . ' = 0 OR ' . $db->quoteName('parent_id') . ' IS NULL)');
+        } elseif ($level === 2) {
+            $query->where($db->quoteName('parent_id') . ' > 0');
+        }
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList('id') ?: [];
+    }
+
+    /** Return division ids for the active project and requested hierarchy level. */
+    public function getProjectDivisionIds(int $level = 0): array
+    {
+        return array_values(
+            array_map(
+                'intval',
+                array_keys($this->getProjectDivisions($level))
+            )
+        );
+    }
+
+    /** Public compatibility wrapper around the recursive native division-tree resolver. */
+    public function getProjectDivisionTreeIds(int $divisionId): array
+    {
+        if ($divisionId <= 0) {
+            return $this->getProjectDivisionIds();
+        }
+
+        return parent::getDivisionTreeIds($divisionId);
+    }
+
+    /** Return Joomla list options for the active project's rounds. */
+    public function getRoundOptions(string $ordering = 'ASC', bool $slug = true): array
+    {
+        if ($this->projectId <= 0) {
+            return [];
+        }
+
+        $projectId = $this->projectId;
+        $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('r.id', 'value'))
+            ->select(
+                "CASE LENGTH(r.name) WHEN 0 THEN CONCAT('"
+                . Text::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME')
+                . "', ' ', r.id) ELSE CONCAT(r.name, ' (', r.round_date_first, ')') END AS text"
+            )
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.project_id') . ' = :roundOptionsProjectId')
+            ->bind(':roundOptionsProjectId', $projectId, ParameterType::INTEGER)
+            ->order($db->quoteName('r.roundcode') . ' ' . $direction);
+
+        if ($slug) {
+            $query->select("CONCAT_WS(':', r.id, r.alias) AS slug");
+        }
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    /** Return the historical project-team information object for one project-team id. */
+    public function getProjectTeamInfo(int $projectTeamId): ?object
+    {
+        if ($projectTeamId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                't.*',
+                $db->quoteName('t.id', 'team_id'),
+                $db->quoteName('t.picture'),
+                $db->quoteName('t.picture', 'team_picture'),
+                $db->quoteName('t.extended', 'teamextended'),
+                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
+                $db->quoteName('pt.division_id'),
+                $db->quoteName('pt.picture', 'projectteam_picture'),
+                $db->quoteName('c.logo_small'),
+                $db->quoteName('c.logo_middle'),
+                $db->quoteName('c.logo_big'),
+                $db->quoteName('c.country'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_club', 'c')
+                . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id')
+            )
+            ->where($db->quoteName('pt.id') . ' = :projectTeamInfoId')
+            ->bind(':projectTeamInfoId', $projectTeamId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    /** Return the project-team id for one season-team id in the active project. */
+    public function getProjectTeamId(int $seasonTeamId): int
+    {
+        if ($seasonTeamId <= 0 || $this->projectId <= 0) {
+            return 0;
+        }
+
+        $projectId = $this->projectId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_project_team'))
+            ->where($db->quoteName('team_id') . ' = :projectTeamSeasonTeamId')
+            ->where($db->quoteName('project_id') . ' = :projectTeamProjectId')
+            ->bind(':projectTeamSeasonTeamId', $seasonTeamId, ParameterType::INTEGER)
+            ->bind(':projectTeamProjectId', $projectId, ParameterType::INTEGER);
+        $db->setQuery($query, 0, 1);
+
+        return (int) $db->loadResult();
+    }
+
+    /** Return legacy referee select options for the active project. */
+    public function getRefereeOptions(): array
+    {
+        $project = $this->getProject();
+        if (!$project) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+
+        if ((int) ($project->teams_as_referees ?? 0) === 1) {
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('t.id', 'value'),
+                    $db->quoteName('t.name', 'text'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_team', 't'))
+                ->order($db->quoteName('t.name') . ' ASC');
+            $db->setQuery($query);
+
+            return $db->loadObjectList() ?: [];
+        }
+
+        $projectId = $this->projectId;
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('pr.id', 'value'),
+                $db->quoteName('p.firstname'),
+                $db->quoteName('p.lastname'),
+                "CONCAT(p.lastname, ',', p.firstname) AS text",
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project_referee', 'pr'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_person_id', 'spi')
+                . ' ON ' . $db->quoteName('spi.id') . ' = ' . $db->quoteName('pr.person_id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_person', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('spi.person_id')
+            )
+            ->where($db->quoteName('pr.project_id') . ' = :refereeOptionsProjectId')
+            ->bind(':refereeOptionsProjectId', $projectId, ParameterType::INTEGER)
+            ->order([
+                $db->quoteName('p.lastname') . ' ASC',
+                $db->quoteName('p.firstname') . ' ASC',
+            ]);
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
     }
 
 }
