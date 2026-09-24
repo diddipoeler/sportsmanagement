@@ -30,6 +30,10 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
+if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+}
+
 if (!class_exists(EventsRankingHelper::class)) {
     $nativeHelper = __DIR__ . '/src/Helper/EventsRankingHelper.php';
 
