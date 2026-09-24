@@ -1,0 +1,67 @@
+name: Joomla 5/6 admin bridges batch 317
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/github.php'
+      - 'admin/models/extrafield.php'
+      - 'admin/models/seasonteam.php'
+      - 'admin/models/teamstaff.php'
+      - 'admin/models/matchplayer.php'
+      - 'admin/models/seasonperson.php'
+      - 'admin/models/agegroup.php'
+      - 'site/models/clubinfo.php'
+      - '.github/workflows/joomla5-6-admin-bridges-batch317.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/github.php'
+      - 'admin/models/extrafield.php'
+      - 'admin/models/seasonteam.php'
+      - 'admin/models/teamstaff.php'
+      - 'admin/models/matchplayer.php'
+      - 'admin/models/seasonperson.php'
+      - 'admin/models/agegroup.php'
+      - 'site/models/clubinfo.php'
+      - '.github/workflows/joomla5-6-admin-bridges-batch317.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 administrator bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/models/github.php
+            admin/models/extrafield.php
+            admin/models/seasonteam.php
+            admin/models/teamstaff.php
+            admin/models/matchplayer.php
+            admin/models/seasonperson.php
+            admin/models/agegroup.php
+            site/models/clubinfo.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          grep -Fq -- "class_alias(AgegroupModel::class, 'sportsmanagementModelagegroup')" admin/models/agegroup.php
+          ! grep -Fq -- 'class sportsmanagementModelagegroup extends' admin/models/agegroup.php
+          ! grep -Fq -- '@version    4.24.00' admin/models/github.php
+          ! grep -Fq -- '@version    4.24.00' admin/models/extrafield.php
