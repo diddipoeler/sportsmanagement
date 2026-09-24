@@ -1,0 +1,45 @@
+name: Joomla 5/6 native ranking bridge batch 320
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/ranking.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - '.github/workflows/joomla5-6-ranking-bridge-batch320.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/ranking.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - '.github/workflows/joomla5-6-ranking-bridge-batch320.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate native ranking bridge cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(site/models/ranking.php site/src/Model/SportsManagementProjectModel.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          ! grep -Fq -- 'JVERSION' site/models/ranking.php
+          grep -Fq -- 'RankingModel as NativeRankingModel' site/models/ranking.php
+          grep -Fq -- 'public function setProjectId(int $projectId): void' site/src/Model/SportsManagementProjectModel.php
+          ! grep -Fq -- 'Factory::getFeedParser' site/models/ranking.php
+          ! grep -Fq -- 'loadResultArray' site/models/ranking.php

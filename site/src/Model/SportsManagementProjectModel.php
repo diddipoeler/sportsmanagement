@@ -33,6 +33,11 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $this->projectId;
     }
 
+    public function setProjectId(int $projectId): void
+    {
+        $this->projectId = max(0, $projectId);
+    }
+
     public function getDivisionId(): int
     {
         return $this->divisionId;

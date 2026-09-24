@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel as NativeRankingModel;
 
 /**
  * sportsmanagementModelRanking
@@ -201,166 +202,42 @@ try
 	 * @param string $sports_type_name
 	 * @return
 	 */
-	public static function getPreviousGames($cfg_which_database = 0,$sports_type_name='')
-	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->createQuery();
-		$starttime = microtime();
-        $division = array();
-        $prevgames = array();
-
-        $query->select('*');
-		$query->from('#__sportsmanagement_division');
-		$query->where('project_id = ' . (int) self::$projectid);
-        $query->where('published = 1');
-		$db->setQuery($query);
-		try
-		{
-		$divisions = $db->loadObjectList();
-}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
-		}
-
-			
-		if (!self::$round)
-		{
-			sportsmanagementModelProject::$_current_round = 0;
-			self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . self::$viewName, $cfg_which_database);
-		}
-		else
-		{
-			$query->clear();
-			$query->select('r.id, r.roundcode,CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
-			$query->from('#__sportsmanagement_round AS r ');
-			$query->where('r.id = ' . (int) self::$round);
-			$query->where('r.project_id = ' . (int) self::$projectid);
-
-			try
-			{
-				$db->setQuery($query);
-				$result = $db->loadObject();
-			}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
-		}
-
-
-			if (!$result)
-			{
-				sportsmanagementModelProject::$_current_round = 0;
-				self::$round                                  = sportsmanagementModelProject::getCurrentRound(__METHOD__ . ' ' . self::$viewName, $cfg_which_database);
-			}
-		}
-
-		if (!self::$round)
-		{
-			return false;
-		}
-
-		// Current round roundcode
-		$rounds  = sportsmanagementModelProject::getRounds('ASC', $cfg_which_database);
-		$current = null;
-
-		foreach ($rounds as $r)
-		{
-			if ((int) $r->id == (int) self::$round)
-			{
-				$current = $r;
-				break;
-			}
-		}
-
-		if (!$current)
-		{
-			return false;
-		}
-
-		$query->clear();
-		$query->select('m.*, r.roundcode');
-		$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug');
-		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
-		$query->from('#__sportsmanagement_match AS m ');
-		$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id ');
-		$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id ');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
-		$query->join('INNER', '#__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
-		$query->join('INNER', '#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
-		$query->where('r.project_id = ' . self::$projectid);
-		$query->where('r.roundcode <= ' . $db->Quote($current->roundcode));
-		$query->where('m.team1_result IS NOT NULL');
-		$query->order('r.roundcode ASC ');
-try
-{
-		$db->setQuery($query);
-		$games = $db->loadObjectList();
-}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
-		}
-
-		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0, 'name', $cfg_which_database, __METHOD__);
-
-		/** Get games per team */
-		$res = array();
-
-		foreach ($teams as $ptid => $team)
-		{
-			$teamgames = array();
-
-			foreach ((array) $games as $g)
-			{
-				if ($g->projectteam1_id == $team->projectteamid || $g->projectteam2_id == $team->projectteamid)
-				{
-					$teamgames[$g->division_id][] = $g;
-				}
-			}
-
-			if (!count($teamgames))
-			{
-				$res[$ptid] = array();
-				continue;
-			}
-
-			/** Get last x games $nb_games = 5; */
-			$config     = sportsmanagementModelProject::getTemplateConfig('ranking', $cfg_which_database, __METHOD__);
-			$nb_games   = $config['nb_previous'];
-            $res[$ptid] = $teamgames;
-			//$res[$ptid] = array_slice($teamgames, -$nb_games);
-		}
-        
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-        
-        foreach ($res as $ptid => $value )
-		{
-        //$ptid[0] = array_slice($ptid[0], -$nb_games); 
-        foreach ($value as $g => $neu)
-        {
-        $neu = array_slice($neu, -$nb_games);   
-          //echo __LINE__.'<pre>'.print_r($g,true).'</pre>';  
-          $prevgames[$ptid][$g] = $neu;
+	public static function getPreviousGames($cfg_which_database = 0, $sports_type_name = '')
+    {
+        if (!class_exists(NativeRankingModel::class)) {
+            foreach ([
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php',
+            ] as $nativeFile) {
+                if (is_file($nativeFile)) {
+                    require_once $nativeFile;
+                }
+            }
         }
-       
-      }
-      
-      //echo __LINE__.'<pre>'.print_r($prevgames,true).'</pre>'; 
 
-		return $prevgames;
-	}
+        if (!class_exists(NativeRankingModel::class)) {
+            throw new \RuntimeException('SportsManagement native Ranking model could not be loaded.', 500);
+        }
+
+        $model = new NativeRankingModel();
+        $model->setDatabaseSelector((int) $cfg_which_database);
+
+        if ((int) self::$projectid > 0) {
+            $model->setProjectId((int) self::$projectid);
+        } else {
+            self::$projectid = $model->getProjectId();
+        }
+
+        $roundId = (int) self::$round;
+
+        if ($roundId <= 0) {
+            $roundId = $model->getCurrentRound();
+            self::$round = $roundId;
+        }
+
+        return $model->getPreviousGames($roundId);
+    }
 
 	
 	/**
@@ -695,55 +572,34 @@ try
 	 * @return
 	 */
 	public static function _getPreviousRoundId($round_id, $cfg_which_database = 0)
-	{
-		$app       = Factory::getApplication();
-		$option    = $app->input->getCmd('option');
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->createQuery();
-		$starttime = microtime();
+    {
+        if (!class_exists(NativeRankingModel::class)) {
+            foreach ([
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php',
+            ] as $nativeFile) {
+                if (is_file($nativeFile)) {
+                    require_once $nativeFile;
+                }
+            }
+        }
 
-		$query->select('id');
-		$query->from('#__sportsmanagement_round');
-		$query->where('project_id = ' . self::$projectid);
-		$query->order('roundcode ASC');
+        if (!class_exists(NativeRankingModel::class)) {
+            throw new \RuntimeException('SportsManagement native Ranking model could not be loaded.', 500);
+        }
 
-		$db->setQuery($query);
-try
-{
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$res = $db->loadResultArray();
-		}
-}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
-		}
+        $model = new NativeRankingModel();
+        $model->setDatabaseSelector((int) $cfg_which_database);
 
-		
-		if (!$res)
-		{
-			return $round_id;
-		}
+        if ((int) self::$projectid > 0) {
+            $model->setProjectId((int) self::$projectid);
+        } else {
+            self::$projectid = $model->getProjectId();
+        }
 
-		$index = array_search($round_id, $res);
-
-		if ($index && $index > 0)
-		{
-			return $res[$index - 1];
-		}
-
-		// If not found, return same round
-		return $round_id;
-	}
+        return $model->getPreviousRoundId((int) $round_id);
+    }
 
 	/**
 	 * sportsmanagementModelRanking::limitText()
@@ -786,92 +642,31 @@ try
 	 *
 	 * @return
 	 */
-	function getRssFeeds($rssfeedlink, $rssitems)
-	{
-		$rssIds = array();
-		$rssIds = explode(',', $rssfeedlink);
-
-		//  get RSS parsed object
-		$options               = array();
-		$options['cache_time'] = null;
-
-		$lists = array();
-
-		foreach ($rssIds as $rssId)
-		{
-			$options['rssUrl'] = $rssId;
-
-			if (version_compare(JVERSION, '4.0.0', 'ge'))
-			{
-			}
-			elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-            {
-				// Joomla! 3.0 code here
-				$rssDoc = Factory::getFeedParser($options);
-			}
-			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-			{
-				// Joomla! 2.5 code here
-				$rssDoc = Factory::getXMLparser('RSS', $options);
-			}
-			elseif (version_compare(JVERSION, '1.7.0', 'ge'))
-			{
-				// Joomla! 1.7 code here
-			}
-			elseif (version_compare(JVERSION, '1.6.0', 'ge'))
-			{
-				// Joomla! 1.6 code here
-			}
-			else
-			{
-				// Joomla! 1.5 code here
-			}
-
-
-
-if (version_compare(JVERSION, '4.0.0', 'ge'))
-			{
-				try
-				{
-					$feed = new \FeedFactory;
-
-					// $feeds = new stdclass();
-					$rssDoc = $feed->getFeed($rssId);
-
-					return $rssDoc;
-				}
-				catch (\InvalidArgumentException $e)
-				{
-					Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
-				}
-				catch (\RuntimeException $e)
-				{
-					Factory::getApplication()->enqueueMessage(Text::_('COM_NEWSFEEDS_ERRORS_FEED_NOT_RETRIEVED'), 'Notice');
-				}
-			}
-else
-			{
-			$feed = new stdclass;
-			if ($rssDoc != false)
-			{
-				/** Channel header and link */
-				$feed->title       = $rssDoc->get_title();
-				$feed->link        = $rssDoc->get_link();
-				$feed->description = $rssDoc->get_description();
-				/** Channel image if exists */
-				$feed->image->url   = $rssDoc->get_image_url();
-				$feed->image->title = $rssDoc->get_image_title();
-				/** Items */
-				$items = $rssDoc->get_items();
-				/** Feed elements */
-				$feed->items = array_slice($items, 0, $rssitems);
-				$lists[]     = $feed;
-			}
+	public function getRssFeeds($rssfeedlink, $rssitems)
+    {
+        if (!class_exists(NativeRankingModel::class)) {
+            foreach ([
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+                JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php',
+            ] as $nativeFile) {
+                if (is_file($nativeFile)) {
+                    require_once $nativeFile;
+                }
             }
-		}
+        }
 
-		return $lists;
-	}
+        if (!class_exists(NativeRankingModel::class)) {
+            throw new \RuntimeException('SportsManagement native Ranking model could not be loaded.', 500);
+        }
+
+        $feeds = (new NativeRankingModel())->getRssFeeds(
+            (string) $rssfeedlink,
+            max(0, (int) $rssitems)
+        );
+
+        return $feeds[0] ?? [];
+    }
 
 	/**
 	 * sportsmanagementModelRanking::playedCmp()
