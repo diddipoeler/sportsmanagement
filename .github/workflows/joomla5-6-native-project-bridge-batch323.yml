@@ -1,0 +1,55 @@
+name: Joomla 5/6 native project bridge batch 323
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/project.php'
+      - 'site/models/ranking.php'
+      - 'site/src/Model/ProjectModel.php'
+      - 'site/src/Model/RankingModel.php'
+      - '.github/workflows/joomla5-6-native-project-bridge-batch323.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/project.php'
+      - 'site/models/ranking.php'
+      - 'site/src/Model/ProjectModel.php'
+      - 'site/src/Model/RankingModel.php'
+      - '.github/workflows/joomla5-6-native-project-bridge-batch323.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate native project bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/project.php
+            site/models/ranking.php
+            site/src/Model/ProjectModel.php
+            site/src/Model/RankingModel.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+          done
+          grep -Fq -- 'final class ProjectModel extends SportsManagementProjectModel' site/src/Model/ProjectModel.php
+          grep -Fq -- 'private static function nativeProjectModel' site/models/project.php
+          grep -Fq -- '->getProjectStats($statid, (int) $positionid)' site/models/project.php
+          grep -Fq -- 'public function setFinalStanding' site/src/Model/RankingModel.php
+          ! grep -Fq -- "sportsmanagementHelper::getDBConnection" <(sed -n '/function setFinalStanding/,/^[[:space:]]*}/p' site/models/ranking.php)

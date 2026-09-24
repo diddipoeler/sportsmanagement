@@ -130,69 +130,25 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	 */
 	public static function setFinalStanding($current_ranking = array(),$project_type = 'SIMPLE_LEAGUE' )
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		$jinput                 = $app->input;
-		$db        = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
-		$query     = $db->createQuery();
-		
-//echo '<pre>'.print_r($current_ranking,true).'</pre>';
-      foreach ($current_ranking as $division => $cu_rk) 
-{
-        foreach ($cu_rk as $key => $value) 
-{
-          //echo '<pre>'.print_r($key,true).'</pre>';
-          //echo '<pre>'.print_r($value,true).'</pre>';
-          // Create an object for the record we are going to update.
-				$object = new stdClass;
-
-				// Must be a valid primary key value.
-				$object->id      = $key;
-                
-                $object->cache_points_finally = $value->sum_points;
-                $object->cache_neg_points_finally = $value->neg_points;
-                $object->cache_matches_finally = $value->cnt_matches;
-                $object->cache_won_finally = $value->cnt_won;
-                $object->cache_draws_finally = $value->cnt_draw;
-                $object->cache_lost_finally = $value->cnt_lost;
-				$object->cache_homegoals_finally = $value->sum_team1_result;
-                $object->cache_guestgoals_finally = $value->sum_team2_result;
-                $object->cache_diffgoals_finally = $value->diff_team_results;
-  
-            
-            $object->finaltablerank = $value->rank;
-            
-            switch ($project_type)
-            {
-            case 'SIMPLE_LEAGUE':
-            switch ($object->finaltablerank)
-            {
-            case 1:
-            $object->champion = 1;
-            break;
-            }
-            break;
-            }
-try
-		{
-				// Use the selected SportsManagement database connection so external
-				// database projects are updated consistently as well.
-				$result_update = $db->updateObject('#__sportsmanagement_project_team', $object, 'id');
-          }
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
+		if (!class_exists(NativeRankingModel::class)) {
+			foreach ([
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php',
+			] as $nativeFile) {
+				if (is_file($nativeFile)) {
+					require_once $nativeFile;
+				}
+			}
 		}
-          
-          
-        }
-      
-      
-      
-      }		
-		
+
+		if (!class_exists(NativeRankingModel::class)) {
+			throw new \RuntimeException('SportsManagement native Ranking model could not be loaded.', 500);
+		}
+
+		$model = new NativeRankingModel();
+		$model->setDatabaseSelector((int) Factory::getApplication()->input->getInt('cfg_which_database', 0));
+		$model->setFinalStanding((array) $current_ranking, (string) $project_type);
 	}
 	
 	/**

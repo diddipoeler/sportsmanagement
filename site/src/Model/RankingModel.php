@@ -32,6 +32,46 @@ final class RankingModel extends SportsManagementProjectModel
     }
 
     /**
+     * Persist the final ranking cache using the model's selected Joomla database.
+     */
+    public function setFinalStanding(array $currentRanking = [], string $projectType = 'SIMPLE_LEAGUE'): void
+    {
+        $db = $this->getDatabase();
+
+        foreach ($currentRanking as $divisionRanking) {
+            foreach ((array) $divisionRanking as $projectTeamId => $value) {
+                if (!is_object($value)) {
+                    continue;
+                }
+
+                $record = (object) [
+                    'id' => (int) $projectTeamId,
+                    'cache_points_finally' => $value->sum_points ?? null,
+                    'cache_neg_points_finally' => $value->neg_points ?? null,
+                    'cache_matches_finally' => $value->cnt_matches ?? null,
+                    'cache_won_finally' => $value->cnt_won ?? null,
+                    'cache_draws_finally' => $value->cnt_draw ?? null,
+                    'cache_lost_finally' => $value->cnt_lost ?? null,
+                    'cache_homegoals_finally' => $value->sum_team1_result ?? null,
+                    'cache_guestgoals_finally' => $value->sum_team2_result ?? null,
+                    'cache_diffgoals_finally' => $value->diff_team_results ?? null,
+                    'finaltablerank' => $value->rank ?? null,
+                ];
+
+                if ($projectType === 'SIMPLE_LEAGUE' && (int) ($record->finaltablerank ?? 0) === 1) {
+                    $record->champion = 1;
+                }
+
+                try {
+                    $db->updateObject('#__sportsmanagement_project_team', $record, 'id');
+                } catch (Throwable $e) {
+                    $this->reportDatabaseError($e);
+                }
+            }
+        }
+    }
+
+    /**
      * Return the previous matches grouped by project team and division.
      * The shape intentionally matches sportsmanagementModelRanking::getPreviousGames().
      *
