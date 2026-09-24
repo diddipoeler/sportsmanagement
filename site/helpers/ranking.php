@@ -10,9 +10,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * JSMRanking
@@ -25,6 +27,29 @@ use Joomla\CMS\Log\Log;
  */
 class JSMRanking extends \stdClass
 {
+    /**
+     * Resolve the Joomla or configured external SportsManagement database.
+     */
+    private static function database(int $selector = 0): DatabaseInterface
+    {
+        if (!class_exists(SportsManagementDatabaseResolver::class)) {
+            $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
+
+            if (is_file($resolverFile)) {
+                require_once $resolverFile;
+            }
+        }
+
+        if (!class_exists(SportsManagementDatabaseResolver::class)) {
+            throw new \RuntimeException('SportsManagement database resolver could not be loaded.', 500);
+        }
+
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    }
+
 	static $rankingalltimenotes = array();
 	static $rankingalltimewarnings = array();
 	static $rankingalltimetips = array();
@@ -690,8 +715,7 @@ In that case, $data wont be affected
 	 */
 	function _initData($cfg_which_database = 0,$sports_type_name='')
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app = Factory::getApplication();
 
 		if (!$this->_projectid)
 		{
@@ -700,16 +724,12 @@ In that case, $data wont be affected
 			return false;
 		}
 
-		if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database,$sports_type_name);
-		}
-		elseif (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$data = self::_cachedGetData($this->_projectid, $this->_division, $cfg_which_database,$sports_type_name);
-		}
-
-		return $data;
+		return self::_cachedGetData(
+			$this->_projectid,
+			$this->_division,
+			$cfg_which_database,
+			$sports_type_name
+		);
 	}
 
 	/**
@@ -754,8 +774,8 @@ In that case, $data wont be affected
 	{
 	$app = Factory::getApplication();
 	$jinput = $app->input;	
-	$db = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );
-	$query = $db->getQuery(true);
+	$db = self::database($jinput->getInt('cfg_which_database', 0));
+	$query = $db->createQuery();
 	$query->select('*');
 	$query->from('#__sportsmanagement_project_team_division');
 	$query->where('division_id = ' . (int) $division_id);
@@ -778,8 +798,8 @@ In that case, $data wont be affected
 	{
 		$app    = Factory::getApplication();
 		$option = $app->input->getCmd('option');
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$db        = self::database((int) $cfg_which_database);
+		$query     = $db->createQuery();
 		$starttime = microtime();
         $res = array();
 
@@ -985,8 +1005,8 @@ try{
 	{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$db        = self::database((int) $cfg_which_database);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 		$viewName = $app->input->getVar("view");
 
@@ -1040,7 +1060,7 @@ try{
 //		$query->where('( (m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1) ) ');
 		$query->where('m.published = 1');
 		$query->where('r.published = 1');
-		$query->where('pt1.project_id = ' . $db->Quote($pid));
+		$query->where('pt1.project_id = ' . $db->quote($pid));
 
 		if ($division)
 		{
@@ -1135,8 +1155,8 @@ try{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
 		$view = $app->input->getVar("view");
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
+		$db        = self::database((int) $cfg_which_database);
+		$query     = $db->createQuery();
 		$starttime = microtime();
 
 		if (empty($this->_roundcodes))
@@ -1455,44 +1475,42 @@ function array_multisort(&$a, array $column_names) {
 	 */
 	function _getSubDivisions($cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query  = $db->getQuery(true);
+		$app = Factory::getApplication();
 
 		if (!$this->_division)
 		{
 			return false;
 		}
-		elseif (empty($this->_divisions))
-		{
-			$query->select('id');
-			$query->from('#__sportsmanagement_division ');
-			$query->where('project_id = ' . $db->Quote($this->_projectid) );
-			$query->where('parent_id = ' . $db->Quote($this->_division) );
-            $query->where('published = 1');
-try{
-			$db->setQuery($query);
 
-			if (version_compare(JVERSION, '3.0.0', 'ge'))
+		if (empty($this->_divisions))
+		{
+			$db = self::database((int) $cfg_which_database);
+			$query = $db->createQuery()
+				->select($db->quoteName('id'))
+				->from($db->quoteName('#__sportsmanagement_division'))
+				->where($db->quoteName('project_id') . ' = ' . $db->quote((int) $this->_projectid))
+				->where($db->quoteName('parent_id') . ' = ' . $db->quote((int) $this->_division))
+				->where($db->quoteName('published') . ' = 1');
+
+			try
 			{
-				// Joomla! 3.0 code here
+				$db->setQuery($query);
 				$res = $db->loadColumn();
 			}
-            }
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
-		
-		}
-//			elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-//			{
-//				// Joomla! 2.5 code here
-//				$res = $db->loadResultArray();
-//			}
+			catch (\Throwable $e)
+			{
+				$app->enqueueMessage(
+					Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+					'error'
+				);
+				$app->enqueueMessage(
+					Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__),
+					'error'
+				);
+				$res = [];
+			}
 
-			$res[]            = $this->_division;
+			$res[] = (int) $this->_division;
 			$this->_divisions = $res;
 		}
 
