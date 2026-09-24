@@ -1,42 +1,27 @@
 <?php
 /**
+ * Legacy compatibility bridge for the native Joomla 5/6 time form rule.
  *
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- *
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage rules
- * @file       superiorzero.php
+ * @file       time.php
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+\defined('_JEXEC') or die;
 
-defined('_JEXEC') or die('Restricted access');
+use Diddipoeler\Component\SportsManagement\Administrator\Rule\TimeRule;
 
-use Joomla\CMS\Form\FormRule;
+if (!class_exists(TimeRule::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Rule/TimeRule.php';
+}
 
-/**
- * Form Rule class for the Joomla Framework.
- */
-class JFormRuleTime extends FormRule
-{
-	/**
-	 * The regular expression.
-	 *
-	 * @access protected
-	 * @var    string
-	 * @since  2.5
-	 */
-	protected $regex = '^[0-9]{1,2}:[0-9]{1,2}$';
+if (!class_exists(TimeRule::class)) {
+    throw new \RuntimeException('SportsManagement native Time rule could not be loaded.', 500);
+}
 
-	public function test(SimpleXMLElement &$element, $value, $group = null, &$input = null, &$form = null)
-	{
-		if ($value == null || $value == '')
-		{
-			return true;
-		}
-
-		return parent::test($element, $value, $group, $input, $form);
-	}
+if (!class_exists('JFormRuleTime', false)) {
+    class_alias(TimeRule::class, 'JFormRuleTime');
 }

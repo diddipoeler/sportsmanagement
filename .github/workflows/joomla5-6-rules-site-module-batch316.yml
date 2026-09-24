@@ -1,0 +1,74 @@
+name: Joomla 5/6 rules site module batch 316
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/helpers/scoresheet.php'
+      - 'site/models/resultsranking.php'
+      - 'admin/models/rules/greeting.php'
+      - 'admin/models/rules/superiorzero.php'
+      - 'admin/models/rules/time.php'
+      - 'admin/src/Rule/TimeRule.php'
+      - 'admin/layouts/newissue.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php'
+      - '.github/workflows/joomla5-6-rules-site-module-batch316.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/helpers/scoresheet.php'
+      - 'site/models/resultsranking.php'
+      - 'admin/models/rules/greeting.php'
+      - 'admin/models/rules/superiorzero.php'
+      - 'admin/models/rules/time.php'
+      - 'admin/src/Rule/TimeRule.php'
+      - 'admin/layouts/newissue.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php'
+      - '.github/workflows/joomla5-6-rules-site-module-batch316.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 rule and compatibility bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/helpers/scoresheet.php
+            site/models/resultsranking.php
+            admin/models/rules/greeting.php
+            admin/models/rules/superiorzero.php
+            admin/models/rules/time.php
+            admin/src/Rule/TimeRule.php
+            admin/layouts/newissue.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          grep -Fq -- "\\defined('_JEXEC') or die;" site/helpers/scoresheet.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" site/models/resultsranking.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" admin/models/rules/time.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php
+          grep -Fq -- "\\defined('JPATH_BASE') or die;" admin/layouts/newissue.php
+          grep -Fq -- "class_alias(GreetingRule::class, 'JFormRuleGreeting')" admin/models/rules/greeting.php
+          grep -Fq -- "class_alias(SuperiorzeroRule::class, 'JFormRuleSuperiorzero')" admin/models/rules/superiorzero.php
+          grep -Fq -- "class_alias(TimeRule::class, 'JFormRuleTime')" admin/models/rules/time.php
+          grep -Fq -- "final class TimeRule extends FormRule" admin/src/Rule/TimeRule.php
+          grep -Fq -- "require __DIR__ . '/native.php';" modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php
+          ! grep -Fq -- 'Restricted access' site/helpers/scoresheet.php
+          ! grep -Fq -- 'Restricted access' site/models/resultsranking.php
+          ! grep -Fq -- 'version_compare(substr(JVERSION' modules/mod_sportsmanagement_ajax_top_navigation_menu/tmpl/default.php

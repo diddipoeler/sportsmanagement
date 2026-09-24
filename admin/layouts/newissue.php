@@ -1,7 +1,8 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * Joomla 5/6 toolbar trigger for creating a GitHub issue.
+ *
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage layouts
  * @file       newissue.php
@@ -9,7 +10,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('JPATH_BASE') or die;
+\defined('JPATH_BASE') or die;
 
 use Joomla\CMS\Language\Text;
 ?>
