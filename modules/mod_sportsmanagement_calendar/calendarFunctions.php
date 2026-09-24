@@ -12,7 +12,15 @@
 use Diddipoeler\Module\SportsManagementCalendar\Site\Runtime\CalendarFunctions;
 
 if (!class_exists(CalendarFunctions::class)) {
-    require_once __DIR__ . '/src/Runtime/CalendarFunctions.php';
+    $nativeFunctions = __DIR__ . '/src/Runtime/CalendarFunctions.php';
+
+    if (is_file($nativeFunctions)) {
+        require_once $nativeFunctions;
+    }
+}
+
+if (!class_exists(CalendarFunctions::class)) {
+    throw new \RuntimeException('SportsManagement native CalendarFunctions runtime could not be loaded.', 500);
 }
 
 if (!function_exists('getCalender')) {
