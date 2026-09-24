@@ -15,6 +15,10 @@ if (!class_exists(Playgroundlist2Field::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/Playgroundlist2Field.php';
 }
 
+if (!class_exists(Playgroundlist2Field::class)) {
+    throw new \RuntimeException('SportsManagement native Playgroundlist2 field could not be loaded.', 500);
+}
+
 if (!class_exists('JFormFieldplaygroundlist2', false)) {
     class_alias(Playgroundlist2Field::class, 'JFormFieldplaygroundlist2');
 }

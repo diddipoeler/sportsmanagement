@@ -15,6 +15,10 @@ if (!class_exists(ExtensionradiobuttonField::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ExtensionradiobuttonField.php';
 }
 
+if (!class_exists(ExtensionradiobuttonField::class)) {
+    throw new \RuntimeException('SportsManagement native Extensionradiobutton field could not be loaded.', 500);
+}
+
 if (!class_exists('JFormFieldExtensionRadioButton', false)) {
     class_alias(ExtensionradiobuttonField::class, 'JFormFieldExtensionRadioButton');
 }

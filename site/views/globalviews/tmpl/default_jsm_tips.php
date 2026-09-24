@@ -1,7 +1,8 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * Joomla 5/6 shared frontend tips layout.
+ *
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage globalviews
  * @file       default_jsm_tips.php
@@ -9,37 +10,25 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\HTML\HTMLHelper;
+\defined('_JEXEC') or die;
+
 use Joomla\CMS\Language\Text;
 
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-$boxicon = 'fas fa-quote-right fa-2x fa-pull-left';
-}
-else	
-{
-$boxicon = 'info-tab tip-icon';	
-}
-?>
-
-<?php
-if ( $this->tips )
-{
-$tips = implode("<br>",$this->tips);  
-?>
-<!--Tip Box grün -->
-<div class="color-box">
-<div class="shadow">
-<div class="<?php echo $boxicon;?>" title="<?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TIP'); ?>"><i></i></div>
-<div class="tip-box">
-<p><strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TIP'); ?></strong>
-<?php echo $tips; ?>
-</p>
-</div>
-</div>
-</div>
-<!--Tip Box grün -->
-
-<?php  
-}
+if (!empty($this->tips)) :
+    $tips = implode('<br>', (array) $this->tips);
+    ?>
+    <div class="color-box">
+        <div class="shadow">
+            <div class="fas fa-quote-right fa-2x fa-pull-left"
+                 title="<?php echo htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TIP'), ENT_QUOTES, 'UTF-8'); ?>">
+                <i aria-hidden="true"></i>
+            </div>
+            <div class="tip-box">
+                <p>
+                    <strong><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TIP'); ?></strong>
+                    <?php echo $tips; ?>
+                </p>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

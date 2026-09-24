@@ -15,6 +15,10 @@ if (!class_exists(UserfieldsField::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/UserfieldsField.php';
 }
 
+if (!class_exists(UserfieldsField::class)) {
+    throw new \RuntimeException('SportsManagement native Userfields field could not be loaded.', 500);
+}
+
 if (!class_exists('JFormFielduserfields', false)) {
     class_alias(UserfieldsField::class, 'JFormFielduserfields');
 }

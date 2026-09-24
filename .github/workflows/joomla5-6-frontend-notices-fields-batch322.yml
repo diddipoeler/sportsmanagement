@@ -1,0 +1,63 @@
+name: Joomla 5/6 frontend notices admin fields batch 322
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/globalviews/tmpl/default_jsm_tips.php'
+      - 'site/views/globalviews/tmpl/default_jsm_warnings.php'
+      - 'site/views/results/tmpl/form.php'
+      - 'admin/models/fields/playgroundlist2.php'
+      - 'admin/models/fields/userfields.php'
+      - 'admin/models/fields/extensionradiobutton.php'
+      - '.github/workflows/joomla5-6-frontend-notices-fields-batch322.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/globalviews/tmpl/default_jsm_tips.php'
+      - 'site/views/globalviews/tmpl/default_jsm_warnings.php'
+      - 'site/views/results/tmpl/form.php'
+      - 'admin/models/fields/playgroundlist2.php'
+      - 'admin/models/fields/userfields.php'
+      - 'admin/models/fields/extensionradiobutton.php'
+      - '.github/workflows/joomla5-6-frontend-notices-fields-batch322.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 notices and field bridges
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/globalviews/tmpl/default_jsm_tips.php
+            site/views/globalviews/tmpl/default_jsm_warnings.php
+            site/views/results/tmpl/form.php
+            admin/models/fields/playgroundlist2.php
+            admin/models/fields/userfields.php
+            admin/models/fields/extensionradiobutton.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          for file in site/views/globalviews/tmpl/default_jsm_tips.php site/views/globalviews/tmpl/default_jsm_warnings.php; do
+            ! grep -Fq -- 'JVERSION' "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
+          ! grep -Fq -- 'Restricted access' site/views/results/tmpl/form.php
+          grep -Fq -- 'native Playgroundlist2 field could not be loaded' admin/models/fields/playgroundlist2.php
+          grep -Fq -- 'native Userfields field could not be loaded' admin/models/fields/userfields.php
+          grep -Fq -- 'native Extensionradiobutton field could not be loaded' admin/models/fields/extensionradiobutton.php
