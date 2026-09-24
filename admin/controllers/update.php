@@ -7,12 +7,16 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\UpdateController;
 
 if (!class_exists(UpdateController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/UpdateController.php';
+}
+
+if (!class_exists(UpdateController::class)) {
+    throw new \RuntimeException('SportsManagement native Update controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerUpdate', false)) {
