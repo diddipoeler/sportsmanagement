@@ -10,6 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -124,7 +125,7 @@ class JSMModelAdmin extends AdminModel
 		$this->jsmsubquery1   = $this->jsmdb->createQuery();
 		$this->jsmsubquery2   = $this->jsmdb->createQuery();
 		$this->jsmsubquery3   = $this->jsmdb->createQuery();
-		$this->jsmapp         = Factory::getApplication();
+		$this->jsmapp         = Factory::getContainer()->get(AdministratorApplication::class);
 		$this->jsmjinput      = $this->jsmapp->getInput();
 		$this->jsmoption      = $this->jsmjinput->getCmd('option');
 		$this->jsmview        = $this->jsmjinput->getCmd('view');
@@ -2201,7 +2202,7 @@ class JSMModelList extends ListModel
 	 */
 	public function __construct($config = array())
 	{
-		$this->jsmapp = Factory::getApplication();
+		$this->jsmapp = Factory::getContainer()->get(AdministratorApplication::class);
 		$this->jsmjinput = $this->jsmapp->getInput();
 		parent::__construct($config);
 		$this->jsmdb = sportsmanagementHelper::getDBConnection();
@@ -2295,7 +2296,7 @@ class JSMModelLegacy extends BaseDatabaseModel
 		$this->jsmsubquery3 = $this->jsmdb->createQuery();
 
 		// Reference the active Joomla application.
-		$this->jsmapp = Factory::getApplication();
+		$this->jsmapp = Factory::getContainer()->get(AdministratorApplication::class);
 
 		// JInput object
 		$this->jsmjinput      = $this->jsmapp->getInput();

@@ -1,0 +1,39 @@
+name: Joomla 5/6 administrator application container batch 412
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/libraries/sportsmanagement/model.php'
+      - '.github/workflows/joomla5-6-admin-application-container-batch412.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/libraries/sportsmanagement/model.php'
+      - '.github/workflows/joomla5-6-admin-application-container-batch412.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator application container
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/libraries/sportsmanagement/model.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- 'AdministratorApplication::class' "$file"
+          test "$(grep -Fc -- 'Factory::getContainer()->get(AdministratorApplication::class)' "$file")" -eq 3
+          ! grep -Fq -- 'Factory::getApplication();' "$file"
