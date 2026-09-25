@@ -17,6 +17,8 @@ use Joomla\Data\DataObject;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Version;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -1066,75 +1068,48 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function addSubmenu($submenu)
 	{
-		$app             = Factory::getApplication();
-		$jinput          = $app->input;
-		$option          = $jinput->getCmd('option');
-		$document        = Factory::getDocument();
-		$project_id      = $app->getUserState("$option.pid", '0');
-		$project_team_id = $app->getUserState("$option.project_team_id", '0');
-		$team_id         = $app->getUserState("$option.team_id", '0');
-		$club_id         = $app->getUserState("$option.club_id", '0');
+		Sidebar::addEntry(
+			Text::_('COM_SPORTSMANAGEMENT_MENU'),
+			'index.php?option=com_sportsmanagement',
+			$submenu === 'cpanel'
+		);
+		Sidebar::addEntry(
+			Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'),
+			'index.php?option=com_sportsmanagement&view=projects',
+			$submenu === 'projects'
+		);
+		Sidebar::addEntry(
+			Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'),
+			'index.php?option=com_sportsmanagement&view=predictions',
+			$submenu === 'predictions'
+		);
+		Sidebar::addEntry(
+			Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'),
+			'index.php?option=com_sportsmanagement&view=currentseasons',
+			$submenu === 'currentseasons'
+		);
+		Sidebar::addEntry(
+			Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'),
+			'index.php?option=com_sportsmanagement&view=jsmgcalendars',
+			$submenu === 'googlecalendar'
+		);
+		Sidebar::addEntry(
+			Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'),
+			'index.php?option=com_sportsmanagement&view=extensions',
+			$submenu === 'extensions'
+		);
+		Sidebar::addEntry(
+			Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'),
+			'index.php?option=com_sportsmanagement&view=specialextensions',
+			$submenu === 'specialextensions'
+		);
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		if ($submenu === 'extensions')
 		{
-			JHtmlSidebar::addEntry(
-				Text::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel'
-			);
-
-			JHtmlSidebar::addEntry(
-				Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects'
-			);
-
-			JHtmlSidebar::addEntry(
-				Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions'
-			);
-			JHtmlSidebar::addEntry(
-				Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'), 'index.php?option=com_sportsmanagement&view=currentseasons', $submenu == 'currentseasons'
-			);
-			JHtmlSidebar::addEntry(
-				Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgcalendars', $submenu == 'googlecalendar'
-			);
-			JHtmlSidebar::addEntry(
-				Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions'
-			);
-			JHtmlSidebar::addEntry(
-				Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions'
-			);
-		}
-		else
-		{
-			JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_MENU'), 'index.php?option=com_sportsmanagement', $submenu == 'cpanel');
-
-			JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=extensions', $submenu == 'extensions');
-
-			JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS'), 'index.php?option=com_sportsmanagement&view=projects', $submenu == 'projects');
-
-			if ($project_id != 0)
-			{
-				JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PROJECTS_DETAILS'), 'index.php?option=com_sportsmanagement&view=project&layout=panel&id=' . $project_id, $submenu == 'project');
-			}
-			else
-			{
-			}
-
-			JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_PREDICTIONS'), 'index.php?option=com_sportsmanagement&view=predictions', $submenu == 'predictions');
-
-			JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'), 'index.php?option=com_sportsmanagement&view=currentseasons', $submenu == 'currentseasons');
-
-			JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgcalendars', $submenu == 'googlecalendar');
-
-			JSubMenuHelper::addEntry(Text::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions');
-
-			// Set some global property
-			$document = Factory::getDocument();
-			$document->addStyleDeclaration('.icon-48-helloworld {background-image: url(../media/com_sportsmanagement/images/tux-48x48.png);}');
-
-			if ($submenu == 'extensions')
-			{
-				$document->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMINISTRATION_EXTENSIONS'));
-			}
+			Factory::getDocument()->setTitle(Text::_('COM_SPORTSMANAGEMENT_ADMINISTRATION_EXTENSIONS'));
 		}
 	}
+
 
 	/**
 	 * Get the actions
@@ -1210,14 +1185,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 				if ($data)
 				{
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						$jRegistry->loadString($data);
-					}
-					else
-					{
-						$jRegistry->loadJSON($data);
-					}
+					$jRegistry->loadString($data);
 				}
 
 				$extended = Form::getInstance('extended', $xmlfile, array('control' => 'extended'), false, '/config');
@@ -1273,14 +1241,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 				if ($data)
 				{
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						$jRegistry->loadString($data);
-					}
-					else
-					{
-						$jRegistry->loadJSON($data);
-					}
+					$jRegistry->loadString($data);
 				}
 
 				$extended = Form::getInstance('extendeduser', $xmlfile, array('control' => 'extendeduser'), false, '/config');
@@ -2354,14 +2315,7 @@ $jinput = $app->input;
 				echo '<td align="center" style=""><b>' . $division->name . '</b>&nbsp;</td>';
 				$jRegistry = new Registry;
 	
-				if ( version_compare(JVERSION, '3.0.0', 'ge') )
-				{
-					$jRegistry->loadString($division->rankingparams);
-				}
-				else
-				{
-					$jRegistry->loadJSON($division->rankingparams);
-				}
+				$jRegistry->loadString($division->rankingparams);
 	
 				$configvalues = $jRegistry->toArray();
 				$colors       = array();
@@ -2691,14 +2645,7 @@ $jinput = $app->input;
 				 * welche joomla version
 				 * und ist seo eingestellt
 				 */
-				if (version_compare(JVERSION, '3.0.0', 'ge'))
-				{
-					$sef = Factory::getConfig()->get('sef', false);
-				}
-				else
-				{
-					$sef = Factory::getConfig()->getValue('config.sef', false);
-				}
+				$sef = (bool) Factory::getConfig()->get('sef', false);
 
 				$print_urlparams = ($sef ? "?tmpl=component&print=1" : "&tmpl=component&print=1");
 
@@ -3622,75 +3569,56 @@ $jinput = $app->input;
 	 */
 	public static function checkUpdateVersion()
 	{
-		$return  = 0;
-		$version = self::getVersion();
+		$app = Factory::getApplication();
+		$currentVersion = self::getVersion();
+		$url = 'https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml';
 
-		$temp = explode(".", $version);
-
-		// Laden
-		$datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml";
-
-		if (function_exists('curl_version'))
+		try
 		{
-			$curl = curl_init();
+			$response = HttpFactory::getHttp()->get($url);
+			$statusCode = (int) ($response->code ?? 0);
 
-			// Define header array for cURL requestes
-			$header = array('Contect-Type:application/xml');
-			curl_setopt($curl, CURLOPT_URL, $datei);
-			curl_setopt($curl, CURLOPT_VERBOSE, 1);
-			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-
-			// Curl_setopt($curl, CURLOPT_POST, 1);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
-
-			if (curl_errno($curl))
+			if ($statusCode < 200 || $statusCode >= 300)
 			{
-				// Moving to display page to display curl errors
+				$app->enqueueMessage(
+					Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $statusCode, $url),
+					'warning'
+				);
+
+				return false;
 			}
-			else
+
+			$content = trim((string) ($response->body ?? ''));
+
+			if ($content === '')
 			{
-				$content = curl_exec($curl);
-				curl_close($curl);
+				return false;
 			}
-		}
-		elseif (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
-		{
-			$content = file_get_contents($datei);
-		}
-		else
-		{
-			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'), 'Error');
-		}
 
-		if ($content)
-		{
-			$doc = new DOMDocument;
-			$doc->loadXML($content, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
-			$doc->save(JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement.xml');
-		}
+			$xml = simplexml_load_string($content, 'SimpleXMLElement', LIBXML_NONET | LIBXML_NOERROR | LIBXML_NOWARNING);
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$xml = simplexml_load_file(JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement.xml');
-		}
-		else
-		{
-			$xml = Factory::getXML(JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement.xml');
-		}
+			if ($xml === false || !isset($xml->version))
+			{
+				return false;
+			}
 
-		$github_version = (string) $xml->version;
-
-		if (version_compare($github_version, $version, 'gt'))
-		{
-			$return = false;
+			return !version_compare((string) $xml->version, $currentVersion, 'gt');
 		}
-		else
+		catch (\Throwable $e)
 		{
-			$return = true;
+			$app->enqueueMessage(
+				Text::sprintf(
+					'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
+					$e->getCode(),
+					$e->getMessage()
+				),
+				'warning'
+			);
+
+			return false;
 		}
 	}
+
 
 	/**
 	 * sportsmanagementHelper::getVersion()
@@ -3965,15 +3893,7 @@ $jinput = $app->input;
 		$result[0]['exportDate']    = date('Y-m-d');
 		$result[0]['exportTime']    = date('H:i:s');
 
-		// Welche joomla version ?
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
-		}
-		else
-		{
-			$result[0]['exportSystem'] = Factory::getConfig()->getValue('sitename');
-		}
+		$result[0]['exportSystem'] = Factory::getConfig()->get('sitename');
 
 		$result[0]['object'] = 'SportsManagementVersion';
 

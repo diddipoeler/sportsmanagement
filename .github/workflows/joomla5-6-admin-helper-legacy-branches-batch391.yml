@@ -1,0 +1,43 @@
+name: Joomla 5/6 administrator helper legacy branches batch 391
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/helpers/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-admin-helper-legacy-branches-batch391.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/helpers/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-admin-helper-legacy-branches-batch391.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator helper legacy cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/helpers/sportsmanagement.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- 'Sidebar::addEntry' "$file"
+          grep -Fq -- 'HttpFactory::getHttp()' "$file"
+          ! grep -Fq -- 'version_compare(JVERSION' "$file"
+          ! grep -Fq -- 'JHtmlSidebar::' "$file"
+          ! grep -Fq -- 'JSubMenuHelper::' "$file"
+          ! grep -Fq -- 'loadJSON(' "$file"
+          ! grep -Fq -- 'getValue(' "$file"
