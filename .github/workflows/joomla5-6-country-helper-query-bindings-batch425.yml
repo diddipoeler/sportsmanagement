@@ -1,0 +1,39 @@
+name: Joomla 5/6 country helper query bindings batch 425
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/helpers/countries.php'
+      - '.github/workflows/joomla5-6-country-helper-query-bindings-batch425.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/helpers/countries.php'
+      - '.github/workflows/joomla5-6-country-helper-query-bindings-batch425.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate country helper query bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/helpers/countries.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- 'ParameterType::STRING' "$file"
+          grep -Fq -- 'is_file($resolverFile)' "$file"
+          ! grep -Fq -- '$db->quote((string)' "$file"

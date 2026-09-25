@@ -15,9 +15,14 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 if (!class_exists(SportsManagementDatabaseResolver::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
+    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
+
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
 }
 
 if (!class_exists(SportsManagementDatabaseResolver::class)) {
@@ -47,8 +52,9 @@ class JSMCountries
         $db = self::database();
         $query = $db->createQuery()
             ->select('*')
-            ->from('#__sportsmanagement_countries')
-            ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
+            ->from($db->quoteName('#__sportsmanagement_countries'))
+            ->where($db->quoteName('alpha3') . ' = :countryAlpha3')
+            ->bind(':countryAlpha3', $countrycode, ParameterType::STRING);
         $db->setQuery($query);
 
         return $db->loadObject();
@@ -99,9 +105,10 @@ class JSMCountries
     {
         $db = self::database();
         $query = $db->createQuery()
-            ->select('alpha3')
-            ->from('#__sportsmanagement_countries')
-            ->where('alpha2 LIKE ' . $db->quote((string) $iso_code_2));
+            ->select($db->quoteName('alpha3'))
+            ->from($db->quoteName('#__sportsmanagement_countries'))
+            ->where($db->quoteName('alpha2') . ' = :countryAlpha2')
+            ->bind(':countryAlpha2', $iso_code_2, ParameterType::STRING);
         $db->setQuery($query);
         $result = $db->loadResult();
 
@@ -124,9 +131,10 @@ class JSMCountries
     {
         $db = self::database();
         $query = $db->createQuery()
-            ->select('alpha3')
-            ->from('#__sportsmanagement_countries')
-            ->where('fifa LIKE ' . $db->quote((string) $fifa));
+            ->select($db->quoteName('alpha3'))
+            ->from($db->quoteName('#__sportsmanagement_countries'))
+            ->where($db->quoteName('fifa') . ' = :countryFifa')
+            ->bind(':countryFifa', $fifa, ParameterType::STRING);
         $db->setQuery($query);
         $result = $db->loadResult();
 
@@ -137,9 +145,10 @@ class JSMCountries
     {
         $db = self::database();
         $query = $db->createQuery()
-            ->select('name')
-            ->from('#__sportsmanagement_countries')
-            ->where('alpha3 LIKE ' . $db->quote((string) $iso3));
+            ->select($db->quoteName('name'))
+            ->from($db->quoteName('#__sportsmanagement_countries'))
+            ->where($db->quoteName('alpha3') . ' = :countryNameAlpha3')
+            ->bind(':countryNameAlpha3', $iso3, ParameterType::STRING);
         $db->setQuery($query);
         $result = $db->loadResult();
 
@@ -186,9 +195,10 @@ class JSMCountries
 
         if ($picture) {
             $query = $db->createQuery()
-                ->select('picture')
-                ->from('#__sportsmanagement_countries')
-                ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
+                ->select($db->quoteName('picture'))
+                ->from($db->quoteName('#__sportsmanagement_countries'))
+                ->where($db->quoteName('alpha3') . ' = :flagPictureAlpha3')
+                ->bind(':flagPictureAlpha3', $countrycode, ParameterType::STRING);
             $db->setQuery($query);
 
             return $db->loadResult();
@@ -196,9 +206,10 @@ class JSMCountries
 
         if ($flag_map) {
             $query = $db->createQuery()
-                ->select('flag_maps')
-                ->from('#__sportsmanagement_countries')
-                ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
+                ->select($db->quoteName('flag_maps'))
+                ->from($db->quoteName('#__sportsmanagement_countries'))
+                ->where($db->quoteName('alpha3') . ' = :flagMapAlpha3')
+                ->bind(':flagMapAlpha3', $countrycode, ParameterType::STRING);
             $db->setQuery($query);
 
             return $db->loadResult();
@@ -206,9 +217,10 @@ class JSMCountries
 
         if (!$src) {
             $query = $db->createQuery()
-                ->select('picture')
-                ->from('#__sportsmanagement_countries')
-                ->where('alpha3 LIKE ' . $db->quote((string) $countrycode));
+                ->select($db->quoteName('picture'))
+                ->from($db->quoteName('#__sportsmanagement_countries'))
+                ->where($db->quoteName('alpha3') . ' = :fallbackFlagAlpha3')
+                ->bind(':fallbackFlagAlpha3', $countrycode, ParameterType::STRING);
             $db->setQuery($query);
             $src = $db->loadResult();
         }
@@ -254,9 +266,10 @@ class JSMCountries
     {
         $db = self::database();
         $query = $db->createQuery()
-            ->select('alpha2')
-            ->from('#__sportsmanagement_countries')
-            ->where('alpha3 LIKE ' . $db->quote((string) $iso_code_3));
+            ->select($db->quoteName('alpha2'))
+            ->from($db->quoteName('#__sportsmanagement_countries'))
+            ->where($db->quoteName('alpha3') . ' = :countryIso3')
+            ->bind(':countryIso3', $iso_code_3, ParameterType::STRING);
         $db->setQuery($query);
         $result = $db->loadResult();
 
