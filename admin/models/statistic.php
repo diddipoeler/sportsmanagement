@@ -12,8 +12,18 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\StatisticModel;
 
 if (!class_exists(StatisticModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/StatisticModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/StatisticModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(StatisticModel::class)) {
+    throw new \RuntimeException('SportsManagement native Statistic model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelstatistic', false)) {

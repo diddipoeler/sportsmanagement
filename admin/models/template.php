@@ -12,8 +12,18 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TemplateModel;
 
 if (!class_exists(TemplateModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TemplateModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TemplateModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(TemplateModel::class)) {
+    throw new \RuntimeException('SportsManagement native Template model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModeltemplate', false)) {
