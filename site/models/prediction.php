@@ -1039,41 +1039,16 @@ $recipient = array();
 	 */
 	static function getMatchTeam($teamID = 0, $teamName = 'name')
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		// $teamName='name';
-		if ($teamID == 0)
+		if ((int) $teamID <= 0)
 		{
 			return '#Error1 teamID==0 in ' . __METHOD__;
 		}
 
-		$query->clear();
-		$query->select('t.' . $teamName . ' as name');
-		$query->from('#__sportsmanagement_team AS t');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
-		$query->where('pt.id = ' . (int) $teamID);
+		$value = self::nativePredictionModel()->getProjectTeamDisplayValue((int) $teamID, (string) $teamName);
 
-		$db->setQuery($query);
-		$db->execute();
-
-		if ($object = $db->loadObject())
-		{
-			return $object->name;
-		}
-
-		return '#Error2 teamname not found in ' . __METHOD__;
-
+		return $value !== null ? $value : '#Error2 teamname not found in ' . __METHOD__;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getMatchTeamClubLogo()
@@ -1084,40 +1059,16 @@ $recipient = array();
 	 */
 	static function getMatchTeamClubLogo($teamID = 0, $which_logo = 'logo_big')
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($teamID == 0)
+		if ((int) $teamID <= 0)
 		{
 			return '#Error1 in ' . __METHOD__;
 		}
 
-		$query->select('c.' . $which_logo);
-		$query->from('#__sportsmanagement_club AS c');
-		$query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
-		$query->where('pt.id = ' . (int) $teamID);
+		$value = self::nativePredictionModel()->getProjectTeamClubLogo((int) $teamID, (string) $which_logo);
 
-		$db->setQuery($query);
-		$db->execute();
-
-		if ($object = $db->loadObject())
-		{
-			return $object->$which_logo;
-		}
-
-		return '#Error2 in ' . __METHOD__;
-
+		return $value !== null ? $value : '#Error2 in ' . __METHOD__;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getMatchTeamClubFlag()
@@ -1128,40 +1079,16 @@ $recipient = array();
 	 */
 	static function getMatchTeamClubFlag($teamID = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($teamID == 0)
+		if ((int) $teamID <= 0)
 		{
 			return '#Error1 in ' . __METHOD__;
 		}
 
-		$query->select('c.country');
-		$query->from('#__sportsmanagement_club AS c');
-		$query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
-		$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
-		$query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
-		$query->where('pt.id = ' . (int) $teamID);
+		$value = self::nativePredictionModel()->getProjectTeamClubCountry((int) $teamID);
 
-		$db->setQuery($query);
-		$db->execute();
-
-		if ($object = $db->loadObject())
-		{
-			return $object->country;
-		}
-
-		return '#Error2 in ' . __METHOD__;
-
+		return $value !== null ? $value : '#Error2 in ' . __METHOD__;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::createRatingObject()
@@ -1351,26 +1278,9 @@ $recipient = array();
 	 */
 	static function getPredictionGroupList()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('id AS value, name AS text');
-		$query->from('#__sportsmanagement_prediction_groups ');
-		$query->order('name ASC');
-
-		$db->setQuery($query);
-		$results = $db->loadObjectList();
-
-		return $results;
+		return self::nativePredictionModel()->getPredictionGroupOptions();
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getPredictionMemberList()
@@ -1382,45 +1292,12 @@ $recipient = array();
 	 */
 	static function getPredictionMemberList($config = null, $actUserId = null)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
+		$showFullName = (int) ($config['show_full_name'] ?? 0) !== 0;
+		$activeUserId = isset($actUserId) ? (int) $actUserId : null;
 
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($config['show_full_name'] == 0)
-		{
-			$nameType = 'username';
-		}
-		else
-		{
-			$nameType = 'name';
-		}
-
-		$query->select('pm.id AS value');
-		$query->select('u.' . $nameType . ' AS text');
-		$query->select('pg.id as pg_group_id,pg.name as pg_group_name');
-		$query->from('#__sportsmanagement_prediction_member AS pm ');
-		$query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
-		$query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
-		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-
-		if (isset($actUserId))
-		{
-			$query->where('pm.approved = 1');
-			$query->where('(pm.show_profile=1 OR pm.user_id=' . $actUserId . ')');
-		}
-
-		$db->setQuery($query);
-		$results = $db->loadObjectList();
-
-		return $results;
+		return self::nativePredictionModel()->getPredictionMemberOptions($showFullName, $activeUserId);
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getMemberPredictionJokerCount()
@@ -1624,19 +1501,12 @@ $recipient = array();
 	 */
 	static function getPredictionProjectNames($predictionID, $ordering = 'ASC', $limit = 0)
 	{
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('ppj.id,pj.id AS prediction_id,pj.name AS pjName,CONCAT_WS(\':\',pj.id,pj.alias) AS slug');
-		$query->from('#__sportsmanagement_project AS pj');
-		$query->join('LEFT', '#__sportsmanagement_prediction_project AS ppj ON ppj.project_id = pj.id');
-		$query->where('ppj.prediction_id = ' . (int) $predictionID);
-		$query->order('ppj.id ' . $ordering);
-		$db->setQuery($query);
-
-		return $db->loadObjectList();
+		return self::nativePredictionModel()->getPredictionProjectNameOptions(
+			(int) $predictionID,
+			(string) $ordering
+		);
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::savePredictionPoints()

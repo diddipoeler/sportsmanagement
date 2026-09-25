@@ -861,4 +861,204 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return (int) $db->loadResult();
     }
 
+
+    /** Return a configured team display field for one project-team id. */
+    public function getProjectTeamDisplayValue(int $projectTeamId, string $field = 'name'): ?string
+    {
+        if ($projectTeamId <= 0) {
+            return null;
+        }
+
+        $field = in_array($field, ['name', 'short_name', 'middle_name'], true) ? $field : 'name';
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('t.' . $field))
+            ->from($db->quoteName('#__sportsmanagement_team', 't'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->where($db->quoteName('pt.id') . ' = :displayProjectTeamId')
+            ->bind(':displayProjectTeamId', $projectTeamId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+        $value = $db->loadResult();
+
+        return $value !== null ? (string) $value : null;
+    }
+
+    /** Return one permitted club logo field for a project-team id. */
+    public function getProjectTeamClubLogo(int $projectTeamId, string $field = 'logo_big'): ?string
+    {
+        if ($projectTeamId <= 0) {
+            return null;
+        }
+
+        $field = in_array($field, ['logo_big', 'logo_middle', 'logo_small'], true) ? $field : 'logo_big';
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('c.' . $field))
+            ->from($db->quoteName('#__sportsmanagement_club', 'c'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->where($db->quoteName('pt.id') . ' = :logoProjectTeamId')
+            ->bind(':logoProjectTeamId', $projectTeamId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+        $value = $db->loadResult();
+
+        return $value !== null ? (string) $value : null;
+    }
+
+    /** Return the club country for a project-team id. */
+    public function getProjectTeamClubCountry(int $projectTeamId): ?string
+    {
+        if ($projectTeamId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('c.country'))
+            ->from($db->quoteName('#__sportsmanagement_club', 'c'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.club_id') . ' = ' . $db->quoteName('c.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('t.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project_team', 'pt')
+                . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id')
+            )
+            ->where($db->quoteName('pt.id') . ' = :countryProjectTeamId')
+            ->bind(':countryProjectTeamId', $projectTeamId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+        $value = $db->loadResult();
+
+        return $value !== null ? (string) $value : null;
+    }
+
+    /** Return prediction group options for legacy select lists. */
+    public function getPredictionGroupOptions(): array
+    {
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('id', 'value'),
+                $db->quoteName('name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_groups'))
+            ->order($db->quoteName('name') . ' ASC');
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    /** Return prediction member options with the historical visibility filter. */
+    public function getPredictionMemberOptions(bool $showFullName = false, ?int $activeUserId = null): array
+    {
+        if ($this->predictionGameId <= 0) {
+            return [];
+        }
+
+        $nameField = $showFullName ? 'name' : 'username';
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('pm.id', 'value'),
+                $db->quoteName('u.' . $nameField, 'text'),
+                $db->quoteName('pg.id', 'pg_group_id'),
+                $db->quoteName('pg.name', 'pg_group_name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__users', 'u')
+                . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pm.user_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_prediction_groups', 'pg')
+                . ' ON ' . $db->quoteName('pg.id') . ' = ' . $db->quoteName('pm.group_id')
+            )
+            ->where($db->quoteName('pm.prediction_id') . ' = :memberOptionsPredictionId')
+            ->bind(':memberOptionsPredictionId', $this->predictionGameId, ParameterType::INTEGER);
+
+        if ($activeUserId !== null) {
+            $approved = 1;
+            $showProfile = 1;
+            $query
+                ->where($db->quoteName('pm.approved') . ' = :memberOptionsApproved')
+                ->where(
+                    '(' . $db->quoteName('pm.show_profile') . ' = :memberOptionsShowProfile'
+                    . ' OR ' . $db->quoteName('pm.user_id') . ' = :memberOptionsActiveUserId)'
+                )
+                ->bind(':memberOptionsApproved', $approved, ParameterType::INTEGER)
+                ->bind(':memberOptionsShowProfile', $showProfile, ParameterType::INTEGER)
+                ->bind(':memberOptionsActiveUserId', $activeUserId, ParameterType::INTEGER);
+        }
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    /** Return projects assigned to one prediction game in legacy option shape. */
+    public function getPredictionProjectNameOptions(int $predictionId, string $ordering = 'ASC'): array
+    {
+        if ($predictionId <= 0) {
+            return [];
+        }
+
+        $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('ppj.id'),
+                $db->quoteName('pj.id', 'prediction_id'),
+                $db->quoteName('pj.name', 'pjName'),
+                "CONCAT_WS(':', " . $db->quoteName('pj.id') . ', ' . $db->quoteName('pj.alias') . ') AS ' . $db->quoteName('slug'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project', 'pj'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_prediction_project', 'ppj')
+                . ' ON ' . $db->quoteName('ppj.project_id') . ' = ' . $db->quoteName('pj.id')
+            )
+            ->where($db->quoteName('ppj.prediction_id') . ' = :projectNamesPredictionId')
+            ->bind(':projectNamesPredictionId', $predictionId, ParameterType::INTEGER)
+            ->order($db->quoteName('ppj.id') . ' ' . $direction);
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
 }
