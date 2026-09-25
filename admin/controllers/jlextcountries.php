@@ -7,13 +7,17 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextcountriesController;
 
 if (!class_exists(JlextcountriesController::class)) {
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
     require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JlextcountriesController.php';
+}
+
+if (!class_exists(JlextcountriesController::class)) {
+    throw new \RuntimeException('SportsManagement native Jlextcountries controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerjlextcountries', false)) {
