@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage libraries
  * @file       cbootstrap.php
@@ -17,8 +17,8 @@
  * @license        GNU General Public License <http://www.gnu.org/copyleft/gpl.html>
  * @link           http://www.conflate.nl
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+\defined('_JEXEC') or die;
+use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * CBootstrap
@@ -51,39 +51,10 @@ class CBootstrap
 	 */
 	public static function load()
 	{
-		$doc = Factory::getDocument();
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
-
-			// Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
-			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
-			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
-		}
-		elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			Factory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js');
-
-			// Factory::getDocument()->addScript('http://getbootstrap.com/2.3.2/assets/js/bootstrap-tab.js');
-			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
-			Factory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css');
-		}
-		elseif (version_compare(JVERSION, '1.7.0', 'ge'))
-		{
-			// Joomla! 1.7 code here
-		}
-		elseif (version_compare(JVERSION, '1.6.0', 'ge'))
-		{
-			// Joomla! 1.6 code here
-		}
-		else
-		{
-			// Joomla! 1.5 code here
-		}
-
+		// Joomla 5/6 ships Bootstrap through the core Web Asset Manager.
+		// Keep the historical entry point without injecting an obsolete
+		// Bootstrap 3 bundle from an external CDN.
+		HTMLHelper::_('bootstrap.framework');
 	}
 
 }

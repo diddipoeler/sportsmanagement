@@ -1,0 +1,40 @@
+name: Joomla 5/6 administrator bootstrap bridge batch 405
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/libraries/cbootstrap.php'
+      - '.github/workflows/joomla5-6-admin-bootstrap-bridge-batch405.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/libraries/cbootstrap.php'
+      - '.github/workflows/joomla5-6-admin-bootstrap-bridge-batch405.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator Bootstrap bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/libraries/cbootstrap.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "HTMLHelper::_('bootstrap.framework')" "$file"
+          ! grep -Fq -- 'version_compare(JVERSION' "$file"
+          ! grep -Fq -- 'maxcdn.bootstrapcdn.com' "$file"
+          ! grep -Fq -- 'Restricted access' "$file"
