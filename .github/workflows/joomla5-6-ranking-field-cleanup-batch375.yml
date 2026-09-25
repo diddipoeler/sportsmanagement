@@ -1,4 +1,4 @@
-name: Joomla 5/6 ranking field cleanup batch 355
+name: Joomla 5/6 ranking field cleanup batch 375
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - 'admin/models/fields/teams.php'
       - 'admin/models/fields/favteam.php'
       - 'admin/models/fields/imageselect.php'
-      - '.github/workflows/joomla5-6-ranking-field-cleanup-batch355.yml'
+      - '.github/workflows/joomla5-6-ranking-field-cleanup-batch375.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
@@ -16,7 +16,7 @@ on:
       - 'admin/models/fields/teams.php'
       - 'admin/models/fields/favteam.php'
       - 'admin/models/fields/imageselect.php'
-      - '.github/workflows/joomla5-6-ranking-field-cleanup-batch355.yml'
+      - '.github/workflows/joomla5-6-ranking-field-cleanup-batch375.yml'
 
 permissions:
   contents: read

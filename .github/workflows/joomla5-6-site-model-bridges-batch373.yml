@@ -1,4 +1,4 @@
-name: Joomla 5/6 site model bridges batch 353
+name: Joomla 5/6 site model bridges batch 373
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - 'site/models/scoresheet.php'
       - 'site/models/statsranking.php'
       - 'site/models/predictionuser.php'
-      - '.github/workflows/joomla5-6-site-model-bridges-batch353.yml'
+      - '.github/workflows/joomla5-6-site-model-bridges-batch373.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
@@ -16,7 +16,7 @@ on:
       - 'site/models/scoresheet.php'
       - 'site/models/statsranking.php'
       - 'site/models/predictionuser.php'
-      - '.github/workflows/joomla5-6-site-model-bridges-batch353.yml'
+      - '.github/workflows/joomla5-6-site-model-bridges-batch373.yml'
 
 permissions:
   contents: read

@@ -1,4 +1,4 @@
-name: Joomla 5/6 admin field bridges batch 356
+name: Joomla 5/6 admin field bridges batch 376
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - 'admin/models/fields/languagecharacter.php'
       - 'admin/models/fields/jlgcolor.php'
       - 'admin/models/fields/personagegroup.php'
-      - '.github/workflows/joomla5-6-admin-field-bridges-batch356.yml'
+      - '.github/workflows/joomla5-6-admin-field-bridges-batch376.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
@@ -18,7 +18,7 @@ on:
       - 'admin/models/fields/languagecharacter.php'
       - 'admin/models/fields/jlgcolor.php'
       - 'admin/models/fields/personagegroup.php'
-      - '.github/workflows/joomla5-6-admin-field-bridges-batch356.yml'
+      - '.github/workflows/joomla5-6-admin-field-bridges-batch376.yml'
 
 permissions:
   contents: read
