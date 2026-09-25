@@ -17,9 +17,26 @@ use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-require_once dirname(__DIR__, 2) . '/connectors/native/QueryTrait.php';
-require_once dirname(__DIR__, 2) . '/connectors/native/FormatTrait.php';
-require_once dirname(__DIR__, 2) . '/connectors/native/LinkTrait.php';
+$nativeTraits = [
+    NativeQueryTrait::class => dirname(__DIR__, 2) . '/connectors/native/QueryTrait.php',
+    NativeFormatTrait::class => dirname(__DIR__, 2) . '/connectors/native/FormatTrait.php',
+    NativeLinkTrait::class => dirname(__DIR__, 2) . '/connectors/native/LinkTrait.php',
+];
+
+foreach ($nativeTraits as $trait => $file) {
+    if (!trait_exists($trait, false) && is_file($file)) {
+        require_once $file;
+    }
+}
+
+foreach (array_keys($nativeTraits) as $requiredTrait) {
+    if (!trait_exists($requiredTrait)) {
+        throw new \RuntimeException(
+            'SportsManagement Matches trait could not be loaded: ' . $requiredTrait,
+            500
+        );
+    }
+}
 
 final class MatchesHelper
 {

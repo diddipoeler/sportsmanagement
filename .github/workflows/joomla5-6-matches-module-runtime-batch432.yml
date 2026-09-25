@@ -1,0 +1,48 @@
+name: Joomla 5/6 matches module runtime batch 432
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_matches/helper.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/workflows/joomla5-6-matches-module-runtime-batch432.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_matches/helper.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/workflows/joomla5-6-matches-module-runtime-batch432.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Matches module runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_matches/helper.php
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          grep -Fq -- 'SiteRouteHelper::class' modules/mod_sportsmanagement_matches/helper.php
+          grep -Fq -- 'SportsManagementDatabaseResolver::class' modules/mod_sportsmanagement_matches/helper.php
+          grep -Fq -- 'MatchesHelper::class => __DIR__' modules/mod_sportsmanagement_matches/helper.php
+          grep -Fq -- 'trait_exists($requiredTrait)' modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          ! grep -Fq -- "require_once dirname(__DIR__, 2)" modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
