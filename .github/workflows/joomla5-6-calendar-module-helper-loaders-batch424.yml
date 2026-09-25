@@ -1,0 +1,47 @@
+name: Joomla 5/6 calendar module helper loaders batch 424
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - '.github/workflows/joomla5-6-calendar-module-helper-loaders-batch424.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - '.github/workflows/joomla5-6-calendar-module-helper-loaders-batch424.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate calendar module helper loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_gcalendar/helper.php
+            modules/mod_sportsmanagement_google_calendar/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+          grep -Fq -- 'GcalendarHelper::class => __DIR__' modules/mod_sportsmanagement_gcalendar/helper.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::class' modules/mod_sportsmanagement_gcalendar/helper.php
+          grep -Fq -- 'GoogleCalendarHelper::class => __DIR__' modules/mod_sportsmanagement_google_calendar/helper.php

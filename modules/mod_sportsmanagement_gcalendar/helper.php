@@ -17,6 +17,7 @@ use Joomla\Registry\Registry;
 
 $nativeDependencies = [
     SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    GcalendarHelper::class => __DIR__ . '/src/Helper/GcalendarHelper.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -25,20 +26,16 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(GcalendarHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/GcalendarHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SportsManagementSiteApplicationResolver::class,
+    GcalendarHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement GCalendar dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(GcalendarHelper::class)) {
-    throw new \RuntimeException('SportsManagement native GCalendar module helper could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
