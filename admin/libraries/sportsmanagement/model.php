@@ -1,7 +1,7 @@
 <?PHP
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage libraries
  * @file       model.php
@@ -9,7 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\AdminModel;
@@ -117,20 +117,18 @@ class JSMModelAdmin extends AdminModel
 	{
 
 		parent::__construct($config);
-		$getDBConnection = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($getDBConnection);
 		$this->jsmdb = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($this->jsmdb);
-		$this->jsmquery       = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery1   = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery2   = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery3   = $this->jsmdb->getQuery(true);
+		$this->setDatabase($this->jsmdb);
+		$this->jsmquery       = $this->jsmdb->createQuery();
+		$this->jsmsubquery1   = $this->jsmdb->createQuery();
+		$this->jsmsubquery2   = $this->jsmdb->createQuery();
+		$this->jsmsubquery3   = $this->jsmdb->createQuery();
 		$this->jsmapp         = Factory::getApplication();
-		$this->jsmjinput      = $this->jsmapp->input;
+		$this->jsmjinput      = $this->jsmapp->getInput();
 		$this->jsmoption      = $this->jsmjinput->getCmd('option');
 		$this->jsmview        = $this->jsmjinput->getCmd('view');
-		$this->jsmdocument    = Factory::getDocument();
-		$this->jsmuser        = Factory::getUser();
+		$this->jsmdocument    = $this->jsmapp->getDocument();
+		$this->jsmuser        = $this->jsmapp->getIdentity();
 		$this->jsmdate        = Factory::getDate();
 		$this->jsmmessage     = '';
 		$this->jsmmessagetype = 'notice';
@@ -422,7 +420,7 @@ $post['copy_jform']['picture']  = $filepath;
                 $object->logo_big     = $data['logo_big'];
 				$object->modified    = $this->jsmdate->toSql();
 				$object->modified_by = $this->jsmuser->get('id');
-				$result = Factory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
+				$result = $this->jsmdb->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
 
 
 // Fields to update.
@@ -829,7 +827,7 @@ $post['copy_jform']['logo_big']  = $filepath;
 						$object->short_name  = $short_name;
 						$object->club_id    = $club_id;
 						$object->alias = OutputFilter::stringURLSafe($team_name);
-						$result = Factory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
+						$result = $this->jsmdb->updateObject('#__sportsmanagement_team', $object, 'id');
 					}
 				}
 
@@ -1125,10 +1123,10 @@ catch (Exception $e)
                 $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
 		        $profile->modified_by      = $this->jsmuser->get('id');
-$result = Factory::getDbo()->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
+$result = $this->jsmdb->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
 /**			
 			try{
-              $result = Factory::getDbo()->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
+              $result = $this->jsmdb->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
 			}
 catch (Exception $e)
 {
@@ -1370,13 +1368,13 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 						}	
 
 						$options = array();
-						$query = Factory::getDbo()->getQuery(true);
+						$query = $this->jsmdb->createQuery();
 
 						$query->select('id AS value, name AS text');
 						$query->from('#__sportsmanagement_season');
 						$query->order('name DESC');
-						Factory::getDbo()->setQuery($query);
-						$options = Factory::getDbo()->loadObjectList();
+						$this->jsmdb->setQuery($query);
+						$options = $this->jsmdb->loadObjectList();
 
 						foreach ($data['season_ids'] as $key => $value)
 						{
@@ -1577,7 +1575,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 	 */
 	public function getTable($type = '', $prefix = 'sportsmanagementTable', $config = array())
 	{
-		$config['dbo'] = sportsmanagementHelper::getDBConnection();
+		$config['dbo'] = $this->jsmdb;
 
 		if (empty($type))
 		{
@@ -2137,7 +2135,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_sportsmanagement.edit.' . $this->getName() . '.data', array());
+		$data = $this->jsmapp->getUserState('com_sportsmanagement.edit.' . $this->getName() . '.data', array());
 
 		if (empty($data))
 		{
@@ -2174,7 +2172,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 	protected function allowEdit($data = array(), $key = 'id')
 	{
 		// Check specific edit permission then general edit permission.
-		return Factory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
+		return $this->jsmapp->getIdentity()->authorise('core.edit', 'com_sportsmanagement.message.' . ((int) isset($data[$key]) ? $data[$key] : 0)) || parent::allowEdit($data, $key);
 	}
 
 }
@@ -2203,23 +2201,18 @@ class JSMModelList extends ListModel
 	public function __construct($config = array())
 	{
 		$this->jsmapp = Factory::getApplication();
-		$this->jsmjinput      = $this->jsmapp->input;
+		$this->jsmjinput = $this->jsmapp->getInput();
 		parent::__construct($config);
-		$getDBConnection = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($getDBConnection);
 		$this->jsmdb = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($this->jsmdb);
-		$this->jsmquery     = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery1 = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery2 = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery3 = $this->jsmdb->getQuery(true);
+		$this->setDatabase($this->jsmdb);
+		$this->jsmquery     = $this->jsmdb->createQuery();
+		$this->jsmsubquery1 = $this->jsmdb->createQuery();
+		$this->jsmsubquery2 = $this->jsmdb->createQuery();
+		$this->jsmsubquery3 = $this->jsmdb->createQuery();
 
-//		$this->jsmapp = Factory::getApplication();
-//		$this->jsmjinput      = $this->jsmapp->input;
-        
 		$this->jsmoption      = $this->jsmjinput->getCmd('option');
-		$this->jsmdocument    = Factory::getDocument();
-		$this->jsmuser        = Factory::getUser();
+		$this->jsmdocument    = $this->jsmapp->getDocument();
+		$this->jsmuser        = $this->jsmapp->getIdentity();
 		$this->jsmpks         = $this->jsmjinput->get('cid', array(), 'array');
 		$this->jsmpost        = $this->jsmjinput->post->getArray(array());
 		$this->jsmmessage     = '';
@@ -2293,23 +2286,21 @@ class JSMModelLegacy extends BaseDatabaseModel
 	{
 
 		parent::__construct($config);
-		$getDBConnection = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($getDBConnection);
 		$this->jsmdb = sportsmanagementHelper::getDBConnection();
-		parent::setDbo($this->jsmdb);
-		$this->jsmquery     = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery1 = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery2 = $this->jsmdb->getQuery(true);
-		$this->jsmsubquery3 = $this->jsmdb->getQuery(true);
+		$this->setDatabase($this->jsmdb);
+		$this->jsmquery     = $this->jsmdb->createQuery();
+		$this->jsmsubquery1 = $this->jsmdb->createQuery();
+		$this->jsmsubquery2 = $this->jsmdb->createQuery();
+		$this->jsmsubquery3 = $this->jsmdb->createQuery();
 
-		// Reference global application object
+		// Reference the active Joomla application.
 		$this->jsmapp = Factory::getApplication();
 
 		// JInput object
-		$this->jsmjinput      = $this->jsmapp->input;
+		$this->jsmjinput      = $this->jsmapp->getInput();
 		$this->jsmoption      = $this->jsmjinput->getCmd('option');
-		$this->jsmdocument    = Factory::getDocument();
-		$this->jsmuser        = Factory::getUser();
+		$this->jsmdocument    = $this->jsmapp->getDocument();
+		$this->jsmuser        = $this->jsmapp->getIdentity();
 		$this->jsmpks         = $this->jsmjinput->get('cid', array(), 'array');
 		$this->jsmpost        = $this->jsmjinput->post->getArray(array());
 		$this->jsmmessage     = '';
