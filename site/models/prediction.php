@@ -12,7 +12,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\CMS\Access\Access;
 use Joomla\Registry\Registry;
 
@@ -20,17 +20,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
 
-jimport('joomla.utilities.array');
-jimport('joomla.utilities.arrayhelper');
-jimport('joomla.utilities.utility');
-jimport('joomla.user.authorization');
-jimport('joomla.access.access');
-JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTRATOR);
 
 /**
  * sportsmanagementModelPrediction
@@ -96,31 +89,26 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 * sportsmanagementModelPrediction::__construct()
 	 *
 	 * @return
-	 */
-	function __construct()
+	 */	public function __construct($config = [], ?MVCFactoryInterface $factory = null)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
+		parent::__construct($config, $factory);
 
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		$input = Factory::getApplication()->getInput();
 
-		self::$roundID            = $jinput->getVar('r', '0');
-		self::$pjID               = $jinput->getVar('pj', '0');
-		self::$from               = $jinput->getVar('from', self::$roundID);
-		self::$to                 = $jinput->getVar('to', self::$roundID);
-		self::$predictionGameID   = $jinput->getVar('prediction_id', '0');
-		self::$cfg_which_database = $jinput->getVar('cfg_which_database', '0');
-		self::$predictionMemberID = $jinput->getVar('uid', '0');
-		self::$joomlaUserID       = $jinput->getVar('juid', '0');
-		self::$pggroup            = $jinput->getVar('pggroup', '0');
-		self::$pggrouprank        = $jinput->getInt('pggrouprank', 0);
-		self::$isNewMember        = $jinput->getInt('s', 0);
-		self::$tippEntryDone      = $jinput->getInt('eok', 0);
-		self::$type               = $jinput->getInt('type', 0);
-		self::$page               = $jinput->getInt('page', 1);
-		parent::__construct();
+		self::$roundID            = $input->getInt('r', 0);
+		self::$pjID               = $input->getInt('pj', 0);
+		self::$from               = $input->getInt('from', self::$roundID);
+		self::$to                 = $input->getInt('to', self::$roundID);
+		self::$predictionGameID   = $input->getInt('prediction_id', 0);
+		self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
+		self::$predictionMemberID = $input->getInt('uid', 0);
+		self::$joomlaUserID       = $input->getInt('juid', 0);
+		self::$pggroup            = $input->getInt('pggroup', 0);
+		self::$pggrouprank        = $input->getInt('pggrouprank', 0);
+		self::$isNewMember        = $input->getInt('s', 0);
+		self::$tippEntryDone      = $input->getInt('eok', 0);
+		self::$type               = $input->getInt('type', 0);
+		self::$page               = max(1, $input->getInt('page', 1));
 	}
 
 

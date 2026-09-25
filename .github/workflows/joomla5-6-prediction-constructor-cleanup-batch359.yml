@@ -1,0 +1,44 @@
+name: Joomla 5/6 prediction constructor cleanup batch 359
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/prediction.php'
+      - '.github/workflows/joomla5-6-prediction-constructor-cleanup-batch359.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/prediction.php'
+      - '.github/workflows/joomla5-6-prediction-constructor-cleanup-batch359.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate prediction constructor migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/models/prediction.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+          grep -Fq -- 'public function __construct($config = [], ?MVCFactoryInterface $factory = null)' "$file"
+          grep -Fq -- 'parent::__construct($config, $factory);' "$file"
+          ! grep -Fq -- 'jimport(' "$file"
+          ! grep -Fq -- 'JLoader::import' "$file"
+          ! grep -Fq -- 'getVar(' "$file"
+          ! grep -Fq -- 'use Joomla\CMS\Table\Table;' "$file"
+          ! grep -Fq -- 'use Joomla\CMS\Filesystem\File;' "$file"
