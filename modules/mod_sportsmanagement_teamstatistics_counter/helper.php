@@ -9,34 +9,45 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementProjectModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\TeamstatsModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementTeamStatisticsCounter\Site\Helper\TeamStatisticsCounterHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+$nativeDependencies = [
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    SportsManagementModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+    SportsManagementProjectModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+    TeamstatsModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/TeamstatsModel.php',
+    TeamStatisticsCounterHelper::class => __DIR__ . '/src/Helper/TeamStatisticsCounterHelper.php',
+];
 
-    if (is_file($resolverFile)) {
-        require_once $resolverFile;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(TeamStatisticsCounterHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/TeamStatisticsCounterHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    SportsManagementModel::class,
+    SportsManagementProjectModel::class,
+    TeamstatsModel::class,
+    TeamStatisticsCounterHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Team Statistics Counter dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(TeamStatisticsCounterHelper::class)) {
-    throw new \RuntimeException('SportsManagement Team Statistics Counter helper could not be loaded.', 500);
 }
 
 if (!class_exists('modJSMTeamStatisticsCounter', false)) {

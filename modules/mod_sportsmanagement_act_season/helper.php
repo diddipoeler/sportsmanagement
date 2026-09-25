@@ -9,34 +9,33 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+$nativeDependencies = [
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    ActSeasonHelper::class => __DIR__ . '/src/Helper/ActSeasonHelper.php',
+];
 
-    if (is_file($resolverFile)) {
-        require_once $resolverFile;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(ActSeasonHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/ActSeasonHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    ActSeasonHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException('SportsManagement ActSeason dependency could not be loaded: ' . $requiredClass, 500);
     }
-}
-
-if (!class_exists(ActSeasonHelper::class)) {
-    throw new \RuntimeException('SportsManagement native ActSeason module helper could not be loaded.', 500);
 }
 
 class modJSMActSeasonHelper

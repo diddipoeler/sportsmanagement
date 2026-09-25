@@ -1,0 +1,53 @@
+name: Joomla 5/6 module dependency guards batch 396
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/helper.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - '.github/workflows/joomla5-6-module-dependency-guards-batch396.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/helper.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - '.github/workflows/joomla5-6-module-dependency-guards-batch396.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate module dependency guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_act_season/helper.php
+            modules/mod_sportsmanagement_trainingsdata/helper.php
+            modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'SportsManagementDatabaseResolver::class' "$file"
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::class' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+          grep -Fq -- 'ActSeasonHelper::class => __DIR__' modules/mod_sportsmanagement_act_season/helper.php
+          grep -Fq -- 'TrainingsDataHelper::class => __DIR__' modules/mod_sportsmanagement_trainingsdata/helper.php
+          grep -Fq -- 'TeamstatsModel::class' modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+          grep -Fq -- 'SportsManagementProjectModel::class' modules/mod_sportsmanagement_teamstatistics_counter/helper.php
