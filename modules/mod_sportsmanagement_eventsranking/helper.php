@@ -22,6 +22,7 @@ $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
     SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    EventsRankingHelper::class => __DIR__ . '/src/Helper/EventsRankingHelper.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -30,20 +31,18 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(EventsRankingHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/EventsRankingHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    EventsRankingHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement EventsRanking dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(EventsRankingHelper::class)) {
-    throw new \RuntimeException('SportsManagement native EventsRanking module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modSMEventsrankingHelper', false)) {

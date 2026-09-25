@@ -21,6 +21,7 @@ $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
     SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    ClubBirthdayHelper::class => __DIR__ . '/src/Helper/ClubBirthdayHelper.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -33,25 +34,14 @@ foreach ([
     SiteRouteHelper::class,
     SportsManagementDatabaseResolver::class,
     SportsManagementSiteApplicationResolver::class,
+    ClubBirthdayHelper::class,
 ] as $requiredClass) {
     if (!class_exists($requiredClass)) {
         throw new \RuntimeException(
-            'SportsManagement Club Birthday dependencies could not be loaded: ' . $requiredClass,
+            'SportsManagement Club Birthday dependency could not be loaded: ' . $requiredClass,
             500
         );
     }
-}
-
-if (!class_exists(ClubBirthdayHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/ClubBirthdayHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
-    }
-}
-
-if (!class_exists(ClubBirthdayHelper::class)) {
-    throw new \RuntimeException('SportsManagement native Club Birthday module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {

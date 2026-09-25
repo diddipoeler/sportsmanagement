@@ -21,6 +21,7 @@ $nativeDependencies = [
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
     SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
     RankingEngine::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/RankingEngine.php',
+    ClubiconsHelper::class => __DIR__ . '/src/Helper/ClubiconsHelper.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -29,20 +30,19 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(ClubiconsHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/ClubiconsHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    RankingEngine::class,
+    ClubiconsHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Clubicons dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(ClubiconsHelper::class)) {
-    throw new \RuntimeException('SportsManagement native Clubicons module helper could not be loaded.', 500);
 }
 
 class modJSMClubiconsHelper
