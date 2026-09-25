@@ -1061,4 +1061,238 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return $db->loadObjectList() ?: [];
     }
 
+
+    /**
+     * Resolve a prediction-member avatar from one of the historically supported integrations.
+     */
+    public function getPredictionMemberAvatarValue(int $userId, string $source): ?string
+    {
+        if ($userId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery();
+
+        switch ($source) {
+            case 'prediction':
+                if ($this->predictionGameId <= 0) {
+                    return null;
+                }
+
+                $query
+                    ->select($db->quoteName('picture'))
+                    ->from($db->quoteName('#__sportsmanagement_prediction_member'))
+                    ->where($db->quoteName('user_id') . ' = :avatarPredictionUserId')
+                    ->where($db->quoteName('prediction_id') . ' = :avatarPredictionGameId')
+                    ->bind(':avatarPredictionUserId', $userId, ParameterType::INTEGER)
+                    ->bind(':avatarPredictionGameId', $this->predictionGameId, ParameterType::INTEGER);
+                break;
+
+            case 'com_cbe':
+            case 'com_cbe25':
+                $query
+                    ->select($db->quoteName('avatar'))
+                    ->from($db->quoteName('#__cbe_users'))
+                    ->where($db->quoteName('userid') . ' = :avatarCbeUserId')
+                    ->bind(':avatarCbeUserId', $userId, ParameterType::INTEGER);
+                break;
+
+            case 'com_kunena':
+                $query
+                    ->select($db->quoteName('avatar'))
+                    ->from($db->quoteName('#__kunena_users'))
+                    ->where($db->quoteName('userid') . ' = :avatarKunenaUserId')
+                    ->bind(':avatarKunenaUserId', $userId, ParameterType::INTEGER);
+                break;
+
+            case 'com_community':
+                $query
+                    ->select($db->quoteName('avatar'))
+                    ->from($db->quoteName('#__community_users'))
+                    ->where($db->quoteName('userid') . ' = :avatarCommunityUserId')
+                    ->bind(':avatarCommunityUserId', $userId, ParameterType::INTEGER);
+                break;
+
+            case 'com_comprofiler':
+                $query
+                    ->select($db->quoteName('avatar'))
+                    ->from($db->quoteName('#__comprofiler'))
+                    ->where($db->quoteName('user_id') . ' = :avatarProfilerUserId')
+                    ->bind(':avatarProfilerUserId', $userId, ParameterType::INTEGER);
+                break;
+
+            default:
+                return null;
+        }
+
+        $db->setQuery($query, 0, 1);
+        $value = $db->loadResult();
+
+        return $value !== null ? (string) $value : null;
+    }
+
+    /**
+     * Return published round betting rules and the first published match date per round.
+     */
+    public function getPredictionRoundBettingRules(int $predictionId): array
+    {
+        if ($predictionId <= 0) {
+            return [];
+        }
+
+        $published = 1;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('ptr.round_id'),
+                $db->quoteName('ptr.rien_ne_va_plus'),
+                'MIN(' . $db->quoteName('m.match_date') . ') AS ' . $db->quoteName('first_match_date'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_tippround', 'ptr'))
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_match', 'm')
+                . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('ptr.round_id')
+                . ' AND ' . $db->quoteName('m.published') . ' = ' . (int) $published
+            )
+            ->where($db->quoteName('ptr.prediction_id') . ' = :bettingRulesPredictionId')
+            ->where($db->quoteName('ptr.published') . ' = :bettingRulesPublished')
+            ->bind(':bettingRulesPredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':bettingRulesPublished', $published, ParameterType::INTEGER)
+            ->group([
+                $db->quoteName('ptr.round_id'),
+                $db->quoteName('ptr.rien_ne_va_plus'),
+            ]);
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList('round_id') ?: [];
+    }
+
+    /** Return member prediction results for a project and round range. */
+    public function getPredictionMemberResults(
+        int $projectId,
+        int $fromRoundId,
+        int $toRoundId = 0,
+        int $userId = 0
+    ): array {
+        if ($this->predictionGameId <= 0) {
+            return [];
+        }
+
+        $fromRoundId = max(1, $fromRoundId);
+        $predictionGameId = $this->predictionGameId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('m.id', 'matchID'),
+                $db->quoteName('m.match_date'),
+                $db->quoteName('m.team1_result', 'homeResult'),
+                $db->quoteName('m.team2_result', 'awayResult'),
+                $db->quoteName('m.team1_result_decision', 'homeDecision'),
+                $db->quoteName('m.team2_result_decision', 'awayDecision'),
+                $db->quoteName('m.team1_result_split', 'homeResultSplit'),
+                $db->quoteName('m.team2_result_split', 'awayResultSplit'),
+                $db->quoteName('m.team1_result_ot', 'homeResultOT'),
+                $db->quoteName('m.team2_result_ot', 'awayResultOT'),
+                $db->quoteName('m.team1_result_so', 'homeResultSO'),
+                $db->quoteName('m.team2_result_so', 'awayResultSO'),
+                $db->quoteName('pr.id', 'prID'),
+                $db->quoteName('pr.user_id', 'prUserID'),
+                $db->quoteName('pr.tipp', 'prTipp'),
+                $db->quoteName('pr.tipp_home', 'prHomeTipp'),
+                $db->quoteName('pr.tipp_away', 'prAwayTipp'),
+                $db->quoteName('pr.joker', 'prJoker'),
+                $db->quoteName('pr.points', 'prPoints'),
+                $db->quoteName('pr.top', 'prTop'),
+                $db->quoteName('pr.diff', 'prDiff'),
+                $db->quoteName('pr.tend', 'prTend'),
+                $db->quoteName('pm.id', 'pmID'),
+                $db->quoteName('m.round_id', 'matchRoundId'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_prediction_result', 'pr')
+                . ' ON ' . $db->quoteName('pr.match_id') . ' = ' . $db->quoteName('m.id')
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_prediction_member', 'pm')
+                . ' ON ' . $db->quoteName('pm.user_id') . ' = ' . $db->quoteName('pr.user_id')
+            )
+            ->where($db->quoteName('r.id') . ' >= :memberResultsFromRound')
+            ->where($db->quoteName('pm.prediction_id') . ' = :memberResultsMemberGame')
+            ->where($db->quoteName('pr.prediction_id') . ' = :memberResultsResultGame')
+            ->where(
+                '(' . $db->quoteName('m.cancel') . ' IS NULL OR '
+                . $db->quoteName('m.cancel') . ' = 0)'
+            )
+            ->bind(':memberResultsFromRound', $fromRoundId, ParameterType::INTEGER)
+            ->bind(':memberResultsMemberGame', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':memberResultsResultGame', $predictionGameId, ParameterType::INTEGER)
+            ->order([
+                $db->quoteName('pm.id') . ' ASC',
+                $db->quoteName('m.match_date') . ' ASC',
+                $db->quoteName('m.id') . ' ASC',
+            ]);
+
+        if ($projectId > 0) {
+            $query
+                ->where($db->quoteName('r.project_id') . ' = :memberResultsProjectId')
+                ->bind(':memberResultsProjectId', $projectId, ParameterType::INTEGER);
+        }
+
+        if ($toRoundId > 0) {
+            $query
+                ->where($db->quoteName('r.id') . ' <= :memberResultsToRound')
+                ->bind(':memberResultsToRound', $toRoundId, ParameterType::INTEGER);
+        }
+
+        if ($userId > 0) {
+            $query
+                ->where($db->quoteName('pr.user_id') . ' = :memberResultsUserId')
+                ->bind(':memberResultsUserId', $userId, ParameterType::INTEGER);
+        }
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    /** Persist the calculated result columns for one prediction result row. */
+    public function updatePredictionResult(object $result): bool
+    {
+        $id = (int) ($result->id ?? 0);
+
+        if ($id <= 0) {
+            return false;
+        }
+
+        $row = (object) [
+            'id' => $id,
+            'tipp_home' => $result->tipp_home ?? null,
+            'tipp_away' => $result->tipp_away ?? null,
+            'tipp' => $result->tipp ?? null,
+            'joker' => $result->joker ?? null,
+            'points' => $result->points ?? null,
+            'top' => $result->top ?? null,
+            'diff' => $result->diff ?? null,
+            'tend' => $result->tend ?? null,
+        ];
+
+        return (bool) $this->getDatabase()->updateObject(
+            '#__sportsmanagement_prediction_result',
+            $row,
+            'id',
+            true
+        );
+    }
+
 }

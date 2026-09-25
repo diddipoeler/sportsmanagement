@@ -322,118 +322,49 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getPredictionMemberAvatar($members, $configavatar)
 	{
+		$userId = (int) $members;
+		$source = (string) $configavatar;
 
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$picture = '';
-		$query->select('avatar');
-		$query->where('userid = ' . (int) $members);
-
-		switch ($configavatar)
+		if ($source === 'com_cbe15')
 		{
-			case 'prediction':
-				$picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
-
-				$query->clear('select');
-				$query->clear('where');
-				$query->select('picture');
-				$query->from('#__sportsmanagement_prediction_member');
-				$query->where('user_id = ' . (int) $members);
-				$query->where('prediction_id = ' . (int) self::$predictionGameID);
-				break;
-
-			case 'com_sportsmanagement':
-				// Alles ok
-				break;
-
-			case 'com_cbe15':
-				$picture = 'images/cbe/' . $members . '.png';
-				break;
-
-			case 'com_cbe25':
-				$picture = 'components/com_cbe/assets/user.png';
-				$query->from('#__cbe_users');
-				break;
-
-			case 'com_cbe':
-				$picture = 'components/com_cbe/assets/user.png';
-				$query->from('#__cbe_users');
-				break;
-
-			case 'com_kunena':
-				$picture = 'media/kunena/avatars/resized/size200/nophoto.jpg';
-				$query->from('#__kunena_users');
-				break;
-
-			case 'com_community':
-				$query->from('#__community_users');
-				break;
-
-			case 'com_comprofiler':
-				$query->clear('where');
-				$query->from('#__comprofiler');
-				$query->where('user_id = ' . (int) $members);
-				break;
+			return 'images/cbe/' . $userId . '.png';
 		}
 
-		switch ($configavatar)
+		if ($source === 'com_sportsmanagement' || $source === '')
 		{
-			case 'prediction':
-			case 'com_comprofiler':
-			case 'com_community':
-			case 'com_cbe':
-			case 'com_cbe25':
-			case 'prediction':
-				try
-				{
-					$db->setQuery($query);
-					$picture = $db->loadResult();
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-				}
-				catch (Exception $e)
-				{
-					$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-					$code = $e->getCode(); // Returns
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-					Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-					return false;
-				}
-				break;
-			case 'com_kunena':
-				try
-				{
-					$db->setQuery($query);
-					$results = $db->loadResult();
-					$picture = 'media/kunena/avatars/' . $results;
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-				}
-				catch (Exception $e)
-				{
-					$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-					$code = $e->getCode(); // Returns
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-					Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-
-					return false;
-				}
-				break;
+			return '';
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$defaultPicture = match ($source)
+		{
+			'prediction' => 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png',
+			'com_cbe', 'com_cbe25' => 'components/com_cbe/assets/user.png',
+			'com_kunena' => 'media/kunena/avatars/resized/size200/nophoto.jpg',
+			default => '',
+		};
 
-		return $picture;
+		try
+		{
+			$picture = self::nativePredictionModel()->getPredictionMemberAvatarValue($userId, $source);
 
+			if ($source === 'com_kunena' && $picture !== null && $picture !== '')
+			{
+				return 'media/kunena/avatars/' . ltrim((string) $picture, '/');
+			}
+
+			return ($picture !== null && $picture !== '') ? $picture : $defaultPicture;
+		}
+		catch (\Throwable $e)
+		{
+			Factory::getApplication()->enqueueMessage(
+				__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(),
+				'error'
+			);
+
+			return false;
+		}
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getPredictionTippRoundsRatingCharts()
@@ -481,55 +412,59 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getPredictionTippRoundsRienNeVaPlusTimes($predictionProject, $timezone)
 	{
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
+		$predictionId = (int) ($predictionProject->prediction_id ?? 0);
 
-		if ($predictionProject->prediction_id > 0)
+		if ($predictionId <= 0)
 		{
-			$query->select('round_id, rien_ne_va_plus');
-			$query->from('#__sportsmanagement_prediction_tippround as ptr');
-			$query->where('ptr.prediction_id = ' . (int) $predictionProject->prediction_id);
-			$query->where('ptr.published = 1');
-
-			$db->setQuery($query);
-			$result = $db->loadObjectList('round_id');
-
-			// prepare special times to avoid to many db queries
-			if ($result && is_array($result))
-			{
-				foreach ($result AS $r)
-				{
-					switch ($r->rien_ne_va_plus)
-					{
-						case 'FIRSTMATCH_OF_TIPPGAME':
-							// for first match, actually project start date and time are used
-							// to be consistent to champion / final 4 tipps
-							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp($predictionProject->start_date . " " . $predictionProject->start_time, 1, $timezone);
-							break;
-						case 'FIRSTMATCH_OF_TIPPROUND':
-							$query->clear();
-							$query->select('min(match_date)');
-							$query->from('#__sportsmanagement_match');
-							$query->where('round_id = ' . (int) $r->round_id);
-							$query->where('published = 1');
-							$db->setQuery($query);
-
-							$round_first_match_start_datetime = $db->loadResult();
-							$round_first_match_start_time  = strtotime($round_first_match_start_datetime);
-							$result[$r->round_id]->latestTimeToBet  = sportsmanagementHelper::getTimestamp(date("Y-m-d", $round_first_match_start_time), 1, $timezone);
-							break;
-						case 'BEGIN_OF_MATCH':
-						default:
-							// noting to change, we use match date as latestTimeToBet already
-							break;
-					}
-				}
-			}			
-			return $result;
+			return false;
 		}
-		return false;
+
+		$result = self::nativePredictionModel()->getPredictionRoundBettingRules($predictionId);
+
+		if (!$result)
+		{
+			return false;
+		}
+
+		foreach ($result as $r)
+		{
+			switch ($r->rien_ne_va_plus)
+			{
+				case 'FIRSTMATCH_OF_TIPPGAME':
+					$result[$r->round_id]->latestTimeToBet = sportsmanagementHelper::getTimestamp(
+						$predictionProject->start_date . ' ' . $predictionProject->start_time,
+						1,
+						$timezone
+					);
+					break;
+
+				case 'FIRSTMATCH_OF_TIPPROUND':
+					$firstMatchDate = (string) ($r->first_match_date ?? '');
+
+					if ($firstMatchDate !== '')
+					{
+						$firstMatchTimestamp = strtotime($firstMatchDate);
+
+						if ($firstMatchTimestamp !== false)
+						{
+							$result[$r->round_id]->latestTimeToBet = sportsmanagementHelper::getTimestamp(
+								date('Y-m-d', $firstMatchTimestamp),
+								1,
+								$timezone
+							);
+						}
+					}
+					break;
+
+				case 'BEGIN_OF_MATCH':
+				default:
+					break;
+			}
+		}
+
+		return $result;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getProjectSettings()
@@ -1360,74 +1295,14 @@ $recipient = array();
 	 */
 	static function getPredictionMembersResultsList($project_id, $round1ID, $round2ID = 0, $user_id = 0, $type = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ((int) $round1ID == 0)
-		{
-			$round1ID = 1;
-		}
-
-		$query->select('m.id AS matchID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
-
-		// Normale spielzeit
-		$query->select('m.team1_result_split AS homeResultSplit,m.team2_result_split AS awayResultSplit');
-
-		// Verlaengerung
-		$query->select('m.team1_result_ot AS homeResultOT,m.team2_result_ot AS awayResultOT');
-
-		// Elfmeter
-		$query->select('m.team1_result_so AS homeResultSO,m.team2_result_so AS awayResultSO');
-		$query->select('pr.id AS prID,pr.user_id AS prUserID,pr.tipp AS prTipp,pr.tipp_home AS prHomeTipp,pr.tipp_away AS prAwayTipp,pr.joker AS prJoker,pr.points AS prPoints,pr.top AS prTop,pr.diff AS prDiff,pr.tend AS prTend');
-		$query->select('pm.id AS pmID');
-
-		// Need round_id for round specific predition settings
-		$query->select('m.round_id AS matchRoundId');
-
-		$query->from('#__sportsmanagement_match AS m');
-		$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
-
-		if (isset($project_id) && (int) $project_id > 0)
-		{
-			$query->where('r.project_id = ' . (int) $project_id);
-		}
-
-		$query->where('r.id >= ' . (int) $round1ID);
-
-		if ((isset($round2ID)) && ((int) $round2ID > 0))
-		{
-			$query->where('r.id <= ' . (int) $round2ID);
-		}
-
-		$query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = m.id');
-
-		if (isset($user_id) && (int) $user_id > 0)
-		{
-			$query->where('pr.user_id = ' . (int) $user_id);
-		}
-
-		$query->join('INNER', '#__sportsmanagement_prediction_member AS pm ON pm.user_id = pr.user_id');
-
-		$query->where('pm.prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('pr.prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('(m.cancel IS NULL OR m.cancel = 0)');
-
-		$query->order('pm.id,m.match_date,m.id ASC');
-
-		$db->setQuery($query);
-		$results = $db->loadObjectList();
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $results;
+		return self::nativePredictionModel()->getPredictionMemberResults(
+			(int) $project_id,
+			max(1, (int) $round1ID),
+			(int) $round2ID,
+			(int) $user_id
+		);
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::createProjectSelector()
@@ -1520,17 +1395,6 @@ $recipient = array();
 	 */
 	public static function savePredictionPoints($newPoints, &$memberResult, &$predictionProject, $returnArray = false)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
 		// $show_debug = $this->getDebugInfo();
 		// [matchID] => 14501
 		// [match_date] => 2010-08-21 15:30:00
@@ -1646,8 +1510,8 @@ $recipient = array();
 		$object->diff      = $diff;
 		$object->tend      = $tend;
 
-		// Update their details in the table using id as the primary key.
-		$result = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_result', $object, 'id');
+		// Update their details through the native Joomla 5/6 prediction model.
+		$result = self::nativePredictionModel()->updatePredictionResult($object);
 
 		if ($returnArray)
 		{
@@ -1660,7 +1524,6 @@ $recipient = array();
 			return $memberResult;
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $result;
 	}
