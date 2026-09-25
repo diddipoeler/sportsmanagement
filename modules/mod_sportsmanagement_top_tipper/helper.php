@@ -9,14 +9,30 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Module\SportsManagementTopTipper\Site\Helper\TopTipperHelper;
 
-if (!class_exists(TopTipperHelper::class)) {
-    require_once __DIR__ . '/src/Helper/TopTipperHelper.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    TopTipperHelper::class => __DIR__ . '/src/Helper/TopTipperHelper.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
+    }
 }
 
-if (!class_exists(TopTipperHelper::class)) {
-    throw new \RuntimeException('SportsManagement Top Tipper helper could not be loaded.', 500);
+foreach ([
+    SiteRouteHelper::class,
+    TopTipperHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Top Tipper dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
 }
 
 if (!class_exists('modJSMTopTipper', false)) {

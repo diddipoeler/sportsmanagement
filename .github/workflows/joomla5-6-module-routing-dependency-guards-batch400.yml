@@ -1,0 +1,51 @@
+name: Joomla 5/6 module routing dependency guards batch 400
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_top_tipper/helper.php'
+      - '.github/workflows/joomla5-6-module-routing-dependency-guards-batch400.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - 'modules/mod_sportsmanagement_top_tipper/helper.php'
+      - '.github/workflows/joomla5-6-module-routing-dependency-guards-batch400.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate module routing dependency guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+            modules/mod_sportsmanagement_top_tipper/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'SiteRouteHelper::class' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+          grep -Fq -- 'SportsManagementDatabaseResolver::class' modules/mod_sportsmanagement_playgroundplan/helper.php
+          grep -Fq -- 'ProjectMapHelper::class => __DIR__' modules/mod_sportsmanagement_projectmap/helper.php
+          grep -Fq -- 'TopTipperHelper::class => __DIR__' modules/mod_sportsmanagement_top_tipper/helper.php
