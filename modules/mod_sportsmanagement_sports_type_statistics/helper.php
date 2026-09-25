@@ -11,20 +11,32 @@
 
 use Joomla\CMS\Factory;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Module\SportsManagementSportsTypeStatistics\Site\Helper\SportsTypeStatisticsHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-if (!class_exists(SportsTypeStatisticsHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/SportsTypeStatisticsHelper.php';
+$nativeDependencies = [
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsTypeStatisticsHelper::class => __DIR__ . '/src/Helper/SportsTypeStatisticsHelper.php',
+];
 
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(SportsTypeStatisticsHelper::class)) {
-    throw new \RuntimeException('SportsManagement native SportsTypeStatistics module helper could not be loaded.', 500);
+foreach ([
+    SportsManagementDatabaseResolver::class,
+    SportsTypeStatisticsHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Sports Type Statistics dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
 }
 
 if (!class_exists('modJSMSportsHelper', false)) {

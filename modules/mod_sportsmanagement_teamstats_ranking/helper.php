@@ -9,6 +9,7 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper\TeamStatsRankingHelper;
@@ -18,40 +19,31 @@ use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    TeamStatsRankingHelper::class => __DIR__ . '/src/Helper/TeamStatsRankingHelper.php',
+];
 
-    if (is_file($resolverFile)) {
-        require_once $resolverFile;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(SiteRouteHelper::class)) {
-    $routeHelper = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
-
-    if (is_file($routeHelper)) {
-        require_once $routeHelper;
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    TeamStatsRankingHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Team Stats Ranking dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(SiteRouteHelper::class)) {
-    throw new \RuntimeException('SportsManagement SiteRouteHelper could not be loaded for Team Stats Ranking.', 500);
-}
-
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(TeamStatsRankingHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/TeamStatsRankingHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
-    }
-}
-
-if (!class_exists(TeamStatsRankingHelper::class)) {
-    throw new \RuntimeException('SportsManagement native Team Stats Ranking helper could not be loaded.', 500);
 }
 
 if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
