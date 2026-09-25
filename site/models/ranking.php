@@ -11,7 +11,8 @@
  */
 \defined('_JEXEC') or die;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
@@ -28,6 +29,26 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RankingModel as NativeRank
  */
 class sportsmanagementModelRanking extends BaseDatabaseModel
 {
+	/**
+	 * Resolve the Joomla site application for legacy ranking callers.
+	 */
+	private static function siteApplication(): SiteApplication
+	{
+		if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+			$resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+			if (is_file($resolverFile)) {
+				require_once $resolverFile;
+			}
+		}
+
+		if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+			throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+		}
+
+		return SportsManagementSiteApplicationResolver::resolve();
+	}
+
 	static $projectid = 0;
 	static $round = 0;
 	static $rounds = array(0);
@@ -57,7 +78,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	 */
 	function __construct()
 	{
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		// JInput object
 		$jinput                 = $app->input;
@@ -66,12 +87,9 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		self::$projectid        = (int) $jinput->get('p', 0, '');
 		self::$paramconfig['p'] = self::$projectid;
 
-		// $this->round = Factory::getApplication()->input->getInt("r", $this->current_round);
 		self::$round = $jinput->get('r', self::$current_round, '');
 		self::$part  = $jinput->getInt("part", 0);
 
-		// $this->from  = Factory::getApplication()->input->getInt('from', 0 );
-		// $this->to  = Factory::getApplication()->input->getInt('to', $this->round);
 		self::$from = $jinput->post->get('from', 0, '');
 		self::$to   = $jinput->post->get('to', self::$round, '');
 
@@ -147,7 +165,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		}
 
 		$model = new NativeRankingModel();
-		$model->setDatabaseSelector((int) Factory::getApplication()->input->getInt('cfg_which_database', 0));
+		$model->setDatabaseSelector((int) self::siteApplication()->getInput()->getInt('cfg_which_database', 0));
 		$model->setFinalStanding((array) $current_ranking, (string) $project_type);
 	}
 	
@@ -206,7 +224,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	 */
 	public static function computeRanking($cfg_which_database = 0, $s = 0,$sports_type_name='')
 	{
-		$app   = Factory::getApplication();
+		$app   = self::siteApplication();
 		$input = $app->input;
 
 		$project = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
@@ -420,13 +438,11 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	 */
 	public static function _sortRanking(&$ranking)
 	{
-		$app       = Factory::getApplication();
+		$app       = self::siteApplication();
 		$jinput    = $app->input;
 		$order     = $jinput->get('order', '', 'STR');
 		$order_dir = $jinput->get('dir', 'ASC', 'STR');
 
-		//		$order     = Factory::getApplication()->input->getVar( 'order', '' );
-		//		$order_dir = Factory::getApplication()->input->getVar( 'dir', 'ASC' );
 
 		switch ($order)
 		{
