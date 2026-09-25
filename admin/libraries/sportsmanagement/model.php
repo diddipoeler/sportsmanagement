@@ -24,6 +24,7 @@ use Joomla\CMS\Input\Input;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Http\HttpFactory;
+use Joomla\CMS\Helper\MediaHelper;
 
 /**
  * JSMModelAdmin
@@ -370,24 +371,24 @@ $post['copy_jform']['picture']  = $filepath;
 					$data['trikot_away'] = $post['copy_jform']['trikot_away'];
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
                 
-                if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['logo_big']))
+                if (!empty($data['logo_big']))
 				{
-					$data['logo_big'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_big']);
+					$data['logo_big'] = MediaHelper::getCleanMediaFieldValue($data['logo_big']);
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['trikot_home']))
+				if (!empty($data['trikot_home']))
 				{
-					$data['trikot_home'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
+					$data['trikot_home'] = MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['trikot_away']))
+				if (!empty($data['trikot_away']))
 				{
-					$data['trikot_away'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
+					$data['trikot_away'] = MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
 				}
 
 				if ($post['delete'])
@@ -444,9 +445,9 @@ $result = $this->jsmdb->execute();
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 				
                 if ( !$data['founded'] )
@@ -496,9 +497,9 @@ catch (Exception $e)
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
                 if ($data['contract_from'] == '')
@@ -591,9 +592,9 @@ catch (Exception $e)
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
 				switch ($data['person_art'])
@@ -682,9 +683,9 @@ switch ( $row_sports_type )
 					}
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
 				if ($data['birthday'] != '0000-00-00' && $data['birthday'] != '')
@@ -845,37 +846,37 @@ $post['copy_jform']['logo_big']  = $filepath;
 				{
 					$data['logo_big'] = ComponentHelper::getParams($option)->get('ph_logo_big', '');
 				}
-				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				else
 				{
-					$data['logo_big'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_big']);
+					$data['logo_big'] = MediaHelper::getCleanMediaFieldValue($data['logo_big']);
 				}
 
 				if (empty($data['logo_middle']))
 				{
 					$data['logo_middle'] = ComponentHelper::getParams($option)->get('ph_logo_medium', '');
 				}
-				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				else
 				{
-					$data['logo_middle'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_middle']);
+					$data['logo_middle'] = MediaHelper::getCleanMediaFieldValue($data['logo_middle']);
 				}
 
 				if (empty($data['logo_small']))
 				{
 					$data['logo_small'] = ComponentHelper::getParams($option)->get('ph_logo_small', '');
 				}
-				else if (version_compare(JVERSION, '4.0.0', 'ge'))
+				else
 				{
-					$data['logo_small'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['logo_small']);
+					$data['logo_small'] = MediaHelper::getCleanMediaFieldValue($data['logo_small']);
 				}
 
-				if (!empty($data['trikot_home']) && version_compare(JVERSION, '4.0.0', 'ge'))
+				if (!empty($data['trikot_home']))
 				{
-					$data['trikot_home'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
+					$data['trikot_home'] = MediaHelper::getCleanMediaFieldValue($data['trikot_home']);
 				}
 
-				if (!empty($data['trikot_away']) && version_compare(JVERSION, '4.0.0', 'ge'))
+				if (!empty($data['trikot_away']))
 				{
-					$data['trikot_away'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
+					$data['trikot_away'] = MediaHelper::getCleanMediaFieldValue($data['trikot_away']);
 				}
 
 				/** wurden jahre mitgegeben ? */
@@ -1050,9 +1051,9 @@ catch (Exception $e)
 				{
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
 				if ($post['delete'])
@@ -1078,9 +1079,9 @@ catch (Exception $e)
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
 				if ($data['max_visitors'] == '')
@@ -1168,9 +1169,9 @@ catch (Exception $e)
 					$data['picture'] = $post['copy_jform']['picture'];
 				}
 
-				if (version_compare(JVERSION, '4.0.0', 'ge') && !empty($data['picture']))
+				if (!empty($data['picture']))
 				{
-					$data['picture'] = \Joomla\CMS\Helper\MediaHelper::getCleanMediaFieldValue($data['picture']);
+					$data['picture'] = MediaHelper::getCleanMediaFieldValue($data['picture']);
 				}
 
 				if ( $data['category_id'] == '' )
