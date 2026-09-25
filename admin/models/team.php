@@ -15,8 +15,18 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamModel;
 
 if (!class_exists(TeamModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TeamModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TeamModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(TeamModel::class)) {
+    throw new \RuntimeException('SportsManagement native Team model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelteam', false)) {
