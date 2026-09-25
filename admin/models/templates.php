@@ -12,8 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TemplatesModel;
 
 if (!class_exists(TemplatesModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TemplatesModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TemplatesModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
 }
 
 if (!class_exists(TemplatesModel::class)) {
