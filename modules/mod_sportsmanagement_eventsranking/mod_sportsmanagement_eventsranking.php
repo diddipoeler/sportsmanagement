@@ -12,34 +12,39 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\Database\DatabaseInterface;
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    $resolver = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    EventsRankingHelper::class => __DIR__ . '/src/Helper/EventsRankingHelper.php',
+];
 
-    if (is_file($resolver)) {
-        require_once $resolver;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(EventsRankingHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/EventsRankingHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    EventsRankingHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement EventsRanking entry dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(EventsRankingHelper::class)) {
-    throw new \RuntimeException('SportsManagement native EventsRanking helper could not be loaded.', 500);
 }
 
 $app = SportsManagementSiteApplicationResolver::resolve();
