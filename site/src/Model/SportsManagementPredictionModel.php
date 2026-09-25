@@ -11,7 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\User\UserFactoryInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
@@ -563,6 +565,117 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
+    }
+
+
+    /** Return the active Joomla account for one prediction member. */
+    public function getPredictionMemberEmailAddress(int $predictionMemberId): ?object
+    {
+        if ($predictionMemberId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('u.email'),
+                $db->quoteName('u.username'),
+                $db->quoteName('u.id', 'user_id'),
+            ])
+            ->from($db->quoteName('#__users', 'u'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_prediction_member', 'pm')
+                . ' ON ' . $db->quoteName('pm.user_id') . ' = ' . $db->quoteName('u.id')
+            )
+            ->where($db->quoteName('pm.id') . ' = :predictionMemberEmailId')
+            ->where($db->quoteName('u.block') . ' = 0')
+            ->bind(':predictionMemberEmailId', $predictionMemberId, ParameterType::INTEGER)
+            ->order($db->quoteName('u.email') . ' ASC');
+
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    /** Return email addresses for unblocked Joomla users authorised for core administration. */
+    public function getSystemAdminEmailAddresses(): array
+    {
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('u.id'),
+                $db->quoteName('u.email'),
+            ])
+            ->from($db->quoteName('#__users', 'u'))
+            ->where($db->quoteName('u.sendEmail') . ' = 1')
+            ->where($db->quoteName('u.block') . ' = 0')
+            ->order($db->quoteName('u.email') . ' ASC');
+
+        $db->setQuery($query);
+        $rows = $db->loadObjectList() ?: [];
+        $emails = [];
+        $userFactory = Factory::getContainer()->get(UserFactoryInterface::class);
+
+        foreach ($rows as $row) {
+            $user = $userFactory->loadUserById((int) $row->id);
+
+            if ($user->authorise('core.admin')) {
+                $emails[] = (string) $row->email;
+            }
+        }
+
+        return $emails;
+    }
+
+    /** Return email addresses for administrators assigned to the active prediction game. */
+    public function getPredictionGameAdminEmailAddresses(): array
+    {
+        if ($this->predictionGameId <= 0) {
+            return [];
+        }
+
+        $predictionGameId = $this->predictionGameId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('u.email'))
+            ->from($db->quoteName('#__users', 'u'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_prediction_admin', 'pa')
+                . ' ON ' . $db->quoteName('pa.user_id') . ' = ' . $db->quoteName('u.id')
+            )
+            ->where($db->quoteName('u.block') . ' = 0')
+            ->where($db->quoteName('u.sendEmail') . ' = 1')
+            ->where($db->quoteName('pa.prediction_id') . ' = :predictionAdminEmailGameId')
+            ->bind(':predictionAdminEmailGameId', $predictionGameId, ParameterType::INTEGER)
+            ->order($db->quoteName('u.email') . ' ASC');
+
+        $db->setQuery($query);
+
+        return array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
+    }
+
+    /** Count stored prediction results for one Joomla user in the active prediction game. */
+    public function getMemberPredictionTotalCount(int $userId): int
+    {
+        if ($this->predictionGameId <= 0 || $userId <= 0) {
+            return 0;
+        }
+
+        $predictionGameId = $this->predictionGameId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__sportsmanagement_prediction_result', 'pr'))
+            ->where($db->quoteName('pr.prediction_id') . ' = :memberResultCountGameId')
+            ->where($db->quoteName('pr.user_id') . ' = :memberResultCountUserId')
+            ->bind(':memberResultCountGameId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':memberResultCountUserId', $userId, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+
+        return (int) $db->loadResult();
     }
 
 }

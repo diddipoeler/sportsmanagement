@@ -1,0 +1,49 @@
+name: Joomla 5/6 prediction email bridge batch 387
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-email-bridge-batch387.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-email-bridge-batch387.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate prediction email bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(site/models/prediction.php site/src/Model/SportsManagementPredictionModel.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          for method in getPredictionMemberEmailAddress getSystemAdminEmailAddresses getPredictionGameAdminEmailAddresses getMemberPredictionTotalCount; do
+            grep -Fq -- "function $method" site/src/Model/SportsManagementPredictionModel.php
+          done
+          ! grep -Fq -- 'version_compare(JVERSION' site/models/prediction.php
+          ! grep -Fq -- 'loadResultArray' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getPredictionMemberEmailAddress' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getSystemAdminEmailAddresses' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getPredictionGameAdminEmailAddresses' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getMemberPredictionTotalCount' site/models/prediction.php

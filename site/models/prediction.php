@@ -819,18 +819,8 @@ $recipient = array();
 		// Set a sender
 		$config = Factory::getConfig();
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$sender           = array($config->get('mailfrom'), $config->get('fromname'));
-			$adminsenderemail = $config->get('mailfrom');
-		}
-        elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$sender           = array($config->getValue('config.mailfrom'), $config->getValue('config.fromname'));
-			$adminsenderemail = $config->getValue('config.mailfrom');
-		}
+		$sender           = array($config->get('mailfrom'), $config->get('fromname'));
+		$adminsenderemail = $config->get('mailfrom');
 
 		// $sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
 		$mailer->setSender($sender);
@@ -1165,52 +1155,9 @@ $recipient = array();
 	 */
 	public static function getPredictionMemberEMailAdress($predictionMemberID)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('user_id');
-		$query->from('#__sportsmanagement_prediction_member');
-		$query->where('id = ' . (int) $predictionMemberID);
-
-		$db->setQuery($query);
-
-		if (!$user_id = $db->loadResult())
-		{
-			return false;
-		}
-
-		$query->clear();
-		$query->select('u.email');
-		$query->select('u.username');
-		$query->select('u.id as user_id');
-		$query->from('#__users AS u');
-		$query->where('u.block = 0');
-		$query->where('u.id = ' . $user_id);
-		$query->order('u.email');
-
-		$db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$res = $db->loadObject();
-		}
-        elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$res = $db->loadResultArray();
-		}
-
-		return $res;
+		return self::nativePredictionModel()->getPredictionMemberEmailAddress((int) $predictionMemberID) ?: false;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getMatchTeam()
@@ -2267,16 +2214,7 @@ $recipient = array();
 					// Set a sender
 					$config = Factory::getConfig();
 
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						// Joomla! 3.0 code here
-						$sender = array($config->get('mailfrom'), $config->get('fromname'));
-					}
-                    elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-					{
-						// Joomla! 2.5 code here
-						$sender = array($config->getValue('config.mailfrom'), $config->getValue('config.fromname'));
-					}
+					$sender = array($config->get('mailfrom'), $config->get('fromname'));
 
 					$mailer->setSender($sender);
 
@@ -2372,52 +2310,9 @@ $recipient = array();
 	 */
 	static function getSystemAdminsEMailAdresses()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('u.email');
-		$query->from('#__users AS u');
-		$query->where('u.sendEmail = 1');
-		$query->where('u.block = 0');
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$query->join('INNER', '#__user_usergroup_map AS um ON um.user_id = u.id');
-			$query->join('INNER', '#__usergroups AS ug ON ug.id = um.group_id');
-			$query->where('ug.title LIKE ' . $db->Quote('' . 'Super Benutzer' . ''));
-		}
-        elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$query->where('u.usertype LIKE ' . $db->Quote('' . 'Super Administrator' . ''));
-		}
-
-		$query->order('u.email');
-
-		$db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
-		}
-        elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$res = $db->loadResultArray();
-		}
-
-		return $res;
+		return self::nativePredictionModel()->getSystemAdminEmailAddresses();
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getPredictionGameAdminsEMailAdresses()
@@ -2426,40 +2321,9 @@ $recipient = array();
 	 */
 	static function getPredictionGameAdminsEMailAdresses()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('u.email');
-		$query->from('#__users AS u');
-		$query->join('INNER', '#__sportsmanagement_prediction_admin AS pa ON pa.user_id = u.id ');
-		$query->where('u.block = 0');
-		$query->where('u.sendEmail = 1');
-		$query->where('pa.prediction_id = ' . (int) self::$predictionGameID);
-		$query->order('u.email');
-
-		$db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
-		}
-        elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$res = $db->loadResultArray();
-		}
-
-		return $res;
+		return self::nativePredictionModel()->getPredictionGameAdminEmailAddresses();
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getMemberPredictionTotalCount()
@@ -2470,26 +2334,7 @@ $recipient = array();
 	 */
 	function getMemberPredictionTotalCount($user_id)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('count(*)');
-		$query->from('#__sportsmanagement_prediction_result AS pr');
-		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('user_id = ' . (int) $user_id);
-
-		$db->setQuery($query);
-		$results = $db->loadResult();
-
-		return $results;
+		return self::nativePredictionModel()->getMemberPredictionTotalCount((int) $user_id);
 	}
 
 
