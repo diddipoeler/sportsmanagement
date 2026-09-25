@@ -1,0 +1,58 @@
+name: Joomla 5/6 administrator table bridge loaders batch 426
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/tables/project.php'
+      - 'admin/tables/league.php'
+      - 'admin/tables/template.php'
+      - 'admin/tables/treeto.php'
+      - 'admin/tables/smquote.php'
+      - 'admin/tables/clubname.php'
+      - '.github/workflows/joomla5-6-admin-table-bridge-loaders-batch426.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/tables/project.php'
+      - 'admin/tables/league.php'
+      - 'admin/tables/template.php'
+      - 'admin/tables/treeto.php'
+      - 'admin/tables/smquote.php'
+      - 'admin/tables/clubname.php'
+      - '.github/workflows/joomla5-6-admin-table-bridge-loaders-batch426.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator table bridge loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/tables/project.php
+            admin/tables/league.php
+            admin/tables/template.php
+            admin/tables/treeto.php
+            admin/tables/smquote.php
+            admin/tables/clubname.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'is_file($nativeTable)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+            grep -Fq -- 'class_alias(' "$file"
+          done
