@@ -9,18 +9,33 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementLiveticker\Site\Helper\LivetickerHelper;
 
-if (!class_exists(LivetickerHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/LivetickerHelper.php';
+$nativeDependencies = [
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    LivetickerHelper::class => __DIR__ . '/src/Helper/LivetickerHelper.php',
+];
 
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(LivetickerHelper::class)) {
-    throw new \RuntimeException('SportsManagement native Liveticker module helper could not be loaded.', 500);
+foreach ([
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    LivetickerHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Liveticker dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
 }
 
 if (!class_exists('modTurtushoutHelper', false)) {

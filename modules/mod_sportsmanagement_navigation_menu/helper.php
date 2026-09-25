@@ -9,27 +9,39 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper\NavigationMenuHelper;
 use Diddipoeler\Module\SportsManagementNavigationMenu\Site\Helper\NativeNavigationMenuHelper;
 
-if (!class_exists(NavigationMenuHelper::class)) {
-    $baseHelper = __DIR__ . '/src/Helper/NavigationMenuHelper.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    NavigationMenuHelper::class => __DIR__ . '/src/Helper/NavigationMenuHelper.php',
+    NativeNavigationMenuHelper::class => __DIR__ . '/src/Helper/NativeNavigationMenuHelper.php',
+];
 
-    if (is_file($baseHelper)) {
-        require_once $baseHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(NativeNavigationMenuHelper::class) && class_exists(NavigationMenuHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/NativeNavigationMenuHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    NavigationMenuHelper::class,
+    NativeNavigationMenuHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Navigation Menu dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(NativeNavigationMenuHelper::class)) {
-    throw new \RuntimeException('SportsManagement Navigation Menu helper could not be loaded.', 500);
 }
 
 if (!class_exists('modsportsmanagementNavigationMenuHelper', false)) {
