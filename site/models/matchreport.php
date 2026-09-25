@@ -19,18 +19,18 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-if (!class_exists(MatchreportModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportModel.php';
-}
+$nativeModelFiles = [
+    JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+    JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+    JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportModel.php',
+    JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportDataModel.php',
+    JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportMatchDataModel.php',
+];
 
-if (!class_exists(MatchreportDataModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportDataModel.php';
-}
-
-if (!class_exists(MatchreportMatchDataModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportMatchDataModel.php';
+foreach ($nativeModelFiles as $nativeModelFile) {
+    if (is_file($nativeModelFile)) {
+        require_once $nativeModelFile;
+    }
 }
 
 foreach ([
