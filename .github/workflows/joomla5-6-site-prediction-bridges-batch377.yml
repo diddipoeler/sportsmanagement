@@ -1,4 +1,4 @@
-name: Joomla 5/6 site prediction bridges batch 357
+name: Joomla 5/6 site prediction bridges batch 377
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - 'site/models/predictionusers.php'
       - 'site/models/predictionresults.php'
       - 'site/models/predictionentry.php'
-      - '.github/workflows/joomla5-6-site-prediction-bridges-batch357.yml'
+      - '.github/workflows/joomla5-6-site-prediction-bridges-batch377.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
@@ -16,7 +16,7 @@ on:
       - 'site/models/predictionusers.php'
       - 'site/models/predictionresults.php'
       - 'site/models/predictionentry.php'
-      - '.github/workflows/joomla5-6-site-prediction-bridges-batch357.yml'
+      - '.github/workflows/joomla5-6-site-prediction-bridges-batch377.yml'
 
 permissions:
   contents: read

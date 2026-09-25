@@ -1,4 +1,4 @@
-name: Joomla 5/6 site ranking tournament bridges batch 358
+name: Joomla 5/6 site ranking tournament bridges batch 378
 
 on:
   push:
@@ -7,14 +7,14 @@ on:
       - 'site/models/rankingalltime.php'
       - 'site/models/tournamentbracket.php'
       - 'site/models/leaguechampionoverview.php'
-      - '.github/workflows/joomla5-6-site-ranking-tournament-bridges-batch358.yml'
+      - '.github/workflows/joomla5-6-site-ranking-tournament-bridges-batch378.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'site/models/rankingalltime.php'
       - 'site/models/tournamentbracket.php'
       - 'site/models/leaguechampionoverview.php'
-      - '.github/workflows/joomla5-6-site-ranking-tournament-bridges-batch358.yml'
+      - '.github/workflows/joomla5-6-site-ranking-tournament-bridges-batch378.yml'
 
 permissions:
   contents: read

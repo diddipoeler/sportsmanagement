@@ -1,16 +1,16 @@
-name: Joomla 5/6 prediction constructor cleanup batch 359
+name: Joomla 5/6 prediction constructor cleanup batch 379
 
 on:
   push:
     branches: [joomla5-6]
     paths:
       - 'site/models/prediction.php'
-      - '.github/workflows/joomla5-6-prediction-constructor-cleanup-batch359.yml'
+      - '.github/workflows/joomla5-6-prediction-constructor-cleanup-batch379.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'site/models/prediction.php'
-      - '.github/workflows/joomla5-6-prediction-constructor-cleanup-batch359.yml'
+      - '.github/workflows/joomla5-6-prediction-constructor-cleanup-batch379.yml'
 
 permissions:
   contents: read
