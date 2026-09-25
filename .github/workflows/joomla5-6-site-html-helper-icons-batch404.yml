@@ -1,0 +1,39 @@
+name: Joomla 5/6 site html helper icon cleanup batch 404
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/helpers/html.php'
+      - '.github/workflows/joomla5-6-site-html-helper-icons-batch404.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/helpers/html.php'
+      - '.github/workflows/joomla5-6-site-html-helper-icons-batch404.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site HTML helper icon cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/helpers/html.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "fa-stack fa-xs" "$file"
+          ! grep -Fq -- 'version_compare(JVERSION' "$file"
+          ! grep -Fq -- 'jl_images/' "$file"

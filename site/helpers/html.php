@@ -1261,31 +1261,24 @@ class sportsmanagementHelperHtml
 		$alt = $icons[$res][2];
 		$title = $alt;
 
-		if (version_compare(JVERSION, '4.0.0', 'ge')) {
-			$icon_color = '" style="color:' . $icons[$res][3];
-			if ($usefontawesome) {
-				$icon_color = $icons[$res][1];
-			}
-		} else {
-			$img = 'media/com_sportsmanagement/jl_images/' . $icons[$res][1] . '.png';
-		}
+		// Joomla 5/6 always renders the vector icon path; the legacy bitmap branch
+		// was only needed before Joomla 4.
+		$stateClass = $usefontawesome ? $icons[$res][1] : '';
+		$style = $usefontawesome ? '' : ' style="color:' . htmlspecialchars($icons[$res][3], ENT_QUOTES, 'UTF-8') . '"';
 
 		// Default title attribute, if not specified in passed attributes
 		$def_attribs = array('title' => $title);
 		$attributes = ($attributes) ? array_merge($def_attribs, $attributes) : $def_attribs;
 
-		if (version_compare(JVERSION, '4.0.0', 'ge') || $usefontawesome) {
-			$stackClass = "fa-stack fa-xs " . $icon_color;
-			$faSquare = "fa fa-square fa-stack-2x";
-			$faIcon = "fa $icon fa-stack-1x fa-inverse";
-			$titleAttr = implode("|", $attributes);
-			return "<span class=\"$stackClass\">
-		<i class=\"$faSquare\"></i>
-		<i class=\"$faIcon\" title=\"$titleAttr\"></i>
-		</span>";
-		} else {
-			return HTMLHelper::image($img, $alt, $attributes);
-		}
+		$stackClass = trim('fa-stack fa-xs ' . $stateClass);
+		$faSquare = 'fa fa-square fa-stack-2x';
+		$faIcon = 'fa ' . $icon . ' fa-stack-1x fa-inverse';
+		$titleAttr = htmlspecialchars((string) ($attributes['title'] ?? $title), ENT_QUOTES, 'UTF-8');
+
+		return '<span class="' . $stackClass . '"' . $style . '>'
+			. '<i class="' . $faSquare . '"></i>'
+			. '<i class="' . $faIcon . '" title="' . $titleAttr . '"></i>'
+			. '</span>';
 	}
 
 }
