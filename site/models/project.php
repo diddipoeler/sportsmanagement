@@ -10,7 +10,8 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -49,6 +50,26 @@ if (!defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO')) {
  */
 class sportsmanagementModelProject extends BaseDatabaseModel
 {
+	/**
+	 * Resolve the Joomla site application for legacy project callers.
+	 */
+	private static function siteApplication(): SiteApplication
+	{
+		if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+			$resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+			if (is_file($resolverFile)) {
+				require_once $resolverFile;
+			}
+		}
+
+		if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+			throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+		}
+
+		return SportsManagementSiteApplicationResolver::resolve();
+	}
+
 	static $_project = null;
 	static $projectid = 0;
 	static $matchid = 0;
@@ -102,7 +123,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		$model->setDatabaseSelector((int) $cfg_which_database);
 
 		if ((int) self::$projectid <= 0) {
-			self::$projectid = Factory::getApplication()->input->getInt('p', 0);
+			self::$projectid = self::siteApplication()->getInput()->getInt('p', 0);
 		}
 
 		$model->setProjectId((int) self::$projectid);
@@ -135,7 +156,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 		$model->setDatabaseSelector((int) $cfg_which_database);
 
 		if ((int) self::$projectid <= 0) {
-			self::$projectid = Factory::getApplication()->input->getInt('p', 0);
+			self::$projectid = self::siteApplication()->getInput()->getInt('p', 0);
 		}
 
 		$model->setProjectId((int) self::$projectid);
@@ -152,7 +173,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		parent::__construct($config, $factory);
 
-		$input = Factory::getApplication()->getInput();
+		$input = self::siteApplication()->getInput();
 		self::$projectid = $input->getInt('p', 0);
 		self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
 		self::$matchid = $input->getInt('mid', 0);

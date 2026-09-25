@@ -1,0 +1,39 @@
+name: Joomla 5/6 site project application resolver batch 418
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/project.php'
+      - '.github/workflows/joomla5-6-site-project-app-resolver-batch418.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/project.php'
+      - '.github/workflows/joomla5-6-site-project-app-resolver-batch418.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site project application resolver
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/models/project.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+          grep -Fq -- 'function siteApplication()' "$file"
+          ! grep -Fq -- 'Factory::' "$file"
