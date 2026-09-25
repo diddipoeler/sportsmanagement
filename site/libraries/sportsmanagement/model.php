@@ -14,7 +14,7 @@
  * @subpackage libraries
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\SiteApplication;
@@ -69,10 +69,10 @@ class JSMModelList extends ListModel
 
         $this->jsmdb = $this->resolveDatabase();
         $this->setDatabase($this->jsmdb);
-        $this->jsmquery     = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery1 = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery2 = $this->jsmdb->getQuery(true);
-        $this->jsmsubquery3 = $this->jsmdb->getQuery(true);
+        $this->jsmquery     = $this->jsmdb->createQuery();
+        $this->jsmsubquery1 = $this->jsmdb->createQuery();
+        $this->jsmsubquery2 = $this->jsmdb->createQuery();
+        $this->jsmsubquery3 = $this->jsmdb->createQuery();
     }
 
     private function resolveDatabase(): DatabaseInterface
@@ -107,7 +107,7 @@ class JSMModelLegacy extends BaseDatabaseModel
 
         $this->jsmdb = $this->resolveDatabase();
         $this->setDatabase($this->jsmdb);
-        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $this->jsmquery = $this->jsmdb->createQuery();
 
         Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
         Log::addLogger(

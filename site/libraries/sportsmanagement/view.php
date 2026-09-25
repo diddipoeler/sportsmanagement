@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage libraries
  * @file       view.php
@@ -15,7 +15,7 @@
  * http://eddify.me/posts/logging-in-joomla-with-jlog.html
  * https://github.com/joomla-framework/log/blob/master/src/Logger/Database.php
  */
-defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\View\HtmlView;

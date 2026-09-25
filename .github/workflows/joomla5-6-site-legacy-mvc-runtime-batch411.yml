@@ -1,0 +1,46 @@
+name: Joomla 5/6 site legacy MVC runtime batch 411
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/libraries/sportsmanagement/model.php'
+      - 'site/libraries/sportsmanagement/view.php'
+      - '.github/workflows/joomla5-6-site-legacy-mvc-runtime-batch411.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/libraries/sportsmanagement/model.php'
+      - 'site/libraries/sportsmanagement/view.php'
+      - '.github/workflows/joomla5-6-site-legacy-mvc-runtime-batch411.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site legacy MVC runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/libraries/sportsmanagement/model.php
+            site/libraries/sportsmanagement/view.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          grep -Fq -- '$this->jsmdb->createQuery()' site/libraries/sportsmanagement/model.php
+          ! grep -Fq -- 'getQuery(true)' site/libraries/sportsmanagement/model.php
+          ! grep -Fq -- 'Restricted access' site/libraries/sportsmanagement/model.php
