@@ -1008,7 +1008,7 @@ try{
 		$db        = self::database((int) $cfg_which_database);
 		$query     = $db->createQuery();
 		$starttime = microtime();
-		$viewName = $app->input->getVar("view");
+		$viewName = $app->input->getCmd('view');
 
 
         switch ($sports_type_name)
@@ -1154,7 +1154,7 @@ try{
 	{
 		$app       = Factory::getApplication();
 		$option    = $app->input->getCmd('option');
-		$view = $app->input->getVar("view");
+		$view = $app->input->getCmd('view');
 		$db        = self::database((int) $cfg_which_database);
 		$query     = $db->createQuery();
 		$starttime = microtime();

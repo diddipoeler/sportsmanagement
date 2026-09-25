@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\ImageSelectField;
 
 if (!class_exists(ImageSelectField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ImageSelectField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ImageSelectField.php';
+
+    if (is_file($nativeField)) {
+        require_once $nativeField;
+    }
+}
+
+if (!class_exists(ImageSelectField::class)) {
+    throw new \RuntimeException('SportsManagement native ImageSelect field could not be loaded.', 500);
 }
 
 if (!class_exists('JFormFieldImageSelect', false)) {

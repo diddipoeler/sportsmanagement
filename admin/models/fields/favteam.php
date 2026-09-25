@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\FavteamField;
 
 if (!class_exists(FavteamField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/FavteamField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/FavteamField.php';
+
+    if (is_file($nativeField)) {
+        require_once $nativeField;
+    }
+}
+
+if (!class_exists(FavteamField::class)) {
+    throw new \RuntimeException('SportsManagement native Favteam field could not be loaded.', 500);
 }
 
 if (!class_exists('JFormFieldFavteam', false)) {
