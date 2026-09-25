@@ -102,44 +102,86 @@ abstract class sportsmanagementHelper
  */
 public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
-        $result = array();
+		$matchId = (int) $match_id;
 
-		$db        = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
-		$query     = $db->getQuery(true);
-		$starttime = microtime();
-        
-        $query->clear();
-        $query->select('COUNT(DISTINCT(mr.match_id)) as count_referees');
-        $query->from('#__sportsmanagement_match_referee AS mr');
-        $query->where('mr.match_id = ' . (int) $match_id);
-        $db->setQuery($query);
-        $total_referees = $db->loadResult();
-        if ( $total_referees )
-        {
-        $query->clear();
-		$query->select('p.id,pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.nickname ');
-		$query->select('mr.project_position_id,pos.name as position_name,pref.picture');
-		$query->from('#__sportsmanagement_match_referee AS mr');
-		$query->join('LEFT', '#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id');
-		$query->join('INNER', '#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
-		$query->join('INNER', '#__sportsmanagement_person AS p ON spi.person_id=p.id');
-		$query->join('LEFT', '#__sportsmanagement_project_position AS ppos ON mr.project_position_id=ppos.id');
-		$query->join('LEFT', '#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
-		$query->where('mr.match_id = ' . (int) $match_id);
-		$query->where('p.published = 1');
-		$query->order('pos.name,mr.ordering');
+		if ($matchId <= 0)
+		{
+			return array();
+		}
+
+		$db = self::getDBConnection(true, $cfg_which_database);
+		$query = $db->createQuery()
+			->select('COUNT(DISTINCT ' . $db->quoteName('mr.match_id') . ')')
+			->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
+			->where($db->quoteName('mr.match_id') . ' = :refereeMatchId')
+			->bind(':refereeMatchId', $matchId, ParameterType::INTEGER);
+
 		$db->setQuery($query);
-		$result = $db->loadObjectList();
-        }
+		$totalReferees = (int) $db->loadResult();
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		if ($totalReferees <= 0)
+		{
+			return array();
+		}
 
-		return $result;
+		$query = $db->createQuery()
+			->select(array(
+				$db->quoteName('p.id'),
+				$db->quoteName('pref.id', 'person_id'),
+				$db->quoteName('p.firstname'),
+				$db->quoteName('p.lastname'),
+				$db->quoteName('pos.name', 'position_name'),
+				"CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('person_slug'),
+				$db->quoteName('p.nickname'),
+				$db->quoteName('mr.project_position_id'),
+				$db->quoteName('pref.picture'),
+			))
+			->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
+			->join(
+				'LEFT',
+				$db->quoteName('#__sportsmanagement_project_referee', 'pref')
+				. ' ON ' . $db->quoteName('mr.project_referee_id') . ' = ' . $db->quoteName('pref.id')
+			)
+			->join(
+				'INNER',
+				$db->quoteName('#__sportsmanagement_season_person_id', 'spi')
+				. ' ON ' . $db->quoteName('pref.person_id') . ' = ' . $db->quoteName('spi.id')
+			)
+			->join(
+				'INNER',
+				$db->quoteName('#__sportsmanagement_person', 'p')
+				. ' ON ' . $db->quoteName('spi.person_id') . ' = ' . $db->quoteName('p.id')
+			)
+			->join(
+				'LEFT',
+				$db->quoteName('#__sportsmanagement_project_position', 'ppos')
+				. ' ON ' . $db->quoteName('mr.project_position_id') . ' = ' . $db->quoteName('ppos.id')
+			)
+			->join(
+				'LEFT',
+				$db->quoteName('#__sportsmanagement_position', 'pos')
+				. ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id')
+			)
+			->where($db->quoteName('mr.match_id') . ' = :refereeListMatchId')
+			->where($db->quoteName('p.published') . ' = :refereePublished')
+			->bind(':refereeListMatchId', $matchId, ParameterType::INTEGER)
+			->bind(':refereePublished', $published = 1, ParameterType::INTEGER)
+			->order(array(
+				$db->quoteName('pos.name') . ' ASC',
+				$db->quoteName('mr.ordering') . ' ASC',
+			));
 
+		$db->setQuery($query);
+
+		return $db->loadObjectList() ?: array();
 	}
+
 	
+	
+	
+	
+    /**
+     * sportsmanagementHelper::getTips()
 	
 	
 	
@@ -1816,32 +1858,34 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getProjectFavTeams($project_id)
 	{
-$app    = Factory::getApplication();
-$jinput = $app->input;
+		$projectId = (int) $project_id;
 
-		
-		if ($project_id)
-		{
-		$db    = sportsmanagementHelper::getDBConnection(true, $jinput->get('cfg_which_database', 0, '') );	
-		$query = $db->getQuery(true);
-		$query->select('fav_team, fav_team_text_bold, fav_team_text_color, fav_team_color');
-		$query->from('#__sportsmanagement_project');
-		$query->where('id = ' . (int) $project_id);
-		$db->setQuery($query);
-		$row = $db->loadObject();
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-			
-			//$row = Table::getInstance('project', 'sportsmanagementTable');
-			//$row->load($project_id);
-
-			return $row;
-		}
-		else
+		if ($projectId <= 0)
 		{
 			return false;
 		}
+
+		$databaseSelector = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+		$db = self::getDBConnection(true, $databaseSelector);
+		$query = $db->createQuery()
+			->select(array(
+				$db->quoteName('fav_team'),
+				$db->quoteName('fav_team_text_bold'),
+				$db->quoteName('fav_team_text_color'),
+				$db->quoteName('fav_team_color'),
+			))
+			->from($db->quoteName('#__sportsmanagement_project'))
+			->where($db->quoteName('id') . ' = :favProjectId')
+			->bind(':favProjectId', $projectId, ParameterType::INTEGER);
+
+		$db->setQuery($query, 0, 1);
+
+		return $db->loadObject() ?: false;
 	}
 
+	
+	/**
+	 * sportsmanagementHelper::showTeamIcons()
 	
 	/**
 	 * sportsmanagementHelper::showTeamIcons()
