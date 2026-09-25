@@ -687,30 +687,14 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getProjectRounds($pid = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($pid > 0)
-		{
-			$query->select('max(id)');
-			$query->from('#__sportsmanagement_round');
-			$query->where('project_id = ' . (int) $pid);
-
-			$db->setQuery($query);
-			self::$_projectRoundsCount = $db->loadResult();
-
-			return self::$_projectRoundsCount;
+		if ((int) $pid <= 0) {
+			return false;
 		}
 
-		return false;
+		self::$_projectRoundsCount = self::nativePredictionModel()
+			->getProjectLastRoundId((int) $pid);
+
+		return self::$_projectRoundsCount ?: false;
 	}
 
 	/**
@@ -720,31 +704,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function checkPredictionMembership()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('id');
-		$query->from('#__sportsmanagement_prediction_member');
-		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('user_id = ' . Factory::getApplication()->getIdentity()->id);
-		$query->where('approved = 1');
-
-		$db->setQuery($query, 0, 1);
-
-		if (!$db->loadResult())
-		{
-			return false;
-		}
-
-		return true;
+		return self::nativePredictionModel()->isCurrentUserApprovedMember();
 	}
 
 	/**
@@ -754,35 +714,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function checkIsNotApprovedPredictionMember()
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('user_id,approved');
-		$query->from('#__sportsmanagement_prediction_member');
-		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('user_id = ' . Factory::getApplication()->getIdentity()->id);
-
-		$db->setQuery($query, 0, 1);
-
-		if (!$result = $db->loadObject())
-		{
-			return 2;
-		}
-
-		if ($result->approved)
-		{
-			return 0;
-		}
-
-		return 1;
+		return self::nativePredictionModel()->getCurrentUserMembershipStatus();
 	}
 
 	/**
@@ -822,35 +754,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getPredictionGameAdmins($predictionID)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('user_id');
-		$query->from('#__sportsmanagement_prediction_admin');
-		$query->where('prediction_id = ' . (int) $predictionID);
-
-		$db->setQuery($query);
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			// Joomla! 3.0 code here
-			$res = $db->loadColumn();
-		}
-        elseif (version_compare(JVERSION, '2.5.0', 'ge'))
-		{
-			// Joomla! 2.5 code here
-			$res = $db->loadResultArray();
-		}
-
-		return $res;
+		return self::nativePredictionModel()->getPredictionGameAdminIds((int) $predictionID);
 	}
 
 	/**
@@ -1233,46 +1137,7 @@ $recipient = array();
 	 */
 	static function getPredictionProject($project_id = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($project_id > 0)
-		{
-			$query->clear();
-			$query->select('*');
-			$query->from('#__sportsmanagement_project');
-			$query->where('id = ' . (int) $project_id);
-
-			$db->setQuery($query);
-
-			if (!$result = $db->loadObject())
-			{
-				return false;
-			}
-
-			if ($result->start_date == '0000-00-00')
-			{
-				$query->clear();
-				$query->select('min(round_date_first)');
-				$query->from('#__sportsmanagement_round');
-				$query->where('project_id = ' . (int) $project_id);
-
-				$db->setQuery($query);
-				$result->start_date = $db->loadResult();
-			}
-
-			return $result;
-		}
-
-		return false;
+		return self::nativePredictionModel()->getPredictionProjectById((int) $project_id) ?: false;
 	}
 
 	/**
@@ -2145,35 +2010,12 @@ $recipient = array();
 	 */
 	static function getRoundNames($project_id, $ordering = 'ASC', $round_ids = null)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput   = $app->input;
-		$option   = $jinput->getCmd('option');
-		$document = Factory::getDocument();
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if (empty(self::$_roundNames))
-		{
-			// $query->select('id AS value, name AS text');
-			$query->select("CONCAT_WS(':',id,alias) AS value");
-			$query->select('name AS text');
-			$query->from('#__sportsmanagement_round');
-			$query->where('project_id = ' . (int) $project_id);
-
-			if ($round_ids)
-			{
-				$query->where('id IN (' . implode(',', $round_ids) . ')');
-			}
-
-			$query->order('id ' . $ordering);
-
-			$db->setQuery($query);
-			self::$_roundNames = $db->loadObjectList();
+		if (empty(self::$_roundNames)) {
+			self::$_roundNames = self::nativePredictionModel()->getPredictionRoundOptions(
+				(int) $project_id,
+				(string) $ordering,
+				is_array($round_ids) ? $round_ids : []
+			);
 		}
 
 		return self::$_roundNames;

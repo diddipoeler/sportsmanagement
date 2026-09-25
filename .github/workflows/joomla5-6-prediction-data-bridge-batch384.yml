@@ -1,0 +1,45 @@
+name: Joomla 5/6 prediction data bridge batch 384
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-data-bridge-batch384.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-data-bridge-batch384.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate prediction data bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(site/models/prediction.php site/src/Model/SportsManagementPredictionModel.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
+          done
+          for method in getPredictionGameAdminIds getProjectLastRoundId isCurrentUserApprovedMember getCurrentUserMembershipStatus getPredictionProjectById getPredictionRoundOptions; do
+            grep -Fq -- "function $method" site/src/Model/SportsManagementPredictionModel.php
+          done
+          ! grep -Fq -- 'version_compare(JVERSION' <(sed -n '/function getPredictionGameAdmins/,/function sendMemberTipResults/p' site/models/prediction.php)

@@ -401,4 +401,168 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
 
         return $defaults;
     }
+
+    /** Return Joomla user ids configured as administrators for one prediction game. */
+    public function getPredictionGameAdminIds(int $predictionGameId): array
+    {
+        if ($predictionGameId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('user_id'))
+            ->from($db->quoteName('#__sportsmanagement_prediction_admin'))
+            ->where($db->quoteName('prediction_id') . ' = :predictionAdminGameListId')
+            ->bind(':predictionAdminGameListId', $predictionGameId, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+
+        return array_map('intval', $db->loadColumn() ?: []);
+    }
+
+    /** Return the highest round id used by a project, preserving the legacy contract. */
+    public function getProjectLastRoundId(int $projectId): int
+    {
+        if ($projectId <= 0) {
+            return 0;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('MAX(' . $db->quoteName('id') . ')')
+            ->from($db->quoteName('#__sportsmanagement_round'))
+            ->where($db->quoteName('project_id') . ' = :predictionProjectRoundId')
+            ->bind(':predictionProjectRoundId', $projectId, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+
+        return (int) $db->loadResult();
+    }
+
+    /** Check whether the current Joomla user is an approved member of the active prediction game. */
+    public function isCurrentUserApprovedMember(): bool
+    {
+        if ($this->predictionGameId <= 0) {
+            return false;
+        }
+
+        $userId = (int) $this->siteApplication()->getIdentity()->id;
+        if ($userId <= 0) {
+            return false;
+        }
+
+        $predictionGameId = $this->predictionGameId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_prediction_member'))
+            ->where($db->quoteName('prediction_id') . ' = :approvedMemberGameId')
+            ->where($db->quoteName('user_id') . ' = :approvedMemberUserId')
+            ->where($db->quoteName('approved') . ' = 1')
+            ->bind(':approvedMemberGameId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':approvedMemberUserId', $userId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+
+        return (bool) $db->loadResult();
+    }
+
+    /**
+     * Return legacy membership status: 0 approved, 1 pending, 2 not registered.
+     */
+    public function getCurrentUserMembershipStatus(): int
+    {
+        if ($this->predictionGameId <= 0) {
+            return 2;
+        }
+
+        $userId = (int) $this->siteApplication()->getIdentity()->id;
+        if ($userId <= 0) {
+            return 2;
+        }
+
+        $predictionGameId = $this->predictionGameId;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('approved'))
+            ->from($db->quoteName('#__sportsmanagement_prediction_member'))
+            ->where($db->quoteName('prediction_id') . ' = :membershipStatusGameId')
+            ->where($db->quoteName('user_id') . ' = :membershipStatusUserId')
+            ->bind(':membershipStatusGameId', $predictionGameId, ParameterType::INTEGER)
+            ->bind(':membershipStatusUserId', $userId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+        $approved = $db->loadResult();
+
+        if ($approved === null) {
+            return 2;
+        }
+
+        return (int) $approved === 1 ? 0 : 1;
+    }
+
+    /** Return one prediction project with the historical start-date fallback. */
+    public function getPredictionProjectById(int $projectId): ?object
+    {
+        if ($projectId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('*')
+            ->from($db->quoteName('#__sportsmanagement_project'))
+            ->where($db->quoteName('id') . ' = :predictionProjectById')
+            ->bind(':predictionProjectById', $projectId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+        $project = $db->loadObject();
+
+        if (!$project) {
+            return null;
+        }
+
+        if (($project->start_date ?? '') === '0000-00-00') {
+            $roundQuery = $db->createQuery()
+                ->select('MIN(' . $db->quoteName('round_date_first') . ')')
+                ->from($db->quoteName('#__sportsmanagement_round'))
+                ->where($db->quoteName('project_id') . ' = :predictionProjectStartId')
+                ->bind(':predictionProjectStartId', $projectId, ParameterType::INTEGER);
+            $db->setQuery($roundQuery);
+            $project->start_date = $db->loadResult();
+        }
+
+        return $project;
+    }
+
+    /** Return legacy round select options for a project. */
+    public function getPredictionRoundOptions(int $projectId, string $ordering = 'ASC', array $roundIds = []): array
+    {
+        if ($projectId <= 0) {
+            return [];
+        }
+
+        $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                "CONCAT_WS(':', id, alias) AS value",
+                $db->quoteName('name', 'text'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_round'))
+            ->where($db->quoteName('project_id') . ' = :predictionRoundOptionsProjectId')
+            ->bind(':predictionRoundOptionsProjectId', $projectId, ParameterType::INTEGER)
+            ->order($db->quoteName('id') . ' ' . $direction);
+
+        $ids = array_values(array_filter(array_map('intval', $roundIds), static fn (int $id): bool => $id > 0));
+        if ($ids) {
+            $query->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER);
+        }
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
 }
