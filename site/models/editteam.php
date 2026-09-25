@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native frontend Editteam model.
+ * Legacy compatibility bridge for the native Joomla 5/6 frontend Editteam model.
  *
  * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\EditteamModel;
 
 if (!class_exists(EditteamModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/EditteamModel.php';
+    $nativeModel = JPATH_SITE . '/components/com_sportsmanagement/src/Model/EditteamModel.php';
+
+    if (is_file($nativeModel)) {
+        require_once $nativeModel;
+    }
+}
+
+if (!class_exists(EditteamModel::class)) {
+    throw new \RuntimeException('SportsManagement native Editteam model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelEditteam', false)) {
