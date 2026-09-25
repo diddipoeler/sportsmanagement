@@ -9,18 +9,36 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Helper\NavigationDataHelper;
 
-if (!class_exists(NavigationDataHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/NavigationDataHelper.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    NavigationDataHelper::class => __DIR__ . '/src/Helper/NavigationDataHelper.php',
+];
 
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(NavigationDataHelper::class)) {
-    throw new \RuntimeException('SportsManagement AJAX Top Navigation helper could not be loaded.', 500);
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    NavigationDataHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement AJAX Top Navigation dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
 }
 
 if (!class_exists('modSportsmanagementAjaxTopNavigationMenuHelper', false)) {
