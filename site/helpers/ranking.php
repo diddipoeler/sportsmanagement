@@ -11,6 +11,8 @@
  */
 \defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -48,6 +50,26 @@ class JSMRanking extends \stdClass
         $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    }
+
+    /**
+     * Resolve the Joomla site application for legacy ranking helper callers.
+     */
+    private static function siteApplication(): SiteApplication
+    {
+        if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+            $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+
+            if (is_file($resolverFile)) {
+                require_once $resolverFile;
+            }
+        }
+
+        if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+            throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
+        }
+
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
 	static $rankingalltimenotes = array();
@@ -126,8 +148,8 @@ class JSMRanking extends \stdClass
 	 */
 	function setProjectId($id, $cfg_which_database = 0)
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app    = self::siteApplication();
+		$option = $app->getInput()->getCmd('option');
 		$this->_projectid = (int) $id;
 		sportsmanagementModelProject::setProjectID($id, $cfg_which_database);
 		$this->_params = sportsmanagementModelProject::getTemplateConfig('ranking', $cfg_which_database, __METHOD__);
@@ -147,8 +169,8 @@ class JSMRanking extends \stdClass
 	 */
 	function getRanking($from = null, $to = null, $division = null, $cfg_which_database = 0,$sports_type_name='')
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app    = self::siteApplication();
+		$option = $app->getInput()->getCmd('option');
 
 		$this->_from = $from;
 		$this->_to   = $to;
@@ -184,8 +206,8 @@ class JSMRanking extends \stdClass
 	 */
 	function _collect($ptids = null, $cfg_which_database = 0,$sports_type_name='')
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app    = self::siteApplication();
+		$option = $app->getInput()->getCmd('option');
 
 		$mode     = $this->_mode;
 		$from     = $this->_from;
@@ -342,7 +364,7 @@ In that case, $data wont be affected
 			$draw_points = (isset($arr[1])) ? $arr[1] : 1;
 			$loss_points = (isset($arr[2])) ? $arr[2] : 0;
 
-/* Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arr<pre>'.print_r($arr,true).'</pre>'),''); */
+/* self::siteApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arr<pre>'.print_r($arr,true).'</pre>'),''); */
 
 			$home_ot = $match->home_score_ot;
 			$away_ot = $match->away_score_ot;
@@ -703,7 +725,7 @@ In that case, $data wont be affected
             }
             
             
-		/* Factory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<pre>'.print_r($data->_teams,true).'</pre>'),''); */
+		/* self::siteApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<pre>'.print_r($data->_teams,true).'</pre>'),''); */
 
 		return $data->_teams;
 	}
@@ -715,7 +737,7 @@ In that case, $data wont be affected
 	 */
 	function _initData($cfg_which_database = 0,$sports_type_name='')
 	{
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		if (!$this->_projectid)
 		{
@@ -772,8 +794,8 @@ In that case, $data wont be affected
 	 */
 	public static function getProjectTeamsDivision($division_id = 0,$project_team_id = 0)
 	{
-	$app = Factory::getApplication();
-	$jinput = $app->input;	
+	$app = self::siteApplication();
+	$jinput = $app->getInput();	
 	$db = self::database($jinput->getInt('cfg_which_database', 0));
 	$query = $db->createQuery();
 	$query->select('*');
@@ -796,8 +818,8 @@ In that case, $data wont be affected
 	 */
 	public static function _initTeams($pid, $division, $cfg_which_database = 0,$sports_type_name='')
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app    = self::siteApplication();
+		$option = $app->getInput()->getCmd('option');
 		$db        = self::database((int) $cfg_which_database);
 		$query     = $db->createQuery();
 		$starttime = microtime();
@@ -1003,12 +1025,12 @@ try{
 	 */
 	public static function _getMatches($pid = 0, $division = 0, $cfg_which_database = 0,$sports_type_name='')
 	{
-		$app       = Factory::getApplication();
-		$option    = $app->input->getCmd('option');
+		$app       = self::siteApplication();
+		$option    = $app->getInput()->getCmd('option');
 		$db        = self::database((int) $cfg_which_database);
 		$query     = $db->createQuery();
 		$starttime = microtime();
-		$viewName = $app->input->getCmd('view');
+		$viewName = $app->getInput()->getCmd('view');
 
 
         switch ($sports_type_name)
@@ -1152,9 +1174,9 @@ try{
 	 */
 	function _getRoundcode($round_id, $cfg_which_database = 0)
 	{
-		$app       = Factory::getApplication();
-		$option    = $app->input->getCmd('option');
-		$view = $app->input->getCmd('view');
+		$app       = self::siteApplication();
+		$option    = $app->getInput()->getCmd('option');
+		$view = $app->getInput()->getCmd('view');
 		$db        = self::database((int) $cfg_which_database);
 		$query     = $db->createQuery();
 		$starttime = microtime();
@@ -1207,8 +1229,8 @@ try{
 	 */
 	function _buildRanking($teams = array(), $cfg_which_database = 0,$sports_type_name='')
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app    = self::siteApplication();
+		$option = $app->getInput()->getCmd('option');
         $this->_rankingsortorder = explode(',', $this->_params['ranking_sort_order']);
 
 		/** Division filtering */
@@ -1398,8 +1420,8 @@ function array_multisort(&$a, array $column_names) {
 	 */
 	function getRankingHome($from = null, $to = null, $division = null, $cfg_which_database = 0,$sports_type_name='')
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app    = self::siteApplication();
+		$option = $app->getInput()->getCmd('option');
 
 		$this->_from = $from;
 		$this->_to   = $to;
@@ -1431,8 +1453,8 @@ function array_multisort(&$a, array $column_names) {
 	 */
 	function getRankingAway($from = null, $to = null, $division = null, $cfg_which_database = 0,$sports_type_name='')
 	{
-		$app    = Factory::getApplication();
-		$option = $app->input->getCmd('option');
+		$app    = self::siteApplication();
+		$option = $app->getInput()->getCmd('option');
 
 		$this->_from = $from;
 		$this->_to   = $to;
@@ -1475,7 +1497,7 @@ function array_multisort(&$a, array $column_names) {
 	 */
 	function _getSubDivisions($cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		if (!$this->_division)
 		{
