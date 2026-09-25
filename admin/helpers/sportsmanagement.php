@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage helpers
  * @file       sportsmanagement.php
@@ -12,7 +12,7 @@
  * toolbar
  * https://issues.joomla.org/tracker/joomla-cms/19670
  */
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 use Joomla\Data\DataObject;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Version;
@@ -37,14 +37,12 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 use Joomla\CMS\Form\Form;
+use Joomla\Database\DatabaseFactory;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 //BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
 
 //HTMLHelper::_('behavior.keepalive');
-
-if (version_compare(JVERSION, '3.0.0', 'ge'))
-{
-	jimport('joomla.html.toolbar');
-}
 
 // Get the base version
 //$baseVersion = substr(JVERSION, 0, 3);
@@ -553,144 +551,110 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getDBConnection($request = false, $value = false)
 	{
-		$app    = Factory::getApplication();
+		/** @var DatabaseInterface $joomlaDatabase */
+		$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$config = Factory::getConfig();
 
-		// Echo '<pre>'.print_r($params,true).'</pre>';
-		// Log::add(Text::_($params->get('cfg_which_database')), Log::ERROR, 'jsmerror');
-		if ($params->get('cfg_which_database') || $value == 1)
+		if (!(bool) $params->get('cfg_which_database', 0) && (int) $value !== 1)
 		{
-			$options             = array(); // Prevent problems
-			$options['driver']   = $params->get('jsm_dbtype');            // Database driver name
-			$options['host']     = $params->get('jsm_host');    // Database host name
-			$options['user']     = $params->get('jsm_user');       // User for database authentication
-			$options['password'] = $params->get('jsm_password');   // Password for database authentication
-			$options['database'] = $params->get('jsm_db');      // Database name
-			$options['prefix']   = $params->get('jsm_dbprefix');             // Database prefix (may be empty)
-
-			// Log::add(Text::_('options <pre>'.print_r($options,true).'</pre>'), Log::ERROR, 'jsmerror');
-
-			try
-			{
-				// Zuerst noch überprüfen, ob der user
-				// überhaupt den zugriff auf die datenbank hat.
-				if (version_compare(JVERSION, '4.0.0', 'ge'))
-				{
-					self::$_jsm_db = JDatabaseDriver::getInstance($options);
-				}
-				else
-				{
-					self::$_jsm_db = JDatabase::getInstance($options);
-				}
-
-				$user_id = $params->get('jsm_server_user');
-			}
-			catch (Exception $e)
-			{
-				// Catch any database errors.
-				//   $db->transactionRollback();
-				Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
-				Log::add(Text::_($e->getCode()), Log::ERROR, 'jsmerror');
-
-				// JErrorPage::render($e);
-			}
-
-			// Log::add(Text::_('user_id '.$user_id), Log::WARNING, 'jsmerror');
-			if ($user_id)
-			{
-				// Load the profile data from the database.
-				$db    = self::$_jsm_db;
-				$query = $db->getQuery(true);
-				$query->clear();
-				$query->select('up.profile_key, up.profile_value');
-				$query->from('#__user_profiles as up');
-				$query->where('up.user_id = ' . $user_id);
-				$query->where('up.profile_key LIKE ' . $db->Quote('' . 'jsmprofile.%' . ''));
-
-try
-		{
-				$db->setQuery($query);
-				$row = $db->loadAssocList('profile_key');
- }
-		catch (Exception $e)
-		{
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getCode()), Log::ERROR, 'jsmerror');
-			Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage()), Log::ERROR, 'jsmerror');
-			return Factory::getDbo();
-		}
-				// Log::add(Text::_('row <pre>'.print_r($row,true).'</pre>'), Log::INFO, 'jsmerror');
-
-				if ($row['jsmprofile.databaseaccess']['profile_value'])
-				{
-					Log::add(Text::_('Sie haben Zugriff.'), Log::INFO, 'jsmerror');
-
-					if ($row['jsmprofile.serialnumber']['profile_value'] == $params->get('jsm_user_serialnumber'))
-					{
-						Log::add(Text::_('Die Seriennummer stimmt.'), Log::INFO, 'jsmerror');
-
-						if ($row['jsmprofile.access_from']['profile_value'] && $row['jsmprofile.access_to']['profile_value'])
-						{
-							$timestampfrom    = self::getTimestamp($row['jsmprofile.access_from']['profile_value']);
-							$timestampto      = self::getTimestamp($row['jsmprofile.access_to']['profile_value']);
-							$timestampaktuell = self::getTimestamp();
-
-							$varaccess = filter_var(
-								$timestampaktuell,
-								FILTER_VALIDATE_INT,
-								array(
-									'options' => array(
-										'min_range' => $timestampfrom,
-										'max_range' => $timestampto
-									)
-								)
-							);
-
-							// Log::add(Text::_('access '.$varaccess), Log::INFO, 'jsmerror');
-
-							if ($varaccess)
-							{
-								Log::add(Text::_('Der Zeitraum ist freigeschaltet.'), Log::INFO, 'jsmerror');
-
-								return self::$_jsm_db;
-							}
-							else
-							{
-								Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');
-							}
-
-							// Log::add(Text::_('timestamp von '.$timestampfrom), Log::INFO, 'jsmerror');
-							// Log::add(Text::_('timestamp bis '.$timestampto), Log::INFO, 'jsmerror');
-							// Log::add(Text::_('timestamp aktuell '.$timestampaktuell), Log::INFO, 'jsmerror');
-						}
-						else
-						{
-							Log::add(Text::_('Der Zeitraum ist nicht freigeschaltet.'), Log::ERROR, 'jsmerror');
-						}
-					}
-					else
-					{
-						Log::add(Text::_('Die Seriennummer stimmt nicht.'), Log::ERROR, 'jsmerror');
-					}
-				}
-			}
-
-			/*
-	if ( !$db ) {
-		header('HTTP/1.1 500 Internal Server Error');
-		jexit('Database Error: ' . $db->toString());
-	} else {
-
-	}
-	*/
-			// $db->debug($debug);
-			// return $db;
+			return $joomlaDatabase;
 		}
 
-		return Factory::getDbo();
+		try
+		{
+			$driver = strtolower(trim((string) $params->get('jsm_dbtype', '')));
+			$driver = match ($driver)
+			{
+				'postgresql' => 'pgsql',
+				'' => 'mysqli',
+				default => $driver,
+			};
 
-		// Return self::$_jsm_db;
+			$factory = new DatabaseFactory;
+			self::$_jsm_db = $factory->getDriver(
+				$driver,
+				array(
+					'host' => (string) $params->get('jsm_host', ''),
+					'user' => (string) $params->get('jsm_user', ''),
+					'password' => (string) $params->get('jsm_password', ''),
+					'database' => (string) $params->get('jsm_db', ''),
+					'prefix' => (string) $params->get('jsm_dbprefix', ''),
+					'select' => true,
+				)
+			);
+
+			$userId = (int) $params->get('jsm_server_user', 0);
+
+			if ($userId <= 0)
+			{
+				return $joomlaDatabase;
+			}
+
+			$db = self::$_jsm_db;
+			$profilePattern = 'jsmprofile.%';
+			$query = $db->createQuery()
+				->select(array(
+					$db->quoteName('profile_key'),
+					$db->quoteName('profile_value'),
+				))
+				->from($db->quoteName('#__user_profiles'))
+				->where($db->quoteName('user_id') . ' = :jsmServerUser')
+				->where($db->quoteName('profile_key') . ' LIKE :jsmProfilePattern')
+				->bind(':jsmServerUser', $userId, ParameterType::INTEGER)
+				->bind(':jsmProfilePattern', $profilePattern, ParameterType::STRING);
+
+			$db->setQuery($query);
+			$profiles = $db->loadAssocList('profile_key') ?: array();
+			$profileValue = static function (string $key) use ($profiles): string
+			{
+				return trim((string) ($profiles[$key]['profile_value'] ?? ''));
+			};
+
+			if (!(bool) $profileValue('jsmprofile.databaseaccess'))
+			{
+				return $joomlaDatabase;
+			}
+
+			$expectedSerial = (string) $params->get('jsm_user_serialnumber', '');
+			$actualSerial = $profileValue('jsmprofile.serialnumber');
+
+			if (!hash_equals($expectedSerial, $actualSerial))
+			{
+				return $joomlaDatabase;
+			}
+
+			$accessFrom = $profileValue('jsmprofile.access_from');
+			$accessTo = $profileValue('jsmprofile.access_to');
+
+			if ($accessFrom === '' || $accessTo === '')
+			{
+				return $joomlaDatabase;
+			}
+
+			$timestampFrom = self::getTimestamp($accessFrom);
+			$timestampTo = self::getTimestamp($accessTo);
+			$timestampNow = self::getTimestamp();
+
+			if (
+				is_int($timestampFrom)
+				&& is_int($timestampTo)
+				&& is_int($timestampNow)
+				&& $timestampNow >= $timestampFrom
+				&& $timestampNow <= $timestampTo
+			)
+			{
+				return self::$_jsm_db;
+			}
+		}
+		catch (\Throwable $e)
+		{
+			Log::add(Text::_($e->getMessage()), Log::ERROR, 'jsmerror');
+			Log::add(Text::_((string) $e->getCode()), Log::ERROR, 'jsmerror');
+		}
+
+		return $joomlaDatabase;
 	}
+
 
 	/**
 	 * sportsmanagementHelper::getTimestamp()
@@ -703,54 +667,38 @@ try
 	 */
 	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
 	{
-		$date = $date != '0000-00-00 00:00:00' ? $date : 'now';
-		$date = $date != '0000-00-00 15:30:00' ? $date : 'now';
-		$app  = Factory::getApplication();
+		if ($date === null || $date === '0000-00-00 00:00:00' || $date === '0000-00-00 15:30:00')
+		{
+			$date = 'now';
+		}
+
+		$app = Factory::getApplication();
 
 		try
 		{
-			$res = Factory::getDate(strtotime($date));
+			$res = Factory::getDate((string) $date);
 
 			if ($use_offset)
 			{
-				if ($offset)
-				{
-					$serveroffset = explode(':', $offset);
+				$timezone = trim((string) ($offset ?: $app->get('offset', 'UTC')));
 
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						$res->setTimezone(new DateTimeZone($serveroffset[0]));
-					}
-					else
-					{
-						$res->setOffset($serveroffset[0]);
-					}
-				}
-				else
+				if ($timezone !== '')
 				{
-					if (version_compare(JVERSION, '3.0.0', 'ge'))
-					{
-						$res->setTimezone(new DateTimeZone($app->getCfg('offset')));
-					}
-					else
-					{
-						$res->setOffset($app->getCfg('offset'));
-					}
+					$res->setTimezone(new DateTimeZone($timezone));
 				}
 			}
 
-			return $res->toUnix('true');
+			return $res->toUnix();
 		}
-		catch (Exception $e)
+		catch (\Throwable $e)
 		{
-//			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-//			$code = $e->getCode(); // Returns
-//			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
-            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+
 			return false;
 		}
 	}
+
 
 	/**
 	 * sportsmanagementHelper::getMatchDate()
@@ -885,7 +833,7 @@ try
 
 		// Get some system objects.
 		$config = Factory::getConfig();
-		$user   = Factory::getUser();
+		$user   = $app->getIdentity();
 
 		try
 		{
@@ -1193,7 +1141,7 @@ try
 	 */
 	public static function getActions($messageId = 0)
 	{
-		$user   = Factory::getUser();
+		$user   = Factory::getApplication()->getIdentity();
 		$result = new CMSObject;
 
 		if (empty($messageId))
@@ -3475,12 +3423,8 @@ $jinput = $app->input;
 		$app    = Factory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-        $result = array();
+		$result = array();
 
-		// Wenn der user die k2 komponente
-		// in der konfiguration ausgewählt hat,
-		// kommt es zu einem fehler, wenn wir darüber selektieren
-		// ist k2 installiert ?
 		if (ComponentHelper::getParams($option)->get('which_article_component') == 'com_k2')
 		{
 			$k2 = ComponentHelper::getComponent('com_k2');
@@ -3493,43 +3437,51 @@ $jinput = $app->input;
 			}
 		}
 
-		// Create a new query object.
-		$query = Factory::getDBO()->getQuery(true);
-
-		$query->select('c.id as value,c.title as text');
+		/** @var DatabaseInterface $db */
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->createQuery()
+			->select(array(
+				$db->quoteName('c.id', 'value'),
+				$db->quoteName('c.title', 'text'),
+			));
 
 		switch (ComponentHelper::getParams($option)->get('which_article_component'))
 		{
-			case 'com_content':
-				$query->from('#__content as c');
-				$query->order('created DESC');
-				break;
 			case 'com_k2':
-				$query->from('#__k2_items as c');
-				$query->order('created DESC');
+				$query->from($db->quoteName('#__k2_items', 'c'));
+				$query->order($db->quoteName('c.created') . ' DESC');
 				break;
+
+			case 'com_content':
 			default:
-				$query->from('#__content as c');
+				$query->from($db->quoteName('#__content', 'c'));
+				$query->order($db->quoteName('c.created') . ' DESC');
 				break;
 		}
 
-		if ( $project_category_id )
+		if ((int) $project_category_id > 0)
 		{
-		$query->where('catid =' . $project_category_id);
+			$categoryId = (int) $project_category_id;
+			$query
+				->where($db->quoteName('c.catid') . ' = :articleCategoryId')
+				->bind(':articleCategoryId', $categoryId, ParameterType::INTEGER);
 		}
-		try{
-		Factory::getDBO()->setQuery($query);
-		$result = Factory::getDBO()->loadObjectList();
-	}
-catch (RuntimeException $e)
-				{
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
-$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
-$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dump(), true) . '</pre>', 'Error');
-				}
+
+		try
+		{
+			$db->setQuery($query);
+			$result = $db->loadObjectList() ?: array();
+		}
+		catch (\RuntimeException $e)
+		{
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'notice');
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'notice');
+			$app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dump(), true) . '</pre>', 'Error');
+		}
 
 		return $result;
 	}
+
 
 	/**
 	 * Internal method to get a JavaScript object notation string from an array
@@ -3747,22 +3699,21 @@ $app->enqueueMessage(__METHOD__ . ' ' . __LINE__ . '<pre>' . print_r($query->dum
 	 */
 	public static function getVersion()
 	{
-		$app    = Factory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$query  = Factory::getDbo()->getQuery(true);
+		/** @var DatabaseInterface $db */
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$element = 'com_sportsmanagement';
+		$query = $db->createQuery()
+			->select($db->quoteName('manifest_cache'))
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('element') . ' = :extensionElement')
+			->bind(':extensionElement', $element, ParameterType::STRING);
 
-		// Select some fields
-		$query->select('manifest_cache');
+		$db->setQuery($query, 0, 1);
+		$manifestCache = json_decode((string) $db->loadResult(), true);
 
-		// From the table
-		$query->from('#__extensions');
-		$query->where('name LIKE ' . Factory::getDbo()->Quote('' . 'com_sportsmanagement' . ''));
-		Factory::getDbo()->setQuery($query);
-		$manifest_cache = json_decode(Factory::getDbo()->loadResult(), true);
-
-		return $manifest_cache['version'];
+		return (string) ($manifestCache['version'] ?? '');
 	}
+
 
 	/**
 	 * sportsmanagementHelper::date_diff()
