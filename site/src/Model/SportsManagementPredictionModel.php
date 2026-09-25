@@ -678,4 +678,187 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return (int) $db->loadResult();
     }
 
+
+    /**
+     * Return a fallback round slug only when the requested legacy round is missing.
+     */
+    public function resolveLegacyRoundSlug(int $projectId, int $roundId): ?string
+    {
+        if ($projectId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+
+        if ($roundId > 0) {
+            $query = $db->createQuery()
+                ->select($db->quoteName('roundcode'))
+                ->from($db->quoteName('#__sportsmanagement_round'))
+                ->where($db->quoteName('project_id') . ' = :roundCheckProjectId')
+                ->where($db->quoteName('id') . ' = :roundCheckRoundId')
+                ->bind(':roundCheckProjectId', $projectId, ParameterType::INTEGER)
+                ->bind(':roundCheckRoundId', $roundId, ParameterType::INTEGER);
+
+            $db->setQuery($query, 0, 1);
+
+            if ($db->loadResult()) {
+                return null;
+            }
+        }
+
+        return $this->getProjectCurrentRoundSlug($projectId);
+    }
+
+    /** Return champion evaluation settings for the active prediction project. */
+    public function getPredictionChampionSettings(): ?object
+    {
+        if ($this->predictionGameId <= 0 || $this->projectId <= 0) {
+            return null;
+        }
+
+        $enabled = 1;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('league_champ'),
+                $db->quoteName('points_tipp_champ'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_project'))
+            ->where($db->quoteName('prediction_id') . ' = :championPredictionId')
+            ->where($db->quoteName('project_id') . ' = :championProjectId')
+            ->where($db->quoteName('champ') . ' = :championEnabled')
+            ->bind(':championPredictionId', $this->predictionGameId, ParameterType::INTEGER)
+            ->bind(':championProjectId', $this->projectId, ParameterType::INTEGER)
+            ->bind(':championEnabled', $enabled, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    /** Return final-four evaluation settings for the active prediction project. */
+    public function getPredictionFinal4Settings(): ?object
+    {
+        if ($this->predictionGameId <= 0 || $this->projectId <= 0) {
+            return null;
+        }
+
+        $enabled = 1;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('league_final4'),
+                $db->quoteName('points_tipp_final4'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_project'))
+            ->where($db->quoteName('prediction_id') . ' = :final4PredictionId')
+            ->where($db->quoteName('project_id') . ' = :final4ProjectId')
+            ->where($db->quoteName('final4') . ' = :final4Enabled')
+            ->bind(':final4PredictionId', $this->predictionGameId, ParameterType::INTEGER)
+            ->bind(':final4ProjectId', $this->projectId, ParameterType::INTEGER)
+            ->bind(':final4Enabled', $enabled, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    /** Return published prediction round rating overrides keyed by round id. */
+    public function getPredictionRoundRatingCharts(int $predictionId): array
+    {
+        if ($predictionId <= 0) {
+            return [];
+        }
+
+        $published = 1;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('round_id'),
+                $db->quoteName('points_tipp'),
+                $db->quoteName('points_correct_result'),
+                $db->quoteName('points_correct_diff'),
+                $db->quoteName('points_correct_draw'),
+                $db->quoteName('points_correct_tendence'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_tippround', 'ptr'))
+            ->where($db->quoteName('ptr.prediction_id') . ' = :ratingPredictionId')
+            ->where($db->quoteName('ptr.published') . ' = :ratingPublished')
+            ->bind(':ratingPredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':ratingPublished', $published, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList('round_id') ?: [];
+    }
+
+    /** Return the current project round slug, falling back to the first project round. */
+    public function getProjectCurrentRoundSlug(int $projectId): ?string
+    {
+        if ($projectId <= 0) {
+            return null;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select("CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ')')
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.current_round') . ' = ' . $db->quoteName('r.id')
+            )
+            ->where($db->quoteName('p.id') . ' = :currentRoundProjectId')
+            ->bind(':currentRoundProjectId', $projectId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+        $slug = $db->loadResult();
+
+        if ($slug) {
+            return (string) $slug;
+        }
+
+        $fallbackQuery = $db->createQuery()
+            ->select("CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ')')
+            ->from($db->quoteName('#__sportsmanagement_round', 'r'))
+            ->where($db->quoteName('r.project_id') . ' = :fallbackRoundProjectId')
+            ->bind(':fallbackRoundProjectId', $projectId, ParameterType::INTEGER)
+            ->order($db->quoteName('r.id') . ' ASC');
+
+        $db->setQuery($fallbackQuery, 0, 1);
+        $slug = $db->loadResult();
+
+        return $slug ? (string) $slug : null;
+    }
+
+    /** Count jokers already used by one member in the active prediction game. */
+    public function getMemberPredictionJokerCount(int $userId, int $projectId = 0): int
+    {
+        if ($this->predictionGameId <= 0 || $userId <= 0) {
+            return 0;
+        }
+
+        $joker = 1;
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('COUNT(' . $db->quoteName('id') . ')')
+            ->from($db->quoteName('#__sportsmanagement_prediction_result'))
+            ->where($db->quoteName('prediction_id') . ' = :jokerPredictionId')
+            ->where($db->quoteName('user_id') . ' = :jokerUserId')
+            ->where($db->quoteName('joker') . ' = :jokerEnabled')
+            ->bind(':jokerPredictionId', $this->predictionGameId, ParameterType::INTEGER)
+            ->bind(':jokerUserId', $userId, ParameterType::INTEGER)
+            ->bind(':jokerEnabled', $joker, ParameterType::INTEGER);
+
+        if ($projectId > 0) {
+            $query
+                ->where($db->quoteName('project_id') . ' = :jokerProjectId')
+                ->bind(':jokerProjectId', $projectId, ParameterType::INTEGER);
+        }
+
+        $db->setQuery($query);
+
+        return (int) $db->loadResult();
+    }
+
 }

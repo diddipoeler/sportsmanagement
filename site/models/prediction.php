@@ -156,65 +156,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function checkRoundID($project_id, $roundID)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
+		$roundSlug = self::nativePredictionModel()->resolveLegacyRoundSlug((int) $project_id, (int) $roundID);
 
-		// JInput object
-		$jinput   = $app->input;
-		$option   = $jinput->getCmd('option');
-		$document = Factory::getDocument();
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('roundcode');
-		$query->from('#__sportsmanagement_round');
-		$query->where('project_id = ' . (int) $project_id);
-		$query->where('id = ' . (int) $roundID);
-		$db->setQuery($query);
-
-		$results = $db->loadResult();
-
-		if (!$results)
-		{
-			$query->clear();
-			$query->select('current_round');
-			$query->from('#__sportsmanagement_project');
-			$query->where('id = ' . (int) $project_id);
-			$db->setQuery($query);
-			$roundIDnew = $db->loadResult();
-
-			$query->clear();
-			$query->select("CONCAT_WS(':',id,alias) AS slug");
-			$query->from('#__sportsmanagement_round');
-			$query->where('id = ' . (int) $roundIDnew);
-			$db->setQuery($query);
-			$roundIDnew = $db->loadResult();
-
-			self::$roundID = $roundIDnew;
+		if ($roundSlug !== null) {
+			self::$roundID = $roundSlug;
 		}
-
-		if ((int) $roundID == 0)
-		{
-			$query->clear();
-			$query->select('current_round');
-			$query->from('#__sportsmanagement_project');
-			$query->where('id = ' . (int) $project_id);
-			$db->setQuery($query);
-			$roundIDnew = $db->loadResult();
-
-			$query->clear();
-			$query->select("CONCAT_WS(':',id,alias) AS slug");
-			$query->from('#__sportsmanagement_round');
-			$query->where('id = ' . (int) $roundIDnew);
-			$db->setQuery($query);
-			$roundIDnew = $db->loadResult();
-
-			self::$roundID = $roundIDnew;
-		}
-
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getChampionPoints()
@@ -225,73 +173,53 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getChampionPoints($champ_tipp)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
 		$ChampPoints = 0;
-
-		$resultchamp       = 0;
+		$resultchamp = 0;
 		$resultchamppoints = 0;
-
 		$sChampTeamsList = array();
 		$dChampTeamsList = array();
-		$champTeamsList  = array();
+		$champTeamsList = array();
 
-		// Select champion from project
-
-		$query->select('league_champ,points_tipp_champ');
-		$query->from('#__sportsmanagement_prediction_project');
-		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('project_id = ' . (int) self::$pjID);
-		$query->where('champ = 1');
-		$db->setQuery($query);
-		$result = $db->loadObject();
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = self::nativePredictionModel()->getPredictionChampionSettings();
 
 		if ($result)
 		{
-			if ($result->league_champ == 0) {
+			if ((int) $result->league_champ === 0) {
 				return false;
 			}
-			$resultchamp       = $result->league_champ;
+
+			$resultchamp = $result->league_champ;
 			$resultchamppoints = $result->points_tipp_champ;
 		}
 
-		// User hat auch champion tip abgegeben
 		if ($champ_tipp)
 		{
 			$sChampTeamsList = explode(';', $champ_tipp);
 
-			foreach ($sChampTeamsList AS $key => $value)
+			foreach ($sChampTeamsList AS $value)
 			{
 				$dChampTeamsList[] = explode(',', $value);
 			}
 
-			foreach ($dChampTeamsList AS $key => $value)
+			foreach ($dChampTeamsList AS $value)
 			{
-				$champTeamsList[$value[0]] = $value[1];
+				if (isset($value[0], $value[1])) {
+					$champTeamsList[$value[0]] = $value[1];
+				}
 			}
 
-			if (isset($champTeamsList[(int) self::$pjID]))
+			if (
+				isset($champTeamsList[(int) self::$pjID])
+				&& $champTeamsList[(int) self::$pjID] == $resultchamp
+			)
 			{
-				if ($champTeamsList[(int) self::$pjID] == $resultchamp)
-				{
-					$ChampPoints = $resultchamppoints;
-				}
+				$ChampPoints = $resultchamppoints;
 			}
 		}
 
 		return $ChampPoints;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getFinal4Points()
@@ -302,65 +230,44 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getFinal4Points($final4_tipp)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
 		$Final4Points = 0;
-
 		$resultfinal4TeamsList = array();
 		$resultfinal4points = 0;
-
 		$sFinal4TeamsList = array();
 		$dFinal4TeamsList = array();
-		$final4TeamsList  = array();
+		$final4TeamsList = array();
 
-		// Select final4 teams from project
-
-		$query->select('league_final4,points_tipp_final4');
-		$query->from('#__sportsmanagement_prediction_project');
-		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('project_id = ' . (int) self::$pjID);
-		$query->where('final4 = 1');
-		$db->setQuery($query);
-		$result = $db->loadObject();
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = self::nativePredictionModel()->getPredictionFinal4Settings();
 
 		if ($result)
 		{
-			if ($result->league_final4 == 0) {
+			if ((string) $result->league_final4 === '' || (string) $result->league_final4 === '0') {
 				return false;
 			}
-			$resultfinal4TeamsList = explode(',', $result->league_final4);
-			$resultfinal4points    = $result->points_tipp_final4;
+
+			$resultfinal4TeamsList = explode(',', (string) $result->league_final4);
+			$resultfinal4points = $result->points_tipp_final4;
 		}
 
 		if (count($resultfinal4TeamsList) != 4)
 		{
-			// final 4 not evaluated yet
 			return false;
 		}
-		// User hat auch final4 tipps abgegeben
+
 		if ($final4_tipp)
 		{
 			$sFinal4TeamsList = explode(';', $final4_tipp);
 
-			foreach ($sFinal4TeamsList AS $key => $value)
+			foreach ($sFinal4TeamsList AS $value)
 			{
 				$dFinal4TeamsList[] = explode(',', $value);
 			}
 
-			foreach ($dFinal4TeamsList AS $key => $value)
+			foreach ($dFinal4TeamsList AS $value)
 			{
-				$final4TeamsList[$value[0]] = $value[1];
+				if (isset($value[0], $value[1])) {
+					$final4TeamsList[$value[0]] = $value[1];
+				}
 			}
 
 			if (isset($final4TeamsList[(int) self::$pjID]))
@@ -369,14 +276,15 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 				{
 					if ($final4TeamsList[(int) self::$pjID] == $final4_team)
 					{
-                        $Final4Points = $resultfinal4points;
-                    }
-                }
+						$Final4Points = $resultfinal4points;
+					}
+				}
 			}
 		}
 
 		return $Final4Points;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getPredictionMember()
@@ -536,24 +444,17 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getPredictionTippRoundsRatingCharts($predictionProject)
 	{
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
+		$predictionId = (int) ($predictionProject->prediction_id ?? 0);
 
-		if ($predictionProject->prediction_id > 0)
-		{
-			$query->select('round_id, points_tipp, points_correct_result, points_correct_diff, points_correct_draw, points_correct_tendence');
-			$query->from('#__sportsmanagement_prediction_tippround as ptr');
-			$query->where('ptr.prediction_id = ' . (int) $predictionProject->prediction_id);
-			$query->where('ptr.published = 1');
-
-			$db->setQuery($query);
-			$result = $db->loadObjectList('round_id');
-
-			return $result;
+		if ($predictionId <= 0) {
+			return false;
 		}
-		return false;
+
+		$result = self::nativePredictionModel()->getPredictionRoundRatingCharts($predictionId);
+
+		return $result ?: false;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::isProjectStarted($predictionProject)
@@ -639,44 +540,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getProjectSettings($pid = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($pid > 0)
-		{
-			$query->select('CONCAT_WS(\':\',r.id,r.alias) AS slug');
-			$query->from('#__sportsmanagement_round as r');
-			$query->join('INNER', '#__sportsmanagement_project AS p ON p.current_round = r.id');
-			$query->where('p.id = ' . (int) $pid);
-
-			$db->setQuery($query, 0, 1);
-			$result = $db->loadResult();
-
-			if (!$result)
-			{
-				$query->clear();
-				$query->select('CONCAT_WS(\':\',r.id,r.alias) AS slug');
-				$query->from('#__sportsmanagement_round as r');
-				$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
-				$query->where('p.id = ' . (int) $pid);
-
-				$db->setQuery($query, 0, 1);
-				$result = $db->loadResult();
-			}
-
-			return $result;
+		if ((int) $pid <= 0) {
+			return false;
 		}
 
-		return false;
+		return self::nativePredictionModel()->getProjectCurrentRoundSlug((int) $pid) ?: false;
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::getProjectRounds()
@@ -1562,34 +1432,12 @@ $recipient = array();
 	 */
 	static function getMemberPredictionJokerCount($user_id, $project_id = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->select('count(id)');
-		$query->from('#__sportsmanagement_prediction_result');
-		$query->where('prediction_id = ' . (int) self::$predictionGameID);
-		$query->where('user_id = ' . (int) $user_id);
-		$query->where('joker = 1');
-
-		if ($project_id > 0)
-		{
-			// $query .=     " AND project_id=$project_id";
-			$query->where('project_id = ' . (int) $project_id);
-		}
-
-		$db->setQuery($query);
-		$results = $db->loadResult();
-
-		return $results;
+		return self::nativePredictionModel()->getMemberPredictionJokerCount(
+			(int) $user_id,
+			(int) $project_id
+		);
 	}
+
 
 	/**
 	 * sportsmanagementModelPrediction::createResultsObject()

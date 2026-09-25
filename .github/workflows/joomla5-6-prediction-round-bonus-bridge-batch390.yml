@@ -1,0 +1,50 @@
+name: Joomla 5/6 prediction round bonus bridge batch 390
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-round-bonus-bridge-batch390.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-round-bonus-bridge-batch390.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate prediction round and bonus bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(site/models/prediction.php site/src/Model/SportsManagementPredictionModel.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          for method in resolveLegacyRoundSlug getPredictionChampionSettings getPredictionFinal4Settings getPredictionRoundRatingCharts getProjectCurrentRoundSlug getMemberPredictionJokerCount; do
+            grep -Fq -- "function $method" site/src/Model/SportsManagementPredictionModel.php
+          done
+          ! grep -Fq -- '->disconnect()' <(sed -n '/function getChampionPoints/,/function getPredictionMember/p' site/models/prediction.php)
+          grep -Fq -- 'nativePredictionModel()->resolveLegacyRoundSlug' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getPredictionChampionSettings' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getPredictionFinal4Settings' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getPredictionRoundRatingCharts' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getProjectCurrentRoundSlug' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getMemberPredictionJokerCount' site/models/prediction.php
