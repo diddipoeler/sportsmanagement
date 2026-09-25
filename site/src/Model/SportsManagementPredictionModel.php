@@ -53,6 +53,26 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         $this->page = max(1, $input->getInt('page', 1));
     }
 
+    /**
+     * Apply the historical static prediction context to a native model instance.
+     */
+    public function setLegacyContext(
+        int $predictionGameId = 0,
+        int $predictionMemberId = 0,
+        int $projectId = 0,
+        int $roundId = 0,
+        int $databaseSelector = 0
+    ): void {
+        $this->predictionGameId = max(0, $predictionGameId);
+        $this->predictionMemberId = max(0, $predictionMemberId);
+        $this->projectId = max(0, $projectId);
+        $this->roundId = max(0, $roundId);
+        $this->fromRoundId = $this->fromRoundId > 0 ? $this->fromRoundId : $this->roundId;
+        $this->toRoundId = $this->toRoundId > 0 ? $this->toRoundId : $this->roundId;
+        $this->databaseSelector = max(0, $databaseSelector);
+        $this->setDatabaseSelector($this->databaseSelector);
+    }
+
     public function getPredictionGameId(): int
     {
         return $this->predictionGameId;

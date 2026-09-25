@@ -23,6 +23,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Log\Log;
+use Diddipoeler\Component\SportsManagement\Site\Model\PredictionentryModel as NativePredictionModel;
 
 
 /**
@@ -36,6 +37,39 @@ use Joomla\CMS\Log\Log;
  */
 class sportsmanagementModelPrediction extends BaseDatabaseModel
 {
+	/**
+	 * Build the native Joomla 5/6 prediction model for legacy static callers.
+	 */
+	private static function nativePredictionModel(): NativePredictionModel
+	{
+		if (!class_exists(NativePredictionModel::class)) {
+			foreach ([
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionModel.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/PredictionentryModel.php',
+			] as $nativeFile) {
+				if (is_file($nativeFile)) {
+					require_once $nativeFile;
+				}
+			}
+		}
+
+		if (!class_exists(NativePredictionModel::class)) {
+			throw new \RuntimeException('SportsManagement native Prediction model could not be loaded.', 500);
+		}
+
+		$model = new NativePredictionModel();
+		$model->setLegacyContext(
+			(int) self::$predictionGameID,
+			(int) self::$predictionMemberID,
+			(int) self::$pjID,
+			(int) self::$roundID,
+			(int) self::$cfg_which_database
+		);
+
+		return $model;
+	}
+
 	static $_predictionGame = null;
 
 	static $predictionGameID = 0;
@@ -353,88 +387,19 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getPredictionMember($configavatar)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
+		self::$_predictionMember = self::nativePredictionModel()->getPredictionMember();
 
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if (!self::$_predictionMember)
-		{
-			$query->clear();
-
-			// $query->select('pm.id AS pmID, pm.registerDate AS pmRegisterDate, pm.*');
-			$query->select('CONCAT_WS(\':\',pm.id,u.username) AS pmID,CONCAT_WS(\':\',u.id,u.username) AS joomuserID, pm.registerDate AS pmRegisterDate, pm.*');
-			$query->from('#__sportsmanagement_prediction_member AS pm');
-			$query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
-			$query->where('pm.prediction_id = ' . (int) self::$predictionGameID);
-
-			if ((int) self::$predictionMemberID > 0)
-			{
-				// $query->clear();
-				$query->select('u.name, u.username');
-				$query->select('pg.id as pg_group_id,pg.name as pg_group_name');
-				$query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
-				$query->where('pm.id = ' . (int) self::$predictionMemberID);
-
-				$db->setQuery($query, 0, 1);
-				self::$_predictionMember = $db->loadObject();
-
-				if (isset(self::$_predictionMember->pmID))
-				{
-					self::$predictionMemberID = self::$_predictionMember->pmID;
-				}
-				else
-				{
-				}
-			}
-			else
-			{
-				$user = Factory::getApplication()->getIdentity();
-
-				if ($user->id > 0)
-				{
-					//	$query->clear();
-					$query->select('u.*');
-					$query->where('pm.user_id = ' . $user->id);
-
-					$db->setQuery($query, 0, 1);
-					self::$_predictionMember = $db->loadObject();
-
-					if (isset(self::$_predictionMember->pmID))
-					{
-						self::$predictionMemberID = self::$_predictionMember->pmID;
-						self::$joomlaUserID       = self::$_predictionMember->joomuserID;
-					}
-					else
-					{
-						self::$_predictionMember       = new stdclass;
-						self::$_predictionMember->id   = 0;
-						self::$_predictionMember->pmID = 0;
-						self::$predictionMemberID      = 0;
-					}
-				}
-				else
-				{
-					self::$_predictionMember       = new stdclass;
-					self::$_predictionMember->id   = 0;
-					self::$_predictionMember->pmID = 0;
-					self::$predictionMemberID      = 0;
-				}
-			}
+		if (isset(self::$_predictionMember->pmID)) {
+			self::$predictionMemberID = (int) self::$_predictionMember->id;
 		}
 
-		if (isset(self::$_predictionMember->user_id))
-		{
-			self::$_predictionMember->picture = self::getPredictionMemberAvatar(self::$_predictionMember->user_id, $configavatar['show_image_from']);
+		if (isset(self::$_predictionMember->user_id)) {
+			self::$joomlaUserID = (int) self::$_predictionMember->user_id;
+			self::$_predictionMember->picture = self::getPredictionMemberAvatar(
+				self::$_predictionMember->user_id,
+				$configavatar['show_image_from'] ?? ''
+			);
 		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$_predictionMember;
 	}
@@ -829,81 +794,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getAllowed($pmUID = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$allowed    = false;
-		$groupNames = '';
-
-		// Application Instanz holen
-		$app = Factory::getApplication();
-
-		// JUserobjekt holen
-		$user = Factory::getApplication()->getIdentity();
-
-		$authorised = Access::getAuthorisedViewLevels(Factory::getApplication()->getIdentity()->get('id'));
-
-		$authorisedgroups = $user->getAuthorisedGroups();
-
-		foreach ($user->groups as $groupId => $value)
-		{
-			$query->clear();
-			$query->select('title');
-			$query->from('#__usergroups');
-			$query->where('id = ' . (int) $groupId);
-			$db->setQuery($query);
-
-			$groupNames .= $db->loadResult();
-			$groupNames .= '<br/>';
-		}
-
-		$groups = Access::getGroupsByUser($user->id, false);
-
-		if ($user->id > 0)
-		{
-			// $aro_group = $acl->getAroGroup($user->id);
-
-			if (($groups[0] == 7) || ($groups[0] == 8))
-			{
-				$allowed = true;
-			}
-			else
-			{
-				if (($pmUID > 0) && ($pmUID == $user->id))
-				{
-					$allowed = true;
-				}
-				else
-				{
-					$predictionGame = self::getPredictionGame();
-					$adminAllowed   = $predictionGame->admin_tipp;
-
-					if ($adminAllowed)
-					{
-						$predictionGameAdmins = self::getPredictionGameAdmins($predictionGame->id);
-
-						foreach ($predictionGameAdmins AS $adminUserID)
-						{
-							if ($adminUserID == $user->id)
-							{
-								$allowed = true;
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return $allowed;
+		return self::nativePredictionModel()->isAllowedAdmin((int) $pmUID);
 	}
 
 	/**
@@ -913,43 +804,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	 */
 	static function getPredictionGame($predictionGameID = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		if ($predictionGameID)
-		{
-			self::$predictionGameID = $predictionGameID;
+		if ((int) $predictionGameID > 0) {
+			self::$predictionGameID = (int) $predictionGameID;
 		}
 
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if (!self::$_predictionGame)
-		{
-			if (self::$predictionGameID > 0)
-			{
-				$query->clear();
-				$query->select('*');
-				$query->select("CONCAT_WS(':',id,alias) AS slug");
-				$query->from('#__sportsmanagement_prediction_game');
-				$query->where('id = ' . (int) self::$predictionGameID);
-				$query->where('published = 1');
-
-				$db->setQuery($query, 0, 1);
-				self::$_predictionGame = $db->loadObject();
-
-				if (!self::$_predictionGame)
-				{
-				}
-			}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$_predictionGame = self::nativePredictionModel()->getPredictionGame();
 
 		return self::$_predictionGame;
 	}
@@ -1352,97 +1211,7 @@ $recipient = array();
 	 */
 	static function getPredictionTemplateConfig($template)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput   = $app->input;
-		$option   = $jinput->getCmd('option');
-		$document = Factory::getDocument();
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		$query->clear();
-		$query->select('t.params');
-		$query->from('#__sportsmanagement_prediction_template AS t');
-		$query->join('INNER', '#__sportsmanagement_prediction_game AS p ON p.id = t.prediction_id');
-		$query->where('t.template = ' . $db->Quote($template));
-		$query->where('p.id = ' . (int) self::$predictionGameID);
-
-		$db->setQuery($query);
-
-		if (!$result = $db->loadResult())
-		{
-			if (isset(self::$predictionGame) && (self::$predictionGame->master_template))
-			{
-				$query->clear('where');
-				$query->where('t.template = ' . $db->Quote($template));
-				$query->where('p.id = ' . $db->Quote(self::$predictionGame->master_template));
-
-				$db->setQuery($query);
-
-				if (!$result = $db->loadResult())
-				{
-					Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE', $template, $predictionGame->master_template), Log::INFO, 'jsmerror');
-					Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), Log::INFO, 'jsmerror');
-					echo '<br /><br />';
-
-					return false;
-				}
-			}
-			else
-			{
-				Log::add(Text::sprintf('COM_SPORTSMANAGEMENT_PRED_MISSING_TEMPLATE', $template, self::$predictionGameID), Log::INFO, 'jsmerror');
-				Log::add(Text::_('COM_SPORTSMANAGEMENT_PRED_MISSING_MASTER_TEMPLATE_HINT'), Log::INFO, 'jsmerror');
-				echo '<br /><br />';
-
-				return false;
-			}
-		}
-
-		$jRegistry = new Registry;
-
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			$jRegistry->loadString($result);
-		}
-		else
-		{
-			$jRegistry->loadJSON($result);
-		}
-
-		$configvalues = $jRegistry->toArray();
-
-		// Check some defaults and init data for quicker access
-		switch ($template)
-		{
-			case    'predictionoverall':
-			{
-				if (!array_key_exists('sort_order_1', $configvalues))
-					// For people updating,the ranking order won't be set until they edit
-					// predictionoverall.xml. In that case,use a default sorting
-				{
-					$configvalues['sort_order_1'] = 'points';
-					$configvalues['sort_order_2'] = 'correct_tipps';
-					$configvalues['sort_order_3'] = 'correct_diffs';
-					$configvalues['sort_order_4'] = 'correct_tend';
-					$configvalues['sort_order_5'] = 'count_tipps_p';
-				}
-
-				break;
-			}
-
-			default:
-			{
-				break;
-			}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-
-		return $configvalues;
+		return self::nativePredictionModel()->getPredictionTemplateConfig((string) $template);
 	}
 
 	/**
@@ -1513,56 +1282,11 @@ $recipient = array();
 	 */
 	static function getPredictionProjectS($predictionGameID = 0)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($predictionGameID)
-		{
-			self::$predictionGameID = $predictionGameID;
+		if ((int) $predictionGameID > 0) {
+			self::$predictionGameID = (int) $predictionGameID;
 		}
 
-		if (!(int) self::$_predictionProjectS)
-		{
-			if ((int) self::$predictionGameID > 0)
-			{
-				$query->clear();
-				$query->select('pp.*');
-				$query->select('p.name AS projectName, p.start_date, p.start_time, p.timezone');
-				$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
-				$query->from('#__sportsmanagement_prediction_project AS pp');
-				$query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pp.project_id');
-				$query->where('pp.prediction_id = ' . (int) self::$predictionGameID);
-				$query->where('pp.published = 1');
-
-				$db->setQuery($query);
-				self::$_predictionProjectS = $db->loadObjectList();
-			}
-		}
-
-		// Das startdatum �berpr�fen
-		foreach (self::$_predictionProjectS as $row)
-		{
-			if ($row->start_date == '0000-00-00')
-			{
-				$query->clear();
-				$query->select('min(round_date_first)');
-				$query->from('#__sportsmanagement_round');
-				$query->where('project_id = ' . $row->project_id);
-
-				$db->setQuery($query);
-				$row->start_date = $db->loadResult();
-			}
-		}
-
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		self::$_predictionProjectS = self::nativePredictionModel()->getPredictionProjects();
 
 		return self::$_predictionProjectS;
 	}
