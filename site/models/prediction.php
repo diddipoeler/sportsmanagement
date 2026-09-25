@@ -1667,222 +1667,51 @@ $recipient = array();
 	 */
 	static function getPredictionMembersList(&$config = null, &$configavatar = null, $total = false, $limit = null)
 	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		// Create a new query object.
-		$db    = sportsmanagementHelper::getDBConnection();
-		$query = $db->createQuery();
-
-		if ($config['show_full_name'] == 0)
-		{
-			$nameType = 'username';
-		}
-		else
-		{
-			$nameType = 'name';
-		}
-
-		$query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.final4_tipp AS final4_tipp,pm.aliasName as aliasName');
-		$query->select('u.' . $nameType . ' AS name');
-		$query->select('pg.id as pg_group_id,pg.name as pg_group_name');
-		$query->from('#__sportsmanagement_prediction_member AS pm');
-		$query->join('INNER', '#__users AS u ON u.id = pm.user_id');
-		$query->join('LEFT', '#__sportsmanagement_prediction_groups as pg on pg.id = pm.group_id');
-		$query->where('pm.prediction_id = ' . (int) self::$predictionGameID);
-
-		switch ($configavatar['show_image_from'])
-		{
-			case 'com_cbe':
-
-				$query->select('cbeu.latitude,cbeu.longitude');
-				$query->join('LEFT', '#__cbe_users AS cbeu ON cbeu.userid = u.id');
-				break;
-			case 'com_users':
-			case 'prediction':
-				break;
-
-			case 'com_comprofiler':
-				//$query->select('cf.cb_streetaddress,cf.cb_city,cf.cb_state,cf.cb_zip,cf.cb_country');
-				$query->join('LEFT', '#__comprofiler AS cf ON cf.user_id = u.id');
-				break;
-			case 'com_kunena':
-				$query->join('LEFT', '#__kunena_users AS cf ON cf.userid = u.id');
-				break;
-		}
-
-		if (self::$pggroup)
-		{
-			$query->where('pm.group_id = ' . (int) self::$pggroup);
-		}
-
-		$query->order('pm.id ASC');
+		$showFullName = (int) ($config['show_full_name'] ?? 0) !== 0;
+		$avatarSource = (string) ($configavatar['show_image_from'] ?? '');
+		$groupId = (int) self::$pggroup;
 
 		if ($total)
 		{
-			return $query;
+			return self::nativePredictionModel()->buildPredictionMembersQuery(
+				$showFullName,
+				$avatarSource,
+				$groupId
+			);
 		}
-		else
+
+		try
 		{
-			try
-			{
-				$db->setQuery($query);
-				$results = $db->loadObjectList();
-				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-			}
-			catch (Exception $e)
-			{
-				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
-				$code = $e->getCode(); // Returns
-				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+			$results = self::nativePredictionModel()->getPredictionMembers(
+				$showFullName,
+				$avatarSource,
+				$groupId,
+				$limit !== null ? (int) $limit : null
+			);
+		}
+		catch (\Throwable $e)
+		{
+			Factory::getApplication()->enqueueMessage(
+				__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(),
+				'error'
+			);
 
-				return false;
-			}
-
-			foreach ($results as $row)
-			{
-				$picture = self::getPredictionMemberAvatar($row->user_id, $configavatar['show_image_from']);
-
-				if ($picture)
-				{
-					$row->avatar = $picture;
-				}
-			}
-
-			return $results;
+			return false;
 		}
 
+		foreach ($results as $row)
+		{
+			$picture = self::getPredictionMemberAvatar($row->user_id, $avatarSource);
+
+			if ($picture)
+			{
+				$row->avatar = $picture;
+			}
+		}
+
+		return $results;
 	}
 
-	/**
-	 * sportsmanagementModelPrediction::sendMembershipConfirmation()
-	 *
-	 * @param   mixed  $cid
-	 *
-	 * @return
-	 */
-	function sendMembershipConfirmation($cid = array())
-	{
-		// Reference global application object
-		$app = Factory::getApplication();
-
-		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-
-		if (count($cid))
-		{
-			$cids = implode(',', $cid);
-
-			// Create and send mail about registration in Prediction game
-			$systemAdminsMails         = self::getSystemAdminsEMailAdresses();
-			$predictionGameAdminsMails = self::getPredictionGameAdminsEMailAdresses();
-
-			foreach ($cid as $predictionMemberID)
-			{
-				$predictionGameMember_EMail = self::getPredictionMemberEMailAdress($predictionMemberID)->email;
-
-				//if (count($predictionGameMemberMail) > 0)
-				{
-					// Fetch the mail object
-					$mailer = Factory::getMailer();
-
-					// Set a sender
-					$config = Factory::getConfig();
-
-					$sender = array($config->get('mailfrom'), $config->get('fromname'));
-
-					$mailer->setSender($sender);
-
-					// Set Member as recipient
-					$lastMailAdress = '';
-					$recipient      = array();
-
-					//foreach ($predictionGameMemberMail AS $predictionGameMember_EMail)
-					{
-						if ($lastMailAdress != $predictionGameMember_EMail)
-						{
-							$recipient[]    = $predictionGameMember_EMail;
-							$lastMailAdress = $predictionGameMember_EMail;
-						}
-					}
-
-					$mailer->addRecipient($recipient);
-
-					// Set system admins as BCC recipients
-					$lastMailAdress  = '';
-					$recipientAdmins = array();
-
-					foreach ($systemAdminsMails AS $systemAdminMail)
-					{
-						if ($lastMailAdress != $systemAdminMail)
-						{
-							$recipientAdmins[] = $systemAdminMail;
-							$lastMailAdress    = $systemAdminMail;
-						}
-					}
-
-					$lastMailAdress = '';
-
-					// Set predictiongame admins as BCC recipients
-					foreach ($predictionGameAdminsMails AS $predictionGameAdminMail)
-					{
-						if ($lastMailAdress != $predictionGameAdminMail)
-						{
-							$recipientAdmins[] = $predictionGameAdminMail;
-							$lastMailAdress    = $predictionGameAdminMail;
-						}
-					}
-
-					$mailer->addBCC($recipientAdmins);
-					unset($recipientAdmins);
-
-					// Create the mail
-					$mailer->setSubject(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MEMBERSHIP_SUBJECT'));
-					$body = Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MEMBERSHIP');
-
-					$mailer->setBody($body);
-
-					// Optional file attached
-					// $mailer->addAttachment(PATH_COMPONENT.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'document.pdf');
-
-					// Sending the mail
-					$send = $mailer->Send();
-
-					if ($send !== true)
-					{
-						echo 'Error message: ' . $send->message;
-					}
-					else
-					{
-						echo 'Mail sent';
-					}
-
-					echo '<br /><br />';
-				}
-				//else
-				//{
-				//	// Joomla_user is blocked or has set sendEmail to off
-				//	// can't send email
-				//	return false;
-				//}
-			}
-		}
-
-		return true;
-	}
-
-	// General comparison of two tippers results
-	// returns negative values for better tipper no 1
-	// returns positive values for better tipper no 2
-	// returns zero values for both tippers equal
-	// 
-	// ranking rules are described inside the code
 
 	/**
 	 * sportsmanagementModelPrediction::getSystemAdminsEMailAdresses()

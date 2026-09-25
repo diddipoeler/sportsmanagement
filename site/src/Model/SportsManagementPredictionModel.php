@@ -1295,4 +1295,100 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         );
     }
 
+
+    /**
+     * Build the historical prediction members query for callers that still need the query object.
+     */
+    public function buildPredictionMembersQuery(
+        bool $showFullName = false,
+        string $avatarSource = '',
+        int $groupId = 0
+    ) {
+        $nameField = $showFullName ? 'name' : 'username';
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('pm.id', 'pmID'),
+                $db->quoteName('pm.user_id', 'user_id'),
+                $db->quoteName('pm.picture', 'avatar'),
+                $db->quoteName('pm.show_profile', 'show_profile'),
+                $db->quoteName('pm.champ_tipp', 'champ_tipp'),
+                $db->quoteName('pm.final4_tipp', 'final4_tipp'),
+                $db->quoteName('pm.aliasName', 'aliasName'),
+                $db->quoteName('u.' . $nameField, 'name'),
+                $db->quoteName('pg.id', 'pg_group_id'),
+                $db->quoteName('pg.name', 'pg_group_name'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_prediction_member', 'pm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__users', 'u')
+                . ' ON ' . $db->quoteName('u.id') . ' = ' . $db->quoteName('pm.user_id')
+            )
+            ->join(
+                'LEFT',
+                $db->quoteName('#__sportsmanagement_prediction_groups', 'pg')
+                . ' ON ' . $db->quoteName('pg.id') . ' = ' . $db->quoteName('pm.group_id')
+            )
+            ->where($db->quoteName('pm.prediction_id') . ' = :membersListPredictionId')
+            ->bind(':membersListPredictionId', $this->predictionGameId, ParameterType::INTEGER)
+            ->order($db->quoteName('pm.id') . ' ASC');
+
+        if ($avatarSource === 'com_cbe') {
+            $query
+                ->select([
+                    $db->quoteName('cbeu.latitude'),
+                    $db->quoteName('cbeu.longitude'),
+                ])
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__cbe_users', 'cbeu')
+                    . ' ON ' . $db->quoteName('cbeu.userid') . ' = ' . $db->quoteName('u.id')
+                );
+        } elseif ($avatarSource === 'com_comprofiler') {
+            $query->join(
+                'LEFT',
+                $db->quoteName('#__comprofiler', 'cf')
+                . ' ON ' . $db->quoteName('cf.user_id') . ' = ' . $db->quoteName('u.id')
+            );
+        } elseif ($avatarSource === 'com_kunena') {
+            $query->join(
+                'LEFT',
+                $db->quoteName('#__kunena_users', 'cf')
+                . ' ON ' . $db->quoteName('cf.userid') . ' = ' . $db->quoteName('u.id')
+            );
+        }
+
+        if ($groupId > 0) {
+            $query
+                ->where($db->quoteName('pm.group_id') . ' = :membersListGroupId')
+                ->bind(':membersListGroupId', $groupId, ParameterType::INTEGER);
+        }
+
+        return $query;
+    }
+
+    /** Return prediction members using the historical result shape. */
+    public function getPredictionMembers(
+        bool $showFullName = false,
+        string $avatarSource = '',
+        int $groupId = 0,
+        ?int $limit = null
+    ): array {
+        if ($this->predictionGameId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $this->buildPredictionMembersQuery($showFullName, $avatarSource, $groupId);
+
+        if ($limit !== null && $limit > 0) {
+            $db->setQuery($query, 0, $limit);
+        } else {
+            $db->setQuery($query);
+        }
+
+        return $db->loadObjectList() ?: [];
+    }
+
 }

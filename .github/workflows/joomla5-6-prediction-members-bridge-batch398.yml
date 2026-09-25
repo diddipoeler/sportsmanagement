@@ -1,0 +1,46 @@
+name: Joomla 5/6 prediction members bridge batch 398
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-members-bridge-batch398.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/prediction.php'
+      - 'site/src/Model/SportsManagementPredictionModel.php'
+      - '.github/workflows/joomla5-6-prediction-members-bridge-batch398.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate prediction members bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(site/models/prediction.php site/src/Model/SportsManagementPredictionModel.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          grep -Fq -- 'function buildPredictionMembersQuery' site/src/Model/SportsManagementPredictionModel.php
+          grep -Fq -- 'function getPredictionMembers' site/src/Model/SportsManagementPredictionModel.php
+          grep -Fq -- 'nativePredictionModel()->buildPredictionMembersQuery' site/models/prediction.php
+          grep -Fq -- 'nativePredictionModel()->getPredictionMembers' site/models/prediction.php
+          ! grep -Fq -- 'sportsmanagementHelper::getDBConnection' site/models/prediction.php
+          ! grep -Fq -- '->disconnect()' site/models/prediction.php
