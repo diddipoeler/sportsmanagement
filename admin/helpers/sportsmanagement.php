@@ -124,6 +124,7 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 			return array();
 		}
 
+		$published = 1;
 		$query = $db->createQuery()
 			->select(array(
 				$db->quoteName('p.id'),
@@ -165,7 +166,7 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 			->where($db->quoteName('mr.match_id') . ' = :refereeListMatchId')
 			->where($db->quoteName('p.published') . ' = :refereePublished')
 			->bind(':refereeListMatchId', $matchId, ParameterType::INTEGER)
-			->bind(':refereePublished', $published = 1, ParameterType::INTEGER)
+			->bind(':refereePublished', $published, ParameterType::INTEGER)
 			->order(array(
 				$db->quoteName('pos.name') . ' ASC',
 				$db->quoteName('mr.ordering') . ' ASC',
