@@ -9,18 +9,30 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementCalendar\Site\Helper\CalendarHelper;
 
-if (!class_exists(CalendarHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/CalendarHelper.php';
+$nativeDependencies = [
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    CalendarHelper::class => __DIR__ . '/src/Helper/CalendarHelper.php',
+];
 
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(CalendarHelper::class)) {
-    throw new \RuntimeException('SportsManagement native Calendar module helper could not be loaded.', 500);
+foreach ([
+    SportsManagementSiteApplicationResolver::class,
+    CalendarHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Calendar dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
 }
 
 if (!class_exists('modJSMCalendarHelper', false)) {
