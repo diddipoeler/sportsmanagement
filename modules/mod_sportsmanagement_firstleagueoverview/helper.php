@@ -22,6 +22,7 @@ $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
     SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    FirstLeagueOverviewHelper::class => __DIR__ . '/src/Helper/FirstLeagueOverviewHelper.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
@@ -30,20 +31,18 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(FirstLeagueOverviewHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/FirstLeagueOverviewHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    FirstLeagueOverviewHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement FirstLeagueOverview dependency could not be loaded: ' . $requiredClass,
+            500
+        );
     }
-}
-
-if (!class_exists(FirstLeagueOverviewHelper::class)) {
-    throw new \RuntimeException('SportsManagement native FirstLeagueOverview module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modjsmfirstleagueoverview', false)) {

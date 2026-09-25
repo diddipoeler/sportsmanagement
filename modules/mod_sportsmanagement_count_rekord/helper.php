@@ -11,29 +11,32 @@
 
 use Joomla\CMS\Factory;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementCountRekord\Site\Helper\CountRekordHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
-}
+$nativeDependencies = [
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    CountRekordHelper::class => __DIR__ . '/src/Helper/CountRekordHelper.php',
+];
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(CountRekordHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/CountRekordHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(CountRekordHelper::class)) {
-    throw new \RuntimeException('SportsManagement CountRekord helper could not be loaded.', 500);
+foreach ([
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    CountRekordHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException('SportsManagement CountRekord dependency could not be loaded: ' . $requiredClass, 500);
+    }
 }
 
 if (!class_exists('modJSMStatistikRekordHelper', false)) {
