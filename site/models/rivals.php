@@ -7,14 +7,28 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\RivalsModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 
 if (!class_exists(RivalsModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RivalsModel.php';
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/RivalsModel.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
+}
+
+if (!class_exists(RivalsModel::class)) {
+    throw new \RuntimeException('SportsManagement native Rivals model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelRivals', false)) {

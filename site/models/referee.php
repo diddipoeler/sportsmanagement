@@ -10,12 +10,22 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\RefereeModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 
 if (!class_exists(RefereeModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/PersonModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RefereeModel.php';
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/PersonModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/RefereeModel.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
 }
 
 if (!class_exists(RefereeModel::class)) {
