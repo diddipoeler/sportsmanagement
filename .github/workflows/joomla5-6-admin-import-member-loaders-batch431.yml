@@ -1,0 +1,45 @@
+name: Joomla 5/6 administrator import member loaders batch 431
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/predictionmember.php'
+      - 'admin/models/jlxmlimport.php'
+      - '.github/workflows/joomla5-6-admin-import-member-loaders-batch431.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/predictionmember.php'
+      - 'admin/models/jlxmlimport.php'
+      - '.github/workflows/joomla5-6-admin-import-member-loaders-batch431.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator import/member loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(admin/models/predictionmember.php admin/models/jlxmlimport.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'is_file($nativeFile)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+            ! grep -Fq -- 'require_once JPATH_ADMINISTRATOR' "$file"
+          done
+          grep -Fq -- 'PredictionmemberTable.php' admin/models/predictionmember.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/jlxmlimport.php

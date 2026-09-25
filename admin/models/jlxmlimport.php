@@ -12,7 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlxmlimportModel;
 
 if (!class_exists(JlxmlimportModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlxmlimportModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlxmlimportModel.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
 }
 
 if (!class_exists(JlxmlimportModel::class)) {
