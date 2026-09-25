@@ -11,33 +11,35 @@
 
 use Joomla\CMS\Factory;
 
+use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper\RandomPlayerHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+$nativeDependencies = [
+    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    RandomPlayerHelper::class => __DIR__ . '/src/Helper/RandomPlayerHelper.php',
+];
 
-    if (is_file($resolverFile)) {
-        require_once $resolverFile;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(RandomPlayerHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/RandomPlayerHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    RandomPlayerHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException('SportsManagement RandomPlayer dependency could not be loaded: ' . $requiredClass, 500);
     }
-}
-
-if (!class_exists(RandomPlayerHelper::class)) {
-    throw new \RuntimeException('SportsManagement native RandomPlayer module helper could not be loaded.', 500);
 }
 
 if (!class_exists('modJSMRandomplayerHelper', false)) {

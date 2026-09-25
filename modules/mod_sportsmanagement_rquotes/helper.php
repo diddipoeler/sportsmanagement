@@ -9,6 +9,7 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -18,28 +19,26 @@ use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    $resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
+$nativeDependencies = [
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    RquotesHelper::class => __DIR__ . '/src/Helper/RquotesHelper.php',
+];
 
-    if (is_file($resolverFile)) {
-        require_once $resolverFile;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
-if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
-    throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
-}
-
-if (!class_exists(RquotesHelper::class)) {
-    $nativeHelper = __DIR__ . '/src/Helper/RquotesHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    RquotesHelper::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException('SportsManagement Rquotes dependency could not be loaded: ' . $requiredClass, 500);
     }
-}
-
-if (!class_exists(RquotesHelper::class)) {
-    throw new \RuntimeException('SportsManagement Rquotes helper could not be loaded.', 500);
 }
 
 class modRquotesHelper
