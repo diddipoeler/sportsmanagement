@@ -9,10 +9,18 @@
  */
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\Json\HtmlView;
 
 if (!class_exists(HtmlView::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Json/HtmlView.php';
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/View/Json/HtmlView.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
 }
 
 if (!class_exists(HtmlView::class)) {
