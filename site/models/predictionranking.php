@@ -12,10 +12,17 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionrankingModel;
 
 if (!class_exists(PredictionrankingModel::class)) {
-    $nativeModel = JPATH_SITE . '/components/com_sportsmanagement/src/Model/PredictionrankingModel.php';
-
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionReadModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/PredictionrankingModel.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
     }
 }
 
