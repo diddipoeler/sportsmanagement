@@ -15,9 +15,35 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Filter\InputFilter;
+
+$runtimeDependencies = [
+    SportsManagementDatabaseResolver::class => __DIR__ . '/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => __DIR__ . '/src/Service/SportsManagementSiteApplicationResolver.php',
+    LegacyBootstrap::class => __DIR__ . '/src/Legacy/LegacyBootstrap.php',
+];
+
+foreach ($runtimeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
+    }
+}
+
+foreach ([
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    LegacyBootstrap::class,
+] as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement site runtime dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
+}
 
 $app = SportsManagementSiteApplicationResolver::resolve();
 
@@ -56,9 +82,19 @@ $projectId = $input->getInt('p');
 
 if ($projectId > 0) {
     if (!class_exists(ResultsDataModel::class)) {
-        require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-        require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-        require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsDataModel.php';
+        foreach ([
+            JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+            JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+            JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsDataModel.php',
+        ] as $nativeModel) {
+            if (is_file($nativeModel)) {
+                require_once $nativeModel;
+            }
+        }
+    }
+
+    if (!class_exists(ResultsDataModel::class)) {
+        throw new \RuntimeException('SportsManagement native ResultsData model could not be loaded.', 500);
     }
 
     $projectModel = new ResultsDataModel();

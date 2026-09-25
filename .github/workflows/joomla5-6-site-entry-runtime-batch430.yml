@@ -1,0 +1,41 @@
+name: Joomla 5/6 site entry runtime batch 430
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-site-entry-runtime-batch430.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/sportsmanagement.php'
+      - '.github/workflows/joomla5-6-site-entry-runtime-batch430.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site entry runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/sportsmanagement.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- 'SportsManagementDatabaseResolver::class' "$file"
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::class' "$file"
+          grep -Fq -- 'LegacyBootstrap::class' "$file"
+          grep -Fq -- 'is_file($nativeModel)' "$file"
+          ! grep -Fq -- 'require_once JPATH_SITE' "$file"
