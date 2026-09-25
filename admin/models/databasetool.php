@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
 
 if (!class_exists(DatabasetoolModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/DatabasetoolModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/DatabasetoolModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
 }
 
 if (!class_exists(DatabasetoolModel::class)) {
