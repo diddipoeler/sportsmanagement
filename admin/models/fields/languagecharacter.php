@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 language character field.
+ * Legacy compatibility bridge for the native Joomla 5/6 Languagecharacter field.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\LanguagecharacterField;
 
 if (!class_exists(LanguagecharacterField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/LanguagecharacterField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/LanguagecharacterField.php';
+
+    if (is_file($nativeField)) {
+        require_once $nativeField;
+    }
+}
+
+if (!class_exists(LanguagecharacterField::class)) {
+    throw new \RuntimeException('SportsManagement native Languagecharacter field could not be loaded.', 500);
 }
 
 if (!class_exists('JFormFieldlanguagecharacter', false)) {

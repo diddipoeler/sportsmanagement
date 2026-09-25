@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 person age group field.
+ * Legacy compatibility bridge for the native Joomla 5/6 Personagegroup field.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\PersonagegroupField;
 
 if (!class_exists(PersonagegroupField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PersonagegroupField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PersonagegroupField.php';
+
+    if (is_file($nativeField)) {
+        require_once $nativeField;
+    }
+}
+
+if (!class_exists(PersonagegroupField::class)) {
+    throw new \RuntimeException('SportsManagement native Personagegroup field could not be loaded.', 500);
 }
 
 if (!class_exists('JFormFieldpersonagegroup', false)) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 playgrounds field.
+ * Legacy compatibility bridge for the native Joomla 5/6 Playgrounds field.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\PlaygroundsField;
 
 if (!class_exists(PlaygroundsField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PlaygroundsField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PlaygroundsField.php';
+
+    if (is_file($nativeField)) {
+        require_once $nativeField;
+    }
+}
+
+if (!class_exists(PlaygroundsField::class)) {
+    throw new \RuntimeException('SportsManagement native Playgrounds field could not be loaded.', 500);
 }
 
 if (!class_exists('JFormFieldPlaygrounds', false)) {
