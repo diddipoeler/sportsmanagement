@@ -13,6 +13,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\MatchCommentsHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 if (!class_exists(MatchCommentsHelper::class)) {
     $nativeHelper = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/MatchCommentsHelper.php';
@@ -102,7 +103,8 @@ class sportsmanagementModelComments
                 $db->quoteName('#__sportsmanagement_team', 't2')
                 . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id')
             )
-            ->where($db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($db->quoteName('m.id') . ' = :commentsMatchId')
+            ->bind(':commentsMatchId', $matchId, ParameterType::INTEGER);
 
         try {
             $db->setQuery($query, 0, 1);
