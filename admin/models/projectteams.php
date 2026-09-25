@@ -1,6 +1,6 @@
 <?php
 /**
- * Legacy compatibility bridge for the native Joomla 5/6 administrator Projectteams list model.
+ * Legacy compatibility bridge for the native Joomla 5/6 administrator Projectteams model.
  *
  * @version    5.6.0
  * @author     diddipoeler

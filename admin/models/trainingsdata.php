@@ -7,13 +7,25 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TrainingsdataModel;
 
 if (!class_exists(TrainingsdataModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TrainingsdataModel.php';
+    $nativeFiles = [
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TrainingsdataModel.php',
+    ];
+
+    foreach ($nativeFiles as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
+}
+
+if (!class_exists(TrainingsdataModel::class)) {
+    throw new \RuntimeException('SportsManagement native Trainingsdata model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModeltrainingsdata', false)) {

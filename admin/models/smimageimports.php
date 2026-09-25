@@ -12,8 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SmimageimportsModel;
 
 if (!class_exists(SmimageimportsModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SmimageimportsModel.php';
+    $nativeFiles = [
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SmimageimportsModel.php',
+    ];
+
+    foreach ($nativeFiles as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
+    }
 }
 
 if (!class_exists(SmimageimportsModel::class)) {
