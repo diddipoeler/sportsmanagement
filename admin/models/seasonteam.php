@@ -12,8 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonteamModel;
 
 if (!class_exists(SeasonteamModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SeasonteamModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SeasonteamModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
 }
 
 if (!class_exists(SeasonteamModel::class)) {

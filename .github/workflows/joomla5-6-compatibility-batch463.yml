@@ -1,0 +1,57 @@
+name: Joomla 5/6 compatibility batch 463
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/rosteralltime.php'
+      - 'admin/models/seasonteam.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch463.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/rosteralltime.php'
+      - 'admin/models/seasonteam.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch463.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site, administrator and module compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/rosteralltime.php
+            admin/models/seasonteam.php
+            modules/mod_sportsmanagement_clubicons/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementDatabaseResolver.php' site/models/rosteralltime.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver.php' site/models/rosteralltime.php
+          grep -Fq -- 'throw new \RuntimeException' site/models/rosteralltime.php
+
+          grep -Fq -- 'is_file($nativeModel)' admin/models/seasonteam.php
+          grep -Fq -- 'throw new \RuntimeException' admin/models/seasonteam.php
+          ! grep -Fq -- 'require_once JPATH_ADMINISTRATOR' admin/models/seasonteam.php
+
+          grep -Fq -- "if (!class_exists('modJSMClubiconsHelper', false))" modules/mod_sportsmanagement_clubicons/helper.php
+          grep -Fq -- 'final class modJSMClubiconsHelper' modules/mod_sportsmanagement_clubicons/helper.php

@@ -45,8 +45,9 @@ foreach ([
     }
 }
 
-class modJSMClubiconsHelper
-{
+if (!class_exists('modJSMClubiconsHelper', false)) {
+    final class modJSMClubiconsHelper
+    {
     public ?object $project = null;
     public array $ranking = [];
     public array $teams = [];
@@ -63,5 +64,6 @@ class modJSMClubiconsHelper
         $this->project = $result['project'];
         $this->ranking = $result['ranking'];
         $this->teams = $result['teams'];
+    }
     }
 }
