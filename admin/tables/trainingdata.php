@@ -12,8 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TrainingdataTable;
 
 if (!class_exists(TrainingdataTable::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TrainingdataTable.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TrainingdataTable.php',
+    ] as $nativeTable) {
+        if (is_file($nativeTable)) {
+            require_once $nativeTable;
+        }
+    }
 }
 
 if (!class_exists(TrainingdataTable::class)) {

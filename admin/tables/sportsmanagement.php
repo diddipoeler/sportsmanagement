@@ -12,8 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\LegacySportsmanagementTable;
 
 if (!class_exists(LegacySportsmanagementTable::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/LegacySportsmanagementTable.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/LegacySportsmanagementTable.php',
+    ] as $nativeTable) {
+        if (is_file($nativeTable)) {
+            require_once $nativeTable;
+        }
+    }
 }
 
 if (!class_exists(LegacySportsmanagementTable::class)) {
