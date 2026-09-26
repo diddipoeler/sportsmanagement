@@ -12,12 +12,21 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
-JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
+if (!class_exists('SMStatistic', false)) {
+	$baseStatistic = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/statistics/base.php';
+
+	if (is_file($baseStatistic)) {
+		require_once $baseStatistic;
+	}
+}
+
+if (!class_exists('SMStatistic', false)) {
+	throw new \RuntimeException('SportsManagement statistic base class could not be loaded.', 500);
+}
 
 /**
  * SMStatisticBasic
@@ -279,7 +288,7 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getTeamsRanking($project_id = 0, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
-		$app = Factory::getApplication();
+		$app = SMStatistic::application();
 		$db  = sportsmanagementHelper::getDBConnection();
 
 		$select       = 'SUM(ms.value) AS total, st.team_id ';

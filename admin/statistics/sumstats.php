@@ -12,12 +12,21 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 
-JLoader::import('components.com_sportsmanagement.statistics.base', JPATH_ADMINISTRATOR);
+if (!class_exists('SMStatistic', false)) {
+	$baseStatistic = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/statistics/base.php';
+
+	if (is_file($baseStatistic)) {
+		require_once $baseStatistic;
+	}
+}
+
+if (!class_exists('SMStatistic', false)) {
+	throw new \RuntimeException('SportsManagement statistic base class could not be loaded.', 500);
+}
 
 /**
  * SMStatisticSumstats
@@ -179,7 +188,7 @@ class SMStatisticSumstats extends SMStatistic
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
-		$app  = Factory::getApplication();
+		$app  = SMStatistic::application();
 		$db   = sportsmanagementHelper::getDBConnection();
 
 		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
@@ -266,7 +275,7 @@ class SMStatisticSumstats extends SMStatistic
 		{
 			$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 			$code = $e->getCode(); // Returns '500';
-			Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+			SMStatistic::application()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 		}
 
 		if ($res)

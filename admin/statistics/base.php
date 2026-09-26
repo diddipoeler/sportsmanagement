@@ -9,10 +9,11 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Log\Log;
@@ -92,6 +93,30 @@ class SMStatistic extends CMSObject
 	}
 
 	/**
+	 * Resolve the active Joomla administrator application.
+	 */
+	public static function application(): AdministratorApplication
+	{
+		if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+			$resolverFile = JPATH_ADMINISTRATOR
+				. '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+			if (is_file($resolverFile)) {
+				require_once $resolverFile;
+			}
+		}
+
+		if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+			throw new \RuntimeException(
+				'SportsManagement administrator application resolver could not be loaded.',
+				500
+			);
+		}
+
+		return SportsManagementAdministratorApplicationResolver::resolve();
+	}
+
+	/**
 	 * get an instance of class corresponding to type
 	 *
 	 * @param   string class
@@ -111,14 +136,16 @@ class SMStatistic extends CMSObject
 				Log::add($classname . ': ' . Text::_('STATISTIC CLASS NOT DEFINED'), Log::ERROR, 'jsmerror');
 			}
 
-			try
-			{
-				JLoader::import('components.com_sportsmanagement.statistics.' . $class, JPATH_ADMINISTRATOR);
+			if (is_file($file)) {
+				require_once $file;
 			}
-			catch (Exception $e)
-			{
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . Text::_($e->getMessage()), 'Error');
-				$result = false;
+
+			if (!class_exists($classname)) {
+				self::application()->enqueueMessage(
+					__METHOD__ . ' ' . __LINE__ . ' ' . Text::_('STATISTIC CLASS NOT DEFINED'),
+					'error'
+				);
+				throw new \RuntimeException($classname . ': statistic class could not be loaded.', 500);
 			}
 		}
 
@@ -139,8 +166,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getTeamsRankingStatisticNumQuery($project_id, $sids)
 	{
-		$option    = Factory::getApplication()->input->getCmd('option');
-		$app       = Factory::getApplication();
+		$option    = self::application()->input->getCmd('option');
+		$app       = self::application();
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_num = $db->createQuery();
 
@@ -168,8 +195,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getTeamsRankingStatisticDenQuery($project_id, $sids)
 	{
-		$option    = Factory::getApplication()->input->getCmd('option');
-		$app       = Factory::getApplication();
+		$option    = self::application()->input->getCmd('option');
+		$app       = self::application();
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_den = $db->createQuery();
 
@@ -200,8 +227,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getTeamsRankingStatisticCoreQuery($project_id, $query_num, $query_den)
 	{
-		$option     = Factory::getApplication()->input->getCmd('option');
-		$app        = Factory::getApplication();
+		$option     = self::application()->input->getCmd('option');
+		$app        = self::application();
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -232,8 +259,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select, $history = false, $table = 'match_staff_statistic')
 	{
-		$option     = Factory::getApplication()->input->getCmd('option');
-		$app        = Factory::getApplication();
+		$option     = self::application()->input->getCmd('option');
+		$app        = self::application();
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -289,8 +316,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select, $which = 'statistic')
 	{
-		$option    = Factory::getApplication()->input->getCmd('option');
-		$app       = Factory::getApplication();
+		$option    = self::application()->input->getCmd('option');
+		$app       = self::application();
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_num = $db->createQuery();
 
@@ -342,8 +369,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id, $sids)
 	{
-		$option    = Factory::getApplication()->input->getCmd('option');
-		$app       = Factory::getApplication();
+		$option    = self::application()->input->getCmd('option');
+		$app       = self::application();
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query_num = $db->createQuery();
 
@@ -387,8 +414,8 @@ class SMStatistic extends CMSObject
 	 */
 	function getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id, $query_num, $query_den, $select)
 	{
-		$option     = Factory::getApplication()->input->getCmd('option');
-		$app        = Factory::getApplication();
+		$option     = self::application()->input->getCmd('option');
+		$app        = self::application();
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -426,7 +453,7 @@ class SMStatistic extends CMSObject
 	 */
 	function getSids($id_field = 'stat_ids')
 	{
-		$app    = Factory::getApplication();
+		$app    = self::application();
 		$params = self::getParams();
 
 		$stat_ids = $params->get($id_field);
@@ -458,8 +485,8 @@ is_array($stat_ids) ? true : false;
 	 */
 	function getParams()
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = self::application();
+		$option = self::application()->input->getCmd('option');
 
 		if (empty($this->_params))
 		{
@@ -486,7 +513,7 @@ is_array($stat_ids) ? true : false;
 	 */
 	function getBaseParams()
 	{
-		$app = Factory::getApplication();
+		$app = self::application();
 
 		$paramsdata = $this->baseparams;
 		$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics' . DIRECTORY_SEPARATOR . 'base.xml';
@@ -521,7 +548,7 @@ is_array($stat_ids) ? true : false;
 	 */
 	function getQuotedSids($id_field = 'stat_ids')
 	{
-		$app    = Factory::getApplication();
+		$app    = self::application();
 		$params = self::getParams();
 
 		$event_ids = $params->get($id_field);
@@ -849,7 +876,7 @@ is_array($stat_ids) ? true : false;
 	 */
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
-		$app        = Factory::getApplication();
+		$app        = self::application();
 		$db         = sportsmanagementHelper::getDBConnection();
 		$query_core = $db->createQuery();
 
@@ -956,7 +983,7 @@ is_array($stat_ids) ? true : false;
 	 */
 	protected function getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids, $factors = null)
 	{
-		$app   = Factory::getApplication();
+		$app   = self::application();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->createQuery();
 
@@ -1008,8 +1035,8 @@ is_array($stat_ids) ? true : false;
 			}
 			catch (Exception $e)
 			{
-			 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+			 self::application()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			self::application()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			}
 
 			// Apply weighting using factors
@@ -1043,8 +1070,8 @@ is_array($stat_ids) ? true : false;
 			}
 			catch (Exception $e)
 			{
-							 Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+							 self::application()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			self::application()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			}
 		}
 
@@ -1080,7 +1107,7 @@ is_array($stat_ids) ? true : false;
 	 */
 	protected function getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors = null)
 	{
-		$app   = Factory::getApplication();
+		$app   = self::application();
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->createQuery();
 
@@ -1174,7 +1201,7 @@ is_array($stat_ids) ? true : false;
 	protected function getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id)
 	{
 		$db       = sportsmanagementHelper::getDBConnection();
-		$app      = Factory::getApplication();
+		$app      = self::application();
 		$query    = $db->createQuery();
 		$query_mp = $db->createQuery();
 		$query_ms = $db->createQuery();
@@ -1249,8 +1276,8 @@ is_array($stat_ids) ? true : false;
 	 */
 	protected function getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids)
 	{
-		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$app    = self::application();
+		$option = self::application()->input->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->createQuery();
 
@@ -1299,7 +1326,7 @@ is_array($stat_ids) ? true : false;
 			{
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns '500';
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				self::application()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			}
 		}
 
@@ -1324,7 +1351,7 @@ is_array($stat_ids) ? true : false;
 	protected function getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors = null)
 	{
 		$db    = sportsmanagementHelper::getDBConnection();
-		$app   = Factory::getApplication();
+		$app   = self::application();
 		$query = $db->createQuery();
 
 		$quoted_sids = array();
@@ -1370,7 +1397,7 @@ is_array($stat_ids) ? true : false;
 			{
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns '500';
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				self::application()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			}
 
 			// Apply weighting using factors
@@ -1414,7 +1441,7 @@ is_array($stat_ids) ? true : false;
 			{
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns '500';
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				self::application()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			}
 
 			// Determine the total statistics for the position_id of the project team
@@ -1432,7 +1459,7 @@ is_array($stat_ids) ? true : false;
 			{
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns '500';
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
+				self::application()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error'); // commonly to still display that error
 			}
 
 			if (!isset($res['totals']->value))
@@ -1456,7 +1483,7 @@ is_array($stat_ids) ? true : false;
 	{
 		$db = sportsmanagementHelper::getDBConnection();
 
-		$app      = Factory::getApplication();
+		$app      = self::application();
 		$query    = $db->createQuery();
 		$subquery = $db->createQuery();
 		$query_mp = $db->createQuery();
@@ -1633,7 +1660,7 @@ is_array($stat_ids) ? true : false;
 	{
 		$db    = sportsmanagementHelper::getDBConnection();
 		$query = $db->createQuery();
-		$app   = Factory::getApplication();
+		$app   = self::application();
 
 		$quoted_sids = array();
 
@@ -1687,7 +1714,7 @@ is_array($stat_ids) ? true : false;
 	protected function getGamesPlayedQuery($project_id, $division_id, $team_id)
 	{
 		$db       = sportsmanagementHelper::getDBConnection();
-		$app      = Factory::getApplication();
+		$app      = self::application();
 		$query    = $db->createQuery();
 		$subquery = $db->createQuery();
 		$query_mp = $db->createQuery();
