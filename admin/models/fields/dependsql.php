@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\DependsqlField;
 
 if (!class_exists(DependsqlField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/DependsqlField.php';
+    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/DependsqlField.php';
+
+    if (is_file($nativeField)) {
+        require_once $nativeField;
+    }
+}
+
+if (!class_exists(DependsqlField::class)) {
+    throw new \RuntimeException('SportsManagement native Dependsql field could not be loaded.', 500);
 }
 
 if (!class_exists('JFormFieldDependSQL', false)) {
