@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Site\View\Scoresheet\RawView;
 
 if (!class_exists(RawView::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Scoresheet/RawView.php';
+    $nativeView = JPATH_SITE . '/components/com_sportsmanagement/src/View/Scoresheet/RawView.php';
+
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
+}
+
+if (!class_exists(RawView::class)) {
+    throw new \RuntimeException('SportsManagement native ScoreSheet raw view could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementViewScoresheet', false)) {

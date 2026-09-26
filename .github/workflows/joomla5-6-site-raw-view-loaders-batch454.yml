@@ -1,0 +1,50 @@
+name: Joomla 5/6 site raw view loaders batch 454
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/ical/view.raw.php'
+      - 'site/views/jsonfeed/view.raw.php'
+      - 'site/views/scoresheet/view.raw.php'
+      - '.github/workflows/joomla5-6-site-raw-view-loaders-batch454.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/ical/view.raw.php'
+      - 'site/views/jsonfeed/view.raw.php'
+      - 'site/views/scoresheet/view.raw.php'
+      - '.github/workflows/joomla5-6-site-raw-view-loaders-batch454.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate raw view loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/ical/view.raw.php
+            site/views/jsonfeed/view.raw.php
+            site/views/scoresheet/view.raw.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'is_file($nativeView)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+            grep -Fq -- 'class_alias(' "$file"
+            ! grep -Fq -- 'require_once JPATH_SITE' "$file"
+          done

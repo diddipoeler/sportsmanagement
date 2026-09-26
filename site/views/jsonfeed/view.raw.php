@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Site\View\Jsonfeed\RawView;
 
 if (!class_exists(RawView::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Jsonfeed/RawView.php';
+    $nativeView = JPATH_SITE . '/components/com_sportsmanagement/src/View/Jsonfeed/RawView.php';
+
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
+}
+
+if (!class_exists(RawView::class)) {
+    throw new \RuntimeException('SportsManagement native JSON feed raw view could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementViewJSONFeed', false)) {

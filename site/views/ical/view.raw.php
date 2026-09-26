@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Site\View\Ical\RawView;
 
 if (!class_exists(RawView::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Ical/RawView.php';
+    $nativeView = JPATH_SITE . '/components/com_sportsmanagement/src/View/Ical/RawView.php';
+
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
+}
+
+if (!class_exists(RawView::class)) {
+    throw new \RuntimeException('SportsManagement native iCal raw view could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementViewIcal', false)) {
