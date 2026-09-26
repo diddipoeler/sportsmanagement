@@ -27,7 +27,7 @@ if (!class_exists(GoogleCalendarHelper::class)) {
 }
 
 if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
-    class ModJSMGoogleCalendarHelper
+    final class ModJSMGoogleCalendarHelper
     {
         protected string $apiKey = '';
         protected string $calendarId = '';
