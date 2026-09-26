@@ -38,8 +38,9 @@ foreach ([
     }
 }
 
-class modJSMPlaygroundTicker
-{
+if (!class_exists('modJSMPlaygroundTicker', false)) {
+    final class modJSMPlaygroundTicker
+    {
     public static function getData($params, ?DatabaseInterface $database = null): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
@@ -59,5 +60,6 @@ class modJSMPlaygroundTicker
     public static function getEstadios_Proyecto($params, ?DatabaseInterface $database = null): array
     {
         return self::getData($params, $database);
+    }
     }
 }
