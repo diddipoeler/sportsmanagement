@@ -1,0 +1,45 @@
+name: Joomla 5/6 administrator prediction table loaders batch 449
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/tables/predictionadmin.php'
+      - 'admin/tables/predictionentry.php'
+      - 'admin/tables/predictiongroup.php'
+      - 'admin/tables/predictionmember.php'
+      - '.github/workflows/joomla5-6-admin-prediction-table-loaders-batch449.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/tables/predictionadmin.php'
+      - 'admin/tables/predictionentry.php'
+      - 'admin/tables/predictiongroup.php'
+      - 'admin/tables/predictionmember.php'
+      - '.github/workflows/joomla5-6-admin-prediction-table-loaders-batch449.yml'
+permissions:
+  contents: read
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate administrator prediction table loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(admin/tables/predictionadmin.php admin/tables/predictionentry.php admin/tables/predictiongroup.php admin/tables/predictionmember.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do grep -Fq -- "$tag" "$file"; done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'is_file($nativeTable)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+            grep -Fq -- 'class_alias(' "$file"
+            ! grep -Fq -- 'require_once JPATH_ADMINISTRATOR' "$file"
+            ! grep -Fq -- 'Restricted access' "$file"
+          done
