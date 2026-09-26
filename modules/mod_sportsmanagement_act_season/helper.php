@@ -38,8 +38,9 @@ foreach ([
     }
 }
 
-class modJSMActSeasonHelper
-{
+if (!class_exists('modJSMActSeasonHelper', false)) {
+    final class modJSMActSeasonHelper
+    {
     public static function getData($seasonIds, ?DatabaseInterface $database = null): array
     {
         return self::result($seasonIds, $database)['list'];
@@ -103,5 +104,6 @@ class modJSMActSeasonHelper
             $app,
             $database
         );
+    }
     }
 }

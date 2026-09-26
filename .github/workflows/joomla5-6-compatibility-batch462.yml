@@ -1,0 +1,57 @@
+name: Joomla 5/6 compatibility batch 462
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/treetonode.php'
+      - 'admin/models/teamstaff.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch462.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/treetonode.php'
+      - 'admin/models/teamstaff.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch462.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site, administrator and module compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/treetonode.php
+            admin/models/teamstaff.php
+            modules/mod_sportsmanagement_act_season/helper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          grep -Fq -- 'is_file($nativeModel)' site/models/treetonode.php
+          grep -Fq -- 'throw new \RuntimeException' site/models/treetonode.php
+          ! grep -Fq -- 'require_once JPATH_SITE' site/models/treetonode.php
+
+          grep -Fq -- 'is_file($nativeModel)' admin/models/teamstaff.php
+          grep -Fq -- 'throw new \RuntimeException' admin/models/teamstaff.php
+          ! grep -Fq -- 'require_once JPATH_ADMINISTRATOR' admin/models/teamstaff.php
+
+          grep -Fq -- "if (!class_exists('modJSMActSeasonHelper', false))" modules/mod_sportsmanagement_act_season/helper.php
+          grep -Fq -- 'final class modJSMActSeasonHelper' modules/mod_sportsmanagement_act_season/helper.php
