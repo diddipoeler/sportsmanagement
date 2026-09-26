@@ -15,15 +15,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
 
 if (!class_exists(ClubModel::class)) {
-    $baseModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ClubModel.php';
-
-    if (is_file($baseModel)) {
-        require_once $baseModel;
-    }
-
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ClubModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
     }
 }
 

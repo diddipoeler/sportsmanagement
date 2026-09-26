@@ -1,0 +1,58 @@
+name: Joomla 5/6 compatibility batch 470
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/ranking.php'
+      - 'site/models/project.php'
+      - 'admin/models/club.php'
+      - '.github/workflows/joomla5-6-compatibility-batch470.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/ranking.php'
+      - 'site/models/project.php'
+      - 'admin/models/club.php'
+      - '.github/workflows/joomla5-6-compatibility-batch470.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/ranking.php
+            site/models/project.php
+            admin/models/club.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          test "$(grep -Fc -- 'SportsManagementDatabaseResolver.php' site/models/ranking.php)" -ge 4
+          test "$(grep -Fc -- 'SportsManagementSiteApplicationResolver.php' site/models/ranking.php)" -ge 5
+          grep -Fq -- 'throw new \RuntimeException' site/models/ranking.php
+
+          test "$(grep -Fc -- 'SportsManagementDatabaseResolver.php' site/models/project.php)" -ge 2
+          test "$(grep -Fc -- 'SportsManagementSiteApplicationResolver.php' site/models/project.php)" -ge 3
+          grep -Fq -- 'throw new \RuntimeException' site/models/project.php
+
+          grep -Fq -- 'is_file($nativeModel)' admin/models/club.php
+          grep -Fq -- 'throw new \RuntimeException' admin/models/club.php
+          ! grep -Fq -- '$baseModel = JPATH_ADMINISTRATOR' admin/models/club.php

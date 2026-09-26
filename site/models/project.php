@@ -105,6 +105,8 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		if (!class_exists(NativeProjectModel::class)) {
 			foreach ([
+				JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/ProjectModel.php',
@@ -138,6 +140,8 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	{
 		if (!class_exists(NativeMatchreportDataModel::class)) {
 			foreach ([
+				JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportDataModel.php',
