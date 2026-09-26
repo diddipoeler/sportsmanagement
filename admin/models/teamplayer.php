@@ -12,8 +12,18 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayerModel;
 
 if (!class_exists(TeamplayerModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TeamplayerModel.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TeamplayerModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(TeamplayerModel::class)) {
+    throw new \RuntimeException('SportsManagement native Teamplayer model could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelteamplayer', false)) {

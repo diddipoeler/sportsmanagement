@@ -54,6 +54,7 @@ foreach ([
 /**
  * Legacy ranking helper facade kept for template overrides and third-party code.
  */
+if (!class_exists('modJSMRankingHelper', false)) {
 class modJSMRankingHelper extends stdClass
 {
     /**
@@ -305,4 +306,5 @@ class modJSMRankingHelper extends stdClass
 
         return null;
     }
+}
 }
