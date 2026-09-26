@@ -15,6 +15,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectroundsModel;
 
 if (!class_exists(AllprojectroundsModel::class)) {
     $nativeModels = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllprojectroundsModel.php',

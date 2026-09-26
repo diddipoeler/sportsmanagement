@@ -14,6 +14,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;
 
 if (!class_exists(AllclubsModel::class)) {
     $nativeModels = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllclubsModel.php',
     ];
