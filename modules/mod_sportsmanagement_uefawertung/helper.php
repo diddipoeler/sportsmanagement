@@ -41,32 +41,34 @@ foreach ([
     }
 }
 
-class modJSMUefaWERTUNG
-{
-    public static function getData($params, ?DatabaseInterface $database = null): array
+if (!class_exists('modJSMUefaWERTUNG', false)) {
+    final class modJSMUefaWERTUNG
     {
-        return self::result($params, $database)['rankings'];
-    }
-
-    public static function getSeasonNames($params, ?DatabaseInterface $database = null): array
-    {
-        return self::result($params, $database)['seasons'];
-    }
-
-    private static function result($params, ?DatabaseInterface $database = null): array
-    {
-        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-        $app = SportsManagementSiteApplicationResolver::resolve();
-
-        if (!$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement UEFA ranking legacy helper requires the Joomla site application.', 500);
+        public static function getData($params, ?DatabaseInterface $database = null): array
+        {
+            return self::result($params, $database)['rankings'];
         }
 
-        if ($database === null) {
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+        public static function getSeasonNames($params, ?DatabaseInterface $database = null): array
+        {
+            return self::result($params, $database)['seasons'];
         }
 
-        return (new UefaWertungHelper())->getData($registry, $app, $database);
+        private static function result($params, ?DatabaseInterface $database = null): array
+        {
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement UEFA ranking legacy helper requires the Joomla site application.', 500);
+            }
+
+            if ($database === null) {
+                /** @var DatabaseInterface $database */
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
+            }
+
+            return (new UefaWertungHelper())->getData($registry, $app, $database);
+        }
     }
 }
