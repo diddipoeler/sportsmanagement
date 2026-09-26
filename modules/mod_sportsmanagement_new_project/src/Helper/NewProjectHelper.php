@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementNewProject\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
@@ -25,10 +26,15 @@ use Joomla\Registry\Registry;
 
 final class NewProjectHelper
 {
-    public function getData(Registry $params, CMSApplicationInterface $app): array
-    {
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+    public function getData(
+        Registry $params,
+        CMSApplicationInterface $app,
+        ?DatabaseInterface $joomlaDatabase = null
+    ): array {
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
+        $databaseSelector = (int) $params->get('cfg_which_database', 0);
+        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
         [$start, $end] = $this->todayRange($app);
 
         $query = $db->createQuery()
@@ -57,7 +63,7 @@ final class NewProjectHelper
         $placeholder = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');
 
         foreach ($rows as $row) {
-            $row->project_url = $this->resultsUrl($row);
+            $row->project_url = $this->resultsUrl($row, $databaseSelector);
             $row->flag_url = $flags[strtoupper(trim((string) ($row->country ?? '')))] ?? '';
             $row->project_picture = (string) ($row->project_picture ?: $placeholder);
             $row->league_picture = (string) ($row->league_picture ?: $placeholder);
@@ -98,9 +104,9 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-        $module = $this->loadPublishedModule($db, $moduleId);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $module = $this->loadPublishedModule($joomlaDatabase, $moduleId);
 
         if (!$module) {
             throw new \RuntimeException('New Project module is not published.', 404);
@@ -114,7 +120,7 @@ final class NewProjectHelper
 
         $categoryId = (int) $params->get('mycategory', 0);
 
-        if ($categoryId <= 0 || !$this->validContentCategory($db, $categoryId)) {
+        if ($categoryId <= 0 || !$this->validContentCategory($joomlaDatabase, $categoryId)) {
             throw new \RuntimeException('The configured content category is invalid.', 409);
         }
 
@@ -125,13 +131,13 @@ final class NewProjectHelper
             throw new \RuntimeException('Not authorised to create project articles.', 403);
         }
 
-        $projects = $this->getData($params, $app);
+        $projects = $this->getData($params, $app, $joomlaDatabase);
 
         if (!$projects) {
             return ['created' => 0, 'skipped' => 0, 'errors' => [], 'module_id' => $moduleId];
         }
 
-        $existing = $this->existingProjectReferences($db, $categoryId, $projects);
+        $existing = $this->existingProjectReferences($joomlaDatabase, $categoryId, $projects);
         $content = $app->bootComponent('com_content');
         $mvcFactory = $content->getMVCFactory();
         $created = 0;
@@ -275,10 +281,10 @@ final class NewProjectHelper
             . '</p>';
     }
 
-    private function resultsUrl(object $project): string
+    private function resultsUrl(object $project, int $databaseSelector = 0): string
     {
         return SiteRouteHelper::view('resultsranking', [
-            'cfg_which_database' => 0,
+            'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
             's' => 0,
             'p' => (string) $project->project_slug,
             'r' => (string) ($project->round_slug ?? ''),

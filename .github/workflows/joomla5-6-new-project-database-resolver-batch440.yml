@@ -1,0 +1,49 @@
+name: Joomla 5/6 New Project database resolver batch 440
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_new_project/helper.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-new-project-database-resolver-batch440.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_new_project/helper.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-new-project-database-resolver-batch440.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate New Project database resolver
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_new_project/helper.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+          grep -Fq -- 'SportsManagementDatabaseResolver::class =>' modules/mod_sportsmanagement_new_project/helper.php
+          grep -Fq -- 'NewProjectHelper::class,' modules/mod_sportsmanagement_new_project/helper.php
+          grep -Fq -- 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector)' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          grep -Fq -- "'cfg_which_database' => \$databaseSelector === 1 ? 1 : 0" modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          grep -Fq -- 'loadPublishedModule($joomlaDatabase, $moduleId)' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          grep -Fq -- 'existingProjectReferences($joomlaDatabase, $categoryId, $projects)' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
