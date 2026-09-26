@@ -1,0 +1,43 @@
+name: Joomla 5/6 site ranking bridge loaders batch 433
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/resultsranking.php'
+      - 'site/models/uefawertung.php'
+      - '.github/workflows/joomla5-6-site-ranking-bridge-loaders-batch433.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/resultsranking.php'
+      - 'site/models/uefawertung.php'
+      - '.github/workflows/joomla5-6-site-ranking-bridge-loaders-batch433.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site ranking bridge loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(site/models/resultsranking.php site/models/uefawertung.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'is_file($nativeFile)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+            ! grep -Fq -- 'require_once JPATH_SITE' "$file"
+          done
