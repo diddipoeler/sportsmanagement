@@ -1,0 +1,58 @@
+name: Joomla 5/6 compatibility batch 468
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/curve.php'
+      - 'admin/models/predictiontemplate.php'
+      - 'admin/models/position.php'
+      - '.github/workflows/joomla5-6-compatibility-batch468.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/curve.php'
+      - 'admin/models/predictiontemplate.php'
+      - 'admin/models/position.php'
+      - '.github/workflows/joomla5-6-compatibility-batch468.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/curve.php
+            admin/models/predictiontemplate.php
+            admin/models/position.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementDatabaseResolver.php' site/models/curve.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver.php' site/models/curve.php
+          grep -Fq -- 'throw new \RuntimeException' site/models/curve.php
+
+          grep -Fq -- 'is_file($nativeModel)' admin/models/predictiontemplate.php
+          grep -Fq -- 'throw new \RuntimeException' admin/models/predictiontemplate.php
+          ! grep -Fq -- 'require_once JPATH_ADMINISTRATOR' admin/models/predictiontemplate.php
+
+          grep -Fq -- 'is_file($nativeModel)' admin/models/position.php
+          grep -Fq -- 'throw new \RuntimeException' admin/models/position.php
+          ! grep -Fq -- 'require_once JPATH_ADMINISTRATOR' admin/models/position.php
