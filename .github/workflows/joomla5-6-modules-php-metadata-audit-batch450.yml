@@ -1,0 +1,54 @@
+name: Joomla 5/6 modules PHP metadata audit batch 450
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/**/*.php'
+      - '.github/workflows/joomla5-6-modules-php-metadata-audit-batch450.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/**/*.php'
+      - '.github/workflows/joomla5-6-modules-php-metadata-audit-batch450.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  modules-php-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate every module PHP file
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(find modules -type f -name '*.php' -print0 | sort -z)
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No module PHP files found." >&2
+            exit 1
+          fi
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              if ! grep -Fq -- "$tag" "$file"; then
+                echo "Missing $tag in $file" >&2
+                exit 1
+              fi
+            done
+
+            if ! grep -Fq -- '@version    5.6.0' "$file"; then
+              echo "Wrong or missing Joomla 5/6 version metadata in $file" >&2
+              exit 1
+            fi
+          done
+
+          echo "Validated ${#files[@]} module PHP files."
