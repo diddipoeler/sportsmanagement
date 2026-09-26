@@ -24,6 +24,7 @@ use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 $nativeDependencies = [
+    CountryPresentationHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/CountryPresentationHelper.php',
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     RankingEngine::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/RankingEngine.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
@@ -38,18 +39,16 @@ foreach ($nativeDependencies as $class => $file) {
 }
 
 foreach ([
+    CountryPresentationHelper::class,
     SiteRouteHelper::class,
     RankingEngine::class,
     SportsManagementDatabaseResolver::class,
     SportsManagementSiteApplicationResolver::class,
+    NativeRankingHelper::class,
 ] as $requiredClass) {
     if (!class_exists($requiredClass)) {
-        throw new \RuntimeException('SportsManagement Ranking dependencies could not be loaded: ' . $requiredClass, 500);
+        throw new \RuntimeException('SportsManagement Ranking dependency could not be loaded: ' . $requiredClass, 500);
     }
-}
-
-if (!class_exists(NativeRankingHelper::class)) {
-    throw new \RuntimeException('SportsManagement native Ranking module helper could not be loaded.', 500);
 }
 
 /**
