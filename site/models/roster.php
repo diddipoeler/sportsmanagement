@@ -13,6 +13,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RosterModel;
 
 if (!class_exists(RosterModel::class)) {
     $nativeFiles = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/RosterModel.php',

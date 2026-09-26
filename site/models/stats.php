@@ -12,11 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\StatsModel;
 
 if (!class_exists(StatsModel::class)) {
+    $databaseResolver = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php';
+    $applicationResolver = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
     $baseModel = JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
     $projectModel = JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
     $nativeModel = JPATH_SITE . '/components/com_sportsmanagement/src/Model/StatsModel.php';
 
-    foreach ([$baseModel, $projectModel, $nativeModel] as $modelFile) {
+    foreach ([$databaseResolver, $applicationResolver, $baseModel, $projectModel, $nativeModel] as $modelFile) {
         if (is_file($modelFile)) {
             require_once $modelFile;
         }

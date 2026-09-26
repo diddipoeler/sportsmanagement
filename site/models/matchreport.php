@@ -20,6 +20,8 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 $nativeModelFiles = [
+    JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
     JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
     JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
     JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatchreportModel.php',

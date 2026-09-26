@@ -1,0 +1,51 @@
+name: Joomla 5/6 site model resolver loaders batch 458
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/stats.php'
+      - 'site/models/roster.php'
+      - 'site/models/hitlist.php'
+      - 'site/models/matchreport.php'
+      - '.github/workflows/joomla5-6-site-model-resolver-loaders-batch458.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/stats.php'
+      - 'site/models/roster.php'
+      - 'site/models/hitlist.php'
+      - 'site/models/matchreport.php'
+      - '.github/workflows/joomla5-6-site-model-resolver-loaders-batch458.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site model resolver loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/models/stats.php
+            site/models/roster.php
+            site/models/hitlist.php
+            site/models/matchreport.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'SportsManagementDatabaseResolver.php' "$file"
+            grep -Fq -- 'SportsManagementSiteApplicationResolver.php' "$file"
+          done
