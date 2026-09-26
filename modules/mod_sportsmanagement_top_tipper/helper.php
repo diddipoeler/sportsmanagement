@@ -10,10 +10,22 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Diddipoeler\Component\SportsManagement\Site\Model\PredictionrankingModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementPredictionModel;
+use Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementPredictionReadModel;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementTopTipper\Site\Helper\TopTipperHelper;
 
 $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    SportsManagementModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+    SportsManagementPredictionModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionModel.php',
+    SportsManagementPredictionReadModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionReadModel.php',
+    PredictionrankingModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/PredictionrankingModel.php',
     TopTipperHelper::class => __DIR__ . '/src/Helper/TopTipperHelper.php',
 ];
 
@@ -25,6 +37,12 @@ foreach ($nativeDependencies as $class => $file) {
 
 foreach ([
     SiteRouteHelper::class,
+    SportsManagementDatabaseResolver::class,
+    SportsManagementSiteApplicationResolver::class,
+    SportsManagementModel::class,
+    SportsManagementPredictionModel::class,
+    SportsManagementPredictionReadModel::class,
+    PredictionrankingModel::class,
     TopTipperHelper::class,
 ] as $requiredClass) {
     if (!class_exists($requiredClass)) {

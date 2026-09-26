@@ -1,0 +1,44 @@
+name: Joomla 5/6 Top Tipper prediction dependency guard batch 444
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_top_tipper/helper.php'
+      - '.github/workflows/joomla5-6-top-tipper-prediction-dependency-batch444.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_top_tipper/helper.php'
+      - '.github/workflows/joomla5-6-top-tipper-prediction-dependency-batch444.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Top Tipper prediction dependency guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=modules/mod_sportsmanagement_top_tipper/helper.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- 'SportsManagementDatabaseResolver::class =>' "$file"
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::class =>' "$file"
+          grep -Fq -- 'SportsManagementModel::class =>' "$file"
+          grep -Fq -- 'SportsManagementPredictionModel::class =>' "$file"
+          grep -Fq -- 'SportsManagementPredictionReadModel::class =>' "$file"
+          grep -Fq -- 'PredictionrankingModel::class =>' "$file"
+          grep -Fq -- 'TopTipperHelper::class =>' "$file"
+          grep -Fq -- 'throw new \RuntimeException' "$file"
