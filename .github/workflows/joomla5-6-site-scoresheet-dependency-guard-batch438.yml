@@ -1,0 +1,40 @@
+name: Joomla 5/6 site scoresheet dependency guard batch 438
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/helpers/scoresheet.php'
+      - '.github/workflows/joomla5-6-site-scoresheet-dependency-guard-batch438.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/helpers/scoresheet.php'
+      - '.github/workflows/joomla5-6-site-scoresheet-dependency-guard-batch438.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate ScoreSheet dependency guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=site/helpers/scoresheet.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "'FPDM' => __DIR__ . '/scoresheet/fpdm.php'" "$file"
+          grep -Fq -- 'class_exists($requiredClass)' "$file"
+          grep -Fq -- 'throw new \RuntimeException' "$file"
+          ! grep -Fq -- "require_once __DIR__ . '/scoresheet/" "$file"

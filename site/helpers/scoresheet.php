@@ -14,9 +14,26 @@
 
 \defined('FPDM_DIRECT') or define('FPDM_DIRECT', true);
 
-require_once __DIR__ . '/scoresheet/fpdm.php';
-require_once __DIR__ . '/scoresheet/FilterASCIIHex.php';
-require_once __DIR__ . '/scoresheet/FilterASCII85.php';
-require_once __DIR__ . '/scoresheet/FilterFlate.php';
-require_once __DIR__ . '/scoresheet/FilterLZW.php';
-require_once __DIR__ . '/scoresheet/FilterStandard.php';
+$scoreSheetDependencies = [
+    'FilterASCIIHex' => __DIR__ . '/scoresheet/FilterASCIIHex.php',
+    'FilterASCII85' => __DIR__ . '/scoresheet/FilterASCII85.php',
+    'FilterFlate' => __DIR__ . '/scoresheet/FilterFlate.php',
+    'FilterLZW' => __DIR__ . '/scoresheet/FilterLZW.php',
+    'FilterStandard' => __DIR__ . '/scoresheet/FilterStandard.php',
+    'FPDM' => __DIR__ . '/scoresheet/fpdm.php',
+];
+
+foreach ($scoreSheetDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
+    }
+}
+
+foreach (array_keys($scoreSheetDependencies) as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement ScoreSheet dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
+}
