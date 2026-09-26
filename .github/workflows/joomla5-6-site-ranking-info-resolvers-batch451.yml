@@ -1,0 +1,44 @@
+name: Joomla 5/6 site ranking info resolver loaders batch 451
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/teaminfo.php'
+      - 'site/models/statsranking.php'
+      - 'site/models/statsrankingteams.php'
+      - 'site/models/eventsranking.php'
+      - '.github/workflows/joomla5-6-site-ranking-info-resolvers-batch451.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/teaminfo.php'
+      - 'site/models/statsranking.php'
+      - 'site/models/statsrankingteams.php'
+      - 'site/models/eventsranking.php'
+      - '.github/workflows/joomla5-6-site-ranking-info-resolvers-batch451.yml'
+permissions:
+  contents: read
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate site ranking/info resolver loaders
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(site/models/teaminfo.php site/models/statsranking.php site/models/statsrankingteams.php site/models/eventsranking.php)
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do grep -Fq -- "$tag" "$file"; done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'SportsManagementDatabaseResolver.php' "$file"
+            grep -Fq -- 'SportsManagementSiteApplicationResolver.php' "$file"
+            grep -Fq -- 'is_file(' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
