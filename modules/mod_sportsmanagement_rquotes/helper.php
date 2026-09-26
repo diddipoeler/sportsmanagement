@@ -41,8 +41,9 @@ foreach ([
     }
 }
 
-class modRquotesHelper
-{
+if (!class_exists('modRquotesHelper', false)) {
+    final class modRquotesHelper
+    {
     public static function renderRquote(&$rquote, &$params, $module = null): void
     {
         $module ??= (object) ['module' => 'mod_sportsmanagement_rquotes', 'id' => 0];
@@ -188,5 +189,6 @@ class modRquotesHelper
         }
 
         return array_values(array_unique($result));
+    }
     }
 }
