@@ -12,8 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PredictiontemplateTable;
 
 if (!class_exists(PredictiontemplateTable::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictiontemplateTable.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictiontemplateTable.php',
+    ] as $nativeTable) {
+        if (is_file($nativeTable)) {
+            require_once $nativeTable;
+        }
+    }
 }
 
 if (!class_exists(PredictiontemplateTable::class)) {
