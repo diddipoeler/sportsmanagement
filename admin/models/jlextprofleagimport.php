@@ -21,9 +21,27 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Log\Log;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\Utilities\ArrayHelper;
 
-$option        = Factory::getApplication()->getInput()->getCmd('option');
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    $applicationResolverFile = JPATH_ADMINISTRATOR
+        . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+    if (is_file($applicationResolverFile)) {
+        require_once $applicationResolverFile;
+    }
+}
+
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    throw new \RuntimeException(
+        'SportsManagement administrator application resolver could not be loaded.',
+        500
+    );
+}
+
+$adminApplication = SportsManagementAdministratorApplicationResolver::resolve();
+$option        = $adminApplication->getInput()->getCmd('option');
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
 if (empty($maxImportTime))
@@ -89,7 +107,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
 		$this->jsmdb = sportsmanagementHelper::getDBConnection();
 		$this->jsmquery = $this->jsmdb->createQuery();
-		$this->jsmapp = Factory::getApplication();
+		$this->jsmapp = SportsManagementAdministratorApplicationResolver::resolve();
 		$this->jsmjinput = $this->jsmapp->getInput();
 		$this->jsmoption = $this->jsmjinput->getCmd('option');
 		$this->debug_info = (bool) ComponentHelper::getParams($this->jsmoption)->get('show_debug_info', 0);
@@ -265,7 +283,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 	 */
 	protected function loadFormData()
 	{
-		$data = Factory::getApplication()->getUserState($this->jsmoption . '.edit.' . $this->name . '.data', array());
+		$data = $this->jsmapp->getUserState($this->jsmoption . '.edit.' . $this->name . '.data', array());
 
 		if (empty($data))
 		{
@@ -282,22 +300,22 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 	 */
 	function getData()
 	{
-		$option = Factory::getApplication()->getInput()->getCmd('option');
+		$option = $this->jsmoption;
 
-		$app      = Factory::getApplication();
-		$document = Factory::getApplication()->getDocument();
+		$app      = $this->jsmapp;
+		$document = $app->getDocument();
 
 		$lang  = Factory::getLanguage();
 		$teile = explode("-", $lang->getTag());
 
-		$post    = Factory::getApplication()->getInput()->post->getArray(array());
+		$post    = $this->jsmjinput->post->getArray(array());
 		$country = $post['country'];
 
 		// $country = JSMCountries::convertIso2to3($teile[1]);
 
 		$app->enqueueMessage(Text::_('land ' . $country . ''), '');
 
-		$option  = Factory::getApplication()->getInput()->getCmd('option');
+		$option  = $this->jsmoption;
 		$project = $app->getUserState($option . 'project', 0);
 
 		$temp                       = new stdClass;
