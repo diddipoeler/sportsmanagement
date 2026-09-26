@@ -1,0 +1,54 @@
+name: Joomla 5/6 administrator PHP metadata audit batch 457
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/**/*.php'
+      - '.github/workflows/joomla5-6-admin-php-metadata-audit-batch457.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/**/*.php'
+      - '.github/workflows/joomla5-6-admin-php-metadata-audit-batch457.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  admin-php-audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate every administrator PHP file
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -d '' files < <(find admin -type f -name '*.php' -print0 | sort -z)
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No administrator PHP files found." >&2
+            exit 1
+          fi
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              if ! grep -Fq -- "$tag" "$file"; then
+                echo "Missing $tag in $file" >&2
+                exit 1
+              fi
+            done
+
+            if ! grep -Fq -- '@version    5.6.0' "$file"; then
+              echo "Wrong or missing Joomla 5/6 version metadata in $file" >&2
+              exit 1
+            fi
+          done
+
+          echo "Validated ${#files[@]} administrator PHP files."
