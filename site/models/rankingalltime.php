@@ -13,6 +13,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\RankingalltimeCalculatorMo
 
 if (!class_exists(RankingalltimeCalculatorModel::class)) {
     foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingalltimeModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingalltimeCalculatorModel.php',

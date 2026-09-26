@@ -13,6 +13,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\ScoresheetModel;
 
 if (!class_exists(ScoresheetModel::class)) {
     foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/ScoresheetModel.php',
