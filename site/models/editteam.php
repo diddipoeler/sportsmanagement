@@ -12,10 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\EditteamModel;
 
 if (!class_exists(EditteamModel::class)) {
-    $nativeModel = JPATH_SITE . '/components/com_sportsmanagement/src/Model/EditteamModel.php';
-
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TeamTable.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/EditteamModel.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
     }
 }
 
