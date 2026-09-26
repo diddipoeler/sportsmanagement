@@ -13,6 +13,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\AllprojectsModel;
 
 if (!class_exists(AllprojectsModel::class)) {
     $nativeModels = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllprojectsModel.php',
     ];
