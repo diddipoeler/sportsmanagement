@@ -1258,7 +1258,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 				if (!$row->store())
 				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, Factory::getContainer()->get(DatabaseInterface::class)->getErrorMsg(), __LINE__);
+					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, (string) $row->getError(), __LINE__);
 
 					return false;
 				}
@@ -2222,7 +2222,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-			$this->setError($this->jsmdb->getErrorMsg());
+			$this->setError(Text::_('JLIB_DATABASE_ERROR_FUNCTION_FAILED'));
 			$result = false;
 		}
 
@@ -2259,7 +2259,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 						}
 						catch (Exception $e)
 						{
-							sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
+							sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $e->getMessage(), __LINE__);
 						}
 					}
 					else
