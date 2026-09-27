@@ -31,7 +31,11 @@ class sportsmanagementModelsportsmanagement extends ItemModel
     public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array())
     {
         if (!class_exists(LegacySportsmanagementTable::class)) {
-            require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/LegacySportsmanagementTable.php';
+            $nativeTable = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/LegacySportsmanagementTable.php';
+
+            if (is_file($nativeTable)) {
+                require_once $nativeTable;
+            }
         }
 
         if (!class_exists(LegacySportsmanagementTable::class)) {

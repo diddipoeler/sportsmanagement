@@ -12,10 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Site\Model\UpdsportsmanagementModel;
 
 if (!class_exists(UpdsportsmanagementModel::class)) {
-    $nativeModel = JPATH_SITE . '/components/com_sportsmanagement/src/Model/UpdsportsmanagementModel.php';
-
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/UpdsportsmanagementModel.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
     }
 }
 
