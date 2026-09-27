@@ -1246,7 +1246,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function saveorder($pks = null, $order = null)
 	{
-		$row =& $this->getTable();
+		$row = $this->getTable();
 
 		for ($i = 0; $i < count($pks); $i++)
 		{
