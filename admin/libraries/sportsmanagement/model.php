@@ -134,7 +134,7 @@ class JSMModelAdmin extends AdminModel
 		$this->jsmdate        = Factory::getDate();
 		$this->jsmmessage     = '';
 		$this->jsmmessagetype = 'notice';
-        $this->joomlaconfig = Factory::getConfig();
+        $this->joomlaconfig = Factory::getApplication()->getConfig();
 
 		$this->project_id = $this->jsmjinput->getint('pid');
 
@@ -167,7 +167,7 @@ class JSMModelAdmin extends AdminModel
 		{
 		}
 		
-if ( Factory::getConfig()->get('debug') )
+if ( Factory::getApplication()->getConfig()->get('debug') )
 {  
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
 }		
@@ -192,7 +192,7 @@ Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->ge
 		$person_double = array();
 		$parentsave    = true;
         
-        $config = Factory::getConfig();
+        $config = Factory::getApplication()->getConfig();
 
 if ( $config->get('debug') )
 {
@@ -2248,7 +2248,7 @@ class JSMModelList extends ListModel
 		 */
 		Log::addLogger(array('logger' => 'messagequeue'), Log::ALL, array('jsmerror'));
 		
-if ( Factory::getConfig()->get('debug') )
+if ( Factory::getApplication()->getConfig()->get('debug') )
 {  
 Log::add(Text::_(__METHOD__ . ' ' . __LINE__ . ' layout ' . $this->jsmjinput->getVar('layout')), Log::NOTICE, 'jsmerror');
 }		
