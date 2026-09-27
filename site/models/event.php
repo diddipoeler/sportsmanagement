@@ -16,6 +16,8 @@ use Diddipoeler\Component\SportsManagement\Site\Model\EventModel;
 
 if (!class_exists(EventModel::class)) {
     $nativeFiles = [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/EventModel.php',
     ];
