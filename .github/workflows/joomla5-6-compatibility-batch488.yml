@@ -1,0 +1,49 @@
+name: Joomla 5/6 compatibility batch 488
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch488.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch488.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/models/match.php
+          php -l "$file"
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "libraries/google-php/vendor/autoload.php" "$file"
+          grep -Fq -- 'is_file($googleAutoload)' "$file"
+          grep -Fq -- 'require_once $googleAutoload' "$file"
+
+          if grep -Fq -- 'JLoader::import' "$file"; then
+            echo 'Legacy JLoader::import remains in match.php' >&2
+            exit 1
+          fi
+
+          if grep -Fiq -- 'simplecrypt' "$file"; then
+            echo 'Unused legacy simplecrypt bootstrap remains in match.php' >&2
+            exit 1
+          fi

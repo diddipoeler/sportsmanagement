@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage match
  * @file       match.php
@@ -10,7 +10,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * https://hotexamples.com/de/examples/-/Google_Service_Calendar_EventDateTime/-/php-google_service_calendar_eventdatetime-class-examples.html
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -23,8 +23,11 @@ use Joomla\CMS\Input\Input;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Log\Log;
 
-JLoader::import('components.com_sportsmanagement.libraries.google-php.vendor.autoload', JPATH_ADMINISTRATOR);
-JLoader::import('joomla.utilities.simplecrypt');
+$googleAutoload = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php/vendor/autoload.php';
+
+if (is_file($googleAutoload)) {
+    require_once $googleAutoload;
+}
 
 /**
  * sportsmanagementModelMatch
