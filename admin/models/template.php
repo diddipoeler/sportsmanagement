@@ -13,6 +13,9 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\TemplateModel;
 
 if (!class_exists(TemplateModel::class)) {
     foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TemplateModel.php',
     ] as $nativeModel) {
