@@ -13,6 +13,12 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\RoundModel;
 
 if (!class_exists(RoundModel::class)) {
     foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDateHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/RoundTable.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/RoundModel.php',
     ] as $nativeFile) {
