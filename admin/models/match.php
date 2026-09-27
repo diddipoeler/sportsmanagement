@@ -367,7 +367,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getteampersons($projectteam_id = 0, $filter = false, $persontype = 0)
 	{
-		$option            = Factory::getApplication()->input->getCmd('option');
+		$option            = Factory::getApplication()->getInput()->getCmd('option');
 		$app               = Factory::getApplication();
         $result = array();
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
@@ -426,7 +426,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getSubstitutions($tid = 0, $match_id = 0)
 	{
-		$option           = Factory::getApplication()->input->getCmd('option');
+		$option           = Factory::getApplication()->getInput()->getCmd('option');
 		$app              = Factory::getApplication();
 		self::$_season_id = $app->getUserState("$option.season_id", '0');
 		$project_id       = $app->getUserState("$option.pid", '0');
@@ -484,7 +484,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getRoster($team_id = 0, $project_position_id = 0, $match_id = 0, $position_value = 0)
 	{
-		$option            = Factory::getApplication()->input->getCmd('option');
+		$option            = Factory::getApplication()->getInput()->getCmd('option');
 		$app               = Factory::getApplication();
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
@@ -539,7 +539,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app    = Factory::getApplication();
         $result = array();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection(true, $cfg_which_database, false);
 		$query  = $db->getQuery(true);
 		$query->select('m.*');
@@ -662,7 +662,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function getMatchPersons($projectteam_id = 0, $project_position_id = 0, $match_id = 0, $table = 'player')
 	{
 		$app               = Factory::getApplication();
-		$option            = Factory::getApplication()->input->getCmd('option');
+		$option            = Factory::getApplication()->getInput()->getCmd('option');
 		$query             = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
@@ -731,7 +731,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getInputStats($project_id)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$app    = Factory::getApplication();
 
 		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
@@ -772,7 +772,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getMatchStatsInput($match_id, $projectteam1_id, $projectteam2_id)
 	{
-		$option    = Factory::getApplication()->input->getCmd('option');
+		$option    = Factory::getApplication()->getInput()->getCmd('option');
 		$app       = Factory::getApplication();
 		$starttime = microtime();
 		$query     = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
@@ -805,7 +805,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getMatchStaffStatsInput($match_id = 0, $projectteam1_id = 0, $projectteam2_id = 0)
 	{
-		$option    = Factory::getApplication()->input->getCmd('option');
+		$option    = Factory::getApplication()->getInput()->getCmd('option');
 		$app       = Factory::getApplication();
 		$starttime = microtime();
 
@@ -935,7 +935,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getMatchCommentary($match_id)
 	{
-		$option    = Factory::getApplication()->input->getCmd('option');
+		$option    = Factory::getApplication()->getInput()->getCmd('option');
 		$app       = Factory::getApplication();
 		$starttime = microtime();
 
@@ -1043,8 +1043,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function insertgooglecalendar()
 	{
-		$pks        = Factory::getApplication()->input->getVar('cid', null, 'post', 'array');
-		$post       = Factory::getApplication()->input->post->getArray(array());
+		$pks        = Factory::getApplication()->getInput()->getVar('cid', null, 'post', 'array');
+		$post       = Factory::getApplication()->getInput()->post->getArray(array());
 		$project_id = $post['project_id'];
 		$match_ids  = implode(",", $pks);
 
@@ -1962,7 +1962,7 @@ break;
 	function sendEmailtoPlayers()
 	{
 		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 		$user   = Factory::getApplication()->getIdentity();
 
@@ -2083,7 +2083,7 @@ break;
 	{
 		$date       = Factory::getDate();
 		$user       = Factory::getApplication()->getIdentity();
-		$post       = Factory::getApplication()->input->post->getArray(array());
+		$post       = Factory::getApplication()->getInput()->post->getArray(array());
 		$parentsave = true;
 
 //$this->jsmapp->enqueueMessage('data <pre>'.print_r($data,true).'</pre>', 'notice');
@@ -2337,7 +2337,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	{
 		$app    = Factory::getApplication();
         $result = array();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
 
@@ -2573,7 +2573,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function updateRoster($post)
 	{
 		$app           = Factory::getApplication();
-		$option        = Factory::getApplication()->input->getCmd('option');
+		$option        = Factory::getApplication()->getInput()->getCmd('option');
 		$date          = Factory::getDate();
 		$user          = Factory::getApplication()->getIdentity();
 		$db            = sportsmanagementHelper::getDBConnection();
@@ -2673,7 +2673,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function updateStaff($post)
 	{
 		$app       = Factory::getApplication();
-		$option    = Factory::getApplication()->input->getCmd('option');
+		$option    = Factory::getApplication()->getInput()->getCmd('option');
 		$date      = Factory::getDate();
 		$user      = Factory::getApplication()->getIdentity();
 		$db        = sportsmanagementHelper::getDBConnection();
@@ -2769,7 +2769,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function savesubstitution($data)
 	{
 		$app    = Factory::getApplication();
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$date   = Factory::getDate();
 		$user   = Factory::getApplication()->getIdentity();
 		$db     = sportsmanagementHelper::getDBConnection();
@@ -3270,11 +3270,11 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getPressebericht()
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$app    = Factory::getApplication();
 
 		// $match_id = $cid[0];
-		$match_id  = Factory::getApplication()->input->getVar('match_id');
+		$match_id  = Factory::getApplication()->getInput()->getVar('match_id');
 		$this->_id = $match_id;
 		$file      = JPATH_SITE . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'pressebericht' . DIRECTORY_SEPARATOR . $match_id . '.jlg';
 		$app->enqueueMessage(Text::_('datei = ' . $file), '');
@@ -3311,9 +3311,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getPresseberichtMatchnumber($csv_file)
 	{
-		$option   = Factory::getApplication()->input->getCmd('option');
+		$option   = Factory::getApplication()->getInput()->getCmd('option');
 		$app      = Factory::getApplication();
-		$match_id = Factory::getApplication()->input->getVar('match_id');
+		$match_id = Factory::getApplication()->getInput()->getVar('match_id');
 		$tblmatch = Table::getInstance("match", "sportsmanagementTable");
 		$tblmatch->load($match_id);
 		$match_number     = $tblmatch->match_number;
@@ -3343,7 +3343,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getPresseberichtReadPlayers($csv_file)
 	{
-		$option = Factory::getApplication()->input->getCmd('option');
+		$option = Factory::getApplication()->getInput()->getCmd('option');
 		$app    = Factory::getApplication();
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
@@ -3351,7 +3351,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$csv_player_count = 40;
 		$find_csv = '';
 		$project_id       = $app->getUserState("$option.pid", '0');
-		$match_id         = Factory::getApplication()->input->getVar('match_id');
+		$match_id         = Factory::getApplication()->getInput()->getVar('match_id');
 		$tblmatch         = Table::getInstance("match", "sportsmanagementTable");
 		$tblmatch->load($match_id);
 		$tblproject = Table::getInstance("project", "sportsmanagementTable");
