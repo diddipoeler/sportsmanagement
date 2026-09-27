@@ -44,8 +44,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	{
 		if (!class_exists(NativePredictionModel::class)) {
 			foreach ([
+				JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionModel.php',
+				JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementPredictionReadModel.php',
 				JPATH_SITE . '/components/com_sportsmanagement/src/Model/PredictionentryModel.php',
 			] as $nativeFile) {
 				if (is_file($nativeFile)) {
