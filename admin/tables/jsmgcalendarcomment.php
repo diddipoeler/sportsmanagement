@@ -13,6 +13,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\Jsmgcalendarcomme
 
 if (!class_exists(JsmgcalendarcommentTable::class)) {
     foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JsmgcalendarcommentTable.php',
     ] as $nativeTable) {

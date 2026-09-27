@@ -1,0 +1,59 @@
+name: Joomla 5/6 compatibility batch 487
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/teamplayer.php'
+      - 'admin/tables/jsmgcalendarimport.php'
+      - 'admin/tables/jsmgcalendarcomment.php'
+      - '.github/workflows/joomla5-6-compatibility-batch487.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/teamplayer.php'
+      - 'admin/tables/jsmgcalendarimport.php'
+      - 'admin/tables/jsmgcalendarcomment.php'
+      - '.github/workflows/joomla5-6-compatibility-batch487.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/models/teamplayer.php
+            admin/tables/jsmgcalendarimport.php
+            admin/tables/jsmgcalendarcomment.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          grep -Fq -- 'ActionLogHelper.php' admin/models/teamplayer.php
+          grep -Fq -- 'SportsManagementDatabaseResolver.php' admin/models/teamplayer.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/teamplayer.php
+
+          grep -Fq -- 'SportsManagementDatabaseResolver.php' admin/tables/jsmgcalendarimport.php
+          grep -Fq -- 'SportsManagementTable.php' admin/tables/jsmgcalendarimport.php
+          grep -Fq -- 'JsmgcalendarTable.php' admin/tables/jsmgcalendarimport.php
+
+          grep -Fq -- 'SportsManagementDatabaseResolver.php' admin/tables/jsmgcalendarcomment.php
+          grep -Fq -- 'SportsManagementTable.php' admin/tables/jsmgcalendarcomment.php
+          grep -Fq -- 'JsmgcalendarcommentTable.php' admin/tables/jsmgcalendarcomment.php
