@@ -12,10 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Site\Pagination\JSMSportsmanagementPagination as NativePagination;
 
 if (!class_exists(NativePagination::class)) {
-    $nativePagination = JPATH_SITE . '/components/com_sportsmanagement/src/Pagination/JSMSportsmanagementPagination.php';
-
-    if (is_file($nativePagination)) {
-        require_once $nativePagination;
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Pagination/JSMSportsmanagementPagination.php',
+    ] as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
+        }
     }
 }
 
