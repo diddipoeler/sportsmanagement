@@ -13,6 +13,11 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamstaffModel;
 
 if (!class_exists(TeamstaffModel::class)) {
     foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/TeamstaffTable.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TeamstaffModel.php',
     ] as $nativeModel) {
