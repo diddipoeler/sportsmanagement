@@ -22,6 +22,7 @@ use Joomla\Registry\Registry;
 use Joomla\CMS\Input\Input;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\Database\DatabaseInterface;
 
 $googleAutoload = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php/vendor/autoload.php';
@@ -1962,7 +1963,7 @@ break;
 	{
 		$app    = Factory::getApplication();
 		$option = Factory::getApplication()->input->getCmd('option');
-		$mailer = Factory::getMailer();
+		$mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 		$user   = Factory::getApplication()->getIdentity();
 
 		// Get settings from com_issuetracker parameters
@@ -2279,7 +2280,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 								$match_teams    = self::getMatchTeams($mid);
 								$match_detail   = self::getMatchData($mid);
 								$refreee_detail = self::getRefereeRoster($key, $mid, $project_referee_id);
-								$mailer         = Factory::getMailer();
+								$mailer         = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 								$mailer->setSender($sender);
 								$recipient = $refreee_detail[$project_referee_id]->email;
 								$mailer->addRecipient($recipient);
