@@ -16,6 +16,13 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
 
 if (!class_exists(ClubModel::class)) {
     foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ExtraFieldsSaveHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/LocationHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/RemoteImageDownloadHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDateHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ClubModel.php',
     ] as $nativeModel) {

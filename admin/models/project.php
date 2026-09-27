@@ -13,6 +13,11 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
 
 if (!class_exists(ProjectModel::class)) {
     foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/ProjectTable.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ProjectModel.php',
     ] as $nativeModel) {
