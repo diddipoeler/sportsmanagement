@@ -1,0 +1,49 @@
+name: Joomla 5/6 compatibility batch 495
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/libraries/sportsmanagement/model.php'
+      - '.github/workflows/joomla5-6-compatibility-batch495.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/libraries/sportsmanagement/model.php'
+      - '.github/workflows/joomla5-6-compatibility-batch495.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/libraries/sportsmanagement/model.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- '$this->jsmapp->getConfig()' "$file"
+
+          if grep -Fq -- 'Factory::getApplication()->getConfig()' "$file"; then
+            echo 'Global application config lookup remains in admin model library' >&2
+            exit 1
+          fi
+
+          if grep -Fq -- 'Factory::getConfig()' "$file"; then
+            echo 'Deprecated Factory::getConfig() remains in admin model library' >&2
+            exit 1
+          fi
