@@ -1203,7 +1203,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 				$object                = new stdClass;
 				$object->id            = $row->id;
 				$object->gcal_event_id = $id;
-				$result_update         = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_match', $object, 'id', true);
+				$result_update         = $this->jsmdb->updateObject('#__sportsmanagement_match', $object, 'id', true);
 			}
 		}
 
