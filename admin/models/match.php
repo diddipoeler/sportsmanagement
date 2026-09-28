@@ -22,7 +22,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Input\Input;
 use Joomla\CMS\Filter\OutputFilter;
@@ -1285,9 +1284,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = array())
 	{
-		$config['dbo'] = sportsmanagementHelper::getDBConnection();
-
-		return Table::getInstance($type, $prefix, $config);
+		return new MatchTable(sportsmanagementHelper::getDBConnection());
 	}
 
 	/**
