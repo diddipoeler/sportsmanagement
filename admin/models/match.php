@@ -2772,28 +2772,28 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		if (empty($data['project_position_id']))
 		{
-			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_POSITION_ID'));
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_POSITION_ID'), 'error');
 
 			return false;
 		}
 
 		if (empty($data['in_out_time']))
 		{
-			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_TIME'));
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_TIME'), 'error');
 
 			return false;
 		}
 
 		if (empty($data['in']))
 		{
-			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_IN'));
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_IN'), 'error');
 
 			return false;
 		}
 
 		if (empty($data['out']))
 		{
-			$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_OUT'));
+			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_OUT'), 'error');
 
 			return false;
 		}
@@ -2808,11 +2808,12 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		if (!($data['matchid']))
 		{
-			$this->setError(
+			$app->enqueueMessage(
 				"in: " . $data['in'] .
 				", out: " . $data['out'] .
 				", matchid: " . $data['matchid'] .
-				", project_position_id: " . $data['project_position_id']
+				", project_position_id: " . $data['project_position_id'],
+				'error'
 			);
 
 			return false;
