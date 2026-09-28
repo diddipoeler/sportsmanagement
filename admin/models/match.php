@@ -1373,7 +1373,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 					foreach ($data as $key => $value)
 					{
-						if (ereg('^staffstat' . $team_staff_id . '_([0-9]+)', $key, $reg) && $value != "")
+						if (preg_match('/^staffstat' . $team_staff_id . '_([0-9]+)/', $key, $reg) && $value != "")
 						{
 							$statistic_id         = $reg[1];
 							$stat                 = Table::getInstance('Matchstaffstatistic', 'sportsmanagementTable');
