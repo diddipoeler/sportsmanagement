@@ -1088,14 +1088,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		);
 		$client->setAccessType("offline");
 
-		if (version_compare(JVERSION, '4.0.0', 'ge'))
-		{
-			$uri = Uri::getInstance();
-		}
-		else
-		{
-			$uri = Factory::getURI();
-		}
+		$uri = Uri::getInstance();
 
 		if (filter_var($uri->getHost(), FILTER_VALIDATE_IP))
 		{
