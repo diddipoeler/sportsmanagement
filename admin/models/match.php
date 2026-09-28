@@ -1813,7 +1813,7 @@ $object->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]
 			
 			try
 			{
-				$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_match', $object, 'id', true);
+				$result_update = $this->jsmdb->updateObject('#__sportsmanagement_match', $object, 'id', true);
 			}
 			catch (Exception $e)
 			{
