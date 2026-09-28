@@ -11,6 +11,9 @@
  * https://hotexamples.com/de/examples/-/Google_Service_Calendar_EventDateTime/-/php-google_service_calendar_eventdatetime-class-examples.html
  */
 \defined('_JEXEC') or die;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstaffstatisticTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstatisticTable;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -1323,7 +1326,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 						if (preg_match('/^stat' . $teamplayer_id . '_([0-9]+)/', $key, $reg) && $value != "")
 						{
 							$statistic_id         = $reg[1];
-							$stat                 = Table::getInstance('Matchstatistic', 'sportsmanagementTable');
+							$stat                 = new MatchstatisticTable($db);
 							$stat->match_id       = $match_id;
 							$stat->projectteam_id = $projectteam_id;
 							$stat->teamplayer_id  = $teamplayer_id;
@@ -1376,7 +1379,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 						if (preg_match('/^staffstat' . $team_staff_id . '_([0-9]+)/', $key, $reg) && $value != "")
 						{
 							$statistic_id         = $reg[1];
-							$stat                 = Table::getInstance('Matchstaffstatistic', 'sportsmanagementTable');
+							$stat                 = new MatchstaffstatisticTable($db);
 							$stat->match_id       = $match_id;
 							$stat->projectteam_id = $projectteam_id;
 							$stat->team_staff_id  = $team_staff_id;
@@ -3314,7 +3317,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option   = Factory::getApplication()->getInput()->getCmd('option');
 		$app      = Factory::getApplication();
 		$match_id = Factory::getApplication()->getInput()->getVar('match_id');
-		$tblmatch = Table::getInstance("match", "sportsmanagementTable");
+		$tblmatch = new MatchTable(Factory::getContainer()->get(DatabaseInterface::class));
 		$tblmatch->load($match_id);
 		$match_number     = $tblmatch->match_number;
 		$csv_match_number = $csv_file->data[0]['Spielberichtsnummer'];
