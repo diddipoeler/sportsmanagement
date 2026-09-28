@@ -3359,9 +3359,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$favteam   = $tblproject->fav_team;
 		$season_id = $tblproject->season_id;
 
-		for ($a = 0; $a < sizeof($csv_file->titles); $a++)
+		for ($a = 0; $a < count($csv_file->titles); $a++)
 		{
-			$csv_file->titles[$a] = utf8_encode($csv_file->titles[$a]);
+			$csv_file->titles[$a] = mb_convert_encoding($csv_file->titles[$a], 'UTF-8', 'ISO-8859-1');
 		}
 
 		foreach ($csv_file->data as $key => $key2)
