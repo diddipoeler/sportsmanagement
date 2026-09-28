@@ -1253,9 +1253,30 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 			{
 				$row->ordering = $order[$i];
 
-				if (!$row->store())
+				try
 				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, (string) $row->getError(), __LINE__);
+					if (!$row->store())
+					{
+						sportsmanagementModeldatabasetool::writeErrorLog(
+							get_class($this),
+							__FUNCTION__,
+							__FILE__,
+							'MatchTable::store() returned false.',
+							__LINE__
+						);
+
+						return false;
+					}
+				}
+				catch (\Throwable $e)
+				{
+					sportsmanagementModeldatabasetool::writeErrorLog(
+						get_class($this),
+						__FUNCTION__,
+						__FILE__,
+						$e->getMessage(),
+						__LINE__
+					);
 
 					return false;
 				}
