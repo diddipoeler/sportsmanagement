@@ -1,0 +1,62 @@
+name: Joomla 5/6 compatibility batch 511
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch511.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch511.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/models/match.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path('admin/models/match.php').read_text()
+          for method in ('deleteevent', 'deletecommentary', 'savecomment', 'saveevent'):
+              m = re.search(r'(?:public\s+)?static\s+function\s+' + method + r'\s*\([^)]*\)\s*\{', text)
+              if not m:
+                  raise SystemExit(f'{method} not found')
+              i = text.find('{', m.start())
+              depth = 0
+              end = i
+              for j in range(i, len(text)):
+                  if text[j] == '{':
+                      depth += 1
+                  elif text[j] == '}':
+                      depth -= 1
+                      if depth == 0:
+                          end = j + 1
+                          break
+              segment = text[m.start():end]
+              if '$db->disconnect()' in segment:
+                  raise SystemExit(f'shared container database disconnected in {method}')
+          PY
