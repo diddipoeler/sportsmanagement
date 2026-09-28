@@ -1,16 +1,16 @@
-name: Joomla 5/6 compatibility batch 502
+name: Joomla 5/6 compatibility batch 503
 
 on:
   push:
     branches: [joomla5-6]
     paths:
       - 'admin/models/match.php'
-      - '.github/workflows/joomla5-6-compatibility-batch502.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch503.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'admin/models/match.php'
-      - '.github/workflows/joomla5-6-compatibility-batch502.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch503.yml'
 
 permissions:
   contents: read
@@ -36,11 +36,13 @@ jobs:
           done
 
           grep -Fq -- '@version    5.6.0' "$file"
-          grep -Fq -- '$app->getInput()->getCmd(' "$file"
-          grep -Fq -- '$app->getInput()->getVar(' "$file"
-          grep -Fq -- '$app->getInput()->post->getArray' "$file"
 
           if grep -Fq -- 'Factory::getApplication()->getInput()' "$file"; then
             echo 'Global application input lookup remains in match.php' >&2
+            exit 1
+          fi
+
+          if perl -0777 -ne "exit(!(m/\$option\s*=\s*\$app->getInput\(\)->getCmd\('option'\);\s*\$app\s*=\s*Factory::getApplication\(\);/s))" "$file"; then
+            echo 'Application variable is used before assignment in match.php' >&2
             exit 1
           fi

@@ -373,8 +373,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getteampersons($projectteam_id = 0, $filter = false, $persontype = 0)
 	{
-		$option            = $app->getInput()->getCmd('option');
 		$app               = Factory::getApplication();
+		$option            = $app->getInput()->getCmd('option');
         $result = array();
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
@@ -432,8 +432,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getSubstitutions($tid = 0, $match_id = 0)
 	{
-		$option           = $app->getInput()->getCmd('option');
 		$app              = Factory::getApplication();
+		$option           = $app->getInput()->getCmd('option');
 		self::$_season_id = $app->getUserState("$option.season_id", '0');
 		$project_id       = $app->getUserState("$option.pid", '0');
 		$starttime        = microtime();
@@ -490,8 +490,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getRoster($team_id = 0, $project_position_id = 0, $match_id = 0, $position_value = 0)
 	{
-		$option            = $app->getInput()->getCmd('option');
 		$app               = Factory::getApplication();
+		$option            = $app->getInput()->getCmd('option');
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
 
@@ -737,8 +737,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getInputStats($project_id)
 	{
-		$option = $app->getInput()->getCmd('option');
 		$app    = Factory::getApplication();
+		$option = $app->getInput()->getCmd('option');
 
 		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
 
@@ -778,8 +778,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getMatchStatsInput($match_id, $projectteam1_id, $projectteam2_id)
 	{
-		$option    = $app->getInput()->getCmd('option');
 		$app       = Factory::getApplication();
+		$option    = $app->getInput()->getCmd('option');
 		$starttime = microtime();
 		$query     = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
 		$query->select('*');
@@ -811,8 +811,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getMatchStaffStatsInput($match_id = 0, $projectteam1_id = 0, $projectteam2_id = 0)
 	{
-		$option    = $app->getInput()->getCmd('option');
 		$app       = Factory::getApplication();
+		$option    = $app->getInput()->getCmd('option');
 		$starttime = microtime();
 
 		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
@@ -941,8 +941,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getMatchCommentary($match_id)
 	{
-		$option    = $app->getInput()->getCmd('option');
 		$app       = Factory::getApplication();
+		$option    = $app->getInput()->getCmd('option');
 		$starttime = microtime();
 
 		// Get a db connection.
@@ -3273,8 +3273,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getPressebericht()
 	{
-		$option = $app->getInput()->getCmd('option');
 		$app    = Factory::getApplication();
+		$option = $app->getInput()->getCmd('option');
 
 		// $match_id = $cid[0];
 		$match_id  = $app->getInput()->getVar('match_id');
@@ -3314,8 +3314,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getPresseberichtMatchnumber($csv_file)
 	{
-		$option   = $app->getInput()->getCmd('option');
 		$app      = Factory::getApplication();
+		$option   = $app->getInput()->getCmd('option');
 		$match_id = $app->getInput()->getVar('match_id');
 		$tblmatch = new MatchTable(Factory::getContainer()->get(DatabaseInterface::class));
 		$tblmatch->load($match_id);
@@ -3346,8 +3346,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getPresseberichtReadPlayers($csv_file)
 	{
-		$option = $app->getInput()->getCmd('option');
 		$app    = Factory::getApplication();
+		$option = $app->getInput()->getCmd('option');
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
 
