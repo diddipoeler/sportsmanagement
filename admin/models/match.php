@@ -16,11 +16,13 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\Matchstaffstatist
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstatisticTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextindividualsportesModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Input\Input;
@@ -1803,15 +1805,13 @@ $object->team1_result_split = implode(";", $post['team1_result_split' . $pks[$x]
 				$result = false;
 			}
 
-			$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-			$project    = $mdlProject->getProject($post['project_id']);
+			$project = ProjectModel::getProject($post['project_id']);
 			if($project->teams_as_referees == 1)
 			{
 				$postReferee = array();
-				$modelMatches = BaseDatabaseModel::getInstance("Match", "sportsmanagementModel");
 				$postReferee['id'] = $object->id;
 				
-				$positions              = $modelMatches->getProjectPositionsOptions(0, 3, $post['project_id']);
+				$positions = self::getProjectPositionsOptions(0, 3, $post['project_id']);
 				$position = array();
 				
 				if ($post['referee_id' . $pks[$x]] != null && $post['referee_id' . $pks[$x]] > 0)
@@ -1836,11 +1836,11 @@ case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
 $match_single_free = array();
 $match_single_player = array();
 
-$mdlProject = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-$mdlteamplayers = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
-$mdljlextindividualsportes = BaseDatabaseModel::getInstance("jlextindividualsportes", "sportsmanagementModel");
+$db = sportsmanagementHelper::getDBConnection();
+$mdlteamplayers = new TeamplayersModel(['dbo' => $db]);
+$mdljlextindividualsportes = new JlextindividualsportesModel(['dbo' => $db]);
 
-$project = $mdlProject->getProject($post['project_id']);
+$project = ProjectModel::getProject($post['project_id']);
 $rid = $post['rid'];
 for ($x = 0; $x < count($pks); $x++)
 {
@@ -1971,13 +1971,12 @@ break;
 		// Get settings from com_issuetracker parameters
 		$params           = ComponentHelper::getParams($option);
 		$this->project_id = $app->getUserState("$option.pid", '0');
-		$mdl              = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
-		$project          = $mdl->getProject($this->project_id);
+		$project = ProjectModel::getProject($this->project_id);
 
 		if ($project->fav_team)
 		{
-			$mdl        = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
-			$teamplayer = $mdl->getProjectTeamplayers($project->fav_team, $project->season_id);
+			$teamplayersModel = new TeamplayersModel(['dbo' => sportsmanagementHelper::getDBConnection()]);
+			$teamplayer = $teamplayersModel->getProjectTeamplayers($project->fav_team, $project->season_id);
 		}
 
 		foreach ($teamplayer as $player)

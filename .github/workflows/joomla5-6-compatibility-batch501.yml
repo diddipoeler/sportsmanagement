@@ -1,0 +1,55 @@
+name: Joomla 5/6 compatibility batch 501
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch501.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch501.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/models/match.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- 'use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;' "$file"
+          grep -Fq -- 'use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;' "$file"
+          grep -Fq -- 'use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextindividualsportesModel;' "$file"
+          grep -Fq -- 'ProjectModel::getProject(' "$file"
+          grep -Fq -- 'new TeamplayersModel(' "$file"
+          grep -Fq -- 'new JlextindividualsportesModel(' "$file"
+          grep -Fq -- 'self::getProjectPositionsOptions(' "$file"
+
+          if grep -Fq -- 'BaseDatabaseModel::getInstance' "$file"; then
+            echo 'Legacy BaseDatabaseModel::getInstance() remains in match.php' >&2
+            exit 1
+          fi
+
+          if grep -Fq -- 'use Joomla\CMS\MVC\Model\BaseDatabaseModel;' "$file"; then
+            echo 'Unused BaseDatabaseModel import remains in match.php' >&2
+            exit 1
+          fi
