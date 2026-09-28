@@ -378,7 +378,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
 
-		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true);
 		$query->select('sp.id AS value');
 		$query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering,pl.knvbnr');
 		$query->select('pos.name AS positionname');
@@ -402,8 +403,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$query->order("pl.lastname ASC");
-		Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
-		$result = Factory::getContainer()->get(DatabaseInterface::class)->loadObjectList();
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
 
 		if (!$result)
 		{
@@ -494,7 +495,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
 
-		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true);
 		$query->select('mp.id AS table_id,mp.match_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number,mp.captain AS captain');
 		$query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,pl.ordering,pl.position_id as person_position_id');
 		$query->select('pos.name AS positionname,pos.id as position_position_id');
@@ -522,8 +524,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$query->order('mp.ordering ASC');
-		Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
-		$result = Factory::getContainer()->get(DatabaseInterface::class)->loadObjectList('value');
+		$db->setQuery($query);
+		$result = $db->loadObjectList('value');
 
 		if (!$result)
 		{
@@ -666,7 +668,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app               = Factory::getApplication();
 		$option            = $app->getInput()->getCmd('option');
-		$query             = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$db                = Factory::getContainer()->get(DatabaseInterface::class);
+		$query             = $db->getQuery(true);
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
 
@@ -714,9 +717,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$query->order('mp.project_position_id, mp.ordering,	pl.lastname, pl.firstname ASC');
-		Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
+		$db->setQuery($query);
 
-		$result = Factory::getContainer()->get(DatabaseInterface::class)->loadObjectList($id);
+		$result = $db->loadObjectList($id);
 
 		if (!$result)
 		{
@@ -737,7 +740,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app    = Factory::getApplication();
 		$option = $app->getInput()->getCmd('option');
 
-		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true);
 
 		include_once JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics' . DIRECTORY_SEPARATOR . 'base.php';
 
@@ -748,9 +752,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$query->where('ppos.project_id = ' . $project_id);
 		$query->order('stat.ordering, ps.ordering');
 
-		Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
+		$db->setQuery($query);
 
-		$res   = Factory::getContainer()->get(DatabaseInterface::class)->loadObjectList();
+		$res   = $db->loadObjectList();
 		$stats = array();
 
 		foreach ($res as $k => $row)
@@ -778,14 +782,15 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app       = Factory::getApplication();
 		$option    = $app->getInput()->getCmd('option');
 		$starttime = microtime();
-		$query     = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$db        = Factory::getContainer()->get(DatabaseInterface::class);
+		$query     = $db->getQuery(true);
 		$query->select('*');
 		$query->from('#__sportsmanagement_match_statistic ');
 		$query->where('match_id = ' . $match_id);
 
-		Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
+		$db->setQuery($query);
 
-		$res   = Factory::getContainer()->get(DatabaseInterface::class)->loadObjectList();
+		$res   = $db->loadObjectList();
 		$stats = array($projectteam1_id => array(),
 		               $projectteam2_id => array());
 
@@ -812,15 +817,16 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option    = $app->getInput()->getCmd('option');
 		$starttime = microtime();
 
-		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true);
 
 		$query->select('*');
 		$query->from('#__sportsmanagement_match_staff_statistic ');
 		$query->where('match_id = ' . $match_id);
 
-		Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
+		$db->setQuery($query);
 
-		$res   = Factory::getContainer()->get(DatabaseInterface::class)->loadObjectList();
+		$res   = $db->loadObjectList();
 		$stats = array($projectteam1_id => array(), $projectteam2_id => array());
 
 		foreach ((array) $res as $stat)
@@ -892,7 +898,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app       = Factory::getApplication();
 		$starttime = microtime();
 
-		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true);
 
 		$query->select('et.id AS value,et.name AS text,et.icon AS icon');
 
@@ -914,9 +921,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$query->order('et.id,pet.ordering, et.ordering');
 		$query->group('et.id');
 
-		Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
+		$db->setQuery($query);
 
-		$result = Factory::getContainer()->get(DatabaseInterface::class)->loadObjectList();
+		$result = $db->loadObjectList();
 
 		if (!$result)
 		{
