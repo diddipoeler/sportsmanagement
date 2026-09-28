@@ -2026,7 +2026,7 @@ break;
 	{
 		$app   = $this->jsmapp;
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = Factory::getContainer()->get(DatabaseInterface::class)->getQuery(true);
+		$query = $db->getQuery(true);
 
 		$result = false;
 
@@ -2050,12 +2050,8 @@ break;
             LEFT JOIN #__sportsmanagement_match_player as mpl
             ON mpl.match_id = m.id
             WHERE m.id IN (' . $cids . ')';
-			Factory::getContainer()->get(DatabaseInterface::class)->setQuery($query);
-			Factory::getContainer()->get(DatabaseInterface::class)->execute();
-
-			if (!Factory::getContainer()->get(DatabaseInterface::class)->execute())
-			{
-			}
+			$db->setQuery($query);
+			$db->execute();
 
 			return parent::delete($pks);
 		}
