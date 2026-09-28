@@ -1,0 +1,50 @@
+name: Joomla 5/6 compatibility batch 507
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch507.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch507.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/models/match.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- '$app = $this->jsmapp;' "$file"
+          grep -Fq -- '$this->jsmapp->getUserState(' "$file"
+
+          if grep -Fq -- '$jsmfactory    = Factory::getApplication();' "$file"; then
+            echo 'Unused constructor application lookup remains in match.php' >&2
+            exit 1
+          fi
+
+          if grep -Fq -- "Factory::getApplication()->getUserState('com_sportsmanagement.edit.match.data'" "$file"; then
+            echo 'Global loadFormData application lookup remains in match.php' >&2
+            exit 1
+          fi
