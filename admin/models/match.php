@@ -14,6 +14,8 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstaffstatisticTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstatisticTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamTable;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
@@ -3355,9 +3357,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$find_csv = '';
 		$project_id       = $app->getUserState("$option.pid", '0');
 		$match_id         = Factory::getApplication()->getInput()->getVar('match_id');
-		$tblmatch         = Table::getInstance("match", "sportsmanagementTable");
+		$tblmatch         = new MatchTable($db);
 		$tblmatch->load($match_id);
-		$tblproject = Table::getInstance("project", "sportsmanagementTable");
+		$tblproject = new ProjectTable($db);
 		$tblproject->load($project_id);
 		$favteam   = $tblproject->fav_team;
 		$season_id = $tblproject->season_id;
@@ -3384,7 +3386,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 			return false;
 		}
 
-		$tblteam = Table::getInstance("team", "sportsmanagementTable");
+		$tblteam = new TeamTable($db);
 		$tblteam->load($favteam);
 
 		// Select some fields
