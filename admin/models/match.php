@@ -3896,7 +3896,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function savePressebericht($post = null)
 	{
 		$app    = Factory::getApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 
 		$match_id        = $app->getInput()->getVar('match_id');
