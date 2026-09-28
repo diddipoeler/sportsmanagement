@@ -94,7 +94,7 @@ class sportsmanagementModelMatch extends JSMModelAdmin
 public static function getSingleMatchDatas($match_id = 0)
 	{
 		$app    = Factory::getApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$db     = sportsmanagementHelper::getDBConnection(true, $jinput->getInt('cfg_which_database', 0));
 		$query  = $db->getQuery(true);
 		$result = array();
@@ -1074,7 +1074,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$params = array();
 		$client = new Google_Client(
 			array(
-				'ioFileCache_directory' => Factory::getConfig()->get('tmp_path')
+				'ioFileCache_directory' => $app->getConfig()->get('tmp_path')
 			)
 		);
 		$client->setApplicationName("JSMCalendar");
@@ -1422,9 +1422,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
         $pks = array();
         $post = array();
-		$pks  = $this->jsmapp->input->getVar('cid', null, 'post', 'array');
-		$post = $this->jsmapp->input->post->getArray(array());
-        $config = Factory::getConfig();
+		$pks  = $this->jsmapp->getInput()->getVar('cid', null, 'post', 'array');
+		$post = $this->jsmapp->getInput()->post->getArray(array());
+        $config = $this->jsmapp->getConfig();
 		$result = true;
         $projectteam1_id = 0;
         $projectteam2_id = 0;
@@ -2162,7 +2162,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 	function updateReferees($post)
 	{
 		$app    = Factory::getApplication();
-		$config = Factory::getConfig();
+		$config = $app->getConfig();
 
 		$sender = array(
 			$config->get('mailfrom'),
@@ -3899,7 +3899,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
-		$match_id        = $app->input->getVar('match_id');
+		$match_id        = $app->getInput()->getVar('match_id');
 		$project_id      = $app->getUserState("$option.pid", '0');
 		$season_id       = $post['season_id'];
 		$fav_team        = $post['fav_team'];
