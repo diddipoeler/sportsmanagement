@@ -2099,7 +2099,7 @@ break;
 	public function save($data)
 	{
 		$app        = $this->jsmapp;
-		$date       = Factory::getDate();
+		$date       = $this->jsmdate;
 		$user       = $app->getIdentity();
 		$post       = $app->getInput()->post->getArray(array());
 		$parentsave = true;
@@ -2590,7 +2590,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app           = $this->jsmapp;
 		$option        = $app->getInput()->getCmd('option');
-		$date          = Factory::getDate();
+		$date          = $this->jsmdate;
 		$user          = $app->getIdentity();
 		$db            = sportsmanagementHelper::getDBConnection();
 		$query         = $db->getQuery(true);
@@ -2690,7 +2690,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app       = $this->jsmapp;
 		$option    = $app->getInput()->getCmd('option');
-		$date      = Factory::getDate();
+		$date      = $this->jsmdate;
 		$user      = $app->getIdentity();
 		$db        = sportsmanagementHelper::getDBConnection();
 		$query     = $db->getQuery(true);
@@ -4234,7 +4234,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
@@ -4273,7 +4273,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
@@ -4319,7 +4319,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
@@ -4390,7 +4390,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
@@ -4463,7 +4463,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
@@ -4544,7 +4544,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
@@ -4615,7 +4615,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
@@ -4687,7 +4687,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$app  = $this->jsmapp;
 		$db   = Factory::getContainer()->get(DatabaseInterface::class);
-		$date = Factory::getDate();
+		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
 		$insertquery = $db->getQuery(true);
