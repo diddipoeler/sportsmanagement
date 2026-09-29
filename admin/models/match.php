@@ -22,6 +22,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
@@ -123,7 +124,7 @@ public static function getSingleMatchDatas($match_id = 0)
 public static function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0, $round_id = 0)
 {
 $app    = Factory::getApplication();    
-$date          = Factory::getDate();
+$date          = new Date();
 		$user          = $app->getIdentity();
         $db            = sportsmanagementHelper::getDBConnection();
 
@@ -2786,7 +2787,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app    = Factory::getApplication();
 		$option = $app->getInput()->getCmd('option');
-		$date   = Factory::getDate();
+		$date   = new Date();
 		$user   = $app->getIdentity();
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
@@ -3068,7 +3069,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function savecomment($data)
 	{
 		$app  = Factory::getApplication();
-		$date = Factory::getDate();
+		$date = new Date();
 		$user = $app->getIdentity();
 
 		// Live kommentar speichern
@@ -3137,7 +3138,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function saveevent($data)
 	{
 		$app  = Factory::getApplication();
-		$date = Factory::getDate();
+		$date = new Date();
 		$user = $app->getIdentity();
         $statsvalue = 0;
         $statsid    = 0;
