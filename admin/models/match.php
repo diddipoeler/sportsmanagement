@@ -1054,6 +1054,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function insertgooglecalendar()
 	{
 		$app        = $this->jsmapp;
+		$option     = $app->getInput()->getCmd('option');
 		$pks        = $app->getInput()->getVar('cid', null, 'post', 'array');
 		$post       = $app->getInput()->post->getArray(array());
 		$project_id = $post['project_id'];
