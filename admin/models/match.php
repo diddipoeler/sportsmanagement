@@ -3140,6 +3140,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$date = Factory::getDate();
 		$user = $app->getIdentity();
         $statsvalue = 0;
+        $statsid    = 0;
 
 		if ($data['useeventtime'])
 		{
