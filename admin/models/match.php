@@ -2951,7 +2951,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		 */
 		$query->clear();
 		$query->delete('#__sportsmanagement_match_player');
-		$query->where("id = " . $db->Quote($substitution_id) . " OR id = " . $db->Quote($substitution_id + 1));
+		$query->where("id = " . $db->quote($substitution_id) . " OR id = " . $db->quote($substitution_id + 1));
 		$db->setQuery($query);
 
 		try
@@ -3760,8 +3760,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		// From the table
 		$query->from('#__sportsmanagement_person');
-		$query->where('firstname LIKE ' . $db->Quote('' . trim($firstname) . '') );
-		$query->where('lastname LIKE ' . $db->Quote('' . trim($lastname) . ''));
+		$query->where('firstname LIKE ' . $db->quote('' . trim($firstname) . '') );
+		$query->where('lastname LIKE ' . $db->quote('' . trim($lastname) . ''));
 		$db->setQuery($query);
 
 		try
@@ -3889,7 +3889,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$query = $db->getQuery(true);
 		$query->select('*');
 		$query->from('#__sportsmanagement_eventtype');
-		$query->where('name = ' . $db->Quote($event_type_name));
+		$query->where('name = ' . $db->quote($event_type_name));
 
 		$db->setQuery($query);
 
@@ -4239,7 +4239,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('person_id', 'season_id', 'persontype', 'position_id', 'modified', 'modified_by');
-		$values      = array($person_id, $season_id, $person_type, $position_id, $db->Quote($date->toSql()), $user->id);
+		$values      = array($person_id, $season_id, $person_type, $position_id, $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_season_person_id'))
 			->columns($db->quoteName($columns))
@@ -4278,7 +4278,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('project_id', 'person_id', 'project_position_id', 'modified', 'modified_by');
-		$values      = array($project_id, $season_person_id, $position_id, $db->Quote($date->toSql()), $user->id);
+		$values      = array($project_id, $season_person_id, $position_id, $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_project_referee'))
 			->columns($db->quoteName($columns))
@@ -4324,7 +4324,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('match_id', 'project_referee_id', 'project_position_id', 'modified', 'modified_by');
-		$values      = array($match_id, $project_referee_id, $position_id, $db->Quote($date->toSql()), $user->id);
+		$values      = array($match_id, $project_referee_id, $position_id, $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_match_referee'))
 			->columns($db->quoteName($columns))
@@ -4395,7 +4395,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('person_id', 'project_id', 'persontype', 'project_position_id', 'modified', 'modified_by');
-		$values      = array($person_id, $project_id, $person_type, $project_position_id, $db->Quote($date->toSql()), $user->id);
+		$values      = array($person_id, $project_id, $person_type, $project_position_id, $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_person_project_position'))
 			->columns($db->quoteName($columns))
@@ -4468,7 +4468,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('person_id', 'season_id', 'team_id', 'persontype', 'project_position_id', 'jerseynumber', 'published', 'modified', 'modified_by');
-		$values      = array($person_id, $season_id, $team_id, $person_type, $project_position_id, $jerseynumber, 1, $db->Quote($date->toSql()), $user->id);
+		$values      = array($person_id, $season_id, $team_id, $person_type, $project_position_id, $jerseynumber, 1, $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
 			->columns($db->quoteName($columns))
@@ -4549,7 +4549,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('match_id', 'teamplayer_id', 'project_position_id', 'trikot_number', 'came_in', 'in_for', 'in_out_time', 'captain', 'modified', 'modified_by');
-		$values      = array($match_id, $season_team_person_id, $project_position_id, $jerseynumber, $came_in, $in_for, $in_out_time, $captain, $db->Quote($date->toSql()), $user->id);
+		$values      = array($match_id, $season_team_person_id, $project_position_id, $jerseynumber, $came_in, $in_for, $in_out_time, $captain, $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_match_player'))
 			->columns($db->quoteName($columns))
@@ -4620,7 +4620,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('match_id', 'projectteam_id', 'teamplayer_id', 'event_time', 'event_type_id', 'event_sum', 'notice', 'modified', 'modified_by');
-		$values      = array($match_id, $project_team_id, $season_team_person_id, $event_time, $event_type, 1, $db->Quote($notice), $db->Quote($date->toSql()), $user->id);
+		$values      = array($match_id, $project_team_id, $season_team_person_id, $event_time, $event_type, 1, $db->quote($notice), $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_match_event'))
 			->columns($db->quoteName($columns))
@@ -4692,7 +4692,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$insertquery = $db->getQuery(true);
 		$columns     = array('match_id', 'team_staff_id', 'project_position_id', 'modified', 'modified_by');
-		$values      = array($match_id, $team_staff_id, $project_position_id, $db->Quote($date->toSql()), $user->id);
+		$values      = array($match_id, $team_staff_id, $project_position_id, $db->quote($date->toSql()), $user->id);
 		$insertquery
 			->insert($db->quoteName('#__sportsmanagement_match_staff'))
 			->columns($db->quoteName($columns))
