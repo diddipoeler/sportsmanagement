@@ -46,7 +46,7 @@ jobs:
           import re
 
           text = Path('admin/models/match.php').read_text()
-          pattern = re.compile(r'(?:(?:public|protected|private)s+)?(?P<static>statics+)?functions+(?P<name>[A-Za-z0-9_]+)s*([^)]*)s*{')
+          pattern = re.compile(r'(?:(?:public|protected|private)\s+)?(?P<static>static\s+)?function\s+(?P<name>[A-Za-z0-9_]+)\s*\([^)]*\)\s*\{')
           for match in pattern.finditer(text):
               start = match.start()
               i = text.find('{', start)

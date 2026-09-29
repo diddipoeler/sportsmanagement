@@ -1,0 +1,30 @@
+name: Joomla 5/6 compatibility batch 523
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch522.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch523.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch522.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch523.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate batch 522 regex
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=.github/workflows/joomla5-6-compatibility-batch522.yml
+          grep -Fq -- "(?P<static>static\\s+)?" "$file"
+          grep -Fq -- "function\\s+(?P<name>" "$file"
+          grep -Fq -- "\\s*\\([^)]*\\)\\s*\\{" "$file"
