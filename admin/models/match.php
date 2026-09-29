@@ -743,7 +743,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
-		include_once JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics' . DIRECTORY_SEPARATOR . 'base.php';
+		require_once JPATH_COMPONENT_ADMINISTRATOR . '/statistics/base.php';
 
 		$query->select('stat.id,stat.name,stat.short,stat.class,stat.icon,stat.calculated,ppos.position_id AS posid');
 		$query->from('#__sportsmanagement_statistic AS stat ');
