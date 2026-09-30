@@ -47,8 +47,9 @@ foreach ([
 if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
     final class modSportsmanagementClubBirthdayHelper
     {
-        public static function getData(Registry $params, ?DatabaseInterface $database = null): array
+        public static function getData($params, ?DatabaseInterface $database = null): array
         {
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = SportsManagementSiteApplicationResolver::resolve();
 
             if (!$app->isClient('site')) {
@@ -60,7 +61,7 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
                 $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
-            return (new ClubBirthdayHelper())->getData($params, $app, $database);
+            return (new ClubBirthdayHelper())->getData($registry, $app, $database);
         }
 
         public static function jsm_birthday_sort(array $clubs, int $sort): array

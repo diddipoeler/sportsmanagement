@@ -12,7 +12,11 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagelistModel;
 
 if (!class_exists(ImagelistModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ImagelistModel.php';
+    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ImagelistModel.php';
+
+    if (is_file($nativeModel)) {
+        require_once $nativeModel;
+    }
 }
 
 if (!class_exists(ImagelistModel::class)) {

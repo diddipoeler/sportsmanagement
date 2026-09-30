@@ -10,10 +10,17 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\InstallhelperModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementAdminModel;
 
-if (!class_exists(InstallhelperModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/InstallhelperModel.php';
+$nativeDependencies = [
+    SportsManagementAdminModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+    InstallhelperModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/InstallhelperModel.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
+    }
 }
 
 if (!class_exists(InstallhelperModel::class)) {

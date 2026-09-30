@@ -12,7 +12,11 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\AjaxModel;
 
 if (!class_exists(AjaxModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/AjaxModel.php';
+    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/AjaxModel.php';
+
+    if (is_file($nativeModel)) {
+        require_once $nativeModel;
+    }
 }
 
 if (!class_exists(AjaxModel::class)) {
