@@ -46,9 +46,10 @@ if (!class_exists('modRquotesHelper', false)) {
     {
     public static function renderRquote(&$rquote, &$params, $module = null): void
     {
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $module ??= (object) ['module' => 'mod_sportsmanagement_rquotes', 'id' => 0];
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
-        $pictureServer = (int) $params->get('cfg_which_database', 0)
+        $pictureServer = (int) $registry->get('cfg_which_database', 0)
             ? rtrim((string) $componentParams->get('cfg_which_database_server', ''), '/') . '/'
             : Uri::root();
 
@@ -109,12 +110,16 @@ if (!class_exists('modRquotesHelper', false)) {
 
     public static function getTextFile(&$params, $filename, $module): array
     {
-        return self::legacyText($params, (string) $filename, $module, false);
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+
+        return self::legacyText($registry, (string) $filename, $module, false);
     }
 
     public static function getTextFile2(&$params, $filename, $module): array
     {
-        return self::legacyText($params, (string) $filename, $module, true);
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+
+        return self::legacyText($registry, (string) $filename, $module, true);
     }
 
     private static function databaseResult(

@@ -260,6 +260,8 @@ class modJSMRankingHelper extends stdClass
      */
     public static function getTeamLink($item, $params, $project)
     {
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+
         if (!class_exists(SiteRouteHelper::class)) {
             $routeHelperFile = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
 
@@ -273,12 +275,12 @@ class modJSMRankingHelper extends stdClass
         }
 
         $routeparameter = [
-            'cfg_which_database' => $params->get('cfg_which_database'),
-            's' => $params->get('s'),
+            'cfg_which_database' => $registry->get('cfg_which_database'),
+            's' => $registry->get('s'),
             'p' => $project->slug,
         ];
 
-        switch ($params->get('teamlink')) {
+        switch ($registry->get('teamlink')) {
             case 'teaminfo':
                 return SiteRouteHelper::view('teaminfo', $routeparameter + [
                     'tid' => $item->team->team_slug,
