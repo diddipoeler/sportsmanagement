@@ -1,0 +1,70 @@
+name: Joomla 5/6 compatibility batch 540
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/matchevent.php'
+      - 'admin/models/matchplayer.php'
+      - 'admin/models/matchstatistic.php'
+      - 'admin/models/positioneventtype.php'
+      - 'admin/models/positionstatistic.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch540.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/matchevent.php'
+      - 'admin/models/matchplayer.php'
+      - 'admin/models/matchstatistic.php'
+      - 'admin/models/positioneventtype.php'
+      - 'admin/models/positionstatistic.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch540.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/matchevent.php
+            admin/models/matchplayer.php
+            admin/models/matchstatistic.php
+            admin/models/positioneventtype.php
+            admin/models/positionstatistic.php
+            modules/mod_sportsmanagement_clubicons/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          for file in             admin/models/matchevent.php             admin/models/matchplayer.php             admin/models/matchstatistic.php             admin/models/positioneventtype.php             admin/models/positionstatistic.php; do
+            grep -Fq -- 'SportsManagementAdminModel::class =>' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          grep -Fq -- 'MatcheventModel::class =>' admin/models/matchevent.php
+          grep -Fq -- 'MatchplayerModel::class =>' admin/models/matchplayer.php
+          grep -Fq -- 'MatchstatisticModel::class =>' admin/models/matchstatistic.php
+          grep -Fq -- 'PositioneventtypeModel::class =>' admin/models/positioneventtype.php
+          grep -Fq -- 'PositionstatisticModel::class =>' admin/models/positionstatistic.php
+          grep -Fq -- '$params instanceof Registry ? $params : new Registry((array) $params)' modules/mod_sportsmanagement_clubicons/helper.php
+          grep -Fq -- '(new ClubiconsHelper())->getData($registry, $module, $app)' modules/mod_sportsmanagement_clubicons/helper.php
