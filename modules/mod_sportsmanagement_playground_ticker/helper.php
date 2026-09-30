@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Registry\Registry;
 
 $nativeDependencies = [
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
@@ -43,6 +44,7 @@ if (!class_exists('modJSMPlaygroundTicker', false)) {
     {
     public static function getData($params, ?DatabaseInterface $database = null): array
     {
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $app = SportsManagementSiteApplicationResolver::resolve();
 
         if (!$app->isClient('site')) {
@@ -54,7 +56,7 @@ if (!class_exists('modJSMPlaygroundTicker', false)) {
             $database = Factory::getContainer()->get(DatabaseInterface::class);
         }
 
-        return (new PlaygroundTickerHelper())->getData($params, $app, $database);
+        return (new PlaygroundTickerHelper())->getData($registry, $app, $database);
     }
 
     public static function getEstadios_Proyecto($params, ?DatabaseInterface $database = null): array
