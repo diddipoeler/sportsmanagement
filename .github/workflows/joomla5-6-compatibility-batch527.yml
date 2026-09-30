@@ -1,0 +1,52 @@
+name: Joomla 5/6 compatibility batch 527
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch527.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch527.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/models/match.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+
+          grep -Fq -- '@version    5.6.0' "$file"
+          grep -Fq -- "insertObject('#__sportsmanagement_match_commentary', \$temp, 'id')" "$file"
+          grep -Fq -- "insertObject('#__sportsmanagement_match_event', \$temp, 'id')" "$file"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('admin/models/match.php').read_text()
+
+          for name in ('savecomment', 'saveevent'):
+              start = text.index(f'function {name}')
+              end = text.find('\n\t/**', start + 10)
+              segment = text[start:end]
+              if 'insertid()' in segment:
+                  raise SystemExit(f'Legacy insertid() remains in {name}')
+          PY

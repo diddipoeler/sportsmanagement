@@ -3108,10 +3108,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		 */
 		try
 		{
-			$resultinsert = $db->insertObject('#__sportsmanagement_match_commentary', $temp);
-			$result       = $db->insertid();
+			$db->insertObject('#__sportsmanagement_match_commentary', $temp, 'id');
 
-			return $result;
+			return $temp->id;
 		}
 		catch (Exception $e)
 		{
@@ -3207,8 +3206,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		/** Insert the object into the table. */
 		try
 		{
-			$resultinsert = $db->insertObject('#__sportsmanagement_match_event', $temp);
-			$result       = $db->insertid();
+			$db->insertObject('#__sportsmanagement_match_event', $temp, 'id');
+			$result = $temp->id;
 			/** jetzt schauen wir nach, ob es statistiken zu dem event in der position gibt */
 			$query->clear();
 			$query->select('st.id,st.params,st.class');
