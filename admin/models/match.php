@@ -2239,7 +2239,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 
 		$this->jsmdb->setQuery($this->jsmquery);
 
-		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__, $this->jsmdb))
 		{
 			$this->setError(Text::_('JLIB_DATABASE_ERROR_FUNCTION_FAILED'));
 			$result = false;
