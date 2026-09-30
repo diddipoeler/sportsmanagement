@@ -10,10 +10,17 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonpersonModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementAdminModel;
 
-if (!class_exists(SeasonpersonModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SeasonpersonModel.php';
+$nativeDependencies = [
+    SportsManagementAdminModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+    SeasonpersonModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SeasonpersonModel.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
+    }
 }
 
 if (!class_exists(SeasonpersonModel::class)) {

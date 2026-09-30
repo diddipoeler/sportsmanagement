@@ -1,0 +1,51 @@
+name: Joomla 5/6 compatibility batch 537
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/seasonperson.php'
+      - 'admin/models/seasonteam.php'
+      - '.github/workflows/joomla5-6-compatibility-batch537.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/seasonperson.php'
+      - 'admin/models/seasonteam.php'
+      - '.github/workflows/joomla5-6-compatibility-batch537.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/seasonperson.php
+            admin/models/seasonteam.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementAdminModel::class =>' admin/models/seasonperson.php
+          grep -Fq -- 'SeasonpersonModel::class =>' admin/models/seasonperson.php
+          grep -Fq -- 'SportsManagementAdminModel::class =>' admin/models/seasonteam.php
+          grep -Fq -- 'SeasonteamModel::class =>' admin/models/seasonteam.php
