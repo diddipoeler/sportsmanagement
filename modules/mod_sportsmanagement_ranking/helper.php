@@ -116,8 +116,9 @@ class modJSMRankingHelper extends stdClass
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase);
         $query = $db->createQuery();
         $matchestoupdate = 0;
         $projectId = (int) $projectid;

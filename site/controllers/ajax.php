@@ -13,4 +13,10 @@
  */
 \defined('_JEXEC') or die;
 
-require_once __DIR__ . '/ajax.json.php';
+$legacyAjaxController = __DIR__ . '/ajax.json.php';
+
+if (!is_file($legacyAjaxController)) {
+    throw new \RuntimeException('SportsManagement Ajax compatibility controller could not be loaded.', 500);
+}
+
+require_once $legacyAjaxController;

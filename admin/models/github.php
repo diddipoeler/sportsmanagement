@@ -12,7 +12,11 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\GithubModel;
 
 if (!class_exists(GithubModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/GithubModel.php';
+    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/GithubModel.php';
+
+    if (is_file($nativeModel)) {
+        require_once $nativeModel;
+    }
 }
 
 if (!class_exists(GithubModel::class)) {
