@@ -43,7 +43,7 @@ if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
     {
         public static function getCalendars($params, ?DatabaseInterface $database = null): array
         {
-            $registry = $params instanceof Registry ? $params : new Registry($params);
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = SportsManagementSiteApplicationResolver::resolve();
 
             if (!$app->isClient('site')) {

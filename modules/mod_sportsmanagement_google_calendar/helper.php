@@ -32,11 +32,11 @@ if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
         protected string $apiKey = '';
         protected string $calendarId = '';
 
-        public function __construct(?Registry $params = null)
+        public function __construct($params = null)
         {
-            $params ??= new Registry();
-            $this->apiKey = trim((string) $params->get('api_key', ''));
-            $this->calendarId = trim((string) $params->get('calendar_id', ''));
+            $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
+            $this->apiKey = trim((string) $registry->get('api_key', ''));
+            $this->calendarId = trim((string) $registry->get('calendar_id', ''));
         }
 
         public static function duration(object $event): string
