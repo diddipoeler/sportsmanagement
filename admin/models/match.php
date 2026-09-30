@@ -4199,9 +4199,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		try
 		{
-			$result = $db->insertObject('#__sportsmanagement_person', $temp);
+			$db->insertObject('#__sportsmanagement_person', $temp, 'id');
 
-			return $db->insertid();
+			return $temp->id;
 		}
 		catch (Exception $e)
 		{
