@@ -86,15 +86,16 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             return '';
         }
 
-        public static function getTeamLink(object $item, Registry $params, object $project): string
+        public static function getTeamLink(object $item, $params, object $project): string
         {
-            $view = (string) $params->get('teamlink', '');
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+            $view = (string) $registry->get('teamlink', '');
             if ($view === '') {
                 return '';
             }
 
             $query = [
-                'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
+                'cfg_which_database' => (int) $registry->get('cfg_which_database', 0),
                 's' => (string) ($project->season_slug ?? $project->season_id ?? ''),
                 'p' => (string) ($project->slug ?? $project->id ?? ''),
             ];

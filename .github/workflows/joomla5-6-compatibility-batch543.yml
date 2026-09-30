@@ -1,0 +1,62 @@
+name: Joomla 5/6 compatibility batch 543
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/division.php'
+      - 'admin/models/eventtype.php'
+      - 'admin/models/season.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch543.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/division.php'
+      - 'admin/models/eventtype.php'
+      - 'admin/models/season.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch543.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/division.php
+            admin/models/eventtype.php
+            admin/models/season.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          for file in admin/models/division.php admin/models/eventtype.php admin/models/season.php; do
+            grep -Fq -- 'SportsManagementAdminModel::class =>' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          grep -Fq -- 'DivisionModel::class =>' admin/models/division.php
+          grep -Fq -- 'EventtypeModel::class =>' admin/models/eventtype.php
+          grep -Fq -- 'SeasonModel::class =>' admin/models/season.php
+          grep -Fq -- 'public static function getTeamLink(object $item, $params, object $project): string' modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          grep -Fq -- '$registry = $params instanceof Registry ? $params : new Registry((array) $params);' modules/mod_sportsmanagement_teamstats_ranking/helper.php
