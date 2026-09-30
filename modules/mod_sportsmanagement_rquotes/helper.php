@@ -118,12 +118,13 @@ if (!class_exists('modRquotesHelper', false)) {
     }
 
     private static function databaseResult(
-        Registry $params,
+        mixed $params,
         string $rotation,
         mixed $category,
         ?int $numOfRandom = null
     ): array {
-        $copy = clone $params;
+        $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+        $copy = clone $registry;
         $copy->set('source', 'db');
         $copy->set('rotate', $rotation);
         $copy->set('category', self::categoryValues($category));

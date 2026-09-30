@@ -30,8 +30,13 @@ foreach ($nativeDependencies as $class => $file) {
     }
 }
 
-if (!class_exists(AjaxController::class)) {
-    throw new \RuntimeException('SportsManagement native Ajax controller could not be loaded.', 500);
+foreach (array_keys($nativeDependencies) as $requiredClass) {
+    if (!class_exists($requiredClass)) {
+        throw new \RuntimeException(
+            'SportsManagement Ajax dependency could not be loaded: ' . $requiredClass,
+            500
+        );
+    }
 }
 
 if (!class_exists('sportsmanagementControllerAjax', false)) {
