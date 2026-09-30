@@ -17,6 +17,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Registry\Registry;
 
 $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
@@ -55,6 +56,7 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
          */
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = SportsManagementSiteApplicationResolver::resolve();
 
             if (!$app->isClient('site')) {
@@ -66,7 +68,7 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
                 $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
-            $data = (new EventsRankingHelper())->getData($params, $database);
+            $data = (new EventsRankingHelper())->getData($registry, $database);
 
             return [
                 'project' => $data['project'] ?? null,

@@ -12,7 +12,11 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagehandlerModel;
 
 if (!class_exists(ImagehandlerModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ImagehandlerModel.php';
+    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ImagehandlerModel.php';
+
+    if (is_file($nativeModel)) {
+        require_once $nativeModel;
+    }
 }
 
 if (!class_exists(ImagehandlerModel::class)) {

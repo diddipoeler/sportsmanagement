@@ -82,8 +82,9 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
 if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
     final class modSportsmanagementBirthdayHelper
     {
-        public static function getData(Registry $params, ?DatabaseInterface $database = null): array
+        public static function getData($params, ?DatabaseInterface $database = null): array
         {
+            $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = SportsManagementSiteApplicationResolver::resolve();
 
             if (!$app->isClient('site')) {
@@ -96,7 +97,7 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
             }
 
             return (new BirthdayHelper())->getData(
-                $params,
+                $registry,
                 ComponentHelper::getParams('com_sportsmanagement'),
                 $app,
                 $database
