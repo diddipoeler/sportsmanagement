@@ -4173,7 +4173,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function createPerson($firstname = '', $lastname = '', $position_id = 0)
 	{
 		$app = $this->jsmapp;
-		$db  = Factory::getContainer()->get(DatabaseInterface::class);
+		$db  = $this->jsmdb;
 
 		$temp              = new stdClass;
 		$temp->firstname   = $firstname;
@@ -4232,7 +4232,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = $this->jsmdb;
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
@@ -4271,7 +4271,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function createProjectReferee($project_id = 0, $season_person_id = 0, $position_id = 0)
 	{
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = $this->jsmdb;
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
@@ -4317,7 +4317,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = $this->jsmdb;
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
