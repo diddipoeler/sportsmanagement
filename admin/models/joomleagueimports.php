@@ -154,7 +154,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	function get_info_fields()
 	{
 		$conf   = Factory::getConfig();
-		$app    = Factory::getApplication();
 		$params = ComponentHelper::getParams('com_sportsmanagement');
 		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $db->createQuery();
@@ -181,7 +180,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	function check_database()
 	{
 		$conf   = Factory::getConfig();
-		$app    = Factory::getApplication();
+		$app    = $this->jsmapp;
 		$params = ComponentHelper::getParams('com_sportsmanagement');
         $jl_dberror = 0;
         $jl_dbprefix   = $params->get('jl_dbprefix');
@@ -560,12 +559,12 @@ return $jl_dberror;
 	function importjoomleaguenew($importstep = 0, $sports_type_id = 0)
 	{
 		$conf   = Factory::getConfig();
-		$app    = Factory::getApplication();
+		$app    = $this->jsmapp;
 		$params = ComponentHelper::getParams('com_sportsmanagement');
-		$jinput      = $app->input;
+		$jinput      = $app->getInput();
 		$option      = $jinput->getCmd('option');
 		$date        = Factory::getDate();
-		$user        = Factory::getApplication()->getIdentity();
+		$user        = $app->getIdentity();
 		$modified    = $date->toSql();
 		$modified_by = $user->get('id');
         $params = ComponentHelper::getParams('com_sportsmanagement');
