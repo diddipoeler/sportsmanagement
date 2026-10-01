@@ -13,7 +13,15 @@ defined('_JEXEC') or die;
 use Diddipoeler\Plugin\Finder\Sportsmanagement\Extension\Sportsmanagement;
 
 if (!class_exists(Sportsmanagement::class)) {
-    require_once __DIR__ . '/src/Extension/Sportsmanagement.php';
+    $nativePlugin = __DIR__ . '/src/Extension/Sportsmanagement.php';
+
+    if (is_file($nativePlugin)) {
+        require_once $nativePlugin;
+    }
+}
+
+if (!class_exists(Sportsmanagement::class)) {
+    throw new \RuntimeException('SportsManagement Finder plugin class could not be loaded.', 500);
 }
 
 if (!class_exists('PlgFinderJsm_search', false)) {
