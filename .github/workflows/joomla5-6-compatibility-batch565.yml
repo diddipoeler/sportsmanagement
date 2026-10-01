@@ -42,11 +42,11 @@ jobs:
             exit 1
           fi
 
-          grep -Fq -- "$debug = (bool) $app->get('debug', false);" "$file"
-          grep -Fq -- "$app->get('host')" "$file"
-          grep -Fq -- "$app->get('user')" "$file"
-          grep -Fq -- "$app->get('password')" "$file"
-          grep -Fq -- "$app->get('db')" "$file"
+          grep -Fq -- '$debug = (bool) $app->get('"'"'debug'"'"', false);' "$file"
+          grep -Fq -- '$app->get('"'"'host'"'"')' "$file"
+          grep -Fq -- '$app->get('"'"'user'"'"')' "$file"
+          grep -Fq -- '$app->get('"'"'password'"'"')' "$file"
+          grep -Fq -- '$app->get('"'"'db'"'"')' "$file"
 
           if grep -A5 -F 'function get_info_fields()' "$file" | grep -Fq -- 'ComponentHelper::getParams'; then
             echo 'Unused component params remain in get_info_fields.'

@@ -153,7 +153,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	 */
 	function get_info_fields()
 	{
-		
 		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $db->createQuery();
 
