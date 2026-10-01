@@ -1,0 +1,44 @@
+name: Joomla 5/6 compatibility batch 569
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/joomleagueimports.php'
+      - '.github/workflows/joomla5-6-compatibility-batch569.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/joomleagueimports.php'
+      - '.github/workflows/joomla5-6-compatibility-batch569.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=admin/models/joomleagueimports.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          test "$(grep -Fc -- "Log::add(\$e->getMessage(), Log::ERROR, 'jsmerror');" "$file")" -ge 7
+
+          for table in             '#__joomleague_team_staff'             '#__joomleague_team_player'             '#__joomleague_match_player'             '#__joomleague_match_staff'             '#__joomleague_match_referee'             '#__joomleague_match_event'; do
+            grep -Fq -- "$table" "$file"
+          done

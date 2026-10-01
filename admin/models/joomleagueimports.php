@@ -822,6 +822,7 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
+					Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 				}
 			}
 
@@ -882,6 +883,7 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
+					Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 				}
 			}
 
@@ -942,6 +944,7 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
+					Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 				}
 			}
 
@@ -1002,6 +1005,7 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
+					Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 				}
 			}
 
@@ -1063,6 +1067,7 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
+					Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 				}
 			}
 
@@ -1113,6 +1118,7 @@ return $jl_dberror;
 				}
 				catch (Exception $e)
 				{
+					Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 				}
 			}
             
