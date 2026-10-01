@@ -3177,6 +3177,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					}
 					catch (Exception $e)
 					{
+						Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 					}
 
 					if ($result_insert)
@@ -3215,6 +3216,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					}
 					catch (Exception $e)
 					{
+						Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 					}
 
 					if ($result_insert)
@@ -3298,6 +3300,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					}
 					catch (Exception $e)
 					{
+						Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 					}
 
 					if ($result_insert)
@@ -3464,6 +3467,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					}
 					catch (Exception $e)
 					{
+						Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
 					}
 
 					if ($result_insert)
