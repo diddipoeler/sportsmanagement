@@ -11,13 +11,13 @@
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
 
-if (!class_exists(DatabasetoolModel::class)) {
-    foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/DatabasetoolModel.php',
-    ] as $nativeModel) {
-        if (is_file($nativeModel)) {
-            require_once $nativeModel;
-        }
+$nativeDependencies = [
+    DatabasetoolModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/DatabasetoolModel.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
