@@ -1,0 +1,50 @@
+name: Joomla 5/6 compatibility batch 554
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/predictiongroup.php'
+      - 'admin/models/predictionmember.php'
+      - '.github/workflows/joomla5-6-compatibility-batch554.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/predictiongroup.php'
+      - 'admin/models/predictionmember.php'
+      - '.github/workflows/joomla5-6-compatibility-batch554.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/predictiongroup.php
+            admin/models/predictionmember.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'SportsManagementAdminModel::class =>' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          grep -Fq -- 'PredictiongroupModel::class =>' admin/models/predictiongroup.php
+          grep -Fq -- 'PredictionmemberModel::class =>' admin/models/predictionmember.php
