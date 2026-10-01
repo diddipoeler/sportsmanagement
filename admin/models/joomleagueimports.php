@@ -14,11 +14,12 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseFactory;
 use Joomla\Database\DatabaseInterface;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamplayersModel;
 
 $maxImportTime = 1920;
 
@@ -45,6 +46,8 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
  */
 class sportsmanagementModeljoomleagueimports extends ListModel
 {
+    protected $jsmapp;
+    protected $jsmjinput;
     /**
      * Create the configured JoomLeague source database using Joomla 5/6 drivers.
      */
@@ -3562,7 +3565,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			$query->join('INNER', '#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
 			$dbjsm->setQuery($query);
 			$result  = $dbjsm->loadObjectList();
-			$mdl     = BaseDatabaseModel::getInstance("teamplayers", "sportsmanagementModel");
+			if (!class_exists(TeamplayersModel::class)) {
+				require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/teamplayers.php';
+			}
+
+			if (!class_exists(TeamplayersModel::class)) {
+				throw new \RuntimeException('SportsManagement native Teamplayers model could not be loaded.', 500);
+			}
+
+			$mdl     = new TeamplayersModel();
 			$zaehler = 1;
 
 			foreach ($result as $row)
@@ -3591,7 +3602,15 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 		{
 			$my_text = '';
 			/** zum schluss werden noch die bilderpfade umgesetzt */
-			$mdl = BaseDatabaseModel::getInstance("databasetool", "sportsmanagementModel");
+			if (!class_exists(DatabasetoolModel::class)) {
+				require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/databasetool.php';
+			}
+
+			if (!class_exists(DatabasetoolModel::class)) {
+				throw new \RuntimeException('SportsManagement native Databasetool model could not be loaded.', 500);
+			}
+
+			$mdl = new DatabasetoolModel();
 
 			$mdl->setNewPicturePath();
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong>Bilderpfade angepasst !</strong>' . '</span>';
