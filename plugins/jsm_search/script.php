@@ -1,4 +1,12 @@
 <?php
+/**
+ * SportsManagement Joomla 5/6 file metadata.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 
 defined('_JEXEC') or die;
 
@@ -8,6 +16,13 @@ use Joomla\CMS\Installer\InstallerScriptInterface;
 use Joomla\Database\DatabaseInterface;
 
 return new class () implements InstallerScriptInterface {
+    private ?DatabaseInterface $database = null;
+
+    private function database(): DatabaseInterface
+    {
+        return $this->database ??= Factory::getContainer()->get(DatabaseInterface::class);
+    }
+
     public function install(InstallerAdapter $adapter): bool
     {
         return $this->migrateLegacySearchPlugin();
@@ -36,7 +51,7 @@ return new class () implements InstallerScriptInterface {
     private function migrateLegacySearchPlugin(): bool
     {
         try {
-            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            $db = $this->database();
             $legacyElements = [
                 $db->quote('search_sportsmanagement'),
                 $db->quote('jsm_search'),
