@@ -42,5 +42,5 @@ jobs:
             exit 1
           fi
 
-          grep -Fq -- "$my_text = '';" "$file"
+          grep -Fq -- '$my_text = '"'"''"'"';' "$file"
           grep -Fq -- '.= $my_text;' "$file"
