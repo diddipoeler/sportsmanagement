@@ -10,8 +10,6 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 \defined('_JEXEC') or die;
-use Joomla\Data\DataObject;
-use Joomla\CMS\Exception\ExceptionHandler;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -19,7 +17,6 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Filesystem\File;
 use Joomla\Database\DatabaseFactory;
 use Joomla\Database\DatabaseInterface;
 
@@ -131,6 +128,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$db->setQuery($query);
 
+			$result_insert = false;
 			try
 			{
 				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
@@ -3106,6 +3104,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			/**
 			 * unique index anlegen auf project_id/team_id
 			 */
+			$result_insert = false;
 			try
 			{
 				$query = $dbjsm->createQuery();
@@ -3205,6 +3204,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 //					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
+					$result_insert = false;
 					try
 					{
 						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_person_id', $temp);
@@ -3287,6 +3287,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 //					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
+					$result_insert = false;
 					try
 					{
 						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
@@ -3326,6 +3327,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 //					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
+					$result_insert = false;
 					try
 					{
 						// Insert the object into table.
@@ -3335,7 +3337,8 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					{
 						// Catch any database errors.
 						//    $dbjsm->transactionRollback();
-						ExceptionHandler::render($e);
+                        Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
+                        $this->jsmapp->enqueueMessage($e->getMessage(), 'error');
 					}
 
 					if ($result_insert)
@@ -3449,6 +3452,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 //					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
+					$result_insert = false;
 					try
 					{
 						// Insert the object into table.
