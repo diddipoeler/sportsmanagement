@@ -958,7 +958,7 @@ return $jl_dberror;
 			self::$_success['JL-Update:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -1018,7 +1018,7 @@ return $jl_dberror;
 			self::$_success['JL-Update:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -1079,7 +1079,7 @@ return $jl_dberror;
 			self::$_success['Tabellenkopie:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -1131,7 +1131,7 @@ return $jl_dberror;
 			self::$_success['Tabellenkopie:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -1144,7 +1144,7 @@ return $jl_dberror;
 			self::$_success['Tabellenkopie:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -1157,7 +1157,7 @@ return $jl_dberror;
 			self::$_success['Tabellenkopie:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -1487,7 +1487,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 			self::$_success['Tabellenkopie:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -1556,7 +1556,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 			self::$_success['Tabellenaktualisierung:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -1737,7 +1737,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 			self::$_success['Update Mannschaften/Spielorte:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -1797,7 +1797,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 			self::$_success['Update Saison:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -1855,7 +1855,7 @@ $this->jsmapp->enqueueMessage(__LINE__.' '.Text::sprintf('JLIB_DATABASE_ERROR_FU
 			self::$_success['Update Liga:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -2023,7 +2023,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			self::$_success['Update Runden/Gruppen/Projektpositionen/Projektschiedsrichter/Projektmannschaft:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -2181,7 +2181,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			self::$_success['Update Personen/Projektpositionen:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -2237,7 +2237,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			self::$_success['Update Team-Spieler/Team-Staff:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -2312,7 +2312,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			self::$_success['Update Projektteam:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -2424,7 +2424,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			self::$_success['Update Teamplayer/Teamstaff:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -2534,7 +2534,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			self::$_success['Update Matchplayer/Matchstaff:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -2706,7 +2706,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			self::$_success['Update Spiele:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 			return self::$_success;
 		}
 
@@ -2833,7 +2833,7 @@ $result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTa
 			self::$_success['Update Spiele:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -3491,7 +3491,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			self::$_success['Update Spiele:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -3548,7 +3548,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			self::$_success['Update Match-Statistic:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -3592,7 +3592,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			self::$_success['Update Projektpositionen:'] = $my_text;
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -3751,7 +3751,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', $jl_table_import_step);
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -3927,7 +3927,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', 'ENDE');
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
@@ -4074,7 +4074,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 
 			$jl_table_import_step++;
 			$jinput->set('jl_table_import_step', 'ENDE');
-			Factory::getDocument()->addScriptOptions('success', self::$_success);
+			$this->jsmapp->getDocument()->addScriptOptions('success', self::$_success);
 
 			return self::$_success;
 		}
