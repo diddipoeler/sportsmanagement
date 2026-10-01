@@ -10,21 +10,16 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\RoundModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementAdminModel;
 
-if (!class_exists(RoundModel::class)) {
-    foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDateHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/RoundTable.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/RoundModel.php',
-    ] as $nativeFile) {
-        if (is_file($nativeFile)) {
-            require_once $nativeFile;
-        }
+$nativeDependencies = [
+    SportsManagementAdminModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+    RoundModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/RoundModel.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 

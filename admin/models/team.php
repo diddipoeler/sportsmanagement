@@ -13,19 +13,16 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TeamModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementAdminModel;
 
-if (!class_exists(TeamModel::class)) {
-    foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ExtraFieldsSaveHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TeamModel.php',
-    ] as $nativeModel) {
-        if (is_file($nativeModel)) {
-            require_once $nativeModel;
-        }
+$nativeDependencies = [
+    SportsManagementAdminModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+    TeamModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TeamModel.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
