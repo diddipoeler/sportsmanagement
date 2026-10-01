@@ -13,22 +13,16 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ClubModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementAdminModel;
 
-if (!class_exists(ClubModel::class)) {
-    foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ExtraFieldsSaveHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/LocationHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/RemoteImageDownloadHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDateHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ClubModel.php',
-    ] as $nativeModel) {
-        if (is_file($nativeModel)) {
-            require_once $nativeModel;
-        }
+$nativeDependencies = [
+    SportsManagementAdminModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
+    ClubModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ClubModel.php',
+];
+
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
