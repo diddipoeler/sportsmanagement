@@ -1,0 +1,67 @@
+name: Joomla 5/6 compatibility batch 547
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/projectteams.php'
+      - 'admin/models/positions.php'
+      - 'admin/models/seasons.php'
+      - 'admin/models/statistics.php'
+      - 'admin/models/teams.php'
+      - 'admin/models/templates.php'
+      - '.github/workflows/joomla5-6-compatibility-batch547.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/projectteams.php'
+      - 'admin/models/positions.php'
+      - 'admin/models/seasons.php'
+      - 'admin/models/statistics.php'
+      - 'admin/models/teams.php'
+      - 'admin/models/templates.php'
+      - '.github/workflows/joomla5-6-compatibility-batch547.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/projectteams.php
+            admin/models/positions.php
+            admin/models/seasons.php
+            admin/models/statistics.php
+            admin/models/teams.php
+            admin/models/templates.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'SportsManagementListModel::class =>' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          grep -Fq -- 'ProjectRelationService::class =>' admin/models/projectteams.php
+          grep -Fq -- 'ProjectteamsModel::class =>' admin/models/projectteams.php
+          grep -Fq -- 'PositionsModel::class =>' admin/models/positions.php
+          grep -Fq -- 'SeasonsModel::class =>' admin/models/seasons.php
+          grep -Fq -- 'StatisticsModel::class =>' admin/models/statistics.php
+          grep -Fq -- 'TeamsModel::class =>' admin/models/teams.php
+          grep -Fq -- 'TemplatesModel::class =>' admin/models/templates.php

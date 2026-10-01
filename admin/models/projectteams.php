@@ -10,18 +10,18 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamsModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectRelationService;
 
-if (!class_exists(ProjectteamsModel::class)) {
-    $nativeFiles = [
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/ProjectRelationService.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ProjectteamsModel.php',
-    ];
+$nativeDependencies = [
+    SportsManagementListModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
+    ProjectRelationService::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/ProjectRelationService.php',
+    ProjectteamsModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ProjectteamsModel.php',
+];
 
-    foreach ($nativeFiles as $nativeFile) {
-        if (is_file($nativeFile)) {
-            require_once $nativeFile;
-        }
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
