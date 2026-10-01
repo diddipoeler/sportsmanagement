@@ -752,7 +752,7 @@ return $jl_dberror;
 
 				try
 				{
-					$result_update = $db->updateObject('#__joomleague_project_referee', $mdlTable, 'id');
+					$db->updateObject('#__joomleague_project_referee', $mdlTable, 'id');
                     $infocolor = self::$storeSuccessColor;
             $infotext = self::$storeSuccessText;
 				}
@@ -818,7 +818,7 @@ return $jl_dberror;
 
 				try
 				{
-					$result_update = $db->updateObject('#__joomleague_team_staff', $mdlTable, 'id');
+					$db->updateObject('#__joomleague_team_staff', $mdlTable, 'id');
 				}
 				catch (Exception $e)
 				{
@@ -879,7 +879,7 @@ return $jl_dberror;
 
 				try
 				{
-					$result_update = $db->updateObject('#__joomleague_team_player', $mdlTable, 'id');
+					$db->updateObject('#__joomleague_team_player', $mdlTable, 'id');
 				}
 				catch (Exception $e)
 				{
@@ -940,7 +940,7 @@ return $jl_dberror;
 
 				try
 				{
-					$result_update = $db->updateObject('#__joomleague_match_player', $mdlTable, 'id');
+					$db->updateObject('#__joomleague_match_player', $mdlTable, 'id');
 				}
 				catch (Exception $e)
 				{
@@ -1001,7 +1001,7 @@ return $jl_dberror;
 				$mdlTable->project_position_id = $db->loadResult();
 				try
 				{
-					$result_update = $db->updateObject('#__joomleague_match_staff', $mdlTable, 'id');
+					$db->updateObject('#__joomleague_match_staff', $mdlTable, 'id');
 				}
 				catch (Exception $e)
 				{
@@ -1063,7 +1063,7 @@ return $jl_dberror;
 				$mdlTable->project_position_id = $db->loadResult();
 				try
 				{
-					$result_update = $db->updateObject('#__joomleague_match_referee', $mdlTable, 'id');
+					$db->updateObject('#__joomleague_match_referee', $mdlTable, 'id');
 				}
 				catch (Exception $e)
 				{
@@ -1114,7 +1114,7 @@ return $jl_dberror;
 				$mdlTable->event_time  = '1';
 				try
 				{
-				$result_update = $db->updateObject('#__joomleague_match_event', $mdlTable, 'id');
+				$db->updateObject('#__joomleague_match_event', $mdlTable, 'id');
 				}
 				catch (Exception $e)
 				{
@@ -2267,7 +2267,7 @@ $mdlTable                      = new stdClass;
 $mdlTable->id                  = $row->id;
 $mdlTable->team_id = $row->new_team_id;
 try{
-$result_update = $dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTable, 'id');
+$dbjsm->updateObject('#__sportsmanagement_project_team', $mdlTable, 'id');
 	}
 				catch (Exception $e)
 				{
@@ -3102,7 +3102,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$object->team_id = $new_id;
 
 				// Update their details in the users table using id as the primary key.
-				$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_team', $object, 'id');
+				Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_team', $object, 'id');
 			}
 
 			/**
@@ -3484,7 +3484,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$object->person_id = $new_id;
 
 				// Update their details in the users table using id as the primary key.
-				$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_referee', $object, 'id');
+				Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_referee', $object, 'id');
 			}
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong> Spieler wurden umgesetzt !</strong>' . '</span>';
@@ -3654,7 +3654,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$object->modified_timestamp = $projekt->modified_timestamp;
 
 					// Update their details in the table using id as the primary key.
-					$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project', $object, 'id');
+					Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project', $object, 'id');
 				}
 			}
 
@@ -3686,7 +3686,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$object->match_timestamp = $match->match_timestamp;
 
 					// Update their details in the table using id as the primary key.
-					$result_update = Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_match', $object, 'id');
+					Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_match', $object, 'id');
 				}
 			}
 
