@@ -10,17 +10,16 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\LeaguesModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel;
 
-if (!class_exists(LeaguesModel::class)) {
-    $nativeFiles = [
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/LeaguesModel.php',
-    ];
+$nativeDependencies = [
+    SportsManagementListModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
+    LeaguesModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/LeaguesModel.php',
+];
 
-    foreach ($nativeFiles as $nativeFile) {
-        if (is_file($nativeFile)) {
-            require_once $nativeFile;
-        }
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 

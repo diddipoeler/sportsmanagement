@@ -1,0 +1,66 @@
+name: Joomla 5/6 compatibility batch 546
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/agegroups.php'
+      - 'admin/models/clubs.php'
+      - 'admin/models/divisions.php'
+      - 'admin/models/eventtypes.php'
+      - 'admin/models/leagues.php'
+      - 'admin/models/matches.php'
+      - '.github/workflows/joomla5-6-compatibility-batch546.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/agegroups.php'
+      - 'admin/models/clubs.php'
+      - 'admin/models/divisions.php'
+      - 'admin/models/eventtypes.php'
+      - 'admin/models/leagues.php'
+      - 'admin/models/matches.php'
+      - '.github/workflows/joomla5-6-compatibility-batch546.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/agegroups.php
+            admin/models/clubs.php
+            admin/models/divisions.php
+            admin/models/eventtypes.php
+            admin/models/leagues.php
+            admin/models/matches.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'SportsManagementListModel::class =>' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          grep -Fq -- 'AgegroupsModel::class =>' admin/models/agegroups.php
+          grep -Fq -- 'ClubsModel::class =>' admin/models/clubs.php
+          grep -Fq -- 'DivisionsModel::class =>' admin/models/divisions.php
+          grep -Fq -- 'EventtypesModel::class =>' admin/models/eventtypes.php
+          grep -Fq -- 'LeaguesModel::class =>' admin/models/leagues.php
+          grep -Fq -- 'MatchesModel::class =>' admin/models/matches.php
