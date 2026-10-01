@@ -48,6 +48,12 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 {
     protected $jsmapp;
     protected $jsmjinput;
+    private ?DatabaseInterface $sportsDatabase = null;
+    private function sportsDatabase(): DatabaseInterface
+    {
+        return $this->sportsDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
+    }
+
     /**
      * Create the configured JoomLeague source database using Joomla 5/6 drivers.
      */
@@ -108,7 +114,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 //		// JInput object
 //		$jinput = $app->input;
 		$post   = $this->jsmjinput->post->getArray(array());
-		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$db     = $this->sportsDatabase();
 		$query  = $db->createQuery();
 		$a      = 0;
 
@@ -154,7 +160,7 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 	 */
 	function get_info_fields()
 	{
-		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$db     = $this->sportsDatabase();
 		$query  = $db->createQuery();
 
 		$query->clear();
@@ -183,8 +189,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
         $jl_dberror = 0;
         $jl_dbprefix   = $params->get('jl_dbprefix');
 		$jsm_prefix = $app->get('dbprefix');
-		//$db     = Factory::getContainer()->get(DatabaseInterface::class);
-		//$query  = $db->createQuery();
 
 		/**
 		 * welche joomla version ?
@@ -575,7 +579,6 @@ return $jl_dberror;
 
 		$jinput->set('filter_sports_type', $sports_type_id);
 
-//		$db    = Factory::getContainer()->get(DatabaseInterface::class);
         $option             = array(); // Prevent problems
 		$option['driver']   = $params->get('jl_dbtype');      //       Database driver name
 		$option['host']     = $params->get('jl_host') ? $params->get('jl_host') : $app->get('host');     // Database host name
@@ -589,7 +592,7 @@ return $jl_dberror;
 		 */
         $db = self::createJoomLeagueDatabase($option);
         
-        $dbjsm    = Factory::getContainer()->get(DatabaseInterface::class);
+        $dbjsm    = $this->sportsDatabase();
 		$query = $db->createQuery();
         $queryjsm = $dbjsm->createQuery();
 
