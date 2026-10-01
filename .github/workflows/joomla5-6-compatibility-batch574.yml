@@ -1,0 +1,49 @@
+name: Joomla 5/6 compatibility batch 574
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/assets/images/shirt_php8.php'
+      - '.github/workflows/joomla5-6-compatibility-batch574.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/assets/images/shirt_php8.php'
+      - '.github/workflows/joomla5-6-compatibility-batch574.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=site/assets/images/shirt_php8.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          grep -Fq -- "$_GET['text'] ?? ''" "$file"
+          grep -Fq -- 'is_scalar($rawText)' "$file"
+          grep -Fq -- "is_file($imageFile)" "$file"
+          grep -Fq -- 'strlen($string) > 1' "$file"
+          grep -Fq -- 'imagedestroy($image);' "$file"
+
+          if grep -Fq -- "$string = $_GET['text'];" "$file"; then
+            echo 'Unsafe direct text access remains.'
+            exit 1
+          fi
