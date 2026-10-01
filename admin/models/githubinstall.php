@@ -11,11 +11,13 @@
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\GithubinstallModel;
 
-if (!class_exists(GithubinstallModel::class)) {
-    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/GithubinstallModel.php';
+$nativeDependencies = [
+    GithubinstallModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/GithubinstallModel.php',
+];
 
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 

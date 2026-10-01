@@ -1,0 +1,57 @@
+name: Joomla 5/6 compatibility batch 556
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/githubinstall.php'
+      - 'admin/models/github.php'
+      - 'admin/models/ajax.php'
+      - 'admin/models/imagelist.php'
+      - '.github/workflows/joomla5-6-compatibility-batch556.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/githubinstall.php'
+      - 'admin/models/github.php'
+      - 'admin/models/ajax.php'
+      - 'admin/models/imagelist.php'
+      - '.github/workflows/joomla5-6-compatibility-batch556.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/githubinstall.php
+            admin/models/github.php
+            admin/models/ajax.php
+            admin/models/imagelist.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          grep -Fq -- 'GithubinstallModel::class =>' admin/models/githubinstall.php
+          grep -Fq -- 'GithubModel::class =>' admin/models/github.php
+          grep -Fq -- 'AjaxModel::class =>' admin/models/ajax.php
+          grep -Fq -- 'ImagelistModel::class =>' admin/models/imagelist.php

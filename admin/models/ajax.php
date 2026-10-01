@@ -11,11 +11,13 @@
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\AjaxModel;
 
-if (!class_exists(AjaxModel::class)) {
-    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/AjaxModel.php';
+$nativeDependencies = [
+    AjaxModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/AjaxModel.php',
+];
 
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 

@@ -11,11 +11,13 @@
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagelistModel;
 
-if (!class_exists(ImagelistModel::class)) {
-    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ImagelistModel.php';
+$nativeDependencies = [
+    ImagelistModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ImagelistModel.php',
+];
 
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 
