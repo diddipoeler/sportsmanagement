@@ -16,6 +16,7 @@ use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Filesystem\File;
 use Joomla\Database\DatabaseInterface;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectteamTable;
+use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable;
 
 $maxImportTime = 1920;
 
@@ -61,7 +62,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 		/** umsetzung der project teams */
 		if (preg_match("/project_team/i", $jsm_table))
 		{
-			$my_text;
+			$my_text = '';
 			$my_text .= '<span style="color:' . sportsmanagementModeljoomleagueimports::$storeInfo . '"<strong> ( ' . __METHOD__ . ' )  ( ' . __LINE__ . ' ) </strong>' . '</span>';
 			$my_text .= '<br />';
 			$my_text .= '<span style="color:' . sportsmanagementModeljoomleagueimports::$existingInDbColor . '"<strong>Daten aus der Tabelle: ( ' . $jl_table . ' ) werden in die neue Struktur umgesetzt!"!</strong>' . '</span>';
@@ -149,9 +150,15 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				else
 				{
 					/** Eintrag schon vorhanden, ein update */
-					if (!class_exists(ProjectteamTable::class)) {
-						require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php';
-						require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/ProjectteamTable.php';
+					$nativeTableDependencies = [
+						SportsManagementTable::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
+						ProjectteamTable::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/ProjectteamTable.php',
+					];
+
+					foreach ($nativeTableDependencies as $class => $file) {
+						if (!class_exists($class, false) && is_file($file)) {
+							require_once $file;
+						}
 					}
 
 					if (!class_exists(ProjectteamTable::class)) {
@@ -175,13 +182,13 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				$my_text .= '<br />';
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Projectteam:'] .= $my_text;
+			sportsmanagementModeljoomleagueimports::$_success['Projectteam:'] .= $my_text = '';
 		}
 		elseif (preg_match("/team_player/i", $jsm_table))
 		{
 			/** umsetzung der teamplayer */
 			sportsmanagementModeljoomleagueimports::$team_player[$project_id][0] = 0;
-			$my_text;
+			$my_text = '';
 			$my_text .= '<span style="color:' . sportsmanagementModeljoomleagueimports::$storeInfo . '"<strong> ( ' . __METHOD__ . ' )  ( ' . __LINE__ . ' ) </strong>' . '</span>';
 			$my_text .= '<br />';
 
@@ -304,7 +311,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				sportsmanagementModeljoomleagueimports::$team_player[$project_id][$row->id] = $new_id;
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Team Player Projekt(' . $project_id . '):'] .= $my_text;
+			sportsmanagementModeljoomleagueimports::$_success['Team Player Projekt(' . $project_id . '):'] .= $my_text = '';
 		}
 		elseif (preg_match("/team_staff/i", $jsm_table))
 		{
@@ -312,7 +319,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 			 * umsetzung der team mitarbeiter
 			 */
 
-			$my_text;
+			$my_text = '';
 			$my_text .= '<span style="color:' . sportsmanagementModeljoomleagueimports::$storeInfo . '"<strong> ( ' . __METHOD__ . ' )  ( ' . __LINE__ . ' ) </strong>' . '</span>';
 			$my_text .= '<br />';
 
@@ -436,13 +443,12 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				sportsmanagementModeljoomleagueimports::$team_staff[$project_id][$row->id] = $new_id;
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Team Staff (' . $project_id . '):'] .= $my_text;
-
+			sportsmanagementModeljoomleagueimports::$_success['Team Staff (' . $project_id . '):'] .= $my_text = '';
 		}
 		elseif (preg_match("/project_referee/i", $jsm_table))
 		{
 			/** projekt schiedsrichter */
-			$my_text;
+			$my_text = '';
 			$my_text .= '<span style="color:' . sportsmanagementModeljoomleagueimports::$storeInfo . '"<strong> ( ' . __METHOD__ . ' )  ( ' . __LINE__ . ' ) </strong>' . '</span>';
 			$my_text .= '<br />';
 
@@ -527,7 +533,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				sportsmanagementModeljoomleagueimports::$project_referee[$project_id][$row->person_id] = $new_id;
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Project Referee neue Struktur (' . $project_id . '):'] .= $my_text;
+			sportsmanagementModeljoomleagueimports::$_success['Project Referee neue Struktur (' . $project_id . '):'] .= $my_text = '';
 		}
 
 	}

@@ -1,0 +1,47 @@
+name: Joomla 5/6 compatibility batch 558
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/joomleagueimport.php'
+      - '.github/workflows/joomla5-6-compatibility-batch558.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/joomleagueimport.php'
+      - '.github/workflows/joomla5-6-compatibility-batch558.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=admin/models/joomleagueimport.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          grep -Fq -- 'SportsManagementTable::class =>' "$file"
+          grep -Fq -- 'ProjectteamTable::class =>' "$file"
+          grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+
+          if grep -Eq '^[[[:space:]]]*\$my_text;[[[:space:]]]*$' "$file"; then
+            echo 'Uninitialised $my_text statement remains.'
+            exit 1
+          fi
