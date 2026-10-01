@@ -182,7 +182,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				$my_text .= '<br />';
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Projectteam:'] .= $my_text = '';
+			sportsmanagementModeljoomleagueimports::$_success['Projectteam:'] .= $my_text;
 		}
 		elseif (preg_match("/team_player/i", $jsm_table))
 		{
@@ -311,7 +311,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				sportsmanagementModeljoomleagueimports::$team_player[$project_id][$row->id] = $new_id;
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Team Player Projekt(' . $project_id . '):'] .= $my_text = '';
+			sportsmanagementModeljoomleagueimports::$_success['Team Player Projekt(' . $project_id . '):'] .= $my_text;
 		}
 		elseif (preg_match("/team_staff/i", $jsm_table))
 		{
@@ -443,7 +443,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				sportsmanagementModeljoomleagueimports::$team_staff[$project_id][$row->id] = $new_id;
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Team Staff (' . $project_id . '):'] .= $my_text = '';
+			sportsmanagementModeljoomleagueimports::$_success['Team Staff (' . $project_id . '):'] .= $my_text;
 		}
 		elseif (preg_match("/project_referee/i", $jsm_table))
 		{
@@ -533,7 +533,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				sportsmanagementModeljoomleagueimports::$project_referee[$project_id][$row->person_id] = $new_id;
 			}
 
-			sportsmanagementModeljoomleagueimports::$_success['Project Referee neue Struktur (' . $project_id . '):'] .= $my_text = '';
+			sportsmanagementModeljoomleagueimports::$_success['Project Referee neue Struktur (' . $project_id . '):'] .= $my_text;
 		}
 
 	}
