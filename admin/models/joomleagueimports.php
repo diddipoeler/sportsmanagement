@@ -3077,7 +3077,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$result_insert = false;
 					try
 					{
-						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_id', $temp);
+						$result_insert = $dbjsm->insertObject('#__sportsmanagement_season_team_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3102,7 +3102,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$object->team_id = $new_id;
 
 				// Update their details in the users table using id as the primary key.
-				Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_team', $object, 'id');
+				$dbjsm->updateObject('#__sportsmanagement_project_team', $object, 'id');
 			}
 
 			/**
@@ -3173,7 +3173,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$result_insert = false;
 					try
 					{
-						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
+						$result_insert = $dbjsm->insertObject('#__sportsmanagement_season_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3212,7 +3212,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$result_insert = false;
 					try
 					{
-						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+						$result_insert = $dbjsm->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3296,7 +3296,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$result_insert = false;
 					try
 					{
-						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
+						$result_insert = $dbjsm->insertObject('#__sportsmanagement_season_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3338,7 +3338,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					try
 					{
 						// Insert the object into table.
-						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+						$result_insert = $dbjsm->insertObject('#__sportsmanagement_season_team_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3463,7 +3463,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					try
 					{
 						// Insert the object into table.
-						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
+						$result_insert = $dbjsm->insertObject('#__sportsmanagement_season_person_id', $temp);
 					}
 					catch (Exception $e)
 					{
@@ -3484,7 +3484,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 				$object->person_id = $new_id;
 
 				// Update their details in the users table using id as the primary key.
-				Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project_referee', $object, 'id');
+				$dbjsm->updateObject('#__sportsmanagement_project_referee', $object, 'id');
 			}
 
 			$my_text .= '<span style="color:' . self::$storeSuccessColor . '"<strong> Spieler wurden umgesetzt !</strong>' . '</span>';
@@ -3654,7 +3654,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$object->modified_timestamp = $projekt->modified_timestamp;
 
 					// Update their details in the table using id as the primary key.
-					Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_project', $object, 'id');
+					$dbjsm->updateObject('#__sportsmanagement_project', $object, 'id');
 				}
 			}
 
@@ -3686,7 +3686,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 					$object->match_timestamp = $match->match_timestamp;
 
 					// Update their details in the table using id as the primary key.
-					Factory::getContainer()->get(DatabaseInterface::class)->updateObject('#__sportsmanagement_match', $object, 'id');
+					$dbjsm->updateObject('#__sportsmanagement_match', $object, 'id');
 				}
 			}
 
