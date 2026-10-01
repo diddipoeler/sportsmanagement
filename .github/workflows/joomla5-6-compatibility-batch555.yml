@@ -1,0 +1,49 @@
+name: Joomla 5/6 compatibility batch 555
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/updates.php'
+      - '.github/workflows/joomla5-6-compatibility-batch542.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch555.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/updates.php'
+      - '.github/workflows/joomla5-6-compatibility-batch542.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch555.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          php -l admin/models/updates.php
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" admin/models/updates.php
+          done
+
+          grep -Fq -- '@version    5.6.0' admin/models/updates.php
+          grep -Fq -- 'UpdatesModel::class =>' admin/models/updates.php
+          grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' admin/models/updates.php
+
+          grep -Fq -- "grep -Fq -- 'switch (' modules/mod_sportsmanagement_ranking/helper.php" .github/workflows/joomla5-6-compatibility-batch542.yml
+          grep -Fq -- "grep -Fq -- 'teamlink' modules/mod_sportsmanagement_ranking/helper.php" .github/workflows/joomla5-6-compatibility-batch542.yml
+          if grep -Fq -- 'switch ($registry->get' .github/workflows/joomla5-6-compatibility-batch542.yml; then
+            echo 'Unsafe shell expansion remains in batch 542 workflow.'
+            exit 1
+          fi

@@ -11,11 +11,13 @@
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\UpdatesModel;
 
-if (!class_exists(UpdatesModel::class)) {
-    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/UpdatesModel.php';
+$nativeDependencies = [
+    UpdatesModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/UpdatesModel.php',
+];
 
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+foreach ($nativeDependencies as $class => $file) {
+    if (!class_exists($class, false) && is_file($file)) {
+        require_once $file;
     }
 }
 

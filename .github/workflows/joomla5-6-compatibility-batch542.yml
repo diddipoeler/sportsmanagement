@@ -52,7 +52,8 @@ jobs:
           grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' admin/models/projectposition.php
 
           grep -Fq -- '$registry = $params instanceof Registry ? $params : new Registry((array) $params);' modules/mod_sportsmanagement_ranking/helper.php
-          grep -Fq -- "switch ($registry->get('teamlink'))" modules/mod_sportsmanagement_ranking/helper.php
+          grep -Fq -- 'switch (' modules/mod_sportsmanagement_ranking/helper.php
+          grep -Fq -- 'teamlink' modules/mod_sportsmanagement_ranking/helper.php
 
           grep -Fq -- '$registry = $params instanceof Registry ? $params : new Registry((array) $params);' modules/mod_sportsmanagement_rquotes/helper.php
           grep -Fq -- 'self::legacyText($registry, (string) $filename, $module, false)' modules/mod_sportsmanagement_rquotes/helper.php
