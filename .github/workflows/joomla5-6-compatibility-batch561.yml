@@ -1,4 +1,4 @@
-name: Joomla 5/6 compatibility batch 560
+name: Joomla 5/6 compatibility batch 561
 
 on:
   push:
@@ -6,11 +6,13 @@ on:
     paths:
       - 'admin/models/joomleagueimports.php'
       - '.github/workflows/joomla5-6-compatibility-batch560.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch561.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'admin/models/joomleagueimports.php'
       - '.github/workflows/joomla5-6-compatibility-batch560.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch561.yml'
 
 permissions:
   contents: read
@@ -37,21 +39,15 @@ jobs:
           done
           grep -Fq -- '@version    5.6.0' "$file"
 
+          test "$(grep -Fc -- '$result_insert = false;' "$file")" -eq 6
+          test "$(grep -Fc -- 'insertObject(' "$file")" -ge 6
+
           if grep -Eq '^[[:space:]]*ExceptionHandler::render\(' "$file"; then
             echo 'Legacy ExceptionHandler::render call remains.'
             exit 1
           fi
 
-          grep -Fq -- '$result_insert = false;' "$file"
-          grep -Fq -- "Log::add(\$e->getMessage(), Log::ERROR, 'jsmerror');" "$file"
-          grep -Fq -- "\$this->jsmapp->enqueueMessage(\$e->getMessage(), 'error');" "$file"
-
-          if grep -Fq -- 'use Joomla\Data\DataObject;' "$file"; then
-            echo 'Unused DataObject import remains.'
-            exit 1
-          fi
-
-          if grep -Fq -- 'use Joomla\CMS\Filesystem\File;' "$file"; then
-            echo 'Unused File import remains.'
+          if grep -Fq -- 'grep -Fq -- "$result_insert' .github/workflows/joomla5-6-compatibility-batch560.yml; then
+            echo 'Unsafe result_insert shell expansion remains in batch 560.'
             exit 1
           fi

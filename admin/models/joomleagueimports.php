@@ -128,7 +128,6 @@ class sportsmanagementModeljoomleagueimports extends ListModel
 
 			$db->setQuery($query);
 
-			$result_insert = false;
 			try
 			{
 				sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
@@ -3071,6 +3070,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 //					$temp->modified    = $dbjsm->quote('' . $date->toSql() . '');
 //					$temp->modified_by = $user->get('id');
 
+					$result_insert = false;
 					try
 					{
 						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_team_id', $temp);
@@ -3104,7 +3104,6 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 			/**
 			 * unique index anlegen auf project_id/team_id
 			 */
-			$result_insert = false;
 			try
 			{
 				$query = $dbjsm->createQuery();
@@ -3167,6 +3166,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR
 //					$temp->modified    = $dbjsm->quote('' . $modified . '');
 //					$temp->modified_by = $modified_by;
 
+					$result_insert = false;
 					try
 					{
 						$result_insert = Factory::getContainer()->get(DatabaseInterface::class)->insertObject('#__sportsmanagement_season_person_id', $temp);
