@@ -1,0 +1,54 @@
+name: Joomla 5/6 compatibility batch 577
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'plugins/jsm_search/src/Extension/Sportsmanagement.php'
+      - 'plugins/jsm_search/services/provider.php'
+      - 'plugins/jsm_search/search_sportsmanagement.php'
+      - '.github/workflows/joomla5-6-compatibility-batch577.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'plugins/jsm_search/src/Extension/Sportsmanagement.php'
+      - 'plugins/jsm_search/services/provider.php'
+      - 'plugins/jsm_search/search_sportsmanagement.php'
+      - '.github/workflows/joomla5-6-compatibility-batch577.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            plugins/jsm_search/src/Extension/Sportsmanagement.php
+            plugins/jsm_search/services/provider.php
+            plugins/jsm_search/search_sportsmanagement.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          grep -Fq -- 'final class Sportsmanagement extends Adapter implements SubscriberInterface' plugins/jsm_search/src/Extension/Sportsmanagement.php
+          grep -Fq -- 'implements ServiceProviderInterface' plugins/jsm_search/services/provider.php
+          grep -Fq -- "class_alias(Sportsmanagement::class, 'PlgFinderJsm_search');" plugins/jsm_search/search_sportsmanagement.php
