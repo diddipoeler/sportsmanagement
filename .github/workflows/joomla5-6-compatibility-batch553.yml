@@ -1,0 +1,73 @@
+name: Joomla 5/6 compatibility batch 553
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/sportstype.php'
+      - 'admin/models/trainingsdata.php'
+      - 'admin/models/predictiongame.php'
+      - 'admin/models/predictiongames.php'
+      - 'admin/models/predictiongroups.php'
+      - 'admin/models/predictionmembers.php'
+      - '.github/workflows/joomla5-6-compatibility-batch553.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/sportstype.php'
+      - 'admin/models/trainingsdata.php'
+      - 'admin/models/predictiongame.php'
+      - 'admin/models/predictiongames.php'
+      - 'admin/models/predictiongroups.php'
+      - 'admin/models/predictionmembers.php'
+      - '.github/workflows/joomla5-6-compatibility-batch553.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/sportstype.php
+            admin/models/trainingsdata.php
+            admin/models/predictiongame.php
+            admin/models/predictiongames.php
+            admin/models/predictiongroups.php
+            admin/models/predictionmembers.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' "$file"
+          done
+
+          for file in admin/models/sportstype.php admin/models/trainingsdata.php admin/models/predictiongame.php; do
+            grep -Fq -- 'SportsManagementAdminModel::class =>' "$file"
+          done
+
+          for file in admin/models/predictiongames.php admin/models/predictiongroups.php admin/models/predictionmembers.php; do
+            grep -Fq -- 'SportsManagementListModel::class =>' "$file"
+          done
+
+          grep -Fq -- 'SportstypeModel::class =>' admin/models/sportstype.php
+          grep -Fq -- 'TrainingsdataModel::class =>' admin/models/trainingsdata.php
+          grep -Fq -- 'PredictiongameModel::class =>' admin/models/predictiongame.php
+          grep -Fq -- 'PredictiongamesModel::class =>' admin/models/predictiongames.php
+          grep -Fq -- 'PredictiongroupsModel::class =>' admin/models/predictiongroups.php
+          grep -Fq -- 'PredictionmembersModel::class =>' admin/models/predictionmembers.php
