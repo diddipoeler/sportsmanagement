@@ -13,7 +13,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\View\Positions\HtmlView;
 
 if (!class_exists(HtmlView::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Positions/HtmlView.php';
+    $nativeView = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Positions/HtmlView.php';
+
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
+}
+
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Positions view could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementViewPositions', false)) {

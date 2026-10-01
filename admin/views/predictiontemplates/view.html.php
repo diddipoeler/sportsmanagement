@@ -13,7 +13,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\View\Predictiontemplates\HtmlView;
 
 if (!class_exists(HtmlView::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Predictiontemplates/HtmlView.php';
+    $nativeView = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Predictiontemplates/HtmlView.php';
+
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
+}
+
+if (!class_exists(HtmlView::class)) {
+    throw new \RuntimeException('SportsManagement native administrator Predictiontemplates view could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementViewPredictionTemplates', false)) {
