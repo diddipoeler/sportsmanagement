@@ -1,0 +1,36 @@
+name: Joomla 5/6 compatibility batch 575
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch574.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch575.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch574.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch575.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate workflow quoting
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if grep -Fq -- 'grep -Fq -- "$_GET' .github/workflows/joomla5-6-compatibility-batch574.yml; then
+            echo 'Unsafe _GET shell expansion remains in batch 574.'
+            exit 1
+          fi
+
+          if grep -Fq -- 'grep -Fq -- "is_file($imageFile)' .github/workflows/joomla5-6-compatibility-batch574.yml; then
+            echo 'Unsafe imageFile shell expansion remains in batch 574.'
+            exit 1
+          fi
