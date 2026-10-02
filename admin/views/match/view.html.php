@@ -161,12 +161,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	function _displaySavePressebericht()
 	{
-		$app        = $this->app;
-		$jinput     = $app->getInput();
-		$option     = $jinput->getCmd('option');
-		$post       = $app->getInput()->post->getArray(array());
-		$project_id = $app->getUserState("$option.pid", '0');;
-		$model         = $this->getModel();
+		$post  = $this->app->getInput()->post->getArray();
+		$model = $this->getModel();
 		$model->savePressebericht($post);
 
 		$this->importData = $model->_success_text;
@@ -675,7 +671,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-		$tid                       = $this->app->getInput()->getVar('team', '0');
+		$tid                       = $this->app->getInput()->getInt('team');
 		$match                     = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
         if ( $match )
         {
@@ -969,8 +965,7 @@ $mdlPlayground      = $this->playgroundsModel();
 		$jinput     = $app->getInput();
 		$option     = $jinput->getCmd('option');
 		$project_id = $app->getUserState("$option.pid", '0');;
-		$config       = ComponentHelper::getParams('com_media');
-		$this->config = $config;
+		$this->config = ComponentHelper::getParams('com_media');
 
 		$model             = $this->getModel();
 		$csv_file          = $model->getPressebericht();
