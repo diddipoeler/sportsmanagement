@@ -50,7 +50,7 @@ jobs:
             exit 1
           fi
 
-          if grep -Fq -- "$default_name_format = '';" "$file"; then
+          if grep -Fq -- '$default_name_format = '"'"''"'"';' "$file"; then
             echo 'Unused empty default_name_format remains.'
             exit 1
           fi
