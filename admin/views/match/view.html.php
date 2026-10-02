@@ -13,7 +13,6 @@
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Log\Log;
@@ -939,7 +938,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		//        $myoptions[] = HTMLHelper::_('select.option', '3', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS'));
 		//        $myoptions[] = HTMLHelper::_('select.option', '4', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
 		//        $lists['team_won'] = HTMLHelper::_('select.genericlist', $myoptions, 'team_won', 'class="inputbox" size="1"', 'value', 'text', $this->item->team_won);
-$mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanagementModel");
+$mdlPlayground      = $this->playgroundsModel();
 		$this->playgrounds = $mdlPlayground->getPlaygrounds(true);
 		
 		$this->lists = $lists;
@@ -1106,6 +1105,20 @@ $mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanag
 
 			ToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CLOSE');
 		}
+	}
+
+	private function playgroundsModel(): object
+	{
+		$model = $this->app
+			->bootComponent('com_sportsmanagement')
+			->getMVCFactory()
+			->createModel('Playgrounds', 'Administrator', ['ignore_request' => true]);
+
+		if ($model === null) {
+			throw new \RuntimeException('SportsManagement native Playgrounds model could not be created.', 500);
+		}
+
+		return $model;
 	}
 
 	private function projectModel(): object
