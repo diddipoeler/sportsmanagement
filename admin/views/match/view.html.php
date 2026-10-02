@@ -40,7 +40,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-		$default_name_format = '';
         $this->lists = array();
         $this->positions = array();
 
@@ -299,7 +298,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$jinput              = $app->getInput();
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
-		$default_name_format = '';
 		$lists             = Array();
 		$projectpositions = Array();
 
@@ -457,8 +455,8 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$app                              = $this->app;
 		$jinput                           = $app->getInput();
 		$option                           = $jinput->getCmd('option');
-		$this->useeventtime               = $jinput->get('useeventtime');
-        $this->doubleevents               = $jinput->get('doubleevents');
+		$this->useeventtime               = $jinput->getInt('useeventtime');
+        $this->doubleevents               = $jinput->getInt('doubleevents');
 		$model                            = $this->getModel();
 		$params                           = ComponentHelper::getParams($option);
 		$default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
@@ -964,7 +962,7 @@ $mdlPlayground      = $this->playgroundsModel();
 		$app        = $this->app;
 		$jinput     = $app->getInput();
 		$option     = $jinput->getCmd('option');
-		$project_id = $app->getUserState("$option.pid", '0');;
+		$project_id = $app->getUserState("$option.pid", '0');
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$model             = $this->getModel();
@@ -1060,7 +1058,6 @@ $mdlPlayground      = $this->playgroundsModel();
 		$jinput = $this->app->getInput();
 		$jinput->set('hidemainmenu', true);
 		$user   = $this->app->getIdentity();
-		$userId = $user->id;
 		$isNew  = $this->item->id == 0;
 		$canDo  = sportsmanagementHelper::getActions($this->item->id);
 		ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_MATCH_NEW') : Text::_('COM_SPORTSMANAGEMENT_MATCH_EDIT'), 'match');
