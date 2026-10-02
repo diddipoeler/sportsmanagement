@@ -1,0 +1,61 @@
+name: Joomla 5/6 compatibility batch 591
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/match/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch591.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/views/match/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch591.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=admin/views/match/view.html.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          if grep -Fq -- '$app->input' "$file"; then
+            echo 'Direct application input access remains.'
+            exit 1
+          fi
+
+          if grep -Fq -- '$this->app->input' "$file"; then
+            echo 'Direct view application input access remains.'
+            exit 1
+          fi
+
+          test "$(grep -Fc -- '$app->getInput()' "$file")" -ge 9
+          test "$(grep -Fc -- '$this->app->getInput()' "$file")" -ge 2
+
+          if grep -Fq -- '$csv_file_save =' "$file"; then
+            echo 'Unused save result remains.'
+            exit 1
+          fi
+
+          if grep -Fq -- '$readplayers' "$file"; then
+            echo 'Unused readplayers assignment remains.'
+            exit 1
+          fi

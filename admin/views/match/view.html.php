@@ -162,12 +162,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	function _displaySavePressebericht()
 	{
 		$app        = $this->app;
-		$jinput     = $app->input;
+		$jinput     = $app->getInput();
 		$option     = $jinput->getCmd('option');
-		$post       = $app->input->post->getArray(array());
+		$post       = $app->getInput()->post->getArray(array());
 		$project_id = $app->getUserState("$option.pid", '0');;
 		$model         = $this->getModel();
-		$csv_file_save = $model->savePressebericht($post);
+		$model->savePressebericht($post);
 
 		$this->importData = $model->_success_text;
 
@@ -182,7 +182,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	public function initPressebericht()
 	{
 		$app    = $this->app;
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
 
@@ -194,7 +194,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 		if ($matchnumber)
 		{
-			$readplayers       = $model->getPresseberichtReadPlayers($csv_file);
+			$model->getPresseberichtReadPlayers($csv_file);
 			$this->csvreferees = $model->csv_referee;
 			$this->csvplayers  = $model->csv_player;
 			$this->csvinout    = $model->csv_in_out;
@@ -300,7 +300,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	public function initEditReferees()
 	{
 		$app                 = $this->app;
-		$jinput              = $app->input;
+		$jinput              = $app->getInput();
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
 		$default_name_format = '';
@@ -459,7 +459,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	public function initEditEevents()
 	{
 		$app                              = $this->app;
-		$jinput                           = $app->input;
+		$jinput                           = $app->getInput();
 		$option                           = $jinput->getCmd('option');
 		$this->useeventtime               = $jinput->get('useeventtime');
         $this->doubleevents               = $jinput->get('doubleevents');
@@ -549,7 +549,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	public function initEditEeventsBB()
 	{
 		$app                 = $this->app;
-		$jinput              = $app->input;
+		$jinput              = $app->getInput();
 		$option              = $jinput->getCmd('option');
 		$project_id          = $app->getUserState("$option.pid", '0');
 		$params              = ComponentHelper::getParams($option);
@@ -602,7 +602,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	public function initEditStats()
 	{
 		$app    = $this->app;
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
 		$lists  = array();
@@ -665,7 +665,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	public function initEditLineup()
 	{
 		$app                 = $this->app;
-		$jinput              = $app->input;
+		$jinput              = $app->getInput();
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
 		$default_name_format = 0;
@@ -675,7 +675,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-		$tid                       = $this->app->input->getVar('team', '0');
+		$tid                       = $this->app->getInput()->getVar('team', '0');
 		$match                     = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
         if ( $match )
         {
@@ -966,7 +966,7 @@ $mdlPlayground      = $this->playgroundsModel();
 	function _displayPressebericht()
 	{
 		$app        = $this->app;
-		$jinput     = $app->input;
+		$jinput     = $app->getInput();
 		$option     = $jinput->getCmd('option');
 		$project_id = $app->getUserState("$option.pid", '0');;
 		$config       = ComponentHelper::getParams('com_media');
@@ -980,7 +980,7 @@ $mdlPlayground      = $this->playgroundsModel();
 
 		if ($matchnumber)
 		{
-			$readplayers      = $model->getPresseberichtReadPlayers($csv_file);
+			$model->getPresseberichtReadPlayers($csv_file);
 			$this->csvplayers = $model->csv_player;
 			$this->csvinout   = $model->csv_in_out;
 			$this->csvcards   = $model->csv_cards;
@@ -1062,7 +1062,7 @@ $mdlPlayground      = $this->playgroundsModel();
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
 		$this->document->addCustomTag($stylelink);
 
-		$jinput = $this->app->input;
+		$jinput = $this->app->getInput();
 		$jinput->set('hidemainmenu', true);
 		$user   = $this->app->getIdentity();
 		$userId = $user->id;
