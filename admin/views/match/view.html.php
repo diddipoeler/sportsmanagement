@@ -158,7 +158,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 *
 	 * @return void
 	 */
-	function _displaySavePressebericht()
+	public function _displaySavePressebericht(): void
 	{
 		$post  = $this->app->getInput()->post->getArray();
 		$model = $this->getModel();
@@ -741,7 +741,6 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'posid', 'text', null, false, true);
 
 		/** Build player select */
-		$allplayers = $model->getTeamPersons($tid, false, 1);
 
 		foreach ((array) $starters AS $player) // Foreach ((array)$allplayers AS $player)
 		{
@@ -957,7 +956,7 @@ $mdlPlayground      = $this->playgroundsModel();
 	 *
 	 * @return
 	 */
-	function _displayPressebericht()
+	public function _displayPressebericht(): void
 	{
 		$app        = $this->app;
 		$jinput     = $app->getInput();
@@ -1057,7 +1056,6 @@ $mdlPlayground      = $this->playgroundsModel();
 
 		$jinput = $this->app->getInput();
 		$jinput->set('hidemainmenu', true);
-		$user   = $this->app->getIdentity();
 		$isNew  = $this->item->id == 0;
 		$canDo  = sportsmanagementHelper::getActions($this->item->id);
 		ToolbarHelper::title($isNew ? Text::_('COM_SPORTSMANAGEMENT_MATCH_NEW') : Text::_('COM_SPORTSMANAGEMENT_MATCH_EDIT'), 'match');
