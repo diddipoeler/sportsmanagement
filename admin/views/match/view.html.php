@@ -174,7 +174,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 *
 	 * @return
 	 */
-	public function initPressebericht()
+	public function initPressebericht(): void
 	{
 		$app    = $this->app;
 		$jinput = $app->getInput();
@@ -185,7 +185,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->csv         = $csv_file;
 		$matchnumber       = $model->getPresseberichtMatchnumber($csv_file);
 		$this->matchnumber = $matchnumber;
-		$lists             = Array();
+		$lists             = [];
 
 		if ($matchnumber)
 		{
@@ -292,14 +292,14 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 *
 	 * @return
 	 */
-	public function initEditReferees()
+	public function initEditReferees(): void
 	{
 		$app                 = $this->app;
 		$jinput              = $app->getInput();
 		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
-		$lists             = Array();
-		$projectpositions = Array();
+		$lists             = [];
+		$projectpositions = [];
 
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
@@ -450,7 +450,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 *
 	 * @return
 	 */
-	public function initEditEevents()
+	public function initEditEevents(): void
 	{
 		$app                              = $this->app;
 		$jinput                           = $app->getInput();
@@ -540,7 +540,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 *
 	 * @return
 	 */
-	public function initEditEeventsBB()
+	public function initEditEeventsBB(): void
 	{
 		$app                 = $this->app;
 		$jinput              = $app->getInput();
@@ -593,7 +593,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 *
 	 * @return
 	 */
-	public function initEditStats()
+	public function initEditStats(): void
 	{
 		$app    = $this->app;
 		$jinput = $app->getInput();
@@ -656,7 +656,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 *
 	 * @return
 	 */
-	public function initEditLineup()
+	public function initEditLineup(): void
 	{
 		$app                 = $this->app;
 		$jinput              = $app->getInput();
@@ -873,7 +873,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 *
 	 * @return void
 	 */
-	public function initEdit()
+	public function initEdit(): void
 	{
 //echo __LINE__.' matchdetails <pre>'.print_r($this->match,true).'</pre>';
 		// Match relation tab
@@ -944,7 +944,7 @@ $mdlPlayground      = $this->playgroundsModel();
 	 *
 	 * @return void
 	 */
-	public function initPicture()
+	public function initPicture(): void
 	{
 		$this->setLayout('picture');
 	}
