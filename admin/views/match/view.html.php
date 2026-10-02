@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage match
  * @file       view.html.php
@@ -9,8 +9,7 @@
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Environment\Browser;
+\defined('_JEXEC') or die;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -19,8 +18,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Log\Log;
 
-jimport('joomla.environment.browser');
-jimport('joomla.filesystem.file');
 
 /**
  * sportsmanagementViewMatch
@@ -41,7 +38,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function init()
 	{
-		$browser      = Browser::getInstance();
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
@@ -54,7 +50,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->script = $this->get('Script');
         $this->match                = $this->model->getMatchData($this->item->id);
 
-		$mdlProject      = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$mdlProject      = $this->projectModel();
 		$this->projectws = $mdlProject->getProject($this->project_id);
 		$this->eventsprojecttime = $this->projectws->game_regular_time;
         /** nachspielzeit */
@@ -354,7 +350,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 		$squad = array();
 
-		$mdlProject      = BaseDatabaseModel::getInstance("Project", "sportsmanagementModel");
+		$mdlProject      = $this->projectModel();
 		$this->projectws = $mdlProject->getProject($this->project_id);
 
 		if ($this->projectws->teams_as_referees == 1)
@@ -1112,5 +1108,18 @@ $mdlPlayground      = BaseDatabaseModel::getInstance("Playgrounds", "sportsmanag
 		}
 	}
 
-}
+	private function projectModel(): object
+	{
+		$model = $this->app
+			->bootComponent('com_sportsmanagement')
+			->getMVCFactory()
+			->createModel('Project', 'Administrator', ['ignore_request' => true]);
 
+		if ($model === null) {
+			throw new \RuntimeException('SportsManagement native Project model could not be created.', 500);
+		}
+
+		return $model;
+	}
+
+}
