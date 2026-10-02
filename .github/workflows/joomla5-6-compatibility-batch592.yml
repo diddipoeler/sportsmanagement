@@ -37,9 +37,9 @@ jobs:
           done
           grep -Fq -- '@version    5.6.0' "$file"
 
-          grep -Fq -- "$this->app->getInput()->getInt('team')" "$file"
+          grep -Fq -- '$this->app->getInput()->getInt('"'"'team'"'"')' "$file"
           grep -Fq -- '$post  = $this->app->getInput()->post->getArray();' "$file"
-          grep -Fq -- "$this->config = ComponentHelper::getParams('com_media');" "$file"
+          grep -Fq -- '$this->config = ComponentHelper::getParams('"'"'com_media'"'"');' "$file"
 
           if grep -Fq -- "->getVar('team'" "$file"; then
             echo 'Legacy team getVar access remains.'
