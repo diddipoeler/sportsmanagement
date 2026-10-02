@@ -1,0 +1,57 @@
+name: Joomla 5/6 compatibility batch 586
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/agegroup/view.html.php'
+      - 'admin/views/club/view.html.php'
+      - 'admin/views/clubname/view.html.php'
+      - 'admin/views/clubnames/view.html.php'
+      - 'admin/views/division/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch586.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/views/agegroup/view.html.php'
+      - 'admin/views/club/view.html.php'
+      - 'admin/views/clubname/view.html.php'
+      - 'admin/views/clubnames/view.html.php'
+      - 'admin/views/division/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch586.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/views/agegroup/view.html.php
+            admin/views/club/view.html.php
+            admin/views/clubname/view.html.php
+            admin/views/clubnames/view.html.php
+            admin/views/division/view.html.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+            grep -Fq -- '$nativeView =' "$file"
+            grep -Fq -- 'if (is_file($nativeView)) {' "$file"
+            grep -Fq -- 'throw new \RuntimeException(' "$file"
+          done
