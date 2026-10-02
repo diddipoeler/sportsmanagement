@@ -12,7 +12,11 @@
 use Diddipoeler\Component\SportsManagement\Administrator\View\Smquotes\HtmlView;
 
 if (!class_exists(HtmlView::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Smquotes/HtmlView.php';
+    $nativeView = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/View/Smquotes/HtmlView.php';
+
+    if (is_file($nativeView)) {
+        require_once $nativeView;
+    }
 }
 
 if (!class_exists(HtmlView::class)) {
