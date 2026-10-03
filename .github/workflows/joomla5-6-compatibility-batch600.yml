@@ -41,7 +41,7 @@ jobs:
           grep -Fq -- '$this->positions = [];' "$file"
           grep -Fq -- '$inroster         = [];' "$file"
           grep -Fq -- '$projectreferees2 = [];' "$file"
-          grep -Fq -- "$rosters = ['home' => $homeRoster, 'away' => $awayRoster];" "$file"
+          grep -Fq -- '$rosters = ['"'"'home'"'"' => $homeRoster, '"'"'away'"'"' => $awayRoster];' "$file"
 
           if grep -Fq -- '$allreferees = array();' "$file"; then
             echo 'Redundant allreferees initialiser remains.'

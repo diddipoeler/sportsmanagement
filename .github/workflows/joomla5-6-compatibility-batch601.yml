@@ -1,0 +1,35 @@
+name: Joomla 5/6 compatibility batch 601
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch600.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch601.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch600.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch601.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate batch 600 shell quoting
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=.github/workflows/joomla5-6-compatibility-batch600.yml
+
+          grep -Fq -- "grep -Fq -- '\$rosters =" "$file"
+
+          if grep -Fq -- 'grep -Fq -- "$rosters' "$file"; then
+            echo 'Unsafe rosters shell expansion remains in batch 600.'
+            exit 1
+          fi
