@@ -35,7 +35,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 *
 	 * @return
 	 */
-	public function init()
+	public function init(): void
 	{
 		$this->config = ComponentHelper::getParams('com_media');
 
@@ -580,7 +580,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 *
 	 * @since 1.7
 	 */
-	protected function addToolbar_Editeventsbb()
+	protected function addToolbar_Editeventsbb(): void
 	{
 		ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_EEBB_TITLE'), 'events');
 		ToolbarHelper::apply('match.saveeventbb');
@@ -1048,7 +1048,7 @@ $mdlPlayground      = $this->playgroundsModel();
 	/**
 	 * Setting the toolbar
 	 */
-	protected function addToolBar()
+	protected function addToolBar(): void
 	{
 		// Set toolbar items for the page
 		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
