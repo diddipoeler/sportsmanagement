@@ -40,8 +40,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$this->project_id = $this->app->getUserState("$this->option.pid", '0');
-        $this->lists = array();
-        $this->positions = array();
+        $this->lists = [];
+        $this->positions = [];
 
 		$this->form   = $this->get('Form');
 		$this->item   = $this->get('Item');
@@ -305,13 +305,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
 
 		// Projekt schiedsrichter
-		$allreferees = array();
-
 		// $allreferees = $model->getRefereeRoster(0,$this->item->id);
 		$allreferees      = $model->getRefereeRoster(0, $this->item->id);
-		$inroster         = array();
-		$projectreferees  = array();
-		$projectreferees2 = array();
+		$inroster         = [];
+		$projectreferees  = [];
+		$projectreferees2 = [];
 
 		if (isset($allreferees))
 		{
@@ -341,7 +339,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 		$lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text');
 
-		$squad = array();
+		$squad = [];
 
 		$mdlProject      = $this->projectModel();
 		$this->projectws = $mdlProject->getProject($this->project_id);
@@ -410,7 +408,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		{
 			foreach ($squad AS $key => $referees)
 			{
-				$temp[$key] = array();
+				$temp[$key] = [];
 
 				if (isset($referees))
 				{
@@ -483,7 +481,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		// Mannschaften der paarung
 		$teams = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
 
-		$teamlist       = array();
+		$teamlist       = [];
 		$teamlist[]     = HTMLHelper::_('select.option', $teams->projectteam1_id, $teams->team1);
 		$teamlist[]     = HTMLHelper::_('select.option', $teams->projectteam2_id, $teams->team2);
 		$lists['teams'] = HTMLHelper::_('select.genericlist', $teamlist, 'team_id', 'class="inputbox select-team" ');
@@ -498,7 +496,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			return;
 		}
 
-		$eventlist = array();
+		$eventlist = [];
 		$eventlist = array_merge($eventlist, $events);
 
 		$lists['events'] = HTMLHelper::_('select.genericlist', $eventlist, 'event_type_id', 'class="inputbox select-event"');
@@ -517,7 +515,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			// $awayRoster=$model->getGhostPlayer();
 		}
 
-		$rosters = array('home' => $homeRoster, 'away' => $awayRoster);
+		$rosters = ['home' => $homeRoster, 'away' => $awayRoster];
 
 		$matchCommentary = $model->getMatchCommentary($this->item->id);
 		$matchevents     = $model->getMatchEvents($this->item->id);
