@@ -519,7 +519,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		$matchCommentary = $model->getMatchCommentary($this->item->id);
 		$matchevents     = $model->getMatchEvents($this->item->id);
-		$this->document->addScriptDeclaration($javascript);
+		$this->addInlineScript($javascript);
 
 		$this->matchevents                      = $matchevents;
 		$this->matchcommentary                  = $matchCommentary;
@@ -861,7 +861,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$javascript .= "var teamid = " . $this->tid . ";" . "\n";
 		$javascript .= "var projecttime = " . $this->eventsprojecttime . ";" . "\n";
 		$javascript .= "var str_delete = '" . Text::_('JACTION_DELETE') . "';" . "\n";
-		$this->document->addScriptDeclaration($javascript);
+		$this->addInlineScript($javascript);
 
 		$this->setLayout('editlineup');
 	}
@@ -1093,6 +1093,11 @@ $mdlPlayground      = $this->playgroundsModel();
 
 			ToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CLOSE');
 		}
+	}
+
+	private function addInlineScript(string $script): void
+	{
+		$this->document->getWebAssetManager()->addInlineScript($script);
 	}
 
 	private function useScriptAsset(string $name, string $uri): void
