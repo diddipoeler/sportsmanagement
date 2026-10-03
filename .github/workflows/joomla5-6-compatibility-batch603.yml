@@ -44,5 +44,5 @@ jobs:
 
           grep -Fq -- '$oldmatches[] = HTMLHelper::' "$file"
           grep -Fq -- '$newmatches[] = HTMLHelper::' "$file"
-          grep -Fq -- "$lists['old_match'] =" "$file"
-          grep -Fq -- "$lists['new_match'] =" "$file"
+          grep -Fq -- '$lists['"'"'old_match'"'"'] =' "$file"
+          grep -Fq -- '$lists['"'"'new_match'"'"'] =' "$file"
