@@ -597,7 +597,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
-		$lists  = array();
+		$lists  = [];
 
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
@@ -662,7 +662,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$model               = $this->getModel();
 		$default_name_format = 0;
         $teamname = '';
-		$lists               = array();
+		$lists               = [];
 
 		$this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
 		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
@@ -675,15 +675,15 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
         }
 		$this->teamname            = $teamname;
 		$this->preFillSuccess      = false;
-		$this->positions           = array();
-		$this->substitutions       = array();
-		$this->staffpositions      = array();
+		$this->positions           = [];
+		$this->substitutions       = [];
+		$this->staffpositions      = [];
 		$lists['team_players']     = '';
 		$lists['team_staffs']      = '';
 		$lists['projectpositions'] = '';
-		$playersoptionsout         = array();
+		$playersoptionsout         = [];
 		$playersoptionsout[]       = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
-		$playersoptionsin          = array();
+		$playersoptionsin          = [];
 		$playersoptionsin[]        = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
 
 		/** Get starters */
@@ -716,7 +716,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		}
 
 		/** Build select list for not assigned players */
-		$not_assigned_options = array();
+		$not_assigned_options = [];
 
 		foreach ((array) $not_assigned AS $p)
 		{
@@ -757,7 +757,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		}
 
 		/** Generate selection list for each position */
-		$starters = array();
+		$starters = [];
 
 		foreach ($projectpositions AS $position_id => $pos)
 		{
@@ -767,7 +767,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		foreach ($starters AS $position_id => $players)
 		{
-			$options = array();
+			$options = [];
 
 			foreach ((array) $players AS $p)
 			{
@@ -797,7 +797,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$not_assigned = $model->getTeamPersons($tid, $assigned_id, 2);
 
 		/** Build select list for not assigned */
-		$not_assigned_options = array();
+		$not_assigned_options = [];
 
 		foreach ((array) $not_assigned AS $p)
 		{
@@ -814,12 +814,12 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		);
 
 		/** Generate selection list for each position */
-		$options = array();
+		$options = [];
 
 		foreach ($staffpositions AS $position_id => $pos)
 		{
 			/** Get players assigned to this position */
-			$options = array();
+			$options = [];
 
 			foreach ($assigned as $staff)
 			{
@@ -840,7 +840,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		}
 
 		/** Build the html select booleanlist */
-		$myoptions        = array();
+		$myoptions        = [];
 		$myoptions[]      = HTMLHelper::_('select.option', '0', Text::_('JNO'));
 		$myoptions[]      = HTMLHelper::_('select.option', '1', Text::_('JYES'));
 		$lists['captain'] = $myoptions;
@@ -876,7 +876,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 //echo __LINE__.' matchdetails <pre>'.print_r($this->match,true).'</pre>';
 		// Match relation tab
 		$oldmatches [] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
-		$res           = array();
+		$res           = [];
 		$new_match_id  = ($this->item->new_match_id) ? $this->item->new_match_id : 0;
 
 		if ($res = $this->model->getMatchRelationsOptions($this->project_id, $this->item->id . "," . $new_match_id))
@@ -899,7 +899,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$lists ['old_match'] = HTMLHelper::_('select.genericlist', $oldmatches, 'old_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->old_match_id);
 
 		$newmatches [] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH'));
-		$res           = array();
+		$res           = [];
 		$old_match_id  = ($this->item->old_match_id) ? $this->item->old_match_id : 0;
 
 		if ($res = $this->model->getMatchRelationsOptions($this->project_id, $this->item->id . "," . $old_match_id))
