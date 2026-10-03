@@ -40,8 +40,8 @@ jobs:
           grep -Fq -- 'private function useScriptAsset(string $name, string $uri): void' "$file"
           grep -Fq -- 'private function useStyleAsset(string $name, string $uri): void' "$file"
           grep -Fq -- "getWebAssetManager()" "$file"
-          grep -Fq -- "assetExists('script', $name)" "$file"
-          grep -Fq -- "assetExists('style', $name)" "$file"
+          grep -Fq -- 'assetExists('"'"'script'"'"', $name)' "$file"
+          grep -Fq -- 'assetExists('"'"'style'"'"', $name)' "$file"
 
           if grep -Fq -- '->addScript(' "$file"; then
             echo 'Deprecated external addScript call remains.'
