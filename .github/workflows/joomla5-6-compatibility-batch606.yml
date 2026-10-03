@@ -1,0 +1,57 @@
+name: Joomla 5/6 compatibility batch 606
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/match/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch606.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/views/match/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch606.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=admin/views/match/view.html.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          grep -Fq -- 'private function useScriptAsset(string $name, string $uri): void' "$file"
+          grep -Fq -- 'private function useStyleAsset(string $name, string $uri): void' "$file"
+          grep -Fq -- "getWebAssetManager()" "$file"
+          grep -Fq -- "assetExists('script', $name)" "$file"
+          grep -Fq -- "assetExists('style', $name)" "$file"
+
+          if grep -Fq -- '->addScript(' "$file"; then
+            echo 'Deprecated external addScript call remains.'
+            exit 1
+          fi
+
+          if grep -Fq -- '->addStyleSheet(' "$file"; then
+            echo 'Deprecated addStyleSheet call remains.'
+            exit 1
+          fi
+
+          test "$(grep -Fc -- 'useScriptAsset(' "$file")" -ge 11
+          test "$(grep -Fc -- 'useStyleAsset(' "$file")" -ge 3

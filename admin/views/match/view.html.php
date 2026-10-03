@@ -301,8 +301,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$lists             = [];
 		$projectpositions = [];
 
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.startinglineup', Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
 
 		// Projekt schiedsrichter
 		// $allreferees = $model->getRefereeRoster(0,$this->item->id);
@@ -460,9 +460,9 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
 		$default_name_format              = $params->get("name_format", 14);
 
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-		$this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.diddioeler', Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
+		$this->useStyleAsset('com_sportsmanagement.admin', Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
 
 		$javascript = "\n";
 		$javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
@@ -599,8 +599,8 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$model  = $this->getModel();
 		$lists  = [];
 
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.editmatchstats', Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
 		$teams = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
 
 		$positions      = $model->getProjectPositionsOptions(0, 1, $this->project_id);
@@ -664,9 +664,9 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
         $teamname = '';
 		$lists               = [];
 
-		$this->document->addStyleSheet(Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->document->addScript(Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
+		$this->useStyleAsset('com_sportsmanagement.admin', Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.diddioeler', Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
 		$tid                       = $this->app->getInput()->getInt('team');
 		$match                     = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
         if ( $match )
@@ -1037,8 +1037,8 @@ $mdlPlayground      = $this->playgroundsModel();
 	{
 		$isNew = $this->item->id == 0;
 		$this->document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$this->document->addScript(Uri::root() . $this->script);
-		$this->document->addScript(Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
+		$this->useScriptAsset('com_sportsmanagement.match-model-script', Uri::root() . $this->script);
+		$this->useScriptAsset('com_sportsmanagement.submitbutton', Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
 		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
 	*/
@@ -1093,6 +1093,28 @@ $mdlPlayground      = $this->playgroundsModel();
 
 			ToolbarHelper::cancel('match.cancel', 'JTOOLBAR_CLOSE');
 		}
+	}
+
+	private function useScriptAsset(string $name, string $uri): void
+	{
+		$assets = $this->document->getWebAssetManager();
+
+		if (!$assets->assetExists('script', $name)) {
+			$assets->registerScript($name, $uri);
+		}
+
+		$assets->useScript($name);
+	}
+
+	private function useStyleAsset(string $name, string $uri): void
+	{
+		$assets = $this->document->getWebAssetManager();
+
+		if (!$assets->assetExists('style', $name)) {
+			$assets->registerStyle($name, $uri);
+		}
+
+		$assets->useStyle($name);
 	}
 
 	private function playgroundsModel(): object
