@@ -875,7 +875,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	{
 //echo __LINE__.' matchdetails <pre>'.print_r($this->match,true).'</pre>';
 		// Match relation tab
-		$oldmatches [] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
+		$oldmatches[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
 		$res           = [];
 		$new_match_id  = ($this->item->new_match_id) ? $this->item->new_match_id : 0;
 
@@ -896,9 +896,9 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			$oldmatches = array_merge($oldmatches, $res);
 		}
 
-		$lists ['old_match'] = HTMLHelper::_('select.genericlist', $oldmatches, 'old_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->old_match_id);
+		$lists['old_match'] = HTMLHelper::_('select.genericlist', $oldmatches, 'old_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->old_match_id);
 
-		$newmatches [] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH'));
+		$newmatches[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH'));
 		$res           = [];
 		$old_match_id  = ($this->item->old_match_id) ? $this->item->old_match_id : 0;
 
@@ -919,7 +919,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			$newmatches = array_merge($newmatches, $res);
 		}
 
-		$lists ['new_match'] = HTMLHelper::_('select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id);
+		$lists['new_match'] = HTMLHelper::_('select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id);
 
 		//        /** build the html select booleanlist which team got the won */
 		//        $myoptions = array();
@@ -1009,7 +1009,7 @@ $mdlPlayground      = $this->playgroundsModel();
 			return;
 		}
 
-		$eventlist   = array();
+		$eventlist   = [];
 		$eventlist[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
 		$eventlist   = array_merge($eventlist, $events);
 
@@ -1017,7 +1017,7 @@ $mdlPlayground      = $this->playgroundsModel();
 		unset($eventlist);
 
 		// Build the html select booleanlist
-		$myoptions                 = array();
+		$myoptions                 = [];
 		$myoptions[]               = HTMLHelper::_('select.option', '0', Text::_('JNO'));
 		$myoptions[]               = HTMLHelper::_('select.option', '1', Text::_('JYES'));
 		$lists['startaufstellung'] = $myoptions;
