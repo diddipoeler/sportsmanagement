@@ -266,7 +266,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 			$app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS'), 'Error');
 		}
 
-		$eventlist   = array();
+		$eventlist   = [];
 		$eventlist[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT'));
 		$eventlist   = array_merge($eventlist, $events);
 
@@ -277,7 +277,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		 *
 		 * build the html select booleanlist
 		 */
-		$myoptions                 = array();
+		$myoptions                 = [];
 		$myoptions[]               = HTMLHelper::_('select.option', '0', Text::_('JNO'));
 		$myoptions[]               = HTMLHelper::_('select.option', '1', Text::_('JYES'));
 		$lists['startaufstellung'] = $myoptions;
@@ -1026,7 +1026,7 @@ $mdlPlayground      = $this->playgroundsModel();
 
 		$this->lists = $lists;
 
-		parent::display($tpl);
+		parent::display();
 	}
 
 	/**
