@@ -1027,21 +1027,6 @@ $mdlPlayground      = $this->playgroundsModel();
 		parent::display();
 	}
 
-	/**
-	 * Method to set up the document properties
-	 *
-	 * @return void
-	 */
-	 /**
-	public function setDocument($document)
-	{
-		$isNew = $this->item->id == 0;
-		$this->document->setTitle($isNew ? Text::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : Text::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-		$this->useScriptAsset('com_sportsmanagement.match-model-script', Uri::root() . $this->script);
-		$this->useScriptAsset('com_sportsmanagement.submitbutton', Uri::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-		Text::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-	}
-	*/
 
 	/**
 	 * Setting the toolbar
