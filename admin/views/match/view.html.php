@@ -308,9 +308,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 				$inroster[] = $referee->value;
 			}
 		}
-		else
-		{
-		}
 
 		/** Projekt positionen */
 		$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
