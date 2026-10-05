@@ -68,8 +68,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		
         
         if($this->match) {
-            $this->match->team1_legs = $this->match->team1_legs ? $this->match->team1_legs : 0;
-            $this->match->team2_legs = $this->match->team2_legs ? $this->match->team2_legs : 0;
+            $this->match->team1_legs = $this->match->team1_legs ?? 0;
+            $this->match->team2_legs = $this->match->team2_legs ?? 0;
             if ( !property_exists($this->match, "hometeam") )
             {
                 $this->match->hometeam = '';
@@ -860,7 +860,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		// Match relation tab
 		$oldmatches[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH'));
 		$res           = [];
-		$new_match_id  = ($this->item->new_match_id) ? $this->item->new_match_id : 0;
+		$new_match_id  = $this->item->new_match_id ?? 0;
 
 		if ($res = $this->model->getMatchRelationsOptions($this->project_id, $this->item->id . "," . $new_match_id))
 		{
@@ -883,7 +883,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		$newmatches[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH'));
 		$res           = [];
-		$old_match_id  = ($this->item->old_match_id) ? $this->item->old_match_id : 0;
+		$old_match_id  = $this->item->old_match_id ?? 0;
 
 		if ($res = $this->model->getMatchRelationsOptions($this->project_id, $this->item->id . "," . $old_match_id))
 		{
