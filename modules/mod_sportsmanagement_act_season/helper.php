@@ -107,3 +107,8 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
     }
     }
 }
+
+
+if (!class_exists('ModSportsmanagementActSeasonHelper', false)) {
+    class_alias('modJSMActSeasonHelper', 'ModSportsmanagementActSeasonHelper');
+}
