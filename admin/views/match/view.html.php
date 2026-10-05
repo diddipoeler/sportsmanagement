@@ -489,8 +489,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			return;
 		}
 
-		$eventlist = [];
-		$eventlist = array_merge($eventlist, $events);
+		$eventlist = $events;
 
 		$lists['events'] = HTMLHelper::_('select.genericlist', $eventlist, 'event_type_id', 'class="inputbox select-event"');
 
