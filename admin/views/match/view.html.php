@@ -292,15 +292,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function initEditReferees(): void
 	{
-		$app                 = $this->app;
-		$jinput              = $app->getInput();
-		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
 		$lists             = [];
 		$projectpositions = [];
 
-		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->useScriptAsset('com_sportsmanagement.startinglineup', Uri::base() . 'components/' . $option . '/assets/js/startinglineup.js');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $this->option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.startinglineup', Uri::base() . 'components/' . $this->option . '/assets/js/startinglineup.js');
 
 		// Projekt schiedsrichter
 		// $allreferees = $model->getRefereeRoster(0,$this->item->id);
@@ -448,19 +445,17 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditEevents(): void
 	{
-		$app                              = $this->app;
-		$jinput                           = $app->getInput();
-		$option                           = $jinput->getCmd('option');
+		$jinput                           = $this->app->getInput();
 		$this->useeventtime               = $jinput->getInt('useeventtime');
         $this->doubleevents               = $jinput->getInt('doubleevents');
 		$model                            = $this->getModel();
-		$params                           = ComponentHelper::getParams($option);
+		$params                           = ComponentHelper::getParams($this->option);
 		$default_name_dropdown_list_order = $params->get("cfg_be_name_dropdown_list_order", "lastname");
 		$default_name_format              = $params->get("name_format", 14);
 
-		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->useScriptAsset('com_sportsmanagement.diddioeler', Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
-		$this->useStyleAsset('com_sportsmanagement.admin', Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $this->option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.diddioeler', Uri::base() . 'components/' . $this->option . '/assets/js/diddioeler.js');
+		$this->useStyleAsset('com_sportsmanagement.admin', Uri::base() . '/components/' . $this->option . '/assets/css/sportsmanagement.css');
 
 		$javascript = "\n";
 		$javascript .= "var baseajaxurl = '" . Uri::root() . "administrator/index.php?option=com_sportsmanagement';" . "\n";
@@ -538,9 +533,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditEeventsBB(): void
 	{
-		$jinput              = $this->app->getInput();
-		$option              = $jinput->getCmd('option');
-		$params              = ComponentHelper::getParams($option);
+		$params              = ComponentHelper::getParams($this->option);
 		$default_name_format = $params->get("name_format");
 
 		$model = $this->getModel();
@@ -589,14 +582,11 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditStats(): void
 	{
-		$app    = $this->app;
-		$jinput = $app->getInput();
-		$option = $jinput->getCmd('option');
 		$model  = $this->getModel();
 		$lists  = [];
 
-		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->useScriptAsset('com_sportsmanagement.editmatchstats', Uri::base() . 'components/' . $option . '/assets/js/editmatchstats.js');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $this->option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.editmatchstats', Uri::base() . 'components/' . $this->option . '/assets/js/editmatchstats.js');
 		$teams = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
 
 		$positions      = $model->getProjectPositionsOptions(0, 1, $this->project_id);
@@ -652,17 +642,14 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditLineup(): void
 	{
-		$app                 = $this->app;
-		$jinput              = $app->getInput();
-		$option              = $jinput->getCmd('option');
 		$model               = $this->getModel();
 		$default_name_format = 0;
         $teamname = '';
 		$lists               = [];
 
-		$this->useStyleAsset('com_sportsmanagement.admin', Uri::base() . '/components/' . $option . '/assets/css/sportsmanagement.css');
-		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $option . '/assets/js/sm_functions.js');
-		$this->useScriptAsset('com_sportsmanagement.diddioeler', Uri::base() . 'components/' . $option . '/assets/js/diddioeler.js');
+		$this->useStyleAsset('com_sportsmanagement.admin', Uri::base() . '/components/' . $this->option . '/assets/css/sportsmanagement.css');
+		$this->useScriptAsset('com_sportsmanagement.sm-functions', Uri::base() . 'components/' . $this->option . '/assets/js/sm_functions.js');
+		$this->useScriptAsset('com_sportsmanagement.diddioeler', Uri::base() . 'components/' . $this->option . '/assets/js/diddioeler.js');
 		$tid                       = $this->app->getInput()->getInt('team');
 		$match                     = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
         if ( $match )

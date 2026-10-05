@@ -1,0 +1,51 @@
+name: Joomla 5/6 compatibility batch 612
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/views/match/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch612.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/views/match/view.html.php'
+      - '.github/workflows/joomla5-6-compatibility-batch612.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=admin/views/match/view.html.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          grep -Fq -- 'ComponentHelper::getParams($this->option)' "$file"
+          grep -Fq -- "Uri::base() . 'components/' . $this->option" "$file"
+
+          if grep -Fq -- "$jinput->getCmd('option')" "$file"; then
+            echo 'Redundant option lookup remains.'
+            exit 1
+          fi
+
+          if grep -Fq -- 'ComponentHelper::getParams($option)' "$file"; then
+            echo 'Legacy local option component params lookup remains.'
+            exit 1
+          fi
