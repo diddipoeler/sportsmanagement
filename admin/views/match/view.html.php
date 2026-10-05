@@ -194,7 +194,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		 *
 		 * build the html options for referee positions
 		 */
-		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$position_id = [HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'))];
 
 		if ($res = $model->getProjectPositionsOptions(0, 3, $this->project_id))
 		{
@@ -213,7 +213,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		 *
 		 * build the html options for player position
 		 */
-		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$position_id = [HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'))];
 
 		if ($res = $model->getProjectPositionsOptions(0, 1, $this->project_id))
 		{
@@ -233,7 +233,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		 *
 		 * build the html options for staff position
 		 */
-		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$position_id = [HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'))];
 
 		if ($res = $model->getProjectPositionsOptions(0, 2, $this->project_id))
 		{
@@ -925,7 +925,7 @@ $mdlPlayground      = $this->playgroundsModel();
 		}
 
 		// Build the html options for position
-		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$position_id = [HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'))];
 
 		if ($res = $model->getProjectPositionsOptions(0, 1))
 		{
@@ -936,7 +936,7 @@ $mdlPlayground      = $this->playgroundsModel();
 		$lists['inout_position_id']   = $position_id;
 		unset($position_id);
 
-		$position_id[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
+		$position_id = [HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'))];
 
 		if ($res = $model->getProjectPositionsOptions(0, 2))
 		{
