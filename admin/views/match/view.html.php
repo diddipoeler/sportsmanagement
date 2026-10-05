@@ -308,7 +308,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 		if (isset($allreferees))
 		{
-			foreach ($allreferees AS $referee)
+			foreach ($allreferees as $referee)
 			{
 				$inroster[] = $referee->value;
 			}
@@ -344,7 +344,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 			$divhomeid        = 0;
 			$projectreferees2 = $mdlProject->getProjectTeamsOptions($this->project_id, $divhomeid);
 
-			foreach ($projectpositions AS $key => $pos)
+			foreach ($projectpositions as $key => $pos)
 			{
 				// Get referees assigned to this position
 				$squad[$key] = $model->getTeamsRefereeRoster($this->item->id);
@@ -367,7 +367,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 			if (count($projectreferees) > 0)
 			{
-				foreach ($projectreferees AS $referee)
+				foreach ($projectreferees as $referee)
 				{
 					$projectreferees2[] = HTMLHelper::_(
 						'select.option', $referee->value,
@@ -385,7 +385,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			}
 
 			// Generate selection list for each position
-			foreach ($projectpositions AS $key => $pos)
+			foreach ($projectpositions as $key => $pos)
 			{
 				// Get referees assigned to this position
 				$squad[$key] = $model->getRefereeRoster($pos->value, $this->item->id);
@@ -401,13 +401,13 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		if (count($squad) > 0)
 		{
-			foreach ($squad AS $key => $referees)
+			foreach ($squad as $key => $referees)
 			{
 				$temp[$key] = [];
 
 				if (isset($referees))
 				{
-					foreach ($referees AS $referee)
+					foreach ($referees as $referee)
 					{
 						if ($this->projectws->teams_as_referees == 1)
 						{
@@ -742,13 +742,13 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		/** Generate selection list for each position */
 		$starters = [];
 
-		foreach ($projectpositions AS $position_id => $pos)
+		foreach ($projectpositions as $position_id => $pos)
 		{
 			/** Get players assigned to this position */
 			$starters[$position_id] = $model->getRoster($tid, $pos->value, $this->item->id, $pos->text);
 		}
 
-		foreach ($starters AS $position_id => $players)
+		foreach ($starters as $position_id => $players)
 		{
 			$options = [];
 
@@ -799,7 +799,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		/** Generate selection list for each position */
 		$options = [];
 
-		foreach ($staffpositions AS $position_id => $pos)
+		foreach ($staffpositions as $position_id => $pos)
 		{
 			/** Get players assigned to this position */
 			$options = [];
