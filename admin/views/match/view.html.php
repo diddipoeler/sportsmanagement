@@ -353,16 +353,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		{
 			$projectreferees = $model->getProjectReferees($inroster, $this->project_id);
 
-			if (count($projectreferees) > 0)
+			foreach ($projectreferees as $referee)
 			{
-				foreach ($projectreferees as $referee)
-				{
-					$projectreferees2[] = HTMLHelper::_(
-						'select.option', $referee->value,
-						 $referee->text .
-						' - (' . Text::_($referee->positionname ) . ')'
-					);
-				}
+				$projectreferees2[] = HTMLHelper::_(
+					'select.option', $referee->value,
+					 $referee->text .
+					' - (' . Text::_($referee->positionname ) . ')'
+				);
 			}
 
 			if (!$projectpositions)
@@ -387,34 +384,31 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			'value', 'text'
 		);
 
-		if (count($squad) > 0)
+		foreach ($squad as $key => $referees)
 		{
-			foreach ($squad as $key => $referees)
+			$temp[$key] = [];
+
+			foreach ($referees as $referee)
 			{
-				$temp[$key] = [];
-
-				foreach ($referees as $referee)
+				if ($this->projectws->teams_as_referees == 1)
 				{
-					if ($this->projectws->teams_as_referees == 1)
-					{
-						$temp[$key][] = HTMLHelper::_('select.option', $referee->value, $referee->name);
-					}
-					else
-					{
-						$temp[$key][] = HTMLHelper::_(
-							'select.option', $referee->value,
-							$referee->text
-						);
-					}
+					$temp[$key][] = HTMLHelper::_('select.option', $referee->value, $referee->name);
 				}
-
-				$lists['team_referees' . $key] = HTMLHelper::_(
-					'select.genericlist', $temp[$key], 'position' . $key . '[]',
-					' style="font-size:12px;height:auto;min-width:15em;" ' .
-					'class="position-starters" multiple="true" ',
-					'value', 'text'
-				);
+				else
+				{
+					$temp[$key][] = HTMLHelper::_(
+						'select.option', $referee->value,
+						$referee->text
+					);
+				}
 			}
+
+			$lists['team_referees' . $key] = HTMLHelper::_(
+				'select.genericlist', $temp[$key], 'position' . $key . '[]',
+				' style="font-size:12px;height:auto;min-width:15em;" ' .
+				'class="position-starters" multiple="true" ',
+				'value', 'text'
+			);
 		}
 
 		$this->positions = $projectpositions;
