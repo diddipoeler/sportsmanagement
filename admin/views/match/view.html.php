@@ -532,9 +532,6 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditEeventsBB(): void
 	{
-		$params              = ComponentHelper::getParams($this->option);
-		$default_name_format = $params->get("name_format");
-
 		$model = $this->getModel();
 		$teams = $model->getMatchTeams($this->item->id,$this->item->projectteam1_id,$this->item->projectteam2_id,$this->projectws->sports_type_name);
 
