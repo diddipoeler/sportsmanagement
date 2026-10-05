@@ -307,19 +307,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		}
 
 		/** Projekt positionen */
-		$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
+		$selectpositions = [HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'))];
 
 		if ($projectpositions = $model->getProjectPositionsOptions(0, 3, $this->project_id))
 		{
 			$selectpositions = array_merge($selectpositions, $projectpositions);
 		}
-		/*
-		if ( !$selectpositions )
-		{
-		$this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');	
-		}
-		*/
-
 		$lists['projectpositions'] = HTMLHelper::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text');
 
 		$squad = [];
