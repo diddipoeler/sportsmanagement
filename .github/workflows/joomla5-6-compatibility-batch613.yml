@@ -1,0 +1,38 @@
+name: Joomla 5/6 compatibility batch 613
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch612.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch613.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - '.github/workflows/joomla5-6-compatibility-batch612.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch613.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate batch 612 shell quoting
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          file=.github/workflows/joomla5-6-compatibility-batch612.yml
+
+          if grep -Fq -- 'grep -Fq -- "Uri::base() . '"'"'components/'"'"' . $this->option"' "$file"; then
+            echo 'Unsafe this-option shell expansion remains in batch 612.'
+            exit 1
+          fi
+
+          if grep -Fq -- 'grep -Fq -- "$jinput->getCmd' "$file"; then
+            echo 'Unsafe jinput shell expansion remains in batch 612.'
+            exit 1
+          fi

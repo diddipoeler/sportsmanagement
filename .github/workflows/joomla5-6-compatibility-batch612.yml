@@ -38,9 +38,9 @@ jobs:
           grep -Fq -- '@version    5.6.0' "$file"
 
           grep -Fq -- 'ComponentHelper::getParams($this->option)' "$file"
-          grep -Fq -- "Uri::base() . 'components/' . $this->option" "$file"
+          grep -Fq -- 'Uri::base() . '"'"'components/'"'"' . $this->option' "$file"
 
-          if grep -Fq -- "$jinput->getCmd('option')" "$file"; then
+          if grep -Fq -- '$jinput->getCmd('"'"'option'"'"')' "$file"; then
             echo 'Redundant option lookup remains.'
             exit 1
           fi
