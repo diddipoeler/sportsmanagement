@@ -1,0 +1,65 @@
+name: Joomla 5/6 compatibility batch 624
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/predictionentry/tmpl/default_view_tippentry_do.php'
+      - 'admin/views/match/view.html.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch624.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/predictionentry/tmpl/default_view_tippentry_do.php'
+      - 'admin/views/match/view.html.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch624.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/views/predictionentry/tmpl/default_view_tippentry_do.php
+            admin/views/match/view.html.php
+            modules/mod_sportsmanagement_act_season/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          site_file=site/views/predictionentry/tmpl/default_view_tippentry_do.php
+          if grep -Fq -- 'Factory::getUser()' "$site_file"; then
+            echo 'Deprecated Factory::getUser() remains in prediction entry layout.'
+            exit 1
+          fi
+          grep -Fq -- 'Factory::getApplication()->getIdentity()->id == 0' "$site_file"
+
+          admin_file=admin/views/match/view.html.php
+          if grep -Fq -- '$position_id[] = HTMLHelper::_(' "$admin_file"; then
+            echo 'Implicit position_id array creation remains in administrator match view.'
+            exit 1
+          fi
+          grep -Fq -- '$position_id = [HTMLHelper::_(' "$admin_file"
+
+          module_file=modules/mod_sportsmanagement_act_season/helper.php
+          grep -Fq -- "class_alias('modJSMActSeasonHelper', 'ModSportsmanagementActSeasonHelper');" "$module_file"
