@@ -60,10 +60,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $this->eventsprojecttime += $this->match->overtime;	
 		}
 		
-		/**
-		$this->app->enqueueMessage(Text::_('projectws<pre>'.print_r($this->projectws,true).'</pre>' ), '');
-		$this->app->enqueueMessage(Text::_('eventsprojecttime<pre>'.print_r($this->eventsprojecttime,true).'</pre>' ), '');
-		*/
 		
 		
         
@@ -166,7 +162,6 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 		$this->importData = $model->_success_text;
 
-		// Parent::display($tpl);
 	}
 
 	/**
@@ -315,8 +310,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		}
 		else
 		{
-		//$this->notes[] = $value;		
-		}
+}
 
 		/** Projekt positionen */
 		$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
@@ -719,7 +713,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		/** Build player select */
 
-		foreach ((array) $starters AS $player) // Foreach ((array)$allplayers AS $player)
+		foreach ((array) $starters AS $player)
 		{
 			$playersoptionsout[] = HTMLHelper::_(
 				'select.option', $player->value,
@@ -727,7 +721,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			);
 		}
 
-		foreach ((array) $not_assigned AS $player) // Foreach ((array)$allplayers AS $player)
+		foreach ((array) $not_assigned AS $player)
 		{
 			$playersoptionsin[] = HTMLHelper::_(
 				'select.option', $player->value,
