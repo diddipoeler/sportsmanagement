@@ -310,7 +310,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		}
 		else
 		{
-}
+		}
 
 		/** Projekt positionen */
 		$selectpositions[] = HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
@@ -691,7 +691,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		/** Build select list for not assigned players */
 		$not_assigned_options = [];
 
-		foreach ((array) $not_assigned AS $p)
+		foreach ((array) $not_assigned as $p)
 		{
 			$not_assigned_options[] = HTMLHelper::_(
 				'select.option', $p->value, '[' . $p->jerseynumber . '] ' .
@@ -713,7 +713,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 
 		/** Build player select */
 
-		foreach ((array) $starters AS $player)
+		foreach ((array) $starters as $player)
 		{
 			$playersoptionsout[] = HTMLHelper::_(
 				'select.option', $player->value,
@@ -721,7 +721,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			);
 		}
 
-		foreach ((array) $not_assigned AS $player)
+		foreach ((array) $not_assigned as $player)
 		{
 			$playersoptionsin[] = HTMLHelper::_(
 				'select.option', $player->value,
@@ -742,7 +742,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		{
 			$options = [];
 
-			foreach ((array) $players AS $p)
+			foreach ((array) $players as $p)
 			{
 				$options[] = HTMLHelper::_(
 					'select.option', $p->value, '[' . $p->jerseynumber . '] ' .
@@ -772,7 +772,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		/** Build select list for not assigned */
 		$not_assigned_options = [];
 
-		foreach ((array) $not_assigned AS $p)
+		foreach ((array) $not_assigned as $p)
 		{
 			$not_assigned_options[] = HTMLHelper::_(
 				'select.option', $p->value,
