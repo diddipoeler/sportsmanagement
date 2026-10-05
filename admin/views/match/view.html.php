@@ -176,10 +176,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function initPressebericht(): void
 	{
-		$app    = $this->app;
-		$jinput = $app->getInput();
-		$option = $jinput->getCmd('option');
-		$model  = $this->getModel();
+		$app   = $this->app;
+		$model = $this->getModel();
 
 		$csv_file          = $model->getPressebericht();
 		$this->csv         = $csv_file;
@@ -540,10 +538,8 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 	 */
 	public function initEditEeventsBB(): void
 	{
-		$app                 = $this->app;
-		$jinput              = $app->getInput();
+		$jinput              = $this->app->getInput();
 		$option              = $jinput->getCmd('option');
-		$project_id          = $app->getUserState("$option.pid", '0');
 		$params              = ComponentHelper::getParams($option);
 		$default_name_format = $params->get("name_format");
 
@@ -554,7 +550,7 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 		$awayRoster = $model->getTeamPersons($teams->projectteam2_id, false, 1);
 
 		// Events
-		$events = $model->getEventsOptions($project_id, $this->item->id);
+		$events = $model->getEventsOptions($this->project_id, $this->item->id);
 
 		if (!$events)
 		{
@@ -956,10 +952,6 @@ $mdlPlayground      = $this->playgroundsModel();
 	 */
 	public function _displayPressebericht(): void
 	{
-		$app        = $this->app;
-		$jinput     = $app->getInput();
-		$option     = $jinput->getCmd('option');
-		$project_id = $app->getUserState("$option.pid", '0');
 		$this->config = ComponentHelper::getParams('com_media');
 
 		$model             = $this->getModel();
@@ -1000,7 +992,7 @@ $mdlPlayground      = $this->playgroundsModel();
 		unset($position_id);
 
 		// Events
-		$events = $model->getEventsOptions($project_id);
+		$events = $model->getEventsOptions($this->project_id);
 
 		if (!$events)
 		{
