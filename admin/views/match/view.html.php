@@ -1034,8 +1034,10 @@ $mdlPlayground      = $this->playgroundsModel();
 	protected function addToolBar(): void
 	{
 		// Set toolbar items for the page
-		$stylelink = '<link rel="stylesheet" href="' . Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' . '" type="text/css" />' . "\n";
-		$this->document->addCustomTag($stylelink);
+		$this->useStyleAsset(
+			'com_sportsmanagement.usericons',
+			Uri::root() . 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'
+		);
 
 		$jinput = $this->app->getInput();
 		$jinput->set('hidemainmenu', true);
