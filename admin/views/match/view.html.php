@@ -301,12 +301,9 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$projectreferees  = [];
 		$projectreferees2 = [];
 
-		if (isset($allreferees))
+		foreach ($allreferees as $referee)
 		{
-			foreach ($allreferees as $referee)
-			{
-				$inroster[] = $referee->value;
-			}
+			$inroster[] = $referee->value;
 		}
 
 		/** Projekt positionen */
@@ -396,21 +393,18 @@ $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS');
 			{
 				$temp[$key] = [];
 
-				if (isset($referees))
+				foreach ($referees as $referee)
 				{
-					foreach ($referees as $referee)
+					if ($this->projectws->teams_as_referees == 1)
 					{
-						if ($this->projectws->teams_as_referees == 1)
-						{
-							$temp[$key][] = HTMLHelper::_('select.option', $referee->value, $referee->name);
-						}
-						else
-						{
-							$temp[$key][] = HTMLHelper::_(
-								'select.option', $referee->value,
-								$referee->text
-							);
-						}
+						$temp[$key][] = HTMLHelper::_('select.option', $referee->value, $referee->name);
+					}
+					else
+					{
+						$temp[$key][] = HTMLHelper::_(
+							'select.option', $referee->value,
+							$referee->text
+						);
 					}
 				}
 
