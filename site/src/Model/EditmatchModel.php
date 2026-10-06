@@ -52,15 +52,18 @@ final class EditmatchModel extends AdminModel
     protected $_data = null;
 
     private ?DatabaseInterface $injectedDatabase = null;
+    private ?MailerFactoryInterface $injectedMailerFactory = null;
 
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
         ?FormFactoryInterface $formFactory = null,
-        ?DatabaseInterface $database = null
+        ?DatabaseInterface $database = null,
+        ?MailerFactoryInterface $mailerFactory = null
     ) {
         parent::__construct($config, $factory, $formFactory);
         $this->injectedDatabase = $database;
+        $this->injectedMailerFactory = $mailerFactory;
 
         $input = $this->siteApplication()->getInput();
         self::$divisionid = $input->getInt('division', 0);
@@ -466,7 +469,9 @@ final class EditmatchModel extends AdminModel
             );
 
             try {
-                $mailer = \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+                $mailerFactory = $this->injectedMailerFactory
+                    ?? \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class);
+                $mailer = $mailerFactory->createMailer();
                 $mailFrom = (string) $app->get('mailfrom', '');
                 $fromName = (string) $app->get('fromname', '');
                 if ($mailFrom !== '') {
