@@ -341,7 +341,7 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
             ->where($db->quoteName('pt.id') . ' = :substituteProjectTeamId')
             ->where($db->quoteName('mp.came_in') . ' > 0')
             ->where('(' . $db->quoteName('p.published') . ' = 1 OR ' . $db->quoteName('p.id') . ' IS NULL)')
-            ->order('CAST(' . $db->quoteName('mp.in_out_time') . ' AS UNSIGNED) ASC')
+            ->order($db->quoteName('mp.in_out_time') . ' ASC')
             ->bind(':substituteMatchId', $matchId, ParameterType::INTEGER)
             ->bind(':substituteProjectTeamId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query);
