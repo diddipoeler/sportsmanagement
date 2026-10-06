@@ -1,0 +1,84 @@
+name: Joomla 5/6 compatibility batch 631
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'site/src/Controller/EditmatchController.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch631.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'site/src/Controller/EditmatchController.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch631.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_update_timestamp.php
+            site/src/Controller/EditmatchController.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- '@version    5.6.0' admin/assets/updates/jsm_update_timestamp.php
+          grep -Fq -- 'SportsManagementDatabaseResolver' admin/assets/updates/jsm_update_timestamp.php
+          if grep -Fq -- 'sportsmanagementHelper::' admin/assets/updates/jsm_update_timestamp.php; then
+            echo 'Legacy sportsmanagementHelper remains in timestamp updater'
+            exit 1
+          fi
+          if grep -Fq -- 'jimport(' admin/assets/updates/jsm_update_timestamp.php; then
+            echo 'Legacy jimport remains in timestamp updater'
+            exit 1
+          fi
+
+          if grep -Fq -- 'Factory::getDate(' site/src/Controller/EditmatchController.php; then
+            echo 'Deprecated Factory::getDate remains in frontend edit controller'
+            exit 1
+          fi
+          grep -Fq -- "new Date('now', new \\DateTimeZone('UTC'))" site/src/Controller/EditmatchController.php
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          text = Path('modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php').read_text()
+
+          if not re.search(
+              r'createArticlesAjax\(\?DatabaseInterface \$joomlaDatabase = null\): array',
+              text,
+          ):
+              raise SystemExit('createArticlesAjax() lacks optional DatabaseInterface injection')
+
+          start = text.index('public function createArticlesAjax')
+          end = text.index('private function loadPublishedModule', start)
+          segment = text[start:end]
+          if "if ($joomlaDatabase === null)" not in segment:
+              raise SystemExit('AJAX database fallback guard is missing')
+          PY
