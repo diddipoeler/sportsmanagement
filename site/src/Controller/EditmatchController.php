@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\IndividualMatchWriteService;
 use Diddipoeler\Component\SportsManagement\Site\Model\EditmatchModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -111,7 +112,7 @@ final class EditmatchController extends FormController
             'team2_bonus' => $this->nullIfEmpty($post['team2_bonus'] ?? null),
             'team1_legs' => $this->nullIfEmpty($post['team1_legs'] ?? null),
             'team2_legs' => $this->nullIfEmpty($post['team2_legs'] ?? null),
-            'modified' => Factory::getDate()->toSql(),
+            'modified' => $this->nowSql(),
             'modified_by' => (int) $app->getIdentity()->id,
             'cancel' => $post['cancel'] ?? 0,
             'cancel_reason' => $post['cancel_reason'] ?? '',
@@ -167,7 +168,7 @@ final class EditmatchController extends FormController
                 $post,
                 $ids,
                 (int) $app->getIdentity()->id,
-                Factory::getDate()->toSql()
+                $this->nowSql()
             );
         } catch (\Throwable $e) {
             $saved = false;
@@ -197,6 +198,11 @@ final class EditmatchController extends FormController
         $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
 
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    }
+
+    private function nowSql(): string
+    {
+        return (new Date('now', new \DateTimeZone('UTC')))->toSql();
     }
 
     private function nullIfEmpty(mixed $value): mixed
