@@ -1,0 +1,71 @@
+name: Joomla 5/6 compatibility batch 630
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_alias.php'
+      - 'site/src/Model/AllprojectroundsModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch630.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_update_alias.php'
+      - 'site/src/Model/AllprojectroundsModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch630.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_update_alias.php
+            site/src/Model/AllprojectroundsModel.php
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- '@version    5.6.0' admin/assets/updates/jsm_update_alias.php
+          grep -Fq -- 'SportsManagementDatabaseResolver' admin/assets/updates/jsm_update_alias.php
+          if grep -Fq -- 'sportsmanagementHelper::getDBConnection()' admin/assets/updates/jsm_update_alias.php; then
+            echo 'Legacy database helper remains in alias updater'
+            exit 1
+          fi
+
+          if grep -Fq -- 'AS UNSIGNED' site/src/Model/AllprojectroundsModel.php; then
+            echo 'MySQL-only CAST AS UNSIGNED remains in site model'
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          text = Path('modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php').read_text()
+          if not re.search(
+              r'getData\(Registry \$params, object \$module, CMSApplicationInterface \$app, \?DatabaseInterface \$database = null\)',
+              text,
+          ):
+              raise SystemExit('Liveticker getData() lacks optional DatabaseInterface injection')
+          PY
