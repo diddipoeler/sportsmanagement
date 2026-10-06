@@ -1,0 +1,54 @@
+name: Joomla 5/6 compatibility batch 625
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/models/allclubs.php'
+      - 'admin/controllers/ajax.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch625.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/models/allclubs.php'
+      - 'admin/controllers/ajax.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch625.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            site/models/allclubs.php
+            admin/controllers/ajax.php
+            modules/mod_sportsmanagement_playground_ticker/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+          grep -Fq -- "\\defined('_JEXEC') or die;" site/models/allclubs.php
+          grep -Fq -- "\\defined('_JEXEC') or die;" admin/controllers/ajax.php
+          grep -Fq -- "SportsManagement native administrator Ajax controller could not be loaded." admin/controllers/ajax.php
+          grep -Fq -- "class_alias('modJSMPlaygroundTicker', 'modJSMPlaygroundTickerHelper');" modules/mod_sportsmanagement_playground_ticker/helper.php
+          grep -Fq -- "class_alias('modJSMPlaygroundTicker', 'ModSportsmanagementPlaygroundTickerHelper');" modules/mod_sportsmanagement_playground_ticker/helper.php
