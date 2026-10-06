@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage updates
  * @file       jsm_install_jcemediabox.php
@@ -12,15 +12,10 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Installer\Installer;
-use Joomla\CMS\Updater\Update;
-use Joomla\CMS\Updater\Updater;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Plugin\PluginHelper;
 
 $app = Factory::getApplication();
 //PluginHelper::importPlugin('plg_installer_webinstaller');
@@ -102,7 +97,6 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 	ini_set('memory_limit', $maxImportMemory);
 }
 
-$db = sportsmanagementHelper::getDBConnection();
 
 //$tabs = $app->triggerEvent('onInstallerAddInstallationTab', []);
 //echo 'tabs <pre>'.print_r($tabs,true).'</pre>';
