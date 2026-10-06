@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage updates
  * @file       jsm_update_timestamp.php
@@ -11,21 +11,12 @@
  */
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
-
-jimport('joomla.filter.output');
-
-/** Prüft vor Benutzung ob die gewünschte Klasse definiert ist */
-if (!class_exists('sportsmanagementHelper'))
-{
-	// Add the classes for handling
-	$classpath = JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . JSM_PATH . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'sportsmanagement.php';
-	JLoader::register('sportsmanagementHelper', $classpath);
-	BaseDatabaseModel::getInstance("sportsmanagementHelper", "sportsmanagementModel");
-}
+use Joomla\CMS\Date\Date;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Joomla\Database\DatabaseInterface;
 
 $uri = Uri::getInstance();
 $app = Factory::getApplication();
@@ -83,7 +74,37 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 }
 
 
-$db = sportsmanagementHelper::getDBConnection();
+if (!class_exists(SportsManagementDatabaseResolver::class)) {
+    $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php';
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
+
+if (!class_exists(SportsManagementDatabaseResolver::class)) {
+    throw new \RuntimeException('SportsManagement database resolver could not be loaded.', 500);
+}
+
+/** @var DatabaseInterface $joomlaDatabase */
+$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+$db = (new SportsManagementDatabaseResolver())->resolve(null, $joomlaDatabase);
+
+$toTimestamp = static function (mixed $value) use ($app): int|false {
+    if ($value === null || $value === '0000-00-00 00:00:00' || $value === '0000-00-00 15:30:00') {
+        $value = 'now';
+    }
+
+    try {
+        return (new Date((string) $value, new \DateTimeZone('UTC')))->toUnix();
+    } catch (\Throwable $e) {
+        $app->enqueueMessage(
+            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            'error'
+        );
+
+        return false;
+    }
+};
 
 
 if ($table)
@@ -102,7 +123,7 @@ if ($table)
 			{
 				if ($projekt->modified != $db->getNullDate())
 				{
-					$projekt->modified_timestamp = sportsmanagementHelper::getTimestamp($projekt->modified);
+					$projekt->modified_timestamp = $toTimestamp($projekt->modified);
 
 					// Create an object for the record we are going to update.
 					$object = new stdClass;
@@ -132,7 +153,7 @@ if ($table)
 			{
 				if ($match->match_date != $db->getNullDate())
 				{
-					$match->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
+					$match->match_timestamp = $toTimestamp($match->match_date);
 
 					// Create an object for the record we are going to update.
 					$object = new stdClass;
