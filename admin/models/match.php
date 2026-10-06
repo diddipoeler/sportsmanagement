@@ -621,7 +621,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getProjectReferees($already_sel = false, $project_id = 0)
 	{
-		$db     = $this->jsmdb;
+		$db     = Factory::getContainer()->get(DatabaseInterface::class);
 		$query  = $db->getQuery(true);
 		$result = array();
 		$query->select('pref.id AS value,pl.firstname,pl.nickname,pl.lastname,pl.info,pos.name AS positionname');
@@ -3802,7 +3802,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getProjectReferee($person_id = 0, $project_id = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = $this->jsmdb;
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -4150,7 +4150,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getProjectPosition($project_position_id = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = $this->jsmdb;
 
 		$query = $db->getQuery(true);
 		$query->select('*');

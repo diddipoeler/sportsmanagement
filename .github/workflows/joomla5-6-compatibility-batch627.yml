@@ -1,0 +1,37 @@
+name: Joomla 5/6 compatibility batch 627
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch626.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch627.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch626.yml'
+      - '.github/workflows/joomla5-6-compatibility-batch627.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate batch 626 correction
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l admin/models/match.php
+          grep -Fq -- 'public static function getProjectReferees' admin/models/match.php
+          grep -Fq -- 'public static function getProjectPositionsOptions' admin/models/match.php
+          grep -Fq -- 'function getProjectReferee(' admin/models/match.php
+          grep -Fq -- 'function getProjectPosition(' admin/models/match.php
