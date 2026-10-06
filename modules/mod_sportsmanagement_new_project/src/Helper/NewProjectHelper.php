@@ -90,7 +90,7 @@ final class NewProjectHelper
             && $identity->authorise('core.create', 'com_content.category.' . $categoryId);
     }
 
-    public function createArticlesAjax(): array
+    public function createArticlesAjax(?DatabaseInterface $joomlaDatabase = null): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
 
@@ -104,8 +104,11 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        if ($joomlaDatabase === null) {
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        }
+
         $module = $this->loadPublishedModule($joomlaDatabase, $moduleId);
 
         if (!$module) {
