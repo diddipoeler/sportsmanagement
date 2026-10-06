@@ -1,0 +1,78 @@
+name: Joomla 5/6 compatibility batch 634
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcemediabox.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch634.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcemediabox.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch634.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_install_jcemediabox.php
+            site/src/Model/EditmatchModel.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- '@version    5.6.0' admin/assets/updates/jsm_install_jcemediabox.php
+          grep -Fq -- 'getWebAssetManager()->registerAndUseScript' admin/assets/updates/jsm_install_jcemediabox.php
+          if grep -Fq -- 'sportsmanagementHelper::getDBConnection()' admin/assets/updates/jsm_install_jcemediabox.php; then
+            echo 'Unused legacy database helper remains in JCE MediaBox installer'
+            exit 1
+          fi
+          if grep -Fq -- '->addScript(' admin/assets/updates/jsm_install_jcemediabox.php; then
+            echo 'Legacy document addScript remains in JCE MediaBox installer'
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          model = Path('site/src/Model/EditmatchModel.php').read_text()
+          if not re.search(r'\?MailerFactoryInterface \$mailerFactory = null', model):
+              raise SystemExit('EditmatchModel constructor lacks optional MailerFactoryInterface injection')
+          if '$this->injectedMailerFactory = $mailerFactory;' not in model:
+              raise SystemExit('EditmatchModel does not retain the injected mailer factory')
+          if '$this->injectedMailerFactory' not in model or 'createMailer()' not in model:
+              raise SystemExit('EditmatchModel mailer path does not use injectable factory')
+
+          helper = Path('modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php').read_text()
+          if helper.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('New Project helper should have exactly one centralized Joomla DB fallback')
+          if 'private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in helper:
+              raise SystemExit('Centralized New Project Joomla database helper is missing')
+          PY
