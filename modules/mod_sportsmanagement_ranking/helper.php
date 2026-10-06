@@ -112,13 +112,16 @@ class modJSMRankingHelper extends stdClass
     /**
      * Count unfinished games old enough to qualify for the inline-hockey update.
      */
-    public static function getCountGames($projectid, $ishd_update_hour)
+    public static function getCountGames($projectid, $ishd_update_hour, ?DatabaseInterface $database = null)
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase);
+        if ($database === null) {
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+        }
+
+        $db = SportsManagementDatabaseResolver::resolve($database);
         $query = $db->createQuery();
         $matchestoupdate = 0;
         $projectId = (int) $projectid;
