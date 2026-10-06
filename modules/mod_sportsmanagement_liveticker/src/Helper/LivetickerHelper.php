@@ -26,15 +26,17 @@ use Joomla\Registry\Registry;
 
 final class LivetickerHelper
 {
-    public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
+    public function getData(Registry $params, object $module, CMSApplicationInterface $app, ?DatabaseInterface $database = null): array
     {
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $db = $this->database($params, $joomlaDatabase);
+        if ($database === null) {
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+        }
+        $db = $this->database($params, $database);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
