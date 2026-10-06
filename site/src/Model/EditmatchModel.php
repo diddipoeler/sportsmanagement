@@ -51,12 +51,16 @@ final class EditmatchModel extends AdminModel
     protected int $_id = 0;
     protected $_data = null;
 
+    private ?DatabaseInterface $injectedDatabase = null;
+
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
-        ?FormFactoryInterface $formFactory = null
+        ?FormFactoryInterface $formFactory = null,
+        ?DatabaseInterface $database = null
     ) {
         parent::__construct($config, $factory, $formFactory);
+        $this->injectedDatabase = $database;
 
         $input = $this->siteApplication()->getInput();
         self::$divisionid = $input->getInt('division', 0);
@@ -490,8 +494,12 @@ final class EditmatchModel extends AdminModel
 
     private function database(): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        if ($this->injectedDatabase === null) {
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        } else {
+            $joomlaDatabase = $this->injectedDatabase;
+        }
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
