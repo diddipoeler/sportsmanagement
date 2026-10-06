@@ -15,6 +15,8 @@ use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\CMS\Uri\Uri;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -35,9 +37,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
         }
 
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
         $result = $this->getHelperFactory()
             ->getHelper('LivetickerHelper')
-            ->getData($data['params'], $data['module'], $app);
+            ->getData($data['params'], $data['module'], $app, $database);
 
         $document = $app->getDocument();
 
