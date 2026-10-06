@@ -65,3 +65,12 @@ if (!class_exists('modJSMPlaygroundTicker', false)) {
     }
     }
 }
+
+
+if (!class_exists('modJSMPlaygroundTickerHelper', false)) {
+    class_alias('modJSMPlaygroundTicker', 'modJSMPlaygroundTickerHelper');
+}
+
+if (!class_exists('ModSportsmanagementPlaygroundTickerHelper', false)) {
+    class_alias('modJSMPlaygroundTicker', 'ModSportsmanagementPlaygroundTickerHelper');
+}
