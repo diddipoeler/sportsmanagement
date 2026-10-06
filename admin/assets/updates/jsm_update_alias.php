@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage updates
  * @file       jsm_update_alias.php
@@ -15,6 +15,8 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Joomla\Database\DatabaseInterface;
 
 $uri = Uri::getInstance();
 $app = Factory::getApplication();
@@ -72,7 +74,16 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 }
 
 
-$db = sportsmanagementHelper::getDBConnection();
+if (!class_exists(SportsManagementDatabaseResolver::class)) {
+    $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php';
+    if (is_file($resolverFile)) {
+        require_once $resolverFile;
+    }
+}
+
+/** @var DatabaseInterface $joomlaDatabase */
+$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+$db = (new SportsManagementDatabaseResolver())->resolve(null, $joomlaDatabase);
 
 
 if ($table)
