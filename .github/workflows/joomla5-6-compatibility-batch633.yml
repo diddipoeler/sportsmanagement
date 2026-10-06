@@ -1,0 +1,75 @@
+name: Joomla 5/6 compatibility batch 633
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcomments_j3.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch633.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcomments_j3.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch633.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_install_jcomments_j3.php
+            site/src/Model/EditmatchModel.php
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- '@version    5.6.0' admin/assets/updates/jsm_install_jcomments_j3.php
+          grep -Fq -- 'getWebAssetManager()->registerAndUseScript' admin/assets/updates/jsm_install_jcomments_j3.php
+          if grep -Fq -- 'sportsmanagementHelper::getDBConnection()' admin/assets/updates/jsm_install_jcomments_j3.php; then
+            echo 'Unused legacy database helper remains in JComments J3 installer'
+            exit 1
+          fi
+          if grep -Fq -- '->addScript(' admin/assets/updates/jsm_install_jcomments_j3.php; then
+            echo 'Legacy document addScript remains in JComments J3 installer'
+            exit 1
+          fi
+
+          grep -Fq -- "new Date('now', new \\DateTimeZone('UTC'))" site/src/Model/EditmatchModel.php
+          if grep -Fq -- 'new Date()' site/src/Model/EditmatchModel.php; then
+            echo 'Implicit edit timestamp remains in EditmatchModel'
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          dispatcher = Path('modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php').read_text()
+          if 'Factory::getContainer()->get(DatabaseInterface::class)' not in dispatcher:
+              raise SystemExit('Liveticker dispatcher does not resolve Joomla database')
+          if "getData($data['params'], $data['module'], $app, $database)" not in dispatcher:
+              raise SystemExit('Liveticker dispatcher does not pass the database explicitly')
+          PY
