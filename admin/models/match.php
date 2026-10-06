@@ -851,7 +851,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$starttime = microtime();
    		$app       = Factory::getApplication();
-		$db        = $this->jsmdb;
+		$db        = Factory::getContainer()->get(DatabaseInterface::class);
 		$result    = '';
 		$query     = $db->getQuery(true);
 
