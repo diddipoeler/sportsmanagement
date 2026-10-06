@@ -1,0 +1,75 @@
+name: Joomla 5/6 compatibility batch 629
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/helpers/comments.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch629.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/helpers/comments.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch629.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/helpers/comments.php
+            modules/mod_sportsmanagement_ranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          match = Path('admin/models/match.php').read_text()
+          start = match.index('public static function savesubstitution')
+          end = match.find('\n\t/**', start)
+          segment = match[start:end if end != -1 else None]
+          if '$this->' in segment:
+              raise SystemExit('$this remains in static savesubstitution()')
+
+          comments = Path('site/helpers/comments.php').read_text()
+          required_comments = (
+              'SportsManagementDatabaseResolver::resolve($joomlaDatabase)',
+              'Factory::getContainer()->get(DatabaseInterface::class)',
+          )
+          for needle in required_comments:
+              if needle not in comments:
+                  raise SystemExit(f'missing comments DB migration marker: {needle}')
+
+          ranking = Path('modules/mod_sportsmanagement_ranking/helper.php').read_text()
+          if not re.search(
+              r'getCountGames\([^)]*\?DatabaseInterface \$database = null\)',
+              ranking,
+          ):
+              raise SystemExit('ranking helper does not expose optional DatabaseInterface injection')
+          PY
