@@ -10,20 +10,22 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\MatchCommentsHelper;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
-if (!class_exists(MatchCommentsHelper::class)) {
-    $nativeHelper = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/MatchCommentsHelper.php';
-
-    if (is_file($nativeHelper)) {
-        require_once $nativeHelper;
+foreach ([
+    MatchCommentsHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/MatchCommentsHelper.php',
+    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+] as $nativeClass => $nativeFile) {
+    if (!class_exists($nativeClass, false) && is_file($nativeFile)) {
+        require_once $nativeFile;
     }
 }
 
-if (!class_exists(MatchCommentsHelper::class)) {
+if (!class_exists(MatchCommentsHelper::class) || !class_exists(SportsManagementDatabaseResolver::class)) {
     throw new \RuntimeException('SportsManagement native MatchComments helper could not be loaded.', 500);
 }
 
@@ -65,8 +67,9 @@ class sportsmanagementModelComments
             return $fallback;
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        /** @var DatabaseInterface $joomlaDatabase */
+        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase);
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('t1.name', 'home'),
