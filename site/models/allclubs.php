@@ -8,21 +8,21 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\AllclubsModel;
 
 if (!class_exists(AllclubsModel::class)) {
-    $nativeModels = [
+    $nativeDependencies = [
         JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/AllclubsModel.php',
     ];
 
-    foreach ($nativeModels as $nativeModel) {
-        if (is_file($nativeModel)) {
-            require_once $nativeModel;
+    foreach ($nativeDependencies as $nativeFile) {
+        if (is_file($nativeFile)) {
+            require_once $nativeFile;
         }
     }
 }
