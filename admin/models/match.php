@@ -2822,7 +2822,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		if ((int) $data['in_out_time'] > (int) $data['projecttime'])
 		{
 			/** erst einmal ausgeschaltet
-			$this->setError(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_SUBST_TIME_OVER_PROJECTTIME', $data['in_out_time'], $data['projecttime']));
+			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_SUBST_TIME_OVER_PROJECTTIME', $data['in_out_time'], $data['projecttime']), 'error');
 			return false;
 			*/
 		}
