@@ -621,7 +621,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getProjectReferees($already_sel = false, $project_id = 0)
 	{
-		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$db     = $this->jsmdb;
 		$query  = $db->getQuery(true);
 		$result = array();
 		$query->select('pref.id AS value,pl.firstname,pl.nickname,pl.lastname,pl.info,pos.name AS positionname');
@@ -851,7 +851,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$starttime = microtime();
    		$app       = Factory::getApplication();
-		$db        = Factory::getContainer()->get(DatabaseInterface::class);
+		$db        = $this->jsmdb;
 		$result    = '';
 		$query     = $db->getQuery(true);
 
@@ -3779,7 +3779,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	function getSeasonPersonAssignment($person_id = 0, $season_id = 0, $person_type = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = $this->jsmdb;
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -3883,7 +3883,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getEventType($event_type_name = '')
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = $this->jsmdb;
 
 		$query = $db->getQuery(true);
 		$query->select('*');

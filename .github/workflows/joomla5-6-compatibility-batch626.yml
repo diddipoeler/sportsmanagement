@@ -1,0 +1,57 @@
+name: Joomla 5/6 compatibility batch 626
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch626.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - '.github/workflows/joomla5-6-compatibility-batch626.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+          file=admin/models/match.php
+          php -l "$file"
+
+          for tag in '@version' '@author' '@copyright' '@license'; do
+            grep -Fq -- "$tag" "$file"
+          done
+
+          grep -Fq -- '@version    5.6.0' "$file"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          text = Path('admin/models/match.php').read_text()
+          names = (
+              'getSeasonPersonAssignment',
+              'getProjectReferee',
+              'getEventType',
+              'getProjectPosition',
+          )
+          for name in names:
+              start = text.index(f'function {name}')
+              end = text.find('\n\t/**', start + 10)
+              segment = text[start:end]
+              if '$this->jsmdb' not in segment:
+                  raise SystemExit(f'{name} does not use $this->jsmdb')
+              if 'Factory::getContainer()->get(DatabaseInterface::class)' in segment:
+                  raise SystemExit(f'Global database remains in {name}')
+          PY
