@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 632
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcomments.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch632.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcomments.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch632.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_install_jcomments.php
+            site/src/Model/EditmatchModel.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- '@version    5.6.0' admin/assets/updates/jsm_install_jcomments.php
+          grep -Fq -- 'getWebAssetManager()->registerAndUseScript' admin/assets/updates/jsm_install_jcomments.php
+          if grep -Fq -- 'sportsmanagementHelper::getDBConnection()' admin/assets/updates/jsm_install_jcomments.php; then
+            echo 'Unused legacy database helper remains in JComments installer'
+            exit 1
+          fi
+          if grep -Fq -- '->addScript(' admin/assets/updates/jsm_install_jcomments.php; then
+            echo 'Legacy document addScript remains in JComments installer'
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          model = Path('site/src/Model/EditmatchModel.php').read_text()
+          if not re.search(r'\?DatabaseInterface \$database = null', model):
+              raise SystemExit('EditmatchModel constructor lacks optional database injection')
+          if '$this->injectedDatabase = $database;' not in model:
+              raise SystemExit('EditmatchModel does not retain the injected database')
+          if 'if ($this->injectedDatabase === null)' not in model:
+              raise SystemExit('EditmatchModel database fallback guard is missing')
+
+          dispatcher = Path('modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php').read_text()
+          if 'getData($data[\'params\'], $app, $database)' not in dispatcher:
+              raise SystemExit('New Project dispatcher does not pass the database explicitly')
+          PY
