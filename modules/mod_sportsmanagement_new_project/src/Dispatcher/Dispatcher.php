@@ -15,6 +15,8 @@ use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
 {
@@ -38,7 +40,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $helper = $this->getHelperFactory()->getHelper('NewProjectHelper');
         $data['params']->set('layout', 'native');
-        $data['list'] = $helper->getData($data['params'], $app);
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $data['list'] = $helper->getData($data['params'], $app, $database);
         $data['canCreateArticles'] = $helper->canCreateArticles($data['params'], $app);
 
         $document = $app->getDocument();
