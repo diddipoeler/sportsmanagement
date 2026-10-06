@@ -31,8 +31,7 @@ final class NewProjectHelper
         CMSApplicationInterface $app,
         ?DatabaseInterface $joomlaDatabase = null
     ): array {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $this->joomlaDatabase($joomlaDatabase);
         $databaseSelector = (int) $params->get('cfg_which_database', 0);
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
         [$start, $end] = $this->todayRange($app);
@@ -104,10 +103,7 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid module.', 400);
         }
 
-        if ($joomlaDatabase === null) {
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        }
+        $joomlaDatabase = $this->joomlaDatabase($joomlaDatabase);
 
         $module = $this->loadPublishedModule($joomlaDatabase, $moduleId);
 
@@ -197,6 +193,18 @@ final class NewProjectHelper
             'errors' => $errors,
             'module_id' => $moduleId,
         ];
+    }
+
+    private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+    {
+        if ($database !== null) {
+            return $database;
+        }
+
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function loadPublishedModule(DatabaseInterface $db, int $moduleId): ?object
