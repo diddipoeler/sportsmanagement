@@ -1,0 +1,81 @@
+name: Joomla 5/6 compatibility batch 662
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/ProjectModel.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch662.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/ProjectModel.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch662.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/ProjectModel.php
+            site/src/Model/SportsManagementProjectModel.php
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          project = Path('admin/src/Model/ProjectModel.php').read_text()
+          if 'Factory::getDate()' in project:
+              raise SystemExit('Deprecated Factory::getDate() remains in administrator ProjectModel')
+          if project.count("new Date('now', new \\DateTimeZone('UTC'))") < 5:
+              raise SystemExit('Administrator ProjectModel UTC date migration is incomplete')
+
+          site_project = Path('site/src/Model/SportsManagementProjectModel.php').read_text()
+          start = site_project.index('public function getProject(): ?object')
+          end = site_project.index('public function getCurrentRound', start)
+          segment = site_project[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in SportsManagementProjectModel::getProject()')
+          for required in (
+              '$project->slug =',
+              '$project->league_slug =',
+              '$project->season_slug =',
+              '$project->round_slug =',
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing PHP project slug builder: {required}')
+
+          dispatcher = Path('modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('TrainingsData dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('TrainingsData dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TrainingsData dispatcher should have exactly one Joomla DB container access')
+          PY
