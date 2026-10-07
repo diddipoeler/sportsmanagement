@@ -120,7 +120,7 @@ final class MatchController extends SportsManagementFormController
 
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = self::joomlaDatabase();
             $databaseSelector = $input->getInt(
                 'cfg_which_database',
                 (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
@@ -313,7 +313,7 @@ final class MatchController extends SportsManagementFormController
 
         try {
             /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = self::joomlaDatabase();
             $databaseSelector = $input->getInt(
                 'cfg_which_database',
                 (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
@@ -512,6 +512,14 @@ final class MatchController extends SportsManagementFormController
         $this->setRedirect($successRedirect);
 
         return true;
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function maxPressReportBytes(): int
