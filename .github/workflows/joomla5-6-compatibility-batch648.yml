@@ -1,0 +1,77 @@
+name: Joomla 5/6 compatibility batch 648
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch648.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch648.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/RoundsModel.php
+            site/src/Model/NextmatchModel.php
+            modules/mod_sportsmanagement_act_season/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          rounds = Path('admin/src/Model/RoundsModel.php').read_text()
+          start = rounds.index('private static function resolveSportsManagementDatabase')
+          end = rounds.index('private static function resolveAdministratorApplication', start)
+          segment = rounds[start:end]
+          if 'Factory::getContainer()->get(DatabaseInterface::class)' in segment:
+              raise SystemExit('Rounds database resolver still accesses the Joomla DB container directly')
+          if '(new SportsManagementDatabaseResolver())->resolve($databaseConfig)' not in segment:
+              raise SystemExit('Rounds database resolution is not delegated to SportsManagementDatabaseResolver')
+
+          nextmatch = Path('site/src/Model/NextmatchModel.php').read_text()
+          start = nextmatch.index('private function loadSharedProjectsWithoutMatches')
+          segment = nextmatch[start:]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in shared-project Nextmatch history')
+          if "$row->project_slug = (int) ($row->prid ?? 0) . ':'" not in segment:
+              raise SystemExit('Shared-project Nextmatch slug is not built in PHP')
+
+          helper = Path('modules/mod_sportsmanagement_act_season/helper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in helper:
+              raise SystemExit('ActSeason database helper is missing')
+          if '$database = self::joomlaDatabase($database);' not in helper:
+              raise SystemExit('ActSeason result helper does not use centralized DB fallback')
+          if helper.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ActSeason helper should have exactly one Joomla DB container fallback')
+          PY
