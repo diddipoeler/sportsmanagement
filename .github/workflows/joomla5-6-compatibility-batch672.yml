@@ -1,0 +1,80 @@
+name: Joomla 5/6 compatibility batch 672
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/AjaxModel.php'
+      - 'site/src/Model/RosterModel.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch672.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/AjaxModel.php'
+      - 'site/src/Model/RosterModel.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch672.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/AjaxModel.php
+            site/src/Model/RosterModel.php
+            modules/mod_sportsmanagement_ranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin_ajax = Path('admin/src/Model/AjaxModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in admin_ajax:
+              raise SystemExit('Administrator AjaxModel Joomla DB helper is missing')
+          if '$db = self::joomlaDatabase();' not in admin_ajax:
+              raise SystemExit('Administrator AjaxModel association selector bypasses centralized DB access')
+          if admin_ajax.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Administrator AjaxModel should have exactly one Joomla DB container access')
+
+          roster = Path('site/src/Model/RosterModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in roster:
+              raise SystemExit('RosterModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase(),' not in roster:
+              raise SystemExit('RosterModel database resolver bypasses centralized Joomla DB access')
+          if roster.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('RosterModel should have exactly one Joomla DB container access')
+
+          ranking = Path('modules/mod_sportsmanagement_ranking/helper.php').read_text()
+          if 'private static function siteApplication()' not in ranking:
+              raise SystemExit('Ranking legacy site application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in ranking:
+              raise SystemExit('Ranking legacy Joomla DB helper is missing')
+          if '$database ??= self::joomlaDatabase();' not in ranking:
+              raise SystemExit('Ranking legacy helper does not use centralized DB access')
+          if ranking.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Ranking legacy helper should have exactly one Joomla DB container access')
+          if ranking.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Ranking legacy helper should resolve the site application only in its centralized helper')
+          PY
