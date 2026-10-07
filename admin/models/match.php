@@ -2459,11 +2459,11 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
         $result = array();
 		$db    = self::sportsManagementDatabase($cfg_which_database);
 		$query = $db->getQuery(true);
-		$query->select('m.*,CASE m.time_present	when NULL then NULL	else DATE_FORMAT(m.time_present, "%H:%i") END AS time_present,m.extended as matchextended');
+		$query->select('m.*,m.extended as matchextended');
 		$query->select('t1.name AS hometeam, t1.id AS t1id');
 		$query->select('t2.name as awayteam, t2.id AS t2id');
 		$query->select('pt1.project_id');
-		$query->select('CONCAT_WS(\':\',pg.id,pg.alias) AS playground_slug ');
+		$query->select('pg.id AS playground_slug_id,pg.alias AS playground_alias');
 		$query->select('pg.picture AS playground_picture,pg.name AS playground_name ');
 		$query->select('r.roundcode');
 		$query->from('#__sportsmanagement_match AS m');
@@ -2481,6 +2481,20 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		{
 			$db->setQuery($query);
 			$result = $db->loadObject();
+
+			if ($result)
+			{
+				$timePresent = trim((string) ($result->time_present ?? ''));
+				if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1)
+				{
+					$result->time_present = substr($timePresent, 0, 5);
+				}
+
+				$playgroundId = (int) ($result->playground_slug_id ?? 0);
+				$result->playground_slug = $playgroundId > 0
+					? $playgroundId . ':' . (string) ($result->playground_alias ?? '')
+					: '';
+			}
 		}
 		catch (Exception $e)
 		{
