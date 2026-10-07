@@ -38,9 +38,15 @@ class JSMCountries
 {
     private static function database(): DatabaseInterface
     {
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase());
+    }
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase);
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     public static function getCountries()
