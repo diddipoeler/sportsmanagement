@@ -12,14 +12,18 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
 $app = Factory::getApplication();
-//PluginHelper::importPlugin('plg_installer_webinstaller');
-$app->getDocument()->addScript(Uri::root() .'media\plg_installer_webinstaller\js\client.js');
+$app->getDocument()->getWebAssetManager()->registerAndUseScript(
+    'plg_installer_webinstaller.client',
+    'plg_installer_webinstaller/client.js',
+    ['version' => 'auto'],
+    ['defer' => true],
+    ['core']
+);
 
 
 
