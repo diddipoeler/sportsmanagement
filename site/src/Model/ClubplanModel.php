@@ -108,14 +108,16 @@ final class ClubplanModel extends SportsManagementProjectModel
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select($db->quoteName('c') . '.*')
-            ->select(
-                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('slug')
-            )
             ->from($db->quoteName('#__sportsmanagement_club', 'c'))
             ->where($db->quoteName('c.id') . ' = :clubId')
             ->bind(':clubId', $clubId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $this->club = $db->loadObject() ?: false;
+
+        if ($this->club) {
+            $this->club->slug = (int) ($this->club->id ?? 0) . ':' . (string) ($this->club->alias ?? '');
+        }
+
         return $this->club ?: null;
     }
 
@@ -209,7 +211,6 @@ final class ClubplanModel extends SportsManagementProjectModel
                 $db->quoteName('m.match_timestamp'),
                 $db->quoteName('m.projectteam1_id'),
                 $db->quoteName('m.projectteam2_id'),
-                "DATE_FORMAT(" . $db->quoteName('m.time_present') . ", '%H:%i') AS " . $db->quoteName('time_present'),
                 $db->quoteName('m.playground_id'),
                 $db->quoteName('m.alt_decision'),
                 $db->quoteName('m.team1_result'),
@@ -325,6 +326,13 @@ final class ClubplanModel extends SportsManagementProjectModel
         $query->order($db->quoteName('m.match_date') . ' ' . $direction);
         $db->setQuery($query);
         $this->allmatches = $db->loadObjectList() ?: [];
+
+        foreach ($this->allmatches as $match) {
+            $timePresent = trim((string) ($match->time_present ?? ''));
+            if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
+                $match->time_present = substr($timePresent, 0, 5);
+            }
+        }
 
         if (!$this->allmatches) {
             $this->siteApplication()->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), 'warning');
