@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
@@ -600,11 +601,14 @@ final class AjaxModel extends BaseDatabaseModel
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $this->databaseSelector());
     }
 
+    private function siteApplication(): SiteApplication
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     private function databaseSelector(): int
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
-
-        return $app->getInput()->getInt(
+        return $this->siteApplication()->getInput()->getInt(
             'cfg_which_database',
             (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
         );
