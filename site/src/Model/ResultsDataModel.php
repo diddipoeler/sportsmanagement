@@ -201,7 +201,6 @@ final class ResultsDataModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('m') . '.*',
-                'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', ' . $db->quote('%H:%i') . ') AS ' . $db->quoteName('time_present'),
                 $db->quoteName('playground.name', 'playground_name'),
                 $db->quoteName('playground.short_name', 'playground_short_name'),
                 $db->quoteName('playground.address', 'playground_address'),
@@ -323,7 +322,16 @@ final class ResultsDataModel extends SportsManagementProjectModel
 
         try {
             $this->getDatabase()->setQuery($query, max(0, $offset), max(0, $limit));
-            return $this->getDatabase()->loadObjectList('id') ?: [];
+            $rows = $this->getDatabase()->loadObjectList('id') ?: [];
+
+            foreach ($rows as $row) {
+                $timePresent = trim((string) ($row->time_present ?? ''));
+                if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
+                    $row->time_present = substr($timePresent, 0, 5);
+                }
+            }
+
+            return $rows;
         } catch (Throwable $e) {
             $this->reportDatabaseError($e);
             return [];
