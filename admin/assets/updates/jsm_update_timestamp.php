@@ -12,25 +12,14 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Date\Date;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
 
-$uri = Uri::getInstance();
 $app = Factory::getApplication();
 $table = $app->getInput()->getCmd('table');
-$uri->delVar('table');
-$link = $uri->toString();
 
-?>
-<?PHP echo $link;?>';
-            window.location = oldLocation + '&table=' + sData;
-//  window.location.search = sData;
-//  window.location.reload(true)
-        }
-    </script>
 <?PHP
 
 $version           = '1.0.53';
@@ -170,7 +159,7 @@ if ($table)
 }
 
 
-echo '<form method="get" id="adminForm" action="' . htmlspecialchars($link, ENT_QUOTES, 'UTF-8') . '">';
+echo '<form method="get" id="adminForm" action="">';
 echo '<br><button type="submit" name="table" value="project">Projekte</button>';
 echo '<button type="submit" name="table" value="match">Match</button>';
 echo '</form>';
