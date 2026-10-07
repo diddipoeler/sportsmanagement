@@ -11,9 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamplayerTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
@@ -47,8 +47,11 @@ final class TeamplayerModel extends SportsManagementAdminModel
 
     public function getTable($type = 'teamplayer', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
-        return Table::getInstance($type, $prefix, $config);
+        if (strcasecmp((string) $type, 'teamplayer') === 0) {
+            return new TeamplayerTable($this->getDatabase());
+        }
+
+        return parent::getTable($type, $prefix, $config);
     }
 
     /** Copy the owning club country to all selected team persons for a season. */
