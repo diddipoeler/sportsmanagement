@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 669
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TeamstaffModel.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch669.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/TeamstaffModel.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch669.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/TeamstaffModel.php
+            site/src/Model/SportsManagementProjectModel.php
+            modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          teamstaff = Path('admin/src/Model/TeamstaffModel.php').read_text()
+          if "'com_sportsmanagement.message.' . $id" in teamstaff:
+              raise SystemExit('TeamstaffModel still checks the message ACL asset')
+          if "'com_sportsmanagement.teamstaff.' . $id" not in teamstaff:
+              raise SystemExit('TeamstaffModel teamstaff ACL asset is missing')
+
+          project = Path('site/src/Model/SportsManagementProjectModel.php').read_text()
+          start = project.index('private function resolveCurrentRound')
+          end = project.index('public function', start + 20)
+          segment = project[start:end]
+          if 'INTERVAL' in segment:
+              raise SystemExit('MySQL INTERVAL syntax remains in resolveCurrentRound()')
+          for required in (
+              "$currentDate = new \\DateTimeImmutable('today', new \\DateTimeZone('UTC'));",
+              "$cutoffAfter = $currentDate->modify('+' . $autoTime . ' minutes')->format('Y-m-d H:i:s');",
+              "$cutoffBefore = $currentDate->modify('-' . $autoTime . ' minutes')->format('Y-m-d H:i:s');",
+              ":currentRoundCutoffAfter",
+              ":currentRoundCutoffBefore",
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing portable current-round cutoff logic: {required}')
+
+          dispatcher = Path('modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('UefaWertung dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('UefaWertung dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('UefaWertung dispatcher should have exactly one Joomla DB container access')
+          PY
