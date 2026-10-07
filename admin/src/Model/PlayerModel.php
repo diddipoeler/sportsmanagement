@@ -11,11 +11,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Table\PersonTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Table\Table;
 use Joomla\Filesystem\File;
 use Joomla\Registry\Registry;
 use Joomla\Database\ParameterType;
@@ -51,9 +51,11 @@ final class PlayerModel extends SportsManagementAdminModel
 
     public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = [])
     {
-        $config['dbo'] = $this->getDatabase();
+        if (in_array(strtolower((string) $type), ['player', 'person'], true)) {
+            return new PersonTable($this->getDatabase());
+        }
 
-        return Table::getInstance($type, $prefix, $config);
+        return parent::getTable($type, $prefix, $config);
     }
 
     public function getAgeGroupID($age)
