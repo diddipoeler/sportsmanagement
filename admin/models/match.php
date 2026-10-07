@@ -377,8 +377,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app               = Factory::getApplication();
 		$option            = $app->getInput()->getCmd('option');
         $result = array();
-		self::$_season_id  = $app->getUserState("$option.season_id", '0');
-		self::$_project_id = $app->getUserState("$option.pid", '0');
+		self::$_season_id  = (int) $app->getUserState("$option.season_id", 0);
+		self::$_project_id = (int) $app->getUserState("$option.pid", 0);
 
 		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
@@ -437,7 +437,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app              = Factory::getApplication();
 		$option           = $app->getInput()->getCmd('option');
 		self::$_season_id = $app->getUserState("$option.season_id", '0');
-		$project_id       = $app->getUserState("$option.pid", '0');
+		$project_id       = (int) $app->getUserState("$option.pid", 0);
 		$starttime        = microtime();
 		$db               = self::joomlaDatabase();
 		$query            = $db->getQuery(true);
@@ -494,8 +494,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app               = Factory::getApplication();
 		$option            = $app->getInput()->getCmd('option');
-		self::$_season_id  = $app->getUserState("$option.season_id", '0');
-		self::$_project_id = $app->getUserState("$option.pid", '0');
+		self::$_season_id  = (int) $app->getUserState("$option.season_id", 0);
+		self::$_project_id = (int) $app->getUserState("$option.pid", 0);
 
 		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
@@ -672,8 +672,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option            = $app->getInput()->getCmd('option');
 		$db                = self::joomlaDatabase();
 		$query             = $db->getQuery(true);
-		self::$_season_id  = $app->getUserState("$option.season_id", '0');
-		self::$_project_id = $app->getUserState("$option.pid", '0');
+		self::$_season_id  = (int) $app->getUserState("$option.season_id", 0);
+		self::$_project_id = (int) $app->getUserState("$option.pid", 0);
 
 		switch ($table)
 		{
@@ -3392,7 +3392,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$csv_player_count = 40;
 		$find_csv = '';
-		$project_id       = $app->getUserState("$option.pid", '0');
+		$project_id       = (int) $app->getUserState("$option.pid", 0);
 		$match_id         = $app->getInput()->getInt('match_id', 0);
 		$tblmatch         = new MatchTable($db);
 		$tblmatch->load($match_id);
