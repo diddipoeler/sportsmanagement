@@ -1,0 +1,69 @@
+name: Joomla 5/6 compatibility batch 638
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_alias.php'
+      - 'site/src/Model/AllprojectroundsModel.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch638.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_update_alias.php'
+      - 'site/src/Model/AllprojectroundsModel.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch638.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_update_alias.php
+            site/src/Model/AllprojectroundsModel.php
+            modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- "throw new \\RuntimeException('SportsManagement database resolver could not be loaded.', 500);" admin/assets/updates/jsm_update_alias.php
+
+          if grep -Fq -- 'DATE_FORMAT(' site/src/Model/AllprojectroundsModel.php; then
+            echo 'MySQL DATE_FORMAT remains in AllprojectroundsModel'
+            exit 1
+          fi
+          if grep -Fq -- 'CONCAT_WS' site/src/Model/AllprojectroundsModel.php; then
+            echo 'MySQL CONCAT_WS remains in AllprojectroundsModel'
+            exit 1
+          fi
+          grep -Fq -- '$match->slug = $homeAlias' site/src/Model/AllprojectroundsModel.php
+          grep -Fq -- '$row->person_slug =' site/src/Model/AllprojectroundsModel.php
+
+          if grep -Fq -- 'CONCAT_WS' modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php; then
+            echo 'MySQL CONCAT_WS remains in TeamPlayersHelper'
+            exit 1
+          fi
+          grep -Fq -- '$project->project_slug =' modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+          grep -Fq -- '$project->team_slug =' modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+          grep -Fq -- '$row->person_slug =' modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
