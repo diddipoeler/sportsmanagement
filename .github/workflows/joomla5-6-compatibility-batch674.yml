@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 674
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/MatchController.php'
+      - 'site/src/Model/TeamstatsModel.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch674.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/MatchController.php'
+      - 'site/src/Model/TeamstatsModel.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch674.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Controller/MatchController.php
+            site/src/Model/TeamstatsModel.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/src/Controller/MatchController.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in match:
+              raise SystemExit('MatchController Joomla DB helper is missing')
+          if match.count('self::joomlaDatabase()') < 2:
+              raise SystemExit('MatchController still bypasses centralized Joomla DB access')
+          if match.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('MatchController should have exactly one Joomla DB container access')
+
+          teamstats = Path('site/src/Model/TeamstatsModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in teamstats:
+              raise SystemExit('TeamstatsModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase(),' not in teamstats:
+              raise SystemExit('TeamstatsModel database resolver bypasses centralized Joomla DB access')
+          if teamstats.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeamstatsModel should have exactly one Joomla DB container access')
+
+          legacy = Path('modules/mod_sportsmanagement_teamstats_ranking/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in legacy:
+              raise SystemExit('TeamStatsRanking legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in legacy:
+              raise SystemExit('TeamStatsRanking legacy helper bypasses centralized site application access')
+          if legacy.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('TeamStatsRanking legacy helper should resolve the site application only in its centralized helper')
+          PY
