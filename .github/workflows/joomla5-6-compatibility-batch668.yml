@@ -1,0 +1,80 @@
+name: Joomla 5/6 compatibility batch 668
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/ProjectpositionModel.php'
+      - 'site/src/Model/MatchreportDataModel.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch668.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/ProjectpositionModel.php'
+      - 'site/src/Model/MatchreportDataModel.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch668.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/ProjectpositionModel.php
+            site/src/Model/MatchreportDataModel.php
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          projectposition = Path('admin/src/Model/ProjectpositionModel.php').read_text()
+          if "'com_sportsmanagement.message.' . $id" in projectposition:
+              raise SystemExit('ProjectpositionModel still checks the message ACL asset')
+          if "'com_sportsmanagement.projectposition.' . $id" not in projectposition:
+              raise SystemExit('ProjectpositionModel projectposition ACL asset is missing')
+
+          matchreport = Path('site/src/Model/MatchreportDataModel.php').read_text()
+          if 'CONCAT_WS' in matchreport:
+              raise SystemExit('MySQL CONCAT_WS remains in MatchreportDataModel')
+          start = matchreport.index('public function getMatchEvents')
+          segment = matchreport[start:]
+          for required in (
+              "$event->team_id = implode(':', $teamSlugParts);",
+              "$event->playerid = implode(':', $playerSlugParts);",
+              "if ($event->team_slug_id !== null)",
+              "if ($event->player_slug_id !== null)",
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing PHP match-event slug logic: {required}')
+
+          dispatcher = Path('modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('EventsRanking dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('EventsRanking dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('EventsRanking dispatcher should have exactly one Joomla DB container access')
+          PY
