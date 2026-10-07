@@ -67,12 +67,21 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
                 throw new \RuntimeException('SportsManagement FirstLeagueOverview legacy bridge requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
 
             return (new FirstLeagueOverviewHelper())->getData($registry, $database);
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
