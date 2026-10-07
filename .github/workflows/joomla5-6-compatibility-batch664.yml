@@ -1,0 +1,79 @@
+name: Joomla 5/6 compatibility batch 664
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TeamModel.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch664.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/TeamModel.php'
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch664.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/TeamModel.php
+            site/src/Model/SportsManagementProjectModel.php
+            modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          team = Path('admin/src/Model/TeamModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in team:
+              raise SystemExit('TeamModel Joomla DB helper is missing')
+          if '$db = self::joomlaDatabase();' not in team:
+              raise SystemExit('TeamModel static database read is not centralized')
+          if team.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeamModel should have exactly one Joomla DB container access')
+
+          project = Path('site/src/Model/SportsManagementProjectModel.php').read_text()
+          start = project.index('private function resolveCurrentRound')
+          end = project.index('public function', start + 20)
+          segment = project[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in resolveCurrentRound()')
+          if "$round->round_slug = (int) ($round->id ?? 0) . ':' . (string) ($round->alias ?? '');" not in segment:
+              raise SystemExit('Current round slug is not built in PHP')
+          if segment.count("$db->quoteName('r.alias')") < 3:
+              raise SystemExit('Current round queries do not expose aliases for PHP slug building')
+
+          dispatcher = Path('modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('TeamStatisticsCounter dispatcher Joomla DB helper is missing')
+          if '$joomlaDatabase = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('TeamStatisticsCounter dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeamStatisticsCounter dispatcher should have exactly one Joomla DB container access')
+          PY
