@@ -81,7 +81,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$app = self::siteApplication();
 
 		// JInput object
-		$jinput                 = $app->input;
+		$jinput                 = $app->getInput();
 		$from                   = 0;
 		$to                     = 0;
 		self::$projectid        = (int) $jinput->get('p', 0, '');
