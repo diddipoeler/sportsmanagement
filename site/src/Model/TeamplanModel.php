@@ -275,6 +275,28 @@ final class TeamplanModel extends SportsManagementProjectModel
         $db->setQuery($query);
         $matches = $db->loadObjectList() ?: [];
 
+        foreach ($matches as $match) {
+            $timePresent = trim((string) ($match->time_present ?? ''));
+            if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
+                $match->time_present = substr($timePresent, 0, 5);
+            }
+
+            $matchId = (int) ($match->id ?? 0);
+            $team1Alias = (string) ($match->team1_alias ?? '');
+            $team2Alias = (string) ($match->team2_alias ?? '');
+            $match->match_slug = $matchId . ':' . $team1Alias . '_' . $team2Alias;
+            $match->round_slug = (int) ($match->roundid ?? 0) . ':' . (string) ($match->round_alias ?? '');
+            $match->project_slug = (int) ($match->project_slug_id ?? 0) . ':' . (string) ($match->project_alias ?? '');
+            $divisionId = (int) ($match->division_slug_id ?? 0);
+            $match->division_slug = $divisionId > 0
+                ? $divisionId . ':' . (string) ($match->division_alias ?? '')
+                : '';
+            $playgroundId = (int) ($match->playground_slug_id ?? 0);
+            $match->playground_slug = $playgroundId > 0
+                ? $playgroundId . ':' . (string) ($match->playground_alias ?? '')
+                : '';
+        }
+
         if ($withReferees) {
             $this->loadRefereesByMatch($matches);
         }
@@ -300,17 +322,19 @@ final class TeamplanModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('m') . '.*',
-                'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', "%H:%i") AS ' . $db->quoteName('time_present'),
                 $db->quoteName('r.roundcode'),
                 $db->quoteName('r.id', 'roundid'),
                 $db->quoteName('r.project_id'),
                 $db->quoteName('r.name'),
+                $db->quoteName('r.alias', 'round_alias'),
+                $db->quoteName('p.id', 'project_slug_id'),
+                $db->quoteName('p.alias', 'project_alias'),
+                $db->quoteName('d.id', 'division_slug_id'),
+                $db->quoteName('d.alias', 'division_alias'),
                 $db->quoteName('t1.id', 'team1'),
+                $db->quoteName('t1.alias', 'team1_alias'),
                 $db->quoteName('t2.id', 'team2'),
-                "CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) AS ' . $db->quoteName('match_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('d.id') . ', ' . $db->quoteName('d.alias') . ') AS ' . $db->quoteName('division_slug'),
+                $db->quoteName('t2.alias', 'team2_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -431,9 +455,10 @@ final class TeamplanModel extends SportsManagementProjectModel
         if ($withPlayground) {
             $query
                 ->select([
+                    $db->quoteName('playground.id', 'playground_slug_id'),
                     $db->quoteName('playground.name', 'playground_name'),
                     $db->quoteName('playground.short_name', 'playground_short_name'),
-                    "CONCAT_WS(':', " . $db->quoteName('playground.id') . ', ' . $db->quoteName('playground.alias') . ') AS ' . $db->quoteName('playground_slug'),
+                    $db->quoteName('playground.alias', 'playground_alias'),
                 ])
                 ->join(
                     'LEFT',
