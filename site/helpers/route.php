@@ -13,11 +13,7 @@
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Router\Router;
-use Joomla\CMS\Component\Router\RouterBase;
-use Joomla\CMS\Language\Text;
 
 /**
  * sportsmanagementHelperRoute
