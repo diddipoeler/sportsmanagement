@@ -66,7 +66,7 @@ class modJSMRankingHelper extends stdClass
     public static function getData(&$params): array
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         $data = (new NativeRankingHelper())->getData($registry, (object) ['id' => 0], $app);
 
@@ -114,12 +114,9 @@ class modJSMRankingHelper extends stdClass
      */
     public static function getCountGames($projectid, $ishd_update_hour, ?DatabaseInterface $database = null)
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
-        if ($database === null) {
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
-        }
+        $database ??= self::joomlaDatabase();
 
         $db = SportsManagementDatabaseResolver::resolve($database);
         $query = $db->createQuery();
@@ -154,6 +151,19 @@ class modJSMRankingHelper extends stdClass
         }
 
         return $matchestoupdate;
+    }
+
+    private static function siteApplication()
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     /**
