@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 671
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/PlayerModel.php'
+      - 'site/src/Model/AjaxModel.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch671.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/PlayerModel.php'
+      - 'site/src/Model/AjaxModel.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch671.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/PlayerModel.php
+            site/src/Model/AjaxModel.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          player = Path('admin/src/Model/PlayerModel.php').read_text()
+          if 'Table::getInstance' in player:
+              raise SystemExit('Legacy Table::getInstance remains in PlayerModel')
+          if 'new PersonTable($this->getDatabase())' not in player:
+              raise SystemExit('PlayerModel does not use native PersonTable')
+          if 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Table\\PersonTable;' not in player:
+              raise SystemExit('PersonTable import is missing')
+
+          ajax = Path('site/src/Model/AjaxModel.php').read_text()
+          if 'private function siteApplication(): SiteApplication' not in ajax:
+              raise SystemExit('AjaxModel site application helper is missing')
+          if 'return SportsManagementSiteApplicationResolver::resolve();' not in ajax:
+              raise SystemExit('AjaxModel does not use the shared site application resolver')
+          if 'return $this->siteApplication()->getInput()->getInt(' not in ajax:
+              raise SystemExit('AjaxModel database selector bypasses centralized application access')
+
+          helper = Path('modules/mod_sportsmanagement_count_rekord/helper.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in helper:
+              raise SystemExit('CountRekord legacy Joomla DB helper is missing')
+          if '$database ??= self::joomlaDatabase();' not in helper:
+              raise SystemExit('CountRekord legacy helper does not use centralized DB access')
+          if helper.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('CountRekord legacy helper should have exactly one Joomla DB container access')
+          PY
