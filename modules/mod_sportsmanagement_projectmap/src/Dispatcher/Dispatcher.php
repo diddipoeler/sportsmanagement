@@ -47,8 +47,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
         try {
-            /** @var DatabaseInterface $db */
-            $db = Factory::getContainer()->get(DatabaseInterface::class);
+            $db = $this->joomlaDatabase();
             $seasonIds = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
             $mapData = $this->getHelperFactory()
                 ->getHelper('ProjectMapHelper')
@@ -90,5 +89,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         return $data;
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
