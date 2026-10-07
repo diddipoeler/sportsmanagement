@@ -1129,7 +1129,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$this->jsmdb->setQuery($this->jsmquery);
 		$gcalendar_id = $this->jsmdb->loadObject();
 		$this->jsmquery->clear();
-		$this->jsmquery->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,DATE_FORMAT(m.time_present,"%H:%i") time_present,m.match_timestamp');
+		$this->jsmquery->select('m.id,m.match_date,m.team1_result,m.team2_result,m.gcal_event_id,m.time_present,m.match_timestamp');
 		$this->jsmquery->select('m.cancel, m.cancel_reason');
 		$this->jsmquery->select('playground.name AS playground_name,playground.zipcode AS playground_zipcode,playground.city AS playground_city,playground.address AS playground_address');
 		$this->jsmquery->select('pt1.project_id');
@@ -1166,6 +1166,12 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		foreach ($result as $row)
 		{
+			$timePresent = trim((string) ($row->time_present ?? ''));
+			if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1)
+			{
+				$row->time_present = substr($timePresent, 0, 5);
+			}
+
 			$event  = new Google_Service_Calendar_Event;
 			$detail = "";
 			if ($row->cancel == 1)
