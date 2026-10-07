@@ -69,12 +69,21 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
                 throw new \RuntimeException('SportsManagement Birthday requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
 
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
@@ -91,10 +100,7 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
                 throw new \RuntimeException('SportsManagement Birthday legacy facade requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
 
             return (new BirthdayHelper())->getData(
                 $registry,
@@ -102,6 +108,18 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
                 $app,
                 $database
             );
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
