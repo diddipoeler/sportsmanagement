@@ -53,13 +53,20 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             );
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $this->joomlaDatabase();
         $helper = $this->getHelperFactory()->getHelper('TeamStatsRankingHelper');
 
         return array_merge(
             $data,
             $helper->getData($data['params'], $joomlaDatabase)
         );
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
