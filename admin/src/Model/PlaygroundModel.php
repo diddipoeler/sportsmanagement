@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagemen
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -583,15 +582,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
             return self::$database;
         }
 
-        $fallback = Factory::getContainer()->get(DatabaseInterface::class);
-
-        if (!$fallback instanceof DatabaseInterface) {
-            throw new \RuntimeException('SportsManagement playground database connection is unavailable.');
-        }
-
         self::$database = (new SportsManagementDatabaseResolver())->resolve(
-            self::$cfg_which_database,
-            $fallback
+            self::$cfg_which_database
         );
 
         return self::$database;
