@@ -12,6 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
@@ -157,7 +158,7 @@ if (!class_exists('modRquotesHelper', false)) {
 
     private static function nativeData(Registry $params): array
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
         $database = self::joomlaDatabase();
 
         return (new RquotesHelper())->getData(
@@ -166,6 +167,11 @@ if (!class_exists('modRquotesHelper', false)) {
             $app,
             $database
         );
+    }
+
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private static function joomlaDatabase(): DatabaseInterface
