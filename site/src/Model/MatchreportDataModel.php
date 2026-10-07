@@ -95,7 +95,7 @@ final class MatchreportDataModel extends SportsManagementProjectModel
                 $db->quoteName('mr.project_position_id'),
                 $db->quoteName('pos.name', 'position_name'),
                 $db->quoteName('pref.picture'),
-                "CONCAT_WS(':', p.id, p.alias) AS person_slug",
+                $db->quoteName('p.alias', 'person_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_referee', 'pref') . ' ON ' . $db->quoteName('mr.project_referee_id') . ' = ' . $db->quoteName('pref.id'))
@@ -113,7 +113,13 @@ final class MatchreportDataModel extends SportsManagementProjectModel
 
         try {
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+            $rows = $db->loadObjectList() ?: [];
+
+            foreach ($rows as $row) {
+                $row->person_slug = (int) ($row->id ?? 0) . ':' . (string) ($row->person_alias ?? '');
+            }
+
+            return $rows;
         } catch (Throwable $e) {
             $this->reportDatabaseError($e);
             return [];
