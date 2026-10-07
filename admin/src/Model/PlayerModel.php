@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Table\Table;
@@ -243,7 +243,7 @@ final class PlayerModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $now = Factory::getDate()->toSql();
+        $now = (new Date('now', new \DateTimeZone('UTC')))->toSql();
         $userId = (int) $app->getIdentity()->id;
         $db->transactionStart();
 
