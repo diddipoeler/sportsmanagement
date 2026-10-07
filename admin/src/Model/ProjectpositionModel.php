@@ -95,7 +95,7 @@ final class ProjectpositionModel extends SportsManagementAdminModel
 
         return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
-            'com_sportsmanagement.message.' . $id
+            'com_sportsmanagement.projectposition.' . $id
         ) || parent::allowEdit($data, $key);
     }
 }
