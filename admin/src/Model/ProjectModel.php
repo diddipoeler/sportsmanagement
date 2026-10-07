@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
@@ -55,7 +56,7 @@ final class ProjectModel extends SportsManagementAdminModel
             $data['alias'] = OutputFilter::stringURLSafe($data['name']);
         }
 
-        $data['modified_timestamp'] = Factory::getDate()->toUnix();
+        $data['modified_timestamp'] = new Date('now', new \DateTimeZone('UTC'))->toUnix();
 
         return $data;
     }
@@ -71,7 +72,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
         $post = $app->getInput()->post->getArray();
         $db = $this->getDatabase();
-        $now = Factory::getDate();
+        $now = new Date('now', new \DateTimeZone('UTC'));
         $userId = (int) $app->getIdentity()->id;
 
         try {
@@ -469,8 +470,8 @@ final class ProjectModel extends SportsManagementAdminModel
                 $source->published = 0;
                 $source->checked_out = 0;
                 $source->checked_out_time = $db->getNullDate();
-                $source->modified = Factory::getDate()->toSql();
-                $source->modified_timestamp = Factory::getDate()->toUnix();
+                $source->modified = new Date('now', new \DateTimeZone('UTC'))->toSql();
+                $source->modified_timestamp = new Date('now', new \DateTimeZone('UTC'))->toUnix();
                 $source->modified_by = (int) $app->getIdentity()->id;
                 $db->insertObject('#__sportsmanagement_project', $source);
                 $newProjectId = (int) $db->insertid();
@@ -500,7 +501,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
         $post = $input->post->getArray();
         $db = $this->getDatabase();
-        $now = Factory::getDate();
+        $now = new Date('now', new \DateTimeZone('UTC'));
         $userId = (int) $app->getIdentity()->id;
 
         try {
