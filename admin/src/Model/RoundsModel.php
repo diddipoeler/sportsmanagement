@@ -664,10 +664,7 @@ final class RoundsModel extends SportsManagementListModel
 
     private static function resolveSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
     {
-        return (new SportsManagementDatabaseResolver())->resolve(
-            $databaseConfig,
-            Factory::getContainer()->get(DatabaseInterface::class)
-        );
+        return (new SportsManagementDatabaseResolver())->resolve($databaseConfig);
     }
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
