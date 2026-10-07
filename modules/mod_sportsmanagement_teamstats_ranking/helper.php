@@ -58,12 +58,23 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
                 if (!$app->isClient('site')) {
                     throw new \RuntimeException('SportsManagement legacy module helper requires the Joomla site application.', 500);
                 }
-
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
             }
 
+            $database = self::joomlaDatabase($database);
+
             return (new TeamStatsRankingHelper())->getData($registry, $database);
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
 
         public static function getLogo(object $item, int $type = 1): string
