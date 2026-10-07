@@ -1,0 +1,80 @@
+name: Joomla 5/6 compatibility batch 651
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch651.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch651.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/src/Model/NextmatchModel.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          if 'sportsmanagementHelper::getDBConnection' in match:
+              raise SystemExit('Legacy sportsmanagementHelper DB resolver remains in Match model')
+          if 'private static function sportsManagementDatabase(mixed $selector = null): DatabaseInterface' not in match:
+              raise SystemExit('Match model SportsManagement database helper is missing')
+          if '(new SportsManagementDatabaseResolver())->resolve($selector, self::joomlaDatabase())' not in match:
+              raise SystemExit('Match model does not delegate DB selection to the Joomla 5/6 resolver')
+          if match.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Match model should retain exactly one centralized Joomla DB container access')
+
+          nextmatch = Path('site/src/Model/NextmatchModel.php').read_text()
+          start = nextmatch.index('public function _getTeamPreviousX')
+          end = nextmatch.index('private function highestForTeam', start)
+          segment = nextmatch[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in Nextmatch::_getTeamPreviousX()')
+          for required in ('$row->match_slug =', '$row->project_slug =', '$row->round_slug ='):
+              if required not in segment:
+                  raise SystemExit(f'Missing Previous-match PHP slug builder: {required}')
+
+          rquotes = Path('modules/mod_sportsmanagement_rquotes/helper.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in rquotes:
+              raise SystemExit('Rquotes Joomla DB helper is missing')
+          if '$database = self::joomlaDatabase();' not in rquotes:
+              raise SystemExit('Rquotes nativeData() does not use centralized DB access')
+          if rquotes.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Rquotes helper should have exactly one Joomla DB container access')
+          PY
