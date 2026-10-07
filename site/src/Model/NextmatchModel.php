@@ -772,7 +772,7 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('m.show_report'),
                 $db->quoteName('m.projectteam1_id'),
                 $db->quoteName('m.projectteam2_id'),
-                'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
+                $db->quoteName('m.time_present'),
                 $db->quoteName('pt1.project_id'),
                 $db->quoteName('s.name', 'seasonname'),
                 $db->quoteName('s.id', 'season_id'),
@@ -780,14 +780,15 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('l.id', 'league_id'),
                 $db->quoteName('p.name', 'project_name'),
                 $db->quoteName('p.id', 'prid'),
+                $db->quoteName('p.alias', 'project_alias'),
                 $db->quoteName('r.id', 'roundid'),
                 $db->quoteName('r.roundcode'),
                 $db->quoteName('r.name', 'mname'),
+                $db->quoteName('r.alias', 'round_alias'),
                 $db->quoteName('t1.id', 'team1_id'),
+                $db->quoteName('t1.alias', 'team1_alias'),
                 $db->quoteName('t2.id', 'team2_id'),
-                "CONCAT_WS(':', m.id, CONCAT_WS('_', t1.alias, t2.alias)) AS match_slug",
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                $db->quoteName('t2.alias', 'team2_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
@@ -810,7 +811,23 @@ final class NextmatchModel extends SportsManagementProjectModel
 
         try {
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+            $rows = $db->loadObjectList() ?: [];
+
+            foreach ($rows as $row) {
+                $timePresent = trim((string) ($row->time_present ?? ''));
+                if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
+                    $row->time_present = substr($timePresent, 0, 5);
+                }
+
+                $matchId = (int) ($row->id ?? 0);
+                $homeAlias = (string) ($row->team1_alias ?? '');
+                $awayAlias = (string) ($row->team2_alias ?? '');
+                $row->match_slug = $matchId . ':' . $homeAlias . '_' . $awayAlias;
+                $row->project_slug = (int) ($row->prid ?? 0) . ':' . (string) ($row->project_alias ?? '');
+                $row->round_slug = (int) ($row->roundid ?? 0) . ':' . (string) ($row->round_alias ?? '');
+            }
+
+            return $rows;
         } catch (Throwable $e) {
             $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'notice');
             return [];
