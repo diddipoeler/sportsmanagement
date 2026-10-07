@@ -1,0 +1,85 @@
+name: Joomla 5/6 compatibility batch 667
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/PlayerModel.php'
+      - 'site/src/Model/MatchreportDataModel.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch667.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/PlayerModel.php'
+      - 'site/src/Model/MatchreportDataModel.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch667.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/PlayerModel.php
+            site/src/Model/MatchreportDataModel.php
+            modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          player = Path('admin/src/Model/PlayerModel.php').read_text()
+          if 'Factory::getDate()' in player:
+              raise SystemExit('Deprecated Factory::getDate() remains in PlayerModel')
+          if "(new Date('now', new \\DateTimeZone('UTC')))->toSql()" not in player:
+              raise SystemExit('PlayerModel explicit UTC assignment date is missing')
+
+          matchreport = Path('site/src/Model/MatchreportDataModel.php').read_text()
+          start = matchreport.index('public function getMatchSubstitutions')
+          end = matchreport.index('public function', start + 20)
+          segment = matchreport[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in getMatchSubstitutions()')
+          for required in (
+              "$row->person_id = $incomingSlug;",
+              "$row->sub_person_slug = $incomingSlug;",
+              "$row->out_person_id = $outgoingSlug;",
+              "$row->person_slug = $outgoingSlug;",
+              "$row->team_id = $teamSlug;",
+              "$row->team_slug = $teamSlug;",
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing PHP substitution slug assignment: {required}')
+          if "if ($row->out_ptid !== null)" not in segment:
+              raise SystemExit('Outgoing substitution NULL handling is missing')
+
+          dispatcher = Path('modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('PlaygroundTicker dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('PlaygroundTicker dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('PlaygroundTicker dispatcher should have exactly one Joomla DB container access')
+          PY
