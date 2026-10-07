@@ -849,9 +849,9 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('l.id', 'league_id'),
                 $db->quoteName('p.name', 'project_name'),
                 $db->quoteName('p.id', 'prid'),
+                $db->quoteName('p.alias', 'project_alias'),
                 $db->quoteName('t1.id', 'team1_id'),
                 $db->quoteName('t2.id', 'team2_id'),
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
                 $db->quote(Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1') . ':' . Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2')) . ' AS round_slug',
                 $db->quote(Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1') . ':' . Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2')) . ' AS roundid',
                 $db->quote(Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY1') . ':' . Text::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY2')) . ' AS roundcode',
@@ -888,7 +888,13 @@ final class NextmatchModel extends SportsManagementProjectModel
 
         try {
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+            $rows = $db->loadObjectList() ?: [];
+
+            foreach ($rows as $row) {
+                $row->project_slug = (int) ($row->prid ?? 0) . ':' . (string) ($row->project_alias ?? '');
+            }
+
+            return $rows;
         } catch (Throwable $e) {
             $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'notice');
             return [];
