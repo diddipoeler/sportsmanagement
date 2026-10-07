@@ -1,0 +1,77 @@
+name: Joomla 5/6 compatibility batch 657
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/ranking.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch657.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/ranking.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch657.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/models/ranking.php
+            modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          if "$app->getInput()->getVar('match_id')" in match:
+              raise SystemExit('Untyped scalar match_id getVar access remains in legacy Match model')
+          if match.count("$app->getInput()->getInt('match_id', 0)") < 4:
+              raise SystemExit('Legacy Match model match_id inputs were not migrated to getInt()')
+
+          ranking = Path('site/models/ranking.php').read_text()
+          start = ranking.index('public static function _sortRanking')
+          end = ranking.index('public static function _getPreviousRoundId', start)
+          segment = ranking[start:end]
+          if "$jinput->get('order'" in segment or "$jinput->get('dir'" in segment:
+              raise SystemExit('Untyped Ranking sort input remains')
+          if "$jinput->getCmd('order', '')" not in segment:
+              raise SystemExit('Ranking sort order does not use getCmd()')
+          if "strtoupper($jinput->getCmd('dir', 'ASC')) === 'DESC' ? 'DESC' : 'ASC'" not in segment:
+              raise SystemExit('Ranking sort direction is not normalized to ASC/DESC')
+
+          dispatcher = Path('modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('TeamStats dispatcher Joomla DB helper is missing')
+          if '$joomlaDatabase = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('TeamStats dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeamStats dispatcher should have exactly one Joomla DB container access')
+          PY
