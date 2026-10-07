@@ -13,27 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
 
-$uri = Uri::getInstance();
 $app = Factory::getApplication();
 $table = $app->getInput()->getCmd('table');
-$uri->delVar('table');
-$link = $uri->toString();
 
-?>
-    <script type="text/javascript">
-        function sendData(sData) {
-            var oldLocation = '<?PHP echo $link;?>';
-            window.location = oldLocation + '&table=' + sData;
-//  window.location.search = sData;
-//  window.location.reload(true)
-        }
-    </script>
-<?PHP
 
 $version           = '1.0.53';
 
@@ -148,16 +134,20 @@ if ($table)
 }
 
 
-echo '<form method="post" id="adminForm" action="' . $link . '" >';
-echo '<br><input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'person\')" value="Personen" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'league\')" value="Ligen" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'season\')" value="Saison" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'club\')" value="Vereine" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'team\')" value="Mannschaften" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'playground\')" value="Spielstätten" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'division\')" value="Gruppen" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'project\')" value="Projekte" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'round\')" value="Spieltage" />';
+echo '<form method="get" id="adminForm" action="">';
+foreach ([
+    'person' => 'Personen',
+    'league' => 'Ligen',
+    'season' => 'Saison',
+    'club' => 'Vereine',
+    'team' => 'Mannschaften',
+    'playground' => 'Spielstätten',
+    'division' => 'Gruppen',
+    'project' => 'Projekte',
+    'round' => 'Spieltage',
+] as $tableValue => $label) {
+    echo '<button type="submit" name="table" value="' . $tableValue . '">' . $label . '</button>';
+}
 echo '</form>';
 
 
