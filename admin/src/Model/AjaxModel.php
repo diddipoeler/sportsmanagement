@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -124,7 +125,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getcountryleagueoptions($country = '', $required = false, $slug = false, $dbase = false): array
     {
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $input = $app->getInput();
         $country = trim((string) $country);
 
@@ -464,7 +465,7 @@ final class AjaxModel extends BaseDatabaseModel
 
     public static function getpersonlistoptionsprojectteam($person_art = 0, $required = false, $slug = false, $dbase = false): array
     {
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $projectId = max(0, (int) $app->getUserState('teamplayer.pid', 0));
         $seasonId = max(0, (int) $app->getUserState('teamplayer.season_id', 0));
         $teamId = max(0, (int) $app->getUserState('teamplayer.team_id', 0));
@@ -895,7 +896,7 @@ final class AjaxModel extends BaseDatabaseModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            SportsManagementAdministratorApplicationResolver::resolve()->enqueueMessage($e->getMessage(), 'error');
+            self::administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
             return [];
         }
@@ -929,6 +930,11 @@ final class AjaxModel extends BaseDatabaseModel
         sort($ids, SORT_NUMERIC);
 
         return $ids;
+    }
+
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     private static function joomlaDatabase(): DatabaseInterface
