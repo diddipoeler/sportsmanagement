@@ -169,8 +169,14 @@ final class RoundsModel extends SportsManagementListModel
 
         try {
             $db->setQuery($query);
+            $rows = $db->loadAssocList() ?: [];
 
-            return $db->loadAssocList() ?: [];
+            foreach ($rows as &$row) {
+                $row['id'] = (int) ($row['round_id'] ?? 0) . ':' . (string) ($row['alias'] ?? '');
+            }
+            unset($row);
+
+            return $rows;
         } catch (\Throwable $e) {
             $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
@@ -627,8 +633,8 @@ final class RoundsModel extends SportsManagementListModel
         $db = self::resolveSportsManagementDatabase($databaseConfig);
         $query = $db->createQuery()
             ->select([
-                "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('id'),
                 $db->quoteName('id', 'round_id'),
+                $db->quoteName('alias'),
                 $db->quoteName('roundcode'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
