@@ -1,0 +1,77 @@
+name: Joomla 5/6 compatibility batch 649
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch649.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch649.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/src/Model/NextmatchModel.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in match:
+              raise SystemExit('Legacy Match model Joomla DB helper is missing')
+          if match.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Legacy Match model should have exactly one Joomla DB container access')
+          if match.count('self::joomlaDatabase()') < 32:
+              raise SystemExit('Legacy Match model direct DB accesses were not centralized')
+
+          nextmatch = Path('site/src/Model/NextmatchModel.php').read_text()
+          start = nextmatch.index('private function loadProjectTeam')
+          end = nextmatch.index('private function loadHeadToHeadGames', start)
+          segment = nextmatch[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in Nextmatch project-team lookup')
+          if '$team->team_slug =' not in segment or '$team->projectteam_slug =' not in segment:
+              raise SystemExit('Nextmatch project-team slugs are not built in PHP')
+
+          projectmap = Path('modules/mod_sportsmanagement_projectmap/helper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in projectmap:
+              raise SystemExit('ProjectMap database helper is missing')
+          if '$database = self::joomlaDatabase($database);' not in projectmap:
+              raise SystemExit('ProjectMap helper does not use centralized DB fallback')
+          if projectmap.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ProjectMap helper should have exactly one Joomla DB container fallback')
+          PY
