@@ -469,11 +469,10 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 $db->quoteName('plg.name', 'playground_name'),
                 $db->quoteName('plg.short_name', 'playground_short_name'),
                 "COALESCE(NULLIF(t.picture, ''), c.logo_small) AS picture",
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
-                "CONCAT_WS(':', pt.id, t.alias) AS projectteam_slug",
-                "CONCAT_WS(':', d.id, d.alias) AS division_slug",
-                "CONCAT_WS(':', c.id, c.alias) AS club_slug",
+                $db->quoteName('p.alias', 'project_alias'),
+                $db->quoteName('t.alias', 'team_alias'),
+                $db->quoteName('d.alias', 'division_alias'),
+                $db->quoteName('c.alias', 'club_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
@@ -502,7 +501,28 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
 
         $db->setQuery($query);
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList() ?: [];
+
+        foreach ($rows as $row) {
+            $projectId = (int) ($row->project_id ?? 0);
+            $teamId = (int) ($row->id ?? 0);
+            $projectTeamId = (int) ($row->projectteamid ?? 0);
+            $divisionId = (int) ($row->division_id ?? 0);
+            $clubId = (int) ($row->club_id ?? 0);
+            $teamAlias = (string) ($row->team_alias ?? '');
+
+            $row->project_slug = $projectId . ':' . (string) ($row->project_alias ?? '');
+            $row->team_slug = $teamId . ':' . $teamAlias;
+            $row->projectteam_slug = $projectTeamId . ':' . $teamAlias;
+            $row->division_slug = $divisionId > 0
+                ? $divisionId . ':' . (string) ($row->division_alias ?? '')
+                : '';
+            $row->club_slug = $clubId > 0
+                ? $clubId . ':' . (string) ($row->club_alias ?? '')
+                : '';
+        }
+
+        return $rows;
     }
 
     public function getTeamsIndexedById(?int $divisionId = null): array
