@@ -1,0 +1,79 @@
+name: Joomla 5/6 compatibility batch 658
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/helpers/countries.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch658.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/helpers/countries.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch658.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/helpers/countries.php
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          if 'getVar(' in match:
+              raise SystemExit('Legacy getVar() remains in administrator Match model')
+          for required in (
+              "$this->jsmjinput->post->get('cid', [], 'array')",
+              "$app->getInput()->post->get('cid', [], 'array')",
+              "$this->jsmapp->getInput()->post->get('cid', [], 'array')",
+          ):
+              if required not in match:
+                  raise SystemExit(f'Missing filtered Match cid array input: {required}')
+
+          countries = Path('site/helpers/countries.php').read_text()
+          if 'use Joomla\\CMS\\Factory;' not in countries:
+              raise SystemExit('Country helper Joomla Factory import is missing')
+          if '\\Joomla\\CMS\\Factory::getContainer()' in countries:
+              raise SystemExit('Country helper still uses fully-qualified inline Factory access')
+          if countries.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Country helper should have exactly one Joomla DB container access')
+
+          dispatcher = Path('modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('Rquotes dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('Rquotes dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Rquotes dispatcher should have exactly one Joomla DB container access')
+          PY
