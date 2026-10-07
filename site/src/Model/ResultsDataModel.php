@@ -211,10 +211,14 @@ final class ResultsDataModel extends SportsManagementProjectModel
                 $db->quoteName('d1.id', 'divhomeid'),
                 $db->quoteName('d2.name', 'divaway'),
                 $db->quoteName('d2.id', 'divawayid'),
-                "CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(':', m.id, CONCAT_WS('_', t1.alias, t2.alias)) ELSE m.id END AS slug",
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
-                "CONCAT_WS(':', playground.id, playground.alias) AS playground_slug",
+                $db->quoteName('t1.alias', 'home_alias'),
+                $db->quoteName('t2.alias', 'away_alias'),
+                $db->quoteName('p.id', 'project_slug_id'),
+                $db->quoteName('p.alias', 'project_alias'),
+                $db->quoteName('r.id', 'round_slug_id'),
+                $db->quoteName('r.alias', 'round_alias'),
+                $db->quoteName('playground.id', 'playground_slug_id'),
+                $db->quoteName('playground.alias', 'playground_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
@@ -329,6 +333,19 @@ final class ResultsDataModel extends SportsManagementProjectModel
                 if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
                     $row->time_present = substr($timePresent, 0, 5);
                 }
+
+                $matchId = (int) ($row->id ?? 0);
+                $homeAlias = trim((string) ($row->home_alias ?? ''));
+                $awayAlias = trim((string) ($row->away_alias ?? ''));
+                $row->slug = $homeAlias !== '' && $awayAlias !== ''
+                    ? $matchId . ':' . $homeAlias . '_' . $awayAlias
+                    : (string) $matchId;
+                $row->project_slug = (int) ($row->project_slug_id ?? 0) . ':' . (string) ($row->project_alias ?? '');
+                $row->round_slug = (int) ($row->round_slug_id ?? 0) . ':' . (string) ($row->round_alias ?? '');
+                $playgroundId = (int) ($row->playground_slug_id ?? 0);
+                $row->playground_slug = $playgroundId > 0
+                    ? $playgroundId . ':' . (string) ($row->playground_alias ?? '')
+                    : '';
             }
 
             return $rows;
