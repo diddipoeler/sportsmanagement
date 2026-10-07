@@ -177,7 +177,9 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         if ($autoTime <= 0) {
             $autoTime = 7200;
         }
-        $currentDate = date('Y-m-d');
+        $currentDate = new \DateTimeImmutable('today', new \DateTimeZone('UTC'));
+        $cutoffAfter = $currentDate->modify('+' . $autoTime . ' minutes')->format('Y-m-d H:i:s');
+        $cutoffBefore = $currentDate->modify('-' . $autoTime . ' minutes')->format('Y-m-d H:i:s');
 
         $query = $db->createQuery()
             ->select([
@@ -198,25 +200,25 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 }
                 break;
             case 1:
-                $query->where('(r.round_date_first - INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
-                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
+                $query->where($db->quoteName('r.round_date_first') . ' < :currentRoundCutoffAfter')
+                    ->bind(':currentRoundCutoffAfter', $cutoffAfter, ParameterType::STRING)
                     ->order($db->quoteName('r.round_date_first') . ' DESC');
                 break;
             case 2:
-                $query->where('(r.round_date_last - INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
-                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
+                $query->where($db->quoteName('r.round_date_last') . ' < :currentRoundCutoffAfter')
+                    ->bind(':currentRoundCutoffAfter', $cutoffAfter, ParameterType::STRING)
                     ->order($db->quoteName('r.round_date_first') . ' DESC');
                 break;
             case 3:
                 $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
-                    ->where('(m.match_date - INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
-                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
+                    ->where($db->quoteName('m.match_date') . ' < :currentRoundCutoffAfter')
+                    ->bind(':currentRoundCutoffAfter', $cutoffAfter, ParameterType::STRING)
                     ->order($db->quoteName('m.match_date') . ' DESC');
                 break;
             case 4:
                 $query->join('INNER', $db->quoteName('#__sportsmanagement_match', 'm') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
-                    ->where('(m.match_date + INTERVAL ' . $autoTime . ' MINUTE < :currentRoundDate)')
-                    ->bind(':currentRoundDate', $currentDate, ParameterType::STRING)
+                    ->where($db->quoteName('m.match_date') . ' < :currentRoundCutoffBefore')
+                    ->bind(':currentRoundCutoffBefore', $cutoffBefore, ParameterType::STRING)
                     ->order($db->quoteName('m.match_date') . ' ASC');
                 break;
         }
