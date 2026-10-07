@@ -1,0 +1,73 @@
+name: Joomla 5/6 compatibility batch 635
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcemediabox.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch635.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcemediabox.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch635.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_install_jcemediabox.php
+            site/src/Model/EditmatchModel.php
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- 'getWebAssetManager()->registerAndUseScript' admin/assets/updates/jsm_install_jcemediabox.php
+          if grep -Fq -- '->addScript(' admin/assets/updates/jsm_install_jcemediabox.php; then
+            echo 'Legacy addScript remains in JCE MediaBox installer'
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          model = Path('site/src/Model/EditmatchModel.php').read_text()
+          if 'private function mailerFactory(): MailerFactoryInterface' not in model:
+              raise SystemExit('EditmatchModel mailer factory helper is missing')
+          if '$this->mailerFactory()->createMailer()' not in model:
+              raise SystemExit('EditmatchModel does not use centralized mailer factory helper')
+
+          helper = Path('modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php').read_text()
+          if not re.search(r'refreshAjax\(\?DatabaseInterface \$database = null\): string', helper):
+              raise SystemExit('Liveticker refreshAjax() lacks optional DatabaseInterface injection')
+          if helper.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Liveticker helper should have exactly one centralized Joomla DB fallback')
+          if 'private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in helper:
+              raise SystemExit('Centralized Liveticker Joomla database helper is missing')
+          PY
