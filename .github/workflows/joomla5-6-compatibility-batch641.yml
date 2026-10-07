@@ -1,0 +1,84 @@
+name: Joomla 5/6 compatibility batch 641
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_alias.php'
+      - 'site/src/Model/ResultsDataModel.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch641.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_update_alias.php'
+      - 'site/src/Model/ResultsDataModel.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch641.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_update_alias.php
+            site/src/Model/ResultsDataModel.php
+            modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          if grep -Fq -- 'function sendData' admin/assets/updates/jsm_update_alias.php; then
+            echo 'Legacy alias updater sendData JavaScript remains'
+            exit 1
+          fi
+          if grep -Fq -- 'Uri::getInstance()' admin/assets/updates/jsm_update_alias.php; then
+            echo 'Legacy alias updater Uri navigation remains'
+            exit 1
+          fi
+          grep -Fq -- 'form method="get" id="adminForm" action=""' admin/assets/updates/jsm_update_alias.php
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          results = Path('site/src/Model/ResultsDataModel.php').read_text()
+          start = results.index('public function getResultsQuery')
+          end = results.index('/** Preserve the legacy id-keyed match result contract', start)
+          query_segment = results[start:end]
+          if 'CONCAT_WS' in query_segment:
+              raise SystemExit('MySQL CONCAT_WS remains in ResultsDataModel::getResultsQuery()')
+
+          rows_start = results.index('public function getResultsRows')
+          rows_end = results.index('/**', rows_start + 10)
+          rows_segment = results[rows_start:rows_end]
+          for required in ('$row->slug =', '$row->project_slug =', '$row->round_slug =', '$row->playground_slug ='):
+              if required not in rows_segment:
+                  raise SystemExit(f'Missing PHP results slug builder: {required}')
+
+          dispatcher = Path('modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('TeamPlayers dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('TeamPlayers dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeamPlayers dispatcher should have exactly one Joomla DB container access')
+          PY
