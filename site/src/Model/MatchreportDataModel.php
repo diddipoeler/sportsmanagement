@@ -263,7 +263,8 @@ final class MatchreportDataModel extends SportsManagementProjectModel
             $db->quoteName('me.notice'),
             $db->quoteName('me.projectteam_id', 'ptid'),
             $db->quoteName('me.event_sum'),
-            "CONCAT_WS(':', t.id, t.alias) AS team_id",
+            $db->quoteName('t.id', 'team_slug_id'),
+            $db->quoteName('t.alias', 'team_alias'),
             $db->quoteName('et.name', 'eventtype_name'),
             $db->quoteName('t.name', 'team_name'),
             $db->quoteName('tp.picture', 'tppicture1'),
@@ -271,7 +272,8 @@ final class MatchreportDataModel extends SportsManagementProjectModel
             $db->quoteName('p.nickname', 'nickname1'),
             $db->quoteName('p.lastname', 'lastname1'),
             $db->quoteName('p.picture', 'picture1'),
-            "CONCAT_WS(':', p.id, p.alias) AS playerid",
+            $db->quoteName('p.id', 'player_slug_id'),
+            $db->quoteName('p.alias', 'player_alias'),
         ];
 
         if ($showComments) {
@@ -322,6 +324,27 @@ final class MatchreportDataModel extends SportsManagementProjectModel
         } catch (Throwable $e) {
             $this->reportDatabaseError($e);
             $events = [];
+        }
+
+        foreach ($events as $event) {
+            $teamSlugParts = [];
+            if ($event->team_slug_id !== null) {
+                $teamSlugParts[] = (string) (int) $event->team_slug_id;
+            }
+            if ($event->team_alias !== null) {
+                $teamSlugParts[] = (string) $event->team_alias;
+            }
+
+            $playerSlugParts = [];
+            if ($event->player_slug_id !== null) {
+                $playerSlugParts[] = (string) (int) $event->player_slug_id;
+            }
+            if ($event->player_alias !== null) {
+                $playerSlugParts[] = (string) $event->player_alias;
+            }
+
+            $event->team_id = implode(':', $teamSlugParts);
+            $event->playerid = implode(':', $playerSlugParts);
         }
 
         foreach ($this->getMatchCommentary($matchId) as $comment) {
