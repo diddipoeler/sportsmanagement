@@ -63,10 +63,7 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
                 throw new \RuntimeException('SportsManagement ProjectMap legacy helper requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
 
             return self::helper()->getData($seasonIds, $database);
         }
@@ -83,6 +80,18 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
             $helper = self::helper();
 
             return $helper->toJavascriptObjectBody($helper->createStateSpecific((array) $projects));
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
