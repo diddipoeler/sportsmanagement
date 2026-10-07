@@ -83,9 +83,11 @@ final class ResultsDataModel extends SportsManagementProjectModel
         $projectId = $this->projectId;
         $query = $db->createQuery()
             ->select([
-                "CONCAT_WS(':', id, alias) AS slug",
+                $db->quoteName('id'),
+                $db->quoteName('alias'),
+                $db->quoteName('name'),
+                $db->quoteName('round_date_first'),
                 $db->quoteName('id', 'value'),
-                "CASE LENGTH(name) WHEN 0 THEN CONCAT(" . $db->quote($matchdayName) . ", ' ', id) ELSE CONCAT(name, ' (', round_date_first, ')') END AS text",
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('project_id') . ' = :roundOptionsProjectId')
@@ -94,7 +96,17 @@ final class ResultsDataModel extends SportsManagementProjectModel
 
         try {
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+            $rows = $db->loadObjectList() ?: [];
+
+            foreach ($rows as $row) {
+                $row->slug = (int) ($row->id ?? 0) . ':' . (string) ($row->alias ?? '');
+                $name = trim((string) ($row->name ?? ''));
+                $row->text = $name === ''
+                    ? $matchdayName . ' ' . (int) ($row->id ?? 0)
+                    : $name . ' (' . (string) ($row->round_date_first ?? '') . ')';
+            }
+
+            return $rows;
         } catch (Throwable $e) {
             $this->reportDatabaseError($e);
             return [];
