@@ -1,0 +1,87 @@
+name: Joomla 5/6 compatibility batch 646
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/TeamplanModel.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch646.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/TeamplanModel.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch646.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/RoundsModel.php
+            site/src/Model/TeamplanModel.php
+            modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          rounds = Path('admin/src/Model/RoundsModel.php').read_text()
+          start = rounds.index('public function getNextRoundByToday')
+          end = rounds.index('/**\n     * Create missing rounds', start)
+          segment = rounds[start:end]
+          if "$row['id'] =" in segment:
+              raise SystemExit('getNextRoundByToday() still mutates the id contract')
+          if "return $db->loadAssocList() ?: [];" not in segment:
+              raise SystemExit('getNextRoundByToday() no longer returns the raw round rows')
+
+          teamplan = Path('site/src/Model/TeamplanModel.php').read_text()
+          start = teamplan.index('private function loadPlanMatches')
+          end = teamplan.index('private function loadRefereesByMatch', start)
+          segment = teamplan[start:end]
+          for mysql_specific in ('DATE_FORMAT(', 'CONCAT_WS'):
+              if mysql_specific in segment:
+                  raise SystemExit(f'MySQL-specific {mysql_specific} remains in TeamplanModel::loadPlanMatches()')
+          for required in (
+              '$match->match_slug =',
+              '$match->round_slug =',
+              '$match->project_slug =',
+              '$match->division_slug =',
+              '$match->playground_slug =',
+              '$match->time_present = substr($timePresent, 0, 5);',
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing Teamplan PHP normalization: {required}')
+
+          dispatcher = Path('modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('Birthday dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('Birthday dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Birthday dispatcher should have exactly one Joomla DB container access')
+          PY
