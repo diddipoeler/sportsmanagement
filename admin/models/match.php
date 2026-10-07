@@ -693,8 +693,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$query->select('pos.name AS positionname');
 		$query->select('ppos.position_id,ppos.id AS pposid, mp.ordering as playerordering');
 
-		$query->select('CONCAT_WS(\':\',pl.firstname,pl.lastname) AS text ');
-		
+
 		$query->from('#__sportsmanagement_match_' . $table . ' AS mp');
 		$query->join('INNER', '#__sportsmanagement_season_team_person_id AS sp ON mp.' . $id . ' = sp.id');
 		$query->join('INNER', '#__sportsmanagement_season_team_id AS st ON st.team_id = sp.team_id ');
@@ -723,8 +722,21 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 		$result = $db->loadObjectList($id);
 
-		if (!$result)
+		foreach ($result ?: [] as $person)
 		{
+			$nameParts = [];
+
+			if ($person->firstname !== null)
+			{
+				$nameParts[] = (string) $person->firstname;
+			}
+
+			if ($person->lastname !== null)
+			{
+				$nameParts[] = (string) $person->lastname;
+			}
+
+			$person->text = implode(':', $nameParts);
 		}
 
 		return $result;
