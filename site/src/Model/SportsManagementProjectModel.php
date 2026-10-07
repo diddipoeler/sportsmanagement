@@ -183,7 +183,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             ->select([
                 $db->quoteName('r.id'),
                 $db->quoteName('r.roundcode'),
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                $db->quoteName('r.alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round', 'r'))
             ->where($db->quoteName('r.project_id') . ' = :currentRoundProjectId')
@@ -231,7 +231,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 ->select([
                     $db->quoteName('r.id'),
                     $db->quoteName('r.roundcode'),
-                    "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                    $db->quoteName('r.alias'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_round', 'r'))
                 ->where($db->quoteName('r.id') . ' = :fallbackRoundId')
@@ -248,7 +248,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 ->select([
                     $db->quoteName('r.id'),
                     $db->quoteName('r.roundcode'),
-                    "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                    $db->quoteName('r.alias'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_round', 'r'))
                 ->where($db->quoteName('r.project_id') . ' = :lastFallbackProjectId')
@@ -256,6 +256,10 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 ->order($db->quoteName('r.roundcode') . (in_array($mode, [0, 2], true) ? ' DESC' : ' ASC'));
             $db->setQuery($fallback, 0, 1);
             $round = $db->loadObject();
+        }
+
+        if ($round) {
+            $round->round_slug = (int) ($round->id ?? 0) . ':' . (string) ($round->alias ?? '');
         }
 
         if ($round && (int) ($project->current_round ?? 0) !== (int) $round->id) {
