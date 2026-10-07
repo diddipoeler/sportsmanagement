@@ -191,7 +191,7 @@ final class AjaxModel extends BaseDatabaseModel
     public static function getassociationsoptions($country = null, $required = false, $slug = false, $dabse = false): array
     {
         $country = trim((string) $country);
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = self::joomlaDatabase();
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('t.id', 'value'),
@@ -929,6 +929,14 @@ final class AjaxModel extends BaseDatabaseModel
         sort($ids, SORT_NUMERIC);
 
         return $ids;
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private static function database(bool $external): DatabaseInterface
