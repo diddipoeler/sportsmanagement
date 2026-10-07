@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
@@ -73,10 +74,10 @@ final class NextmatchModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select([
                 'm.*',
-                'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
                 $db->quoteName('pt1.project_id'),
                 $db->quoteName('r.roundcode'),
-                "CONCAT_WS(':', pl.id, pl.alias) AS playground_slug",
+                $db->quoteName('pl.id', 'playground_slug_id'),
+                $db->quoteName('pl.alias', 'playground_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -99,8 +100,13 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('#__sportsmanagement_playground', 'pl')
                 . ' ON ' . $db->quoteName('pl.id') . ' = ' . $db->quoteName('m.playground_id')
             )
-            ->where('DATE_ADD(' . $db->quoteName('m.match_date') . ', INTERVAL ' . $expiryTime . ' MINUTE) >= NOW()')
+            ->where($db->quoteName('m.match_date') . ' >= :expiryCutoff')
             ->where($db->quoteName('m.cancel') . ' = 0');
+
+        $expiryCutoff = (new Date('now', new \DateTimeZone('UTC')))
+            ->modify('-' . $expiryTime . ' minutes')
+            ->toSql();
+        $query->bind(':expiryCutoff', $expiryCutoff, ParameterType::STRING);
 
         if ($matchId > 0) {
             $query->where($db->quoteName('m.id') . ' = :specifiedMatchId')
@@ -135,7 +141,7 @@ final class NextmatchModel extends SportsManagementProjectModel
 
         $query->order($db->quoteName('m.match_date') . ' ASC');
         $db->setQuery($query, 0, 1);
-        $this->match = $db->loadObject() ?: null;
+        $this->match = $this->normaliseMatch($db->loadObject() ?: null);
 
         if ($this->match !== null) {
             $this->projectId = (int) $this->match->project_id;
@@ -159,10 +165,10 @@ final class NextmatchModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select([
                 'm.*',
-                'DATE_FORMAT(m.time_present, "%H:%i") AS time_present',
                 $db->quoteName('pt1.project_id'),
                 $db->quoteName('r.roundcode'),
-                "CONCAT_WS(':', pl.id, pl.alias) AS playground_slug",
+                $db->quoteName('pl.id', 'playground_slug_id'),
+                $db->quoteName('pl.alias', 'playground_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join(
@@ -187,7 +193,7 @@ final class NextmatchModel extends SportsManagementProjectModel
 
         try {
             $db->setQuery($query, 0, 1);
-            $this->match = $db->loadObject() ?: null;
+            $this->match = $this->normaliseMatch($db->loadObject() ?: null);
         } catch (Throwable $e) {
             $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return null;
@@ -689,6 +695,25 @@ final class NextmatchModel extends SportsManagementProjectModel
             'sum_team1_result' => 0,
             'sum_team2_result' => 0,
         ];
+    }
+
+    private function normaliseMatch(?object $match): ?object
+    {
+        if ($match === null) {
+            return null;
+        }
+
+        $timePresent = trim((string) ($match->time_present ?? ''));
+        if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
+            $match->time_present = substr($timePresent, 0, 5);
+        }
+
+        $playgroundId = (int) ($match->playground_slug_id ?? 0);
+        $match->playground_slug = $playgroundId > 0
+            ? $playgroundId . ':' . (string) ($match->playground_alias ?? '')
+            : '';
+
+        return $match;
     }
 
     private function loadProjectTeam(int $projectTeamId): ?object
