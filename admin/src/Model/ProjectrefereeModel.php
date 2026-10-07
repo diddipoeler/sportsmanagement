@@ -12,7 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectrefereeTable;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\ParameterType;
 
@@ -50,7 +50,7 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $modified = Factory::getDate()->toSql();
+        $modified = (new Date('now', new \DateTimeZone('UTC')))->toSql();
         $userId = (int) $app->getIdentity()->id;
         $transactionStarted = false;
 
