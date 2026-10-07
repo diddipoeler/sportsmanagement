@@ -51,12 +51,17 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
                 throw new \RuntimeException('SportsManagement CountRekord legacy helper requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database ??= self::joomlaDatabase();
 
             return (new CountRekordHelper())->getData($registry, $module, $database);
+        }
+
+        private static function joomlaDatabase(): DatabaseInterface
+        {
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
