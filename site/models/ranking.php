@@ -229,7 +229,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	public static function computeRanking($cfg_which_database = 0, $s = 0,$sports_type_name='')
 	{
 		$app   = self::siteApplication();
-		$input = $app->input;
+		$input = $app->getInput();
 
 		$project = sportsmanagementModelProject::getProject($cfg_which_database, __METHOD__);
 
@@ -443,7 +443,7 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	public static function _sortRanking(&$ranking)
 	{
 		$app       = self::siteApplication();
-		$jinput    = $app->input;
+		$jinput    = $app->getInput();
 		$order     = $jinput->get('order', '', 'STR');
 		$order_dir = $jinput->get('dir', 'ASC', 'STR');
 
