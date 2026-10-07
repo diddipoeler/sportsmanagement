@@ -81,6 +81,10 @@ if (!class_exists(SportsManagementDatabaseResolver::class)) {
     }
 }
 
+if (!class_exists(SportsManagementDatabaseResolver::class)) {
+    throw new \RuntimeException('SportsManagement database resolver could not be loaded.', 500);
+}
+
 /** @var DatabaseInterface $joomlaDatabase */
 $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 $db = (new SportsManagementDatabaseResolver())->resolve(null, $joomlaDatabase);
