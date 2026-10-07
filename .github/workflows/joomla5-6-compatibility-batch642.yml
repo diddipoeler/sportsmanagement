@@ -1,0 +1,73 @@
+name: Joomla 5/6 compatibility batch 642
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch642.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch642.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_update_timestamp.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          timestamp = Path('admin/assets/updates/jsm_update_timestamp.php').read_text()
+          if len(re.findall(r'<\?php', timestamp, flags=re.I)) != 1:
+              raise SystemExit('Timestamp updater must contain exactly one PHP open tag')
+
+          for path in (
+              'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php',
+              'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php',
+              'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php',
+          ):
+              text = Path(path).read_text()
+              if 'private function joomlaDatabase(): DatabaseInterface' not in text:
+                  raise SystemExit(f'Missing centralized Joomla database helper in {path}')
+              if 'return $data;\n    }\n\n    private function joomlaDatabase()' not in text:
+                  raise SystemExit(f'joomlaDatabase() is not a class-level method in {path}')
+              if text.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+                  raise SystemExit(f'Expected exactly one Joomla DB container access in {path}')
+          PY
