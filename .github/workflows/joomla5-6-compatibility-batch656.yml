@@ -1,0 +1,87 @@
+name: Joomla 5/6 compatibility batch 656
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/ranking.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch656.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/ranking.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch656.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/models/ranking.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          if 'CONCAT_WS' in match:
+              raise SystemExit('MySQL CONCAT_WS remains in legacy Match model')
+          start = match.index('function getMatchPersons')
+          end = match.index('/**', start + 20)
+          segment = match[start:end]
+          if "$person->text = implode(':', $nameParts);" not in segment:
+              raise SystemExit('Match person labels are not built in PHP')
+
+          ranking = Path('site/models/ranking.php').read_text()
+          ctor = ranking[ranking.index('function __construct'):ranking.index('public static function setFinalStanding')]
+          for legacy in (
+              "$jinput->get('p'",
+              "$jinput->get('r'",
+              "$jinput->post->get('from'",
+              "$jinput->post->get('to'",
+              "$jinput->post->get('type'",
+              "$jinput->get('view'",
+              "$jinput->get('cfg_which_database'",
+              "$jinput->get('s'",
+          ):
+              if legacy in ctor:
+                  raise SystemExit(f'Untyped Ranking input access remains: {legacy}')
+          for required in ('$jinput->getInt(', '$jinput->getCmd('):
+              if required not in ctor:
+                  raise SystemExit(f'Ranking typed Joomla input accessor missing: {required}')
+
+          dispatcher = Path('modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('FirstLeagueOverview dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('FirstLeagueOverview dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('FirstLeagueOverview dispatcher should have exactly one Joomla DB container access')
+          PY
