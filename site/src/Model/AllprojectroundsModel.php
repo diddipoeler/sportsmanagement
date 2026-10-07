@@ -451,11 +451,10 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
                 $db->quoteName('p.firstname'),
                 $db->quoteName('p.lastname'),
                 $db->quoteName('p.nickname'),
+                $db->quoteName('p.alias'),
                 $db->quoteName('pos.name', 'position_name'),
                 $db->quoteName('mr.project_position_id'),
                 $db->quoteName('pref.picture'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('person_slug'),
-                'CONCAT(' . $db->quoteName('p.firstname') . ", ' - ', " . $db->quoteName('p.lastname') . ') AS ' . $db->quoteName('text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_referee', 'mr'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_project_referee', 'pref') . ' ON ' . $db->quoteName('pref.id') . ' = ' . $db->quoteName('mr.project_referee_id'))
@@ -468,7 +467,14 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
             ->order($db->quoteName('pos.name') . ' ASC, ' . $db->quoteName('mr.ordering') . ' ASC')
             ->bind(':refereeMatchId', $matchId, ParameterType::INTEGER);
         $db->setQuery($query);
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList() ?: [];
+
+        foreach ($rows as $row) {
+            $row->person_slug = (int) ($row->id ?? 0) . ':' . (string) ($row->alias ?? '');
+            $row->text = trim((string) ($row->firstname ?? '')) . ' - ' . trim((string) ($row->lastname ?? ''));
+        }
+
+        return $rows;
     }
 
     private function escape(string $value): string
