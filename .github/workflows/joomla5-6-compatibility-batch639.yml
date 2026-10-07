@@ -1,0 +1,74 @@
+name: Joomla 5/6 compatibility batch 639
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'site/src/Model/ResultsDataModel.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch639.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'site/src/Model/ResultsDataModel.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch639.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_update_timestamp.php
+            site/src/Model/ResultsDataModel.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          if grep -Fq -- 'function sendData' admin/assets/updates/jsm_update_timestamp.php; then
+            echo 'Legacy timestamp updater sendData JavaScript remains'
+            exit 1
+          fi
+          grep -Fq -- 'button type="submit" name="table" value="project"' admin/assets/updates/jsm_update_timestamp.php
+          grep -Fq -- 'button type="submit" name="table" value="match"' admin/assets/updates/jsm_update_timestamp.php
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          results = Path('site/src/Model/ResultsDataModel.php').read_text()
+          start = results.index('public function getRoundOptions')
+          end = results.index('/** Preserve the legacy id-keyed event list', start)
+          segment = results[start:end]
+          if 'CONCAT_WS' in segment or 'CONCAT(' in segment:
+              raise SystemExit('MySQL concatenation remains in ResultsDataModel::getRoundOptions()')
+          if '$row->slug =' not in segment or '$row->text =' not in segment:
+              raise SystemExit('Round option slug/text are not built in PHP')
+
+          helper = Path('modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php').read_text()
+          if 'CONCAT_WS' in helper:
+              raise SystemExit('MySQL CONCAT_WS remains in NewProjectHelper')
+          if '$row->project_slug =' not in helper or '$row->round_slug =' not in helper:
+              raise SystemExit('New Project slugs are not built in PHP')
+          PY
