@@ -469,9 +469,7 @@ final class EditmatchModel extends AdminModel
             );
 
             try {
-                $mailerFactory = $this->injectedMailerFactory
-                    ?? \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class);
-                $mailer = $mailerFactory->createMailer();
+                $mailer = $this->mailerFactory()->createMailer();
                 $mailFrom = (string) $app->get('mailfrom', '');
                 $fromName = (string) $app->get('fromname', '');
                 if ($mailFrom !== '') {
@@ -495,6 +493,18 @@ final class EditmatchModel extends AdminModel
             'notice'
         );
         return false;
+    }
+
+    private function mailerFactory(): MailerFactoryInterface
+    {
+        if ($this->injectedMailerFactory !== null) {
+            return $this->injectedMailerFactory;
+        }
+
+        /** @var MailerFactoryInterface $mailerFactory */
+        $mailerFactory = \Joomla\CMS\Factory::getContainer()->get(MailerFactoryInterface::class);
+
+        return $mailerFactory;
     }
 
     private function database(): DatabaseInterface
