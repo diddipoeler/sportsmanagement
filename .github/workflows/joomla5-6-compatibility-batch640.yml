@@ -1,0 +1,80 @@
+name: Joomla 5/6 compatibility batch 640
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'site/src/Model/ResultsDataModel.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch640.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_update_timestamp.php'
+      - 'site/src/Model/ResultsDataModel.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch640.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_update_timestamp.php
+            site/src/Model/ResultsDataModel.php
+            modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          if grep -Fq -- '$link' admin/assets/updates/jsm_update_timestamp.php; then
+            echo 'Legacy timestamp updater link state remains'
+            exit 1
+          fi
+          if grep -Fq -- 'window.location' admin/assets/updates/jsm_update_timestamp.php; then
+            echo 'Broken legacy timestamp navigation remains'
+            exit 1
+          fi
+          if grep -Fq -- 'Uri::getInstance()' admin/assets/updates/jsm_update_timestamp.php; then
+            echo 'Legacy timestamp Uri navigation remains'
+            exit 1
+          fi
+          grep -Fq -- 'form method="get" id="adminForm" action=""' admin/assets/updates/jsm_update_timestamp.php
+
+          if grep -Fq -- 'DATE_FORMAT(' site/src/Model/ResultsDataModel.php; then
+            echo 'MySQL DATE_FORMAT remains in ResultsDataModel'
+            exit 1
+          fi
+          grep -Fq -- '$row->time_present = substr($timePresent, 0, 5);' site/src/Model/ResultsDataModel.php
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          dispatcher = Path('modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('RandomPlayer dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('RandomPlayer dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('RandomPlayer dispatcher should have exactly one Joomla DB container access')
+          PY
