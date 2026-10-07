@@ -25,9 +25,7 @@ $uri->delVar('table');
 $link = $uri->toString();
 
 ?>
-    <script type="text/javascript">
-        function sendData(sData) {
-            var oldLocation = '<?PHP echo $link;?>';
+<?PHP echo $link;?>';
             window.location = oldLocation + '&table=' + sData;
 //  window.location.search = sData;
 //  window.location.reload(true)
@@ -172,10 +170,9 @@ if ($table)
 }
 
 
-echo '<form method="post" id="adminForm" action="' . $link . '" >';
-echo '<br><input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'project\')" value="Projekte" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'match\')" value="Match" />';
-echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'person\')" value="Personen" />';
+echo '<form method="get" id="adminForm" action="' . htmlspecialchars($link, ENT_QUOTES, 'UTF-8') . '">';
+echo '<br><button type="submit" name="table" value="project">Projekte</button>';
+echo '<button type="submit" name="table" value="match">Match</button>';
 echo '</form>';
 
 
