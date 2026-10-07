@@ -84,22 +84,22 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 		$jinput                 = $app->getInput();
 		$from                   = 0;
 		$to                     = 0;
-		self::$projectid        = (int) $jinput->get('p', 0, '');
+		self::$projectid        = $jinput->getInt('p', 0);
 		self::$paramconfig['p'] = self::$projectid;
 
-		self::$round = $jinput->get('r', self::$current_round, '');
+		self::$round = $jinput->getInt('r', (int) self::$current_round);
 		self::$part  = $jinput->getInt("part", 0);
 
-		self::$from = $jinput->post->get('from', 0, '');
-		self::$to   = $jinput->post->get('to', self::$round, '');
+		self::$from = $jinput->post->getInt('from', 0);
+		self::$to   = $jinput->post->getInt('to', (int) self::$round);
 
-		self::$type        = $jinput->post->get('type', 0, '');
+		self::$type        = $jinput->post->getInt('type', 0);
 		self::$last        = $jinput->getInt('last', 0);
-		self::$viewName    = $jinput->get('view', '', 'STR');
+		self::$viewName    = $jinput->getCmd('view', '');
 		self::$selDivision = $jinput->getInt('division', 0);
 
-		sportsmanagementModelProject::$cfg_which_database = $jinput->get('cfg_which_database', 0, '');
-		self::$season                                     = $jinput->get('s', 0, '');
+		sportsmanagementModelProject::$cfg_which_database = $jinput->getInt('cfg_which_database', 0);
+		self::$season                                     = $jinput->getInt('s', 0);
 
 		sportsmanagementModelProject::$projectid = self::$projectid;
 
