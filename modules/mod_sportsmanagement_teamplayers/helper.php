@@ -56,10 +56,7 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
                 throw new \RuntimeException('SportsManagement TeamPlayers legacy helper requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
             $data = (new TeamPlayersHelper())->getData($registry, $database);
 
             return ['project' => $data['project'], 'roster' => $data['roster']];
@@ -81,6 +78,18 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         public static function getPlayerMinsPlayed($item, $params, $project, $module, $time_for_match): int
         {
             return (int) ($item->minutes_played ?? 0);
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
 
         private static function renderPlayer(object $item): string
