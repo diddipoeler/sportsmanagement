@@ -1,0 +1,77 @@
+name: Joomla 5/6 compatibility batch 637
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcomments_j3.php'
+      - 'site/helpers/route.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch637.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/assets/updates/jsm_install_jcomments_j3.php'
+      - 'site/helpers/route.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch637.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/assets/updates/jsm_install_jcomments_j3.php
+            site/helpers/route.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          grep -Fq -- 'getWebAssetManager()->registerAndUseScript' admin/assets/updates/jsm_install_jcomments_j3.php
+          if grep -Fq -- '->addScript(' admin/assets/updates/jsm_install_jcomments_j3.php; then
+            echo 'Legacy addScript remains in JComments J3 installer'
+            exit 1
+          fi
+          if grep -Fq -- 'Uri::getInstance()' admin/assets/updates/jsm_install_jcomments_j3.php; then
+            echo 'Unused installer Uri bootstrap remains in JComments J3 installer'
+            exit 1
+          fi
+
+          for legacy_import in             'use Joomla\CMS\Factory;'             'use Joomla\CMS\Router\Router;'             'use Joomla\CMS\Component\Router\RouterBase;'             'use Joomla\CMS\Language\Text;'; do
+            if grep -Fq -- "$legacy_import" site/helpers/route.php; then
+              echo "Unused route import remains: $legacy_import"
+              exit 1
+            fi
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          helper = Path('modules/mod_sportsmanagement_randomplayer/helper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in helper:
+              raise SystemExit('RandomPlayer legacy database helper is missing')
+          if 'self::joomlaDatabase($database)' not in helper:
+              raise SystemExit('RandomPlayer legacy helper does not use centralized DB fallback')
+          if helper.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('RandomPlayer legacy helper should have exactly one Joomla DB container fallback')
+          PY
