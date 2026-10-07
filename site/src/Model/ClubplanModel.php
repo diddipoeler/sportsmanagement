@@ -223,46 +223,46 @@ final class ClubplanModel extends SportsManagementProjectModel
                 $db->quoteName('p.name', 'project_name'),
                 $db->quoteName('p.id', 'project_id'),
                 $db->quoteName('p.id', 'prid'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
+                $db->quoteName('p.alias', 'project_alias'),
                 $db->quoteName('r.id', 'roundid'),
                 $db->quoteName('r.roundcode'),
                 $db->quoteName('r.name', 'roundname'),
                 $db->quoteName('l.name', 'l_name'),
                 $db->quoteName('playground.name', 'pl_name'),
-                "CONCAT_WS(':', " . $db->quoteName('playground.id') . ', ' . $db->quoteName('playground.alias') . ') AS ' . $db->quoteName('playground_slug'),
+                $db->quoteName('playground.alias', 'playground_alias'),
                 $db->quoteName('t1.club_id', 't1club_id'),
                 $db->quoteName('t1.id', 'team1_id'),
                 $db->quoteName('t1.name', 'tname1'),
                 $db->quoteName('t1.short_name', 'tname1_short'),
                 $db->quoteName('t1.middle_name', 'tname1_middle'),
                 $db->quoteName('t1.club_id', 'club1_id'),
-                "CONCAT_WS(':', " . $db->quoteName('t1.id') . ', ' . $db->quoteName('t1.alias') . ') AS ' . $db->quoteName('team1_slug'),
+                $db->quoteName('t1.alias', 'team1_alias'),
                 $db->quoteName('t2.club_id', 't2club_id'),
                 $db->quoteName('t2.id', 'team2_id'),
                 $db->quoteName('t2.name', 'tname2'),
                 $db->quoteName('t2.short_name', 'tname2_short'),
                 $db->quoteName('t2.middle_name', 'tname2_middle'),
                 $db->quoteName('t2.club_id', 'club2_id'),
-                "CONCAT_WS(':', " . $db->quoteName('t2.id') . ', ' . $db->quoteName('t2.alias') . ') AS ' . $db->quoteName('team2_slug'),
+                $db->quoteName('t2.alias', 'team2_alias'),
                 $db->quoteName('c1.logo_small', 'home_logo_small'),
-                "CONCAT_WS(':', " . $db->quoteName('c1.id') . ', ' . $db->quoteName('c1.alias') . ') AS ' . $db->quoteName('club1_slug'),
+                $db->quoteName('c1.id', 'club1_slug_id'),
+                $db->quoteName('c1.alias', 'club1_alias'),
                 $db->quoteName('c1.country', 'club1_country'),
                 $db->quoteName('c2.logo_small', 'away_logo_small'),
-                "CONCAT_WS(':', " . $db->quoteName('c2.id') . ', ' . $db->quoteName('c2.alias') . ') AS ' . $db->quoteName('club2_slug'),
+                $db->quoteName('c2.id', 'club2_slug_id'),
+                $db->quoteName('c2.alias', 'club2_alias'),
                 $db->quoteName('c2.country', 'club2_country'),
                 $db->quoteName('c1.logo_big', 'home_logo_big'),
                 $db->quoteName('c2.logo_big', 'away_logo_big'),
                 $db->quoteName('c1.logo_middle', 'home_logo_middle'),
                 $db->quoteName('c2.logo_middle', 'away_logo_middle'),
                 $db->quoteName('tj1.division_id'),
-                "CONCAT_WS(':', " . $db->quoteName('m.projectteam1_id') . ', ' . $db->quoteName('t1.alias') . ') AS ' . $db->quoteName('projectteam1_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('m.projectteam2_id') . ', ' . $db->quoteName('t2.alias') . ') AS ' . $db->quoteName('projectteam2_slug'),
                 $db->quoteName('d.name', 'division_name'),
                 $db->quoteName('d.shortname', 'division_shortname'),
                 $db->quoteName('d.parent_id', 'parent_division_id'),
-                "CONCAT_WS(':', " . $db->quoteName('d.id') . ', ' . $db->quoteName('d.alias') . ') AS ' . $db->quoteName('division_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) AS ' . $db->quoteName('match_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
+                $db->quoteName('d.id', 'division_slug_id'),
+                $db->quoteName('d.alias', 'division_alias'),
+                $db->quoteName('r.alias', 'round_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'tj1') . ' ON ' . $db->quoteName('tj1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
@@ -332,6 +332,27 @@ final class ClubplanModel extends SportsManagementProjectModel
             if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
                 $match->time_present = substr($timePresent, 0, 5);
             }
+
+            $matchId = (int) ($match->match_id ?? $match->id ?? 0);
+            $team1Alias = (string) ($match->team1_alias ?? '');
+            $team2Alias = (string) ($match->team2_alias ?? '');
+            $match->project_slug = (int) ($match->project_id ?? 0) . ':' . (string) ($match->project_alias ?? '');
+            $playgroundId = (int) ($match->playground_id ?? 0);
+            $match->playground_slug = $playgroundId > 0
+                ? $playgroundId . ':' . (string) ($match->playground_alias ?? '')
+                : '';
+            $match->team1_slug = (int) ($match->team1_id ?? 0) . ':' . $team1Alias;
+            $match->team2_slug = (int) ($match->team2_id ?? 0) . ':' . $team2Alias;
+            $match->club1_slug = (int) ($match->club1_slug_id ?? 0) . ':' . (string) ($match->club1_alias ?? '');
+            $match->club2_slug = (int) ($match->club2_slug_id ?? 0) . ':' . (string) ($match->club2_alias ?? '');
+            $match->projectteam1_slug = (int) ($match->projectteam1_id ?? 0) . ':' . $team1Alias;
+            $match->projectteam2_slug = (int) ($match->projectteam2_id ?? 0) . ':' . $team2Alias;
+            $divisionId = (int) ($match->division_slug_id ?? 0);
+            $match->division_slug = $divisionId > 0
+                ? $divisionId . ':' . (string) ($match->division_alias ?? '')
+                : '';
+            $match->match_slug = $matchId . ':' . $team1Alias . '_' . $team2Alias;
+            $match->round_slug = (int) ($match->roundid ?? 0) . ':' . (string) ($match->round_alias ?? '');
         }
 
         if (!$this->allmatches) {
