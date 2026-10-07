@@ -38,8 +38,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = $this->joomlaDatabase();
         $data['data'] = $this->getHelperFactory()
             ->getHelper('TeamStatisticsCounterHelper')
             ->getData($data['params'], $joomlaDatabase);
@@ -54,5 +53,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         return $data;
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
