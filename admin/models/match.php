@@ -1016,7 +1016,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function count_result($count_result = 0)
 	{
-		$pks    = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+		$pks    = $this->jsmjinput->post->get('cid', [], 'array');
 		$post   = $this->jsmjinput->post->getArray(array());
 		$result = true;
 
@@ -1069,7 +1069,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app        = $this->jsmapp;
 		$option     = $app->getInput()->getCmd('option');
-		$pks        = $app->getInput()->getVar('cid', null, 'post', 'array');
+		$pks        = $app->getInput()->post->get('cid', [], 'array');
 		$post       = $app->getInput()->post->getArray(array());
 		$project_id = $post['project_id'];
 		$match_ids  = implode(",", $pks);
@@ -1460,7 +1460,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
         $pks = array();
         $post = array();
-		$pks  = $this->jsmapp->getInput()->getVar('cid', null, 'post', 'array');
+		$pks  = $this->jsmapp->getInput()->post->get('cid', [], 'array');
 		$post = $this->jsmapp->getInput()->post->getArray(array());
         $config = $this->jsmapp->getConfig();
 		$result = true;
