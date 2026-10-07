@@ -1483,7 +1483,6 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 				$this->jsmquery->clear();
 				$this->jsmquery->select('t1.id as hometeam,t2.id as awayteam');
 				$this->jsmquery->select('p.fav_team, p.fav_team_send_mail');
-				$this->jsmquery->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
 				$this->jsmquery->from('#__sportsmanagement_match AS m');
 				$this->jsmquery->join('INNER', '#__sportsmanagement_round AS r ON m.round_id = r.id ');
 				$this->jsmquery->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
