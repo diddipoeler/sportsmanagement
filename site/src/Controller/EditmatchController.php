@@ -194,10 +194,18 @@ final class EditmatchController extends FormController
             'cfg_which_database',
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve(
+            $this->joomlaDatabase(),
+            $selector
+        );
+    }
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function nowSql(): string
