@@ -639,8 +639,14 @@ final class RoundsModel extends SportsManagementListModel
 
         try {
             $db->setQuery($query);
+            $rows = $db->loadAssocList() ?: [];
 
-            return $db->loadAssocList() ?: [];
+            foreach ($rows as &$row) {
+                $row['id'] = (int) ($row['round_id'] ?? 0) . ':' . (string) ($row['alias'] ?? '');
+            }
+            unset($row);
+
+            return $rows;
         } catch (\Throwable $e) {
             self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
