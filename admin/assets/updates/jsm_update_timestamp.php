@@ -20,7 +20,6 @@ use Joomla\Database\DatabaseInterface;
 $app = Factory::getApplication();
 $table = $app->getInput()->getCmd('table');
 
-<?PHP
 
 $version           = '1.0.53';
 
