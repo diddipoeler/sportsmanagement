@@ -1,0 +1,84 @@
+name: Joomla 5/6 compatibility batch 647
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch647.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch647.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/PlaygroundModel.php
+            site/src/Model/NextmatchModel.php
+            modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          playground = Path('admin/src/Model/PlaygroundModel.php').read_text()
+          start = playground.index('private static function getStaticDatabase')
+          segment = playground[start:]
+          if 'Factory::getContainer()->get(DatabaseInterface::class)' in segment:
+              raise SystemExit('Playground static database fallback still accesses the container directly')
+          if '(new SportsManagementDatabaseResolver())->resolve(' not in segment:
+              raise SystemExit('Playground static database fallback is not delegated to the resolver')
+
+          nextmatch = Path('site/src/Model/NextmatchModel.php').read_text()
+          start = nextmatch.index('private function loadHeadToHeadGames')
+          end = nextmatch.index('private function loadSharedProjectsWithoutMatches', start)
+          segment = nextmatch[start:end]
+          for mysql_specific in ('DATE_FORMAT(', 'CONCAT_WS'):
+              if mysql_specific in segment:
+                  raise SystemExit(f'MySQL-specific {mysql_specific} remains in Nextmatch head-to-head history')
+          for required in (
+              '$row->match_slug =',
+              '$row->project_slug =',
+              '$row->round_slug =',
+              '$row->time_present = substr($timePresent, 0, 5);',
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing Nextmatch PHP normalization: {required}')
+
+          dispatcher = Path('modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('Club Birthday dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('Club Birthday dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Club Birthday dispatcher should have exactly one Joomla DB container access')
+          PY
