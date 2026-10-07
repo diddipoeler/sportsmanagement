@@ -171,21 +171,19 @@ final class MatchreportDataModel extends SportsManagementProjectModel
                 $db->quoteName('pin.nickname'),
                 $db->quoteName('pin.lastname'),
                 $db->quoteName('pin.id', 'playerid'),
-                "CONCAT_WS(':', pin.id, pin.alias) AS person_id",
-                "CONCAT_WS(':', pin.id, pin.alias) AS sub_person_slug",
+                $db->quoteName('pin.alias', 'incoming_alias'),
                 $db->quoteName('posin.name', 'in_position'),
                 $db->quoteName('pposin.id', 'pposid1'),
                 $db->quoteName('pout.firstname', 'out_firstname'),
                 $db->quoteName('pout.nickname', 'out_nickname'),
                 $db->quoteName('pout.lastname', 'out_lastname'),
                 $db->quoteName('pout.id', 'out_ptid'),
-                "CONCAT_WS(':', pout.id, pout.alias) AS out_person_id",
-                "CONCAT_WS(':', pout.id, pout.alias) AS person_slug",
+                $db->quoteName('pout.alias', 'outgoing_alias'),
                 $db->quoteName('posout.name', 'out_position'),
                 $db->quoteName('pposout.id', 'pposid2'),
                 $db->quoteName('pt.id', 'ptid'),
-                "CONCAT_WS(':', t.id, t.alias) AS team_id",
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
+                $db->quoteName('t.id', 'team_slug_id'),
+                $db->quoteName('t.alias', 'team_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match_player', 'mp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tpin') . ' ON ' . $db->quoteName('tpin.id') . ' = ' . $db->quoteName('mp.teamplayer_id'))
@@ -213,7 +211,36 @@ final class MatchreportDataModel extends SportsManagementProjectModel
 
         try {
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+            $rows = $db->loadObjectList() ?: [];
+
+            foreach ($rows as $row) {
+                $incomingSlug = (string) (int) ($row->playerid ?? 0);
+                if ($row->incoming_alias !== null) {
+                    $incomingSlug .= ':' . (string) $row->incoming_alias;
+                }
+
+                $outgoingSlug = '';
+                if ($row->out_ptid !== null) {
+                    $outgoingSlug = (string) (int) $row->out_ptid;
+                    if ($row->outgoing_alias !== null) {
+                        $outgoingSlug .= ':' . (string) $row->outgoing_alias;
+                    }
+                }
+
+                $teamSlug = (string) (int) ($row->team_slug_id ?? 0);
+                if ($row->team_alias !== null) {
+                    $teamSlug .= ':' . (string) $row->team_alias;
+                }
+
+                $row->person_id = $incomingSlug;
+                $row->sub_person_slug = $incomingSlug;
+                $row->out_person_id = $outgoingSlug;
+                $row->person_slug = $outgoingSlug;
+                $row->team_id = $teamSlug;
+                $row->team_slug = $teamSlug;
+            }
+
+            return $rows;
         } catch (Throwable $e) {
             $this->reportDatabaseError($e);
             return [];
