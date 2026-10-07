@@ -37,8 +37,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
         }
 
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $this->joomlaDatabase();
         $result = $this->getHelperFactory()
             ->getHelper('LivetickerHelper')
             ->getData($data['params'], $data['module'], $app, $database);
@@ -68,5 +67,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             . '/index.php?option=com_ajax&module=sportsmanagement_liveticker&method=refresh&format=raw';
 
         return array_merge($data, $result);
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
