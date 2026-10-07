@@ -41,11 +41,12 @@ final class NewProjectHelper
                 $db->quoteName('p.id'),
                 $db->quoteName('p.name'),
                 $db->quoteName('p.picture', 'project_picture'),
+                $db->quoteName('p.alias', 'project_alias'),
                 $db->quoteName('l.name', 'league_name'),
                 $db->quoteName('l.country'),
                 $db->quoteName('l.picture', 'league_picture'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
+                $db->quoteName('r.id', 'round_id'),
+                $db->quoteName('r.alias', 'round_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
@@ -62,6 +63,11 @@ final class NewProjectHelper
         $placeholder = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');
 
         foreach ($rows as $row) {
+            $row->project_slug = (int) ($row->id ?? 0) . ':' . (string) ($row->project_alias ?? '');
+            $roundId = (int) ($row->round_id ?? 0);
+            $row->round_slug = $roundId > 0
+                ? $roundId . ':' . (string) ($row->round_alias ?? '')
+                : '';
             $row->project_url = $this->resultsUrl($row, $databaseSelector);
             $row->flag_url = $flags[strtoupper(trim((string) ($row->country ?? '')))] ?? '';
             $row->project_picture = (string) ($row->project_picture ?: $placeholder);
