@@ -32,10 +32,7 @@ final class LivetickerHelper
             throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
         }
 
-        if ($database === null) {
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
-        }
+        $database = $this->joomlaDatabase($database);
         $db = $this->database($params, $database);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
@@ -55,7 +52,7 @@ final class LivetickerHelper
      *
      * Endpoint: index.php?option=com_ajax&module=sportsmanagement_liveticker&method=refresh&format=raw
      */
-    public function refreshAjax(): string
+    public function refreshAjax(?DatabaseInterface $database = null): string
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
 
@@ -71,15 +68,26 @@ final class LivetickerHelper
 
         $params = new Registry();
         $params->loadString((string) ($module->params ?? ''));
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $db = $this->database($params, $joomlaDatabase);
+        $database = $this->joomlaDatabase($database);
+        $db = $this->database($params, $database);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
             : [];
 
         return $this->buildListHtml($list, $commentary, $params, $app);
+    }
+
+    private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+    {
+        if ($database !== null) {
+            return $database;
+        }
+
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     /** @return array<int,array<int,object>> */
