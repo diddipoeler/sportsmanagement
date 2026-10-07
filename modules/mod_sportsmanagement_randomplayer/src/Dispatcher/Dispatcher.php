@@ -63,13 +63,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         return $data;
+    }
+
     private function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
 
         return $database;
-    }
-
     }
 }
