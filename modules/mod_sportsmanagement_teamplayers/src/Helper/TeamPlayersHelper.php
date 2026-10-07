@@ -114,8 +114,7 @@ final class TeamPlayersHelper
                 $db->quoteName('st.id', 'season_team_id'),
                 $db->quoteName('t.id', 'team_id'),
                 $db->quoteName('t.name', 'team_name'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
+                $db->quoteName('t.alias', 'team_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
@@ -126,8 +125,16 @@ final class TeamPlayersHelper
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
+        $project = $db->loadObject();
 
-        return $db->loadObject() ?: null;
+        if (!$project) {
+            return null;
+        }
+
+        $project->project_slug = (int) $project->id . ':' . (string) ($project->alias ?? '');
+        $project->team_slug = (int) $project->team_id . ':' . (string) ($project->team_alias ?? '');
+
+        return $project;
     }
 
     /** @return array<int,object> */
@@ -153,7 +160,7 @@ final class TeamPlayersHelper
                 $db->quoteName('co.alpha2'),
                 $db->quoteName('co.name', 'country_name'),
                 $db->quoteName('co.picture', 'country_picture'),
-                "CONCAT_WS(':', " . $db->quoteName('pr.id') . ', ' . $db->quoteName('pr.alias') . ') AS ' . $db->quoteName('person_slug'),
+                $db->quoteName('pr.alias', 'person_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_season_team_person_id', 'tp'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
@@ -187,8 +194,13 @@ final class TeamPlayersHelper
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
 
         $db->setQuery($query);
+        $rows = $db->loadObjectList() ?: [];
 
-        return $db->loadObjectList() ?: [];
+        foreach ($rows as $row) {
+            $row->person_slug = (int) ($row->pid ?? 0) . ':' . (string) ($row->person_alias ?? '');
+        }
+
+        return $rows;
     }
 
     /** @return array<int,int> */
