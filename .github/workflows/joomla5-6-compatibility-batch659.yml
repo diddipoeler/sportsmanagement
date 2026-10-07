@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 659
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/event.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch659.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/event.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch659.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/models/event.php
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          if '$app->getUserState("$option.season_id", \'0\')' in match:
+              raise SystemExit('String-default season state remains in Match model')
+          if '$app->getUserState("$option.pid", \'0\')' in match:
+              raise SystemExit('String-default project state remains in Match model')
+          if '(int) $app->getUserState("$option.season_id", 0)' not in match:
+              raise SystemExit('Typed season state missing in Match model')
+          if '(int) $app->getUserState("$option.pid", 0)' not in match:
+              raise SystemExit('Typed project state missing in Match model')
+
+          event = Path('site/models/event.php').read_text()
+          if "die('Restricted access')" in event:
+              raise SystemExit('Legacy restricted-access execution guard remains in Event model')
+          if "\\defined('_JEXEC') or die;" not in event:
+              raise SystemExit('Joomla 5/6 Event execution guard is missing')
+
+          dispatcher = Path('modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('ProjectMap dispatcher Joomla DB helper is missing')
+          if '$db = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('ProjectMap dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ProjectMap dispatcher should have exactly one Joomla DB container access')
+          PY
