@@ -174,7 +174,7 @@ final class TeamstaffModel extends SportsManagementAdminModel
 
         return $this->administratorApplication()->getIdentity()->authorise(
             'core.edit',
-            'com_sportsmanagement.message.' . $id
+            'com_sportsmanagement.teamstaff.' . $id
         ) || parent::allowEdit($data, $key);
     }
 }
