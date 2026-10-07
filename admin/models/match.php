@@ -192,7 +192,7 @@ return false;
  */
 public static function getMatchAllSingleData($project_id = 0)
 	{
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
         $result = array();
         $query->clear();
@@ -227,7 +227,7 @@ return $result;
 	 */
 	public static function getMatchSingleData($match_id = 0)
 	{
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
         $result = array();
         $query->clear();
@@ -316,7 +316,7 @@ break;
 	{
 		$app   = Factory::getApplication();
         $matches = array();
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
 		$query->select('m.id AS value,m.match_date, p.timezone, t1.name AS t1_name, t2.name AS t2_name');
 		$query->from('#__sportsmanagement_match AS m');
@@ -379,7 +379,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
 		$query->select('sp.id AS value');
 		$query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering,pl.knvbnr');
@@ -438,7 +438,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		self::$_season_id = $app->getUserState("$option.season_id", '0');
 		$project_id       = $app->getUserState("$option.pid", '0');
 		$starttime        = microtime();
-		$db               = Factory::getContainer()->get(DatabaseInterface::class);
+		$db               = self::joomlaDatabase();
 		$query            = $db->getQuery(true);
 
 		$in_out = array();
@@ -496,7 +496,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
 		$query->select('mp.id AS table_id,mp.match_id,mp.teamplayer_id AS value,mp.trikot_number AS trikot_number,mp.captain AS captain');
 		$query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,pl.ordering,pl.position_id as person_position_id');
@@ -586,7 +586,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getTeamsRefereeRoster($match_id = 0)
 	{
-		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$db     = self::joomlaDatabase();
 		$query  = $db->getQuery(true);
 		$result = array();
 
@@ -621,7 +621,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function getProjectReferees($already_sel = false, $project_id = 0)
 	{
-		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$db     = self::joomlaDatabase();
 		$query  = $db->getQuery(true);
 		$result = array();
 		$query->select('pref.id AS value,pl.firstname,pl.nickname,pl.lastname,pl.info,pos.name AS positionname');
@@ -669,7 +669,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app               = Factory::getApplication();
 		$option            = $app->getInput()->getCmd('option');
-		$db                = Factory::getContainer()->get(DatabaseInterface::class);
+		$db                = self::joomlaDatabase();
 		$query             = $db->getQuery(true);
 		self::$_season_id  = $app->getUserState("$option.season_id", '0');
 		self::$_project_id = $app->getUserState("$option.pid", '0');
@@ -741,7 +741,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app    = Factory::getApplication();
 		$option = $app->getInput()->getCmd('option');
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
 
 		require_once JPATH_COMPONENT_ADMINISTRATOR . '/statistics/base.php';
@@ -783,7 +783,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app       = Factory::getApplication();
 		$option    = $app->getInput()->getCmd('option');
 		$starttime = microtime();
-		$db        = Factory::getContainer()->get(DatabaseInterface::class);
+		$db        = self::joomlaDatabase();
 		$query     = $db->getQuery(true);
 		$query->select('*');
 		$query->from('#__sportsmanagement_match_statistic ');
@@ -818,7 +818,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option    = $app->getInput()->getCmd('option');
 		$starttime = microtime();
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -851,7 +851,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$starttime = microtime();
    		$app       = Factory::getApplication();
-		$db        = Factory::getContainer()->get(DatabaseInterface::class);
+		$db        = self::joomlaDatabase();
 		$result    = '';
 		$query     = $db->getQuery(true);
 
@@ -899,7 +899,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app       = Factory::getApplication();
 		$starttime = microtime();
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
 
 		$query->select('et.id AS value,et.name AS text,et.icon AS icon');
@@ -2055,7 +2055,7 @@ break;
 	function delete(&$pks)
 	{
 		$app   = $this->jsmapp;
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
 
 		$result = false;
@@ -2501,7 +2501,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function getRefereeRoster($project_position_id = 0, $match_id = 0, $project_referee_id = 0)
 	{
    		$app   = Factory::getApplication();
-		$db     = Factory::getContainer()->get(DatabaseInterface::class);
+		$db     = self::joomlaDatabase();
 		$query  = $db->getQuery(true);
 		$result = array();
 		$query->select('pref.id AS value,pr.firstname,pr.nickname,pr.lastname,pr.email');
@@ -2978,7 +2978,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function deleteevent($event_id)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 
@@ -3022,7 +3022,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public static function deletecommentary($event_id)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 
@@ -3093,7 +3093,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 			*/
 		}
 
-		$db                = Factory::getContainer()->get(DatabaseInterface::class);
+		$db                = self::joomlaDatabase();
 		$query             = $db->getQuery(true);
 		$temp              = new stdClass;
 		$temp->event_time  = $data['event_time'];
@@ -3170,7 +3170,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 			*/
 		}
 
-		$db    = Factory::getContainer()->get(DatabaseInterface::class);
+		$db    = self::joomlaDatabase();
 		$query = $db->getQuery(true);
         
         if ( !$data['doubleevents'] )
@@ -3325,7 +3325,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app      = $this->jsmapp;
 		$option   = $app->getInput()->getCmd('option');
 		$match_id = $app->getInput()->getVar('match_id');
-		$tblmatch = new MatchTable(Factory::getContainer()->get(DatabaseInterface::class));
+		$tblmatch = new MatchTable(self::joomlaDatabase());
 		$tblmatch->load($match_id);
 		$match_number     = $tblmatch->match_number;
 		$csv_match_number = $csv_file->data[0]['Spielberichtsnummer'];
@@ -4355,7 +4355,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getMatchReferee($match_id = 0, $project_referee_id = 0, $position_id = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -4388,7 +4388,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = self::joomlaDatabase();
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
@@ -4425,7 +4425,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getPersonProjektPositionAssignment($person_id = 0, $project_id = 0, $person_type = 0, $project_position_id = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -4461,7 +4461,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = self::joomlaDatabase();
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
@@ -4499,7 +4499,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getSeasonTeamPersonAssignment($person_id = 0, $season_id = 0, $team_id = 0, $person_type = 0, $project_position_id = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -4542,7 +4542,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = self::joomlaDatabase();
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
@@ -4578,7 +4578,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getMatchPlayer($match_id = 0, $season_team_person_id = 0, $project_position_id = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -4613,7 +4613,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = self::joomlaDatabase();
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
@@ -4651,7 +4651,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getMatchEvent($match_id = 0, $project_team_id = 0, $season_team_person_id = 0, $event_time = 0, $event_type = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -4685,7 +4685,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		$app  = $this->jsmapp;
-		$db   = Factory::getContainer()->get(DatabaseInterface::class);
+		$db   = self::joomlaDatabase();
 		$date = $this->jsmdate;
 		$user = $app->getIdentity();
 
@@ -4721,7 +4721,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	function getMatchStaff($match_id = 0, $team_staff_id = 0, $project_position_id = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 
 		$query = $db->getQuery(true);
 		$query->select('*');
@@ -4765,6 +4765,14 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		return $data;
+	}
+
+	private static function joomlaDatabase(): DatabaseInterface
+	{
+		/** @var DatabaseInterface $database */
+		$database = Factory::getContainer()->get(DatabaseInterface::class);
+
+		return $database;
 	}
 }
 
