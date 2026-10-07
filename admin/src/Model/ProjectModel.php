@@ -12,10 +12,10 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -700,7 +700,7 @@ final class ProjectModel extends SportsManagementAdminModel
 
     private static function backendApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     private static function sportsDatabase(int $whichDatabase = 0): DatabaseInterface
