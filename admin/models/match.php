@@ -11,6 +11,7 @@
  * https://hotexamples.com/de/examples/-/Google_Service_Calendar_EventDateTime/-/php-google_service_calendar_eventdatetime-class-examples.html
  */
 \defined('_JEXEC') or die;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstaffstatisticTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstatisticTable;
@@ -95,7 +96,7 @@ public static function getSingleMatchDatas($match_id = 0)
 	{
 		$app    = Factory::getApplication();
 		$jinput = $app->getInput();
-		$db     = sportsmanagementHelper::getDBConnection(true, $jinput->getInt('cfg_which_database', 0));
+		$db     = self::sportsManagementDatabase($jinput->getInt('cfg_which_database', 0));
 		$query  = $db->getQuery(true);
 		$result = array();
 
@@ -126,7 +127,7 @@ public static function insertSingleMatchData($match_id=0,$match_numer='',$valueh
 $app    = Factory::getApplication();    
 $date          = new Date('now', new \DateTimeZone('UTC'));
 		$user          = $app->getIdentity();
-        $db            = sportsmanagementHelper::getDBConnection();
+        $db            = self::sportsManagementDatabase();
 
 $temp                      = new stdClass;
 		$temp->match_id            = $match_id;
@@ -165,7 +166,7 @@ return false;
 	 */
 	public static function getMatchEvents($match_id = 0)
 	{
-		$db         = sportsmanagementHelper::getDBConnection();
+		$db         = self::sportsManagementDatabase();
 		$query      = $db->getQuery(true);
 		$query->select('me.*,t.name AS team,et.name AS event,CONCAT(t1.firstname," \'",t1.nickname,"\' ",t1.lastname) AS player1');
 		$query->from('#__sportsmanagement_match_event AS me');
@@ -548,7 +549,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app    = Factory::getApplication();
         $result = array();
 		$option = $app->getInput()->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection(true, $cfg_which_database, false);
+		$db     = self::sportsManagementDatabase($cfg_which_database);
 		$query  = $db->getQuery(true);
 		$query->select('m.*');
 		$query->select('t1.name as t1name,t2.name as t2name');
@@ -951,7 +952,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$starttime = microtime();
 
 		// Get a db connection.
-		$db    = sportsmanagementHelper::getDBConnection(true, $app->getUserState("com_sportsmanagement.cfg_which_database", false));
+		$db    = self::sportsManagementDatabase($app->getUserState("com_sportsmanagement.cfg_which_database", false));
 		$query = $db->getQuery(true);
 
 		$query->select('*');
@@ -1307,7 +1308,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	 */
 	public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = array())
 	{
-		return new MatchTable(sportsmanagementHelper::getDBConnection());
+		return new MatchTable(self::sportsManagementDatabase());
 	}
 
 	/**
@@ -1320,7 +1321,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	function savestats($data)
 	{
 		$app      = $this->jsmapp;
-		$db       = sportsmanagementHelper::getDBConnection();
+		$db       = self::sportsManagementDatabase();
 		$query    = $db->getQuery(true);
 		$match_id = $data['match_id'];
 
@@ -1857,7 +1858,7 @@ case 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION':
 $match_single_free = array();
 $match_single_player = array();
 
-$db = sportsmanagementHelper::getDBConnection();
+$db = self::sportsManagementDatabase();
 $mdlteamplayers = new TeamplayersModel(['dbo' => $db]);
 $mdljlextindividualsportes = new JlextindividualsportesModel(['dbo' => $db]);
 
@@ -1996,7 +1997,7 @@ break;
 
 		if ($project->fav_team)
 		{
-			$teamplayersModel = new TeamplayersModel(['dbo' => sportsmanagementHelper::getDBConnection()]);
+			$teamplayersModel = new TeamplayersModel(['dbo' => self::sportsManagementDatabase()]);
 			$teamplayer = $teamplayersModel->getProjectTeamplayers($project->fav_team, $project->season_id);
 		}
 
@@ -2356,7 +2357,7 @@ $this->jsmapp->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUN
 		$app    = Factory::getApplication();
         $result = array();
 		$option = $app->getInput()->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection();
+		$db     = self::sportsManagementDatabase();
 		$query  = $db->getQuery(true);
 
         $query->select('mc.*');
@@ -2456,7 +2457,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app   = Factory::getApplication();
         $result = array();
-		$db    = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+		$db    = self::sportsManagementDatabase($cfg_which_database);
 		$query = $db->getQuery(true);
 		$query->select('m.*,CASE m.time_present	when NULL then NULL	else DATE_FORMAT(m.time_present, "%H:%i") END AS time_present,m.extended as matchextended');
 		$query->select('t1.name AS hometeam, t1.id AS t1id');
@@ -2592,7 +2593,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option        = $app->getInput()->getCmd('option');
 		$date          = $this->jsmdate;
 		$user          = $app->getIdentity();
-		$db            = sportsmanagementHelper::getDBConnection();
+		$db            = self::sportsManagementDatabase();
 		$query         = $db->getQuery(true);
 		$result        = true;
 		$positions     = $post['positions'];
@@ -2692,7 +2693,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option    = $app->getInput()->getCmd('option');
 		$date      = $this->jsmdate;
 		$user      = $app->getIdentity();
-		$db        = sportsmanagementHelper::getDBConnection();
+		$db        = self::sportsManagementDatabase();
 		$query     = $db->getQuery(true);
 		$result    = true;
 		$positions = $post['staffpositions'];
@@ -2788,7 +2789,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option = $app->getInput()->getCmd('option');
 		$date   = new Date('now', new \DateTimeZone('UTC'));
 		$user   = $app->getIdentity();
-		$db     = sportsmanagementHelper::getDBConnection();
+		$db     = self::sportsManagementDatabase();
 		$query  = $db->getQuery(true);
 
 		if (empty($data['project_position_id']))
@@ -2944,7 +2945,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function removeSubstitution($substitution_id)
 	{
 		$app   = Factory::getApplication();
-		$db    = sportsmanagementHelper::getDBConnection();
+		$db    = self::sportsManagementDatabase();
 		$query = $db->getQuery(true);
 		/**
 		 * the subsitute isn't getting in so we delete the substitution
@@ -3356,7 +3357,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app    = $this->jsmapp;
 		$option = $app->getInput()->getCmd('option');
-		$db     = sportsmanagementHelper::getDBConnection();
+		$db     = self::sportsManagementDatabase();
 		$query  = $db->getQuery(true);
 
 		$csv_player_count = 40;
@@ -3750,7 +3751,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app = $this->jsmapp;
 
 		// Get a db connection.
-		$db        = sportsmanagementHelper::getDBConnection();
+		$db        = self::sportsManagementDatabase();
 		$person_id = 0;
 
 		// Create a new query object.
@@ -3830,7 +3831,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$app = $this->jsmapp;
 
 		// Get a db connection.
-		$db = sportsmanagementHelper::getDBConnection();
+		$db = self::sportsManagementDatabase();
 
 		// Create a new query object.
 		$query = $db->getQuery(true);
@@ -4765,6 +4766,11 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		}
 
 		return $data;
+	}
+
+	private static function sportsManagementDatabase(mixed $selector = null): DatabaseInterface
+	{
+		return (new SportsManagementDatabaseResolver())->resolve($selector, self::joomlaDatabase());
 	}
 
 	private static function joomlaDatabase(): DatabaseInterface
