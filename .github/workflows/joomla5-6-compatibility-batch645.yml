@@ -1,0 +1,88 @@
+name: Joomla 5/6 compatibility batch 645
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/ClubplanModel.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch645.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/ClubplanModel.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch645.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/RoundsModel.php
+            site/src/Model/ClubplanModel.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          rounds = Path('admin/src/Model/RoundsModel.php').read_text()
+          if 'CONCAT_WS' in rounds:
+              raise SystemExit('MySQL CONCAT_WS remains in RoundsModel')
+          if "$row['id'] = (int) ($row['round_id'] ?? 0) . ':'" not in rounds:
+              raise SystemExit('Navigation round slug is not built in PHP')
+
+          clubplan = Path('site/src/Model/ClubplanModel.php').read_text()
+          start = clubplan.index('public function getAllMatches')
+          end = clubplan.index('public function getTeams()', start)
+          segment = clubplan[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in ClubplanModel::getAllMatches()')
+          for required in (
+              '$match->project_slug =',
+              '$match->playground_slug =',
+              '$match->team1_slug =',
+              '$match->team2_slug =',
+              '$match->club1_slug =',
+              '$match->club2_slug =',
+              '$match->projectteam1_slug =',
+              '$match->projectteam2_slug =',
+              '$match->division_slug =',
+              '$match->match_slug =',
+              '$match->round_slug =',
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing Clubplan PHP slug builder: {required}')
+
+          helper = Path('modules/mod_sportsmanagement_club_birthday/helper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in helper:
+              raise SystemExit('Club Birthday database helper is missing')
+          if 'self::joomlaDatabase($database)' not in helper:
+              raise SystemExit('Club Birthday helper does not use centralized database fallback')
+          if helper.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Club Birthday helper should have exactly one Joomla DB container fallback')
+          PY
