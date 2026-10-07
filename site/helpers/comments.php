@@ -67,9 +67,7 @@ class sportsmanagementModelComments
             return $fallback;
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase);
+        $db = self::database();
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('t1.name', 'home'),
@@ -123,6 +121,19 @@ class sportsmanagementModelComments
         $subject = trim((string) ($teams->home ?? '') . ' - ' . (string) ($teams->away ?? ''));
 
         return $subject !== '-' ? $subject : $fallback;
+    }
+
+    private static function database(): DatabaseInterface
+    {
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase());
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     public function isEnabled()
