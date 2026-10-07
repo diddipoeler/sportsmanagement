@@ -158,9 +158,7 @@ if (!class_exists('modRquotesHelper', false)) {
     private static function nativeData(Registry $params): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
-
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = self::joomlaDatabase();
 
         return (new RquotesHelper())->getData(
             $params,
@@ -168,6 +166,14 @@ if (!class_exists('modRquotesHelper', false)) {
             $app,
             $database
         );
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private static function registryArgument($first, $second): Registry
