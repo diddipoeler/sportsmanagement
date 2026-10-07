@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectteamTable;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -139,7 +140,7 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $projectId = (int) ($post['pid'] ?? 0);
         $targetProjectId = (int) ($post['all_project_id'] ?? $projectId);
-        $date = Factory::getDate()->toSql();
+        $date = (new Date('now', new \DateTimeZone('UTC')))->toSql();
         $userId = (int) $app->getIdentity()->id;
         $associationId = $this->projectAssociation($projectId);
         $divisionPoints = is_array($post['division_points'] ?? null) ? $post['division_points'] : [];
