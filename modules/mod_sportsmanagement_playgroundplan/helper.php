@@ -127,14 +127,20 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
         private static function database(): DatabaseInterface
         {
             $app = self::siteApplication();
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
             $selector = $app->getInput()->getInt(
                 'cfg_which_database',
                 (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
             );
 
-            return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+            return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
+        }
+
+        private static function joomlaDatabase(): DatabaseInterface
+        {
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
