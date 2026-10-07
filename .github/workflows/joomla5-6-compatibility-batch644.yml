@@ -1,0 +1,83 @@
+name: Joomla 5/6 compatibility batch 644
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'site/src/Model/ClubplanModel.php'
+      - 'modules/mod_sportsmanagement_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch644.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'site/src/Model/ClubplanModel.php'
+      - 'modules/mod_sportsmanagement_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch644.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/PlaygroundModel.php
+            site/src/Model/ClubplanModel.php
+            modules/mod_sportsmanagement_birthday/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          playground = Path('admin/src/Model/PlaygroundModel.php').read_text()
+          if 'Factory::getDate()' in playground:
+              raise SystemExit('Deprecated Factory::getDate() remains in PlaygroundModel')
+          if playground.count("new Date('now', new \\DateTimeZone('UTC'))") < 2:
+              raise SystemExit('PlaygroundModel does not use explicit UTC modification timestamps')
+
+          clubplan = Path('site/src/Model/ClubplanModel.php').read_text()
+          club_start = clubplan.index('public function getClub')
+          club_end = clubplan.index('public function getTeamsArt', club_start)
+          club_segment = clubplan[club_start:club_end]
+          if 'CONCAT_WS' in club_segment:
+              raise SystemExit('MySQL CONCAT_WS remains in ClubplanModel::getClub()')
+          if '$this->club->slug =' not in club_segment:
+              raise SystemExit('Club slug is not built in PHP')
+
+          matches_start = clubplan.index('public function getAllMatches')
+          matches_end = clubplan.index('public function getTeams()', matches_start)
+          matches_segment = clubplan[matches_start:matches_end]
+          if 'DATE_FORMAT(' in matches_segment:
+              raise SystemExit('MySQL DATE_FORMAT remains in ClubplanModel::getAllMatches()')
+          if '$match->time_present = substr($timePresent, 0, 5);' not in matches_segment:
+              raise SystemExit('Clubplan match time is not normalized in PHP')
+
+          birthday = Path('modules/mod_sportsmanagement_birthday/helper.php').read_text()
+          if birthday.count('private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface') != 2:
+              raise SystemExit('Birthday helper facades do not centralize their database fallback')
+          if birthday.count('Factory::getContainer()->get(DatabaseInterface::class)') != 2:
+              raise SystemExit('Birthday helper should have one container DB fallback per compatibility facade')
+          if birthday.count('self::joomlaDatabase($database)') != 2:
+              raise SystemExit('Birthday helper facades do not use centralized database fallback')
+          PY
