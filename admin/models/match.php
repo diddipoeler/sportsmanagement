@@ -3316,7 +3316,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option = $app->getInput()->getCmd('option');
 
 		// $match_id = $cid[0];
-		$match_id  = $app->getInput()->getVar('match_id');
+		$match_id  = $app->getInput()->getInt('match_id', 0);
 		$this->_id = $match_id;
 		$file      = JPATH_SITE . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'com_sportsmanagement' . DIRECTORY_SEPARATOR . 'pressebericht' . DIRECTORY_SEPARATOR . $match_id . '.jlg';
 		$app->enqueueMessage(Text::_('datei = ' . $file), '');
@@ -3355,7 +3355,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app      = $this->jsmapp;
 		$option   = $app->getInput()->getCmd('option');
-		$match_id = $app->getInput()->getVar('match_id');
+		$match_id = $app->getInput()->getInt('match_id', 0);
 		$tblmatch = new MatchTable(self::joomlaDatabase());
 		$tblmatch->load($match_id);
 		$match_number     = $tblmatch->match_number;
@@ -3393,7 +3393,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$csv_player_count = 40;
 		$find_csv = '';
 		$project_id       = $app->getUserState("$option.pid", '0');
-		$match_id         = $app->getInput()->getVar('match_id');
+		$match_id         = $app->getInput()->getInt('match_id', 0);
 		$tblmatch         = new MatchTable($db);
 		$tblmatch->load($match_id);
 		$tblproject = new ProjectTable($db);
@@ -3937,7 +3937,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 
-		$match_id        = $app->getInput()->getVar('match_id');
+		$match_id        = $app->getInput()->getInt('match_id', 0);
 		$project_id      = $app->getUserState("$option.pid", '0');
 		$season_id       = $post['season_id'];
 		$fav_team        = $post['fav_team'];
