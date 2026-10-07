@@ -436,7 +436,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app              = Factory::getApplication();
 		$option           = $app->getInput()->getCmd('option');
-		self::$_season_id = $app->getUserState("$option.season_id", '0');
+		self::$_season_id = (int) $app->getUserState("$option.season_id", 0);
 		$project_id       = (int) $app->getUserState("$option.pid", 0);
 		$starttime        = microtime();
 		$db               = self::joomlaDatabase();
@@ -2008,7 +2008,7 @@ break;
 
 		// Get settings from com_issuetracker parameters
 		$params           = ComponentHelper::getParams($option);
-		$this->project_id = $app->getUserState("$option.pid", '0');
+		$this->project_id = (int) $app->getUserState("$option.pid", 0);
 		$project = ProjectModel::getProject($this->project_id);
 
 		if ($project->fav_team)
@@ -3938,7 +3938,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$option = $jinput->getCmd('option');
 
 		$match_id        = $app->getInput()->getInt('match_id', 0);
-		$project_id      = $app->getUserState("$option.pid", '0');
+		$project_id      = (int) $app->getUserState("$option.pid", 0);
 		$season_id       = $post['season_id'];
 		$fav_team        = $post['fav_team'];
 		$project_team_id = $post['projectteamid'];
