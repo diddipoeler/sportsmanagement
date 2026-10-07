@@ -124,7 +124,7 @@ public static function getSingleMatchDatas($match_id = 0)
 public static function insertSingleMatchData($match_id=0,$match_numer='',$valuehometeamplayer_id=0, $valueawayteamplayer_id=0,$valuehomeprojectteam_id=0, $valueawayprojectteam_id=0, $round_id = 0)
 {
 $app    = Factory::getApplication();    
-$date          = new Date();
+$date          = new Date('now', new \DateTimeZone('UTC'));
 		$user          = $app->getIdentity();
         $db            = sportsmanagementHelper::getDBConnection();
 
@@ -2786,7 +2786,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	{
 		$app    = Factory::getApplication();
 		$option = $app->getInput()->getCmd('option');
-		$date   = new Date();
+		$date   = new Date('now', new \DateTimeZone('UTC'));
 		$user   = $app->getIdentity();
 		$db     = sportsmanagementHelper::getDBConnection();
 		$query  = $db->getQuery(true);
@@ -3068,7 +3068,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function savecomment($data)
 	{
 		$app  = Factory::getApplication();
-		$date = new Date();
+		$date = new Date('now', new \DateTimeZone('UTC'));
 		$user = $app->getIdentity();
 
 		// Live kommentar speichern
@@ -3136,7 +3136,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 	public static function saveevent($data)
 	{
 		$app  = Factory::getApplication();
-		$date = new Date();
+		$date = new Date('now', new \DateTimeZone('UTC'));
 		$user = $app->getIdentity();
         $statsvalue = 0;
         $statsid    = 0;
