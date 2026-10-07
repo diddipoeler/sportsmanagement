@@ -138,13 +138,10 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $projectId = $this->projectId;
         $db = $this->getDatabase();
         $direction = strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
-        $query = $db->createQuery();
-        if ($slug) {
-            $query->select("CONCAT_WS(':', r.id, r.alias) AS id");
-        } else {
-            $query->select($db->quoteName('r.id'));
-        }
-        $query->select([
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('r.id'),
+                $db->quoteName('r.alias'),
                 $db->quoteName('r.round_date_first'),
                 $db->quoteName('r.round_date_last'),
                 "CASE LENGTH(r.name) WHEN 0 THEN r.roundcode ELSE r.name END AS name",
@@ -155,7 +152,15 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             ->bind(':roundsProjectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('r.roundcode') . ' ' . $direction);
         $db->setQuery($query);
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList() ?: [];
+
+        if ($slug) {
+            foreach ($rows as $row) {
+                $row->id = (int) ($row->id ?? 0) . ':' . (string) ($row->alias ?? '');
+            }
+        }
+
+        return $rows;
     }
 
     private function resolveCurrentRound(): ?object
