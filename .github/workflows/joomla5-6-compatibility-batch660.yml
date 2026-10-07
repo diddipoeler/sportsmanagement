@@ -1,0 +1,77 @@
+name: Joomla 5/6 compatibility batch 660
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/jsonfeed.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch660.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/models/jsonfeed.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch660.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/models/jsonfeed.php
+            modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          match = Path('admin/models/match.php').read_text()
+          if re.search(r"getUserState\([^)]*,\s*['\"]0['\"]\)", match):
+              raise SystemExit('String-default numeric user state remains in legacy Match model')
+          for required in (
+              '(int) $app->getUserState("$option.season_id", 0)',
+              '(int) $app->getUserState("$option.pid", 0)',
+          ):
+              if required not in match:
+                  raise SystemExit(f'Typed Match state access missing: {required}')
+
+          jsonfeed = Path('site/models/jsonfeed.php').read_text()
+          if "die('Restricted access')" in jsonfeed:
+              raise SystemExit('Legacy restricted-access execution guard remains in Jsonfeed model')
+          if "\\defined('_JEXEC') or die;" not in jsonfeed:
+              raise SystemExit('Joomla 5/6 Jsonfeed execution guard is missing')
+
+          dispatcher = Path('modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('ActSeason dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('ActSeason dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ActSeason dispatcher should have exactly one Joomla DB container access')
+          PY
