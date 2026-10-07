@@ -36,8 +36,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         try {
-            /** @var CacheControllerFactoryInterface $cacheFactory */
-            $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+            $cacheFactory = $this->cacheControllerFactory();
             $data = array_merge(
                 $data,
                 $this->getHelperFactory()
@@ -53,5 +52,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         return $data;
+    }
+
+    private function cacheControllerFactory(): CacheControllerFactoryInterface
+    {
+        /** @var CacheControllerFactoryInterface $cacheFactory */
+        $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+
+        return $cacheFactory;
     }
 }
