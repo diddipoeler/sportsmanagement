@@ -150,8 +150,7 @@ final class TeamModel extends SportsManagementAdminModel
         $logoSize = strtolower((string) $club_logo);
         $logoSize = in_array($logoSize, ['small', 'middle', 'big'], true) ? $logoSize : 'small';
         $app = self::backendApplication();
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = self::joomlaDatabase();
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('c.logo_' . $logoSize, 'logo_small'),
@@ -468,6 +467,14 @@ final class TeamModel extends SportsManagementAdminModel
             'com_sportsmanagement.change_training_date',
             (bool) self::$change_training_date
         );
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private static function backendApplication(): CMSApplicationInterface
