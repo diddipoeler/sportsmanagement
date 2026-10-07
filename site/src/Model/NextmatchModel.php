@@ -746,8 +746,7 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('c.logo_small'),
                 $db->quoteName('c.logo_middle'),
                 $db->quoteName('c.logo_big'),
-                "CONCAT_WS(':', t.id, t.alias) AS team_slug",
-                "CONCAT_WS(':', pt.id, t.alias) AS projectteam_slug",
+                $db->quoteName('t.alias', 'team_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
@@ -756,8 +755,15 @@ final class NextmatchModel extends SportsManagementProjectModel
             ->where($db->quoteName('pt.id') . ' = :projectTeamLookupId')
             ->bind(':projectTeamLookupId', $projectTeamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
+        $team = $db->loadObject() ?: null;
 
-        return $db->loadObject() ?: null;
+        if ($team !== null) {
+            $teamAlias = (string) ($team->team_alias ?? '');
+            $team->team_slug = (int) ($team->id ?? 0) . ':' . $teamAlias;
+            $team->projectteam_slug = (int) ($team->projectteamid ?? 0) . ':' . $teamAlias;
+        }
+
+        return $team;
     }
 
     private function loadHeadToHeadGames(int $homeTeamId, int $awayTeamId): array
