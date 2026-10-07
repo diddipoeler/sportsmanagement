@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 643
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch643.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/RoundsModel.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch643.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/RoundsModel.php
+            site/src/Model/NextmatchModel.php
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          rounds = Path('admin/src/Model/RoundsModel.php').read_text()
+          if 'Factory::getDate()' in rounds:
+              raise SystemExit('Deprecated Factory::getDate() remains in RoundsModel')
+          if "$row->value = (int) ($row->id ?? 0) . ':'" not in rounds:
+              raise SystemExit('Rounds option slug is not built in PHP')
+          if "new Date('now', new \\DateTimeZone('UTC'))" not in rounds:
+              raise SystemExit('RoundsModel does not use explicit UTC dates')
+
+          nextmatch = Path('site/src/Model/NextmatchModel.php').read_text()
+          start = nextmatch.index('public function getSpecifiedMatch')
+          end = nextmatch.index('public function getMatchTeams', start)
+          primary = nextmatch[start:end]
+          for mysql_specific in ('DATE_FORMAT(', 'DATE_ADD(', 'CONCAT_WS'):
+              if mysql_specific in primary:
+                  raise SystemExit(f'MySQL-specific {mysql_specific} remains in primary Nextmatch queries')
+          if "->where($db->quoteName('m.match_date') . ' >= :expiryCutoff')" not in primary:
+              raise SystemExit('Portable Nextmatch expiry cutoff is missing')
+          if '$this->normaliseMatch($db->loadObject() ?: null)' not in primary:
+              raise SystemExit('Nextmatch primary loads do not use PHP normalization')
+          if 'private function normaliseMatch(?object $match): ?object' not in nextmatch:
+              raise SystemExit('Nextmatch match normalization helper is missing')
+
+          dispatcher = Path('modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('Liveticker dispatcher Joomla DB helper is missing')
+          if '$database = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('Liveticker dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Liveticker dispatcher should have exactly one Joomla DB container access')
+          PY
