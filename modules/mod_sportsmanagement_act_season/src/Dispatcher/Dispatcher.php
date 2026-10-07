@@ -47,8 +47,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
         $seasonIds = $componentParams->get('current_season', []);
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $this->joomlaDatabase();
         $result = $this->getHelperFactory()
             ->getHelper('ActSeasonHelper')
             ->getData($seasonIds, $componentParams, $app, $database);
@@ -58,5 +57,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['countriesByFederation'] = $result['countriesByFederation'];
 
         return $data;
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
