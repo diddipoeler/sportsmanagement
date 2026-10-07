@@ -40,8 +40,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $helper = $this->getHelperFactory()->getHelper('NewProjectHelper');
         $data['params']->set('layout', 'native');
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = $this->joomlaDatabase();
         $data['list'] = $helper->getData($data['params'], $app, $database);
         $data['canCreateArticles'] = $helper->canCreateArticles($data['params'], $app);
 
@@ -63,5 +62,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         return $data;
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
