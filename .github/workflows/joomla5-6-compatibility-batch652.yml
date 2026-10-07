@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 652
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/helpers/countries.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch652.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/helpers/countries.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch652.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/helpers/countries.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          start = match.index('public static function getMatchData')
+          end = match.index('public static function getRefereeRoster', start)
+          segment = match[start:end]
+          for mysql_specific in ('DATE_FORMAT(', 'CONCAT_WS'):
+              if mysql_specific in segment:
+                  raise SystemExit(f'MySQL-specific {mysql_specific} remains in Match::getMatchData()')
+          for required in (
+              '$result->time_present = substr($timePresent, 0, 5);',
+              '$result->playground_slug =',
+          ):
+              if required not in segment:
+                  raise SystemExit(f'Missing PHP Match::getMatchData() normalization: {required}')
+
+          countries = Path('site/helpers/countries.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in countries:
+              raise SystemExit('Country helper Joomla DB helper is missing')
+          if 'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase())' not in countries:
+              raise SystemExit('Country helper database resolution is not centralized')
+          if countries.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Country helper should have exactly one Joomla DB container access')
+
+          league = Path('modules/mod_sportsmanagement_firstleagueoverview/helper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in league:
+              raise SystemExit('FirstLeagueOverview Joomla DB helper is missing')
+          if '$database = self::joomlaDatabase($database);' not in league:
+              raise SystemExit('FirstLeagueOverview result helper does not use centralized DB fallback')
+          if league.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('FirstLeagueOverview helper should have exactly one Joomla DB container access')
+          PY
