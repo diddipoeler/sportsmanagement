@@ -209,6 +209,7 @@ final class ClubplanModel extends SportsManagementProjectModel
                 $db->quoteName('m.id', 'match_id'),
                 $db->quoteName('m.match_date'),
                 $db->quoteName('m.match_timestamp'),
+                $db->quoteName('m.time_present'),
                 $db->quoteName('m.projectteam1_id'),
                 $db->quoteName('m.projectteam2_id'),
                 $db->quoteName('m.playground_id'),
