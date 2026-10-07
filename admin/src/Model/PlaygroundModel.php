@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagement
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Helper\MediaHelper;
@@ -381,7 +382,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
     private function storePlaygroundDetails(array $post, int $playgroundId, array $data): void
     {
         $db = $this->getDatabase();
-        $modified = (string) ($data['modified'] ?? Factory::getDate()->toSql());
+        $modified = (string) ($data['modified'] ?? (new Date('now', new \DateTimeZone('UTC')))->toSql());
         $modifiedBy = (int) ($data['modified_by'] ?? $this->administratorApplication()->getIdentity()->id);
 
         foreach ((array) ($post['date_von'] ?? []) as $key => $dateFrom) {
@@ -480,7 +481,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
 
         $db = $this->getDatabase();
         $logo = (string) ($post['playground_logo_history'] ?? '');
-        $modified = (string) ($data['modified'] ?? Factory::getDate()->toSql());
+        $modified = (string) ($data['modified'] ?? (new Date('now', new \DateTimeZone('UTC')))->toSql());
         $modifiedBy = (int) ($data['modified_by'] ?? $this->administratorApplication()->getIdentity()->id);
 
         foreach ($seasonIds as $seasonId) {
