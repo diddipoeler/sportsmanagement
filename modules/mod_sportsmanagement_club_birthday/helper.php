@@ -56,10 +56,7 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
                 throw new \RuntimeException('SportsManagement Club Birthday legacy helper requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
 
             return (new ClubBirthdayHelper())->getData($registry, $app, $database);
         }
@@ -67,6 +64,18 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
         public static function jsm_birthday_sort(array $clubs, int $sort): array
         {
             return ClubBirthdayHelper::sortClubs($clubs, $sort);
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
