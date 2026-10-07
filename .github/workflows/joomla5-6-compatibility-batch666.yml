@@ -1,0 +1,75 @@
+name: Joomla 5/6 compatibility batch 666
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/ProjectrefereeModel.php'
+      - 'site/src/Model/MatchreportDataModel.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch666.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/ProjectrefereeModel.php'
+      - 'site/src/Model/MatchreportDataModel.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch666.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/ProjectrefereeModel.php
+            site/src/Model/MatchreportDataModel.php
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin = Path('admin/src/Model/ProjectrefereeModel.php').read_text()
+          if 'Factory::getDate()' in admin:
+              raise SystemExit('Deprecated Factory::getDate() remains in ProjectrefereeModel')
+          if "(new Date('now', new \\DateTimeZone('UTC')))->toSql()" not in admin:
+              raise SystemExit('ProjectrefereeModel explicit UTC date is missing')
+
+          site = Path('site/src/Model/MatchreportDataModel.php').read_text()
+          start = site.index('public function getMatchReferees')
+          end = site.index('public function', start + 20)
+          segment = site[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in getMatchReferees()')
+          if "$row->person_slug = (int) ($row->id ?? 0) . ':' . (string) ($row->person_alias ?? '');" not in segment:
+              raise SystemExit('Match referee slug is not built in PHP')
+
+          dispatcher = Path('modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in dispatcher:
+              raise SystemExit('GCalendar dispatcher Joomla DB helper is missing')
+          if '$db = $this->joomlaDatabase();' not in dispatcher:
+              raise SystemExit('GCalendar dispatcher does not use centralized DB access')
+          if dispatcher.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('GCalendar dispatcher should have exactly one Joomla DB container access')
+          PY
