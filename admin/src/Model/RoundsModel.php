@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -151,7 +152,7 @@ final class RoundsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
-        $today = Factory::getDate()->format('Y-m-d');
+        $today = (new Date('now', new \DateTimeZone('UTC')))->format('Y-m-d');
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
@@ -197,7 +198,7 @@ final class RoundsModel extends SportsManagementListModel
         }
 
         if (!strtotime($start)) {
-            $start = Factory::getDate()->format('Y-m-d');
+            $start = (new Date('now', new \DateTimeZone('UTC')))->format('Y-m-d');
         }
 
         if (!preg_match('/^[0-9]+:[0-9]+$/', $time)) {
@@ -244,7 +245,7 @@ final class RoundsModel extends SportsManagementListModel
         $schedule = $helper->getSchedule($scheduling + 1);
         $rounds = self::getRoundsOptions($projectId) ?: [];
         $db = $this->getDatabase();
-        $date = Factory::getDate();
+        $date = new Date('now', new \DateTimeZone('UTC'));
         $user = $this->administratorApplication()->getIdentity();
         $currentDate = null;
         $currentCode = 0;
@@ -328,7 +329,7 @@ final class RoundsModel extends SportsManagementListModel
         $db = self::resolveSportsManagementDatabase((int) $cfg_which_database);
         $query = $db->createQuery()
             ->select([
-                "CONCAT_WS(':', " . $db->quoteName('id') . ', ' . $db->quoteName('alias') . ') AS ' . $db->quoteName('value'),
+                $db->quoteName('alias'),
                 $db->quoteName('name', 'text'),
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -344,8 +345,13 @@ final class RoundsModel extends SportsManagementListModel
 
         try {
             $db->setQuery($query);
+            $rows = $db->loadObjectList() ?: [];
 
-            return $db->loadObjectList() ?: [];
+            foreach ($rows as $row) {
+                $row->value = (int) ($row->id ?? 0) . ':' . (string) ($row->alias ?? '');
+            }
+
+            return $rows;
         } catch (\Throwable $e) {
             self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
 
