@@ -13,6 +13,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper\TeamStatsRankingHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -53,7 +54,7 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             if ($database === null) {
-                $app = SportsManagementSiteApplicationResolver::resolve();
+                $app = self::siteApplication();
 
                 if (!$app->isClient('site')) {
                     throw new \RuntimeException('SportsManagement legacy module helper requires the Joomla site application.', 500);
@@ -63,6 +64,11 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             $database = self::joomlaDatabase($database);
 
             return (new TeamStatsRankingHelper())->getData($registry, $database);
+        }
+
+        private static function siteApplication(): CMSApplicationInterface
+        {
+            return SportsManagementSiteApplicationResolver::resolve();
         }
 
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
