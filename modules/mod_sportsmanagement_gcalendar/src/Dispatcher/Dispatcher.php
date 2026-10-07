@@ -36,8 +36,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement GCalendar requires the Joomla site application.', 500);
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = $this->joomlaDatabase();
         $data = array_merge(
             $data,
             $this->getHelperFactory()
@@ -69,5 +68,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['calendarOptionsKey'] = 'mod_sportsmanagement_gcalendar.' . $moduleId;
 
         return $data;
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
