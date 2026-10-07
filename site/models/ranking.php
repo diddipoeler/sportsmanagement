@@ -444,8 +444,8 @@ class sportsmanagementModelRanking extends BaseDatabaseModel
 	{
 		$app       = self::siteApplication();
 		$jinput    = $app->getInput();
-		$order     = $jinput->get('order', '', 'STR');
-		$order_dir = $jinput->get('dir', 'ASC', 'STR');
+		$order     = $jinput->getCmd('order', '');
+		$order_dir = strtoupper($jinput->getCmd('dir', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
 
 
 		switch ($order)
