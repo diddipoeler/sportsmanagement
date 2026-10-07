@@ -38,9 +38,7 @@ abstract class SportsManagementModel extends BaseDatabaseModel
         $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
         $this->siteApplication();
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $this->setDatabase($joomlaDatabase);
+        $this->setDatabase($this->joomlaDatabase());
     }
 
     /**
@@ -50,6 +48,14 @@ abstract class SportsManagementModel extends BaseDatabaseModel
     public function getSportsManagementDatabase(): DatabaseInterface
     {
         return $this->getDatabase();
+    }
+
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     public function setDatabase(DatabaseInterface $db): void
