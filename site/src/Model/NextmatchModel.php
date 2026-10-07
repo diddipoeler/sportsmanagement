@@ -340,10 +340,11 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('m.team1_result', 'homegoals'),
                 $db->quoteName('m.team2_result', 'awaygoals'),
                 $db->quoteName('t1.name', 'hometeam'),
+                $db->quoteName('t1.alias', 'home_alias'),
                 $db->quoteName('t2.name', 'awayteam'),
+                $db->quoteName('t2.alias', 'away_alias'),
                 $db->quoteName('pt1.project_id', 'pid'),
-                "CONCAT_WS(':', m.id, CONCAT_WS('_', t1.alias, t2.alias)) AS match_slug",
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
+                $db->quoteName('p.alias', 'project_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('pt1.id') . ' = ' . $db->quoteName('m.projectteam1_id'))
@@ -378,7 +379,17 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
 
         $db->setQuery($query, 0, 1);
-        return $db->loadObject() ?: null;
+        $match = $db->loadObject() ?: null;
+
+        if ($match !== null) {
+            $matchId = (int) ($match->mid ?? 0);
+            $homeAlias = (string) ($match->home_alias ?? '');
+            $awayAlias = (string) ($match->away_alias ?? '');
+            $match->match_slug = $matchId . ':' . $homeAlias . '_' . $awayAlias;
+            $match->project_slug = (int) ($match->pid ?? 0) . ':' . (string) ($match->project_alias ?? '');
+        }
+
+        return $match;
     }
 
     public function getGames(): array
