@@ -1,0 +1,75 @@
+name: Joomla 5/6 compatibility batch 650
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch650.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/models/match.php'
+      - 'site/src/Model/NextmatchModel.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch650.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/models/match.php
+            site/src/Model/NextmatchModel.php
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match = Path('admin/models/match.php').read_text()
+          if 'new Date()' in match:
+              raise SystemExit('Implicit Joomla Date construction remains in legacy Match model')
+          if match.count("new Date('now', new \\DateTimeZone('UTC'))") < 4:
+              raise SystemExit('Legacy Match model does not use explicit UTC Date construction')
+
+          nextmatch = Path('site/src/Model/NextmatchModel.php').read_text()
+          start = nextmatch.index('public function _getHighestMatches')
+          end = nextmatch.index('public function getGames()', start)
+          segment = nextmatch[start:end]
+          if 'CONCAT_WS' in segment:
+              raise SystemExit('MySQL CONCAT_WS remains in Nextmatch::_getHighestMatches()')
+          if '$match->match_slug =' not in segment or '$match->project_slug =' not in segment:
+              raise SystemExit('Highest-match slugs are not built in PHP')
+
+          playground = Path('modules/mod_sportsmanagement_playgroundplan/helper.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in playground:
+              raise SystemExit('PlaygroundPlan Joomla DB helper is missing')
+          if 'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector)' not in playground:
+              raise SystemExit('PlaygroundPlan database resolver does not use centralized Joomla DB access')
+          if playground.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('PlaygroundPlan should have exactly one Joomla DB container access')
+          PY
