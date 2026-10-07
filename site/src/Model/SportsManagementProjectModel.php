@@ -66,10 +66,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
                 $db->quoteName('l.cr_picture', 'cr_leaguepicture'),
                 $db->quoteName('l.champions_complete'),
                 $db->quoteName('asso.name', 'assoname'),
-                "CONCAT_WS(':', p.id, p.alias) AS slug",
-                "CONCAT_WS(':', l.id, l.alias) AS league_slug",
-                "CONCAT_WS(':', s.id, s.alias) AS season_slug",
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                $db->quoteName('p.alias', 'project_alias'),
+                $db->quoteName('l.id', 'league_slug_id'),
+                $db->quoteName('l.alias', 'league_alias'),
+                $db->quoteName('s.id', 'season_slug_id'),
+                $db->quoteName('s.alias', 'season_alias'),
+                $db->quoteName('r.id', 'round_slug_id'),
+                $db->quoteName('r.alias', 'round_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_sports_type', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('p.sports_type_id'))
@@ -85,6 +88,11 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         if (!$project) {
             return null;
         }
+
+        $project->slug = (int) ($project->id ?? 0) . ':' . (string) ($project->project_alias ?? '');
+        $project->league_slug = (int) ($project->league_slug_id ?? 0) . ':' . (string) ($project->league_alias ?? '');
+        $project->season_slug = (int) ($project->season_slug_id ?? 0) . ':' . (string) ($project->season_alias ?? '');
+        $project->round_slug = (int) ($project->round_slug_id ?? 0) . ':' . (string) ($project->round_alias ?? '');
 
         $sportName = (string) ($project->sport_type_name ?? '');
         $prefix = 'COM_SPORTSMANAGEMENT_ST_';
