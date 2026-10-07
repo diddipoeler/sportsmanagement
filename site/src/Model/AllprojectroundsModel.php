@@ -64,7 +64,6 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('m') . '.*',
-                'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', "%H:%i") AS ' . $db->quoteName('time_present'),
                 $db->quoteName('playground.name', 'playground_name'),
                 $db->quoteName('playground.short_name', 'playground_short_name'),
                 $db->quoteName('r.name', 'round_name'),
@@ -72,13 +71,14 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
                 $db->quoteName('t1.name', 'home_name'),
                 $db->quoteName('t1.short_name', 'home_short_name'),
                 $db->quoteName('t1.middle_name', 'home_middle_name'),
+                $db->quoteName('t1.alias', 'home_alias'),
                 $db->quoteName('t2.name', 'away_name'),
                 $db->quoteName('t2.short_name', 'away_short_name'),
                 $db->quoteName('t2.middle_name', 'away_middle_name'),
+                $db->quoteName('t2.alias', 'away_alias'),
                 $db->quoteName('pt1.project_id'),
                 $db->quoteName('d1.name', 'divhome'),
                 $db->quoteName('d2.name', 'divaway'),
-                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('t1.alias') . ') AND CHAR_LENGTH(' . $db->quoteName('t2.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) ELSE ' . $db->quoteName('m.id') . ' END AS ' . $db->quoteName('slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -98,6 +98,21 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
 
         $db->setQuery($query);
         $this->result = $db->loadObjectList() ?: [];
+
+        foreach ($this->result as $match) {
+            $timePresent = trim((string) ($match->time_present ?? ''));
+            if (preg_match('/^\d{2}:\d{2}/', $timePresent) === 1) {
+                $match->time_present = substr($timePresent, 0, 5);
+            }
+
+            $matchId = (int) ($match->id ?? 0);
+            $homeAlias = trim((string) ($match->home_alias ?? ''));
+            $awayAlias = trim((string) ($match->away_alias ?? ''));
+            $match->slug = $homeAlias !== '' && $awayAlias !== ''
+                ? $matchId . ':' . $homeAlias . '_' . $awayAlias
+                : (string) $matchId;
+        }
+
         if (!$this->result) {
             Log::add(Text::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'), Log::INFO, 'jsmerror');
         }
