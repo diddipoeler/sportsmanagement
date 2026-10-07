@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 673
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/AjaxModel.php'
+      - 'site/src/Model/TeaminfoModel.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch673.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/AjaxModel.php'
+      - 'site/src/Model/TeaminfoModel.php'
+      - 'modules/mod_sportsmanagement_rquotes/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch673.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/AjaxModel.php
+            site/src/Model/TeaminfoModel.php
+            modules/mod_sportsmanagement_rquotes/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin_ajax = Path('admin/src/Model/AjaxModel.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in admin_ajax:
+              raise SystemExit('Administrator AjaxModel application helper is missing')
+          if admin_ajax.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Administrator AjaxModel should resolve the application only in its centralized helper')
+          if 'self::administratorApplication()->enqueueMessage' not in admin_ajax:
+              raise SystemExit('Administrator AjaxModel error handling bypasses centralized application access')
+
+          teaminfo = Path('site/src/Model/TeaminfoModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in teaminfo:
+              raise SystemExit('TeaminfoModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase(),' not in teaminfo:
+              raise SystemExit('TeaminfoModel database resolver bypasses centralized Joomla DB access')
+          if teaminfo.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeaminfoModel should have exactly one Joomla DB container access')
+
+          rquotes = Path('modules/mod_sportsmanagement_rquotes/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in rquotes:
+              raise SystemExit('Rquotes legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in rquotes:
+              raise SystemExit('Rquotes legacy helper bypasses centralized site application access')
+          if rquotes.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Rquotes legacy helper should resolve the site application only in its centralized helper')
+          PY
