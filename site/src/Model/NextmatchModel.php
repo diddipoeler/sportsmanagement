@@ -612,9 +612,10 @@ final class NextmatchModel extends SportsManagementProjectModel
                 $db->quoteName('r.project_id'),
                 $db->quoteName('r.id', 'roundid'),
                 $db->quoteName('r.roundcode'),
-                "CONCAT_WS(':', m.id, CONCAT_WS('_', t1.alias, t2.alias)) AS match_slug",
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
+                $db->quoteName('r.alias', 'round_alias'),
+                $db->quoteName('p.alias', 'project_alias'),
+                $db->quoteName('t1.alias', 'home_alias'),
+                $db->quoteName('t2.alias', 'away_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -665,6 +666,15 @@ final class NextmatchModel extends SportsManagementProjectModel
         } catch (Throwable $e) {
             $this->siteApplication()->enqueueMessage(Text::_(__METHOD__ . ' ' . $e->getMessage()), 'error');
             return [];
+        }
+
+        foreach ($rows as $row) {
+            $matchId = (int) ($row->id ?? 0);
+            $homeAlias = (string) ($row->home_alias ?? '');
+            $awayAlias = (string) ($row->away_alias ?? '');
+            $row->match_slug = $matchId . ':' . $homeAlias . '_' . $awayAlias;
+            $row->project_slug = (int) ($row->project_id ?? 0) . ':' . (string) ($row->project_alias ?? '');
+            $row->round_slug = (int) ($row->roundid ?? 0) . ':' . (string) ($row->round_alias ?? '');
         }
 
         return array_reverse($rows);
