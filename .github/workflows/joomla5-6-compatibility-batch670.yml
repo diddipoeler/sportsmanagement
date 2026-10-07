@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 670
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TeamplayerModel.php'
+      - 'site/src/Model/SportsManagementModel.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch670.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/TeamplayerModel.php'
+      - 'site/src/Model/SportsManagementModel.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla5-6-compatibility-batch670.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/TeamplayerModel.php
+            site/src/Model/SportsManagementModel.php
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          teamplayer = Path('admin/src/Model/TeamplayerModel.php').read_text()
+          if 'Table::getInstance' in teamplayer:
+              raise SystemExit('Legacy Table::getInstance remains in TeamplayerModel')
+          if 'new TeamplayerTable($this->getDatabase())' not in teamplayer:
+              raise SystemExit('TeamplayerModel does not use the native TeamplayerTable')
+          if 'use Diddipoeler\\Component\\SportsManagement\\Administrator\\Table\\TeamplayerTable;' not in teamplayer:
+              raise SystemExit('TeamplayerTable import is missing')
+
+          site_model = Path('site/src/Model/SportsManagementModel.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in site_model:
+              raise SystemExit('SportsManagementModel Joomla DB helper is missing')
+          if '$this->setDatabase($this->joomlaDatabase());' not in site_model:
+              raise SystemExit('SportsManagementModel does not use centralized Joomla DB access')
+          if site_model.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('SportsManagementModel should have exactly one Joomla DB container access')
+
+          dispatcher = Path('modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php').read_text()
+          if 'private function cacheControllerFactory(): CacheControllerFactoryInterface' not in dispatcher:
+              raise SystemExit('GoogleCalendar cache factory helper is missing')
+          if '$cacheFactory = $this->cacheControllerFactory();' not in dispatcher:
+              raise SystemExit('GoogleCalendar does not use centralized cache factory access')
+          if dispatcher.count('Factory::getContainer()->get(CacheControllerFactoryInterface::class)') != 1:
+              raise SystemExit('GoogleCalendar should have exactly one cache factory container access')
+          PY
