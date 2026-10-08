@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper\RandomPlayerHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -48,7 +49,7 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = SportsManagementSiteApplicationResolver::resolve();
+            $app = self::siteApplication();
 
             if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement RandomPlayer legacy helper requires the Joomla site application.', 500);
@@ -58,6 +59,11 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
 
             return (new RandomPlayerHelper())->getData($registry, $database);
         }
+        private static function siteApplication(): CMSApplicationInterface
+        {
+            return SportsManagementSiteApplicationResolver::resolve();
+        }
+
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
