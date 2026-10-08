@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 683
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/PlayerPersistenceService.php'
+      - 'site/src/Model/JlxmlexportsModel.php'
+      - 'modules/mod_sportsmanagement_uefawertung/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch683.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Service/PlayerPersistenceService.php'
+      - 'site/src/Model/JlxmlexportsModel.php'
+      - 'modules/mod_sportsmanagement_uefawertung/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch683.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Service/PlayerPersistenceService.php
+            site/src/Model/JlxmlexportsModel.php
+            modules/mod_sportsmanagement_uefawertung/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          player = Path('admin/src/Service/PlayerPersistenceService.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in player:
+              raise SystemExit('PlayerPersistenceService application helper is missing')
+          if player.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('PlayerPersistenceService should resolve the administrator application only in its centralized helper')
+          if player.count('self::administratorApplication()') < 2:
+              raise SystemExit('PlayerPersistenceService still bypasses centralized administrator application access')
+
+          exports = Path('site/src/Model/JlxmlexportsModel.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in exports:
+              raise SystemExit('JlxmlexportsModel site application helper is missing')
+          if '$this->app = self::siteApplication();' not in exports:
+              raise SystemExit('JlxmlexportsModel bypasses centralized site application access')
+          if exports.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('JlxmlexportsModel should resolve the site application only in its centralized helper')
+
+          uefa = Path('modules/mod_sportsmanagement_uefawertung/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in uefa:
+              raise SystemExit('UefaWertung legacy site application helper is missing')
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in uefa:
+              raise SystemExit('UefaWertung legacy Joomla DB helper is missing')
+          if '$app = self::siteApplication();' not in uefa:
+              raise SystemExit('UefaWertung legacy helper bypasses centralized site application access')
+          if '$database = self::joomlaDatabase($database);' not in uefa:
+              raise SystemExit('UefaWertung legacy helper bypasses centralized Joomla DB access')
+          if uefa.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('UefaWertung should resolve the site application only in its centralized helper')
+          if uefa.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('UefaWertung should have exactly one Joomla DB container access')
+          PY
