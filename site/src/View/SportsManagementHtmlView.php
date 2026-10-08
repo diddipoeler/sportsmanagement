@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Document\Document;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -25,13 +26,18 @@ abstract class SportsManagementHtmlView extends HtmlView
     public $uri;
     public int $databaseSelector = 0;
 
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     public function __construct($config = [])
     {
         $this->option = 'com_sportsmanagement';
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
 
-        $this->app = SportsManagementSiteApplicationResolver::resolve();
+        $this->app = self::siteApplication();
         $this->input = $this->app->getInput();
         $this->params = ComponentHelper::getParams($this->option);
         $this->uri = Uri::getInstance();
