@@ -255,12 +255,18 @@ final class PlaygroundModel extends SportsManagementProjectModel
 
     private static function database(): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $selector = self::frontendApplication()->getInput()->getInt('cfg_which_database', self::$cfg_which_database) === 1
             ? 1
             : 0;
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
