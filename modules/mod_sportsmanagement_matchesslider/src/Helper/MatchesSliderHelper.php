@@ -24,6 +24,18 @@ use Joomla\Registry\Registry;
 
 final class MatchesSliderHelper
 {
+    private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+    {
+        if ($database !== null) {
+            return $database;
+        }
+
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     /** @return array<int,object> */
     public function getData(
         Registry $params,
@@ -45,7 +57,7 @@ final class MatchesSliderHelper
             return [];
         }
 
-        $joomlaDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = self::joomlaDatabase($joomlaDatabase);
         $db = $this->database($databaseMode, $joomlaDatabase);
         $nameColumn = (string) $params->get('team_names', 'short_name');
 
