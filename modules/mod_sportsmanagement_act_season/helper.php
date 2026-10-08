@@ -12,6 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
@@ -89,7 +90,7 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
 
     private static function result($seasonIds, ?DatabaseInterface $database = null): array
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
 
@@ -101,6 +102,11 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
             $app,
             $database
         );
+    }
+
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
