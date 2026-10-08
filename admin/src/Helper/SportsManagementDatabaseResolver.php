@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Log\Log;
@@ -30,10 +31,8 @@ final class SportsManagementDatabaseResolver
     public function resolve(mixed $whichDatabase = null, ?DatabaseInterface $fallback = null): DatabaseInterface
     {
         if ($fallback === null) {
-            SportsManagementAdministratorApplicationResolver::resolve();
-
-            /** @var DatabaseInterface $fallback */
-            $fallback = Factory::getContainer()->get(DatabaseInterface::class);
+            self::administratorApplication();
+            $fallback = self::joomlaDatabase();
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -112,6 +111,19 @@ final class SportsManagementDatabaseResolver
         Log::add('SportsManagement external database access granted.', Log::INFO, 'jsmerror');
 
         return $external;
+    }
+
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     /** @return array<string, array<string, mixed>> */
