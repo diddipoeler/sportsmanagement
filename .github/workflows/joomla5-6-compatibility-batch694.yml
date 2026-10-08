@@ -1,0 +1,86 @@
+name: Joomla 5/6 compatibility batch 694
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Clubs/HtmlView.php'
+      - 'site/libraries/sportsmanagement/model.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch694.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Clubs/HtmlView.php'
+      - 'site/libraries/sportsmanagement/model.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch694.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Clubs/HtmlView.php
+            site/libraries/sportsmanagement/model.php
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          clubs = Path('admin/src/View/Clubs/HtmlView.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in clubs:
+              raise SystemExit('Clubs view administrator application helper is missing')
+          if '$app = self::administratorApplication();' not in clubs:
+              raise SystemExit('Clubs view bypasses centralized administrator application access')
+          if clubs.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Clubs view should resolve the administrator application only in its helper')
+
+          legacy = Path('site/libraries/sportsmanagement/model.php').read_text()
+          if 'trait JSMJoomlaServices' not in legacy:
+              raise SystemExit('Legacy site model Joomla service trait is missing')
+          if 'private static function joomlaSiteApplication(): SiteApplication' not in legacy:
+              raise SystemExit('Legacy site model application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in legacy:
+              raise SystemExit('Legacy site model database helper is missing')
+          if legacy.count('use JSMJoomlaServices;') != 3:
+              raise SystemExit('All three legacy model bases must reuse the shared Joomla service trait')
+          if legacy.count('Factory::getContainer()->get(SiteApplication::class)') != 1:
+              raise SystemExit('Legacy site model library should have exactly one SiteApplication container access')
+          if legacy.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Legacy site model library should have exactly one Joomla DB container access')
+          if legacy.count('self::joomlaSiteApplication()') != 3:
+              raise SystemExit('Legacy site model bases still bypass centralized application access')
+          if legacy.count('self::joomlaDatabase()') != 2:
+              raise SystemExit('Legacy site database models still bypass centralized DB access')
+
+          matches = Path('modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in matches:
+              raise SystemExit('Matches native Joomla DB helper is missing')
+          if '$joomlaDatabase = self::joomlaDatabase($joomlaDatabase);' not in matches:
+              raise SystemExit('Matches native helper bypasses centralized Joomla DB access')
+          if matches.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Matches native helper should have exactly one Joomla DB container access')
+          PY
