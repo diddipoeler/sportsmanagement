@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\LegacySportsmanagementTable;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\Database\DatabaseInterface;
@@ -21,6 +22,19 @@ use Joomla\Database\DatabaseInterface;
  */
 class sportsmanagementModelsportsmanagement extends ItemModel
 {
+    private static function joomlaApplication(): CMSApplicationInterface
+    {
+        return Factory::getApplication();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     /** @var object|null */
     protected $item;
 
@@ -42,10 +56,7 @@ class sportsmanagementModelsportsmanagement extends ItemModel
             throw new \RuntimeException('SportsManagement legacy table bridge could not be loaded.', 500);
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-
-        return new LegacySportsmanagementTable($db);
+        return new LegacySportsmanagementTable(self::joomlaDatabase());
     }
 
     /**
@@ -61,7 +72,7 @@ class sportsmanagementModelsportsmanagement extends ItemModel
      */
     protected function populateState()
     {
-        $app = Factory::getApplication();
+        $app = self::joomlaApplication();
         $input = $app->getInput();
 
         $this->setState('message.id', $input->getInt('id'));
