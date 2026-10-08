@@ -66,9 +66,14 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
 {
     private const COMPONENT = 'com_sportsmanagement';
 
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)
     {
-        $app ??= SportsManagementSiteApplicationResolver::resolve();
+        $app ??= self::siteApplication();
         $menu ??= $app->getMenu();
 
         // Joomla 5 LegacyComponent::createRouter() passes its application and
