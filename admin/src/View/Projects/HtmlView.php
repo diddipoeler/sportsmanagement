@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectsViewDataService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -28,6 +29,19 @@ use Joomla\Database\DatabaseInterface;
  */
 final class HtmlView extends BaseHtmlView
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     public $items = [];
     public $pagination;
     public $state;
@@ -64,7 +78,7 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $this->user = $app->getIdentity();
         $this->show_notassign = (int) $this->state->get('filter.show_notassign', 0);
         $this->sortDirection = (string) $this->state->get('list.direction', 'ASC');
@@ -75,9 +89,10 @@ final class HtmlView extends BaseHtmlView
          * must not call it on the model. Resolve the same SportsManagement
          * database connection here that the MVC factory injects into models.
          */
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $sportsManagementDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0);
+        $sportsManagementDatabase = SportsManagementDatabaseResolver::resolve(
+            self::joomlaDatabase(),
+            0
+        );
         $service = new ProjectsViewDataService($sportsManagementDatabase);
         $this->projectData = $service;
         $this->userfields = $service->getExtraFields('project');
