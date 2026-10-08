@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 686
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/MatchTimelineWriteService.php'
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch686.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Service/MatchTimelineWriteService.php'
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch686.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Service/MatchTimelineWriteService.php
+            site/src/View/SportsManagementHtmlView.php
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          timeline = Path('admin/src/Service/MatchTimelineWriteService.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in timeline:
+              raise SystemExit('MatchTimelineWriteService administrator application helper is missing')
+          if 'self::administratorApplication()->getIdentity()->id' not in timeline:
+              raise SystemExit('MatchTimelineWriteService bypasses centralized administrator application access')
+          if timeline.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('MatchTimelineWriteService should resolve the administrator application only in its helper')
+
+          base_view = Path('site/src/View/SportsManagementHtmlView.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in base_view:
+              raise SystemExit('SportsManagementHtmlView site application helper is missing')
+          if '$this->app = self::siteApplication();' not in base_view:
+              raise SystemExit('SportsManagementHtmlView bypasses centralized site application access')
+          if base_view.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('SportsManagementHtmlView should resolve the site application only in its helper')
+
+          sports = Path('modules/mod_sportsmanagement_sports_type_statistics/helper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in sports:
+              raise SystemExit('SportsTypeStatistics legacy Joomla DB helper is missing')
+          if '$database = self::joomlaDatabase($database);' not in sports:
+              raise SystemExit('SportsTypeStatistics legacy helper bypasses centralized Joomla DB access')
+          if sports.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('SportsTypeStatistics should have exactly one Joomla DB container access')
+          PY
