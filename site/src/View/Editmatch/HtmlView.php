@@ -16,12 +16,10 @@ use Diddipoeler\Component\SportsManagement\Site\Service\EditmatchViewDataService
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Document\HtmlDocument;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /** Joomla 5/6 frontend view for match editing. */
@@ -396,14 +394,6 @@ final class HtmlView extends SportsManagementHtmlView
         $form->bind($registry);
 
         return $form;
-    }
-
-    private static function joomlaDatabase(): DatabaseInterface
-    {
-        /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
-
-        return $database;
     }
 
     private function viewDataService(): EditmatchViewDataService
