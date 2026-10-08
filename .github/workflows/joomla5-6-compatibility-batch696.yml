@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 696
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Divisions/HtmlView.php'
+      - 'site/helpers/ranking.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch696.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Divisions/HtmlView.php'
+      - 'site/helpers/ranking.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch696.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Divisions/HtmlView.php
+            site/helpers/ranking.php
+            modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          divisions = Path('admin/src/View/Divisions/HtmlView.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in divisions:
+              raise SystemExit('Divisions view administrator application helper is missing')
+          if divisions.count('self::administratorApplication()') != 2:
+              raise SystemExit('Divisions view should reuse the administrator application helper twice')
+          if divisions.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Divisions view should resolve the administrator application only in its helper')
+
+          ranking = Path('site/helpers/ranking.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in ranking:
+              raise SystemExit('Legacy ranking Joomla DB helper is missing')
+          if 'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector)' not in ranking:
+              raise SystemExit('Legacy ranking helper bypasses centralized Joomla DB access')
+          if ranking.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Legacy ranking helper should have exactly one Joomla DB container access')
+
+          slider = Path('modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php').read_text()
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in slider:
+              raise SystemExit('MatchesSlider Joomla DB helper is missing')
+          if '$joomlaDatabase = self::joomlaDatabase($joomlaDatabase);' not in slider:
+              raise SystemExit('MatchesSlider bypasses centralized Joomla DB access')
+          if slider.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('MatchesSlider should have exactly one Joomla DB container access')
+          PY
