@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\PlayerModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -107,10 +108,18 @@ final class PlayersController extends SportsManagementAdminController
             (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $selector,
+            self::joomlaDatabase()
+        );
+    }
 
-        return (new SportsManagementDatabaseResolver())->resolve($selector, $joomlaDatabase);
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function requireToken(): void
