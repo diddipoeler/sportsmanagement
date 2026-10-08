@@ -452,13 +452,18 @@ final class PersonModel extends SportsManagementProjectModel
 
     private static function database(?int $selector = null): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            self::joomlaDatabase(),
             max(0, $selector ?? self::$cfg_which_database)
         );
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private static function enqueueDatabaseError(\Throwable $e): void
