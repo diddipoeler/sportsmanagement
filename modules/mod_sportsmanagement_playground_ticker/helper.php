@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper\PlaygroundTickerHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -45,16 +46,13 @@ if (!class_exists('modJSMPlaygroundTicker', false)) {
     public static function getData($params, ?DatabaseInterface $database = null): array
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement PlaygroundTicker legacy helper requires the Joomla site application.', 500);
         }
 
-        if ($database === null) {
-            /** @var DatabaseInterface $database */
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
-        }
+        $database = self::joomlaDatabase($database);
 
         return (new PlaygroundTickerHelper())->getData($registry, $app, $database);
     }
@@ -62,6 +60,23 @@ if (!class_exists('modJSMPlaygroundTicker', false)) {
     public static function getEstadios_Proyecto($params, ?DatabaseInterface $database = null): array
     {
         return self::getData($params, $database);
+    }
+
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+    {
+        if ($database !== null) {
+            return $database;
+        }
+
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
     }
 }
