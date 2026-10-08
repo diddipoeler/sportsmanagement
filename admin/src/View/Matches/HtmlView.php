@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraSelectOptio
 use Diddipoeler\Component\SportsManagement\Administrator\Model\MatchesModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -26,6 +27,11 @@ use Joomla\CMS\Uri\Uri;
 /** Native Joomla 5/6 administrator list view for project matches. */
 final class HtmlView extends BaseHtmlView
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public array $items = [];
     public array $matches = [];
     public $pagination;
@@ -60,7 +66,7 @@ final class HtmlView extends BaseHtmlView
 
     public function display($tpl = null)
     {
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $this->app = $app;
         $input = $this->app->getInput();
         $this->document = $this->getDocument();
