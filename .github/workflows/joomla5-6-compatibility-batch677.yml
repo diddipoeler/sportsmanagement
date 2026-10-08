@@ -1,0 +1,78 @@
+name: Joomla 5/6 compatibility batch 677
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/PlayersController.php'
+      - 'site/src/Model/PlaygroundModel.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch677.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/PlayersController.php'
+      - 'site/src/Model/PlaygroundModel.php'
+      - 'modules/mod_sportsmanagement_randomplayer/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch677.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Controller/PlayersController.php
+            site/src/Model/PlaygroundModel.php
+            modules/mod_sportsmanagement_randomplayer/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          players = Path('admin/src/Controller/PlayersController.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in players:
+              raise SystemExit('PlayersController Joomla DB helper is missing')
+          if 'self::joomlaDatabase()' not in players:
+              raise SystemExit('PlayersController bypasses centralized Joomla DB access')
+          if players.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('PlayersController should have exactly one Joomla DB container access')
+          if '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)' in players:
+              raise SystemExit('PlayersController still contains fully-qualified direct Joomla DB access')
+
+          playground = Path('site/src/Model/PlaygroundModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in playground:
+              raise SystemExit('PlaygroundModel Joomla DB helper is missing')
+          if 'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector)' not in playground:
+              raise SystemExit('PlaygroundModel database resolver bypasses centralized Joomla DB access')
+          if playground.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('PlaygroundModel should have exactly one Joomla DB container access')
+
+          randomplayer = Path('modules/mod_sportsmanagement_randomplayer/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in randomplayer:
+              raise SystemExit('RandomPlayer legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in randomplayer:
+              raise SystemExit('RandomPlayer legacy helper bypasses centralized site application access')
+          if randomplayer.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('RandomPlayer legacy helper should resolve the site application only in its centralized helper')
+          PY
