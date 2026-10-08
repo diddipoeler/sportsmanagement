@@ -45,10 +45,7 @@ if (!class_exists('modJSMSportsHelper', false)) {
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
 
             $data = (new SportsTypeStatisticsHelper())->getData($registry, $database);
             $sportTypeId = (int) $registry->get('sportstypes', 0);
@@ -80,6 +77,18 @@ if (!class_exists('modJSMSportsHelper', false)) {
             }
 
             return $legacy;
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
