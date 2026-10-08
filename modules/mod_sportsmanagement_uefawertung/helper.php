@@ -12,6 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementUefaWertung\Site\Helper\UefaWertungHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -57,18 +58,32 @@ if (!class_exists('modJSMUefaWERTUNG', false)) {
         private static function result($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = SportsManagementSiteApplicationResolver::resolve();
+            $app = self::siteApplication();
 
             if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement UEFA ranking legacy helper requires the Joomla site application.', 500);
             }
 
-            if ($database === null) {
-                /** @var DatabaseInterface $database */
-                $database = Factory::getContainer()->get(DatabaseInterface::class);
-            }
+            $database = self::joomlaDatabase($database);
 
             return (new UefaWertungHelper())->getData($registry, $app, $database);
+        }
+
+        private static function siteApplication(): CMSApplicationInterface
+        {
+            return SportsManagementSiteApplicationResolver::resolve();
+        }
+
+        private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+        {
+            if ($database !== null) {
+                return $database;
+            }
+
+            /** @var DatabaseInterface $database */
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return $database;
         }
     }
 }
