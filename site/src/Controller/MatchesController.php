@@ -120,6 +120,14 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private function mutationService(): MatchMutationService
     {
         if ($this->matchMutationService instanceof MatchMutationService) {
@@ -131,8 +139,7 @@ final class MatchesController extends BaseController
             'cfg_which_database',
             (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
         );
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = self::joomlaDatabase();
         $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
         $identity = $app->getIdentity();
         $userId = (int) ($identity->id ?? 0);
