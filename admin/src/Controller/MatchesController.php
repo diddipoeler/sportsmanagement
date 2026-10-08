@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchRefereeNotificationService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchTimelineWriteService;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchWriteService;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Router\Route;
@@ -351,7 +352,15 @@ final class MatchesController extends SportsManagementAdminController
         } catch (\Throwable) {
         }
 
-        return \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        return self::joomlaDatabase();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function legacyMatchModel(): object
