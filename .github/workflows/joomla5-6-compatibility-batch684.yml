@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 684
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/MatchWriteService.php'
+      - 'site/src/Model/AjaxModel.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch684.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Service/MatchWriteService.php'
+      - 'site/src/Model/AjaxModel.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch684.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Service/MatchWriteService.php
+            site/src/Model/AjaxModel.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          match_write = Path('admin/src/Service/MatchWriteService.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in match_write:
+              raise SystemExit('MatchWriteService administrator application helper is missing')
+          if '$app = self::administratorApplication();' not in match_write:
+              raise SystemExit('MatchWriteService bypasses centralized administrator application access')
+          if match_write.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('MatchWriteService should resolve the administrator application only in its centralized helper')
+
+          ajax = Path('site/src/Model/AjaxModel.php').read_text()
+          if 'private function joomlaDatabase(): DatabaseInterface' not in ajax:
+              raise SystemExit('Site AjaxModel Joomla DB helper is missing')
+          if '$this->joomlaDatabase(),' not in ajax:
+              raise SystemExit('Site AjaxModel database resolver bypasses centralized Joomla DB access')
+          if 'return $this->getDatabase();' not in ajax:
+              raise SystemExit('Site AjaxModel Joomla DB helper should use the model database')
+
+          birthday = Path('modules/mod_sportsmanagement_club_birthday/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in birthday:
+              raise SystemExit('ClubBirthday legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in birthday:
+              raise SystemExit('ClubBirthday legacy helper bypasses centralized site application access')
+          if birthday.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('ClubBirthday should resolve the site application only in its centralized helper')
+          PY
