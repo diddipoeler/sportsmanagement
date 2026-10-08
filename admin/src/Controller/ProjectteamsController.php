@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagement
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -285,8 +286,16 @@ final class ProjectteamsController extends SportsManagementAdminController
 
         return (new SportsManagementDatabaseResolver())->resolve(
             $selector,
-            \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)
+            self::joomlaDatabase()
         );
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function assertPostAndPermission(string $permission): void
