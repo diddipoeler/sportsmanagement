@@ -938,14 +938,20 @@ final class ClubinfoModel extends SportsManagementProjectModel
             return self::$database;
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         self::$database = SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            self::joomlaDatabase(),
             self::$cfg_which_database
         );
 
         return self::$database;
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private static function ensureHelpers(): void
