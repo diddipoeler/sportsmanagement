@@ -1,0 +1,88 @@
+name: Joomla 5/6 compatibility batch 692
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Projects/HtmlView.php'
+      - 'site/models/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch692.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Projects/HtmlView.php'
+      - 'site/models/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch692.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Projects/HtmlView.php
+            site/models/sportsmanagement.php
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          projects = Path('admin/src/View/Projects/HtmlView.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in projects:
+              raise SystemExit('Projects view administrator application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in projects:
+              raise SystemExit('Projects view Joomla DB helper is missing')
+          if '$app = self::administratorApplication();' not in projects:
+              raise SystemExit('Projects view bypasses centralized administrator application access')
+          if 'self::joomlaDatabase(),' not in projects:
+              raise SystemExit('Projects view bypasses centralized Joomla DB access')
+          if projects.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Projects view should resolve the administrator application only in its helper')
+          if projects.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Projects view should have exactly one Joomla DB container access')
+
+          legacy = Path('site/models/sportsmanagement.php').read_text()
+          if 'private static function joomlaApplication(): CMSApplicationInterface' not in legacy:
+              raise SystemExit('Legacy root site model Joomla application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in legacy:
+              raise SystemExit('Legacy root site model Joomla DB helper is missing')
+          if '$app = self::joomlaApplication();' not in legacy:
+              raise SystemExit('Legacy root site model bypasses centralized Joomla application access')
+          if 'new LegacySportsmanagementTable(self::joomlaDatabase())' not in legacy:
+              raise SystemExit('Legacy root site model bypasses centralized Joomla DB access')
+          if legacy.count('Factory::getApplication()') != 1:
+              raise SystemExit('Legacy root site model should call Factory::getApplication only in its helper')
+          if legacy.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Legacy root site model should have exactly one Joomla DB container access')
+
+          clubicons = Path('modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in clubicons:
+              raise SystemExit('Clubicons native Joomla DB helper is missing')
+          if 'self::joomlaDatabase()' not in clubicons:
+              raise SystemExit('Clubicons native helper bypasses centralized Joomla DB access')
+          if clubicons.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Clubicons native helper should have exactly one Joomla DB container access')
+          PY
