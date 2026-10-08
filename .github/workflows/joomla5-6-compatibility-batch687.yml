@@ -1,0 +1,77 @@
+name: Joomla 5/6 compatibility batch 687
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'site/src/Model/SportsManagementListModel.php'
+      - 'modules/mod_sportsmanagement_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch687.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'site/src/Model/SportsManagementListModel.php'
+      - 'modules/mod_sportsmanagement_birthday/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch687.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Helper/ExtraFieldsSaveHelper.php
+            site/src/Model/SportsManagementListModel.php
+            modules/mod_sportsmanagement_birthday/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          extra = Path('admin/src/Helper/ExtraFieldsSaveHelper.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in extra:
+              raise SystemExit('ExtraFieldsSaveHelper administrator application helper is missing')
+          if extra.count('self::administratorApplication()') < 2:
+              raise SystemExit('ExtraFieldsSaveHelper still bypasses centralized administrator application access')
+          if extra.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('ExtraFieldsSaveHelper should resolve the administrator application only in its helper')
+
+          list_model = Path('site/src/Model/SportsManagementListModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in list_model:
+              raise SystemExit('SportsManagementListModel Joomla DB helper is missing')
+          if '$this->setDatabase(self::joomlaDatabase());' not in list_model:
+              raise SystemExit('SportsManagementListModel bypasses centralized Joomla DB access')
+          if list_model.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('SportsManagementListModel should have exactly one Joomla DB container access')
+
+          birthday = Path('modules/mod_sportsmanagement_birthday/helper.php').read_text()
+          facade = birthday.split("if (!class_exists('modSportsmanagementBirthdayHelper', false))", 1)[1]
+          if 'private static function siteApplication(): CMSApplicationInterface' not in facade:
+              raise SystemExit('Birthday legacy facade site application helper is missing')
+          if '$app = self::siteApplication();' not in facade:
+              raise SystemExit('Birthday legacy facade bypasses centralized site application access')
+          if facade.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Birthday legacy facade should resolve the site application only in its helper')
+          PY
