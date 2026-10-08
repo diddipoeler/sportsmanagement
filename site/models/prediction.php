@@ -14,6 +14,7 @@
 
 \defined('_JEXEC') or die;
 use Joomla\CMS\Access\Access;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Registry\Registry;
 
 use Joomla\CMS\HTML\HTMLHelper;
@@ -37,6 +38,11 @@ use Diddipoeler\Component\SportsManagement\Site\Model\PredictionentryModel as Na
  */
 class sportsmanagementModelPrediction extends BaseDatabaseModel
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return Factory::getApplication();
+    }
+
 	/**
 	 * Build the native Joomla 5/6 prediction model for legacy static callers.
 	 */
@@ -130,7 +136,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	{
 		parent::__construct($config, $factory);
 
-		$input = Factory::getApplication()->getInput();
+		$input = self::siteApplication()->getInput();
 
 		self::$roundID            = $input->getInt('r', 0);
 		self::$pjID               = $input->getInt('pj', 0);
@@ -359,7 +365,7 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		}
 		catch (\Throwable $e)
 		{
-			Factory::getApplication()->enqueueMessage(
+			self::siteApplication()->enqueueMessage(
 				__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(),
 				'error'
 			);
@@ -580,13 +586,13 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 	{
 
 		// Reference global application object
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 $recipient = array();
 		// JInput object
 		$jinput   = $app->input;
 		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
-		$app      = Factory::getApplication();
+		$app      = self::siteApplication();
 
 		$configprediction          = self::getPredictionTemplateConfig('predictionentry');
 		$overallConfig             = self::getPredictionOverallConfig();
@@ -1319,7 +1325,7 @@ $recipient = array();
 	static function createProjectSelector(&$predictionProjects, $current, $addTotalSelect = null)
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		// JInput object
 		$jinput = $app->input;
@@ -1563,7 +1569,7 @@ $recipient = array();
 	static function compare($a, $b)
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		// JInput object
 		$jinput = $app->input;
@@ -1623,7 +1629,7 @@ $recipient = array();
 	static function computeMembersRanking($membersResultsArray, $config)
 	{
 		// Reference global application object
-		$app = Factory::getApplication();
+		$app = self::siteApplication();
 
 		// JInput object
 		$jinput = $app->input;
@@ -1694,7 +1700,7 @@ $recipient = array();
 		}
 		catch (\Throwable $e)
 		{
-			Factory::getApplication()->enqueueMessage(
+			self::siteApplication()->enqueueMessage(
 				__METHOD__ . ' ' . __LINE__ . ' ' . $e->getMessage(),
 				'error'
 			);
