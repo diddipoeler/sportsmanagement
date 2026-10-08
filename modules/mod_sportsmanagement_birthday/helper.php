@@ -74,6 +74,11 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
         }
 
+        private static function siteApplication(): CMSApplicationInterface
+        {
+            return SportsManagementSiteApplicationResolver::resolve();
+        }
+
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
@@ -94,7 +99,7 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
         public static function getData($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = SportsManagementSiteApplicationResolver::resolve();
+            $app = self::siteApplication();
 
             if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement Birthday legacy facade requires the Joomla site application.', 500);
