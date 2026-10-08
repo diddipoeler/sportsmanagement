@@ -321,12 +321,17 @@ final class EventsrankingModel extends SportsManagementProjectModel
 
     private static function database(): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            self::joomlaDatabase(),
             self::$cfg_which_database === 1 ? 1 : 0
         );
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 }
