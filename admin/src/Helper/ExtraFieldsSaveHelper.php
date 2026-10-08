@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
@@ -19,13 +20,18 @@ use Joomla\Database\DatabaseInterface;
  */
 final class ExtraFieldsSaveHelper
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public function save(array $post, int $itemId, ?DatabaseInterface $database = null): void
     {
         if ($itemId <= 0 || empty($post['extraf']) || !is_array($post['extraf'])) {
             return;
         }
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $task = $app->getInput()->getCmd('task');
         $db = (new SportsManagementDatabaseResolver())->resolve(null, $database);
         $extraIds = is_array($post['extra_id'] ?? null) ? $post['extra_id'] : [];
@@ -94,7 +100,7 @@ final class ExtraFieldsSaveHelper
 
     private function reportDatabaseError(\Throwable $e): void
     {
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $app->enqueueMessage(
             Text::sprintf(
                 'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
