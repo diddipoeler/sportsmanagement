@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 
@@ -19,10 +20,15 @@ use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
  */
 final class ActionLogHelper
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public static function record(object $user, array $transaction, bool $isNew, ?string $view = null): void
     {
         if ($view === null || $view === '') {
-            $app = SportsManagementAdministratorApplicationResolver::resolve();
+            $app = self::administratorApplication();
 
             $view = $app->getInput()->getCmd('view', 'cpanel');
         }
