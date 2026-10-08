@@ -1,0 +1,78 @@
+name: Joomla 5/6 compatibility batch 676
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/ProjectteamsController.php'
+      - 'site/src/Model/EventsrankingModel.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch676.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/ProjectteamsController.php'
+      - 'site/src/Model/EventsrankingModel.php'
+      - 'modules/mod_sportsmanagement_projectmap/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch676.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Controller/ProjectteamsController.php
+            site/src/Model/EventsrankingModel.php
+            modules/mod_sportsmanagement_projectmap/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin = Path('admin/src/Controller/ProjectteamsController.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in admin:
+              raise SystemExit('ProjectteamsController Joomla DB helper is missing')
+          if 'self::joomlaDatabase()' not in admin:
+              raise SystemExit('ProjectteamsController bypasses centralized Joomla DB access')
+          if admin.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ProjectteamsController should have exactly one Joomla DB container access')
+          if '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)' in admin:
+              raise SystemExit('ProjectteamsController still contains fully-qualified direct Joomla DB access')
+
+          events = Path('site/src/Model/EventsrankingModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in events:
+              raise SystemExit('EventsrankingModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase(),' not in events:
+              raise SystemExit('EventsrankingModel database resolver bypasses centralized Joomla DB access')
+          if events.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('EventsrankingModel should have exactly one Joomla DB container access')
+
+          projectmap = Path('modules/mod_sportsmanagement_projectmap/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in projectmap:
+              raise SystemExit('ProjectMap legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in projectmap:
+              raise SystemExit('ProjectMap legacy helper bypasses centralized site application access')
+          if projectmap.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('ProjectMap legacy helper should resolve the site application only in its centralized helper')
+          PY
