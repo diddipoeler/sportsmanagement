@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -315,10 +316,15 @@ final class MatchWriteService
         return $fallback;
     }
 
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     /** @return array{0:string,1:int} */
     private function auditData(): array
     {
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         return [Factory::getDate()->toSql(), (int) $app->getIdentity()->id];
     }
 
