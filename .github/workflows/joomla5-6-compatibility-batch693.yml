@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 693
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Cpanel/HtmlView.php'
+      - 'site/models/prediction.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch693.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Cpanel/HtmlView.php'
+      - 'site/models/prediction.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch693.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Cpanel/HtmlView.php
+            site/models/prediction.php
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          cpanel = Path('admin/src/View/Cpanel/HtmlView.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in cpanel:
+              raise SystemExit('Cpanel administrator application helper is missing')
+          if '$app = self::administratorApplication();' not in cpanel:
+              raise SystemExit('Cpanel view bypasses centralized administrator application access')
+          if cpanel.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Cpanel view should resolve the administrator application only in its helper')
+
+          prediction = Path('site/models/prediction.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in prediction:
+              raise SystemExit('Legacy prediction model application helper is missing')
+          if prediction.count('Factory::getApplication()') != 1:
+              raise SystemExit('Legacy prediction model should call Factory::getApplication only in its helper')
+          if prediction.count('self::siteApplication()') < 7:
+              raise SystemExit('Legacy prediction model still bypasses centralized Joomla application access')
+
+          liveticker = Path('modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in liveticker:
+              raise SystemExit('Liveticker native site application helper is missing')
+          if '$app = self::siteApplication();' not in liveticker:
+              raise SystemExit('Liveticker native helper bypasses centralized site application access')
+          if liveticker.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Liveticker should resolve the site application only in its helper')
+          PY
