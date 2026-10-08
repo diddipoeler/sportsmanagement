@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 695
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Matches/HtmlView.php'
+      - 'site/helpers/html.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - '.github/workflows/joomla5-6-compatibility-batch695.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Matches/HtmlView.php'
+      - 'site/helpers/html.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - '.github/workflows/joomla5-6-compatibility-batch695.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Matches/HtmlView.php
+            site/helpers/html.php
+            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          matches = Path('admin/src/View/Matches/HtmlView.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in matches:
+              raise SystemExit('Matches view administrator application helper is missing')
+          if '$app = self::administratorApplication();' not in matches:
+              raise SystemExit('Matches view bypasses centralized administrator application access')
+          if matches.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Matches view should resolve the administrator application only in its helper')
+
+          html = Path('site/helpers/html.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in html:
+              raise SystemExit('Legacy HTML helper application helper is missing')
+          if html.count('Factory::getApplication()') != 1:
+              raise SystemExit('Legacy HTML helper should call Factory::getApplication only in its helper')
+          if html.count('self::siteApplication()') < 20:
+              raise SystemExit('Legacy HTML helper still bypasses centralized Joomla application access')
+
+          livescore = Path('modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in livescore:
+              raise SystemExit('LiveScore connector site application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in livescore:
+              raise SystemExit('LiveScore connector Joomla DB helper is missing')
+          if '$app = self::siteApplication();' not in livescore:
+              raise SystemExit('LiveScore connector bypasses centralized site application access')
+          if '$db = self::joomlaDatabase();' not in livescore:
+              raise SystemExit('LiveScore connector bypasses centralized Joomla DB access')
+          if livescore.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('LiveScore connector should resolve the site application only in its helper')
+          if livescore.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('LiveScore connector should have exactly one Joomla DB container access')
+          PY
