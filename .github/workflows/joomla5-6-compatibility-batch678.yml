@@ -1,0 +1,84 @@
+name: Joomla 5/6 compatibility batch 678
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/TeamplayersController.php'
+      - 'site/src/Model/PersonModel.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch678.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/TeamplayersController.php'
+      - 'site/src/Model/PersonModel.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch678.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Controller/TeamplayersController.php
+            site/src/Model/PersonModel.php
+            modules/mod_sportsmanagement_eventsranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          teamplayers = Path('admin/src/Controller/TeamplayersController.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in teamplayers:
+              raise SystemExit('TeamplayersController Joomla DB helper is missing')
+          if 'self::joomlaDatabase()' not in teamplayers:
+              raise SystemExit('TeamplayersController bypasses centralized Joomla DB access')
+          if teamplayers.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeamplayersController should have exactly one Joomla DB container access')
+          if '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)' in teamplayers:
+              raise SystemExit('TeamplayersController still contains fully-qualified direct Joomla DB access')
+
+          person = Path('site/src/Model/PersonModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in person:
+              raise SystemExit('PersonModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase(),' not in person:
+              raise SystemExit('PersonModel database resolver bypasses centralized Joomla DB access')
+          if person.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('PersonModel should have exactly one Joomla DB container access')
+
+          events = Path('modules/mod_sportsmanagement_eventsranking/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in events:
+              raise SystemExit('EventsRanking legacy site application helper is missing')
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in events:
+              raise SystemExit('EventsRanking legacy Joomla DB helper is missing')
+          if '$app = self::siteApplication();' not in events:
+              raise SystemExit('EventsRanking legacy helper bypasses centralized site application access')
+          if '$database = self::joomlaDatabase($database);' not in events:
+              raise SystemExit('EventsRanking legacy helper bypasses centralized Joomla DB access')
+          if events.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('EventsRanking legacy helper should resolve the site application only in its centralized helper')
+          if events.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('EventsRanking legacy helper should have exactly one Joomla DB container access')
+          PY
