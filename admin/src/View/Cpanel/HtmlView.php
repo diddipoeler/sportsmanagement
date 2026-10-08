@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Cpanel;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\CpanelModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -27,6 +28,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 final class HtmlView extends BaseHtmlView
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public string $version = '';
     public int $countryCount = 0;
     public array $dashboardLinks = [];
@@ -55,7 +61,7 @@ final class HtmlView extends BaseHtmlView
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'home');
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         if ($app->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
             ToolbarHelper::preferences('com_sportsmanagement');
         }
