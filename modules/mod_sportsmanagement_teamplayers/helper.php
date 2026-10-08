@@ -13,6 +13,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementTeamPlayers\Site\Helper\TeamPlayersHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -50,7 +51,7 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = SportsManagementSiteApplicationResolver::resolve();
+            $app = self::siteApplication();
 
             if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement TeamPlayers legacy helper requires the Joomla site application.', 500);
@@ -78,6 +79,11 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         public static function getPlayerMinsPlayed($item, $params, $project, $module, $time_for_match): int
         {
             return (int) ($item->minutes_played ?? 0);
+        }
+
+        private static function siteApplication(): CMSApplicationInterface
+        {
+            return SportsManagementSiteApplicationResolver::resolve();
         }
 
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
