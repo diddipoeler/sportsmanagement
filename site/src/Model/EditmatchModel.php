@@ -18,6 +18,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
@@ -509,17 +510,20 @@ final class EditmatchModel extends AdminModel
 
     private function database(): DatabaseInterface
     {
-        if ($this->injectedDatabase === null) {
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
-        } else {
-            $joomlaDatabase = $this->injectedDatabase;
-        }
+        $joomlaDatabase = $this->injectedDatabase ?? self::joomlaDatabase();
 
         return SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
             (int) self::$cfg_which_database
         );
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function siteApplication(): CMSApplicationInterface
