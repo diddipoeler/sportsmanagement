@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
@@ -21,6 +22,11 @@ final class PlayerPersistenceService
 {
     public function __construct(private DatabaseInterface $db)
     {
+    }
+
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
     public function prepare(array $data): array
@@ -86,7 +92,7 @@ final class PlayerPersistenceService
             return;
         }
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $app->setUserState('com_sportsmanagement.person_id', $personId);
         $app->getInput()->set('person_id', $personId);
 
@@ -116,7 +122,7 @@ final class PlayerPersistenceService
     {
         $seasonIds = $this->normaliseIds($seasonIds);
         $now = Factory::getDate()->toSql();
-        $userId = (int) SportsManagementAdministratorApplicationResolver::resolve()->getIdentity()->id;
+        $userId = (int) self::administratorApplication()->getIdentity()->id;
 
         $query = $this->db->createQuery()
             ->select([$this->db->quoteName('id'), $this->db->quoteName('season_id')])
