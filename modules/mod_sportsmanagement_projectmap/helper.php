@@ -12,6 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementProjectMap\Site\Helper\ProjectMapHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -57,7 +58,7 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
 
         public static function getData($seasonIds, ?DatabaseInterface $database = null): array
         {
-            $app = SportsManagementSiteApplicationResolver::resolve();
+            $app = self::siteApplication();
 
             if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement ProjectMap legacy helper requires the Joomla site application.', 500);
@@ -80,6 +81,11 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
             $helper = self::helper();
 
             return $helper->toJavascriptObjectBody($helper->createStateSpecific((array) $projects));
+        }
+
+        private static function siteApplication(): CMSApplicationInterface
+        {
+            return SportsManagementSiteApplicationResolver::resolve();
         }
 
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
