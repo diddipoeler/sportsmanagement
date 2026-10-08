@@ -1,0 +1,84 @@
+name: Joomla 5/6 compatibility batch 682
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'site/src/Model/ScoresheetModel.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch682.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/PlaygroundModel.php'
+      - 'site/src/Model/ScoresheetModel.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch682.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/PlaygroundModel.php
+            site/src/Model/ScoresheetModel.php
+            modules/mod_sportsmanagement_trainingsdata/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          playground = Path('admin/src/Model/PlaygroundModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in playground:
+              raise SystemExit('PlaygroundModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase()' not in playground:
+              raise SystemExit('PlaygroundModel bypasses centralized Joomla DB fallback')
+          if playground.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('PlaygroundModel should have exactly one Joomla DB container access')
+
+          scoresheet = Path('site/src/Model/ScoresheetModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in scoresheet:
+              raise SystemExit('ScoresheetModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase(),' not in scoresheet:
+              raise SystemExit('ScoresheetModel database resolver bypasses centralized Joomla DB access')
+          if scoresheet.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ScoresheetModel should have exactly one Joomla DB container access')
+          if '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)' in scoresheet:
+              raise SystemExit('ScoresheetModel still contains fully-qualified direct Joomla DB access')
+
+          trainings = Path('modules/mod_sportsmanagement_trainingsdata/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in trainings:
+              raise SystemExit('TrainingsData legacy site application helper is missing')
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in trainings:
+              raise SystemExit('TrainingsData legacy Joomla DB helper is missing')
+          if '$app = self::siteApplication();' not in trainings:
+              raise SystemExit('TrainingsData legacy helper bypasses centralized site application access')
+          if '$database = self::joomlaDatabase($database);' not in trainings:
+              raise SystemExit('TrainingsData legacy helper bypasses centralized Joomla DB access')
+          if trainings.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('TrainingsData should resolve the site application only in its centralized helper')
+          if trainings.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TrainingsData should have exactly one Joomla DB container access')
+          PY
