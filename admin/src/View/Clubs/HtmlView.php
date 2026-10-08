@@ -20,6 +20,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\Jlextassociations
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -28,6 +29,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /** Native Joomla 5/6 clubs list view. */
 final class HtmlView extends BaseHtmlView
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public array $items = [];
     public $pagination;
     public $state;
@@ -54,7 +60,7 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(implode("\n", $errors), 500);
         }
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $factory = $app->bootComponent('com_sportsmanagement')->getMVCFactory();
         $this->modelclub = $factory->createModel('Club', 'Administrator');
         $this->table = new ClubTable($model->getSportsManagementDatabase());
