@@ -44,6 +44,18 @@ final class MatchesHelper
     use NativeFormatTrait;
     use NativeLinkTrait;
 
+    private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
+    {
+        if ($database !== null) {
+            return $database;
+        }
+
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     /** @return array{matches:array<int,array<string,mixed>>,legacy_update_requested:bool} */
     public function getData(
         Registry $params,
@@ -61,7 +73,7 @@ final class MatchesHelper
                 throw new \RuntimeException('SportsManagement Matches requires the Joomla site application.', 500);
             }
 
-            $joomlaDatabase ??= Factory::getContainer()->get(DatabaseInterface::class);
+            $joomlaDatabase = self::joomlaDatabase($joomlaDatabase);
             $db = $this->database($params, $joomlaDatabase);
             $matches = $this->loadMatches($db, $params, $projects);
             $showReferees = (int) $params->get('show_referee', 1) === 1;
