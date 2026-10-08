@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectteamModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\FinderRelationNotifier;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
@@ -253,8 +254,16 @@ final class ProjectteamController extends SportsManagementFormController
 
         return (new SportsManagementDatabaseResolver())->resolve(
             $selector,
-            \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class)
+            self::joomlaDatabase()
         );
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private function normaliseIds(mixed $ids): array
