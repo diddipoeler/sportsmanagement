@@ -29,6 +29,14 @@ final class IcalModel extends SportsManagementProjectModel
     public ?object $team = null;
     public ?object $club = null;
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -62,9 +70,10 @@ final class IcalModel extends SportsManagementProjectModel
             if ($databaseSelector === self::$cfg_which_database) {
                 $db = $this->getDatabase();
             } else {
-                /** @var DatabaseInterface $joomlaDatabase */
-                $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-                $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
+                $db = SportsManagementDatabaseResolver::resolve(
+                    self::joomlaDatabase(),
+                    $databaseSelector
+                );
             }
 
             $query = $db->createQuery()
