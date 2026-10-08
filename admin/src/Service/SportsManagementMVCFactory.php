@@ -280,12 +280,25 @@ final class SportsManagementMVCFactory extends MVCFactory
         SiteLegacyBootstrap::bootForView($view);
     }
 
+    private static function joomlaApplication(): CMSApplicationInterface
+    {
+        return Factory::getApplication();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private function normalisePrefix(string $prefix): string
     {
         $normalised = trim(strtolower(trim($prefix)), '\\');
 
         if ($normalised === '' || str_starts_with($normalised, 'sportsmanagement')) {
-            return Factory::getApplication()->isClient('administrator')
+            return self::joomlaApplication()->isClient('administrator')
                 ? 'Administrator'
                 : 'Site';
         }
@@ -313,9 +326,9 @@ final class SportsManagementMVCFactory extends MVCFactory
         }
 
         try {
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-            $model->setDatabase(SportsManagementDatabaseResolver::resolve($joomlaDatabase, 0));
+            $model->setDatabase(
+                SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), 0)
+            );
         } catch (\Throwable) {
             // Keep Joomla's injected database connection as fallback.
         }
