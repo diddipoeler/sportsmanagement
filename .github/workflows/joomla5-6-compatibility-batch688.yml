@@ -1,0 +1,97 @@
+name: Joomla 5/6 compatibility batch 688
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/src/View/Editmatch/HtmlView.php'
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch688.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Service/SportsManagementMVCFactory.php'
+      - 'site/src/View/SportsManagementHtmlView.php'
+      - 'site/src/View/Editmatch/HtmlView.php'
+      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch688.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Service/SportsManagementMVCFactory.php
+            site/src/View/SportsManagementHtmlView.php
+            site/src/View/Editmatch/HtmlView.php
+            modules/mod_sportsmanagement_gcalendar/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          mvc = Path('admin/src/Service/SportsManagementMVCFactory.php').read_text()
+          if 'private static function joomlaApplication(): CMSApplicationInterface' not in mvc:
+              raise SystemExit('SportsManagementMVCFactory Joomla application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in mvc:
+              raise SystemExit('SportsManagementMVCFactory Joomla DB helper is missing')
+          if 'self::joomlaApplication()->isClient' not in mvc:
+              raise SystemExit('SportsManagementMVCFactory bypasses centralized application access')
+          if 'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), 0)' not in mvc:
+              raise SystemExit('SportsManagementMVCFactory bypasses centralized Joomla DB access')
+          if mvc.count('Factory::getApplication()') != 1:
+              raise SystemExit('SportsManagementMVCFactory should call Factory::getApplication only in its helper')
+          if mvc.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('SportsManagementMVCFactory should have exactly one Joomla DB container access')
+
+          base_view = Path('site/src/View/SportsManagementHtmlView.php').read_text()
+          if 'protected static function joomlaDatabase(): DatabaseInterface' not in base_view:
+              raise SystemExit('SportsManagementHtmlView protected Joomla DB helper is missing')
+          if base_view.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('SportsManagementHtmlView should have exactly one Joomla DB container access')
+
+          editmatch = Path('site/src/View/Editmatch/HtmlView.php').read_text()
+          if 'self::joomlaDatabase()' not in editmatch:
+              raise SystemExit('Editmatch view does not reuse the base Joomla DB helper')
+          if 'Factory::getContainer()->get(DatabaseInterface::class)' in editmatch:
+              raise SystemExit('Editmatch view still has direct Joomla DB container access')
+          if 'private static function joomlaDatabase()' in editmatch:
+              raise SystemExit('Editmatch view still duplicates the base Joomla DB helper')
+
+          gcalendar = Path('modules/mod_sportsmanagement_gcalendar/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in gcalendar:
+              raise SystemExit('GCalendar legacy site application helper is missing')
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in gcalendar:
+              raise SystemExit('GCalendar legacy Joomla DB helper is missing')
+          if '$app = self::siteApplication();' not in gcalendar:
+              raise SystemExit('GCalendar legacy helper bypasses centralized site application access')
+          if '$database = self::joomlaDatabase($database);' not in gcalendar:
+              raise SystemExit('GCalendar legacy helper bypasses centralized Joomla DB access')
+          if gcalendar.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('GCalendar should resolve the site application only in its helper')
+          if gcalendar.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('GCalendar should have exactly one Joomla DB container access')
+          PY
