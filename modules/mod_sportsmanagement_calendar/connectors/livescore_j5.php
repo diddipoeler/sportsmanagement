@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -28,6 +29,19 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
 
 final class LivescoreConnector extends JSMCalendar
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private Registry $xparams;
     private string $connectorPrefix = '';
 
@@ -41,14 +55,13 @@ final class LivescoreConnector extends JSMCalendar
 
     private function getRows(array $caldates, string $ordering = 'ASC'): array
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Calendar LiveScore requires the Joomla site application.', 500);
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = self::joomlaDatabase();
         $table = $this->connectorPrefix !== ''
             ? str_replace('#__', $this->connectorPrefix, '#__livescore_games')
             : '#__livescore_games';
