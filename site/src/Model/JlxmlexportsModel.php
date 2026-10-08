@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -42,11 +43,16 @@ class JlxmlexportsModel extends \sportsmanagementModelJLXMLExports
     public DatabaseInterface $jsmdb;
     public $query;
 
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         BaseDatabaseModel::__construct($config, $factory);
 
-        $this->app = SportsManagementSiteApplicationResolver::resolve();
+        $this->app = self::siteApplication();
         $this->user = $this->app->getIdentity();
         $this->jinput = $this->app->getInput();
         $this->option = $this->jinput->getCmd('option', 'com_sportsmanagement');
