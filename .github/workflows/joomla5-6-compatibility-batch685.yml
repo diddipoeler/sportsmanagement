@@ -1,0 +1,80 @@
+name: Joomla 5/6 compatibility batch 685
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - 'site/src/View/Editmatch/HtmlView.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch685.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - 'site/src/View/Editmatch/HtmlView.php'
+      - 'modules/mod_sportsmanagement_count_rekord/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch685.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Helper/SportsManagementDatabaseResolver.php
+            site/src/View/Editmatch/HtmlView.php
+            modules/mod_sportsmanagement_count_rekord/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          resolver = Path('admin/src/Helper/SportsManagementDatabaseResolver.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in resolver:
+              raise SystemExit('Administrator DB resolver application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in resolver:
+              raise SystemExit('Administrator DB resolver Joomla DB helper is missing')
+          if 'self::administratorApplication();' not in resolver or '$fallback = self::joomlaDatabase();' not in resolver:
+              raise SystemExit('Administrator DB resolver bypasses centralized Joomla services')
+          if resolver.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Administrator DB resolver should resolve the application only in its helper')
+          if resolver.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Administrator DB resolver should have exactly one Joomla DB container access')
+
+          editmatch = Path('site/src/View/Editmatch/HtmlView.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in editmatch:
+              raise SystemExit('Editmatch view Joomla DB helper is missing')
+          if '$joomlaDatabase = self::joomlaDatabase();' not in editmatch:
+              raise SystemExit('Editmatch view bypasses centralized Joomla DB access')
+          if editmatch.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Editmatch view should have exactly one Joomla DB container access')
+
+          count_rekord = Path('modules/mod_sportsmanagement_count_rekord/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in count_rekord:
+              raise SystemExit('CountRekord legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in count_rekord:
+              raise SystemExit('CountRekord legacy helper bypasses centralized site application access')
+          if count_rekord.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('CountRekord should resolve the site application only in its centralized helper')
+          PY
