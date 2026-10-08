@@ -46,10 +46,15 @@ class JSMRanking extends \stdClass
             throw new \RuntimeException('SportsManagement database resolver could not be loaded.', 500);
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
+    }
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     /**
