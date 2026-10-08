@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 680
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/ProjectModel.php'
+      - 'site/src/Model/IcalModel.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch680.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/ProjectModel.php'
+      - 'site/src/Model/IcalModel.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch680.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Model/ProjectModel.php
+            site/src/Model/IcalModel.php
+            modules/mod_sportsmanagement_teamstatistics_counter/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          project = Path('admin/src/Model/ProjectModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in project:
+              raise SystemExit('ProjectModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase()' not in project:
+              raise SystemExit('ProjectModel bypasses centralized Joomla DB fallback')
+          if project.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ProjectModel should have exactly one Joomla DB container access')
+
+          ical = Path('site/src/Model/IcalModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in ical:
+              raise SystemExit('IcalModel Joomla DB helper is missing')
+          if 'self::joomlaDatabase(),' not in ical:
+              raise SystemExit('IcalModel database resolver bypasses centralized Joomla DB access')
+          if ical.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('IcalModel should have exactly one Joomla DB container access')
+
+          counter = Path('modules/mod_sportsmanagement_teamstatistics_counter/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in counter:
+              raise SystemExit('TeamStatisticsCounter legacy site application helper is missing')
+          if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in counter:
+              raise SystemExit('TeamStatisticsCounter legacy Joomla DB helper is missing')
+          if '$app = self::siteApplication();' not in counter:
+              raise SystemExit('TeamStatisticsCounter legacy helper bypasses centralized site application access')
+          if '$database = self::joomlaDatabase($database);' not in counter:
+              raise SystemExit('TeamStatisticsCounter legacy helper bypasses centralized Joomla DB access')
+          if counter.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('TeamStatisticsCounter should resolve the site application only in its centralized helper')
+          if counter.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('TeamStatisticsCounter should have exactly one Joomla DB container access')
+          PY
