@@ -398,10 +398,17 @@ final class HtmlView extends SportsManagementHtmlView
         return $form;
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private function viewDataService(): EditmatchViewDataService
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = self::joomlaDatabase();
         $selector = $this->input->getInt(
             'cfg_which_database',
             (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
