@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
@@ -139,15 +140,23 @@ final class ScoresheetModel extends SportsManagementProjectModel
         }
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private function database(int $selector): DatabaseInterface
     {
         if ($selector === self::$cfg_which_database) {
             return $this->getDatabase();
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
-
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve(
+            self::joomlaDatabase(),
+            $selector
+        );
     }
 }
