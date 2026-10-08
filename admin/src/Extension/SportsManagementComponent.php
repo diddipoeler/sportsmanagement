@@ -41,6 +41,11 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
         createRouter as private createFactoryRouter;
     }
 
+    private static function joomlaApplication(): CMSApplicationInterface
+    {
+        return Factory::getApplication();
+    }
+
     /**
      * Load the language sources which were historically loaded from the legacy
      * component entry points. Native Joomla 5/6 dispatcher requests bypass those
@@ -48,7 +53,7 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
      */
     public function boot(ContainerInterface $container): void
     {
-        $app = Factory::getApplication();
+        $app = self::joomlaApplication();
         $language = $app->getLanguage();
         $tag = $language->getTag();
 
