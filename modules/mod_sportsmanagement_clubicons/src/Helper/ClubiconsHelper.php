@@ -24,6 +24,14 @@ use Joomla\Registry\Registry;
 
 final class ClubiconsHelper
 {
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private const PLACEHOLDERS = [
         'logo_big' => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png',
         'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png',
@@ -41,9 +49,7 @@ final class ClubiconsHelper
             return ['project' => null, 'ranking' => [], 'teams' => []];
         }
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $db = $this->database($params, $joomlaDatabase);
+        $db = $this->database($params, self::joomlaDatabase());
         $divisionId = $this->firstId($params->get('division_id', 0));
         $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
         $project = $result['project'];
