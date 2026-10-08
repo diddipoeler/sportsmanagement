@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 690
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Helper/ExtraFieldsReadHelper.php'
+      - 'site/router.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch690.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Helper/ExtraFieldsReadHelper.php'
+      - 'site/router.php'
+      - 'modules/mod_sportsmanagement_act_season/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch690.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Helper/ExtraFieldsReadHelper.php
+            site/router.php
+            modules/mod_sportsmanagement_act_season/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          extra = Path('admin/src/Helper/ExtraFieldsReadHelper.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in extra:
+              raise SystemExit('ExtraFieldsReadHelper administrator application helper is missing')
+          if '$app = self::administratorApplication();' not in extra:
+              raise SystemExit('ExtraFieldsReadHelper bypasses centralized administrator application access')
+          if extra.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('ExtraFieldsReadHelper should resolve the administrator application only in its helper')
+
+          router = Path('site/router.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in router:
+              raise SystemExit('Legacy site router application helper is missing')
+          if '$app ??= self::siteApplication();' not in router:
+              raise SystemExit('Legacy site router bypasses centralized site application access')
+          if router.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Legacy site router should resolve the site application only in its helper')
+
+          season = Path('modules/mod_sportsmanagement_act_season/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in season:
+              raise SystemExit('ActSeason legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in season:
+              raise SystemExit('ActSeason legacy helper bypasses centralized site application access')
+          if season.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('ActSeason should resolve the site application only in its helper')
+          PY
