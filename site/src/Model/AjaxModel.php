@@ -596,9 +596,15 @@ final class AjaxModel extends BaseDatabaseModel
 
     private function sportsDatabase(): DatabaseInterface
     {
-        $joomlaDatabase = $this->getDatabase();
+        return SportsManagementDatabaseResolver::resolve(
+            $this->joomlaDatabase(),
+            $this->databaseSelector()
+        );
+    }
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $this->databaseSelector());
+    private function joomlaDatabase(): DatabaseInterface
+    {
+        return $this->getDatabase();
     }
 
     private function siteApplication(): SiteApplication
