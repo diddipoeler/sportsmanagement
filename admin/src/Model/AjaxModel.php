@@ -947,7 +947,10 @@ final class AjaxModel extends BaseDatabaseModel
 
     private static function database(bool $external): DatabaseInterface
     {
-        return (new SportsManagementDatabaseResolver())->resolve($external ? 1 : 0);
+        return (new SportsManagementDatabaseResolver())->resolve(
+            $external ? 1 : 0,
+            self::joomlaDatabase()
+        );
     }
 
     /**
