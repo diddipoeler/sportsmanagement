@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagemen
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -576,6 +577,14 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private static function getStaticDatabase(): DatabaseInterface
     {
         if (self::$database instanceof DatabaseInterface) {
@@ -583,7 +592,8 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
 
         self::$database = (new SportsManagementDatabaseResolver())->resolve(
-            self::$cfg_which_database
+            self::$cfg_which_database,
+            self::joomlaDatabase()
         );
 
         return self::$database;
