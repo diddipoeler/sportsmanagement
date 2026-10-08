@@ -74,11 +74,6 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
         }
 
-        private static function siteApplication(): CMSApplicationInterface
-        {
-            return SportsManagementSiteApplicationResolver::resolve();
-        }
-
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
@@ -113,6 +108,11 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
                 $app,
                 $database
             );
+        }
+
+        private static function siteApplication(): CMSApplicationInterface
+        {
+            return SportsManagementSiteApplicationResolver::resolve();
         }
 
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
