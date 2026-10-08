@@ -54,7 +54,7 @@ final class LivetickerHelper
      */
     public function refreshAjax(?DatabaseInterface $database = null): string
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
@@ -76,6 +76,11 @@ final class LivetickerHelper
             : [];
 
         return $this->buildListHtml($list, $commentary, $params, $app);
+    }
+
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
     }
 
     private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
