@@ -25,17 +25,36 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\DatabaseInterface;
 
+trait JSMJoomlaServices
+{
+    private static function joomlaSiteApplication(): SiteApplication
+    {
+        /** @var SiteApplication $application */
+        $application = Factory::getContainer()->get(SiteApplication::class);
+
+        return $application;
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+}
+
 /**
  * Legacy administrator-style model base retained for old SportsManagement models.
  */
 class JSMModelAdmin extends AdminModel
 {
+    use JSMJoomlaServices;
     public function __construct($config = array())
     {
         parent::__construct($config);
 
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = self::joomlaSiteApplication();
         $this->jsmapp    = $app;
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -56,12 +75,13 @@ class JSMModelAdmin extends AdminModel
  */
 class JSMModelList extends ListModel
 {
+    use JSMJoomlaServices;
+
     public function __construct($config = array())
     {
         parent::__construct($config);
 
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = self::joomlaSiteApplication();
         $this->jsmapp    = $app;
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -77,11 +97,9 @@ class JSMModelList extends ListModel
 
     private function resolveDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $selector = $this->jsmjinput->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
     }
 }
 
@@ -94,12 +112,13 @@ class JSMModelList extends ListModel
  */
 class JSMModelLegacy extends BaseDatabaseModel
 {
+    use JSMJoomlaServices;
+
     public function __construct($config = array())
     {
         parent::__construct($config);
 
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = self::joomlaSiteApplication();
         $this->jsmapp    = $app;
         $this->jsmjinput = $this->jsmapp->getInput();
         $this->jsmoption = $this->jsmjinput->getCmd('option');
@@ -124,10 +143,8 @@ class JSMModelLegacy extends BaseDatabaseModel
 
     private function resolveDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
         $selector = $this->jsmjinput->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
     }
 }
