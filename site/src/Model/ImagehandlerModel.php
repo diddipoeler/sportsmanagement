@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
@@ -25,11 +26,16 @@ final class ImagehandlerModel extends BaseDatabaseModel
     private ?Pagination $pagination = null;
     private ?array $imageList = null;
 
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
 
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
