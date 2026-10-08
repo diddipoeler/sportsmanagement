@@ -61,14 +61,20 @@ abstract class SportsManagementListModel extends ListModel
      * Explicitly select the SportsManagement database for compatibility callers
      * which do not derive their context from the current request.
      */
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     public function setDatabaseSelector(int $selector): void
     {
         $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
         $this->siteApplication();
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $this->setDatabase($joomlaDatabase);
+        $this->setDatabase(self::joomlaDatabase());
     }
 
     public function setDatabase(DatabaseInterface $db): void
