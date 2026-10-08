@@ -17,6 +17,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Divisions;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DivisionsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\DivisionTable;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -28,6 +29,11 @@ use RuntimeException;
  */
 final class HtmlView extends BaseHtmlView
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public $items = [];
     public $pagination;
     public $state;
@@ -57,7 +63,7 @@ final class HtmlView extends BaseHtmlView
         $this->table = new DivisionTable($model->getSportsManagementDatabase());
         $this->lists = [];
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $this->close = $app->getInput()->getInt('close', 0);
 
         if (in_array($this->getLayout(), ['massadd', 'massadd_3', 'massadd_4'], true)) {
@@ -85,7 +91,7 @@ final class HtmlView extends BaseHtmlView
             );
         }
 
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $user = $app->getIdentity();
 
         if (($user->username ?? '') === 'admin') {
