@@ -1,0 +1,80 @@
+name: Joomla 5/6 compatibility batch 679
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/MatchesController.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch679.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/MatchesController.php'
+      - 'site/src/Model/EditmatchModel.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch679.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/Controller/MatchesController.php
+            site/src/Model/EditmatchModel.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          matches = Path('admin/src/Controller/MatchesController.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in matches:
+              raise SystemExit('MatchesController Joomla DB helper is missing')
+          if 'return self::joomlaDatabase();' not in matches:
+              raise SystemExit('MatchesController fallback bypasses centralized Joomla DB access')
+          if matches.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('MatchesController should have exactly one Joomla DB container access')
+          if '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)' in matches:
+              raise SystemExit('MatchesController still contains fully-qualified direct Joomla DB access')
+
+          editmatch = Path('site/src/Model/EditmatchModel.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in editmatch:
+              raise SystemExit('EditmatchModel Joomla DB helper is missing')
+          if '$joomlaDatabase = $this->injectedDatabase ?? self::joomlaDatabase();' not in editmatch:
+              raise SystemExit('EditmatchModel bypasses centralized Joomla DB access')
+          if editmatch.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('EditmatchModel should have exactly one Joomla DB container access')
+          if '\\Joomla\\CMS\\Factory::getContainer()->get(DatabaseInterface::class)' in editmatch:
+              raise SystemExit('EditmatchModel still contains fully-qualified direct Joomla DB access')
+
+          overview = Path('modules/mod_sportsmanagement_firstleagueoverview/helper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in overview:
+              raise SystemExit('FirstLeagueOverview legacy site application helper is missing')
+          if '$app = self::siteApplication();' not in overview:
+              raise SystemExit('FirstLeagueOverview legacy helper bypasses centralized site application access')
+          if overview.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('FirstLeagueOverview should resolve the site application only in its centralized helper')
+          PY
