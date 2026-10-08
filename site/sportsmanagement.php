@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Legacy\LegacyBootstrap;
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Filter\InputFilter;
 
@@ -45,7 +46,11 @@ foreach ([
     }
 }
 
-$app = SportsManagementSiteApplicationResolver::resolve();
+$siteApplication = static function (): CMSApplicationInterface {
+    return SportsManagementSiteApplicationResolver::resolve();
+};
+
+$app = $siteApplication();
 
 $input = $app->getInput();
 $document = $app->getDocument();
