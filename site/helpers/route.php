@@ -256,7 +256,7 @@ class sportsmanagementHelperRoute
 		$query     = (array) $query;
 		$component = ComponentHelper::getComponent(self::$option);
 		/** @var SiteApplication $app */
-		$app       = Factory::getContainer()->get(SiteApplication::class);
+		$app       = self::siteApplication();
 		$menus     = $app->getMenu();
 		$items     = $menus->getItems('component', self::$option);
 
