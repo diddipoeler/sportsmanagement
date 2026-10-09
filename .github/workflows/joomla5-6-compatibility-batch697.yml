@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 697
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/helpers/sportsmanagement.php'
+      - 'site/helpers/route.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - '.github/workflows/joomla5-6-compatibility-batch697.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/helpers/sportsmanagement.php'
+      - 'site/helpers/route.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - '.github/workflows/joomla5-6-compatibility-batch697.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/helpers/sportsmanagement.php
+            site/helpers/route.php
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin = Path('admin/helpers/sportsmanagement.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in admin:
+              raise SystemExit('Legacy administrator application helper is missing')
+          if admin.count('Factory::getApplication()') != 1:
+              raise SystemExit('Legacy administrator helper should call Factory::getApplication only in its helper')
+          if admin.count('self::administratorApplication()') < 40:
+              raise SystemExit('Legacy administrator helper still bypasses centralized application access')
+
+          route = Path('site/helpers/route.php').read_text()
+          if 'private static function siteApplication(): SiteApplication' not in route:
+              raise SystemExit('Legacy route site application helper is missing')
+          if '$app       = self::siteApplication();' not in route:
+              raise SystemExit('Legacy route helper bypasses centralized site application access')
+          if route.count('Factory::getContainer()->get(SiteApplication::class)') != 1:
+              raise SystemExit('Legacy route helper should have exactly one SiteApplication container access')
+
+          jevents = Path('modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in jevents:
+              raise SystemExit('JEvents connector site application helper is missing')
+          if '$app = self::siteApplication();' not in jevents:
+              raise SystemExit('JEvents connector bypasses centralized site application access')
+          if jevents.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('JEvents connector should resolve the site application only in its helper')
+          PY
