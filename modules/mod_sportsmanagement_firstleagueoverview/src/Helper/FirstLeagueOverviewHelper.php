@@ -102,9 +102,7 @@ final class FirstLeagueOverviewHelper
             $seenLeagues[$leagueId] = true;
             // Build the Joomla ID:alias slug in PHP instead of relying on
             // a database-specific CONCAT_WS expression.
-            $row->project_slug = $leagueId > 0
-                ? (int) $row->id . ':' . (string) ($row->alias ?? '')
-                : (string) (int) $row->id;
+            $row->project_slug = (int) $row->id . ':' . (string) ($row->alias ?? '');
             $projects[] = $row;
         }
 
