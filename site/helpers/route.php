@@ -11,6 +11,7 @@
  */
 \defined('_JEXEC') or die;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Component\ComponentHelper;
@@ -26,6 +27,14 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementHelperRoute
 {
+    private static function siteApplication(): SiteApplication
+    {
+        /** @var SiteApplication $application */
+        $application = Factory::getContainer()->get(SiteApplication::class);
+
+        return $application;
+    }
+
 	static $season = 0;
 
 	static $view = 0;
