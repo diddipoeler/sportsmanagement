@@ -243,14 +243,19 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private function resolveDatabase(mixed $databaseSelector = null): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return (new SportsManagementDatabaseResolver())->resolve(
             $databaseSelector,
-            $joomlaDatabase
+            self::joomlaDatabase()
         );
     }
 }
