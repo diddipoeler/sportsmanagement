@@ -20,7 +20,11 @@ final class ExtensionLanguageHelper
     /** @return list<string> */
     public static function forView(string $view): array
     {
-        $view = preg_replace('/[^A-Z0-9_-]/i', '', $view) ?? '';
+        // Do not silently strip path separators into another extension name.
+        // Administrator view names must already consist of safe Joomla command characters.
+        if (!preg_match('/^[A-Z0-9_-]+$/i', $view)) {
+            return [];
+        }
 
         if ($view === '') {
             return [];
