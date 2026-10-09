@@ -126,7 +126,11 @@ final class SportsManagementDatabaseResolver
         $to = self::timestamp($accessTo);
         $now = time();
 
-        return $from !== null && $to !== null && $now >= $from && $now <= $to;
+        // An inverted range must never grant access, even when both
+        // individual timestamps are otherwise valid.
+        return $from !== null && $to !== null
+            && $from <= $to
+            && $now >= $from && $now <= $to;
     }
 
     private static function timestamp(string $value): ?int
