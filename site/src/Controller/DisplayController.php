@@ -29,6 +29,8 @@ final class DisplayController extends BaseController
 
     public function display($cachable = false, $urlparams = [])
     {
+        // Joomla only applies the controller default when the view is absent;
+        // an explicitly empty view must be handled here as well.
         if ($this->input->getCmd('view', '') === '') {
             $this->input->set('view', $this->default_view);
         }
