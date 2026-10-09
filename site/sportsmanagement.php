@@ -54,7 +54,12 @@ $app = $siteApplication();
 
 $input = $app->getInput();
 $document = $app->getDocument();
-$view = strtolower($input->getCmd('view', ''));
+$view = strtolower($input->getCmd('view', 'sportsmanagement'));
+
+// An explicitly empty view must resolve to the same default as DisplayController.
+if ($view === '') {
+    $view = 'sportsmanagement';
+}
 
 LegacyBootstrap::bootForView($view);
 
