@@ -54,7 +54,12 @@ $type = '';
 $task = $command !== '' ? $command : 'display';
 
 if (str_contains($command, '.')) {
-    [$type, $task] = array_pad(explode('.', $command, 2), 2, '');
+    [$type, $task] = explode('.', $command, 2);
+
+    // A dotted task must name both its controller and its action.
+    if ($type === '' || $task === '') {
+        throw new \InvalidArgumentException('Invalid SportsManagement controller task.', 400);
+    }
 }
 
 $activeView = $input->getCmd('view', 'cpanel');
