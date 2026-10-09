@@ -120,8 +120,10 @@ final class SportsManagementDatabaseResolver
     {
         $value = trim($value);
 
-        if ($value === '0000-00-00 00:00:00' || $value === '0000-00-00 15:30:00') {
-            return time();
+        // Zero dates are placeholders, not valid entitlement boundaries.
+        // Never interpret them as the current time and accidentally grant access.
+        if ($value === '' || str_starts_with($value, '0000-00-00')) {
+            return null;
         }
 
         $timestamp = strtotime($value);
