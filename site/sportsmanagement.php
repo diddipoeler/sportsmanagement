@@ -93,7 +93,9 @@ if ($configuredMetaKeys !== '') {
 
 $projectId = $input->getInt('p');
 
-if ($projectId > 0) {
+// Project-team names are only used to enrich HTML keywords. Avoid a
+// potentially expensive database query for JSON, feed or download requests.
+if ($document instanceof HtmlDocument && $projectId > 0) {
     if (!class_exists(ResultsDataModel::class)) {
         foreach ([
             JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
