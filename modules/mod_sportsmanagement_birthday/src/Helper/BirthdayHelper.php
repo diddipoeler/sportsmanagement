@@ -199,6 +199,11 @@ final class BirthdayHelper
         $values = is_array($values) ? $values : [$values];
         $ids = [];
         foreach ($values as $value) {
+            // Joomla module parameters may contain nested multi-select values.
+            // Ignore malformed entries rather than casting arrays to strings.
+            if (!is_scalar($value)) {
+                continue;
+            }
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
                 $id = (int) $part;
                 if ($id > 0) {
