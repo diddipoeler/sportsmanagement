@@ -25,6 +25,19 @@ use Joomla\Registry\Registry;
 
 final class RankingHelper
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         if (!$app->isClient('site')) {
@@ -117,7 +130,7 @@ final class RankingHelper
 
     public function refreshAjax(): array
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
@@ -137,8 +150,7 @@ final class RankingHelper
             throw new \RuntimeException('Invalid ranking module.', 400);
         }
 
-        /** @var DatabaseInterface $joomlaDb */
-        $joomlaDb = Factory::getContainer()->get(DatabaseInterface::class);
+        $joomlaDb = self::joomlaDatabase();
         $moduleName = 'mod_sportsmanagement_ranking';
         $query = $joomlaDb->createQuery()
             ->select([$joomlaDb->quoteName('params'), $joomlaDb->quoteName('published')])
@@ -358,11 +370,8 @@ final class RankingHelper
 
     private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            self::joomlaDatabase(),
             (int) $params->get('cfg_which_database', 0)
         );
     }
