@@ -229,7 +229,9 @@ final class BirthdayHelper
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d', trim($value), $timezone);
         // PHP normalises invalid calendar dates (for example 2025-02-31).
         // Reject those instead of displaying a birthday on the wrong day.
-        return $date instanceof \DateTimeImmutable && $date->format('Y-m-d') === trim($value)
+        return $date instanceof \DateTimeImmutable
+            && (int) $date->format('Y') > 0
+            && $date->format('Y-m-d') === trim($value)
             ? $date
             : null;
     }
