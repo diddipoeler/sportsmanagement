@@ -58,7 +58,12 @@ if (str_contains($command, '.')) {
 }
 
 $activeView = $input->getCmd('view', 'cpanel');
-$extensions = ExtensionLanguageHelper::forView($activeView !== '' ? $activeView : 'cpanel');
+if ($activeView === '') {
+    $activeView = 'cpanel';
+}
+
+$input->set('view', $activeView);
+$extensions = ExtensionLanguageHelper::forView($activeView);
 
 foreach ($extensions as $extensionName) {
     $extension = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
