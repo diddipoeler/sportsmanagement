@@ -69,9 +69,9 @@ final class RquotesHelper
                     max(1, (int) $params->get('num_of_random', 2))
                 ),
                 'sequential' => $this->sequential($db, $categoryIds, $app),
-                'daily' => $this->periodic($db, $this->firstCategory($categoryIds), 1, 'j', $app),
-                'weekly' => $this->periodic($db, $this->firstCategory($categoryIds), 2, 'W', $app),
-                'monthly' => $this->periodic($db, $this->firstCategory($categoryIds), 3, 'n', $app),
+                'daily' => $this->periodic($db, $this->firstCategory($categoryIds), 1, 'Y-m-d', $app),
+                'weekly' => $this->periodic($db, $this->firstCategory($categoryIds), 2, 'o-W', $app),
+                'monthly' => $this->periodic($db, $this->firstCategory($categoryIds), 3, 'Y-m', $app),
                 'yearly' => $this->periodic($db, $this->firstCategory($categoryIds), 4, 'Y', $app),
                 'today' => $this->todayQuote($db, $this->firstCategory($categoryIds), $app),
                 default => $this->singleRandom($db, $this->randomCategory($categoryIds)),
