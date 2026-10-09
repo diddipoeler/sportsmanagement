@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
 
@@ -27,6 +28,11 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
 
 final class JEventsConnector extends JSMCalendar
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     public static Registry $xparams;
     private static $jevent;
 
@@ -78,7 +84,7 @@ final class JEventsConnector extends JSMCalendar
 
     private static function raiseError(string $message): void
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Calendar JEvents connector requires the Joomla site application.', 500);
