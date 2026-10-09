@@ -156,6 +156,14 @@ final class HtmlView extends BaseHtmlView
         return $database;
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
