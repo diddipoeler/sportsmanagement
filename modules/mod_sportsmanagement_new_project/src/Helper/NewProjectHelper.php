@@ -26,6 +26,11 @@ use Joomla\Registry\Registry;
 
 final class NewProjectHelper
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     public function getData(
         Registry $params,
         CMSApplicationInterface $app,
@@ -97,7 +102,7 @@ final class NewProjectHelper
 
     public function createArticlesAjax(?DatabaseInterface $joomlaDatabase = null): array
     {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
 
         if (!Session::checkToken('post')) {
             throw new \RuntimeException('Invalid CSRF token.', 403);
