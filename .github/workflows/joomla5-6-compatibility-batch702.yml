@@ -1,0 +1,76 @@
+name: Joomla 5/6 compatibility batch 702
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Player/HtmlView.php'
+      - 'site/src/Helper/RoundPaginationHelper.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch702.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Player/HtmlView.php'
+      - 'site/src/Helper/RoundPaginationHelper.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch702.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Player/HtmlView.php
+            site/src/Helper/RoundPaginationHelper.php
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          player = Path('admin/src/View/Player/HtmlView.php').read_text()
+          if player.count('private static function joomlaDatabase(): DatabaseInterface') != 1:
+              raise SystemExit('Player view must have exactly one Joomla DB helper')
+          if 'self::joomlaDatabase()' not in player:
+              raise SystemExit('Player view bypasses centralized Joomla DB access')
+          if player.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Player view should have exactly one Joomla DB container access')
+
+          pagination = Path('site/src/Helper/RoundPaginationHelper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in pagination:
+              raise SystemExit('Round pagination site application helper is missing')
+          if pagination.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Round pagination should resolve the site application only in its helper')
+          if pagination.count('self::siteApplication()') != 3:
+              raise SystemExit('Round pagination should reuse centralized site application access three times')
+
+          new_project = Path('modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in new_project:
+              raise SystemExit('New Project site application helper is missing')
+          if '$app = self::siteApplication();' not in new_project:
+              raise SystemExit('New Project AJAX path bypasses centralized site application access')
+          if new_project.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('New Project should resolve the site application only in its helper')
+          PY
