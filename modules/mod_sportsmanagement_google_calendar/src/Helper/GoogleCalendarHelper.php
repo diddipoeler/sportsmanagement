@@ -85,7 +85,7 @@ final class GoogleCalendarHelper
         }
 
         if (!isset($data->items) || !is_array($data->items)) {
-            return [];
+            throw new \UnexpectedValueException('Google Calendar response contains no event list.');
         }
 
         $events = [];
