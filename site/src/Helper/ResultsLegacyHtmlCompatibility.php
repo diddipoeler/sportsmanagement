@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -24,6 +25,19 @@ use Joomla\Database\ParameterType;
  */
 final class ResultsLegacyHtmlCompatibility
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     public static int $roundid = 0;
 
     /** @var object|array|null */
@@ -73,7 +87,7 @@ final class ResultsLegacyHtmlCompatibility
             return '';
         }
 
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
         $input = $app->getInput();
         $resolvedSeasonId = (int) $seasonId;
 
@@ -124,7 +138,7 @@ final class ResultsLegacyHtmlCompatibility
             ];
         }
 
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
         $input = $app->getInput();
         $project = is_object(self::$project) ? self::$project : null;
         $output = TeamplanMatchPresentationHelper::renderPlayground(
@@ -174,7 +188,7 @@ final class ResultsLegacyHtmlCompatibility
             self::applyDivision($guestTeam, $divisionId);
         }
 
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
         $input = $app->getInput();
         $project = is_object(self::$project) ? self::$project : null;
         $seasonId = (int) ($project->season_id ?? $input->getInt('s', 0));
@@ -204,7 +218,7 @@ final class ResultsLegacyHtmlCompatibility
                     $label = self::escape($roundName);
 
                     if ((int) $mode === 1) {
-                        $app = SportsManagementSiteApplicationResolver::resolve();
+                        $app = self::siteApplication();
                         $input = $app->getInput();
                         $project = is_object(self::$project) ? self::$project : null;
                         $link = SiteRouteHelper::view('ranking', [
@@ -266,7 +280,7 @@ final class ResultsLegacyHtmlCompatibility
     private static function loadDivision(int $divisionId): ?object
     {
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = self::joomlaDatabase();
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
@@ -285,7 +299,7 @@ final class ResultsLegacyHtmlCompatibility
     private static function loadRound(int $roundId): ?object
     {
         /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = self::joomlaDatabase();
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
