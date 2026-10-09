@@ -316,8 +316,17 @@ final class RquotesHelper
         $values = is_array($values) ? $values : [$values];
         $ids = [];
         foreach ($values as $value) {
+            if (!is_scalar($value)) {
+                continue;
+            }
+
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                $id = (int) $part;
+                if (!preg_match('/^(\d+)(?::[A-Za-z0-9_-]+)?$/', $part, $match)) {
+                    continue;
+                }
+
+                $id = (int) $match[1];
+
                 if ($id > 0) {
                     $ids[$id] = $id;
                 }
