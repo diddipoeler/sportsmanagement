@@ -83,7 +83,20 @@ final class SportsManagementDatabaseResolver
         $db->setQuery($query);
         $profiles = $db->loadAssocList('profile_key') ?: [];
 
-        $profileValue = static fn (string $key): string => trim((string) ($profiles[$key]['profile_value'] ?? ''));
+        // Joomla stores profile values as JSON, including quoted strings.
+        $profileValue = static function (string $key) use ($profiles): string {
+            $raw = trim((string) ($profiles[$key]['profile_value'] ?? ''));
+
+            if ($raw === '') {
+                return '';
+            }
+
+            $decoded = json_decode($raw, true);
+
+            return is_string($decoded) || is_numeric($decoded)
+                ? trim((string) $decoded)
+                : $raw;
+        };
 
         // User-profile values may be JSON-encoded; only explicit true/1 grants access.
         $rawAccess = $profileValue('jsmprofile.databaseaccess');
