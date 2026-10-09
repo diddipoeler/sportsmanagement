@@ -270,7 +270,7 @@ final class RandomPlayerHelper
     {
         $values = is_array($value)
             ? $value
-            : preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
+            : (is_scalar($value) ? preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) : []);
         $ids = [];
 
         foreach ((array) $values as $candidate) {
