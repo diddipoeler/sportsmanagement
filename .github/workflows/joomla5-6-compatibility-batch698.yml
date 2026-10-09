@@ -1,0 +1,88 @@
+name: Joomla 5/6 compatibility batch 698
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/helpers/sportsmanagement.php'
+      - 'site/src/Helper/ResultsLegacyHtmlCompatibility.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch698.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/helpers/sportsmanagement.php'
+      - 'site/src/Helper/ResultsLegacyHtmlCompatibility.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch698.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/helpers/sportsmanagement.php
+            site/src/Helper/ResultsLegacyHtmlCompatibility.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin = Path('admin/helpers/sportsmanagement.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in admin:
+              raise SystemExit('Legacy administrator Joomla DB helper is missing')
+          if admin.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Legacy administrator helper should have exactly one Joomla DB container access')
+          if admin.count('self::joomlaDatabase()') < 3:
+              raise SystemExit('Legacy administrator helper still bypasses centralized Joomla DB access')
+
+          results = Path('site/src/Helper/ResultsLegacyHtmlCompatibility.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in results:
+              raise SystemExit('Results legacy site application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in results:
+              raise SystemExit('Results legacy Joomla DB helper is missing')
+          if results.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Results legacy helper should resolve the site application only in its helper')
+          if results.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Results legacy helper should have exactly one Joomla DB container access')
+          if results.count('self::siteApplication()') < 4:
+              raise SystemExit('Results legacy helper still bypasses centralized application access')
+          if results.count('self::joomlaDatabase()') != 2:
+              raise SystemExit('Results legacy helper still bypasses centralized DB access')
+
+          navigation = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/NavigationDataHelper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in navigation:
+              raise SystemExit('AJAX navigation site application helper is missing')
+          if 'private static function joomlaDatabase(' not in navigation:
+              raise SystemExit('AJAX navigation Joomla DB helper is missing')
+          if '$resolvedApp = $app ?? self::siteApplication();' not in navigation:
+              raise SystemExit('AJAX navigation bypasses centralized site application access')
+          if '$joomlaDatabase = self::joomlaDatabase($database, $resolvedApp);' not in navigation:
+              raise SystemExit('AJAX navigation bypasses centralized Joomla DB access')
+          if navigation.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('AJAX navigation should resolve the site application only in its helper')
+          if navigation.count('$application->getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('AJAX navigation should have exactly one application-container DB access')
+          PY
