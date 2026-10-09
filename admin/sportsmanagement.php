@@ -57,7 +57,8 @@ if (str_contains($command, '.')) {
     [$type, $task] = array_pad(explode('.', $command, 2), 2, '');
 }
 
-$extensions = ExtensionLanguageHelper::forView($input->getCmd('view', ''));
+$activeView = $input->getCmd('view', 'cpanel');
+$extensions = ExtensionLanguageHelper::forView($activeView !== '' ? $activeView : 'cpanel');
 
 foreach ($extensions as $extensionName) {
     $extension = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
