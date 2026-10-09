@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 701
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Project/HtmlView.php'
+      - 'site/src/Legacy/TeamplanHtmlFacade.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch701.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Project/HtmlView.php'
+      - 'site/src/Legacy/TeamplanHtmlFacade.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch701.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Project/HtmlView.php
+            site/src/Legacy/TeamplanHtmlFacade.php
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          project = Path('admin/src/View/Project/HtmlView.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in project:
+              raise SystemExit('Project view Joomla DB helper is missing')
+          if 'self::joomlaDatabase()' not in project:
+              raise SystemExit('Project view bypasses centralized Joomla DB access')
+          if project.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Project view should have exactly one Joomla DB container access')
+
+          teamplan = Path('site/src/Legacy/TeamplanHtmlFacade.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in teamplan:
+              raise SystemExit('Teamplan legacy site application helper is missing')
+          if teamplan.count('Factory::getApplication()') != 1:
+              raise SystemExit('Teamplan legacy facade should call Factory::getApplication only in its helper')
+          if teamplan.count('self::siteApplication()->getInput()') != 2:
+              raise SystemExit('Teamplan legacy facade still bypasses centralized application access')
+
+          ranking = Path('modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in ranking:
+              raise SystemExit('Ranking module site application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in ranking:
+              raise SystemExit('Ranking module Joomla DB helper is missing')
+          if '$app = self::siteApplication();' not in ranking:
+              raise SystemExit('Ranking AJAX refresh bypasses centralized site application access')
+          if ranking.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
+              raise SystemExit('Ranking module should resolve the site application only in its helper')
+          if ranking.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Ranking module should have exactly one Joomla DB container access')
+          if ranking.count('self::joomlaDatabase()') != 2:
+              raise SystemExit('Ranking module should reuse centralized Joomla DB access twice')
+          PY
