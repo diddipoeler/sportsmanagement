@@ -122,6 +122,7 @@ final class RandomPlayerHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
+                . ' AND ' . $db->quoteName('p.season_id') . ' = ' . $db->quoteName('st.season_id')
             )
             ->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER)
             ->where($db->quoteName('st.season_id') . ' = :eligibleSeason')
@@ -191,6 +192,7 @@ final class RandomPlayerHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_project', 'p')
                 . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id')
+                . ' AND ' . $db->quoteName('p.season_id') . ' = ' . $db->quoteName('st.season_id')
             )
             ->join(
                 'INNER',
