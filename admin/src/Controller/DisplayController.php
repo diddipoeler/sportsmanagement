@@ -27,7 +27,9 @@ final class DisplayController extends BaseController
     public function display($cachable = false, $urlparams = [])
     {
         $input = $this->input;
-        $input->set('view', $input->getCmd('view', $this->default_view));
+        if ($input->getCmd('view', '') === '') {
+            $input->set('view', $this->default_view);
+        }
 
         return parent::display($cachable, $urlparams);
     }
