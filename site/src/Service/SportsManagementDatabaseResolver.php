@@ -106,7 +106,7 @@ final class SportsManagementDatabaseResolver
             return false;
         }
 
-        $expectedSerial = (string) $params->get('jsm_user_serialnumber', '');
+        $expectedSerial = trim((string) $params->get('jsm_user_serialnumber', ''));
         $actualSerial = $profileValue('jsmprofile.serialnumber');
 
         // Two missing serial numbers must never grant external database access.
