@@ -26,4 +26,13 @@ use Joomla\CMS\MVC\Controller\BaseController;
 final class DisplayController extends BaseController
 {
     protected $default_view = 'sportsmanagement';
+
+    public function display($cachable = false, $urlparams = [])
+    {
+        if ($this->input->getCmd('view', '') === '') {
+            $this->input->set('view', $this->default_view);
+        }
+
+        return parent::display($cachable, $urlparams);
+    }
 }
