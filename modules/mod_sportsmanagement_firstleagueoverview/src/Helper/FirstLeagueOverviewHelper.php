@@ -64,7 +64,6 @@ final class FirstLeagueOverviewHelper
                 $db->quoteName('c.name', 'country_name'),
                 $db->quoteName('c.picture', 'country_picture'),
                 $db->quoteName('c.federation'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join(
@@ -101,6 +100,11 @@ final class FirstLeagueOverviewHelper
             }
 
             $seenLeagues[$leagueId] = true;
+            // Build the Joomla ID:alias slug in PHP instead of relying on
+            // a database-specific CONCAT_WS expression.
+            $row->project_slug = $leagueId > 0
+                ? (int) $row->id . ':' . (string) ($row->alias ?? '')
+                : (string) (int) $row->id;
             $projects[] = $row;
         }
 
