@@ -77,6 +77,7 @@ final class FirstLeagueOverviewHelper
                 $db->quoteName('#__sportsmanagement_countries', 'c')
                 . ' ON ' . $db->quoteName('c.alpha3') . ' = ' . $db->quoteName('l.country')
             )
+            ->where($db->quoteName('p.published') . ' = 1')
             ->where($db->quoteName('l.champions_complete') . ' = :championsComplete')
             ->bind(':championsComplete', $championsComplete, ParameterType::INTEGER)
             ->whereIn($db->quoteName('l.league_level'), $leagueLevels, ParameterType::INTEGER)
