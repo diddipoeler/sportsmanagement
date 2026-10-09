@@ -98,11 +98,11 @@ final class SportsManagementDatabaseResolver
                 : $raw;
         };
 
-        // User-profile values may be JSON-encoded; only explicit true/1 grants access.
-        $rawAccess = $profileValue('jsmprofile.databaseaccess');
-        $decodedAccess = json_decode($rawAccess, true);
+        // Treat JSON booleans and the common plain-text representations
+        // consistently, but never grant access for "false" or other strings.
+        $accessEnabled = strtolower($profileValue('jsmprofile.databaseaccess'));
 
-        if (!in_array($decodedAccess, [true, 1, '1'], true)) {
+        if (!in_array($accessEnabled, ['1', 'true'], true)) {
             return false;
         }
 
