@@ -161,7 +161,10 @@ final class ClubBirthdayHelper
 
             $birth = DateTimeImmutable::createFromFormat('!Y-m-d', (string) $row->founded, $timezone);
 
-            if (!$birth instanceof DateTimeImmutable) {
+            // DateTimeImmutable normalises impossible dates instead of rejecting them.
+            if (!$birth instanceof DateTimeImmutable
+                || $birth->format('Y-m-d') !== (string) $row->founded
+                || (int) $birth->format('Y') <= 0) {
                 continue;
             }
 
