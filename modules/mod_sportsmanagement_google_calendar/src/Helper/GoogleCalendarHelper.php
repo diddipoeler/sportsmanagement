@@ -104,7 +104,8 @@ final class GoogleCalendarHelper
             return $event->startDate->format($startDateFormat, true);
         }
 
-        if ($event->startDate->dayofyear == $event->endDate->dayofyear) {
+        if ($event->startDate->format('Y-m-d') === $event->endDate->format('Y-m-d')
+            && isset($event->start->dateTime, $event->end->dateTime)) {
             return $event->startDate->format($startDateFormat, true)
                 . ' - ' . $event->endDate->format('H:i', true);
         }
