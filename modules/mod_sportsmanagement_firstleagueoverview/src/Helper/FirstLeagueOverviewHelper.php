@@ -178,8 +178,12 @@ final class FirstLeagueOverviewHelper
             return '';
         }
 
+        $url = preg_match('#^https?://#i', $path)
+            ? $path
+            : rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+
         return '<img src="'
-            . htmlspecialchars(rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/'), ENT_QUOTES, 'UTF-8')
+            . htmlspecialchars($url, ENT_QUOTES, 'UTF-8')
             . '" alt="' . $label . '" title="' . $label . '" loading="lazy" />';
     }
 }
