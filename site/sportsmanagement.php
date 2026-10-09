@@ -137,12 +137,12 @@ if ($document instanceof HtmlDocument) {
 $command = $input->get('task', 'display');
 $filter = InputFilter::getInstance();
 
-if (is_array($command)) {
-    $keys = array_keys($command);
-    $command = $filter->clean((string) array_pop($keys), 'cmd');
-} else {
-    $command = $filter->clean((string) $command, 'cmd');
+// Controller tasks must be scalar. Never interpret array keys as actions.
+if (!is_string($command) && !is_numeric($command)) {
+    throw new \InvalidArgumentException('Invalid SportsManagement controller task.', 400);
 }
+
+$command = $filter->clean((string) $command, 'cmd');
 
 $type = '';
 $task = $command !== '' ? $command : 'display';
