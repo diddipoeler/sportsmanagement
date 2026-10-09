@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 700
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Statistics/HtmlView.php'
+      - 'site/src/Helper/MatchCommentsHelper.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch700.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Statistics/HtmlView.php'
+      - 'site/src/Helper/MatchCommentsHelper.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php'
+      - '.github/workflows/joomla5-6-compatibility-batch700.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Statistics/HtmlView.php
+            site/src/Helper/MatchCommentsHelper.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          statistics = Path('admin/src/View/Statistics/HtmlView.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in statistics:
+              raise SystemExit('Statistics administrator application helper is missing')
+          if 'self::administratorApplication()' not in statistics:
+              raise SystemExit('Statistics view bypasses centralized administrator application access')
+          if statistics.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Statistics view should resolve the administrator application only in its helper')
+
+          comments = Path('site/src/Helper/MatchCommentsHelper.php').read_text()
+          if 'private static function siteApplication(): SiteApplication' not in comments:
+              raise SystemExit('Match comments site application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in comments:
+              raise SystemExit('Match comments Joomla DB helper is missing')
+          if comments.count('Factory::getContainer()->get(SiteApplication::class)') != 1:
+              raise SystemExit('Match comments should have exactly one SiteApplication container access')
+          if comments.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Match comments should have exactly one Joomla DB container access')
+          if comments.count('self::siteApplication()') != 1:
+              raise SystemExit('Match comments should reuse centralized site application access')
+          if comments.count('self::joomlaDatabase()') != 1:
+              raise SystemExit('Match comments should reuse centralized Joomla DB access')
+
+          navigation = Path('modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in navigation:
+              raise SystemExit('AJAX top navigation Joomla DB helper is missing')
+          if '$database = self::joomlaDatabase();' not in navigation:
+              raise SystemExit('AJAX top navigation bypasses centralized Joomla DB access')
+          if navigation.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('AJAX top navigation should have exactly one Joomla DB container access')
+          PY
