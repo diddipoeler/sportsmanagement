@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Legacy;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -30,6 +31,11 @@ use Joomla\Database\DatabaseInterface;
  */
 final class TeamplanHtmlFacade
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return Factory::getApplication();
+    }
+
     public static $project = null;
     public static array $teams = [];
 
@@ -366,7 +372,7 @@ final class TeamplanHtmlFacade
         $toolTipText = (string) ($playground->name ?? '') . '&lt;br /&gt;'
             . (string) ($playground->address ?? '') . '&lt;br /&gt;'
             . (string) ($playground->zipcode ?? '') . ' ' . (string) ($playground->city ?? '') . '&lt;br /&gt;';
-        $input = Factory::getApplication()->getInput();
+        $input = self::siteApplication()->getInput();
         $slug = (string) ($game->playground_slug ?? '');
         if ($slug === '' && !empty($playground->id)) {
             $slug = $playground->id . ':' . ($playground->alias ?? '');
@@ -478,7 +484,7 @@ final class TeamplanHtmlFacade
         if (empty($config['show_division_link'])) {
             return $label;
         }
-        $input = Factory::getApplication()->getInput();
+        $input = self::siteApplication()->getInput();
         $project = self::$project;
         $link = SiteRouteHelper::view('ranking', [
             'cfg_which_database' => $input->getInt('cfg_which_database', 0),
