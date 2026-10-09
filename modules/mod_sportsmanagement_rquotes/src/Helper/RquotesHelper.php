@@ -183,7 +183,8 @@ final class RquotesHelper
 
     private function todayQuote(DatabaseInterface $db, array $categoryIds, CMSApplicationInterface $app): array
     {
-        $dayOfYear = (int) $this->now($app)->format('z');
+        // PHP's z is zero-based, while configured daily_number values are one-based.
+        $dayOfYear = (int) $this->now($app)->format('z') + 1;
         $rows = $this->quoteRows($db, $categoryIds, $dayOfYear);
         return $rows ?: $this->singleRandom($db, $categoryIds);
     }
