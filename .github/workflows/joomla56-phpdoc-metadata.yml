@@ -1,5 +1,6 @@
 name: Joomla 5/6 PHPDoc metadata
-on:
+
+'on':
   push:
     branches:
       - joomla5-6
@@ -10,30 +11,36 @@ on:
       - 'modules/**/*.php'
       - '.github/tests/phpdoc_metadata.php'
       - '.github/workflows/joomla56-phpdoc-metadata.yml'
+
 jobs:
   changed-phpdoc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-      - name: Check metadata for changed PHP files
+      - name: Check metadata and syntax of changed PHP files
         shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          mapfile -d '' php_files < <(git diff --name-only -z --diff-filter=ACMR HEAD^ HEAD -- site admin modules | grep -zE '\.php || true)
-          if (( ${#php_files[@]} )); then
-            php .github/tests/phpdoc_metadata.php "${php_files[@]}"
-            for file in "${php_files[@]}"; do php -l "$file"; done
-          else
-            echo "No changed PHP files."
+          set -euo pipefail
+          if [[ "$BASE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+            BASE_SHA=$(git rev-parse HEAD^)
           fi
- || true)
+          mapfile -d '' php_files < <(
+            git diff --name-only -z --diff-filter=ACMR "$BASE_SHA" HEAD -- site admin modules |
+              grep -zE '\.php$' || true
+          )
           if (( ${#php_files[@]} )); then
             php .github/tests/phpdoc_metadata.php "${php_files[@]}"
-            for file in "${php_files[@]}"; do php -l "$file"; done
+            for file in "${php_files[@]}"; do
+              php -l "$file"
+            done
           else
             echo "No changed PHP files."
           fi
