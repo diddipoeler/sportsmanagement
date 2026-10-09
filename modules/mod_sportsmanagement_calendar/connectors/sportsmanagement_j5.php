@@ -497,14 +497,20 @@ final class SportsmanagementConnector extends JSMCalendar
         return $app;
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private static function database(): DatabaseInterface
     {
-        $app = self::siteApplication();
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        self::siteApplication();
         $selector = (int) self::$xparams->get('cfg_which_database', 0) === 1 ? 1 : 0;
 
-        return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
     }
 
     private static function normaliseIds(mixed $values): array
