@@ -33,11 +33,13 @@ final class SportsManagementDatabaseResolver
 
         try {
             $external = self::connectExternal($params);
+
+            // A connection can succeed while the entitlement query fails
+            // (missing profile table, permissions or unreachable server).
+            return self::hasExternalAccess($external, $params) ? $external : $joomlaDatabase;
         } catch (\Throwable) {
             return $joomlaDatabase;
         }
-
-        return self::hasExternalAccess($external, $params) ? $external : $joomlaDatabase;
     }
 
     private static function connectExternal(Registry $params): DatabaseInterface
