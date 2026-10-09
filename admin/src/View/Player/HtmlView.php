@@ -100,15 +100,13 @@ final class HtmlView extends BaseHtmlView
         $this->lists['ext_fields'] = [];
 
         if ($playerId > 0) {
-            /** @var DatabaseInterface $joomlaDatabase */
-            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
             $databaseSelector = $input->getInt(
                 'cfg_which_database',
                 (int) $app->getUserState($this->option . '.cfg_which_database', 0)
             );
             $database = (new SportsManagementDatabaseResolver())->resolve(
                 $databaseSelector,
-                $joomlaDatabase
+                self::joomlaDatabase()
             );
 
             $this->lists['ext_fields'] = (new ExtraFieldsReadHelper())->getFields(
@@ -148,6 +146,14 @@ final class HtmlView extends BaseHtmlView
 
         $this->addToolbar();
         parent::display($tpl);
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
     }
 
     private static function administratorApplication(): AdministratorApplication
