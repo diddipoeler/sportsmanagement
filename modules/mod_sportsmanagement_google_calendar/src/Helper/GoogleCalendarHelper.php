@@ -88,7 +88,22 @@ final class GoogleCalendarHelper
             return [];
         }
 
-        return array_map([$this, 'prepareEvent'], $data->items);
+        $events = [];
+
+        foreach ($data->items as $event) {
+            if (!is_object($event)) {
+                continue;
+            }
+
+            try {
+                $events[] = $this->prepareEvent($event);
+            } catch (\UnexpectedValueException) {
+                // One malformed remote event must not hide the remaining events.
+                continue;
+            }
+        }
+
+        return $events;
     }
 
     public static function duration(object $event): string
