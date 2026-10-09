@@ -26,10 +26,6 @@ final class ExtensionLanguageHelper
             return [];
         }
 
-        if ($view === '') {
-            return [];
-        }
-
         $path = JPATH_SITE . '/components/com_sportsmanagement/extensions/' . $view;
 
         return is_dir($path) ? [$view] : [];
