@@ -25,7 +25,6 @@ jobs:
       - name: Check metadata and syntax of changed PHP files
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           set -euo pipefail
@@ -34,7 +33,8 @@ jobs:
           fi
           mapfile -d '' php_files < <(
             git diff --name-only -z --diff-filter=ACMR "$BASE_SHA" HEAD -- site admin modules |
-              grep -zE '\.php$' || true
+              grep -zE '\.php
+ || true
           )
           if (( ${#php_files[@]} )); then
             php .github/tests/phpdoc_metadata.php "${php_files[@]}"
@@ -43,4 +43,11 @@ jobs:
             done
           else
             echo "No changed PHP files."
+          fi
+          # Changes to the validator itself must be checked even if no
+          # site/admin/module PHP file changed in this push.
+          if git diff --quiet "$BASE_SHA" HEAD -- .github/tests/phpdoc_metadata.php; then
+            echo "PHPDoc validator unchanged."
+          else
+            php -l .github/tests/phpdoc_metadata.php
           fi
