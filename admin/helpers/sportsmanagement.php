@@ -14,6 +14,7 @@
  */
 \defined('_JEXEC') or die;
 use Joomla\Data\DataObject;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Version;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -80,6 +81,11 @@ use Joomla\Database\ParameterType;
  */
 abstract class sportsmanagementHelper
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return Factory::getApplication();
+    }
+
 	static $latitude = '';
 	static $longitude = '';
 	static $_jsm_db = '';
@@ -263,7 +269,7 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 	$extension = 'com_sportsmanagement';
 	// get the transaction details for use in the log for easy reference
         //$tran = MycomponentHelper::getTransaction($tran_id);
-        $con_type = Factory::getApplication()->input->getCmd('view', 'cpanel');
+        $con_type = self::administratorApplication()->input->getCmd('view', 'cpanel');
         if ($id === 0) { $type = Text::_('JTOOLBAR_NEW'); } else { $type = Text::_('JLIB_INSTALLER_UPDATE'); }
 
 		$message = array();
@@ -399,7 +405,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '',$modalWidth = '80', $body = '')
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 		$jinput = $app->input;
 		
 		
@@ -492,7 +498,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function existPicture($picture = '', $standard = '')
 	{
-		$app        = Factory::getApplication();
+		$app        = self::administratorApplication();
 		$imageArray = '';
 
 		if (!File::exists($picture))
@@ -519,7 +525,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function setDebugInfoText($methode, $funktion, $klasse, $zeile, $text)
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		// Create an object for the record we are going to update.
 		$object = new stdClass;
@@ -569,7 +575,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getMatchContent($content_id)
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		// Create a new query object.
 		$db    = self::getDBConnection();
@@ -717,7 +723,7 @@ var <?php echo $placeholder; ?> = new Array;
 			$date = 'now';
 		}
 
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		try
 		{
@@ -755,7 +761,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getMatchDate($match, $format = 'Y-m-d')
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		try
 		{
@@ -779,7 +785,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getMatchTime($match, $format = 'H:i')
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		try
 		{
@@ -804,7 +810,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getMatchEndTimestamp($match, $totalMatchDuration, $format = 'Y-m-d H:i')
 	{
-		$app          = Factory::getApplication();
+		$app          = self::administratorApplication();
 		$endTimestamp = "xxxx-xx-xx xx:xx";
 
 		try
@@ -834,7 +840,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getMatchStartTimestamp($match, $format = 'Y-m-d H:i')
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		try
 		{
@@ -874,7 +880,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function convertMatchDateToTimezone(&$match)
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		// Get some system objects.
 		$config = Factory::getConfig();
@@ -886,7 +892,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 			if ($match->match_date > 0)
 			{
-				$app = Factory::getApplication();
+				$app = self::administratorApplication();
 
 				if ($app->isClient('administrator'))
 				{
@@ -934,7 +940,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function isJoomlaVersion($version = '2.5')
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
@@ -1159,7 +1165,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getActions($messageId = 0)
 	{
-		$user   = Factory::getApplication()->getIdentity();
+		$user   = self::administratorApplication()->getIdentity();
 		$result = new CMSObject;
 
 		if (empty($messageId))
@@ -1194,7 +1200,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function getExtendedStatistic($data = '', $file = '', $format = 'ini')
 	{
-		$app          = Factory::getApplication();
+		$app          = self::administratorApplication();
 		$templatepath = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'statistics';
 		$xmlfile      = $templatepath . DIRECTORY_SEPARATOR . $file . '.xml';
 		$extended     = Form::getInstance('params', $xmlfile, array('control' => 'params'), false, '/config');
@@ -1215,7 +1221,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function getExtended($data = '', $file = '', $format = 'ini', $frontend = false)
 	{
-		$app     = Factory::getApplication();
+		$app     = self::administratorApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extended' . DIRECTORY_SEPARATOR . $file . '.xml';
 		/**
 		 * extended data
@@ -1247,7 +1253,7 @@ var <?php echo $placeholder; ?> = new Array;
 			{
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+				self::administratorApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
 				return false;
 			}
@@ -1269,7 +1275,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function getExtendedUser($data = '', $file = '', $format = 'ini')
 	{
-		$app     = Factory::getApplication();
+		$app     = self::administratorApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'extendeduser' . DIRECTORY_SEPARATOR . $file . '.xml';
 
 		/*
@@ -1296,7 +1302,7 @@ var <?php echo $placeholder; ?> = new Array;
 			{
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns
-				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
+				self::administratorApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 			}
 		}
 		else
@@ -1617,13 +1623,13 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function addTemplatePaths($templatesToLoad, &$view)
 	{
-		$jinput     = Factory::getApplication()->input;
+		$jinput     = self::administratorApplication()->input;
 		$extensions = self::getExtensions($jinput->getInt('p'));
 
 		foreach ($templatesToLoad as $template)
 		{
 			$view->addTemplatePath(JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . $template . DIRECTORY_SEPARATOR . 'tmpl');
-			$view->addTemplatePath(JPATH_THEMES . '/' . Factory::getApplication()->getTemplate() . '/html/com_sportsmanagement/' . $template);
+			$view->addTemplatePath(JPATH_THEMES . '/' . self::administratorApplication()->getTemplate() . '/html/com_sportsmanagement/' . $template);
 			
 			if (is_array($extensions) && count($extensions) > 0)
 			{
@@ -1648,7 +1654,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getExtensions()
 	{
-		$app              = Factory::getApplication();
+		$app              = self::administratorApplication();
 		$jinput           = $app->input;
 		$option           = 'com_sportsmanagement';
 		$view             = $jinput->get('view');
@@ -1749,7 +1755,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function formatTeamName($team, $containerprefix, &$config, $isfav = 0, $link = null, $cfg_which_database = 0)
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		$output = '';
 		$desc   = '';
@@ -1866,7 +1872,7 @@ var <?php echo $placeholder; ?> = new Array;
 			return false;
 		}
 
-		$databaseSelector = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+		$databaseSelector = self::administratorApplication()->input->getInt('cfg_which_database', 0);
 		$db = self::getDBConnection(true, $databaseSelector);
 		$query = $db->createQuery()
 			->select(array(
@@ -1899,7 +1905,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function showTeamIcons(&$team, &$config, $cfg_which_database = 0, $s = 0)
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $default_width = 20;
@@ -2332,7 +2338,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function showColorsLegend($colors, $divisions = null)
 	{
-		$jinput  = Factory::getApplication()->input;
+		$jinput  = self::administratorApplication()->input;
 		$favshow = $jinput->getString('func', '');
 
 		if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team))
@@ -2657,8 +2663,8 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function printbutton($print_link, &$config)
 	{
-		$jinput = Factory::getApplication()->input;
-		$app    = Factory::getApplication();
+		$jinput = self::administratorApplication()->input;
+		$app    = self::administratorApplication();
 
 		if ($config['show_print_button'] == 1)
 		{
@@ -2723,7 +2729,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function ToolbarButton($layout = null, $icon_image = 'upload', $alt_text = 'My Label', $view = '', $type = 0, $issueview = null, $issuelayout = null)
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 
@@ -2773,7 +2779,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function ToolbarButtonOnlineHelp()
 	{
-		$app      = Factory::getApplication();
+		$app      = self::administratorApplication();
 		$jinput   = $app->input;
 		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
@@ -2823,7 +2829,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getRoundsOptions($project_id, $ordering = 'ASC', $required = false, $round_ids = null, $cfg_which_database = 0)
 	{
-		$app   = Factory::getApplication();
+		$app   = self::administratorApplication();
 		$db    = self::getDBConnection(true, $cfg_which_database);
 		$query = $db->getQuery(true);
 
@@ -2933,7 +2939,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getExtraSelectOptions($view = '', $field = '', $template = false, $fieldtyp = 0)
 	{
-		$app            = Factory::getApplication();
+		$app            = self::administratorApplication();
 		$jinput         = $app->input;
 		$option         = $jinput->getCmd('option');
 		$select_columns = array();
@@ -3008,7 +3014,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0, $template_name = 'clubinfo')
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = self::getDBConnection();
@@ -3033,8 +3039,8 @@ var <?php echo $placeholder; ?> = new Array;
 		}
 		catch (Exception $e)
 		{
-            Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+            self::administratorApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			self::administratorApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 			return false;
 		}
 	}
@@ -3051,7 +3057,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0,$template_name = 'clubinfo')
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$db     = self::getDBConnection();
 		$query  = $db->getQuery(true);
@@ -3074,8 +3080,8 @@ var <?php echo $placeholder; ?> = new Array;
 			}
 			catch (Exception $e)
 			{
-				Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
-			Factory::getApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
+				self::administratorApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), 'error');
+			self::administratorApplication()->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				return $result;
 			}
 		}
@@ -3095,7 +3101,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function saveExtraFields($post, $pid)
 	{
-		$app           = Factory::getApplication();
+		$app           = self::administratorApplication();
 		$address_parts = array();
 		$db            = self::getDBConnection();
 
@@ -3184,7 +3190,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function resolveLocation($address)
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$coords = array();
 		$data   = self::getAddressData($address);
 
@@ -3242,7 +3248,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getAddressData($address)
 	{
-		$app     = Factory::getApplication();
+		$app     = self::administratorApplication();
 		$url     = 'http://maps.google.com/maps/api/geocode/json?' . 'address=' . urlencode($address) . '&sensor=false&language=de';
 		$content = self::getContent($url);
 
@@ -3293,7 +3299,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 			if ($curl_errno != 0)
 			{
-				$app = Factory::getApplication();
+				$app = self::administratorApplication();
 				$err = 'CURL error : ' . $curl_errno . ' ' . $curl_error;
 				$app->enqueueMessage($err, 'error');
 			}
@@ -3344,7 +3350,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function getPictureClub($id)
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = self::getDBConnection();
@@ -3378,7 +3384,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function getPicturePlayground($id)
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$db     = self::getDBConnection();
@@ -3412,7 +3418,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function getArticleList($project_category_id)
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$result = array();
@@ -3614,7 +3620,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function checkUpdateVersion()
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 		$currentVersion = self::getVersion();
 		$url = 'https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml';
 
@@ -3819,7 +3825,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	function get_IP_address()
 	{
-		$app = Factory::getApplication();
+		$app = self::administratorApplication();
 
 		foreach (array('HTTP_CLIENT_IP',
 			         'HTTP_X_FORWARDED_FOR',
@@ -4115,7 +4121,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 		if (!$project_id)
 		{
-			$app        = Factory::getApplication();
+			$app        = self::administratorApplication();
 			$project_id = $app->getUserState($option . 'project', 0);
 		}
 
@@ -4164,7 +4170,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public function getOSMGeoCoords($address)
 	{
-		$app    = Factory::getApplication();
+		$app    = self::administratorApplication();
 		$coords = array();
 
 		// Call OSM geoencoding api
