@@ -278,12 +278,21 @@ final class RandomPlayerHelper
 
     private function normaliseIds(mixed $value): array
     {
-        $values = is_array($value)
-            ? $value
-            : (is_scalar($value) ? preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) : []);
+        $values = is_array($value) ? $value : [$value];
         $ids = [];
 
-        foreach ((array) $values as $candidate) {
+        // Both scalar and multiselect parameters may contain delimited IDs.
+        $candidates = [];
+        foreach ($values as $entry) {
+            if (!is_scalar($entry)) {
+                continue;
+            }
+            foreach (preg_split('/[\s,;]+/', (string) $entry, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $candidate) {
+                $candidates[] = $candidate;
+            }
+        }
+
+        foreach ($candidates as $candidate) {
             if (is_scalar($candidate) && preg_match('/^\s*(\d+)(?::[A-Za-z0-9_-]+)?\s*$/', (string) $candidate, $match)) {
                 $id = (int) $match[1];
 
