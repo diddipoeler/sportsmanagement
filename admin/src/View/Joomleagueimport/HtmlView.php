@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Joomleagueim
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
 
@@ -25,9 +26,14 @@ use Joomla\CMS\Router\Route;
  */
 final class HtmlView extends BaseHtmlView
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public function display($tpl = null)
     {
-        $app = SportsManagementAdministratorApplicationResolver::resolve();
+        $app = self::administratorApplication();
         $app->redirect(
             Route::_('index.php?option=com_sportsmanagement&view=joomleagueimports&layout=default', false)
         );
