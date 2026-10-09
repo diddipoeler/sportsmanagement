@@ -219,6 +219,8 @@ final class RandomPlayerHelper
                 $db->quoteName('#__sportsmanagement_countries', 'co')
                 . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('ps.country')
             )
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->where($db->quoteName('ps.published') . ' = 1')
             ->where($db->quoteName('pt.id') . ' = :projectTeamId')
             ->where($db->quoteName('pt.project_id') . ' = :projectId')
             ->where($db->quoteName('tp.season_id') . ' = :playerSeasonId')
