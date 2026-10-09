@@ -83,7 +83,8 @@ final class FirstLeagueOverviewHelper
             ->order([
                 $db->quoteName('l.country') . ' ASC',
                 $db->quoteName('l.name') . ' ASC',
-                $db->quoteName('p.name') . ' DESC',
+                // A project name is not a reliable indication of recency.
+                $db->quoteName('p.season_id') . ' DESC',
                 $db->quoteName('p.id') . ' DESC',
             ]);
 
