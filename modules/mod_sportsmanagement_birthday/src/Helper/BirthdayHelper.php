@@ -222,7 +222,11 @@ final class BirthdayHelper
     private function date(string $value, \DateTimeZone $timezone): ?\DateTimeImmutable
     {
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d', trim($value), $timezone);
-        return $date instanceof \DateTimeImmutable ? $date : null;
+        // PHP normalises invalid calendar dates (for example 2025-02-31).
+        // Reject those instead of displaying a birthday on the wrong day.
+        return $date instanceof \DateTimeImmutable && $date->format('Y-m-d') === trim($value)
+            ? $date
+            : null;
     }
 
     private function nextBirthday(\DateTimeImmutable $birth, \DateTimeImmutable $today): \DateTimeImmutable
