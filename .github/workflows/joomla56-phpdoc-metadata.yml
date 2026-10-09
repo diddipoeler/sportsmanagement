@@ -1,0 +1,32 @@
+name: Joomla 5/6 PHPDoc metadata
+on:
+  push:
+    branches:
+      - joomla5-6
+  pull_request:
+    paths:
+      - 'site/**/*.php'
+      - 'admin/**/*.php'
+      - 'modules/**/*.php'
+      - '.github/tests/phpdoc_metadata.php'
+      - '.github/workflows/joomla56-phpdoc-metadata.yml'
+jobs:
+  changed-phpdoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Check metadata for changed PHP files
+        shell: bash
+        run: |
+          mapfile -d '' php_files < <(git diff --name-only -z --diff-filter=ACMR HEAD^ HEAD -- site admin modules | grep -zE '\\.php$' || true)
+          if (( ${#php_files[@]} )); then
+            php .github/tests/phpdoc_metadata.php "${php_files[@]}"
+            for file in "${php_files[@]}"; do php -l "$file"; done
+          else
+            echo "No changed PHP files."
+          fi
