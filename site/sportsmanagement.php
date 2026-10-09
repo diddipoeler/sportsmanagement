@@ -61,6 +61,9 @@ if ($view === '') {
     $view = 'sportsmanagement';
 }
 
+// Keep the legacy bootstrap and the MVC dispatcher on the same view.
+$input->set('view', $view);
+
 LegacyBootstrap::bootForView($view);
 
 // Load the administrator country language file used by legacy site views.
