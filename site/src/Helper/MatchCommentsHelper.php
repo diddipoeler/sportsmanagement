@@ -28,6 +28,22 @@ use Joomla\Registry\Registry;
  */
 final class MatchCommentsHelper
 {
+    private static function siteApplication(): SiteApplication
+    {
+        /** @var SiteApplication $application */
+        $application = Factory::getContainer()->get(SiteApplication::class);
+
+        return $application;
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     private static ?bool $kunenaEnabled = null;
     private static ?bool $jcommentsEnabled = null;
     private static bool $kunenaItemResolved = false;
@@ -63,8 +79,7 @@ final class MatchCommentsHelper
             return '';
         }
 
-        /** @var DatabaseInterface $db */
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db = self::joomlaDatabase();
         $itemId = self::getKunenaItemId($db);
         $homeName = trim(strip_tags((string) ($homeTeam->name ?? '')));
         $awayName = trim(strip_tags((string) ($awayTeam->name ?? '')));
@@ -105,8 +120,7 @@ final class MatchCommentsHelper
         $eventName = self::$separateComments ? 'onMatchReportComments' : 'onMatchComments';
         $comments = [];
         $title = trim((string) ($homeTeam->name ?? '') . ' - ' . (string) ($awayTeam->name ?? ''));
-        /** @var SiteApplication $app */
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        $app = self::siteApplication();
         $results = $app->triggerEvent($eventName, [$match, $title, &$comments]);
 
         $output = [];
