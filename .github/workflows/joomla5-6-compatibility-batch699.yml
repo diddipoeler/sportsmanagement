@@ -1,0 +1,82 @@
+name: Joomla 5/6 compatibility batch 699
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/View/Joomleagueimport/HtmlView.php'
+      - 'site/src/Legacy/RankingLegacyHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
+      - '.github/workflows/joomla5-6-compatibility-batch699.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/View/Joomleagueimport/HtmlView.php'
+      - 'site/src/Legacy/RankingLegacyHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
+      - '.github/workflows/joomla5-6-compatibility-batch699.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate Joomla 5/6 compatibility
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          files=(
+            admin/src/View/Joomleagueimport/HtmlView.php
+            site/src/Legacy/RankingLegacyHelper.php
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+          done
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          admin = Path('admin/src/View/Joomleagueimport/HtmlView.php').read_text()
+          if 'private static function administratorApplication(): CMSApplicationInterface' not in admin:
+              raise SystemExit('Joomleagueimport administrator application helper is missing')
+          if '$app = self::administratorApplication();' not in admin:
+              raise SystemExit('Joomleagueimport view bypasses centralized administrator application access')
+          if admin.count('SportsManagementAdministratorApplicationResolver::resolve()') != 1:
+              raise SystemExit('Joomleagueimport should resolve the administrator application only in its helper')
+
+          ranking = Path('site/src/Legacy/RankingLegacyHelper.php').read_text()
+          if 'private static function siteApplication(): CMSApplicationInterface' not in ranking:
+              raise SystemExit('Ranking legacy application helper is missing')
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in ranking:
+              raise SystemExit('Ranking legacy Joomla DB helper is missing')
+          if 'self::siteApplication()->getInput()->getCmd' not in ranking:
+              raise SystemExit('Ranking legacy helper bypasses centralized application access')
+          if 'self::joomlaDatabase(),' not in ranking:
+              raise SystemExit('Ranking legacy helper bypasses centralized Joomla DB access')
+          if ranking.count('Factory::getApplication()') != 1:
+              raise SystemExit('Ranking legacy helper should call Factory::getApplication only in its helper')
+          if ranking.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Ranking legacy helper should have exactly one Joomla DB container access')
+
+          calendar = Path('modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php').read_text()
+          if 'private static function joomlaDatabase(): DatabaseInterface' not in calendar:
+              raise SystemExit('SportsManagement calendar connector Joomla DB helper is missing')
+          if 'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector)' not in calendar:
+              raise SystemExit('SportsManagement calendar connector bypasses centralized Joomla DB access')
+          if calendar.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('SportsManagement calendar connector should have exactly one Joomla DB container access')
+          PY
