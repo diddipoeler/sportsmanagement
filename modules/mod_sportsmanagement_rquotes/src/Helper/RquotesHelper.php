@@ -33,8 +33,9 @@ final class RquotesHelper
             'cfg_which_database',
             $componentParams->get('cfg_which_database', 0)
         );
+        $remotePictureServer = trim((string) $componentParams->get('cfg_which_database_server', ''));
         $pictureServer = $databaseSelector
-            ? rtrim((string) $componentParams->get('cfg_which_database_server', ''), '/') . '/'
+            ? ($remotePictureServer !== '' ? rtrim($remotePictureServer, '/') . '/' : '')
             : Uri::root();
 
         if ($source === 'text') {
