@@ -80,7 +80,7 @@ final class GoogleCalendarHelper
 
         $data = json_decode($body);
 
-        if (!$data) {
+        if (json_last_error() !== JSON_ERROR_NONE || !is_object($data)) {
             throw new \UnexpectedValueException('Unexpected data received from Google Calendar.');
         }
 
