@@ -38,7 +38,8 @@ foreach ($arguments as $path) {
     $absolutePath = realpath($root . '/' . $path);
     if ($absolutePath === false || !str_starts_with($absolutePath, $root . DIRECTORY_SEPARATOR)
         || !is_file($absolutePath)) {
-        continue; // A deleted file does not need validation.
+        $errors[] = "$path: PHP file could not be found or is outside the repository";
+        continue;
     }
     ++$checked;
     $source = file_get_contents($absolutePath);
