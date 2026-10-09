@@ -42,7 +42,7 @@ foreach ($arguments as $path) {
     }
     ++$checked;
     $source = file_get_contents($absolutePath);
-    if ($source === false || !preg_match('/^\\xEF?\\xBB?\\xBF?<\\?php\\s*\\/\\*\\*(.*?)\\*\\//s', $source, $match)) {
+    if ($source === false || !preg_match('/^(?:\\xEF\\xBB\\xBF)?<\\?php\\s*\\/\\*\\*(.*?)\\*\\//s', $source, $match)) {
         $errors[] = "$path: missing file-level PHPDoc block";
         continue;
     }
@@ -55,5 +55,5 @@ foreach ($arguments as $path) {
 foreach ($errors as $error) {
     fwrite(STDERR, $error . PHP_EOL);
 }
-printf("Checked %d PHP files in site/, admin/, modules/: %d problems.\\n", $checked, count($errors));
+printf("Checked %d PHP files in site/, admin/, modules/: %d problems.\n", $checked, count($errors));
 exit($errors === [] ? 0 : 1);
