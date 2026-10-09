@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Legacy;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
@@ -26,6 +27,19 @@ use Joomla\Database\DatabaseInterface;
  */
 final class RankingLegacyHelper
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return Factory::getApplication();
+    }
+
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     /** Public names intentionally mirror sportsmanagementHelper for extensions. */
     public static array $_tips = [];
     public static array $_warnings = [];
@@ -33,18 +47,15 @@ final class RankingLegacyHelper
 
     public static function getDBConnection($request = false, $value = false): DatabaseInterface
     {
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-
         return SportsManagementDatabaseResolver::resolve(
-            $joomlaDatabase,
+            self::joomlaDatabase(),
             (int) $value === 1 ? 1 : 0
         );
     }
 
     public static function getExtensions($projectId = 0): array
     {
-        $view = Factory::getApplication()->getInput()->getCmd('view', '');
+        $view = self::siteApplication()->getInput()->getCmd('view', '');
         if ($view === '' || preg_match('/^[A-Za-z0-9_-]+$/', $view) !== 1) {
             return [];
         }
