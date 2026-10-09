@@ -125,9 +125,12 @@ final class FirstLeagueOverviewHelper
 
         $result = [];
         foreach ($db->loadObjectList() ?: [] as $row) {
-            $row->picture_url = trim((string) ($row->picture ?? '')) !== ''
-                ? rtrim((string) Uri::root(), '/') . '/' . ltrim((string) $row->picture, '/')
-                : '';
+            $picture = trim((string) ($row->picture ?? ''));
+            $row->picture_url = $picture === ''
+                ? ''
+                : (preg_match('#^https?://#i', $picture)
+                    ? $picture
+                    : rtrim((string) Uri::root(), '/') . '/' . ltrim($picture, '/'));
             $result[(int) $row->id] = $row;
         }
 
