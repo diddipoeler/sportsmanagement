@@ -299,6 +299,11 @@ final class RquotesHelper
             return $path;
         }
 
+        // An empty external media server must not produce a root-relative URL.
+        if (trim($pictureServer) === '') {
+            return '';
+        }
+
         return rtrim($pictureServer, '/') . '/' . ltrim($path, '/');
     }
 
