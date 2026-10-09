@@ -25,6 +25,25 @@ use Joomla\Registry\Registry;
 
 final class NavigationDataHelper
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
+    private static function joomlaDatabase(
+        ?DatabaseInterface $database,
+        CMSApplicationInterface $application
+    ): DatabaseInterface {
+        if ($database !== null) {
+            return $database;
+        }
+
+        /** @var DatabaseInterface $database */
+        $database = $application->getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
     public static $_project_id = 0;
     public static $_country_fed = [];
     public static $query_getFederations = '';
@@ -68,7 +87,7 @@ final class NavigationDataHelper
         $this->_params = $params instanceof Registry ? $params : new Registry($params);
 
         /** @var CMSApplicationInterface $resolvedApp */
-        $resolvedApp = $app ?? SportsManagementSiteApplicationResolver::resolve();
+        $resolvedApp = $app ?? self::siteApplication();
 
         if (!$resolvedApp->isClient('site')) {
             throw new \RuntimeException('SportsManagement AJAX navigation data requires the Joomla site application.', 500);
@@ -76,8 +95,7 @@ final class NavigationDataHelper
 
         $this->_app = $resolvedApp;
 
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = $database ?? $resolvedApp->getContainer()->get(DatabaseInterface::class);
+        $joomlaDatabase = self::joomlaDatabase($database, $resolvedApp);
         $input = $this->_app->getInput();
         $selector = $input->getInt(
             'cfg_which_database',
