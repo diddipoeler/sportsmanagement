@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Statistics;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\StatisticsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -21,6 +22,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /** Native Joomla 5/6 administrator list view for statistic definitions. */
 final class HtmlView extends BaseHtmlView
 {
+    private static function administratorApplication(): CMSApplicationInterface
+    {
+        return SportsManagementAdministratorApplicationResolver::resolve();
+    }
+
     public array $items = [];
     public $pagination;
     public $state;
@@ -45,7 +51,7 @@ final class HtmlView extends BaseHtmlView
 
     private function buildFilters(): void
     {
-        $factory = SportsManagementAdministratorApplicationResolver::resolve()
+        $factory = self::administratorApplication()
             ->bootComponent('com_sportsmanagement')
             ->getMVCFactory();
         $sportstypesModel = $factory->createModel('Sportstypes', 'Administrator');
