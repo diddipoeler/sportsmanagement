@@ -86,6 +86,14 @@ abstract class sportsmanagementHelper
         return Factory::getApplication();
     }
 
+    private static function joomlaDatabase(): DatabaseInterface
+    {
+        /** @var DatabaseInterface $database */
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return $database;
+    }
+
 	static $latitude = '';
 	static $longitude = '';
 	static $_jsm_db = '';
@@ -603,7 +611,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function getDBConnection($request = false, $value = false)
 	{
 		/** @var DatabaseInterface $joomlaDatabase */
-		$joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+		$joomlaDatabase = self::joomlaDatabase();
 		$params = ComponentHelper::getParams('com_sportsmanagement');
 
 		if (!(bool) $params->get('cfg_which_database', 0) && (int) $value !== 1)
@@ -3436,7 +3444,7 @@ var <?php echo $placeholder; ?> = new Array;
 		}
 
 		/** @var DatabaseInterface $db */
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 		$query = $db->createQuery()
 			->select(array(
 				$db->quoteName('c.id', 'value'),
@@ -3679,7 +3687,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function getVersion()
 	{
 		/** @var DatabaseInterface $db */
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = self::joomlaDatabase();
 		$element = 'com_sportsmanagement';
 		$query = $db->createQuery()
 			->select($db->quoteName('manifest_cache'))
