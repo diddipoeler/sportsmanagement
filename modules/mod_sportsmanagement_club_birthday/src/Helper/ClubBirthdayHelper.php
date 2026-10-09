@@ -291,6 +291,10 @@ final class ClubBirthdayHelper
         $ids = [];
 
         foreach ($values as $value) {
+            if (!is_scalar($value)) {
+                continue;
+            }
+
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
                 $id = (int) $part;
 
