@@ -23,7 +23,14 @@ jobs:
       - name: Check metadata for changed PHP files
         shell: bash
         run: |
-          mapfile -d '' php_files < <(git diff --name-only -z --diff-filter=ACMR HEAD^ HEAD -- site admin modules | grep -zE '\\.php$' || true)
+          mapfile -d '' php_files < <(git diff --name-only -z --diff-filter=ACMR HEAD^ HEAD -- site admin modules | grep -zE '\.php || true)
+          if (( ${#php_files[@]} )); then
+            php .github/tests/phpdoc_metadata.php "${php_files[@]}"
+            for file in "${php_files[@]}"; do php -l "$file"; done
+          else
+            echo "No changed PHP files."
+          fi
+ || true)
           if (( ${#php_files[@]} )); then
             php .github/tests/phpdoc_metadata.php "${php_files[@]}"
             for file in "${php_files[@]}"; do php -l "$file"; done
