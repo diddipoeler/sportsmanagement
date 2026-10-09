@@ -274,7 +274,7 @@ final class RandomPlayerHelper
         $ids = [];
 
         foreach ((array) $values as $candidate) {
-            if (is_scalar($candidate) && preg_match('/^\s*(\d+)/', (string) $candidate, $match)) {
+            if (is_scalar($candidate) && preg_match('/^\s*(\d+)(?::[A-Za-z0-9_-]+)?\s*$/', (string) $candidate, $match)) {
                 $id = (int) $match[1];
 
                 if ($id > 0) {
