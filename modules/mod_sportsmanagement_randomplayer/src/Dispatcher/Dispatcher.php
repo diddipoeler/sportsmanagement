@@ -31,8 +31,6 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
-        $data['params']->set('layout', 'native');
-
         $app = $this->getApplication();
 
         if (!$app->isClient('site')) {
@@ -46,6 +44,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $tag, true);
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
+
+        // The native layout consumes the structured player result returned by the helper.
+        $data['params']->set('layout', 'native');
 
         $database = $this->joomlaDatabase();
         $data['list'] = $this->getHelperFactory()
