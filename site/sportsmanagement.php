@@ -122,11 +122,15 @@ if ($projectId > 0) {
     }
 }
 
-$document->setMetaData('author', 'Dieter Ploeger');
-$document->setMetaData('revisit-after', '2 days');
-$document->setMetaData('robots', 'index,follow');
-$document->setMetaData('keywords', implode(',', array_unique($metaKeys)));
-$document->setMetaData('generator', 'JSM - Sports Management');
+// Non-HTML output (feeds, JSON or raw downloads) must not receive HTML
+// document metadata from the legacy frontend bootstrap.
+if ($document instanceof HtmlDocument) {
+    $document->setMetaData('author', 'Dieter Ploeger');
+    $document->setMetaData('revisit-after', '2 days');
+    $document->setMetaData('robots', 'index,follow');
+    $document->setMetaData('keywords', implode(',', array_unique($metaKeys)));
+    $document->setMetaData('generator', 'JSM - Sports Management');
+}
 
 $command = $input->get('task', 'display');
 $filter = InputFilter::getInstance();
