@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -23,6 +24,11 @@ use Joomla\CMS\Uri\Uri;
  */
 final class RoundPaginationHelper
 {
+    private static function siteApplication(): CMSApplicationInterface
+    {
+        return SportsManagementSiteApplicationResolver::resolve();
+    }
+
     public static string $nextlink = '';
     public static string $prevlink = '';
 
@@ -41,7 +47,7 @@ final class RoundPaginationHelper
             return '';
         }
 
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::siteApplication();
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
         $currentRoundId = $input->getInt('r', (int) ($project->current_round ?? 0));
@@ -155,7 +161,7 @@ final class RoundPaginationHelper
             return '';
         }
 
-        $input = SportsManagementSiteApplicationResolver::resolve()->getInput();
+        $input = self::siteApplication()->getInput();
         $params = self::buildBaseParams($project, $cfgWhichDatabase, $seasonId);
         $params['view'] = 'results';
         $params['layout'] = $layout;
@@ -218,7 +224,7 @@ final class RoundPaginationHelper
 
     private static function buildBaseParams($project, int $databaseSelector, int $seasonId): array
     {
-        $input = SportsManagementSiteApplicationResolver::resolve()->getInput();
+        $input = self::siteApplication()->getInput();
         $params = [
             'option' => $input->getCmd('option', 'com_sportsmanagement'),
             'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
