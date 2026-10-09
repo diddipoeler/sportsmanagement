@@ -166,16 +166,8 @@ $controller = $mvcFactory->createController(
     $input
 );
 
-if ($controller === null && $controllerName !== 'Display') {
-    $controller = $mvcFactory->createController(
-        'Display',
-        'Site',
-        $controllerConfig,
-        $app,
-        $input
-    );
-}
-
+// Do not silently dispatch unknown controller tasks to Display: a typo or
+// stale action URL must not execute a different controller method.
 if ($controller === null) {
     throw new \RuntimeException('SportsManagement site controller not found.', 500);
 }
