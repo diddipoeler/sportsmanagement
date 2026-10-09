@@ -85,7 +85,11 @@ final class SportsManagementDatabaseResolver
 
         $profileValue = static fn (string $key): string => trim((string) ($profiles[$key]['profile_value'] ?? ''));
 
-        if (!(bool) $profileValue('jsmprofile.databaseaccess')) {
+        // User-profile values may be JSON-encoded; only explicit true/1 grants access.
+        $rawAccess = $profileValue('jsmprofile.databaseaccess');
+        $decodedAccess = json_decode($rawAccess, true);
+
+        if (!in_array($decodedAccess, [true, 1, '1'], true)) {
             return false;
         }
 
