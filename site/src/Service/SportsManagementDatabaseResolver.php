@@ -139,9 +139,21 @@ final class SportsManagementDatabaseResolver
             return null;
         }
 
-        $timestamp = strtotime($value);
+        // Entitlements use complete database dates; strtotime() also accepts
+        // relative expressions such as "tomorrow", which are not valid here.
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2}:\d{2})?$/', $value)) {
+            return null;
+        }
 
-        return $timestamp === false ? null : $timestamp;
+        $format = strlen($value) === 10 ? '!Y-m-d' : '!Y-m-d H:i:s';
+        $date = \DateTimeImmutable::createFromFormat($format, $value, new \DateTimeZone('UTC'));
+
+        if (!$date instanceof \DateTimeImmutable
+            || $date->format(strlen($value) === 10 ? 'Y-m-d' : 'Y-m-d H:i:s') !== $value) {
+            return null;
+        }
+
+        return $date->getTimestamp();
     }
 
     private static function normaliseDriver(string $driver): string
