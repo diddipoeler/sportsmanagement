@@ -41,13 +41,23 @@ final class RandomPlayerHelper
             return [];
         }
 
-        $projectTeam = $projectTeams[random_int(0, count($projectTeams) - 1)];
-        $players = $this->getPlayersForProjectTeam(
-            $db,
-            (int) $projectTeam->projectteam_id,
-            (int) $projectTeam->project_id,
-            $seasonId
-        );
+        // A selected project team can have no eligible players. Try the
+        // remaining teams before displaying an empty module.
+        shuffle($projectTeams);
+        $players = [];
+
+        foreach ($projectTeams as $projectTeam) {
+            $players = $this->getPlayersForProjectTeam(
+                $db,
+                (int) $projectTeam->projectteam_id,
+                (int) $projectTeam->project_id,
+                $seasonId
+            );
+
+            if ($players) {
+                break;
+            }
+        }
 
         if (!$players) {
             return [];
