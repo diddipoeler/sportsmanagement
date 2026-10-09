@@ -296,7 +296,12 @@ final class ClubBirthdayHelper
             }
 
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                $id = (int) $part;
+                // Accept positive IDs and Joomla's id:alias values only.
+                if (!preg_match('/^(\d+)(?::[A-Za-z0-9_-]+)?$/', $part, $match)) {
+                    continue;
+                }
+
+                $id = (int) $match[1];
 
                 if ($id > 0) {
                     $ids[$id] = $id;
