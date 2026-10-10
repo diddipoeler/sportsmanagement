@@ -305,7 +305,9 @@ final class RquotesHelper
             return '';
         }
 
-        $lines = preg_split('/\R/u', $contents) ?: [];
+        // Legacy quote files may use non-UTF-8 encodings. Splitting lines
+        // must not discard the complete file on an invalid UTF-8 byte.
+        $lines = preg_split('/\R/', $contents) ?: [];
         $lines = array_values(array_filter($lines, static fn(string $line): bool => trim($line) !== ''));
         if (!$lines) {
             return '';
