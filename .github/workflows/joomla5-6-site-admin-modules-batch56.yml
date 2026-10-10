@@ -60,10 +60,10 @@ jobs:
           grep -Fq 'SportsManagement native Customcalendar field could not be loaded.' admin/models/fields/customcalendar.php
           grep -Fq "class_alias(CustomcalendarField::class, 'JFormFieldCustomCalendar')" admin/models/fields/customcalendar.php
 
-          grep -Fq 'is_file($nativeHelper)' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq 'is_file($file)' modules/mod_sportsmanagement_google_calendar/helper.php
           grep -Fq 'SportsManagement native Google Calendar module helper could not be loaded.' modules/mod_sportsmanagement_google_calendar/helper.php
-          grep -Fq "class_alias(GoogleCalendarHelper::class, 'ModJSMGoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/helper.php
-          grep -Fq "class_alias(GoogleCalendarHelper::class, 'ModGoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq 'final class ModJSMGoogleCalendarHelper' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq "class_alias('ModJSMGoogleCalendarHelper', 'ModGoogleCalendarHelper')" modules/mod_sportsmanagement_google_calendar/helper.php
 
       - name: Reject stale Batch 56 metadata
         run: |
