@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementGcalendar\Site\Dispatcher;
 use Joomla\CMS\Factory;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -46,24 +47,28 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $moduleId = (int) ($data['module']->id ?? 0);
         $document = $app->getDocument();
-        $assets = $document->getWebAssetManager();
+        // Joomla may render modules in feeds or documents without web assets.
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
 
-        $assets->registerAndUseStyle(
-            'mod_sportsmanagement_gcalendar.calendar',
-            'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css',
-            ['version' => 'auto']
-        );
-        $assets->registerAndUseScript(
-            'mod_sportsmanagement_gcalendar.calendar',
-            'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js',
-            ['version' => 'auto'],
-            ['defer' => true]
-        );
+            $assets->registerAndUseStyle(
+                'mod_sportsmanagement_gcalendar.calendar',
+                'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css',
+                ['version' => 'auto']
+            );
+            $assets->registerAndUseScript(
+                'mod_sportsmanagement_gcalendar.calendar',
+                'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
 
-        $document->addScriptOptions(
-            'mod_sportsmanagement_gcalendar.' . $moduleId,
-            $data['calendarConfig'] ?? []
-        );
+            $document->addScriptOptions(
+                'mod_sportsmanagement_gcalendar.' . $moduleId,
+                $data['calendarConfig'] ?? []
+            );
+
+        }
 
         $data['calendarOptionsKey'] = 'mod_sportsmanagement_gcalendar.' . $moduleId;
 

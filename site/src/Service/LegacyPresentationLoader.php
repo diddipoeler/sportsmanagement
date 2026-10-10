@@ -37,13 +37,16 @@ final class LegacyPresentationLoader
             'JSMRanking' => JPATH_SITE . '/components/com_sportsmanagement/helpers/ranking.php',
         ];
 
+        // PHP class names are case-insensitive, including during SPL autoloading.
+        $classes = array_change_key_case($classes, CASE_LOWER);
+
         spl_autoload_register(
             static function (string $class) use ($classes): void {
-                if (!isset($classes[$class])) {
+                $path = $classes[strtolower($class)] ?? null;
+
+                if ($path === null) {
                     return;
                 }
-
-                $path = $classes[$class];
 
                 if (is_file($path)) {
                     require_once $path;
