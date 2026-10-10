@@ -60,9 +60,13 @@ if (!class_exists('modRquotesHelper', false)) {
                 $path = trim((string) ($rquote->picture ?? ''));
             }
             if ($path !== '') {
+                // When no external media server is configured, do not
+                // accidentally turn relative media paths into root URLs.
                 $rquote->picture_url = preg_match('#^https?://#i', $path)
                     ? $path
-                    : rtrim($pictureServer, '/') . '/' . ltrim($path, '/');
+                    : (trim($pictureServer, '/') !== ''
+                        ? rtrim($pictureServer, '/') . '/' . ltrim($path, '/')
+                        : '');
             }
         }
 
