@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -107,7 +108,9 @@ final class BirthdayHelper
             $db->setQuery($query);
             $rows = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            // Database and SQL details belong in the administrator log, not in
+            // messages rendered to public site visitors.
+            Log::add('SportsManagement Birthday query failed: ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
             $rows = [];
         }
 

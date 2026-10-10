@@ -228,10 +228,14 @@ final class GoogleCalendarMatchSynchronizer
                 preg_split('/\s*,\s*/', (string) ($project->fav_team ?? ''), -1, PREG_SPLIT_NO_EMPTY) ?: []
             );
 
-            if ($favoriteTeamIds !== []) {
-                $favoriteTeams = implode(',', $favoriteTeamIds);
-                $query->where('(t1.id IN (' . $favoriteTeams . ') OR t2.id IN (' . $favoriteTeams . '))');
+            // The favorites-only option must not silently import every match
+            // when a project has no favorite teams configured.
+            if ($favoriteTeamIds === []) {
+                return [];
             }
+
+            $favoriteTeams = implode(',', $favoriteTeamIds);
+            $query->where('(t1.id IN (' . $favoriteTeams . ') OR t2.id IN (' . $favoriteTeams . '))');
         }
 
         $this->db->setQuery($query);

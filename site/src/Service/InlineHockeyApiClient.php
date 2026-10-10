@@ -90,6 +90,22 @@ final class InlineHockeyApiClient
             throw new \RuntimeException('Inline-Hockey logo exceeds the 5 MiB size limit.');
         }
 
+        // The external endpoint controls the bytes, not just the filename. Do
+        // not save HTML, SVG or a differently encoded image under a web-accessible
+        // raster-image extension.
+        $imageTypes = [
+            'png' => IMAGETYPE_PNG,
+            'jpg' => IMAGETYPE_JPEG,
+            'jpeg' => IMAGETYPE_JPEG,
+            'gif' => IMAGETYPE_GIF,
+            'webp' => IMAGETYPE_WEBP,
+        ];
+        $image = @getimagesizefromstring($body);
+
+        if ($image === false || (int) ($image[2] ?? 0) !== $imageTypes[$extension]) {
+            throw new \RuntimeException('Inline-Hockey logo content does not match its image extension.');
+        }
+
         return $body;
     }
 
