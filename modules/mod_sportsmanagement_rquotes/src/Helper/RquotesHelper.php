@@ -285,8 +285,10 @@ final class RquotesHelper
         }
 
         if ((bool) $params->get('randomtext', 0)) {
-            $index = min((int) date('j') - 1, count($lines) - 1);
-            return $lines[max(0, $index)];
+            // Wrap the day-of-month index instead of repeating the final
+            // line for the rest of the month when fewer than 31 exist.
+            $index = ((int) date('j') - 1) % count($lines);
+            return $lines[$index];
         }
 
         return $lines[array_rand($lines)];
