@@ -46,5 +46,5 @@ jobs:
           grep -Fq -- 'class sportsmanagementTablesmquotestxt' admin/tables/smquotestxt.php
           for file in admin/tables/userextrafieldsvalues.php admin/tables/predictionmember.php admin/tables/predictionresult.php admin/tables/smquote.php admin/tables/sportsmanagement.php; do
             grep -Fq -- 'class_alias(' "$file"
-            grep -Fq -- 'throw new \\RuntimeException' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
           done
