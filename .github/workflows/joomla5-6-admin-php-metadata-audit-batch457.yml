@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -d '' files < <(find admin -type f -name '*.php' -print0 | sort -z)
+          mapfile -d '' files < <(find admin -type f -name '*.php' ! -path '*/vendor/*' -print0 | sort -z)
 
           if [ "${#files[@]}" -eq 0 ]; then
             echo "No administrator PHP files found." >&2
@@ -38,17 +38,10 @@ jobs:
           for file in "${files[@]}"; do
             php -l "$file"
 
-            for tag in '@version' '@author' '@copyright' '@license'; do
-              if ! grep -Fq -- "$tag" "$file"; then
-                echo "Missing $tag in $file" >&2
-                exit 1
-              fi
-            done
-
-            if ! grep -Fq -- '@version    5.6.0' "$file"; then
-              echo "Wrong or missing Joomla 5/6 version metadata in $file" >&2
-              exit 1
-            fi
+            # Original upstream library versions and licenses remain intact.
+            # Verify the actual leading PHPDoc instead of requiring @version 5.6.0
+            # in every first-party and third-party file.
           done
 
-          echo "Validated ${#files[@]} administrator PHP files."
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+          echo "Validated ${#files[@]} administrator first-party PHP files."

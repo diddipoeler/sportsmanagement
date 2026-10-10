@@ -78,7 +78,8 @@ jobs:
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement Season edit layout.' "$admin_layout"
 
           grep -Fq 'SportsManagement AJAX Top Navigation helper could not be loaded.' "$helper"
-          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"
+          grep -Fq '$app = $this->getApplication();' "$dispatcher"
+          grep -Fq 'if ($document instanceof HtmlDocument)' "$dispatcher"
           grep -Fq 'SportsManagement AJAX Top Navigation requires the Joomla site application.' "$dispatcher"
 
           echo 'Joomla 5/6 batch 140 contracts OK.'
