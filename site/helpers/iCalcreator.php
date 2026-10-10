@@ -1,5 +1,8 @@
 <?php
-/******************************************************************************** * @version    2.18
+/**
+ * Upstream iCalcreator metadata; see original LGPL notice below.
+ *
+ * @version    2.18
  * @author    Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
  * @copyright    Copyright (c) 2007-2013 Kjell-Inge Gustafsson, kigkonsult
  * @license    GNU Lesser General Public License version 2.1 or later
