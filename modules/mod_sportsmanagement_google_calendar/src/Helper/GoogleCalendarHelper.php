@@ -34,7 +34,9 @@ final class GoogleCalendarHelper
 
         // Google Calendar Events.list accepts at most 2500 results per request.
         $maxEvents = min(2500, max(1, (int) $params->get('max_list_events', 5)));
-        $lifetime = max(1, (int) $params->get('api_cache_time', 60));
+        // Keep the API cache bounded even when a legacy module parameter is
+        // corrupted or configured to an excessively large lifetime.
+        $lifetime = min(10080, max(1, (int) $params->get('api_cache_time', 60)));
         $cache = $cacheFactory->createCacheController('callback', [
             'caching' => true,
             'lifetime' => $lifetime,
