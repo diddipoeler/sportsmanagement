@@ -208,11 +208,13 @@ if (!class_exists('modRquotesHelper', false)) {
             }
 
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                if (!preg_match('/^[1-9]\d*$/', $part)) {
+                // Joomla select fields may submit an ID with a value suffix,
+                // e.g. "12:category". Accept the same format as the native helper.
+                if (!preg_match('/^([1-9]\d*)(?::[A-Za-z0-9_-]+)?$/', $part, $match)) {
                     continue;
                 }
 
-                $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                $id = filter_var($match[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
                 if ($id === false) {
                     continue;
                 }
