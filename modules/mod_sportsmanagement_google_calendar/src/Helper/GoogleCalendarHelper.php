@@ -162,6 +162,14 @@ final class GoogleCalendarHelper
             throw new \UnexpectedValueException('Google Calendar event ends before it starts.');
         }
 
+        // All-day event end dates are exclusive. A matching start/end day
+        // represents an empty interval, not a valid one-day event.
+        if (isset($event->start->date, $event->end->date)
+            && !isset($event->start->dateTime, $event->end->dateTime)
+            && $event->endDate <= $event->startDate) {
+            throw new \UnexpectedValueException('Google Calendar all-day event has an empty date range.');
+        }
+
         $event->jsmStartIso = $event->startDate->toISO8601(true);
         $event->jsmEndIso = $event->endDate->toISO8601(true);
         $event->jsmDuration = self::duration($event);
