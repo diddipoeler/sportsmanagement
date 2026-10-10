@@ -333,23 +333,23 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 		$app->setUserState($option . 'pltree', $tree);
 
 		$temp                          = new stdClass;
-		$temp->name                    = $tree[tournament][title][value];
+		$temp->name                    = $tree['tournament']['title']['value'];
 		$this->_datas['exportversion'] = $temp;
 
 		$temp                   = new stdClass;
-		$temp->name             = $tree[tournament][season][value];
+		$temp->name             = $tree['tournament']['season']['value'];
 		$this->_datas['season'] = $temp;
 
 		$temp                   = new stdClass;
-		$temp->name             = $tree[tournament][title][value];
-		$temp->alias            = $tree[tournament][title][value];
-		$temp->short_name       = $tree[tournament][title][value];
-		$temp->middle_name      = $tree[tournament][title][value];
+		$temp->name             = $tree['tournament']['title']['value'];
+		$temp->alias            = $tree['tournament']['title']['value'];
+		$temp->short_name       = $tree['tournament']['title']['value'];
+		$temp->middle_name      = $tree['tournament']['title']['value'];
 		$temp->country          = $country;
 		$this->_datas['league'] = $temp;
 
 		$temp                            = new stdClass;
-		$temp->name                      = $tree[tournament][title][value] . ' ' . $tree[tournament][season][value];
+		$temp->name                      = $tree['tournament']['title']['value'] . ' ' . $tree['tournament']['season']['value'];
 		$temp->serveroffset              = 0;
 		$temp->project_type              = 'SIMPLE_LEAGUE';
 		$temp->current_round_auto        = '2';
@@ -370,19 +370,19 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 		// Spieler als personen anlegen
 		$lfdnummerperson = 1;
 
-		for ($a = 0; $a < sizeof($tree[tournament][player]); $a++)
+		for ($a = 0; $a < sizeof($tree['tournament']['player']); $a++)
 		{
-			// Echo $tree[tournament][player][$a][id].'<br>';
+			// Echo $tree['tournament']['player'][$a]['id'].'<br>';
 			$temp                                                = new stdClass;
-			$tempexportplayer[$tree[tournament][player][$a][id]] = $lfdnummerperson;
+			$tempexportplayer[$tree['tournament']['player'][$a]['id']] = $lfdnummerperson;
 
-			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][player][$a][id] );
-			// $tempexportplayer[$tree[tournament][player][$a][id]] = $temp->id;
+			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree['tournament']['player'][$a]['id'] );
+			// $tempexportplayer[$tree['tournament']['player'][$a]['id']] = $temp->id;
 			$temp->id        = $lfdnummerperson;
-			$temp->plid      = $tree[tournament][player][$a][id];
-			$temp->lastname  = $tree[tournament][player][$a][lastName];
-			$temp->firstname = $tree[tournament][player][$a][firstName];
-			$temp->birthday  = $tree[tournament][player][$a][dateOfBirth][date][value];
+			$temp->plid      = $tree['tournament']['player'][$a]['id'];
+			$temp->lastname  = $tree['tournament']['player'][$a]['lastName'];
+			$temp->firstname = $tree['tournament']['player'][$a]['firstName'];
+			$temp->birthday  = $tree['tournament']['player'][$a]['dateOfBirth']['date']['value'];
 
 			if (!$temp->birthday)
 			{
@@ -399,19 +399,19 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 		}
 
 		// Trainer als personen anlegen
-		for ($a = 0; $a < sizeof($tree[tournament][coach]); $a++)
+		for ($a = 0; $a < sizeof($tree['tournament']['coach']); $a++)
 		{
-			// Echo $tree[tournament][player][$a][id].'<br>';
+			// Echo $tree['tournament']['player'][$a]['id'].'<br>';
 			$temp                                               = new stdClass;
-			$tempexportplayer[$tree[tournament][coach][$a][id]] = $lfdnummerperson;
+			$tempexportplayer[$tree['tournament']['coach'][$a]['id']] = $lfdnummerperson;
 
-			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][coach][$a][id] );
-			// $tempexportplayer[$tree[tournament][coach][$a][id]] = $temp->id;
+			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree['tournament']['coach'][$a]['id'] );
+			// $tempexportplayer[$tree['tournament']['coach'][$a]['id']] = $temp->id;
 			$temp->id        = $lfdnummerperson;
-			$temp->plid      = $tree[tournament][coach][$a][id];
-			$temp->lastname  = $tree[tournament][coach][$a][lastName];
-			$temp->firstname = $tree[tournament][coach][$a][firstName];
-			$temp->birthday  = $tree[tournament][coach][$a][dateOfBirth][date][value];
+			$temp->plid      = $tree['tournament']['coach'][$a]['id'];
+			$temp->lastname  = $tree['tournament']['coach'][$a]['lastName'];
+			$temp->firstname = $tree['tournament']['coach'][$a]['firstName'];
+			$temp->birthday  = $tree['tournament']['coach'][$a]['dateOfBirth']['date']['value'];
 
 			if (!$temp->birthday)
 			{
@@ -429,18 +429,18 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 		}
 
 		// Schiedsrichter als personen anlegen
-		for ($a = 0; $a < sizeof($tree[tournament][referee]); $a++)
+		for ($a = 0; $a < sizeof($tree['tournament']['referee']); $a++)
 		{
-			// Echo $tree[tournament][player][$a][id].'<br>';
+			// Echo $tree['tournament']['player'][$a]['id'].'<br>';
 			$temp = new stdClass;
 
-			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][player][$a][id] );
+			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree['tournament']['player'][$a]['id'] );
 			$temp->id        = $lfdnummerperson;
-			$temp->plid      = $tree[tournament][referee][$a][id];
-			$temp->lastname  = $tree[tournament][referee][$a][lastName];
-			$temp->firstname = $tree[tournament][referee][$a][firstName];
-			$temp->location  = $tree[tournament][referee][$a][location];
-			$temp->birthday  = $tree[tournament][referee][$a][dateOfBirth][date][value];
+			$temp->plid      = $tree['tournament']['referee'][$a]['id'];
+			$temp->lastname  = $tree['tournament']['referee'][$a]['lastName'];
+			$temp->firstname = $tree['tournament']['referee'][$a]['firstName'];
+			$temp->location  = $tree['tournament']['referee'][$a]['location'];
+			$temp->birthday  = $tree['tournament']['referee'][$a]['dateOfBirth']['date']['value'];
 
 			if (!$temp->birthday)
 			{
@@ -456,12 +456,12 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
 			$temp = new stdClass;
 
-			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree[tournament][referee][$a][id] );
-			$tempexportreferee[$tree[tournament][referee][$a][id]] = $lfdnummerperson;
+			// $temp->id = preg_replace ( "![^0-9]+!", "", $tree['tournament']['referee'][$a]['id'] );
+			$tempexportreferee[$tree['tournament']['referee'][$a]['id']] = $lfdnummerperson;
 
-			// $tempexportreferee[$tree[tournament][referee][$a][id]] = $temp->id;
+			// $tempexportreferee[$tree['tournament']['referee'][$a]['id']] = $temp->id;
 			$temp->id                  = $lfdnummerperson;
-			$temp->plid                = $tree[tournament][referee][$a][id];
+			$temp->plid                = $tree['tournament']['referee'][$a]['id'];
 			$temp->person_id           = $lfdnummerperson;
 			$temp->project_position_id = 1000;
 			$temp->published           = 1;
@@ -476,89 +476,89 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 		$lfdnummerteamperson = 1;
 		$lfdnummerteam       = 1;
 
-		for ($a = 0; $a < sizeof($tree[tournament][team]); $a++)
+		for ($a = 0; $a < sizeof($tree['tournament']['team']); $a++)
 		{
 			$temp                      = new stdClass;
-			$temp->id                  = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
-			$temp->plid                = $tree[tournament][team][$a][id];
-			$temp->name                = $tree[tournament][team][$a][name];
+			$temp->id                  = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
+			$temp->plid                = $tree['tournament']['team'][$a]['id'];
+			$temp->name                = $tree['tournament']['team'][$a]['name'];
 			$temp->country             = $country;
-			$temp->standard_playground = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
+			$temp->standard_playground = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
 			$exportclubs[]             = $temp;
 
 			$temp              = new stdClass;
-			$temp->id          = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
-			$temp->plid        = $tree[tournament][team][$a][id];
-			$temp->club_id     = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
-			$temp->name        = $tree[tournament][team][$a][name];
-			$temp->middle_name = $tree[tournament][team][$a][name];
-			$temp->short_name  = $tree[tournament][team][$a][name];
+			$temp->id          = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
+			$temp->plid        = $tree['tournament']['team'][$a]['id'];
+			$temp->club_id     = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
+			$temp->name        = $tree['tournament']['team'][$a]['name'];
+			$temp->middle_name = $tree['tournament']['team'][$a]['name'];
+			$temp->short_name  = $tree['tournament']['team'][$a]['name'];
 			$exportteams[]     = $temp;
 
 			$temp                                                   = new stdClass;
-			$temp->id                                               = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
-			$temp->plid                                             = $tree[tournament][team][$a][id];
-			$exportprojectteamtemp[$tree[tournament][team][$a][id]] = $temp->id;
-			$temp->team_id                                          = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
-			$temp->project_team_id                                  = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
+			$temp->id                                               = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
+			$temp->plid                                             = $tree['tournament']['team'][$a]['id'];
+			$exportprojectteamtemp[$tree['tournament']['team'][$a]['id']] = $temp->id;
+			$temp->team_id                                          = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
+			$temp->project_team_id                                  = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
 			$temp->is_in_score                                      = 1;
-			$temp->standard_playground                              = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
+			$temp->standard_playground                              = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
 			$exportprojectteam[]                                    = $temp;
 
 			/**
 			 * teamplayer
 			 */
-			for ($b = 0; $b < sizeof($tree[tournament][team][$a][player]); $b++)
+			for ($b = 0; $b < sizeof($tree['tournament']['team'][$a]['player']); $b++)
 			{
 				$temp                                                              = new stdClass;
-				$tempexportteamplayer[$tree[tournament][team][$a][player][$b][id]] = $lfdnummerteamperson;
+				$tempexportteamplayer[$tree['tournament']['team'][$a]['player'][$b]['id']] = $lfdnummerteamperson;
 				$temp->id                                                          = $lfdnummerteamperson;
-				$temp->plid                                                        = $tree[tournament][team][$a][player][$b][id];
-				$temp->projectteam_id                                              = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
+				$temp->plid                                                        = $tree['tournament']['team'][$a]['player'][$b]['id'];
+				$temp->projectteam_id                                              = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
 				$temp->active                                                      = 1;
-				$temp->person_id                                                   = $tempexportplayer[$tree[tournament][team][$a][player][$b][playerRef]];
+				$temp->person_id                                                   = $tempexportplayer[$tree['tournament']['team'][$a]['player'][$b]['playerRef']];
 
-				// $temp->person_id = preg_replace ( "![^0-9]+!", "", $tree[tournament][team][$a][player][$b][playerRef] );
-				$temp->jerseynumber = $tree[tournament][team][$a][player][$b][shirtNumber];
-				$temp->plposition   = $tree[tournament][team][$a][player][$b][posCode];
+				// $temp->person_id = preg_replace ( "![^0-9]+!", "", $tree['tournament']['team'][$a]['player'][$b]['playerRef'] );
+				$temp->jerseynumber = $tree['tournament']['team'][$a]['player'][$b]['shirtNumber'];
+				$temp->plposition   = $tree['tournament']['team'][$a]['player'][$b]['posCode'];
 
-				if (!empty($tree[tournament][team][$a][player][$b][posCode]))
+				if (!empty($tree['tournament']['team'][$a]['player'][$b]['posCode']))
 				{
-					$temp->project_position_id = $this->getProfLeagPosition($tree[tournament][team][$a][player][$b][posCode], $tree[tournament][team][$a][player][$b][playerRef]);
+					$temp->project_position_id = $this->getProfLeagPosition($tree['tournament']['team'][$a]['player'][$b]['posCode'], $tree['tournament']['team'][$a]['player'][$b]['playerRef']);
 				}
 				else
 				{
-					$temp->project_position_id = $this->getProfLeagPosition(900, $tree[tournament][team][$a][player][$b][playerRef]);
+					$temp->project_position_id = $this->getProfLeagPosition(900, $tree['tournament']['team'][$a]['player'][$b]['playerRef']);
 				}
 
 				$exportteamplayer[] = $temp;
 
 				// Temp player position
 				// temp positionen
-				if (!empty($tree[tournament][team][$a][player][$b][posCode]))
+				if (!empty($tree['tournament']['team'][$a]['player'][$b]['posCode']))
 				{
-					$exportplayerpositiontemp[(string) $tree[tournament][team][$a][player][$b][playerRef]] = (string) $tree[tournament][team][$a][player][$b][posCode];
-					$exportpositiontemp[(string) $tree[tournament][team][$a][player][$b][posCode]]         = (string) $tree[tournament][team][$a][player][$b][posCode];
+					$exportplayerpositiontemp[(string) $tree['tournament']['team'][$a]['player'][$b]['playerRef']] = (string) $tree['tournament']['team'][$a]['player'][$b]['posCode'];
+					$exportpositiontemp[(string) $tree['tournament']['team'][$a]['player'][$b]['posCode']]         = (string) $tree['tournament']['team'][$a]['player'][$b]['posCode'];
 				}
 				else
 				{
-					$exportplayerpositiontemp[(string) $tree[tournament][team][$a][player][$b][playerRef]] = 900;
+					$exportplayerpositiontemp[(string) $tree['tournament']['team'][$a]['player'][$b]['playerRef']] = 900;
 					$exportpositiontemp[900]                                                               = 900;
 				}
 
 				// Ist die position schon in der tabelle
-				$profleagpos = $this->getProfLeagPosition((string) $tree[tournament][team][$a][player][$b][posCode], (string) $tree[tournament][team][$a][player][$b][playerRef]);
+				$profleagpos = $this->getProfLeagPosition((string) $tree['tournament']['team'][$a]['player'][$b]['posCode'], (string) $tree['tournament']['team'][$a]['player'][$b]['playerRef']);
 
 				$lfdnummerteamperson++;
 			}
 
 			// Playground
 			$temp               = new stdClass;
-			$temp->id           = preg_replace("![^0-9]+!", "", $tree[tournament][team][$a][id]);
-			$temp->plid         = $tree[tournament][team][$a][id];
-			$temp->name         = $tree[tournament][team][$a][venue];
+			$temp->id           = preg_replace("![^0-9]+!", "", $tree['tournament']['team'][$a]['id']);
+			$temp->plid         = $tree['tournament']['team'][$a]['id'];
+			$temp->name         = $tree['tournament']['team'][$a]['venue'];
 			$temp->country      = $country;
-			$temp->max_visitors = $tree[tournament][team][$a][capacity];
+			$temp->max_visitors = $tree['tournament']['team'][$a]['capacity'];
 
 			if ($temp->name)
 			{
@@ -573,90 +573,90 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 		$lfdnumbermatchevent  = 1;
 		$countgoals           = 0;
 
-		for ($a = 0; $a < sizeof($tree[tournament][tournamentElement][group][groupRound]); $a++)
+		for ($a = 0; $a < sizeof($tree['tournament']['tournamentElement']['group']['groupRound']); $a++)
 		{
 			// Spieltage
 			$temp            = new stdClass;
-			$temp->id        = $tree[tournament][tournamentElement][group][groupRound][$a][header][shortcut];
-			$round_id        = $tree[tournament][tournamentElement][group][groupRound][$a][header][shortcut];
-			$temp->roundcode = $tree[tournament][tournamentElement][group][groupRound][$a][header][shortcut];
-			$temp->name      = $tree[tournament][tournamentElement][group][groupRound][$a][header][title];
+			$temp->id        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['header']['shortcut'];
+			$round_id        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['header']['shortcut'];
+			$temp->roundcode = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['header']['shortcut'];
+			$temp->name      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['header']['title'];
 			$exportround[]   = $temp;
 
 			// Paarung
-			for ($b = 0; $b < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match]); $b++)
+			for ($b = 0; $b < sizeof($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match']); $b++)
 			{
 				$temp                  = new stdClass;
 				$temp->id              = $lfdnumbermatch;
 				$temp->round_id        = $round_id;
 				$temp->match_number    = $lfdnumbermatch;
-				$temp->match_date      = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][date] . ' ' . $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][kickoff];
-				$temp->summary         = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][note][value];
+				$temp->match_date      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['date'] . ' ' . $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['kickoff'];
+				$temp->summary         = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['note']['value'];
 				$temp->count_result    = 1;
 				$temp->published       = 1;
 				$temp->show_report     = 1;
-				$temp->projectteam1_id = preg_replace("![^0-9]+!", "", $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref]);
+				$temp->projectteam1_id = preg_replace("![^0-9]+!", "", $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref']);
 
-				if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][coachRef])
+				if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['coachRef'])
 				{
-					$tempexportteamstaff[$tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref]] = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][coachRef];
+					$tempexportteamstaff[$tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref']] = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['coachRef'];
 
 					$temp2                      = new stdClass;
 					$temp2->id                  = $lfdnumberlineupstaff;
 					$temp2->match_id            = $lfdnumbermatch;
-					$temp2->plid                = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][coachRef];
-					$temp2->proteamid           = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
+					$temp2->plid                = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['coachRef'];
+					$temp2->proteamid           = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
 					$temp2->project_position_id = 2000;
-					$temp2->team_staff_id       = $tempexportplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][coachRef]];
+					$temp2->team_staff_id       = $tempexportplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['coachRef']];
 					$exportmatchstaff[]         = $temp2;
 					$lfdnumberlineupstaff++;
 				}
 
-				$temp->projectteam2_id = preg_replace("![^0-9]+!", "", $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref]);
+				$temp->projectteam2_id = preg_replace("![^0-9]+!", "", $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref']);
 
-				if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][coachRef])
+				if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['coachRef'])
 				{
-					$tempexportteamstaff[$tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref]] = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][coachRef];
+					$tempexportteamstaff[$tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref']] = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['coachRef'];
 
 					$temp2                      = new stdClass;
 					$temp2->id                  = $lfdnumberlineupstaff;
 					$temp2->match_id            = $lfdnumbermatch;
-					$temp2->plid                = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][coachRef];
-					$temp2->proteamid           = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
+					$temp2->plid                = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['coachRef'];
+					$temp2->proteamid           = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
 					$temp2->project_position_id = 2000;
-					$temp2->team_staff_id       = $tempexportplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][coachRef]];
+					$temp2->team_staff_id       = $tempexportplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['coachRef']];
 					$exportmatchstaff[]         = $temp2;
 					$lfdnumberlineupstaff++;
 				}
 
-				$temp->team1_result = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][home];
-				$temp->team2_result = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][away];
+				$temp->team1_result = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['result']['home'];
+				$temp->team2_result = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['result']['away'];
 				$exportmatch[]      = $temp;
 
-				$countgoals = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][home] +
-					$tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][result][away];
+				$countgoals = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['result']['home'] +
+					$tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['result']['away'];
 
 				/**
 				 * startaufstellung oder auswechselung
 				 * heimmannschaft
 				 */
-				for ($c = 0; $c < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry]); $c++)
+				for ($c = 0; $c < sizeof($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry']); $c++)
 				{
 					/**
 					 * startaufstellung heimmannschaft
 					 */
-					if (empty($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][type]))
+					if (empty($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['type']))
 					{
 						$temp                = new stdClass;
 						$temp->id            = $lfdnumberlineup;
 						$temp->match_id      = $lfdnumbermatch;
-						$temp->plid          = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
-						$temp->proteamid     = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
-						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]];
+						$temp->plid          = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+						$temp->proteamid     = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
+						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef']];
 
-						// $teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]);
+						// $teile = explode("_",(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef']);
 						// $playerposition = $exportplayerpositiontemp[$teile[1]];
-						$playerposition = (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][posCode];
+						$playerposition = (string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['posCode'];
 
 						if (empty($playerposition))
 						{
@@ -670,14 +670,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
 						// Hat der spieler karten bekommen ?
 						// gelbe karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'Y')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->plid      = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->plid      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -696,14 +696,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Gelb/rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'YR')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->plid      = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->plid      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -714,7 +714,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 								}
 							}
 
-							$temp->event_time    = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][time][min];
+							$temp->event_time    = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['score'][$d]['time']['min'];
 							$temp->event_type_id = 3;
 							$temp->event_sum     = 1;
 							$exportmatchevent[]  = $temp;
@@ -723,14 +723,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'R')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->plid      = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->plid      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -741,7 +741,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 								}
 							}
 
-							// $temp->event_time = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][time][min];
+							// $temp->event_time = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['score'][$d]['time']['min'];
 							$temp->event_type_id = 4;
 							$temp->event_sum     = 1;
 							$exportmatchevent[]  = $temp;
@@ -757,14 +757,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						$temp                = new stdClass;
 						$temp->id            = $lfdnumberlineup;
 						$temp->match_id      = $lfdnumbermatch;
-						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]];
-						$temp->proteamid     = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
+						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef']];
+						$temp->proteamid     = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
 						$inplayer            = $temp->teamplayer_id;
 
-						$teile          = explode("_", (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef]);
+						$teile          = explode("_", (string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef']);
 						$playerposition = $exportplayerpositiontemp[$teile[1]];
 
-						// $playerposition = (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][posCode];
+						// $playerposition = (string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['posCode'];
 
 						if (empty($playerposition))
 						{
@@ -774,21 +774,21 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						$temp->project_position_id = $this->getProfLeagPosition($playerposition, '');
 						$temp->came_in             = 1;
 						$temp->out                 = 0;
-						$temp->in_for              = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][substitution][substRef]];
+						$temp->in_for              = $tempexportteamplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['substitution']['substRef']];
 						$outplayer                 = $temp->in_for;
-						$temp->in_out_time         = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][substitution][time][min];
+						$temp->in_out_time         = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['substitution']['time']['min'];
 						$exportmatchplayer[]       = $temp;
 						$lfdnumberlineup++;
 
 						// Hat der spieler karten bekommen ?
 						// gelbe karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'Y')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -807,13 +807,13 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Gelb/rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'YR')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -832,13 +832,13 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'R')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][homeTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['homeTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -861,21 +861,21 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 				}
 
 				// Gastmannschaft
-				for ($c = 0; $c < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry]); $c++)
+				for ($c = 0; $c < sizeof($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry']); $c++)
 				{
 					// Startaufstellung gastmannschaft
-					if (empty($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][type]))
+					if (empty($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['type']))
 					{
 						$temp                = new stdClass;
 						$temp->id            = $lfdnumberlineup;
 						$temp->match_id      = $lfdnumbermatch;
-						$temp->plid          = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
-						$temp->proteamid     = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]];
+						$temp->plid          = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+						$temp->proteamid     = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef']];
 
-						// $teile = explode("_",(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]);
+						// $teile = explode("_",(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef']);
 						// $playerposition = $exportplayerpositiontemp[$teile[1]];
-						$playerposition = (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][posCode];
+						$playerposition = (string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['posCode'];
 
 						if (empty($playerposition))
 						{
@@ -889,14 +889,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
 						// Hat der spieler karten bekommen ?
 						// gelbe karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'Y')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->plid      = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->plid      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -915,14 +915,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Gelb/rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'YR')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->plid      = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->plid      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -941,14 +941,14 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'R')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->plid      = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->plid      = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -972,15 +972,15 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						$temp                = new stdClass;
 						$temp->id            = $lfdnumberlineup;
 						$temp->match_id      = $lfdnumbermatch;
-						$temp->plid          = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
-						$temp->proteamid     = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]];
+						$temp->plid          = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
+						$temp->proteamid     = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+						$temp->teamplayer_id = $tempexportteamplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef']];
 						$inplayer            = $temp->teamplayer_id;
 
-						$teile          = explode("_", (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef]);
+						$teile          = explode("_", (string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef']);
 						$playerposition = $exportplayerpositiontemp[$teile[1]];
 
-						// $playerposition = (string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][posCode];
+						// $playerposition = (string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['posCode'];
 
 						if (empty($playerposition))
 						{
@@ -990,21 +990,21 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						$temp->project_position_id = $this->getProfLeagPosition($playerposition, '');
 						$temp->came_in             = 1;
 						$temp->out                 = 0;
-						$temp->in_for              = $tempexportteamplayer[(string) $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][substitution][substRef]];
+						$temp->in_for              = $tempexportteamplayer[(string) $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['substitution']['substRef']];
 						$outplayer                 = $temp->in_for;
-						$temp->in_out_time         = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][substitution][time][min];
+						$temp->in_out_time         = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['substitution']['time']['min'];
 						$exportmatchplayer[]       = $temp;
 						$lfdnumberlineup++;
 
 						// Hat der spieler karten bekommen ?
 						// gelbe karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'Y')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'Y')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -1023,13 +1023,13 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Gelb/rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'YR')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'YR')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -1048,13 +1048,13 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 
 						// Rote karte ?
-						if ($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][penalty][type][value] == 'R')
+						if ($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['penalty']['type']['value'] == 'R')
 						{
 							$temp            = new stdClass;
 							$temp->id        = $lfdnumbermatchevent;
 							$temp->match_id  = $lfdnumbermatch;
-							$temp->proteamid = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][teamRef][ref];
-							$tempplid        = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][awayTeam][teamData][lineup][entry][$c][playerRef];
+							$temp->proteamid = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['teamRef']['ref'];
+							$tempplid        = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['awayTeam']['teamData']['lineup']['entry'][$c]['playerRef'];
 
 							foreach ($exportteamplayer as $teamplayer)
 							{
@@ -1082,7 +1082,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 					$temp           = new stdClass;
 					$temp->id       = $lfdnumbermatchevent;
 					$temp->match_id = $lfdnumbermatch;
-					$tempplid       = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][scorerRef];
+					$tempplid       = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['score']['scorerRef'];
 
 					foreach ($exportteamplayer as $teamplayer)
 					{
@@ -1093,7 +1093,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 						}
 					}
 
-					$temp->event_time    = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][time][min];
+					$temp->event_time    = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['score']['time']['min'];
 					$temp->event_type_id = 1;
 					$temp->event_sum     = 1;
 					$exportmatchevent[]  = $temp;
@@ -1103,12 +1103,12 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 
 				if ($countgoals > 1)
 				{
-					for ($d = 0; $d < sizeof($tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score]); $d++)
+					for ($d = 0; $d < sizeof($tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['score']); $d++)
 					{
 						$temp           = new stdClass;
 						$temp->id       = $lfdnumbermatchevent;
 						$temp->match_id = $lfdnumbermatch;
-						$tempplid       = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][scorerRef];
+						$tempplid       = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['score'][$d]['scorerRef'];
 
 						foreach ($exportteamplayer as $teamplayer)
 						{
@@ -1119,7 +1119,7 @@ class sportsmanagementModeljlextprofleagimport extends BaseDatabaseModel
 							}
 						}
 
-						$temp->event_time    = $tree[tournament][tournamentElement][group][groupRound][$a][round][match][$b][score][$d][time][min];
+						$temp->event_time    = $tree['tournament']['tournamentElement']['group']['groupRound'][$a]['round']['match'][$b]['score'][$d]['time']['min'];
 						$temp->event_type_id = 1;
 						$temp->event_sum     = 1;
 						$exportmatchevent[]  = $temp;

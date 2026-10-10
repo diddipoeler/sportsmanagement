@@ -552,6 +552,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 				if (isset($team->{$teamname})) {
 					$team->name = $team->{$teamname};
 				}
+			}
 		}
 
 		return $teams;

@@ -77,7 +77,8 @@ jobs:
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement Season edit view.' "$admin_native"
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement Season edit layout.' "$admin_layout"
 
-          grep -Fq 'SportsManagement AJAX Top Navigation helper could not be loaded.' "$helper"
+          grep -Fq 'SportsManagement AJAX Top Navigation dependency could not be loaded:' "$helper"
+          grep -Fq 'class_alias(NavigationDataHelper::class' "$helper"
           grep -Fq '$app = $this->getApplication();' "$dispatcher"
           grep -Fq 'if ($document instanceof HtmlDocument)' "$dispatcher"
           grep -Fq 'SportsManagement AJAX Top Navigation requires the Joomla site application.' "$dispatcher"
