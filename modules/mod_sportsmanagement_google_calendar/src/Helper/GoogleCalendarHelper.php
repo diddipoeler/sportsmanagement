@@ -97,8 +97,9 @@ final class GoogleCalendarHelper
 
             try {
                 $events[] = $this->prepareEvent($event);
-            } catch (\UnexpectedValueException) {
-                // One malformed remote event must not hide the remaining events.
+            } catch (\Exception) {
+                // Invalid remote dates/time zones may also throw from Joomla's
+                // date parser. Skip that event and retain the valid entries.
                 continue;
             }
         }
