@@ -149,8 +149,15 @@ final class GoogleCalendarHelper
 
     public function prepareEvent(object $event): object
     {
-        $event->startDate = $this->unifyDate($event->start ?? null);
-        $event->endDate = $this->unifyDate($event->end ?? null);
+        // Remote JSON is untrusted: Google event date fields must be objects.
+        // Reject unexpected scalar/array values before calling the typed parser.
+        if (!isset($event->start, $event->end)
+            || !is_object($event->start) || !is_object($event->end)) {
+            throw new \UnexpectedValueException('Google Calendar event has invalid date fields.');
+        }
+
+        $event->startDate = $this->unifyDate($event->start);
+        $event->endDate = $this->unifyDate($event->end);
         if ($event->endDate < $event->startDate) {
             throw new \UnexpectedValueException('Google Calendar event ends before it starts.');
         }
