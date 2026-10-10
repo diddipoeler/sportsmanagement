@@ -1,0 +1,55 @@
+name: Joomla 5/6 image and favorites regression tests
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/joomla5-6-image-favorites.php'
+      - '.github/workflows/joomla5-6-image-favorites-regressions.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/joomla5-6-image-favorites.php'
+      - '.github/workflows/joomla5-6-image-favorites-regressions.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  image-and-favorites:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax, metadata and behavior
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Service/InlineHockeyApiClient.php \
+            admin/src/Service/GoogleCalendarMatchSynchronizer.php \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php \
+            .github/tests/joomla5-6-image-favorites.php; do
+            php -l "$file"
+          done
+          php .github/tests/phpdoc_metadata.php \
+            site/src/Service/InlineHockeyApiClient.php \
+            admin/src/Service/GoogleCalendarMatchSynchronizer.php \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          php .github/tests/joomla5-6-image-favorites.php
+          grep -Fq -- "Log::add('SportsManagement Birthday query failed:" \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          ! grep -Fq -- '$app->enqueueMessage($e->getMessage()' \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
