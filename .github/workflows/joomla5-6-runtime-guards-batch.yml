@@ -1,0 +1,56 @@
+name: Joomla 5/6 site admin module runtime guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'site/src/Service/GoogleCalendarReadService.php'
+      - 'admin/src/Service/MatchRefereeNotificationService.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/inline_hockey_api_security.php'
+      - '.github/tests/ajax_navigation_document.php'
+      - '.github/workflows/joomla5-6-runtime-guards-batch.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'site/src/Service/GoogleCalendarReadService.php'
+      - 'admin/src/Service/MatchRefereeNotificationService.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/inline_hockey_api_security.php'
+      - '.github/tests/ajax_navigation_document.php'
+      - '.github/workflows/joomla5-6-runtime-guards-batch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  php-runtime-guards:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Validate PHP syntax and required file-level metadata
+        run: |
+          set -euo pipefail
+          php_files=(
+            site/src/Service/InlineHockeyApiClient.php
+            site/src/Service/GoogleCalendarReadService.php
+            admin/src/Service/MatchRefereeNotificationService.php
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+            .github/tests/inline_hockey_api_security.php
+            .github/tests/ajax_navigation_document.php
+          )
+          for file in "${php_files[@]}"; do
+            php -l "$file"
+          done
+          php .github/tests/phpdoc_metadata.php "${php_files[@]}"
+      - name: Exercise Joomla 5/6 standalone guards
+        run: |
+          php .github/tests/inline_hockey_api_security.php
+          php .github/tests/ajax_navigation_document.php

@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementAjaxTopNavigationMenu\Site\Dispatch
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 
@@ -52,30 +53,33 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['params']->set('layout', 'native');
 
         $document = $app->getDocument();
-        $assets = $document->getWebAssetManager();
-        $assets->useScript('bootstrap.tab');
-        $assets->registerAndUseStyle(
-            'mod_sportsmanagement_ajax_top_navigation_menu',
-            'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_menu.css',
-            ['version' => 'auto']
-        );
-        $assets->registerAndUseStyle(
-            'mod_sportsmanagement_ajax_top_navigation_menu.tabs',
-            'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css',
-            ['version' => 'auto']
-        );
-        $assets->registerAndUseScript(
-            'mod_sportsmanagement_ajax_top_navigation_menu.native',
-            'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js',
-            ['version' => 'auto'],
-            ['defer' => true],
-            ['core']
-        );
-
-        $document->addScriptOptions(
-            'mod_sportsmanagement_ajax_top_navigation_menu.' . (int) $data['module']->id,
-            $data['clientConfig']
-        );
+        // Joomla's web assets and script options are only available in HTML documents.
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assets->useScript('bootstrap.tab');
+            $assets->registerAndUseStyle(
+                'mod_sportsmanagement_ajax_top_navigation_menu',
+                'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_menu.css',
+                ['version' => 'auto']
+            );
+            $assets->registerAndUseStyle(
+                'mod_sportsmanagement_ajax_top_navigation_menu.tabs',
+                'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css',
+                ['version' => 'auto']
+            );
+            $assets->registerAndUseScript(
+                'mod_sportsmanagement_ajax_top_navigation_menu.native',
+                'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js',
+                ['version' => 'auto'],
+                ['defer' => true],
+                ['core']
+            );
+    
+            $document->addScriptOptions(
+                'mod_sportsmanagement_ajax_top_navigation_menu.' . (int) $data['module']->id,
+                $data['clientConfig']
+            );
+        }
 
         return $data;
     }

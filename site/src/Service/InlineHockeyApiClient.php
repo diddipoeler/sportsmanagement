@@ -28,6 +28,15 @@ final class InlineHockeyApiClient
             throw new \RuntimeException('Invalid Inline-Hockey API URL.');
         }
 
+        // Do not send Basic authentication over HTTP or accept credentials in URLs.
+        if (isset($parts['user']) || isset($parts['pass'])) {
+            throw new \RuntimeException('Inline-Hockey API URLs must not contain credentials.');
+        }
+
+        if ($scheme !== 'https' && ($username !== '' || $password !== '')) {
+            throw new \RuntimeException('Inline-Hockey API authentication requires HTTPS.');
+        }
+
         $http = (new HttpFactory())->getHttp();
         $response = $http->get(
             $url,

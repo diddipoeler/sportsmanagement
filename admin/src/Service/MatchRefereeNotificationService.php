@@ -51,20 +51,20 @@ final class MatchRefereeNotificationService
             }
             $when = $timestamp > 0 ? date('d.m.Y - H:i', $timestamp) : (string) ($context->match_date ?? '');
 
-            $body = sprintf(
-                $template,
-                (string) $context->firstname,
-                (string) $context->lastname,
-                'Schiedsrichterverein',
-                'Schiedsrichterstufe',
-                $when,
-                (string) ($context->playground_name ?? ''),
-                'Ligakurzname',
-                (string) ($context->team1 ?? ''),
-                (string) ($context->team2 ?? '')
-            );
-
+            // Invalid legacy sprintf templates must not interrupt match persistence.
             try {
+                $body = sprintf(
+                    $template,
+                    (string) $context->firstname,
+                    (string) $context->lastname,
+                    'Schiedsrichterverein',
+                    'Schiedsrichterstufe',
+                    $when,
+                    (string) ($context->playground_name ?? ''),
+                    'Ligakurzname',
+                    (string) ($context->team1 ?? ''),
+                    (string) ($context->team2 ?? '')
+                );
                 $mailer = $this->mailerFactory->createMailer();
                 $mailFrom = (string) $this->app->get('mailfrom', '');
                 $fromName = (string) $this->app->get('fromname', '');

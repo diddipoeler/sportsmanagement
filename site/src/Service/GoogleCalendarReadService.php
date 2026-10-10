@@ -135,7 +135,12 @@ final class GoogleCalendarReadService
 
         $user = $this->app->getIdentity();
 
-        if ($user && !$user->authorise('core.admin', 'com_sportsmanagement')) {
+        // Missing identity must never bypass the calendar access-level filter.
+        if ($user === null) {
+            return [];
+        }
+
+        if (!$user->authorise('core.admin', 'com_sportsmanagement')) {
             $levels = array_values(array_unique(array_filter(array_map(
                 'intval',
                 $user->getAuthorisedViewLevels()
