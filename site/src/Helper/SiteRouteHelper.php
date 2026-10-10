@@ -21,10 +21,12 @@ final class SiteRouteHelper
 {
     public static function view(string $view, array $parameters = []): string
     {
-        return self::query(array_merge([
+        // The requested component and view are authoritative: callers may pass
+        // route parameters, but must not redirect this helper to another view.
+        return self::query(array_merge($parameters, [
             'option' => 'com_sportsmanagement',
             'view' => $view,
-        ], $parameters));
+        ]));
     }
 
     public static function query(array $parameters): string
