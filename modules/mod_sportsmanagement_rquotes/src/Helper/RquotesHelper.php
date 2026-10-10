@@ -74,7 +74,7 @@ final class RquotesHelper
                 'multiple_random' => $this->multipleRandom(
                     $db,
                     $this->randomCategory($categoryIds),
-                    max(1, (int) $params->get('num_of_random', 2))
+                    min(2500, max(1, (int) $params->get('num_of_random', 2)))
                 ),
                 'sequential' => $this->sequential($db, $categoryIds, $app),
                 'daily' => $this->periodic($db, $this->firstCategory($categoryIds), 1, 'Y-m-d', $app),
