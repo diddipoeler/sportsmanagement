@@ -49,7 +49,7 @@ jobs:
           grep -Fq -- 'SportsManagementSiteApplicationResolver.php' site/models/teamstats.php
           grep -Fq -- 'throw new \RuntimeException' site/models/teamstats.php
 
-          grep -Fq -- 'is_file($nativeModel)' admin/models/predictiongroup.php
+          grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' admin/models/predictiongroup.php
           grep -Fq -- 'throw new \RuntimeException' admin/models/predictiongroup.php
           ! grep -Fq -- 'require_once JPATH_ADMINISTRATOR' admin/models/predictiongroup.php
 
