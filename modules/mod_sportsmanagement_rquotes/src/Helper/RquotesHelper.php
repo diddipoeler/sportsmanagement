@@ -65,11 +65,11 @@ final class RquotesHelper
             ];
         }
 
-        $db = $this->database($databaseSelector, $fallbackDatabase);
         $categoryIds = $this->normaliseIds($params->get('category', []));
         $rotation = strtolower((string) $params->get('rotate', 'single_random'));
 
         try {
+            $db = $this->database($databaseSelector, $fallbackDatabase);
             $list = match ($rotation) {
                 'multiple_random' => $this->multipleRandom(
                     $db,
