@@ -140,7 +140,8 @@ final class RquotesHelper
 
         $cookie = $app->getInput()->cookie;
         $current = $cookie->getInt('rquote', -1);
-        $index = $current >= 0
+        // Reject an out-of-range or stale index if the quotes list changed.
+        $index = $current >= 0 && $current < count($rows)
             ? ($current + 1) % count($rows)
             : random_int(0, count($rows) - 1);
 
