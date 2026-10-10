@@ -346,10 +346,12 @@ final class RquotesHelper
             return '';
         }
         if (preg_match('#^https?://#i', $path)) {
-            // Reject credentials embedded in quote-provided absolute image URLs.
+            // Reject embedded credentials and control characters from
+            // quote-provided absolute URLs before they reach HTML output.
             return filter_var($path, FILTER_VALIDATE_URL)
                 && parse_url($path, PHP_URL_USER) === null
                 && parse_url($path, PHP_URL_PASS) === null
+                && !preg_match('/[\x00-\x1F\x7F]/', $path)
                 ? $path
                 : '';
         }
