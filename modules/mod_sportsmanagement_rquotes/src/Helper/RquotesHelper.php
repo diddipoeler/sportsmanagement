@@ -332,9 +332,9 @@ final class RquotesHelper
                     continue;
                 }
 
-                $id = (int) $match[1];
+                $id = filter_var($match[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
-                if ($id > 0) {
+                if ($id !== false) {
                     $ids[$id] = $id;
                 }
             }
