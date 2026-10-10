@@ -318,6 +318,13 @@ final class RquotesHelper
             return '';
         }
 
+        // Do not allow relative picture paths to escape the media base or
+        // introduce query strings and fragments into the configured URL.
+        $segments = explode('/', str_replace('\\', '/', $path));
+        if (in_array('..', $segments, true) || strpbrk($path, '?#') !== false) {
+            return '';
+        }
+
         // An empty external media server must not produce a root-relative URL.
         if (trim($pictureServer) === '') {
             return '';
