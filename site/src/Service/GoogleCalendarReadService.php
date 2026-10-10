@@ -57,15 +57,30 @@ final class GoogleCalendarReadService
             }
         }
 
-        usort(
-            $events,
-            static fn (array $left, array $right): int => strcmp(
-                (string) ($left['start'] ?? ''),
-                (string) ($right['start'] ?? '')
-            )
-        );
+        // ISO calendar strings with different UTC offsets do not sort chronologically.
+        usort($events, self::compareEventStarts(...));
 
         return $events;
+    }
+
+    /**
+     * Compare calendar instants, not lexical date strings with UTC offsets.
+     *
+     * @param array<string, mixed> $left
+     * @param array<string, mixed> $right
+     */
+    private static function compareEventStarts(array $left, array $right): int
+    {
+        $leftStart = (string) ($left['start'] ?? '');
+        $rightStart = (string) ($right['start'] ?? '');
+        $leftTime = strtotime($leftStart);
+        $rightTime = strtotime($rightStart);
+
+        if ($leftTime !== false && $rightTime !== false) {
+            return $leftTime <=> $rightTime;
+        }
+
+        return strcmp($leftStart, $rightStart);
     }
 
     /**
