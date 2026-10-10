@@ -43,7 +43,7 @@ final class RquotesHelper
                 'source' => 'text',
                 'style' => $style,
                 'list' => [],
-                'textLine' => $this->textLine($params),
+                'textLine' => $this->textLine($params, $app),
                 'pictureServer' => $pictureServer,
             ];
         }
@@ -261,7 +261,7 @@ final class RquotesHelper
         $db->insertObject('#__rquote_meta', $record);
     }
 
-    private function textLine(Registry $params): string
+    private function textLine(Registry $params, CMSApplicationInterface $app): string
     {
         $filename = basename(trim((string) $params->get('filename', 'rquotes.txt')));
         if ($filename === '') {
@@ -287,7 +287,7 @@ final class RquotesHelper
         if ((bool) $params->get('randomtext', 0)) {
             // Wrap the day-of-month index instead of repeating the final
             // line for the rest of the month when fewer than 31 exist.
-            $index = ((int) date('j') - 1) % count($lines);
+            $index = ((int) $this->now($app)->format('j') - 1) % count($lines);
             return $lines[$index];
         }
 
