@@ -1,7 +1,7 @@
 <?php
 /**
  * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    5.6.0
+ * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage updates
  * @file       jsm_update_db_tables.php
@@ -17,6 +17,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
 
 HTMLHelper::_('bootstrap.framework');
+jimport('joomla.html.html.bootstrap');
 
 $version           = '4.20.00';
 

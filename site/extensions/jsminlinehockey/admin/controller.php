@@ -3,7 +3,7 @@
  *
  * SportsManagement ein Programm zur Verwaltung für Sportarten
  *
- * @version    5.6.0
+ * @version    1.0.05
  * @package    Sportsmanagement
  * @subpackage extension jsminlinehockey controllers
  * @file       controller.php
