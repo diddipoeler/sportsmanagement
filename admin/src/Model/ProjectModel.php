@@ -57,7 +57,7 @@ final class ProjectModel extends SportsManagementAdminModel
             $data['alias'] = OutputFilter::stringURLSafe($data['name']);
         }
 
-        $data['modified_timestamp'] = new Date('now', new \DateTimeZone('UTC'))->toUnix();
+        $data['modified_timestamp'] = (new Date('now', new \DateTimeZone('UTC')))->toUnix();
 
         return $data;
     }
@@ -471,8 +471,8 @@ final class ProjectModel extends SportsManagementAdminModel
                 $source->published = 0;
                 $source->checked_out = 0;
                 $source->checked_out_time = $db->getNullDate();
-                $source->modified = new Date('now', new \DateTimeZone('UTC'))->toSql();
-                $source->modified_timestamp = new Date('now', new \DateTimeZone('UTC'))->toUnix();
+                $source->modified = (new Date('now', new \DateTimeZone('UTC')))->toSql();
+                $source->modified_timestamp = (new Date('now', new \DateTimeZone('UTC')))->toUnix();
                 $source->modified_by = (int) $app->getIdentity()->id;
                 $db->insertObject('#__sportsmanagement_project', $source);
                 $newProjectId = (int) $db->insertid();
