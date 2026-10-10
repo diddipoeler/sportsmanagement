@@ -206,7 +206,13 @@ final class RquotesHelper
         // PHP's z is zero-based, while configured daily_number values are one-based.
         $dayOfYear = (int) $this->now($app)->format('z') + 1;
         $rows = $this->quoteRows($db, $categoryIds, $dayOfYear);
-        return $rows ?: $this->singleRandom($db, $categoryIds);
+        if ($rows) {
+            return $rows;
+        }
+
+        // Without a matching daily_number, retain a stable quote for the day.
+        $available = $this->quoteRows($db, $categoryIds);
+        return $available ? [$available[($dayOfYear - 1) % count($available)]] : [];
     }
 
     private function quoteRows(DatabaseInterface $db, array $categoryIds, ?int $dailyNumber = null): array
