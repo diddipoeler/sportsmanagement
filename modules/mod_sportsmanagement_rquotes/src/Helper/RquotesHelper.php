@@ -309,7 +309,13 @@ final class RquotesHelper
             return '';
         }
         if (preg_match('#^https?://#i', $path)) {
-            return $path;
+            return filter_var($path, FILTER_VALIDATE_URL) ? $path : '';
+        }
+
+        // Never treat a URL with another scheme or a protocol-relative URL
+        // as a local image path on the configured picture server.
+        if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $path) || str_starts_with($path, '//')) {
+            return '';
         }
 
         // An empty external media server must not produce a root-relative URL.
