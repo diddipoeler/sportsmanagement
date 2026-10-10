@@ -34,6 +34,11 @@ final class RquotesHelper
             $componentParams->get('cfg_which_database', 0)
         );
         $remotePictureServer = trim((string) $componentParams->get('cfg_which_database_server', ''));
+        // Do not construct image links from an invalid or unsafe remote base URL.
+        $remotePictureServer = filter_var($remotePictureServer, FILTER_VALIDATE_URL)
+            && in_array(strtolower((string) parse_url($remotePictureServer, PHP_URL_SCHEME)), ['http', 'https'], true)
+            ? $remotePictureServer
+            : '';
         $pictureServer = $databaseSelector
             ? ($remotePictureServer !== '' ? rtrim($remotePictureServer, '/') . '/' : '')
             : Uri::root();
