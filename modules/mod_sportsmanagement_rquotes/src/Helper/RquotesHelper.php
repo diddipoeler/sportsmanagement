@@ -39,6 +39,9 @@ final class RquotesHelper
             && in_array(strtolower((string) parse_url($remotePictureServer, PHP_URL_SCHEME)), ['http', 'https'], true)
             && parse_url($remotePictureServer, PHP_URL_QUERY) === null
             && parse_url($remotePictureServer, PHP_URL_FRAGMENT) === null
+            // Embedded credentials must not be exposed in generated image URLs.
+            && parse_url($remotePictureServer, PHP_URL_USER) === null
+            && parse_url($remotePictureServer, PHP_URL_PASS) === null
             ? $remotePictureServer
             : '';
         $pictureServer = $databaseSelector
