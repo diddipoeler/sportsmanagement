@@ -60,7 +60,8 @@ jobs:
           grep -Fq 'final class ProjectModel extends SportsManagementAdminModel' admin/src/Model/ProjectModel.php
           grep -Fq 'final class ProjectsModel extends SportsManagementListModel' admin/src/Model/ProjectsModel.php
           grep -Fq 'AdministratorApplication' admin/src/Model/ProjectModel.php
-          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Model/ProjectModel.php
+          grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/Model/ProjectModel.php
+          grep -Fq 'self::backendApplication()->getContainer()->get(DatabaseInterface::class)' admin/src/Model/ProjectModel.php
           grep -Fq '$this->administratorApplication()' admin/src/Model/ProjectModel.php
           grep -Fq 'self::backendApplication()' admin/src/Model/ProjectModel.php
 

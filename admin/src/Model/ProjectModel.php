@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagemen
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Date\Date;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -715,7 +714,7 @@ final class ProjectModel extends SportsManagementAdminModel
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        $database = self::backendApplication()->getContainer()->get(DatabaseInterface::class);
 
         return $database;
     }
