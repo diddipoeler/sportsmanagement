@@ -365,7 +365,8 @@ final class RquotesHelper
         // Do not allow relative picture paths to escape the media base or
         // introduce query strings and fragments into the configured URL.
         $segments = explode('/', str_replace('\\', '/', $path));
-        if (str_contains($path, '\\')
+        if (str_starts_with($path, '/')
+            || str_contains($path, '\\')
             || str_contains($path, ':')
             || str_contains($path, '%')
             || in_array('.', $segments, true)
