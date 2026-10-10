@@ -22,19 +22,18 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-      - name: Check metadata and syntax of changed PHP files
+      - name: Check changed PHP metadata and syntax
         shell: bash
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           set -euo pipefail
-          if [[ "$BASE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+          if [[ -z "$BASE_SHA" || "$BASE_SHA" =~ ^0+$ ]] || ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
             BASE_SHA=$(git rev-parse HEAD^)
           fi
           mapfile -d '' php_files < <(
             git diff --name-only -z --diff-filter=ACMR "$BASE_SHA" HEAD -- site admin modules |
-              grep -zE '\.php
- || true
+              grep -zE '\.php$' || true
           )
           if (( ${#php_files[@]} )); then
             php .github/tests/phpdoc_metadata.php "${php_files[@]}"
@@ -44,10 +43,6 @@ jobs:
           else
             echo "No changed PHP files."
           fi
-          # Changes to the validator itself must be checked even if no
-          # site/admin/module PHP file changed in this push.
-          if git diff --quiet "$BASE_SHA" HEAD -- .github/tests/phpdoc_metadata.php; then
-            echo "PHPDoc validator unchanged."
-          else
+          if ! git diff --quiet "$BASE_SHA" HEAD -- .github/tests/phpdoc_metadata.php; then
             php -l .github/tests/phpdoc_metadata.php
           fi
