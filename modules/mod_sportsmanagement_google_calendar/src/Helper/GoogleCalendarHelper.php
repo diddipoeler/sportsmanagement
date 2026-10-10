@@ -112,6 +112,23 @@ final class GoogleCalendarHelper
             return '';
         }
 
+        // Google's all-day end.date is exclusive. Show the last included
+        // calendar day rather than displaying an extra day to visitors.
+        if (isset($event->start->date, $event->end->date)
+            && !isset($event->start->dateTime, $event->end->dateTime)) {
+            $lastDay = clone $event->endDate;
+            $lastDay->modify('-1 day');
+
+            if ($lastDay < $event->startDate) {
+                return '';
+            }
+
+            $start = $event->startDate->format('d.m.Y', true);
+            $end = $lastDay->format('d.m.Y', true);
+
+            return $start === $end ? $start : $start . ' - ' . $end;
+        }
+
         $startDateFormat = isset($event->start->dateTime) ? 'd.m.Y H:i' : 'd.m.Y';
         $endDateFormat = isset($event->end->dateTime) ? 'd.m.Y H:i' : 'd.m.Y';
 
