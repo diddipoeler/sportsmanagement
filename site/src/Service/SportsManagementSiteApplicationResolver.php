@@ -18,6 +18,7 @@ final class SportsManagementSiteApplicationResolver
 {
     public static function resolve(): SiteApplication
     {
+        // Use Joomla's application service instead of the removed legacy Factory::getApplication() API.
         $app = Factory::getContainer()->get(SiteApplication::class);
 
         if (!$app instanceof SiteApplication || !$app->isClient('site')) {
