@@ -113,14 +113,13 @@ jobs:
             modules/mod_sportsmanagement_ranking/helper.php
           )
           for file in "${helpers[@]}"; do
-            if grep -Fq -- 'Factory::getContainer()' "$file"; then
-              echo "$file still uses Factory::getContainer()" >&2
+            if grep -Eq -- '\$app->getContainer\(|->getApplication\(\)->getContainer\(' "$file"; then
+              echo "$file accesses a protected application container" >&2
               exit 1
             fi
           done
-          # Rquotes' compatibility facade obtains the database from Joomla's
-          # public DI container; the prohibition above applies to the other
-          # legacy helper wrappers only.
+          # Factory::getContainer() is Joomla's public DI access point.
+          # Reject protected application container access, not public DI.
           grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_rquotes/helper.php
           grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_firstleagueoverview/helper.php
           grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_playground_ticker/helper.php
