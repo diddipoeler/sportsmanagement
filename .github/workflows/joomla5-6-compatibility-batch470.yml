@@ -53,6 +53,7 @@ jobs:
           test "$(grep -Fc -- 'SportsManagementSiteApplicationResolver.php' site/models/project.php)" -ge 3
           grep -Fq -- 'throw new \RuntimeException' site/models/project.php
 
-          grep -Fq -- 'is_file($nativeModel)' admin/models/club.php
+          grep -Fq -- 'if (!class_exists($class, false) && is_file($file))' admin/models/club.php
+          grep -Fq -- 'require_once $file;' admin/models/club.php
           grep -Fq -- 'throw new \RuntimeException' admin/models/club.php
           ! grep -Fq -- '$baseModel = JPATH_ADMINISTRATOR' admin/models/club.php
