@@ -245,7 +245,9 @@ final class RquotesHelper
                 ->bind(':dailyNumber', $dailyNumber, ParameterType::INTEGER);
         }
 
-        $db->setQuery($query);
+        // Periodic and today rotations display a single quote. Limit
+        // numbered lookups at the database instead of loading duplicates.
+        $db->setQuery($query, 0, $dailyNumber !== null ? 1 : 0);
         return $db->loadObjectList() ?: [];
     }
 
