@@ -57,7 +57,7 @@ jobs:
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Updates/HtmlView.php
           grep -Fq -- 'SportsManagement Updates view requires the Joomla administrator application.' admin/src/View/Updates/HtmlView.php
 
-          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_rquotes/helper.php
-          grep -Fq -- 'SportsManagement Rquotes legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_rquotes/helper.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_rquotes/helper.php
+          grep -Fq -- 'private static function siteApplication(): CMSApplicationInterface' modules/mod_sportsmanagement_rquotes/helper.php
 
           echo 'Joomla 5/6 batch 166 contracts OK.'
