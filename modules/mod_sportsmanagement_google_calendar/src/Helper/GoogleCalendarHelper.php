@@ -212,7 +212,7 @@ final class GoogleCalendarHelper
 
         if (is_string($timeZone)) {
             try {
-                new \DateTimeZone($timeZone);
+                $timeZone = new \DateTimeZone($timeZone);
             } catch (\Exception) {
                 throw new \UnexpectedValueException('Google Calendar event has an unknown time zone.');
             }
