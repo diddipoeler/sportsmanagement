@@ -1,0 +1,36 @@
+name: Joomla 5/6 site route contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - '.github/tests/site_route_helper_contract.php'
+      - '.github/workflows/joomla5-6-site-route-contract.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - '.github/tests/site_route_helper_contract.php'
+      - '.github/workflows/joomla5-6-site-route-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  route-contract:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php-version: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+      - name: Verify site route argument protection
+        run: |
+          php -l site/src/Helper/SiteRouteHelper.php
+          php -l .github/tests/site_route_helper_contract.php
+          php .github/tests/site_route_helper_contract.php
