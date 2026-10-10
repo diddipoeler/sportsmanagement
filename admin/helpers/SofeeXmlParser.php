@@ -1,4 +1,12 @@
 <?php
+/**
+ * File-level attribution and license; original notices are preserved below.
+ *
+ * @version    $Revision: 1.1 $
+ * @author    Justin Wu <wenlong@php.net>
+ * @copyright    Copyright (c) 2004-2005 Sofee Development Team.(http://www.sofee.cn)
+ * @license    GNU Lesser General Public License version 2.1 or later
+ */
 /*
 
   +----------------------------------------------------------------------+

@@ -3,6 +3,9 @@
  * SportsManagement Joomla 5/6 file metadata.
  *
  * @author     diddipoeler
+  * @version    $Id: helper.php 16385 2010-04-23 10:44:15Z ian $
+ * @copyright    Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
+ * @license    GNU/GPL, see LICENSE.php
  */
 
 /**

@@ -3,6 +3,9 @@
  * SportsManagement Joomla 5/6 file metadata.
  *
  * @copyright  Copyright (C) diddipoeler
+  * @version    2.1.20
+ * @author    Jonathan Goode <https://github.com/u01jmg3>
+ * @license    https://opensource.org/licenses/mit-license.php MIT License
  */
 
 

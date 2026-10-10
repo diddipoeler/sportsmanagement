@@ -1,4 +1,12 @@
 <?php
+/**
+ * File-level attribution and license; original notices are preserved below.
+ *
+ * @version    CVS: $Id: JSON.php,v 1.31 2006/06/28 05:54:17 migurski Exp $
+ * @author    Michal Migurski <mike-json@teczno.com>
+ * @copyright    2005 Michal Migurski
+ * @license    http://www.opensource.org/licenses/bsd-license.php
+ */
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 

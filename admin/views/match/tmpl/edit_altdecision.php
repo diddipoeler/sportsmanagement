@@ -3,6 +3,9 @@
  * SportsManagement Joomla 5/6 file metadata.
  *
  * @copyright  Copyright (C) diddipoeler
+  * @version    5.6.0
+ * @author    diddipoeler, stony, svdoldie und donclumsy
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 /**

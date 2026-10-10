@@ -3,6 +3,9 @@
  * SportsManagement Joomla 5/6 file metadata.
  *
  * @author     diddipoeler
+  * @version    $Id: upload.php 4905 2010-01-30 08:51:33Z and_one $
+ * @copyright    Copyright (C) 2008 Julien Vonthron. All rights reserved.
+ * @license    GNU/GPL, see LICENSE.php
  */
 
 /**

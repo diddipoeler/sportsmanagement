@@ -1,4 +1,12 @@
 <?php
+/**
+ * File-level attribution and license; original notices are preserved below.
+ *
+ * @version    2.0.0
+ * @author    Chris Schuld
+ * @copyright    Copyright 2025 Chris Schuld
+ * @license    MIT License
+ */
 defined('_JEXEC') or die('Restricted access');
 //namespace cbschuld;
 

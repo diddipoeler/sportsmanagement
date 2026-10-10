@@ -1,13 +1,13 @@
 <?php
 /**
- * @package     Joomla.Site
- * @subpackage  Layout
+ * @package     Joomla.Site
+ * @subpackage  Layout
  * @version     5.6.0
  * @author      Open Source Matters, Inc.; override by ghsvs.de
- *
- * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
- */
+ *
+ * @copyright   Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
 /**
  * Override by ghsvs.de 2019-05-10
  * @link https://www.ghsvs.de/programmierer-schnipsel/joomla/165-suchwerkzeuge-filter-immer-sichtbar

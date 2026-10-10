@@ -1,5 +1,9 @@
 <?php
-/*********************************************************************************/
+/******************************************************************************** * @version    2.10.5
+ * @author    Kjell-Inge Gustafsson, kigkonsult <ical@kigkonsult.se>
+ * @copyright    Copyright (c) 2007-2011 Kjell-Inge Gustafsson kigkonsult
+ * @license    GNU Lesser General Public License version 2.1 or later
+ */
 /**
  * iCalcreator class v2.10.5
  *

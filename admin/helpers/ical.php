@@ -1,4 +1,12 @@
 <?php
+/**
+ * File-level attribution and license; original notices are preserved below.
+ *
+ * @version    1.0
+ * @author    Roman Ožana (Cz)
+ * @copyright    Roman Ožana (Cz)
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
 //
 // DATE : 01.08.2006  #
 // Short description :                                                         #

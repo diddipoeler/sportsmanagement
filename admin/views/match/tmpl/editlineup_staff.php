@@ -4,6 +4,8 @@
  *
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
+  * @version    5.6.0
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 /**

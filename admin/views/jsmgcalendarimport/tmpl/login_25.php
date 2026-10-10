@@ -3,6 +3,9 @@
  * SportsManagement Joomla 5/6 file metadata.
  *
  * @version    5.6.0
+  * @author    Digital Peak http://www.digital-peak.com
+ * @copyright    Copyright (C) 2007 - 2013 Digital Peak. All rights reserved.
+ * @license    http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 /**

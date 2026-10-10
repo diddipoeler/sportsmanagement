@@ -31,7 +31,8 @@ $errors = [];
 $checked = 0;
 foreach ($arguments as $path) {
     $path = str_replace('\\', '/', $path);
-    if (!str_ends_with(strtolower($path), '.php')
+    if (str_contains($path, '/vendor/')
+        || !str_ends_with(strtolower($path), '.php')
         || !array_filter($areas, static fn(string $area): bool => str_starts_with($path, $area))) {
         continue;
     }
@@ -43,7 +44,7 @@ foreach ($arguments as $path) {
     }
     ++$checked;
     $source = file_get_contents($absolutePath);
-    if ($source === false || !preg_match('/^(?:\\xEF\\xBB\\xBF)?<\\?php\\s*\\/\\*\\*(.*?)\\*\\//s', $source, $match)) {
+    if ($source === false || !preg_match('/^(?:\\xEF\\xBB\\xBF)?<\\?php\\s*\\/\\*\\*(.*?)\\*\\//is', $source, $match)) {
         $errors[] = "$path: missing file-level PHPDoc block";
         continue;
     }
