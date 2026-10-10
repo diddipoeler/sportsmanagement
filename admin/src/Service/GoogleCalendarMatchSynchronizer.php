@@ -278,8 +278,15 @@ final class GoogleCalendarMatchSynchronizer
         }
 
         $startDate = new DateTimeImmutable((string) $match->match_date, $timezoneObject);
-        $duration = max(0, (int) ($project->game_regular_time ?? 0) + (int) ($project->halftime ?? 0));
-        $endDate = $duration > 0 ? $startDate->add(new DateInterval('PT' . $duration . 'M')) : $startDate;
+        $duration = (int) ($project->game_regular_time ?? 0) + (int) ($project->halftime ?? 0);
+
+        // Google Calendar requires an end later than the start. Old projects
+        // may have no game duration configured; use a one-hour fallback.
+        if ($duration <= 0) {
+            $duration = 60;
+        }
+
+        $endDate = $startDate->add(new DateInterval('PT' . $duration . 'M'));
 
         $start = new GoogleCalendarEventDateTime();
         $start->setDateTime($startDate->format(DATE_ATOM));
