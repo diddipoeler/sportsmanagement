@@ -381,7 +381,11 @@ final class RquotesHelper
             return '';
         }
 
-        return rtrim($pictureServer, '/') . '/' . ltrim($path, '/');
+        // Encode spaces and other unsafe bytes per path segment while
+        // retaining directory separators for legacy nested image paths.
+        $encodedPath = implode('/', array_map('rawurlencode', explode('/', ltrim($path, '/'))));
+
+        return rtrim($pictureServer, '/') . '/' . $encodedPath;
     }
 
     private function randomCategory(array $ids): array
