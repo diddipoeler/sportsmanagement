@@ -208,7 +208,9 @@ final class GoogleCalendarHelper
                 || (int) $matches[5] > 59
                 || (int) $matches[6] > 59
                 || (preg_match('/([+-])(\d{2}):(\d{2})$/D', $date->dateTime, $offset)
-                    && ((int) $offset[2] > 23 || (int) $offset[3] > 59))) {
+                    && ((int) $offset[2] > 14
+                        || ((int) $offset[2] === 14 && (int) $offset[3] !== 0)
+                        || (int) $offset[3] > 59))) {
                 throw new \UnexpectedValueException('Google Calendar event has an invalid date-time.');
             }
 
