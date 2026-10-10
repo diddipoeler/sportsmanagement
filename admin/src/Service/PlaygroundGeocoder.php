@@ -99,7 +99,7 @@ final class PlaygroundGeocoder
         $addressData = isset($result['address']) && is_array($result['address'])
             ? $result['address']
             : [];
-        $countryCode = strtolower(trim((string) ($addressData['country_code'] ?? ''));
+        $countryCode = strtolower(trim((string) ($addressData['country_code'] ?? '')));
         $state = $countryCode === 'gb'
             ? trim((string) ($addressData['county'] ?? ''))
             : trim((string) ($addressData['state'] ?? ''));
