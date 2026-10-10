@@ -77,7 +77,6 @@ jobs:
             modules/mod_sportsmanagement_playgroundplan/helper.php
             modules/mod_sportsmanagement_projectmap/helper.php
             modules/mod_sportsmanagement_randomplayer/helper.php
-            modules/mod_sportsmanagement_rquotes/helper.php
             modules/mod_sportsmanagement_ranking/helper.php
           )
           for file in "${files[@]}"; do
@@ -119,6 +118,10 @@ jobs:
               exit 1
             fi
           done
+          # Rquotes' compatibility facade obtains the database from Joomla's
+          # public DI container; the prohibition above applies to the other
+          # legacy helper wrappers only.
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_rquotes/helper.php
           grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_firstleagueoverview/helper.php
           grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_playground_ticker/helper.php
           grep -Fq -- '?DatabaseInterface $database = null' modules/mod_sportsmanagement_projectmap/helper.php
