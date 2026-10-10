@@ -64,6 +64,10 @@ final class GoogleCalendarHelper
      */
     public function loadNextEvents(string $apiKey, string $calendarId, int $maxEvents): array
     {
+        // Guard the public callback as well as the module parameter. Legacy
+        // callers may invoke it directly with an out-of-range event count.
+        $maxEvents = min(2500, max(1, $maxEvents));
+
         $options = [
             'timeMin' => Date::getInstance()->toISO8601(),
             'orderBy' => 'startTime',
