@@ -40,5 +40,5 @@ jobs:
             grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
             ! grep -Fq -- 'Restricted access' "$file"
             grep -Fq -- 'class_alias(' "$file"
-            grep -Fq -- 'throw new \\RuntimeException' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
           done
