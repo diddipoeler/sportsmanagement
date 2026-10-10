@@ -35,7 +35,7 @@ jobs:
           done
           grep -Fq -- '@version    5.6.0' "$file"
           grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
-          grep -Fq -- "$this->getTable((string) $table, 'Administrator')" "$file"
+          grep -Fq -- '$this->getTable((string) $table, \'Administrator\')' "$file"
           ! grep -Fq -- 'Table::getInstance' "$file"
           ! grep -Fq -- '$this->_db' "$file"
           ! grep -Fq -- 'setError(' "$file"
