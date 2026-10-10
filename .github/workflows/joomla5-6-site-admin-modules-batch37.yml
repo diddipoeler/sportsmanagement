@@ -54,8 +54,8 @@ jobs:
           grep -Fq -- "->bind(':homePlayerId', \$homePlayerId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
           grep -Fq -- "->bind(':awayPlayerId', \$awayPlayerId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchAdminService.php
 
-          grep -Fq 'SportsManagement Rquotes helper could not be loaded.' modules/mod_sportsmanagement_rquotes/helper.php
-          grep -Fq "Factory::getContainer()->get(SiteApplication::class)" modules/mod_sportsmanagement_rquotes/helper.php
+          grep -Fq 'SportsManagement Rquotes dependency could not be loaded:' modules/mod_sportsmanagement_rquotes/helper.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_rquotes/helper.php
 
           if grep -n '@version[[:space:]]*4\.24' \
             site/models/editperson.php \
