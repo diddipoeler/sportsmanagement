@@ -72,7 +72,7 @@ jobs:
               'dispatcher public cache container': (dispatcher, 'Factory::getContainer()->get(CacheControllerFactoryInterface::class)'),
               'cache factory injection': (helper, 'CacheControllerFactoryInterface $cacheFactory'),
               'framework HTTP factory': (helper, 'use Joomla\\Http\\HttpFactory;'),
-              'framework HTTP driver': (helper, '(new HttpFactory())->getAvailableDriver()'),
+              'framework HTTP client': (helper, '(new HttpFactory())->getHttp()'),
               'PSR-7 response status': (helper, '$response->getStatusCode()'),
               'PSR-7 response body': (helper, '$response->getBody()'),
               'prepared start date': (helper, '$event->jsmStartIso ='),
