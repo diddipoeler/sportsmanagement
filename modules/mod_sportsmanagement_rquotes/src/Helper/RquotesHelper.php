@@ -193,7 +193,9 @@ final class RquotesHelper
         }
 
         $selected = $this->quoteRows($db, $categoryIds, $number);
-        return $selected ?: $this->singleRandom($db, $categoryIds);
+        // Missing daily_number assignments must not produce a different
+        // random quote on each page view during the same rotation period.
+        return $selected ?: [$rows[$number - 1]];
     }
 
     private function todayQuote(DatabaseInterface $db, array $categoryIds, CMSApplicationInterface $app): array
