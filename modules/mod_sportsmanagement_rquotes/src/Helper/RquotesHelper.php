@@ -84,6 +84,12 @@ final class RquotesHelper
                 'today' => $this->todayQuote($db, $this->firstCategory($categoryIds), $app),
                 default => $this->singleRandom($db, $this->randomCategory($categoryIds)),
             };
+
+            // Keep image URL normalisation inside the same error boundary as
+            // the database fetch so malformed legacy data cannot break the page.
+            foreach ($list as $quote) {
+                $quote->picture_url = $this->pictureUrl($quote, $pictureServer);
+            }
         } catch (\Throwable $e) {
             $app->enqueueMessage(
                 Text::sprintf(
@@ -94,10 +100,6 @@ final class RquotesHelper
                 'error'
             );
             $list = [];
-        }
-
-        foreach ($list as $quote) {
-            $quote->picture_url = $this->pictureUrl($quote, $pictureServer);
         }
 
         return [
