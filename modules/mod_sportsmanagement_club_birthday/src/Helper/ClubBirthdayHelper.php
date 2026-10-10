@@ -168,14 +168,15 @@ final class ClubBirthdayHelper
                 continue;
             }
 
-            $birthday = $today->setDate(
-                (int) $today->format('Y'),
-                (int) $birth->format('m'),
-                (int) $birth->format('d')
-            );
+            $year = (int) $today->format('Y');
+            $month = (int) $birth->format('m');
+            $day = (int) $birth->format('d');
 
-            if ($birthday < $today) {
-                $birthday = $birthday->modify('+1 year');
+            // PHP normalises 29 February into March in non-leap years.
+            // Find the next actual anniversary without changing its day/month.
+            while (!checkdate($month, $day, $year)
+                || ($birthday = $today->setDate($year, $month, $day)) < $today) {
+                ++$year;
             }
 
             $daysToBirthday = (int) $today->diff($birthday)->format('%a');
