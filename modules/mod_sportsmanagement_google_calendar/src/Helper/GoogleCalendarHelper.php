@@ -40,12 +40,18 @@ final class GoogleCalendarHelper
             'defaultgroup' => 'mod_sportsmanagement_google_calendar',
         ]);
 
-        $events = $cache->call(
-            [$this, 'loadNextEvents'],
-            $apiKey,
-            $calendarId,
-            $maxEvents
-        );
+        try {
+            $events = $cache->call(
+                [$this, 'loadNextEvents'],
+                $apiKey,
+                $calendarId,
+                $maxEvents
+            );
+        } catch (\Exception) {
+            // Temporary HTTP/API/cache failures must not break the page.
+            // Do not cache a failed request as an empty event list.
+            return ['events' => []];
+        }
 
         return ['events' => is_array($events) ? $events : []];
     }
