@@ -190,6 +190,9 @@ final class RquotesHelper
         } elseif ((string) ($meta->date_modified ?? '') !== $token) {
             $number = $number >= $count ? 1 : $number + 1;
             $this->storeMeta($db, $metaId, $number, $token, true);
+        } elseif ((int) $meta->number_reached !== $number) {
+            // Persist the clamped index so obsolete values do not linger.
+            $this->storeMeta($db, $metaId, $number, $token, true);
         }
 
         $selected = $this->quoteRows($db, $categoryIds, $number);
