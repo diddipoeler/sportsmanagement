@@ -181,7 +181,9 @@ final class RquotesHelper
 
         $token = $this->now($app)->format($dateFormat);
         $meta = $this->loadMeta($db, $metaId);
-        $number = max(1, (int) ($meta->number_reached ?? 1));
+        // A category may have fewer quotes than when this rotation was saved.
+        // Keep the stored position within the currently available quote list.
+        $number = min($count, max(1, (int) ($meta->number_reached ?? 1)));
 
         if (!$meta) {
             $this->storeMeta($db, $metaId, $number, $token, false);
