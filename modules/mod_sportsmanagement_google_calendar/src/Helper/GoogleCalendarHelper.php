@@ -209,8 +209,14 @@ final class GoogleCalendarHelper
         }
 
         if (isset($date->date)) {
-            if (!is_string($date->date) || trim($date->date) === '') {
+            if (!is_string($date->date)
+                || !preg_match('/^\d{4}-\d{2}-\d{2}$/D', $date->date)) {
                 throw new \UnexpectedValueException('Google Calendar event has an invalid all-day date.');
+            }
+
+            [$year, $month, $day] = array_map('intval', explode('-', $date->date));
+            if (!checkdate($month, $day, $year)) {
+                throw new \UnexpectedValueException('Google Calendar event has an impossible all-day date.');
             }
 
             return Date::getInstance($date->date, $timeZone);
