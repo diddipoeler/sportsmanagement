@@ -20,7 +20,7 @@ final class SportsManagementAdministratorApplicationResolver
     {
         $app = Factory::getContainer()->get(AdministratorApplication::class);
 
-        if (!$app->isClient('administrator')) {
+        if (!$app instanceof AdministratorApplication || !$app->isClient('administrator')) {
             throw new \RuntimeException('SportsManagement administrator application is unavailable.', 500);
         }
 
