@@ -99,6 +99,12 @@ final class GoogleCalendarHelper
             throw new \UnexpectedValueException('Unexpected data received from Google Calendar.');
         }
 
+        // The API can return an error object with HTTP 200, for example
+        // when a proxy rewrites the upstream response status.
+        if (isset($data->error)) {
+            throw new \UnexpectedValueException('Google Calendar API returned an error.');
+        }
+
         if (!isset($data->items) || !is_array($data->items)) {
             throw new \UnexpectedValueException('Google Calendar response contains no event list.');
         }
