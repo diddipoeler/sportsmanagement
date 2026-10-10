@@ -142,7 +142,7 @@ jobs:
           grep -Fq 'SiteRouteHelper::view(' modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
           grep -Fq 'SiteRouteHelper::view(' modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
-          grep -Fq 'public function refreshAjax(): string' "$liveticker_helper"
+          grep -Fq 'public function refreshAjax(?DatabaseInterface $database = null): string' "$liveticker_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$slider_helper"
           grep -Fq 'SiteRouteHelper::view(' "$slider_helper"
 
