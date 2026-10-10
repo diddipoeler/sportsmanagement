@@ -196,6 +196,9 @@ final class RquotesHelper
         }
 
         $selected = $this->quoteRows($db, $categoryIds, $number);
+        // A rotation period displays one quote, even if several records
+        // happen to share the same daily_number.
+        $selected = array_slice($selected, 0, 1);
         // Missing daily_number assignments must not produce a different
         // random quote on each page view during the same rotation period.
         return $selected ?: [$rows[$number - 1]];
@@ -207,7 +210,9 @@ final class RquotesHelper
         $dayOfYear = (int) $this->now($app)->format('z') + 1;
         $rows = $this->quoteRows($db, $categoryIds, $dayOfYear);
         if ($rows) {
-            return $rows;
+            // Duplicate daily_number values must not expand a single quote
+            // of the day into a list of multiple quotes.
+            return [reset($rows)];
         }
 
         // Without a matching daily_number, retain a stable quote for the day.
