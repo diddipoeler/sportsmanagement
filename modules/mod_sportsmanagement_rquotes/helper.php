@@ -212,7 +212,12 @@ if (!class_exists('modRquotesHelper', false)) {
                     continue;
                 }
 
-                $result[] = (int) $part;
+                $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                if ($id === false) {
+                    continue;
+                }
+
+                $result[] = $id;
             }
         }
 
