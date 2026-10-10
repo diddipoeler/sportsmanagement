@@ -194,14 +194,26 @@ final class GoogleCalendarHelper
             throw new \UnexpectedValueException('Google Calendar event has no date information.');
         }
 
-        $timeZone = isset($date->timeZone) ? (string) $date->timeZone : null;
+        $timeZone = $date->timeZone ?? null;
 
-        if (!empty($date->dateTime)) {
-            return Date::getInstance((string) $date->dateTime, $timeZone);
+        if ($timeZone !== null && (!is_string($timeZone) || trim($timeZone) === '')) {
+            throw new \UnexpectedValueException('Google Calendar event has an invalid time zone.');
         }
 
-        if (!empty($date->date)) {
-            return Date::getInstance((string) $date->date, $timeZone);
+        if (isset($date->dateTime)) {
+            if (!is_string($date->dateTime) || trim($date->dateTime) === '') {
+                throw new \UnexpectedValueException('Google Calendar event has an invalid date-time.');
+            }
+
+            return Date::getInstance($date->dateTime, $timeZone);
+        }
+
+        if (isset($date->date)) {
+            if (!is_string($date->date) || trim($date->date) === '') {
+                throw new \UnexpectedValueException('Google Calendar event has an invalid all-day date.');
+            }
+
+            return Date::getInstance($date->date, $timeZone);
         }
 
         throw new \UnexpectedValueException('Google Calendar event has an invalid date.');
