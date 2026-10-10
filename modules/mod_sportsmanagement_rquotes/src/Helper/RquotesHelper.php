@@ -300,8 +300,16 @@ final class RquotesHelper
             return '';
         }
 
-        $contents = file_get_contents($path);
-        if ($contents === false) {
+        // Quote text files should be small; do not load unbounded legacy
+        // files into memory on every module rendering.
+        $maxBytes = 5 * 1024 * 1024;
+        $size = filesize($path);
+        if ($size === false || $size > $maxBytes) {
+            return '';
+        }
+
+        $contents = file_get_contents($path, false, null, 0, $maxBytes + 1);
+        if ($contents === false || strlen($contents) > $maxBytes) {
             return '';
         }
 
