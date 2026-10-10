@@ -81,7 +81,9 @@ final class GoogleCalendarHelper
             . '/events?key=' . rawurlencode($apiKey)
             . '&' . http_build_query($options);
 
-        $response = $http->get($url);
+        // Bound the outbound request so an unresponsive calendar endpoint
+        // cannot hold up the Joomla page indefinitely.
+        $response = $http->get($url, [], 10);
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
 
