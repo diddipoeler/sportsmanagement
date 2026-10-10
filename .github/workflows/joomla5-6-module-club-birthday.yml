@@ -90,7 +90,7 @@ jobs:
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$helper"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           ! grep -Fq '$app->getContainer()->get(DatabaseInterface::class)' "$helper"
-          grep -Fq '(new ClubBirthdayHelper())->getData($params, $app, $database)' "$helper"
+          grep -Fq '(new ClubBirthdayHelper())->getData($registry, $app, $database)' "$helper"
           grep -Fq 'ClubBirthdayHelper::sortClubs' "$helper"
 
           if grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$helper"; then
