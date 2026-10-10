@@ -37,6 +37,8 @@ final class RquotesHelper
         // Do not construct image links from an invalid or unsafe remote base URL.
         $remotePictureServer = filter_var($remotePictureServer, FILTER_VALIDATE_URL)
             && in_array(strtolower((string) parse_url($remotePictureServer, PHP_URL_SCHEME)), ['http', 'https'], true)
+            && parse_url($remotePictureServer, PHP_URL_QUERY) === null
+            && parse_url($remotePictureServer, PHP_URL_FRAGMENT) === null
             ? $remotePictureServer
             : '';
         $pictureServer = $databaseSelector
