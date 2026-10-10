@@ -203,10 +203,16 @@ if (!class_exists('modRquotesHelper', false)) {
         $values = is_array($category) ? $category : [$category];
         $result = [];
         foreach ($values as $value) {
+            if (!is_scalar($value)) {
+                continue;
+            }
+
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                if ((int) $part > 0) {
-                    $result[] = (int) $part;
+                if (!preg_match('/^[1-9]\d*$/', $part)) {
+                    continue;
                 }
+
+                $result[] = (int) $part;
             }
         }
 
