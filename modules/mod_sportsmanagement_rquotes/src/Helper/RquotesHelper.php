@@ -144,12 +144,16 @@ final class RquotesHelper
             ? ($current + 1) % count($rows)
             : random_int(0, count($rows) - 1);
 
-        setcookie('rquote', (string) $index, [
-            'expires' => time() + 3600,
-            'path' => '/',
-            'httponly' => true,
-            'samesite' => 'Lax',
-        ]);
+        // Modules may render after Joomla has started sending the response.
+        // Avoid PHP header warnings while still returning the selected quote.
+        if (!headers_sent()) {
+            setcookie('rquote', (string) $index, [
+                'expires' => time() + 3600,
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+        }
 
         return [$rows[$index]];
     }
