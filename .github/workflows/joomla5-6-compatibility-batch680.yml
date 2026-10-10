@@ -55,7 +55,7 @@ jobs:
               raise SystemExit('ProjectModel Joomla DB helper is missing')
           if 'self::joomlaDatabase()' not in project:
               raise SystemExit('ProjectModel bypasses centralized Joomla DB fallback')
-          if project.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+          if project.count('self::backendApplication()->getContainer()->get(DatabaseInterface::class)') != 1:
               raise SystemExit('ProjectModel should have exactly one Joomla DB container access')
 
           ical = Path('site/src/Model/IcalModel.php').read_text()
