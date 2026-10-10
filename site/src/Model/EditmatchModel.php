@@ -95,7 +95,7 @@ final class EditmatchModel extends AdminModel
             'teamplayer1_id' => (int) $valuehometeamplayer_id,
             'teamplayer2_id' => (int) $valueawayteamplayer_id,
             'published' => 1,
-            'modified' => (new Date('now', new \\DateTimeZone('UTC')))->toSql(),
+            'modified' => (new Date('now', new \DateTimeZone('UTC')))->toSql(),
             'modified_by' => (int) $identity->id,
         ];
 
