@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
 /** Native JSON endpoints used by the Joomla 5/6 frontend. */
@@ -280,7 +281,7 @@ final class AjaxController extends BaseController
         // structure for legacy JavaScript, without exposing exception details.
         $this->sendJson([
             'success' => false,
-            'message' => 'SportsManagement options could not be loaded.',
+            'message' => Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
         ]);
     }
 
