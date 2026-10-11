@@ -264,15 +264,40 @@ final class EditmatchController extends FormController
 
     private function returnUrl(): string
     {
-        $referer = (string) ($_SERVER['HTTP_REFERER'] ?? '');
-        if ($referer !== '') {
-            $current = Uri::getInstance();
-            $target = Uri::getInstance($referer);
-            if ($target->getHost() === '' || strcasecmp($target->getHost(), $current->getHost()) === 0) {
-                return $referer;
-            }
+        $referer = trim((string) ($_SERVER['HTTP_REFERER'] ?? ''));
+        $fallback = 'index.php?option=com_sportsmanagement&view=editmatch';
+
+        // Redirect targets must not contain control characters, a browser-
+        // normalized backslash or a protocol-relative external hostname.
+        if ($referer === '' || preg_match('/[\x00-\x1F\x7F\\\\]/', $referer)
+            || str_starts_with($referer, '//')) {
+            return $fallback;
         }
 
-        return 'index.php?option=com_sportsmanagement&view=editmatch';
+        $parts = parse_url($referer);
+
+        if ($parts === false) {
+            return $fallback;
+        }
+
+        if (!isset($parts['scheme'])) {
+            // Relative Joomla paths and queries are safe only without a host
+            // or userinfo. A URL with a non-http scheme is never accepted.
+            return isset($parts['host'], $parts['user']) || isset($parts['host'])
+                ? $fallback
+                : $referer;
+        }
+
+        if (!in_array(strtolower($parts['scheme']), ['http', 'https'], true)
+            || empty($parts['host'])
+            || isset($parts['user'], $parts['pass'])) {
+            return $fallback;
+        }
+
+        $current = Uri::getInstance();
+
+        return strcasecmp((string) $parts['host'], $current->getHost()) === 0
+            ? $referer
+            : $fallback;
     }
 }
