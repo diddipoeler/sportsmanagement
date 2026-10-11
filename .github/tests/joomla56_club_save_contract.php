@@ -106,6 +106,56 @@ namespace {
         throw new RuntimeException('Club fields were not normalized before binding.');
     }
 
+    $originalBound = $bound;
+
+    foreach (['founded', 'dissolved'] as $field) {
+        $invalid = $input;
+        $invalid[$field] = '31-02-2020';
+
+        if ($model->updItem($invalid) !== false
+            || \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$bound !== $originalBound
+        ) {
+            throw new RuntimeException('Invalid club ' . $field . ' date must not be persisted or silently cleared.');
+        }
+    }
+
+    $nested = $input;
+    $nested['request'] = ['founded' => '31-02-2020'];
+
+    if ($model->updItem($nested) !== false
+        || \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$bound !== $originalBound
+    ) {
+        throw new RuntimeException('Nested request must not bypass club date validation.');
+    }
+
+    $cleared = $input;
+    $cleared['founded'] = '';
+    $cleared['dissolved'] = '';
+    $cleared['founded_year'] = 2020;
+    $cleared['dissolved_year'] = 2024;
+    $cleared['founded_timestamp'] = 1609372800;
+    $cleared['dissolved_timestamp'] = 1717545600;
+    $cleared['request'] = ['id' => 99, 'name' => 'Updated'];
+
+    if ($model->updItem($cleared) !== true) {
+        throw new RuntimeException('Clearing club dates must remain possible.');
+    }
+
+    $clearedBound = \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$bound;
+
+    if ($clearedBound['id'] !== 25
+        || $clearedBound['name'] !== 'Updated'
+        || $clearedBound['founded'] !== '0000-00-00'
+        || $clearedBound['dissolved'] !== '0000-00-00'
+        || $clearedBound['founded_year'] !== 'kein'
+        || $clearedBound['dissolved_year'] !== 0
+        || $clearedBound['founded_timestamp'] !== 0
+        || $clearedBound['dissolved_timestamp'] !== 0
+        || array_key_exists('request', $clearedBound)
+    ) {
+        throw new RuntimeException('Club cleared dates or record identity were not preserved.');
+    }
+
     foreach (['bind', 'check', 'store'] as $mode) {
         \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$mode = $mode;
 
