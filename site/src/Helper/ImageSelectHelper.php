@@ -204,8 +204,18 @@ final class ImageSelectHelper
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $sizeLimit = max(1, (int) $params->get('image_max_size', 120)) * 1024;
         $extension = strtolower((string) File::getExt($name));
+        // SVG can execute scripts when opened in the browser. Restrict new
+        // uploads to raster formats and verify their actual image MIME type.
+        $allowedMimes = [
+            'gif' => ['image/gif'],
+            'jpg' => ['image/jpeg'],
+            'jpeg' => ['image/jpeg'],
+            'png' => ['image/png'],
+            'bmp' => ['image/bmp', 'image/x-ms-bmp'],
+            'webp' => ['image/webp'],
+        ];
 
-        if ($name === '' || $tmpName === '' || !in_array($extension, ['gif', 'jpg', 'jpeg', 'png', 'bmp', 'svg'], true)) {
+        if ($name === '' || $tmpName === '' || !isset($allowedMimes[$extension])) {
             Log::add(
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1') . ' '
                     . self::escape($name),
@@ -216,7 +226,10 @@ final class ImageSelectHelper
             return false;
         }
 
-        if ($size <= 0 || $size > $sizeLimit) {
+        $actualSize = is_file($tmpName) ? filesize($tmpName) : false;
+
+        if ($size <= 0 || $size > $sizeLimit
+            || $actualSize === false || $actualSize <= 0 || $actualSize > $sizeLimit) {
             Log::add(
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR2') . ' '
                     . self::escape($name),
@@ -224,6 +237,14 @@ final class ImageSelectHelper
                 'jsmerror'
             );
 
+            return false;
+        }
+
+        $imageInfo = @getimagesize($tmpName);
+        $mime = is_array($imageInfo) ? strtolower((string) ($imageInfo['mime'] ?? '')) : '';
+
+        if (!in_array($mime, $allowedMimes[$extension], true)) {
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1'), Log::WARNING, 'jsmerror');
             return false;
         }
 
