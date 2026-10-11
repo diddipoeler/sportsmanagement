@@ -217,7 +217,7 @@ namespace {
         throw new \RuntimeException('Frontend prediction writes must log internal exceptions privately.');
     }
 
-    if (str_contains($source, "enqueueMessage($e->getMessage()")
+    if (str_contains($source, 'enqueueMessage($e->getMessage()')
         || str_contains($source, '$msg .= $e->getMessage()')
 
     ) {
