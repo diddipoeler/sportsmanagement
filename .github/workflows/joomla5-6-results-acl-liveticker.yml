@@ -1,0 +1,35 @@
+name: Joomla 5/6 results scope ACL and liveticker commentary
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/ResultsAccessModel.php'
+      - 'admin/access.xml'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/tests/joomla56_results_acl_liveticker_commentary.php'
+      - '.github/workflows/joomla5-6-results-acl-liveticker.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint Joomla 5/6 PHP
+        run: |
+          php -l site/src/Model/ResultsAccessModel.php
+          php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          php -l .github/tests/joomla56_results_acl_liveticker_commentary.php
+      - name: Test project scopes, ACL permissions and commentary bounds
+        run: php .github/tests/joomla56_results_acl_liveticker_commentary.php
