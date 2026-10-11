@@ -53,10 +53,43 @@ final class JsonfeedModel extends SportsManagementModel
             return [];
         }
 
-        if (!is_array($value)) {
-            $value = preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        if (is_int($value) || is_string($value)) {
+            $value = [$value];
         }
 
-        return array_values(array_unique(array_filter(array_map('intval', $value))));
+        if (!is_array($value)) {
+            return [];
+        }
+
+        $ids = [];
+
+        foreach ($value as $entry) {
+            if (!is_int($entry) && !is_string($entry)) {
+                continue;
+            }
+
+            $parts = is_int($entry) ? [$entry] : (preg_split('/[\s,;]+/', $entry, -1, PREG_SPLIT_NO_EMPTY) ?: []);
+
+            foreach ($parts as $part) {
+                if (is_int($part)) {
+                    if ($part > 0) {
+                        $ids[$part] = $part;
+                    }
+                    continue;
+                }
+
+                // Do not turn malformed values like "12abc" into calendar 12.
+                if (!preg_match('/^[1-9][0-9]*$/D', $part)) {
+                    continue;
+                }
+
+                $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                if ($id !== false) {
+                    $ids[$id] = $id;
+                }
+            }
+        }
+
+        return array_values($ids);
     }
 }
