@@ -57,7 +57,7 @@ if (str_contains($command, '.')) {
     [$type, $task] = explode('.', $command, 2);
 
     // A dotted task must name both its controller and its action.
-    if ($type === '' || $task === '') {
+    if ($type === '' || $task === '' || str_contains($task, '.')) {
         throw new \InvalidArgumentException('Invalid SportsManagement controller task.', 400);
     }
 }
