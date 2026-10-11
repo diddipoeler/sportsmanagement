@@ -79,10 +79,7 @@ final class ResultsController extends BaseController
         $input = $this->input;
         $post = $input->post->getArray();
         $layout = (string) ($post['layout'] ?? $input->getCmd('layout', 'form'));
-        $matchIds = array_values(array_unique(array_filter(
-            array_map('intval', (array) $input->post->get('cid', [], 'array')),
-            static fn (int $id): bool => $id > 0
-        )));
+        $matchIds = self::validMatchIds((array) $input->post->get('cid', [], 'array'));
         $databaseSelector = (int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0));
         $projectId = (int) ($post['p'] ?? $input->getInt('p', 0));
 
@@ -112,6 +109,33 @@ final class ResultsController extends BaseController
         }
 
         $this->setRedirect($this->buildResultsRedirect($post, $layout));
+    }
+
+    /**
+     * Treat an invalid selection as no selection: never modify a different
+     * match when a posted checkbox value includes unexpected content.
+     *
+     * @return array<int>
+     */
+    private static function validMatchIds(array $selection): array
+    {
+        $ids = [];
+
+        foreach ($selection as $value) {
+            if (!is_int($value) && (!is_string($value) || !preg_match('/^[1-9][0-9]*$/D', $value))) {
+                return [];
+            }
+
+            $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id === false) {
+                return [];
+            }
+
+            $ids[$id] = $id;
+        }
+
+        return array_values($ids);
     }
 
     private function resultsAccessModel(int $databaseSelector, int $projectId): ResultsAccessModel
