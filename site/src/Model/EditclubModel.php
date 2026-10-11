@@ -44,38 +44,34 @@ final class EditclubModel extends AdminModel
 
     public function updItem($data): bool
     {
-        if (($data['founded'] ?? '') !== '0000-00-00' && ($data['founded'] ?? '') !== '') {
-            $data['founded'] = $this->normaliseFrontendDate((string) $data['founded']);
-        }
+        // Joomla form data can contain a nested request payload. Merge it
+        // before date validation so callers cannot reintroduce an invalid
+        // date or override a normalized date after checking it.
+        $request = is_array($data['request'] ?? null) ? $data['request'] : [];
+        unset($data['request'], $request['id']);
+        $data = array_replace($data, $request);
 
-        if (($data['dissolved'] ?? '') !== '0000-00-00' && ($data['dissolved'] ?? '') !== '') {
-            $data['dissolved'] = $this->normaliseFrontendDate((string) $data['dissolved']);
-        }
+        foreach (['founded', 'dissolved'] as $field) {
+            $provided = trim((string) ($data[$field] ?? ''));
 
-        if (($data['founded'] ?? '') === '0000-00-00' || ($data['founded'] ?? '') === '') {
-            $data['founded'] = '0000-00-00';
-        }
+            if ($provided === '' || $provided === '0000-00-00') {
+                $data[$field] = '0000-00-00';
+                $data[$field . '_timestamp'] = 0;
+                $data[$field . '_year'] = $field === 'founded' ? 'kein' : 0;
+                continue;
+            }
 
-        if ($data['founded'] !== '0000-00-00') {
-            $data['founded_year'] = date('Y', strtotime($data['founded']));
-            $data['founded_timestamp'] = $this->dateTimestamp($data['founded']);
-        }
+            $normalized = $this->normaliseFrontendDate($provided);
 
-        if (($data['dissolved'] ?? '') === '0000-00-00' || ($data['dissolved'] ?? '') === '') {
-            $data['dissolved'] = '0000-00-00';
-        }
+            if ($normalized === '') {
+                $this->setError('Invalid ' . $field . ' date.');
 
-        if ($data['dissolved'] !== '0000-00-00') {
-            $data['dissolved_year'] = date('Y', strtotime($data['dissolved']));
-            $data['dissolved_timestamp'] = $this->dateTimestamp($data['dissolved']);
-        }
+                return false;
+            }
 
-        if (empty($data['founded_year'])) {
-            $data['founded_year'] = 'kein';
-        }
-
-        foreach ((array) ($data['request'] ?? []) as $key => $value) {
-            $data[$key] = $value;
+            $data[$field] = $normalized;
+            $data[$field . '_year'] = (int) substr($normalized, 0, 4);
+            $data[$field . '_timestamp'] = $this->dateTimestamp($normalized);
         }
 
         try {
@@ -90,7 +86,7 @@ final class EditclubModel extends AdminModel
             return true;
         } catch (\Throwable $e) {
             Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
-            $this->setError($e->getMessage());
+            $this->setError('Club changes could not be saved.');
 
             return false;
         }
