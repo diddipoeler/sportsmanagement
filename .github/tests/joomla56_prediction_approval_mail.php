@@ -38,7 +38,7 @@ namespace Joomla\CMS\Mail {
         public function createMailer(): object;
     }
 }
-namespace Joomla\CMS\Factory {
+namespace Joomla\CMS {
     class Factory
     {
         public static function getContainer(): object
