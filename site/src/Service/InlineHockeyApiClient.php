@@ -37,7 +37,9 @@ final class InlineHockeyApiClient
             throw new \RuntimeException('Inline-Hockey API authentication requires HTTPS.');
         }
 
-        $http = (new HttpFactory())->getHttp();
+        // Do not forward Basic credentials or an image download to redirect
+        // targets that have not passed this client's URL validation.
+        $http = (new HttpFactory())->getHttp(['follow_location' => false], ['Curl', 'Stream']);
         $response = $http->get(
             $url,
             $this->headers('application/json', $username, $password),
@@ -73,7 +75,9 @@ final class InlineHockeyApiClient
             throw new \RuntimeException('Inline-Hockey logo has an unsupported image extension.');
         }
 
-        $http = (new HttpFactory())->getHttp();
+        // Do not forward Basic credentials or an image download to redirect
+        // targets that have not passed this client's URL validation.
+        $http = (new HttpFactory())->getHttp(['follow_location' => false], ['Curl', 'Stream']);
         $response = $http->get(
             $url,
             $this->headers('image/png, image/jpeg, image/gif, image/webp', $username, $password),
@@ -143,7 +147,8 @@ final class InlineHockeyApiClient
     {
         $url = trim($urlOrPath);
 
-        if ($url === '') {
+        if ($url === '' || strlen($url) > 2048
+            || preg_match('/[\\x00-\\x20\\x7F\\\\]/', $url)) {
             throw new \RuntimeException('Inline-Hockey logo URL is empty.');
         }
 
