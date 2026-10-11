@@ -106,9 +106,15 @@ final class GoogleCalendarMatchSynchronizer
                 $createdEvent = $calendarService->events->insert($googleCalendarId, $event);
                 $eventId = trim((string) $createdEvent->getId());
 
-                if ($eventId !== '') {
-                    $this->storeEventId((int) $match->id, $eventId);
+                if ($eventId === '') {
+                    // Without an event ID a later synchronization would insert
+                    // the same match again rather than updating this event.
+                    throw new RuntimeException(
+                        'Google Calendar returned no event ID for match ' . (int) $match->id . '.'
+                    );
                 }
+
+                $this->storeEventId((int) $match->id, $eventId);
             }
 
             ++$updated;
