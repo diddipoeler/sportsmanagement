@@ -148,6 +148,8 @@ final class MatchesController extends SportsManagementAdminController
 
     public function savestats(): void
     {
+        $this->assertWritePermission();
+
         $app = $this->app;
         $input = $app->getInput();
         $post = $input->post->getArray();
@@ -167,6 +169,8 @@ final class MatchesController extends SportsManagementAdminController
 
     public function saveroster(): void
     {
+        $this->assertWritePermission();
+
         $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $projectId = (int) ($post['project_id'] ?? 0);
@@ -195,6 +199,8 @@ final class MatchesController extends SportsManagementAdminController
 
     public function saveReferees(): void
     {
+        $this->assertWritePermission();
+
         $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $post['positions'] = $this->projectPositions((int) ($post['project_id'] ?? 0), 3);
@@ -229,12 +235,16 @@ final class MatchesController extends SportsManagementAdminController
     /** Transitional adapter: saveshort still contains tournament/date-change side effects in the legacy model. */
     public function saveshort(): void
     {
+        $this->assertWritePermission();
+
         $this->legacyMatchModel()->saveshort();
         $this->redirectToList();
     }
 
     private function setCountResult(int $value): void
     {
+        $this->assertWritePermission('core.edit.state');
+
         $app = $this->app;
         $ids = array_values(array_filter(array_map('intval', (array) $app->getInput()->post->get('cid', [], 'array'))));
         if (!$ids) {
