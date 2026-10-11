@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\PredictionentryModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionmembershipModel;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictiontipModel;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
 
@@ -50,7 +51,8 @@ final class PredictionentryController extends BaseController
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_2'), 'message');
             $this->setRedirect($this->entryRoute($model, $memberId, ['s' => 1]));
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5'), 'error');
             $this->setRedirect($this->entryRoute($model, 0));
         }
     }
@@ -69,7 +71,8 @@ final class PredictionentryController extends BaseController
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1'), 'message');
             $this->setRedirect($this->entryRoute($model, $model->getSelectedMemberNumericId(), ['eok' => 1]));
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_3'), 'error');
             $this->setRedirect($this->entryRoute($model, $model->getSelectedMemberNumericId()));
         }
     }
