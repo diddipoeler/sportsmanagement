@@ -224,7 +224,7 @@ final class GoogleCalendarMatchSynchronizer
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't2') . ' ON t2.id = st2.team_id')
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_playground', 'playground') . ' ON playground.id = m.playground_id')
             ->where('m.published = 1')
-            ->where('m.id IN (' . implode(',', $matchIds) . ')')
+            ->whereIn($this->db->quoteName('m.id'), $matchIds, ParameterType::INTEGER)
             ->where('r.project_id = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order('m.match_date ASC, m.match_number ASC');
