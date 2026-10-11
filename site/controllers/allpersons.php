@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\AllpersonsController;
 
 if (!class_exists(AllpersonsController::class)) {
-    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/AllpersonsController.php';
+    $nativeController = __DIR__ . '/../src/Controller/AllpersonsController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
