@@ -71,6 +71,7 @@ namespace {
         public array $saved = [];
         public array $queries = [];
         public bool $writeFailure = false;
+        public bool $modeReadFailure = false;
         public array $legMatches = [101 => true, 102 => false];
         public function createQuery(): QueryStub { return new QueryStub(); }
         public function quoteName(string $name, string $alias = ''): string {
@@ -83,6 +84,9 @@ namespace {
         }
         public function loadResult(): mixed {
             if (str_contains((string) $this->current->selection, 'use_legs')) {
+                if ($this->modeReadFailure) {
+                    throw new \RuntimeException('Unreachable project scoring settings');
+                }
                 return (int) ($this->legMatches[(int) ($this->current->bindings[':matchId'] ?? 0)] ?? false);
             }
             return '2026-10-10 16:00:00';
@@ -193,6 +197,18 @@ namespace {
         }
     }
     $db->saved = [];
+    $db->modeReadFailure = true;
+    if ($model->saveShort([
+        'use_legs' => 0,
+        'team1_result101' => 6,
+        'team2_result101' => 2,
+    ], [101])) {
+        throw new \RuntimeException('A scoring rules read failure must reject the result write.');
+    }
+    if ($db->saved !== []) {
+        throw new \RuntimeException('A scoring rules read failure still updated a match.');
+    }
+    $db->modeReadFailure = false;
     $db->writeFailure = true;
     if ($model->saveShort(['match_number101' => 'R3'], [101])) {
         throw new \RuntimeException('Database write failure was reported as success.');
