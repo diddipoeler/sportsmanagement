@@ -145,6 +145,40 @@ namespace {
         }
     }
 
+    $matchesController = file_get_contents($root . '/admin/src/Controller/MatchesController.php');
+
+    foreach (['savestats', 'saveroster', 'saveReferees', 'saveshort'] as $action) {
+        $pattern = '~function\s+' . preg_quote($action, '~')
+            . '\(\):\s*void\s*\{\s*\$this->assertWritePermission\(\);~';
+
+        if (!is_string($matchesController) || preg_match($pattern, $matchesController) !== 1) {
+            throw new \RuntimeException('Missing CSRF/ACL in match form action ' . $action);
+        }
+    }
+
+    if (!is_string($matchesController)
+        || preg_match(
+            '~function\s+setCountResult\(int\s+\$value\):\s*void\s*\{\s*'
+            . '\$this->assertWritePermission\(' . preg_quote("'core.edit.state'", '~') . '\);~',
+            $matchesController
+        ) !== 1
+    ) {
+        throw new \RuntimeException('Missing match result state permission guard.');
+    }
+
+    foreach ([
+        'admin/views/match/tmpl/editstats.php',
+        'admin/views/match/tmpl/editlineup.php',
+        'admin/tmpl/match/editreferees.php',
+        'admin/views/matches/tmpl/default_4_matches.php',
+    ] as $formFile) {
+        $form = file_get_contents($root . '/' . $formFile);
+
+        if (!is_string($form) || !str_contains($form, "HTMLHelper::_('form.token')")) {
+            throw new \RuntimeException('Legacy match form lacks POST token: ' . $formFile);
+        }
+    }
+
     require_once $root . '/modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php';
 
     $birthday = new \Diddipoeler\Module\SportsManagementBirthday\Site\Helper\BirthdayHelper();
