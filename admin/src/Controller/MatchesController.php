@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchTimelineWr
 use Diddipoeler\Component\SportsManagement\Administrator\Service\MatchWriteService;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
@@ -36,7 +37,9 @@ final class MatchesController extends SportsManagementAdminController
 
     public function removeEvent(): void
     {
-        $eventId = $this->app->getInput()->getInt('event_id');
+        $this->assertWritePermission('core.delete');
+
+        $eventId = $this->app->getInput()->post->getInt('event_id');
         $result = $this->timelineAction(
             fn (): bool => $this->timelineWriteService()->deleteEvent($eventId),
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS'),
@@ -48,7 +51,9 @@ final class MatchesController extends SportsManagementAdminController
 
     public function removeCommentary(): void
     {
-        $eventId = $this->app->getInput()->getInt('event_id');
+        $this->assertWritePermission('core.delete');
+
+        $eventId = $this->app->getInput()->post->getInt('event_id');
         $result = $this->timelineAction(
             fn (): bool => $this->timelineWriteService()->deleteCommentary($eventId),
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY'),
@@ -60,7 +65,9 @@ final class MatchesController extends SportsManagementAdminController
 
     public function removeSubst(): void
     {
-        $substitutionId = $this->app->getInput()->getInt('substid');
+        $this->assertWritePermission('core.delete');
+
+        $substitutionId = $this->app->getInput()->post->getInt('substid');
         $result = $this->timelineAction(
             fn (): bool => $this->timelineWriteService()->removeSubstitution($substitutionId),
             Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST'),
@@ -72,7 +79,9 @@ final class MatchesController extends SportsManagementAdminController
 
     public function saveevent(): void
     {
-        $input = $this->app->getInput();
+        $this->assertWritePermission('core.edit');
+
+        $input = $this->app->getInput()->post;
         $data = [
             'teamplayer_id' => $input->getInt('teamplayer_id'),
             'projectteam_id' => $input->getInt('projectteam_id'),
@@ -93,7 +102,8 @@ final class MatchesController extends SportsManagementAdminController
                 ? $eventId . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_EVENT')
                 : '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT');
         } catch (\Throwable $e) {
-            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': ' . $e->getMessage();
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT');
         }
 
         $this->jsonClose($result);
@@ -101,7 +111,9 @@ final class MatchesController extends SportsManagementAdminController
 
     public function savecomment(): void
     {
-        $input = $this->app->getInput();
+        $this->assertWritePermission('core.edit');
+
+        $input = $this->app->getInput()->post;
         $data = [
             'event_time' => $input->getString('event_time', ''),
             'match_id' => $input->getInt('matchid'),
@@ -116,7 +128,8 @@ final class MatchesController extends SportsManagementAdminController
                 ? $commentId . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_COMMENT')
                 : '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT');
         } catch (\Throwable $e) {
-            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT') . ': ' . $e->getMessage();
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT');
         }
 
         $this->jsonClose($result);
@@ -124,7 +137,9 @@ final class MatchesController extends SportsManagementAdminController
 
     public function savesubst(): void
     {
-        $input = $this->app->getInput();
+        $this->assertWritePermission('core.edit');
+
+        $input = $this->app->getInput()->post;
         $data = [
             'in' => $input->getInt('in'),
             'out' => $input->getInt('out'),
@@ -140,7 +155,8 @@ final class MatchesController extends SportsManagementAdminController
                 ? $this->database()->insertid() . '&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_SUBST')
                 : '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST');
         } catch (\Throwable $e) {
-            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': ' . $e->getMessage();
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $result = '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST');
         }
 
         $this->jsonClose($result);
@@ -308,14 +324,25 @@ final class MatchesController extends SportsManagementAdminController
         try {
             return $action() ? '1&' . $success . '&' . $id : '0&' . $error;
         } catch (\Throwable $e) {
-            return '0&' . $error . ': ' . $e->getMessage();
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+
+            return '0&' . $error;
         }
     }
 
     private function jsonClose(string $result): void
     {
-        echo json_encode($result);
-        $this->app->close();
+        $app = $this->app;
+        $app->getDocument()->setMimeEncoding('application/json');
+        $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
+
+        // Keep the legacy string-valued JSON contract used by match editors.
+        echo json_encode(
+            $result,
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR
+        );
+        $app->close();
     }
 
     private function redirectToList(): void
