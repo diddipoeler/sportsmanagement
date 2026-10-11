@@ -51,8 +51,9 @@ if ($timezoneName !== '') {
     }
 }
 
-$json = file_get_contents(__DIR__ . '/../json/events.json');
-$inputArrays = json_decode((string) $json, true);
+$eventsFile = __DIR__ . '/../json/events.json';
+$json = is_readable($eventsFile) ? file_get_contents($eventsFile) : false;
+$inputArrays = $json !== false ? json_decode($json, true) : [];
 
 if (!is_array($inputArrays)) {
     $inputArrays = [];
@@ -61,10 +62,18 @@ if (!is_array($inputArrays)) {
 $outputArrays = [];
 
 foreach ($inputArrays as $array) {
-    $event = new Event($array, $timezone);
+    if (!is_array($array)) {
+        continue;
+    }
 
-    if ($event->isWithinDayRange($rangeStart, $rangeEnd)) {
-        $outputArrays[] = $event->toArray();
+    try {
+        $event = new Event($array, $timezone);
+        if ($event->isWithinDayRange($rangeStart, $rangeEnd)) {
+            $outputArrays[] = $event->toArray();
+        }
+    } catch (\Exception) {
+        // Ignore malformed demo events instead of breaking the entire JSON feed.
+        continue;
     }
 }
 

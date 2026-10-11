@@ -32,6 +32,8 @@ final class EditclubController extends FormController
 
     public function load(): void
     {
+        $this->assertEditorPermission();
+
         $app = $this->app;
         $clubId = $app->getInput()->getInt('cid', 0);
 
@@ -49,6 +51,7 @@ final class EditclubController extends FormController
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
+        $this->assertEditorPermission();
 
         $app = $this->app;
         $post = $app->getInput()->post->getArray();
@@ -109,4 +112,16 @@ final class EditclubController extends FormController
 
         return implode(',', $mergeTeams);
     }
+    /** Ensure a frontend editor cannot write using a token without component ACL. */
+    private function assertEditorPermission(): void
+    {
+        $identity = $this->app->getIdentity();
+        $allowed = $identity->authorise('core.edit', 'com_sportsmanagement')
+            || $identity->authorise('club.edit', 'com_sportsmanagement');
+
+        if (!$allowed) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
 }

@@ -31,6 +31,7 @@ final class EditteamController extends FormController
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
+        $this->assertEditorPermission();
 
         $input = $this->input;
         $data = $input->post->getArray();
@@ -84,4 +85,15 @@ final class EditteamController extends FormController
 
         return $model;
     }
+    /** Ensure a frontend editor cannot write using a token without component ACL. */
+    private function assertEditorPermission(): void
+    {
+        $identity = $this->app->getIdentity();
+        $allowed = $identity->authorise('core.edit', 'com_sportsmanagement');
+
+        if (!$allowed) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
 }

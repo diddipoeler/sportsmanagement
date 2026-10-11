@@ -124,6 +124,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             return 0;
         }
 
+        // Never send reminders for member IDs belonging to another game.
+        $memberIds = $this->predictionMemberIdsForGame($memberIds, $predictionId);
+        if (!$memberIds) {
+            return 0;
+        }
+
         $entryConfig = $this->getPredictionTemplateConfig($predictionId, 'predictionentry');
         $overallConfig = $this->getPredictionTemplateConfig($predictionId, 'predictionoverall');
         $configPrediction = array_merge($overallConfig, $entryConfig);
@@ -318,8 +324,15 @@ final class PredictionmemberModel extends SportsManagementAdminModel
     {
         $ids = $this->normaliseIds((array) $cid);
 
+        $predictionId = (int) $predictionGameID;
+        if ($predictionId <= 0 || !$ids) {
+            return false;
+        }
+
+        // Scope the write and the subsequent approval mails to one prediction game.
+        $ids = $this->predictionMemberIdsForGame($ids, $predictionId);
         if (!$ids) {
-            return true;
+            return false;
         }
 
         $app = $this->administratorApplication();
@@ -330,8 +343,10 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             ->update($db->quoteName('#__sportsmanagement_prediction_member'))
             ->set($db->quoteName('approved') . ' = :approved')
             ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
+            ->where($db->quoteName('prediction_id') . ' = :publishPredictionId')
             ->where('(' . $db->quoteName('checked_out') . ' = 0 OR ' . $db->quoteName('checked_out') . ' = :publishUserId)')
             ->bind(':approved', $approved, ParameterType::INTEGER)
+            ->bind(':publishPredictionId', $predictionId, ParameterType::INTEGER)
             ->bind(':publishUserId', $userId, ParameterType::INTEGER);
 
         try {
@@ -342,20 +357,34 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             return false;
         }
 
-        $this->sendApprovalStateMails($ids, (int) $publish === 1, (int) $predictionGameID);
+        $this->sendApprovalStateMails($ids, (int) $publish === 1, $predictionId);
 
         return true;
     }
 
-    public function deletePredictionMembers($cid = []): bool
+    public function deletePredictionMembers($cid = [], $predictionId = 0): bool
     {
         $ids = $this->normaliseIds((array) $cid);
+        $predictionId = (int) $predictionId;
 
-        if (!$ids) {
-            return true;
+        if ($predictionId <= 0 || !$ids) {
+            return false;
         }
 
-        return $this->deleteByIds('#__sportsmanagement_prediction_member', 'id', $ids);
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->delete($db->quoteName('#__sportsmanagement_prediction_member'))
+            ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
+            ->where($db->quoteName('prediction_id') . ' = :deletePredictionId')
+            ->bind(':deletePredictionId', $predictionId, ParameterType::INTEGER);
+
+        try {
+            $db->setQuery($query)->execute();
+            return true;
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
     }
 
     public function deletePredictionResults($cid = [], $prediction_id = 0): bool
@@ -761,6 +790,26 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $title = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $teamName);
 
         return HTMLHelper::_('image', Uri::root() . ltrim($path, '/'), $title, ['title' => $title, 'width' => 30]);
+    }
+
+    /** Select only members of the requested prediction game (also for outbound mail). */
+    private function predictionMemberIdsForGame(array $ids, int $predictionId): array
+    {
+        if ($predictionId <= 0 || !$ids) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_prediction_member'))
+            ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
+            ->where($db->quoteName('prediction_id') . ' = :selectedPredictionId')
+            ->bind(':selectedPredictionId', $predictionId, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+
+        return $this->normaliseIds($db->loadColumn() ?: []);
     }
 
     private function deleteByIds(string $table, string $column, array $ids): bool

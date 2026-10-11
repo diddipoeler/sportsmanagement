@@ -10,7 +10,7 @@
 
 \defined('_JEXEC') or die;
 
-date_default_timezone_set('UTC');
+// Date parsing explicitly uses UTC below; never override Joomla's process timezone.
 
 class Event
 {

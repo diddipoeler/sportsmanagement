@@ -94,7 +94,7 @@ final class PredictionmembersController extends SportsManagementAdminController
         $ids = $this->normaliseIds((array) $input->post->get('cid', [], 'array'));
         $predictionId = $input->post->getInt('prediction_id');
 
-        if (!$ids) {
+        if ($predictionId <= 0 || !$ids) {
             $this->setRedirect(
                 $this->listUrl($predictionId),
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'),
@@ -106,7 +106,7 @@ final class PredictionmembersController extends SportsManagementAdminController
 
         $model = $this->getModel();
         $resultsDeleted = $model !== false && $model->deletePredictionResults($ids, $predictionId);
-        $membersDeleted = $model !== false && $model->deletePredictionMembers($ids);
+        $membersDeleted = $model !== false && $model->deletePredictionMembers($ids, $predictionId);
         $ok = $resultsDeleted && $membersDeleted;
 
         $this->setRedirect(
@@ -126,7 +126,7 @@ final class PredictionmembersController extends SportsManagementAdminController
         $ids = $this->normaliseIds((array) $input->post->get('cid', [], 'array'));
         $predictionId = $input->post->getInt('prediction_id');
 
-        if (!$ids) {
+        if ($predictionId <= 0 || !$ids) {
             $this->setRedirect(
                 $this->listUrl($predictionId),
                 Text::_($state === 1
