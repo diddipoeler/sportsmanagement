@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\AjaxController;
 
 if (!class_exists(AjaxController::class)) {
-    $nativeController = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/AjaxController.php';
+    $nativeController = __DIR__ . '/../src/Controller/AjaxController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
