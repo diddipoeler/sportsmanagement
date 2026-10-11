@@ -81,7 +81,7 @@ jobs:
               'native dispatcher': (dispatcher, 'extends AbstractModuleDispatcher implements HelperFactoryAwareInterface'),
               'false render guard': (dispatcher, 'if ($data === false)'),
               'helper factory': (dispatcher, "getHelper('LivetickerHelper')"),
-              'native helper call': (dispatcher, "getData($data['params'], $data['module'], $this->getApplication())"),
+              'native helper call': (dispatcher, "getData($data['params'], $data['module'], $app, $database)"),
               'dispatcher web assets': (dispatcher, 'getWebAssetManager()'),
               'dispatcher refresh endpoint': (dispatcher, 'method=refresh&format=raw'),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
