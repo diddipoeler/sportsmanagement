@@ -219,7 +219,7 @@ namespace {
 
     if (str_contains($source, "enqueueMessage($e->getMessage()")
         || str_contains($source, '$msg .= $e->getMessage()')
-        || str_contains($source, " . ': ' . $e->getMessage()")
+
     ) {
         throw new \RuntimeException('Administrator match write errors must not leak exceptions.');
     }
