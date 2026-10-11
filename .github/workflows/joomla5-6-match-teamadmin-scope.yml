@@ -1,0 +1,42 @@
+name: Joomla 5/6 match teamadmin scope
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/ResultsAccessModel.php'
+      - '.github/tests/joomla56_match_teamadmin_scope.php'
+      - '.github/workflows/joomla5-6-match-teamadmin-scope.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Model/ResultsAccessModel.php'
+      - '.github/tests/joomla56_match_teamadmin_scope.php'
+      - '.github/workflows/joomla5-6-match-teamadmin-scope.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  match-teamadmin-scope:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Validate PHP and file metadata
+        run: |
+          set -euo pipefail
+          php .github/tests/phpdoc_metadata.php site/src/Model/ResultsAccessModel.php
+          php -l site/src/Model/ResultsAccessModel.php
+          php -l .github/tests/joomla56_match_teamadmin_scope.php
+
+      - name: Check project-scoped team-admin ACL
+        run: php .github/tests/joomla56_match_teamadmin_scope.php
