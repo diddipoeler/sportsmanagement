@@ -78,8 +78,11 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement Club Birthday database service is unavailable.', 500);
+            }
 
             return $database;
         }
