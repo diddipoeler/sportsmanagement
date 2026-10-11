@@ -45,11 +45,35 @@ trait NativeLinkTrait
             }
             $links[] = ['label' => (string) $params->get($textKey, $fallback), 'url' => $this->route($view, $query), 'external' => false];
         }
-        $website = trim((string) $match->{'club' . $n . '_website'});
+        $website = $this->externalWebsiteUrl((string) ($match->{'club' . $n . '_website'} ?? ''));
         if ((int) $params->get('link_team_www', 0) === 1 && $website !== '') {
             $links[] = ['label' => (string) $params->get('link_team_www_text', 'WWW'), 'url' => $website, 'external' => true];
         }
         return $links;
+    }
+
+
+    /**
+     * Only render safe HTTP(S) hyperlinks from legacy club website fields.
+     * Sites stored without a scheme are treated as HTTPS addresses.
+     */
+    private function externalWebsiteUrl(string $value): string
+    {
+        $value = trim($value);
+
+        if ($value === '' || preg_match('/[\\x00-\\x20\\x7F]/', $value)) {
+            return '';
+        }
+
+        if (!preg_match('~^https?://~i', $value)) {
+            if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $value) || str_starts_with($value, '//')) {
+                return '';
+            }
+
+            $value = 'https://' . $value;
+        }
+
+        return filter_var($value, FILTER_VALIDATE_URL) !== false ? $value : '';
     }
 
     /** @return array<int,array{label:string,url:string}> */
