@@ -76,16 +76,20 @@ trait NativeFormatTrait
         if ((int) $params->get('show_picture', 1) === 1) {
             $pictureType = (string) $params->get('picture_type', 'club_big');
             if ($pictureType === 'country') {
-                $alpha2 = strtolower((string) $match->{'club' . $n . '_alpha2'});
-                $src = $alpha2 !== '' ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png' : '';
+                $alpha2 = strtolower((string) ($match->{'club' . $n . '_alpha2'} ?? ''));
+                $src = preg_match('/^[a-z]{2}$/', $alpha2)
+                    ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
+                    : '';
             } elseif ($pictureType === 'team_picture') {
                 $src = (string) $match->{'team' . $n . '_picture'};
             } else {
                 $src = (string) $match->{'club' . $n . '_big'};
             }
-            if (trim($src) !== '') {
+            $src = $this->imageSource($src);
+
+            if ($src !== '') {
                 $logo = [
-                    'src' => str_starts_with($src, 'http') ? $src : rtrim((string) Uri::root(), '/') . '/' . ltrim($src, '/'),
+                    'src' => $src,
                     'alt' => $name,
                     'width' => max(0, (int) $params->get('xsize', 0)),
                     'height' => max(0, (int) $params->get('ysize', 30)),
@@ -93,6 +97,32 @@ trait NativeFormatTrait
             }
         }
         return ['name' => $name, 'logo' => $logo, 'links' => $this->teamLinks($match, $n, $params)];
+    }
+
+    /**
+     * Resolve existing club and team image paths without accepting foreign URL
+     * schemes, protocol-relative URLs or traversal outside the Joomla root.
+     */
+    private function imageSource(string $source): string
+    {
+        $source = trim($source);
+
+        if ($source === '' || preg_match('/[\x00-\x1F\x7F\\\\]/', $source)) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $source)) {
+            return filter_var($source, FILTER_VALIDATE_URL) !== false ? $source : '';
+        }
+
+        if (str_starts_with($source, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $source)
+            || preg_match('~(?:^|/)\.\.(?:/|$)~', $source)
+        ) {
+            return '';
+        }
+
+        return rtrim((string) Uri::root(), '/') . '/' . ltrim($source, '/');
     }
 
     /** @return null|array{name:string,url:string} */
