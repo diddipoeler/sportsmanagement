@@ -174,7 +174,8 @@ final class MatchesController extends SportsManagementAdminController
             $saved = $this->matchWriteService()->saveStatistics($post);
         } catch (\Throwable $e) {
             $saved = false;
-            $app->enqueueMessage($e->getMessage(), 'error');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
         }
 
         $msg = Text::_($saved
@@ -207,7 +208,8 @@ final class MatchesController extends SportsManagementAdminController
                 ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_STAFF') . '<br />'
                 : Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_STAFF') . '<br />';
         } catch (\Throwable $e) {
-            $msg .= $e->getMessage();
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $msg .= Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
         }
 
         $this->setRedirect($this->editRedirect('editlineup', $post), $msg);
@@ -230,7 +232,8 @@ final class MatchesController extends SportsManagementAdminController
                 $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR');
             }
         } catch (\Throwable $e) {
-            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR') . ': ' . $e->getMessage();
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $msg = Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR');
         }
 
         $this->setRedirect($this->editRedirect('editreferees', $post, false), $msg);
@@ -274,7 +277,8 @@ final class MatchesController extends SportsManagementAdminController
                 $db->updateObject('#__sportsmanagement_match', $row, 'id');
                 $app->enqueueMessage(sprintf(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'), $id), 'notice');
             } catch (\Throwable $e) {
-                $app->enqueueMessage($e->getMessage(), 'error');
+                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             }
         }
     }
