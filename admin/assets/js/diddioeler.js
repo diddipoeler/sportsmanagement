@@ -93,11 +93,6 @@ var querystring = 'teamplayer_id=' + player +
 	'&notice=' + notice +
     '&doubleevents=' + doubleevents;
 
-console.log("url: " + url);
-console.log("querystring :" + querystring);
-console.log("useeventtime : " + useeventtime);
-console.log("projecttime : " + projecttime);
-console.log("doubleevents : " + doubleevents);
 	
 if ( jQuery("#event_sum").val() ) 
 {
@@ -279,7 +274,6 @@ function deletecommentary(commentaryid)
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 //var eventid = this.id.substr(14);  
-var token = jQuery("#token").val();       
 var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
 var querystring = '&event_id=' + commentaryid;
 
@@ -303,7 +297,6 @@ function button_delete_commentary()
 jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 var eventid = this.id.substr(14);  
-var token = jQuery("#token").val();       
 var url = baseajaxurl + '&task=matches.removeCommentary&tmpl=component';
 var querystring = '&event_id=' + eventid;
 
@@ -406,7 +399,6 @@ jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 
 //var substid = this.id.substr(12); 
-var token = jQuery("#token").val();       
 var url = baseajaxurl + '&task=matches.removeSubst&tmpl=component';
 var querystring = '&substid=' + substid;
 
@@ -434,7 +426,6 @@ jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery("#ajaxresponse").addClass('ajax-loading');
 
 var substid = this.id.substr(12); 
-var token = jQuery("#token").val();       
 var url = baseajaxurl + '&task=matches.removeSubst&tmpl=component';
 var querystring = '&substid=' + substid;
 
