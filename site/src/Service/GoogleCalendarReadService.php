@@ -128,7 +128,10 @@ final class GoogleCalendarReadService
      */
     public function getCalendars(array $calendarIds): array
     {
-        $calendarIds = array_values(array_unique(array_filter(array_map('intval', $calendarIds))));
+        $calendarIds = array_values(array_unique(array_filter(
+            $calendarIds,
+            static fn (mixed $id): bool => is_int($id) && $id > 0
+        )));
 
         // Never turn an empty client-side selection into "all calendars".
         if (!$calendarIds) {
