@@ -12,8 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\AgegroupController;
 
 if (!class_exists(AgegroupController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/AgegroupController.php';
+    foreach ([
+        __DIR__ . '/../src/Controller/SportsManagementFormController.php',
+        __DIR__ . '/../src/Controller/AgegroupController.php',
+    ] as $dependency) {
+        if (!is_file($dependency)) {
+            throw new \RuntimeException('SportsManagement administrator controller dependency is missing: ' . basename($dependency), 500);
+        }
+
+        require_once $dependency;
+    }
 }
 
 if (!class_exists(AgegroupController::class)) {
