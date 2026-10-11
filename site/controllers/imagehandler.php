@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\ImagehandlerController;
 
 if (!class_exists(ImagehandlerController::class)) {
-    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/ImagehandlerController.php';
+    $nativeController = __DIR__ . '/../src/Controller/ImagehandlerController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
