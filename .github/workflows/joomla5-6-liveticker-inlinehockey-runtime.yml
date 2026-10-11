@@ -1,0 +1,54 @@
+name: Joomla 5/6 Liveticker Inline Hockey runtime regressions
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
+      - '.github/tests/joomla5-6-liveticker-routing-regression.php'
+      - '.github/workflows/joomla5-6-liveticker-inlinehockey-runtime.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
+      - '.github/tests/joomla5-6-liveticker-routing-regression.php'
+      - '.github/workflows/joomla5-6-liveticker-inlinehockey-runtime.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-regressions:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax, PHPDoc and Joomla 5/6 behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/Service/InlineHockeyApiClient.php
+          php -l admin/src/Service/GoogleCalendarMatchSynchronizer.php
+          php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          php -l .github/tests/joomla5-6-liveticker-routing-regression.php
+
+          php .github/tests/phpdoc_metadata.php \
+            site/src/Service/InlineHockeyApiClient.php \
+            admin/src/Service/GoogleCalendarMatchSynchronizer.php \
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+
+          php .github/tests/joomla5-6-liveticker-routing-regression.php
+
+          # An inserted Google event needs an ID or the next synchronization
+          # silently creates a duplicate; the administrator must reject that case.
+          grep -Fq "if (\$eventId === '')" admin/src/Service/GoogleCalendarMatchSynchronizer.php
+          grep -Fq 'Google Calendar returned no event ID for match' admin/src/Service/GoogleCalendarMatchSynchronizer.php
