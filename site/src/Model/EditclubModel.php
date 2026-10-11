@@ -183,19 +183,29 @@ final class EditclubModel extends AdminModel
 
     private function normaliseFrontendDate(string $date): string
     {
-        if (strpos($date, '-') === false) {
-            if (strlen($date) === 8) {
-                return substr($date, 4, 4) . '-' . substr($date, 2, 2) . '-' . substr($date, 0, 2);
-            }
+        $date = trim($date);
 
-            if (strlen($date) === 6) {
-                return substr(date('Y'), 0, 2) . substr($date, 4, 2) . '-' . substr($date, 2, 2) . '-' . substr($date, 0, 2);
-            }
-
+        // Joomla's calendar uses day-month-year, while native date inputs and
+        // stored club dates may already use the ISO year-month-day format.
+        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $parts)) {
+            [$year, $month, $day] = [(int) $parts[1], (int) $parts[2], (int) $parts[3]];
+        } elseif (preg_match('/^(\d{2})[-.](\d{2})[.-](\d{4})$/', $date, $parts)) {
+            [$day, $month, $year] = [(int) $parts[1], (int) $parts[2], (int) $parts[3]];
+        } elseif (preg_match('/^(\d{2})(\d{2})(\d{4})$/', $date, $parts)) {
+            [$day, $month, $year] = [(int) $parts[1], (int) $parts[2], (int) $parts[3]];
+        } elseif (preg_match('/^(\d{2})(\d{2})(\d{2})$/', $date, $parts)) {
+            [$day, $month, $year] = [
+                (int) $parts[1],
+                (int) $parts[2],
+                (int) (substr(date('Y'), 0, 2) . $parts[3]),
+            ];
+        } else {
             return '';
         }
 
-        return substr($date, 6, 4) . '-' . substr($date, 3, 2) . '-' . substr($date, 0, 2);
+        return checkdate($month, $day, $year)
+            ? sprintf('%04d-%02d-%02d', $year, $month, $day)
+            : '';
     }
 
     private function dateTimestamp(string $date): int
