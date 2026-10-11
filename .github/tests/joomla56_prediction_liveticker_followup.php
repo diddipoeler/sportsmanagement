@@ -32,7 +32,7 @@ namespace Joomla\CMS\MVC\Controller {
     {
         protected mixed $app = null;
         protected mixed $input = null;
-        public function getModel(string $name): mixed { return false; }
+        public function getModel($name = '') { return false; }
         public function setRedirect(string $url, string $message = '', string $type = 'message'): void {}
     }
 }
@@ -52,7 +52,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
 
         public function setTestApplication(object $app): void { $this->app = $app; }
         protected function assertWritePermission(string $permission = 'core.edit'): void { $this->writes++; }
-        public function getModel($name = '', $prefix = '', $config = []): mixed
+        public function getModel($name = '', $prefix = '', $config = [])
         {
             $this->modelRequests++;
             return $this->modelStub ?? false;
