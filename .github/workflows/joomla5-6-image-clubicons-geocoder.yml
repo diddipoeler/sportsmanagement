@@ -5,6 +5,8 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Controller/ImagehandlerController.php'
+      - 'site/src/Helper/ImageSelectHelper.php'
+      - '.github/tests/joomla56_uploaded_image_mime.php'
       - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
       - 'admin/src/Service/PlaygroundGeocoder.php'
       - '.github/tests/joomla56_image_manager_clubicons_acl.php'
@@ -14,6 +16,8 @@ on:
     branches: [joomla5-6, master]
     paths:
       - 'site/src/Controller/ImagehandlerController.php'
+      - 'site/src/Helper/ImageSelectHelper.php'
+      - '.github/tests/joomla56_uploaded_image_mime.php'
       - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
       - 'admin/src/Service/PlaygroundGeocoder.php'
       - '.github/tests/joomla56_image_manager_clubicons_acl.php'
@@ -43,16 +47,20 @@ jobs:
           set -euo pipefail
           files=(
             site/src/Controller/ImagehandlerController.php
+            site/src/Helper/ImageSelectHelper.php
             modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
             admin/src/Service/PlaygroundGeocoder.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_image_manager_clubicons_acl.php .github/tests/joomla56_playground_geocoder_validation.php; do
+          for file in "${files[@]}" .github/tests/joomla56_image_manager_clubicons_acl.php .github/tests/joomla56_playground_geocoder_validation.php .github/tests/joomla56_uploaded_image_mime.php; do
             php -l "$file"
           done
 
       - name: Site image writes and clubicons URL security
         run: php .github/tests/joomla56_image_manager_clubicons_acl.php
+
+      - name: Frontend uploaded-image MIME and byte limits
+        run: php .github/tests/joomla56_uploaded_image_mime.php
 
       - name: Administrator geocoder HTTP and data validation
         run: php .github/tests/joomla56_playground_geocoder_validation.php
