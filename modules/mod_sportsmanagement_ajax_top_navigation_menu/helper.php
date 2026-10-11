@@ -22,7 +22,11 @@ $nativeDependencies = [
 ];
 
 foreach ($nativeDependencies as $class => $file) {
-    if (!class_exists($class, false) && is_file($file)) {
+    if (!class_exists($class)) {
+        if (!is_file($file)) {
+            throw new \RuntimeException('SportsManagement AJAX Top Navigation dependency file is missing: ' . $class, 500);
+        }
+
         require_once $file;
     }
 }
