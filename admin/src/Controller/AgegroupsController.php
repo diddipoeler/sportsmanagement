@@ -25,10 +25,16 @@ class AgegroupsController extends SportsManagementAdminController
      */
     public function saveshort(): void
     {
+        $this->assertWritePermission();
+
         $model = $this->getModel();
         $message = $model->saveshort();
 
-        $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $message);
+        $this->setRedirect(
+            'index.php?option=com_sportsmanagement&view=agegroups',
+            $message === false ? 'Age group changes could not be saved.' : $message,
+            $message === false ? 'warning' : 'message'
+        );
     }
 
     /**
@@ -36,6 +42,8 @@ class AgegroupsController extends SportsManagementAdminController
      */
     public function import(): void
     {
+        $this->assertWritePermission('core.create');
+
         $model = $this->getModel();
         $message = $model->importAgeGroupFile();
 
