@@ -1,0 +1,49 @@
+name: Joomla 5/6 editor ACL prediction scope and calendar regression
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Controller/EditpersonController.php'
+      - 'site/src/Controller/EditteamController.php'
+      - 'site/src/Controller/EditclubController.php'
+      - 'admin/src/Controller/PredictionmembersController.php'
+      - 'admin/src/Model/PredictionmemberModel.php'
+      - 'modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/**'
+      - '.github/tests/joomla56_editor_prediction_calendar_contract.php'
+      - '.github/workflows/joomla5-6-editor-prediction-calendar.yml'
+  pull_request:
+    branches:
+      - joomla5-6
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+      - name: Lint changed PHP
+        run: |
+          php -l site/src/Controller/EditpersonController.php
+          php -l site/src/Controller/EditteamController.php
+          php -l site/src/Controller/EditclubController.php
+          php -l admin/src/Controller/PredictionmembersController.php
+          php -l admin/src/Model/PredictionmemberModel.php
+          php -l modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/get-events.php
+          php -l modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php
+          php -l .github/tests/joomla56_editor_prediction_calendar_contract.php
+      - name: Test frontend ACL, prediction member scoping and calendar
+        run: php .github/tests/joomla56_editor_prediction_calendar_contract.php
