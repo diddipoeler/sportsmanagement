@@ -125,6 +125,26 @@ namespace {
         throw new \RuntimeException('Division sorting must read identifiers from POST.');
     }
 
+    $predictionMembers = file_get_contents($root . '/admin/src/Controller/PredictionmembersController.php');
+
+    foreach ([
+        'save_memberlist' => '',
+        'reminder' => '',
+        'remove' => "'core.delete'",
+        'setApprovalState' => "'core.edit.state'",
+    ] as $action => $permission) {
+        $signature = $action === 'setApprovalState'
+            ? 'function\s+setApprovalState\(int\s+\$state\)'
+            : 'function\s+' . preg_quote($action, '~') . '\(\)';
+
+        $pattern = '~' . $signature . ':\s*void\s*\{\s*'
+            . '\$this->assertWritePermission\(' . preg_quote($permission, '~') . '\);~';
+
+        if (!is_string($predictionMembers) || preg_match($pattern, $predictionMembers) !== 1) {
+            throw new \RuntimeException('Missing permission guard in Predictionmembers::' . $action);
+        }
+    }
+
     require_once $root . '/modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php';
 
     $birthday = new \Diddipoeler\Module\SportsManagementBirthday\Site\Helper\BirthdayHelper();
