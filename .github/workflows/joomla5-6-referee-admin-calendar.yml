@@ -1,0 +1,38 @@
+name: Joomla 5/6 referee writes admin and calendar regression
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/ResultsController.php'
+      - 'site/src/Model/ResultsEditModel.php'
+      - 'admin/src/Controller/PredictionmembersController.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - '.github/tests/joomla56_referee_admin_calendar_contract.php'
+      - '.github/workflows/joomla5-6-referee-admin-calendar.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax
+        run: |
+          php -l site/src/Controller/ResultsController.php
+          php -l site/src/Model/ResultsEditModel.php
+          php -l admin/src/Controller/PredictionmembersController.php
+          php -l modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+          php -l .github/tests/joomla56_referee_admin_calendar_contract.php
+      - name: Frontend and admin write safety and calendar cache
+        run: php .github/tests/joomla56_referee_admin_calendar_contract.php
