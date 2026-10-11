@@ -111,7 +111,7 @@ foreach ([
 }
 
 $moduleSource = file_get_contents($root . '/modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php');
-if (!is_string($moduleSource) || !str_contains($moduleSource, "preg_match('/^[a-z]{2}$/', $alpha2)")) {
+if (!is_string($moduleSource) || !str_contains($moduleSource, "preg_match('/^[a-z]{2}$/', \$alpha2)")) {
     throw new RuntimeException('The matches module must validate country flag codes.');
 }
 
