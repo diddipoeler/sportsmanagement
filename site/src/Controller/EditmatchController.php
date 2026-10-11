@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -43,6 +44,8 @@ final class EditmatchController extends FormController
 
     public function savestats(): void
     {
+        $this->checkToken();
+
         $post = $this->input->post->getArray();
         $saved = $this->editMatchModel()->savestats($post);
         $message = Text::_($saved
@@ -60,6 +63,8 @@ final class EditmatchController extends FormController
 
     public function saveReferees(): void
     {
+        $this->checkToken();
+
         $post = $this->input->post->getArray();
         $saved = $this->editMatchModel()->updateReferees($post);
         $message = Text::_($saved
@@ -71,6 +76,8 @@ final class EditmatchController extends FormController
 
     public function saverosterbillard(): void
     {
+        $this->checkToken();
+
         $post = $this->input->post->getArray();
         $saved = $this->editMatchModel()->updateRosterBillard($post);
         $message = $saved
@@ -82,6 +89,8 @@ final class EditmatchController extends FormController
 
     public function saveroster(): void
     {
+        $this->checkToken();
+
         $post = $this->input->post->getArray();
         $model = $this->editMatchModel();
         $playersSaved = $model->updateRoster($post);
@@ -97,6 +106,8 @@ final class EditmatchController extends FormController
 
     public function saveshort(): void
     {
+        $this->checkToken();
+
         $app = $this->app;
         $post = $this->input->post->getArray();
         $matchId = (int) ($post['matchid'] ?? 0);
@@ -158,6 +169,8 @@ final class EditmatchController extends FormController
 
     private function saveIndividualShort(): void
     {
+        $this->checkToken();
+
         $app = $this->app;
         $input = $this->input;
         $post = $input->post->getArray();
@@ -172,7 +185,7 @@ final class EditmatchController extends FormController
             );
         } catch (\Throwable $e) {
             $saved = false;
-            $app->enqueueMessage($e->getMessage(), 'error');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
         }
 
         $this->setRedirect(
