@@ -334,8 +334,12 @@ final class RankingHelper
 
             $other = max(0, $limit - 1);
             $start = $index - intdiv($other, 2) - ($other % 2);
+            // Keep a full visible window when the selected team is close to
+            // the end: array_slice alone would otherwise return 1-2 rows.
+            $maxStart = max(0, count($ranking) - $limit);
+            $start = min($maxStart, max(0, $start));
 
-            return array_slice($ranking, max(0, $start), $limit);
+            return array_slice($ranking, $start, $limit);
         }
 
         return $ranking;
