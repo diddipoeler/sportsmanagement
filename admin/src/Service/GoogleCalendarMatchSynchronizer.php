@@ -323,9 +323,20 @@ final class GoogleCalendarMatchSynchronizer
      */
     private function normaliseIds(array $ids): array
     {
-        $ids = array_map('intval', $ids);
-        $ids = array_filter($ids, static fn (int $id): bool => $id > 0);
+        $normalised = [];
 
-        return array_values(array_unique($ids));
+        foreach ($ids as $id) {
+            if (!is_int($id) && (!is_string($id) || !preg_match('/^[1-9][0-9]*$/D', $id))) {
+                continue;
+            }
+
+            $validated = filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($validated !== false) {
+                $normalised[$validated] = $validated;
+            }
+        }
+
+        return array_values($normalised);
     }
 }
