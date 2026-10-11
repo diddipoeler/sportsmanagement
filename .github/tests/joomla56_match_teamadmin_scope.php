@@ -29,6 +29,12 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model {
         public static ?object $database = null;
         public function __construct(mixed $config = [], mixed $factory = null) {}
         public function getDatabase(): object { return self::$database; }
+        public function siteApplication(): object
+        {
+            return new class {
+                public function getIdentity(): object { return (object) ['id' => 0]; }
+            };
+        }
     }
 }
 
