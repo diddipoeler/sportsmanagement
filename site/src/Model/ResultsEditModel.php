@@ -56,13 +56,12 @@ final class ResultsEditModel extends SportsManagementModel
         }
 
         $db = $this->getDatabase();
-        $useLegsOverride = array_key_exists('use_legs', $post)
-            ? (int) $post['use_legs'] === 1
-            : null;
         $success = true;
 
         foreach ($matchIds as $matchId) {
-            $useLegs = $useLegsOverride ?? $this->matchUsesLegs($matchId);
+            // Never trust a hidden POST flag to select the scoring algorithm:
+            // each match inherits this rule from its persisted project.
+            $useLegs = $this->matchUsesLegs($matchId);
             $currentDate = $this->getCurrentMatchDate($matchId);
             $record = (object) ['id' => $matchId];
 
@@ -98,11 +97,9 @@ final class ResultsEditModel extends SportsManagementModel
             $this->assignIntIfPresent($record, $post, 'result_type', $matchId);
             $this->assignIntIfPresent($record, $post, 'match_result_type', $matchId);
             $this->assignIntIfPresent($record, $post, 'crowd', $matchId);
-            $this->assignPositiveIntIfPresent($record, $post, 'round_id', $matchId);
-            $this->assignIntIfPresent($record, $post, 'division_id', $matchId);
-            $this->assignIntIfPresent($record, $post, 'projectteam1_id', $matchId);
-            $this->assignIntIfPresent($record, $post, 'projectteam2_id', $matchId);
 
+            // This is a results editor, not the match assignment editor. Never
+            // accept injected round, division, team or content ownership fields.
             foreach ([
                 'team1_single_matchpoint',
                 'team2_single_matchpoint',
@@ -110,7 +107,6 @@ final class ResultsEditModel extends SportsManagementModel
                 'team2_single_sets',
                 'team1_single_games',
                 'team2_single_games',
-                'content_id',
             ] as $field) {
                 $this->assignIfPresent($record, $post, $field, $matchId);
             }
@@ -121,9 +117,9 @@ final class ResultsEditModel extends SportsManagementModel
             $homeSplits = $this->normaliseSplitValues($post[$homeSplitsKey] ?? []);
             $awaySplits = $this->normaliseSplitValues($post[$awaySplitsKey] ?? []);
 
-            if ($useLegs) {
-                // Leg-based competitions derive the match score from the part
-                // results; an empty submitted part list intentionally clears it.
+            if ($useLegs && $splitsSubmitted) {
+                // Only recalculate when the client actually submitted leg
+                // scores. An unrelated update must not zero an existing result.
                 $record->team1_result = 0;
                 $record->team2_result = 0;
 
@@ -145,14 +141,14 @@ final class ResultsEditModel extends SportsManagementModel
                         $record->team2_result++;
                     }
                 }
-            } else {
+            } elseif (!$useLegs) {
                 $this->assignNumericPair($record, $post, $matchId, 'team1_result', 'team2_result', true);
                 $this->assignNumericPair($record, $post, $matchId, 'team1_result_ot', 'team2_result_ot');
                 $this->assignNumericPair($record, $post, $matchId, 'team1_result_so', 'team2_result_so');
                 $this->assignNumericPair($record, $post, $matchId, 'team1_legs', 'team2_legs');
             }
 
-            if ($splitsSubmitted || $useLegs) {
+            if ($splitsSubmitted) {
                 $record->team1_result_split = implode(';', $homeSplits);
                 $record->team2_result_split = implode(';', $awaySplits);
             }
@@ -296,14 +292,4 @@ final class ResultsEditModel extends SportsManagementModel
         }
     }
 
-    private function assignPositiveIntIfPresent(object $record, array $post, string $field, int $matchId): void
-    {
-        $key = $field . $matchId;
-        if (array_key_exists($key, $post)) {
-            $value = (int) $post[$key];
-            if ($value > 0) {
-                $record->{$field} = $value;
-            }
-        }
-    }
 }

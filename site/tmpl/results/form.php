@@ -73,7 +73,6 @@ $cancelUrl = Route::_('index.php?option=com_sportsmanagement&view=results'
                 <input type="hidden" name="division" value="<?php echo $divisionId; ?>">
                 <input type="hidden" name="mode" value="<?php echo $mode; ?>">
                 <input type="hidden" name="order" value="<?php echo $order; ?>">
-                <input type="hidden" name="use_legs" value="<?php echo $useLegs ? 1 : 0; ?>">
 
                 <div class="table-responsive">
                     <table class="table table-striped align-middle" id="results-edit-table">
