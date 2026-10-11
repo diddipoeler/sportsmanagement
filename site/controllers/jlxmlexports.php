@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\JlxmlexportsController;
 
 if (!class_exists(JlxmlexportsController::class)) {
-    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/JlxmlexportsController.php';
+    $nativeController = __DIR__ . '/../src/Controller/JlxmlexportsController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
