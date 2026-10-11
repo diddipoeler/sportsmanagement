@@ -208,8 +208,12 @@ final class BirthdayHelper
                 continue;
             }
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                $id = (int) $part;
-                if ($id > 0) {
+                // Joomla multi-select values are positive decimal database IDs.
+                // A plain cast also accepts malformed values such as "12junk"
+                // or saturates IDs larger than PHP_INT_MAX.
+                $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+                if ($id !== false) {
                     $ids[$id] = $id;
                 }
             }
