@@ -12,6 +12,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Service\OpenLigaDbPreviewService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
 
@@ -47,7 +48,7 @@ class sportsmanagementModeljsmopenligadb extends BaseDatabaseModel
         }
 
         /** @var DatabaseInterface $db */
-        $db = $app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         return new OpenLigaDbPreviewService($db);
     }
