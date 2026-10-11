@@ -347,7 +347,21 @@ final class RankingHelper
             $value = reset($value);
         }
 
-        return preg_match('/^\s*(\d+)/', (string) $value, $match) ? (int) $match[1] : 0;
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $value = trim((string) $value);
+
+        // A Joomla selection may contain "12:team-alias", but a malformed
+        // suffix or an overflowing ID must never silently select team 12.
+        if (!preg_match('/^([1-9][0-9]*)(?::[^\s:]+)?$/D', $value, $match)) {
+            return 0;
+        }
+
+        $id = filter_var($match[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     private function route(string $view, array $parameters): string
