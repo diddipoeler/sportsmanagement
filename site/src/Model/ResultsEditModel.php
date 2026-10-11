@@ -61,7 +61,16 @@ final class ResultsEditModel extends SportsManagementModel
         foreach ($matchIds as $matchId) {
             // Never trust a hidden POST flag to select the scoring algorithm:
             // each match inherits this rule from its persisted project.
-            $useLegs = $this->matchUsesLegs($matchId);
+            try {
+                $useLegs = $this->matchUsesLegs($matchId);
+            } catch (Throwable $e) {
+                // If the persisted scoring rules cannot be read, reject this
+                // write rather than treating a leg-based match as a normal one.
+                Log::add(__METHOD__ . ' (match ' . $matchId . '): ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+                $success = false;
+                continue;
+            }
             $currentDate = $this->getCurrentMatchDate($matchId);
             $record = (object) ['id' => $matchId];
 
@@ -210,12 +219,8 @@ final class ResultsEditModel extends SportsManagementModel
             ->where($db->quoteName('m.id') . ' = :matchId')
             ->bind(':matchId', $matchId, ParameterType::INTEGER);
 
-        try {
-            $db->setQuery($query, 0, 1);
-            return (int) $db->loadResult() === 1;
-        } catch (Throwable) {
-            return false;
-        }
+        $db->setQuery($query, 0, 1);
+        return (int) $db->loadResult() === 1;
     }
 
     private function normaliseTime(string $time): string
