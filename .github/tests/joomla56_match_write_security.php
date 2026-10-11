@@ -58,10 +58,12 @@ class_alias(JsmTestUri::class, 'Joomla\CMS\Uri\Uri');
 
 require_once $root . '/modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php';
 require_once $root . '/modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php';
+require_once $root . '/modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php';
 
 $helper = new class {
     use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeLinkTrait;
     use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeFormatTrait;
+    use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeQueryTrait;
 
     public function normalizeWebsite(string $value): string
     {
@@ -71,6 +73,11 @@ $helper = new class {
     public function normalizeImage(string $value): string
     {
         return $this->imageSource($value);
+    }
+
+    public function normalizeIds(mixed $values): array
+    {
+        return $this->ids($values);
     }
 };
 
@@ -120,6 +127,24 @@ if (!str_contains($adminSource, 'catch (\Throwable $error)')
     || !str_contains($adminSource, "'success' => false")
 ) {
     throw new RuntimeException('Administrator AJAX errors must be logged and returned as JSON.');
+}
+
+foreach ([
+    '1,2; 3' => [1, 2, 3],
+    '001; 2, 001' => [1, 2],
+    '12junk,5' => [5],
+    '-2,0,3' => [3],
+    '99999999999999999999999999,4' => [4],
+] as $provided => $expected) {
+    $actual = $helper->normalizeIds($provided);
+
+    if ($actual !== $expected) {
+        throw new RuntimeException('Invalid matches module IDs for ' . $provided);
+    }
+}
+
+if ($helper->normalizeIds(['1,2', ['3'], '4']) !== [1, 2, 4]) {
+    throw new RuntimeException('Nested module parameter arrays must not corrupt valid selections.');
 }
 
 echo "Joomla 5/6 match write guards, admin JSON and module links: OK\n";
