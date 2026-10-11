@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\PredictionrankingController;
 
 if (!class_exists(PredictionrankingController::class)) {
-    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/PredictionrankingController.php';
+    $nativeController = __DIR__ . '/../src/Controller/PredictionrankingController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
