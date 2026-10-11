@@ -1,6 +1,6 @@
 <?php
 /**
- * Verify the required file-level PHPDoc metadata in SportsManagement PHP files.
+ * Verify file-level PHPDoc metadata in site, admin, modules and the installer.
  *
  * Usage: php .github/tests/phpdoc_metadata.php [--all|path ...]
  *
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $areas = ['site/', 'admin/', 'modules/'];
+$rootPhpFiles = ['script.joomla56.php'];
 $arguments = array_slice($argv, 1);
 
 if ($arguments === [] || $arguments === ['--all']) {
@@ -33,7 +34,8 @@ foreach ($arguments as $path) {
     $path = str_replace('\\', '/', $path);
     if (str_contains($path, '/vendor/')
         || !str_ends_with(strtolower($path), '.php')
-        || !array_filter($areas, static fn(string $area): bool => str_starts_with($path, $area))) {
+        || (!in_array($path, $rootPhpFiles, true)
+            && !array_filter($areas, static fn(string $area): bool => str_starts_with($path, $area)))) {
         continue;
     }
     $absolutePath = realpath($root . '/' . $path);
@@ -57,5 +59,5 @@ foreach ($arguments as $path) {
 foreach ($errors as $error) {
     fwrite(STDERR, $error . PHP_EOL);
 }
-printf("Checked %d PHP files in site/, admin/, modules/: %d problems.\n", $checked, count($errors));
+printf("Checked %d PHP files in site/, admin/, modules/ and installer: %d problems.\n", $checked, count($errors));
 exit($errors === [] ? 0 : 1);
