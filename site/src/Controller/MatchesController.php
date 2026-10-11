@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Model\ResultsAccessModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\MatchMutationService;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
@@ -18,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Native Joomla 5/6 controller for the edit-match AJAX actions. */
 final class MatchesController extends BaseController
@@ -43,6 +45,8 @@ final class MatchesController extends BaseController
             'doubleevents' => $input->get('doubleevents', '', 'raw'),
         ];
 
+        $this->assertMatchScope((int) $data['match_id']);
+
         $result = $this->mutationService()->saveEvent($data);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT') . ': '
@@ -65,6 +69,8 @@ final class MatchesController extends BaseController
             'projecttime' => $input->get('projecttime', '', 'raw'),
         ];
 
+        $this->assertMatchScope((int) $data['matchid']);
+
         $result = $this->mutationService()->saveSubstitution($data);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_SUBST') . ': '
@@ -78,6 +84,8 @@ final class MatchesController extends BaseController
         $this->assertWritePermission();
 
         $substitutionId = $this->input->post->getInt('substid', 0);
+        $this->assertMatchScope($this->parentMatchId('#__sportsmanagement_match_player', $substitutionId, true));
+
         $result = $this->mutationService()->removeSubstitution($substitutionId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': '
@@ -99,6 +107,8 @@ final class MatchesController extends BaseController
             'projecttime' => $input->get('projecttime', '', 'raw'),
         ];
 
+        $this->assertMatchScope((int) $data['match_id']);
+
         $result = $this->mutationService()->saveComment($data);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT') . ': '
@@ -112,6 +122,8 @@ final class MatchesController extends BaseController
         $this->assertWritePermission();
 
         $eventId = $this->input->post->getInt('event_id');
+        $this->assertMatchScope($this->parentMatchId('#__sportsmanagement_match_event', $eventId, false));
+
         $result = $this->mutationService()->deleteEvent($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS') . ': '
@@ -125,6 +137,8 @@ final class MatchesController extends BaseController
         $this->assertWritePermission();
 
         $eventId = $this->input->post->getInt('event_id');
+        $this->assertMatchScope($this->parentMatchId('#__sportsmanagement_match_commentary', $eventId, false));
+
         $result = $this->mutationService()->deleteCommentary($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': '
@@ -176,6 +190,62 @@ final class MatchesController extends BaseController
 
         if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
+    /**
+     * Authorize the actual match, not just a component-wide editing action.
+     * A supplied AJAX match ID must match the persisted parent for deletions.
+     */
+    private function assertMatchScope(int $matchId): void
+    {
+        $post = $this->input->post;
+        $projectId = $post->getInt('p', 0);
+        $requestMatchId = $post->getInt('matchid', 0);
+
+        if ($matchId <= 0 || $projectId <= 0 || $requestMatchId !== $matchId) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        $access = new ResultsAccessModel();
+        $access->setDatabaseSelector($post->getInt('cfg_which_database', 0));
+        $access->setProjectId($projectId);
+
+        if (!$access->canEditMatches([$matchId])) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
+    /**
+     * Resolve the real parent of a child row before checking its access.
+     * The legacy substitution table may live in the selected sports database.
+     */
+    private function parentMatchId(string $table, int $childId, bool $sportsDatabase): int
+    {
+        if ($childId <= 0) {
+            return 0;
+        }
+
+        $fallbackDatabase = self::joomlaDatabase();
+        $db = $sportsDatabase
+            ? SportsManagementDatabaseResolver::resolve(
+                $fallbackDatabase,
+                $this->input->post->getInt('cfg_which_database', 0)
+            )
+            : $fallbackDatabase;
+
+        try {
+            $query = $db->createQuery()
+                ->select($db->quoteName('match_id'))
+                ->from($db->quoteName($table))
+                ->where($db->quoteName('id') . ' = :childId')
+                ->bind(':childId', $childId, ParameterType::INTEGER);
+            $db->setQuery($query, 0, 1);
+
+            return (int) $db->loadResult();
+        } catch (\Throwable) {
+            // A failed child lookup must never authorize a destructive action.
+            return 0;
         }
     }
 
