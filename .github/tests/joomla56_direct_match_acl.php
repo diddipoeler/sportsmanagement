@@ -40,7 +40,7 @@ namespace Joomla\CMS\Uri {
 namespace Joomla\Database {
     interface DatabaseInterface {}
 }
-namespace Joomla\CMS\Factory {
+namespace Joomla\CMS {
     class Factory
     {
         public static function getContainer(): object
