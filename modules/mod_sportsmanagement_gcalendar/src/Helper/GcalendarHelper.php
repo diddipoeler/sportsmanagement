@@ -96,31 +96,42 @@ final class GcalendarHelper
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
 
-        $calendarIds = $params->get('calendarids', []);
+        $rawCalendarIds = $params->get('calendarids', []);
+        $selectionRequested = is_array($rawCalendarIds)
+            ? $rawCalendarIds !== [] && $rawCalendarIds !== ['']
+            : $rawCalendarIds !== null && $rawCalendarIds !== '';
+        $calendarIds = $this->normaliseCalendarIds($rawCalendarIds);
 
-        if (!is_array($calendarIds)) {
-            $calendarIds = preg_split('/\s*,\s*/', (string) $calendarIds, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        // An explicitly configured but invalid selection must not expose all calendars.
+        if ($selectionRequested && $calendarIds === []) {
+            return [];
         }
 
-        $calendarIds = array_values(array_unique(array_filter(array_map('intval', $calendarIds))));
-
-        if ($calendarIds) {
+        if ($calendarIds !== []) {
             $query->whereIn($db->quoteName('id'), $calendarIds, ParameterType::INTEGER);
         }
 
         $user = $app->getIdentity();
 
-        if ($user && !$user->authorise('core.admin', 'com_sportsmanagement')) {
+        // The JSON feed denies access without an identity; the module must too.
+        if ($user === null) {
+            return [];
+        }
+
+        if (!$user->authorise('core.admin', 'com_sportsmanagement')) {
             $levels = array_values(array_unique(array_filter(array_map(
                 'intval',
                 $user->getAuthorisedViewLevels()
-            ))));
+            ), static fn (int $level): bool => $level > 0)));
 
-            if ($levels) {
-                $query->whereIn($db->quoteName('access'), $levels, ParameterType::INTEGER);
-            } else {
-                $query->where('1 = 0');
+            if ($levels === []) {
+                return [];
             }
+
+            // Match GoogleCalendarReadService so restricted calendar details
+            // are not advertised by the module to unauthorized visitors.
+            $query->whereIn($db->quoteName('access'), $levels, ParameterType::INTEGER);
+            $query->whereIn($db->quoteName('access_content'), $levels, ParameterType::INTEGER);
         }
 
         $query->order($db->quoteName('name') . ' ASC');
@@ -128,4 +139,42 @@ final class GcalendarHelper
 
         return $db->loadObjectList() ?: [];
     }
+
+    /**
+     * @return array<int>
+     */
+    private function normaliseCalendarIds(mixed $configured): array
+    {
+        $values = is_array($configured) ? $configured : [$configured];
+        $ids = [];
+
+        foreach ($values as $value) {
+            if (!is_string($value) && !is_int($value)) {
+                continue;
+            }
+
+            $parts = is_int($value) ? [$value] : (preg_split('/[\s,;]+/', $value, -1, PREG_SPLIT_NO_EMPTY) ?: []);
+
+            foreach ($parts as $part) {
+                if (is_int($part)) {
+                    if ($part > 0) {
+                        $ids[$part] = $part;
+                    }
+                    continue;
+                }
+
+                if (!preg_match('/^[1-9][0-9]*$/D', $part)) {
+                    continue;
+                }
+
+                $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                if ($id !== false) {
+                    $ids[$id] = $id;
+                }
+            }
+        }
+
+        return array_values($ids);
+    }
+
 }
