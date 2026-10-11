@@ -94,11 +94,11 @@
             throw new Error('Joomla CSRF form token is missing.');
         }
 
-        const body = new URLSearchParams();
+        const payload = new URLSearchParams();
         Object.entries(params).forEach(([key, value]) => {
-            body.set(key, value == null ? '' : String(value));
+            payload.set(key, value == null ? '' : String(value));
         });
-        body.set(tokenField.name, tokenField.value);
+        payload.set(tokenField.name, tokenField.value);
 
         const response = await fetch(url.toString(), {
             method: 'POST',
@@ -107,7 +107,7 @@
                 'X-Requested-With': 'XMLHttpRequest',
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             },
-            body: body.toString(),
+            body: payload.toString(),
         });
 
         if (!response.ok) {
