@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\EditpersonController;
 
 if (!class_exists(EditpersonController::class)) {
-    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/EditpersonController.php';
+    $nativeController = __DIR__ . '/../src/Controller/EditpersonController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
