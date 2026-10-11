@@ -247,19 +247,34 @@ final class MatchesSliderHelper
             ? trim((string) $componentParams->get('cfg_which_database_server', ''))
             : (string) Uri::root();
 
-        return rtrim($server !== '' ? $server : (string) Uri::root(), '/') . '/';
+        // Database-server URLs are configurable and must not inject a foreign
+        // URL scheme into module image attributes.
+        if (!preg_match('~^https?://~i', $server)
+            || filter_var($server, FILTER_VALIDATE_URL) === false
+        ) {
+            $server = (string) Uri::root();
+        }
+
+        return rtrim($server, '/') . '/';
     }
 
     private function mediaUrl(string $path, string $pictureServer): string
     {
         $path = trim($path);
 
-        if ($path === '') {
+        if ($path === '' || preg_match('/[\x00-\x20\x7F\\\\]/', $path)) {
             return '';
         }
 
-        if (preg_match('#^https?://#i', $path)) {
-            return $path;
+        if (preg_match('~^https?://~i', $path)) {
+            return filter_var($path, FILTER_VALIDATE_URL) !== false ? $path : '';
+        }
+
+        if (str_starts_with($path, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+            || preg_match('~(?:^|/)\.\.(?:/|$)~', $path)
+        ) {
+            return '';
         }
 
         return $pictureServer . ltrim($path, '/');
@@ -268,14 +283,24 @@ final class MatchesSliderHelper
     /** @return array<int,int> */
     private function ids(mixed $value): array
     {
-        $values = is_array($value)
-            ? $value
-            : preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
+        $values = is_array($value) ? $value : [$value];
         $ids = [];
 
-        foreach ((array) $values as $item) {
-            if (preg_match('/^\s*(\d+)/', (string) $item, $match) && (int) $match[1] > 0) {
-                $ids[(int) $match[1]] = (int) $match[1];
+        foreach ($values as $candidate) {
+            if (!is_scalar($candidate)) {
+                continue;
+            }
+
+            foreach (preg_split('/[\s,;]+/', (string) $candidate, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
+                if (!ctype_digit($part)) {
+                    continue;
+                }
+
+                $id = filter_var(ltrim($part, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+                if ($id !== false) {
+                    $ids[$id] = $id;
+                }
             }
         }
 
