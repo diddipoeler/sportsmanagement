@@ -198,10 +198,9 @@ final class ImagehandlerController extends BaseController
 
     private function downloadRemoteImage(string $url, string $baseDir): ?string
     {
-        $parts = parse_url($url);
-        $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+        $parts = $this->validateRemoteImageUrl($url);
 
-        if (!in_array($scheme, ['http', 'https'], true) || empty($parts['host'])) {
+        if ($parts === null) {
             return null;
         }
 
@@ -219,7 +218,10 @@ final class ImagehandlerController extends BaseController
         }
 
         try {
-            $response = HttpFactory::getHttp()->get($url);
+            // Prevent a public URL from redirecting the server into a private
+            // network. The Socket transport cannot guarantee this option.
+            $http = (new HttpFactory())->getHttp(['follow_location' => false], ['Curl', 'Stream']);
+            $response = $http->get($url, ['Accept' => 'image/*'], 10);
             $status = $response->getStatusCode();
             $body = (string) $response->getBody();
         } catch (\Throwable $e) {
@@ -244,6 +246,139 @@ final class ImagehandlerController extends BaseController
             Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
             return null;
         }
+    }
+
+    /**
+     * Remote images must come from publicly routable HTTP(S) hosts. URL
+     * credentials, alternate ports, DNS-local hostnames and control bytes
+     * are not suitable destinations for a server-side fetch.
+     */
+    private function validateRemoteImageUrl(string $url): ?array
+    {
+        if ($url === ''
+            || strlen($url) > 2048
+            || str_contains($url, '\\')
+            || preg_match('/[\x00-\x20\x7F]/', $url)) {
+            return null;
+        }
+
+        $parts = parse_url($url);
+
+        if (!is_array($parts)) {
+            return null;
+        }
+
+        $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+        $host = trim((string) ($parts['host'] ?? ''), '[]');
+
+        if (!in_array($scheme, ['http', 'https'], true)
+            || $host === ''
+            || isset($parts['user'])
+            || isset($parts['pass'])) {
+            return null;
+        }
+
+        $expectedPort = $scheme === 'https' ? 443 : 80;
+
+        if (isset($parts['port']) && (int) $parts['port'] !== $expectedPort) {
+            return null;
+        }
+
+        if (!$this->isPublicRemoteHost($host)) {
+            return null;
+        }
+
+        return $parts;
+    }
+
+    private function isPublicRemoteHost(string $host): bool
+    {
+        $host = strtolower(rtrim(trim($host), '.'));
+
+        if ($host === '' || strlen($host) > 253 || str_contains($host, "\0")) {
+            return false;
+        }
+
+        if (filter_var($host, FILTER_VALIDATE_IP) !== false) {
+            return $this->isPublicRemoteIp($host);
+        }
+
+        foreach (['localhost', 'localdomain', 'local', 'internal', 'lan', 'home', 'home.arpa'] as $suffix) {
+            if ($host === $suffix || str_ends_with($host, '.' . $suffix)) {
+                return false;
+            }
+        }
+
+        if (!str_contains($host, '.') || !preg_match('/^[a-z0-9.-]+$/i', $host)) {
+            return false;
+        }
+
+        foreach (explode('.', $host) as $label) {
+            if ($label === ''
+                || strlen($label) > 63
+                || str_starts_with($label, '-')
+                || str_ends_with($label, '-')) {
+                return false;
+            }
+        }
+
+        $addresses = [];
+        $ipv4 = @gethostbynamel($host);
+
+        if (is_array($ipv4)) {
+            $addresses = array_merge($addresses, $ipv4);
+        }
+
+        if (function_exists('dns_get_record')) {
+            $records = @dns_get_record($host, DNS_A | DNS_AAAA);
+
+            if (is_array($records)) {
+                foreach ($records as $record) {
+                    if (!empty($record['ip'])) {
+                        $addresses[] = (string) $record['ip'];
+                    }
+
+                    if (!empty($record['ipv6'])) {
+                        $addresses[] = (string) $record['ipv6'];
+                    }
+                }
+            }
+        }
+
+        if ($addresses === []) {
+            return false;
+        }
+
+        foreach (array_unique($addresses) as $address) {
+            if (!$this->isPublicRemoteIp((string) $address)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function isPublicRemoteIp(string $address): bool
+    {
+        if (filter_var(
+            $address,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        ) === false) {
+            return false;
+        }
+
+        if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false) {
+            $octets = array_map('intval', explode('.', $address));
+
+            // Carrier-grade NAT and benchmarking subnets are not public hosts.
+            if (($octets[0] === 100 && $octets[1] >= 64 && $octets[1] <= 127)
+                || ($octets[0] === 198 && in_array($octets[1], [18, 19], true))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function maxImageBytes(): int
