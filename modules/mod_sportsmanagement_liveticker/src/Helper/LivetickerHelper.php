@@ -443,7 +443,9 @@ final class LivetickerHelper
             return null;
         }
 
-        $module = ModuleHelper::getModuleById($moduleId);
+        // Joomla's ModuleHelper compares the stored module ID to a string strictly.
+        // Passing an integer makes an otherwise valid AJAX refresh look missing.
+        $module = ModuleHelper::getModuleById((string) $moduleId);
 
         if (
             !is_object($module)
