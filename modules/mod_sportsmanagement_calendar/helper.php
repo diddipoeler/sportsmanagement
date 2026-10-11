@@ -13,12 +13,16 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Diddipoeler\Module\SportsManagementCalendar\Site\Helper\CalendarHelper;
 
 $nativeDependencies = [
-    SportsManagementSiteApplicationResolver::class => dirname(__DIR__, 2) . '/site/src/Service/SportsManagementSiteApplicationResolver.php',
+    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
     CalendarHelper::class => __DIR__ . '/src/Helper/CalendarHelper.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
-    if (!class_exists($class, false) && is_file($file)) {
+    if (!class_exists($class)) {
+        if (!is_file($file)) {
+            throw new \RuntimeException('SportsManagement Calendar dependency file is missing: ' . $class, 500);
+        }
+
         require_once $file;
     }
 }
