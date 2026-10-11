@@ -116,6 +116,11 @@ trait EditmatchEventViewTrait
         $document->addScriptOptions('com_sportsmanagement.editmatch', [
             'baseAjaxUrl' => Uri::root() . 'index.php?option=com_sportsmanagement',
             'matchId' => $matchId,
+            'projectId' => $this->project_id,
+            'databaseSelector' => $this->input->getInt(
+                'cfg_which_database',
+                (int) $this->app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+            ),
             'useEventTime' => $this->useeventtime,
             'doubleEvents' => $this->doubleevents,
             'projectTime' => $this->eventsprojecttime,
