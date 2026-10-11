@@ -257,6 +257,29 @@ namespace {
         ], $params) !== '') {
             throw new \RuntimeException('Unsafe birthday flag path was accepted.');
         }
+        $birthdayText = new \ReflectionMethod($helper, 'birthdayText');
+        $today = new \DateTimeImmutable('2026-10-11');
+        $birth = new \DateTimeImmutable('1999-10-11');
+        $maliciousFormats = new \Joomla\Registry\Registry([
+            'birthdaytext' => '%DATE%|%DATE_OF_BIRTH%',
+            'dayformat' => '<img src=x onerror=alert(1)>d.m.Y',
+            'birthdayformat' => '<script>alert(1)</script>d.m.Y',
+        ]);
+        $rendered = $birthdayText->invoke(
+            $helper,
+            (object) ['days_to_birthday' => 0, 'age' => 27],
+            $today,
+            $birth,
+            $maliciousFormats
+        );
+
+        if (str_contains($rendered, '<img')
+            || str_contains($rendered, '<script')
+            || !str_contains($rendered, '&lt;')
+        ) {
+            throw new \RuntimeException('Birthday date placeholders must escape HTML from custom formats.');
+        }
+
     } finally {
         unlink($imageRoot . '/images/people/person.png');
         rmdir($imageRoot . '/images/people');
