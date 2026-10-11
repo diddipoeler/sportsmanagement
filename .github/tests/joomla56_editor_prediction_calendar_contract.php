@@ -160,8 +160,8 @@ namespace {
     }
 
     $event = new \Event(['title' => 'Sample match', 'start' => '2026-10-11', 'end' => '2026-10-13']);
-    if (!$event->isWithinDayRange(new \DateTime('2026-10-12'), new \DateTime('2026-10-14'))
-        || $event->isWithinDayRange(new \DateTime('2026-10-13'), new \DateTime('2026-10-15'))) {
+    if (!$event->isWithinDayRange(\parseDateTime('2026-10-12'), \parseDateTime('2026-10-14'))
+        || $event->isWithinDayRange(\parseDateTime('2026-10-13'), \parseDateTime('2026-10-15'))) {
         throw new \RuntimeException('Calendar event intersection has regressed.');
     }
 
