@@ -260,6 +260,10 @@ final class CalendarHelper
 
         switch ($viewName) {
             case 'day':
+                if (!checkdate($month, $day, $year)) {
+                    return '';
+                }
+
                 $start = $end = sprintf('%04d-%02d-%02d', $year, $month, $day);
                 break;
 
@@ -277,6 +281,10 @@ final class CalendarHelper
                     return '';
                 }
                 break;
+        }
+
+        if ($start > $end) {
+            return '';
         }
 
         $moduleParams = new Registry();
@@ -315,7 +323,8 @@ final class CalendarHelper
             return null;
         }
 
-        $module = ModuleHelper::getModuleById($moduleId);
+        // Joomla compares stored module IDs as strings when resolving instances.
+        $module = ModuleHelper::getModuleById((string) $moduleId);
 
         if (
             !is_object($module)
@@ -551,8 +560,18 @@ final class CalendarHelper
 
     private static function normaliseDate(string $date): ?string
     {
-        $parsed = \DateTimeImmutable::createFromFormat('!Y-m-d', trim($date));
+        $date = trim($date);
 
-        return $parsed instanceof \DateTimeImmutable ? $parsed->format('Y-m-d') : null;
+        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/D', $date)) {
+            return null;
+        }
+
+        $parsed = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
+
+        // PHP normalizes e.g. February 30 to March 2. Calendar requests
+        // must not silently load matches for a different day.
+        return $parsed instanceof \DateTimeImmutable && $parsed->format('Y-m-d') === $date
+            ? $date
+            : null;
     }
 }
