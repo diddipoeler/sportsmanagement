@@ -36,12 +36,19 @@ final class EditpersonModel extends AdminModel
 
     public function updItem($data): bool
     {
-        foreach ((array) ($data['request'] ?? []) as $key => $value) {
-            $data[$key] = $value;
+        $data = (array) $data;
+        $request = $data['request'] ?? [];
+
+        if (is_array($request)) {
+            foreach ($request as $key => $value) {
+                $data[$key] = $value;
+            }
         }
 
-        // Preserve the historical frontend editor behaviour: empty/zero values were filtered before binding.
-        $data = array_filter((array) $data);
+        unset($data['request']);
+
+        // Keep explicit 0, false and empty-string values: administrators can
+        // clear existing frontend fields and switch boolean options off.
 
         try {
             $table = $this->getTable('player');
@@ -57,10 +64,7 @@ final class EditpersonModel extends AdminModel
             return (bool) $table->store();
         } catch (\Throwable $e) {
             Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
-            $this->siteApplication()->enqueueMessage(
-                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                'error'
-            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return false;
         }
     }
