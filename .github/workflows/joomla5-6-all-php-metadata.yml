@@ -52,6 +52,9 @@ jobs:
           php -l modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
           php -l site/src/Controller/PredictionentryController.php
+          php -l site/src/Controller/MatchesController.php
+          php -l modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php
+          php -l .github/tests/joomla56_site_timeline_slider_contract.php
           php -l .github/tests/joomla56_match_timeline_contract.php
           php -l .github/tests/joomla56_match_write_security.php
           php -l .github/tests/joomla56_club_save_contract.php
@@ -72,3 +75,9 @@ jobs:
 
       - name: Verify match timeline POST security, JSON and private errors
         run: php .github/tests/joomla56_match_timeline_contract.php
+
+      - name: Test frontend match AJAX security and slider sanitizers
+        run: php .github/tests/joomla56_site_timeline_slider_contract.php
+
+      - name: Test timeline JavaScript POST payloads and Joomla CSRF tokens
+        run: node .github/tests/joomla56_timeline_js_contract.js
