@@ -34,6 +34,7 @@ jobs:
           php -l site/src/Model/EditclubModel.php
           php -l site/src/Controller/AjaxController.php
           php -l admin/src/Controller/DivisionsController.php
+          php -l admin/src/Controller/PredictionmembersController.php
           php -l .github/tests/joomla56_ajax_divisions_birthday_contract.php
           php -l site/src/Model/EditpersonModel.php
           php -l site/src/Model/EditteamModel.php
