@@ -117,8 +117,9 @@ final class PredictionmembersController extends SportsManagementAdminController
 
         $model = $this->getModel();
         $resultsDeleted = $model !== false && $model->deletePredictionResults($ids, $predictionId);
-        $membersDeleted = $model !== false && $model->deletePredictionMembers($ids, $predictionId);
-        $ok = $resultsDeleted && $membersDeleted;
+        // Never remove membership rows when deleting their prediction results
+        // has failed: that would leave orphaned result records.
+        $ok = $resultsDeleted && $model->deletePredictionMembers($ids, $predictionId);
 
         $this->setRedirect(
             $this->listUrl($predictionId),

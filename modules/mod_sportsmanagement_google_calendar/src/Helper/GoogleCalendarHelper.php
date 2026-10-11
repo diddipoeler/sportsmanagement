@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Cache\CacheControllerFactoryInterface;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Log\Log;
 use Joomla\Http\HttpFactory;
 use Joomla\Registry\Registry;
 
@@ -37,22 +38,22 @@ final class GoogleCalendarHelper
         // Keep the API cache bounded even when a legacy module parameter is
         // corrupted or configured to an excessively large lifetime.
         $lifetime = min(10080, max(1, (int) $params->get('api_cache_time', 60)));
-        $cache = $cacheFactory->createCacheController('callback', [
-            'caching' => true,
-            'lifetime' => $lifetime,
-            'defaultgroup' => 'mod_sportsmanagement_google_calendar',
-        ]);
-
         try {
+            $cache = $cacheFactory->createCacheController('callback', [
+                'caching' => true,
+                'lifetime' => $lifetime,
+                'defaultgroup' => 'mod_sportsmanagement_google_calendar',
+            ]);
             $events = $cache->call(
                 [$this, 'loadNextEvents'],
                 $apiKey,
                 $calendarId,
                 $maxEvents
             );
-        } catch (\Exception) {
-            // Temporary HTTP/API/cache failures must not break the page.
-            // Do not cache a failed request as an empty event list.
+        } catch (\Throwable $e) {
+            // HTTP, API and cache failures must not break the frontend page.
+            // Report the problem to Joomla without exposing the calendar key.
+            Log::add(__METHOD__ . ': Google Calendar data is unavailable (' . get_class($e) . ')', Log::ERROR, 'jsmerror');
             return ['events' => []];
         }
 

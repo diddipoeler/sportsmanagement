@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 use Throwable;
@@ -163,14 +164,9 @@ final class ResultsEditModel extends SportsManagementModel
                     'notice'
                 );
             } catch (Throwable $e) {
-                $app->enqueueMessage(
-                    Text::sprintf(
-                        'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                        $e->getCode(),
-                        $e->getMessage()
-                    ),
-                    'error'
-                );
+                // Keep driver details in the Joomla log rather than in public UI.
+                Log::add(__METHOD__ . ' (match ' . $matchId . '): ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
                 $success = false;
             }
         }
