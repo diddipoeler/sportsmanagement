@@ -11,6 +11,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\OpenLigaDbPreviewService;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -49,7 +50,8 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
             }
         } catch (\Throwable $exception) {
             Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
-            $this->app->enqueueMessage($exception->getMessage(), 'warning');
+            // Exceptions may contain database paths or remote HTTP details.
+            $this->app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
         }
     }
 
@@ -63,7 +65,7 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
     private function previewService(): OpenLigaDbPreviewService
     {
         /** @var DatabaseInterface $db */
-        $db = $this->app->getContainer()->get(DatabaseInterface::class);
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         return new OpenLigaDbPreviewService($db);
     }
