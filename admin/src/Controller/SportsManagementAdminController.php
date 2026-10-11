@@ -17,6 +17,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Session\Session;
 
 /**
  * Shared administrator list-controller behaviour for SportsManagement.
@@ -43,6 +44,21 @@ abstract class SportsManagementAdminController extends AdminController
         }
 
         return parent::saveorder();
+    }
+
+    /**
+     * Protect legacy administrator write tasks that bypass Joomla's standard
+     * AdminController save routines. Tokens must come from POST requests.
+     */
+    protected function assertWritePermission(string $action = 'core.edit'): void
+    {
+        if (!Session::checkToken('post')) {
+            throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+        }
+
+        if (!$this->app->getIdentity()->authorise($action, 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
     }
 
     /**
