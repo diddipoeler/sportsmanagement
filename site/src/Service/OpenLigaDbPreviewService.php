@@ -62,7 +62,8 @@ final class OpenLigaDbPreviewService
             throw new \RuntimeException('Invalid OpenLigaDB preview URL.');
         }
 
-        $http = (new HttpFactory())->getHttp();
+        // Do not allow a trusted endpoint to redirect into an internal network.
+        $http = (new HttpFactory())->getHttp(['follow_location' => false], ['Curl', 'Stream']);
         $response = $http->get($url, ['Accept' => 'application/json'], 30);
         $status = $response->getStatusCode();
         $body = trim((string) $response->getBody());
@@ -97,14 +98,16 @@ final class OpenLigaDbPreviewService
             foreach (['Team1', 'Team2'] as $teamKey) {
                 $team = $match[$teamKey] ?? null;
 
-                if (is_array($team) && isset($team['TeamId'])) {
+                if (is_array($team) && isset($team['TeamId'])
+                    && (is_int($team['TeamId']) || is_string($team['TeamId']))) {
                     $teams[(string) $team['TeamId']] = true;
                 }
             }
 
             $location = $match['Location'] ?? null;
 
-            if (is_array($location) && isset($location['LocationID'])) {
+            if (is_array($location) && isset($location['LocationID'])
+                && (is_int($location['LocationID']) || is_string($location['LocationID']))) {
                 $playgrounds[(string) $location['LocationID']] = true;
             }
 
@@ -123,12 +126,30 @@ final class OpenLigaDbPreviewService
 
     private function isAllowedUrl(string $url): bool
     {
-        if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
+        // The project field is editable and ultimately drives a server-side
+        // HTTP request. Never allow it to contact arbitrary services or IPs.
+        if ($url === ''
+            || strlen($url) > 2048
+            || preg_match('/[\x00-\x20\x7F\\\\]/', $url)
+            || filter_var($url, FILTER_VALIDATE_URL) === false) {
             return false;
         }
 
-        $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+        $parts = parse_url($url);
 
-        return in_array($scheme, ['http', 'https'], true);
+        if (!is_array($parts)
+            || strtolower((string) ($parts['scheme'] ?? '')) !== 'https'
+            || !in_array(strtolower((string) ($parts['host'] ?? '')), [
+                'api.openligadb.de',
+                'www.openligadb.de',
+                'openligadb.de',
+            ], true)
+            || isset($parts['user'])
+            || isset($parts['pass'])
+            || (isset($parts['port']) && (int) $parts['port'] !== 443)) {
+            return false;
+        }
+
+        return true;
     }
 }
