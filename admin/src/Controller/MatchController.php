@@ -20,6 +20,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
+use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
@@ -41,7 +42,7 @@ final class MatchController extends SportsManagementFormController
 
     public function remove()
     {
-        $this->checkToken();
+        $this->assertMatchWritePermission('core.delete');
 
         $input = $this->app->getInput();
         $pks = array_values(array_filter(array_map(
@@ -71,7 +72,13 @@ final class MatchController extends SportsManagementFormController
 
     public function picture()
     {
+        $this->assertMatchPermission('core.edit');
+
         $matchId = $this->app->getInput()->getInt('id', 0);
+        if ($matchId <= 0) {
+            throw new \RuntimeException(Text::_('JGLOBAL_NO_MATCHING_RESULTS'), 400);
+        }
+
         $destination = JPATH_ROOT . '/images/com_sportsmanagement/database/matchreport/' . $matchId;
 
         if (!Folder::exists($destination) && !Folder::create($destination)) {
@@ -95,7 +102,7 @@ final class MatchController extends SportsManagementFormController
 
     public function copyfrom()
     {
-        $this->checkToken();
+        $this->assertMatchWritePermission('core.create');
 
         $app = $this->app;
         $input = $app->getInput();
@@ -251,7 +258,7 @@ final class MatchController extends SportsManagementFormController
         } catch (\Throwable $exception) {
             Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
             $success = false;
-            $message = $exception->getMessage();
+            $message = Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED');
         }
 
         $this->setRedirect($redirect, $message, $success ? 'message' : 'error');
@@ -261,7 +268,7 @@ final class MatchController extends SportsManagementFormController
 
     public function addmatch()
     {
-        $this->checkToken();
+        $this->assertMatchWritePermission('core.create');
 
         $app = $this->app;
         $input = $app->getInput();
@@ -292,7 +299,7 @@ final class MatchController extends SportsManagementFormController
 
     public function insertgooglecalendar()
     {
-        $this->checkToken();
+        $this->assertMatchWritePermission('core.edit');
 
         $app = $this->app;
         $input = $app->getInput();
@@ -331,7 +338,7 @@ final class MatchController extends SportsManagementFormController
             return true;
         } catch (\Throwable $exception) {
             Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
-            $this->setRedirect($redirect, $exception->getMessage(), 'error');
+            $this->setRedirect($redirect, Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'), 'error');
 
             return false;
         }
@@ -339,6 +346,8 @@ final class MatchController extends SportsManagementFormController
 
     public function pressebericht()
     {
+        $this->assertMatchPermission('core.edit');
+
         $input = $this->app->getInput();
         $input->set('hidemainmenu', 1);
         $input->set('layout', 'pressebericht');
@@ -350,7 +359,7 @@ final class MatchController extends SportsManagementFormController
 
     public function savepressebericht()
     {
-        $this->checkToken();
+        $this->assertMatchWritePermission('core.edit');
 
         $input = $this->app->getInput();
         $matchId = $input->getInt('match_id', $input->getInt('id', 0));
@@ -496,7 +505,7 @@ final class MatchController extends SportsManagementFormController
             }
         } catch (\Throwable $exception) {
             Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::WARNING, 'jsmerror');
-            $this->setRedirect($failureRedirect, $exception->getMessage(), 'error');
+            $this->setRedirect($failureRedirect, Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'), 'error');
 
             return false;
         } finally {
@@ -512,6 +521,25 @@ final class MatchController extends SportsManagementFormController
         $this->setRedirect($successRedirect);
 
         return true;
+    }
+
+    /**
+     * Protect legacy administrator actions which bypass FormController::save().
+     */
+    private function assertMatchWritePermission(string $permission): void
+    {
+        if (!Session::checkToken('post')) {
+            throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+        }
+
+        $this->assertMatchPermission($permission);
+    }
+
+    private function assertMatchPermission(string $permission): void
+    {
+        if (!$this->app->getIdentity()->authorise($permission, 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
     }
 
     private static function joomlaDatabase(): DatabaseInterface
