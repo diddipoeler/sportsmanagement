@@ -13,7 +13,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Diddipoeler\Module\SportsManagementCalendar\Site\Helper\CalendarHelper;
 
 $nativeDependencies = [
-    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+    SportsManagementSiteApplicationResolver::class => dirname(__DIR__, 2) . '/site/src/Service/SportsManagementSiteApplicationResolver.php',
     CalendarHelper::class => __DIR__ . '/src/Helper/CalendarHelper.php',
 ];
 
