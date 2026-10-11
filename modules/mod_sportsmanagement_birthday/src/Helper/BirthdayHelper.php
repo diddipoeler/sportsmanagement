@@ -361,8 +361,8 @@ final class BirthdayHelper
             [
                 '%WHEN%' => htmlspecialchars($when, ENT_QUOTES, 'UTF-8'),
                 '%AGE%' => (string) $row->age,
-                '%DATE%' => $birthday->format((string) $params->get('dayformat', 'd.m.Y')),
-                '%DATE_OF_BIRTH%' => $birth->format((string) $params->get('birthdayformat', 'd.m.Y')),
+                '%DATE%' => htmlspecialchars($birthday->format((string) $params->get('dayformat', 'd.m.Y')), ENT_QUOTES, 'UTF-8'),
+                '%DATE_OF_BIRTH%' => htmlspecialchars($birth->format((string) $params->get('birthdayformat', 'd.m.Y')), ENT_QUOTES, 'UTF-8'),
                 '%BR%' => '<br />',
                 '%BOLD%' => '<strong>',
                 '%BOLDEND%' => '</strong>',
