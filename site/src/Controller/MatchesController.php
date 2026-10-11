@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Session\Session;
 use Joomla\Database\DatabaseInterface;
 
 /** Native Joomla 5/6 controller for the edit-match AJAX actions. */
@@ -25,7 +26,9 @@ final class MatchesController extends BaseController
 
     public function saveevent(): void
     {
-        $input = $this->input;
+        $this->assertWritePermission();
+
+        $input = $this->input->post;
         $data = [
             'teamplayer_id' => $input->getInt('teamplayer_id'),
             'projectteam_id' => $input->getInt('projectteam_id'),
@@ -50,7 +53,9 @@ final class MatchesController extends BaseController
 
     public function savesubst(): void
     {
-        $input = $this->input;
+        $this->assertWritePermission();
+
+        $input = $this->input->post;
         $data = [
             'in' => $input->getInt('in'),
             'out' => $input->getInt('out'),
@@ -70,7 +75,9 @@ final class MatchesController extends BaseController
 
     public function removeSubst(): void
     {
-        $substitutionId = $this->input->getInt('substid', 0);
+        $this->assertWritePermission();
+
+        $substitutionId = $this->input->post->getInt('substid', 0);
         $result = $this->mutationService()->removeSubstitution($substitutionId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_REMOVE_SUBST') . ': '
@@ -81,7 +88,9 @@ final class MatchesController extends BaseController
 
     public function savecomment(): void
     {
-        $input = $this->input;
+        $this->assertWritePermission();
+
+        $input = $this->input->post;
         $data = [
             'event_time' => $input->get('event_time', '', 'raw'),
             'match_id' => $input->getInt('matchid'),
@@ -100,7 +109,9 @@ final class MatchesController extends BaseController
 
     public function removeEvent(): void
     {
-        $eventId = $this->input->getInt('event_id');
+        $this->assertWritePermission();
+
+        $eventId = $this->input->post->getInt('event_id');
         $result = $this->mutationService()->deleteEvent($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_EVENTS') . ': '
@@ -111,7 +122,9 @@ final class MatchesController extends BaseController
 
     public function removeCommentary(): void
     {
-        $eventId = $this->input->getInt('event_id');
+        $this->assertWritePermission();
+
+        $eventId = $this->input->post->getInt('event_id');
         $result = $this->mutationService()->deleteCommentary($eventId);
         $response = !$result
             ? '0&' . Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_DELETE_COMMENTARY') . ': '
@@ -155,9 +168,28 @@ final class MatchesController extends BaseController
         return $this->matchMutationService;
     }
 
+    private function assertWritePermission(): void
+    {
+        if (!Session::checkToken('post')) {
+            throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+        }
+
+        if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
     private function sendLegacyJson(string $response): void
     {
-        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $this->app->close();
+        $app = $this->app;
+        $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
+
+        // The edit-match JavaScript expects the old ampersand-separated string.
+        echo json_encode(
+            $response,
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR
+        );
+        $app->close();
     }
 }
