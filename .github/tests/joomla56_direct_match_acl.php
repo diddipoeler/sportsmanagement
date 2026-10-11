@@ -26,7 +26,8 @@ namespace Joomla\CMS\Log {
     class Log
     {
         public const ERROR = 400;
-        public static function add(string $message, int $level, string $category): void {}
+        public static array $entries = [];
+        public static function add(string $message, int $level, string $category): void { self::$entries[] = $message; }
     }
 }
 namespace Joomla\CMS\Uri {
@@ -257,7 +258,7 @@ namespace {
         $controller->{$action}();
     }
     if ($model->writes !== 6 || $write::$calls !== 2) {
-        throw new \RuntimeException('Authorized match editors reached ' . $model->writes . ' model writes and ' . $write::$calls . ' individual writes; expected 6 and 2.');
+        throw new \RuntimeException('Authorized match editors reached ' . $model->writes . ' model writes and ' . $write::$calls . ' individual writes; expected 6 and 2. Log: ' . implode(' | ', \Joomla\CMS\Log\Log::$entries));
     }
 
     echo "Joomla 5/6 match editing POST, project ACL and valid writes OK\n";
