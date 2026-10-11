@@ -166,14 +166,29 @@ trait NativeQueryTrait
     }
 
     /** @return array<int,int> */
+    /** @return array<int,int> */
     private function ids($value): array
     {
-        $values = is_array($value) ? $value : preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
+        $values = is_array($value) ? $value : [$value];
         $ids = [];
 
-        foreach ((array) $values as $value) {
-            if (($id = (int) $value) > 0) {
-                $ids[$id] = $id;
+        foreach ($values as $candidate) {
+            // Joomla multi-select parameters may contain comma- or semicolon-
+            // separated values. Nested arrays and malformed IDs are ignored.
+            if (!is_scalar($candidate)) {
+                continue;
+            }
+
+            foreach (preg_split('/[\s,;]+/', (string) $candidate, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
+                if (!ctype_digit($part)) {
+                    continue;
+                }
+
+                $id = filter_var(ltrim($part, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+                if ($id !== false) {
+                    $ids[$id] = $id;
+                }
             }
         }
 
