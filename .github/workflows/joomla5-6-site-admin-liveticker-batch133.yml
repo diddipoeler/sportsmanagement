@@ -89,9 +89,9 @@ jobs:
           grep -Fq 'SportsManagement native administrator Playgrounds view could not be loaded.' "$admin_bridge"
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewPlaygrounds')" "$admin_bridge"
 
-          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"
+          grep -Fq "if (!\$app->isClient('site'))" "$dispatcher"
           grep -Fq 'SportsManagement Liveticker requires the Joomla site application.' "$dispatcher"
-          grep -Fq "getData(\$data['params'], \$data['module'], \$app)" "$dispatcher"
+          grep -Fq "getData(\$data['params'], \$data['module'], \$app, \$database)" "$dispatcher"
 
           grep -Fq '<version>5.6.0</version>' "$manifest"
           grep -Fq 'type="extensionversion" version="5.6.0"' "$manifest"
