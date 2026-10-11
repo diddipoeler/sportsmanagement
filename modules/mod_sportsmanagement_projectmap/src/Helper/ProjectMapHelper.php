@@ -244,12 +244,45 @@ final class ProjectMapHelper
 
     private function normaliseSeasonIds($seasonIds): array
     {
-        if (!is_array($seasonIds)) {
-            $seasonIds = preg_split('/\s*,\s*/', trim((string) $seasonIds), -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        if (is_int($seasonIds) || is_string($seasonIds)) {
+            $seasonIds = [$seasonIds];
         }
 
-        $seasonIds = array_values(array_unique(array_filter(array_map('intval', $seasonIds), static fn (int $id): bool => $id > 0)));
+        if (!is_array($seasonIds)) {
+            return [];
+        }
 
-        return $seasonIds;
+        $ids = [];
+
+        foreach ($seasonIds as $entry) {
+            if (!is_int($entry) && !is_string($entry)) {
+                continue;
+            }
+
+            $values = is_int($entry)
+                ? [$entry]
+                : (preg_split('/[\s,;]+/', $entry, -1, PREG_SPLIT_NO_EMPTY) ?: []);
+
+            foreach ($values as $value) {
+                if (is_int($value)) {
+                    if ($value > 0) {
+                        $ids[$value] = $value;
+                    }
+                    continue;
+                }
+
+                if (!preg_match('/^[1-9][0-9]*$/D', $value)) {
+                    continue;
+                }
+
+                $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+                if ($id !== false) {
+                    $ids[$id] = $id;
+                }
+            }
+        }
+
+        return array_values($ids);
     }
 }
