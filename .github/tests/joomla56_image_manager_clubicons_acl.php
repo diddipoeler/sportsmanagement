@@ -127,6 +127,42 @@ namespace {
         throw new \RuntimeException('Image manager ignored invalid CSRF token.');
     }
 
+    $remoteUrl = new \ReflectionMethod($controller, 'validateRemoteImageUrl');
+    $remoteCases = [
+        ['https://1.1.1.1/team.png', true],
+        ['http://8.8.8.8/team.jpg', true],
+        ['https://1.1.1.1:443/team.jpg', true],
+        ['http://127.0.0.1/team.png', false],
+        ['http://10.10.0.2/image.png', false],
+        ['http://172.16.1.1/image.png', false],
+        ['http://192.168.1.1/image.png', false],
+        ['http://169.254.169.254/latest/meta-data', false],
+        ['http://100.100.100.100/image.png', false],
+        ['http://198.18.0.1/image.png', false],
+        ['http://[::1]/image.png', false],
+        ['https://localhost/logo.png', false],
+        ['https://service.internal/logo.png', false],
+        ['https://domain.home.arpa/image.png', false],
+        ['https://1.1.1.1:8443/image.png', false],
+        ['http://1.1.1.1:8080/image.png', false],
+        ['https://user:secret@1.1.1.1/image.png', false],
+        ['file:///etc/passwd', false],
+        ['https://1.1.1.1\\@127.0.0.1/image.png', false],
+        ["https://1.1.1.1/\r\nInjected", false],
+    ];
+
+    foreach ($remoteCases as [$provided, $expected]) {
+        if (($remoteUrl->invoke($controller, $provided) !== null) !== $expected) {
+            throw new \RuntimeException('Image manager accepted an unsafe remote HTTP target: ' . $provided);
+        }
+    }
+
+    $imageSource = file_get_contents($root . '/site/src/Controller/ImagehandlerController.php');
+    if (!str_contains($imageSource, "['follow_location' => false]")
+        || !str_contains($imageSource, "['Curl', 'Stream']")) {
+        throw new \RuntimeException('Remote image HTTP client may follow redirects into private networks.');
+    }
+
     $clubicons = new \Diddipoeler\Module\SportsManagementClubicons\Site\Helper\ClubiconsHelper();
     $firstId = new \ReflectionMethod($clubicons, 'firstId');
 
