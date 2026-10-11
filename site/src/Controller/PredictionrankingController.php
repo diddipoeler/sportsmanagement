@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Controller;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\PredictionRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionrankingModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
 
@@ -20,8 +21,8 @@ final class PredictionrankingController extends BaseController
 {
     public function selectprojectround(): void
     {
-        if (!Session::checkToken()) {
-            throw new \RuntimeException('Invalid token.', 403);
+        if (!Session::checkToken('post')) {
+            throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
         $model = $this->getModel('Predictionranking');

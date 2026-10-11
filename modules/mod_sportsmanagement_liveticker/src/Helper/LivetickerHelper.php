@@ -41,7 +41,7 @@ final class LivetickerHelper
 
         return [
             'listHtml' => $this->buildListHtml($list, $commentary, $params, $app),
-            'updateTimeout' => max(1, (int) $params->get('update_timeout', 10)),
+            'updateTimeout' => min(3600, max(1, (int) $params->get('update_timeout', 10))),
             'cssFile' => basename((string) $params->get('use_css', 'simple.css')),
             'moduleId' => (int) ($module->id ?? 0),
         ];
@@ -144,7 +144,10 @@ final class LivetickerHelper
     ): array {
         $now = $this->getNow($app);
         $timestamp = $now->getTimestamp();
-        $playtime = max(0, (int) $params->get('playtime', 105));
+        // Legacy parameters are not always constrained by their XML form limits.
+        // Bound the query window to one day and the row count to 100 matches.
+        $playtime = min(1440, max(0, (int) $params->get('playtime', 105)));
+        $limit = min(100, max(1, $limit));
         $timestampFrom = $timestamp - ($playtime * 60);
         $timestampTo = $timestamp + ($playtime * 60);
 
@@ -242,7 +245,7 @@ final class LivetickerHelper
             ->bind(':timestampFrom', $timestampFrom, ParameterType::INTEGER)
             ->bind(':timestampTo', $timestampTo, ParameterType::INTEGER);
 
-        $db->setQuery($query, 0, max(1, $limit));
+        $db->setQuery($query, 0, $limit);
 
         try {
             return $db->loadObjectList() ?: [];

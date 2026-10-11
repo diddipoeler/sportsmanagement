@@ -28,7 +28,18 @@ final class PredictionmembersController extends SportsManagementAdminController
 
         $input = $this->app->getInput();
         $predictionId = $input->post->getInt('cid');
-        $memberIds = (array) $input->post->get('prediction_members', [], 'array');
+        $memberIds = $this->normaliseIds((array) $input->post->get('prediction_members', [], 'array'));
+
+        if ($predictionId <= 0 || $memberIds === []) {
+            $this->setRedirect(
+                $this->listUrl($predictionId),
+                Text::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'),
+                'warning'
+            );
+
+            return;
+        }
+
         $model = $this->getModel();
         $errors = $model !== false ? $model->save_memberlist($memberIds, $predictionId) : 1;
 

@@ -63,7 +63,8 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $memberIds = $this->normaliseIds($memberIds);
 
         if ($predictionId <= 0 || !$memberIds) {
-            return 0;
+            // A malformed administrator write must not be reported as successful.
+            return 1;
         }
 
         $db = $this->getDatabase();
