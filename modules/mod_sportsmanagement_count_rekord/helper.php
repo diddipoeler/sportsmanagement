@@ -64,8 +64,11 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
 
         private static function joomlaDatabase(): DatabaseInterface
         {
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement CountRekord database service is unavailable.', 500);
+            }
 
             return $database;
         }
