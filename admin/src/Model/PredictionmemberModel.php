@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\ParameterType;
@@ -330,7 +331,7 @@ final class PredictionmemberModel extends SportsManagementAdminModel
             return false;
         }
 
-        // Scope the write and the subsequent approval mails to one prediction game.
+        // Reject foreign member IDs, but treat a valid no-op approval as success.
         $ids = $this->predictionMemberIdsForGame($ids, $predictionId);
         if (!$ids) {
             return false;
@@ -340,13 +341,22 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $userId = (int) $app->getIdentity()->id;
         $approved = (int) $publish === 1 ? 1 : 0;
+
+        // Only notify members whose state can actually change. Other users'
+        // checkouts and already-approved members must not receive false mail.
+        $ids = $this->predictionMembersEligibleForApproval($ids, $predictionId, $approved, $userId);
+        if (!$ids) {
+            return true;
+        }
         $query = $db->createQuery()
             ->update($db->quoteName('#__sportsmanagement_prediction_member'))
             ->set($db->quoteName('approved') . ' = :approved')
             ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
             ->where($db->quoteName('prediction_id') . ' = :publishPredictionId')
             ->where('(' . $db->quoteName('checked_out') . ' = 0 OR ' . $db->quoteName('checked_out') . ' = :publishUserId)')
+            ->where($db->quoteName('approved') . ' <> :previousApprovalState')
             ->bind(':approved', $approved, ParameterType::INTEGER)
+            ->bind(':previousApprovalState', $approved, ParameterType::INTEGER)
             ->bind(':publishPredictionId', $predictionId, ParameterType::INTEGER)
             ->bind(':publishUserId', $userId, ParameterType::INTEGER);
 
@@ -468,7 +478,9 @@ final class PredictionmemberModel extends SportsManagementAdminModel
                 ));
                 $mailer->send();
             } catch (\Throwable $e) {
-                $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+                // Mail transport details can contain personal data or credentials.
+                Log::add(__METHOD__ . ': mail delivery failed (' . get_class($e) . ')', Log::ERROR, 'jsmerror');
+                $this->administratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             }
         }
     }
@@ -791,6 +803,37 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         $title = Text::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $teamName);
 
         return HTMLHelper::_('image', Uri::root() . ltrim($path, '/'), $title, ['title' => $title, 'width' => 30]);
+    }
+
+    /**
+     * Filter by game, desired state and checkout owner before writing and notifying.
+     * Returned IDs must correspond to actual state transitions.
+     */
+    private function predictionMembersEligibleForApproval(
+        array $ids,
+        int $predictionId,
+        int $approved,
+        int $userId
+    ): array {
+        if (!$ids || $predictionId <= 0) {
+            return [];
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_prediction_member'))
+            ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
+            ->where($db->quoteName('prediction_id') . ' = :eligiblePredictionId')
+            ->where('(' . $db->quoteName('checked_out') . ' = 0 OR ' . $db->quoteName('checked_out') . ' = :eligibleUserId)')
+            ->where($db->quoteName('approved') . ' <> :eligibleState')
+            ->bind(':eligiblePredictionId', $predictionId, ParameterType::INTEGER)
+            ->bind(':eligibleUserId', $userId, ParameterType::INTEGER)
+            ->bind(':eligibleState', $approved, ParameterType::INTEGER);
+
+        $db->setQuery($query);
+
+        return $this->normaliseIds($db->loadColumn() ?: []);
     }
 
     /** Select only members of the requested prediction game (also for outbound mail). */
