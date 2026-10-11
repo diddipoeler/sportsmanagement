@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Model\AjaxModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
 /** Native JSON endpoints used by the Joomla 5/6 frontend. */
@@ -262,20 +263,24 @@ final class AjaxController extends BaseController
 
     private function ajaxErrorMessage(string $stage, \Throwable $error): string
     {
-        $message = trim((string) preg_replace('/\s+/', ' ', $error->getMessage()));
+        // Keep the existing native/fallback diagnostic stages on the server;
+        // public AJAX responses must never contain database error messages.
+        Log::add(
+            __METHOD__ . ' (' . $stage . '): ' . $error->getMessage(),
+            Log::ERROR,
+            'jsmerror'
+        );
 
-        if (strlen($message) > 180) {
-            $message = substr($message, 0, 177) . '...';
-        }
-
-        return $stage . ': ' . get_debug_type($error) . ($message !== '' ? ' - ' . $message : '');
+        return $stage;
     }
 
     private function sendAjaxError(string $task, array $errors): void
     {
+        // The endpoint is read-only and retains its existing JSON response
+        // structure for legacy JavaScript, without exposing exception details.
         $this->sendJson([
             'success' => false,
-            'message' => $task . ' failed: ' . implode(' | ', $errors),
+            'message' => 'SportsManagement options could not be loaded.',
         ]);
     }
 
