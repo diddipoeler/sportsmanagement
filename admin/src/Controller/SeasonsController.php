@@ -22,6 +22,8 @@ final class SeasonsController extends SportsManagementAdminController
 
     public function applypersons(): void
     {
+        $this->assertWritePermission();
+
         $post = $this->input->post->getArray();
         $model = $this->getModel();
         $message = (string) $model->saveshortpersons();
@@ -40,6 +42,8 @@ final class SeasonsController extends SportsManagementAdminController
 
     public function applyteams(): void
     {
+        $this->assertWritePermission();
+
         $post = $this->input->post->getArray();
         $model = $this->getModel();
         $model->saveshortteams();
