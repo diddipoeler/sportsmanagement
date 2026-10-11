@@ -32,6 +32,16 @@ jobs:
           php -l site/src/Controller/EditmatchController.php
           php -l site/src/Controller/EditclubController.php
           php -l site/src/Model/EditclubModel.php
+          php -l site/src/Model/EditpersonModel.php
+          php -l site/src/Model/EditteamModel.php
+          php -l admin/src/Controller/SportsManagementAdminController.php
+          php -l admin/src/Controller/ClubsController.php
+          php -l admin/src/Controller/TeamsController.php
+          php -l admin/src/Controller/LeaguesController.php
+          php -l admin/src/Controller/AgegroupsController.php
+          php -l admin/src/Controller/SeasonsController.php
+          php -l modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          php -l .github/tests/joomla56_editor_admin_module_contract.php
           php -l admin/src/Controller/AjaxController.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php
@@ -45,3 +55,6 @@ jobs:
 
       - name: Check frontend club date parsing and model save contract
         run: php .github/tests/joomla56_club_save_contract.php
+
+      - name: Check site editor values, administrator write guards and birthday paths
+        run: php .github/tests/joomla56_editor_admin_module_contract.php
