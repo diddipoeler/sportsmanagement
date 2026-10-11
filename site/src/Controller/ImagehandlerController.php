@@ -31,6 +31,8 @@ final class ImagehandlerController extends BaseController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
+        $this->assertImagePermission('upload');
+
         $app = $this->app;
         $input = $this->input;
         $type = $input->getCmd('type', '');
@@ -84,6 +86,8 @@ final class ImagehandlerController extends BaseController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
+        $this->assertImagePermission('delete');
+
         $input = $this->input;
         $type = $input->getCmd('type', '');
         $folder = ImageSelectHelper::getFolder($type);
@@ -123,6 +127,31 @@ final class ImagehandlerController extends BaseController
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=imagehandler&type=' . rawurlencode($type) . '&tmpl=component'
         );
+    }
+
+    /**
+     * CSRF protection is not authorization. Only users with component editing
+     * rights may upload images, and removing files requires delete rights.
+     */
+    private function assertImagePermission(string $action): void
+    {
+        $identity = $this->app->getIdentity();
+
+        if (!$identity || (int) ($identity->id ?? 0) <= 0) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        $asset = 'com_sportsmanagement';
+        $allowed = $action === 'delete'
+            ? $identity->authorise('core.delete', $asset)
+            : ($action === 'upload' && (
+                $identity->authorise('core.create', $asset)
+                || $identity->authorise('core.edit', $asset)
+            ));
+
+        if (!$allowed) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
     }
 
     private function imageBaseDirectory(string $folder, bool $create = true): ?string
