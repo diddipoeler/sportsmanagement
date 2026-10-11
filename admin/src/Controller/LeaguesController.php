@@ -17,6 +17,8 @@ final class LeaguesController extends SportsManagementAdminController
 {
     public function saveshort(): void
     {
+        $this->assertWritePermission();
+
         $model = $this->getModel();
 
         if (!$model->saveshort()) {
