@@ -168,6 +168,12 @@ final class ResultsAccessModel extends SportsManagementProjectModel
             return false;
         }
 
+        // A project editor must never use a match ID from a different project.
+        // Validate *all* selected matches, not just the editor's component ACL.
+        if (!$this->allMatchesBelongToProject($matchIds)) {
+            return false;
+        }
+
         if ($this->isAllowed((int) ($project->editorgroup ?? 0))) {
             return true;
         }
@@ -181,4 +187,37 @@ final class ResultsAccessModel extends SportsManagementProjectModel
 
         return true;
     }
+    /**
+     * The selected matches must all be assigned to the requested project's rounds.
+     * A single foreign or nonexistent match ID invalidates the entire edit request.
+     */
+    private function allMatchesBelongToProject(array $matchIds): bool
+    {
+        if ($this->projectId <= 0 || $matchIds === []) {
+            return false;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('COUNT(DISTINCT ' . $db->quoteName('m.id') . ')')
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+            )
+            ->whereIn($db->quoteName('m.id'), $matchIds, ParameterType::INTEGER)
+            ->where($db->quoteName('r.project_id') . ' = :selectedProjectId')
+            ->bind(':selectedProjectId', $this->projectId, ParameterType::INTEGER);
+
+        try {
+            $db->setQuery($query);
+
+            return (int) $db->loadResult() === count($matchIds);
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+
 }

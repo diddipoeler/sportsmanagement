@@ -117,10 +117,12 @@ final class LivetickerHelper
             ->from($db->quoteName('#__sportsmanagement_match_commentary'))
             ->whereIn($db->quoteName('match_id'), array_values($matchIds), ParameterType::INTEGER)
             ->order([
-                $db->quoteName('match_id') . ' ASC',
                 $db->quoteName('event_time') . ' DESC',
+                $db->quoteName('match_id') . ' ASC',
             ]);
-        $db->setQuery($query);
+        // The Ajax endpoint may refresh frequently: do not fetch the full
+        // lifetime commentary history for every rendered match.
+        $db->setQuery($query, 0, 1000);
 
         $matches = [];
 
