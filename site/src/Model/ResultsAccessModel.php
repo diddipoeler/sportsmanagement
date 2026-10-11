@@ -154,10 +154,25 @@ final class ResultsAccessModel extends SportsManagementProjectModel
      */
     public function canEditMatches(array $matchIds): bool
     {
-        $matchIds = array_values(array_unique(array_filter(
-            array_map('intval', $matchIds),
-            static fn (int $id): bool => $id > 0
-        )));
+        $validIds = [];
+
+        foreach ($matchIds as $value) {
+            // Fail the whole request closed rather than silently treating
+            // "123suffix" or a nested array as a different match ID.
+            if (!is_int($value) && (!is_string($value) || !preg_match('/^[1-9][0-9]*$/D', $value))) {
+                return false;
+            }
+
+            $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id === false) {
+                return false;
+            }
+
+            $validIds[$id] = $id;
+        }
+
+        $matchIds = array_values($validIds);
 
         if (!$matchIds) {
             return false;
