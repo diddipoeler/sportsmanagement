@@ -44,7 +44,7 @@ final class ProjectMapHelper
 
         $query = $db->createQuery()
             ->select([
-                'MAX(' . $db->quoteName('pro.id') . ') AS ' . $db->quoteName('id'),
+                $db->quoteName('pro.id'),
                 $db->quoteName('pro.name'),
                 "CONCAT_WS(':', " . $db->quoteName('pro.id') . ', ' . $db->quoteName('pro.alias') . ') AS ' . $db->quoteName('project_slug'),
                 $db->quoteName('le.name', 'liganame'),
@@ -65,12 +65,32 @@ final class ProjectMapHelper
             ->where($db->quoteName('le.published_act_season') . ' = 1')
             ->where('(' . $db->quoteName('le.league_level') . ' = 1 OR ' . $db->quoteName('le.league_level') . ' = 21)')
             ->whereIn($db->quoteName('pro.season_id'), $seasonIds, ParameterType::INTEGER)
-            ->group($db->quoteName('le.country'))
-            ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.name') . ' ASC');
+            ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.id') . ' DESC');
 
         $db->setQuery($query);
 
-        return $db->loadObjectList() ?: [];
+        // Grouping only by country while selecting unrelated project and league
+        // columns is rejected by MySQL ONLY_FULL_GROUP_BY. Choose the highest
+        // project ID for each country in PHP, keeping all selected columns from
+        // the same project row instead of mixing MAX(id) with another row's name.
+        $projectsByCountry = [];
+
+        foreach ($db->loadObjectList() ?: [] as $project) {
+            $country = trim((string) ($project->country ?? ''));
+
+            if ($country === '') {
+                continue;
+            }
+
+            if (!isset($projectsByCountry[$country])
+                || (int) ($project->id ?? 0) > (int) ($projectsByCountry[$country]->id ?? 0)) {
+                $projectsByCountry[$country] = $project;
+            }
+        }
+
+        ksort($projectsByCountry);
+
+        return array_values($projectsByCountry);
     }
 
     public function getMainSettings(): array
