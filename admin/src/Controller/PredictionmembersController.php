@@ -24,7 +24,7 @@ final class PredictionmembersController extends SportsManagementAdminController
 
     public function save_memberlist(): void
     {
-        $this->checkToken();
+        $this->assertWritePermission();
 
         $input = $this->app->getInput();
         $predictionId = $input->post->getInt('cid');
@@ -51,7 +51,7 @@ final class PredictionmembersController extends SportsManagementAdminController
 
     public function reminder(): void
     {
-        $this->checkToken();
+        $this->assertWritePermission();
 
         $input = $this->app->getInput();
         $ids = $this->normaliseIds((array) $input->post->get('cid', [], 'array'));
@@ -88,7 +88,7 @@ final class PredictionmembersController extends SportsManagementAdminController
 
     public function remove(): void
     {
-        $this->checkToken();
+        $this->assertWritePermission('core.delete');
 
         $input = $this->app->getInput();
         $ids = $this->normaliseIds((array) $input->post->get('cid', [], 'array'));
@@ -120,7 +120,7 @@ final class PredictionmembersController extends SportsManagementAdminController
 
     private function setApprovalState(int $state): void
     {
-        $this->checkToken();
+        $this->assertWritePermission('core.edit.state');
 
         $input = $this->app->getInput();
         $ids = $this->normaliseIds((array) $input->post->get('cid', [], 'array'));
