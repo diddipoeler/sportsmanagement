@@ -41,7 +41,7 @@ namespace Joomla\CMS\MVC\Controller {
             $this->app = $app;
             $this->input = $input;
         }
-        public function getModel($name = ''): mixed
+        public function getModel($name = '', $prefix = '', $config = [])
         {
             $this->modelCalls++;
             return $name === 'Editmatch' ? $this->editor : null;
