@@ -29,6 +29,10 @@ abstract class QuickIconHelper
             ->select($database->quoteName('position'))
             ->from($database->quoteName('#__modules'))
             ->where($database->quoteName('module') . ' = ' . $database->quote('mod_sportsmanagement_quickicon'))
+            // A frontend copy or unpublished legacy instance must not decide
+            // where the active administrator quick icons are rendered.
+            ->where($database->quoteName('client_id') . ' = 1')
+            ->where($database->quoteName('published') . ' = 1')
             ->order($database->quoteName('id') . ' ASC');
         $database->setQuery($query, 0, 1);
 
