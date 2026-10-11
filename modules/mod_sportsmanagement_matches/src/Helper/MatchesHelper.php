@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -129,7 +130,9 @@ final class MatchesHelper
 
             return ['matches' => $rows, 'legacy_update_requested' => (bool) $params->get('ishd_update', 0)];
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            // Database errors must be logged server-side, not exposed to site visitors.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage('SportsManagement matches could not be loaded.', 'error');
             return ['matches' => [], 'legacy_update_requested' => (bool) $params->get('ishd_update', 0)];
         }
     }
