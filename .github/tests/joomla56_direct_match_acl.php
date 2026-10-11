@@ -257,7 +257,7 @@ namespace {
         $controller->{$action}();
     }
     if ($model->writes !== 6 || $write::$calls !== 2) {
-        throw new \RuntimeException('Authorized match editors did not reach expected writers.');
+        throw new \RuntimeException('Authorized match editors reached ' . $model->writes . ' model writes and ' . $write::$calls . ' individual writes; expected 6 and 2.');
     }
 
     echo "Joomla 5/6 match editing POST, project ACL and valid writes OK\n";
