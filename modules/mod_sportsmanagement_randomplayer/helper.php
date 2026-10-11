@@ -57,9 +57,6 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
 
             $database = self::joomlaDatabase($database);
 
-            // Honour the component's external-database selection when enabled.
-            $database = SportsManagementDatabaseResolver::resolve($database);
-
             return (new RandomPlayerHelper())->getData($registry, $database);
         }
         private static function siteApplication(): CMSApplicationInterface
@@ -73,8 +70,11 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement RandomPlayer database service is unavailable.', 500);
+            }
 
             return $database;
         }
