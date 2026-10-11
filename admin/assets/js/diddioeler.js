@@ -1,3 +1,26 @@
+// Joomla 5/6 match timeline writes: move parameters and the session token into POST.
+function jsmMatchPostData(querystring) {
+    const form = document.querySelector('form#adminform, form#adminForm');
+    const tokenName = window.Joomla && typeof window.Joomla.getOptions === 'function'
+        ? window.Joomla.getOptions('csrf.token')
+        : null;
+    const tokenField = form
+        ? Array.from(form.querySelectorAll('input[type="hidden"][name]')).find((field) =>
+            field.value === '1' && /^[a-f0-9]{32}$/i.test(field.name)
+            && (!tokenName || tokenName === field.name)
+        )
+        : null;
+
+    if (!tokenField) {
+        throw new Error('Joomla CSRF form token is missing.');
+    }
+
+    const payload = new URLSearchParams((querystring || '').replace(/^&/, ''));
+    payload.set(tokenField.name, tokenField.value);
+
+    return payload.toString();
+}
+
 // ajax save substitution
 jQuery(document).ready(function($){
 	
@@ -80,7 +103,8 @@ if ( jQuery("#event_sum").val() )
 {
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
+  url: url,
+  data: jsmMatchPostData(querystring),
   dataType:"json",
   success: eventsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
@@ -160,7 +184,8 @@ var querystring = '&event_id=' + eventid;
 
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
- url: url + querystring, // Url of the page where to post data and receive response 
+ url: url,
+  data: jsmMatchPostData(querystring),
  dataType:"json",
  success: eventdeleted,   //function to be called on successful reply from server
  error: function (xhr, ajaxOptions, thrownError) 
@@ -208,7 +233,8 @@ var querystring = '&type=' + ctype + '&event_time=' + time + '&matchid='
 
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
+  url: url,
+  data: jsmMatchPostData(querystring),
   dataType:"json",
   success: commentsaved, //function to be called on successful reply from server
   error: function (xhr, ajaxOptions, thrownError) {
@@ -259,7 +285,8 @@ var querystring = '&event_id=' + commentaryid;
 
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
- url: url + querystring, // Url of the page where to post data and receive response 
+ url: url,
+  data: jsmMatchPostData(querystring),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server
  error: function (xhr, ajaxOptions, thrownError) 
@@ -282,7 +309,8 @@ var querystring = '&event_id=' + eventid;
 
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
- url: url + querystring, // Url of the page where to post data and receive response 
+ url: url,
+  data: jsmMatchPostData(querystring),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server
  error: function (xhr, ajaxOptions, thrownError) 
@@ -332,7 +360,8 @@ var querystring = '&in=' + playerin + '&out=' + playerout
         
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
-  url: url + querystring, // Url of the page where to post data and receive response 
+  url: url,
+  data: jsmMatchPostData(querystring),
   //data: data, // data to be post
   dataType:"json",
   success: substsaved //function to be called on successful reply from server
@@ -383,11 +412,9 @@ var querystring = '&substid=' + substid;
 
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
- url: url + querystring, // Url of the page where to post data and receive response 
- data: {
-            'token': '1' // <-- THIS IS IMPORTANT
-            
-        }, // data to be post
+ url: url,
+  data: jsmMatchPostData(querystring),
+ 
  //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: substdeleted,   //function to be called on successful reply from server
@@ -413,11 +440,9 @@ var querystring = '&substid=' + substid;
 
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
- url: url + querystring, // Url of the page where to post data and receive response 
- data: {
-            'token': '1' // <-- THIS IS IMPORTANT
-            
-        }, // data to be post
+ url: url,
+  data: jsmMatchPostData(querystring),
+ 
  //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: substdeleted,   //function to be called on successful reply from server
