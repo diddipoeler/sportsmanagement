@@ -180,19 +180,74 @@ final class MatchMutationService
         $db = $this->sportsDatabase;
 
         try {
-            $query = $db->createQuery()
-                ->delete($db->quoteName('#__sportsmanagement_match_player'))
-                ->whereIn(
-                    $db->quoteName('id'),
-                    [$substitutionId, $substitutionId + 1],
-                    ParameterType::INTEGER
-                );
-            $db->setQuery($query);
-            $db->execute();
+            // Deleting id + 1 is unsafe: another edit may have inserted a
+            // different match player's row between the two substitutions.
+            $incomingQuery = $db->createQuery()
+                ->select([
+                    $db->quoteName('match_id'),
+                    $db->quoteName('in_for'),
+                    $db->quoteName('in_out_time'),
+                    $db->quoteName('project_position_id'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_match_player'))
+                ->where($db->quoteName('id') . ' = :substitutionId')
+                ->where($db->quoteName('came_in') . ' = ' . self::MATCH_ROSTER_SUBSTITUTE_IN)
+                ->bind(':substitutionId', $substitutionId, ParameterType::INTEGER);
+            $db->setQuery($incomingQuery, 0, 1);
+            $incoming = $db->loadObject();
+
+            if (!$incoming) {
+                return false;
+            }
+
+            $ids = [$substitutionId];
+            $matchId = (int) ($incoming->match_id ?? 0);
+            $outPlayerId = (int) ($incoming->in_for ?? 0);
+            $positionId = (int) ($incoming->project_position_id ?? 0);
+            $substitutionTime = (string) ($incoming->in_out_time ?? '');
+
+            if ($matchId > 0 && $outPlayerId > 0 && $positionId > 0 && $substitutionTime !== '') {
+                $outgoingQuery = $db->createQuery()
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__sportsmanagement_match_player'))
+                    ->where($db->quoteName('match_id') . ' = :matchId')
+                    ->where($db->quoteName('teamplayer_id') . ' = :outPlayerId')
+                    ->where($db->quoteName('project_position_id') . ' = :positionId')
+                    ->where($db->quoteName('in_out_time') . ' = :substitutionTime')
+                    ->where($db->quoteName('came_in') . ' = ' . self::MATCH_ROSTER_SUBSTITUTE_OUT)
+                    ->bind(':matchId', $matchId, ParameterType::INTEGER)
+                    ->bind(':outPlayerId', $outPlayerId, ParameterType::INTEGER)
+                    ->bind(':positionId', $positionId, ParameterType::INTEGER)
+                    ->bind(':substitutionTime', $substitutionTime, ParameterType::STRING);
+                $db->setQuery($outgoingQuery, 0, 2);
+                $outgoingIds = array_values(array_unique(array_map('intval', $db->loadColumn() ?: [])));
+
+                // Ambiguous legacy substitutions must be resolved manually.
+                if (count($outgoingIds) > 1) {
+                    return false;
+                }
+
+                if ($outgoingIds !== []) {
+                    $ids[] = $outgoingIds[0];
+                }
+            }
+
+            $db->transactionStart();
+            try {
+                $query = $db->createQuery()
+                    ->delete($db->quoteName('#__sportsmanagement_match_player'))
+                    ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER);
+                $db->setQuery($query);
+                $db->execute();
+                $db->transactionCommit();
+            } catch (\Throwable $error) {
+                $db->transactionRollback();
+                throw $error;
+            }
 
             return true;
-        } catch (\Throwable $e) {
-            $this->logFailure($e);
+        } catch (\Throwable $error) {
+            $this->logFailure($error);
             return false;
         }
     }
