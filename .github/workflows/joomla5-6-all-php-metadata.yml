@@ -32,6 +32,9 @@ jobs:
           php -l site/src/Controller/EditmatchController.php
           php -l site/src/Controller/EditclubController.php
           php -l site/src/Model/EditclubModel.php
+          php -l site/src/Controller/AjaxController.php
+          php -l admin/src/Controller/DivisionsController.php
+          php -l .github/tests/joomla56_ajax_divisions_birthday_contract.php
           php -l site/src/Model/EditpersonModel.php
           php -l site/src/Model/EditteamModel.php
           php -l admin/src/Controller/SportsManagementAdminController.php
@@ -58,3 +61,6 @@ jobs:
 
       - name: Check site editor values, administrator write guards and birthday paths
         run: php .github/tests/joomla56_editor_admin_module_contract.php
+
+      - name: Check site AJAX, division write access and birthday selector IDs
+        run: php .github/tests/joomla56_ajax_divisions_birthday_contract.php
