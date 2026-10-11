@@ -27,8 +27,12 @@ class ClubsController extends SportsManagementAdminController
      */
     public function saveshort(): void
     {
+        $this->assertWritePermission();
+
         $model = $this->getModel();
-        $model->saveshort();
+        if (!$model->saveshort()) {
+            $this->app->enqueueMessage('Club inline changes could not be saved completely.', 'warning');
+        }
 
         $this->setRedirect(
             Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false)
