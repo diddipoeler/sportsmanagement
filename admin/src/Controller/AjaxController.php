@@ -375,7 +375,16 @@ final class AjaxController extends BaseController
 
         $app = $this->app;
         $app->getDocument()->setMimeEncoding('application/json');
-        echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
+
+        // Legacy option labels may contain invalid UTF-8; always send valid JSON.
+        echo json_encode(
+            $result,
+            JSON_UNESCAPED_UNICODE
+            | JSON_UNESCAPED_SLASHES
+            | JSON_INVALID_UTF8_SUBSTITUTE
+            | JSON_THROW_ON_ERROR
+        );
         $app->close();
     }
 }
