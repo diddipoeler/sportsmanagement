@@ -79,16 +79,35 @@
         url.searchParams.set('task', `matches.${action}`);
         url.searchParams.set('tmpl', 'component');
 
+        const form = document.querySelector('#editevents, #editlineup, #adminForm, form[data-editmatch-form]');
+        const tokenName = window.Joomla && typeof window.Joomla.getOptions === 'function'
+            ? window.Joomla.getOptions('csrf.token')
+            : null;
+        const tokenField = form
+            ? Array.from(form.querySelectorAll('input[type="hidden"][name]')).find((field) =>
+                field.value === '1' && /^[a-f0-9]{32}$/i.test(field.name)
+                && (!tokenName || tokenName === field.name)
+            )
+            : null;
+
+        if (!tokenField) {
+            throw new Error('Joomla CSRF form token is missing.');
+        }
+
+        const body = new URLSearchParams();
         Object.entries(params).forEach(([key, value]) => {
-            url.searchParams.set(key, value == null ? '' : String(value));
+            body.set(key, value == null ? '' : String(value));
         });
+        body.set(tokenField.name, tokenField.value);
 
         const response = await fetch(url.toString(), {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             },
+            body: body.toString(),
         });
 
         if (!response.ok) {
