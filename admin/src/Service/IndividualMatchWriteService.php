@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 \defined('_JEXEC') or die;
 
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Transactional writer for individual-match results used by the frontend match editor. */
 final class IndividualMatchWriteService
@@ -27,7 +28,10 @@ final class IndividualMatchWriteService
 
     public function saveShort(array $post, array $ids, int $modifiedBy, string $modified): bool
     {
-        $ids = array_values(array_filter(array_map('intval', $ids)));
+        $ids = array_values(array_unique(array_filter(
+            array_map('intval', $ids),
+            static fn (int $id): bool => $id > 0
+        )));
         $matchId = (int) ($post['match_id'] ?? 0);
         $projectId = (int) ($post['project_id'] ?? 0);
 
@@ -38,6 +42,19 @@ final class IndividualMatchWriteService
             // Legacy saveshort() silently did nothing when no single-match rows were selected.
             return true;
         }
+
+        // A valid parent match ID is not sufficient: cid[] contains IDs from
+        // match_single, and every selected row must belong to that parent.
+        // Verify the posted project against the actual match's round, too.
+        $match = $this->matchForProject($matchId, $projectId);
+        if (!$match || !$this->allSingleMatchesBelongToMatch($ids, $matchId)) {
+            return false;
+        }
+
+        // Team references are used to create score events. They must come
+        // from the persisted match, never from hidden frontend form inputs.
+        $post['projectteam1_id'] = (int) ($match->projectteam1_id ?? 0);
+        $post['projectteam2_id'] = (int) ($match->projectteam2_id ?? 0);
 
         $project = $this->projectConfig($projectId);
         if (!$project) {
@@ -96,7 +113,6 @@ final class IndividualMatchWriteService
                 'teamplayer1_id' => (int) ($post['teamplayer1_id' . $id] ?? 0),
                 'teamplayer2_id' => (int) ($post['teamplayer2_id' . $id] ?? 0),
                 'match_type' => (string) ($post['match_type' . $id] ?? ''),
-                'round_id' => (int) ($post['rid'] ?? 0),
                 'team1_result_split' => implode(';', $homeSplit),
                 'team2_result_split' => implode(';', $awaySplit),
             ];
@@ -211,10 +227,8 @@ final class IndividualMatchWriteService
                 'match_number' => (string) ($post['match_number' . $id] ?? ''),
                 'match_type' => (string) ($post['match_type' . $id] ?? ''),
                 'crowd' => (int) ($post['crowd' . $id] ?? 0),
-                'round_id' => (int) ($post['rid'] ?? 0),
-                'division_id' => (int) ($post['division_id'] ?? 0),
-                'projectteam1_id' => $projectTeam1Id,
-                'projectteam2_id' => $projectTeam2Id,
+                // Editing results must not reassign an existing single match
+                // to another round, division or project team.
                 'teamplayer1_id' => $player1,
                 'teamplayer2_id' => $player2,
                 'tt_startpoints_teamplayer1_id' => $start1,
@@ -440,6 +454,51 @@ final class IndividualMatchWriteService
             'event_type_id' => $eventTypeId,
             'event_sum' => $value,
         ]);
+    }
+
+    /** Ensure this parent match belongs to the selected project. */
+    private function matchForProject(int $matchId, int $projectId): ?object
+    {
+        $query = $this->db->createQuery()
+            ->select([
+                $this->db->quoteName('m.projectteam1_id'),
+                $this->db->quoteName('m.projectteam2_id'),
+            ])
+            ->from($this->db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join(
+                'INNER',
+                $this->db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $this->db->quoteName('r.id')
+                . ' = ' . $this->db->quoteName('m.round_id')
+            )
+            ->where($this->db->quoteName('m.id') . ' = :singleParentMatchId')
+            ->where($this->db->quoteName('r.project_id') . ' = :singleParentProjectId')
+            ->bind(':singleParentMatchId', $matchId, ParameterType::INTEGER)
+            ->bind(':singleParentProjectId', $projectId, ParameterType::INTEGER);
+        $this->db->setQuery($query, 0, 1);
+
+        return $this->db->loadObject() ?: null;
+    }
+
+    /**
+     * Reject the entire batch if even one selected single-match row is
+     * missing or belongs to a different match.
+     */
+    private function allSingleMatchesBelongToMatch(array $ids, int $matchId): bool
+    {
+        if (!$ids || $matchId <= 0) {
+            return false;
+        }
+
+        $query = $this->db->createQuery()
+            ->select('COUNT(DISTINCT ' . $this->db->quoteName('ms.id') . ')')
+            ->from($this->db->quoteName('#__sportsmanagement_match_single', 'ms'))
+            ->whereIn($this->db->quoteName('ms.id'), $ids, ParameterType::INTEGER)
+            ->where($this->db->quoteName('ms.match_id') . ' = :singleParentId')
+            ->bind(':singleParentId', $matchId, ParameterType::INTEGER);
+        $this->db->setQuery($query);
+
+        return (int) $this->db->loadResult() === count($ids);
     }
 
     private function projectConfig(int $projectId): ?object
