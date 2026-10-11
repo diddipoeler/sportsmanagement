@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Transactional writes for match substitutions, events and live commentary. */
 final class MatchTimelineWriteService
@@ -73,11 +74,63 @@ final class MatchTimelineWriteService
             return false;
         }
 
-        return $this->transaction(function () use ($substitutionId): bool {
+        // An adjacent auto-increment ID may belong to another match. Resolve
+        // the outgoing substitute by its recorded match, player and time.
+        $incomingQuery = $this->db->createQuery()
+            ->select([
+                $this->db->quoteName('match_id'),
+                $this->db->quoteName('in_for'),
+                $this->db->quoteName('in_out_time'),
+                $this->db->quoteName('project_position_id'),
+            ])
+            ->from($this->db->quoteName('#__sportsmanagement_match_player'))
+            ->where($this->db->quoteName('id') . ' = :substitutionId')
+            ->where($this->db->quoteName('came_in') . ' = ' . self::MATCH_ROSTER_SUBSTITUTE_IN)
+            ->bind(':substitutionId', $substitutionId, ParameterType::INTEGER);
+        $this->db->setQuery($incomingQuery, 0, 1);
+        $incoming = $this->db->loadObject();
+
+        if (!$incoming) {
+            return false;
+        }
+
+        $ids = [$substitutionId];
+        $matchId = (int) ($incoming->match_id ?? 0);
+        $outPlayerId = (int) ($incoming->in_for ?? 0);
+        $positionId = (int) ($incoming->project_position_id ?? 0);
+        $substitutionTime = (string) ($incoming->in_out_time ?? '');
+
+        if ($matchId > 0 && $outPlayerId > 0 && $positionId > 0 && $substitutionTime !== '') {
+            $outgoingQuery = $this->db->createQuery()
+                ->select($this->db->quoteName('id'))
+                ->from($this->db->quoteName('#__sportsmanagement_match_player'))
+                ->where($this->db->quoteName('match_id') . ' = :matchId')
+                ->where($this->db->quoteName('teamplayer_id') . ' = :outPlayerId')
+                ->where($this->db->quoteName('project_position_id') . ' = :positionId')
+                ->where($this->db->quoteName('in_out_time') . ' = :substitutionTime')
+                ->where($this->db->quoteName('came_in') . ' = ' . self::MATCH_ROSTER_SUBSTITUTE_OUT)
+                ->bind(':matchId', $matchId, ParameterType::INTEGER)
+                ->bind(':outPlayerId', $outPlayerId, ParameterType::INTEGER)
+                ->bind(':positionId', $positionId, ParameterType::INTEGER)
+                ->bind(':substitutionTime', $substitutionTime, ParameterType::STRING);
+            $this->db->setQuery($outgoingQuery, 0, 2);
+            $outgoingIds = array_values(array_unique(array_map('intval', $this->db->loadColumn() ?: [])));
+
+            if (count($outgoingIds) > 1) {
+                return false;
+            }
+
+            if ($outgoingIds !== []) {
+                $ids[] = $outgoingIds[0];
+            }
+        }
+
+        return $this->transaction(function () use ($ids): bool {
             $query = $this->db->createQuery()
                 ->delete($this->db->quoteName('#__sportsmanagement_match_player'))
-                ->where($this->db->quoteName('id') . ' IN (' . $substitutionId . ',' . ($substitutionId + 1) . ')');
+                ->whereIn($this->db->quoteName('id'), $ids, ParameterType::INTEGER);
             $this->db->setQuery($query)->execute();
+
             return true;
         });
     }
