@@ -1,0 +1,58 @@
+name: Joomla 5/6 image ACL, clubicons and geocoder
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/ImagehandlerController.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
+      - 'admin/src/Service/PlaygroundGeocoder.php'
+      - '.github/tests/joomla56_image_manager_clubicons_acl.php'
+      - '.github/tests/joomla56_playground_geocoder_validation.php'
+      - '.github/workflows/joomla5-6-image-clubicons-geocoder.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Controller/ImagehandlerController.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
+      - 'admin/src/Service/PlaygroundGeocoder.php'
+      - '.github/tests/joomla56_image_manager_clubicons_acl.php'
+      - '.github/tests/joomla56_playground_geocoder_validation.php'
+      - '.github/workflows/joomla5-6-image-clubicons-geocoder.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  migration-regressions:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: PHP syntax and required file metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Controller/ImagehandlerController.php
+            modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
+            admin/src/Service/PlaygroundGeocoder.php
+          )
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+          for file in "${files[@]}" .github/tests/joomla56_image_manager_clubicons_acl.php .github/tests/joomla56_playground_geocoder_validation.php; do
+            php -l "$file"
+          done
+
+      - name: Site image writes and clubicons URL security
+        run: php .github/tests/joomla56_image_manager_clubicons_acl.php
+
+      - name: Administrator geocoder HTTP and data validation
+        run: php .github/tests/joomla56_playground_geocoder_validation.php
