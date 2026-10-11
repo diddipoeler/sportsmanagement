@@ -50,7 +50,7 @@ namespace Joomla\CMS\MVC\Controller {
         {
             $this->redirect = compact('url', 'message', 'type');
         }
-        public function display($cachable = false, $urlparams = []): void {}
+        public function display($cachable = false, $urlparams = []) {}
     }
 }
 namespace Diddipoeler\Component\SportsManagement\Site\Helper {
