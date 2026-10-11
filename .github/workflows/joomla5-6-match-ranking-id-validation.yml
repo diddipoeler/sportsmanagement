@@ -1,0 +1,52 @@
+name: Joomla 5/6 match and ranking IDs
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/ResultsController.php'
+      - 'site/src/Model/ResultsAccessModel.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - '.github/tests/joomla56_match_ranking_id_validation.php'
+      - '.github/workflows/joomla5-6-match-ranking-id-validation.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Controller/ResultsController.php'
+      - 'site/src/Model/ResultsAccessModel.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - '.github/tests/joomla56_match_ranking_id_validation.php'
+      - '.github/workflows/joomla5-6-match-ranking-id-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  match-ranking-ids:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Syntax and PHPDoc metadata
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Controller/ResultsController.php
+            site/src/Model/ResultsAccessModel.php
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          )
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+          for file in "${files[@]}" .github/tests/joomla56_match_ranking_id_validation.php; do
+            php -l "$file"
+          done
+
+      - name: Test match and ranking ID validation
+        run: php .github/tests/joomla56_match_ranking_id_validation.php
