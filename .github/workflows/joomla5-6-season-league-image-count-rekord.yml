@@ -48,7 +48,9 @@ jobs:
 
           image_handler=site/src/Controller/ImagehandlerController.php
           grep -Fq 'use Joomla\Http\HttpFactory;' "$image_handler"
-          grep -Fq 'HttpFactory::getHttp()->get(' "$image_handler"
+          grep -Fq "['follow_location' => false]" "$image_handler"
+          grep -Fq "['Curl', 'Stream']" "$image_handler"
+          grep -Fq 'validateRemoteImageUrl($url)' "$image_handler"
           grep -Fq 'Session::checkToken' "$image_handler"
           ! grep -Fq 'Joomla\CMS\Http\HttpFactory' "$image_handler"
           ! grep -Fq '(new HttpFactory())->getHttp()' "$image_handler"
