@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native read-only JSON controller for administrator option endpoints. */
@@ -366,25 +368,38 @@ final class AjaxController extends BaseController
 
     private function respondModel(string $method, array $arguments): void
     {
-        $model = $this->getModel('Ajax', 'Administrator', ['ignore_request' => true]);
-        $result = [];
+        $app = $this->app;
 
-        if ($model !== false && is_callable([$model, $method])) {
+        try {
+            $model = $this->getModel('Ajax', 'Administrator', ['ignore_request' => true]);
+
+            if ($model === false || !is_callable([$model, $method])) {
+                throw new \RuntimeException('Administrator AJAX model action is unavailable: ' . $method);
+            }
+
             $result = $model->{$method}(...$arguments);
+
+            // Legacy option labels may contain invalid UTF-8; always send valid JSON.
+            $json = json_encode(
+                $result,
+                JSON_UNESCAPED_UNICODE
+                | JSON_UNESCAPED_SLASHES
+                | JSON_INVALID_UTF8_SUBSTITUTE
+                | JSON_THROW_ON_ERROR
+            );
+        } catch (\Throwable $error) {
+            Log::add(__METHOD__ . ' (' . $method . '): ' . $error->getMessage(), Log::ERROR, 'jsmerror');
+
+            // Keep the AJAX response machine-readable without leaking database details.
+            $json = json_encode(
+                ['success' => false, 'message' => Text::_('JERROR_AN_ERROR_HAS_OCCURRED')],
+                JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR
+            );
         }
 
-        $app = $this->app;
         $app->getDocument()->setMimeEncoding('application/json');
         $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
-
-        // Legacy option labels may contain invalid UTF-8; always send valid JSON.
-        echo json_encode(
-            $result,
-            JSON_UNESCAPED_UNICODE
-            | JSON_UNESCAPED_SLASHES
-            | JSON_INVALID_UTF8_SUBSTITUTE
-            | JSON_THROW_ON_ERROR
-        );
+        echo $json;
         $app->close();
     }
 }
