@@ -61,7 +61,7 @@ trait NativeLinkTrait
     {
         $value = trim($value);
 
-        if ($value === '' || preg_match('/[\\x00-\\x20\\x7F]/', $value)) {
+        if ($value === '' || preg_match('/[\x00-\x20\x7F]/', $value)) {
             return '';
         }
 
