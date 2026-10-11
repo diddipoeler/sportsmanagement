@@ -24,5 +24,8 @@ jobs:
           php-version: '8.3'
           coverage: none
 
-      - name: Audit file-level PHPDoc metadata in site, admin and modules
+      - name: Audit file-level PHPDoc metadata in site, admin, modules and installer
         run: php .github/tests/phpdoc_metadata.php --all
+
+      - name: Check match write guards, AJAX output and module website links
+        run: php .github/tests/joomla56_match_write_security.php
