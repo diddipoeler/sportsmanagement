@@ -22,6 +22,8 @@
         return {
             baseAjaxUrl: options.baseAjaxUrl || window.baseajaxurl || 'index.php?option=com_sportsmanagement',
             matchId: options.matchId ?? window.matchid ?? 0,
+            projectId: options.projectId ?? 0,
+            databaseSelector: options.databaseSelector ?? 0,
             teamId: options.teamId ?? window.teamid ?? 0,
             projectTime: options.projectTime ?? window.projecttime ?? 0,
             useEventTime: options.useEventTime ?? window.useeventtime ?? 0,
@@ -99,6 +101,12 @@
             payload.set(key, value == null ? '' : String(value));
         });
         payload.set(tokenField.name, tokenField.value);
+        const context = editMatchConfig();
+        // The server validates both the project-scoped match and the actual
+        // parent match of any event, comment or substitution being deleted.
+        payload.set('p', String(context.projectId));
+        payload.set('matchid', String(params.matchid ?? context.matchId));
+        payload.set('cfg_which_database', String(context.databaseSelector));
 
         const response = await fetch(url.toString(), {
             method: 'POST',
