@@ -79,7 +79,9 @@ final class PlaygroundGeocoder
             return null;
         }
 
-        if ($response->getStatusCode() >= 400) {
+        $status = $response->getStatusCode();
+
+        if ($status < 200 || $status >= 300) {
             return null;
         }
 
@@ -99,13 +101,13 @@ final class PlaygroundGeocoder
         $addressData = isset($result['address']) && is_array($result['address'])
             ? $result['address']
             : [];
-        $countryCode = strtolower(trim((string) ($addressData['country_code'] ?? '')));
-        $state = $countryCode === 'gb'
-            ? trim((string) ($addressData['county'] ?? ''))
-            : trim((string) ($addressData['state'] ?? ''));
+        $countryCode = $this->stringValue($addressData['country_code'] ?? null);
+        $state = strtolower($countryCode) === 'gb'
+            ? $this->stringValue($addressData['county'] ?? null)
+            : $this->stringValue($addressData['state'] ?? null);
 
         if ($state === '') {
-            $state = trim((string) ($addressData['state_district'] ?? ''));
+            $state = $this->stringValue($addressData['state_district'] ?? null);
         }
 
         $latitude = $this->coordinate($result['lat'] ?? null, -90.0, 90.0);
@@ -143,6 +145,15 @@ final class PlaygroundGeocoder
         } catch (\Throwable) {
             return $code;
         }
+    }
+
+    /**
+     * Untrusted JSON fields can contain arrays or objects, which must not be
+     * coerced into warnings or the literal string "Array" in map records.
+     */
+    private function stringValue(mixed $value): string
+    {
+        return is_string($value) ? trim($value) : '';
     }
 
     private function coordinate(mixed $value, float $minimum, float $maximum): ?float
