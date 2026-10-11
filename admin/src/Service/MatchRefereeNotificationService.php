@@ -13,8 +13,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /** Sends notifications only for newly created referee assignments. */
 final class MatchRefereeNotificationService
@@ -34,13 +37,20 @@ final class MatchRefereeNotificationService
             return;
         }
 
+        $notifiedReferees = [];
+
         foreach ($assignments as $assignment) {
             $projectRefereeId = (int) ($assignment['project_referee_id'] ?? 0);
-            if ($projectRefereeId <= 0) {
+            if ($projectRefereeId <= 0 || isset($notifiedReferees[$projectRefereeId])) {
                 continue;
             }
 
-            $context = $this->context($matchId, $projectRefereeId);
+            try {
+                $context = $this->context($matchId, $projectRefereeId);
+            } catch (\Throwable $error) {
+                Log::add(__METHOD__ . ': referee lookup failed: ' . $error->getMessage(), Log::WARNING, 'jsmerror');
+                continue;
+            }
             if (!$context || trim((string) $context->email) === '') {
                 continue;
             }
@@ -76,8 +86,12 @@ final class MatchRefereeNotificationService
                 $mailer->isHTML(true);
                 $mailer->setBody($body);
                 $mailer->send();
+                $notifiedReferees[$projectRefereeId] = true;
             } catch (\Throwable $e) {
-                $this->app->enqueueMessage($e->getMessage(), 'warning');
+                // SMTP and template errors belong in the administrator log,
+                // never in a user-facing message with possible credentials.
+                Log::add(__METHOD__ . ': notification failed: ' . $e->getMessage(), Log::WARNING, 'jsmerror');
+                $this->app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
             }
         }
     }
@@ -103,11 +117,13 @@ final class MatchRefereeNotificationService
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $this->db->quoteName('st2.id') . ' = ' . $this->db->quoteName('pt2.team_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $this->db->quoteName('t1.id') . ' = ' . $this->db->quoteName('st1.team_id'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $this->db->quoteName('t2.id') . ' = ' . $this->db->quoteName('st2.team_id'))
-            ->join('INNER', $this->db->quoteName('#__sportsmanagement_match_referee', 'mr') . ' ON ' . $this->db->quoteName('mr.match_id') . ' = ' . $this->db->quoteName('m.id') . ' AND ' . $this->db->quoteName('mr.project_referee_id') . ' = ' . $projectRefereeId)
+            ->join('INNER', $this->db->quoteName('#__sportsmanagement_match_referee', 'mr') . ' ON ' . $this->db->quoteName('mr.match_id') . ' = ' . $this->db->quoteName('m.id') . ' AND ' . $this->db->quoteName('mr.project_referee_id') . ' = :projectRefereeId')
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_project_referee', 'pref') . ' ON ' . $this->db->quoteName('pref.id') . ' = ' . $this->db->quoteName('mr.project_referee_id'))
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_season_person_id', 'spi') . ' ON ' . $this->db->quoteName('spi.id') . ' = ' . $this->db->quoteName('pref.person_id'))
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_person', 'person') . ' ON ' . $this->db->quoteName('person.id') . ' = ' . $this->db->quoteName('spi.person_id'))
-            ->where($this->db->quoteName('m.id') . ' = ' . $matchId);
+            ->where($this->db->quoteName('m.id') . ' = :matchId')
+            ->bind(':matchId', $matchId, ParameterType::INTEGER)
+            ->bind(':projectRefereeId', $projectRefereeId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
         return $this->db->loadObject() ?: null;
     }
