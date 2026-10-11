@@ -18,6 +18,8 @@ final class TeamsController extends SportsManagementAdminController
 {
     public function saveshort(): void
     {
+        $this->assertWritePermission();
+
         $model = $this->getModel();
         $ok = $model->saveshort();
         $this->app->enqueueMessage($ok ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')), $ok ? 'message' : 'warning');
@@ -26,9 +28,7 @@ final class TeamsController extends SportsManagementAdminController
 
     public function copysave(): void
     {
-        if (!$this->app->getIdentity()->authorise('core.create', 'com_sportsmanagement')) {
-            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-        }
+        $this->assertWritePermission('core.create');
         $model = $this->getModel();
         $ok = $model->copySelected();
         $this->app->enqueueMessage($ok ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')), $ok ? 'message' : 'warning');
