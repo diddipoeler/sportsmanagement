@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Session\Session;
 
 class DivisionsController extends SportsManagementAdminController
 {
@@ -23,9 +22,7 @@ class DivisionsController extends SportsManagementAdminController
 
     public function massadd(): void
     {
-        if (!Session::checkToken()) {
-            throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
-        }
+        $this->assertWritePermission('core.create');
 
         $message = $this->getModel()->massadd();
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $message);
@@ -33,6 +30,8 @@ class DivisionsController extends SportsManagementAdminController
 
     public function divisiontoproject(): void
     {
+        $this->assertWritePermission('core.create');
+
         $message = $this->getModel()->divisiontoproject();
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->getProjectId(),
@@ -47,10 +46,12 @@ class DivisionsController extends SportsManagementAdminController
 
     public function saveOrder(): void
     {
+        $this->assertWritePermission('core.admin');
+
         $input = $this->app->getInput();
         $model = $this->getModel();
-        $pks = $input->get('cid', [], 'array');
-        $order = $input->get('order', [], 'array');
+        $pks = $input->post->get('cid', [], 'array');
+        $order = $input->post->get('order', [], 'array');
         $message = $model->saveorder($pks, $order);
 
         $this->setRedirect(
@@ -61,11 +62,15 @@ class DivisionsController extends SportsManagementAdminController
 
     public function saveshort(): void
     {
-        $message = $this->getModel()->saveshort();
+        $this->assertWritePermission();
+
+        $model = $this->getModel();
+        $message = $model->saveshort();
 
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->getProjectId(),
-            $message
+            $message === false ? Text::_('JERROR_AN_ERROR_HAS_OCCURRED') : $message,
+            $message === false ? 'warning' : 'message'
         );
     }
 
