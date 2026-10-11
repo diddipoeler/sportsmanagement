@@ -50,6 +50,9 @@ jobs:
           php -l admin/src/Controller/AjaxController.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php
+          php -l modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
+          php -l site/src/Controller/PredictionentryController.php
+          php -l .github/tests/joomla56_match_timeline_contract.php
           php -l .github/tests/joomla56_match_write_security.php
           php -l .github/tests/joomla56_club_save_contract.php
           php -l .github/tests/phpdoc_metadata.php
@@ -66,3 +69,6 @@ jobs:
 
       - name: Check site AJAX, division write access and birthday selector IDs
         run: php .github/tests/joomla56_ajax_divisions_birthday_contract.php
+
+      - name: Verify match timeline POST security, JSON and private errors
+        run: php .github/tests/joomla56_match_timeline_contract.php
