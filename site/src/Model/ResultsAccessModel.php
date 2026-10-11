@@ -86,19 +86,28 @@ final class ResultsAccessModel extends SportsManagementProjectModel
                 . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id')
             )
             ->where($db->quoteName('m.id') . ' = :matchId')
-            ->where(
-                '(' . $db->quoteName('pt1.admin') . ' = :homeAdminId'
-                . ' OR ' . $db->quoteName('pt2.admin') . ' = :awayAdminId)'
-            )
             ->bind(':matchId', $matchId, ParameterType::INTEGER)
             ->bind([':homeAdminId', ':awayAdminId'], $userId, ParameterType::INTEGER);
 
         if ($this->projectId > 0) {
-            $projectId = $this->projectId;
+            // Match the admin and the project on the *same* team. Independent
+            // OR checks could allow a foreign team's admin to edit a match
+            // solely because the other team belongs to this project.
             $query->where(
-                '(' . $db->quoteName('pt1.project_id') . ' = :homeProjectId'
-                . ' OR ' . $db->quoteName('pt2.project_id') . ' = :awayProjectId)'
-            )->bind([':homeProjectId', ':awayProjectId'], $projectId, ParameterType::INTEGER);
+                '((' . $db->quoteName('pt1.admin') . ' = :homeAdminId'
+                . ' AND ' . $db->quoteName('pt1.project_id') . ' = :homeProjectId)'
+                . ' OR (' . $db->quoteName('pt2.admin') . ' = :awayAdminId'
+                . ' AND ' . $db->quoteName('pt2.project_id') . ' = :awayProjectId))'
+            )->bind(
+                [':homeProjectId', ':awayProjectId'],
+                $this->projectId,
+                ParameterType::INTEGER
+            );
+        } else {
+            $query->where(
+                '(' . $db->quoteName('pt1.admin') . ' = :homeAdminId'
+                . ' OR ' . $db->quoteName('pt2.admin') . ' = :awayAdminId)'
+            );
         }
 
         try {
