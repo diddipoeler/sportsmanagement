@@ -42,7 +42,7 @@ final class EditclubModel extends AdminModel
         $this->clubid = $input->getInt('cid', 0);
     }
 
-    public function updItem($data)
+    public function updItem($data): bool
     {
         if (($data['founded'] ?? '') !== '0000-00-00' && ($data['founded'] ?? '') !== '') {
             $data['founded'] = $this->normaliseFrontendDate((string) $data['founded']);
@@ -80,10 +80,19 @@ final class EditclubModel extends AdminModel
 
         try {
             $table = $this->getTable('club');
-            $table->bind($data);
-            $table->store();
+
+            if (!$table->bind($data) || !$table->check() || !$table->store()) {
+                $this->setError((string) $table->getError());
+
+                return false;
+            }
+
+            return true;
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $this->setError($e->getMessage());
+
+            return false;
         }
     }
 
