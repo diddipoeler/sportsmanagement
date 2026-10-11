@@ -206,5 +206,23 @@ namespace {
         throw new \RuntimeException('Timeline JSON must retain a string response and UTF-8 MIME.');
     }
 
+    $prediction = file_get_contents($root . '/site/src/Controller/PredictionentryController.php');
+
+    if (!is_string($prediction)
+        || substr_count($prediction, "Log::add(__METHOD__") < 2
+        || str_contains($prediction, 'enqueueMessage($e->getMessage()')
+        || !str_contains($prediction, "Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5')")
+        || !str_contains($prediction, "Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_3')")
+    ) {
+        throw new \RuntimeException('Frontend prediction writes must log internal exceptions privately.');
+    }
+
+    if (str_contains($source, "enqueueMessage($e->getMessage()")
+        || str_contains($source, '$msg .= $e->getMessage()')
+        || str_contains($source, " . ': ' . $e->getMessage()")
+    ) {
+        throw new \RuntimeException('Administrator match write errors must not leak exceptions.');
+    }
+
     echo "Joomla 5/6 match timeline POST, ACL, errors and JSON: OK\n";
 }
