@@ -125,10 +125,20 @@ final class ActSeasonHelper
             $ids = [$ids];
         }
 
-        return array_values(array_unique(array_filter(
-            array_map('intval', $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        // Invalid or nested configuration values must not silently become season 1.
+        $normalised = [];
+        foreach ($ids as $id) {
+            if (!is_int($id) && (!is_string($id) || !preg_match('/^[0-9]+$/D', $id))) {
+                continue;
+            }
+
+            $id = filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id !== false) {
+                $normalised[$id] = $id;
+            }
+        }
+
+        return array_values($normalised);
     }
 
     private function flagHtml(object $row, Registry $params): string
