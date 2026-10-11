@@ -57,6 +57,9 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
 
             $database = self::joomlaDatabase($database);
 
+            // Honour the component's external-database selection when enabled.
+            $database = SportsManagementDatabaseResolver::resolve($database);
+
             return (new RandomPlayerHelper())->getData($registry, $database);
         }
         private static function siteApplication(): CMSApplicationInterface
