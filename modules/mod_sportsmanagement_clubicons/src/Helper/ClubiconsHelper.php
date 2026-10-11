@@ -101,7 +101,21 @@ final class ClubiconsHelper
             $value = reset($value);
         }
 
-        return preg_match('/^\s*(\d+)/', (string) $value, $match) ? (int) $match[1] : 0;
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $value = trim((string) $value);
+
+        // Accept a Joomla ID or an ID:alias slug, not an arbitrary prefix
+        // such as "12evil" or an overflowing decimal number.
+        if (!preg_match('/^([1-9][0-9]*)(?::[^\s:]+)?$/D', $value, $matches)) {
+            return 0;
+        }
+
+        $id = filter_var($matches[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     private function teamLink(Registry $params, object $project, object $team, array $websites): string
@@ -113,7 +127,7 @@ final class ClubiconsHelper
 
         if ($teamLink === 5) {
             $teamId = (int) ($team->id ?? 0);
-            return (string) ($websites[$teamId] ?? '');
+            return $this->externalWebsiteUrl((string) ($websites[$teamId] ?? ''));
         }
 
         $common = [
@@ -142,6 +156,32 @@ final class ClubiconsHelper
             ]),
             default => '',
         };
+    }
+
+    /**
+     * External team links must never be javascript:, data: or protocol-relative
+     * URLs; HTML escaping alone does not make an href scheme safe.
+     */
+    private function externalWebsiteUrl(string $url): string
+    {
+        $url = trim($url);
+
+        if ($url === '' || preg_match('/[\x00-\x20\x7F\\\\]/', $url)) {
+            return '';
+        }
+
+        if (!preg_match('#^https?://#i', $url) || filter_var($url, FILTER_VALIDATE_URL) === false) {
+            return '';
+        }
+
+        $parts = parse_url($url);
+
+        return is_array($parts)
+            && !empty($parts['host'])
+            && !isset($parts['user'])
+            && !isset($parts['pass'])
+            ? $url
+            : '';
     }
 
     private function logoUrl(Registry $params, object $team): string
