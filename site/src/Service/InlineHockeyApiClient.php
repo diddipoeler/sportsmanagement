@@ -113,11 +113,18 @@ final class InlineHockeyApiClient
     {
         $page = max(1, $page);
 
-        if (preg_match('/([?&])page=\d+/i', $url)) {
-            return (string) preg_replace('/([?&])page=\d+/i', '$1page=' . $page, $url, 1);
+        // Page parameters belong in the query string, not after a fragment.
+        $fragmentPosition = strpos($url, '#');
+        $fragment = $fragmentPosition === false ? '' : substr($url, $fragmentPosition);
+        $baseUrl = $fragmentPosition === false ? $url : substr($url, 0, $fragmentPosition);
+
+        if (preg_match('/([?&])page=[^&#]*/i', $baseUrl)) {
+            $baseUrl = (string) preg_replace('/([?&])page=[^&#]*/i', '$1page=' . $page, $baseUrl, 1);
+        } else {
+            $baseUrl .= (str_contains($baseUrl, '?') ? '&' : '?') . 'page=' . $page;
         }
 
-        return $url . (str_contains($url, '?') ? '&' : '?') . 'page=' . $page;
+        return $baseUrl . $fragment;
     }
 
     /** @return array<string,string> */
