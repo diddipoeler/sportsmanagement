@@ -88,9 +88,11 @@ async function checkFrontend(file) {
         addEventListener() {},
         querySelector: () => form,
         getElementById(id) {
-            return id === 'event_sum'
-                ? {value: '4'}
-                : {value: '7'};
+            if (id === 'ajaxresponse') {
+                return null;
+            }
+
+            return {value: id === 'event_sum' ? '4' : '7'};
         },
     };
     const window = {
