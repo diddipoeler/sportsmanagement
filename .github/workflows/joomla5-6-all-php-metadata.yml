@@ -27,5 +27,14 @@ jobs:
       - name: Audit file-level PHPDoc metadata in site, admin, modules and installer
         run: php .github/tests/phpdoc_metadata.php --all
 
+      - name: Lint changed Joomla 5/6 PHP files
+        run: |
+          php -l site/src/Controller/EditmatchController.php
+          php -l admin/src/Controller/AjaxController.php
+          php -l modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
+          php -l .github/tests/joomla56_match_write_security.php
+          php -l .github/tests/phpdoc_metadata.php
+          php -l script.joomla56.php
+
       - name: Check match write guards, AJAX output and module website links
         run: php .github/tests/joomla56_match_write_security.php
