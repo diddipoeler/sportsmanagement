@@ -283,14 +283,15 @@ final class EditmatchController extends FormController
         if (!isset($parts['scheme'])) {
             // Relative Joomla paths and queries are safe only without a host
             // or userinfo. A URL with a non-http scheme is never accepted.
-            return isset($parts['host'], $parts['user']) || isset($parts['host'])
+            return isset($parts['host']) || isset($parts['user']) || isset($parts['pass'])
                 ? $fallback
                 : $referer;
         }
 
         if (!in_array(strtolower($parts['scheme']), ['http', 'https'], true)
             || empty($parts['host'])
-            || isset($parts['user'], $parts['pass'])) {
+            || isset($parts['user'])
+            || isset($parts['pass'])) {
             return $fallback;
         }
 
