@@ -1,0 +1,49 @@
+name: Joomla 5/6 substitution pair integrity
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/MatchMutationService.php'
+      - 'admin/src/Service/MatchTimelineWriteService.php'
+      - '.github/tests/joomla56_substitution_pair_integrity.php'
+      - '.github/workflows/joomla5-6-substitution-pair-integrity.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Service/MatchMutationService.php'
+      - 'admin/src/Service/MatchTimelineWriteService.php'
+      - '.github/tests/joomla56_substitution_pair_integrity.php'
+      - '.github/workflows/joomla5-6-substitution-pair-integrity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  substitution-integrity:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Syntax and required PHPDoc headers
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Service/MatchMutationService.php
+            admin/src/Service/MatchTimelineWriteService.php
+          )
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+          for file in "${files[@]}" .github/tests/joomla56_substitution_pair_integrity.php; do
+            php -l "$file"
+          done
+
+      - name: Regression check for substitution pair deletion
+        run: php .github/tests/joomla56_substitution_pair_integrity.php
