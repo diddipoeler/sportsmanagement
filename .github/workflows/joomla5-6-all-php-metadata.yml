@@ -35,6 +35,8 @@ jobs:
           php -l site/src/Controller/AjaxController.php
           php -l admin/src/Controller/DivisionsController.php
           php -l admin/src/Controller/MatchesController.php
+          php -l admin/src/Controller/MatchController.php
+          php -l .github/tests/joomla56_match_form_access_contract.php
           php -l admin/src/Controller/PredictionmembersController.php
           php -l .github/tests/joomla56_ajax_divisions_birthday_contract.php
           php -l site/src/Model/EditpersonModel.php
@@ -81,3 +83,6 @@ jobs:
 
       - name: Test timeline JavaScript POST payloads and Joomla CSRF tokens
         run: node .github/tests/joomla56_timeline_js_contract.js
+
+      - name: Check custom match form write permissions and private errors
+        run: php .github/tests/joomla56_match_form_access_contract.php
