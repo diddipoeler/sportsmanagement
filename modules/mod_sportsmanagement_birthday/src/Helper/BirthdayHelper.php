@@ -282,25 +282,66 @@ final class BirthdayHelper
         if (!$show) {
             return '';
         }
-        foreach ([(string) ($row->picture ?? ''), (string) ($row->default_picture ?? '')] as $path) {
-            $path = ltrim(trim($path), '/');
-            if ($path !== '' && is_file(JPATH_ROOT . '/' . $path)) {
+
+        $root = realpath(JPATH_ROOT);
+
+        if ($root === false) {
+            return '';
+        }
+
+        foreach ([(string) ($row->picture ?? ''), (string) ($row->default_picture ?? '')] as $candidate) {
+            $path = $this->localImagePath($candidate);
+
+            if ($path === '') {
+                continue;
+            }
+
+            // Existing image files must also resolve inside the Joomla root;
+            // reject directory traversal and symbolic links to external files.
+            $absolute = realpath($root . DIRECTORY_SEPARATOR . $path);
+
+            if ($absolute !== false
+                && str_starts_with($absolute, $root . DIRECTORY_SEPARATOR)
+                && is_file($absolute)
+            ) {
                 return Uri::root() . $path;
             }
         }
+
         return '';
+    }
+
+    private function localImagePath(string $candidate): string
+    {
+        $candidate = trim($candidate);
+
+        if ($candidate === ''
+            || preg_match('/[\x00-\x1F\x7F\\\\]/', $candidate)
+            || str_starts_with($candidate, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $candidate)
+            || preg_match('~(?:^|/)\.\.(?:/|$)~', $candidate)
+        ) {
+            return '';
+        }
+
+        return ltrim($candidate, '/');
     }
 
     private function flagHtml(object $row, Registry $params): string
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
         $alpha2 = strtolower((string) ($row->country_alpha2 ?? ''));
+        $alpha2 = preg_match('/^[a-z]{2}$/', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars($alpha3, ENT_QUOTES, 'UTF-8');
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
             $css = match ($alpha3) { 'WAL' => 'gb-wls', 'SCO' => 'gb-sct', 'GBR' => 'gb-eng', default => $alpha2 };
             return $css !== '' ? '<span class="fi fi-' . htmlspecialchars($css, ENT_QUOTES, 'UTF-8') . '" title="' . $label . '"></span>' : '';
         }
-        $path = $alpha2 !== '' ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png' : ltrim((string) ($row->country_picture ?? $params->get('ph_flags', '')), '/');
+        $candidate = $alpha2 !== ''
+            ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
+            : (string) ($row->country_picture ?? $params->get('ph_flags', ''));
+        $path = $this->localImagePath($candidate);
+
         return $path === '' ? '' : '<img src="' . htmlspecialchars(Uri::root() . $path, ENT_QUOTES, 'UTF-8') . '" alt="' . $label . '" />';
     }
 
