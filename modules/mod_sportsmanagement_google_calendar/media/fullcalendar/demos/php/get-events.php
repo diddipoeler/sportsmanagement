@@ -36,11 +36,19 @@ if ($start === '' || $end === '') {
 
 $rangeStart = parseDateTime($start);
 $rangeEnd = parseDateTime($end);
+
+if ($rangeEnd <= $rangeStart) {
+    throw new \InvalidArgumentException('The end of the date range must be after the start.');
+}
 $timezone = null;
 $timezoneName = $input->getString('timezone');
 
 if ($timezoneName !== '') {
-    $timezone = new \DateTimeZone($timezoneName);
+    try {
+        $timezone = new \DateTimeZone($timezoneName);
+    } catch (\Exception $e) {
+        throw new \InvalidArgumentException('Invalid calendar timezone.', 0, $e);
+    }
 }
 
 $json = file_get_contents(__DIR__ . '/../json/events.json');
