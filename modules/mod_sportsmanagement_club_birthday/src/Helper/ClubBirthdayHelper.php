@@ -292,6 +292,8 @@ final class ClubBirthdayHelper
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
         $alpha2 = strtolower((string) ($row->country_alpha2 ?? ''));
+        $alpha3 = preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : '';
+        $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars($alpha3, ENT_QUOTES, 'UTF-8');
 
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
@@ -310,7 +312,7 @@ final class ClubBirthdayHelper
 
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : ltrim((string) ($row->country_picture ?? $params->get('ph_flags', '')), '/');
+            : self::localImagePath((string) ($row->country_picture ?? $params->get('ph_flags', '')));
 
         return $path === ''
             ? ''
