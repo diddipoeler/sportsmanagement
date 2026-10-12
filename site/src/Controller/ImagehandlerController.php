@@ -35,10 +35,10 @@ final class ImagehandlerController extends BaseController
 
         $app = $this->app;
         $input = $this->input;
-        $type = $input->getCmd('type', '');
-        $field = $input->getCmd('field', '');
-        $fieldId = $input->getCmd('fieldid', '');
-        $linkAddress = trim($input->getString('linkaddress', ''));
+        $type = $input->post->getCmd('type', '');
+        $field = $input->post->getCmd('field', '');
+        $fieldId = $input->post->getCmd('fieldid', '');
+        $linkAddress = trim($input->post->getString('linkaddress', ''));
         $file = $input->files->get('userfile', [], 'array');
         $folder = ImageSelectHelper::getFolder($type);
         $baseDir = $this->imageBaseDirectory($folder);
@@ -89,7 +89,7 @@ final class ImagehandlerController extends BaseController
         $this->assertImagePermission('delete');
 
         $input = $this->input;
-        $type = $input->getCmd('type', '');
+        $type = $input->post->getCmd('type', '');
         $folder = ImageSelectHelper::getFolder($type);
         $baseDir = $this->imageBaseDirectory($folder, false);
         $images = $input->post->get('rm', [], 'array');
