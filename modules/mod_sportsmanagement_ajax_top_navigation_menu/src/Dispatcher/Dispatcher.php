@@ -34,7 +34,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement AJAX Top Navigation requires the Joomla site application.', 500);
         }
 
-        $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        $language = $app->getLanguage();
+        $language->load('mod_sportsmanagement_ajax_top_navigation_menu', JPATH_SITE, null, true);
+        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+        $language->load('com_sportsmanagement', JPATH_SITE, null, true);
 
         $requestedLayout = trim((string) $data['params']->get('layout', 'default'));
         if ($requestedLayout === '' || $requestedLayout === '_:native' || $requestedLayout === 'native') {
