@@ -36,12 +36,13 @@ final class UpdsportsmanagementController extends BaseController
             ->get('jform', [], 'array');
 
         if (!class_exists(UpdsportsmanagementModel::class)) {
-            $modelFile = JPATH_SITE
-                . '/components/com_sportsmanagement/src/Model/UpdsportsmanagementModel.php';
+            $modelFile = __DIR__ . '/../Model/UpdsportsmanagementModel.php';
 
-            if (is_file($modelFile)) {
-                require_once $modelFile;
+            if (!is_file($modelFile)) {
+                throw new RuntimeException('SportsManagement frontend updater model file is missing.', 500);
             }
+
+            require_once $modelFile;
         }
 
         if (!class_exists(UpdsportsmanagementModel::class)) {
