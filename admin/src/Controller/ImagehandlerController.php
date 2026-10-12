@@ -220,7 +220,8 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     public function getModel($name = 'Imagehandler', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        // Preserve caller-specific MVC options instead of discarding them.
+        return parent::getModel($name, $prefix, $config + ['ignore_request' => true]);
     }
 
     private function saveImageSelection(string $method, array $data): void
