@@ -269,9 +269,10 @@ final class SportsManagementMVCFactory extends MVCFactory
         }
 
         foreach ((array) $extensions as $extensionName) {
-            $extensionName = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
+            $extensionName = (string) $extensionName;
 
-            if ($extensionName === '') {
+            // Reject invalid extension directory names instead of silently rewriting them.
+            if (!preg_match('/^[A-Za-z0-9_-]+$/D', $extensionName)) {
                 continue;
             }
 
