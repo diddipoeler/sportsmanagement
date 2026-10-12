@@ -141,7 +141,7 @@ namespace {
         'Database tools must resolve the native Administrator model.'
     );
     assertSameValue(
-        ['Databasetool', 'Administrator', ['ignore_request' => true, 'test' => 1]],
+        ['Databasetool', 'Administrator', ['test' => 1, 'ignore_request' => true]],
         $admin->getModel('Databasetool', 'Administrator', ['test' => 1]),
         'Database tools must preserve custom MVC model config.'
     );
