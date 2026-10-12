@@ -42,7 +42,18 @@ $moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), EN
 $moduleId = htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8');
 ?>
 <div class="<?php echo $moduleClass; ?>" id="<?php echo $moduleId; ?>">
-<?php if ((bool) $params->get('show_slider', 0) && $federations !== [] && $countriesByFederation !== []) : ?>
+<?php
+// Rows without a country cannot be assigned to a country tab; show the flat list
+// in that case so no current-season projects disappear from the module.
+$allRowsHaveCountry = true;
+foreach ($list as $row) {
+    if (trim((string) ($row->country ?? '')) === '') {
+        $allRowsHaveCountry = false;
+        break;
+    }
+}
+?>
+<?php if ((bool) $params->get('show_slider', 0) && $federations !== [] && $countriesByFederation !== [] && $allRowsHaveCountry) : ?>
     <?php echo HTMLHelper::_('bootstrap.startTabSet', 'jsm-act-season-' . (int) $module->id, ['active' => 'fed-0']); ?>
     <?php $tab = 0; foreach ($federations as $fedId => $federation) : ?>
         <?php echo HTMLHelper::_('bootstrap.addTab', 'jsm-act-season-' . (int) $module->id, 'fed-' . $tab, htmlspecialchars(Text::_((string) $federation->name), ENT_QUOTES, 'UTF-8')); ?>
