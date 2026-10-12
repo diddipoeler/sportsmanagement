@@ -184,7 +184,11 @@ final class AjaxController extends BaseController
     public function getroute(): void
     {
         $input = $this->app->getInput();
-        $view = strtolower($input->getCmd('view', 'ranking'));
+        $view = strtolower(trim($input->getCmd('view', 'ranking')));
+
+        if ($view === '') {
+            $view = 'ranking';
+        }
 
         if ($view === 'calendar') {
             $view = 'teamplan';
