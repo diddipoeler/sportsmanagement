@@ -7,12 +7,14 @@ on:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'site/src/Service/SportsManagementSiteApplicationResolver.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
+      - '.github/tests/joomla56_birthday_leapday.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_birthday/**'
       - 'site/src/Service/SportsManagementSiteApplicationResolver.php'
       - '.github/workflows/joomla5-6-module-birthday.yml'
+      - '.github/tests/joomla56_birthday_leapday.php'
 
 jobs:
   birthday-module:
@@ -43,6 +45,11 @@ jobs:
               }
             done
           done
+
+      - name: Verify February 29 and leap-year birthday rollover
+        run: |
+          php -l .github/tests/joomla56_birthday_leapday.php
+          php .github/tests/joomla56_birthday_leapday.php
 
       - name: Validate native Birthday contracts
         shell: bash
