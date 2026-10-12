@@ -22,13 +22,6 @@ use Joomla\Registry\Registry;
 
 final class AjaxTopNavigationHelper
 {
-    private static function joomlaDatabase(): DatabaseInterface
-    {
-        $database = self::joomlaDatabase();
-
-        return $database;
-    }
-
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         $this->loadNavigationDataHelper();
