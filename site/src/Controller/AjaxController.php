@@ -56,7 +56,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->app->getInput();
         $this->sendJson($this->ajaxModel()->getAssocLeagueSelect(
-            $input->getString('country', ''),
+            trim($input->getString('country', '')),
             max(0, $input->getInt('assoc_id', 0))
         ));
     }
