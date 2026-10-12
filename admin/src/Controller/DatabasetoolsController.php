@@ -25,7 +25,7 @@ final class DatabasetoolsController extends BaseController
     /**
      * Preserve the historical default action-model routing.
      */
-    public function getModel($name = 'databasetool', $prefix = 'sportsmanagementModel', $config = [])
+    public function getModel($name = 'Databasetool', $prefix = 'Administrator', $config = [])
     {
         $config = is_array($config) ? $config : [];
         $config['ignore_request'] = true;
