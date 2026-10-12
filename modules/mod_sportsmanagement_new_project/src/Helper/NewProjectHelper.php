@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteAppl
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Factory;
@@ -194,7 +195,12 @@ final class NewProjectHelper
 
                 $created++;
             } catch (\Throwable $e) {
-                $errors[] = ['project_id' => $projectId, 'message' => $e->getMessage()];
+                // Do not leak SQL errors or server paths in public AJAX output.
+                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+                $errors[] = [
+                    'project_id' => $projectId,
+                    'message' => 'Content article could not be saved.',
+                ];
             }
         }
 
@@ -212,8 +218,11 @@ final class NewProjectHelper
             return $database;
         }
 
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement NewProject database service is unavailable.', 500);
+        }
 
         return $database;
     }
