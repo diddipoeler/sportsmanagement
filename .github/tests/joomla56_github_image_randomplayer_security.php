@@ -16,6 +16,7 @@ namespace Joomla\CMS\Application {
         public array $messages = [];
         public bool $adminAllowed = false;
         public bool $deleteAllowed = false;
+        public string $tmpPath = '';
 
         public function getIdentity(): object
         {
@@ -45,7 +46,7 @@ namespace Joomla\CMS\Application {
 
         public function get(string $name): string
         {
-            return $name === 'tmp_path' ? sys_get_temp_dir() : '';
+            return $name === 'tmp_path' ? ($this->tmpPath ?: sys_get_temp_dir()) : '';
         }
     }
 }
@@ -199,7 +200,7 @@ namespace Joomla\Filesystem {
     {
         public static function exists(string $path): bool
         {
-            return false;
+            return is_dir($path);
         }
     }
 }
@@ -285,15 +286,28 @@ namespace {
     check($model->downloads === 1 && $model->installs === 1,
         'Authorized GitHub update requests must preserve the installation workflow.');
 
-    $githubModel = new GithubinstallModel();
-    $app->userState['com_sportsmanagement.github_update_dir'] = '/stale/extraction';
-    check($githubModel->CopyGithubLink('https://github.com/example/repo/archive.zip') === false,
-        'An update with no extracted folder must fail.');
-    check(array_key_exists('com_sportsmanagement.github_update_dir', $app->userState)
-        && $app->userState['com_sportsmanagement.github_update_dir'] === null,
-        'Failed updates must clear the previous extracted directory.');
-    check(($app->messages[0][1] ?? '') === 'error',
-        'Missing update directory must produce an error message.');
+    // An older sportsmanagement-* directory must not be mistaken for
+    // an archive just downloaded in the current request.
+    $tmpDirectory = sys_get_temp_dir() . '/jsm-github-regression-' . getmypid();
+    $staleDirectory = $tmpDirectory . '/sportsmanagement-stale-folder';
+    check(mkdir($tmpDirectory) && mkdir($staleDirectory),
+        'Could not prepare isolated update-regression directories.');
+    $app->tmpPath = $tmpDirectory;
+
+    try {
+        $githubModel = new GithubinstallModel();
+        $app->userState['com_sportsmanagement.github_update_dir'] = $staleDirectory;
+        check($githubModel->CopyGithubLink('https://github.com/example/repo/archive.zip') === false,
+            'An update without a matching extracted folder must reject stale directories.');
+        check(array_key_exists('com_sportsmanagement.github_update_dir', $app->userState)
+            && $app->userState['com_sportsmanagement.github_update_dir'] === null,
+            'Failed updates must clear the previous extracted directory.');
+        check(($app->messages[0][1] ?? '') === 'error',
+            'Missing update directory must produce an error message.');
+    } finally {
+        rmdir($staleDirectory);
+        rmdir($tmpDirectory);
+    }
 
     $input = new class {
         public object $post;
