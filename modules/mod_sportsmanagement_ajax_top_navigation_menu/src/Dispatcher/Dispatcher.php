@@ -80,7 +80,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     
             $document->addScriptOptions(
                 'mod_sportsmanagement_ajax_top_navigation_menu.' . (int) $data['module']->id,
-                $data['clientConfig']
+                $data['clientConfig'] ?? []
             );
         }
 
