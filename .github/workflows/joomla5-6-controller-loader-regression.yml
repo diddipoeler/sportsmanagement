@@ -17,6 +17,9 @@ name: Joomla 5/6 controller loader regression
       - 'site/src/Model/UpdsportsmanagementModel.php'
       - 'admin/src/Controller/DatabasetoolsController.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/tests/joomla56_ranking_liveticker_service_contract.php'
       - '.github/tests/joomla56_native_mvc_security.php'
       - '.github/tests/joomla56_controller_bridge_loading.php'
       - '.github/workflows/joomla5-6-controller-loader-regression.yml'
@@ -35,6 +38,9 @@ name: Joomla 5/6 controller loader regression
       - 'site/src/Model/UpdsportsmanagementModel.php'
       - 'admin/src/Controller/DatabasetoolsController.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - '.github/tests/joomla56_ranking_liveticker_service_contract.php'
       - '.github/tests/joomla56_native_mvc_security.php'
       - '.github/tests/joomla56_controller_bridge_loading.php'
       - '.github/workflows/joomla5-6-controller-loader-regression.yml'
@@ -90,3 +96,15 @@ jobs:
             admin/src/Controller/DatabasetoolsController.php \
             modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
           php .github/tests/joomla56_native_mvc_security.php
+
+      - name: Check ranking project selection and module database guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          php -l .github/tests/joomla56_ranking_liveticker_service_contract.php
+          php .github/tests/phpdoc_metadata.php \
+            modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php \
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          php .github/tests/joomla56_ranking_liveticker_service_contract.php
