@@ -135,7 +135,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getProjects', [
-            $input->get('s', 0, 'raw'),
+            max(0, $input->getInt('s', 0)),
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
