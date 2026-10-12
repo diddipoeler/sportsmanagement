@@ -46,7 +46,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
-        $seasonIds = $componentParams->get('current_season', []);
+        $seasonIds = $data['params']->get('current_season', $componentParams->get('current_season', []));
         $database = $this->joomlaDatabase();
         $result = $this->getHelperFactory()
             ->getHelper('ActSeasonHelper')
