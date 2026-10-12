@@ -30,11 +30,25 @@ final class PlaygroundPlanHelper
                 throw new \RuntimeException('SportsManagement PlaygroundPlan requires the Joomla site application.', 500);
             }
 
-            /** @var DatabaseInterface $joomlaDatabase */
+            $projectSelection = $params->get('projects', []);
+            $playgroundSelection = $params->get('playground', []);
+            $projectIds = $this->ids($projectSelection);
+            $playgroundIds = $this->ids($playgroundSelection);
+
+            // Explicitly configured but malformed selectors must not make
+            // this module query and display all projects or playgrounds.
+            if (($this->hasSelection($projectSelection) && $projectIds === [])
+                || ($this->hasSelection($playgroundSelection) && $playgroundIds === [])) {
+                return [];
+            }
+
             $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$joomlaDatabase instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement PlaygroundPlan database service is unavailable.', 500);
+            }
+
             $db = $this->database($params, $joomlaDatabase);
-            $projectIds = $this->ids($params->get('projects', []));
-            $playgroundIds = $this->ids($params->get('playground', []));
             $teamField = $this->teamField((string) $params->get('teamformat', 'middle_name'));
             $logoField = $this->logoField((string) $params->get('show_picture', 'logo_big'));
             $limit = max(1, min(100, (int) $params->get('maxmatches', 7)));
@@ -219,18 +233,56 @@ final class PlaygroundPlanHelper
         return $alias === '' ? (string) $id : $id . ':' . $alias;
     }
 
+    private function hasSelection(mixed $value): bool
+    {
+        $values = is_array($value) ? $value : [$value];
+
+        foreach ($values as $entry) {
+            if (!is_string($entry) && !is_int($entry)) {
+                return true;
+            }
+
+            $text = trim((string) $entry);
+
+            if ($text !== '' && $text !== '0') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /** @return array<int,int> */
     private function ids(mixed $value): array
     {
-        $values = is_array($value)
-            ? $value
-            : preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
+        $values = is_array($value) ? $value : [$value];
         $ids = [];
 
-        foreach ((array) $values as $item) {
-            $id = (int) $item;
+        foreach ($values as $entry) {
+            if (!is_string($entry) && !is_int($entry)) {
+                continue;
+            }
 
-            if ($id > 0) {
-                $ids[$id] = $id;
+            foreach (preg_split('/[\\s,;]+/', (string) $entry, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $candidate) {
+                // Module selectors can return Joomla ID:alias values.
+                // Reject malformed partial IDs and integer overflow.
+                if (!preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $candidate, $match)) {
+                    continue;
+                }
+
+                $digits = ltrim($match[1], '0');
+
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1],
+                ]);
+
+                if ($id !== false) {
+                    $ids[$id] = $id;
+                }
             }
         }
 
