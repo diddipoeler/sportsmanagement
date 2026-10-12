@@ -245,6 +245,7 @@ final class AjaxController extends BaseController
             ])
             ->from($db->quoteName('#__sportsmanagement_associations', 's'))
             ->where($db->quoteName('s.parent_id') . ' = ' . $parentId)
+            ->where($db->quoteName('s.published') . ' = 1')
             ->order($db->quoteName('s.name') . ' ASC');
 
         if ($country !== '') {
