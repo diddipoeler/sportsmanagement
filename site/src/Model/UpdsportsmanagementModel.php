@@ -88,12 +88,18 @@ final class UpdsportsmanagementModel extends FormModel
 
     public function updItem(array $data): bool
     {
-        $id = (int) ($data['id'] ?? 0);
-        $greeting = trim((string) ($data['greeting'] ?? ''));
+        // Never convert malformed identifiers (e.g. "12garbage") or arrays
+        // into valid record IDs or the literal string "Array".
+        $id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+        $greeting = $data['greeting'] ?? null;
 
-        if ($id <= 0 || $greeting === '') {
+        if ($id === false || !is_string($greeting) || trim($greeting) === '') {
             return false;
         }
+
+        $greeting = trim($greeting);
 
         $record = (object) [
             'id' => $id,
