@@ -334,9 +334,14 @@ final class ClubBirthdayHelper
                     continue;
                 }
 
-                $id = (int) $match[1];
+                // Reject decimal IDs exceeding PHP_INT_MAX rather than silently
+                // saturating them to an unrelated database record identifier.
+                $decimal = ltrim($match[1], '0');
+                $id = $decimal === ''
+                    ? false
+                    : filter_var($decimal, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
-                if ($id > 0) {
+                if ($id !== false) {
                     $ids[$id] = $id;
                 }
             }
