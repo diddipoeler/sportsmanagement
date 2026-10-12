@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\DatabasetoolController;
 
 if (!class_exists(DatabasetoolController::class)) {
-    $nativeController = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/DatabasetoolController.php';
+    $nativeController = __DIR__ . '/../src/Controller/DatabasetoolController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
