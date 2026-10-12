@@ -30,8 +30,11 @@ final class MatchesSliderHelper
             return $database;
         }
 
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Matches Slider database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -104,8 +107,8 @@ final class MatchesSliderHelper
                 $db->quoteName('st2.team_id', 'team2_id'),
                 $db->quoteName('t1.' . $nameColumn, 'teamhome'),
                 $db->quoteName('t2.' . $nameColumn, 'teamaway'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
+                $db->quoteName('p.alias', 'project_alias'),
+                $db->quoteName('r.alias', 'round_alias'),
                 $logoSelect[0],
                 $logoSelect[1],
             ])
@@ -178,7 +181,20 @@ final class MatchesSliderHelper
             $query->where($db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round'));
         }
 
-        $teams = $this->ids($params->get('teams', []));
+        $selectedTeams = $params->get('teams', []);
+        $teams = $this->ids($selectedTeams);
+        $selectionRequested = array_filter(
+            is_array($selectedTeams) ? $selectedTeams : [$selectedTeams],
+            static fn (mixed $value): bool => $value !== null
+                && trim((string) (is_scalar($value) ? $value : '')) !== ''
+                && trim((string) (is_scalar($value) ? $value : '')) !== '0'
+        );
+
+        // An explicitly selected but invalid team must not disable the filter
+        // and accidentally show every team's fixtures.
+        if ($selectionRequested !== [] && $teams === []) {
+            return [];
+        }
 
         if ($teams) {
             $homeTeamPlaceholders = $query->bindArray($teams, ParameterType::INTEGER);
@@ -207,6 +223,12 @@ final class MatchesSliderHelper
         $pictureServer = $this->pictureServer($databaseMode);
 
         foreach ($rows as $match) {
+            // Joomla ID:alias slugs are portable when assembled in PHP rather
+            // than via the MySQL-specific CONCAT_WS expression.
+            $match->project_slug = (int) ($match->project_id ?? 0)
+                . ':' . (string) ($match->project_alias ?? '');
+            $match->round_slug = (int) ($match->round_id ?? 0)
+                . ':' . (string) ($match->round_alias ?? '');
             $match->link = $this->matchLink($match, $params, $databaseMode, $seasonId);
             $match->home_logo_url = $this->mediaUrl((string) ($match->logohome ?? ''), $pictureServer);
             $match->away_logo_url = $this->mediaUrl((string) ($match->logoaway ?? ''), $pictureServer);
@@ -292,11 +314,15 @@ final class MatchesSliderHelper
             }
 
             foreach (preg_split('/[\s,;]+/', (string) $candidate, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                if (!ctype_digit($part)) {
+                // Project-team selectors may return Joomla ID:alias slugs.
+                // Reject partial matches, malformed IDs and integer overflow.
+                if (!preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $part, $match)) {
                     continue;
                 }
 
-                $id = filter_var(ltrim($part, '0'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                $id = filter_var(ltrim($match[1], '0'), FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1],
+                ]);
 
                 if ($id !== false) {
                     $ids[$id] = $id;
