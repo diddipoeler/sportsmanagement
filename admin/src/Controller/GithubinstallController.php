@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 
@@ -21,6 +22,14 @@ final class GithubinstallController extends BaseController
     public function CopyGithubLink(): void
     {
         $this->checkToken();
+
+        // Downloading and installing a package is an administrator-only task.
+        // A valid form token alone does not grant extension installation rights.
+        $identity = $this->app->getIdentity();
+
+        if (!$identity || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
 
         $model = $this->getModel('Githubinstall', 'Administrator', ['ignore_request' => true]);
         $url = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_update_server_file', ''));
