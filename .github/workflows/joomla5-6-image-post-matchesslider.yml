@@ -5,6 +5,7 @@ name: Joomla 5/6 image POST and matches slider
     branches: [joomla5-6]
     paths:
       - 'admin/src/Controller/ImagehandlerController.php'
+      - 'admin/src/View/Imagehandler/HtmlView.php'
       - 'site/src/Controller/ImagehandlerController.php'
       - 'site/views/imagehandler/tmpl/upload.php'
       - 'admin/tmpl/imagehandler/upload.php'
@@ -15,6 +16,7 @@ name: Joomla 5/6 image POST and matches slider
   pull_request:
     paths:
       - 'admin/src/Controller/ImagehandlerController.php'
+      - 'admin/src/View/Imagehandler/HtmlView.php'
       - 'site/src/Controller/ImagehandlerController.php'
       - 'site/views/imagehandler/tmpl/upload.php'
       - 'admin/tmpl/imagehandler/upload.php'
@@ -41,6 +43,7 @@ jobs:
           set -euo pipefail
           files=(
             admin/src/Controller/ImagehandlerController.php
+            admin/src/View/Imagehandler/HtmlView.php
             site/src/Controller/ImagehandlerController.php
             site/views/imagehandler/tmpl/upload.php
             admin/tmpl/imagehandler/upload.php
