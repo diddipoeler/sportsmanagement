@@ -233,10 +233,10 @@ final class AjaxController extends BaseController
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = $this->app->getContainer()->get(DatabaseInterface::class);
         $input = $this->app->getInput();
-        $selector = $input->getInt(
+        $selector = max(0, $input->getInt(
             'cfg_which_database',
             (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
-        );
+        ));
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
         $query = $db->createQuery()
             ->select([
