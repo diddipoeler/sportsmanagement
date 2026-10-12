@@ -87,7 +87,7 @@ final class SportsManagementMVCFactory extends MVCFactory
 
     private function bridgeAdministratorTemplatePath(string $name, string $prefix, string $type, array &$config): void
     {
-        if ($prefix !== 'Administrator' || strtolower($type) !== 'html' || isset($config['template_path'])) {
+        if ($prefix !== 'Administrator' || strtolower($type) !== 'html' || isset($config['template_path']) || !$this->validLegacyName($name)) {
             return;
         }
 
@@ -100,8 +100,18 @@ final class SportsManagementMVCFactory extends MVCFactory
         }
     }
 
+    private function validLegacyName(string $name): bool
+    {
+        // Names become filesystem path segments when resolving legacy MVC files.
+        return $name !== '' && preg_match('/^[a-zA-Z][a-zA-Z0-9_]*$/D', $name) === 1;
+    }
+
     private function loadLegacyController(string $name, string $prefix): bool
     {
+        if (!$this->validLegacyName($name)) {
+            return false;
+        }
+
         $prefix = $this->normalisePrefix($prefix);
         $basePath = $this->legacyBasePath($prefix);
 
@@ -144,6 +154,10 @@ final class SportsManagementMVCFactory extends MVCFactory
 
     private function loadLegacyModel(string $name, string $prefix): bool
     {
+        if (!$this->validLegacyName($name)) {
+            return false;
+        }
+
         $prefix = $this->normalisePrefix($prefix);
 
         if ($this->legacyBasePath($prefix) === null) {
@@ -181,6 +195,10 @@ final class SportsManagementMVCFactory extends MVCFactory
 
     private function loadLegacyView(string $name, string $prefix, string $type): ?string
     {
+        if (!$this->validLegacyName($name) || !$this->validLegacyName($type)) {
+            return null;
+        }
+
         $prefix = $this->normalisePrefix($prefix);
 
         if ($this->legacyBasePath($prefix) === null) {
