@@ -163,11 +163,19 @@ namespace {
     }
 
     $app = new class implements CMSApplicationInterface {
+        public mixed $requestProject = null;
         public function isClient(string $name): bool { return $name === 'site'; }
 
         public function getInput(): object
         {
-            return new class {
+            return new class($this) {
+                public function __construct(private object $app) {}
+
+                public function get(string $name, mixed $default = null, string $filter = 'cmd'): mixed
+                {
+                    return $name === 'p' ? ($this->app->requestProject ?? $default) : $default;
+                }
+
                 public function getInt(string $name, int $default = 0): int
                 {
                     return $default;
@@ -188,6 +196,24 @@ namespace {
     ensureSame([], $helper->getData(new Registry(['p' => [5], 'teams' => ['12garbage']]), $module, $app, $db),
         'Invalid explicit team selection must not reveal all teams.');
     ensureSame(0, $db->queries, 'Invalid selections must not load unfiltered matches.');
+
+    // Invalid single-project URL overrides may not revert to the configured
+    // list and accidentally show unrelated fixtures.
+    foreach (['12broken', '12:bad:slug', '12,13', '999999999999999999999999', [12], true] as $invalid) {
+        $app->requestProject = $invalid;
+        ensureSame([], $helper->getData(new Registry(['p' => [5]]), $module, $app, $db),
+            'Invalid URL project override must be rejected.');
+        ensureSame(0, $db->queries, 'Invalid project overrides must not query the database.');
+    }
+
+    $app->requestProject = '8:project-eight';
+    ensureSame([], $helper->getData(new Registry(['p' => [5]]), $module, $app, $db),
+        'Valid project override with empty database must return no fixtures.');
+    ensureSame([8], $db->lastQuery->whereIn['p.id'] ?? null,
+        'A valid URL ID:alias must override the configured project.');
+    ensureSame(1, $db->queries, 'One query expected for a valid project override.');
+    $db->queries = 0;
+    $app->requestProject = null;
 
     $db->rows = [
         (object) [
@@ -231,6 +257,9 @@ namespace {
         'Both administrator upload actions must read POST-only form values.');
     ensureSame(3, substr_count($admin, '$input = $this->app->getInput()->post;'),
         'Every administrator image-selection writer must read values from POST.');
+    ensureSame(true,
+        str_contains($admin, "$config + ['ignore_request' => true]"),
+        'Administrator image model lookup must preserve explicit caller MVC options.');
     ensureSame(true, str_contains($site, "\$input->post->getString('linkaddress', '')"),
         'Frontend remote upload URL must come from POST.');
     ensureSame(true, str_contains($site, "\$input->post->getCmd('type', '')"),
