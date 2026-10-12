@@ -145,6 +145,10 @@ final class ActSeasonHelper
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
         $alpha2 = strtolower((string) ($row->alpha2 ?? ''));
+
+        // Country codes are used in CSS classes and image paths: accept ISO-style codes only.
+        $alpha3 = preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : '';
+        $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars((string) ($row->country_label ?? $alpha3), ENT_QUOTES, 'UTF-8');
 
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
