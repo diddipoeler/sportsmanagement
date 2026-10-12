@@ -123,7 +123,7 @@
     };
 
     const setBusy = (root, config, busy) => {
-        const pagination = root.querySelector('#pagination');
+        const pagination = root.querySelector('[data-jsm-pagination]');
         if (!pagination) {
             return;
         }
@@ -269,7 +269,7 @@
         let revision = 0;
         const nextRevision = () => ++revision;
         const isCurrent = (token) => () => token === revision;
-        const projectList = () => root.querySelector('#ajax-nav-list');
+        const projectList = () => root.querySelector('[data-jsm-project-nav-links]');
         const teamList = () => ensureTeamLinkList(element('team'));
 
         const clearNavigation = () => {
