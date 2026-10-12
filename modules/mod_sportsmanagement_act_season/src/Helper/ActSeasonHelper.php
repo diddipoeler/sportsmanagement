@@ -67,7 +67,8 @@ final class ActSeasonHelper
             $db->setQuery($query);
             $list = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ': ' . $e->getMessage(), \Joomla\CMS\Log\Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             $list = [];
         }
 
