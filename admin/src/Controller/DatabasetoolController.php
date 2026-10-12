@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native administrator controller for destructive database-tool actions. */
@@ -129,8 +130,8 @@ final class DatabasetoolController extends BaseController
         $this->checkToken();
         $identity = $this->app->getIdentity();
 
-        if (!$identity->authorise('core.admin', 'com_sportsmanagement')) {
-            throw new \RuntimeException('JERROR_ALERTNOAUTHOR', 403);
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
     }
 }
