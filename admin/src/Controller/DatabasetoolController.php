@@ -39,9 +39,12 @@ final class DatabasetoolController extends BaseController
     public function updatetemplatemasters(): void
     {
         $this->authoriseAction();
+        // The legacy task no longer has an implementation in DatabasetoolModel.
+        // Do not report a successful database update when nothing was changed.
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=databasetools',
-            'Alle Templates angepasst'
+            'Die Aktualisierung der Template-Master ist derzeit nicht implementiert.',
+            'warning'
         );
     }
 
@@ -90,6 +93,16 @@ final class DatabasetoolController extends BaseController
         $tables = $joomleague
             ? $model->getJoomleagueTablesTruncate()
             : $model->getSportsManagementTables();
+        if ($tables === []) {
+            $this->setRedirect(
+                'index.php?option=com_sportsmanagement&view=databasetools',
+                'Keine passenden Datenbanktabellen gefunden.',
+                'warning'
+            );
+
+            return;
+        }
+
         $failed = [];
 
         foreach ($tables as $table) {
