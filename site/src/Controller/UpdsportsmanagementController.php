@@ -26,6 +26,11 @@ final class UpdsportsmanagementController extends BaseController
             throw new RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
+        // CSRF protection alone does not grant permission to modify records.
+        if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $data = $this->input
             ->post
             ->get('jform', [], 'array');
