@@ -66,7 +66,8 @@ final class SportsManagementMVCFactory extends MVCFactory
     public function createView($name, $prefix = '', $type = '', array $config = [])
     {
         $prefix = $this->normalisePrefix((string) $prefix);
-        $type = $type !== '' ? (string) $type : 'html';
+        $type = trim((string) $type);
+        $type = $type !== '' ? $type : 'html';
         $this->bridgeAdministratorTemplatePath((string) $name, $prefix, $type, $config);
         $view = parent::createView($name, $prefix, $type, $config);
 
