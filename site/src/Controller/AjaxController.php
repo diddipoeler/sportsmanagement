@@ -289,7 +289,9 @@ final class AjaxController extends BaseController
     private function sendJson(mixed $payload): void
     {
         $app = $this->app;
+        $app->getDocument()->setMimeEncoding('application/json');
         $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
+        $app->setHeader('Cache-Control', 'no-store, private', true);
         echo json_encode(
             $payload,
             JSON_UNESCAPED_UNICODE
