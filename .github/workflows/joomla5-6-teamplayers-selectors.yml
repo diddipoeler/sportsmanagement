@@ -1,0 +1,36 @@
+name: Joomla 5/6 TeamPlayers selector IDs
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php'
+      - '.github/tests/joomla56_teamplayers_selector_validation.php'
+      - '.github/workflows/joomla5-6-teamplayers-selectors.yml'
+  pull_request:
+    paths:
+      - 'modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php'
+      - '.github/tests/joomla56_teamplayers_selector_validation.php'
+      - '.github/workflows/joomla5-6-teamplayers-selectors.yml'
+
+jobs:
+  selectors:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Check PHP syntax and PHPDoc headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+          php -l .github/tests/joomla56_teamplayers_selector_validation.php
+          php .github/tests/phpdoc_metadata.php modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+      - name: Validate Joomla selector aliases and SQL guards
+        run: php .github/tests/joomla56_teamplayers_selector_validation.php
