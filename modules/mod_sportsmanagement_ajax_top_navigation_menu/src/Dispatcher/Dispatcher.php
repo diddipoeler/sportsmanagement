@@ -36,7 +36,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-        $requestedLayout = (string) $data['params']->get('layout', 'default');
+        $requestedLayout = trim((string) $data['params']->get('layout', 'default'));
         if ($requestedLayout === '' || $requestedLayout === '_:native' || $requestedLayout === 'native') {
             $requestedLayout = 'default';
         }
