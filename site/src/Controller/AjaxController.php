@@ -254,7 +254,7 @@ final class AjaxController extends BaseController
                 ->bind(':associationCountry', $country, \Joomla\Database\ParameterType::STRING);
         }
 
-        $db->setQuery($query);
+        $db->setQuery($query, 0, 500);
         $rows = $db->loadObjectList() ?: [];
 
         return array_merge([
