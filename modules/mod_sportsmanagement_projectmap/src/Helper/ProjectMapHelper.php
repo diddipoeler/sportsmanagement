@@ -46,7 +46,7 @@ final class ProjectMapHelper
             ->select([
                 $db->quoteName('pro.id'),
                 $db->quoteName('pro.name'),
-                "CONCAT_WS(':', " . $db->quoteName('pro.id') . ', ' . $db->quoteName('pro.alias') . ') AS ' . $db->quoteName('project_slug'),
+                $db->quoteName('pro.alias', 'project_alias'),
                 $db->quoteName('le.name', 'liganame'),
                 $db->quoteName('le.country'),
                 $db->quoteName('le.picture', 'league_picture'),
@@ -81,6 +81,10 @@ final class ProjectMapHelper
             if ($country === '') {
                 continue;
             }
+
+            // Build the Joomla ID:alias route segment without MySQL-only SQL.
+            $project->project_slug = (int) ($project->id ?? 0)
+                . ':' . (string) ($project->project_alias ?? '');
 
             if (!isset($projectsByCountry[$country])
                 || (int) ($project->id ?? 0) > (int) ($projectsByCountry[$country]->id ?? 0)) {
