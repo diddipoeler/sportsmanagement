@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\DatabasetoolsController;
 
 if (!class_exists(DatabasetoolsController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/DatabasetoolsController.php';
+    $nativeController = __DIR__ . '/../src/Controller/DatabasetoolsController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement administrator Databasetools controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(DatabasetoolsController::class)) {
