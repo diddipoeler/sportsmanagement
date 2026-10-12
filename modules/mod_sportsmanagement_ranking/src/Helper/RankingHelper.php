@@ -32,8 +32,11 @@ final class RankingHelper
 
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Ranking database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -44,7 +47,7 @@ final class RankingHelper
             throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
         }
 
-        $projectId = max(0, (int) $params->get('p', 0));
+        $projectId = $this->firstId($params->get('p', 0));
 
         if ($projectId <= 0) {
             return [];
@@ -177,7 +180,7 @@ final class RankingHelper
             throw new \RuntimeException('Inline-hockey refresh is restricted to the Joomla database.', 409);
         }
 
-        $projectId = max(0, (int) $params->get('p', 0));
+        $projectId = $this->firstId($params->get('p', 0));
 
         if ($projectId <= 0) {
             throw new \RuntimeException('Ranking module has no valid project.', 400);
