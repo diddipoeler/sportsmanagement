@@ -1,0 +1,64 @@
+name: Joomla 5/6 controller loader regression
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/results.php'
+      - 'site/controllers/treetonode.php'
+      - 'site/controllers/uefawertung.php'
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/controllers/cpanel.php'
+      - 'admin/controllers/databasetool.php'
+      - 'admin/controllers/databasetools.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/tests/joomla56_controller_bridge_loading.php'
+      - '.github/workflows/joomla5-6-controller-loader-regression.yml'
+  pull_request:
+    paths:
+      - 'site/controllers/results.php'
+      - 'site/controllers/treetonode.php'
+      - 'site/controllers/uefawertung.php'
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/controllers/cpanel.php'
+      - 'admin/controllers/databasetool.php'
+      - 'admin/controllers/databasetools.php'
+      - 'modules/mod_sportsmanagement_eventsranking/helper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/tests/joomla56_controller_bridge_loading.php'
+      - '.github/workflows/joomla5-6-controller-loader-regression.yml'
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Check controller and module syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l .github/tests/joomla56_controller_bridge_loading.php
+          for path in \
+            site/controllers/results.php \
+            site/controllers/treetonode.php \
+            site/controllers/uefawertung.php \
+            site/controllers/updsportsmanagement.php \
+            admin/controllers/cpanel.php \
+            admin/controllers/databasetool.php \
+            admin/controllers/databasetools.php \
+            modules/mod_sportsmanagement_eventsranking/helper.php \
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php; do
+            php -l "$path"
+          done
+      - name: Check file-level PHPDoc tags
+        run: php .github/tests/phpdoc_metadata.php site/controllers/results.php site/controllers/treetonode.php site/controllers/uefawertung.php site/controllers/updsportsmanagement.php admin/controllers/cpanel.php admin/controllers/databasetool.php admin/controllers/databasetools.php modules/mod_sportsmanagement_eventsranking/helper.php modules/mod_sportsmanagement_firstleagueoverview/helper.php
+      - name: Check native bridge paths and module database guards
+        run: php .github/tests/joomla56_controller_bridge_loading.php
