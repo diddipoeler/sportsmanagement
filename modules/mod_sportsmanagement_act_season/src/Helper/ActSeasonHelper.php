@@ -179,10 +179,17 @@ final class ActSeasonHelper
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
             : (string) ($row->country_picture ?? $params->get('ph_flags', ''));
 
-        return $path === ''
-            ? ''
-            : '<img src="' . htmlspecialchars(Uri::root() . ltrim($path, '/'), ENT_QUOTES, 'UTF-8')
-                . '" alt="' . $label . '" title="' . $label . '" />';
+        if ($path === '') {
+            return '';
+        }
+
+        // Preserve configured HTTPS image URLs; local image paths remain site-relative.
+        $source = preg_match('~^https?://~i', $path)
+            ? $path
+            : Uri::root() . ltrim($path, '/');
+
+        return '<img src="' . htmlspecialchars($source, ENT_QUOTES, 'UTF-8')
+            . '" alt="' . $label . '" title="' . $label . '" />';
     }
 
     private function slug(int $id, string $alias): string
