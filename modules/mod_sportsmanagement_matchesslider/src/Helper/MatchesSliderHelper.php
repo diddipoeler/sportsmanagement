@@ -53,8 +53,24 @@ final class MatchesSliderHelper
         $input = $app->getInput();
         $databaseMode = $input->getInt('cfg_which_database', (int) $params->get('cfg_which_database', 0));
         $seasonId = $input->getInt('s', (int) $params->get('s', 0));
-        $requestProject = $input->getInt('p', 0);
-        $projectIds = $requestProject > 0 ? [$requestProject] : $this->ids($params->get('p', []));
+        $requestProject = $input->get('p', null, 'raw');
+        $projectIds = $this->ids($params->get('p', []));
+
+        if ($requestProject !== null && $requestProject !== '' && $requestProject !== '0') {
+            // A request may override the module's project list with one Joomla
+            // ID:alias. Never silently accept malformed or multiple IDs.
+            if (!is_string($requestProject) && !is_int($requestProject)) {
+                return [];
+            }
+
+            $requestedIds = $this->ids($requestProject);
+
+            if (count($requestedIds) !== 1) {
+                return [];
+            }
+
+            $projectIds = $requestedIds;
+        }
 
         if (!$projectIds) {
             return [];
