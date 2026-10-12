@@ -33,6 +33,7 @@ jobs:
           php -l site/src/Controller/EditclubController.php
           php -l site/src/Model/EditclubModel.php
           php -l site/src/Controller/AjaxController.php
+          php -l site/src/Controller/ImagehandlerController.php
           php -l admin/src/Controller/DivisionsController.php
           php -l admin/src/Controller/MatchesController.php
           php -l admin/src/Controller/MatchController.php
@@ -48,8 +49,10 @@ jobs:
           php -l admin/src/Controller/AgegroupsController.php
           php -l admin/src/Controller/SeasonsController.php
           php -l modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          php -l .github/tests/joomla56_birthday_leapday.php
           php -l .github/tests/joomla56_editor_admin_module_contract.php
           php -l admin/src/Controller/AjaxController.php
+          php -l admin/src/Controller/DatabasetoolController.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php
           php -l modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php
