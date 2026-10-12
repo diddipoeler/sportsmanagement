@@ -82,7 +82,7 @@ final class ImagehandlerController extends BaseController
 
     public function delete(): void
     {
-        if (!Session::checkToken('get')) {
+        if (!Session::checkToken('post')) {
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
@@ -92,7 +92,7 @@ final class ImagehandlerController extends BaseController
         $type = $input->getCmd('type', '');
         $folder = ImageSelectHelper::getFolder($type);
         $baseDir = $this->imageBaseDirectory($folder, false);
-        $images = $input->get('rm', [], 'array');
+        $images = $input->post->get('rm', [], 'array');
 
         if ($baseDir !== null) {
             foreach ((array) $images as $image) {
