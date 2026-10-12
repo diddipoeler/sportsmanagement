@@ -294,6 +294,7 @@ final class AjaxController extends BaseController
         $app->getDocument()->setMimeEncoding('application/json');
         $app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
         $app->setHeader('Cache-Control', 'no-store, private', true);
+        $app->setHeader('X-Content-Type-Options', 'nosniff', true);
         echo json_encode(
             $payload,
             JSON_UNESCAPED_UNICODE
