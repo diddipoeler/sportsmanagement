@@ -89,9 +89,10 @@ final class ActSeasonHelper
                 ];
             }
 
-            if (!isset($countries[$fedId][$row->country])) {
-                $countries[$fedId][$row->country] = (object) [
-                    'alpha3' => (string) $row->country,
+            $countryCode = (string) ($row->country ?? '');
+            if ($countryCode !== '' && !isset($countries[$fedId][$countryCode])) {
+                $countries[$fedId][$countryCode] = (object) [
+                    'alpha3' => $countryCode,
                     'name' => $row->country_label,
                     'flag_html' => $row->flag_html,
                 ];
