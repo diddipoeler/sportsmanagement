@@ -72,7 +72,7 @@ $renderLinkItem = static function (string $view, string $label) use ($helper, $e
                     <?php
                     $federation = (string) $federation;
                     $isActive = $federation === $selectedFederation || ($selectedFederation === '' && $index === 0);
-                    $tabId = 'jlajaxtopmenu-' . $federation . $moduleId;
+                    $tabId = 'jlajaxtopmenu-' . preg_replace('/[^a-zA-Z0-9_-]/', '-', $federation) . '-' . $moduleId;
                     ?>
                     <li class="nav-item" role="presentation">
                         <button
@@ -96,7 +96,7 @@ $renderLinkItem = static function (string $view, string $label) use ($helper, $e
                     <?php
                     $federation = (string) $federation;
                     $isActive = $federation === $selectedFederation || ($selectedFederation === '' && $index === 0);
-                    $tabId = 'jlajaxtopmenu-' . $federation . $moduleId;
+                    $tabId = 'jlajaxtopmenu-' . preg_replace('/[^a-zA-Z0-9_-]/', '-', $federation) . '-' . $moduleId;
                     $assocKey = $bucketKey($countryassocselect, $federation);
                     $subAssocKey = $bucketKey($countrysubassocselect, $federation);
                     $subSubAssocKey = $bucketKey($countrysubsubassocselect, $federation);
