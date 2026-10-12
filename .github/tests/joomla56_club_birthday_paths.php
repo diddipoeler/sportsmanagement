@@ -122,6 +122,37 @@ namespace {
             unlink($outside);
         }
 
+        $flag = new \ReflectionMethod($helper, 'flagHtml');
+        $cssParams = new \Joomla\Registry\Registry(['cfg_flags_css' => 1]);
+        $validFlag = $flag->invoke(null, (object) [
+            'country' => 'DEU',
+            'country_alpha2' => 'de',
+        ], $cssParams);
+
+        if (!str_contains($validFlag, 'fi-de')) {
+            throw new \RuntimeException('Valid ISO flag code was not rendered');
+        }
+
+        $invalidFlag = $flag->invoke(null, (object) [
+            'country' => 'ZZZ',
+            'country_alpha2' => '../../wrong',
+        ], $cssParams);
+
+        if ($invalidFlag !== '') {
+            throw new \RuntimeException('Malformed country code was accepted as a CSS flag');
+        }
+
+        $imageParams = new \Joomla\Registry\Registry(['cfg_flags_css' => 0]);
+        $unsafeFlag = $flag->invoke(null, (object) [
+            'country' => 'ZZZ',
+            'country_alpha2' => '',
+            'country_picture' => '../private.png',
+        ], $imageParams);
+
+        if ($unsafeFlag !== '') {
+            throw new \RuntimeException('Parent-directory flag path was accepted');
+        }
+
         echo "Club birthday IDs and image paths OK\n";
     } finally {
         @unlink($testRoot . '/images/outside.png');
