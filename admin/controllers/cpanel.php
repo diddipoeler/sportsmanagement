@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\CpanelController;
 
 if (!class_exists(CpanelController::class)) {
-    $nativeController = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/CpanelController.php';
+    $nativeController = __DIR__ . '/../src/Controller/CpanelController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
