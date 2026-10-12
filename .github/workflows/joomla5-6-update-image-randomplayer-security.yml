@@ -1,0 +1,56 @@
+name: Joomla 5/6 update image and player security
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/GithubinstallController.php'
+      - 'admin/src/Model/GithubinstallModel.php'
+      - 'site/src/Controller/ImagehandlerController.php'
+      - 'site/views/imagehandler/tmpl/default.php'
+      - 'site/views/imagehandler/tmpl/default_image.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
+      - '.github/tests/joomla56_github_image_randomplayer_security.php'
+      - '.github/workflows/joomla5-6-update-image-randomplayer-security.yml'
+  pull_request:
+    paths:
+      - 'admin/src/Controller/GithubinstallController.php'
+      - 'admin/src/Model/GithubinstallModel.php'
+      - 'site/src/Controller/ImagehandlerController.php'
+      - 'site/views/imagehandler/tmpl/default.php'
+      - 'site/views/imagehandler/tmpl/default_image.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
+      - '.github/tests/joomla56_github_image_randomplayer_security.php'
+      - '.github/workflows/joomla5-6-update-image-randomplayer-security.yml'
+
+jobs:
+  security-regressions:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Check PHP syntax and required file headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            admin/src/Controller/GithubinstallController.php
+            admin/src/Model/GithubinstallModel.php
+            site/src/Controller/ImagehandlerController.php
+            site/views/imagehandler/tmpl/default.php
+            site/views/imagehandler/tmpl/default_image.php
+            modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php
+          )
+          for path in "${paths[@]}"; do
+            php -l "$path"
+          done
+          php -l .github/tests/joomla56_github_image_randomplayer_security.php
+          php .github/tests/phpdoc_metadata.php "${paths[@]}"
+      - name: Run GitHub update, image deletion and random player security regressions
+        run: php .github/tests/joomla56_github_image_randomplayer_security.php
