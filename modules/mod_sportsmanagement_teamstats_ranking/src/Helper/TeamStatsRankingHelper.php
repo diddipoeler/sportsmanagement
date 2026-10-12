@@ -591,7 +591,7 @@ final class TeamStatsRankingHelper
 
         $text = trim((string) $value);
 
-        if (!preg_match('/^([0-9]+)(?::[^:\\s,;|]+)?$/D', $text, $match)) {
+        if (!preg_match('/^([0-9]+)(?::[^:\s,;|]+)?$/D', $text, $match)) {
             return 0;
         }
 
