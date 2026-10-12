@@ -104,6 +104,14 @@ final class ActSeasonHelper
             }
         }
 
+        // Countries without a federation must remain visible in the tab layout.
+        if (!empty($countries[0])) {
+            $federations[0] = (object) [
+                'id' => 0,
+                'name' => Text::_('JNONE'),
+            ];
+        }
+
         uasort(
             $federations,
             static fn (object $a, object $b): int => strcasecmp(Text::_($a->name), Text::_($b->name))
