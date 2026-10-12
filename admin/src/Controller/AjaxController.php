@@ -33,7 +33,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getPredictionGroups', [
-            $input->getInt('prediction_id'),
+            max(0, $input->getInt('prediction_id')),
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
@@ -44,7 +44,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getPredictionPj', [
-            $input->getInt('prediction_id'),
+            max(0, $input->getInt('prediction_id')),
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
@@ -202,7 +202,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getpredictionmembersoptions', [
-            $input->getInt('prediction_id'),
+            max(0, $input->getInt('prediction_id')),
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
