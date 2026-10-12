@@ -113,7 +113,7 @@ final class TeamPlayersHelper
 
         $raw = trim((string) $value);
 
-        if (!preg_match('/^([0-9]+)(?::[^:\\s,;]+)?$/D', $raw, $match)) {
+        if (!preg_match('/^([0-9]+)(?::[^:\s,;]+)?$/D', $raw, $match)) {
             return 0;
         }
 
