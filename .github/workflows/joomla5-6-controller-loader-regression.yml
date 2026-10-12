@@ -19,6 +19,9 @@ name: Joomla 5/6 controller loader regression
       - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'site/src/Controller/UpdsportsmanagementController.php'
+      - 'admin/src/Controller/DatabasetoolController.php'
+      - '.github/tests/joomla56_admin_maintenance_guard.php'
       - '.github/tests/joomla56_ranking_liveticker_service_contract.php'
       - '.github/tests/joomla56_native_mvc_security.php'
       - '.github/tests/joomla56_controller_bridge_loading.php'
@@ -40,6 +43,9 @@ name: Joomla 5/6 controller loader regression
       - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
+      - 'site/src/Controller/UpdsportsmanagementController.php'
+      - 'admin/src/Controller/DatabasetoolController.php'
+      - '.github/tests/joomla56_admin_maintenance_guard.php'
       - '.github/tests/joomla56_ranking_liveticker_service_contract.php'
       - '.github/tests/joomla56_native_mvc_security.php'
       - '.github/tests/joomla56_controller_bridge_loading.php'
@@ -108,3 +114,15 @@ jobs:
             modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php \
             modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
           php .github/tests/joomla56_ranking_liveticker_service_contract.php
+
+      - name: Check native admin maintenance and frontend updater model loader
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/Controller/UpdsportsmanagementController.php
+          php -l admin/src/Controller/DatabasetoolController.php
+          php -l .github/tests/joomla56_admin_maintenance_guard.php
+          php .github/tests/phpdoc_metadata.php \
+            site/src/Controller/UpdsportsmanagementController.php \
+            admin/src/Controller/DatabasetoolController.php
+          php .github/tests/joomla56_admin_maintenance_guard.php
