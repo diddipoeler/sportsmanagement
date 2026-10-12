@@ -78,7 +78,7 @@ final class ActSeasonHelper
             $row->project_slug = $this->slug((int) $row->id, (string) ($row->project_alias ?? ''));
             $row->roundcode = $this->slug((int) ($row->round_id ?? 0), (string) ($row->round_alias ?? ''));
             $row->database_selector = $databaseSelector;
-            $row->country_label = Text::_((string) ($row->country_name ?: $row->country));
+            $row->country_label = Text::_((string) (($row->country_name ?? '') ?: ($row->country ?? '')));
             $row->flag_html = $this->flagHtml($row, $componentParams);
             $fedId = (int) ($row->federation ?? 0);
 
