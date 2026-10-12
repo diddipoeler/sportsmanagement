@@ -35,9 +35,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $language = $app->getLanguage();
-        $language->load('mod_sportsmanagement_ajax_top_navigation_menu', JPATH_SITE, null, true);
-        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
-        $language->load('com_sportsmanagement', JPATH_SITE, null, true);
+        $tag = $language->getTag();
+        $language->load('mod_sportsmanagement_ajax_top_navigation_menu', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $tag, true);
+        $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
+        $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
         $requestedLayout = trim((string) $data['params']->get('layout', 'default'));
         if ($requestedLayout === '' || $requestedLayout === '_:native' || $requestedLayout === 'native') {
