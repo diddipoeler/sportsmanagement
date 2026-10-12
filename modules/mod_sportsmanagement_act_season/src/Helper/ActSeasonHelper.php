@@ -85,7 +85,7 @@ final class ActSeasonHelper
             if ($fedId > 0 && !isset($federations[$fedId])) {
                 $federations[$fedId] = (object) [
                     'id' => $fedId,
-                    'name' => (string) ($row->federation_name ?: $fedId),
+                    'name' => (string) (($row->federation_name ?? '') ?: $fedId),
                 ];
             }
 
