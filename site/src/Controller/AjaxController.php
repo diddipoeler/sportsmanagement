@@ -250,7 +250,8 @@ final class AjaxController extends BaseController
             ->order($db->quoteName('s.name') . ' ASC');
 
         if ($country !== '') {
-            $query->where($db->quoteName('s.country') . ' = ' . $db->quote($country));
+            $query->where($db->quoteName('s.country') . ' = :associationCountry')
+                ->bind(':associationCountry', $country, \Joomla\Database\ParameterType::STRING);
         }
 
         $db->setQuery($query);
