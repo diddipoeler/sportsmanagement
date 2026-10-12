@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\UefawertungController;
 
 if (!class_exists(UefawertungController::class)) {
-    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/UefawertungController.php';
+    $nativeController = __DIR__ . '/../src/Controller/UefawertungController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
