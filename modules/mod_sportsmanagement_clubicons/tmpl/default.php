@@ -18,19 +18,27 @@ $alignment = match ((string) $params->get('iconpos', 'middle')) {
     'bottom' => 'align-bottom',
     default => 'align-middle',
 };
+
+// Only render ranked teams that have module data, and calculate row breaks
+// from the actual number of visible cells.
+$displayRows = [];
+foreach ($ranking as $row) {
+    $projectTeamId = (int) ($row->projectteamid ?? 0);
+    if ($projectTeamId > 0 && isset($teams[$projectTeamId])) {
+        $displayRows[] = $row;
+    }
+}
+$displayCount = count($displayRows);
 ?>
-<?php if ($count > 0) : ?>
+<?php if ($displayCount > 0) : ?>
 <div class="mod-sportsmanagement-clubicons <?php echo $moduleClass; ?>" id="<?php echo htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8'); ?>">
     <table id="clubicons<?php echo (int) $module->id; ?>" class="<?php echo $tableClass; ?>">
         <tbody>
         <tr>
             <?php $column = 0; ?>
-            <?php foreach ($ranking as $row) : ?>
+            <?php foreach ($displayRows as $row) : ?>
                 <?php
                 $projectTeamId = (int) ($row->projectteamid ?? 0);
-                if ($projectTeamId <= 0 || !isset($teams[$projectTeamId])) {
-                    continue;
-                }
                 $team = $teams[$projectTeamId];
                 $link = (string) ($team['link'] ?? '');
                 $logoUrl = (string) ($team['logo_url'] ?? '');
@@ -48,7 +56,7 @@ $alignment = match ((string) $params->get('iconpos', 'middle')) {
                     <?php endif; ?>
                     <?php if ($link !== '') : ?></a><?php endif; ?>
                 </td>
-                <?php if ($column % $iconsPerRow === 0) : ?>
+                <?php if ($column % $iconsPerRow === 0 && $column < $displayCount) : ?>
                     </tr><tr>
                 <?php endif; ?>
             <?php endforeach; ?>
