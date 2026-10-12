@@ -54,6 +54,19 @@ namespace Joomla\CMS {
     }
 }
 
+namespace Joomla\CMS\Log {
+    final class Log
+    {
+        public const ERROR = 1;
+        public static array $entries = [];
+
+        public static function add(string $message, int $priority, string $category): void
+        {
+            self::$entries[] = [$message, $priority, $category];
+        }
+    }
+}
+
 namespace Joomla\CMS\Language {
     final class Text
     {
@@ -168,8 +181,9 @@ namespace {
             'id' => 8, 'project_alias' => 'league-new', 'country' => 'DEU',
             'country_alpha2' => 'DE', 'country_federation' => 1,
             'federation_name' => 'UEFA', 'federation_picture' => 'uefa.png',
-            'country_name' => 'Germany', 'country_picture' => 'de.png',
-            'liganame' => 'League', 'name' => 'New league', 'league_picture' => 'league.png',
+            'country_name' => '<b>Germany</b>', 'country_picture' => 'de.png',
+            'liganame' => '<img src=x onerror=alert(1)>',
+            'name' => '<script>alert(1)</script>', 'league_picture' => 'league.png',
         ],
         (object) [
             'id' => 5, 'project_alias' => 'league-b', 'country' => 'FRA',
@@ -196,6 +210,15 @@ namespace {
     parse_str((string) parse_url($result['options']['state_specific']['DE']['url'], PHP_URL_QUERY), $route);
     assertMatch('8:league-new', $route['p'] ?? null,
         'Map routing must include the highest matching project ID:alias');
+    assertMatch(true, str_contains($result['options']['state_specific']['DE']['name'], '&lt;b&gt;Germany&lt;/b&gt;'),
+        'Map country text must be HTML-escaped.');
+    assertMatch(true, str_contains($result['options']['state_specific']['DE']['description'], '&lt;script&gt;'),
+        'Map project description must not contain raw executable markup.');
+    assertMatch(false, str_contains($result['options']['state_specific']['DE']['description'], '<script>'),
+        'Map popup descriptions must never inject unescaped script tags.');
+    assertMatch(true, str_contains($result['options']['state_specific']['DE']['description'], '&lt;img'),
+        'Map league name must be HTML-escaped.');
+
     assertMatch(['DE', 'FR'], $result['options']['regions'][1]['states'] ?? null,
         'Map regions must group countries under their federation');
 
@@ -240,6 +263,11 @@ namespace {
     ), 'A missing/invalid Joomla database service must not load fixtures');
     assertMatch(1, Factory::$lookups, 'Valid project selector must attempt the DB service');
     assertMatch('error', $app->messages[0][1] ?? null, 'Database service failure must be signaled');
+    assertMatch('SportsManagement playground fixtures could not be loaded.',
+        $app->messages[0][0] ?? null, 'Site users should receive a generic error, not internal details.');
+    assertMatch(true, str_contains(\Joomla\CMS\Log\Log::$entries[0][0] ?? '', 'database service is unavailable'),
+        'Internal database service failures should be logged for administrators.');
+
 
     echo "Project Map portability and Playground Plan selector regressions OK.\n";
 }
