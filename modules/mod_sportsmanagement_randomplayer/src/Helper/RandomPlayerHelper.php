@@ -288,7 +288,7 @@ final class RandomPlayerHelper
         // Both scalar and multiselect parameters may contain delimited IDs.
         $candidates = [];
         foreach ($values as $entry) {
-            if (!is_scalar($entry)) {
+            if (!is_string($entry) && !is_int($entry)) {
                 continue;
             }
             foreach (preg_split('/[\s,;]+/', (string) $entry, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $candidate) {
@@ -297,7 +297,7 @@ final class RandomPlayerHelper
         }
 
         foreach ($candidates as $candidate) {
-            if (is_scalar($candidate) && preg_match('/^\s*(\d+)(?::[A-Za-z0-9_-]+)?\s*$/', (string) $candidate, $match)) {
+            if (is_scalar($candidate) && preg_match('/^\s*(\d+)(?::[A-Za-z0-9_-]+)?\s*$/D', (string) $candidate, $match)) {
                 // Casting an overflowing ID can silently clamp it to PHP_INT_MAX.
                 $digits = ltrim($match[1], '0');
                 if ($digits === '') {
