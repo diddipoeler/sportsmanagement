@@ -132,27 +132,9 @@ final class GithubinstallModel extends BaseDatabaseModel
             }
         }
 
-        $candidates = [];
-
-        if (Folder::exists($tmpPath)) {
-            foreach (new \DirectoryIterator($tmpPath) as $entry) {
-                if ($entry->isDot() || !$entry->isDir()) {
-                    continue;
-                }
-
-                if (str_starts_with($entry->getFilename(), 'sportsmanagement-')) {
-                    $candidates[$entry->getPathname()] = $entry->getMTime();
-                }
-            }
-        }
-
-        if (!$candidates) {
-            return null;
-        }
-
-        arsort($candidates, SORT_NUMERIC);
-
-        return (string) array_key_first($candidates);
+        // Never pick the newest unrelated sportsmanagement-* directory:
+        // it might be a stale or attacker-controlled previous extraction.
+        return null;
     }
 
     private function isAllowedUrl(string $url): bool
