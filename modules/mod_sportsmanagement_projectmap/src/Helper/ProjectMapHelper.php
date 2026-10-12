@@ -217,9 +217,14 @@ final class ProjectMapHelper
             $link = SiteRouteHelper::view('ranking', $routeParameters);
             $countryPicture = htmlspecialchars((string) ($project->country_picture ?? ''), ENT_QUOTES, 'UTF-8');
             $leaguePicture = htmlspecialchars((string) ($project->league_picture ?? ''), ENT_QUOTES, 'UTF-8');
+            // Translation lookups may fall back to database-supplied names.
+            // Always escape names inserted into the map's HTML popups.
+            $countryName = htmlspecialchars(Text::_((string) ($project->country_name ?? '')), ENT_QUOTES, 'UTF-8');
+            $leagueName = htmlspecialchars(Text::_((string) ($project->liganame ?? '')), ENT_QUOTES, 'UTF-8');
+            $projectName = htmlspecialchars(Text::_((string) ($project->name ?? '')), ENT_QUOTES, 'UTF-8');
 
             $stateSpecific[$country] = [
-                'name' => '<img src="' . $countryPicture . '" alt="">' . Text::_((string) ($project->country_name ?? '')),
+                'name' => '<img src="' . $countryPicture . '" alt="">' . $countryName,
                 'image_url' => (string) ($project->league_picture ?? ''),
                 'image_position' => 'manual',
                 'image_size' => 0.2,
@@ -227,7 +232,7 @@ final class ProjectMapHelper
                 'image_y' => 0.4,
                 'border_hover_color' => '#d13c12',
                 'image_color' => '#e1ba7d',
-                'description' => '<img src="' . $leaguePicture . '" style="width: 50px" alt="">' . Text::_((string) ($project->liganame ?? '')) . ' :<br>' . Text::_((string) ($project->name ?? '')),
+                'description' => '<img src="' . $leaguePicture . '" style="width: 50px" alt="">' . $leagueName . ' :<br>' . $projectName,
                 'color' => 'default',
                 'hover_color' => 'default',
                 'url' => $link,
