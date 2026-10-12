@@ -96,7 +96,7 @@ final class AjaxController extends BaseController
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
-            $input->getInt('p'),
+            max(0, $input->getInt('p')),
         ]);
     }
 
