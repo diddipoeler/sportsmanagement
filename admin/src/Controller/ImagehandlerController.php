@@ -40,7 +40,7 @@ final class ImagehandlerController extends SportsManagementAdminController
         $this->requirePermission('core.edit');
 
         $input     = $this->app->getInput();
-        $data      = $input->getArray();
+        $data      = $input->post->getArray();
         $file      = $input->files->get('userfile', [], 'array');
         $type      = (string) ($data['type'] ?? '');
         $field     = (string) ($data['field'] ?? '');
@@ -73,7 +73,7 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     public function saveimageplayer(): void
     {
-        $input = $this->app->getInput();
+        $input = $this->app->getInput()->post;
         $this->saveImageSelection(
             'saveimageplayer',
             [
@@ -85,7 +85,7 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     public function saveimageclub(): void
     {
-        $input = $this->app->getInput();
+        $input = $this->app->getInput()->post;
         $this->saveImageSelection(
             'saveimageclub',
             [
@@ -97,7 +97,7 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     public function saveimageteamplayer(): void
     {
-        $input = $this->app->getInput();
+        $input = $this->app->getInput()->post;
         $this->saveImageSelection(
             'saveimageteamplayer',
             [
@@ -113,7 +113,7 @@ final class ImagehandlerController extends SportsManagementAdminController
         $this->requirePermission('core.create');
 
         $input     = $this->app->getInput();
-        $data      = $input->getArray();
+        $data      = $input->post->getArray();
         $file      = $input->files->get('userfile', [], 'array');
         $type      = (string) ($data['type'] ?? '');
         $field     = (string) ($data['field'] ?? '');
@@ -178,8 +178,8 @@ final class ImagehandlerController extends SportsManagementAdminController
         $this->requirePermission('core.delete');
 
         $input  = $this->app->getInput();
-        $images = $input->get('rm', [], 'array');
-        $type   = $input->getCmd('type');
+        $images = $input->post->get('rm', [], 'array');
+        $type   = $input->post->getCmd('type');
         $folder = ImageSelectHelper::getFolder($type);
         $baseDir = $this->imageBaseDirectory($folder, false);
 
