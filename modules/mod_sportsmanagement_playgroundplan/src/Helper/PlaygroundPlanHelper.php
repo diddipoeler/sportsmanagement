@@ -17,6 +17,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -151,7 +152,9 @@ final class PlaygroundPlanHelper
 
             return $rows;
         } catch (\Throwable $exception) {
-            $app->enqueueMessage($exception->getMessage(), 'error');
+            // Keep SQL and service exception details out of public pages.
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage('SportsManagement playground fixtures could not be loaded.', 'error');
 
             return [];
         }
