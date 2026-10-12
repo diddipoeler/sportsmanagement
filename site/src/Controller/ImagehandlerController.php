@@ -406,10 +406,14 @@ final class ImagehandlerController extends BaseController
 
     private function closeModal(string $type, string $filename, string $field, string $fieldId): void
     {
-        $typeJson = json_encode($type, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $filenameJson = json_encode($filename, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $fieldJson = json_encode($field, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $fieldIdJson = json_encode($fieldId, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        // Values are embedded inside a <script> element. Escape HTML delimiters
+        // as well as JavaScript strings to prevent an early </script> terminator.
+        $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+            | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR;
+        $typeJson = json_encode($type, $flags);
+        $filenameJson = json_encode($filename, $flags);
+        $fieldJson = json_encode($field, $flags);
+        $fieldIdJson = json_encode($fieldId, $flags);
 
         echo '<script>'
             . 'if (window.parent && typeof window.parent["selectImage_" + ' . $typeJson . '] === "function") {'
