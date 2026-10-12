@@ -64,7 +64,10 @@ final class HtmlView extends BaseHtmlView
         if (in_array($layout, ['upload', 'upload_3', 'upload_4'], true)) {
             $this->prepareUpload();
         } elseif (in_array($layout, ['uploaddraganddrop', 'uploaddraganddrop_3', 'uploaddraganddrop_4'], true)) {
-            $this->folder = ImageSelectHelper::getFolder((string) ($data['type'] ?? ''));
+            $this->type = (string) ($data['type'] ?? '');
+            $this->folder = ImageSelectHelper::getFolder($this->type);
+            $this->field = (string) ($data['field'] ?? '');
+            $this->fieldid = (string) ($data['fieldid'] ?? '');
             $this->pid = max(0, (int) ($data['pid'] ?? 0));
             $this->mid = max(0, (int) ($data['mid'] ?? 0));
             $this->imagelist = !empty($data['imagelist']) ? 1 : 0;
@@ -111,11 +114,11 @@ final class HtmlView extends BaseHtmlView
     {
         $input = self::administratorApplication()->getInput();
         $this->option = $input->getCmd('option', 'com_sportsmanagement');
-        $type = $input->getCmd('type');
+        $this->type = $input->getCmd('type');
 
         $this->params = ComponentHelper::getParams($this->option);
         $this->ftp = ClientHelper::setCredentialsFromRequest('ftp');
-        $this->folder = ImageSelectHelper::getFolder($type);
+        $this->folder = ImageSelectHelper::getFolder($this->type);
         $this->field = $input->getCmd('field');
         $this->fieldid = $input->getCmd('fieldid');
         $input->set('hidemainmenu', 1);
