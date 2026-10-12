@@ -31,7 +31,7 @@ final class DisplayController extends BaseController
     {
         // Joomla only applies the controller default when the view is absent;
         // an explicitly empty view must be handled here as well.
-        if ($this->input->getCmd('view', '') === '') {
+        if (trim($this->input->getCmd('view', '')) === '') {
             $this->input->set('view', $this->default_view);
         }
 
