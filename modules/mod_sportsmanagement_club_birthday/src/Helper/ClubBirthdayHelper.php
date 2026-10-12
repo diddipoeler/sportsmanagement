@@ -262,7 +262,7 @@ final class ClubBirthdayHelper
 
             if ($absolute !== false
                 && str_starts_with($absolute, $root . DIRECTORY_SEPARATOR)
-                && is_file($absolute)
+                && File::exists($absolute)
             ) {
                 return Uri::root() . $path;
             }
@@ -276,10 +276,11 @@ final class ClubBirthdayHelper
         $candidate = trim($candidate);
 
         if ($candidate === ''
-            || preg_match('/[\\x00-\\x1F\\x7F\\\\\\\\]/', $candidate)
+            || preg_match('/[\x00-\x1F\x7F]/', $candidate)
+            || str_contains($candidate, '\\')
             || str_starts_with($candidate, '//')
             || preg_match('~^[a-z][a-z0-9+.-]*:~i', $candidate)
-            || preg_match('~(?:^|/)\\.\\.(?:/|$)~', $candidate)
+            || preg_match('~(?:^|/)\.\.(?:/|$)~', $candidate)
         ) {
             return '';
         }
