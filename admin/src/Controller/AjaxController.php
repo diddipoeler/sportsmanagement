@@ -126,7 +126,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getpersoncontactid', [
-            $input->getInt('show_user_profile'),
+            max(0, $input->getInt('show_user_profile')),
             $input->getBool('required'),
         ]);
     }
