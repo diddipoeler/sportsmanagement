@@ -67,9 +67,9 @@ final class AjaxTopNavigationHelper
         ));
 
         $legacyHelper->setProject($projectId, $teamId, $divisionId);
-        $leagueId = (int) $legacyHelper->getLeagueId();
+        $leagueId = max(0, (int) $legacyHelper->getLeagueId());
         $countryId = $legacyHelper->getProjectCountry($projectId);
-        $leagueAssocId = (int) $legacyHelper->getLeagueAssocId();
+        $leagueAssocId = max(0, (int) $legacyHelper->getLeagueAssocId());
         $subAssocParentId = (int) $legacyHelper->getAssocParentId($leagueAssocId);
         $subSubAssocParentId = (int) $legacyHelper->getAssocParentId($subAssocParentId);
         $project = $legacyHelper->getProject();
