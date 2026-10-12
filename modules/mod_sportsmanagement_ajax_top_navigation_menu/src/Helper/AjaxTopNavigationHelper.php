@@ -55,16 +55,16 @@ final class AjaxTopNavigationHelper
             $tabPoints[] = (string) $row->name;
         }
 
-        $projectId = $input->getInt('p', 0);
-        $teamId = $input->getInt('tid', 0);
-        $divisionId = $input->getInt('division', 0);
-        $databaseSelector = $input->getInt(
+        $projectId = max(0, $input->getInt('p', 0));
+        $teamId = max(0, $input->getInt('tid', 0));
+        $divisionId = max(0, $input->getInt('division', 0));
+        $databaseSelector = max(0, $input->getInt(
             'cfg_which_database',
             (int) $params->get(
                 'cfg_which_database',
                 (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
             )
-        );
+        ));
 
         $legacyHelper->setProject($projectId, $teamId, $divisionId);
         $leagueId = (int) $legacyHelper->getLeagueId();
@@ -200,7 +200,7 @@ final class AjaxTopNavigationHelper
                 'baseUrl' => rtrim((string) Uri::root(), '/') . '/',
                 'ajaxUrl' => rtrim((string) Uri::root(), '/') . '/index.php',
                 'cfgWhichDatabase' => $databaseSelector,
-                'itemId' => $input->getInt('Itemid', 0),
+                'itemId' => max(0, $input->getInt('Itemid', 0)),
                 'federations' => $tabPoints,
                 'projectType' => (string) ($project->project_type ?? ''),
                 'navpoint' => $navpoint,
