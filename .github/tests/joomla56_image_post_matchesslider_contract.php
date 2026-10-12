@@ -252,5 +252,12 @@ namespace {
             "$path must submit the Joomla CSRF token.");
     }
 
+    $adminView = file_get_contents($root . '/admin/src/View/Imagehandler/HtmlView.php');
+    ensureSame(true, $adminView !== false
+        && str_contains($adminView, "\$this->type = \$input->getCmd('type');")
+        && str_contains($adminView, "\$this->type = (string) (\$data['type'] ?? '');")
+        && str_contains($adminView, "\$this->folder = ImageSelectHelper::getFolder(\$this->type);"),
+        'Administrator image upload layouts must supply their POST image type.');
+
     echo "Joomla 5/6 image POST and portable matches slider regressions OK.\n";
 }
