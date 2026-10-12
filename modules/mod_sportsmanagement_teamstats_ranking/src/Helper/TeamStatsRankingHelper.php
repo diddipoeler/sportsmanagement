@@ -71,8 +71,6 @@ final class TeamStatsRankingHelper
                 $db->quoteName('p.season_id'),
                 $db->quoteName('p.sports_type_id'),
                 $db->quoteName('s.alias', 'season_alias'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('slug'),
-                "CONCAT_WS(':', " . $db->quoteName('s.id') . ', ' . $db->quoteName('s.alias') . ') AS ' . $db->quoteName('season_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join(
@@ -84,8 +82,18 @@ final class TeamStatsRankingHelper
             ->where($db->quoteName('p.published') . ' = 1')
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
+        $project = $db->loadObject();
 
-        return $db->loadObject() ?: null;
+        if ($project === null || $project === false) {
+            return null;
+        }
+
+        // Joomla ID:alias segments are independent of SQL dialect.
+        $project->slug = (int) ($project->id ?? 0) . ':' . (string) ($project->alias ?? '');
+        $project->season_slug = (int) ($project->season_id ?? 0)
+            . ':' . (string) ($project->season_alias ?? '');
+
+        return $project;
     }
 
     private function loadStatistic(DatabaseInterface $db, int $projectId, int $statId): ?object
@@ -496,8 +504,6 @@ final class TeamStatsRankingHelper
                 $db->quoteName('c.logo_middle'),
                 $db->quoteName('c.logo_big'),
                 $db->quoteName('c.country'),
-                "CONCAT_WS(':', " . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
-                "CONCAT_WS(':', " . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('club_slug'),
             ])
             ->from($db->quoteName('#__sportsmanagement_team', 't'))
             ->join(
@@ -507,8 +513,17 @@ final class TeamStatsRankingHelper
             )
             ->whereIn($db->quoteName('t.id'), $teamIds, ParameterType::INTEGER);
         $db->setQuery($query);
+        $teams = $db->loadObjectList('id') ?: [];
 
-        return $db->loadObjectList('id') ?: [];
+        foreach ($teams as $team) {
+            $team->team_slug = (int) ($team->id ?? 0) . ':' . (string) ($team->alias ?? '');
+            $clubId = (int) ($team->club_id ?? 0);
+            $team->club_slug = $clubId > 0
+                ? $clubId . ':' . (string) ($team->club_alias ?? '')
+                : '';
+        }
+
+        return $teams;
     }
 
     private function valueMap(array $rows): array
@@ -561,12 +576,36 @@ final class TeamStatsRankingHelper
 
     private function extractId(mixed $value): int
     {
+        // Single selectors can arrive wrapped in a single-element array.
         if (is_array($value)) {
+            if (count($value) !== 1) {
+                return 0;
+            }
+
             $value = reset($value);
         }
 
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
         $text = trim((string) $value);
-        return $text === '' ? 0 : max(0, (int) strtok($text, ':'));
+
+        if (!preg_match('/^([0-9]+)(?::[^:\\s,;|]+)?$/D', $text, $match)) {
+            return 0;
+        }
+
+        $digits = ltrim($match[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     private function emptyData(): array
