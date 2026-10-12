@@ -180,6 +180,9 @@ use Joomla\CMS\Log\Log;
 
         <input type="hidden" name="option" value="com_sportsmanagement"/>
         <input type="hidden" name="task" value="imagehandler.upload"/>
+        <input type="hidden" name="type" value="<?php echo $this->escape((string) ($this->type ?? '')); ?>"/>
+        <input type="hidden" name="field" value="<?php echo $this->escape((string) ($this->field ?? '')); ?>"/>
+        <input type="hidden" name="fieldid" value="<?php echo $this->escape((string) ($this->fieldid ?? '')); ?>"/>
         <input type="hidden" name="folder" value="<?php echo $this->folder; ?>"/>
 		<?php echo HTMLHelper::_('form.token'); ?>
     </form>
