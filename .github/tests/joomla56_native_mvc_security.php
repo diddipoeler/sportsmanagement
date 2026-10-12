@@ -24,7 +24,7 @@ namespace Joomla\CMS\MVC\Controller {
             $this->input = $input;
         }
 
-        public function getModel($name = '', $prefix = '', $config = []): array
+        public function getModel($name = '', $prefix = '', $config = [])
         {
             return [$name, $prefix, $config];
         }
