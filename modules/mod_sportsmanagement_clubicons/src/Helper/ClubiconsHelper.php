@@ -59,7 +59,10 @@ final class ClubiconsHelper
             return ['project' => $project ?: null, 'ranking' => [], 'teams' => []];
         }
 
-        $websites = $this->websiteMap($db, $ranking);
+        // Fetch club websites only for the configured external-link mode.
+        $websites = (int) $params->get('teamlink', 0) === 5
+            ? $this->websiteMap($db, $ranking)
+            : [];
         $teams = [];
         foreach ($ranking as $row) {
             $team = $row->team;
@@ -236,9 +239,13 @@ final class ClubiconsHelper
 
         $map = [];
         foreach ($db->loadObjectList() ?: [] as $row) {
-            $url = trim((string) ($row->club_www ?? '')) ?: trim((string) ($row->team_www ?? ''));
-            if ($url !== '') {
-                $map[(int) $row->id] = $url;
+            // A malformed club URL must not hide a valid team website.
+            foreach ([(string) ($row->club_www ?? ''), (string) ($row->team_www ?? '')] as $candidate) {
+                $url = $this->externalWebsiteUrl($candidate);
+                if ($url !== '') {
+                    $map[(int) $row->id] = $url;
+                    break;
+                }
             }
         }
 
