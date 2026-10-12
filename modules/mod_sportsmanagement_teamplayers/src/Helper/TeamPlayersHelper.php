@@ -27,8 +27,8 @@ final class TeamPlayersHelper
      */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        $projectId = (int) $params->get('p', 0);
-        $teamId = (int) $params->get('team', 0);
+        $projectId = $this->positiveId($params->get('p', 0));
+        $teamId = $this->positiveId($params->get('team', 0));
 
         if ($projectId <= 0 || $teamId <= 0) {
             return ['project' => null, 'players' => [], 'roster' => []];
@@ -99,6 +99,35 @@ final class TeamPlayersHelper
             'players' => $players,
             'roster' => $roster,
         ];
+    }
+
+    /**
+     * Joomla selectors may return an integer or an ID:alias string. Reject
+     * partial numeric casts, booleans, arrays and overflowing identifiers.
+     */
+    private function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^([0-9]+)(?::[^:\\s,;]+)?$/D', $raw, $match)) {
+            return 0;
+        }
+
+        $digits = ltrim($match[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     private function project(DatabaseInterface $db, int $projectId, int $teamId): ?object
