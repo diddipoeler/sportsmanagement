@@ -6,11 +6,13 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_clubicons/**'
       - '.github/workflows/joomla5-6-module-clubicons.yml'
+      - '.github/tests/joomla56_clubicons_rows.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_clubicons/**'
       - '.github/workflows/joomla5-6-module-clubicons.yml'
+      - '.github/tests/joomla56_clubicons_rows.php'
 
 jobs:
   club-icons-module:
@@ -40,6 +42,11 @@ jobs:
               }
             done
           done
+      - name: Test Club Icons table rows and external URLs
+        run: |
+          php -l .github/tests/joomla56_clubicons_rows.php
+          php .github/tests/joomla56_clubicons_rows.php
+
       - name: Validate manifest and native contracts
         shell: bash
         run: |
