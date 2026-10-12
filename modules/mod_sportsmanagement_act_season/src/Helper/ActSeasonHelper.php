@@ -90,6 +90,11 @@ final class ActSeasonHelper
             }
 
             $countryCode = (string) ($row->country ?? '');
+            if ($fedId === 0 && $countryCode !== '' && !isset($federations[0])) {
+                // Unassigned countries must remain visible when federation tabs are enabled.
+                $federations[0] = (object) ['id' => 0, 'name' => Text::_('JNONE')];
+            }
+
             if ($countryCode !== '' && !isset($countries[$fedId][$countryCode])) {
                 $countries[$fedId][$countryCode] = (object) [
                     'alpha3' => $countryCode,
