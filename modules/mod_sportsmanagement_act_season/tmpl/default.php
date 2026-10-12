@@ -28,6 +28,15 @@ $buttonClass = trim((string) $params->get('button_class', 'btn btn-secondary'));
 if ($buttonClass === 'btn btn-default') {
     $buttonClass = 'btn btn-secondary';
 }
+
+// Only button styles offered by the module manifest should become CSS classes.
+$allowedButtonClasses = [
+    'btn btn-secondary', 'btn btn-primary', 'btn btn-success',
+    'btn btn-info', 'btn btn-warning', 'btn btn-danger', 'btn btn-link',
+];
+if (!in_array($buttonClass, $allowedButtonClasses, true)) {
+    $buttonClass = 'btn btn-secondary';
+}
 $buttonClass = htmlspecialchars($buttonClass, ENT_QUOTES, 'UTF-8');
 $moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8');
 $moduleId = htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8');
