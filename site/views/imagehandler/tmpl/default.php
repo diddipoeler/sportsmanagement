@@ -47,5 +47,6 @@ use Joomla\CMS\Language\Text;
     <input type="hidden" name="tmpl" value="component">
     <input type="hidden" name="task" value="display">
     <input type="hidden" name="folder" value="<?php echo $this->escape($this->folder); ?>">
+    <input type="hidden" name="type" value="<?php echo $this->escape($this->type); ?>">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
