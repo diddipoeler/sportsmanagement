@@ -13,6 +13,11 @@ name: Joomla 5/6 controller loader regression
       - 'admin/controllers/databasetools.php'
       - 'modules/mod_sportsmanagement_eventsranking/helper.php'
       - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'site/src/Controller/UpdsportsmanagementController.php'
+      - 'site/src/Model/UpdsportsmanagementModel.php'
+      - 'admin/src/Controller/DatabasetoolsController.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - '.github/tests/joomla56_native_mvc_security.php'
       - '.github/tests/joomla56_controller_bridge_loading.php'
       - '.github/workflows/joomla5-6-controller-loader-regression.yml'
   pull_request:
@@ -26,6 +31,11 @@ name: Joomla 5/6 controller loader regression
       - 'admin/controllers/databasetools.php'
       - 'modules/mod_sportsmanagement_eventsranking/helper.php'
       - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - 'site/src/Controller/UpdsportsmanagementController.php'
+      - 'site/src/Model/UpdsportsmanagementModel.php'
+      - 'admin/src/Controller/DatabasetoolsController.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - '.github/tests/joomla56_native_mvc_security.php'
       - '.github/tests/joomla56_controller_bridge_loading.php'
       - '.github/workflows/joomla5-6-controller-loader-regression.yml'
 
@@ -62,3 +72,21 @@ jobs:
         run: php .github/tests/phpdoc_metadata.php site/controllers/results.php site/controllers/treetonode.php site/controllers/uefawertung.php site/controllers/updsportsmanagement.php admin/controllers/cpanel.php admin/controllers/databasetool.php admin/controllers/databasetools.php modules/mod_sportsmanagement_eventsranking/helper.php modules/mod_sportsmanagement_firstleagueoverview/helper.php
       - name: Check native bridge paths and module database guards
         run: php .github/tests/joomla56_controller_bridge_loading.php
+      - name: Check Joomla 5/6 native security and ranking regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l .github/tests/joomla56_native_mvc_security.php
+          for path in \
+            site/src/Controller/UpdsportsmanagementController.php \
+            site/src/Model/UpdsportsmanagementModel.php \
+            admin/src/Controller/DatabasetoolsController.php \
+            modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php; do
+            php -l "$path"
+          done
+          php .github/tests/phpdoc_metadata.php \
+            site/src/Controller/UpdsportsmanagementController.php \
+            site/src/Model/UpdsportsmanagementModel.php \
+            admin/src/Controller/DatabasetoolsController.php \
+            modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+          php .github/tests/joomla56_native_mvc_security.php
