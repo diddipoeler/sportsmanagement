@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Site\Controller\TreetonodeController;
 
 if (!class_exists(TreetonodeController::class)) {
-    $nativeController = JPATH_SITE . '/components/com_sportsmanagement/src/Controller/TreetonodeController.php';
+    $nativeController = __DIR__ . '/../src/Controller/TreetonodeController.php';
 
     if (is_file($nativeController)) {
         require_once $nativeController;
