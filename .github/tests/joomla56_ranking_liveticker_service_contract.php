@@ -68,7 +68,7 @@ namespace {
         0, -1, null, false, true, 7.5,
         '0', '-8', '3extra', '3:bad:slug', '3.0', ' 3:bad slug ',
         '999999999999999999999999999999',
-        [], ['5garbage'], [['5']], ['5', '6'],
+        [], ['5garbage'], [['5']],
     ];
 
     foreach ($invalidProjectIds as $id) {
@@ -79,7 +79,7 @@ namespace {
     }
 
     $firstId = new \ReflectionMethod($ranking, 'firstId');
-    foreach ([3, '3', '3:alias', ['3:alias']] as $id) {
+    foreach ([3, '3', '3:alias', ['3:alias'], ['3', '6']] as $id) {
         if ($firstId->invoke($ranking, $id) !== 3) {
             throw new \RuntimeException('Valid Joomla project selection was rejected.');
         }
