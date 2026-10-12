@@ -298,9 +298,17 @@ final class RandomPlayerHelper
 
         foreach ($candidates as $candidate) {
             if (is_scalar($candidate) && preg_match('/^\s*(\d+)(?::[A-Za-z0-9_-]+)?\s*$/', (string) $candidate, $match)) {
-                $id = (int) $match[1];
+                // Casting an overflowing ID can silently clamp it to PHP_INT_MAX.
+                $digits = ltrim($match[1], '0');
+                if ($digits === '') {
+                    continue;
+                }
 
-                if ($id > 0) {
+                $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1],
+                ]);
+
+                if ($id !== false) {
                     $ids[$id] = $id;
                 }
             }
