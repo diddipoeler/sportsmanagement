@@ -83,6 +83,9 @@ break;
 ?>        
         
         
+        <input type="hidden" name="type" value="<?php echo $this->escape((string) ($this->type ?? '')); ?>"/>
+        <input type="hidden" name="field" value="<?php echo $this->escape((string) ($this->field ?? '')); ?>"/>
+        <input type="hidden" name="fieldid" value="<?php echo $this->escape((string) ($this->fieldid ?? '')); ?>"/>
         <input type="hidden" name="folder" value="<?php echo $this->folder; ?>"/>
         <input type="hidden" name="pid" value="<?php echo $this->pid; ?>"/>
         <input type="hidden" name="mid" value="<?php echo $this->mid; ?>"/>
