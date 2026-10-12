@@ -53,6 +53,10 @@ final class GithubinstallModel extends BaseDatabaseModel
         $url = trim((string) $link);
         $app = $this->administratorApplication();
 
+        // A failed download must not reuse an extracted directory from a
+        // previous request when the follow-up installer starts.
+        $app->setUserState('com_sportsmanagement.github_update_dir', null);
+
         if (!$this->isAllowedUrl($url)) {
             $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
 
@@ -100,10 +104,12 @@ final class GithubinstallModel extends BaseDatabaseModel
 
         $installDirectory = $this->findExtractedDirectory($tmpPath, (string) $downloadedFile, $url);
 
-        if ($installDirectory !== null) {
-            $app->setUserState('com_sportsmanagement.github_update_dir', $installDirectory);
+        if ($installDirectory === null) {
+            $app->enqueueMessage('SportsManagement update archive directory could not be found after extraction.', 'error');
+            return false;
         }
 
+        $app->setUserState('com_sportsmanagement.github_update_dir', $installDirectory);
         $this->successText['Module:'] = '';
 
         return $this->successText;
