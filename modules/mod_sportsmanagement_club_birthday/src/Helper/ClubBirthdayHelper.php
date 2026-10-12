@@ -243,17 +243,48 @@ final class ClubBirthdayHelper
 
     private static function pictureUrl(string $picture, Registry $params): string
     {
-        $picture = ltrim(trim($picture), '/');
+        $root = realpath(JPATH_ROOT);
 
-        if ($picture !== '' && File::exists(JPATH_ROOT . '/' . $picture)) {
-            return Uri::root() . $picture;
+        if ($root === false) {
+            return '';
         }
 
-        $placeholder = ltrim((string) $params->get('ph_clublogo', ''), '/');
+        foreach ([$picture, (string) $params->get('ph_clublogo', '')] as $candidate) {
+            $path = self::localImagePath($candidate);
 
-        return $placeholder !== '' && File::exists(JPATH_ROOT . '/' . $placeholder)
-            ? Uri::root() . $placeholder
-            : '';
+            if ($path === '') {
+                continue;
+            }
+
+            // A configured image must resolve to a regular file inside Joomla's
+            // document root, never to a parent path or an external symlink.
+            $absolute = realpath($root . DIRECTORY_SEPARATOR . $path);
+
+            if ($absolute !== false
+                && str_starts_with($absolute, $root . DIRECTORY_SEPARATOR)
+                && is_file($absolute)
+            ) {
+                return Uri::root() . $path;
+            }
+        }
+
+        return '';
+    }
+
+    private static function localImagePath(string $candidate): string
+    {
+        $candidate = trim($candidate);
+
+        if ($candidate === ''
+            || preg_match('/[\\x00-\\x1F\\x7F\\\\\\\\]/', $candidate)
+            || str_starts_with($candidate, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $candidate)
+            || preg_match('~(?:^|/)\\.\\.(?:/|$)~', $candidate)
+        ) {
+            return '';
+        }
+
+        return ltrim($candidate, '/');
     }
 
     private static function flagHtml(object $row, Registry $params): string
