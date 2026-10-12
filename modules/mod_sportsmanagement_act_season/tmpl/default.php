@@ -42,7 +42,7 @@ $moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), EN
 $moduleId = htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8');
 ?>
 <div class="<?php echo $moduleClass; ?>" id="<?php echo $moduleId; ?>">
-<?php if ($params->get('show_slider') && $federations !== []) : ?>
+<?php if ((bool) $params->get('show_slider', 0) && $federations !== [] && $countriesByFederation !== []) : ?>
     <?php echo HTMLHelper::_('bootstrap.startTabSet', 'jsm-act-season-' . (int) $module->id, ['active' => 'fed-0']); ?>
     <?php $tab = 0; foreach ($federations as $fedId => $federation) : ?>
         <?php echo HTMLHelper::_('bootstrap.addTab', 'jsm-act-season-' . (int) $module->id, 'fed-' . $tab, htmlspecialchars(Text::_((string) $federation->name), ENT_QUOTES, 'UTF-8')); ?>
