@@ -166,9 +166,9 @@ final class EventsRankingHelper
             $db->quoteName('p.id', 'project_id'),
             $db->quoteName('p.alias', 'project_alias'),
             $db->quoteName('p.season_id'),
-            'CONCAT_WS(\':\', ' . $db->quoteName('pl.id') . ', ' . $db->quoteName('pl.alias') . ') AS ' . $db->quoteName('person_slug'),
-            'CONCAT_WS(\':\', ' . $db->quoteName('t.id') . ', ' . $db->quoteName('t.alias') . ') AS ' . $db->quoteName('team_slug'),
-            'CONCAT_WS(\':\', ' . $db->quoteName('c.id') . ', ' . $db->quoteName('c.alias') . ') AS ' . $db->quoteName('club_slug'),
+            $db->quoteName('pl.alias', 'person_alias'),
+            $db->quoteName('t.alias', 'team_alias'),
+            $db->quoteName('c.alias', 'club_alias'),
         ])
             ->from($db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $db->quoteName('tp.id') . ' = ' . $db->quoteName('me.teamplayer_id'))
@@ -221,6 +221,12 @@ final class EventsRankingHelper
         }
 
         foreach ($rows as $index => $row) {
+            // Build Joomla ID:alias slugs in PHP, not with MySQL-only CONCAT_WS.
+            $row->person_slug = (int) $row->pid . ':' . (string) ($row->person_alias ?? '');
+            $row->team_slug = (int) $row->tid . ':' . (string) ($row->team_alias ?? '');
+            $row->club_slug = (int) ($row->club_id ?? 0) > 0
+                ? (int) $row->club_id . ':' . (string) ($row->club_alias ?? '')
+                : '';
             $value = (string) $row->p;
             $row->rank = $previousValue !== null && $value === $previousValue ? $previousRank : $index + 1;
             $previousValue = $value;
@@ -300,16 +306,37 @@ final class EventsRankingHelper
 
     private function normaliseIds(mixed $value): array
     {
-        $values = is_array($value) ? $value : preg_split('/\s*,\s*/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
+        if (!is_array($value) && !is_string($value) && !is_int($value)) {
+            return [];
+        }
+
+        $values = is_array($value) ? $value : explode(',', (string) $value);
         $ids = [];
-        foreach ((array) $values as $candidate) {
-            if (is_scalar($candidate) && preg_match('/^\s*(\d+)/', (string) $candidate, $match)) {
-                $id = (int) $match[1];
-                if ($id > 0) {
-                    $ids[$id] = $id;
-                }
+
+        foreach ($values as $candidate) {
+            if (!is_string($candidate) && !is_int($candidate)) {
+                continue;
+            }
+
+            // Joomla selectors may supply an ID or an ID:alias slug.
+            // Reject partial matches such as "12garbage" and overflow.
+            if (!preg_match('/^\s*([0-9]+)(?::[^,\s:]+)?\s*$/D', (string) $candidate, $match)) {
+                continue;
+            }
+
+            $digits = ltrim($match[1], '0');
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+            if ($id !== false) {
+                $ids[$id] = $id;
             }
         }
+
         return array_values($ids);
     }
 
