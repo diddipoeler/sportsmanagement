@@ -245,8 +245,19 @@ final class BirthdayHelper
 
     private function nextBirthday(\DateTimeImmutable $birth, \DateTimeImmutable $today): \DateTimeImmutable
     {
-        $birthday = $today->setDate((int) $today->format('Y'), (int) $birth->format('m'), (int) $birth->format('d'));
-        return $birthday < $today ? $birthday->modify('+1 year') : $birthday;
+        $year = (int) $today->format('Y');
+        $month = (int) $birth->format('m');
+        $day = (int) $birth->format('d');
+        $birthday = $today->setDate($year, $month, $day);
+
+        if ($birthday < $today) {
+            // Rebuild from the birth month/day, not an already normalised date:
+            // a February 29 birthday becomes March 1 in non-leap years but
+            // must return to February 29 when the next year is a leap year.
+            $birthday = $today->setDate($year + 1, $month, $day);
+        }
+
+        return $birthday;
     }
 
     private function displayName(object $row, int $format): string
