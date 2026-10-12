@@ -17,6 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Regression test for club birthday image paths and season IDs
+        run: |
+          php -l .github/tests/joomla56_club_birthday_paths.php
+          php .github/tests/joomla56_club_birthday_paths.php
+
       - name: Validate club birthday module
         shell: bash
         run: |
