@@ -244,7 +244,8 @@ final class AjaxController extends BaseController
                 $db->quoteName('s.name', 'text'),
             ])
             ->from($db->quoteName('#__sportsmanagement_associations', 's'))
-            ->where($db->quoteName('s.parent_id') . ' = ' . $parentId)
+            ->where($db->quoteName('s.parent_id') . ' = :parentAssociationId')
+            ->bind(':parentAssociationId', $parentId, \Joomla\Database\ParameterType::INTEGER)
             ->where($db->quoteName('s.published') . ' = 1')
             ->order($db->quoteName('s.name') . ' ASC');
 
