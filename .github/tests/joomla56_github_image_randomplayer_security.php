@@ -112,6 +112,11 @@ namespace Joomla\CMS\Language {
         {
             return $key;
         }
+
+        public static function sprintf(string $key, mixed ...$args): string
+        {
+            return sprintf($key, ...$args);
+        }
     }
 }
 
