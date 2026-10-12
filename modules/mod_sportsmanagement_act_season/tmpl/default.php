@@ -36,7 +36,7 @@ $moduleId = htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'U
 <?php if ($params->get('show_slider') && $federations !== []) : ?>
     <?php echo HTMLHelper::_('bootstrap.startTabSet', 'jsm-act-season-' . (int) $module->id, ['active' => 'fed-0']); ?>
     <?php $tab = 0; foreach ($federations as $fedId => $federation) : ?>
-        <?php echo HTMLHelper::_('bootstrap.addTab', 'jsm-act-season-' . (int) $module->id, 'fed-' . $tab, Text::_($federation->name)); ?>
+        <?php echo HTMLHelper::_('bootstrap.addTab', 'jsm-act-season-' . (int) $module->id, 'fed-' . $tab, htmlspecialchars(Text::_((string) $federation->name), ENT_QUOTES, 'UTF-8')); ?>
         <?php foreach (($countriesByFederation[$fedId] ?? []) as $country) : ?>
             <div class="row g-2 mb-2">
                 <?php foreach ($list as $row) : if ((int) ($row->federation ?? 0) !== (int) $fedId || $row->country !== $country->alpha3) { continue; } ?>
