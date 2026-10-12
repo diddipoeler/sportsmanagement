@@ -186,10 +186,10 @@ $renderLinkItem = static function (string $view, string $label) use ($helper, $e
         </div>
 
         <div class="col-12 col-lg-<?php echo $menuColumn; ?>">
-            <ul class="pagination mb-2" id="pagination" aria-live="polite"></ul>
+            <ul class="pagination mb-2" data-jsm-pagination aria-live="polite"></ul>
 
             <?php if ($project_id && $params->get('show_nav_links')) : ?>
-                <ul class="nav flex-column" id="ajax-nav-list">
+                <ul class="nav flex-column" data-jsm-project-nav-links>
                     <?php for ($i = 1; $i < 18; ++$i) : ?>
                         <?php
                         $view = (string) $params->get('navpoint' . $i, '');
@@ -207,7 +207,7 @@ $renderLinkItem = static function (string $view, string $label) use ($helper, $e
                     <?php endif; ?>
                 </ul>
             <?php else : ?>
-                <ul class="nav flex-column" id="ajax-nav-list"></ul>
+                <ul class="nav flex-column" data-jsm-project-nav-links></ul>
             <?php endif; ?>
         </div>
     </div>
