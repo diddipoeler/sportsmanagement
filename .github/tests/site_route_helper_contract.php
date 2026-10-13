@@ -53,5 +53,24 @@ namespace {
         throw new \RuntimeException('SiteRouteHelper::view must preserve valid route parameters.');
     }
 
+    foreach ([
+        '77garbage', '-9', '1e3', '77.5', '999999999999999999999',
+        true, 10.5, ['77'], (object) ['id' => 77],
+    ] as $invalidItemId) {
+        $url = SiteRouteHelper::view('ranking', ['Itemid' => $invalidItemId]);
+        parse_str((string) parse_url($url, PHP_URL_QUERY), $params);
+
+        if (isset($params['Itemid'])) {
+            throw new \RuntimeException('Invalid menu ID was accepted by SiteRouteHelper.');
+        }
+    }
+
+    $url = SiteRouteHelper::view('ranking', ['Itemid' => '00077']);
+    parse_str((string) parse_url($url, PHP_URL_QUERY), $params);
+
+    if (($params['Itemid'] ?? null) !== '77') {
+        throw new \RuntimeException('Valid leading-zero menu ID was not normalized.');
+    }
+
     echo "SiteRouteHelper routing contract OK.\n";
 }
