@@ -9,7 +9,7 @@
  */
 
 /** SportsManagement DFB-key division selection template. */
-\\defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 ?>

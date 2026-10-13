@@ -9,7 +9,7 @@
  */
 
 /** Native Joomla 5/6 prediction group edit layout. */
-\\defined('_JEXEC') or die;
+\defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
