@@ -303,14 +303,22 @@ final class NewProjectHelper
         $url = htmlspecialchars((string) $project->project_url, ENT_QUOTES, 'UTF-8');
         $name = htmlspecialchars((string) $project->name, ENT_QUOTES, 'UTF-8');
         $league = htmlspecialchars((string) $project->league_name, ENT_QUOTES, 'UTF-8');
-        $leaguePicture = htmlspecialchars($this->mediaUrl((string) $project->league_picture), ENT_QUOTES, 'UTF-8');
-        $projectPicture = htmlspecialchars($this->mediaUrl((string) $project->project_picture), ENT_QUOTES, 'UTF-8');
+        $leaguePicture = $this->mediaUrl((string) ($project->league_picture ?? ''));
+        $projectPicture = $this->mediaUrl((string) ($project->project_picture ?? ''));
+
+        // Omit image elements when no safe source is available.
+        $leagueImage = $leaguePicture !== ''
+            ? '<img src="' . htmlspecialchars($leaguePicture, ENT_QUOTES, 'UTF-8')
+                . '" alt="' . $league . '" style="float:left" width="100" /> '
+            : '';
+        $projectImage = $projectPicture !== ''
+            ? '<img src="' . htmlspecialchars($projectPicture, ENT_QUOTES, 'UTF-8')
+                . '" alt="' . $name . '" style="float:right" width="100" />'
+            : '';
 
         return '<p><a href="' . $url . '">'
-            . '<img src="' . $leaguePicture . '" alt="' . $league . '" style="float:left" width="100" /> '
-            . $name . ' - ( ' . $league . ' )</a> neu angelegt/aktualisiert. '
-            . '<img src="' . $projectPicture . '" alt="' . $name . '" style="float:right" width="100" />'
-            . '</p>';
+            . $leagueImage . $name . ' - ( ' . $league . ' )</a> neu angelegt/aktualisiert. '
+            . $projectImage . '</p>';
     }
 
     private function resultsUrl(object $project, int $databaseSelector = 0): string
@@ -390,14 +398,46 @@ final class NewProjectHelper
 
     private function mediaUrl(string $path): string
     {
+        $path = trim($path);
+
         if ($path === '') {
             return '';
         }
 
-        if (preg_match('#^https?://#i', $path)) {
-            return $path;
+        if (preg_match('~^https?://~i', $path)) {
+            if (preg_match('/[\x00-\x20\x7F]/', $path)
+                || str_contains($path, '\\')
+                || filter_var($path, FILTER_VALIDATE_URL) === false
+            ) {
+                return '';
+            }
+
+            $parts = parse_url($path);
+
+            return is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                ? $path
+                : '';
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+        // Data from historic media fields is not necessarily a safe path.
+        // Do not permit URL schemes, protocol-relative paths or traversal.
+        if (preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, '\\')
+            || str_starts_with($path, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $path)
+            || str_contains($path, '%')
+            || strpbrk($path, '?#') !== false
+        ) {
+            return '';
+        }
+
+        $relative = ltrim($path, '/');
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $relative)));
+
+        return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 }
