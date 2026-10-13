@@ -23,7 +23,7 @@ namespace Joomla\Http {
     final class HttpFactory
     {
         public static ?object $http = null;
-        public static function getHttp(): object
+        public function getHttp(): object
         {
             return self::$http;
         }
