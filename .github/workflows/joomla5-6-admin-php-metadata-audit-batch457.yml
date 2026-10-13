@@ -35,13 +35,19 @@ jobs:
             exit 1
           fi
 
+          failures=0
           for file in "${files[@]}"; do
-            php -l "$file"
-
-            # Original upstream library versions and licenses remain intact.
-            # Verify the actual leading PHPDoc instead of requiring @version 5.6.0
-            # in every first-party and third-party file.
+            # Continue after syntax errors so a single run reports every broken
+            # administrator file instead of stopping at the first one.
+            if ! php -l "$file"; then
+              failures=$((failures + 1))
+            fi
           done
 
-          php .github/tests/phpdoc_metadata.php "${files[@]}"
-          echo "Validated ${#files[@]} administrator first-party PHP files."
+          # Preserve upstream PHPDoc ownership and licenses.
+          if ! php .github/tests/phpdoc_metadata.php "${files[@]}"; then
+            failures=$((failures + 1))
+          fi
+
+          echo "Validated ${#files[@]} administrator PHP files; ${failures} failures."
+          test "${failures}" -eq 0
