@@ -334,10 +334,20 @@ final class MatchesSliderHelper
             ? trim((string) $componentParams->get('cfg_which_database_server', ''))
             : (string) Uri::root();
 
-        // Database-server URLs are configurable and must not inject a foreign
-        // URL scheme into module image attributes.
+        // External image bases must not expose credentials or place images
+        // behind a query string, fragment or a different URL scheme.
+        $parts = parse_url($server);
         if (!preg_match('~^https?://~i', $server)
+            || preg_match('/[\x00-\x20\x7F]/', $server)
+            || str_contains($server, '\\')
             || filter_var($server, FILTER_VALIDATE_URL) === false
+            || !is_array($parts)
+            || !in_array(strtolower((string) ($parts['scheme'] ?? '')), ['http', 'https'], true)
+            || empty($parts['host'])
+            || isset($parts['user'])
+            || isset($parts['pass'])
+            || isset($parts['query'])
+            || isset($parts['fragment'])
         ) {
             $server = (string) Uri::root();
         }
@@ -349,22 +359,43 @@ final class MatchesSliderHelper
     {
         $path = trim($path);
 
-        if ($path === '' || preg_match('/[\x00-\x20\x7F\\\\]/', $path)) {
-            return '';
-        }
-
-        if (preg_match('~^https?://~i', $path)) {
-            return filter_var($path, FILTER_VALIDATE_URL) !== false ? $path : '';
-        }
-
-        if (str_starts_with($path, '//')
-            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
-            || preg_match('~(?:^|/)\.\.(?:/|$)~', $path)
+        if ($path === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, '\\')
         ) {
             return '';
         }
 
-        return $pictureServer . ltrim($path, '/');
+        if (preg_match('~^https?://~i', $path)) {
+            if (preg_match('/[\x00-\x20\x7F]/', $path)
+                || filter_var($path, FILTER_VALIDATE_URL) === false
+            ) {
+                return '';
+            }
+
+            $parts = parse_url($path);
+
+            return is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                ? $path
+                : '';
+        }
+
+        if (str_starts_with($path, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $path)
+            || str_contains($path, '%')
+            || strpbrk($path, '?#') !== false
+        ) {
+            return '';
+        }
+
+        $relative = ltrim($path, '/');
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $relative)));
+
+        return rtrim($pictureServer, '/') . '/' . $encoded;
     }
 
     /** @return array<int,int> */
