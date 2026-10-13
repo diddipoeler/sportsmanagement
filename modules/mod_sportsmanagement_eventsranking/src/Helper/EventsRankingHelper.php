@@ -263,12 +263,27 @@ final class EventsRankingHelper
 
     private function picture(string $path): string
     {
-        if ($path !== '') {
-            if (preg_match('#^https?://#i', $path)) {
-                return $path;
+        $url = $this->mediaUrl($path);
+
+        if ($url !== '') {
+            if (preg_match('~^https?://~i', trim($path))) {
+                return $url;
             }
-            if (is_file(JPATH_ROOT . '/' . ltrim($path, '/'))) {
-                return $this->mediaUrl($path);
+
+            $root = realpath(JPATH_ROOT);
+            $local = $this->localMediaPath($path);
+            $absolute = $root !== false && $local !== ''
+                ? realpath($root . DIRECTORY_SEPARATOR . $local)
+                : false;
+
+            // Images must be actual files inside Joomla, not symlinks to
+            // outside paths. Reuse the safe URL generated above.
+            if ($root !== false
+                && $absolute !== false
+                && str_starts_with($absolute, $root . DIRECTORY_SEPARATOR)
+                && is_file($absolute)
+            ) {
+                return $url;
             }
         }
 
@@ -277,14 +292,52 @@ final class EventsRankingHelper
 
     private function mediaUrl(string $path): string
     {
+        $path = trim($path);
+
         if ($path === '') {
             return '';
         }
-        if (preg_match('#^https?://#i', $path)) {
-            return $path;
+
+        if (preg_match('~^https?://~i', $path)) {
+            if (preg_match('/[\x00-\x20\x7F]/', $path)
+                || str_contains($path, '\\')
+                || filter_var($path, FILTER_VALIDATE_URL) === false
+            ) {
+                return '';
+            }
+
+            $parts = parse_url($path);
+
+            return is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                ? $path
+                : '';
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+        $local = $this->localMediaPath($path);
+
+        return $local === ''
+            ? ''
+            : rtrim((string) Uri::root(), '/') . '/' . $local;
+    }
+
+    private function localMediaPath(string $path): string
+    {
+        $path = trim($path);
+
+        if ($path === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, '\\')
+            || str_starts_with($path, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+            || preg_match('~(?:^|/)\.\.(?:/|$)~', $path)
+        ) {
+            return '';
+        }
+
+        return ltrim($path, '/');
     }
 
     private function formatName(string $firstName, string $nickName, string $lastName, int $format): string
