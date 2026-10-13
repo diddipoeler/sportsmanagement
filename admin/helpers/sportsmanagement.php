@@ -1695,54 +1695,44 @@ var <?php echo $placeholder; ?> = new Array;
 	 * @access public
 	 * @return array
 	 */
-	static function convertDate($DummyDate, $direction = 1)
+	public static function convertDate($DummyDate, $direction = 1)
 	{
-		$DummyDate = (string) $DummyDate;
-		$result = '';
+        $date = (string) $DummyDate;
+        $direction = (int) $direction;
+        $date = trim($date);
 
-		if (strpos($DummyDate, '-') === false)
-		{
-			// For example 31122011 is used for 31 december 2011
-			if (strlen($DummyDate) == 8)
-			{
-				$result = substr($DummyDate, 4, 4);
-				$result .= '-';
-				$result .= substr($DummyDate, 2, 2);
-				$result .= '-';
-				$result .= substr($DummyDate, 0, 2);
-			}
-			// For example 311211 is used for 31 december 2011
-			elseif (strlen($DummyDate) == 6)
-			{
-				$result = substr(date("Y"), 0, 2);
-				$result .= substr($DummyDate, 4, 4);
-				$result .= '-';
-				$result .= substr($DummyDate, 2, 2);
-				$result .= '-';
-				$result .= substr($DummyDate, 0, 2);
-			}
-		}
-		else
-		{
-			if ($direction == 1)
-			{
-				$result = substr($DummyDate, 8);
-				$result .= '-';
-				$result .= substr($DummyDate, 5, 2);
-				$result .= '-';
-				$result .= substr($DummyDate, 0, 4);
-			}
-			else
-			{
-				$result = substr($DummyDate, 6, 4);
-				$result .= '-';
-				$result .= substr($DummyDate, 3, 2);
-				$result .= '-';
-				$result .= substr($DummyDate, 0, 2);
-			}
-		}
+        // Preserve the two compact historical input formats (DDMMYY and DDMMYYYY).
+        if (preg_match('/^(\d{2})(\d{2})(\d{2}|\d{4})$/D', $date, $parts) === 1) {
+            $day = (int) $parts[1];
+            $month = (int) $parts[2];
+            $year = strlen($parts[3]) === 2 ? substr(date('Y'), 0, 2) . $parts[3] : $parts[3];
 
-		return $result;
+            return checkdate($month, $day, (int) $year)
+                ? $year . '-' . $parts[2] . '-' . $parts[1]
+                : '';
+        }
+
+        if ($direction === 1) {
+            // Accept SQL DATE and DATETIME values without accidentally including the time in the day.
+            if (preg_match('/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}):(\d{2}))?$/D', $date, $parts) !== 1
+                || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1])) {
+                return '';
+            }
+
+            if (isset($parts[4]) && ((int) $parts[4] > 23
+                || (int) $parts[5] > 59 || (int) $parts[6] > 59)) {
+                return '';
+            }
+
+            return $parts[3] . '-' . $parts[2] . '-' . $parts[1];
+        }
+
+        if (preg_match('/^(\d{2})-(\d{2})-(\d{4})$/D', $date, $parts) !== 1
+            || !checkdate((int) $parts[2], (int) $parts[1], (int) $parts[3])) {
+            return '';
+        }
+
+        return $parts[3] . '-' . $parts[2] . '-' . $parts[1];
 	}
 
 	/**

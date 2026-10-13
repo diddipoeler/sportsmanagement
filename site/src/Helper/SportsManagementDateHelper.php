@@ -16,31 +16,39 @@ final class SportsManagementDateHelper
 {
     public static function convertDate(string $date, int $direction = 1): string
     {
-        if (!str_contains($date, '-')) {
-            if (strlen($date) === 8) {
-                return substr($date, 4, 4)
-                    . '-' . substr($date, 2, 2)
-                    . '-' . substr($date, 0, 2);
-            }
+        $date = trim($date);
 
-            if (strlen($date) === 6) {
-                return substr(date('Y'), 0, 2)
-                    . substr($date, 4, 2)
-                    . '-' . substr($date, 2, 2)
-                    . '-' . substr($date, 0, 2);
-            }
+        // Preserve the two compact historical input formats (DDMMYY and DDMMYYYY).
+        if (preg_match('/^(\d{2})(\d{2})(\d{2}|\d{4})$/D', $date, $parts) === 1) {
+            $day = (int) $parts[1];
+            $month = (int) $parts[2];
+            $year = strlen($parts[3]) === 2 ? substr(date('Y'), 0, 2) . $parts[3] : $parts[3];
 
-            return '';
+            return checkdate($month, $day, (int) $year)
+                ? $year . '-' . $parts[2] . '-' . $parts[1]
+                : '';
         }
 
         if ($direction === 1) {
-            return substr($date, 8)
-                . '-' . substr($date, 5, 2)
-                . '-' . substr($date, 0, 4);
+            // Accept SQL DATE and DATETIME values without accidentally including the time in the day.
+            if (preg_match('/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}):(\d{2}))?$/D', $date, $parts) !== 1
+                || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1])) {
+                return '';
+            }
+
+            if (isset($parts[4]) && ((int) $parts[4] > 23
+                || (int) $parts[5] > 59 || (int) $parts[6] > 59)) {
+                return '';
+            }
+
+            return $parts[3] . '-' . $parts[2] . '-' . $parts[1];
         }
 
-        return substr($date, 6, 4)
-            . '-' . substr($date, 3, 2)
-            . '-' . substr($date, 0, 2);
+        if (preg_match('/^(\d{2})-(\d{2})-(\d{4})$/D', $date, $parts) !== 1
+            || !checkdate((int) $parts[2], (int) $parts[1], (int) $parts[3])) {
+            return '';
+        }
+
+        return $parts[3] . '-' . $parts[2] . '-' . $parts[1];
     }
 }

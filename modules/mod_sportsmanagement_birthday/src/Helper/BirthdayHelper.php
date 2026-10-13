@@ -115,8 +115,7 @@ final class BirthdayHelper
         }
 
         $today = $this->today($app);
-        $maxDaysValue = trim((string) $params->get('maxdays', ''));
-        $maxDays = $maxDaysValue !== '' && (int) $maxDaysValue >= 0 ? (int) $maxDaysValue : null;
+        $maxDays = self::normaliseDaysLimit($params->get('maxdays', ''));
         $people = [];
 
         foreach ($rows as $row) {
@@ -174,6 +173,37 @@ final class BirthdayHelper
         });
 
         return $rows;
+    }
+
+
+    /**
+     * Parse the optional days filter without silently turning invalid input into zero.
+     *
+     * Empty or malformed limits mean no filter. Zero explicitly means today only.
+     */
+    private static function normaliseDaysLimit(mixed $value): ?int
+    {
+        if (!is_scalar($value)) {
+            return null;
+        }
+
+        $raw = trim((string) $value);
+
+        if ($raw === '' || !ctype_digit($raw)) {
+            return null;
+        }
+
+        // Filter out integers beyond the platform range before converting to int.
+        $decimal = ltrim($raw, '0');
+        $decimal = $decimal === '' ? '0' : $decimal;
+        $max = (string) PHP_INT_MAX;
+
+        if (strlen($decimal) > strlen($max)
+            || (strlen($decimal) === strlen($max) && strcmp($decimal, $max) > 0)) {
+            return null;
+        }
+
+        return (int) $decimal;
     }
 
     private function resolveTeamIds(DatabaseInterface $db, Registry $params, array $projectIds): array
