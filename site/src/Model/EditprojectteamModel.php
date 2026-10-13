@@ -28,50 +28,77 @@ final class EditprojectteamModel extends AdminModel
 
     private ?ProjectteamTable $projectTeam = null;
 
+    /**
+     * Save only editable form fields against an existing project-team row.
+     * Never trust readonly project_id/team_id or other POST identity fields.
+     */
     public function updItem($data): bool
     {
         $data = (array) $data;
-        $request = $data['request'] ?? null;
+        $id = self::positiveId($data['id'] ?? null);
+        $postedProjectTeamId = self::positiveId($data['ptid'] ?? null);
+        $projectId = self::positiveId($data['p'] ?? null);
 
-        if (is_array($request)) {
-            foreach ($request as $key => $value) {
-                $data[$key] = $value;
-            }
-        } elseif (is_object($request) && method_exists($request, 'getArray')) {
-            foreach ((array) $request->getArray() as $key => $value) {
-                $data[$key] = $value;
+        if ($id <= 0
+            || (array_key_exists('ptid', $data) && $postedProjectTeamId !== $id)) {
+            $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
+            return false;
+        }
+
+        $table = $this->getTable('projectteam');
+
+        if (!$table->load($id)
+            || (int) $table->id !== $id
+            || ($projectId > 0 && (int) $table->project_id !== $projectId)) {
+            $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
+            return false;
+        }
+
+        // Native Joomla forms post under jform; historical top-level fields
+        // remain supported, but neither can alter relation identity.
+        $fields = [
+            'admin', 'standard_playground', 'is_in_score', 'start_points',
+            'reason', 'use_finally', 'matches_finally', 'points_finally',
+            'neg_points_finally', 'penalty_points', 'won_finally',
+            'draws_finally', 'lost_finally', 'homegoals_finally',
+            'guestgoals_finally', 'diffgoals_finally', 'picture',
+            'cr_picture', 'trikot_home', 'trikot_away', 'notes',
+        ];
+        $allowed = array_fill_keys($fields, true);
+        $submitted = array_intersect_key($data, $allowed);
+
+        foreach ([$data['request'] ?? null, $data['jform'] ?? null] as $nested) {
+            if (is_array($nested)) {
+                $submitted = array_replace($submitted, array_intersect_key($nested, $allowed));
             }
         }
 
-        unset($data['request']);
+        foreach ($submitted as $value) {
+            if ($value !== null && !is_scalar($value)) {
+                $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+                return false;
+            }
+        }
 
+        $update = ['id' => $id] + $submitted;
+        $seasonTeamId = (int) $table->team_id;
         $db = $this->getDatabase();
-        $db->transactionStart();
 
         try {
-            $table = $this->getTable('projectteam');
+            $db->transactionStart();
 
-            if (!$table->bind($data) || !$table->check() || !$table->store()) {
+            if (!$table->bind($update) || !$table->check() || !$table->store()) {
                 throw new \RuntimeException((string) $table->getError());
             }
 
-            $seasonTeamId = (int) ($table->team_id ?? $data['team_id'] ?? 0);
-
-            if ($seasonTeamId > 0 && array_key_exists('picture', $data)) {
-                $picture = (string) $data['picture'];
-                $query = $db->createQuery()
-                    ->update($db->quoteName('#__sportsmanagement_project_team'))
-                    ->set($db->quoteName('picture') . ' = :projectTeamPicture')
-                    ->where($db->quoteName('team_id') . ' = :seasonTeamId')
-                    ->bind(':projectTeamPicture', $picture, ParameterType::STRING)
-                    ->bind(':seasonTeamId', $seasonTeamId, ParameterType::INTEGER);
-                $db->setQuery($query)->execute();
-
+            // Table::store() already saves this project-team row. Only mirror
+            // its picture to the season team, never bulk-update other projects.
+            if ($seasonTeamId > 0 && array_key_exists('picture', $submitted)) {
                 $db->updateObject(
                     '#__sportsmanagement_season_team_id',
                     (object) [
                         'id' => $seasonTeamId,
-                        'picture' => $picture,
+                        'picture' => (string) $submitted['picture'],
                     ],
                     'id'
                 );
@@ -83,11 +110,36 @@ final class EditprojectteamModel extends AdminModel
             return true;
         } catch (\Throwable $e) {
             $db->transactionRollback();
-            $this->setError($e->getMessage());
-            Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
         }
+    }
+
+    /** Do not coerce malformed, negative or overflowing IDs into keys. */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if ($raw === '' || !ctype_digit($raw)) {
+            return 0;
+        }
+
+        $decimal = ltrim($raw, '0');
+        $decimal = $decimal === '' ? '0' : $decimal;
+        $max = (string) PHP_INT_MAX;
+
+        if (strlen($decimal) > strlen($max)
+            || (strlen($decimal) === strlen($max) && strcmp($decimal, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $decimal;
     }
 
     public function getTeamInfo(int $projectTeamId): ?object

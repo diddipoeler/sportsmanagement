@@ -31,6 +31,7 @@ final class EditprojectteamController extends FormController
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
+        $this->assertEditorPermission();
 
         $input = $this->input;
         $data = $input->post->getArray();
@@ -72,6 +73,14 @@ final class EditprojectteamController extends FormController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', 'cancel');
 
         return true;
+    }
+
+    /** Require component-level ACL for native frontend project-team writes. */
+    private function assertEditorPermission(): void
+    {
+        if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
     }
 
     private function editProjectTeamModel(): EditprojectteamModel
