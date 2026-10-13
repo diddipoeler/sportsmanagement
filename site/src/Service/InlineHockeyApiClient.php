@@ -122,9 +122,24 @@ final class InlineHockeyApiClient
         $fragment = $fragmentPosition === false ? '' : substr($url, $fragmentPosition);
         $baseUrl = $fragmentPosition === false ? $url : substr($url, 0, $fragmentPosition);
 
-        if (preg_match('/([?&])page=[^&#]*/i', $baseUrl)) {
-            $baseUrl = (string) preg_replace('/([?&])page=[^&#]*/i', '$1page=' . $page, $baseUrl, 1);
-        } else {
+        // Duplicate "page" parameters are interpreted inconsistently by API
+        // servers. Keep the first parameter in place and remove later copies.
+        $seenPage = false;
+        $baseUrl = (string) preg_replace_callback(
+            '/([?&])page=[^&#]*/i',
+            static function (array $matches) use (&$seenPage, $page): string {
+                if ($seenPage) {
+                    return '';
+                }
+
+                $seenPage = true;
+
+                return $matches[1] . 'page=' . $page;
+            },
+            $baseUrl
+        );
+
+        if (!$seenPage) {
             $baseUrl .= (str_contains($baseUrl, '?') ? '&' : '?') . 'page=' . $page;
         }
 
