@@ -49,8 +49,8 @@ $isDart = $project && (string) $project->sport_type_name === 'COM_SPORTSMANAGEME
                         <th><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_NAME') ?></th>
                         <?php if ($showTeam) : ?><th><?= Text::_('MOD_SPORTSMANAGEMENT_EVENTSRANKING_COL_TEAM') ?></th><?php endif; ?>
                         <th<?= $isDart ? ' colspan="2"' : '' ?>>
-                            <?php if ((int) $params->get('show_event_icon', 1) === 1 && !empty($eventType->icon) && $eventType->icon !== 'media/com_sportsmanagement/event_icons/event.gif') : ?>
-                                <img src="<?= htmlspecialchars((string) $eventType->icon, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(Text::_((string) $eventType->name), ENT_QUOTES, 'UTF-8') ?>" width="20">
+                            <?php if ((int) $params->get('show_event_icon', 1) === 1 && !empty($eventType->icon_url) && $eventType->icon !== 'media/com_sportsmanagement/event_icons/event.gif') : ?>
+                                <img src="<?= htmlspecialchars((string) $eventType->icon_url, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(Text::_((string) $eventType->name), ENT_QUOTES, 'UTF-8') ?>" width="20">
                             <?php else : ?>
                                 <?= htmlspecialchars(Text::_((string) $eventType->name), ENT_QUOTES, 'UTF-8') ?>
                             <?php endif; ?>
