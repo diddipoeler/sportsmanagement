@@ -35,12 +35,17 @@ final class TeamStatisticsCounterHelper
             $db = $this->database($databaseSelector, $fallbackDatabase);
 
         $projectTeamId = $this->getProjectTeamId($db, $projectId, $teamId);
+
+        // Never load unrelated project/team information when this pair has no
+        // season-team association; this also avoids unnecessary SQL queries.
+        if ($projectTeamId <= 0) {
+            return self::emptyData();
+        }
+
         $team = $this->getTeam($db, $teamId);
         $project = $this->getProject($db, $projectId);
 
-        // The legacy model expects a team assigned to the selected project.
-        // Do not run cross-project/statistics queries for missing associations.
-        if ($projectTeamId <= 0 || $team === null || $project === null) {
+        if ($team === null || $project === null) {
             return self::emptyData();
         }
 
