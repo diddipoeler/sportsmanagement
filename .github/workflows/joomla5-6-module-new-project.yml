@@ -37,6 +37,11 @@ jobs:
           php -l .github/tests/joomla56_new_project_utc_day.php
           php .github/tests/joomla56_new_project_utc_day.php
 
+      - name: Test article picture URL safety and optional images
+        run: |
+          php -l .github/tests/joomla56_new_project_article_images.php
+          php .github/tests/joomla56_new_project_article_images.php
+
       - name: Validate module manifest
         shell: bash
         run: |
