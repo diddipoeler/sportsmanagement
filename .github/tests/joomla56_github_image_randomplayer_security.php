@@ -325,6 +325,13 @@ namespace {
         {
             $this->post = new class {
                 public array $requested = [];
+                public function getCmd(string $name, string $default = ''): string
+                {
+                    $this->requested[] = $name;
+
+                    return $name === 'type' ? 'team' : $default;
+                }
+
                 public function get(string $name, mixed $default = null, string $filter = ''): mixed
                 {
                     $this->requested[] = $name;
