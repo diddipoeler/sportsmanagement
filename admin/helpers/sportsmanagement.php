@@ -1359,7 +1359,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 		if (!$result = $db->loadResult())
 		{
-			// $this->setError($db->getErrorMsg());
+			// Empty results are handled below; query failures are raised as exceptions.
 			return false;
 		}
 
@@ -4076,7 +4076,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 		if (!$result = $db->loadResult())
 		{
-			// $this->setError($db->getErrorMsg());
+			// Empty results are handled below; query failures are raised as exceptions.
 			return false;
 		}
 
