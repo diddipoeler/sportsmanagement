@@ -169,6 +169,7 @@ final class MatchReadService
                 $this->db->quoteName('p.firstname'),
                 $this->db->quoteName('p.nickname'),
                 $this->db->quoteName('p.lastname'),
+                $this->db->quoteName('p.alias'),
                 $this->db->quoteName('pos.name', 'position_name'),
                 $this->db->quoteName('mr.project_position_id'),
                 $this->db->quoteName('pref.picture'),
