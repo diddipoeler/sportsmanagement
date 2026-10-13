@@ -32,7 +32,24 @@ final class SiteRouteHelper
     public static function query(array $parameters): string
     {
         if ((string) ($parameters['option'] ?? 'com_sportsmanagement') === 'com_sportsmanagement') {
-            $itemId = (int) ($parameters['Itemid'] ?? 0);
+            $requestedItemId = $parameters['Itemid'] ?? null;
+            $itemId = 0;
+
+            // Do not turn an invalid menu ID (e.g. "42junk", booleans,
+            // arrays or an overflowing number) into an unrelated menu link.
+            if (is_int($requestedItemId)) {
+                $itemId = max(0, $requestedItemId);
+            } elseif (is_string($requestedItemId)
+                && preg_match('/^[0-9]+$/D', trim($requestedItemId))) {
+                $digits = ltrim(trim($requestedItemId), '0');
+
+                if ($digits !== '') {
+                    $validated = filter_var($digits, FILTER_VALIDATE_INT, [
+                        'options' => ['min_range' => 1],
+                    ]);
+                    $itemId = $validated === false ? 0 : $validated;
+                }
+            }
 
             // Only preserve an explicitly requested menu item. When no positive
             // Itemid is supplied, leave menu selection to the component router's
