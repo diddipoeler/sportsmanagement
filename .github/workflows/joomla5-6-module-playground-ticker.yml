@@ -6,11 +6,13 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_playground_ticker/**'
       - '.github/workflows/joomla5-6-module-playground-ticker.yml'
+      - '.github/tests/joomla56_playground_ticker_images.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_playground_ticker/**'
       - '.github/workflows/joomla5-6-module-playground-ticker.yml'
+      - '.github/tests/joomla56_playground_ticker_images.php'
 
 jobs:
   native-playground-ticker:
@@ -18,6 +20,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Test picture servers and playground image URLs
+        run: |
+          php -l .github/tests/joomla56_playground_ticker_images.php
+          php .github/tests/joomla56_playground_ticker_images.php
 
       - name: Validate native PlaygroundTicker stack
         shell: bash
