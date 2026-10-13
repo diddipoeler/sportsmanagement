@@ -55,7 +55,7 @@ $mode = (string) $params->get('template', 'L');
                                 <?php endif; ?>
                             </div>
                             <?php if ((int) $params->get('show_positions', 1) === 1 && !empty($player->position)) : ?>
-                                <div class="jsm-teamplayers-position"><?php echo Text::_((string) $player->position); ?></div>
+                                <div class="jsm-teamplayers-position"><?php echo $escape(Text::_((string) $player->position)); ?></div>
                             <?php endif; ?>
                             <?php if ((int) $params->get('show_mins_played', 1) === 1) : ?>
                                 <div class="jsm-teamplayers-minutes"><?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMPLAYERS_MINS_PLAYED'); ?>: <?php echo (int) $player->minutes_played; ?></div>
@@ -91,7 +91,7 @@ $mode = (string) $params->get('template', 'L');
                         <?php foreach ($players as $player) : ?>
                             <tr>
                                 <?php if ((int) $params->get('show_positions', 1) === 1) : ?>
-                                    <td><?php echo !empty($player->position) ? Text::_((string) $player->position) : ''; ?></td>
+                                    <td><?php echo !empty($player->position) ? $escape(Text::_((string) $player->position)) : ''; ?></td>
                                 <?php endif; ?>
                                 <td>
                                     <?php echo $player->flag_html; ?>
