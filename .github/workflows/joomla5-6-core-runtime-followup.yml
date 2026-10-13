@@ -1,0 +1,48 @@
+name: Joomla 5/6 core site admin module follow-up
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/RankingModel.php'
+      - 'admin/helpers/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_core_runtime_followup.php'
+      - '.github/workflows/joomla5-6-core-runtime-followup.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint source and regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Model/RankingModel.php \
+            admin/helpers/sportsmanagement.php \
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php \
+            modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_core_runtime_followup.php; do
+            php -l "$file"
+          done
+      - name: Enforce first-party site admin and module PHPDoc headers
+        run: php .github/tests/phpdoc_metadata.php --all
+      - name: Exercise Joomla 5/6 compatibility regressions
+        run: php .github/tests/joomla56_core_runtime_followup.php
