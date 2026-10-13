@@ -289,6 +289,7 @@ final class TeamStatsRankingHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_season_team_id', 'st')
                 . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('tp.season_id')
             )
             ->join(
                 'INNER',
@@ -299,6 +300,7 @@ final class TeamStatsRankingHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
                 . ' ON ' . $db->quoteName('ms.teamplayer_id') . ' = ' . $db->quoteName('tp.id')
+                . ' AND ' . $db->quoteName('ms.projectteam_id') . ' = ' . $db->quoteName('pt.id')
                 . ' AND ' . $db->quoteName('ms.statistic_id') . ' IN (' . implode(',', $statPlaceholders) . ')'
             )
             ->join(
@@ -306,6 +308,12 @@ final class TeamStatsRankingHelper
                 $db->quoteName('#__sportsmanagement_match', 'm')
                 . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('ms.match_id')
                 . ' AND ' . $db->quoteName('m.published') . ' = 1'
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+                . ' AND ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('pt.project_id')
             )
             ->where($db->quoteName('pt.project_id') . ' = :projectId')
             ->group($db->quoteName('st.team_id'))
@@ -332,6 +340,7 @@ final class TeamStatsRankingHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_season_team_id', 'st')
                 . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('tp.season_id')
             )
             ->join(
                 'INNER',
@@ -342,6 +351,7 @@ final class TeamStatsRankingHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_match_event', 'me')
                 . ' ON ' . $db->quoteName('me.teamplayer_id') . ' = ' . $db->quoteName('tp.id')
+                . ' AND ' . $db->quoteName('me.projectteam_id') . ' = ' . $db->quoteName('pt.id')
                 . ' AND ' . $db->quoteName('me.event_type_id') . ' IN (' . implode(',', $eventPlaceholders) . ')'
             )
             ->join(
@@ -349,6 +359,12 @@ final class TeamStatsRankingHelper
                 $db->quoteName('#__sportsmanagement_match', 'm')
                 . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('me.match_id')
                 . ' AND ' . $db->quoteName('m.published') . ' = 1'
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+                . ' AND ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('pt.project_id')
             )
             ->where($db->quoteName('pt.project_id') . ' = :projectId')
             ->where($db->quoteName('tp.published') . ' = 1')
@@ -380,6 +396,7 @@ final class TeamStatsRankingHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_season_team_id', 'st')
                 . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('tp.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('tp.season_id')
             )
             ->join(
                 'INNER',
@@ -390,6 +407,7 @@ final class TeamStatsRankingHelper
                 'INNER',
                 $db->quoteName('#__sportsmanagement_match_statistic', 'ms')
                 . ' ON ' . $db->quoteName('ms.teamplayer_id') . ' = ' . $db->quoteName('tp.id')
+                . ' AND ' . $db->quoteName('ms.projectteam_id') . ' = ' . $db->quoteName('pt.id')
                 . ' AND ' . $db->quoteName('ms.statistic_id') . ' IN (' . implode(',', $statPlaceholders) . ')'
             )
             ->join(
@@ -397,6 +415,12 @@ final class TeamStatsRankingHelper
                 $db->quoteName('#__sportsmanagement_match', 'm')
                 . ' ON ' . $db->quoteName('m.id') . ' = ' . $db->quoteName('ms.match_id')
                 . ' AND ' . $db->quoteName('m.published') . ' = 1'
+            )
+            ->join(
+                'INNER',
+                $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+                . ' AND ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('pt.project_id')
             )
             ->where($db->quoteName('pt.project_id') . ' = :projectId')
             ->group([
