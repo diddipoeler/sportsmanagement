@@ -168,13 +168,14 @@ namespace {
     }
 
     // A team and a project may exist independently without being linked.
-    // In this case the legacy static TeamstatsModel must not be invoked.
+    // Only check the association. Unrelated team/project queries and the
+    // legacy static TeamstatsModel must not be invoked.
     $db = new SlugTestDatabase((object) ['id' => 42, 'alias' => 'unassigned']);
     $params = new \Joomla\Registry\Registry(['p' => 11, 'teams' => 42]);
     $unassigned = $helper->getData($params, $db);
 
     if ($unassigned !== ['project' => null, 'team' => null, 'stats' => []]
-        || $db->queries !== 3
+        || $db->queries !== 1
     ) {
         throw new \RuntimeException('Unassigned team must not calculate project statistics');
     }
