@@ -3,10 +3,10 @@ name: Joomla 5/6 Matches module migration gate
 on:
   push:
     branches: [joomla5-6]
-    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php']
+    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php', '.github/tests/joomla56_matches_media_links.php']
   pull_request:
     branches: [master]
-    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php']
+    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php', '.github/tests/joomla56_matches_media_links.php']
 
 jobs:
   native-matches:
@@ -48,6 +48,11 @@ jobs:
         run: |
           php -l .github/tests/joomla56_matches_favorites_slugs.php
           php .github/tests/joomla56_matches_favorites_slugs.php
+
+      - name: Test match team logos and credential-free external club links
+        run: |
+          php -l .github/tests/joomla56_matches_media_links.php
+          php .github/tests/joomla56_matches_media_links.php
 
       - name: Validate manifest and runtime contracts
         shell: bash
