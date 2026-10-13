@@ -7,12 +7,14 @@ on:
       - 'modules/mod_sportsmanagement_sports_type_statistics/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
+      - '.github/tests/joomla56_sports_type_statistics_scope.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_sports_type_statistics/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
+      - '.github/tests/joomla56_sports_type_statistics_scope.php'
 
 jobs:
   sports-type-statistics-module:
@@ -46,6 +48,11 @@ jobs:
               }
             done
           done
+
+      - name: Test sport-scoped counts and icon URL safety
+        run: |
+          php -l .github/tests/joomla56_sports_type_statistics_scope.php
+          php .github/tests/joomla56_sports_type_statistics_scope.php
 
       - name: Validate Joomla 5/6 Sports Type Statistics contracts
         shell: bash
