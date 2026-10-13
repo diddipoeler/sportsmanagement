@@ -73,7 +73,21 @@ trait NativeLinkTrait
             $value = 'https://' . $value;
         }
 
-        return filter_var($value, FILTER_VALIDATE_URL) !== false ? $value : '';
+        if (filter_var($value, FILTER_VALIDATE_URL) === false) {
+            return '';
+        }
+
+        $parts = parse_url($value);
+
+        // Login details in a publicly rendered link are not ordinary club
+        // websites and may expose credentials or produce misleading links.
+        return is_array($parts)
+            && in_array(strtolower((string) ($parts['scheme'] ?? '')), ['http', 'https'], true)
+            && !empty($parts['host'])
+            && !isset($parts['user'])
+            && !isset($parts['pass'])
+            ? $value
+            : '';
     }
 
     /** @return array<int,array{label:string,url:string}> */
