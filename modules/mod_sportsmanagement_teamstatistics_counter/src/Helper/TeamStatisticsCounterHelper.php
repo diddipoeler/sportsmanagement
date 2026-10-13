@@ -30,6 +30,12 @@ final class TeamStatisticsCounterHelper
         $team = $this->getTeam($db, $teamId);
         $project = $this->getProject($db, $projectId);
 
+        // The legacy model expects a team assigned to the selected project.
+        // Do not run cross-project/statistics queries for missing associations.
+        if ($projectTeamId <= 0 || $team === null || $project === null) {
+            return ['project' => null, 'team' => null, 'stats' => []];
+        }
+
         $this->prepareModelContext($projectId, $teamId, $projectTeamId, $databaseSelector, $team);
 
         return [
