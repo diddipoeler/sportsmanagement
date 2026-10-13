@@ -42,7 +42,7 @@ final class FirstLeagueOverviewHelper
 
         return [
             'projects' => $projects,
-            'federations' => $this->getFederations($db),
+            'federations' => self::visibleFederations($projects, $this->getFederations($db)),
         ];
     }
 
@@ -72,7 +72,7 @@ final class FirstLeagueOverviewHelper
                 . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id')
             )
             ->join(
-                'INNER',
+                'LEFT',
                 $db->quoteName('#__sportsmanagement_countries', 'c')
                 . ' ON ' . $db->quoteName('c.alpha3') . ' = ' . $db->quoteName('l.country')
             )
@@ -135,6 +135,49 @@ final class FirstLeagueOverviewHelper
         }
 
         return $result;
+    }
+
+    /**
+     * Return only federation tabs which actually contain projects. Unassigned
+     * countries and references to deleted federations must not disappear.
+     *
+     * @param array<int, object> $projects
+     * @param array<int, object> $federations
+     *
+     * @return array<int, object>
+     */
+    public static function visibleFederations(array $projects, array $federations): array
+    {
+        $usedIds = [];
+
+        foreach ($projects as $project) {
+            $id = max(0, (int) ($project->federation ?? 0));
+            $usedIds[$id] = true;
+        }
+
+        $visible = [];
+
+        foreach ($federations as $id => $federation) {
+            if (isset($usedIds[(int) $id])) {
+                $visible[(int) $id] = $federation;
+            }
+        }
+
+        foreach ($usedIds as $id => $_) {
+            if (isset($visible[$id])) {
+                continue;
+            }
+
+            $visible[$id] = (object) [
+                'id' => $id,
+                'name' => $id === 0
+                    ? Text::_('JNONE')
+                    : Text::_('JUNKNOWN') . ' (' . $id . ')',
+                'picture_url' => '',
+            ];
+        }
+
+        return $visible;
     }
 
     private function rankingLink(object $project, Registry $params): string
