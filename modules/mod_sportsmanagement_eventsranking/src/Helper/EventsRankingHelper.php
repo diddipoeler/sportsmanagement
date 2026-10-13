@@ -37,6 +37,9 @@ final class EventsRankingHelper
         $rankings = [];
 
         foreach ($eventTypes as $eventType) {
+            // Event icons are database values; validate them before the layout
+            // renders a URL in an image attribute.
+            $eventType->icon_url = $this->mediaUrl((string) ($eventType->icon ?? ''));
             $dart = $project && (string) $project->sport_type_name === 'COM_SPORTSMANAGEMENT_ST_DART';
             $rankings[(int) $eventType->id] = $this->getRanking(
                 $db,
