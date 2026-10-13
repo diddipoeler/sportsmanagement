@@ -136,7 +136,6 @@ final class MatchReadService
                 $this->db->quoteName('p.firstname'),
                 $this->db->quoteName('p.nickname'),
                 $this->db->quoteName('p.lastname'),
-                $this->db->quoteName('p.alias'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $this->db->quoteName('tp.id') . ' = ' . $this->db->quoteName('me.teamplayer_id'))
