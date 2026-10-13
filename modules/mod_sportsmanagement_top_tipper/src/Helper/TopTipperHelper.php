@@ -241,9 +241,29 @@ final class TopTipperHelper
             $value = reset($value);
         }
 
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
         $text = trim((string) $value);
 
-        return $text === '' ? 0 : max(0, (int) strtok($text, ':'));
+        // Accept Joomla's ID:alias format, but never interpret a malformed
+        // prefix ("12garbage", floats, booleans or overflowing values) as an ID.
+        if (!preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $text, $match)) {
+            return 0;
+        }
+
+        $digits = ltrim($match[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     private function emptyData(): array
