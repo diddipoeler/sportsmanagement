@@ -48,7 +48,15 @@ if (!is_string($command) && !is_numeric($command)) {
     throw new \InvalidArgumentException('Invalid SportsManagement controller task.', 400);
 }
 
-$command = $filter->clean((string) $command, 'cmd');
+$rawCommand = (string) $command;
+$command = $filter->clean($rawCommand, 'cmd');
+
+// Never silently transform an invalid task into another executable action.
+// The Joomla command filter removes unsafe characters; reject such input
+// instead of dispatching the altered controller name or method.
+if ($command !== $rawCommand) {
+    throw new \\InvalidArgumentException('Invalid SportsManagement controller task.', 400);
+}
 
 $type = '';
 $task = $command !== '' ? $command : 'display';
