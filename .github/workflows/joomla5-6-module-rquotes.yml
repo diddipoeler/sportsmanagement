@@ -8,6 +8,7 @@ on:
       - 'modules/mod_sportsmanagement_rquotes/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-rquotes.yml'
+      - '.github/tests/joomla56_rquotes_error_privacy.php'
   pull_request:
     branches:
       - master
@@ -15,6 +16,7 @@ on:
       - 'modules/mod_sportsmanagement_rquotes/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-rquotes.yml'
+      - '.github/tests/joomla56_rquotes_error_privacy.php'
 
 jobs:
   rquotes-module:
@@ -24,6 +26,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Verify Rquotes database errors stay private
+        run: |
+          php -l .github/tests/joomla56_rquotes_error_privacy.php
+          php .github/tests/joomla56_rquotes_error_privacy.php
 
       - name: Validate Rquotes module
         shell: bash
