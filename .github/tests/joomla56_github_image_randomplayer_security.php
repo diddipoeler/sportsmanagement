@@ -106,6 +106,16 @@ namespace Joomla\CMS\Component {
     }
 }
 
+namespace Joomla\CMS\Uri {
+    class Uri
+    {
+        public static function root(): string
+        {
+            return 'https://sports.example.test/';
+        }
+    }
+}
+
 namespace Joomla\CMS\Language {
     class Text
     {
@@ -377,6 +387,28 @@ namespace {
         'RandomPlayer must reject boolean, floating-point and nested array IDs.');
     check($ids->invoke($randomPlayer, [12, '12:alias', '13']) === [12, 13],
         'RandomPlayer must deduplicate valid Joomla multiselect IDs.');
+
+    $media = new \ReflectionMethod($randomPlayer, 'mediaUrl');
+    check($media->invoke($randomPlayer, '/images/com_sportsmanagement/player.png')
+        === 'https://sports.example.test/images/com_sportsmanagement/player.png',
+        'RandomPlayer must preserve valid site-relative media paths.');
+    check($media->invoke($randomPlayer, 'https://cdn.example.test/players/jane.jpg')
+        === 'https://cdn.example.test/players/jane.jpg',
+        'RandomPlayer must preserve valid remote HTTPS images.');
+
+    foreach ([
+        'javascript:alert(1)',
+        'data:image/svg+xml;base64,PHN2Zz4=',
+        '//outside.example.test/pic.jpg',
+        '/../../private/image.png',
+        'images/%2e%2e/secrets.jpg',
+        'images\\..\private.jpg',
+        'https://name:password@example.test/image.png',
+        "images/\r\ninjected.png",
+    ] as $unsafePath) {
+        check($media->invoke($randomPlayer, $unsafePath) === '',
+            'RandomPlayer accepted an unsafe media URL or filesystem traversal.');
+    }
 
     echo "Joomla 5/6 update, image deletion and RandomPlayer security regressions OK.\n";
 }
