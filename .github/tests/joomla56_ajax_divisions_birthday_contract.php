@@ -61,6 +61,24 @@ namespace {
     $app = new class {
         public array $headers = [];
         public int $closes = 0;
+        public object $document;
+
+        public function __construct()
+        {
+            $this->document = new class {
+                public string $mimeEncoding = '';
+
+                public function setMimeEncoding(string $mimeEncoding): void
+                {
+                    $this->mimeEncoding = $mimeEncoding;
+                }
+            };
+        }
+
+        public function getDocument(): object
+        {
+            return $this->document;
+        }
 
         public function setHeader(string $name, string $value, bool $replace): void
         {
@@ -95,6 +113,7 @@ namespace {
         || $payload['message'] !== 'translated:JERROR_AN_ERROR_HAS_OCCURRED'
         || str_contains($json, $secret)
         || $app->closes !== 1
+        || $app->document->mimeEncoding !== 'application/json'
         || ($app->headers['Content-Type'] ?? '') !== 'application/json; charset=utf-8'
     ) {
         throw new \RuntimeException('Site AJAX error response must be generic UTF-8 JSON.');
