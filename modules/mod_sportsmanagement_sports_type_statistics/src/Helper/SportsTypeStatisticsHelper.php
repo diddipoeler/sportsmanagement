@@ -45,6 +45,12 @@ final class SportsTypeStatisticsHelper
             'projects' => $this->countProjects($db, $sportTypeId),
         ];
 
+        // The layout displays only a no-projects message for this state.
+        // Avoid querying unrelated global tables when this sport has no projects.
+        if ($counts['projects'] === 0) {
+            return ['sportstype' => $sportType, 'counts' => $counts];
+        }
+
         $requested = [
             'leagues' => ['show_leagues', fn() => $this->countProjectDimension($db, 'league_id', $sportTypeId)],
             'seasons' => ['show_seasons', fn() => $this->countProjectDimension($db, 'season_id', $sportTypeId)],
