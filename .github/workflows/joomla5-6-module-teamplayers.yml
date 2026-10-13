@@ -7,12 +7,14 @@ on:
       - 'modules/mod_sportsmanagement_teamplayers/**'
       - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-teamplayers.yml'
+      - '.github/tests/joomla56_teamplayers_roster_visibility.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_teamplayers/**'
       - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-teamplayers.yml'
+      - '.github/tests/joomla56_teamplayers_roster_visibility.php'
 
 jobs:
   teamplayers-module:
@@ -48,6 +50,11 @@ jobs:
           done
 
           node --check modules/mod_sportsmanagement_teamplayers/js/native.js
+
+      - name: Test published season rosters and safe player markup
+        run: |
+          php -l .github/tests/joomla56_teamplayers_roster_visibility.php
+          php .github/tests/joomla56_teamplayers_roster_visibility.php
 
       - name: Validate native Team Players contracts
         shell: bash
