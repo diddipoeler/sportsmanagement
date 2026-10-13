@@ -654,12 +654,37 @@ final class TeamplayersModel extends SportsManagementListModel
         return $db->setQuery($query, 0, 1)->loadObject() ?: null;
     }
 
+    /** Keep only valid positive decimal relation IDs from administrator POST. */
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        $valid = [];
+        $max = (string) PHP_INT_MAX;
+
+        foreach ($ids as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if ($raw === '' || !ctype_digit($raw)) {
+                continue;
+            }
+
+            $decimal = ltrim($raw, '0');
+            $decimal = $decimal === '' ? '0' : $decimal;
+
+            if ($decimal === '0'
+                || strlen($decimal) > strlen($max)
+                || (strlen($decimal) === strlen($max) && strcmp($decimal, $max) > 0)) {
+                continue;
+            }
+
+            $id = (int) $decimal;
+            $valid[$id] = $id;
+        }
+
+        return array_values($valid);
     }
 
     private function relationService(): ProjectRelationService
