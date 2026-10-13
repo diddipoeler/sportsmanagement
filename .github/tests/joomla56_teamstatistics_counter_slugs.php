@@ -21,6 +21,32 @@ namespace Joomla\Database {
     }
 }
 
+namespace Joomla\Registry {
+    final class Registry
+    {
+        public function __construct(private array $values = [])
+        {
+        }
+
+        public function get(string $key, mixed $default = null): mixed
+        {
+            return $this->values[$key] ?? $default;
+        }
+    }
+}
+
+namespace Diddipoeler\Component\SportsManagement\Site\Service {
+    final class SportsManagementDatabaseResolver
+    {
+        public static function resolve(
+            \Joomla\Database\DatabaseInterface $fallback,
+            int $selector
+        ): \Joomla\Database\DatabaseInterface {
+            return $fallback;
+        }
+    }
+}
+
 namespace {
     \defined('_JEXEC') || define('_JEXEC', 1);
 
@@ -43,6 +69,11 @@ namespace {
         public function from(string $table): self
         {
             $this->table = $table;
+            return $this;
+        }
+
+        public function join(string $type, string $condition): self
+        {
             return $this;
         }
 
@@ -82,6 +113,12 @@ namespace {
         {
             $this->query = $query;
             $this->queries++;
+        }
+
+        public function loadResult(): int
+        {
+            // No project/team association exists in this fake database.
+            return 0;
         }
 
         public function loadObject(): ?object
@@ -128,6 +165,26 @@ namespace {
         if ($method->invoke($helper, $db, 0) !== null || $db->queries !== 0) {
             throw new \RuntimeException('Non-positive IDs must not query ' . $methodName);
         }
+    }
+
+    // A team and a project may exist independently without being linked.
+    // In this case the legacy static TeamstatsModel must not be invoked.
+    $db = new SlugTestDatabase((object) ['id' => 42, 'alias' => 'unassigned']);
+    $params = new \Joomla\Registry\Registry(['p' => 11, 'teams' => 42]);
+    $unassigned = $helper->getData($params, $db);
+
+    if ($unassigned !== ['project' => null, 'team' => null, 'stats' => []]
+        || $db->queries !== 3
+    ) {
+        throw new \RuntimeException('Unassigned team must not calculate project statistics');
+    }
+
+    $db = new SlugTestDatabase((object) ['id' => 42, 'alias' => 'unassigned']);
+    $emptyParams = new \Joomla\Registry\Registry();
+    if ($helper->getData($emptyParams, $db) !== ['project' => null, 'team' => null, 'stats' => []]
+        || $db->queries !== 0
+    ) {
+        throw new \RuntimeException('Missing team/project IDs must not query statistics');
     }
 
     echo "Team Statistics Counter portable slug regressions OK\n";
