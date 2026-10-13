@@ -36,10 +36,10 @@ $rows = [
 <div class="<?= htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8') ?>">
     <?php if ($sportType) : ?>
         <h4>
-            <?php if (!empty($sportType->icon)) : ?>
-                <img src="<?= htmlspecialchars(Uri::root() . ltrim((string) $sportType->icon, '/'), ENT_QUOTES, 'UTF-8') ?>"
+            <?php if (!empty($sportType->icon_url)) : ?>
+                <img src="<?= htmlspecialchars((string) $sportType->icon_url, ENT_QUOTES, 'UTF-8') ?>"
                      alt=""
-                     width="<?= (int) $params->get('sportstypes_picture_width', 40) ?>">
+                     width="<?= max(1, min(400, (int) $params->get('sportstypes_picture_width', 40))) ?>">
             <?php endif; ?>
             <?= htmlspecialchars(Text::_((string) $sportType->name), ENT_QUOTES, 'UTF-8') ?>
         </h4>
