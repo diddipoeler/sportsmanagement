@@ -96,8 +96,22 @@ final class PlaygroundTickerHelper
         if ($useExternal) {
             $server = trim((string) $componentParams->get('cfg_which_database_server', ''));
 
-            if ($server !== '') {
-                return rtrim($server, '/\\') . '/';
+            if ($server !== ''
+                && !preg_match('/[\\x00-\\x20\\x7F]/', $server)
+                && !str_contains($server, '\\\\')
+                && filter_var($server, FILTER_VALIDATE_URL) !== false
+            ) {
+                $parts = parse_url($server);
+                if (is_array($parts)
+                    && in_array(strtolower((string) ($parts['scheme'] ?? '')), ['http', 'https'], true)
+                    && !empty($parts['host'])
+                    && !isset($parts['user'])
+                    && !isset($parts['pass'])
+                    && !isset($parts['query'])
+                    && !isset($parts['fragment'])
+                ) {
+                    return rtrim($server, '/') . '/';
+                }
             }
         }
 
