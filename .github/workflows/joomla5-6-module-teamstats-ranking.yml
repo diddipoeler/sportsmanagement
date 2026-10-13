@@ -9,6 +9,7 @@ on:
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-teamstats-ranking.yml'
+      - '.github/tests/joomla56_teamstats_ranking_scope.php'
   pull_request:
     branches:
       - master
@@ -17,6 +18,7 @@ on:
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-teamstats-ranking.yml'
+      - '.github/tests/joomla56_teamstats_ranking_scope.php'
 
 jobs:
   team-stats-ranking-contract:
@@ -82,6 +84,11 @@ jobs:
           fi
 
           echo 'Team Stats Ranking PHP contracts OK'
+
+      - name: Test ranking season and project scope
+        run: |
+          php -l .github/tests/joomla56_teamstats_ranking_scope.php
+          php .github/tests/joomla56_teamstats_ranking_scope.php
 
       - name: Validate Team Stats Ranking manifest and update metadata
         shell: bash
