@@ -3,10 +3,10 @@ name: Joomla 5/6 Matches module migration gate
 on:
   push:
     branches: [joomla5-6]
-    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml']
+    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php']
   pull_request:
     branches: [master]
-    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml']
+    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php']
 
 jobs:
   native-matches:
@@ -43,6 +43,11 @@ jobs:
               }
             done
           done
+
+      - name: Test favorite matches filtering and database-independent route slugs
+        run: |
+          php -l .github/tests/joomla56_matches_favorites_slugs.php
+          php .github/tests/joomla56_matches_favorites_slugs.php
 
       - name: Validate manifest and runtime contracts
         shell: bash
