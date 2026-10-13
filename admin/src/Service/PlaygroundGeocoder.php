@@ -67,7 +67,7 @@ final class PlaygroundGeocoder
             . '?format=jsonv2&addressdetails=1&limit=1&q=' . rawurlencode($query);
 
         try {
-            $response = HttpFactory::getHttp()->get(
+            $response = (new HttpFactory())->getHttp()->get(
                 $url,
                 [
                     'Accept' => 'application/json',
