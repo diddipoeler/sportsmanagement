@@ -106,9 +106,11 @@ class NavigationMenuHelper
                 $this->db->quoteName('p.season_id'),
                 $this->db->quoteName('p.league_id'),
                 $this->db->quoteName('p.project_type'),
-                "CONCAT_WS(':', " . $this->db->quoteName('p.id') . ', ' . $this->db->quoteName('p.alias') . ') AS ' . $this->db->quoteName('project_slug'),
-                "CONCAT_WS(':', " . $this->db->quoteName('l.id') . ', ' . $this->db->quoteName('l.alias') . ') AS ' . $this->db->quoteName('league_slug'),
-                "CONCAT_WS(':', " . $this->db->quoteName('s.id') . ', ' . $this->db->quoteName('s.alias') . ') AS ' . $this->db->quoteName('season_slug'),
+                $this->db->quoteName('p.alias', 'project_alias'),
+                $this->db->quoteName('l.id', 'joined_league_id'),
+                $this->db->quoteName('l.alias', 'league_alias'),
+                $this->db->quoteName('s.id', 'joined_season_id'),
+                $this->db->quoteName('s.alias', 'season_alias'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $this->db->quoteName('p.league_id') . ' = ' . $this->db->quoteName('l.id'))
@@ -117,6 +119,23 @@ class NavigationMenuHelper
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $this->db->setQuery($query, 0, 1);
         $this->project = $this->db->loadObject() ?: null;
+
+        if ($this->project !== null) {
+            // Preserve the historical id:alias fields without MySQL-specific
+            // CONCAT_WS, including its handling of NULL joined rows.
+            $this->project->project_slug = self::slug(
+                $this->project->id ?? null,
+                $this->project->project_alias ?? null
+            );
+            $this->project->league_slug = self::slug(
+                $this->project->joined_league_id ?? null,
+                $this->project->league_alias ?? null
+            );
+            $this->project->season_slug = self::slug(
+                $this->project->joined_season_id ?? null,
+                $this->project->season_alias ?? null
+            );
+        }
 
         return $this->project ?: false;
     }
@@ -167,7 +186,6 @@ class NavigationMenuHelper
             ->select([
                 $this->db->quoteName('d.id', 'value'),
                 $this->db->quoteName('d.name', 'text'),
-                "CONCAT_WS(':', " . $this->db->quoteName('d.id') . ', ' . $this->db->quoteName('d.alias') . ') AS ' . $this->db->quoteName('division_slug'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_division', 'd'))
             ->where($this->db->quoteName('d.project_id') . ' = :projectId')
@@ -201,7 +219,6 @@ class NavigationMenuHelper
             ->select([
                 $this->db->quoteName('l.id', 'value'),
                 $this->db->quoteName('l.name', 'text'),
-                "CONCAT_WS(':', " . $this->db->quoteName('l.id') . ', ' . $this->db->quoteName('l.alias') . ') AS ' . $this->db->quoteName('league_slug'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_league', 'l'))
             ->order($this->db->quoteName('l.name'));
@@ -232,7 +249,6 @@ class NavigationMenuHelper
                 $this->db->quoteName('p.name', 'text'),
                 $this->db->quoteName('s.name', 'season_name'),
                 $this->db->quoteName('st.name', 'sports_type_name'),
-                "CONCAT_WS(':', " . $this->db->quoteName('p.id') . ', ' . $this->db->quoteName('p.alias') . ') AS ' . $this->db->quoteName('project_slug'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $this->db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $this->db->quoteName('s.id') . ' = ' . $this->db->quoteName('p.season_id'))
@@ -484,6 +500,16 @@ class NavigationMenuHelper
     protected function getParam(string $name, mixed $default = null): mixed
     {
         return $this->params->get($name, $default);
+    }
+
+    /** Match CONCAT_WS(':', id, alias) without relying on a SQL dialect. */
+    private static function slug(mixed $id, mixed $alias): string
+    {
+        if ($id === null) {
+            return $alias === null ? '' : (string) $alias;
+        }
+
+        return (string) $id . ($alias === null ? '' : ':' . (string) $alias);
     }
 
     private static function siteApplication(): CMSApplicationInterface

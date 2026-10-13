@@ -40,7 +40,7 @@ final class EditprojectteamModel extends AdminModel
         $postedProjectTeamId = self::positiveId($data['ptid'] ?? null);
         $projectId = self::positiveId($data['p'] ?? null);
 
-        if ($id <= 0
+        if ($id <= 0 || $projectId <= 0
             || (array_key_exists('ptid', $data) && $postedProjectTeamId !== $id)) {
             $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
             return false;
@@ -50,7 +50,7 @@ final class EditprojectteamModel extends AdminModel
 
         if (!$table->load($id)
             || (int) $table->id !== $id
-            || ($projectId > 0 && (int) $table->project_id !== $projectId)) {
+            || (int) $table->project_id !== $projectId) {
             $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
             return false;
         }

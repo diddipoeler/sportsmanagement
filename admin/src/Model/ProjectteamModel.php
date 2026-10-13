@@ -568,11 +568,40 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
     }
 
+    /** Reject non-decimal, negative or overflowing project-team record IDs. */
     private function normaliseIds($ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', (array) $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        if (!is_array($ids)) {
+            return [];
+        }
+
+        $valid = [];
+        $max = (string) PHP_INT_MAX;
+
+        foreach ($ids as $value) {
+            if (!is_string($value) && !is_int($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if ($raw === '' || !ctype_digit($raw)) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+            $digits = $digits === '' ? '0' : $digits;
+
+            if ($digits === '0'
+                || strlen($digits) > strlen($max)
+                || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+                continue;
+            }
+
+            $id = (int) $digits;
+            $valid[$id] = $id;
+        }
+
+        return array_values($valid);
     }
 }
