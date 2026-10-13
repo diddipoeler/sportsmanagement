@@ -136,6 +136,7 @@ final class MatchReadService
                 $this->db->quoteName('p.firstname'),
                 $this->db->quoteName('p.nickname'),
                 $this->db->quoteName('p.lastname'),
+                $this->db->quoteName('p.alias'),
             ])
             ->from($this->db->quoteName('#__sportsmanagement_match_event', 'me'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_season_team_person_id', 'tp') . ' ON ' . $this->db->quoteName('tp.id') . ' = ' . $this->db->quoteName('me.teamplayer_id'))
@@ -171,7 +172,6 @@ final class MatchReadService
                 $this->db->quoteName('pos.name', 'position_name'),
                 $this->db->quoteName('mr.project_position_id'),
                 $this->db->quoteName('pref.picture'),
-                "CONCAT_WS(':', p.id, p.alias) AS person_slug",
             ])
             ->from($this->db->quoteName('#__sportsmanagement_match_referee', 'mr'))
             ->join('LEFT', $this->db->quoteName('#__sportsmanagement_project_referee', 'pref') . ' ON ' . $this->db->quoteName('pref.id') . ' = ' . $this->db->quoteName('mr.project_referee_id'))
@@ -187,6 +187,17 @@ final class MatchReadService
 
         $this->db->setQuery($query);
 
-        return $this->db->loadObjectList() ?: [];
+        $referees = $this->db->loadObjectList() ?: [];
+
+        // Build Joomla ID:alias slugs in PHP instead of using the
+        // MySQL-only CONCAT_WS() function in a portable database query.
+        foreach ($referees as $referee) {
+            $personId = (int) ($referee->id ?? 0);
+            $referee->person_slug = $personId > 0
+                ? $personId . ':' . (string) ($referee->alias ?? '')
+                : '';
+        }
+
+        return $referees;
     }
 }
