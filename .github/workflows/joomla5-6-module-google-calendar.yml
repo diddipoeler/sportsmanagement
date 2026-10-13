@@ -5,11 +5,17 @@ on:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_google_calendar/**'
+      - 'site/src/Service/MatchReadService.php'
+      - 'admin/src/Service/PlayerPersistenceService.php'
+      - '.github/tests/joomla56_referee_player_calendar_portability.php'
       - '.github/workflows/joomla5-6-module-google-calendar.yml'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_google_calendar/**'
+      - 'site/src/Service/MatchReadService.php'
+      - 'admin/src/Service/PlayerPersistenceService.php'
+      - '.github/tests/joomla56_referee_player_calendar_portability.php'
       - '.github/workflows/joomla5-6-module-google-calendar.yml'
 
 jobs:
@@ -126,3 +132,7 @@ jobs:
 
           print('Native Google Calendar module contracts OK')
           PY
+
+      - name: Test portable referee data, player validation and redirect-safe calendar HTTP
+        run: php .github/tests/joomla56_referee_player_calendar_portability.php
+
