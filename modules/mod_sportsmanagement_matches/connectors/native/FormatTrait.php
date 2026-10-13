@@ -107,22 +107,43 @@ trait NativeFormatTrait
     {
         $source = trim($source);
 
-        if ($source === '' || preg_match('/[\x00-\x1F\x7F\\\\]/', $source)) {
-            return '';
-        }
-
-        if (preg_match('~^https?://~i', $source)) {
-            return filter_var($source, FILTER_VALIDATE_URL) !== false ? $source : '';
-        }
-
-        if (str_starts_with($source, '//')
-            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $source)
-            || preg_match('~(?:^|/)\.\.(?:/|$)~', $source)
+        if ($source === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $source)
+            || str_contains($source, '\\')
         ) {
             return '';
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . ltrim($source, '/');
+        if (preg_match('~^https?://~i', $source)) {
+            if (preg_match('/[\x00-\x20\x7F]/', $source)
+                || filter_var($source, FILTER_VALIDATE_URL) === false
+            ) {
+                return '';
+            }
+
+            $parts = parse_url($source);
+
+            return is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                ? $source
+                : '';
+        }
+
+        if (str_starts_with($source, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $source)
+            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $source)
+            || str_contains($source, '%')
+            || strpbrk($source, '?#') !== false
+        ) {
+            return '';
+        }
+
+        $relative = ltrim($source, '/');
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $relative)));
+
+        return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
     /** @return null|array{name:string,url:string} */
