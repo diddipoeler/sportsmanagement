@@ -57,7 +57,8 @@ final class NewProjectHelper
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'l') . ' ON ' . $db->quoteName('l.id') . ' = ' . $db->quoteName('p.league_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round') . ' AND ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('p.id'))
-            ->where($db->quoteName('p.modified') . ' BETWEEN :modifiedStart AND :modifiedEnd')
+            ->where($db->quoteName('p.modified') . ' >= :modifiedStart')
+            ->where($db->quoteName('p.modified') . ' < :modifiedEnd')
             ->where($db->quoteName('p.published') . ' = 1')
             ->bind(':modifiedStart', $start, ParameterType::STRING)
             ->bind(':modifiedEnd', $end, ParameterType::STRING)
@@ -360,19 +361,31 @@ final class NewProjectHelper
         return $result;
     }
 
-    private function todayRange(CMSApplicationInterface $app): array
+    /**
+     * Convert the site's current calendar day into a half-open UTC range.
+     * SportsManagement stores project.modified in UTC. Calculating both
+     * local midnights independently also handles 23- and 25-hour DST days.
+     *
+     * @return array{0: string, 1: string}
+     */
+    private function todayRange(CMSApplicationInterface $app, ?\DateTimeImmutable $now = null): array
     {
-        $timezone = (string) $app->get('offset', 'UTC');
-
         try {
-            $date = new \DateTimeImmutable('now', new \DateTimeZone($timezone));
+            $timezone = new \DateTimeZone((string) $app->get('offset', 'UTC'));
         } catch (\Throwable) {
-            $date = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+            $timezone = new \DateTimeZone('UTC');
         }
 
-        $day = $date->format('Y-m-d');
+        $today = ($now ?? new \DateTimeImmutable('now', $timezone))
+            ->setTimezone($timezone)
+            ->setTime(0, 0);
+        $tomorrow = $today->modify('+1 day');
+        $utc = new \DateTimeZone('UTC');
 
-        return [$day . ' 00:00:00', $day . ' 23:59:59'];
+        return [
+            $today->setTimezone($utc)->format('Y-m-d H:i:s'),
+            $tomorrow->setTimezone($utc)->format('Y-m-d H:i:s'),
+        ];
     }
 
     private function mediaUrl(string $path): string
