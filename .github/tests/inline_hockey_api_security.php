@@ -38,4 +38,14 @@ if ($client->pageUrl('https://example.invalid/api?page=2', 3) !== 'https://examp
     throw new \RuntimeException('Existing API pagination query was not preserved.');
 }
 
+if ($client->pageUrl('https://example.invalid/api?filter=active&page=2&page=7&sort=date#results', 4)
+    !== 'https://example.invalid/api?filter=active&page=4&sort=date#results') {
+    throw new \RuntimeException('Duplicate API pagination parameters were not removed.');
+}
+
+if ($client->pageUrl('https://example.invalid/api?homepage=1#results', 0)
+    !== 'https://example.invalid/api?homepage=1&page=1#results') {
+    throw new \RuntimeException('API pagination changed unrelated query keys or fragment.');
+}
+
 echo "Inline-Hockey API URL security checks OK.\n";
