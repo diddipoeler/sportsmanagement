@@ -213,17 +213,52 @@ final class PlayerPersistenceService
 
         foreach (['!Y-m-d', '!d-m-Y', '!d.m.Y'] as $format) {
             $date = \DateTimeImmutable::createFromFormat($format, $raw);
-            if ($date instanceof \DateTimeImmutable) {
+            // PHP normalizes impossible dates (e.g. 31 February) unless
+            // warnings are checked explicitly.
+            $errors = \DateTimeImmutable::getLastErrors();
+
+            if ($date instanceof \DateTimeImmutable
+                && ($errors === false || ($errors['warning_count'] === 0 && $errors['error_count'] === 0))) {
                 return $date->format('Y-m-d');
             }
         }
 
-        $timestamp = strtotime($raw);
-        return $timestamp === false ? null : date('Y-m-d', $timestamp);
+        // Avoid natural-language or ambiguous date strings being silently
+        // interpreted differently across servers and PHP versions.
+        return null;
     }
 
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(array_map('intval', $ids), static fn (int $id): bool => $id > 0)));
+        $normalised = [];
+
+        foreach ($ids as $candidate) {
+            if (is_int($candidate)) {
+                $id = $candidate;
+            } elseif (is_string($candidate) && preg_match('/^[0-9]+$/D', trim($candidate))) {
+                $digits = ltrim(trim($candidate), '0');
+
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1],
+                ]);
+
+                if ($id === false) {
+                    continue;
+                }
+            } else {
+                // Reject partial IDs, booleans, floating-point and arrays.
+                continue;
+            }
+
+            if ($id > 0) {
+                $normalised[$id] = $id;
+            }
+        }
+
+        return array_values($normalised);
     }
 }
