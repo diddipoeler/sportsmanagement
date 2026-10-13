@@ -221,13 +221,10 @@ final class MatchesSliderHelper
             );
         }
 
-        if ((int) $params->get('use_fav', 0) === 1) {
-            $query->where(
-                '(FIND_IN_SET(' . $db->quoteName('st1.team_id')
-                . ', REPLACE(COALESCE(' . $db->quoteName('p.fav_team') . ", ''), ' ', '')) > 0"
-                . ' OR FIND_IN_SET(' . $db->quoteName('st2.team_id')
-                . ', REPLACE(COALESCE(' . $db->quoteName('p.fav_team') . ", ''), ' ', '')) > 0)"
-            );
+        if ((int) $params->get('use_fav', 0) === 1
+            && !$this->applyFavoriteTeamFilter($db, $query, $projectIds)
+        ) {
+            return [];
         }
 
         $query->order([
@@ -251,6 +248,58 @@ final class MatchesSliderHelper
         }
 
         return $rows;
+    }
+
+    /**
+     * Apply project-specific favorite teams without MySQL FIND_IN_SET.
+     * Each project must match only its own favorite team IDs.
+     *
+     * @param array<int,int> $projectIds
+     */
+    private function applyFavoriteTeamFilter(DatabaseInterface $db, object $query, array $projectIds): bool
+    {
+        if ($projectIds === []) {
+            return false;
+        }
+
+        $favoritesQuery = $db->createQuery()
+            ->select([
+                $db->quoteName('p.id'),
+                $db->quoteName('p.fav_team'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER);
+        $db->setQuery($favoritesQuery);
+
+        $conditions = [];
+        $number = 0;
+
+        foreach ($db->loadObjectList() ?: [] as $project) {
+            $projectId = (int) ($project->id ?? 0);
+            $teams = $this->ids($project->fav_team ?? '');
+
+            if ($projectId <= 0 || !in_array($projectId, $projectIds, true) || $teams === []) {
+                continue;
+            }
+
+            $projectBinding = ':favoriteProject' . $number++;
+            $query->bind($projectBinding, $projectId, ParameterType::INTEGER);
+            $homeBindings = $query->bindArray($teams, ParameterType::INTEGER);
+            $awayBindings = $query->bindArray($teams, ParameterType::INTEGER);
+
+            $conditions[] = '(' . $db->quoteName('p.id') . ' = ' . $projectBinding
+                . ' AND (' . $db->quoteName('st1.team_id') . ' IN (' . implode(',', $homeBindings) . ')'
+                . ' OR ' . $db->quoteName('st2.team_id') . ' IN (' . implode(',', $awayBindings) . ')))';
+        }
+
+        if ($conditions === []) {
+            return false;
+        }
+
+        $query->where('(' . implode(' OR ', $conditions) . ')');
+
+        return true;
     }
 
     private function matchLink(object $match, Registry $params, int $databaseMode, int $seasonId): string
