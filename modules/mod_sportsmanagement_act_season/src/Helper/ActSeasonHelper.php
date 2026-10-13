@@ -183,10 +183,21 @@ final class ActSeasonHelper
             return '';
         }
 
-        // Preserve configured HTTPS image URLs; local image paths remain site-relative.
-        $source = preg_match('~^https?://~i', $path)
-            ? $path
-            : Uri::root() . ltrim($path, '/');
+        // Reject untrusted schemes, protocol-relative URLs and traversal paths.
+        // A value from a database or module configuration must never become a
+        // javascript: URL or escape the site's image directory.
+        $path = trim($path);
+        if (preg_match('~^https?://~i', $path)) {
+            $source = $path;
+        } elseif (
+            str_starts_with($path, '//')
+            || str_starts_with($path, '/')
+            || preg_match('~(?:^|/)\\.\\.(?:/|$)|[\\\\\\x00-\\x1F]|^[a-z][a-z0-9+.-]*:~i', $path)
+        ) {
+            return '';
+        } else {
+            $source = Uri::root() . $path;
+        }
 
         return '<img src="' . htmlspecialchars($source, ENT_QUOTES, 'UTF-8')
             . '" alt="' . $label . '" title="' . $label . '" />';
