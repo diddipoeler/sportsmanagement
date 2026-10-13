@@ -211,7 +211,7 @@ final class PlayerPersistenceService
             return null;
         }
 
-        foreach (['!Y-m-d', '!d-m-Y', '!d.m.Y'] as $format) {
+        foreach (['!Y-m-d', '!Y-m-d H:i:s', '!Y-m-d H:i', '!d-m-Y', '!d.m.Y'] as $format) {
             $date = \DateTimeImmutable::createFromFormat($format, $raw);
             // PHP normalizes impossible dates (e.g. 31 February) unless
             // warnings are checked explicitly.
