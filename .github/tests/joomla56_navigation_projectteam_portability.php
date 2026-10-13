@@ -10,7 +10,10 @@
 declare(strict_types=1);
 
 namespace Joomla\CMS\Application { interface CMSApplicationInterface {} }
-namespace Joomla\Database { interface DatabaseInterface {} }
+namespace Joomla\Database {
+    interface DatabaseInterface {}
+    class ParameterType { public const INTEGER = 'integer'; }
+}
 namespace Joomla\Registry {
     class Registry {
         public function __construct(private array $items = []) {}
