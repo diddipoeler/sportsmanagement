@@ -92,9 +92,9 @@ $teamUrl = static function (object $team) use ($linkView, $project, $databaseSel
                     <?php echo Text::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_COL_TEAM'); ?>
                 </th>
                 <th scope="col" class="text-end">
-                    <?php if ((int) $params->get('show_event_icon', 1) === 1 && !empty($stat->icon)
+                    <?php if ((int) $params->get('show_event_icon', 1) === 1 && !empty($stat->icon_url)
                         && $stat->icon !== 'media/com_sportsmanagement/event_icons/event.gif') : ?>
-                        <img src="<?php echo htmlspecialchars((string) $stat->icon, ENT_QUOTES, 'UTF-8'); ?>"
+                        <img src="<?php echo htmlspecialchars((string) $stat->icon_url, ENT_QUOTES, 'UTF-8'); ?>"
                              alt="<?php echo htmlspecialchars(Text::_((string) $stat->name), ENT_QUOTES, 'UTF-8'); ?>"
                              class="jsm-teamstats-stat-icon" loading="lazy">
                     <?php else : ?>
@@ -126,8 +126,8 @@ $teamUrl = static function (object $team) use ($linkView, $project, $databaseSel
                     <td class="text-center"><?php echo htmlspecialchars($rankLabel, ENT_QUOTES, 'UTF-8'); ?></td>
                     <?php if ($showLogo > 0) : ?>
                         <td class="text-center teamlogo">
-                            <?php if ($showLogo === 1 && !empty($team->logo_big)) : ?>
-                                <img src="<?php echo htmlspecialchars((string) $team->logo_big, ENT_QUOTES, 'UTF-8'); ?>"
+                            <?php if ($showLogo === 1 && !empty($team->logo_url)) : ?>
+                                <img src="<?php echo htmlspecialchars((string) $team->logo_url, ENT_QUOTES, 'UTF-8'); ?>"
                                      alt="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>"
                                      class="jsm-teamstats-logo" loading="lazy">
                             <?php elseif ($showLogo === 2 && !empty($team->country)) : ?>
