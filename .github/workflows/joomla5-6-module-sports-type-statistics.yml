@@ -9,6 +9,7 @@ on:
       - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
       - '.github/tests/joomla56_sports_type_statistics_scope.php'
       - '.github/tests/joomla56_sports_type_statistics_relations.php'
+      - '.github/tests/joomla56_sports_type_statistics_playgrounds.php'
   pull_request:
     branches: [master]
     paths:
@@ -17,6 +18,7 @@ on:
       - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
       - '.github/tests/joomla56_sports_type_statistics_scope.php'
       - '.github/tests/joomla56_sports_type_statistics_relations.php'
+      - '.github/tests/joomla56_sports_type_statistics_playgrounds.php'
 
 jobs:
   sports-type-statistics-module:
@@ -60,6 +62,11 @@ jobs:
         run: |
           php -l .github/tests/joomla56_sports_type_statistics_relations.php
           php .github/tests/joomla56_sports_type_statistics_relations.php
+
+      - name: Verify project-team and match playground counts
+        run: |
+          php -l .github/tests/joomla56_sports_type_statistics_playgrounds.php
+          php .github/tests/joomla56_sports_type_statistics_playgrounds.php
 
       - name: Validate Joomla 5/6 Sports Type Statistics contracts
         shell: bash
