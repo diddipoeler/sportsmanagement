@@ -54,7 +54,7 @@ final class SportsTypeStatisticsHelper
         $requested = [
             'leagues' => ['show_leagues', fn() => $this->countProjectDimension($db, 'league_id', $sportTypeId)],
             'seasons' => ['show_seasons', fn() => $this->countProjectDimension($db, 'season_id', $sportTypeId)],
-            'playgrounds' => ['show_playgrounds', fn() => $this->countTable($db, '#__sportsmanagement_playground')],
+            'playgrounds' => ['show_playgrounds', fn() => $this->countSportPlaygrounds($db, $sportTypeId)],
             'clubs' => ['show_clubs', fn() => $this->countSportClubs($db, $sportTypeId)],
             'teams' => ['show_teams', fn() => $this->countProjectRelation($db, '#__sportsmanagement_project_team', $sportTypeId)],
             'players' => ['show_players', fn() => $this->countSportPlayers($db, $sportTypeId)],
@@ -162,14 +162,60 @@ final class SportsTypeStatisticsHelper
         return (int) $db->loadResult();
     }
 
-    private function countTable(DatabaseInterface $db, string $table): int
+    /**
+     * Count existing venues connected to projects of the selected sport.
+     * A ground can be both a team's standard venue and a match venue, so
+     * collect distinct IDs from both relationships before counting.
+     */
+    private function countSportPlaygrounds(DatabaseInterface $db, int $sportTypeId): int
     {
+        if ($sportTypeId <= 0) {
+            return 0;
+        }
+
+        $grounds = [];
+
+        // Project-team standard venues are the same association used by the
+        // native playground ticker module.
         $query = $db->createQuery()
-            ->select('COUNT(*)')
-            ->from($db->quoteName($table));
+            ->select('DISTINCT ' . $db->quoteName('pg.id'))
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_playground', 'pg')
+                . ' ON ' . $db->quoteName('pg.id') . ' = ' . $db->quoteName('pt.standard_playground'))
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        foreach ($db->loadColumn() ?: [] as $id) {
+            if ((int) $id > 0) {
+                $grounds[(int) $id] = true;
+            }
+        }
+
+        // Matches may take place at a different venue than the home team's
+        // standard ground. Include those without counting overlaps twice.
+        $query = $db->createQuery()
+            ->select('DISTINCT ' . $db->quoteName('pg.id'))
+            ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r')
+                . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_playground', 'pg')
+                . ' ON ' . $db->quoteName('pg.id') . ' = ' . $db->quoteName('m.playground_id'))
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
+        $db->setQuery($query);
+
+        foreach ($db->loadColumn() ?: [] as $id) {
+            if ((int) $id > 0) {
+                $grounds[(int) $id] = true;
+            }
+        }
+
+        return count($grounds);
     }
 
     private function countProjectRelation(DatabaseInterface $db, string $table, int $sportTypeId): int
