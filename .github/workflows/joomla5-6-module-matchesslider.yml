@@ -6,10 +6,12 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_matchesslider/**'
       - '.github/workflows/joomla5-6-module-matchesslider.yml'
+      - '.github/tests/joomla56_matchesslider_favorites.php'
   pull_request:
     paths:
       - 'modules/mod_sportsmanagement_matchesslider/**'
       - '.github/workflows/joomla5-6-module-matchesslider.yml'
+      - '.github/tests/joomla56_matchesslider_favorites.php'
 
 jobs:
   contract:
@@ -60,6 +62,11 @@ jobs:
               }
             done
           done
+
+      - name: Test portable project-scoped favorite-team filters
+        run: |
+          php -l .github/tests/joomla56_matchesslider_favorites.php
+          php .github/tests/joomla56_matchesslider_favorites.php
 
       - name: Validate Joomla 5/6 runtime contract
         shell: bash
