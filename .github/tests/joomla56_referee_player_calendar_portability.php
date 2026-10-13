@@ -126,13 +126,15 @@ namespace {
         '29.02.2024' => '2024-02-29',
         '29-02-2024' => '2024-02-29',
         '2026-10-13' => '2026-10-13',
+        '2026-10-13 11:45:00' => '2026-10-13',
+        '2026-10-13 11:45' => '2026-10-13',
     ] as $input => $expected) {
         if ($dates->invoke($player, $input) !== $expected) {
             throw new \RuntimeException('Valid player date changed: ' . $input);
         }
     }
 
-    foreach (['2023-02-29', '31.04.2026', '29.02.2023', '2026-01-01junk', 'next monday', '0000-00-00'] as $invalid) {
+    foreach (['2023-02-29', '31.04.2026', '29.02.2023', '2026-01-01junk', '2026-02-30 12:00:00', 'next monday', '0000-00-00'] as $invalid) {
         if ($dates->invoke($player, $invalid) !== null) {
             throw new \RuntimeException('Impossible or ambiguous player date accepted: ' . $invalid);
         }
