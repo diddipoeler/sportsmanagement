@@ -243,8 +243,13 @@ final class RandomPlayerHelper
 
     private function picture(string $path): string
     {
-        if ($path !== '' && (preg_match('#^https?://#i', $path) || is_file(JPATH_ROOT . '/' . ltrim($path, '/')))) {
-            return $this->mediaUrl($path);
+        $url = $this->mediaUrl($path);
+
+        // Never inspect arbitrary paths outside JPATH_ROOT. The URL
+        // validation also rejects unexpected schemes and traversal.
+        if ($url !== '' && (preg_match('#^https?://#i', $path)
+            || is_file(JPATH_ROOT . '/' . ltrim(trim($path), '/')))) {
+            return $url;
         }
 
         return $this->mediaUrl((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', ''));
@@ -252,15 +257,32 @@ final class RandomPlayerHelper
 
     private function mediaUrl(string $path): string
     {
-        if ($path === '') {
+        $path = trim($path);
+
+        if ($path === '' || str_starts_with($path, '//')
+            || preg_match('/[\x00-\x1F\x7F\\\\]/', $path)) {
             return '';
         }
 
         if (preg_match('#^https?://#i', $path)) {
-            return $path;
+            $parts = parse_url($path);
+
+            return is_array($parts) && !empty($parts['host'])
+                && !isset($parts['user']) && !isset($parts['pass'])
+                ? $path : '';
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+        // Reject custom URI schemes and traversal even for local images.
+        // Permit a single leading slash for existing Joomla media paths.
+        $relativePath = ltrim($path, '/');
+
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $relativePath)
+            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $relativePath)
+            || preg_match('~%(?:2e|2f|5c)~i', $relativePath)) {
+            return '';
+        }
+
+        return rtrim((string) Uri::root(), '/') . '/' . $relativePath;
     }
 
     private function formatName(string $firstName, string $nickName, string $lastName, int $format): string
