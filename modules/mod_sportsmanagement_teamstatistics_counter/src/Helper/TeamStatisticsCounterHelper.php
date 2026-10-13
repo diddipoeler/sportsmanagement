@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementTeamStatisticsCounter\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\TeamstatsModel;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -21,10 +22,17 @@ final class TeamStatisticsCounterHelper
 {
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        $projectId = (int) $params->get('p', 0);
-        $teamId = (int) $params->get('teams', 0);
+        $projectId = self::positiveId($params->get('p', 0));
+        $teamId = self::positiveId($params->get('teams', 0));
+
+        if ($projectId <= 0 || $teamId <= 0) {
+            return self::emptyData();
+        }
+
         $databaseSelector = (int) $params->get('cfg_which_database', 0) === 1 ? 1 : 0;
-        $db = $this->database($databaseSelector, $fallbackDatabase);
+
+        try {
+            $db = $this->database($databaseSelector, $fallbackDatabase);
 
         $projectTeamId = $this->getProjectTeamId($db, $projectId, $teamId);
         $team = $this->getTeam($db, $teamId);
@@ -33,7 +41,7 @@ final class TeamStatisticsCounterHelper
         // The legacy model expects a team assigned to the selected project.
         // Do not run cross-project/statistics queries for missing associations.
         if ($projectTeamId <= 0 || $team === null || $project === null) {
-            return ['project' => null, 'team' => null, 'stats' => []];
+            return self::emptyData();
         }
 
         $this->prepareModelContext($projectId, $teamId, $projectTeamId, $databaseSelector, $team);
@@ -62,6 +70,45 @@ final class TeamStatisticsCounterHelper
                 'results' => TeamstatsModel::getResults(),
             ],
         ];
+        } catch (\Throwable $e) {
+            // Keep missing optional/external databases and statistics failures
+            // private. An unavailable data source must not crash a site page.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+
+            return self::emptyData();
+        }
+    }
+
+    /** Return the same empty shape for missing, invalid or unavailable data. */
+    private static function emptyData(): array
+    {
+        return ['project' => null, 'team' => null, 'stats' => []];
+    }
+
+    /** Accept only positive Joomla ID or ID:alias selectors, never casts. */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^([0-9]+)(?::[\pL\pN_-]+)?$/Du', $raw, $parts)) {
+            return 0;
+        }
+
+        $digits = ltrim($parts[1], '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
