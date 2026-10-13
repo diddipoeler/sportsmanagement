@@ -78,7 +78,9 @@ final class GoogleCalendarHelper
             'singleEvents' => 'true',
         ];
 
-        $http = (new HttpFactory())->getHttp();
+        // The API key is embedded in the request query. Do not forward it
+        // to a different host through an HTTP redirect.
+        $http = (new HttpFactory())->getHttp(['follow_location' => false], ['Curl', 'Stream']);
         $url = 'https://www.googleapis.com/calendar/v3/calendars/'
             . rawurlencode($calendarId)
             . '/events?key=' . rawurlencode($apiKey)
