@@ -113,6 +113,10 @@ namespace {
         public array $queries = [];
         private ?SportsStatsQuery $current = null;
 
+        public function __construct(private int $projectCount = 4)
+        {
+        }
+
         public function createQuery(): SportsStatsQuery
         {
             return new SportsStatsQuery();
@@ -145,7 +149,7 @@ namespace {
             return match ($sql) {
                 'COUNT(DISTINCT p.league_id)' => 2,
                 'COUNT(DISTINCT p.season_id)' => 3,
-                'COUNT(*)' => 4,
+                'COUNT(*)' => $this->projectCount,
                 default => throw new \RuntimeException('Unexpected statistics query: ' . $sql),
             };
         }
@@ -245,6 +249,27 @@ namespace {
         || str_contains($html, 'https://example.test/subdir/https://')
     ) {
         throw new \RuntimeException('Sport type icon or title rendered incorrectly');
+    }
+
+    // No projects means the layout displays an empty state. Do not execute
+    // expensive queries against unrelated global tables in that case.
+    $emptyDb = new SportsStatsDatabase(0);
+    $emptyData = $helper->getData($params, $emptyDb);
+    if ($emptyData['counts'] !== ['projects' => 0]
+        || count($emptyDb->queries) !== 2
+    ) {
+        throw new \RuntimeException('Empty sports must not count unrelated records');
+    }
+
+    $unconfiguredDb = new SportsStatsDatabase();
+    $unconfigured = $helper->getData(
+        new \Joomla\Registry\Registry(['sportstypes' => 0]),
+        $unconfiguredDb
+    );
+    if ($unconfigured['counts'] !== ['projects' => 0]
+        || $unconfiguredDb->queries !== []
+    ) {
+        throw new \RuntimeException('Unconfigured sport must not trigger statistics queries');
     }
 
     echo "Sports Type Statistics project dimensions and icon URLs OK\n";
