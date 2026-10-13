@@ -92,11 +92,11 @@ trait NativeQueryTrait
             }
 
             $homeFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
-                $awayFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
-                $q->where(
-                    '(' . $db->quoteName('st1.team_id') . ' IN (' . implode(',', $homeFavoriteParameters) . ')'
-                    . ' OR ' . $db->quoteName('st2.team_id') . ' IN (' . implode(',', $awayFavoriteParameters) . '))'
-                );
+            $awayFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
+            $q->where(
+                '(' . $db->quoteName('st1.team_id') . ' IN (' . implode(',', $homeFavoriteParameters) . ')'
+                . ' OR ' . $db->quoteName('st2.team_id') . ' IN (' . implode(',', $awayFavoriteParameters) . '))'
+            );
         }
 
         $now = time();
@@ -179,7 +179,6 @@ trait NativeQueryTrait
         };
     }
 
-    /** @return array<int,int> */
     /** @return array<int,int> */
     private function ids($value): array
     {
