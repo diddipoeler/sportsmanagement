@@ -10,6 +10,7 @@ on:
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-teamstats-ranking.yml'
       - '.github/tests/joomla56_teamstats_ranking_scope.php'
+      - '.github/tests/joomla56_teamstats_ranking_media.php'
   pull_request:
     branches:
       - master
@@ -19,6 +20,7 @@ on:
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-teamstats-ranking.yml'
       - '.github/tests/joomla56_teamstats_ranking_scope.php'
+      - '.github/tests/joomla56_teamstats_ranking_media.php'
 
 jobs:
   team-stats-ranking-contract:
@@ -89,6 +91,11 @@ jobs:
         run: |
           php -l .github/tests/joomla56_teamstats_ranking_scope.php
           php .github/tests/joomla56_teamstats_ranking_scope.php
+
+      - name: Test statistic icon and club logo URL safety
+        run: |
+          php -l .github/tests/joomla56_teamstats_ranking_media.php
+          php .github/tests/joomla56_teamstats_ranking_media.php
 
       - name: Validate Team Stats Ranking manifest and update metadata
         shell: bash
