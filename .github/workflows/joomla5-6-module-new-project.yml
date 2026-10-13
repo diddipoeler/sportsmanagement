@@ -32,6 +32,11 @@ jobs:
           test -f modules/mod_sportsmanagement_new_project/js/native.js
           node --check modules/mod_sportsmanagement_new_project/js/native.js
 
+      - name: Test UTC project-day boundaries and daylight saving time
+        run: |
+          php -l .github/tests/joomla56_new_project_utc_day.php
+          php .github/tests/joomla56_new_project_utc_day.php
+
       - name: Validate module manifest
         shell: bash
         run: |
