@@ -32,19 +32,42 @@ $normaliseColour = static function (mixed $value, string $fallback): string {
 
 $imageUrl = static function (object $playground) use ($pictureServer): string {
     $path = trim((string) ($playground->picture ?? ''));
+    $placeholder = rtrim((string) Uri::root(), '/')
+        . '/images/com_sportsmanagement/database/placeholders/placeholder_150.png';
 
-    if ($path === '') {
-        return rtrim((string) Uri::root(), '/')
-            . '/images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+    if ($path === '' || preg_match('/[\x00-\x1F\x7F]/', $path) || str_contains($path, '\\')) {
+        return $placeholder;
     }
 
-    if (preg_match('#^https?://#i', $path)) {
-        return $path;
+    if (preg_match('~^https?://~i', $path)) {
+        $parts = parse_url($path);
+
+        return filter_var($path, FILTER_VALIDATE_URL) !== false
+            && is_array($parts)
+            && !empty($parts['host'])
+            && !isset($parts['user'])
+            && !isset($parts['pass'])
+            ? $path
+            : $placeholder;
+    }
+
+    // Block other URL schemes, protocol-relative paths, traversal and
+    // query/fragment suffixes in paths supplied from older databases.
+    $segments = explode('/', $path);
+    if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+        || str_starts_with($path, '//')
+        || str_contains($path, '%')
+        || strpbrk($path, '?#') !== false
+        || in_array('..', $segments, true)
+        || in_array('.', $segments, true)
+    ) {
+        return $placeholder;
     }
 
     $base = $pictureServer !== '' ? $pictureServer : rtrim((string) Uri::root(), '/');
+    $encodedPath = implode('/', array_map('rawurlencode', explode('/', ltrim($path, '/'))));
 
-    return $base . '/' . ltrim(str_replace('\\', '/', $path), '/');
+    return rtrim($base, '/') . '/' . $encodedPath;
 };
 
 $surface = static function (object $playground): string {
