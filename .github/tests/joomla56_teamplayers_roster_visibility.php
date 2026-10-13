@@ -147,13 +147,15 @@ namespace {
     if ($project?->project_slug !== '11:season-project'
         || $project?->team_slug !== '17:red-team'
         || $database->query === null
-        || !in_array('st.season_id = p.season_id', $database->query->joins, true)
     ) {
-        // The season clause is part of a larger JOIN expression.
-        $joinText = implode(' ', $database->query?->joins ?? []);
-        if (!str_contains($joinText, 'st.season_id = p.season_id')) {
-            throw new \RuntimeException('Team project query lacks season identity');
-        }
+        throw new \RuntimeException('Team project was not loaded with correct Joomla slugs');
+    }
+
+    // The season clause is part of a larger JOIN expression.
+    $joinText = implode(' ', $database->query->joins);
+
+    if (!str_contains($joinText, 'st.season_id = p.season_id')) {
+        throw new \RuntimeException('Team project query lacks season identity');
     }
 
     foreach (['p.published = 1', 'pt.published = 1', 'st.published = 1', 't.published = 1'] as $condition) {
