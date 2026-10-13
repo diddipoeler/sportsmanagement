@@ -6,11 +6,13 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_firstleagueoverview/**'
       - '.github/workflows/joomla5-6-module-firstleagueoverview.yml'
+      - '.github/tests/joomla56_firstleagueoverview_tabs.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_firstleagueoverview/**'
       - '.github/workflows/joomla5-6-module-firstleagueoverview.yml'
+      - '.github/tests/joomla56_firstleagueoverview_tabs.php'
 
 jobs:
   first-league-overview-module:
@@ -58,6 +60,11 @@ jobs:
               }
             done
           done
+
+      - name: Test federation tabs, unassigned countries and escaped labels
+        run: |
+          php -l .github/tests/joomla56_firstleagueoverview_tabs.php
+          php .github/tests/joomla56_firstleagueoverview_tabs.php
 
       - name: Validate native module contracts
         shell: bash
