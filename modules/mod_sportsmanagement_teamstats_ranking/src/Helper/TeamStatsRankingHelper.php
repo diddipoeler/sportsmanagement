@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementTeamStatsRanking\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -37,6 +38,7 @@ final class TeamStatsRankingHelper
                 return $this->emptyData();
             }
 
+            $stat->icon_url = self::mediaUrl((string) ($stat->icon ?? ''));
             $statParams = $this->statParams($stat);
             $order = strtoupper((string) $params->get('ranking_order', $statParams->get('ranking_order', 'DESC')));
             $order = $order === 'ASC' ? 'ASC' : 'DESC';
@@ -545,6 +547,7 @@ final class TeamStatsRankingHelper
             $team->club_slug = $clubId > 0
                 ? $clubId . ':' . (string) ($team->club_alias ?? '')
                 : '';
+            $team->logo_url = self::mediaUrl((string) ($team->logo_big ?? ''));
         }
 
         return $teams;
@@ -630,6 +633,54 @@ final class TeamStatsRankingHelper
         ]);
 
         return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Normalize stored icons and club logos before putting them in HTML src.
+     * Remote assets must be ordinary HTTP(S) URLs without credentials;
+     * relative images are encoded under the actual Joomla installation root.
+     */
+    public static function mediaUrl(string $path): string
+    {
+        $path = trim($path);
+
+        if ($path === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, '\\')
+        ) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $path)) {
+            if (preg_match('/[\x00-\x20\x7F]/', $path)
+                || filter_var($path, FILTER_VALIDATE_URL) === false
+            ) {
+                return '';
+            }
+
+            $parts = parse_url($path);
+
+            return is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                ? $path
+                : '';
+        }
+
+        if (str_starts_with($path, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $path)
+            || str_contains($path, '%')
+            || strpbrk($path, '?#') !== false
+        ) {
+            return '';
+        }
+
+        $relative = ltrim($path, '/');
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $relative)));
+
+        return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
     private function emptyData(): array
