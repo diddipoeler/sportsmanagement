@@ -8,6 +8,7 @@ on:
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
       - '.github/tests/joomla56_sports_type_statistics_scope.php'
+      - '.github/tests/joomla56_sports_type_statistics_relations.php'
   pull_request:
     branches: [master]
     paths:
@@ -15,6 +16,7 @@ on:
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-sports-type-statistics.yml'
       - '.github/tests/joomla56_sports_type_statistics_scope.php'
+      - '.github/tests/joomla56_sports_type_statistics_relations.php'
 
 jobs:
   sports-type-statistics-module:
@@ -53,6 +55,11 @@ jobs:
         run: |
           php -l .github/tests/joomla56_sports_type_statistics_scope.php
           php .github/tests/joomla56_sports_type_statistics_scope.php
+
+      - name: Test clubs and players scoped by sport, season and team
+        run: |
+          php -l .github/tests/joomla56_sports_type_statistics_relations.php
+          php .github/tests/joomla56_sports_type_statistics_relations.php
 
       - name: Validate Joomla 5/6 Sports Type Statistics contracts
         shell: bash
