@@ -95,8 +95,10 @@ final class RankingModel extends SportsManagementProjectModel
             ->select([
                 $db->quoteName('m') . '.*',
                 $db->quoteName('r.roundcode'),
-                'CASE WHEN CHAR_LENGTH(' . $db->quoteName('t1.alias') . ') AND CHAR_LENGTH(' . $db->quoteName('t2.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) ELSE ' . $db->quoteName('m.id') . ' END AS ' . $db->quoteName('slug'),
-                "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
+                $db->quoteName('t1.alias', 'jsm_team1_alias'),
+                $db->quoteName('t2.alias', 'jsm_team2_alias'),
+                $db->quoteName('p.id', 'jsm_project_id'),
+                $db->quoteName('p.alias', 'jsm_project_alias'),
             ])
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id'))
@@ -126,6 +128,24 @@ final class RankingModel extends SportsManagementProjectModel
         $config = $this->getTemplateConfig('ranking');
         $numberOfGames = max(0, (int) ($config['nb_previous'] ?? 0));
         $result = [];
+
+        // Build route slugs in PHP instead of using database-specific SQL functions.
+        // This also works with Joomla's PostgreSQL database driver.
+        foreach ($games as $game) {
+            $matchId = (int) ($game->id ?? 0);
+            $homeAlias = (string) ($game->jsm_team1_alias ?? '');
+            $awayAlias = (string) ($game->jsm_team2_alias ?? '');
+            $projectId = (int) ($game->jsm_project_id ?? 0);
+            $projectAlias = $game->jsm_project_alias ?? null;
+
+            $game->slug = $homeAlias !== '' && $awayAlias !== ''
+                ? $matchId . ':' . $homeAlias . '_' . $awayAlias
+                : (string) $matchId;
+            $game->project_slug = $projectId
+                . ($projectAlias === null ? '' : ':' . (string) $projectAlias);
+
+            unset($game->jsm_team1_alias, $game->jsm_team2_alias, $game->jsm_project_id, $game->jsm_project_alias);
+        }
 
         foreach ($teams as $projectTeamId => $team) {
             $teamGames = [];

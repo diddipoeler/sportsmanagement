@@ -37,7 +37,6 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 use Joomla\CMS\Form\Form;
 use Joomla\Database\DatabaseFactory;
@@ -304,18 +303,8 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 		$messageLanguageKey = Text::_('COM_SPORTSMANAGEMENT_TRANSACTION_LINK');
 		$context = $extension.'.'.$con_type;
 		
-/** welche joomla version ? */
-if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
-{
-/** @var ActionlogModel $model */
-		$fmodel = new ActionlogModel;	
-}
-	    elseif (version_compare(substr(JVERSION, 0, 3), '3.0', 'ge'))
-{
-	        /** @var ActionlogsModelActionlog $model **/
-		    BaseDatabaseModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModel');
-		$fmodel = BaseDatabaseModel::getInstance('Actionlog', 'ActionlogsModel');
-	    }
+// Use the Joomla 5/6 Action Logs administrator model directly.
+		$fmodel = new ActionlogModel();
 		//$model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
 	    try{
 		$fmodel->addLog($messages, $messageLanguageKey, $context, $user->id);
@@ -336,10 +325,15 @@ if (version_compare(substr(JVERSION, 0, 3), '4.0', 'ge'))
 	 */
 	public function getForeignModel($name = 'Transaction', $prefix = 'MycomponentModel', $config = array('ignore_request' => true))
 	{
-		\Joomla\CMS\MVC\Model\ItemModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_actionlogs/models', 'ActionlogsModelActionlog');
-		$fmodel = \Joomla\CMS\MVC\Model\ItemModel::getInstance($name, $prefix, $config);
+        // Keep the legacy signature; Joomla 6 uses a component MVC factory.
+        $component = self::administratorApplication()->bootComponent('com_actionlogs');
+        $model = $component->getMVCFactory()->createModel($name, 'Administrator', $config);
 
-		return $fmodel;
+        if ($model === null) {
+            throw new \RuntimeException('SportsManagement Action Logs model could not be created.', 500);
+        }
+
+        return $model;
 	}
     
     
@@ -1340,7 +1334,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 		if (!$result = $db->loadObjectList())
 		{
-			$this->setError($db->getErrorMsg());
+			// Joomla's modern database drivers throw query exceptions; empty lists are valid.
 
 			return false;
 		}
@@ -1703,9 +1697,10 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	static function convertDate($DummyDate, $direction = 1)
 	{
+		$DummyDate = (string) $DummyDate;
 		$result = '';
 
-		if (!strpos($DummyDate, "-") !== false)
+		if (strpos($DummyDate, '-') === false)
 		{
 			// For example 31122011 is used for 31 december 2011
 			if (strlen($DummyDate) == 8)
@@ -4103,7 +4098,7 @@ var <?php echo $placeholder; ?> = new Array;
 
 		if (!$result = $db->loadObjectList())
 		{
-			$this->setError($db->getErrorMsg());
+			// Joomla's modern database drivers throw query exceptions; empty lists are valid.
 
 			return false;
 		}

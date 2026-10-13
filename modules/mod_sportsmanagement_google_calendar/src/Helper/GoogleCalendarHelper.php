@@ -119,7 +119,7 @@ final class GoogleCalendarHelper
 
             try {
                 $events[] = $this->prepareEvent($event);
-            } catch (\Exception) {
+            } catch (\Throwable) {
                 // Invalid remote dates/time zones may also throw from Joomla's
                 // date parser. Skip that event and retain the valid entries.
                 continue;

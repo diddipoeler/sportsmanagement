@@ -46,7 +46,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             );
         } catch (\Throwable $exception) {
             // Avoid exposing OAuth/API error details to public site visitors.
-            Log::add('JSM Google Calendar: ' . $exception->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add('JSM Google Calendar: rendering failed (' . get_class($exception) . ')', Log::ERROR, 'com_sportsmanagement');
             $app->enqueueMessage('SportsManagement Google Calendar is temporarily unavailable.', 'warning');
             $data['events'] = [];
         }
