@@ -147,10 +147,16 @@ final class TeamPlayersHelper
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.project_id') . ' = ' . $db->quoteName('p.id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id')
+                . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('p.season_id'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
             ->where($db->quoteName('p.id') . ' = :projectId')
             ->where($db->quoteName('st.team_id') . ' = :teamId')
+            ->where($db->quoteName('p.published') . ' = 1')
+            ->where($db->quoteName('pt.published') . ' = 1')
+            ->where($db->quoteName('st.published') . ' = 1')
+            ->where($db->quoteName('t.published') . ' = 1')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
@@ -209,6 +215,8 @@ final class TeamPlayersHelper
             ->where($db->quoteName('tp.season_id') . ' = :seasonId')
             ->where($db->quoteName('tp.team_id') . ' = :teamId')
             ->where($db->quoteName('pr.show_on_frontend') . ' = 1')
+            ->where($db->quoteName('pr.published') . ' = 1')
+            ->where($db->quoteName('tp.published') . ' = 1')
             ->order([
                 $db->quoteName('pos.ordering') . ' ASC',
                 $db->quoteName('ppos.position_id') . ' ASC',
@@ -375,7 +383,15 @@ final class TeamPlayersHelper
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
         $alpha2 = strtolower((string) ($row->alpha2 ?? ''));
-        $label = htmlspecialchars(Text::_((string) ($row->country_name ?: $alpha3)), ENT_QUOTES, 'UTF-8');
+
+        // Database country values are not guaranteed to be valid ISO codes.
+        $alpha3 = preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : '';
+        $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
+        $label = htmlspecialchars(
+            Text::_((string) ($row->country_name ?: $alpha3)),
+            ENT_QUOTES,
+            'UTF-8'
+        );
 
         if ((int) $componentParams->get('cfg_flags_css', 0) === 1) {
             $cssCode = match ($alpha3) {
@@ -386,36 +402,62 @@ final class TeamPlayersHelper
             };
 
             return $cssCode !== ''
-                ? '<span class="fi fi-' . htmlspecialchars($cssCode, ENT_QUOTES, 'UTF-8') . '" title="' . $label . '"></span>'
+                ? '<span class="fi fi-' . $cssCode . '" title="' . $label . '"></span>'
                 : '';
         }
 
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
             : (string) ($row->country_picture ?? $componentParams->get('ph_flags', ''));
+        $url = $this->imageUrl($path);
 
-        if ($path === '') {
-            return '';
-        }
-
-        return '<img class="jsm-teamplayers-flag" src="'
-            . htmlspecialchars(rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/'), ENT_QUOTES, 'UTF-8')
-            . '" alt="' . $label . '" title="' . $label . '" />';
+        return $url !== ''
+            ? '<img class="jsm-teamplayers-flag" src="'
+                . htmlspecialchars($url, ENT_QUOTES, 'UTF-8')
+                . '" alt="' . $label . '" title="' . $label . '" />'
+            : '';
     }
 
     private function imageUrl(string $path): string
     {
         $path = trim($path);
 
-        if ($path === '') {
+        if ($path === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, '\\')
+        ) {
             return '';
         }
 
-        if (preg_match('#^https?://#i', $path)) {
-            return $path;
+        if (preg_match('~^https?://~i', $path)) {
+            if (preg_match('/[\x00-\x20\x7F]/', $path)
+                || filter_var($path, FILTER_VALIDATE_URL) === false
+            ) {
+                return '';
+            }
+
+            $parts = parse_url($path);
+
+            return is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                ? $path
+                : '';
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+        if (str_starts_with($path, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $path)
+            || str_contains($path, '%')
+            || strpbrk($path, '?#') !== false
+        ) {
+            return '';
+        }
+
+        $encodedPath = implode('/', array_map('rawurlencode', explode('/', ltrim($path, '/'))));
+
+        return rtrim((string) Uri::root(), '/') . '/' . $encodedPath;
     }
 
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
