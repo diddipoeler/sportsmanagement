@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementRquotes\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -94,13 +95,12 @@ final class RquotesHelper
                 $quote->picture_url = $this->pictureUrl($quote, $pictureServer);
             }
         } catch (\Throwable $e) {
-            $app->enqueueMessage(
-                Text::sprintf(
-                    'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                    $e->getCode(),
-                    $e->getMessage()
-                ),
-                'error'
+            // SQL, credentials and filesystem details belong in the server log,
+            // never in a message displayed to anonymous site visitors.
+            Log::add(
+                'SportsManagement Rquotes query failed: ' . $e->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
             );
             $list = [];
         }
