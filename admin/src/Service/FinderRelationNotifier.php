@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Event\Finder as FinderEvent;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -245,9 +244,37 @@ final class FinderRelationNotifier
 
     private function normaliseIds(mixed $ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', (array) $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        $normalised = [];
+
+        foreach (is_array($ids) ? $ids : [$ids] as $candidate) {
+            if (is_int($candidate)) {
+                $id = $candidate;
+            } elseif (is_string($candidate)
+                && preg_match('/^[0-9]+$/D', trim($candidate))) {
+                $digits = ltrim(trim($candidate), '0');
+
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1],
+                ]);
+
+                if ($id === false) {
+                    continue;
+                }
+            } else {
+                // (int) "12garbage", true and 12.9 must not notify unrelated
+                // Finder entities or unexpectedly broaden relation lookups.
+                continue;
+            }
+
+            if ($id > 0) {
+                $normalised[$id] = $id;
+            }
+        }
+
+        return array_values($normalised);
     }
 }
