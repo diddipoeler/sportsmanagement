@@ -192,7 +192,8 @@ final class ActSeasonHelper
         } elseif (
             str_starts_with($path, '//')
             || str_starts_with($path, '/')
-            || preg_match('~(?:^|/)\\.\\.(?:/|$)|[\\\\\\x00-\\x1F]|^[a-z][a-z0-9+.-]*:~i', $path)
+            || str_contains($path, '\\')
+            || preg_match('~(?:^|/)\\.\\.(?:/|$)|[\\x00-\\x1F]|^[a-z][a-z0-9+.-]*:~i', $path)
         ) {
             return '';
         } else {
