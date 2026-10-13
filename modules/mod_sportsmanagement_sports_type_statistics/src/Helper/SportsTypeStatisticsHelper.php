@@ -41,8 +41,8 @@ final class SportsTypeStatisticsHelper
         ];
 
         $requested = [
-            'leagues' => ['show_leagues', fn() => $this->countTable($db, '#__sportsmanagement_league')],
-            'seasons' => ['show_seasons', fn() => $this->countTable($db, '#__sportsmanagement_season')],
+            'leagues' => ['show_leagues', fn() => $this->countProjectDimension($db, 'league_id', $sportTypeId)],
+            'seasons' => ['show_seasons', fn() => $this->countProjectDimension($db, 'season_id', $sportTypeId)],
             'playgrounds' => ['show_playgrounds', fn() => $this->countTable($db, '#__sportsmanagement_playground')],
             'clubs' => ['show_clubs', fn() => $this->countTable($db, '#__sportsmanagement_club')],
             'teams' => ['show_teams', fn() => $this->countProjectRelation($db, '#__sportsmanagement_project_team', $sportTypeId)],
@@ -76,6 +76,29 @@ final class SportsTypeStatisticsHelper
             ->select('COUNT(*)')
             ->from($db->quoteName('#__sportsmanagement_project'))
             ->where($db->quoteName('sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
+        $db->setQuery($query);
+
+        return (int) $db->loadResult();
+    }
+
+    /**
+     * League and season totals must describe the chosen sport, not every
+     * league or season stored for unrelated sports. The field name is selected
+     * exclusively from the trusted call sites above.
+     */
+    private function countProjectDimension(DatabaseInterface $db, string $field, int $sportTypeId): int
+    {
+        if ($sportTypeId <= 0 || !in_array($field, ['league_id', 'season_id'], true)) {
+            return 0;
+        }
+
+        $column = $db->quoteName('p.' . $field);
+        $query = $db->createQuery()
+            ->select('COUNT(DISTINCT ' . $column . ')')
+            ->from($db->quoteName('#__sportsmanagement_project', 'p'))
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->where($column . ' > 0')
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
