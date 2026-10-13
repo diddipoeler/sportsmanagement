@@ -1,0 +1,50 @@
+name: Joomla 5/6 referee player and calendar portability
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/MatchReadService.php'
+      - 'admin/src/Service/PlayerPersistenceService.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - '.github/tests/joomla56_referee_player_calendar_portability.php'
+      - '.github/workflows/joomla5-6-referee-player-calendar-portability.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Service/MatchReadService.php'
+      - 'admin/src/Service/PlayerPersistenceService.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - '.github/tests/joomla56_referee_player_calendar_portability.php'
+      - '.github/workflows/joomla5-6-referee-player-calendar-portability.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Verify PHP syntax and mandatory PHPDoc headers
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Service/MatchReadService.php
+            admin/src/Service/PlayerPersistenceService.php
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+          )
+          for file in "${files[@]}" .github/tests/joomla56_referee_player_calendar_portability.php; do
+            php -l "$file"
+          done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Test portable match referees, player validation and Google HTTP
+        run: php .github/tests/joomla56_referee_player_calendar_portability.php
