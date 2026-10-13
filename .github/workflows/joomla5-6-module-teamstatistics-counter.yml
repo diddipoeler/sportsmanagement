@@ -8,6 +8,7 @@ on:
       - 'modules/mod_sportsmanagement_teamstatistics_counter/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-teamstatistics-counter.yml'
+      - '.github/tests/joomla56_teamstatistics_counter_slugs.php'
   pull_request:
     branches:
       - master
@@ -15,6 +16,7 @@ on:
       - 'modules/mod_sportsmanagement_teamstatistics_counter/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-teamstatistics-counter.yml'
+      - '.github/tests/joomla56_teamstatistics_counter_slugs.php'
 
 jobs:
   team-statistics-counter-contract:
@@ -68,6 +70,11 @@ jobs:
           fi
 
           echo 'Team Statistics Counter PHP contracts OK'
+
+      - name: Test portable team and project slugs
+        run: |
+          php -l .github/tests/joomla56_teamstatistics_counter_slugs.php
+          php .github/tests/joomla56_teamstatistics_counter_slugs.php
 
       - name: Validate Team Statistics Counter manifest and update metadata
         shell: bash
