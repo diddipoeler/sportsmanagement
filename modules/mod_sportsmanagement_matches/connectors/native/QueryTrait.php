@@ -39,9 +39,6 @@ trait NativeQueryTrait
                 'c1.country AS club1_country', 'c2.country AS club2_country', 'c1.website AS club1_website', 'c2.website AS club2_website',
                 'co1.alpha2 AS club1_alpha2', 'co2.alpha2 AS club2_alpha2',
                 'pg.name AS playground_name', 'pg.short_name AS playground_short_name',
-                "CONCAT_WS(':', p.id, p.alias) AS project_slug",
-                "CONCAT_WS(':', r.id, r.alias) AS round_slug",
-                "CONCAT_WS(':', m.id, CONCAT_WS('_', t1.alias, t2.alias)) AS match_slug",
             ])
             ->from('#__sportsmanagement_match AS m')
             ->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id')
@@ -88,14 +85,18 @@ trait NativeQueryTrait
 
         if ((int) $params->get('use_fav', 0) === 1) {
             $favorites = $this->favoriteTeams($db, $projectIds);
-            if ($favorites) {
-                $homeFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
+            if (!$favorites) {
+                // Without favorite teams the requested filter must match no
+                // games, not silently fall back to every selected project.
+                return [];
+            }
+
+            $homeFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
                 $awayFavoriteParameters = $q->bindArray($favorites, ParameterType::INTEGER);
                 $q->where(
                     '(' . $db->quoteName('st1.team_id') . ' IN (' . implode(',', $homeFavoriteParameters) . ')'
                     . ' OR ' . $db->quoteName('st2.team_id') . ' IN (' . implode(',', $awayFavoriteParameters) . '))'
                 );
-            }
         }
 
         $now = time();
@@ -132,7 +133,20 @@ trait NativeQueryTrait
         $q->order($order);
         $db->setQuery($q, 0, max(1, (int) $params->get('limit', 1)));
 
-        return $db->loadObjectList() ?: [];
+        $matches = $db->loadObjectList() ?: [];
+
+        foreach ($matches as $match) {
+            // Build Joomla ID:alias routes in PHP to avoid MySQL CONCAT_WS,
+            // which is unavailable on other supported database drivers.
+            $match->project_slug = (int) ($match->project_id ?? 0) . ':' . (string) ($match->project_alias ?? '');
+            $match->round_slug = (int) ($match->round_id ?? 0) . ':' . (string) ($match->round_alias ?? '');
+            $match->match_slug = (int) ($match->match_id ?? 0) . ':' . trim(
+                (string) ($match->team1_alias ?? '') . '_' . (string) ($match->team2_alias ?? ''),
+                '_'
+            );
+        }
+
+        return $matches;
     }
 
     /** @param array<int,int> $projectIds @return array<int,int> */
