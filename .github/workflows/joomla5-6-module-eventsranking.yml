@@ -7,12 +7,14 @@ on:
       - 'modules/mod_sportsmanagement_eventsranking/**'
       - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-eventsranking.yml'
+      - '.github/tests/joomla56_eventsranking_media.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_eventsranking/**'
       - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-eventsranking.yml'
+      - '.github/tests/joomla56_eventsranking_media.php'
 
 jobs:
   contract:
@@ -45,6 +47,11 @@ jobs:
               }
             done
           done
+
+      - name: Test event-ranking local images, remote URLs and icon markup
+        run: |
+          php -l .github/tests/joomla56_eventsranking_media.php
+          php .github/tests/joomla56_eventsranking_media.php
 
       - name: Validate Joomla 5/6 dispatcher and routing contract
         shell: bash
