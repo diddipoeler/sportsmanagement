@@ -26,7 +26,9 @@ $activeTab = $federations ? 'federation-' . (int) array_key_first($federations) 
         <?php foreach ($federations as $federationId => $federation) : ?>
             <?php
             $tabId = 'federation-' . (int) $federationId;
-            $label = Text::_((string) $federation->name);
+            // Federation names originate in the database; keep markup only for the
+            // separately escaped flag image added below.
+            $label = htmlspecialchars(Text::_((string) $federation->name), ENT_QUOTES, 'UTF-8');
 
             if (!empty($federation->picture_url)) {
                 $label .= ' <img src="'
@@ -56,5 +58,7 @@ $activeTab = $federations ? 'federation-' . (int) array_key_first($federations) 
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
         <?php endforeach; ?>
         <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
+    <?php else : ?>
+        <div class="text-muted"><?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?></div>
     <?php endif; ?>
 </div>
