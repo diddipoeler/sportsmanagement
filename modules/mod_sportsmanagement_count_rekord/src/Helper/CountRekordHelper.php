@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementCountRekord\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -24,15 +25,24 @@ final class CountRekordHelper
             return [];
         }
 
-        $db = $this->database($params, $fallbackDatabase);
-        $query = $db->createQuery()
-            ->select('COUNT(*)')
-            ->from($db->quoteName('#__sportsmanagement_match'));
-        $db->setQuery($query);
+        try {
+            $db = $this->database($params, $fallbackDatabase);
+            $query = $db->createQuery()
+                ->select('COUNT(*)')
+                ->from($db->quoteName('#__sportsmanagement_match'));
+            $db->setQuery($query);
+            $count = max(0, (int) $db->loadResult());
+        } catch (\Throwable $e) {
+            // A missing match table or unavailable external database must not
+            // take down the site; details belong in the Joomla error log.
+            Log::add('SportsManagement Count Record query failed: ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
 
-        $count = (int) $db->loadResult();
+            return [];
+        }
+
         $target = max(0, (int) $params->get('jsm_stat_paarungen', 0));
-        $difference = $target - $count;
+        $difference = max(0, $target - $count);
+        $reached = $count >= $target;
 
         return [(object) [
             'image' => 'modules/' . $module->module . '/images/matches.png',
@@ -40,8 +50,8 @@ final class CountRekordHelper
             'anzahlbis' => $target,
             'anzahldiff' => $difference,
             'text' => Text::sprintf(
-                'SHOW_MATCHES_DIFF',
-                '<strong>' . number_format($difference, 0, ',', '.') . '</strong>',
+                $reached ? 'SHOW_MATCHES_TARGET_REACHED' : 'SHOW_MATCHES_DIFF',
+                '<strong>' . number_format($reached ? $count : $difference, 0, ',', '.') . '</strong>',
                 '<strong>' . number_format($target, 0, ',', '.') . '</strong>'
             ),
         ]];
