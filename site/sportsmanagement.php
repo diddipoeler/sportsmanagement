@@ -149,7 +149,7 @@ $command = $filter->clean($rawCommand, 'cmd');
 // The Joomla command filter removes unsafe characters; reject such input
 // instead of dispatching the altered controller name or method.
 if ($command !== $rawCommand) {
-    throw new \\InvalidArgumentException('Invalid SportsManagement controller task.', 400);
+    throw new \InvalidArgumentException('Invalid SportsManagement controller task.', 400);
 }
 
 $type = '';
