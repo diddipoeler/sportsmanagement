@@ -55,9 +55,9 @@ final class SportsTypeStatisticsHelper
             'leagues' => ['show_leagues', fn() => $this->countProjectDimension($db, 'league_id', $sportTypeId)],
             'seasons' => ['show_seasons', fn() => $this->countProjectDimension($db, 'season_id', $sportTypeId)],
             'playgrounds' => ['show_playgrounds', fn() => $this->countTable($db, '#__sportsmanagement_playground')],
-            'clubs' => ['show_clubs', fn() => $this->countTable($db, '#__sportsmanagement_club')],
+            'clubs' => ['show_clubs', fn() => $this->countSportClubs($db, $sportTypeId)],
             'teams' => ['show_teams', fn() => $this->countProjectRelation($db, '#__sportsmanagement_project_team', $sportTypeId)],
-            'players' => ['show_players', fn() => $this->countTable($db, '#__sportsmanagement_person')],
+            'players' => ['show_players', fn() => $this->countSportPlayers($db, $sportTypeId)],
             'divisions' => ['show_divisions', fn() => $this->countProjectRelation($db, '#__sportsmanagement_division', $sportTypeId)],
             'rounds' => ['show_rounds', fn() => $this->countProjectRelation($db, '#__sportsmanagement_round', $sportTypeId)],
             'matches' => ['show_matches', fn() => $this->countMatches($db, $sportTypeId)],
@@ -183,6 +183,63 @@ final class SportsTypeStatisticsHelper
             ->from($db->quoteName($table, 'rel'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('rel.project_id'))
             ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
+        $db->setQuery($query);
+
+        return (int) $db->loadResult();
+    }
+
+    /**
+     * Count distinct clubs that have at least one team assigned to a project
+     * of this sport. Project-team rows reference season-team IDs, not team IDs.
+     */
+    private function countSportClubs(DatabaseInterface $db, int $sportTypeId): int
+    {
+        if ($sportTypeId <= 0) {
+            return 0;
+        }
+
+        $query = $db->createQuery()
+            ->select('COUNT(DISTINCT ' . $db->quoteName('t.club_id') . ')')
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't')
+                . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->where($db->quoteName('t.club_id') . ' > 0')
+            ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
+        $db->setQuery($query);
+
+        return (int) $db->loadResult();
+    }
+
+    /**
+     * Count unique players participating in the selected sport. The roster
+     * table identifies the team by team_id and season_id, so both fields must
+     * match the project team season to avoid counting players from other years.
+     */
+    private function countSportPlayers(DatabaseInterface $db, int $sportTypeId): int
+    {
+        if ($sportTypeId <= 0) {
+            return 0;
+        }
+
+        $query = $db->createQuery()
+            ->select('COUNT(DISTINCT ' . $db->quoteName('tp.person_id') . ')')
+            ->from($db->quoteName('#__sportsmanagement_project_team', 'pt'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p')
+                . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st')
+                . ' ON ' . $db->quoteName('st.id') . ' = ' . $db->quoteName('pt.team_id'))
+            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'tp')
+                . ' ON ' . $db->quoteName('tp.team_id') . ' = ' . $db->quoteName('st.team_id')
+                . ' AND ' . $db->quoteName('tp.season_id') . ' = ' . $db->quoteName('st.season_id'))
+            ->where($db->quoteName('p.sports_type_id') . ' = :sportTypeId')
+            ->where($db->quoteName('tp.persontype') . ' = 1')
+            ->where($db->quoteName('tp.person_id') . ' > 0')
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
