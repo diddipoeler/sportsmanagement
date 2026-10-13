@@ -8,6 +8,7 @@ on:
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-count-rekord.yml'
+      - '.github/tests/joomla56_count_rekord.php'
   pull_request:
     branches:
       - master
@@ -15,6 +16,7 @@ on:
       - 'modules/mod_sportsmanagement_count_rekord/**'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-count-rekord.yml'
+      - '.github/tests/joomla56_count_rekord.php'
 
 jobs:
   count-record-module:
@@ -50,6 +52,11 @@ jobs:
               }
             done
           done
+
+      - name: Test Count Record completed targets and database fallback
+        run: |
+          php -l .github/tests/joomla56_count_rekord.php
+          php .github/tests/joomla56_count_rekord.php
 
       - name: Validate module manifest and update metadata
         shell: bash
