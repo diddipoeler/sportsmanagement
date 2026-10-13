@@ -54,6 +54,18 @@ namespace Joomla\CMS {
     }
 }
 
+namespace Diddipoeler\Component\SportsManagement\Site\Service {
+    final class SportsManagementDatabaseResolver
+    {
+        public static function resolve(
+            \Joomla\Database\DatabaseInterface $fallbackDatabase,
+            int $databaseSelector
+        ): \Joomla\Database\DatabaseInterface {
+            return $fallbackDatabase;
+        }
+    }
+}
+
 namespace Joomla\CMS\Log {
     final class Log
     {
@@ -115,6 +127,7 @@ namespace {
     {
         public array $selections = [];
         public array $whereIn = [];
+        public array $joins = [];
 
         public function select(array|string $columns): self
         {
@@ -123,7 +136,7 @@ namespace {
         }
 
         public function from(string $name): self { return $this; }
-        public function join(string $kind, string $join): self { return $this; }
+        public function join(string $kind, string $join): self { $this->joins[] = $join; return $this; }
         public function where(string $expression): self { return $this; }
         public function order(string $ordering): self { return $this; }
 
@@ -268,6 +281,24 @@ namespace {
     assertMatch(true, str_contains(\Joomla\CMS\Log\Log::$entries[0][0] ?? '', 'database service is unavailable'),
         'Internal database service failures should be logged for administrators.');
 
+
+    // A match must only join opponents from its own project and teams
+    // registered for that project's season.
+    Factory::$database = new MapDatabase();
+    $messageCount = count($app->messages);
+    assertMatch([], $playground->getData(new Registry(), $app, (object) []),
+        'Playground fixtures should allow an empty result set');
+    assertMatch($messageCount, count($app->messages),
+        'An empty fixture result must not be treated as a database error');
+    $joinSql = implode("\n", Factory::$database->lastQuery->joins);
+    foreach ([
+        'pt2.id = m.projectteam2_id AND pt2.project_id = pt1.project_id',
+        'st1.id = pt1.team_id AND st1.season_id = p.season_id',
+        'st2.id = pt2.team_id AND st2.season_id = p.season_id',
+    ] as $constraint) {
+        assertMatch(true, str_contains($joinSql, $constraint),
+            'Playground Plan must constrain both match teams to one project/season: ' . $constraint);
+    }
 
     echo "Project Map portability and Playground Plan selector regressions OK.\n";
 }
