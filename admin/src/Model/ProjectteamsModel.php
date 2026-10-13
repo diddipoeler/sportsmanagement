@@ -1507,12 +1507,41 @@ final class ProjectteamsModel extends SportsManagementListModel
         return array_key_exists($legacyKey, $post) ? (int) $post[$legacyKey] : $default;
     }
 
+    /** Validate selected project-team IDs before building write queries. */
     private function normaliseIds($ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', (array) $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        if (!is_array($ids)) {
+            return [];
+        }
+
+        $valid = [];
+        $max = (string) PHP_INT_MAX;
+
+        foreach ($ids as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if ($raw === '' || !ctype_digit($raw)) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+            $digits = $digits === '' ? '0' : $digits;
+
+            if ($digits === '0'
+                || strlen($digits) > strlen($max)
+                || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+                continue;
+            }
+
+            $id = (int) $digits;
+            $valid[$id] = $id;
+        }
+
+        return array_values($valid);
     }
 
     private function relationService(): ProjectRelationService
