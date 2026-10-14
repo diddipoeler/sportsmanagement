@@ -235,7 +235,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getProjectsBySportsTypesOptions', [
-            $input->getInt('sportstype'),
+            max(0, $input->getInt('sportstype')),
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
