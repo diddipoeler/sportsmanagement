@@ -67,7 +67,7 @@ final class GcalendarHelper
             'calendarIds' => $calendarIds,
             'calendarConfig' => [
                 'feedUrl' => $feedUrl,
-                'weekStart' => max(0, min(6, (int) $params->get('weekstart', 0))),
+                'weekStart' => max(0, min(6, is_scalar($params->get('weekstart', 0)) ? (int) $params->get('weekstart', 0) : 0)),
                 'titleFormat' => (string) $params->get('titleformat_month', 'M Y'),
                 'timeFormat' => (string) $params->get('timeformat_month', 'g:i a'),
                 'calendarHeight' => max(0, (int) $params->get('calendar_height', 0)),
