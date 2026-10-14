@@ -26,8 +26,17 @@ final class GoogleCalendarHelper
         CMSApplicationInterface $app,
         CacheControllerFactoryInterface $cacheFactory
     ): array {
-        $apiKey = trim((string) $params->get('api_key', ''));
-        $calendarId = trim((string) $params->get('calendar_id', ''));
+        $rawApiKey = $params->get('api_key', '');
+        $rawCalendarId = $params->get('calendar_id', '');
+
+        // Legacy parameters may contain arrays after an invalid form submission.
+        // Do not cast them to strings or attempt an outbound API request.
+        if (!is_string($rawApiKey) || !is_string($rawCalendarId)) {
+            return ['events' => []];
+        }
+
+        $apiKey = trim($rawApiKey);
+        $calendarId = trim($rawCalendarId);
 
         // Reject control characters in remote API identifiers before using
         // them in the outbound URL or the Joomla callback-cache key.
