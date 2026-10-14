@@ -39,7 +39,7 @@ final class AjaxController extends BaseController
         }
 
         // Keep route names canonical and preserve the calendar routing alias.
-        $view = strtolower($view);
+        $view = strtolower(trim($view));
 
         if ($view === 'calendar') {
             $view = 'teamplan';
