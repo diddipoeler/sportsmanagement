@@ -45,7 +45,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ->getData($data['params'], $data['module'], $app, $db)
         );
 
-        $moduleId = (int) ($data['module']->id ?? 0);
+        // The script-options key must be stable and tied to the module instance.
+        $moduleId = max(0, (int) ($data['module']->id ?? 0));
         $document = $app->getDocument();
         if ($document instanceof HtmlDocument) {
             $assets = $document->getWebAssetManager();
