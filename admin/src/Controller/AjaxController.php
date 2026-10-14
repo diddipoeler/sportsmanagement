@@ -189,7 +189,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getpersonagegroupoptions', [
-            $input->getInt('sports_type_id'),
+            max(0, $input->getInt('sports_type_id')),
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
