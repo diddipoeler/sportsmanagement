@@ -54,7 +54,8 @@ final class GcalendarHelper
             $color = '135CAE';
         }
 
-        $compact = max(0, min(2, (int) $params->get('compact_events', 1)));
+        $rawCompact = $params->get('compact_events', 1);
+        $compact = max(0, min(2, is_scalar($rawCompact) ? (int) $rawCompact : 1));
         $feedUrl = Route::_(
             'index.php?option=com_sportsmanagement&view=jsonfeed&compact=' . $compact
                 . '&format=raw&gcids=' . implode(',', $calendarIds),
