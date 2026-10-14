@@ -23,18 +23,19 @@ final class RandomPlayerHelper
 {
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        $db = SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
         $projectIds = $this->normaliseIds($params->get('p'));
         $teamIds = $this->normaliseIds($params->get('teams'));
-        $seasonId = max(0, (int) $params->get('s', 0));
+        $seasonId = self::positiveId($params->get('s', 0));
 
+        // Invalid selectors must not open an optional/external database.
         if (!$projectIds || $seasonId <= 0) {
             return [];
         }
 
+        $db = SportsManagementDatabaseResolver::resolve(
+            $fallbackDatabase,
+            (int) $params->get('cfg_which_database', 0)
+        );
         $projectTeams = $this->getEligibleProjectTeams($db, $projectIds, $teamIds, $seasonId);
 
         if (!$projectTeams) {
@@ -300,6 +301,32 @@ final class RandomPlayerHelper
         };
 
         return trim(implode(' ', array_values(array_filter($parts, static fn($value) => $value !== ''))));
+    }
+
+    /** Parse a single positive ID or Joomla ID:alias without prefix casts. */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^([0-9]+)(?::[\pL\pN_-]+)?$/Du', $raw, $parts)) {
+            return 0;
+        }
+
+        $digits = ltrim($parts[1], '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 
     private function normaliseIds(mixed $value): array

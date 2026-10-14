@@ -197,10 +197,9 @@ final class PlayersModel extends SportsManagementListModel
 
     public function getPersonsToAssign(): array
     {
-        $ids = array_values(array_unique(array_filter(array_map(
-            'intval',
-            (array) $this->administratorApplication()->getInput()->get('cid', [], 'array')
-        ))));
+        $ids = self::normaliseSelectedIds(
+            $this->administratorApplication()->getInput()->get('cid', [], 'array')
+        );
 
         if (!$ids) {
             return [];
@@ -214,6 +213,43 @@ final class PlayersModel extends SportsManagementListModel
             ->where('pl.published = 1');
 
         return $db->setQuery($query)->loadObjectList();
+    }
+
+    /** Accept only positive, strictly decimal selected-person IDs. */
+    private static function normaliseSelectedIds(mixed $ids): array
+    {
+        if (!is_array($ids)) {
+            return [];
+        }
+
+        $valid = [];
+        $max = (string) PHP_INT_MAX;
+
+        foreach ($ids as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if ($raw === '' || !ctype_digit($raw)) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+            $digits = $digits === '' ? '0' : $digits;
+
+            if ($digits === '0'
+                || strlen($digits) > strlen($max)
+                || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+                continue;
+            }
+
+            $id = (int) $digits;
+            $valid[$id] = $id;
+        }
+
+        return array_values($valid);
     }
 
     public function getProjectTeamList(): array

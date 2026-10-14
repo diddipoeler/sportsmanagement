@@ -34,39 +34,71 @@ final class EditpersonModel extends AdminModel
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Merge the native Joomla jform payload while preserving the original ID
+     * and the legacy request fields (including explicit zero/empty values).
+     */
     public function updItem($data): bool
     {
         $data = (array) $data;
-        $request = $data['request'] ?? [];
+        $id = self::positiveId($data['id'] ?? null);
 
-        if (is_array($request)) {
-            foreach ($request as $key => $value) {
-                $data[$key] = $value;
-            }
+        if ($id <= 0) {
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+            return false;
         }
 
-        unset($data['request']);
+        $request = is_array($data['request'] ?? null) ? $data['request'] : [];
+        $form = is_array($data['jform'] ?? null) ? $data['jform'] : [];
 
-        // Keep explicit 0, false and empty-string values: administrators can
-        // clear existing frontend fields and switch boolean options off.
+        unset($data['request'], $data['jform']);
+        unset($request['id'], $form['id']);
+
+        // jform fields take precedence, but never let nested data change
+        // the record ID chosen by the editor form.
+        $data = array_replace($data, $request, $form);
+        $data['id'] = $id;
 
         try {
             $table = $this->getTable('player');
 
-            if (!$table->bind($data)) {
-                return false;
-            }
-
-            if (!$table->check()) {
+            if (!$table->bind($data) || !$table->check()) {
                 return false;
             }
 
             return (bool) $table->store();
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
             $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+
             return false;
         }
+    }
+
+    /** Reject malformed, negative and overflowing person record IDs. */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if ($raw === '' || !ctype_digit($raw)) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 
     public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = [])
