@@ -112,8 +112,27 @@ final class TeamplayerModel extends SportsManagementAdminModel
     {
         $personIds = $this->normaliseIds((array) $ids);
         $mapping = (array) $tpids;
+
+        // Joomla list actions may publish, unpublish, archive or trash.
+        // Do not coerce malformed request values into a valid state/project.
+        if ((!is_int($state) && !is_string($state))
+            || !in_array(trim((string) $state), ['-2', '0', '1', '2'], true)) {
+            $this->setError('Invalid team-player state.');
+            return false;
+        }
+
         $state = (int) $state;
-        $projectId = max(0, (int) $pid);
+        $projectId = self::positiveId($pid);
+
+        if ($projectId === 0 && !in_array($pid, [0, '0', null], true)) {
+            $this->setError('Invalid project selection.');
+            return false;
+        }
+
+        if (!$personIds) {
+            return true;
+        }
+
         $db = $this->getDatabase();
         $now = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $userId = (int) $this->administratorApplication()->getIdentity()->id;
@@ -163,8 +182,14 @@ final class TeamplayerModel extends SportsManagementAdminModel
         $input = $app->getInput();
         $post = $input->post->getArray();
         $personIds = $this->normaliseIds((array) ($post['cid'] ?? []));
-        $projectId = max(0, (int) ($post['pid'] ?? 0));
+        $requestedProject = $post['pid'] ?? 0;
+        $projectId = self::positiveId($requestedProject);
         $personType = max(0, (int) ($post['persontype'] ?? 0));
+
+        if ($projectId === 0 && !in_array($requestedProject, [0, '0', null], true)) {
+            $this->setError('Invalid project selection.');
+            return false;
+        }
 
         if (!$personIds) {
             return true;
@@ -179,7 +204,7 @@ final class TeamplayerModel extends SportsManagementAdminModel
         try {
             foreach ($personIds as $personId) {
                 $assignmentId = self::positiveId(($post['tpid'][$personId] ?? null) ?: ($post['person_id' . $personId] ?? null));
-                $projectPositionId = max(0, (int) ($post['project_position_id' . $personId] ?? 0));
+                $projectPositionId = self::positiveId($post['project_position_id' . $personId] ?? null);
                 $positionId = (int) ($projectPositionMap[$projectPositionId] ?? 0);
 
                 if ($assignmentId <= 0) {
@@ -250,7 +275,7 @@ final class TeamplayerModel extends SportsManagementAdminModel
         }
 
         $db = $this->getDatabase();
-        $projectId = max(0, (int) ($post['pid'] ?? 0));
+        $projectId = self::positiveId($post['pid'] ?? null);
         $db->transactionStart();
 
         try {

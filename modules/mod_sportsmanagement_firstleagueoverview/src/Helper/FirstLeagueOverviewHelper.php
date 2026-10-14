@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -27,23 +28,31 @@ final class FirstLeagueOverviewHelper
      */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        $db = SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
-        $componentParams = ComponentHelper::getParams('com_sportsmanagement');
-        $projects = $this->latestProjects($db);
+        try {
+            $db = SportsManagementDatabaseResolver::resolve(
+                $fallbackDatabase,
+                (int) $params->get('cfg_which_database', 0)
+            );
+            $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+            $projects = $this->latestProjects($db);
 
-        foreach ($projects as $project) {
-            $project->ranking_link = $this->rankingLink($project, $params);
-            $project->country_label = Text::_((string) ($project->country_name ?: $project->country));
-            $project->flag_html = $this->flagHtml($project, $componentParams);
+            foreach ($projects as $project) {
+                $project->ranking_link = $this->rankingLink($project, $params);
+                $project->country_label = Text::_((string) ($project->country_name ?: $project->country));
+                $project->flag_html = $this->flagHtml($project, $componentParams);
+            }
+
+            return [
+                'projects' => $projects,
+                'federations' => self::visibleFederations($projects, $this->getFederations($db)),
+            ];
+        } catch (\Throwable $e) {
+            // Missing tables and optional external database failures must
+            // not disclose SQL details or break the whole frontend page.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+
+            return ['projects' => [], 'federations' => []];
         }
-
-        return [
-            'projects' => $projects,
-            'federations' => self::visibleFederations($projects, $this->getFederations($db)),
-        ];
     }
 
     /** @return array<int,object> */

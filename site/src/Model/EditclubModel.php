@@ -44,15 +44,37 @@ final class EditclubModel extends AdminModel
 
     public function updItem($data): bool
     {
-        // Joomla form data can contain a nested request payload. Merge it
-        // before date validation so callers cannot reintroduce an invalid
-        // date or override a normalized date after checking it.
+        $data = (array) $data;
+        $clubId = self::positiveId($data['id'] ?? null);
+
+        if ($clubId <= 0) {
+            $this->setError('Invalid club record.');
+            return false;
+        }
+
         $request = is_array($data['request'] ?? null) ? $data['request'] : [];
-        unset($data['request'], $request['id']);
-        $data = array_replace($data, $request);
+        $form = is_array($data['jform'] ?? null) ? $data['jform'] : [];
+
+        unset($data['request'], $data['jform']);
+        unset($request['id'], $form['id']);
+
+        // Native Joomla jform values take precedence; nested IDs do not.
+        $data = array_replace($data, $request, $form);
+        $data['id'] = $clubId;
 
         foreach (['founded', 'dissolved'] as $field) {
-            $provided = trim((string) ($data[$field] ?? ''));
+            // Not every frontend editor posts both date fields. Never clear
+            // an existing date just because an unrelated field was saved.
+            if (!array_key_exists($field, $data)) {
+                continue;
+            }
+
+            if (!is_string($data[$field]) && !is_int($data[$field])) {
+                $this->setError('Invalid ' . $field . ' date.');
+                return false;
+            }
+
+            $provided = trim((string) $data[$field]);
 
             if ($provided === '' || $provided === '0000-00-00') {
                 $data[$field] = '0000-00-00';
@@ -175,6 +197,32 @@ final class EditclubModel extends AdminModel
     private function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
+    }
+
+    /** Only existing positive decimal club IDs are valid editor targets. */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if ($raw === '' || !ctype_digit($raw)) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 
     private function normaliseFrontendDate(string $date): string
