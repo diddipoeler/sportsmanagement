@@ -28,10 +28,10 @@ final class GcalendarHelper
         DatabaseInterface $db
     ): array {
         $calendars = $this->getCalendars($params, $app, $db);
-        $calendarIds = array_values(array_filter(array_map(
+        $calendarIds = array_values(array_unique(array_filter(array_map(
             static fn (object $calendar): int => (int) ($calendar->id ?? 0),
             $calendars
-        )));
+        ), static fn (int $id): bool => $id > 0)));
 
         $date = Date::getInstance('now', (string) $app->get('offset', 'UTC'));
         $dayNamesMin = [];
