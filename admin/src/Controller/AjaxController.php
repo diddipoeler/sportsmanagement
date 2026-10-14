@@ -146,7 +146,7 @@ final class AjaxController extends BaseController
     {
         $input = $this->input;
         $this->respondModel('getseasons', [
-            $input->getInt('cfg_which_database'),
+            max(0, $input->getInt('cfg_which_database')),
             $input->getBool('required'),
             $input->getBool('slug'),
         ]);
