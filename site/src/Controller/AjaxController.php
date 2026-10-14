@@ -63,7 +63,9 @@ final class AjaxController extends BaseController
     public function getProjectTeams(): void
     {
         $input = $this->app->getInput();
-        $this->sendJson($this->ajaxModel()->getProjectTeams(max(0, $input->getInt('project_id', 0))));
+        $this->sendJson($this->ajaxModel()->getProjectTeams(
+            max(0, $input->getInt('project_id', $input->getInt('p', 0)))
+        ));
     }
 
     public function getProjectSelect(): void
