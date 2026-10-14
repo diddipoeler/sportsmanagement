@@ -32,6 +32,11 @@ final class AjaxController extends BaseController
             throw new \InvalidArgumentException('Invalid SportsManagement AJAX view.', 400);
         }
 
+        // Preserve the documented ranking default for an explicitly empty view.
+        if ($view === '') {
+            $view = 'ranking';
+        }
+
         $link = $this->ajaxModel()->getLink(
             $view,
             max(0, $input->getInt('project_id', $input->getInt('p', 0))),
