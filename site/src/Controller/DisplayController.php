@@ -31,7 +31,19 @@ final class DisplayController extends BaseController
     {
         // Joomla only applies the controller default when the view is absent;
         // an explicitly empty view must be handled here as well.
-        if (trim($this->input->getCmd('view', '')) === '') {
+        $rawView = $this->input->get('view', '', 'raw');
+
+        if (!is_string($rawView)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
+        }
+
+        $view = $this->input->getCmd('view', '');
+
+        if ($rawView !== '' && strtolower($view) !== strtolower($rawView)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
+        }
+
+        if (trim($view) === '') {
             $this->input->set('view', $this->default_view);
         }
 
