@@ -33,7 +33,7 @@ final class AjaxController extends BaseController
         }
 
         // Preserve the documented ranking default for an explicitly empty view.
-        if ($view === '') {
+        if (trim($view) === '') {
             $view = 'ranking';
         }
 
