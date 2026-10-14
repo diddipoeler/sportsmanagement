@@ -189,17 +189,21 @@ final class EditmatchModel extends AdminModel
         }
     }
 
+    /**
+     * Persist billiards roster entries only for an existing match in the
+     * requested project, rejecting malformed IDs before inserting anything.
+     */
     public function updateRosterBillard($data): bool
     {
-        $matchId = (int) ($data['id'] ?? 0);
-        $projectId = (int) ($data['project_id'] ?? self::$projectid);
-        if ($matchId <= 0 || $projectId <= 0) {
+        if (!is_array($data)) {
             return false;
         }
 
-        $positions = [];
-        foreach ($this->getProjectPositions($projectId) as $position) {
-            $positions[(string) $position->name] = (int) $position->id;
+        $matchId = self::positiveId($data['id'] ?? null);
+        $projectId = self::positiveId($data['project_id'] ?? self::$projectid);
+
+        if ($matchId <= 0 || $projectId <= 0) {
+            return false;
         }
 
         $groups = [
@@ -207,27 +211,92 @@ final class EditmatchModel extends AdminModel
             ['key' => 'rosterc', 'name' => 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN', 'fixed' => 100],
             ['key' => 'rosterr', 'name' => 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_RESERVE', 'fixed' => 50],
         ];
+        $roster = [];
 
         foreach ($groups as $group) {
-            $positionId = (int) ($positions[$group['name']] ?? 0);
-            if ($positionId <= 0) {
-                continue;
+            $selected = $data[$group['key']] ?? [];
+
+            if (!is_array($selected)) {
+                return false;
             }
 
-            foreach ((array) ($data[$group['key']] ?? []) as $ordering => $teamPlayerId) {
-                $teamPlayerId = (int) $teamPlayerId;
-                if ($teamPlayerId <= 0) {
+            foreach ($selected as $ordering => $player) {
+                // Zero is the legacy "not selected" placeholder.
+                if ($player === null || $player === '' || $player === 0 || $player === '0') {
                     continue;
                 }
 
-                $value = $group['fixed'] === null ? (int) $ordering : (int) $group['fixed'];
-                if (!$this->insertMatchPlayer($matchId, $teamPlayerId, $positionId, $value)) {
+                $playerId = self::positiveId($player);
+
+                if ($playerId <= 0) {
                     return false;
                 }
+
+                if ($group['fixed'] === null
+                    && (!is_int($ordering) && !is_string($ordering)
+                        || !ctype_digit((string) $ordering))) {
+                    return false;
+                }
+
+                $roster[] = [
+                    'player_id' => $playerId,
+                    'position' => $group['name'],
+                    'ordering' => $group['fixed'] ?? (int) $ordering,
+                ];
             }
         }
 
-        return true;
+        try {
+            $db = $this->database();
+            $query = $db->createQuery()
+                ->select('COUNT(*)')
+                ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_round', 'r')
+                    . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+                )
+                ->where($db->quoteName('m.id') . ' = :billardMatchId')
+                ->where($db->quoteName('r.project_id') . ' = :billardProjectId')
+                ->bind(':billardMatchId', $matchId, ParameterType::INTEGER)
+                ->bind(':billardProjectId', $projectId, ParameterType::INTEGER);
+            $db->setQuery($query, 0, 1);
+
+            if ((int) $db->loadResult() !== 1) {
+                return false;
+            }
+
+            $positions = [];
+
+            foreach ($this->getProjectPositions($projectId) as $position) {
+                $positions[(string) $position->name] = (int) $position->id;
+            }
+
+            // Resolve every selected role before the first write.
+            foreach ($roster as &$item) {
+                $item['position_id'] = $positions[$item['position']] ?? 0;
+
+                if ($item['position_id'] <= 0) {
+                    return false;
+                }
+            }
+            unset($item);
+
+            foreach ($roster as $item) {
+                if (!$this->insertMatchPlayer(
+                    $matchId,
+                    $item['player_id'],
+                    $item['position_id'],
+                    $item['ordering']
+                )) {
+                    return false;
+                }
+            }
+
+            return true;
+        } catch (\Throwable $e) {
+            return $this->reportWriteFailure($e);
+        }
     }
 
     /**
