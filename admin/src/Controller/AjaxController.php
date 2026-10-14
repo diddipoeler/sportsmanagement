@@ -227,7 +227,7 @@ final class AjaxController extends BaseController
             $input->getBool('required'),
             $input->getBool('slug'),
             $input->getBool('dbase'),
-            $input->getInt('division'),
+            max(0, $input->getInt('division')),
         ]);
     }
 
