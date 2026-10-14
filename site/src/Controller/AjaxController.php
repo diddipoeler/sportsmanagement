@@ -28,7 +28,8 @@ final class AjaxController extends BaseController
         $rawView = $input->get('view', 'ranking', 'raw');
         $view = $input->getCmd('view', 'ranking');
 
-        if (!is_string($rawView) || ($rawView !== '' && strtolower($view) !== strtolower($rawView))) {
+        if (!is_string($rawView)
+            || ($rawView !== '' && strtolower(trim($view)) !== strtolower(trim($rawView)))) {
             throw new \InvalidArgumentException('Invalid SportsManagement AJAX view.', 400);
         }
 
