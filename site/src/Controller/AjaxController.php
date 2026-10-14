@@ -25,8 +25,15 @@ final class AjaxController extends BaseController
     public function getLink(): void
     {
         $input = $this->app->getInput();
+        $rawView = $input->get('view', 'ranking', 'raw');
+        $view = $input->getCmd('view', 'ranking');
+
+        if (!is_string($rawView) || ($rawView !== '' && strtolower($view) !== strtolower($rawView))) {
+            throw new \InvalidArgumentException('Invalid SportsManagement AJAX view.', 400);
+        }
+
         $link = $this->ajaxModel()->getLink(
-            $input->getCmd('view', 'ranking'),
+            $view,
             max(0, $input->getInt('project_id', $input->getInt('p', 0))),
             max(0, $input->getInt('team_id', $input->getInt('tid', 0))),
             max(0, $input->getInt('division_id', $input->getInt('division', 0))),
