@@ -68,9 +68,12 @@ final class GcalendarHelper
             'calendarConfig' => [
                 'feedUrl' => $feedUrl,
                 'weekStart' => max(0, min(6, is_scalar($params->get('weekstart', 0)) ? (int) $params->get('weekstart', 0) : 0)),
-                'titleFormat' => (string) $params->get('titleformat_month', 'M Y'),
-                'timeFormat' => (string) $params->get('timeformat_month', 'g:i a'),
-                'calendarHeight' => max(0, (int) $params->get('calendar_height', 0)),
+                'titleFormat' => is_string($params->get('titleformat_month', 'M Y'))
+                    ? $params->get('titleformat_month', 'M Y') : 'M Y',
+                'timeFormat' => is_string($params->get('timeformat_month', 'g:i a'))
+                    ? $params->get('timeformat_month', 'g:i a') : 'g:i a',
+                'calendarHeight' => max(0, is_scalar($params->get('calendar_height', 0))
+                    ? (int) $params->get('calendar_height', 0) : 0),
                 'eventColor' => '#' . $color,
                 'compactMode' => $compact,
                 'dayNamesMin' => $dayNamesMin,
