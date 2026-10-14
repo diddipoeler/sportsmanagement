@@ -53,7 +53,8 @@ final class GoogleCalendarHelper
         $maxEvents = min(2500, max(1, is_scalar($rawMaxEvents) ? (int) $rawMaxEvents : 5));
         // Keep the API cache bounded even when a legacy module parameter is
         // corrupted or configured to an excessively large lifetime.
-        $lifetime = min(10080, max(1, (int) $params->get('api_cache_time', 60)));
+        $rawLifetime = $params->get('api_cache_time', 60);
+        $lifetime = min(10080, max(1, is_scalar($rawLifetime) ? (int) $rawLifetime : 60));
         try {
             $cache = $cacheFactory->createCacheController('callback', [
                 'caching' => true,
