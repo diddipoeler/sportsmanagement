@@ -97,6 +97,9 @@ final class GcalendarHelper
             ->from($db->quoteName('#__sportsmanagement_gcalendar'));
 
         $rawCalendarIds = $params->get('calendarids', []);
+        // Only a genuinely empty selection means all visible calendars.
+        // A whitespace-only or malformed configured selection must not
+        // silently expand into an unrestricted calendar query.
         $selectionRequested = is_array($rawCalendarIds)
             ? $rawCalendarIds !== [] && $rawCalendarIds !== ['']
             : $rawCalendarIds !== null && $rawCalendarIds !== '';
