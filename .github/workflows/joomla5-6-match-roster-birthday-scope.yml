@@ -1,0 +1,55 @@
+name: Joomla 5/6 match roster birthday scope
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/EditmatchModel.php'
+      - 'admin/src/Model/TeamplayerModel.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/joomla56_match_roster_birthday_scope.php'
+      - '.github/workflows/joomla5-6-match-roster-birthday-scope.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Model/EditmatchModel.php'
+      - 'admin/src/Model/TeamplayerModel.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/joomla56_match_roster_birthday_scope.php'
+      - '.github/workflows/joomla5-6-match-roster-birthday-scope.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax and mandatory PHPDoc tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Model/EditmatchModel.php
+            admin/src/Model/TeamplayerModel.php
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+            .github/tests/joomla56_match_roster_birthday_scope.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Scoped administrator writes and public module error isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          php .github/tests/joomla56_match_roster_birthday_scope.php
+          php .github/tests/joomla56_date_input_normalisation.php
+          php .github/tests/joomla56_club_roster_firstleague_guard.php
