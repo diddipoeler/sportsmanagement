@@ -70,7 +70,18 @@ if (str_contains($command, '.')) {
     }
 }
 
+$rawView = $input->get('view', 'cpanel', 'raw');
+
+// Never turn malformed view input into a different administrator MVC action.
+if (!is_string($rawView)) {
+    throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
+}
+
 $activeView = $input->getCmd('view', 'cpanel');
+
+if ($rawView !== '' && $activeView !== $rawView) {
+    throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
+}
 if ($activeView === '') {
     $activeView = 'cpanel';
 }
