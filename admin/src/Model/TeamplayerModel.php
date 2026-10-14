@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamplayerTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Form;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
@@ -142,6 +143,10 @@ final class TeamplayerModel extends SportsManagementAdminModel
             foreach ($personIds as $personId) {
                 $assignmentId = self::positiveId($mapping[$personId] ?? null);
                 if ($assignmentId > 0) {
+                    if (!$this->assignmentBelongsToPerson($db, $assignmentId, $personId)) {
+                        throw new \RuntimeException('Roster assignment does not match the selected person.');
+                    }
+
                     $db->updateObject(
                         '#__sportsmanagement_season_team_person_id',
                         (object) ['id' => $assignmentId, 'published' => $state, 'modified' => $now, 'modified_by' => $userId],
@@ -211,6 +216,10 @@ final class TeamplayerModel extends SportsManagementAdminModel
                     continue;
                 }
 
+                if (!$this->assignmentBelongsToPerson($db, $assignmentId, $personId)) {
+                    throw new \RuntimeException('Roster assignment does not match the selected person.');
+                }
+
                 if ($positionId > 0 && in_array($personType, [1, 2], true)) {
                     $table = $personType === 1 ? '#__sportsmanagement_match_player' : '#__sportsmanagement_match_staff';
                     $foreignKey = $personType === 1 ? 'teamplayer_id' : 'team_staff_id';
@@ -274,11 +283,28 @@ final class TeamplayerModel extends SportsManagementAdminModel
             return true;
         }
 
+        $requestedProject = $post['pid'] ?? 0;
+        $projectId = self::positiveId($requestedProject);
+
+        if ($projectId === 0 && !in_array($requestedProject, [0, '0', null], true)) {
+            $this->setError('Invalid project selection.');
+            return false;
+        }
+
         $db = $this->getDatabase();
-        $projectId = self::positiveId($post['pid'] ?? null);
         $db->transactionStart();
 
         try {
+            // Validate each submitted relation/person pair before removing
+            // matches or calling the parent model's destructive delete.
+            foreach ($personIds as $personId) {
+                $assignmentId = self::positiveId($mapping[$personId] ?? null);
+
+                if ($assignmentId > 0 && !$this->assignmentBelongsToPerson($db, $assignmentId, $personId)) {
+                    throw new \RuntimeException('Roster assignment does not match the selected person.');
+                }
+            }
+
             $deleteSpecs = [
                 ['#__sportsmanagement_match_player', 'teamplayer_id'],
                 ['#__sportsmanagement_match_player', 'in_for'],
@@ -524,6 +550,31 @@ final class TeamplayerModel extends SportsManagementAdminModel
     }
 
     /** Strictly validate posted person IDs before any relation write. */
+    /**
+     * Check the selected roster relation against its person, not just the
+     * posted relation ID. Otherwise a forged tpid[] can edit/delete records
+     * belonging to a different person.
+     */
+    private function assignmentBelongsToPerson(
+        DatabaseInterface $db,
+        int $assignmentId,
+        int $personId
+    ): bool {
+        if ($assignmentId <= 0 || $personId <= 0) {
+            return false;
+        }
+
+        $query = $db->createQuery()
+            ->select($db->quoteName('person_id'))
+            ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
+            ->where($db->quoteName('id') . ' = :assignmentId')
+            ->bind(':assignmentId', $assignmentId, ParameterType::INTEGER);
+
+        $db->setQuery($query, 0, 1);
+
+        return (int) $db->loadResult() === $personId;
+    }
+
     private function normaliseIds(array $ids): array
     {
         $valid = [];
