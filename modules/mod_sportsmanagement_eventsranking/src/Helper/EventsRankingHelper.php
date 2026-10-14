@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -23,45 +24,126 @@ final class EventsRankingHelper
 {
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        $db = $this->database($params, $fallbackDatabase);
-        $projectIds = $this->normaliseIds($params->get('p'));
-        $eventIds = $this->normaliseIds($params->get('evid'));
-        $divisionId = max(0, (int) $params->get('division_id', 0));
-        $matchId = max(0, (int) $params->get('mid', 0));
-        $teamId = max(0, (int) $params->get('tid', 0));
+        $empty = ['project' => null, 'eventtypes' => [], 'rankings' => []];
+        $selectedProjects = $params->get('p');
+        $projectIds = $this->normaliseIds($selectedProjects);
+        $selectedEvents = $params->get('evid');
+        $eventIds = $this->normaliseIds($selectedEvents);
+
+        // A corrupt selection of events must not silently render every
+        // event type. No project selection likewise requires no database.
+        if (!$projectIds
+            || (self::hasSelection($selectedEvents) && !$eventIds)) {
+            return $empty;
+        }
+
+        $divisionId = self::optionalId($params->get('division_id', 0));
+        $matchId = self::optionalId($params->get('mid', 0));
+        $teamId = self::optionalId($params->get('tid', 0));
         $limit = max(1, min(100, (int) $params->get('limit', 5)));
         $primaryDirection = $this->direction((string) $params->get('ranking_order', 'DESC'));
 
-        $project = $projectIds ? $this->getProject($db, $projectIds[0]) : null;
-        $eventTypes = $this->getEventTypes($db, $projectIds, $eventIds);
-        $rankings = [];
-
-        foreach ($eventTypes as $eventType) {
-            // Event icons are database values; validate them before the layout
-            // renders a URL in an image attribute.
-            $eventType->icon_url = $this->mediaUrl((string) ($eventType->icon ?? ''));
-            $dart = $project && (string) $project->sport_type_name === 'COM_SPORTSMANAGEMENT_ST_DART';
-            $rankings[(int) $eventType->id] = $this->getRanking(
-                $db,
-                (int) $eventType->id,
-                $projectIds,
-                $divisionId,
-                $teamId,
-                $matchId,
-                $limit,
-                $dart,
-                $primaryDirection,
-                $this->direction((string) ($eventType->directionscounter ?? 'DESC')),
-                max(1, min(2, (int) ($eventType->directionspointpos ?? 1))),
-                $params
-            );
+        // Reject malformed explicit constraints instead of broadening the
+        // query to all divisions, matches or teams.
+        foreach ([
+            [$params->get('division_id', 0), $divisionId],
+            [$params->get('mid', 0), $matchId],
+            [$params->get('tid', 0), $teamId],
+        ] as [$raw, $id]) {
+            if ($id === 0 && self::hasSelection($raw)) {
+                return $empty;
+            }
         }
 
-        return [
-            'project' => $project,
-            'eventtypes' => $eventTypes,
-            'rankings' => $rankings,
-        ];
+        try {
+            $db = $this->database($params, $fallbackDatabase);
+            $project = $this->getProject($db, $projectIds[0]);
+            $eventTypes = $this->getEventTypes($db, $projectIds, $eventIds);
+            $rankings = [];
+
+            foreach ($eventTypes as $eventType) {
+                $eventType->icon_url = $this->mediaUrl((string) ($eventType->icon ?? ''));
+                $dart = $project && (string) $project->sport_type_name === 'COM_SPORTSMANAGEMENT_ST_DART';
+                $rankings[(int) $eventType->id] = $this->getRanking(
+                    $db,
+                    (int) $eventType->id,
+                    $projectIds,
+                    $divisionId,
+                    $teamId,
+                    $matchId,
+                    $limit,
+                    $dart,
+                    $primaryDirection,
+                    $this->direction((string) ($eventType->directionscounter ?? 'DESC')),
+                    max(1, min(2, (int) ($eventType->directionspointpos ?? 1))),
+                    $params
+                );
+            }
+
+            return [
+                'project' => $project,
+                'eventtypes' => $eventTypes,
+                'rankings' => $rankings,
+            ];
+        } catch (\Throwable $e) {
+            // Joomla pages must survive missing tables and offline optional
+            // databases without disclosing SQL or server paths to visitors.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+
+            return $empty;
+        }
+    }
+
+    /** Positive ID/ID:alias selector; invalid or unset means no constraint. */
+    private static function optionalId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^([0-9]+)(?::[\pL\pN_-]+)?$/Du', $raw, $matches)) {
+            return 0;
+        }
+
+        $digits = ltrim($matches[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $max = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
+    }
+
+    private static function hasSelection(mixed $value): bool
+    {
+        if ($value === null || $value === '' || $value === 0 || $value === '0') {
+            return false;
+        }
+
+        if (is_string($value) && preg_match('/^0+$/D', trim($value)) === 1) {
+            return false;
+        }
+
+        if (!is_array($value)) {
+            return true;
+        }
+
+        foreach ($value as $selection) {
+            if (self::hasSelection($selection)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getProject(DatabaseInterface $db, int $projectId): ?object
