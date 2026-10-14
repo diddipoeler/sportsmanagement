@@ -24,7 +24,15 @@ final class PlaygroundTickerHelper
         CMSApplicationInterface $app,
         DatabaseInterface $fallbackDatabase
     ): array {
-        $projectId = (int) $params->get('p', 0);
+        $configuredProject = $params->get('p', 0);
+        $projectId = self::projectId($configuredProject);
+
+        // Project 0 means "all playgrounds"; an invalid configured value
+        // must not silently become 0 and expose unrelated projects.
+        if ($projectId <= 0 && !self::isUnfilteredProject($configuredProject)) {
+            return [];
+        }
+
         $limit = max(1, (int) $params->get('limit', 1));
         $whichDatabase = $this->databaseSelector($params, $app);
         $db = SportsManagementDatabaseResolver::resolve(
@@ -85,6 +93,43 @@ final class PlaygroundTickerHelper
         $keys = is_array($keys) ? $keys : [$keys];
 
         return array_values(array_map(static fn (int $key): object => $playgrounds[$key], $keys));
+    }
+
+    /** Parse a single selected project, optionally in Joomla ID:alias form. */
+    private static function projectId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $value = trim((string) $value);
+
+        if (!preg_match('/^([0-9]+)(?::[\pL\pN_-]+)?$/Du', $value, $parts)) {
+            return 0;
+        }
+
+        $digits = ltrim($parts[1], '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
+    }
+
+    /** Only a missing or explicitly zero project selection requests all. */
+    private static function isUnfilteredProject(mixed $value): bool
+    {
+        return $value === null
+            || $value === ''
+            || $value === 0
+            || $value === '0'
+            || $value === '000'
+            || (is_string($value) && preg_match('/^0+$/D', trim($value)) === 1);
     }
 
     public function getPictureServer(Registry $params, CMSApplicationInterface $app): string

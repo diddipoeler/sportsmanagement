@@ -232,36 +232,86 @@ final class EditmatchModel extends AdminModel
         return true;
     }
 
+    /**
+     * Store a frontend match form without allowing nested request fields to
+     * redirect the write to another match or to create a new record.
+     */
     public function updItem($data): bool
     {
-        $request = $data['request'] ?? null;
+        $data = (array) $data;
+        $matchId = self::positiveId($data['id'] ?? null);
 
-        if (is_array($request)) {
-            foreach ($request as $key => $value) {
-                $data[$key] = $value;
-            }
-        } elseif (is_object($request)) {
-            $requestData = method_exists($request, 'getArray') ? (array) $request->getArray() : [];
-            foreach ($requestData as $key => $value) {
-                $data[$key] = $value;
-            }
+        if ($matchId <= 0) {
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+            return false;
+        }
+
+        $request = $data['request'] ?? null;
+        $requestData = is_array($request) ? $request : [];
+
+        if (is_object($request) && method_exists($request, 'getArray')) {
+            $requestData = (array) $request->getArray();
+
             if (method_exists($request, 'get')) {
-                $data['preview'] = $request->get('preview', (string) ($data['preview'] ?? ''), 'raw');
-                $data['summary'] = $request->get('summary', (string) ($data['summary'] ?? ''), 'raw');
+                $requestData['preview'] = $request->get(
+                    'preview', (string) ($data['preview'] ?? ''), 'raw'
+                );
+                $requestData['summary'] = $request->get(
+                    'summary', (string) ($data['summary'] ?? ''), 'raw'
+                );
             }
         }
-        unset($data['request']);
+
+        $formData = is_array($data['jform'] ?? null) ? $data['jform'] : [];
+
+        unset($data['request'], $data['jform']);
+        unset($requestData['id'], $formData['id']);
+
+        // Joomla uses jform, while legacy editors use the request array.
+        // Preserve explicit zeros/cleared values and the top-level match ID.
+        $data = array_replace($data, $requestData, $formData);
+        $data['id'] = $matchId;
 
         try {
             $table = $this->getTable('match');
+
             if (!$table->bind($data) || !$table->check() || !$table->store()) {
                 return false;
             }
+
             return true;
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+
             return false;
         }
+    }
+
+    /** Only positive decimal IDs within PHP integer range are record keys. */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $value = trim((string) $value);
+
+        if ($value === '' || !ctype_digit($value)) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 
     public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = [])

@@ -121,7 +121,7 @@ final class TeamplayerModel extends SportsManagementAdminModel
 
         try {
             foreach ($personIds as $personId) {
-                $assignmentId = max(0, (int) ($mapping[$personId] ?? 0));
+                $assignmentId = self::positiveId($mapping[$personId] ?? null);
                 if ($assignmentId > 0) {
                     $db->updateObject(
                         '#__sportsmanagement_season_team_person_id',
@@ -178,7 +178,7 @@ final class TeamplayerModel extends SportsManagementAdminModel
 
         try {
             foreach ($personIds as $personId) {
-                $assignmentId = max(0, (int) (($post['tpid'][$personId] ?? 0) ?: ($post['person_id' . $personId] ?? 0)));
+                $assignmentId = self::positiveId(($post['tpid'][$personId] ?? null) ?: ($post['person_id' . $personId] ?? null));
                 $projectPositionId = max(0, (int) ($post['project_position_id' . $personId] ?? 0));
                 $positionId = (int) ($projectPositionMap[$projectPositionId] ?? 0);
 
@@ -238,7 +238,7 @@ final class TeamplayerModel extends SportsManagementAdminModel
         $assignmentIds = [];
 
         foreach ($personIds as $personId) {
-            $assignmentId = max(0, (int) ($mapping[$personId] ?? 0));
+            $assignmentId = self::positiveId($mapping[$personId] ?? null);
             if ($assignmentId > 0) {
                 $assignmentIds[] = $assignmentId;
             }
@@ -498,8 +498,45 @@ final class TeamplayerModel extends SportsManagementAdminModel
         return $timestamp === false ? '0000-00-00' : date('Y-m-d', $timestamp);
     }
 
+    /** Strictly validate posted person IDs before any relation write. */
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(array_map('intval', $ids), static fn (int $id): bool => $id > 0)));
+        $valid = [];
+
+        foreach ($ids as $value) {
+            $id = self::positiveId($value);
+
+            if ($id > 0) {
+                $valid[$id] = $id;
+            }
+        }
+
+        return array_values($valid);
+    }
+
+    /** Reject numeric prefixes, floats, booleans and integer overflows. */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $value = trim((string) $value);
+
+        if ($value === '' || !ctype_digit($value)) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 }
