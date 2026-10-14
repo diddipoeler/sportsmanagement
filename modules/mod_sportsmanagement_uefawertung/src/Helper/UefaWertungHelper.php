@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementUefaWertung\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -27,18 +28,20 @@ final class UefaWertungHelper
         CMSApplicationInterface $app,
         DatabaseInterface $fallbackDatabase
     ): array {
-        $seasonId = (int) $params->get('s', 0);
+        $seasonId = self::positiveSeasonId($params->get('s', 0));
 
         if ($seasonId <= 0) {
             return ['seasons' => [], 'rankings' => []];
         }
 
-        $db = SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
-
         try {
+            // Resolver failures (including unavailable external databases)
+            // need the same guarded path as the following queries.
+            $db = SportsManagementDatabaseResolver::resolve(
+                $fallbackDatabase,
+                (int) $params->get('cfg_which_database', 0)
+            );
+
             $seasonName = $this->seasonName($db, $seasonId);
 
             if ($seasonName === '') {
@@ -58,10 +61,38 @@ final class UefaWertungHelper
                 'rankings' => $rankings,
             ];
         } catch (\Throwable $error) {
-            $app->enqueueMessage($error->getMessage(), 'error');
+            // Do not expose SQL, table names or connection credentials.
+            Log::add(__METHOD__ . ': ' . $error->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            $app->enqueueMessage('SportsManagement UEFA rankings could not be loaded.', 'error');
 
             return ['seasons' => [], 'rankings' => []];
         }
+    }
+
+    /** Validate Joomla's numeric season selector (including ID:alias). */
+    private static function positiveSeasonId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^([0-9]+)(?::[\pL\pN_-]+)?$/Du', $raw, $parts)) {
+            return 0;
+        }
+
+        $digits = ltrim($parts[1], '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '0'
+            || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 
     private function seasonName(DatabaseInterface $db, int $seasonId): string

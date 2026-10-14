@@ -58,12 +58,13 @@ final class TeamplayerModel extends SportsManagementAdminModel
     /** Copy the owning club country to all selected team persons for a season. */
     public function assignplayerscountry($persontype = 1, $projectTeamId = 0, $teamId = 0, $projectId = 0, $seasonId = 0): bool
     {
-        $teamId = max(0, (int) $teamId);
-        $seasonId = max(0, (int) $seasonId);
-        $personType = max(0, (int) $persontype);
+        $teamId = self::positiveId($teamId);
+        $seasonId = self::positiveId($seasonId);
+        $personType = self::positiveId($persontype);
 
-        if ($teamId === 0 || $seasonId === 0) {
-            return true;
+        if ($teamId === 0 || $seasonId === 0 || !in_array($personType, [1, 2, 3], true)) {
+            $this->setError('Invalid team, season or person type.');
+            return false;
         }
 
         $db = $this->getDatabase();
@@ -88,7 +89,7 @@ final class TeamplayerModel extends SportsManagementAdminModel
             ->bind(':relationTeamId', $teamId, ParameterType::INTEGER)
             ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
             ->bind(':personType', $personType, ParameterType::INTEGER);
-        $personIds = array_values(array_unique(array_filter(array_map('intval', $db->setQuery($query)->loadColumn()))));
+        $personIds = $this->normaliseIds($db->setQuery($query)->loadColumn() ?: []);
 
         if (!$personIds) {
             return true;

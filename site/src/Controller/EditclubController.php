@@ -104,13 +104,44 @@ final class EditclubController extends FormController
         return $model;
     }
 
+    /**
+     * Convert only complete positive decimal team IDs to the legacy list
+     * format. Never pass nested data or arbitrary text to the table layer.
+     */
     private function normalizeMergeTeams(mixed $mergeTeams): string
     {
-        if (!is_array($mergeTeams) || $mergeTeams === []) {
+        if (!is_array($mergeTeams)) {
             return '';
         }
 
-        return implode(',', $mergeTeams);
+        $ids = [];
+        $max = (string) PHP_INT_MAX;
+
+        foreach ($mergeTeams as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if ($raw === '' || !ctype_digit($raw)) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+            $digits = $digits === '' ? '0' : $digits;
+
+            if ($digits === '0'
+                || strlen($digits) > strlen($max)
+                || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+                continue;
+            }
+
+            $id = (int) $digits;
+            $ids[$id] = $id;
+        }
+
+        return implode(',', $ids);
     }
     /** Ensure a frontend editor cannot write using a token without component ACL. */
     private function assertEditorPermission(): void
