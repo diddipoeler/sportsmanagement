@@ -47,7 +47,8 @@ final class GcalendarHelper
             $monthNamesShort[] = $date->monthToString($month, true);
         }
 
-        $color = strtoupper(ltrim((string) $params->get('event_color', '135CAE'), '#'));
+        $rawColor = $params->get('event_color', '135CAE');
+        $color = strtoupper(ltrim(is_string($rawColor) ? $rawColor : '135CAE', '#'));
 
         if (!preg_match('/^[0-9A-F]{6}$/', $color)) {
             $color = '135CAE';
