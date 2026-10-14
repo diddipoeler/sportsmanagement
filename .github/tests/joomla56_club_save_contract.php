@@ -156,6 +156,49 @@ namespace {
         throw new RuntimeException('Club cleared dates or record identity were not preserved.');
     }
 
+    // Joomla 5/6 jform fields override legacy request fields, never the
+    // top-level record ID. A partial edit must leave both dates untouched.
+    if (!$model->updItem([
+        'id' => '0025',
+        'name' => 'Old name',
+        'request' => ['id' => 80, 'name' => 'Legacy', 'published' => 0],
+        'jform' => ['id' => 99, 'name' => 'Native', 'picture' => '', 'active' => false],
+    ])) {
+        throw new RuntimeException('Native jform club partial update failed.');
+    }
+
+    $partial = \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$bound;
+
+    if ($partial['id'] !== 25
+        || $partial['name'] !== 'Native'
+        || $partial['picture'] !== ''
+        || $partial['active'] !== false
+        || $partial['published'] !== 0
+        || array_key_exists('founded', $partial)
+        || array_key_exists('dissolved', $partial)
+        || array_key_exists('jform', $partial)
+    ) {
+        throw new RuntimeException('Club partial update cleared dates or accepted nested IDs.');
+    }
+
+    foreach ([0, -4, true, '25garbage', '999999999999999999999999', []] as $invalidId) {
+        if ($model->updItem(['id' => $invalidId, 'name' => 'Bad ID']) !== false
+            || \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$bound !== $partial) {
+            throw new RuntimeException('Invalid club record ID reached the Joomla table.');
+        }
+    }
+
+    foreach ([
+        ['id' => 25, 'jform' => ['founded' => '2025-02-29']],
+        ['id' => 25, 'jform' => ['dissolved' => '31-02-2026']],
+        ['id' => 25, 'jform' => ['founded' => ['2025-01-01']]],
+    ] as $badDate) {
+        if ($model->updItem($badDate) !== false
+            || \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$bound !== $partial) {
+            throw new RuntimeException('Invalid nested club date was not rejected.');
+        }
+    }
+
     foreach (['bind', 'check', 'store'] as $mode) {
         \Diddipoeler\Component\SportsManagement\Administrator\Table\ClubTable::$mode = $mode;
 
