@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\TeamplayerTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -67,44 +68,63 @@ final class TeamplayerModel extends SportsManagementAdminModel
             return false;
         }
 
-        $db = $this->getDatabase();
-        $query = $db->createQuery()
-            ->select($db->quoteName('c.country'))
-            ->from($db->quoteName('#__sportsmanagement_club', 'c'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id')
-            ->where($db->quoteName('t.id') . ' = :teamId')
-            ->bind(':teamId', $teamId, ParameterType::INTEGER);
-        $country = (string) $db->setQuery($query, 0, 1)->loadResult();
+        $transactionStarted = false;
 
-        if ($country === '') {
-            return true;
-        }
-
-        $query = $db->createQuery()
-            ->select($db->quoteName('person_id'))
-            ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
-            ->where($db->quoteName('team_id') . ' = :relationTeamId')
-            ->where($db->quoteName('season_id') . ' = :seasonId')
-            ->where($db->quoteName('persontype') . ' = :personType')
-            ->bind(':relationTeamId', $teamId, ParameterType::INTEGER)
-            ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
-            ->bind(':personType', $personType, ParameterType::INTEGER);
-        $personIds = $this->normaliseIds($db->setQuery($query)->loadColumn() ?: []);
-
-        if (!$personIds) {
-            return true;
-        }
-
-        $db->transactionStart();
         try {
-            foreach ($personIds as $personId) {
-                $db->updateObject('#__sportsmanagement_person', (object) ['id' => $personId, 'country' => $country], 'id');
+            $db = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select($db->quoteName('c.country'))
+                ->from($db->quoteName('#__sportsmanagement_club', 'c'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON t.club_id = c.id')
+                ->where($db->quoteName('t.id') . ' = :teamId')
+                ->bind(':teamId', $teamId, ParameterType::INTEGER);
+            $country = (string) $db->setQuery($query, 0, 1)->loadResult();
+
+            if ($country === '') {
+                return true;
             }
+
+            $query = $db->createQuery()
+                ->select($db->quoteName('person_id'))
+                ->from($db->quoteName('#__sportsmanagement_season_team_person_id'))
+                ->where($db->quoteName('team_id') . ' = :relationTeamId')
+                ->where($db->quoteName('season_id') . ' = :seasonId')
+                ->where($db->quoteName('persontype') . ' = :personType')
+                ->bind(':relationTeamId', $teamId, ParameterType::INTEGER)
+                ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
+                ->bind(':personType', $personType, ParameterType::INTEGER);
+            $personIds = $this->normaliseIds($db->setQuery($query)->loadColumn() ?: []);
+
+            if (!$personIds) {
+                return true;
+            }
+
+            $db->transactionStart();
+            $transactionStarted = true;
+
+            foreach ($personIds as $personId) {
+                $db->updateObject(
+                    '#__sportsmanagement_person',
+                    (object) ['id' => $personId, 'country' => $country],
+                    'id'
+                );
+            }
+
             $db->transactionCommit();
+
             return true;
         } catch (\Throwable $e) {
-            $db->transactionRollback();
-            $this->setError($e->getMessage());
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable $rollbackError) {
+                    Log::add(__METHOD__ . ': rollback failed: ' . $rollbackError->getMessage(), Log::ERROR, 'jsmerror');
+                }
+            }
+
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $this->setError('Team-person countries could not be updated.');
+
             return false;
         }
     }
