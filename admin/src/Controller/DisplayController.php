@@ -27,7 +27,19 @@ final class DisplayController extends BaseController
     public function display($cachable = false, $urlparams = [])
     {
         $input = $this->input;
-        if (trim($input->getCmd('view', '')) === '') {
+        $rawView = $input->get('view', '', 'raw');
+
+        if (!is_string($rawView)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
+        }
+
+        $view = $input->getCmd('view', '');
+
+        if ($rawView !== '' && $view !== $rawView) {
+            throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
+        }
+
+        if (trim($view) === '') {
             $input->set('view', $this->default_view);
         }
 
