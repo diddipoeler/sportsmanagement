@@ -37,6 +37,9 @@ final class AjaxController extends BaseController
             $view = 'ranking';
         }
 
+        // Keep route names canonical before passing them to the model.
+        $view = strtolower($view);
+
         $link = $this->ajaxModel()->getLink(
             $view,
             max(0, $input->getInt('project_id', $input->getInt('p', 0))),
