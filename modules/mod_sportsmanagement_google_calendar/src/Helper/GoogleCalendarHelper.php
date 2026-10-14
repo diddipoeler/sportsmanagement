@@ -29,6 +29,12 @@ final class GoogleCalendarHelper
         $apiKey = trim((string) $params->get('api_key', ''));
         $calendarId = trim((string) $params->get('calendar_id', ''));
 
+        // Reject control characters in remote API identifiers before using
+        // them in the outbound URL or the Joomla callback-cache key.
+        if (preg_match('/[\x00-\x1F\x7F]/', $apiKey . $calendarId)) {
+            return ['events' => []];
+        }
+
         if ($apiKey === '' || $calendarId === '') {
             return ['events' => []];
         }
