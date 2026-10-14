@@ -95,7 +95,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
                 }
             };
         }
-        public function delete(&$ids): bool {
+        public function delete(&$ids) {
             ++self::$parentDeletes;
             return true;
         }
