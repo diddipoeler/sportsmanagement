@@ -103,10 +103,8 @@ final class EditmatchModel extends AdminModel
             $this->database()->insertObject('#__sportsmanagement_match_single', $row);
             return true;
         } catch (\Throwable $e) {
-            $app->enqueueMessage(
-                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                'notice'
-            );
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             return false;
         }
     }
@@ -392,10 +390,8 @@ final class EditmatchModel extends AdminModel
             $this->database()->insertObject('#__sportsmanagement_match_player', $row);
             return true;
         } catch (\Throwable $e) {
-            $app->enqueueMessage(
-                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                'notice'
-            );
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             return false;
         }
     }
@@ -532,17 +528,17 @@ final class EditmatchModel extends AdminModel
                 $mailer->setBody($body);
                 $mailer->send();
             } catch (\Throwable $e) {
-                $app->enqueueMessage($e->getMessage(), 'warning');
+                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::WARNING, 'jsmerror');
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
             }
         }
     }
 
     private function reportWriteFailure(\Throwable $e): bool
     {
-        $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-            'notice'
-        );
+        Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+        $this->siteApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+
         return false;
     }
 

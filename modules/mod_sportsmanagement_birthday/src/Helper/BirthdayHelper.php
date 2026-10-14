@@ -34,9 +34,27 @@ final class BirthdayHelper
             'cfg_which_database',
             $componentParams->get('cfg_which_database', 0)
         );
+        $selectedProjects = $params->get('p', []);
+        $projectIds = $this->normaliseIds($selectedProjects);
+        $selectedTeams = $params->get('teams', []);
+        $favoriteTeams = (bool) $params->get('use_fav', 0);
+
+        // A malformed configured filter must not turn into a query returning
+        // birthdays from every project or team. Unset/zero means unfiltered.
+        if ((self::hasSelection($selectedProjects) && !$projectIds)
+            || (!$favoriteTeams && self::hasSelection($selectedTeams)
+                && !$this->normaliseIds($selectedTeams))
+            || ($favoriteTeams && !$projectIds)) {
+            return $this->emptyData($params);
+        }
+
         $db = $this->database($databaseSelector, $fallbackDatabase);
-        $projectIds = $this->normaliseIds($params->get('p', []));
         $teamIds = $this->resolveTeamIds($db, $params, $projectIds);
+
+        if ($favoriteTeams && !$teamIds) {
+            return $this->emptyData($params);
+        }
+
         $personTypes = match ((int) $params->get('use_which', 0)) {
             1 => [1],
             2 => [2],
@@ -159,6 +177,36 @@ final class BirthdayHelper
             'mode' => strtoupper((string) $params->get('mode', 'L')),
             'pictureServer' => Uri::root(),
         ];
+    }
+
+    /** Keep the module layout contract even when filtering produces no rows. */
+    private function emptyData(Registry $params): array
+    {
+        return [
+            'persons' => [],
+            'mode' => strtoupper((string) $params->get('mode', 'L')),
+            'pictureServer' => Uri::root(),
+        ];
+    }
+
+    /** Distinguish an explicitly invalid filter from a disabled filter. */
+    private static function hasSelection(mixed $value): bool
+    {
+        if ($value === null || $value === '' || $value === 0 || $value === '0') {
+            return false;
+        }
+
+        if (!is_array($value)) {
+            return true;
+        }
+
+        foreach ($value as $entry) {
+            if (self::hasSelection($entry)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /** Preserve the historical jsm_birthday_sort() ordering contract. */
