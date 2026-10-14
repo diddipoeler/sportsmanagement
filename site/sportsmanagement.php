@@ -54,7 +54,18 @@ $app = $siteApplication();
 
 $input = $app->getInput();
 $document = $app->getDocument();
+$rawView = $input->get('view', 'sportsmanagement', 'raw');
+
+// An array cannot identify an MVC view; do not silently dispatch it as a default.
+if (!is_string($rawView)) {
+    throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
+}
+
 $view = strtolower($input->getCmd('view', 'sportsmanagement'));
+
+if ($rawView !== '' && $view !== strtolower($rawView)) {
+    throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
+}
 
 // An explicitly empty view must resolve to the same default as DisplayController.
 if ($view === '') {
