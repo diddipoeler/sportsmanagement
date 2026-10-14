@@ -191,7 +191,13 @@ final class AjaxController extends BaseController
     public function getroute(): void
     {
         $input = $this->app->getInput();
+        $rawView = $input->get('view', 'ranking', 'raw');
         $view = strtolower(trim($input->getCmd('view', 'ranking')));
+
+        if (!is_string($rawView)
+            || ($rawView !== '' && $view !== strtolower(trim($rawView)))) {
+            throw new \InvalidArgumentException('Invalid SportsManagement AJAX view.', 400);
+        }
 
         if ($view === '') {
             $view = 'ranking';
