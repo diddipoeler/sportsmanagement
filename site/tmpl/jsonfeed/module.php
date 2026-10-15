@@ -41,7 +41,9 @@ foreach ($this->events as $event) {
             $cursor = $start->setTime(0, 0)->modify('+1 day');
             $end = (new DateTimeImmutable((string) $event['end']))->setTime(0, 0);
 
-            while ($cursor < $end) {
+            // A malformed or extreme multi-day event must not expand the
+            // public JSON feed into an unbounded number of calendar entries.
+            while ($cursor < $end && count($dates) < 370) {
                 $dates[] = $cursor->format('Y-m-d');
                 $cursor = $cursor->modify('+1 day');
             }
@@ -63,7 +65,7 @@ foreach ($grouped as $date => $events) {
     $calendarIds = array_values(array_unique(array_filter(array_map(
         static fn (array $event): int => (int) ($event['gcid'] ?? 0),
         $events
-    ))));
+    ), static fn (int $id): bool => $id > 0))));
     $titles = array_values(array_filter(array_map(
         static fn (array $event): string => trim((string) ($event['title'] ?? '')),
         $events
