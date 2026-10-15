@@ -72,7 +72,7 @@ final class InlineHockeyClubLogoService
 
                 foreach ([$externalMatch->home_team ?? null, $externalMatch->away_team ?? null] as $side) {
                     $club = is_object($side) && is_object($side->club ?? null) ? $side->club : null;
-                    $clubId = (int) ($club->id ?? 0);
+                    $clubId = $this->api->positiveId($club->id ?? null);
 
                     if ($clubId <= 0 || isset($seen[$clubId])) {
                         continue;
