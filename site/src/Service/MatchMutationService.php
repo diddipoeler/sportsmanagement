@@ -47,6 +47,7 @@ final class MatchMutationService
         }
 
         $db = $this->joomlaDatabase;
+        $transactionStarted = false;
 
         try {
             if (empty($data['doubleevents'])) {
@@ -87,13 +88,32 @@ final class MatchMutationService
             $event->modified = $this->modified;
             $event->modified_by = $this->userId;
 
+            // The event and any derived match statistic form one logical write.
+            // Roll both back when the statistic insert or lookup fails, rather
+            // than reporting failure after persisting an orphan event.
+            $db->transactionStart();
+            $transactionStarted = true;
             $db->insertObject('#__sportsmanagement_match_event', $event);
             $eventId = (int) $db->insertid();
 
-            $this->createEventStatisticIfNeeded($data);
+            if ($eventId <= 0) {
+                throw new \RuntimeException('Match event insert returned no ID.');
+            }
 
-            return $eventId > 0 ? $eventId : false;
+            $this->createEventStatisticIfNeeded($data);
+            $db->transactionCommit();
+            $transactionStarted = false;
+
+            return $eventId;
         } catch (\Throwable $e) {
+            if ($transactionStarted) {
+                try {
+                    $db->transactionRollback();
+                } catch (\Throwable $rollbackError) {
+                    $this->logFailure($rollbackError);
+                }
+            }
+
             $this->logFailure($e);
             return false;
         }
