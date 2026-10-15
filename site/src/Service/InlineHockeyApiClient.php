@@ -17,6 +17,8 @@ use Joomla\Http\HttpFactory;
 final class InlineHockeyApiClient
 {
     private const MAX_IMAGE_BYTES = 5242880;
+    private const MAX_API_PAGES = 100;
+    private const API_HOSTS = ['ishd.de', 'www.ishd.de', 'api.ishd.de'];
     private const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
 
     public function fetchJson(string $url, string $username = '', string $password = ''): object
@@ -35,6 +37,17 @@ final class InlineHockeyApiClient
 
         if ($scheme !== 'https' && ($username !== '' || $password !== '')) {
             throw new \RuntimeException('Inline-Hockey API authentication requires HTTPS.');
+        }
+
+        // The project match URL and API-provided club links are not trusted.
+        // Only the official ISHD API hosts may receive an HTTP request,
+        // especially when the administrator configured Basic credentials.
+        if (strlen($url) > 2048
+            || preg_match('/[\x00-\x20\x7F\\\\]/', $url)
+            || $scheme !== 'https'
+            || !in_array(strtolower((string) $parts['host']), self::API_HOSTS, true)
+            || (isset($parts['port']) && (int) $parts['port'] !== 443)) {
+            throw new \RuntimeException('Inline-Hockey API URL must use trusted ISHD HTTPS.');
         }
 
         // Do not forward Basic credentials or an image download to redirect
@@ -111,6 +124,17 @@ final class InlineHockeyApiClient
         }
 
         return $body;
+    }
+
+    /** Keep remote pagination finite, even for corrupt or enormous API counts. */
+    public function pageCount(mixed $rawPages): int
+    {
+        if (!is_int($rawPages)
+            && (!is_string($rawPages) || !preg_match('/^[0-9]{1,5}$/D', $rawPages))) {
+            return 1;
+        }
+
+        return min(self::MAX_API_PAGES, max(1, (int) $rawPages));
     }
 
     public function pageUrl(string $url, int $page): string
