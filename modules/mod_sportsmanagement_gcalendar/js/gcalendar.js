@@ -115,6 +115,24 @@
         return dates;
     };
 
+    // Feed entries are data, not trusted navigation targets. The JSON feed
+    // links to site-local event pages; reject script, data and off-site URLs.
+    const safeEventUrl = (value) => {
+        const target = String(value ?? '').trim();
+        if (!target) {
+            return '#';
+        }
+
+        try {
+            const url = new URL(target, document.baseURI);
+            const base = new URL(document.baseURI);
+            return ['http:', 'https:'].includes(url.protocol) && url.origin === base.origin
+                ? target : '#';
+        } catch {
+            return '#';
+        }
+    };
+
     const createEvent = (event, config) => {
         const link = document.createElement('a');
         const title = String(event.title || '').replace(/\u00a0/g, ' ').trim();
@@ -123,7 +141,7 @@
         const label = title || '•';
 
         link.className = 'jsm-gcalendar-event';
-        link.href = String(event.url || '#');
+        link.href = safeEventUrl(event.url);
         link.textContent = time ? `${time} ${label}` : label;
         link.style.backgroundColor = String(event.color || config.eventColor || '#D0DFF1');
         link.style.borderColor = String(config.eventColor || event.color || '#135CAE');
