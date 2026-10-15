@@ -62,7 +62,7 @@ final class InlineHockeyMatchImportService
         }
 
         $firstPage = $this->api->fetchJson($matchLink, $username, $password);
-        $pages = max(1, (int) ($firstPage->pages ?? 1));
+        $pages = $this->api->pageCount($firstPage->pages ?? 1);
         $changed = 0;
         $syncedPlaygrounds = [];
 
