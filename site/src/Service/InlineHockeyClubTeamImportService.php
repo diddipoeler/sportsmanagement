@@ -31,7 +31,7 @@ final class InlineHockeyClubTeamImportService
     public function importClubs(string $username = '', string $password = ''): int
     {
         $firstPage = $this->api->fetchJson(self::CLUBS_URL, $username, $password);
-        $pages = max(1, (int) ($firstPage->pages ?? 1));
+        $pages = $this->api->pageCount($firstPage->pages ?? 1);
         $imported = 0;
 
         for ($page = 1; $page <= $pages; $page++) {
