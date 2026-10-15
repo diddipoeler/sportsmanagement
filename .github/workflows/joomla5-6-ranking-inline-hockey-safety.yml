@@ -10,6 +10,7 @@ on:
       - 'site/src/Service/InlineHockeyMatchImportService.php'
       - 'site/src/Service/InlineHockeyClubLogoService.php'
       - '.github/tests/inline_hockey_api_security.php'
+      - '.github/tests/joomla56_inline_hockey_external_ids.php'
       - '.github/tests/joomla56_ranking_inline_hockey_safety.php'
       - '.github/workflows/joomla5-6-ranking-inline-hockey-safety.yml'
   pull_request:
@@ -21,6 +22,7 @@ on:
       - 'site/src/Service/InlineHockeyMatchImportService.php'
       - 'site/src/Service/InlineHockeyClubLogoService.php'
       - '.github/tests/inline_hockey_api_security.php'
+      - '.github/tests/joomla56_inline_hockey_external_ids.php'
       - '.github/tests/joomla56_ranking_inline_hockey_safety.php'
       - '.github/workflows/joomla5-6-ranking-inline-hockey-safety.yml'
 
@@ -51,6 +53,7 @@ jobs:
             site/src/Service/InlineHockeyClubTeamImportService.php
             site/src/Service/InlineHockeyMatchImportService.php
             site/src/Service/InlineHockeyClubLogoService.php
+            .github/tests/joomla56_inline_hockey_external_ids.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
           for file in "${files[@]}" .github/tests/joomla56_ranking_inline_hockey_safety.php .github/tests/inline_hockey_api_security.php; do
@@ -62,3 +65,6 @@ jobs:
 
       - name: Existing Inline Hockey URL checks
         run: php .github/tests/inline_hockey_api_security.php
+
+      - name: Prevent malformed ISHD club, team and match IDs from reaching writes
+        run: php .github/tests/joomla56_inline_hockey_external_ids.php
