@@ -1,0 +1,60 @@
+name: Joomla 5/6 AJAX calendar and admin MVC regression
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/AjaxController.php'
+      - 'admin/src/Controller/ProjectsController.php'
+      - 'admin/src/Controller/TeamsController.php'
+      - 'admin/src/Controller/SportsManagementAdminController.php'
+      - 'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js'
+      - '.github/tests/joomla56_ajax_calendar_model_config.php'
+      - '.github/tests/joomla56_gcalendar_safe_links.js'
+      - '.github/workflows/joomla5-6-ajax-calendar-admin-model-regression.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Controller/AjaxController.php'
+      - 'admin/src/Controller/ProjectsController.php'
+      - 'admin/src/Controller/TeamsController.php'
+      - 'admin/src/Controller/SportsManagementAdminController.php'
+      - 'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js'
+      - '.github/tests/joomla56_ajax_calendar_model_config.php'
+      - '.github/tests/joomla56_gcalendar_safe_links.js'
+      - '.github/workflows/joomla5-6-ajax-calendar-admin-model-regression.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  calendar-and-admin-mvc:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Check PHP syntax and metadata
+        run: |
+          php .github/tests/phpdoc_metadata.php \
+            site/src/Controller/AjaxController.php \
+            admin/src/Controller/ProjectsController.php \
+            admin/src/Controller/TeamsController.php \
+            admin/src/Controller/SportsManagementAdminController.php \
+            .github/tests/joomla56_ajax_calendar_model_config.php
+          php -l .github/tests/joomla56_ajax_calendar_model_config.php
+          php -l site/src/Controller/AjaxController.php
+          php -l admin/src/Controller/ProjectsController.php
+          php -l admin/src/Controller/TeamsController.php
+          node --check modules/mod_sportsmanagement_gcalendar/js/gcalendar.js
+          node --check .github/tests/joomla56_gcalendar_safe_links.js
+      - name: Test native controller calendar links and model factory configuration
+        run: php .github/tests/joomla56_ajax_calendar_model_config.php
+      - name: Test calendar event links in the browser renderer
+        run: node .github/tests/joomla56_gcalendar_safe_links.js
