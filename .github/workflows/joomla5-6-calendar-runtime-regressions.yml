@@ -8,6 +8,7 @@ on:
       - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
       - 'modules/mod_sportsmanagement_google_calendar/tmpl/default.php'
       - '.github/tests/joomla5-6-calendar-runtime.php'
+      - '.github/tests/joomla56_calendar_pagination_bounds.php'
       - '.github/workflows/joomla5-6-calendar-runtime-regressions.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -16,6 +17,7 @@ on:
       - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
       - 'modules/mod_sportsmanagement_google_calendar/tmpl/default.php'
       - '.github/tests/joomla5-6-calendar-runtime.php'
+      - '.github/tests/joomla56_calendar_pagination_bounds.php'
       - '.github/workflows/joomla5-6-calendar-runtime-regressions.yml'
 
 permissions:
@@ -40,6 +42,7 @@ jobs:
           php -l admin/src/Service/GoogleCalendarMatchSynchronizer.php
           php -l modules/mod_sportsmanagement_google_calendar/tmpl/default.php
           php -l .github/tests/joomla5-6-calendar-runtime.php
+          php -l .github/tests/joomla56_calendar_pagination_bounds.php
       - name: Check four required PHPDoc tags
         run: |
           php .github/tests/phpdoc_metadata.php \
@@ -48,3 +51,5 @@ jobs:
             modules/mod_sportsmanagement_google_calendar/tmpl/default.php
       - name: Test timezone ordering, event durations and safe links
         run: php .github/tests/joomla5-6-calendar-runtime.php
+      - name: Test bounded Google Calendar pagination and time windows
+        run: php .github/tests/joomla56_calendar_pagination_bounds.php
