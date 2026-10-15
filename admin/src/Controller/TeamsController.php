@@ -37,7 +37,8 @@ final class TeamsController extends SportsManagementAdminController
 
     public function getModel($name = 'Team', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        // Preserve the native list default and caller-provided model options.
+        return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
     }
 
     private function redirectToList(): void
