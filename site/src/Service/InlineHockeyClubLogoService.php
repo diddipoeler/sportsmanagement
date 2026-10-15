@@ -51,7 +51,7 @@ final class InlineHockeyClubLogoService
         }
 
         $firstPage = $this->api->fetchJson($matchLink, $username, $password);
-        $pages = max(1, (int) ($firstPage->pages ?? 1));
+        $pages = $this->api->pageCount($firstPage->pages ?? 1);
         $seen = [];
         $synced = 0;
 
