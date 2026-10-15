@@ -9,6 +9,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/tmpl/default.php'
       - '.github/tests/joomla5-6-calendar-runtime.php'
       - '.github/tests/joomla56_calendar_pagination_bounds.php'
+      - '.github/tests/joomla56_calendar_oauth_log_safety.php'
       - '.github/workflows/joomla5-6-calendar-runtime-regressions.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -18,6 +19,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/tmpl/default.php'
       - '.github/tests/joomla5-6-calendar-runtime.php'
       - '.github/tests/joomla56_calendar_pagination_bounds.php'
+      - '.github/tests/joomla56_calendar_oauth_log_safety.php'
       - '.github/workflows/joomla5-6-calendar-runtime-regressions.yml'
 
 permissions:
@@ -43,6 +45,7 @@ jobs:
           php -l modules/mod_sportsmanagement_google_calendar/tmpl/default.php
           php -l .github/tests/joomla5-6-calendar-runtime.php
           php -l .github/tests/joomla56_calendar_pagination_bounds.php
+          php -l .github/tests/joomla56_calendar_oauth_log_safety.php
       - name: Check four required PHPDoc tags
         run: |
           php .github/tests/phpdoc_metadata.php \
@@ -53,3 +56,5 @@ jobs:
         run: php .github/tests/joomla5-6-calendar-runtime.php
       - name: Test bounded Google Calendar pagination and time windows
         run: php .github/tests/joomla56_calendar_pagination_bounds.php
+      - name: Test Google Calendar OAuth parameters and diagnostic secrecy
+        run: php .github/tests/joomla56_calendar_oauth_log_safety.php
