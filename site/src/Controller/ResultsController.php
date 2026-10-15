@@ -28,13 +28,17 @@ final class ResultsController extends BaseController
 
         $input = $this->input;
         $post = $input->post->getArray();
-        $layout = (string) ($post['layout'] ?? $input->getCmd('layout', 'form'));
+        $layout = is_string($post['layout'] ?? null)
+            ? $post['layout'] : $input->getCmd('layout', 'form');
         $redirect = $this->buildResultsRedirect($post, $layout);
-        $matchId = (int) ($post['id'] ?? 0);
-        $projectId = (int) ($post['project_id'] ?? $post['p'] ?? 0);
-        $databaseSelector = (int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0));
+        $matchId = self::validatedId($post['id'] ?? null);
+        $projectId = self::validatedId($post['project_id'] ?? $post['p'] ?? null);
+        $databaseSelector = self::validatedId(
+            $post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0),
+            true
+        );
 
-        if ($matchId <= 0 || $projectId <= 0) {
+        if ($matchId === null || $projectId === null || $databaseSelector === null) {
             $this->setRedirect($redirect, Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             return;
         }
@@ -78,12 +82,17 @@ final class ResultsController extends BaseController
         $app = $this->app;
         $input = $this->input;
         $post = $input->post->getArray();
-        $layout = (string) ($post['layout'] ?? $input->getCmd('layout', 'form'));
-        $matchIds = self::validMatchIds((array) $input->post->get('cid', [], 'array'));
-        $databaseSelector = (int) ($post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0));
-        $projectId = (int) ($post['p'] ?? $input->getInt('p', 0));
+        $layout = is_string($post['layout'] ?? null)
+            ? $post['layout'] : $input->getCmd('layout', 'form');
+        $selection = $input->post->get('cid', [], 'array');
+        $matchIds = is_array($selection) ? self::validMatchIds($selection) : [];
+        $databaseSelector = self::validatedId(
+            $post['cfg_which_database'] ?? $input->getInt('cfg_which_database', 0),
+            true
+        );
+        $projectId = self::validatedId($post['p'] ?? $input->getInt('p', 0));
 
-        if ($matchIds === []) {
+        if ($matchIds === [] || $projectId === null || $databaseSelector === null) {
             $app->enqueueMessage(Text::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'), 'notice');
             $this->setRedirect($this->buildResultsRedirect($post, $layout));
             return;
@@ -117,6 +126,29 @@ final class ResultsController extends BaseController
      *
      * @return array<int>
      */
+    /**
+     * Reject malformed numeric IDs instead of converting strings such as
+     * "12junk" or arrays to an unrelated positive ID during a write request.
+     */
+    private static function validatedId(mixed $value, bool $allowZero = false): ?int
+    {
+        $minimum = $allowZero ? 0 : 1;
+
+        if (is_int($value)) {
+            return $value >= $minimum ? $value : null;
+        }
+
+        if (!is_string($value) || !preg_match('/^(?:0|[1-9][0-9]*)$/D', $value)) {
+            return null;
+        }
+
+        $validated = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => $minimum],
+        ]);
+
+        return $validated === false ? null : $validated;
+    }
+
     private static function validMatchIds(array $selection): array
     {
         $ids = [];
@@ -162,6 +194,13 @@ final class ResultsController extends BaseController
 
     private function buildResultsRedirect(array $post, string $layout): string
     {
+        // Only forward scalar route values, never raw POST arrays/objects.
+        foreach (['cfg_which_database', 's', 'p', 'r', 'division', 'mode', 'order'] as $key) {
+            if (!is_string($post[$key] ?? null) && !is_int($post[$key] ?? null)) {
+                $post[$key] = '';
+            }
+        }
+
         return SiteRouteHelper::view('results', [
             'cfg_which_database' => (string) ($post['cfg_which_database'] ?? ''),
             's' => (string) ($post['s'] ?? ''),
