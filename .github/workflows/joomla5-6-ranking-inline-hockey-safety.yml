@@ -6,6 +6,10 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'site/src/Service/InlineHockeyClubTeamImportService.php'
+      - 'site/src/Service/InlineHockeyMatchImportService.php'
+      - 'site/src/Service/InlineHockeyClubLogoService.php'
+      - '.github/tests/inline_hockey_api_security.php'
       - '.github/tests/joomla56_ranking_inline_hockey_safety.php'
       - '.github/workflows/joomla5-6-ranking-inline-hockey-safety.yml'
   pull_request:
@@ -13,6 +17,10 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
       - 'site/src/Service/InlineHockeyApiClient.php'
+      - 'site/src/Service/InlineHockeyClubTeamImportService.php'
+      - 'site/src/Service/InlineHockeyMatchImportService.php'
+      - 'site/src/Service/InlineHockeyClubLogoService.php'
+      - '.github/tests/inline_hockey_api_security.php'
       - '.github/tests/joomla56_ranking_inline_hockey_safety.php'
       - '.github/workflows/joomla5-6-ranking-inline-hockey-safety.yml'
 
@@ -40,9 +48,12 @@ jobs:
           files=(
             modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
             site/src/Service/InlineHockeyApiClient.php
+            site/src/Service/InlineHockeyClubTeamImportService.php
+            site/src/Service/InlineHockeyMatchImportService.php
+            site/src/Service/InlineHockeyClubLogoService.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_ranking_inline_hockey_safety.php; do
+          for file in "${files[@]}" .github/tests/joomla56_ranking_inline_hockey_safety.php .github/tests/inline_hockey_api_security.php; do
             php -l "$file"
           done
 
