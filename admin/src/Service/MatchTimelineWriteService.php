@@ -162,7 +162,13 @@ final class MatchTimelineWriteService
                 'modified_by' => $modifiedBy,
             ];
             $this->db->insertObject('#__sportsmanagement_match_commentary', $row);
-            return (int) $this->db->insertid();
+            $commentId = (int) $this->db->insertid();
+
+            if ($commentId <= 0) {
+                throw new \RuntimeException('Match commentary insert returned no ID.');
+            }
+
+            return $commentId;
         });
     }
 
@@ -217,6 +223,10 @@ final class MatchTimelineWriteService
             ];
             $this->db->insertObject('#__sportsmanagement_match_event', $row);
             $eventId = (int) $this->db->insertid();
+
+            if ($eventId <= 0) {
+                throw new \RuntimeException('Match event insert returned no ID.');
+            }
 
             [$statisticId, $statisticValue] = $this->mappedStatistic($matchId, $teamPlayerId, $eventTypeId);
             if ($statisticId > 0 && $statisticValue != 0) {
