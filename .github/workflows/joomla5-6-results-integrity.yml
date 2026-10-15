@@ -1,11 +1,15 @@
-name: Joomla 5/6 compact results integrity
+name: Joomla 5/6 compact results and calendar feed integrity
 on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'site/src/Controller/ResultsController.php'
       - 'site/src/Model/ResultsEditModel.php'
+      - 'site/tmpl/jsonfeed/module.php'
       - 'site/tmpl/results/form.php'
       - '.github/tests/joomla56_results_write_integrity.php'
+      - '.github/tests/joomla56_results_controller_inputs.php'
+      - '.github/tests/joomla56_jsonfeed_module_bounds.php'
       - '.github/workflows/joomla5-6-results-integrity.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -25,10 +29,26 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-      - name: Lint PHP
+      - name: Lint PHP and audit mandatory metadata
         run: |
+          php .github/tests/phpdoc_metadata.php \
+            site/src/Controller/ResultsController.php \
+            site/src/Model/ResultsEditModel.php \
+            site/tmpl/results/form.php \
+            site/tmpl/jsonfeed/module.php \
+            .github/tests/joomla56_results_write_integrity.php \
+            .github/tests/joomla56_results_controller_inputs.php \
+            .github/tests/joomla56_jsonfeed_module_bounds.php
+          php -l site/src/Controller/ResultsController.php
           php -l site/src/Model/ResultsEditModel.php
           php -l site/tmpl/results/form.php
+          php -l site/tmpl/jsonfeed/module.php
           php -l .github/tests/joomla56_results_write_integrity.php
+          php -l .github/tests/joomla56_results_controller_inputs.php
+          php -l .github/tests/joomla56_jsonfeed_module_bounds.php
       - name: Reject forged match assignments and competition rules
         run: php .github/tests/joomla56_results_write_integrity.php
+      - name: Reject malformed frontend results controller write IDs
+        run: php .github/tests/joomla56_results_controller_inputs.php
+      - name: Bound compact JSON calendar feeds and route IDs
+        run: php .github/tests/joomla56_jsonfeed_module_bounds.php
