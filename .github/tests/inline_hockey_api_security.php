@@ -63,7 +63,7 @@ foreach ([
     [null, 1], [true, 1], [[], 1], [(object) ['pages' => 999], 1],
 ] as [$input, $expected]) {
     if ($client->pageCount($input) !== $expected) {
-        throw new \\RuntimeException('Invalid ISHD pagination count for ' . json_encode($input));
+        throw new \RuntimeException('Invalid ISHD pagination count for ' . json_encode($input));
     }
 }
 
