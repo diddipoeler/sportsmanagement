@@ -19,7 +19,9 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native Joomla 5/6 controller for the events ranking view. */
 final class EventsrankingController extends BaseController
 {
+    /** Render the native events ranking view through Joomla's MVC dispatcher. */
     public function display($cachable = false, $urlparams = [])
     {
+        return parent::display($cachable, $urlparams);
     }
 }
