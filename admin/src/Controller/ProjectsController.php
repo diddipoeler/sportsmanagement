@@ -36,7 +36,9 @@ final class ProjectsController extends SportsManagementAdminController
 
     public function getModel($name = 'Project', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => false]);
+        // Keep the list's default request handling without discarding
+        // options passed by Joomla's MVC factory or legacy callers.
+        return parent::getModel($name, $prefix, array_replace(['ignore_request' => false], $config));
     }
 
     private function runProjectAction(string $permission, string $method): void
