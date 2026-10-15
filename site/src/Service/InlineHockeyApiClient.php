@@ -127,6 +127,25 @@ final class InlineHockeyApiClient
     }
 
     /** Keep remote pagination finite, even for corrupt or enormous API counts. */
+    /**
+     * Accept only complete, positive external decimal identifiers. PHP casts
+     * arrays, booleans and strings such as "12junk" into unrelated IDs.
+     */
+    public function positiveId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value > 0 ? $value : 0;
+        }
+
+        if (!is_string($value) || !preg_match('/^[1-9][0-9]*$/D', $value)) {
+            return 0;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
     public function pageCount(mixed $rawPages): int
     {
         if (!is_int($rawPages)
