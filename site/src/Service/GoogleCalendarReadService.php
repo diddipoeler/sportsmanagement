@@ -123,7 +123,7 @@ final class GoogleCalendarReadService
             return $this->normalizeEvent($calendar, $googleEvent);
         } catch (\Throwable $e) {
             Log::add(
-                'Google Calendar event lookup failed for calendar ' . (int) $calendar->id . ': ' . $e->getMessage(),
+                'Google Calendar event lookup failed for calendar ' . (int) $calendar->id . ' (' . get_class($e) . ').',
                 Log::WARNING,
                 'com_sportsmanagement'
             );
@@ -268,7 +268,7 @@ final class GoogleCalendarReadService
             } while ($pageToken !== null && $pages < self::MAX_CALENDAR_PAGES);
         } catch (\Throwable $e) {
             Log::add(
-                'Google Calendar feed failed for calendar ' . (int) ($calendar->id ?? 0) . ': ' . $e->getMessage(),
+                'Google Calendar feed failed for calendar ' . (int) ($calendar->id ?? 0) . ' (' . get_class($e) . ').',
                 Log::WARNING,
                 'com_sportsmanagement'
             );
@@ -279,18 +279,36 @@ final class GoogleCalendarReadService
 
     private function createService(object $calendar): ?object
     {
+        $rawParams = $calendar->params ?? '';
+        if (!is_string($rawParams)) {
+            return null;
+        }
+
         $params = new Registry();
 
         try {
-            $params->loadString((string) ($calendar->params ?? ''));
+            $params->loadString($rawParams);
         } catch (\Throwable) {
             return null;
         }
 
-        $clientId = trim((string) $params->get('client-id', ''));
-        $clientSecret = trim((string) $params->get('client-secret', ''));
-        $refreshToken = trim((string) $params->get('refreshToken', ''));
-        $calendarAddress = trim((string) ($calendar->calendar_id ?? $params->get('calendarId', '')));
+        // Registry data originates from the database and may be malformed.
+        // Never turn an array or object into the literal string "Array" or
+        // pass it as an OAuth credential to the Google client.
+        $rawClientId = $params->get('client-id', '');
+        $rawClientSecret = $params->get('client-secret', '');
+        $rawRefreshToken = $params->get('refreshToken', '');
+        $rawCalendarAddress = $calendar->calendar_id ?? $params->get('calendarId', '');
+
+        if (!is_string($rawClientId) || !is_string($rawClientSecret)
+            || !is_string($rawRefreshToken) || !is_string($rawCalendarAddress)) {
+            return null;
+        }
+
+        $clientId = trim($rawClientId);
+        $clientSecret = trim($rawClientSecret);
+        $refreshToken = trim($rawRefreshToken);
+        $calendarAddress = trim($rawCalendarAddress);
 
         if ($calendarAddress === '' || $clientId === '' || $clientSecret === '' || $refreshToken === '') {
             Log::add(
@@ -331,7 +349,7 @@ final class GoogleCalendarReadService
             return new \Google_Service_Calendar($client);
         } catch (\Throwable $e) {
             Log::add(
-                'Google Calendar authentication failed for calendar ' . (int) ($calendar->id ?? 0) . ': ' . $e->getMessage(),
+                'Google Calendar authentication failed for calendar ' . (int) ($calendar->id ?? 0) . ' (' . get_class($e) . ').',
                 Log::WARNING,
                 'com_sportsmanagement'
             );
