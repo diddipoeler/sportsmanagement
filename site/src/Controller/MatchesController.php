@@ -162,10 +162,10 @@ final class MatchesController extends BaseController
         }
 
         $app = $this->app;
-        $selector = $this->input->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
+        // The ACL check and the mutation must select the same database.
+        // Never let URL parameters or a stored user preference override the
+        // database explicitly submitted with this CSRF-protected POST request.
+        $selector = $this->postDatabaseSelector();
         $joomlaDatabase = self::joomlaDatabase();
         $sportsDatabase = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
         $identity = $app->getIdentity();
@@ -208,12 +208,18 @@ final class MatchesController extends BaseController
         }
 
         $access = new ResultsAccessModel();
-        $access->setDatabaseSelector($post->getInt('cfg_which_database', 0));
+        $access->setDatabaseSelector($this->postDatabaseSelector());
         $access->setProjectId($projectId);
 
         if (!$access->canEditMatches([$matchId])) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
+    }
+
+    /** Read one non-negative POST database selector for ACL, lookup and write. */
+    private function postDatabaseSelector(): int
+    {
+        return max(0, $this->input->post->getInt('cfg_which_database', 0));
     }
 
     /**
@@ -230,7 +236,7 @@ final class MatchesController extends BaseController
         $db = $sportsDatabase
             ? SportsManagementDatabaseResolver::resolve(
                 $fallbackDatabase,
-                $this->input->post->getInt('cfg_which_database', 0)
+                $this->postDatabaseSelector()
             )
             : $fallbackDatabase;
 
