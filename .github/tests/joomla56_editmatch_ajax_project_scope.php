@@ -57,10 +57,23 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model {
 namespace Diddipoeler\Component\SportsManagement\Site\Service {
     class SportsManagementDatabaseResolver
     {
+        public static array $selectors = [];
+
         public static function resolve(\Joomla\Database\DatabaseInterface $db, int $selector): \Joomla\Database\DatabaseInterface
         {
+            self::$selectors[] = $selector;
             return $db;
         }
+    }
+
+    class MatchMutationService
+    {
+        public function __construct(
+            public readonly \Joomla\Database\DatabaseInterface $joomlaDatabase,
+            public readonly \Joomla\Database\DatabaseInterface $sportsDatabase,
+            public readonly int $userId,
+            public readonly string $modified
+        ) {}
     }
 }
 
@@ -169,6 +182,12 @@ namespace {
     $controller->input->post->values['p'] = 0;
     $assertDenied(71);
     $controller->input->post->values['p'] = 9;
+    $controller->input->post->values['cfg_which_database'] = -9;
+    $scope->invoke($controller, 71);
+    if ($access::$database !== 0) {
+        throw new \RuntimeException('Negative POST database selector was not normalised.');
+    }
+    $controller->input->post->values['cfg_which_database'] = 1;
     $access::$allowed = false;
     $assertDenied(71);
     $access::$allowed = true;
@@ -180,7 +199,8 @@ namespace {
         throw new \RuntimeException('Event deletion did not resolve the persisted parent match.');
     }
     if ($lookup->invoke($controller, '#__sportsmanagement_match_player', 11, true) !== 71
-        || $database->query?->table !== '#__sportsmanagement_match_player') {
+        || $database->query?->table !== '#__sportsmanagement_match_player'
+        || end(\Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selectors) !== 1) {
         throw new \RuntimeException('Substitution deletion did not resolve its persisted parent.');
     }
     $count = $database->queryCount;
@@ -191,6 +211,20 @@ namespace {
     $database->failLookup = true;
     if ($lookup->invoke($controller, '#__sportsmanagement_match_commentary', 40, false) !== 0) {
         throw new \RuntimeException('Failed parent lookup must deny deletion.');
+    }
+
+    // The legacy controller accepts POST data while the URL/user state may
+    // specify a conflicting database. Mutation must use the POST value that
+    // was checked by ResultsAccessModel and by the substitution parent query.
+    $controller->app = new class {
+        public function getIdentity(): object { return (object) ['id' => 28]; }
+        public function getUserState(string $key, int $default): int { return 99; }
+    };
+    $service = (new \ReflectionMethod($controller, 'mutationService'))->invoke($controller);
+    if (!$service instanceof \Diddipoeler\Component\SportsManagement\Site\Service\MatchMutationService
+        || end(\Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selectors) !== 1
+        || $service->userId !== 28) {
+        throw new \RuntimeException('AJAX mutation did not reuse the POST-authorized database.');
     }
 
     $source = file_get_contents($root . '/site/src/Controller/MatchesController.php');
