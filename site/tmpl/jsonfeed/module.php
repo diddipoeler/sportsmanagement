@@ -65,7 +65,7 @@ foreach ($grouped as $date => $events) {
     $calendarIds = array_values(array_unique(array_filter(array_map(
         static fn (array $event): int => (int) ($event['gcid'] ?? 0),
         $events
-    ), static fn (int $id): bool => $id > 0))));
+    ), static fn (int $id): bool => $id > 0)));
     $titles = array_values(array_filter(array_map(
         static fn (array $event): string => trim((string) ($event['title'] ?? '')),
         $events
