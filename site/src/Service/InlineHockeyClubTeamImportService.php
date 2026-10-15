@@ -49,7 +49,7 @@ final class InlineHockeyClubTeamImportService
                     continue;
                 }
 
-                $clubId = (int) ($club->id ?? 0);
+                $clubId = $this->api->positiveId($club->id ?? null);
                 $name = trim((string) ($club->name ?? ''));
 
                 if ($clubId <= 0 || $name === '' || $this->clubExists($clubId)) {
@@ -111,7 +111,7 @@ final class InlineHockeyClubTeamImportService
                     continue;
                 }
 
-                $teamId = (int) ($team->team_id ?? 0);
+                $teamId = $this->api->positiveId($team->team_id ?? null);
                 $name = trim((string) ($team->team ?? ''));
 
                 if ($teamId <= 0 || $name === '') {
@@ -188,7 +188,7 @@ final class InlineHockeyClubTeamImportService
                     continue;
                 }
 
-                $playerId = (int) ($player->player_id ?? 0);
+                $playerId = $this->api->positiveId($player->player_id ?? null);
                 $firstName = trim((string) ($player->first_name ?? ''));
                 $lastName = trim((string) ($player->last_name ?? ''));
                 $licenseNumber = trim((string) ($player->license_number ?? ''));
