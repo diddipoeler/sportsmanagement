@@ -143,7 +143,7 @@ final class InlineHockeyMatchImportService
         }
 
         $club = is_object($side->club ?? null) ? $side->club : null;
-        $clubId = (int) ($club->id ?? 0);
+        $clubId = $this->api->positiveId($club->id ?? null);
         $clubName = trim((string) ($club->name ?? ''));
         $website = is_object($club->website ?? null) ? trim((string) ($club->website->url ?? '')) : '';
         $clubInfoHref = is_object($club->_links ?? null) && is_object($club->_links->self ?? null)
@@ -154,7 +154,7 @@ final class InlineHockeyMatchImportService
             $this->ensureClub($clubId, $clubName, $website);
         }
 
-        $teamId = (int) ($side->team_id ?? 0);
+        $teamId = $this->api->positiveId($side->team_id ?? null);
         $teamName = trim((string) ($side->full_name ?? ''));
         $teamInfo = trim((string) ($side->alternate_team_name ?? ''));
 
@@ -187,7 +187,7 @@ final class InlineHockeyMatchImportService
         array $home,
         array $away
     ): bool {
-        $externalId = (int) ($externalMatch->id ?? 0);
+        $externalId = $this->api->positiveId($externalMatch->id ?? null);
 
         if ($externalId <= 0) {
             return false;
@@ -422,7 +422,7 @@ final class InlineHockeyMatchImportService
             return;
         }
 
-        $playgroundId = (int) ($venue->id ?? 0);
+        $playgroundId = $this->api->positiveId($venue->id ?? null);
 
         if ($playgroundId <= 0) {
             return;
