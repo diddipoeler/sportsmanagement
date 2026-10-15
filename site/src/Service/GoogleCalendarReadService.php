@@ -27,6 +27,10 @@ use Joomla\Registry\Registry;
  */
 final class GoogleCalendarReadService
 {
+    // Bound remote requests even if the Google API keeps returning pages
+    // containing no usable events or repeats pagination cursors.
+    private const MAX_CALENDAR_PAGES = 10;
+
     private bool $googleClientLoaded = false;
 
     public function __construct(
@@ -43,6 +47,12 @@ final class GoogleCalendarReadService
      */
     public function getEvents(array $calendarIds, ?int $start = null, ?int $end = null): array
     {
+        // Reversed or empty ranges should not unexpectedly fetch the entire
+        // calendar when timeMax would otherwise be omitted.
+        if ($start !== null && $end !== null && $end <= $start) {
+            return [];
+        }
+
         $calendars = $this->getCalendars($calendarIds);
 
         if (!$calendars || !$this->loadGoogleClient()) {
@@ -212,14 +222,26 @@ final class GoogleCalendarReadService
 
         $events = [];
         $pageToken = null;
+        $seenTokens = [];
+        $pages = 0;
 
         try {
             do {
+                if ($pageToken !== null) {
+                    if (isset($seenTokens[$pageToken])) {
+                        break;
+                    }
+
+                    $seenTokens[$pageToken] = true;
+                }
+
                 $requestOptions = $options;
 
-                if ($pageToken) {
+                if ($pageToken !== null) {
                     $requestOptions['pageToken'] = $pageToken;
                 }
+
+                ++$pages;
 
                 $collection = $service->events->listEvents($calendarAddress, $requestOptions);
                 $items = method_exists($collection, 'getItems') ? $collection->getItems() : ($collection->items ?? []);
@@ -232,16 +254,18 @@ final class GoogleCalendarReadService
                     }
                 }
 
-                $pageToken = method_exists($collection, 'getNextPageToken')
+                $nextToken = method_exists($collection, 'getNextPageToken')
                     ? $collection->getNextPageToken()
                     : ($collection->nextPageToken ?? null);
+                $pageToken = is_string($nextToken) && $nextToken !== '' ? $nextToken : null;
 
-                // Keep the historical upper bound used by the old helper.
+                // The 1000-event limit alone cannot bound pagination when
+                // malformed upstream events are discarded during normalisation.
                 if (count($events) >= 1000) {
                     $events = array_slice($events, 0, 1000);
                     break;
                 }
-            } while ($pageToken);
+            } while ($pageToken !== null && $pages < self::MAX_CALENDAR_PAGES);
         } catch (\Throwable $e) {
             Log::add(
                 'Google Calendar feed failed for calendar ' . (int) ($calendar->id ?? 0) . ': ' . $e->getMessage(),
