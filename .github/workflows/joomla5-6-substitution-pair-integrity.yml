@@ -8,6 +8,7 @@ on:
       - 'admin/src/Service/MatchTimelineWriteService.php'
       - '.github/tests/joomla56_substitution_pair_integrity.php'
       - '.github/tests/joomla56_match_event_transaction_integrity.php'
+      - '.github/tests/joomla56_admin_timeline_insert_ids.php'
       - '.github/workflows/joomla5-6-substitution-pair-integrity.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -16,6 +17,7 @@ on:
       - 'admin/src/Service/MatchTimelineWriteService.php'
       - '.github/tests/joomla56_substitution_pair_integrity.php'
       - '.github/tests/joomla56_match_event_transaction_integrity.php'
+      - '.github/tests/joomla56_admin_timeline_insert_ids.php'
       - '.github/workflows/joomla5-6-substitution-pair-integrity.yml'
 
 permissions:
@@ -43,7 +45,7 @@ jobs:
             admin/src/Service/MatchTimelineWriteService.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_substitution_pair_integrity.php .github/tests/joomla56_match_event_transaction_integrity.php; do
+          for file in "${files[@]}" .github/tests/joomla56_substitution_pair_integrity.php .github/tests/joomla56_match_event_transaction_integrity.php .github/tests/joomla56_admin_timeline_insert_ids.php; do
             php -l "$file"
           done
 
@@ -52,3 +54,6 @@ jobs:
 
       - name: Regression check for atomic event/statistic writes
         run: php .github/tests/joomla56_match_event_transaction_integrity.php
+
+      - name: Regression check for administrator event/comment IDs and rollbacks
+        run: php .github/tests/joomla56_admin_timeline_insert_ids.php
