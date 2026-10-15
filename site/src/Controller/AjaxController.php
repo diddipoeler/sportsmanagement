@@ -41,10 +41,6 @@ final class AjaxController extends BaseController
         // Keep route names canonical and preserve the calendar routing alias.
         $view = strtolower(trim($view));
 
-        if ($view === 'calendar') {
-            $view = 'teamplan';
-        }
-
         $link = $this->ajaxModel()->getLink(
             $view,
             max(0, $input->getInt('project_id', $input->getInt('p', 0))),
@@ -218,10 +214,6 @@ final class AjaxController extends BaseController
 
         if ($view === '') {
             $view = 'ranking';
-        }
-
-        if ($view === 'calendar') {
-            $view = 'teamplan';
         }
 
         $link = $this->ajaxModel()->getLink(
