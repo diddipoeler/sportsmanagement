@@ -257,12 +257,22 @@ namespace {
         throw new \RuntimeException('A failed referee save was reported as successful.');
     }
 
-    $input->values = ['cid' => [42, 42, -3], 'p' => 11, 'cfg_which_database' => 1];
+    // A valid selection must reach the writer and show a save failure.
+    $input->values = ['cid' => [42, 42], 'p' => 11, 'cfg_which_database' => 1];
     \Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel::$result = false;
     $controller->saveshort();
     if (\Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel::$calls !== 1
         || ($app->messages[count($app->messages) - 1]['type'] ?? '') !== 'error') {
         throw new \RuntimeException('Failed frontend result writes did not display an error.');
+    }
+
+    // A negative checkbox value must reject the entire selection instead of
+    // performing a partial update of the remaining valid match.
+    $input->values['cid'] = [42, -3];
+    $controller->saveshort();
+    if (\Diddipoeler\Component\SportsManagement\Site\Model\ResultsEditModel::$calls !== 1
+        || ($app->messages[count($app->messages) - 1]['type'] ?? '') !== 'notice') {
+        throw new \RuntimeException('Malformed match selection triggered a result write.');
     }
 
     require_once $root . '/admin/src/Controller/PredictionmembersController.php';
