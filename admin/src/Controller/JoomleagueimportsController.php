@@ -29,7 +29,7 @@ final class JoomleagueimportsController extends BaseController
 {
     public function joomleaguesetagegroup()
     {
-        $this->checkToken();
+        $this->assertImportPermission();
 
         $model = $this->getModel();
         $model->joomleaguesetagegroup();
@@ -47,7 +47,7 @@ final class JoomleagueimportsController extends BaseController
 
     public function importjoomleaguenew()
     {
-        $this->checkToken();
+        $this->assertImportPermission();
 
         $app = $this->app;
         $input = $app->getInput();
@@ -95,7 +95,7 @@ final class JoomleagueimportsController extends BaseController
 
     public function importjoomleagueagegroup()
     {
-        $this->checkToken();
+        $this->assertImportPermission();
 
         $this->setRedirect(
             Route::_(
@@ -112,6 +112,20 @@ final class JoomleagueimportsController extends BaseController
         $config['ignore_request'] = true;
 
         return parent::getModel($name, $prefix, $config);
+    }
+
+    /**
+     * The multi-step import can migrate and delete records. Each POST task
+     * must verify component admin rights before loading any import models.
+     */
+    private function assertImportPermission(): void
+    {
+        $this->checkToken();
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
     }
 
     private function runNativeStagingStep(int $sportsTypeId): array
