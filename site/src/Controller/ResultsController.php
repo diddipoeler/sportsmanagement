@@ -151,6 +151,12 @@ final class ResultsController extends BaseController
 
     private static function validMatchIds(array $selection): array
     {
+        // Reject oversized selections rather than building unbounded IN
+        // clauses or silently writing only a subset of selected matches.
+        if (count($selection) > 500) {
+            return [];
+        }
+
         $ids = [];
 
         foreach ($selection as $value) {

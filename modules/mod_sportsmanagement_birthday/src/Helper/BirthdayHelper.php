@@ -24,6 +24,10 @@ use Joomla\Registry\Registry;
 
 final class BirthdayHelper
 {
+    private const MAX_FILTER_IDS = 100;
+    private const MAX_FILTER_VALUES = 200;
+    private const MAX_FILTER_VALUE_LENGTH = 4096;
+
     public function getData(
         Registry $params,
         Registry $componentParams,
@@ -279,23 +283,37 @@ final class BirthdayHelper
     {
         $values = is_array($values) ? $values : [$values];
         $ids = [];
-        foreach ($values as $value) {
-            // Joomla module parameters may contain nested multi-select values.
-            // Ignore malformed entries rather than casting arrays to strings.
-            if (!is_scalar($value)) {
+
+        // Module parameters and optional project favourite-team fields can
+        // contain arbitrarily long selections. Bound the query filter size.
+        foreach (array_slice($values, 0, self::MAX_FILTER_VALUES) as $value) {
+            if (!is_int($value) && !is_string($value)) {
                 continue;
             }
+
+            if (is_string($value) && strlen($value) > self::MAX_FILTER_VALUE_LENGTH) {
+                continue;
+            }
+
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                // Joomla multi-select values are positive decimal database IDs.
-                // A plain cast also accepts malformed values such as "12junk"
-                // or saturates IDs larger than PHP_INT_MAX.
+                // Only canonical positive decimal IDs, not "+12", "12junk",
+                // zero, negative numbers or integer-overflowing strings.
+                if (!preg_match('/^[1-9][0-9]*$/D', $part)) {
+                    continue;
+                }
+
                 $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
                 if ($id !== false) {
                     $ids[$id] = $id;
+
+                    if (count($ids) >= self::MAX_FILTER_IDS) {
+                        return array_values($ids);
+                    }
                 }
             }
         }
+
         return array_values($ids);
     }
 
