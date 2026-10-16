@@ -116,6 +116,14 @@ namespace {
             $this->lastLimits[] = $limit;
             return $this;
         }
+        public function execute(): bool {
+            if ($this->active?->operation !== 'delete') {
+                throw new \RuntimeException('Unexpected tournament-tree write.');
+            }
+
+            ++$this->deletes;
+            return true;
+        }
         public function loadResult(): int {
             $params = $this->active->bindings;
             if (!str_contains($this->active->fromTable, 'treeto_node')
