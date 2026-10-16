@@ -21,10 +21,10 @@ final class TreetonodeController extends SportsManagementFormController
 
     public function saveshort(): void
     {
-        $this->checkToken();
+        $this->assertTreeWritePermission();
 
         $input = $this->app->getInput();
-        $ids = $this->normaliseIds((array) $input->post->get('cid', [], 'array'));
+        $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
         $data = $input->post->getArray();
         $model = $this->getModel('Treetonodes', 'Administrator', ['ignore_request' => false]);
         $ok = $model !== false && $model->storeshort($ids, $data);
@@ -42,10 +42,10 @@ final class TreetonodeController extends SportsManagementFormController
     /** Save selected leaves and show the bracket once before final confirmation. */
     public function saveallleaf(): void
     {
-        $this->checkToken();
+        $this->assertTreeWritePermission();
 
         $input = $this->app->getInput();
-        $ids = $this->normaliseIds((array) $input->post->get('cid', [], 'array'));
+        $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
         $data = $input->post->getArray();
         $model = $this->getModel('Treetonodes', 'Administrator', ['ignore_request' => false]);
         $ok = $model !== false && $model->storeshortleaf($ids, $data);
@@ -60,7 +60,7 @@ final class TreetonodeController extends SportsManagementFormController
     /** Finalise the leaf selection after the preview state. */
     public function savefinishleaf(): void
     {
-        $this->checkToken();
+        $this->assertTreeWritePermission();
 
         $data = $this->app->getInput()->post->getArray();
         $model = $this->getModel('Treetonodes', 'Administrator', ['ignore_request' => false]);
@@ -75,7 +75,7 @@ final class TreetonodeController extends SportsManagementFormController
 
     public function removenode(): void
     {
-        $this->checkToken();
+        $this->assertTreeWritePermission();
 
         $data = $this->app->getInput()->post->getArray();
         $projectId = (int) ($data['project_id'] ?? 0);
@@ -140,11 +140,46 @@ final class TreetonodeController extends SportsManagementFormController
         );
     }
 
-    private function normaliseIds(array $ids): array
+    private function assertTreeWritePermission(): void
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        $this->checkToken();
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
+    private function normaliseIds(mixed $raw): array
+    {
+        if (!is_array($raw) || count($raw) > 500) {
+            throw new \UnexpectedValueException('Invalid tournament node selection.', 400);
+        }
+
+        $ids = [];
+
+        foreach ($raw as $candidate) {
+            if (!is_int($candidate) && !is_string($candidate)) {
+                throw new \UnexpectedValueException('Invalid tournament node ID.', 400);
+            }
+
+            $value = trim((string) $candidate);
+
+            if (!preg_match('/^[1-9][0-9]*$/D', $value)) {
+                throw new \UnexpectedValueException('Invalid tournament node ID.', 400);
+            }
+
+            $id = filter_var($value, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+
+            if ($id === false) {
+                throw new \UnexpectedValueException('Invalid tournament node ID.', 400);
+            }
+
+            $ids[$id] = $id;
+        }
+
+        return array_values($ids);
     }
 }

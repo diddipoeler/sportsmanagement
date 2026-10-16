@@ -57,37 +57,143 @@ final class TreetosModel extends SportsManagementListModel
         return (int) $this->getState('filter.pid', 0);
     }
 
-    /** Save division assignments from the compact list editor. */
+    /** Save only tree division assignments within the submitted project. */
     public function storeshort($cid, $data): bool
     {
-        $ids = array_values(array_unique(array_filter(array_map('intval', (array) $cid))));
+        $identity = $this->administratorApplication()->getIdentity();
 
-        if (!$ids) {
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException('Not authorized to edit tournament trees.', 403);
+        }
+
+        if (!is_array($cid) || count($cid) > 500 || !is_array($data)) {
+            $this->setError('Invalid tournament-tree selection.');
+            return false;
+        }
+
+        $projectId = $this->positiveId($data['project_id'] ?? $data['pid'] ?? null);
+        $ids = [];
+        $divisions = [];
+
+        foreach ($cid as $rawId) {
+            $id = $this->positiveId($rawId);
+
+            if ($id <= 0) {
+                $this->setError('Invalid tournament-tree ID.');
+                return false;
+            }
+
+            $rawDivision = $data['division_id' . $id] ?? 0;
+            $divisionId = $rawDivision === 0 || $rawDivision === '0' || $rawDivision === ''
+                ? 0
+                : $this->positiveId($rawDivision);
+
+            if ($divisionId < 0 || ($divisionId === 0 && !in_array($rawDivision, [0, '0', ''], true))) {
+                $this->setError('Invalid tournament division ID.');
+                return false;
+            }
+
+            $ids[$id] = $id;
+            $divisions[$id] = $divisionId;
+        }
+
+        if ($projectId <= 0) {
+            $this->setError('Invalid tournament-tree project.');
+            return false;
+        }
+
+        if ($ids === []) {
             return true;
         }
 
         $db = $this->getDatabase();
+
+        try {
+            // All selected trees must be owned by the same project.
+            $treeQuery = $db->createQuery()
+                ->select($db->quoteName('id'))
+                ->from($db->quoteName('#__sportsmanagement_treeto'))
+                ->whereIn($db->quoteName('id'), array_values($ids), ParameterType::INTEGER)
+                ->where($db->quoteName('project_id') . ' = :treeProjectId')
+                ->bind(':treeProjectId', $projectId, ParameterType::INTEGER);
+            $db->setQuery($treeQuery, 0, 500);
+            $found = array_map('intval', $db->loadColumn() ?: []);
+            sort($found);
+            $expected = array_values($ids);
+            sort($expected);
+
+            if ($found !== $expected) {
+                $this->setError('Selected tournament trees do not belong to this project.');
+                return false;
+            }
+
+            $divisionIds = array_values(array_unique(array_filter(
+                array_values($divisions),
+                static fn(int $id): bool => $id > 0
+            )));
+
+            if ($divisionIds !== []) {
+                $divisionQuery = $db->createQuery()
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__sportsmanagement_division'))
+                    ->whereIn($db->quoteName('id'), $divisionIds, ParameterType::INTEGER)
+                    ->where($db->quoteName('project_id') . ' = :divisionProjectId')
+                    ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
+                $db->setQuery($divisionQuery, 0, 500);
+                $foundDivisions = array_map('intval', $db->loadColumn() ?: []);
+                sort($foundDivisions);
+                sort($divisionIds);
+
+                if ($foundDivisions !== $divisionIds) {
+                    $this->setError('Tournament divisions do not belong to this project.');
+                    return false;
+                }
+            }
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
         $db->transactionStart();
 
         try {
             foreach ($ids as $id) {
-                $divisionId = (int) ($data['division_id' . $id] ?? 0);
                 $row = (object) [
                     'id' => $id,
-                    'division_id' => $divisionId,
+                    'division_id' => $divisions[$id],
                 ];
-                $db->updateObject('#__sportsmanagement_treeto', $row, 'id');
+
+                if (!$db->updateObject('#__sportsmanagement_treeto', $row, 'id')) {
+                    throw new \RuntimeException('Could not update tournament division.');
+                }
             }
 
             $db->transactionCommit();
-
             return true;
         } catch (\Throwable $e) {
             $db->transactionRollback();
             $this->setError($e->getMessage());
-
             return false;
         }
+    }
+
+    private function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^[1-9][0-9]*$/D', $raw)) {
+            return 0;
+        }
+
+        $id = filter_var($raw, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     protected function getListQuery()

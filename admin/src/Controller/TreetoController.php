@@ -20,13 +20,10 @@ final class TreetoController extends SportsManagementFormController
     /** Save division assignments edited directly in the tree list. */
     public function saveshort(): void
     {
-        $this->checkToken();
+        $this->assertTreeWritePermission('core.edit');
 
         $input = $this->app->getInput();
-        $ids = array_values(array_unique(array_filter(array_map(
-            'intval',
-            (array) $input->post->get('cid', [], 'array')
-        ))));
+        $ids = $this->selectedTreeIds($input->post->get('cid', [], 'array'));
         $data = $input->post->getArray();
         $model = $this->getModel('Treetos', 'Administrator', ['ignore_request' => false]);
         $result = $model !== false && $model->storeshort($ids, $data);
@@ -44,7 +41,7 @@ final class TreetoController extends SportsManagementFormController
     /** Generate all nodes and continue to the existing node editor. */
     public function generatenode(): void
     {
-        $this->checkToken();
+        $this->assertTreeWritePermission('core.edit');
 
         $input = $this->app->getInput();
         $model = $this->getModel('Treeto', 'Administrator', ['ignore_request' => false]);
@@ -71,13 +68,10 @@ final class TreetoController extends SportsManagementFormController
     /** Delete selected trees. */
     public function remove(): void
     {
-        $this->checkToken();
+        $this->assertTreeWritePermission('core.delete');
 
         $input = $this->app->getInput();
-        $ids = array_values(array_unique(array_filter(array_map(
-            'intval',
-            (array) $input->post->get('cid', [], 'array')
-        ))));
+        $ids = $this->selectedTreeIds($input->post->get('cid', [], 'array'));
         $projectId = $input->getInt('pid');
 
         if (!$ids) {
@@ -108,6 +102,49 @@ final class TreetoController extends SportsManagementFormController
     public function getModel($name = 'Treeto', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
         return parent::getModel($name, $prefix, $config);
+    }
+
+    private function assertTreeWritePermission(string $action): void
+    {
+        $this->checkToken();
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise($action, 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
+    private function selectedTreeIds(mixed $raw): array
+    {
+        if (!is_array($raw) || count($raw) > 500) {
+            throw new \UnexpectedValueException('Invalid tournament-tree selection.', 400);
+        }
+
+        $ids = [];
+
+        foreach ($raw as $candidate) {
+            if (!is_int($candidate) && !is_string($candidate)) {
+                throw new \UnexpectedValueException('Invalid tournament-tree ID.', 400);
+            }
+
+            $rawId = trim((string) $candidate);
+
+            if (!preg_match('/^[1-9][0-9]*$/D', $rawId)) {
+                throw new \UnexpectedValueException('Invalid tournament-tree ID.', 400);
+            }
+
+            $id = filter_var($rawId, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+
+            if ($id === false) {
+                throw new \UnexpectedValueException('Invalid tournament-tree ID.', 400);
+            }
+
+            $ids[$id] = $id;
+        }
+
+        return array_values($ids);
     }
 
     private function treetosUrl(int $projectId): string

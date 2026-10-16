@@ -368,7 +368,7 @@ final class TreetonodesModel extends SportsManagementListModel
         $treeId = (int) ($data['treeto_id'] ?? 0);
         $depth = (int) ($data['tree_i'] ?? 0);
 
-        if ($treeId <= 0 || $depth <= 0) {
+        if ($treeId <= 0 || $depth <= 0 || $depth > 7) {
             return false;
         }
 

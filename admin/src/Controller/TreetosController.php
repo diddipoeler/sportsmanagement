@@ -38,6 +38,12 @@ final class TreetosController extends SportsManagementAdminController
     {
         $this->checkToken();
 
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.create', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $input = $this->app->getInput();
         $projectId = $input->post->getInt('project_id') ?: $input->getInt('pid');
         $model = $this->getModel('Treeto', 'Administrator', ['ignore_request' => false]);

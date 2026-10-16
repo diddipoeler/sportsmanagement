@@ -52,10 +52,21 @@ final class TreetoModel extends SportsManagementAdminModel
         $input = $this->administratorApplication()->getInput();
         $treetoId = $input->post->getInt('id');
         $formData = new Registry($input->post->get('jform', [], 'array'));
-        $treeDepth = (int) $formData->get('tree_i', 0);
+        $rawDepth = $formData->get('tree_i', 0);
+        $depthText = is_int($rawDepth) || is_string($rawDepth) ? trim((string) $rawDepth) : '';
+        $treeDepth = preg_match('/^[1-7]$/D', $depthText) ? (int) $depthText : 0;
 
+        // Seven levels yield at most 255 nodes. Never evaluate untrusted
+        // exponents before checking the depth.
         if ($treetoId <= 0 || $treeDepth <= 0) {
             return false;
+        }
+
+        // A caller may invoke the model without the protected controller.
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException('Not authorized to generate tournament-tree nodes.', 403);
         }
 
         $globalBestOf = $input->post->getInt('global_bestof');
