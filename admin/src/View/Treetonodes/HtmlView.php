@@ -94,9 +94,9 @@ final class HtmlView extends BaseHtmlView
             $value->roundcode = (int) $bracketNode->roundcode;
         }
 
-        if (!$model->savenode($this->node)) {
-            $app->enqueueMessage($model->getError(), 'error');
-        }
+        // Rendering an administrator GET view must never persist computed
+        // bracket results or insert match links. Only protected POST tasks
+        // may write node and match data.
 
         $this->addToolbar();
         parent::display($tpl);

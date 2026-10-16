@@ -50,7 +50,8 @@ final class TreetoModel extends SportsManagementAdminModel
     public function setGenerateNode(): bool
     {
         $input = $this->administratorApplication()->getInput();
-        $treetoId = $input->post->getInt('id');
+        $treetoId = $this->positivePostId($input->post->get('id', null, 'raw'));
+        $projectId = $this->positivePostId($input->post->get('pid', null, 'raw'));
         $formData = new Registry($input->post->get('jform', [], 'array'));
         $rawDepth = $formData->get('tree_i', 0);
         $depthText = is_int($rawDepth) || is_string($rawDepth) ? trim((string) $rawDepth) : '';
@@ -58,7 +59,7 @@ final class TreetoModel extends SportsManagementAdminModel
 
         // Seven levels yield at most 255 nodes. Never evaluate untrusted
         // exponents before checking the depth.
-        if ($treetoId <= 0 || $treeDepth <= 0) {
+        if ($treetoId <= 0 || $projectId <= 0 || $treeDepth <= 0) {
             return false;
         }
 
@@ -74,6 +75,41 @@ final class TreetoModel extends SportsManagementAdminModel
         $globalKnown = $input->post->getInt('global_known');
         $globalFake = $input->post->getInt('global_fake');
         $db = $this->getDatabase();
+
+        try {
+            // Never update a bracket belonging to a different project.
+            $scope = $db->createQuery()
+                ->select($db->quoteName('id'))
+                ->from($db->quoteName('#__sportsmanagement_treeto'))
+                ->where($db->quoteName('id') . ' = :generationTreeId')
+                ->where($db->quoteName('project_id') . ' = :generationProjectId')
+                ->bind(':generationTreeId', $treetoId, ParameterType::INTEGER)
+                ->bind(':generationProjectId', $projectId, ParameterType::INTEGER);
+            $db->setQuery($scope, 0, 1);
+
+            if ((int) $db->loadResult() !== $treetoId) {
+                $this->setError('Tournament tree does not belong to this project.');
+                return false;
+            }
+
+            // Repeated generation used to silently append duplicate nodes.
+            // Existing brackets must be reset through their explicit workflow.
+            $existing = $db->createQuery()
+                ->select('COUNT(*)')
+                ->from($db->quoteName('#__sportsmanagement_treeto_node'))
+                ->where($db->quoteName('treeto_id') . ' = :generationExistingTreeId')
+                ->bind(':generationExistingTreeId', $treetoId, ParameterType::INTEGER);
+            $db->setQuery($existing, 0, 1);
+
+            if ((int) $db->loadResult() > 0) {
+                $this->setError('Tournament tree already has generated nodes.');
+                return false;
+            }
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
         $db->transactionStart();
 
         try {
@@ -86,7 +122,9 @@ final class TreetoModel extends SportsManagementAdminModel
                 'leafed' => 2,
                 'tree_i' => $treeDepth,
             ];
-            $db->updateObject('#__sportsmanagement_treeto', $tree, 'id');
+            if (!$db->updateObject('#__sportsmanagement_treeto', $tree, 'id')) {
+                throw new \RuntimeException('Could not update tournament tree.');
+            }
 
             $nodeCount = (2 ** ($treeDepth + 1)) - 1;
 
@@ -113,7 +151,9 @@ final class TreetoModel extends SportsManagementAdminModel
                     'row' => $row,
                     'bestof' => $globalBestOf,
                 ];
-                $db->insertObject('#__sportsmanagement_treeto_node', $record);
+                if (!$db->insertObject('#__sportsmanagement_treeto_node', $record)) {
+                    throw new \RuntimeException('Could not insert tournament-tree node.');
+                }
             }
 
             $db->transactionCommit();
@@ -125,6 +165,25 @@ final class TreetoModel extends SportsManagementAdminModel
 
             return false;
         }
+    }
+
+    private function positivePostId(mixed $raw): int
+    {
+        if (!is_string($raw) && !is_int($raw)) {
+            return 0;
+        }
+
+        $value = trim((string) $raw);
+
+        if (!preg_match('/^[1-9][0-9]*$/D', $value)) {
+            return 0;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     public function getProject(int $projectId): ?object

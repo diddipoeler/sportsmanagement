@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 
@@ -66,10 +67,53 @@ final class TreetonodesModel extends SportsManagementListModel
     /** Persist derived node labels/team/round data and add missing positive match links once. */
     public function savenode($node = null): bool
     {
+        // Derived bracket display data must never be written from a GET view.
+        if (!Session::checkToken('post')) {
+            throw new \RuntimeException('Invalid tournament-node write token.', 403);
+        }
+
+        $this->assertTreeEditAccess();
         $nodes = is_array($node) ? $node : [];
+
+        if (count($nodes) > 255) {
+            $this->setError('Too many tournament nodes to synchronize.');
+            return false;
+        }
 
         if (!$nodes) {
             return true;
+        }
+
+        $input = $this->administratorApplication()->getInput();
+        $treeId = $this->strictNodeId($input->post->get('treeto_id', null, 'raw'));
+        $projectId = $this->strictNodeId($input->post->get('project_id', null, 'raw'));
+        $ids = [];
+
+        if ($treeId <= 0 || $projectId <= 0) {
+            $this->setError('Invalid tournament tree or project for synchronization.');
+            return false;
+        }
+
+        foreach ($nodes as $value) {
+            $id = is_object($value) ? $this->strictNodeId($value->id ?? null) : 0;
+
+            if ($id <= 0 || isset($ids[$id])) {
+                $this->setError('Invalid tournament node to synchronize.');
+                return false;
+            }
+
+            $ids[$id] = $id;
+        }
+
+        try {
+            if ($this->scopedTree($treeId, $projectId) === null
+                || !$this->nodesBelongToTree(array_values($ids), $treeId)) {
+                $this->setError('Tournament node synchronization is outside the project.');
+                return false;
+            }
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
         }
 
         $db = $this->getDatabase();
@@ -94,7 +138,9 @@ final class TreetonodesModel extends SportsManagementListModel
                     'modified' => $modified,
                     'modified_by' => $userId,
                 ];
-                $db->updateObject('#__sportsmanagement_treeto_node', $record, 'id');
+                if (!$db->updateObject('#__sportsmanagement_treeto_node', $record, 'id')) {
+                    throw new \RuntimeException('Could not synchronize tournament node.');
+                }
 
                 $matchId = (int) ($value->match_id ?? 0);
 
@@ -108,7 +154,9 @@ final class TreetonodesModel extends SportsManagementListModel
                     'modified' => $modified,
                     'modified_by' => $userId,
                 ];
-                $db->insertObject('#__sportsmanagement_treeto_match', $mapping);
+                if (!$db->insertObject('#__sportsmanagement_treeto_match', $mapping)) {
+                    throw new \RuntimeException('Could not synchronize tournament match.');
+                }
             }
 
             $db->transactionCommit();

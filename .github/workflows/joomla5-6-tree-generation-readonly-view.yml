@@ -1,0 +1,55 @@
+name: Joomla 5/6 tree generation and read-only bracket view
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TreetoModel.php'
+      - 'admin/src/Model/TreetonodesModel.php'
+      - 'admin/src/View/Treetonodes/HtmlView.php'
+      - '.github/tests/joomla56_tree_controller_division_depth_security.php'
+      - '.github/tests/joomla56_tree_generation_readonly_view.php'
+      - '.github/workflows/joomla5-6-tree-generation-readonly-view.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/TreetoModel.php'
+      - 'admin/src/Model/TreetonodesModel.php'
+      - 'admin/src/View/Treetonodes/HtmlView.php'
+      - '.github/tests/joomla56_tree_controller_division_depth_security.php'
+      - '.github/tests/joomla56_tree_generation_readonly_view.php'
+      - '.github/workflows/joomla5-6-tree-generation-readonly-view.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  generation-regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax and required metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Model/TreetoModel.php
+            admin/src/Model/TreetonodesModel.php
+            admin/src/View/Treetonodes/HtmlView.php
+            .github/tests/joomla56_tree_controller_division_depth_security.php
+            .github/tests/joomla56_tree_generation_readonly_view.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Verify bounded, project-scoped generation and read-only view
+        run: php .github/tests/joomla56_tree_generation_readonly_view.php
+      - name: Recheck existing tree write and depth contract
+        run: php .github/tests/joomla56_tree_controller_division_depth_security.php

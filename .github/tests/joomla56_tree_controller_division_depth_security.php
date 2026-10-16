@@ -162,6 +162,25 @@ namespace {
             $this->limits[] = $limit;
             return $this;
         }
+        public int $existingGeneratedNodes = 0;
+        public function loadResult(): int {
+            if ($this->active === null) {
+                throw new \RuntimeException('No database query.');
+            }
+
+            if ($this->active->from === '#__sportsmanagement_treeto_node') {
+                return $this->existingGeneratedNodes;
+            }
+
+            if ($this->active->from === '#__sportsmanagement_treeto') {
+                return ($this->active->bindings[':generationTreeId'] ?? null) === 11
+                    && ($this->active->bindings[':generationProjectId'] ?? null) === 9
+                    ? 11 : 0;
+            }
+
+            throw new \RuntimeException('Unexpected tournament generation lookup.');
+        }
+
         public function loadColumn(): array {
             if ($this->active === null) { throw new \RuntimeException('No database query.'); }
             $tree = str_contains($this->active->from, 'sportsmanagement_treeto');
