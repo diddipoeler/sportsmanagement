@@ -1,4 +1,4 @@
-name: Joomla 5/6 administrator match statistics input integrity
+name: Joomla 5/6 administrator match write input integrity
 
 on:
   push:
@@ -6,12 +6,14 @@ on:
     paths:
       - 'admin/src/Service/MatchWriteService.php'
       - '.github/tests/joomla56_admin_match_statistics_input_integrity.php'
+      - '.github/tests/joomla56_admin_match_lineup_input_integrity.php'
       - '.github/workflows/joomla5-6-admin-match-statistics-input-integrity.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'admin/src/Service/MatchWriteService.php'
       - '.github/tests/joomla56_admin_match_statistics_input_integrity.php'
+      - '.github/tests/joomla56_admin_match_lineup_input_integrity.php'
       - '.github/workflows/joomla5-6-admin-match-statistics-input-integrity.yml'
 
 permissions:
@@ -35,6 +37,9 @@ jobs:
           set -euo pipefail
           php -l admin/src/Service/MatchWriteService.php
           php -l .github/tests/joomla56_admin_match_statistics_input_integrity.php
-          php .github/tests/phpdoc_metadata.php admin/src/Service/MatchWriteService.php .github/tests/joomla56_admin_match_statistics_input_integrity.php
+          php -l .github/tests/joomla56_admin_match_lineup_input_integrity.php
+          php .github/tests/phpdoc_metadata.php admin/src/Service/MatchWriteService.php .github/tests/joomla56_admin_match_statistics_input_integrity.php .github/tests/joomla56_admin_match_lineup_input_integrity.php
       - name: Exercise valid and forged match statistic form submissions
         run: php .github/tests/joomla56_admin_match_statistics_input_integrity.php
+      - name: Reject forged lineup and referee assignments
+        run: php .github/tests/joomla56_admin_match_lineup_input_integrity.php
