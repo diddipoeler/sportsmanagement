@@ -181,6 +181,7 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
             $transactionStarted = true;
             $pageToken = null;
             $seenTokens = [];
+            $seenCalendarIds = [];
             $pageCount = 0;
 
             do {
@@ -200,9 +201,13 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
                     $calendarId = (string) $entry->getID();
                     $title = (string) $entry->getSummary();
 
-                    if ($calendarId === '') {
+                    if ($calendarId === '' || isset($seenCalendarIds[$calendarId])) {
                         continue;
                     }
+
+                    // Malformed API pagination can return the same calendar
+                    // more than once. Never insert or update it twice.
+                    $seenCalendarIds[$calendarId] = true;
 
                     $lookup = $db->createQuery()
                         ->select([
