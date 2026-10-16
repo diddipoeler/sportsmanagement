@@ -36,7 +36,26 @@ final class SmquotetxtModel extends AdminModel
 
     public function save($data)
     {
-        $fileName = $this->normaliseFileName((string) ($data['filename'] ?? ''));
+        // Check permissions at the model boundary too: other Joomla
+        // controllers and plugins can invoke this model directly.
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
+
+            return false;
+        }
+
+        if (!is_array($data)
+            || !is_string($data['filename'] ?? null)
+            || !is_string($data['source'] ?? null)
+            || strlen($data['source']) > 1048576) {
+            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
+
+            return false;
+        }
+
+        $fileName = $this->normaliseFileName($data['filename']);
 
         if ($fileName === null) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
@@ -44,8 +63,15 @@ final class SmquotetxtModel extends AdminModel
             return false;
         }
 
-        $filePath = $this->getEditorPath() . DIRECTORY_SEPARATOR . $fileName;
-        $source = (string) ($data['source'] ?? '');
+        $filePath = $this->validatedExistingFile($fileName);
+
+        if ($filePath === null) {
+            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
+
+            return false;
+        }
+
+        $source = $data['source'];
 
         try {
             if (!File::write($filePath, $source)) {
@@ -87,9 +113,9 @@ final class SmquotetxtModel extends AdminModel
             return $item;
         }
 
-        $filePath = $this->getEditorPath() . DIRECTORY_SEPARATOR . $fileName;
+        $filePath = $this->validatedExistingFile($fileName);
 
-        if (!is_file($filePath) || !is_readable($filePath)) {
+        if ($filePath === null || !is_readable($filePath)) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ERROR_SOURCE_FILE_NOT_FOUND'));
 
             return $item;
@@ -124,13 +150,38 @@ final class SmquotetxtModel extends AdminModel
     {
         $fileName = trim($fileName);
 
-        if ($fileName === '' || basename($fileName) !== $fileName) {
+        if (strlen($fileName) > 255
+            || !preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*\.(?:txt|php)$/iD', $fileName)
+            || str_contains($fileName, '..')) {
             return null;
         }
 
-        $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        return $fileName;
+    }
 
-        return in_array($extension, ['txt', 'php'], true) ? $fileName : null;
+    /**
+     * Never edit a missing path or follow a symlink outside the module.
+     * Only the module's existing root-level source files are editable.
+     */
+    private function validatedExistingFile(string $fileName): ?string
+    {
+        $directory = realpath($this->getEditorPath());
+
+        if ($directory === false) {
+            return null;
+        }
+
+        $candidate = $directory . DIRECTORY_SEPARATOR . $fileName;
+
+        if (is_link($candidate) || !is_file($candidate)) {
+            return null;
+        }
+
+        $resolved = realpath($candidate);
+
+        return $resolved !== false && dirname($resolved) === $directory
+            ? $resolved
+            : null;
     }
 
     private function administratorApplication(): AdministratorApplication

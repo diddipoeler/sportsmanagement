@@ -95,7 +95,13 @@ final class UpdsportsmanagementModel extends FormModel
         ]);
         $greeting = $data['greeting'] ?? null;
 
-        if ($id === false || !is_string($greeting) || trim($greeting) === '') {
+        // Old frontend forms sometimes submit arrays where a single string
+        // was expected. Bound the text to avoid overflowing legacy columns.
+        if ($id === false
+            || !is_string($greeting)
+            || trim($greeting) === ''
+            || strlen($greeting) > 4096
+            || str_contains($greeting, "\0")) {
             return false;
         }
 

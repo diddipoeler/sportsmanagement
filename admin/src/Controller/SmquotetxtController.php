@@ -33,11 +33,20 @@ final class SmquotetxtController extends FormController
     {
         $this->checkToken();
 
+        // The editor can modify module PHP files: a CSRF token alone is
+        // insufficient to authorize writes to executable source files.
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $data = $this->app->getInput()->post->get('jform', [], 'array');
+        $data = is_array($data) ? $data : [];
         $model = $this->getModel();
-        $success = $model->save($data);
+        $success = $model !== false && $model->save($data);
         $task = $this->getTask();
-        $fileName = rawurlencode((string) ($data['filename'] ?? ''));
+        $fileName = rawurlencode(is_string($data['filename'] ?? null) ? $data['filename'] : '');
 
         if (!$success) {
             $this->setRedirect(
@@ -45,7 +54,9 @@ final class SmquotetxtController extends FormController
                     'index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name=' . $fileName,
                     false
                 ),
-                $model->getError() ?: Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'),
+                $model !== false
+                    ? ($model->getError() ?: Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'))
+                    : Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'),
                 'error'
             );
 

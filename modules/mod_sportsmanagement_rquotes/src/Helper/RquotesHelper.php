@@ -22,6 +22,10 @@ use Joomla\Registry\Registry;
 
 final class RquotesHelper
 {
+    private const MAX_CATEGORY_IDS = 100;
+    private const MAX_CATEGORY_VALUES = 200;
+    private const MAX_CATEGORY_STRING_BYTES = 4096;
+
     public function getData(
         Registry $params,
         Registry $componentParams,
@@ -295,13 +299,36 @@ final class RquotesHelper
 
     private function textLine(Registry $params, CMSApplicationInterface $app): string
     {
-        $filename = basename(trim((string) $params->get('filename', 'rquotes.txt')));
-        if ($filename === '') {
+        $configured = $params->get('filename', 'rquotes.txt');
+
+        // The module displays plain-text quotes, not arbitrary source files
+        // or files outside its directory reached through symbolic links.
+        if (!is_string($configured)) {
             return '';
         }
 
-        $path = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . $filename;
-        if (!is_file($path) || !is_readable($path)) {
+        $filename = trim($configured);
+
+        if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*\.txt$/iD', $filename)
+            || str_contains($filename, '..')) {
+            return '';
+        }
+
+        $root = realpath(dirname(__DIR__, 2));
+
+        if ($root === false) {
+            return '';
+        }
+
+        $candidate = $root . DIRECTORY_SEPARATOR . $filename;
+
+        if (is_link($candidate)) {
+            return '';
+        }
+
+        $path = realpath($candidate);
+
+        if ($path === false || dirname($path) !== $root || !is_file($path) || !is_readable($path)) {
             return '';
         }
 
@@ -403,13 +430,16 @@ final class RquotesHelper
     {
         $values = is_array($values) ? $values : [$values];
         $ids = [];
-        foreach ($values as $value) {
-            if (!is_scalar($value)) {
+
+        foreach (array_slice($values, 0, self::MAX_CATEGORY_VALUES) as $value) {
+            if ((!is_int($value) && !is_string($value))
+                || (is_string($value) && strlen($value) > self::MAX_CATEGORY_STRING_BYTES)) {
                 continue;
             }
 
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                if (!preg_match('/^(\d+)(?::[A-Za-z0-9_-]+)?$/', $part, $match)) {
+                // Preserve Joomla's optional numeric ID:alias syntax.
+                if (!preg_match('/^([1-9][0-9]*)(?::[A-Za-z0-9_-]+)?$/D', $part, $match)) {
                     continue;
                 }
 
@@ -417,6 +447,10 @@ final class RquotesHelper
 
                 if ($id !== false) {
                     $ids[$id] = $id;
+
+                    if (count($ids) >= self::MAX_CATEGORY_IDS) {
+                        return array_values($ids);
+                    }
                 }
             }
         }
