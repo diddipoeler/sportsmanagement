@@ -28,8 +28,10 @@ final class MatchWriteService
 
     public function saveStatistics(array $data): bool
     {
-        $matchId = (int) ($data['match_id'] ?? 0);
-        if ($matchId <= 0) {
+        $matchId = self::validPositiveId($data['match_id'] ?? null);
+        if ($matchId === null
+            || !self::validStatisticsSelection($data, 'cid', 'teamplayer_id', 'projectteam_id', 'stat')
+            || !self::validStatisticsSelection($data, 'staffcid', 'team_staff_id', 'sprojectteam_id', 'staffstat')) {
             return false;
         }
 
@@ -90,6 +92,70 @@ final class MatchWriteService
                 }
             }
         });
+    }
+
+    /**
+     * Validate every selected statistics row before any existing values are
+     * deleted. PHP casts malformed strings and arrays to unrelated IDs.
+     */
+    private static function validStatisticsSelection(
+        array $data,
+        string $flag,
+        string $personField,
+        string $teamField,
+        string $prefix
+    ): bool {
+        if (!isset($data[$flag])) {
+            return true;
+        }
+
+        if (!is_array($data[$personField] ?? null) || !is_array($data[$teamField] ?? null)) {
+            return false;
+        }
+
+        foreach ($data[$personField] as $index => $rawId) {
+            $personId = self::validPositiveId($rawId, true);
+            if ($personId === null) {
+                return false;
+            }
+            if ($personId === 0) {
+                continue;
+            }
+            if (self::validPositiveId($data[$teamField][$index] ?? null) === null) {
+                return false;
+            }
+
+            $pattern = '/^' . preg_quote($prefix . $personId, '/') . '_([0-9]+)$/';
+            foreach ($data as $name => $value) {
+                if (!is_string($name) || preg_match($pattern, $name, $matches) !== 1) {
+                    continue;
+                }
+                if (self::validPositiveId($matches[1]) === null
+                    || ($value !== '' && !is_scalar($value))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /** Accept only complete decimal IDs within PHP's integer range. */
+    private static function validPositiveId(mixed $value, bool $allowZero = false): ?int
+    {
+        $minimum = $allowZero ? 0 : 1;
+
+        if (is_int($value)) {
+            return $value >= $minimum ? $value : null;
+        }
+        if (!is_string($value)
+            || !preg_match($allowZero ? '/^(?:0|[1-9][0-9]*)$/D' : '/^[1-9][0-9]*$/D', $value)) {
+            return null;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => $minimum]]);
+
+        return $id === false ? null : $id;
     }
 
     public function updateRoster(array $post): bool
