@@ -1,0 +1,44 @@
+name: Joomla 5/6 tournament node model project scope
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TreetonodesModel.php'
+      - '.github/tests/joomla56_treetonode_model_project_scope.php'
+      - '.github/workflows/joomla5-6-treetonode-model-project-scope.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/TreetonodesModel.php'
+      - '.github/tests/joomla56_treetonode_model_project_scope.php'
+      - '.github/workflows/joomla5-6-treetonode-model-project-scope.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  node-scope-regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP lint and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Model/TreetonodesModel.php
+            .github/tests/joomla56_treetonode_model_project_scope.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Check tree and node scope before database writes
+        run: php .github/tests/joomla56_treetonode_model_project_scope.php

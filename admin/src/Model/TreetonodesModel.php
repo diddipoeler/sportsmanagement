@@ -306,24 +306,46 @@ final class TreetonodesModel extends SportsManagementListModel
     /** Delete all nodes/match mappings of a tree and reset its generation state. */
     public function setRemoveNode($post): bool
     {
-        $treeId = (int) ((array) $post)['treeto_id'];
+        $this->assertTreeEditAccess();
+        $data = is_array($post) ? $post : [];
+        $treeId = $this->strictNodeId($data['treeto_id'] ?? null);
+        $projectId = $this->strictNodeId($data['project_id'] ?? null);
 
-        if ($treeId <= 0) {
+        if ($treeId <= 0 || $projectId <= 0) {
+            $this->setError('Invalid tournament tree or project.');
             return false;
         }
 
         $db = $this->getDatabase();
-        $db->transactionStart();
 
         try {
+            if ($this->scopedTree($treeId, $projectId) === null) {
+                $this->setError('Tournament tree does not belong to this project.');
+                return false;
+            }
+
             $query = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__sportsmanagement_treeto_node'))
                 ->where($db->quoteName('treeto_id') . ' = :removeTreeId')
                 ->bind(':removeTreeId', $treeId, ParameterType::INTEGER);
-            $db->setQuery($query);
+            // A bound lookup prevents a legacy/unbounded tree from creating a
+            // massive IN clause when deleting its match mappings.
+            $db->setQuery($query, 0, 1001);
             $nodeIds = $this->normaliseIds($db->loadColumn() ?: []);
 
+            if (count($nodeIds) > 1000) {
+                $this->setError('Tournament tree contains too many nodes.');
+                return false;
+            }
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
+        $db->transactionStart();
+
+        try {
             if ($nodeIds) {
                 $query = $db->createQuery()
                     ->delete($db->quoteName('#__sportsmanagement_treeto_match'))
@@ -348,14 +370,16 @@ final class TreetonodesModel extends SportsManagementListModel
                 'hide' => 0,
                 'leafed' => 0,
             ];
-            $db->updateObject('#__sportsmanagement_treeto', $record, 'id');
-            $db->transactionCommit();
 
+            if (!$db->updateObject('#__sportsmanagement_treeto', $record, 'id')) {
+                throw new \RuntimeException('Could not reset tournament tree.');
+            }
+
+            $db->transactionCommit();
             return true;
         } catch (\Throwable $e) {
             $db->transactionRollback();
             $this->setError($e->getMessage());
-
             return false;
         }
     }
@@ -363,16 +387,39 @@ final class TreetonodesModel extends SportsManagementListModel
     /** Mark selected nodes as leaves, hide their descendants and prepare final confirmation. */
     public function storeshortleaf($cid, $post): bool
     {
-        $ids = $this->normaliseIds((array) $cid);
-        $data = (array) $post;
-        $treeId = (int) ($data['treeto_id'] ?? 0);
-        $depth = (int) ($data['tree_i'] ?? 0);
+        $this->assertTreeEditAccess();
+        $data = is_array($post) ? $post : [];
+        $treeId = $this->strictNodeId($data['treeto_id'] ?? null);
+        $projectId = $this->strictNodeId($data['project_id'] ?? null);
+        $rawDepth = $data['tree_i'] ?? null;
+        $depth = $this->strictNodeId($rawDepth);
 
-        if ($treeId <= 0 || $depth <= 0 || $depth > 7) {
+        if ($treeId <= 0 || $projectId <= 0 || $depth <= 0 || $depth > 7) {
+            $this->setError('Invalid tournament tree, project or depth.');
+            return false;
+        }
+
+        $ids = $this->validatedSubmittedNodes($cid);
+
+        if ($ids === null) {
             return false;
         }
 
         $db = $this->getDatabase();
+
+        try {
+            $tree = $this->scopedTree($treeId, $projectId);
+
+            if ($tree === null || (int) ($tree->tree_i ?? 0) !== $depth
+                || !$this->nodesBelongToTree($ids, $treeId)) {
+                $this->setError('Selected leaves do not belong to this tournament tree.');
+                return false;
+            }
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
         $db->transactionStart();
 
         try {
@@ -381,14 +428,18 @@ final class TreetonodesModel extends SportsManagementListModel
                     ->update($db->quoteName('#__sportsmanagement_treeto_node'))
                     ->set($db->quoteName('is_leaf') . ' = 1')
                     ->where($db->quoteName('id') . ' = :leafNodeId')
-                    ->bind(':leafNodeId', $nodeId, ParameterType::INTEGER);
+                    ->where($db->quoteName('treeto_id') . ' = :leafTreeId')
+                    ->bind(':leafNodeId', $nodeId, ParameterType::INTEGER)
+                    ->bind(':leafTreeId', $treeId, ParameterType::INTEGER);
                 $db->setQuery($query)->execute();
 
                 $query = $db->createQuery()
                     ->select($db->quoteName('node'))
                     ->from($db->quoteName('#__sportsmanagement_treeto_node'))
                     ->where($db->quoteName('id') . ' = :leafLookupNodeId')
-                    ->bind(':leafLookupNodeId', $nodeId, ParameterType::INTEGER);
+                    ->where($db->quoteName('treeto_id') . ' = :leafLookupTreeId')
+                    ->bind(':leafLookupNodeId', $nodeId, ParameterType::INTEGER)
+                    ->bind(':leafLookupTreeId', $treeId, ParameterType::INTEGER);
                 $db->setQuery($query, 0, 1);
                 $leafNodeNumber = (int) $db->loadResult();
 
@@ -427,7 +478,10 @@ final class TreetonodesModel extends SportsManagementListModel
             $db->setQuery($query)->execute();
 
             $tree = (object) ['id' => $treeId, 'leafed' => 3];
-            $db->updateObject('#__sportsmanagement_treeto', $tree, 'id');
+            if (!$db->updateObject('#__sportsmanagement_treeto', $tree, 'id')) {
+                throw new \RuntimeException('Could not update tournament-tree leaf status.');
+            }
+
             $db->transactionCommit();
 
             return true;
@@ -441,22 +495,34 @@ final class TreetonodesModel extends SportsManagementListModel
 
     public function storefinishleaf($post): bool
     {
-        $treeId = (int) (((array) $post)['treeto_id'] ?? 0);
+        $this->assertTreeEditAccess();
+        $data = is_array($post) ? $post : [];
+        $treeId = $this->strictNodeId($data['treeto_id'] ?? null);
+        $projectId = $this->strictNodeId($data['project_id'] ?? null);
 
-        if ($treeId <= 0) {
+        if ($treeId <= 0 || $projectId <= 0) {
+            $this->setError('Invalid tournament tree or project.');
             return false;
         }
 
         $db = $this->getDatabase();
-        $tree = (object) ['id' => $treeId, 'leafed' => 1];
 
         try {
-            $db->updateObject('#__sportsmanagement_treeto', $tree, 'id');
+            if ($this->scopedTree($treeId, $projectId) === null) {
+                $this->setError('Tournament tree does not belong to this project.');
+                return false;
+            }
+
+            if (!$db->updateObject('#__sportsmanagement_treeto', (object) [
+                'id' => $treeId,
+                'leafed' => 1,
+            ], 'id')) {
+                throw new \RuntimeException('Could not finalise tournament-tree leaves.');
+            }
 
             return true;
         } catch (\Throwable $e) {
             $this->setError($e->getMessage());
-
             return false;
         }
     }
@@ -501,35 +567,93 @@ final class TreetonodesModel extends SportsManagementListModel
         return $rows;
     }
 
-    /** Update selected node team assignments. */
+    /** Update node teams only when both the nodes and teams belong to the tree project. */
     public function storeshort($cid, $post): bool
     {
-        $ids = $this->normaliseIds((array) $cid);
-        $data = (array) $post;
+        $this->assertTreeEditAccess();
+        $data = is_array($post) ? $post : [];
+        $treeId = $this->strictNodeId($data['treeto_id'] ?? null);
+        $projectId = $this->strictNodeId($data['project_id'] ?? null);
+        $ids = $this->validatedSubmittedNodes($cid);
 
-        if (!$ids) {
-            return true;
+        if ($ids === null) {
+            return false;
+        }
+
+        if ($treeId <= 0 || $projectId <= 0) {
+            $this->setError('Invalid tournament tree or project.');
+            return false;
+        }
+
+        $teams = [];
+
+        foreach ($ids as $nodeId) {
+            $rawTeam = $data['team_id' . $nodeId] ?? 0;
+            $teamId = ($rawTeam === 0 || $rawTeam === '0' || $rawTeam === '')
+                ? 0 : $this->strictNodeId($rawTeam);
+
+            if ($teamId <= 0 && !in_array($rawTeam, [0, '0', ''], true)) {
+                $this->setError('Invalid project-team ID.');
+                return false;
+            }
+
+            $teams[$nodeId] = $teamId;
         }
 
         $db = $this->getDatabase();
+
+        try {
+            if ($this->scopedTree($treeId, $projectId) === null
+                || !$this->nodesBelongToTree($ids, $treeId)) {
+                $this->setError('Selected tournament nodes belong to another tree.');
+                return false;
+            }
+
+            $teamIds = array_values(array_unique(array_filter(array_values($teams))));
+
+            if ($teamIds !== []) {
+                $query = $db->createQuery()
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__sportsmanagement_project_team'))
+                    ->whereIn($db->quoteName('id'), $teamIds, ParameterType::INTEGER)
+                    ->where($db->quoteName('project_id') . ' = :nodeTeamsProjectId')
+                    ->bind(':nodeTeamsProjectId', $projectId, ParameterType::INTEGER);
+                $db->setQuery($query, 0, 500);
+                $found = array_values(array_unique(array_map('intval', $db->loadColumn() ?: [])));
+                sort($found);
+                sort($teamIds);
+
+                if ($found !== $teamIds) {
+                    $this->setError('Selected teams do not belong to the tournament project.');
+                    return false;
+                }
+            }
+        } catch (\Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
+        }
+
+        if ($ids === []) {
+            return true;
+        }
+
         $db->transactionStart();
 
         try {
             foreach ($ids as $nodeId) {
-                $record = (object) [
+                if (!$db->updateObject('#__sportsmanagement_treeto_node', (object) [
                     'id' => $nodeId,
-                    'team_id' => (int) ($data['team_id' . $nodeId] ?? 0),
-                ];
-                $db->updateObject('#__sportsmanagement_treeto_node', $record, 'id');
+                    'team_id' => $teams[$nodeId],
+                ], 'id')) {
+                    throw new \RuntimeException('Could not store tournament node team.');
+                }
             }
 
             $db->transactionCommit();
-
             return true;
         } catch (\Throwable $e) {
             $db->transactionRollback();
             $this->setError($e->getMessage());
-
             return false;
         }
     }
@@ -696,6 +820,94 @@ final class TreetonodesModel extends SportsManagementListModel
         }
 
         return $names;
+    }
+
+    private function assertTreeEditAccess(): void
+    {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException('Not authorized to edit tournament-tree nodes.', 403);
+        }
+    }
+
+    private function strictNodeId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $value = trim((string) $value);
+
+        if (!preg_match('/^[1-9][0-9]*$/D', $value)) {
+            return 0;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    private function validatedSubmittedNodes(mixed $selected): ?array
+    {
+        if (!is_array($selected) || count($selected) > 500) {
+            $this->setError('Invalid tournament-node selection.');
+            return null;
+        }
+
+        $ids = [];
+
+        foreach ($selected as $rawId) {
+            $id = $this->strictNodeId($rawId);
+
+            if ($id <= 0) {
+                $this->setError('Invalid tournament-node ID.');
+                return null;
+            }
+
+            $ids[$id] = $id;
+        }
+
+        return array_values($ids);
+    }
+
+    private function scopedTree(int $treeId, int $projectId): ?object
+    {
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select([$db->quoteName('id'), $db->quoteName('tree_i')])
+            ->from($db->quoteName('#__sportsmanagement_treeto'))
+            ->where($db->quoteName('id') . ' = :nodeTreeId')
+            ->where($db->quoteName('project_id') . ' = :nodeTreeProjectId')
+            ->bind(':nodeTreeId', $treeId, ParameterType::INTEGER)
+            ->bind(':nodeTreeProjectId', $projectId, ParameterType::INTEGER);
+        $db->setQuery($query, 0, 1);
+
+        return $db->loadObject() ?: null;
+    }
+
+    private function nodesBelongToTree(array $ids, int $treeId): bool
+    {
+        if ($ids === []) {
+            return true;
+        }
+
+        $db = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__sportsmanagement_treeto_node'))
+            ->whereIn($db->quoteName('id'), $ids, ParameterType::INTEGER)
+            ->where($db->quoteName('treeto_id') . ' = :selectedTreeId')
+            ->bind(':selectedTreeId', $treeId, ParameterType::INTEGER);
+        $db->setQuery($query, 0, 500);
+        $found = array_values(array_unique(array_map('intval', $db->loadColumn() ?: [])));
+        $expected = $ids;
+        sort($found);
+        sort($expected);
+
+        return $found === $expected;
     }
 
     private function normaliseIds(array $ids): array
