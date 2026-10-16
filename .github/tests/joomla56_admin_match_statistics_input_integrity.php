@@ -104,7 +104,7 @@ namespace {
         ['sprojectteam_id' => [['41']]],
         ['sprojectteam_id' => ['41oops']],
         ['staffstat31_4' => ['2']],
-        ['staffstat31_999999999999999999' => '2'],
+        ['staffstat31_999999999999999999999999999' => '2'],
     ] as $tamper) {
         $db = new StatisticsDatabase();
         $service = new MatchWriteService($db);
