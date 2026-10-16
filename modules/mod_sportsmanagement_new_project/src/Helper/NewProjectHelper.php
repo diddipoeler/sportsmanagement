@@ -27,6 +27,10 @@ use Joomla\Registry\Registry;
 
 final class NewProjectHelper
 {
+    // Bound both the daily module render and its optional article-creation
+    // action to avoid loading or creating an unlimited number of records.
+    private const MAX_DAILY_PROJECTS = 100;
+
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -63,7 +67,7 @@ final class NewProjectHelper
             ->bind(':modifiedStart', $start, ParameterType::STRING)
             ->bind(':modifiedEnd', $end, ParameterType::STRING)
             ->order($db->quoteName('p.name') . ' ASC');
-        $db->setQuery($query);
+        $db->setQuery($query, 0, self::MAX_DAILY_PROJECTS);
         $rows = $db->loadObjectList() ?: [];
 
         $flags = $this->countryFlags($db, $rows);
@@ -143,7 +147,11 @@ final class NewProjectHelper
             throw new \RuntimeException('Not authorised to create project articles.', 403);
         }
 
-        $projects = $this->getData($params, $app, $joomlaDatabase);
+        $projects = array_slice(
+            $this->getData($params, $app, $joomlaDatabase),
+            0,
+            self::MAX_DAILY_PROJECTS
+        );
 
         if (!$projects) {
             return ['created' => 0, 'skipped' => 0, 'errors' => [], 'module_id' => $moduleId];

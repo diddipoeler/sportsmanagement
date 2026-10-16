@@ -188,7 +188,13 @@ final class PredictiontipModel extends PredictionentryModel
             }
 
             if (!empty($member->receipt)) {
-                $this->sendTipReceipt($member, $project, $this->getEntryMatches());
+                // A failed notification must not turn already persisted tips
+                // into a false failure or cause the member to resubmit them.
+                try {
+                    $this->sendTipReceipt($member, $project, $this->getEntryMatches());
+                } catch (\Throwable) {
+                    // The tips were committed; email receipts are best-effort.
+                }
             }
         }
 
@@ -299,7 +305,23 @@ final class PredictiontipModel extends PredictionentryModel
 
     private function scalarInt(mixed $value): int
     {
-        return is_scalar($value) ? max(0, (int) $value) : 0;
+        // Form target IDs must be complete decimal numbers. PHP casts values
+        // such as "12junk" to 12, silently changing the write target.
+        if (!is_string($value) && !is_int($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^(?:0|[1-9][0-9]*)$/D', $raw)) {
+            return 0;
+        }
+
+        $validated = filter_var($raw, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 0],
+        ]);
+
+        return $validated === false ? 0 : $validated;
     }
 
     private function nullableScore(mixed $value): ?int
