@@ -30,6 +30,7 @@ final class GoogleCalendarReadService
     // Bound remote requests even if the Google API keeps returning pages
     // containing no usable events or repeats pagination cursors.
     private const MAX_CALENDAR_PAGES = 10;
+    private const MAX_SELECTED_CALENDARS = 50;
 
     private bool $googleClientLoaded = false;
 
@@ -100,7 +101,8 @@ final class GoogleCalendarReadService
      */
     public function getEvent(int $calendarId, string $eventId): ?array
     {
-        if ($calendarId <= 0 || $eventId === '') {
+        if ($calendarId <= 0 || $eventId === '' || strlen($eventId) > 512
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $eventId)) {
             return null;
         }
 
@@ -138,10 +140,12 @@ final class GoogleCalendarReadService
      */
     public function getCalendars(array $calendarIds): array
     {
-        $calendarIds = array_values(array_unique(array_filter(
+        // Cap selections before constructing the SQL IN clause or making
+        // per-calendar Google API requests.
+        $calendarIds = array_slice(array_values(array_unique(array_filter(
             $calendarIds,
             static fn (mixed $id): bool => is_int($id) && $id > 0
-        )));
+        ))), 0, self::MAX_SELECTED_CALENDARS);
 
         // Never turn an empty client-side selection into "all calendars".
         if (!$calendarIds) {

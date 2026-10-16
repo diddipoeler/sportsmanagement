@@ -26,12 +26,16 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Use Joomla's native form persistence without writing obsolete Google
+     * GData Atom templates to a shared site tmp directory.
+     *
+     * Google Calendar authentication and imports now use the OAuth service;
+     * createcal.xml is neither consumed by the Joomla 5/6 workflow nor
+     * required to create a calendar record.
+     */
     public function save($data)
     {
-        if (empty($data['id']) && !$this->writeCreateCalendarTemplate($data)) {
-            return false;
-        }
-
         return parent::save($data);
     }
 
@@ -74,31 +78,4 @@ final class JsmgcalendarModel extends SportsManagementAdminModel
         return $data;
     }
 
-    private function writeCreateCalendarTemplate(array $data): bool
-    {
-        $tmpDir = JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp';
-
-        if (!is_dir($tmpDir) && !mkdir($tmpDir, 0755, true) && !is_dir($tmpDir)) {
-            return false;
-        }
-
-        $offset = (string) $this->administratorApplication()->get('offset', 'UTC');
-        $color = ltrim((string) ($data['color'] ?? ''), '#');
-        $xml = "<entry xmlns='http://www.w3.org/2005/Atom'\n"
-            . "xmlns:gd='http://schemas.google.com/g/2005'\n"
-            . "xmlns:gCal='http://schemas.google.com/gCal/2005'>\n"
-            . "<title type='text'>[TITLE]</title>\n"
-            . "<summary type='text'>[SUMMARY]</summary>\n"
-            . "<gCal:timezone value='" . htmlspecialchars($offset, ENT_QUOTES, 'UTF-8') . "'></gCal:timezone>\n"
-            . "<gCal:hidden value='false'></gCal:hidden>\n"
-            . "<gCal:color value='#" . htmlspecialchars($color, ENT_QUOTES, 'UTF-8') . "'></gCal:color>\n"
-            . "<gd:where rel='' label='' valueString='Oakland'></gd:where>\n"
-            . "</entry>\n";
-
-        return file_put_contents(
-            $tmpDir . DIRECTORY_SEPARATOR . 'createcal.xml',
-            $xml,
-            LOCK_EX
-        ) !== false;
-    }
 }

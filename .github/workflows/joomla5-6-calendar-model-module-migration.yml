@@ -1,0 +1,50 @@
+name: Joomla 5/6 calendar model and module migration
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/GoogleCalendarReadService.php'
+      - 'admin/src/Model/JsmgcalendarModel.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_calendar_migration_contract.php'
+      - '.github/workflows/joomla5-6-calendar-model-module-migration.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Service/GoogleCalendarReadService.php'
+      - 'admin/src/Model/JsmgcalendarModel.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_calendar_migration_contract.php'
+      - '.github/workflows/joomla5-6-calendar-model-module-migration.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  calendar-migration:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint migrated site admin and module PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Service/GoogleCalendarReadService.php
+            admin/src/Model/JsmgcalendarModel.php
+            modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
+            .github/tests/joomla56_calendar_migration_contract.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Exercise calendar migration regression tests
+        run: php .github/tests/joomla56_calendar_migration_contract.php

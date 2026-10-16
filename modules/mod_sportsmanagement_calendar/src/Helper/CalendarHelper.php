@@ -34,6 +34,15 @@ final class CalendarHelper
         };
     }
 
+    /**
+     * Calendar views and AJAX requests use four-digit dates; avoid producing
+     * invalid years when a legacy parameter or query string is out of range.
+     */
+    public static function normaliseYear(int $year): int
+    {
+        return min(9999, max(1970, $year));
+    }
+
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         $this->bootstrapRuntime();
@@ -52,19 +61,33 @@ final class CalendarHelper
             ? 1
             : 0;
 
-        if (!$params->get('cal_start_date')) {
+        $rawStartDate = $params->get('cal_start_date');
+        $startDate = null;
+
+        // Old module configurations can contain invalid dates or even arrays.
+        // An invalid optional date should fall back to the current month,
+        // not throw and prevent the rest of the Joomla site from rendering.
+        if (is_string($rawStartDate) && trim($rawStartDate) !== '') {
+            try {
+                $startDate = new Date($rawStartDate);
+            } catch (\Throwable) {
+                $startDate = null;
+            }
+        }
+
+        if ($startDate === null) {
             $year = $input->getInt('year', (int) date('Y'));
             $month = $input->getInt('month', (int) date('m'));
             $day = $input->getInt('day', 0);
         } else {
-            $startDate = new Date((string) $params->get('cal_start_date'));
             $year = $input->getInt('year', (int) $startDate->format('Y'));
             $month = $input->getInt('month', (int) $startDate->format('m'));
             $day = $ajax ? 0 : $input->getInt('day', (int) $startDate->format('d'));
         }
 
-        $year = max(1970, $year);
+        $year = self::normaliseYear($year);
         $month = max(1, min(12, $month));
+        $day = max(0, min(31, $day));
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
@@ -254,7 +277,7 @@ final class CalendarHelper
         }
 
         $viewName = $input->getCmd('viewname', 'range');
-        $year = max(1970, $input->getInt('formvalueyear', (int) date('Y')));
+        $year = self::normaliseYear($input->getInt('formvalueyear', (int) date('Y')));
         $month = max(1, min(12, $input->getInt('formvaluemonth', (int) date('m'))));
         $day = max(1, min(31, $input->getInt('formvalueday', 1)));
 
