@@ -60,8 +60,11 @@ jobs:
           grep -Fq 'SportsManagement native Currentround field could not be loaded.' admin/models/fields/currentround.php
           grep -Fq "class_alias(CurrentroundField::class, 'JFormFieldCurrentround')" admin/models/fields/currentround.php
 
-          grep -Fq 'is_file($nativeHelper)' modules/mod_sportsmanagement_gcalendar/helper.php
-          grep -Fq 'SportsManagement native GCalendar module helper could not be loaded.' modules/mod_sportsmanagement_gcalendar/helper.php
+          # The Joomla 5/6 bridge loads a dependency map instead of a single
+          # obsolete $nativeHelper variable.
+          grep -Fq "GcalendarHelper::class => __DIR__ . '/src/Helper/GcalendarHelper.php'" modules/mod_sportsmanagement_gcalendar/helper.php
+          grep -Fq 'is_file($file)' modules/mod_sportsmanagement_gcalendar/helper.php
+          grep -Fq 'SportsManagement GCalendar dependency could not be loaded:' modules/mod_sportsmanagement_gcalendar/helper.php
           grep -Fq "class_exists('sportsmanagementModGCalendarHelper', false)" modules/mod_sportsmanagement_gcalendar/helper.php
 
       - name: Reject stale Batch 55 metadata
