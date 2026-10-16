@@ -132,7 +132,11 @@ jobs:
           grep -Fq 'extends AbstractModuleDispatcher' "$dispatcher"
           grep -Fq "getHelper('TeamPlayersHelper')" "$dispatcher"
           grep -Fq 'getWebAssetManager()' "$dispatcher"
-          grep -Fq "class_alias(TeamPlayersHelper::class, 'modSportsmanagementTeamPlayersHelper')" "$module_helper_bridge"
+          # The legacy helper now wraps the native helper instead of aliasing
+          # it, preserving historic static template override methods.
+          grep -Fq 'final class modSportsmanagementTeamPlayersHelper' "$module_helper_bridge"
+          grep -Fq 'public static function getData(' "$module_helper_bridge"
+          grep -Fq '(new TeamPlayersHelper())->getData(' "$module_helper_bridge"
           grep -Fq 'SportsManagementDatabaseResolver' "$helper"
           grep -Fq 'SiteRouteHelper' "$helper"
           grep -Fq "require __DIR__ . '/native.php';" "$default_layout"
