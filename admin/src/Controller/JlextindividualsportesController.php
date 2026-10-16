@@ -22,6 +22,8 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
 {
     public function generatematchsingles(): void
     {
+        $this->assertWritePermission('core.create');
+
         $app = $this->app;
         $post = $this->requestData();
 
@@ -62,6 +64,8 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
 
     public function delete(): void
     {
+        $this->assertWritePermission('core.delete');
+
         $post = $this->requestData();
         $ids = $this->selectedIds();
 
@@ -81,6 +85,8 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
 
     private function saveShortAndRedirect(bool $close): void
     {
+        $this->assertWritePermission('core.edit');
+
         $app = $this->app;
         $post = $this->requestData();
 
@@ -107,6 +113,8 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
 
     private function setPublishState(int $state): void
     {
+        $this->assertWritePermission('core.edit.state');
+
         $post = $this->requestData();
         $ids = $this->selectedIds();
 
@@ -139,10 +147,41 @@ final class JlextindividualsportesController extends SportsManagementAdminContro
     /** @return int[] */
     private function selectedIds(): array
     {
-        return array_values(array_filter(array_map(
-            'intval',
-            (array) $this->app->getInput()->post->get('cid', [], 'array')
-        )));
+        $raw = $this->app->getInput()->post->get('cid', [], 'array');
+
+        if (!is_array($raw) || count($raw) > 500) {
+            throw new \UnexpectedValueException('Invalid individual-match selection.', 400);
+        }
+
+        $ids = [];
+
+        foreach ($raw as $candidate) {
+            if (!is_string($candidate) && !is_int($candidate)) {
+                continue;
+            }
+
+            $value = trim((string) $candidate);
+
+            if (!preg_match('/^[0-9]+$/D', $value)) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+
+            if ($id !== false) {
+                $ids[$id] = $id;
+            }
+        }
+
+        return array_values($ids);
     }
 
     private function editorUrl(array $post): string

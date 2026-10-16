@@ -23,6 +23,8 @@ use Joomla\Filesystem\File;
  */
 final class SmextxmleditorModel extends AdminModel
 {
+    private const MAX_SOURCE_BYTES = 1048576;
+
     public function getForm($data = [], $loadData = true)
     {
         FormHelper::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -36,19 +38,26 @@ final class SmextxmleditorModel extends AdminModel
 
     public function save($data)
     {
-        $fileName = $this->normaliseFileName((string) ($data['filename'] ?? ''));
+        $this->assertEditorPermission();
 
-        if ($fileName === null) {
+        if (!is_array($data) || !is_string($data['filename'] ?? null)
+            || !is_string($data['source'] ?? null)
+            || strlen($data['source']) > self::MAX_SOURCE_BYTES) {
+            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_XML_FILE_WRITE'));
+
+            return false;
+        }
+
+        $filePath = $this->existingEditorFile($data['filename'], true);
+
+        if ($filePath === null) {
             $this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 
             return false;
         }
 
-        $filePath = $this->getEditorPath() . DIRECTORY_SEPARATOR . $fileName;
-        $source = (string) ($data['source'] ?? '');
-
         try {
-            if (!File::write($filePath, $source)) {
+            if (!File::write($filePath, $data['source'])) {
                 throw new \RuntimeException('Extended source file could not be written.');
             }
         } catch (\Throwable) {
@@ -76,20 +85,14 @@ final class SmextxmleditorModel extends AdminModel
 
     public function getSource()
     {
-        $fileName = $this->normaliseFileName(
-            $this->administratorApplication()->getInput()->getString('file_name')
-        );
+        $this->assertEditorPermission();
+
+        $fileName = $this->administratorApplication()->getInput()->getString('file_name');
+        $filePath = $this->existingEditorFile($fileName);
         $item = new \stdClass();
 
-        if ($fileName === null) {
-            $this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
-
-            return $item;
-        }
-
-        $filePath = $this->getEditorPath() . DIRECTORY_SEPARATOR . $fileName;
-
-        if (!is_file($filePath) || !is_readable($filePath)) {
+        if ($filePath === null || !is_readable($filePath)
+            || filesize($filePath) > self::MAX_SOURCE_BYTES) {
             $this->setError(Text::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));
 
             return $item;
@@ -98,7 +101,7 @@ final class SmextxmleditorModel extends AdminModel
         try {
             $source = file_get_contents($filePath);
 
-            if ($source === false) {
+            if (!is_string($source) || strlen($source) > self::MAX_SOURCE_BYTES) {
                 throw new \RuntimeException('Extended source file could not be read.');
             }
         } catch (\Throwable) {
@@ -107,10 +110,55 @@ final class SmextxmleditorModel extends AdminModel
             return $item;
         }
 
-        $item->filename = $fileName;
+        $item->filename = basename($filePath);
         $item->source = $source;
 
         return $item;
+    }
+
+    private function assertEditorPermission(): void
+    {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
+    private function existingEditorFile(mixed $fileName, bool $forWrite = false): ?string
+    {
+        if (!is_string($fileName)) {
+            return null;
+        }
+
+        $fileName = $this->normaliseFileName($fileName);
+
+        if ($fileName === null) {
+            return null;
+        }
+
+        $root = realpath($this->getEditorPath());
+
+        if ($root === false) {
+            return null;
+        }
+
+        $candidate = $root . DIRECTORY_SEPARATOR . $fileName;
+
+        // Never create arbitrary .php files or follow symlinks into other
+        // directories; both can otherwise lead to executable code writes.
+        if (is_link($candidate) || !is_file($candidate)) {
+            return null;
+        }
+
+        $resolved = realpath($candidate);
+
+        if ($resolved === false || dirname($resolved) !== $root
+            || ($forWrite && !is_writable($resolved))) {
+            return null;
+        }
+
+        return $resolved;
     }
 
     private function getEditorPath(): string
@@ -131,12 +179,14 @@ final class SmextxmleditorModel extends AdminModel
     {
         $fileName = trim($fileName);
 
-        if ($fileName === '' || basename($fileName) !== $fileName) {
+        if ($fileName === ''
+            || strlen($fileName) > 255
+            || str_contains($fileName, '..')
+            || str_contains($fileName, '\\')
+            || !preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*\.(?:xml|php)$/iD', $fileName)) {
             return null;
         }
 
-        $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-        return in_array($extension, ['xml', 'php'], true) ? $fileName : null;
+        return $fileName;
     }
 }

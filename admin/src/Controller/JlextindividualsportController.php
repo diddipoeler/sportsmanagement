@@ -20,6 +20,9 @@ final class JlextindividualsportController extends SportsManagementAdminControll
 {
     public function addmatch(): void
     {
+        // This legacy add-match task bypasses Joomla's standard save routine.
+        $this->assertWritePermission('core.create');
+
         $app = $this->app;
         $post = $app->getInput()->post->getArray();
         $post['project_id'] = (int) $app->getUserState('com_sportsmanagement.pid', $post['project_id'] ?? 0);

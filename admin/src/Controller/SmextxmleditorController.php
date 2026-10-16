@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SmextxmleditorModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\Router\Route;
@@ -33,11 +34,20 @@ final class SmextxmleditorController extends FormController
     {
         $this->checkToken();
 
+        if (!$this->app->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $data = $this->app->getInput()->post->get('jform', [], 'array');
         $model = $this->getModel();
+
+        if (!$model instanceof SmextxmleditorModel) {
+            throw new \RuntimeException('Extended source editor model is unavailable.', 500);
+        }
+
         $success = $model->save($data);
         $task = $this->getTask();
-        $fileName = rawurlencode((string) ($data['filename'] ?? ''));
+        $fileName = rawurlencode(is_string($data['filename'] ?? null) ? $data['filename'] : '');
 
         if (!$success) {
             $this->setRedirect(
