@@ -18,6 +18,11 @@ use Joomla\Database\ParameterType;
 
 final class ProjectMapHelper
 {
+    private const MAX_SEASONS = 50;
+    private const MAX_FILTER_VALUES = 200;
+    private const MAX_FILTER_BYTES = 4096;
+    private const MAX_PROJECT_ROWS = 5000;
+
     public function getMapData($seasonIds, DatabaseInterface $db): array
     {
         $projects = $this->getData($seasonIds, $db);
@@ -67,7 +72,9 @@ final class ProjectMapHelper
             ->whereIn($db->quoteName('pro.season_id'), $seasonIds, ParameterType::INTEGER)
             ->order($db->quoteName('le.country') . ' ASC, ' . $db->quoteName('pro.id') . ' DESC');
 
-        $db->setQuery($query);
+        // Map only needs one project per country. Bound the intermediate
+        // result set instead of loading an unbounded historical project list.
+        $db->setQuery($query, 0, self::MAX_PROJECT_ROWS);
 
         // Grouping only by country while selecting unrelated project and league
         // columns is rejected by MySQL ONLY_FULL_GROUP_BY. Choose the highest
@@ -263,8 +270,9 @@ final class ProjectMapHelper
 
         $ids = [];
 
-        foreach ($seasonIds as $entry) {
-            if (!is_int($entry) && !is_string($entry)) {
+        foreach (array_slice($seasonIds, 0, self::MAX_FILTER_VALUES) as $entry) {
+            if ((!is_int($entry) && !is_string($entry))
+                || (is_string($entry) && strlen($entry) > self::MAX_FILTER_BYTES)) {
                 continue;
             }
 
@@ -276,6 +284,10 @@ final class ProjectMapHelper
                 if (is_int($value)) {
                     if ($value > 0) {
                         $ids[$value] = $value;
+
+                        if (count($ids) >= self::MAX_SEASONS) {
+                            return array_values($ids);
+                        }
                     }
                     continue;
                 }
@@ -288,6 +300,10 @@ final class ProjectMapHelper
 
                 if ($id !== false) {
                     $ids[$id] = $id;
+
+                    if (count($ids) >= self::MAX_SEASONS) {
+                        return array_values($ids);
+                    }
                 }
             }
         }

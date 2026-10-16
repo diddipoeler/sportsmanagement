@@ -44,7 +44,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 
     public function getProjectType($project_id = 0)
     {
-        $projectId = (int) $project_id;
+        $projectId = self::positiveDatabaseId($project_id);
 
         if ($projectId <= 0) {
             return false;
@@ -71,8 +71,15 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 
     public function getProjectteams($project_id = 0, $division_id = 0): array
     {
-        $projectId = (int) $project_id;
-        $divisionId = (int) $division_id;
+        $projectId = self::positiveDatabaseId($project_id);
+        $divisionId = ($division_id === 0 || $division_id === '0' || $division_id === '')
+            ? 0 : self::positiveDatabaseId($division_id);
+
+        // An explicitly invalid division must not silently query every team.
+        if (($division_id !== 0 && $division_id !== '0' && $division_id !== '')
+            && $divisionId <= 0) {
+            return [];
+        }
 
         if ($projectId <= 0) {
             return [];
@@ -107,7 +114,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
 
         try {
-            $db->setQuery($query);
+            $db->setQuery($query, 0, 1000);
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
@@ -206,7 +213,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 
     public function getMatchdays($project_id = 0): array
     {
-        $projectId = (int) $project_id;
+        $projectId = self::positiveDatabaseId($project_id);
 
         if ($projectId <= 0) {
             return [];
@@ -233,7 +240,7 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 
     public function getMatches($project_id = 0, $division_id = 0): int
     {
-        $projectId = (int) $project_id;
+        $projectId = self::positiveDatabaseId($project_id);
 
         if ($projectId <= 0) {
             return 0;
@@ -425,6 +432,35 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 
             return false;
         }
+    }
+
+    /**
+     * Interpret complete numeric Joomla identifiers without permissive PHP
+     * integer casts ("12junk" must never select project 12).
+     */
+    private static function positiveDatabaseId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+
+        if (!preg_match('/^[0-9]+$/D', $raw)) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     private function reportDatabaseError(\Throwable $e): void

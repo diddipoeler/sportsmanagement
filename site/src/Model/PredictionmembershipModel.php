@@ -59,8 +59,15 @@ final class PredictionmembershipModel extends PredictionentryModel
 
         $memberId = (int) $db->insertid();
         if ($memberId > 0) {
-            $this->sendMembershipConfirmation($memberId, $userId);
+            // An email/SMTP or notification-query failure must not turn an
+            // already persisted registration into a reported failed signup.
+            try {
+                $this->sendMembershipConfirmation($memberId, $userId);
+            } catch (\Throwable) {
+                // Membership is committed; notification is best-effort.
+            }
         }
+
         return $memberId;
     }
 
@@ -91,7 +98,24 @@ final class PredictionmembershipModel extends PredictionentryModel
             ->order($db->quoteName('u.email') . ' ASC')
             ->bind(':adminPredictionId', $predictionGameId, ParameterType::INTEGER);
         $db->setQuery($adminQuery);
-        $bcc = array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
+        // Administrators can number in the thousands. Bound mail recipients
+        // and reject malformed addresses returned by old user databases.
+        $bcc = [];
+        foreach ($db->loadColumn() ?: [] as $candidate) {
+            if (!is_string($candidate)
+                || strlen($candidate) > 254
+                || filter_var($candidate, FILTER_VALIDATE_EMAIL) === false) {
+                continue;
+            }
+
+            $bcc[strtolower($candidate)] = $candidate;
+
+            if (count($bcc) >= 100) {
+                break;
+            }
+        }
+
+        $bcc = array_values($bcc);
 
         try {
             $app = $this->siteApplication();

@@ -1,0 +1,50 @@
+name: Joomla 5/6 prediction membership DFB import and projectmap bounds
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/PredictionmembershipModel.php'
+      - 'admin/src/Model/JlextdfbkeyimportModel.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php'
+      - '.github/tests/joomla56_membership_dfb_projectmap_bounds.php'
+      - '.github/workflows/joomla5-6-membership-dfb-projectmap-bounds.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Model/PredictionmembershipModel.php'
+      - 'admin/src/Model/JlextdfbkeyimportModel.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php'
+      - '.github/tests/joomla56_membership_dfb_projectmap_bounds.php'
+      - '.github/workflows/joomla5-6-membership-dfb-projectmap-bounds.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Check PHP syntax and required metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Model/PredictionmembershipModel.php
+            admin/src/Model/JlextdfbkeyimportModel.php
+            modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+            .github/tests/joomla56_membership_dfb_projectmap_bounds.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Exercise registration import and map bounds
+        run: php .github/tests/joomla56_membership_dfb_projectmap_bounds.php
