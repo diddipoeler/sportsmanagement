@@ -56,7 +56,9 @@ jobs:
           nav='modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php'
           grep -Fq 'use Joomla\Database\ParameterType;' "$nav"
           grep -Fq '$this->db->createQuery()' "$nav"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$nav"
+          # The Joomla 5/6 navigation helper resolves the site application via its shared service.
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;' "$nav"
+          grep -Fq 'return SportsManagementSiteApplicationResolver::resolve();' "$nav"
           grep -Fq -- "->bind(':projectId', \$projectId, ParameterType::INTEGER)" "$nav"
           grep -Fq -- "->bind(':divisionId', \$divisionId, ParameterType::INTEGER)" "$nav"
           grep -Fq -- "->bind(':seasonId', \$seasonId, ParameterType::INTEGER)" "$nav"
