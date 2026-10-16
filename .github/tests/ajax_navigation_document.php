@@ -43,6 +43,7 @@ namespace Joomla\CMS\Helper {
 namespace {
     define('_JEXEC', 1);
     define('JPATH_ADMINISTRATOR', '/not-installed');
+    define('JPATH_SITE', '/not-installed');
 
     class TestParams
     {
@@ -63,6 +64,7 @@ namespace {
     {
         public function isClient(string $client): bool { return $client === 'site'; }
         public function getLanguage(): object { return new class {
+            public function getTag(): string { return 'en-GB'; }
             public function load(mixed ...$args): bool { return true; }
         }; }
         public function getDocument(): object { return new \stdClass(); }
