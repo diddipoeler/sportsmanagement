@@ -79,6 +79,6 @@ jobs:
           start = text.index('public function createArticlesAjax')
           end = text.index('private function loadPublishedModule', start)
           segment = text[start:end]
-          if "if ($joomlaDatabase === null)" not in segment:
-              raise SystemExit('AJAX database fallback guard is missing')
+          if '$joomlaDatabase = $this->joomlaDatabase($joomlaDatabase);' not in segment:
+              raise SystemExit('AJAX database injection/fallback resolver is missing')
           PY
