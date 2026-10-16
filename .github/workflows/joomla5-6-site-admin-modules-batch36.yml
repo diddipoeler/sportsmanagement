@@ -56,14 +56,14 @@ jobs:
           done
 
           grep -Fq 'class SportsmanagementRouter extends SportsManagementRouterService implements RouterInterface' site/router.php
-          grep -Fq 'SportsManagement native site router could not be loaded.' site/router.php
+          grep -Fq 'SportsManagement native site router runtime could not be loaded.' site/router.php
 
           grep -Fq 'use Joomla\Database\ParameterType;' admin/src/Service/IndividualMatchViewService.php
           grep -Fq -- "->bind(':projectId', \$projectId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchViewService.php
           grep -Fq -- "->bind(':roundId', \$roundId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchViewService.php
           grep -Fq -- "->bind(':matchId', \$matchId, ParameterType::INTEGER)" admin/src/Service/IndividualMatchViewService.php
 
-          grep -Fq 'SportsManagement Project Map helper could not be loaded.' modules/mod_sportsmanagement_projectmap/helper.php
+          grep -Fq 'SportsManagement ProjectMap dependency could not be loaded:' modules/mod_sportsmanagement_projectmap/helper.php
           grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_projectmap/services/provider.php
           grep -Fq 'HelperFactory' modules/mod_sportsmanagement_projectmap/services/provider.php
           grep -Fq 'final class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
