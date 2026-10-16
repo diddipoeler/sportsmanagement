@@ -9,6 +9,7 @@ on:
       - '.github/tests/joomla56_substitution_pair_integrity.php'
       - '.github/tests/joomla56_match_event_transaction_integrity.php'
       - '.github/tests/joomla56_admin_timeline_insert_ids.php'
+      - '.github/tests/joomla56_match_mutation_input_integrity.php'
       - '.github/workflows/joomla5-6-substitution-pair-integrity.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -18,6 +19,7 @@ on:
       - '.github/tests/joomla56_substitution_pair_integrity.php'
       - '.github/tests/joomla56_match_event_transaction_integrity.php'
       - '.github/tests/joomla56_admin_timeline_insert_ids.php'
+      - '.github/tests/joomla56_match_mutation_input_integrity.php'
       - '.github/workflows/joomla5-6-substitution-pair-integrity.yml'
 
 permissions:
@@ -45,7 +47,7 @@ jobs:
             admin/src/Service/MatchTimelineWriteService.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_substitution_pair_integrity.php .github/tests/joomla56_match_event_transaction_integrity.php .github/tests/joomla56_admin_timeline_insert_ids.php; do
+          for file in "${files[@]}" .github/tests/joomla56_substitution_pair_integrity.php .github/tests/joomla56_match_event_transaction_integrity.php .github/tests/joomla56_admin_timeline_insert_ids.php .github/tests/joomla56_match_mutation_input_integrity.php; do
             php -l "$file"
           done
 
@@ -57,3 +59,6 @@ jobs:
 
       - name: Regression check for administrator event/comment IDs and rollbacks
         run: php .github/tests/joomla56_admin_timeline_insert_ids.php
+
+      - name: Reject malformed frontend match mutation POST data
+        run: php .github/tests/joomla56_match_mutation_input_integrity.php
