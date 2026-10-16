@@ -72,7 +72,7 @@ namespace Joomla\CMS\MVC\Controller {
             $name = 'Smquotetxt',
             $prefix = 'Administrator',
             $config = []
-        ): mixed {
+        ) {
             ++$this->getModelCalls;
             return $this->model;
         }
