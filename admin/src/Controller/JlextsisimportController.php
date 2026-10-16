@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextsisimportModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 /** Native Joomla 5/6 controller for the SIS import workflow. */
@@ -21,8 +22,16 @@ final class JlextsisimportController extends BaseController
     {
         $this->checkToken();
 
+        // CSRF validation is not an authorization decision. Importers can
+        // persist data and replace import files, so require component admin.
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $app = $this->app;
-        $option = $app->getInput()->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
+        $option = 'com_sportsmanagement';
         $model = $this->getImportModel();
         $model->getData();
 

@@ -61,6 +61,8 @@ final class JlxmlimportController extends BaseController
 
     public function select()
     {
+        $this->assertAdminAccess();
+
         $app = $this->app;
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
@@ -78,6 +80,7 @@ final class JlxmlimportController extends BaseController
     public function save()
     {
         $this->checkToken();
+        $this->assertAdminAccess();
 
         $app = $this->app;
         $input = $app->getInput();
@@ -119,6 +122,15 @@ final class JlxmlimportController extends BaseController
         return true;
     }
 
+    private function assertAdminAccess(): void
+    {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
     private function downloadRemoteImport(int $projectId, bool $update): bool
     {
         $app = $this->app;
@@ -142,7 +154,14 @@ final class JlxmlimportController extends BaseController
             return false;
         }
 
-        if ($response->code < 200 || $response->code >= 300 || !File::write($importFile, (string) $response->body)) {
+        // Do not persist unexpectedly large remote import responses.
+        // Network transfer itself is handled by Joomla's HTTP client.
+        $remoteBody = (string) ($response->body ?? '');
+
+        if ($response->code < 200
+            || $response->code >= 300
+            || strlen($remoteBody) > 25 * 1024 * 1024
+            || !File::write($importFile, $remoteBody)) {
             $app->enqueueMessage(
                 Text::_('daten -> ' . $remoteUrl . ' konnten nicht kopiert werden!'),
                 'error'

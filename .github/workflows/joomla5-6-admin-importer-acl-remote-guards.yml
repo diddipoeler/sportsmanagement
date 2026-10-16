@@ -1,0 +1,59 @@
+name: Joomla 5/6 admin importer ACL and remote payload guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/JlextdbbimportController.php'
+      - 'admin/src/Controller/JlextlmoimportsController.php'
+      - 'admin/src/Controller/JlextdfbnetplayerimportController.php'
+      - 'admin/src/Controller/JlextprofleagimportController.php'
+      - 'admin/src/Controller/JlextsisimportController.php'
+      - 'admin/src/Controller/JlxmlimportController.php'
+      - '.github/tests/joomla56_admin_importer_acl_remote_bounds.php'
+      - '.github/workflows/joomla5-6-admin-importer-acl-remote-guards.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/JlextdbbimportController.php'
+      - 'admin/src/Controller/JlextlmoimportsController.php'
+      - 'admin/src/Controller/JlextdfbnetplayerimportController.php'
+      - 'admin/src/Controller/JlextprofleagimportController.php'
+      - 'admin/src/Controller/JlextsisimportController.php'
+      - 'admin/src/Controller/JlxmlimportController.php'
+      - '.github/tests/joomla56_admin_importer_acl_remote_bounds.php'
+      - '.github/workflows/joomla5-6-admin-importer-acl-remote-guards.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  importer-regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP lint and required metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Controller/JlextdbbimportController.php
+            admin/src/Controller/JlextlmoimportsController.php
+            admin/src/Controller/JlextdfbnetplayerimportController.php
+            admin/src/Controller/JlextprofleagimportController.php
+            admin/src/Controller/JlextsisimportController.php
+            admin/src/Controller/JlxmlimportController.php
+            .github/tests/joomla56_admin_importer_acl_remote_bounds.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Verify importer authorization and remote export size limits
+        run: php .github/tests/joomla56_admin_importer_acl_remote_bounds.php

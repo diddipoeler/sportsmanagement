@@ -28,9 +28,17 @@ final class JlextlmoimportsController extends BaseController
     {
         $this->checkToken();
 
+        // CSRF validation is not an authorization decision. Importers can
+        // persist data and replace import files, so require component admin.
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $app = $this->app;
         $input = $app->getInput();
-        $option = $input->getCmd('option', 'com_sportsmanagement') ?: 'com_sportsmanagement';
+        $option = 'com_sportsmanagement';
         $post = $input->post->getArray();
 
         if ((int) ($post['sent'] ?? 0) === 1) {
