@@ -160,13 +160,14 @@ final class MatchWriteService
 
     public function updateRoster(array $post): bool
     {
-        $matchId = (int) ($post['id'] ?? 0);
-        $projectTeamId = (int) ($post['team'] ?? 0);
-        if ($matchId <= 0 || $projectTeamId <= 0) {
-            return true;
-        }
+        $matchId = self::validPositiveId($post['id'] ?? null);
+        $projectTeamId = self::validPositiveId($post['team'] ?? null);
+        $positions = $post['positions'] ?? [];
 
-        $positions = (array) ($post['positions'] ?? []);
+        if ($matchId === null || $projectTeamId === null || !is_array($positions)
+            || !self::validLineupSelection($post, $positions, 'position')) {
+            return false;
+        }
         $shirtNumbers = (array) ($post['trikot_number'] ?? []);
         $captains = (array) ($post['captain'] ?? []);
         [$modified, $modifiedBy] = $this->auditData();
@@ -215,13 +216,14 @@ final class MatchWriteService
 
     public function updateStaff(array $post): bool
     {
-        $matchId = (int) ($post['id'] ?? 0);
-        $projectTeamId = (int) ($post['team'] ?? 0);
-        if ($matchId <= 0 || $projectTeamId <= 0) {
-            return true;
-        }
+        $matchId = self::validPositiveId($post['id'] ?? null);
+        $projectTeamId = self::validPositiveId($post['team'] ?? null);
+        $positions = $post['staffpositions'] ?? [];
 
-        $positions = (array) ($post['staffpositions'] ?? []);
+        if ($matchId === null || $projectTeamId === null || !is_array($positions)
+            || !self::validLineupSelection($post, $positions, 'staffposition')) {
+            return false;
+        }
         [$modified, $modifiedBy] = $this->auditData();
 
         return $this->transaction(function () use ($post, $matchId, $projectTeamId, $positions, $modified, $modifiedBy): void {
@@ -257,12 +259,12 @@ final class MatchWriteService
     /** @return array{success:bool,added:array<int,array{project_referee_id:int,project_position_id:int}>} */
     public function updateReferees(array $post): array
     {
-        $matchId = (int) ($post['id'] ?? 0);
-        if ($matchId <= 0) {
+        $matchId = self::validPositiveId($post['id'] ?? null);
+        $positions = $post['positions'] ?? [];
+        if ($matchId === null || !is_array($positions)
+            || !self::validLineupSelection($post, $positions, 'position')) {
             return ['success' => false, 'added' => []];
         }
-
-        $positions = (array) ($post['positions'] ?? []);
         $selected = [];
         foreach ($positions as $positionKey => $position) {
             foreach ((array) ($post['position' . $positionKey] ?? []) as $ordering => $projectRefereeId) {
@@ -371,15 +373,60 @@ final class MatchWriteService
         $this->db->setQuery($query)->execute();
     }
 
-    private function positionId(mixed $position, int $fallback): int
+    /**
+     * Check roster/referee IDs and submitted positions before clearing old rows.
+     * Empty selections remain valid: removing all assignments is intentional.
+     */
+    private static function validLineupSelection(array $post, array $positions, string $prefix): bool
+    {
+        foreach ($positions as $key => $position) {
+            $field = $prefix . $key;
+            $entries = $post[$field] ?? [];
+            if (!is_array($entries)) {
+                return false;
+            }
+
+            foreach ($entries as $ordering => $personId) {
+                if ($personId === '' || $personId === null) {
+                    continue;
+                }
+
+                if (self::validPositiveId($personId, true) === null
+                    || self::validPositiveId($ordering, true) === null) {
+                    return false;
+                }
+
+                if (self::validPositiveId($personId, true) > 0
+                    && self::positionId($position, (int) $key) <= 0) {
+                    return false;
+                }
+            }
+        }
+
+        // Reject assignments for a position not supplied by the project's
+        // authoritative list, instead of silently deleting the existing team.
+        foreach ($post as $name => $value) {
+            if (is_string($name)
+                && preg_match('/^' . preg_quote($prefix, '/') . '[0-9]+$/D', $name)
+                && !array_key_exists(substr($name, strlen($prefix)), $positions)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static function positionId(mixed $position, int $fallback): int
     {
         if (is_object($position)) {
-            return (int) ($position->posid ?? $position->pposid ?? $position->value ?? $fallback);
+            $id = $position->posid ?? $position->pposid ?? $position->value ?? $fallback;
+        } elseif (is_array($position)) {
+            $id = $position['posid'] ?? $position['pposid'] ?? $position['value'] ?? $fallback;
+        } else {
+            $id = $fallback;
         }
-        if (is_array($position)) {
-            return (int) ($position['posid'] ?? $position['pposid'] ?? $position['value'] ?? $fallback);
-        }
-        return $fallback;
+
+        return self::validPositiveId($id) ?? 0;
     }
 
     private static function administratorApplication(): CMSApplicationInterface
