@@ -220,7 +220,25 @@ namespace {
         }
     };
     $GLOBALS['quoteTestSiteDb'] = $siteDb;
+    $GLOBALS['quoteTestSiteApp'] = new class implements \Joomla\CMS\Application\CMSApplicationInterface {
+        public bool $allowed = false;
+        public function getIdentity(): object {
+            return new class($this) {
+                public function __construct(private object $app) {}
+                public function authorise(string $action, string $asset): bool {
+                    return $this->app->allowed
+                        && $action === 'core.edit'
+                        && $asset === 'com_sportsmanagement';
+                }
+            };
+        }
+    };
     $site = new \Diddipoeler\Component\SportsManagement\Site\Model\UpdsportsmanagementModel();
+    if ($site->updItem(['id' => 5, 'greeting' => 'not authorised']) !== false
+        || $siteDb->writes !== 0) {
+        throw new \RuntimeException('Frontend update model accepted a direct unauthorized write.');
+    }
+    $GLOBALS['quoteTestSiteApp']->allowed = true;
     foreach ([
         ['id' => 5, 'greeting' => ['array']],
         ['id' => '5junk', 'greeting' => 'invalid'],

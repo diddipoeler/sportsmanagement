@@ -26,14 +26,31 @@ final class InstallhelperModel extends SportsManagementAdminModel
      */
     public function saveSportstype(array $post = []): array
     {
-        $sportsType = trim((string) ($post['filter_sports_type'] ?? ''));
+        $user = $this->administratorApplication()->getIdentity();
 
-        if ($sportsType === '') {
+        // Other Joomla integrations may call the model directly, bypassing
+        // the install-helper controller's CSRF and ACL checks.
+        if ($user === null || !$user->authorise('core.admin', 'com_sportsmanagement')) {
+            return [Text::_('JERROR_ALERTNOAUTHOR')];
+        }
+
+        $rawType = $post['filter_sports_type'] ?? null;
+
+        // A Joomla language-key suffix cannot contain arrays, control
+        // characters or unbounded text from an old installer form.
+        if (!is_string($rawType)) {
+            return [Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_ERROR_1')];
+        }
+
+        $sportsType = trim($rawType);
+
+        if ($sportsType === ''
+            || strlen($sportsType) > 64
+            || !preg_match('/^[a-zA-Z][a-zA-Z0-9_-]*$/D', $sportsType)) {
             return [Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALLHELPER_ERROR_1')];
         }
 
         $db = $this->getDatabase();
-        $user = $this->administratorApplication()->getIdentity();
         $profile = new \stdClass();
         $profile->name = 'COM_SPORTSMANAGEMENT_ST_' . strtoupper($sportsType);
         $profile->modified = Factory::getDate()->toSql();

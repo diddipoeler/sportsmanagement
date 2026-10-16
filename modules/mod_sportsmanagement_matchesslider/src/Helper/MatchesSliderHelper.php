@@ -24,6 +24,11 @@ use Joomla\Registry\Registry;
 
 final class MatchesSliderHelper
 {
+    private const MAX_FILTER_IDS = 100;
+    private const MAX_FILTER_VALUES = 200;
+    private const MAX_FILTER_VALUE_BYTES = 4096;
+    private const MAX_MATCH_ROWS = 500;
+
     private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
     {
         if ($database !== null) {
@@ -231,7 +236,9 @@ final class MatchesSliderHelper
             $db->quoteName('m.match_date') . ' ASC',
             $db->quoteName('m.match_number') . ' ASC',
         ]);
-        $db->setQuery($query);
+        // An old slider configuration can reference years of matches. Bound
+        // each module render to a reasonable number of current rows.
+        $db->setQuery($query, 0, self::MAX_MATCH_ROWS);
         $rows = $db->loadObjectList() ?: [];
         $pictureServer = $this->pictureServer($databaseMode);
 
@@ -270,7 +277,7 @@ final class MatchesSliderHelper
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.published') . ' = 1')
             ->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER);
-        $db->setQuery($favoritesQuery);
+        $db->setQuery($favoritesQuery, 0, self::MAX_FILTER_IDS);
 
         $conditions = [];
         $number = 0;
@@ -404,8 +411,9 @@ final class MatchesSliderHelper
         $values = is_array($value) ? $value : [$value];
         $ids = [];
 
-        foreach ($values as $candidate) {
-            if (!is_scalar($candidate)) {
+        foreach (array_slice($values, 0, self::MAX_FILTER_VALUES) as $candidate) {
+            if ((!is_int($candidate) && !is_string($candidate))
+                || (is_string($candidate) && strlen($candidate) > self::MAX_FILTER_VALUE_BYTES)) {
                 continue;
             }
 
@@ -422,6 +430,10 @@ final class MatchesSliderHelper
 
                 if ($id !== false) {
                     $ids[$id] = $id;
+
+                    if (count($ids) >= self::MAX_FILTER_IDS) {
+                        return array_values($ids);
+                    }
                 }
             }
         }

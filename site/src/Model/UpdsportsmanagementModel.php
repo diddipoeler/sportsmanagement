@@ -88,6 +88,14 @@ final class UpdsportsmanagementModel extends FormModel
 
     public function updItem(array $data): bool
     {
+        // Controller CSRF checks must not be the only write protection:
+        // the native Joomla model can also be invoked by other callers.
+        $identity = $this->siteApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            return false;
+        }
+
         // Never convert malformed identifiers (e.g. "12garbage") or arrays
         // into valid record IDs or the literal string "Array".
         $id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT, [
