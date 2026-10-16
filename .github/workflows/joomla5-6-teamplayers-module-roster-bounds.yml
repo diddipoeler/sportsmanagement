@@ -1,0 +1,55 @@
+name: Joomla 5/6 TeamPlayers SQL and roster bounds
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php'
+      - '.github/tests/joomla56_teamplayers_module_roster_bounds.php'
+      - '.github/tests/joomla56_teamplayers_selector_validation.php'
+      - '.github/tests/joomla56_teamplayers_roster_visibility.php'
+      - '.github/workflows/joomla5-6-teamplayers-module-roster-bounds.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php'
+      - '.github/tests/joomla56_teamplayers_module_roster_bounds.php'
+      - '.github/tests/joomla56_teamplayers_selector_validation.php'
+      - '.github/tests/joomla56_teamplayers_roster_visibility.php'
+      - '.github/workflows/joomla5-6-teamplayers-module-roster-bounds.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-roster:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax and metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+            .github/tests/joomla56_teamplayers_module_roster_bounds.php
+            .github/tests/joomla56_teamplayers_selector_validation.php
+            .github/tests/joomla56_teamplayers_roster_visibility.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Check bounded module roster and minutes queries
+        run: php .github/tests/joomla56_teamplayers_module_roster_bounds.php
+      - name: Keep project selector and visibility regressions green
+        shell: bash
+        run: |
+          php .github/tests/joomla56_teamplayers_selector_validation.php
+          php .github/tests/joomla56_teamplayers_roster_visibility.php

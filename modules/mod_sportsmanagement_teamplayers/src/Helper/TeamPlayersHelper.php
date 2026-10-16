@@ -22,6 +22,11 @@ use Joomla\Registry\Registry;
 
 final class TeamPlayersHelper
 {
+    // Bound both the public module output and its intermediate SQL/aggregation
+    // work. Large legacy rosters must not produce unbounded IN clauses.
+    private const MAX_PLAYERS = 100;
+    private const MAX_ROSTER_ROWS = 500;
+
     /**
      * @return array{project:?object,players:array<int,object>,roster:array<int,array<int,object>>}
      */
@@ -45,7 +50,7 @@ final class TeamPlayersHelper
         $rosterRows = $this->roster($db, $project);
         $players = [];
         $roster = [];
-        $limit = max(1, (int) $params->get('limit', 24));
+        $limit = $this->displayLimit($params->get('limit', 24));
         $showMinutes = (int) $params->get('show_mins_played', 1) === 1;
         $minutesByPlayer = $showMinutes
             ? $this->minutesPlayedByPlayer(
@@ -128,6 +133,35 @@ final class TeamPlayersHelper
         ]);
 
         return $id === false ? 0 : $id;
+    }
+
+    /**
+     * A corrupted module parameter must never bypass the configured bound.
+     */
+    private function displayLimit(mixed $raw): int
+    {
+        if (!is_int($raw) && !is_string($raw)) {
+            return 24;
+        }
+
+        $value = trim((string) $raw);
+
+        if (!preg_match('/^[0-9]+$/D', $value)) {
+            return 24;
+        }
+
+        // Avoid overflow while retaining zero-padded legacy configuration.
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 1;
+        }
+
+        if (strlen($digits) > 3) {
+            return self::MAX_PLAYERS;
+        }
+
+        return max(1, min(self::MAX_PLAYERS, (int) $digits));
     }
 
     private function project(DatabaseInterface $db, int $projectId, int $teamId): ?object
@@ -230,7 +264,7 @@ final class TeamPlayersHelper
             ->bind(':seasonId', $seasonId, ParameterType::INTEGER)
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
 
-        $db->setQuery($query);
+        $db->setQuery($query, 0, self::MAX_ROSTER_ROWS);
         $rows = $db->loadObjectList() ?: [];
 
         foreach ($rows as $row) {
@@ -271,7 +305,7 @@ final class TeamPlayersHelper
             ->where($db->quoteName('r.project_id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->group($db->quoteName('mp.teamplayer_id'));
-        $db->setQuery($query);
+        $db->setQuery($query, 0, self::MAX_ROSTER_ROWS);
 
         foreach ($db->loadObjectList() ?: [] as $row) {
             $playerId = (int) $row->player_id;
@@ -293,7 +327,7 @@ final class TeamPlayersHelper
             ->where($db->quoteName('r.project_id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->group($db->quoteName('mp.teamplayer_id'));
-        $db->setQuery($query);
+        $db->setQuery($query, 0, self::MAX_ROSTER_ROWS);
 
         foreach ($db->loadObjectList() ?: [] as $row) {
             $playerId = (int) $row->player_id;
@@ -316,7 +350,7 @@ final class TeamPlayersHelper
             ->where($db->quoteName('r.project_id') . ' = :projectId')
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->group($db->quoteName('mp.in_for'));
-        $db->setQuery($query);
+        $db->setQuery($query, 0, self::MAX_ROSTER_ROWS);
 
         foreach ($db->loadObjectList() ?: [] as $row) {
             $playerId = (int) $row->player_id;
