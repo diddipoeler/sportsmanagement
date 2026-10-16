@@ -17,6 +17,8 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 list model for tournament-tree match assignments. */
 final class TreetomatchsModel extends SportsManagementListModel
 {
+    private const MAX_NODE_MATCHES = 500;
+
     private int $nodeId = 0;
     private int $treeId = 0;
     private int $projectId = 0;
@@ -69,22 +71,89 @@ final class TreetomatchsModel extends SportsManagementListModel
         $this->setState('context.node_id', $this->nodeId);
     }
 
-    /** Replace the complete selected match set for one tree node. */
+    /** Replace one node's match set only after checking tree and project scope. */
     public function store(array $data): bool
     {
-        $nodeId = (int) ($data['id'] ?? $data['nid'] ?? 0);
-        $matchIds = $this->normaliseIds((array) ($data['node_matcheslist'] ?? []));
+        $identity = $this->administratorApplication()->getIdentity();
 
-        if ($nodeId <= 0) {
-            $this->setError('Invalid tournament-tree node id.');
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException('Not authorized to change tournament-tree matches.', 403);
+        }
 
+        $nodeId = $this->strictPositiveId($data['id'] ?? $data['nid'] ?? null);
+        $treeId = $this->strictPositiveId($data['tid'] ?? null);
+        $projectId = $this->strictPositiveId($data['pid'] ?? null);
+        $rawMatches = $data['node_matcheslist'] ?? [];
+
+        if ($nodeId <= 0 || $treeId <= 0 || $projectId <= 0
+            || !is_array($rawMatches) || count($rawMatches) > self::MAX_NODE_MATCHES) {
+            $this->setError('Invalid tournament-tree assignment.');
+            return false;
+        }
+
+        try {
+            $matchIds = $this->normaliseIds($rawMatches);
+        } catch (\UnexpectedValueException) {
+            $this->setError('Invalid tournament-tree match selection.');
             return false;
         }
 
         $db = $this->getDatabase();
-        $db->transactionStart();
+        $transactionStarted = false;
 
         try {
+            // The selected node must belong to the submitted tree and project.
+            $nodeQuery = $db->createQuery()
+                ->select($db->quoteName('n.id'))
+                ->from($db->quoteName('#__sportsmanagement_treeto_node', 'n'))
+                ->join(
+                    'INNER',
+                    $db->quoteName('#__sportsmanagement_treeto', 't')
+                    . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('n.treeto_id')
+                )
+                ->where($db->quoteName('n.id') . ' = :assignmentNodeId')
+                ->where($db->quoteName('n.treeto_id') . ' = :assignmentTreeId')
+                ->where($db->quoteName('t.project_id') . ' = :assignmentProjectId')
+                ->bind(':assignmentNodeId', $nodeId, ParameterType::INTEGER)
+                ->bind(':assignmentTreeId', $treeId, ParameterType::INTEGER)
+                ->bind(':assignmentProjectId', $projectId, ParameterType::INTEGER);
+            $db->setQuery($nodeQuery, 0, 1);
+
+            if ((int) $db->loadResult() !== $nodeId) {
+                $this->setError('Tournament-tree node does not belong to the selected project.');
+                return false;
+            }
+
+            if ($matchIds !== []) {
+                // Every assigned match must belong to the same project as
+                // the tree. Reject mixed/foreign sets instead of dropping IDs.
+                $matchQuery = $db->createQuery()
+                    ->select($db->quoteName('m.id'))
+                    ->from($db->quoteName('#__sportsmanagement_match', 'm'))
+                    ->join(
+                        'INNER',
+                        $db->quoteName('#__sportsmanagement_round', 'r')
+                        . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('m.round_id')
+                    )
+                    ->whereIn($db->quoteName('m.id'), $matchIds, ParameterType::INTEGER)
+                    ->where($db->quoteName('r.project_id') . ' = :assignmentMatchProjectId')
+                    ->bind(':assignmentMatchProjectId', $projectId, ParameterType::INTEGER);
+                $db->setQuery($matchQuery, 0, self::MAX_NODE_MATCHES);
+                $allowed = array_values(array_unique(array_map('intval', $db->loadColumn() ?: [])));
+                sort($allowed);
+                $expected = $matchIds;
+                sort($expected);
+
+                if ($allowed !== $expected) {
+                    $this->setError('Selected matches do not belong to this project.');
+                    return false;
+                }
+            }
+
+            // Validation is complete: only now may the existing set be erased.
+            $db->transactionStart();
+            $transactionStarted = true;
+
             $query = $db->createQuery()
                 ->delete($db->quoteName('#__sportsmanagement_treeto_match'))
                 ->where($db->quoteName('node_id') . ' = :storeNodeId')
@@ -92,20 +161,22 @@ final class TreetomatchsModel extends SportsManagementListModel
             $db->setQuery($query)->execute();
 
             foreach ($matchIds as $matchId) {
-                $record = (object) [
+                if (!$db->insertObject('#__sportsmanagement_treeto_match', (object) [
                     'node_id' => $nodeId,
                     'match_id' => $matchId,
-                ];
-                $db->insertObject('#__sportsmanagement_treeto_match', $record);
+                ])) {
+                    throw new \RuntimeException('Could not store tournament-tree match.');
+                }
             }
 
             $db->transactionCommit();
-
             return true;
         } catch (\Throwable $e) {
-            $db->transactionRollback();
-            $this->setError($e->getMessage());
+            if ($transactionStarted) {
+                $db->transactionRollback();
+            }
 
+            $this->setError($e->getMessage());
             return false;
         }
     }
@@ -304,11 +375,40 @@ final class TreetomatchsModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('mc.round_id'));
     }
 
+    private function strictPositiveId(mixed $raw): int
+    {
+        if (!is_string($raw) && !is_int($raw)) {
+            return 0;
+        }
+
+        $raw = trim((string) $raw);
+
+        if (!preg_match('/^[1-9][0-9]*$/D', $raw)) {
+            return 0;
+        }
+
+        $id = filter_var($raw, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
+    }
+
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        $valid = [];
+
+        foreach ($ids as $raw) {
+            $id = $this->strictPositiveId($raw);
+
+            if ($id <= 0) {
+                throw new \UnexpectedValueException('Invalid tournament-tree match ID.');
+            }
+
+            $valid[$id] = $id;
+        }
+
+        return array_values($valid);
     }
 }
+

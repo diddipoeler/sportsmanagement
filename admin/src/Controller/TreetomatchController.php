@@ -33,12 +33,18 @@ final class TreetomatchController extends SportsManagementFormController
     {
         $this->checkToken();
 
+        if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $input = $this->app->getInput();
-        $nodeId = $input->post->getInt('nid') ?: $input->getInt('nid');
-        $treeId = $input->post->getInt('tid') ?: $input->getInt('tid');
-        $projectId = $input->post->getInt('pid') ?: $input->getInt('pid');
+        // Save targets must come from the CSRF-protected POST, never from
+        // conflicting GET parameters. The model validates the raw IDs.
         $data = $input->post->getArray();
-        $data['id'] = $nodeId;
+        $data['id'] = $data['nid'] ?? null;
+        $nodeId = max(0, $input->post->getInt('nid', 0));
+        $treeId = max(0, $input->post->getInt('tid', 0));
+        $projectId = max(0, $input->post->getInt('pid', 0));
         $model = $this->getModel('Treetomatchs', 'Administrator', ['ignore_request' => false]);
         $ok = $model !== false && $model->store($data);
 

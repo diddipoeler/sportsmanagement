@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 
@@ -19,7 +20,31 @@ final class JlxmlexportsController extends BaseController
 {
     public function export(): bool
     {
-        $projectId = $this->app->getInput()->getInt('pid');
+        // The download includes whole project exports. A valid administrator
+        // session alone must not grant access to component data.
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        $rawProjectId = $this->app->getInput()->get('pid', '', 'raw');
+
+        if (!is_string($rawProjectId) && !is_int($rawProjectId)) {
+            throw new \UnexpectedValueException('Invalid export project.', 400);
+        }
+
+        $rawProjectId = trim((string) $rawProjectId);
+        $projectId = preg_match('/^[1-9][0-9]*$/D', $rawProjectId)
+            ? filter_var($rawProjectId, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ])
+            : false;
+
+        if ($projectId === false) {
+            throw new \UnexpectedValueException('Invalid export project.', 400);
+        }
+
         $model = $this->getExportModel();
 
         if (!method_exists($model, 'exportData')) {

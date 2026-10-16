@@ -74,6 +74,21 @@ class JlxmlexportsModel extends \sportsmanagementModelJLXMLExports
      * Compatibility for inherited collectors that still call getDbo().
      * New code must use the injected database/query properties instead.
      */
+    /**
+     * Guard direct model calls as well as administrator controller exports.
+     * The public site export model remains independent of administrator ACL.
+     */
+    public function exportData()
+    {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
+            throw new \RuntimeException('Not authorized to export SportsManagement data.', 403);
+        }
+
+        return parent::exportData();
+    }
+
     public function getDbo(): DatabaseInterface
     {
         return $this->jsmdb;
