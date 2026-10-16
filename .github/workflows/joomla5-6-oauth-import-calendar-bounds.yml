@@ -1,0 +1,50 @@
+name: Joomla 5/6 OAuth importer and calendar selection
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/JsmgcalendarimportModel.php'
+      - 'site/src/Model/JsonfeedModel.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
+      - '.github/tests/joomla56_calendar_oauth_import_bounds.php'
+      - '.github/workflows/joomla5-6-oauth-import-calendar-bounds.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/JsmgcalendarimportModel.php'
+      - 'site/src/Model/JsonfeedModel.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
+      - '.github/tests/joomla56_calendar_oauth_import_bounds.php'
+      - '.github/workflows/joomla5-6-oauth-import-calendar-bounds.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  import-bounds:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax and required file headers
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            admin/src/Model/JsmgcalendarimportModel.php
+            site/src/Model/JsonfeedModel.php
+            modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+            .github/tests/joomla56_calendar_oauth_import_bounds.php
+          )
+          for file in "${files[@]}"; do php -l "$file"; done
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+      - name: Exercise OAuth and calendar ID runtime regressions
+        run: php .github/tests/joomla56_calendar_oauth_import_bounds.php

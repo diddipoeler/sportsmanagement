@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
@@ -29,6 +30,8 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
 {
     private const OAUTH_STATE_KEY = 'com_sportsmanagement.jsmgcalendar.oauth_state';
     private const OAUTH_CONTEXT_KEY = 'com_sportsmanagement.jsmgcalendar.oauth_context';
+    private const MAX_CALENDAR_PAGES = 10;
+    private const MAX_OAUTH_CODE_LENGTH = 4096;
 
     public function import(): bool
     {
@@ -36,7 +39,17 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
         $input = $app->getInput();
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $session = $app->getSession();
-        $code = (string) $input->get('code', '', 'raw');
+        $code = $input->get('code', '', 'raw');
+
+        // A callback parameter must be a single bounded string, never an
+        // array or a control-character-containing HTTP request value.
+        if (!is_string($code) || strlen($code) > self::MAX_OAUTH_CODE_LENGTH
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $code)) {
+            $app->enqueueMessage('Invalid Google OAuth response.', 'error');
+
+            return false;
+        }
+
         $oauthError = trim((string) $input->getString('error'));
         $isCallback = $code !== '' || $oauthError !== '' || trim((string) $input->getString('state')) !== '';
 
@@ -143,7 +156,9 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
             $token = $client->authenticate($code);
             $client->setAccessToken($token);
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            // OAuth transport exceptions may include tokens and credentials.
+            Log::add('Google Calendar OAuth authentication failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
+            $app->enqueueMessage('Google OAuth authentication failed.', 'error');
             $session->set(self::OAUTH_CONTEXT_KEY, null);
 
             return false;
@@ -151,20 +166,34 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
 
         $tokenData = is_string($token) ? json_decode($token, true) : $token;
         $tokenData = is_array($tokenData) ? $tokenData : [];
-        $refreshToken = $tokenData['refresh_token'] ?? null;
+        $rawRefreshToken = $tokenData['refresh_token'] ?? null;
+        $refreshToken = is_string($rawRefreshToken) ? trim($rawRefreshToken) : '';
         $calendarService = new \Google_Service_Calendar($client);
         $db = $this->getDatabase();
         $userId = (int) $app->getIdentity()->id;
         $session->set(self::OAUTH_CONTEXT_KEY, null);
         $transactionStarted = false;
+        $processed = 0;
+        $skippedWithoutToken = 0;
 
         try {
             $db->transactionStart();
             $transactionStarted = true;
             $pageToken = null;
+            $seenTokens = [];
+            $pageCount = 0;
 
             do {
-                $options = $pageToken ? ['pageToken' => $pageToken] : [];
+                if ($pageToken !== null) {
+                    if (isset($seenTokens[$pageToken])) {
+                        break;
+                    }
+
+                    $seenTokens[$pageToken] = true;
+                }
+
+                ++$pageCount;
+                $options = $pageToken !== null ? ['pageToken' => $pageToken] : [];
                 $calendarList = $calendarService->calendarList->listCalendarList($options);
 
                 foreach ($calendarList->getItems() as $entry) {
@@ -175,22 +204,49 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
                         continue;
                     }
 
+                    $lookup = $db->createQuery()
+                        ->select([
+                            $db->quoteName('id'),
+                            $db->quoteName('params'),
+                        ])
+                        ->from($db->quoteName('#__sportsmanagement_gcalendar'))
+                        ->where($db->quoteName('calendar_id') . ' = :calendarId')
+                        ->bind(':calendarId', $calendarId, ParameterType::STRING);
+                    $db->setQuery($lookup, 0, 1);
+                    $existing = $db->loadObject() ?: null;
+                    $existingId = (int) ($existing->id ?? 0);
+
+                    // Google may omit refresh_token on repeated consent.
+                    // Preserve the stored token when updating an existing
+                    // calendar instead of overwriting it with null.
+                    $effectiveRefreshToken = $refreshToken;
+
+                    if ($effectiveRefreshToken === '' && is_string($existing->params ?? null)) {
+                        try {
+                            $storedParams = new Registry();
+                            $storedParams->loadString($existing->params);
+                            $storedToken = $storedParams->get('refreshToken', '');
+                            $effectiveRefreshToken = is_string($storedToken) ? trim($storedToken) : '';
+                        } catch (\Throwable) {
+                            $effectiveRefreshToken = '';
+                        }
+                    }
+
+                    // A new calendar without OAuth refresh credentials cannot
+                    // be read later; skip rather than storing a broken record.
+                    if ($effectiveRefreshToken === '') {
+                        ++$skippedWithoutToken;
+                        continue;
+                    }
+
                     $calendarParams = new Registry();
-                    $calendarParams->set('refreshToken', $refreshToken);
+                    $calendarParams->set('refreshToken', $effectiveRefreshToken);
                     $calendarParams->set('client-id', $clientId);
                     $calendarParams->set('client-secret', $clientSecret);
                     $calendarParams->set('calendarId', $calendarId);
                     $calendarParams->set('action-create', true);
                     $calendarParams->set('action-edit', true);
                     $calendarParams->set('action-delete', true);
-
-                    $lookup = $db->createQuery()
-                        ->select($db->quoteName('id'))
-                        ->from($db->quoteName('#__sportsmanagement_gcalendar'))
-                        ->where($db->quoteName('calendar_id') . ' = :calendarId')
-                        ->bind(':calendarId', $calendarId, ParameterType::STRING);
-                    $db->setQuery($lookup, 0, 1);
-                    $existingId = (int) $db->loadResult();
                     $now = Factory::getDate()->toSql();
 
                     if ($existingId <= 0) {
@@ -222,14 +278,21 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
                         ];
                         $db->updateObject('#__sportsmanagement_gcalendar', $row, 'id');
                     }
+
+                    ++$processed;
                 }
 
-                $pageToken = $calendarList->getNextPageToken();
-            } while ($pageToken);
+                $nextToken = $calendarList->getNextPageToken();
+                $pageToken = is_string($nextToken) && $nextToken !== '' ? $nextToken : null;
+            } while ($pageToken !== null && $pageCount < self::MAX_CALENDAR_PAGES);
 
             $db->transactionCommit();
 
-            return true;
+            if ($skippedWithoutToken > 0) {
+                $app->enqueueMessage('Some Google calendars were skipped because no refresh token was available.', 'warning');
+            }
+
+            return $processed > 0;
         } catch (\Throwable $e) {
             if ($transactionStarted) {
                 try {
@@ -239,8 +302,9 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
                 }
             }
 
-            $this->setError($e->getMessage());
-            $app->enqueueMessage($e->getMessage(), 'error');
+            Log::add('Google Calendar import failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
+            $this->setError('Google Calendar import failed.');
+            $app->enqueueMessage('Google Calendar import failed.', 'error');
 
             return false;
         }

@@ -13,6 +13,9 @@ use Diddipoeler\Component\SportsManagement\Site\Service\GoogleCalendarReadServic
 
 final class JsonfeedModel extends SportsManagementModel
 {
+    private const MAX_CALENDAR_IDS = 50;
+    private const MAX_ID_INPUTS = 200;
+    private const MAX_ID_STRING_LENGTH = 4096;
     /**
      * Return normalized Google Calendar event arrays for the JSON feed.
      *
@@ -63,8 +66,11 @@ final class JsonfeedModel extends SportsManagementModel
 
         $ids = [];
 
-        foreach ($value as $entry) {
-            if (!is_int($entry) && !is_string($entry)) {
+        // Bound both the number and size of untrusted selection values
+        // before splitting a comma-separated request into calendar IDs.
+        foreach (array_slice($value, 0, self::MAX_ID_INPUTS) as $entry) {
+            if ((!is_int($entry) && !is_string($entry))
+                || (is_string($entry) && strlen($entry) > self::MAX_ID_STRING_LENGTH)) {
                 continue;
             }
 
@@ -86,6 +92,10 @@ final class JsonfeedModel extends SportsManagementModel
                 $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
                 if ($id !== false) {
                     $ids[$id] = $id;
+                }
+
+                if (count($ids) >= self::MAX_CALENDAR_IDS) {
+                    return array_values($ids);
                 }
             }
         }

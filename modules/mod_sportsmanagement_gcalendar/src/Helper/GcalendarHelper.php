@@ -21,6 +21,9 @@ use Joomla\Registry\Registry;
 
 final class GcalendarHelper
 {
+    private const MAX_CALENDARS = 50;
+    private const MAX_ID_INPUTS = 200;
+    private const MAX_ID_STRING_LENGTH = 4096;
     public function getData(
         Registry $params,
         object $module,
@@ -143,7 +146,9 @@ final class GcalendarHelper
         }
 
         $query->order($db->quoteName('name') . ' ASC');
-        $db->setQuery($query);
+        // Match the JSON feed bound, including when the module is configured
+        // to display all calendars visible to the current user.
+        $db->setQuery($query, 0, self::MAX_CALENDARS);
 
         return $db->loadObjectList() ?: [];
     }
@@ -156,8 +161,9 @@ final class GcalendarHelper
         $values = is_array($configured) ? $configured : [$configured];
         $ids = [];
 
-        foreach ($values as $value) {
-            if (!is_string($value) && !is_int($value)) {
+        foreach (array_slice($values, 0, self::MAX_ID_INPUTS) as $value) {
+            if ((!is_string($value) && !is_int($value))
+                || (is_string($value) && strlen($value) > self::MAX_ID_STRING_LENGTH)) {
                 continue;
             }
 
@@ -178,6 +184,10 @@ final class GcalendarHelper
                 $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
                 if ($id !== false) {
                     $ids[$id] = $id;
+                }
+
+                if (count($ids) >= self::MAX_CALENDARS) {
+                    return array_values($ids);
                 }
             }
         }
