@@ -38,6 +38,20 @@ final class MatchMutationService
 
     public function saveEvent(array $data): int|false
     {
+        $matchId = self::positiveId($data['match_id'] ?? null);
+        $projectTeamId = self::positiveId($data['projectteam_id'] ?? null);
+        $eventTypeId = self::positiveId($data['event_type_id'] ?? null);
+        $teamPlayerId = self::positiveId($data['teamplayer_id'] ?? 0, true);
+
+        if ($matchId === null || $projectTeamId === null
+            || $eventTypeId === null || $teamPlayerId === null
+            || !is_scalar($data['event_sum'] ?? null)
+            || !is_scalar($data['event_time'] ?? '')
+            || !is_scalar($data['notice'] ?? '')
+            || !is_scalar($data['notes'] ?? '')) {
+            return false;
+        }
+
         if (!empty($data['useeventtime']) && empty($data['event_time'])) {
             return false;
         }
@@ -51,9 +65,6 @@ final class MatchMutationService
 
         try {
             if (empty($data['doubleevents'])) {
-                $matchId = (int) ($data['match_id'] ?? 0);
-                $projectTeamId = (int) ($data['projectteam_id'] ?? 0);
-                $teamPlayerId = (int) ($data['teamplayer_id'] ?? 0);
                 $eventTime = (string) ($data['event_time'] ?? '');
                 $eventSum = (string) ($data['event_sum'] ?? '');
                 $query = $db->createQuery()
@@ -77,11 +88,11 @@ final class MatchMutationService
             }
 
             $event = new \stdClass();
-            $event->match_id = (int) ($data['match_id'] ?? 0);
-            $event->projectteam_id = (int) ($data['projectteam_id'] ?? 0);
-            $event->teamplayer_id = (int) ($data['teamplayer_id'] ?? 0);
+            $event->match_id = $matchId;
+            $event->projectteam_id = $projectTeamId;
+            $event->teamplayer_id = $teamPlayerId;
             $event->event_time = (string) ($data['event_time'] ?? '');
-            $event->event_type_id = (int) ($data['event_type_id'] ?? 0);
+            $event->event_type_id = $eventTypeId;
             $event->event_sum = (string) ($data['event_sum'] ?? '');
             $event->notice = (string) ($data['notice'] ?? '');
             $event->notes = (string) ($data['notes'] ?? '');
@@ -124,18 +135,18 @@ final class MatchMutationService
         // Preserve the legacy validation contract. Although the historical
         // implementation contains fallback branches for zero values, they are
         // unreachable after these checks and therefore are not broadened here.
-        if (empty($data['project_position_id'])
-            || empty($data['in_out_time'])
-            || empty($data['in'])
-            || empty($data['out'])
-            || empty($data['matchid'])) {
+        $playerIn = self::positiveId($data['in'] ?? null);
+        $playerOut = self::positiveId($data['out'] ?? null);
+        $matchId = self::positiveId($data['matchid'] ?? null);
+        $positionId = self::positiveId($data['project_position_id'] ?? null);
+
+        if ($playerIn === null || $playerOut === null
+            || $matchId === null || $positionId === null
+            || !is_scalar($data['in_out_time'] ?? null)
+            || (string) $data['in_out_time'] === '') {
             return false;
         }
 
-        $playerIn = (int) $data['in'];
-        $playerOut = (int) $data['out'];
-        $matchId = (int) $data['matchid'];
-        $positionId = (int) $data['project_position_id'];
         $inOutTime = (string) $data['in_out_time'];
         $db = $this->sportsDatabase;
 
@@ -274,7 +285,13 @@ final class MatchMutationService
 
     public function saveComment(array $data): int|false
     {
-        if (empty($data['event_time']) || empty($data['notes'])) {
+        $matchId = self::positiveId($data['match_id'] ?? null);
+
+        if ($matchId === null
+            || !is_scalar($data['event_time'] ?? null)
+            || !is_scalar($data['notes'] ?? null)
+            || !is_scalar($data['type'] ?? '')
+            || empty($data['event_time']) || empty($data['notes'])) {
             return false;
         }
 
@@ -283,7 +300,7 @@ final class MatchMutationService
         try {
             $comment = new \stdClass();
             $comment->event_time = (string) ($data['event_time'] ?? '');
-            $comment->match_id = (int) ($data['match_id'] ?? 0);
+            $comment->match_id = $matchId;
             $comment->type = (string) ($data['type'] ?? '');
             $comment->notes = (string) ($data['notes'] ?? '');
             $comment->modified = $this->modified;
@@ -406,6 +423,25 @@ final class MatchMutationService
             $this->logFailure($e);
             return false;
         }
+    }
+
+    /** Prevent malformed POST values from being silently cast to unrelated IDs. */
+    private static function positiveId(mixed $value, bool $allowZero = false): ?int
+    {
+        $minimum = $allowZero ? 0 : 1;
+
+        if (is_int($value)) {
+            return $value >= $minimum ? $value : null;
+        }
+
+        if (!is_string($value)
+            || !preg_match($allowZero ? '/^(?:0|[1-9][0-9]*)$/D' : '/^[1-9][0-9]*$/D', $value)) {
+            return null;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => $minimum]]);
+
+        return $id === false ? null : $id;
     }
 
     private function logFailure(\Throwable $e): void
