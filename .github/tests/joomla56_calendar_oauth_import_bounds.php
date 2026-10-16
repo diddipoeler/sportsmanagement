@@ -18,7 +18,7 @@ namespace Joomla\CMS\Component {
         }
     }
 }
-namespace Joomla\CMS\Factory {
+namespace Joomla\CMS {
     class Factory {
         public static function getDate(): object {
             return new class { public function toSql(): string { return '2026-10-16 09:00:00'; } };
@@ -233,7 +233,14 @@ namespace {
         || count($GLOBALS['testDb']->inserted) !== 0
         || $GLOBALS['testCalendarList']->calls !== 2
         || $GLOBALS['testDb']->commits !== 1) {
-        throw new \RuntimeException('OAuth pagination or existing-calendar import did not work.');
+        throw new \RuntimeException(sprintf(
+            'OAuth import mismatch: updated=%d inserted=%d pages=%d commits=%d; messages=%s',
+            count($GLOBALS['testDb']->updated),
+            count($GLOBALS['testDb']->inserted),
+            $GLOBALS['testCalendarList']->calls,
+            $GLOBALS['testDb']->commits,
+            implode(' / ', $GLOBALS['testApp']->messages)
+        ));
     }
     $stored = json_decode($GLOBALS['testDb']->updated[0]->params, true, 512, JSON_THROW_ON_ERROR);
     if (($stored['refreshToken'] ?? '') !== 'saved-refresh-token') {
