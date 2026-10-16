@@ -78,13 +78,13 @@ class NavigationMenuHelper
     private function initialiseState(): void
     {
         $input = $this->app->getInput();
-        $defaultProject = (int) $this->params->get('default_project_id', 0);
+        $defaultProject = max(0, (int) $this->params->get('default_project_id', 0));
         $this->projectId = $input->getCmd('option') === 'com_sportsmanagement'
-            ? $input->getInt('p', $defaultProject)
+            ? max(0, $input->getInt('p', $defaultProject))
             : $defaultProject;
-        $this->roundId = $input->getInt('r', 0);
-        $this->divisionId = $input->getInt('division', 0);
-        $this->teamId = $input->getInt('tid', 0);
+        $this->roundId = max(0, $input->getInt('r', 0));
+        $this->divisionId = max(0, $input->getInt('division', 0));
+        $this->teamId = max(0, $input->getInt('tid', 0));
         $this->project = null;
         $this->teamOptions = null;
     }

@@ -99,11 +99,11 @@ final class Dispatcher extends ComponentDispatcher
             throw new \RuntimeException('SportsManagement requires the Joomla site application.', 500);
         }
 
-        $task = strtolower($this->input->getCmd('task', 'display'));
-        $view = strtolower($this->input->getCmd('view', ''));
-        $controller = strtolower($this->input->getCmd('controller', ''));
-        $layout = strtolower($this->input->getCmd('layout', 'default'));
-        $format = strtolower($this->input->getCmd('format', 'html'));
+        $task = $this->validatedIdentifier('task', 'display');
+        $view = $this->validatedIdentifier('view', '');
+        $controller = $this->validatedIdentifier('controller', '');
+        $layout = $this->validatedIdentifier('layout', 'default');
+        $format = $this->validatedIdentifier('format', 'html');
 
         if ($task === 'display'
             && $view === 'predictionuser'
@@ -125,6 +125,30 @@ final class Dispatcher extends ComponentDispatcher
         }
 
         $this->dispatchLegacy();
+    }
+
+
+    /**
+     * Reject arrays and filtered request identifiers before MVC or legacy routing.
+     *
+     * Joomla's getCmd() silently removes invalid characters; accepting the
+     * transformed value could select a different controller, view or layout.
+     */
+    private function validatedIdentifier(string $key, string $default): string
+    {
+        $raw = $this->input->get($key, $default, 'raw');
+
+        if (!is_string($raw)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement ' . $key . '.', 400);
+        }
+
+        $filtered = $this->input->getCmd($key, $default);
+
+        if (strtolower($filtered) !== strtolower($raw)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement ' . $key . '.', 400);
+        }
+
+        return strtolower($filtered);
     }
 
     private function isModernTask(string $task, string $format): bool
