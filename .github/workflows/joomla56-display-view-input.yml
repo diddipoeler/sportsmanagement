@@ -1,0 +1,32 @@
+name: Joomla 5/6 display view validation
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/DisplayController.php'
+      - 'admin/src/Controller/DisplayController.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - '.github/tests/joomla56_display_view_input_contract.php'
+      - '.github/workflows/joomla56-display-view-input.yml'
+  pull_request:
+    paths:
+      - 'site/src/Controller/DisplayController.php'
+      - 'admin/src/Controller/DisplayController.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - '.github/tests/joomla56_display_view_input_contract.php'
+  workflow_dispatch:
+
+jobs:
+  view-input:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP syntax
+        run: |
+          php -l site/src/Controller/DisplayController.php
+          php -l admin/src/Controller/DisplayController.php
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          php -l .github/tests/joomla56_display_view_input_contract.php
+      - name: View input contracts
+        run: php .github/tests/joomla56_display_view_input_contract.php
