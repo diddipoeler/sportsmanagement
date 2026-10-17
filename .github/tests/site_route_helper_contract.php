@@ -72,5 +72,33 @@ namespace {
         throw new \RuntimeException('Valid leading-zero menu ID was not normalized.');
     }
 
+
+    // Malformed options must never become nested option[] parameters or
+    // redirect this component helper to an unexpected component.
+    foreach ([
+        [],
+        ['option' => ['com_content']],
+        ['option' => (object) ['name' => 'com_content']],
+        ['option' => false],
+        ['option' => "com_content\\n"],
+        ['option' => ''],
+    ] as $input) {
+        $url = SiteRouteHelper::query($input + ['view' => 'ranking']);
+        parse_str((string) parse_url($url, PHP_URL_QUERY), $params);
+
+        if (($params['option'] ?? null) !== 'com_sportsmanagement'
+            || ($params['view'] ?? null) !== 'ranking') {
+            throw new \\RuntimeException('Malformed component option was accepted in a site route.');
+        }
+    }
+
+    // Intentionally requested routes to another Joomla component remain valid.
+    $url = SiteRouteHelper::query(['option' => 'com_content', 'view' => 'article', 'id' => 7]);
+    parse_str((string) parse_url($url, PHP_URL_QUERY), $params);
+
+    if (($params['option'] ?? null) !== 'com_content' || ($params['id'] ?? null) !== '7') {
+        throw new \\RuntimeException('SiteRouteHelper::query lost a valid external component target.');
+    }
+
     echo "SiteRouteHelper routing contract OK.\n";
 }
