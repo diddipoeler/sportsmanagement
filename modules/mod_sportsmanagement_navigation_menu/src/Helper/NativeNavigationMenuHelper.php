@@ -182,7 +182,6 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
                 ]);
 
             case 'ranking':
-            default:
                 return SiteRouteHelper::view('ranking', $base + [
                     'type' => 0,
                     'r' => $roundId,
@@ -190,6 +189,10 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
                     'to' => 0,
                     'division' => $divisionId,
                 ]);
+
+            default:
+                // An unknown navigation target must not silently become a ranking link.
+                return false;
         }
     }
 }
