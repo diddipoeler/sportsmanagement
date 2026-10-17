@@ -33,17 +33,7 @@ final class ActSeasonHelper
         }
 
         try {
-            $rawDatabaseSelector = $componentParams->get('cfg_which_database', 0);
-            // Never cast malformed configuration arrays or arbitrary strings to database 1.
-            $databaseSelector = 0;
-
-            if (is_int($rawDatabaseSelector) || (is_string($rawDatabaseSelector) && preg_match('/^[0-9]+$/D', $rawDatabaseSelector))) {
-                $validSelector = filter_var($rawDatabaseSelector, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
-
-                if ($validSelector !== false) {
-                    $databaseSelector = $validSelector;
-                }
-            }
+            $databaseSelector = $this->normaliseDatabaseSelector($componentParams->get('cfg_which_database', 0));
             $db = $this->database($databaseSelector, $fallbackDatabase);
             $query = $db->createQuery()
                 ->select([
@@ -134,6 +124,17 @@ final class ActSeasonHelper
             'federations' => $federations,
             'countriesByFederation' => $countries,
         ];
+    }
+
+    private function normaliseDatabaseSelector(mixed $rawSelector): int
+    {
+        if (!is_int($rawSelector) && (!is_string($rawSelector) || !preg_match('/^[0-9]+$/D', $rawSelector))) {
+            return 0;
+        }
+
+        $selector = filter_var($rawSelector, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $selector === false ? 0 : $selector;
     }
 
     private function normaliseIds(mixed $ids): array
