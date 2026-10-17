@@ -146,5 +146,30 @@ namespace {
         throw new \RuntimeException('Placeholder statistic IDs must remain a no-op.');
     }
 
+    // The lineup editor clears existing starter rows before re-inserting the
+    // selection. Malformed shirt/captain metadata must be rejected first.
+    $roster = [
+        'id' => 91,
+        'team' => 21,
+        'positions' => [3 => (object) ['posid' => 3]],
+        'position3' => [0 => '11'],
+        'trikot_number' => [11 => '10'],
+        'captain' => [11 => '1'],
+    ];
+    foreach ([
+        ['trikot_number' => [11 => ['10']]],
+        ['trikot_number' => new \\stdClass()],
+        ['captain' => [11 => ['1']]],
+        ['captain' => [11 => '1junk']],
+        ['captain' => [11 => true]],
+        ['captain' => '1'],
+    ] as $bad) {
+        $db = new StatisticsDatabase();
+        if ((new MatchWriteService($db))->updateRoster(array_replace($roster, $bad)) !== false
+            || $db->queryCount !== 0 || $db->started !== 0 || $db->actions !== []) {
+            throw new \\RuntimeException('Invalid roster metadata reached a destructive write.');
+        }
+    }
+
     echo "Joomla 5/6 administrator match statistic input integrity OK\n";
 }
