@@ -1,0 +1,30 @@
+name: Joomla 5/6 PHP file headers
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/**/*.php'
+      - 'admin/**/*.php'
+      - 'modules/**/*.php'
+      - '.github/scripts/check-php-file-headers.php'
+      - '.github/workflows/joomla56-php-headers.yml'
+  pull_request:
+    paths:
+      - 'site/**/*.php'
+      - 'admin/**/*.php'
+      - 'modules/**/*.php'
+      - '.github/scripts/check-php-file-headers.php'
+      - '.github/workflows/joomla56-php-headers.yml'
+  workflow_dispatch:
+
+jobs:
+  headers:
+    name: Required PHP metadata
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check syntax of header validator
+        run: php -l .github/scripts/check-php-file-headers.php
+      - name: Validate site, admin and module headers
+        run: php .github/scripts/check-php-file-headers.php
