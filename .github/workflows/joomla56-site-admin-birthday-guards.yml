@@ -1,0 +1,42 @@
+name: Joomla 5/6 site routes admin ACL birthday guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/site_route_helper_contract.php'
+      - '.github/tests/joomla56_admin_form_save_acl.php'
+      - '.github/tests/joomla56_birthday_database_failures.php'
+      - '.github/workflows/joomla56-site-admin-birthday-guards.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/site_route_helper_contract.php'
+      - '.github/tests/joomla56_admin_form_save_acl.php'
+      - '.github/tests/joomla56_birthday_database_failures.php'
+      - '.github/workflows/joomla56-site-admin-birthday-guards.yml'
+  workflow_dispatch:
+
+jobs:
+  site-admin-birthday:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP lint
+        run: |
+          php -l site/src/Helper/SiteRouteHelper.php
+          php -l admin/src/Controller/SportsManagementFormController.php
+          php -l modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          php -l .github/tests/site_route_helper_contract.php
+          php -l .github/tests/joomla56_admin_form_save_acl.php
+          php -l .github/tests/joomla56_birthday_database_failures.php
+      - name: PHP regression checks
+        run: |
+          php .github/tests/site_route_helper_contract.php
+          php .github/tests/joomla56_admin_form_save_acl.php
+          php .github/tests/joomla56_birthday_database_failures.php
