@@ -114,14 +114,19 @@ jobs:
           grep -Fq 'public function save()' admin/src/Controller/JlextprofleagimportController.php
           grep -Fq 'public function save()' admin/src/Controller/JlextsisimportController.php
 
-          grep -Fq 'new Archive()' admin/src/Controller/JlextdbbimportController.php
-          grep -Fq 'new Archive()' admin/src/Controller/JlextdfbnetplayerimportController.php
-          grep -Fq 'new Archive()' admin/src/Controller/JlextlmoimportsController.php
-          grep -Fq 'new Archive()' admin/src/Controller/JlextprofleagimportController.php
+          grep -Fq 'LegacyImportZipService::stage(' admin/src/Controller/JlextdbbimportController.php
+          grep -Fq 'LegacyImportZipService::stage(' admin/src/Controller/JlextdfbnetplayerimportController.php
+          grep -Fq 'LegacyImportZipService::stage(' admin/src/Controller/JlextlmoimportsController.php
+          grep -Fq 'LegacyImportZipService::stage(' admin/src/Controller/JlextprofleagimportController.php
           grep -Fq "createModel('Jlextdbbimport'" admin/src/Controller/JlextdbbimportController.php
           grep -Fq "createModel('Jlextdfbnetplayerimport'" admin/src/Controller/JlextdfbnetplayerimportController.php
           grep -Fq "createModel('Jlextlmoimports'" admin/src/Controller/JlextlmoimportsController.php
           grep -Fq "createModel('Jlextprofleagimport'" admin/src/Controller/JlextprofleagimportController.php
           grep -Fq "createModel('Jlextsisimport'" admin/src/Controller/JlextsisimportController.php
+
+          php -l admin/src/Service/LegacyImportZipService.php
+          php .github/tests/phpdoc_metadata.php admin/src/Service/LegacyImportZipService.php
+          grep -Fq 'class LegacyImportZipService' admin/src/Service/LegacyImportZipService.php
+          grep -Fq 'getStream($entry)' admin/src/Service/LegacyImportZipService.php
 
           echo 'Joomla 5/6 jlext import batch 13 contracts OK'

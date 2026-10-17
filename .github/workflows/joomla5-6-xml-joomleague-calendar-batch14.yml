@@ -104,7 +104,7 @@ jobs:
           grep -Fq "createModel('Jlxmlexports'" admin/src/Controller/JlxmlexportsController.php
           grep -Fq 'public function save()' admin/src/Controller/JlxmlimportController.php
           grep -Fq 'private function downloadRemoteImport' admin/src/Controller/JlxmlimportController.php
-          grep -Fq 'new Archive()' admin/src/Controller/JlxmlimportController.php
+          grep -Fq 'LegacyImportZipService::stage(' admin/src/Controller/JlxmlimportController.php
           grep -Fq 'public function getModel' admin/src/Controller/JoomleagueimportController.php
           grep -Fq 'public function importjoomleaguenew()' admin/src/Controller/JoomleagueimportsController.php
           grep -Fq 'public function joomleaguesetagegroup()' admin/src/Controller/JoomleagueimportsController.php
@@ -114,5 +114,10 @@ jobs:
           grep -Fq "getModel(\$name = 'Jsmgcalendar'" admin/src/Controller/JsmgcalendarsController.php
           grep -Fq 'class modJSMRankingHelper extends stdClass' modules/mod_sportsmanagement_ranking/helper.php
           grep -Fq 'Factory::getContainer()' modules/mod_sportsmanagement_ranking/helper.php
+
+          php -l admin/src/Service/LegacyImportZipService.php
+          php .github/tests/phpdoc_metadata.php admin/src/Service/LegacyImportZipService.php
+          grep -Fq 'class LegacyImportZipService' admin/src/Service/LegacyImportZipService.php
+          grep -Fq 'getStream($entry)' admin/src/Service/LegacyImportZipService.php
 
           echo 'Joomla 5/6 XML/JoomLeague/calendar batch 14 contracts OK'
