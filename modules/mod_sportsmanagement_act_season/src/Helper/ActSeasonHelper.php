@@ -32,9 +32,10 @@ final class ActSeasonHelper
             return ['list' => [], 'federations' => [], 'countriesByFederation' => []];
         }
 
-        $databaseSelector = max(0, (int) $componentParams->get('cfg_which_database', 0));
-        $db = $this->database($databaseSelector, $fallbackDatabase);
-        $query = $db->createQuery()
+        try {
+            $databaseSelector = max(0, (int) $componentParams->get('cfg_which_database', 0));
+            $db = $this->database($databaseSelector, $fallbackDatabase);
+            $query = $db->createQuery()
             ->select([
                 $db->quoteName('pro.id'),
                 $db->quoteName('pro.name'),
@@ -63,7 +64,6 @@ final class ActSeasonHelper
                 $db->quoteName('pro.name') . ' ASC',
             ]);
 
-        try {
             $db->setQuery($query);
             $list = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
