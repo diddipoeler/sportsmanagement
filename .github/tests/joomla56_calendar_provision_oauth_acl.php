@@ -15,6 +15,15 @@ namespace Joomla\CMS\Language {
 namespace Joomla\Database {
     class ParameterType { public const INTEGER = 'integer'; }
 }
+namespace Joomla\CMS\Log {
+    class Log {
+        public const NOTICE = 200;
+        public static array $messages = [];
+        public static function add(string $message, int $priority, string $category): void {
+            self::$messages[] = $message;
+        }
+    }
+}
 namespace Joomla\Filesystem {
     class File {
         public static int $checks = 0;
