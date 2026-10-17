@@ -34,10 +34,10 @@ final class BirthdayHelper
         CMSApplicationInterface $app,
         DatabaseInterface $fallbackDatabase
     ): array {
-        $databaseSelector = (int) $params->get(
+        $databaseSelector = $this->normaliseDatabaseSelector($params->get(
             'cfg_which_database',
             $componentParams->get('cfg_which_database', 0)
-        );
+        ));
         $selectedProjects = $params->get('p', []);
         $projectIds = $this->normaliseIds($selectedProjects);
         $selectedTeams = $params->get('teams', []);
@@ -52,81 +52,81 @@ final class BirthdayHelper
             return $this->emptyData($params);
         }
 
-        $db = $this->database($databaseSelector, $fallbackDatabase);
-        $teamIds = $this->resolveTeamIds($db, $params, $projectIds);
-
-        if ($favoriteTeams && !$teamIds) {
-            return $this->emptyData($params);
-        }
-
-        $personTypes = match ((int) $params->get('use_which', 0)) {
-            1 => [1],
-            2 => [2],
-            default => [1, 2],
-        };
-
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('p.id'),
-                $db->quoteName('p.birthday'),
-                $db->quoteName('p.firstname'),
-                $db->quoteName('p.nickname'),
-                $db->quoteName('p.lastname'),
-                $db->quoteName('p.alias', 'person_alias'),
-                $db->quoteName('p.picture', 'default_picture'),
-                $db->quoteName('p.country'),
-                $db->quoteName('stp.picture'),
-                $db->quoteName('stp.persontype', 'type'),
-                $db->quoteName('st.team_id'),
-                $db->quoteName('pt.project_id'),
-                $db->quoteName('t.name', 'team_name'),
-                $db->quoteName('t.alias', 'team_alias'),
-                $db->quoteName('pro.alias', 'project_alias'),
-                $db->quoteName('s.id', 'season_id'),
-                $db->quoteName('s.alias', 'season_alias'),
-                $db->quoteName('co.alpha2', 'country_alpha2'),
-                $db->quoteName('co.picture', 'country_picture'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_person', 'p'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'stp') . ' ON ' . $db->quoteName('stp.person_id') . ' = ' . $db->quoteName('p.id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('stp.team_id') . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('stp.season_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro') . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id') . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('st.season_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('pro.season_id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('p.country'))
-            ->where($db->quoteName('p.published') . ' = 1')
-            ->where($db->quoteName('p.birthday') . ' <> ' . $db->quote('0000-00-00'))
-            ->whereIn($db->quoteName('stp.persontype'), $personTypes, ParameterType::INTEGER);
-
-        $position = $db->createQuery()
-            ->select($db->quoteName('pos.name'))
-            ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_person_project_position', 'ppp') . ' ON ' . $db->quoteName('ppp.project_position_id') . ' = ' . $db->quoteName('ppos.id'))
-            ->where($db->quoteName('ppp.person_id') . ' = ' . $db->quoteName('p.id'))
-            ->where($db->quoteName('ppp.project_id') . ' = ' . $db->quoteName('pro.id'))
-            ->where($db->quoteName('ppp.persontype') . ' = ' . $db->quoteName('stp.persontype'));
-        $position->setLimit(1);
-        $query->select('(' . $position . ') AS ' . $db->quoteName('position_name'));
-
-        $ageGroupId = max(0, (int) $params->get('agegrouplist', 0));
-        if ($ageGroupId > 0) {
-            $query->where($db->quoteName('p.agegroup_id') . ' = :ageGroupId')
-                ->bind(':ageGroupId', $ageGroupId, ParameterType::INTEGER);
-        }
-        if ($projectIds) {
-            $query->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER);
-        }
-        if ($teamIds) {
-            $query->whereIn($db->quoteName('st.team_id'), $teamIds, ParameterType::INTEGER);
-        }
-        $query
-            ->order($db->quoteName('p.lastname') . ' ASC')
-            ->order($db->quoteName('p.firstname') . ' ASC')
-            ->order($db->quoteName('p.id') . ' ASC');
-
         try {
+            $db = $this->database($databaseSelector, $fallbackDatabase);
+            $teamIds = $this->resolveTeamIds($db, $params, $projectIds);
+
+            if ($favoriteTeams && !$teamIds) {
+                return $this->emptyData($params);
+            }
+
+            $personTypes = match ((int) $params->get('use_which', 0)) {
+                1 => [1],
+                2 => [2],
+                default => [1, 2],
+            };
+
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('p.id'),
+                    $db->quoteName('p.birthday'),
+                    $db->quoteName('p.firstname'),
+                    $db->quoteName('p.nickname'),
+                    $db->quoteName('p.lastname'),
+                    $db->quoteName('p.alias', 'person_alias'),
+                    $db->quoteName('p.picture', 'default_picture'),
+                    $db->quoteName('p.country'),
+                    $db->quoteName('stp.picture'),
+                    $db->quoteName('stp.persontype', 'type'),
+                    $db->quoteName('st.team_id'),
+                    $db->quoteName('pt.project_id'),
+                    $db->quoteName('t.name', 'team_name'),
+                    $db->quoteName('t.alias', 'team_alias'),
+                    $db->quoteName('pro.alias', 'project_alias'),
+                    $db->quoteName('s.id', 'season_id'),
+                    $db->quoteName('s.alias', 'season_alias'),
+                    $db->quoteName('co.alpha2', 'country_alpha2'),
+                    $db->quoteName('co.picture', 'country_picture'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_person', 'p'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_person_id', 'stp') . ' ON ' . $db->quoteName('stp.person_id') . ' = ' . $db->quoteName('p.id'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_season_team_id', 'st') . ' ON ' . $db->quoteName('st.team_id') . ' = ' . $db->quoteName('stp.team_id') . ' AND ' . $db->quoteName('st.season_id') . ' = ' . $db->quoteName('stp.season_id'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_project_team', 'pt') . ' ON ' . $db->quoteName('pt.team_id') . ' = ' . $db->quoteName('st.id'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'pro') . ' ON ' . $db->quoteName('pro.id') . ' = ' . $db->quoteName('pt.project_id') . ' AND ' . $db->quoteName('pro.season_id') . ' = ' . $db->quoteName('st.season_id'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_season', 's') . ' ON ' . $db->quoteName('s.id') . ' = ' . $db->quoteName('pro.season_id'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_team', 't') . ' ON ' . $db->quoteName('t.id') . ' = ' . $db->quoteName('st.team_id'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('p.country'))
+                ->where($db->quoteName('p.published') . ' = 1')
+                ->where($db->quoteName('p.birthday') . ' <> ' . $db->quote('0000-00-00'))
+                ->whereIn($db->quoteName('stp.persontype'), $personTypes, ParameterType::INTEGER);
+
+            $position = $db->createQuery()
+                ->select($db->quoteName('pos.name'))
+                ->from($db->quoteName('#__sportsmanagement_position', 'pos'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_project_position', 'ppos') . ' ON ' . $db->quoteName('ppos.position_id') . ' = ' . $db->quoteName('pos.id'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_person_project_position', 'ppp') . ' ON ' . $db->quoteName('ppp.project_position_id') . ' = ' . $db->quoteName('ppos.id'))
+                ->where($db->quoteName('ppp.person_id') . ' = ' . $db->quoteName('p.id'))
+                ->where($db->quoteName('ppp.project_id') . ' = ' . $db->quoteName('pro.id'))
+                ->where($db->quoteName('ppp.persontype') . ' = ' . $db->quoteName('stp.persontype'));
+            $position->setLimit(1);
+            $query->select('(' . $position . ') AS ' . $db->quoteName('position_name'));
+
+            $ageGroupId = max(0, (int) $params->get('agegrouplist', 0));
+            if ($ageGroupId > 0) {
+                $query->where($db->quoteName('p.agegroup_id') . ' = :ageGroupId')
+                    ->bind(':ageGroupId', $ageGroupId, ParameterType::INTEGER);
+            }
+            if ($projectIds) {
+                $query->whereIn($db->quoteName('pt.project_id'), $projectIds, ParameterType::INTEGER);
+            }
+            if ($teamIds) {
+                $query->whereIn($db->quoteName('st.team_id'), $teamIds, ParameterType::INTEGER);
+            }
+            $query
+                ->order($db->quoteName('p.lastname') . ' ASC')
+                ->order($db->quoteName('p.firstname') . ' ASC')
+                ->order($db->quoteName('p.id') . ' ASC');
+
             $db->setQuery($query);
             $rows = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
@@ -181,6 +181,21 @@ final class BirthdayHelper
             'mode' => strtoupper((string) $params->get('mode', 'L')),
             'pictureServer' => Uri::root(),
         ];
+    }
+
+    /**
+     * Reject arrays, booleans, signed values and invalid numbers instead of
+     * letting PHP cast them into an unintended external database selector.
+     */
+    private function normaliseDatabaseSelector(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        $selector = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $selector === false ? 0 : $selector;
     }
 
     /** Keep the module layout contract even when filtering produces no rows. */
