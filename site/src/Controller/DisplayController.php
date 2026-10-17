@@ -43,7 +43,13 @@ final class DisplayController extends BaseController
             throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
         }
 
-        // Only an explicitly empty view may select the default. A whitespace-only\n        // or padded view name must not dispatch to a different MVC action.\n        if ($rawView !== '' && trim($rawView) !== $rawView) {\n            throw new \\InvalidArgumentException('Invalid SportsManagement view.', 400);\n        }\n\n        if ($view === '') {
+        // Only an explicitly empty view may select the default.
+        // Whitespace-padded values must not dispatch to a different MVC action.
+        if ($rawView !== '' && trim($rawView) !== $rawView) {
+            throw new \InvalidArgumentException('Invalid SportsManagement view.', 400);
+        }
+
+        if ($view === '') {
             $this->input->set('view', $this->default_view);
         }
 
