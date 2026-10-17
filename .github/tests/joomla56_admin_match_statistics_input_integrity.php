@@ -158,7 +158,7 @@ namespace {
     ];
     foreach ([
         ['trikot_number' => [11 => ['10']]],
-        ['trikot_number' => new \\stdClass()],
+        ['trikot_number' => new \stdClass()],
         ['captain' => [11 => ['1']]],
         ['captain' => [11 => '1junk']],
         ['captain' => [11 => true]],
@@ -167,7 +167,7 @@ namespace {
         $db = new StatisticsDatabase();
         if ((new MatchWriteService($db))->updateRoster(array_replace($roster, $bad)) !== false
             || $db->queryCount !== 0 || $db->started !== 0 || $db->actions !== []) {
-            throw new \\RuntimeException('Invalid roster metadata reached a destructive write.');
+            throw new \RuntimeException('Invalid roster metadata reached a destructive write.');
         }
     }
 
