@@ -6,11 +6,13 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
       - '.github/tests/joomla56_actseason_query_failure_guard.php'
+      - '.github/tests/joomla56_actseason_database_selector.php'
       - '.github/workflows/joomla56-actseason-query-failures.yml'
   pull_request:
     paths:
       - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
       - '.github/tests/joomla56_actseason_query_failure_guard.php'
+      - '.github/tests/joomla56_actseason_database_selector.php'
   workflow_dispatch:
 
 jobs:
@@ -22,5 +24,8 @@ jobs:
         run: |
           php -l modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
           php -l .github/tests/joomla56_actseason_query_failure_guard.php
+          php -l .github/tests/joomla56_actseason_database_selector.php
       - name: Current-season failure contract
-        run: php .github/tests/joomla56_actseason_query_failure_guard.php
+        run: |
+          php .github/tests/joomla56_actseason_query_failure_guard.php
+          php .github/tests/joomla56_actseason_database_selector.php
