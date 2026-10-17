@@ -1,0 +1,26 @@
+name: Joomla 5/6 navigation view contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - '.github/tests/joomla56_navigation_unknown_view_contract.php'
+      - '.github/workflows/joomla56-navigation-unknown-view.yml'
+  pull_request:
+    paths:
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - '.github/tests/joomla56_navigation_unknown_view_contract.php'
+  workflow_dispatch:
+
+jobs:
+  navigation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PHP syntax
+        run: |
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          php -l .github/tests/joomla56_navigation_unknown_view_contract.php
+      - name: Check unsupported view behavior
+        run: php .github/tests/joomla56_navigation_unknown_view_contract.php
