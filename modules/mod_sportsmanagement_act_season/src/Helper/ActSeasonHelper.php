@@ -33,7 +33,17 @@ final class ActSeasonHelper
         }
 
         try {
-            $databaseSelector = max(0, (int) $componentParams->get('cfg_which_database', 0));
+            $rawDatabaseSelector = $componentParams->get('cfg_which_database', 0);
+            // Never cast malformed configuration arrays or arbitrary strings to database 1.
+            $databaseSelector = 0;
+
+            if (is_int($rawDatabaseSelector) || (is_string($rawDatabaseSelector) && preg_match('/^[0-9]+$/D', $rawDatabaseSelector))) {
+                $validSelector = filter_var($rawDatabaseSelector, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+                if ($validSelector !== false) {
+                    $databaseSelector = $validSelector;
+                }
+            }
             $db = $this->database($databaseSelector, $fallbackDatabase);
             $query = $db->createQuery()
                 ->select([
