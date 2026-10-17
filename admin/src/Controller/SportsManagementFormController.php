@@ -130,6 +130,13 @@ class SportsManagementFormController extends FormController
             $data['round_date_last'] = '0000-00-00';
         }
 
+        // Joomla's FormController::save() normally applies allowSave() before
+        // calling the model. This compatibility override must keep that ACL
+        // gate for both new records and edits, including custom form tasks.
+        if (!$this->allowSave($data, $key ?: 'id')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         if ($this->view_item === 'player') {
             try {
                 $playerPersistence = new PlayerPersistenceService($this->jsmdb);
