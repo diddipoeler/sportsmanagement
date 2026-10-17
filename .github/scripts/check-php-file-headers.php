@@ -64,6 +64,6 @@ foreach ($errors as $error) {
     fwrite(STDERR, $error . PHP_EOL);
 }
 
-printf("Checked %d PHP files in site, admin and modules; %d files failed.\\n", $checked, count($errors));
+printf("Checked %d PHP files in site, admin and modules; %d files failed.\n", $checked, count($errors));
 
 exit($errors === [] ? 0 : 1);
