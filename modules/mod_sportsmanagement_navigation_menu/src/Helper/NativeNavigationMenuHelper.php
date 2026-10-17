@@ -39,7 +39,7 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
 
     public function getLink($view): string|false
     {
-        $project = $this->getProject();
+        // Stored module configuration must specify a scalar, non-empty view.\n        if (!is_string($view) || $view === '' || trim($view) !== $view) {\n            return false;\n        }\n\n        $project = $this->getProject();
         $projectId = $project ? (int) $project->id : 0;
 
         if ($projectId <= 0 || $view === 'separator') {
@@ -71,7 +71,7 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
             'p' => $projectId,
         ];
 
-        switch ((string) $view) {
+        switch ($view) {
             case 'calendar':
                 return SiteRouteHelper::view('teamplan', $base + [
                     'tid' => $teamId,
