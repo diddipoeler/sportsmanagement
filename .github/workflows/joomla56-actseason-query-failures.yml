@@ -1,0 +1,26 @@
+name: Joomla 5/6 current-season query guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+      - '.github/tests/joomla56_actseason_query_failure_guard.php'
+      - '.github/workflows/joomla56-actseason-query-failures.yml'
+  pull_request:
+    paths:
+      - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+      - '.github/tests/joomla56_actseason_query_failure_guard.php'
+  workflow_dispatch:
+
+jobs:
+  query-failure-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP syntax
+        run: |
+          php -l modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          php -l .github/tests/joomla56_actseason_query_failure_guard.php
+      - name: Current-season failure contract
+        run: php .github/tests/joomla56_actseason_query_failure_guard.php
