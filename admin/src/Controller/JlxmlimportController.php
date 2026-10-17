@@ -11,9 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
-use Joomla\Archive\Archive;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\LegacyImportZipService;
 use Joomla\Filesystem\File;
-use Joomla\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -182,30 +181,35 @@ final class JlxmlimportController extends BaseController
         $temporaryPath = (string) ($upload['tmp_name'] ?? '');
         $originalName = File::makeSafe((string) ($upload['name'] ?? ''));
 
-        if ($temporaryPath === '' || $originalName === '' || !File::exists($temporaryPath)) {
+        $extension = strtolower(File::getExt($originalName));
+        $size = $temporaryPath !== '' && is_file($temporaryPath) ? filesize($temporaryPath) : false;
+        $maxBytes = $extension === 'zip' ? 32 * 1024 * 1024 : 25 * 1024 * 1024;
+
+        if (($upload['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK
+            || $temporaryPath === ''
+            || $originalName === ''
+            || $size === false
+            || $size < 1
+            || $size > $maxBytes
+            || is_link($temporaryPath)) {
             return $this->reportUploadError('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD');
         }
 
         $temporaryDirectory = JPATH_SITE . '/tmp';
-        $destination = $temporaryDirectory . '/' . $originalName;
+        // Never overwrite another upload with the same user-supplied name.
+        $destination = $temporaryDirectory . '/jsm-upload-' . bin2hex(random_bytes(12)) . '.' . $extension;
         $importFile = $temporaryDirectory . '/sportsmanagement_import.jlg';
 
-        if (File::exists($importFile)) {
-            File::delete($importFile);
-        }
-
-        if (File::exists($destination)) {
-            File::delete($destination);
+        if (is_link($importFile)) {
+            return false;
         }
 
         if (!File::upload($temporaryPath, $destination)) {
             return $this->reportUploadError('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_CANT_UPLOAD');
         }
 
-        $extension = strtolower(File::getExt($destination));
-
         if ($extension === 'zip') {
-            return $this->prepareArchive($destination, $temporaryDirectory, $importFile);
+            return $this->prepareArchive($destination, $importFile);
         }
 
         if (!in_array($extension, ['jlg', 'xml'], true)) {
@@ -221,31 +225,25 @@ final class JlxmlimportController extends BaseController
         return true;
     }
 
-    private function prepareArchive(string $archiveFile, string $temporaryDirectory, string $importFile): bool
+    private function prepareArchive(string $archiveFile, string $importFile): bool
     {
+        // Read a single supported ZIP entry directly. Never extract into
+        // Joomla's shared tmp folder or pick up a stale file left there.
         try {
-            $archive = new Archive();
-            $result = $archive->extract($archiveFile, $temporaryDirectory);
+            $staged = LegacyImportZipService::stage(
+                $archiveFile,
+                $importFile,
+                ['jlg', 'xml']
+            );
         } catch (\Throwable $e) {
             Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            $staged = false;
+        } finally {
+            File::delete($archiveFile);
+        }
 
+        if (!$staged) {
             return $this->reportUploadError('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR');
-        }
-
-        File::delete($archiveFile);
-
-        if ($result === false) {
-            return $this->reportUploadError('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_ERROR');
-        }
-
-        $sources = Folder::files($temporaryDirectory, '\\.(jlg|xml)$', false, true);
-
-        if (!$sources) {
-            return $this->reportUploadError('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_EXTRACT_NOJLG');
-        }
-
-        if (!@rename((string) $sources[0], $importFile)) {
-            return $this->reportUploadError('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CTRL_ERROR_RENAME');
         }
 
         return true;

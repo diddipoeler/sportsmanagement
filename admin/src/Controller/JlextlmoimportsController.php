@@ -12,9 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextlmoimportsModel;
-use Joomla\Archive\Archive;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\LegacyImportZipService;
 use Joomla\Filesystem\File;
-use Joomla\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -67,7 +66,17 @@ final class JlextlmoimportsController extends BaseController
         $temporaryPath = (string) ($upload['tmp_name'] ?? '');
         $originalName = File::makeSafe((string) ($upload['name'] ?? ''));
 
-        if ($temporaryPath === '' || $originalName === '' || !File::exists($temporaryPath)) {
+        $extension = strtolower(File::getExt($originalName));
+        $size = $temporaryPath !== '' && is_file($temporaryPath) ? filesize($temporaryPath) : false;
+        $maxBytes = $extension === 'zip' ? 32 * 1024 * 1024 : 25 * 1024 * 1024;
+
+        if (($upload['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK
+            || $temporaryPath === ''
+            || $originalName === ''
+            || $size === false
+            || $size < 1
+            || $size > $maxBytes
+            || is_link($temporaryPath)) {
             Log::add(
                 Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_CANT_UPLOAD'),
                 Log::NOTICE,
@@ -78,15 +87,12 @@ final class JlextlmoimportsController extends BaseController
         }
 
         $temporaryDirectory = JPATH_SITE . '/tmp';
-        $destination = $temporaryDirectory . '/' . $originalName;
+        // Never overwrite another upload with the same user-supplied name.
+        $destination = $temporaryDirectory . '/jsm-upload-' . bin2hex(random_bytes(12)) . '.' . $extension;
         $importFile = $temporaryDirectory . '/sportsmanagement_import.l98';
 
-        if (File::exists($importFile)) {
-            File::delete($importFile);
-        }
-
-        if (File::exists($destination)) {
-            File::delete($destination);
+        if (is_link($importFile)) {
+            return false;
         }
 
         if (!File::upload($temporaryPath, $destination)) {
@@ -99,10 +105,8 @@ final class JlextlmoimportsController extends BaseController
             return false;
         }
 
-        $extension = strtolower(File::getExt($destination));
-
         if ($extension === 'zip') {
-            return $this->prepareArchive($destination, $temporaryDirectory, $importFile);
+            return $this->prepareArchive($destination, $importFile);
         }
 
         if ($extension !== 'l98') {
@@ -129,47 +133,25 @@ final class JlextlmoimportsController extends BaseController
         return true;
     }
 
-    private function prepareArchive(string $archiveFile, string $temporaryDirectory, string $importFile): bool
+    private function prepareArchive(string $archiveFile, string $importFile): bool
     {
+        // Read a single supported ZIP entry directly. Never extract into
+        // Joomla's shared tmp folder or pick up a stale file left there.
         try {
-            $archive = new Archive();
-            $result = $archive->extract($archiveFile, $temporaryDirectory);
+            $staged = LegacyImportZipService::stage(
+                $archiveFile,
+                $importFile,
+                ['l98']
+            );
         } catch (\Throwable $e) {
             Log::add($e->getMessage(), Log::NOTICE, 'jsmerror');
-
-            return false;
+            $staged = false;
+        } finally {
+            File::delete($archiveFile);
         }
 
-        File::delete($archiveFile);
-
-        if ($result === false) {
-            Log::add(
-                Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'),
-                Log::NOTICE,
-                'jsmerror'
-            );
-
-            return false;
-        }
-
-        $sources = Folder::files($temporaryDirectory, '\\.l98$', false, true);
-
-        if (!$sources) {
-            Log::add(
-                Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_NOJLG'),
-                Log::NOTICE,
-                'jsmerror'
-            );
-
-            return false;
-        }
-
-        if (!@rename((string) $sources[0], $importFile)) {
-            Log::add(
-                Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_ERROR_RENAME'),
-                Log::NOTICE,
-                'jsmerror'
-            );
+        if (!$staged) {
+            Log::add(Text::_('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_CTRL_EXTRACT_ERROR'), Log::NOTICE, 'jsmerror');
 
             return false;
         }
