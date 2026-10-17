@@ -39,7 +39,12 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
 
     public function getLink($view): string|false
     {
-        // Stored module configuration must specify a scalar, non-empty view.\n        if (!is_string($view) || $view === '' || trim($view) !== $view) {\n            return false;\n        }\n\n        $project = $this->getProject();
+        // Stored configuration must specify a non-empty, unpadded view name.
+        if (!is_string($view) || $view === '' || trim($view) !== $view) {
+            return false;
+        }
+
+        $project = $this->getProject();
         $projectId = $project ? (int) $project->id : 0;
 
         if ($projectId <= 0 || $view === 'separator') {
