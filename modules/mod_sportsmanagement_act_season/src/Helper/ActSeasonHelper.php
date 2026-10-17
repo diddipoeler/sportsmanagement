@@ -36,33 +36,33 @@ final class ActSeasonHelper
             $databaseSelector = max(0, (int) $componentParams->get('cfg_which_database', 0));
             $db = $this->database($databaseSelector, $fallbackDatabase);
             $query = $db->createQuery()
-            ->select([
-                $db->quoteName('pro.id'),
-                $db->quoteName('pro.name'),
-                $db->quoteName('pro.alias', 'project_alias'),
-                $db->quoteName('le.name', 'liganame'),
-                $db->quoteName('le.country'),
-                $db->quoteName('le.picture', 'league_picture'),
-                $db->quoteName('pro.picture', 'project_picture'),
-                $db->quoteName('co.alpha2'),
-                $db->quoteName('co.name', 'country_name'),
-                $db->quoteName('co.picture', 'country_picture'),
-                $db->quoteName('co.federation'),
-                $db->quoteName('fed.name', 'federation_name'),
-                $db->quoteName('r.id', 'round_id'),
-                $db->quoteName('r.alias', 'round_alias'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_project', 'pro'))
-            ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'le') . ' ON ' . $db->quoteName('le.id') . ' = ' . $db->quoteName('pro.league_id'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('pro.current_round'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('le.country'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_federations', 'fed') . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('co.federation'))
-            ->where($db->quoteName('le.published_act_season') . ' = 1')
-            ->whereIn($db->quoteName('pro.season_id'), $ids, ParameterType::INTEGER)
-            ->order([
-                $db->quoteName('le.country') . ' ASC',
-                $db->quoteName('pro.name') . ' ASC',
-            ]);
+                ->select([
+                    $db->quoteName('pro.id'),
+                    $db->quoteName('pro.name'),
+                    $db->quoteName('pro.alias', 'project_alias'),
+                    $db->quoteName('le.name', 'liganame'),
+                    $db->quoteName('le.country'),
+                    $db->quoteName('le.picture', 'league_picture'),
+                    $db->quoteName('pro.picture', 'project_picture'),
+                    $db->quoteName('co.alpha2'),
+                    $db->quoteName('co.name', 'country_name'),
+                    $db->quoteName('co.picture', 'country_picture'),
+                    $db->quoteName('co.federation'),
+                    $db->quoteName('fed.name', 'federation_name'),
+                    $db->quoteName('r.id', 'round_id'),
+                    $db->quoteName('r.alias', 'round_alias'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_project', 'pro'))
+                ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'le') . ' ON ' . $db->quoteName('le.id') . ' = ' . $db->quoteName('pro.league_id'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('pro.current_round'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('le.country'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_federations', 'fed') . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('co.federation'))
+                ->where($db->quoteName('le.published_act_season') . ' = 1')
+                ->whereIn($db->quoteName('pro.season_id'), $ids, ParameterType::INTEGER)
+                ->order([
+                    $db->quoteName('le.country') . ' ASC',
+                    $db->quoteName('pro.name') . ' ASC',
+                ]);
 
             $db->setQuery($query);
             $list = $db->loadObjectList() ?: [];
