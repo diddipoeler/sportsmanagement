@@ -31,11 +31,17 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
     private const OAUTH_STATE_KEY = 'com_sportsmanagement.jsmgcalendar.oauth_state';
     private const OAUTH_CONTEXT_KEY = 'com_sportsmanagement.jsmgcalendar.oauth_context';
     private const MAX_CALENDAR_PAGES = 10;
+    private const MAX_CALENDARS = 500;
     private const MAX_OAUTH_CODE_LENGTH = 4096;
 
     public function import(): bool
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException('Not authorized to import Google calendars.', 403);
+        }
         $input = $app->getInput();
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $session = $app->getSession();
@@ -208,6 +214,10 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
                     // Malformed API pagination can return the same calendar
                     // more than once. Never insert or update it twice.
                     $seenCalendarIds[$calendarId] = true;
+
+                    if (count($seenCalendarIds) > self::MAX_CALENDARS) {
+                        throw new \RuntimeException('Google calendar import exceeded the per-request limit.');
+                    }
 
                     $lookup = $db->createQuery()
                         ->select([

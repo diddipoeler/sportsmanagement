@@ -138,6 +138,7 @@ namespace {
         public array $inserted = [];
         public array $updated = [];
         public int $commits = 0;
+        public int $rollbacks = 0;
         public function createQuery(): TestQuery { return new TestQuery(); }
         public function quoteName(string $name): string { return $name; }
         public function setQuery(TestQuery $query, int $offset = 0, int $limit = 0): void {
@@ -149,7 +150,7 @@ namespace {
         public function updateObject(string $table, object $record, string $key): void { $this->updated[] = $record; }
         public function transactionStart(): void {}
         public function transactionCommit(): void { ++$this->commits; }
-        public function transactionRollback(): void {}
+        public function transactionRollback(): void { ++$this->rollbacks; }
     }
     class TestCalendarEntry {
         public function __construct(private string $id) {}
@@ -169,6 +170,15 @@ namespace {
             ++$this->calls;
             if ($this->mode === 'repeat') {
                 return new TestCalendarPage([new TestCalendarEntry('existing'), new TestCalendarEntry('new')], 'repeat-token');
+            }
+            if ($this->mode === 'bulk') {
+                $items = [];
+
+                for ($i = 1; $i <= 501; ++$i) {
+                    $items[] = new TestCalendarEntry('calendar-' . $i);
+                }
+
+                return new TestCalendarPage($items, null);
             }
             return new TestCalendarPage([], 'unique-' . $this->calls);
         }
@@ -253,6 +263,17 @@ namespace {
     $model->import();
     if ($GLOBALS['testCalendarList']->calls !== 10) {
         throw new \RuntimeException('Google Calendar list pagination exceeded the 10-page limit.');
+    }
+
+    $setup('valid-code');
+    $GLOBALS['testCalendarList']->mode = 'bulk';
+    Google_Client::$token = ['access_token' => 'usable-access', 'refresh_token' => 'fresh-token'];
+
+    if ($model->import() !== false
+        || $GLOBALS['testCalendarList']->calls !== 1
+        || $GLOBALS['testDb']->commits !== 0
+        || $GLOBALS['testDb']->rollbacks !== 1) {
+        throw new \RuntimeException('More than 500 Google calendars was not rolled back.');
     }
 
     $feed = new \Diddipoeler\Component\SportsManagement\Site\Model\JsonfeedModel();

@@ -20,13 +20,20 @@ final class JsmgcalendarimportController extends BaseController
     public function import(): void
     {
         $input = $this->app->getInput();
-        $code = (string) $input->get('code', '', 'raw');
+        $code = $input->get('code', '', 'raw');
         $state = trim((string) $input->getString('state'));
         $oauthError = trim((string) $input->getString('error'));
-        $isOauthCallback = $code !== '' || $state !== '' || $oauthError !== '';
+        $isOauthCallback = (is_string($code) && $code !== '')
+            || $state !== '' || $oauthError !== '';
 
         if (!$isOauthCallback) {
             $this->checkToken();
+        }
+
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         $model = $this->getModel('Jsmgcalendarimport', 'Administrator', ['ignore_request' => false]);

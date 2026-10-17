@@ -28,6 +28,12 @@ final class JsmgcalendarsModel extends SportsManagementListModel
     /** Ensure the configured Google API package is available. */
     public function check_google_api(): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException('Not authorized to provision the Google API library.', 403);
+        }
+
         $target = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php';
         $composer = $target . '/composer.json';
 

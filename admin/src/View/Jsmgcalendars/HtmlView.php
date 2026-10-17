@@ -31,15 +31,21 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException('JsmgcalendarsModel could not be loaded.', 500);
         }
 
-        // Preserve the historical bootstrap behaviour until the Google API
-        // package provisioning is moved to an explicit maintenance action.
-        $model->check_google_api();
-
         $this->items = $model->getItems() ?: [];
         $this->pagination = $model->getPagination();
         $this->state = $model->getState();
 
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_D_GOOGLE_CALENDAR'), 'calendar');
+
+        // Never download and extract third-party PHP libraries during a GET
+        // request. Provisioning is an explicit administrator POST task.
+        ToolbarHelper::custom(
+            'jsmgcalendars.installgoogleapi',
+            'download',
+            'download',
+            Text::_('COM_SPORTSMANAGEMENT_ADMIN_INSTALL_GOOGLE_API'),
+            false
+        );
         ToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
         ToolbarHelper::custom(
             'jsmgcalendarimport.import',
