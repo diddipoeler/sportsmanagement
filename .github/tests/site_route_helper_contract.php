@@ -80,7 +80,7 @@ namespace {
         ['option' => ['com_content']],
         ['option' => (object) ['name' => 'com_content']],
         ['option' => false],
-        ['option' => "com_content\\n"],
+        ['option' => "com_content\n"],
         ['option' => ''],
     ] as $input) {
         $url = SiteRouteHelper::query($input + ['view' => 'ranking']);
@@ -88,7 +88,7 @@ namespace {
 
         if (($params['option'] ?? null) !== 'com_sportsmanagement'
             || ($params['view'] ?? null) !== 'ranking') {
-            throw new \\RuntimeException('Malformed component option was accepted in a site route.');
+            throw new \RuntimeException('Malformed component option was accepted in a site route.');
         }
     }
 
@@ -97,7 +97,7 @@ namespace {
     parse_str((string) parse_url($url, PHP_URL_QUERY), $params);
 
     if (($params['option'] ?? null) !== 'com_content' || ($params['id'] ?? null) !== '7') {
-        throw new \\RuntimeException('SiteRouteHelper::query lost a valid external component target.');
+        throw new \RuntimeException('SiteRouteHelper::query lost a valid external component target.');
     }
 
     echo "SiteRouteHelper routing contract OK.\n";
