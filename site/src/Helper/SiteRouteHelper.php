@@ -31,7 +31,18 @@ final class SiteRouteHelper
 
     public static function query(array $parameters): string
     {
-        if ((string) ($parameters['option'] ?? 'com_sportsmanagement') === 'com_sportsmanagement') {
+        // A component route needs an explicit, scalar option. Do not let
+        // malformed nested input become an option[] query parameter.
+        $option = $parameters['option'] ?? 'com_sportsmanagement';
+
+        if (!is_string($option) || !preg_match('/^com_[a-z0-9_]+$/iD', $option)) {
+            $option = 'com_sportsmanagement';
+        }
+
+        $option = strtolower($option);
+        $parameters['option'] = $option;
+
+        if ($option === 'com_sportsmanagement') {
             $requestedItemId = $parameters['Itemid'] ?? null;
             $itemId = 0;
 
