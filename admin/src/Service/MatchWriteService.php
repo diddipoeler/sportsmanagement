@@ -168,8 +168,28 @@ final class MatchWriteService
             || !self::validLineupSelection($post, $positions, 'position')) {
             return false;
         }
-        $shirtNumbers = (array) ($post['trikot_number'] ?? []);
-        $captains = (array) ($post['captain'] ?? []);
+        $shirtNumbers = $post['trikot_number'] ?? [];
+        $captains = $post['captain'] ?? [];
+        if (!is_array($shirtNumbers) || !is_array($captains)) {
+            return false;
+        }
+
+        foreach ($positions as $positionKey => $position) {
+            foreach ($post['position' . $positionKey] ?? [] as $teamPlayerId) {
+                $personId = self::validPositiveId($teamPlayerId, true);
+                if ($personId === null || $personId === 0) {
+                    continue;
+                }
+
+                $shirt = $shirtNumbers[$personId] ?? null;
+                $captain = $captains[$personId] ?? 0;
+                if (($shirt !== null && !is_scalar($shirt))
+                    || self::validPositiveId($captain, true) === null) {
+                    return false;
+                }
+            }
+        }
+
         [$modified, $modifiedBy] = $this->auditData();
 
         return $this->transaction(function () use (
