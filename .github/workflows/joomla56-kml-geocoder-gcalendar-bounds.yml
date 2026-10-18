@@ -1,0 +1,41 @@
+name: Joomla 5/6 KML geocoder and calendar bounds
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/ClubKmlHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - '.github/tests/joomla56_club_kml_coordinates_images.php'
+      - '.github/tests/joomla56_location_geocoder_bounds.php'
+      - '.github/tests/joomla56_google_calendar_numeric_limits.php'
+      - '.github/workflows/joomla56-kml-geocoder-gcalendar-bounds.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/ClubKmlHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
+      - '.github/tests/joomla56_club_kml_coordinates_images.php'
+      - '.github/tests/joomla56_location_geocoder_bounds.php'
+      - '.github/tests/joomla56_google_calendar_numeric_limits.php'
+  workflow_dispatch:
+
+jobs:
+  runtime-bounds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP syntax checks
+        run: |
+          php -l site/src/Helper/ClubKmlHelper.php
+          php -l admin/src/Helper/LocationHelper.php
+          php -l modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
+          php -l .github/tests/joomla56_club_kml_coordinates_images.php
+          php -l .github/tests/joomla56_location_geocoder_bounds.php
+          php -l .github/tests/joomla56_google_calendar_numeric_limits.php
+      - name: Standalone Joomla 5/6 regressions
+        run: |
+          php .github/tests/joomla56_club_kml_coordinates_images.php
+          php .github/tests/joomla56_location_geocoder_bounds.php
+          php .github/tests/joomla56_google_calendar_numeric_limits.php
