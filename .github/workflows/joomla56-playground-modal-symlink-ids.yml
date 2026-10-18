@@ -1,0 +1,52 @@
+name: Joomla 5/6 playground modal symlink and ID guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/PlaygroundKmlHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+      - '.github/tests/joomla56_playground_kml_finite_coordinates.php'
+      - '.github/tests/joomla56_modal_image_safe_urls.php'
+      - '.github/tests/joomla56_remote_image_target_symlinks.php'
+      - '.github/tests/joomla56_actseason_zero_padded_ids.php'
+      - '.github/tests/joomla56_actseason_database_selector.php'
+      - '.github/workflows/joomla56-playground-modal-symlink-ids.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/PlaygroundKmlHelper.php'
+      - 'site/src/Helper/ModalImageHelper.php'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+      - '.github/tests/joomla56_playground_kml_finite_coordinates.php'
+      - '.github/tests/joomla56_modal_image_safe_urls.php'
+      - '.github/tests/joomla56_remote_image_target_symlinks.php'
+      - '.github/tests/joomla56_actseason_zero_padded_ids.php'
+      - '.github/tests/joomla56_actseason_database_selector.php'
+  workflow_dispatch:
+
+jobs:
+  runtime-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PHP syntax
+        run: |
+          php -l site/src/Helper/PlaygroundKmlHelper.php
+          php -l site/src/Helper/ModalImageHelper.php
+          php -l admin/src/Helper/RemoteImageDownloadHelper.php
+          php -l modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          php -l .github/tests/joomla56_playground_kml_finite_coordinates.php
+          php -l .github/tests/joomla56_modal_image_safe_urls.php
+          php -l .github/tests/joomla56_remote_image_target_symlinks.php
+          php -l .github/tests/joomla56_actseason_zero_padded_ids.php
+          php -l .github/tests/joomla56_actseason_database_selector.php
+      - name: Check Joomla 5/6 behavior
+        run: |
+          php .github/tests/joomla56_playground_kml_finite_coordinates.php
+          php .github/tests/joomla56_modal_image_safe_urls.php
+          php .github/tests/joomla56_remote_image_target_symlinks.php
+          php .github/tests/joomla56_actseason_zero_padded_ids.php
+          php .github/tests/joomla56_actseason_database_selector.php
