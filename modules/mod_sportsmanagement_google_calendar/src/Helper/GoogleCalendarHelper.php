@@ -50,11 +50,11 @@ final class GoogleCalendarHelper
 
         // Google Calendar Events.list accepts at most 2500 results per request.
         $rawMaxEvents = $params->get('max_list_events', 5);
-        $maxEvents = min(2500, max(1, is_scalar($rawMaxEvents) ? (int) $rawMaxEvents : 5));
+        $maxEvents = self::normalisePositiveLimit($rawMaxEvents, 5, 2500);
         // Keep the API cache bounded even when a legacy module parameter is
         // corrupted or configured to an excessively large lifetime.
         $rawLifetime = $params->get('api_cache_time', 60);
-        $lifetime = min(10080, max(1, is_scalar($rawLifetime) ? (int) $rawLifetime : 60));
+        $lifetime = self::normalisePositiveLimit($rawLifetime, 60, 10080);
         try {
             $cache = $cacheFactory->createCacheController('callback', [
                 'caching' => true,
@@ -75,6 +75,21 @@ final class GoogleCalendarHelper
         }
 
         return ['events' => is_array($events) ? $events : []];
+    }
+
+    /**
+     * Bound legacy module parameters without accepting partial numeric
+     * strings, booleans or arrays as valid event limits or cache lifetimes.
+     */
+    private static function normalisePositiveLimit(mixed $value, int $default, int $maximum): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return $default;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? $default : min($maximum, max(1, $number));
     }
 
     /**
