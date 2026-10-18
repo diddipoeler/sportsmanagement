@@ -22,14 +22,14 @@ final class LocationAddressHelper
         $parts = [];
 
         foreach (['address', 'state'] as $property) {
-            $value = trim((string) ($location->{$property} ?? ''));
+            $value = self::scalarText($location->{$property} ?? '');
             if ($value !== '') {
                 $parts[] = $value;
             }
         }
 
-        $city = trim((string) ($location->location ?? $location->city ?? ''));
-        $zipCode = trim((string) ($location->zipcode ?? ''));
+        $city = self::scalarText($location->location ?? $location->city ?? '');
+        $zipCode = self::scalarText($location->zipcode ?? '');
 
         if ($city !== '') {
             $parts[] = trim($zipCode . ' ' . $city);
@@ -37,13 +37,24 @@ final class LocationAddressHelper
             $parts[] = $zipCode;
         }
 
-        $countryCode = strtoupper(trim((string) ($location->country ?? '')));
+        $countryCode = strtoupper(self::scalarText($location->country ?? ''));
         if ($countryCode !== '') {
             $countryName = self::countryName($db, $countryCode);
             $parts[] = $countryName !== '' ? $countryName : $countryCode;
         }
 
         return implode(', ', array_filter($parts, static fn (string $part): bool => $part !== ''));
+    }
+
+    /**
+     * Legacy location records can contain malformed nested values. PHP 8+
+     * should not emit "Array to string conversion" warnings on a site page.
+     */
+    private static function scalarText(mixed $value): string
+    {
+        return is_string($value) || is_int($value) || is_float($value)
+            ? trim((string) $value)
+            : '';
     }
 
     private static function countryName(DatabaseInterface $db, string $countryCode): string
