@@ -29,9 +29,11 @@ final class ModalImageHelper
         string $schemaValue = 'logo'
     ): string {
         $targetEscaped = self::escape($target);
+        $picture = self::safeUrl($picture);
+        $resolvedUrl = self::safeUrl($url !== '' ? $url : $picture);
         $pictureEscaped = self::escape($picture);
         $textEscaped = self::escape($text);
-        $urlEscaped = self::escape($url !== '' ? $url : $picture);
+        $urlEscaped = self::escape($resolvedUrl);
         $width = max(1, (int) $width);
         $height = max(1, (int) $height);
         $pictureHeight = max(1, (int) $pictureHeight);
@@ -42,6 +44,12 @@ final class ModalImageHelper
         $image = '<img ' . $schemaAttribute . '="' . $schemaValueEscaped . '" src="'
             . $pictureEscaped . '" alt="' . $textEscaped
             . '" style="width: auto;height: ' . $pictureHeight . 'px" />';
+
+        // Do not render a clickable popup or pass a dangerous URI into
+        // Joomla's Bootstrap modal configuration.
+        if ($resolvedUrl === '') {
+            return $image;
+        }
 
         if ($mode === 2) {
             if ($url !== '') {
@@ -69,7 +77,7 @@ final class ModalImageHelper
             $target,
             [
                 'title' => $text,
-                'url' => $url !== '' ? $url : $picture,
+                'url' => $resolvedUrl,
                 'height' => $height,
                 'width' => $width,
                 'footer' => '<button type="button" class="btn btn-default" data-bs-dismiss="modal">'
@@ -78,6 +86,34 @@ final class ModalImageHelper
         );
 
         return $output;
+    }
+
+    /**
+     * Allow normal site-relative URLs and absolute HTTP(S) URLs. Reject
+     * executable URI schemes, protocol-relative targets and control bytes.
+     */
+    private static function safeUrl(string $value): string
+    {
+        if ($value === ''
+            || preg_match('/[\x00-\x20\x7F]/', $value)
+            || str_contains($value, chr(92))
+            || str_starts_with($value, '//')) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $value)) {
+            $parts = parse_url($value);
+
+            return filter_var($value, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                    ? $value
+                    : '';
+        }
+
+        return preg_match('~^[a-z][a-z0-9+.-]*:~i', $value) ? '' : $value;
     }
 
     private static function escape(string $value): string
