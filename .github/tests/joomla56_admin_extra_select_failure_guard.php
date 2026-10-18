@@ -10,6 +10,14 @@
 
 declare(strict_types=1);
 
+namespace Joomla\Database {
+    final class ParameterType
+    {
+        public const STRING = 'string';
+        public const INTEGER = 'integer';
+    }
+}
+
 namespace Diddipoeler\Component\SportsManagement\Administrator\Field {
     trait SportsManagementDatabaseTrait
     {
@@ -52,9 +60,21 @@ namespace {
 
     final class TestAdminExtraFieldQuery
     {
+        public array $predicates = [];
+        public array $bindings = [];
+
         public function select(mixed $v): self { return $this; }
         public function from(mixed $v): self { return $this; }
-        public function where(mixed $v): self { return $this; }
+        public function where(mixed $v): self
+        {
+            $this->predicates[] = $v;
+            return $this;
+        }
+        public function bind(string $key, mixed $value, string $type): self
+        {
+            $this->bindings[$key] = [$value, $type];
+            return $this;
+        }
     }
 
     final class TestAdminExtraFieldDatabase
@@ -64,6 +84,8 @@ namespace {
         public bool $failSetup = false;
         public bool $failRead = false;
         public ?object $result = null;
+        public ?TestAdminExtraFieldQuery $lastQuery = null;
+        public int $queryLimit = -1;
 
         public function createQuery(): TestAdminExtraFieldQuery
         {
@@ -76,7 +98,12 @@ namespace {
 
         public function quoteName(string $name): string { return $name; }
         public function quote(string $value): string { return "'" . $value . "'"; }
-        public function setQuery(object $query): void { ++$this->queries; }
+        public function setQuery(object $query, int $offset = 0, int $limit = 0): void
+        {
+            ++$this->queries;
+            $this->lastQuery = $query;
+            $this->queryLimit = $limit;
+        }
 
         public function loadObject(): ?object
         {
@@ -109,6 +136,23 @@ namespace {
         || $values[0]->value !== 'yes' || $values[0]->text !== 'Ja'
         || $values[1]->value !== 'no' || $values[1]->text !== 'Nein') {
         throw new \RuntimeException('Valid administrator extra-field select options were altered.');
+    }
+
+    // Wildcard characters in configured field names are literal data:
+    // they must never cause a different extra-field definition to match.
+    $helper->getOptions('club%', 'team_1', false, 7);
+
+    if ($db->queryLimit !== 1
+        || ($db->lastQuery?->bindings ?? []) !== [
+            ':templateName' => ['club%', 'string'],
+            ':fieldName' => ['team_1', 'string'],
+            ':fieldType' => [7, 'integer'],
+        ]
+        || !in_array('template_frontend = :templateName', $db->lastQuery->predicates, true)
+        || !in_array('name = :fieldName', $db->lastQuery->predicates, true)
+        || !in_array('fieldtyp = :fieldType', $db->lastQuery->predicates, true)
+        || str_contains(implode(' ', $db->lastQuery->predicates), ' LIKE ')) {
+        throw new \RuntimeException('Extra-select identifiers did not use exact bound SQL comparisons.');
     }
 
     $db->failSetup = true;
