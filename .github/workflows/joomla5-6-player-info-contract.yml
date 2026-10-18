@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/views/player/tmpl/default_info.php'
+      - 'site/tmpl/player/default_info.php'
       - 'site/src/Helper/CountryPresentationHelper.php'
       - 'site/src/Helper/ModalImageHelper.php'
       - 'site/src/Helper/PersonAgeHelper.php'
@@ -15,6 +16,7 @@ on:
   pull_request:
     paths:
       - 'site/views/player/tmpl/default_info.php'
+      - 'site/tmpl/player/default_info.php'
       - 'site/src/Helper/CountryPresentationHelper.php'
       - 'site/src/Helper/ModalImageHelper.php'
       - 'site/src/Helper/PersonAgeHelper.php'
@@ -30,7 +32,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Lint player info PHP
-        run: php -l site/views/player/tmpl/default_info.php
+        run: |
+          php -l site/views/player/tmpl/default_info.php
+          php -l site/tmpl/player/default_info.php
 
       - name: Validate player info migration contract
         shell: bash
@@ -39,7 +43,17 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
 
-          path = Path('site/views/player/tmpl/default_info.php')
+          # The legacy layout only forwards to the native Joomla 5/6 file.
+          bridge = Path('site/views/player/tmpl/default_info.php')
+          bridge_content = bridge.read_text(encoding='utf-8')
+          if "require JPATH_SITE . '/components/com_sportsmanagement/tmpl/player/default_info.php';" not in bridge_content:
+              raise SystemExit(f'{bridge}: native player info layout bridge missing')
+
+          for tag in ('@version', '@author', '@copyright', '@license'):
+              if tag not in bridge_content:
+                  raise SystemExit(f'{bridge}: required metadata missing: {tag}')
+
+          path = Path('site/tmpl/player/default_info.php')
           content = path.read_text(encoding='utf-8')
 
           for tag in ('@version', '@author', '@copyright', '@license'):
