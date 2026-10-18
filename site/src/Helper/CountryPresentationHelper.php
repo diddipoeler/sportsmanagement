@@ -64,7 +64,7 @@ final class CountryPresentationHelper
             return '';
         }
 
-        $extra = trim($attributes);
+        $extra = self::safeImageAttributes($attributes);
 
         return '<img src="' . self::escape($source)
             . '" alt="' . self::escape($countryName)
@@ -125,6 +125,36 @@ final class CountryPresentationHelper
         }
 
         return rtrim(Uri::root(), '/') . '/' . $path;
+    }
+
+    /**
+     * Preserve supported image layout attributes without allowing an
+     * arbitrary caller-provided HTML fragment or JavaScript event handler.
+     */
+    private static function safeImageAttributes(string $attributes): string
+    {
+        $clean = [];
+
+        preg_match_all('/([A-Za-z][A-Za-z0-9_-]*)\s*=\s*(["\x27])(.*?)\2/s', $attributes, $matches, PREG_SET_ORDER);
+
+        foreach ($matches as $match) {
+            $name = strtolower($match[1]);
+
+            if (!in_array($name, ['class', 'style', 'width', 'height', 'loading', 'decoding', 'id', 'role'], true)
+                && !preg_match('/^aria-[a-z0-9_-]+$/D', $name)) {
+                continue;
+            }
+
+            $value = $match[3];
+
+            if (preg_match('/[\x00-\x1F\x7F]/', $value)) {
+                continue;
+            }
+
+            $clean[] = $name . '="' . self::escape($value) . '"';
+        }
+
+        return implode(' ', $clean);
     }
 
     public static function options(DatabaseInterface $db): array
