@@ -33,7 +33,7 @@ foreach ($directories as $directory) {
         }
 
         $path = $file->getPathname();
-        $relativePath = str_replace('\\\\', '/', substr($path, strlen($root) + 1));
+        $relativePath = str_replace(DIRECTORY_SEPARATOR, '/', substr($path, strlen($root) + 1));
 
         // Dompdf is a bundled external library. Preserve its upstream
         // copyright and license headers instead of rewriting vendor code.
@@ -74,6 +74,11 @@ foreach ($errors as $error) {
     fwrite(STDERR, $error . PHP_EOL);
 }
 
-printf("Checked %d first-party PHP files in site, admin and modules; %d vendor files excluded; %d files failed.\n", $checked, $excludedThirdParty, count($errors));
+printf(
+    "Checked %d first-party PHP files in site, admin and modules; %d vendor files excluded; %d files failed.\n",
+    $checked,
+    $excludedThirdParty,
+    count($errors)
+);
 
 exit($errors === [] ? 0 : 1);
