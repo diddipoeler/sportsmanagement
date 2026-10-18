@@ -50,9 +50,11 @@ final class PlaygroundPlanHelper
             }
 
             $db = $this->database($params, $joomlaDatabase);
-            $teamField = $this->teamField((string) $params->get('teamformat', 'middle_name'));
-            $logoField = $this->logoField((string) $params->get('show_picture', 'logo_big'));
-            $limit = max(1, min(100, (int) $params->get('maxmatches', 7)));
+            $rawTeamField = $params->get('teamformat', 'middle_name');
+            $teamField = $this->teamField(is_string($rawTeamField) ? $rawTeamField : 'middle_name');
+            $rawLogoField = $params->get('show_picture', 'logo_big');
+            $logoField = $this->logoField(is_string($rawLogoField) ? $rawLogoField : 'logo_big');
+            $limit = self::positiveLimit($params->get('maxmatches', 7), 7, 100);
 
             $query = $db->createQuery()
                 ->select([
@@ -118,10 +120,10 @@ final class PlaygroundPlanHelper
 
             $db->setQuery($query, 0, $limit);
             $rows = $db->loadObjectList() ?: [];
-            $cfg = (int) $params->get('cfg_which_database', 0);
-            $season = (int) $params->get('s', 0);
-            $showLink = (int) $params->get('show_playground_link', 1) === 1;
-            $showLogos = (int) $params->get('show_club_logo', 1) === 1;
+            $cfg = self::nonNegativeInteger($params->get('cfg_which_database', 0));
+            $season = self::nonNegativeInteger($params->get('s', 0));
+            $showLink = self::nonNegativeInteger($params->get('show_playground_link', 1)) === 1;
+            $showLogos = self::nonNegativeInteger($params->get('show_club_logo', 1)) === 1;
 
             foreach ($rows as $row) {
                 $row->project_slug = $this->slug((int) $row->project_id, (string) $row->project_alias);
@@ -164,8 +166,45 @@ final class PlaygroundPlanHelper
     {
         return SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
+            self::nonNegativeInteger($params->get('cfg_which_database', 0))
         );
+    }
+
+    /**
+     * Only accept nonnegative decimal IDs, including zero-padded legacy
+     * settings, without PHP's surprising array or boolean-to-integer casts.
+     */
+    private static function nonNegativeInteger(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? 0 : $number;
+    }
+
+    /** Retain a bounded default for malformed fixture display limits. */
+    private static function positiveLimit(mixed $value, int $default, int $maximum): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return $default;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? $default : min($maximum, max(1, $number));
     }
 
     private function logo(string $path, string $logoField): string
