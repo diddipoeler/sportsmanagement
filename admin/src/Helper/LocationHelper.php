@@ -49,7 +49,11 @@ final class LocationHelper
     {
         $address = trim($address);
 
-        if ($address === '') {
+        // The remote geocoder should only receive actual, bounded address
+        // text. Reject malformed input before allocating an HTTP request.
+        if ($address === ''
+            || strlen($address) > 512
+            || preg_match('/[\x00-\x1F\x7F]/', $address)) {
             return [];
         }
 
