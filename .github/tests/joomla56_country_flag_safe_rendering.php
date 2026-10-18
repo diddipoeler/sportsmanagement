@@ -120,7 +120,7 @@ namespace {
         || !str_contains($image, 'title="A &amp; B"')
         || str_contains($image, 'onerror')
         || !str_contains($image, 'alt="Germany"')) {
-        throw new \RuntimeException('Country flag HTML attributes or image source are unsafe.');
+        throw new \RuntimeException('Country flag HTML attributes or image source are unsafe: ' . $image);
     }
 
     $image = $class::flag('TST');
