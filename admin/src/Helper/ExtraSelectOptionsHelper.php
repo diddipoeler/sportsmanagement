@@ -39,22 +39,34 @@ final class ExtraSelectOptionsHelper
             return [];
         }
 
-        $db = $this->getSportsManagementDatabase();
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('select_columns'),
-                $db->quoteName('select_values'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
-            ->where(
-                $db->quoteName($template ? 'template_backend' : 'template_frontend')
-                . ' LIKE ' . $db->quote($view)
-            )
-            ->where($db->quoteName('name') . ' LIKE ' . $db->quote($field))
-            ->where($db->quoteName('fieldtyp') . ' = ' . $fieldType);
+        try {
+            $db = $this->getSportsManagementDatabase();
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('select_columns'),
+                    $db->quoteName('select_values'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
+                ->where(
+                    $db->quoteName($template ? 'template_backend' : 'template_frontend')
+                    . ' LIKE ' . $db->quote($view)
+                )
+                ->where($db->quoteName('name') . ' LIKE ' . $db->quote($field))
+                ->where($db->quoteName('fieldtyp') . ' = ' . $fieldType);
 
-        $db->setQuery($query);
-        $result = $db->loadObject();
+            $db->setQuery($query);
+            $result = $db->loadObject();
+        } catch (\Throwable $e) {
+            // Optional extra fields must not break an administrator form or
+            // expose SQL statements and credentials in public error output.
+            \Joomla\CMS\Log\Log::add(
+                __METHOD__ . ': ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+
+            return [];
+        }
 
         if (!$result || trim((string) $result->select_columns) === '') {
             return [];
