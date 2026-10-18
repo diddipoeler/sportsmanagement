@@ -87,6 +87,13 @@ final class GoogleCalendarHelper
             return $default;
         }
 
+        // PHP's integer validator rejects leading-zero strings such as "0002".
+        // These are valid legacy module settings, so normalize them first.
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
         $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
         return $number === false ? $default : min($maximum, max(1, $number));
