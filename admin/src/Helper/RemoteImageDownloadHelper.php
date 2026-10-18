@@ -335,6 +335,19 @@ final class RemoteImageDownloadHelper
             }
         }
 
+        // A lexical prefix check is not enough: a symbolic link within
+        // images/com_sportsmanagement/database can point outside the allowed
+        // directory and turn an image import into an arbitrary file write.
+        $cursor = rtrim(str_replace(chr(92), '/', JPATH_ROOT), '/');
+
+        foreach (explode('/', substr($normalised, strlen($cursor) + 1)) as $segment) {
+            $cursor .= '/' . $segment;
+
+            if (is_link($cursor)) {
+                return false;
+            }
+        }
+
         $extension = strtolower((string) pathinfo($normalised, PATHINFO_EXTENSION));
 
         return in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'], true);
