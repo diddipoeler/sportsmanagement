@@ -37,6 +37,7 @@ final class CountryPresentationHelper
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $countryName = $country ? Text::_((string) $country->name) : '';
         $iso2 = strtolower((string) ($country->alpha2 ?? ''));
+        $iso2 = preg_match('/^[a-z]{2}$/D', $iso2) ? $iso2 : '';
 
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
             $cssCode = match (strtoupper($countryCode)) {
@@ -57,16 +58,73 @@ final class CountryPresentationHelper
             $src = (string) $params->get('ph_flags', '');
         }
 
-        if ($src === '') {
+        $source = self::safeFlagSource($src);
+
+        if ($source === '') {
             return '';
         }
 
         $extra = trim($attributes);
 
-        return '<img src="' . self::escape(Uri::root() . ltrim($src, '/'))
+        return '<img src="' . self::escape($source)
             . '" alt="' . self::escape($countryName)
             . '" title="' . self::escape($countryName) . '"'
             . ($extra !== '' ? ' ' . $extra : '') . ' />';
+    }
+
+    /**
+     * Resolve only safe flag images; never embed traversal paths, URI schemes
+     * or credentials from legacy country pictures or component placeholders.
+     */
+    private static function safeFlagSource(string $source): string
+    {
+        $source = trim($source);
+
+        if ($source === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $source)
+            || str_contains($source, chr(92))
+            || str_starts_with($source, '//')) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $source)) {
+            $parts = parse_url($source);
+
+            return filter_var($source, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                    ? $source
+                    : '';
+        }
+
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $source)) {
+            return '';
+        }
+
+        $path = ltrim($source, '/');
+        $decoded = $path;
+
+        for ($depth = 0; $depth < 3; $depth++) {
+            if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
+                || preg_match('/[\x00-\x1F\x7F]/', $decoded)
+                || str_contains($decoded, chr(92))
+                || str_contains($decoded, '?')
+                || str_contains($decoded, '#')) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+
+            if ($next === $decoded) {
+                break;
+            }
+
+            $decoded = $next;
+        }
+
+        return rtrim(Uri::root(), '/') . '/' . $path;
     }
 
     public static function options(DatabaseInterface $db): array
