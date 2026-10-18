@@ -17,6 +17,7 @@ $directories = ['site', 'admin', 'modules'];
 $requiredTags = ['@version', '@author', '@copyright', '@license'];
 $errors = [];
 $checked = 0;
+$excludedThirdParty = 0;
 
 foreach ($directories as $directory) {
     $iterator = new RecursiveIteratorIterator(
@@ -31,8 +32,17 @@ foreach ($directories as $directory) {
             continue;
         }
 
-        ++$checked;
         $path = $file->getPathname();
+        $relativePath = str_replace('\\\\', '/', substr($path, strlen($root) + 1));
+
+        // Dompdf is a bundled external library. Preserve its upstream
+        // copyright and license headers instead of rewriting vendor code.
+        if (str_starts_with($relativePath, 'site/libraries/dompdf/vendor/')) {
+            ++$excludedThirdParty;
+            continue;
+        }
+
+        ++$checked;
         $source = file_get_contents($path);
 
         if ($source === false) {
@@ -41,7 +51,7 @@ foreach ($directories as $directory) {
         }
 
         // Metadata must be in the file-level docblock, not in a method comment.
-        if (!preg_match('/\\A(?:\\xEF\\xBB\\xBF)?<\\?php\\s*\\/\\*\\*(.*?)\\*\\//s', $source, $matches)) {
+        if (!preg_match('/\\A(?:\\xEF\\xBB\\xBF)?<\\?(?i:php)\\s*\\/\\*\\*(.*?)\\*\\//s', $source, $matches)) {
             $missing = $requiredTags;
         } else {
             $header = $matches[1];
@@ -64,6 +74,6 @@ foreach ($errors as $error) {
     fwrite(STDERR, $error . PHP_EOL);
 }
 
-printf("Checked %d PHP files in site, admin and modules; %d files failed.\n", $checked, count($errors));
+printf("Checked %d first-party PHP files in site, admin and modules; %d vendor files excluded; %d files failed.\n", $checked, $excludedThirdParty, count($errors));
 
 exit($errors === [] ? 0 : 1);
