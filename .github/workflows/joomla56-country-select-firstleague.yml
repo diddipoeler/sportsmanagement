@@ -1,0 +1,57 @@
+name: Joomla 5/6 country select and first league guards
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php'
+      - '.github/tests/joomla56_country_database_failure_recovery.php'
+      - '.github/tests/joomla56_admin_extra_select_failure_guard.php'
+      - '.github/tests/joomla56_firstleagueoverview_media_config.php'
+      - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/tests/joomla56_firstleagueoverview_tabs.php'
+      - '.github/workflows/joomla56-country-select-firstleague.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php'
+      - '.github/tests/joomla56_country_database_failure_recovery.php'
+      - '.github/tests/joomla56_admin_extra_select_failure_guard.php'
+      - '.github/tests/joomla56_firstleagueoverview_media_config.php'
+      - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/tests/joomla56_firstleagueoverview_tabs.php'
+  workflow_dispatch:
+
+jobs:
+  php-regressions:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax checks
+        run: |
+          php -l site/src/Helper/CountryPresentationHelper.php
+          php -l admin/src/Helper/ExtraSelectOptionsHelper.php
+          php -l modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+          php -l .github/tests/joomla56_country_database_failure_recovery.php
+          php -l .github/tests/joomla56_admin_extra_select_failure_guard.php
+          php -l .github/tests/joomla56_firstleagueoverview_media_config.php
+          php -l .github/tests/joomla56_country_flag_safe_rendering.php
+          php -l .github/tests/joomla56_firstleagueoverview_tabs.php
+      - name: Joomla 5/6 runtime checks
+        run: |
+          php .github/tests/joomla56_country_database_failure_recovery.php
+          php .github/tests/joomla56_admin_extra_select_failure_guard.php
+          php .github/tests/joomla56_firstleagueoverview_media_config.php
+          php .github/tests/joomla56_country_flag_safe_rendering.php
+          php .github/tests/joomla56_firstleagueoverview_tabs.php
