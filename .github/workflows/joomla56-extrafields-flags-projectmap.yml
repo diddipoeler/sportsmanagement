@@ -1,0 +1,41 @@
+name: Joomla 5/6 extra fields flags and project map
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Helper/ExtraFieldsReadHelper.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php'
+      - '.github/tests/joomla56_admin_extra_fields_error_privacy.php'
+      - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/tests/joomla56_projectmap_zero_padded_seasons.php'
+      - '.github/workflows/joomla56-extrafields-flags-projectmap.yml'
+  pull_request:
+    paths:
+      - 'admin/src/Helper/ExtraFieldsReadHelper.php'
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php'
+      - '.github/tests/joomla56_admin_extra_fields_error_privacy.php'
+      - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/tests/joomla56_projectmap_zero_padded_seasons.php'
+  workflow_dispatch:
+
+jobs:
+  runtime-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PHP syntax
+        run: |
+          php -l admin/src/Helper/ExtraFieldsReadHelper.php
+          php -l site/src/Helper/CountryPresentationHelper.php
+          php -l modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php
+          php -l .github/tests/joomla56_admin_extra_fields_error_privacy.php
+          php -l .github/tests/joomla56_country_flag_safe_rendering.php
+          php -l .github/tests/joomla56_projectmap_zero_padded_seasons.php
+      - name: Exercise Joomla 5/6 regressions
+        run: |
+          php .github/tests/joomla56_admin_extra_fields_error_privacy.php
+          php .github/tests/joomla56_country_flag_safe_rendering.php
+          php .github/tests/joomla56_projectmap_zero_padded_seasons.php
