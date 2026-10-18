@@ -115,7 +115,8 @@ final class ClubKmlHelper
         $path = ltrim($picture, '/');
         $decodedPath = rawurldecode($path);
 
-        if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decodedPath)
+        if (preg_match('/[\\x00-\\x1F\\x7F]/', $decodedPath)
+            || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decodedPath)
             || str_contains($decodedPath, '\\\\')
             || str_contains($decodedPath, '?')
             || str_contains($decodedPath, '#')) {
