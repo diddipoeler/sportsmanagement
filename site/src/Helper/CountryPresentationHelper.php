@@ -17,6 +17,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 
@@ -159,16 +160,22 @@ final class CountryPresentationHelper
 
     public static function options(DatabaseInterface $db): array
     {
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('alpha3'),
-                $db->quoteName('name'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_countries'));
-        $db->setQuery($query);
+        try {
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('alpha3'),
+                    $db->quoteName('name'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_countries'));
+            $db->setQuery($query);
+            $rows = $db->loadObjectList() ?: [];
+        } catch (\Throwable $e) {
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            return [];
+        }
 
         $options = [];
-        foreach ($db->loadObjectList() ?: [] as $country) {
+        foreach ($rows as $country) {
             $code = strtoupper(trim((string) ($country->alpha3 ?? '')));
             if ($code === '') {
                 continue;
@@ -230,32 +237,46 @@ final class CountryPresentationHelper
             return null;
         }
 
-        $app = SportsManagementSiteApplicationResolver::resolve();
-        $databaseSelector = $app->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
-        $cacheKey = $databaseSelector . ':' . $countryCode;
+        $cacheKey = null;
 
-        if (array_key_exists($cacheKey, self::$countries)) {
-            return self::$countries[$cacheKey];
+        try {
+            $app = SportsManagementSiteApplicationResolver::resolve();
+            $databaseSelector = $app->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
+            $cacheKey = $databaseSelector . ':' . $countryCode;
+
+            if (array_key_exists($cacheKey, self::$countries)) {
+                return self::$countries[$cacheKey];
+            }
+
+            /** @var DatabaseInterface $joomlaDatabase */
+            $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+            $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('alpha2'),
+                    $db->quoteName('alpha3'),
+                    $db->quoteName('name'),
+                    $db->quoteName('picture'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_countries'))
+                ->where(
+                    '(' . $db->quoteName('alpha3') . ' = ' . $db->quote($countryCode)
+                    . ' OR ' . $db->quoteName('fifa') . ' = ' . $db->quote($countryCode) . ')'
+                );
+
+            $db->setQuery($query, 0, 1);
+            self::$countries[$cacheKey] = $db->loadObject() ?: null;
+        } catch (\Throwable $e) {
+            // Country labels and flags are optional presentation data. Do not
+            // break the whole player/club page or expose SQL errors in HTML.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+
+            if ($cacheKey !== null) {
+                self::$countries[$cacheKey] = null;
+            }
+
+            return null;
         }
-
-        /** @var DatabaseInterface $joomlaDatabase */
-        $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
-        $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('alpha2'),
-                $db->quoteName('alpha3'),
-                $db->quoteName('name'),
-                $db->quoteName('picture'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_countries'))
-            ->where(
-                '(' . $db->quoteName('alpha3') . ' = ' . $db->quote($countryCode)
-                . ' OR ' . $db->quoteName('fifa') . ' = ' . $db->quote($countryCode) . ')'
-            );
-
-        $db->setQuery($query, 0, 1);
-        self::$countries[$cacheKey] = $db->loadObject() ?: null;
 
         return self::$countries[$cacheKey];
     }
