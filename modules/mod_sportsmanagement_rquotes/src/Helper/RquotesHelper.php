@@ -32,13 +32,16 @@ final class RquotesHelper
         CMSApplicationInterface $app,
         DatabaseInterface $fallbackDatabase
     ): array {
-        $source = strtolower(trim((string) $params->get('source', 'text')));
-        $style = $this->normaliseStyle((string) $params->get('template', 'default'));
-        $databaseSelector = (int) $params->get(
+        $rawSource = $params->get('source', 'text');
+        $source = is_string($rawSource) ? strtolower(trim($rawSource)) : 'text';
+        $rawStyle = $params->get('template', 'default');
+        $style = $this->normaliseStyle(is_string($rawStyle) ? $rawStyle : 'default');
+        $databaseSelector = self::normaliseDatabaseSelector($params->get(
             'cfg_which_database',
             $componentParams->get('cfg_which_database', 0)
-        );
-        $remotePictureServer = trim((string) $componentParams->get('cfg_which_database_server', ''));
+        ));
+        $rawRemotePictureServer = $componentParams->get('cfg_which_database_server', '');
+        $remotePictureServer = is_string($rawRemotePictureServer) ? trim($rawRemotePictureServer) : '';
         // Do not construct image links from an invalid or unsafe remote base URL.
         $remotePictureServer = filter_var($remotePictureServer, FILTER_VALIDATE_URL)
             && in_array(strtolower((string) parse_url($remotePictureServer, PHP_URL_SCHEME)), ['http', 'https'], true)
@@ -74,7 +77,8 @@ final class RquotesHelper
         }
 
         $categoryIds = $this->normaliseIds($params->get('category', []));
-        $rotation = strtolower((string) $params->get('rotate', 'single_random'));
+        $rawRotation = $params->get('rotate', 'single_random');
+        $rotation = is_string($rawRotation) ? strtolower($rawRotation) : 'single_random';
 
         try {
             $db = $this->database($databaseSelector, $fallbackDatabase);
@@ -82,7 +86,7 @@ final class RquotesHelper
                 'multiple_random' => $this->multipleRandom(
                     $db,
                     $this->randomCategory($categoryIds),
-                    min(2500, max(1, (int) $params->get('num_of_random', 2)))
+                    self::normalisePositiveLimit($params->get('num_of_random', 2), 2, 2500)
                 ),
                 'sequential' => $this->sequential($db, $categoryIds, $app),
                 'daily' => $this->periodic($db, $this->firstCategory($categoryIds), 1, 'Y-m-d', $app),
@@ -116,6 +120,43 @@ final class RquotesHelper
             'textLine' => '',
             'pictureServer' => $pictureServer,
         ];
+    }
+
+    /**
+     * Keep the external-database selector predictable for malformed legacy
+     * module parameters instead of converting arrays or booleans to 1.
+     */
+    private static function normaliseDatabaseSelector(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $selector = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $selector === false ? 0 : $selector;
+    }
+
+    /** Reject malformed quote-count settings without changing valid bounds. */
+    private static function normalisePositiveLimit(mixed $value, int $default, int $maximum): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return $default;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? $default : min($maximum, max(1, $number));
     }
 
     private function singleRandom(DatabaseInterface $db, array $categoryIds): array
