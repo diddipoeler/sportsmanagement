@@ -92,7 +92,7 @@ final class ClubKmlHelper
 
         if ($picture === ''
             || preg_match('/[\\x00-\\x1F\\x7F]/', $picture)
-            || str_contains($picture, '\\\\')) {
+            || str_contains($picture, chr(92))) {
             return '';
         }
 
@@ -117,7 +117,7 @@ final class ClubKmlHelper
 
         if (preg_match('/[\\x00-\\x1F\\x7F]/', $decodedPath)
             || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decodedPath)
-            || str_contains($decodedPath, '\\\\')
+            || str_contains($decodedPath, chr(92))
             || str_contains($decodedPath, '?')
             || str_contains($decodedPath, '#')) {
             return '';
