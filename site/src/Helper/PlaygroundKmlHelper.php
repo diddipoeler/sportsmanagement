@@ -28,6 +28,8 @@ final class PlaygroundKmlHelper
             $playgroundId <= 0
             || $latitude === null
             || $longitude === null
+            || !is_finite($latitude)
+            || !is_finite($longitude)
             || $latitude < -90.0
             || $latitude > 90.0
             || $longitude < -180.0
