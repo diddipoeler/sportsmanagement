@@ -81,6 +81,7 @@ final class ClubKmlHelper
             return false;
         }
     }
+
     /**
      * Use only safe HTTP(S) URLs or paths beneath the site's public root.
      * Malformed optional image paths must not invalidate the club KML itself.
@@ -100,7 +101,6 @@ final class ClubKmlHelper
 
             return filter_var($picture, FILTER_VALIDATE_URL) !== false
                 && is_array($parts)
-                && !isset($parts['user'], $parts['pass'])
                 && !isset($parts['user'])
                 && !isset($parts['pass'])
                     ? $picture
@@ -124,5 +124,4 @@ final class ClubKmlHelper
 
         return rtrim(Uri::root(), '/') . '/' . $path;
     }
-
 }
