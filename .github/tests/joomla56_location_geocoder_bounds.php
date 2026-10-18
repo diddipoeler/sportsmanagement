@@ -15,12 +15,15 @@ namespace Joomla\Http {
     {
         public static string $body = '[]';
         public static int $status = 200;
+        public static int $requests = 0;
 
         public static function getHttp(): object
         {
             return new class {
                 public function get(string $url, array $headers, int $timeout): object
                 {
+                    ++HttpFactory::$requests;
+
                     return new class {
                         public function getStatusCode(): int
                         {
@@ -76,6 +79,28 @@ namespace {
         || ($data['longitude'] ?? null) !== '7.2'
         || ($data['address'] ?? null) !== ['city' => 'Sample']) {
         throw new \RuntimeException('Valid geocoder details were not preserved.');
+    }
+
+    // Invalid address inputs must not reach the network.
+    \Joomla\Http\HttpFactory::$requests = 0;
+
+    foreach ([
+        '',
+        str_repeat('a', 513),
+        "Street\nAddress",
+        "Street\0Address",
+        "Street\x7FAddress",
+    ] as $invalidAddress) {
+        if ($helper->resolveDetailed($invalidAddress) !== []
+            || \Joomla\Http\HttpFactory::$requests !== 0) {
+            throw new \RuntimeException('Invalid geocoder address triggered an HTTP request.');
+        }
+    }
+
+    // A valid address at the configured boundary remains usable.
+    if ($helper->resolveDetailed(str_repeat('a', 512)) === []
+        || \Joomla\Http\HttpFactory::$requests !== 1) {
+        throw new \RuntimeException('Valid maximum-length geocoder address was rejected.');
     }
 
     echo "Joomla 5/6 geocoder coordinate bounds passed.\n";
