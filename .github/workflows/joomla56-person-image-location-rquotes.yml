@@ -1,0 +1,46 @@
+name: Joomla 5/6 person image location and quotes guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
+      - '.github/tests/joomla56_person_image_url_guard.php'
+      - '.github/tests/joomla56_location_geocoder_bounds.php'
+      - '.github/tests/joomla56_rquotes_config_validation.php'
+      - '.github/tests/joomla56_rquotes_error_privacy.php'
+      - '.github/workflows/joomla56-person-image-location-rquotes.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/PersonImageHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
+      - '.github/tests/joomla56_person_image_url_guard.php'
+      - '.github/tests/joomla56_location_geocoder_bounds.php'
+      - '.github/tests/joomla56_rquotes_config_validation.php'
+      - '.github/tests/joomla56_rquotes_error_privacy.php'
+      - '.github/workflows/joomla56-person-image-location-rquotes.yml'
+  workflow_dispatch:
+
+jobs:
+  runtime-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PHP syntax
+        run: |
+          php -l site/src/Helper/PersonImageHelper.php
+          php -l admin/src/Helper/LocationHelper.php
+          php -l modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
+          php -l .github/tests/joomla56_person_image_url_guard.php
+          php -l .github/tests/joomla56_location_geocoder_bounds.php
+          php -l .github/tests/joomla56_rquotes_config_validation.php
+          php -l .github/tests/joomla56_rquotes_error_privacy.php
+      - name: Check Joomla 5/6 runtime contracts
+        run: |
+          php .github/tests/joomla56_person_image_url_guard.php
+          php .github/tests/joomla56_location_geocoder_bounds.php
+          php .github/tests/joomla56_rquotes_config_validation.php
+          php .github/tests/joomla56_rquotes_error_privacy.php
