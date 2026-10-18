@@ -1,0 +1,50 @@
+name: Joomla 5/6 extra fields and playground parameter guards
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/ExtraFieldsReadHelper.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
+      - '.github/tests/joomla56_site_extra_fields_template_validation.php'
+      - '.github/tests/joomla56_admin_extra_select_failure_guard.php'
+      - '.github/tests/joomla56_playgroundplan_parameter_limits.php'
+      - '.github/workflows/joomla56-extra-fields-playground-parameters.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/ExtraFieldsReadHelper.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
+      - '.github/tests/joomla56_site_extra_fields_template_validation.php'
+      - '.github/tests/joomla56_admin_extra_select_failure_guard.php'
+      - '.github/tests/joomla56_playgroundplan_parameter_limits.php'
+  workflow_dispatch:
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax
+        run: |
+          php -l site/src/Helper/ExtraFieldsReadHelper.php
+          php -l admin/src/Helper/ExtraSelectOptionsHelper.php
+          php -l modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+          php -l .github/tests/joomla56_site_extra_fields_template_validation.php
+          php -l .github/tests/joomla56_admin_extra_select_failure_guard.php
+          php -l .github/tests/joomla56_playgroundplan_parameter_limits.php
+      - name: PHP regression tests
+        run: |
+          php .github/tests/joomla56_site_extra_fields_template_validation.php
+          php .github/tests/joomla56_admin_extra_select_failure_guard.php
+          php .github/tests/joomla56_playgroundplan_parameter_limits.php
+          php .github/tests/joomla56_projectmap_playgroundplan_contract.php
