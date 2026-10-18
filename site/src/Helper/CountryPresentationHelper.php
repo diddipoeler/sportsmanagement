@@ -140,7 +140,7 @@ final class CountryPresentationHelper
         foreach ($matches as $match) {
             $name = strtolower($match[1]);
 
-            if (!in_array($name, ['class', 'style', 'width', 'height', 'loading', 'decoding', 'id', 'role'], true)
+            if (!in_array($name, ['class', 'style', 'width', 'height', 'loading', 'decoding', 'id', 'role', 'title'], true)
                 && !preg_match('/^aria-[a-z0-9_-]+$/D', $name)) {
                 continue;
             }
