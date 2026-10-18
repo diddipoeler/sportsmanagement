@@ -39,25 +39,25 @@ final class ExtraFieldsReadHelper
             return [];
         }
 
-        $db = (new SportsManagementDatabaseResolver())->resolve(null, $database);
-        $templateColumn = 'template_' . $template;
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('ef') . '.*',
-                $db->quoteName('ev.fieldvalue', 'fvalue'),
-                $db->quoteName('ev.id', 'value_id'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_user_extra_fields', 'ef'))
-            ->join(
-                'LEFT',
-                $db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev')
-                . ' ON ' . $db->quoteName('ef.id') . ' = ' . $db->quoteName('ev.field_id')
-                . ' AND ' . $db->quoteName('ev.jl_id') . ' = ' . $itemId
-            )
-            ->where($db->quoteName('ef.' . $templateColumn) . ' LIKE ' . $db->quote($view))
-            ->order($db->quoteName('ef.ordering') . ' ASC');
-
         try {
+            $db = (new SportsManagementDatabaseResolver())->resolve(null, $database);
+            $templateColumn = 'template_' . $template;
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('ef') . '.*',
+                    $db->quoteName('ev.fieldvalue', 'fvalue'),
+                    $db->quoteName('ev.id', 'value_id'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_user_extra_fields', 'ef'))
+                ->join(
+                    'LEFT',
+                    $db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev')
+                    . ' ON ' . $db->quoteName('ef.id') . ' = ' . $db->quoteName('ev.field_id')
+                    . ' AND ' . $db->quoteName('ev.jl_id') . ' = ' . $itemId
+                )
+                ->where($db->quoteName('ef.' . $templateColumn) . ' LIKE ' . $db->quote($view))
+                ->order($db->quoteName('ef.ordering') . ' ASC');
+
             $db->setQuery($query);
 
             return $db->loadObjectList() ?: [];
@@ -70,14 +70,15 @@ final class ExtraFieldsReadHelper
 
     private function reportDatabaseError(\Throwable $e): void
     {
-        $app = self::administratorApplication();
-        $app->enqueueMessage(
-            Text::sprintf(
-                'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                $e->getCode(),
-                $e->getMessage()
-            ),
-            'error'
+        // Keep SQL statements, connection details and filesystem paths in
+        // the server log instead of exposing exception text in administrator HTML.
+        \Joomla\CMS\Log\Log::add(
+            __METHOD__ . ': ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
         );
+
+        $app = self::administratorApplication();
+        $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
     }
 }
