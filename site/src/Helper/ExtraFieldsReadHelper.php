@@ -76,6 +76,15 @@ final class ExtraFieldsReadHelper
 
     private static function templateName(string $templateName): string
     {
-        return preg_replace('/[^A-Za-z0-9_-]/', '', trim($templateName)) ?: '';
+        $templateName = trim($templateName);
+
+        // Reject malformed names instead of silently rewriting one requested
+        // template into a different, potentially unrelated one.
+        if ($templateName === '' || strlen($templateName) > 128
+            || !preg_match('/^[A-Za-z0-9_-]+$/D', $templateName)) {
+            return '';
+        }
+
+        return $templateName;
     }
 }
