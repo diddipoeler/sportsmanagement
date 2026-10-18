@@ -76,10 +76,20 @@ final class LocationHelper
                 return [];
             }
 
+            // A remote geocoder response is not trusted input: booleans and
+            // nested values are not coordinates, even when PHP could cast them.
+            if ((!is_string($result['lat']) && !is_int($result['lat']) && !is_float($result['lat']))
+                || (!is_string($result['lon']) && !is_int($result['lon']) && !is_float($result['lon']))) {
+                return [];
+            }
+
             $latitude = filter_var((string) $result['lat'], FILTER_VALIDATE_FLOAT);
             $longitude = filter_var((string) $result['lon'], FILTER_VALIDATE_FLOAT);
 
-            if ($latitude === false || $longitude === false) {
+            if ($latitude === false || $longitude === false
+                || !is_finite($latitude) || !is_finite($longitude)
+                || $latitude < -90.0 || $latitude > 90.0
+                || $longitude < -180.0 || $longitude > 180.0) {
                 return [];
             }
 
