@@ -292,11 +292,19 @@ final class ProjectMapHelper
                     continue;
                 }
 
-                if (!preg_match('/^[1-9][0-9]*$/D', $value)) {
+                if (!preg_match('/^[0-9]+$/D', $value)) {
                     continue;
                 }
 
-                $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                // Joomla module selections may store historical IDs with
+                // leading zeros; normalize decimal strings before validating.
+                $digits = ltrim($value, '0');
+
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
                 if ($id !== false) {
                     $ids[$id] = $id;
