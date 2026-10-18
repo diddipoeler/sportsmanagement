@@ -13,6 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Field\SportsManagementDatabaseTrait;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Database\ParameterType;
 
 final class ExtraSelectOptionsHelper
 {
@@ -47,14 +48,19 @@ final class ExtraSelectOptionsHelper
                     $db->quoteName('select_values'),
                 ])
                 ->from($db->quoteName('#__sportsmanagement_user_extra_fields'))
+                // LIKE treats % and _ as wildcards. Form field names and
+                // template identifiers need exact matches, not prefix matches.
                 ->where(
                     $db->quoteName($template ? 'template_backend' : 'template_frontend')
-                    . ' LIKE ' . $db->quote($view)
+                    . ' = :templateName'
                 )
-                ->where($db->quoteName('name') . ' LIKE ' . $db->quote($field))
-                ->where($db->quoteName('fieldtyp') . ' = ' . $fieldType);
+                ->where($db->quoteName('name') . ' = :fieldName')
+                ->where($db->quoteName('fieldtyp') . ' = :fieldType')
+                ->bind(':templateName', $view, ParameterType::STRING)
+                ->bind(':fieldName', $field, ParameterType::STRING)
+                ->bind(':fieldType', $fieldType, ParameterType::INTEGER);
 
-            $db->setQuery($query);
+            $db->setQuery($query, 0, 1);
             $result = $db->loadObject();
         } catch (\Throwable $e) {
             // Optional extra fields must not break an administrator form or
