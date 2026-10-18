@@ -132,6 +132,12 @@ final class ActSeasonHelper
             return 0;
         }
 
+        // Historical module parameters may contain leading-zero decimal IDs.
+        if (is_string($rawSelector)) {
+            $digits = ltrim($rawSelector, '0');
+            $rawSelector = $digits === '' ? '0' : $digits;
+        }
+
         $selector = filter_var($rawSelector, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
         return $selector === false ? 0 : $selector;
@@ -151,6 +157,14 @@ final class ActSeasonHelper
         foreach ($ids as $id) {
             if (!is_int($id) && (!is_string($id) || !preg_match('/^[0-9]+$/D', $id))) {
                 continue;
+            }
+
+            if (is_string($id)) {
+                $id = ltrim($id, '0');
+
+                if ($id === '') {
+                    continue;
+                }
             }
 
             $id = filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
