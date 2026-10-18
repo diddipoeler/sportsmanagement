@@ -30,6 +30,8 @@ final class ClubKmlHelper
             $clubId <= 0
             || $latitude === null
             || $longitude === null
+            || !is_finite($latitude)
+            || !is_finite($longitude)
             || $latitude < -90.0
             || $latitude > 90.0
             || $longitude < -180.0
@@ -43,12 +45,7 @@ final class ClubKmlHelper
             ENT_XML1 | ENT_QUOTES,
             'UTF-8'
         );
-        $picture = trim($picture);
-        $pictureUrl = $picture === ''
-            ? ''
-            : (preg_match('#^https?://#i', $picture)
-                ? $picture
-                : rtrim(Uri::root(), '/') . '/' . ltrim($picture, '/'));
+        $pictureUrl = self::pictureUrl($picture);
         $id = (string) $clubId;
         $style = '';
 
@@ -84,4 +81,48 @@ final class ClubKmlHelper
             return false;
         }
     }
+    /**
+     * Use only safe HTTP(S) URLs or paths beneath the site's public root.
+     * Malformed optional image paths must not invalidate the club KML itself.
+     */
+    private static function pictureUrl(string $picture): string
+    {
+        $picture = trim($picture);
+
+        if ($picture === ''
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $picture)
+            || str_contains($picture, '\\\\')) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $picture)) {
+            $parts = parse_url($picture);
+
+            return filter_var($picture, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !isset($parts['user'], $parts['pass'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                    ? $picture
+                    : '';
+        }
+
+        if (str_starts_with($picture, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $picture)) {
+            return '';
+        }
+
+        $path = ltrim($picture, '/');
+        $decodedPath = rawurldecode($path);
+
+        if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decodedPath)
+            || str_contains($decodedPath, '\\\\')
+            || str_contains($decodedPath, '?')
+            || str_contains($decodedPath, '#')) {
+            return '';
+        }
+
+        return rtrim(Uri::root(), '/') . '/' . $path;
+    }
+
 }
