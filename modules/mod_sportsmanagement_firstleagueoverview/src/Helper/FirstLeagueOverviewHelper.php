@@ -31,7 +31,7 @@ final class FirstLeagueOverviewHelper
         try {
             $db = SportsManagementDatabaseResolver::resolve(
                 $fallbackDatabase,
-                (int) $params->get('cfg_which_database', 0)
+                self::databaseSelector($params->get('cfg_which_database', 0))
             );
             $componentParams = ComponentHelper::getParams('com_sportsmanagement');
             $projects = $this->latestProjects($db);
@@ -134,12 +134,8 @@ final class FirstLeagueOverviewHelper
 
         $result = [];
         foreach ($db->loadObjectList() ?: [] as $row) {
-            $picture = trim((string) ($row->picture ?? ''));
-            $row->picture_url = $picture === ''
-                ? ''
-                : (preg_match('#^https?://#i', $picture)
-                    ? $picture
-                    : rtrim((string) Uri::root(), '/') . '/' . ltrim($picture, '/'));
+            $picture = $row->picture ?? '';
+            $row->picture_url = self::mediaUrl(is_string($picture) ? $picture : '');
             $result[(int) $row->id] = $row;
         }
 
@@ -192,7 +188,7 @@ final class FirstLeagueOverviewHelper
     private function rankingLink(object $project, Registry $params): string
     {
         return SiteRouteHelper::view('ranking', [
-            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
+            'cfg_which_database' => self::databaseSelector($params->get('cfg_which_database', 0)),
             's' => (int) ($project->season_id ?? 0),
             'p' => (string) ($project->project_slug ?? $project->id ?? ''),
             'type' => 0,
@@ -207,6 +203,8 @@ final class FirstLeagueOverviewHelper
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
         $alpha2 = strtolower((string) ($row->alpha2 ?? ''));
+        $alpha3 = preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : '';
+        $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars((string) ($row->country_label ?? $alpha3), ENT_QUOTES, 'UTF-8');
 
         if ((int) $componentParams->get('cfg_flags_css', 0) === 1) {
@@ -230,12 +228,86 @@ final class FirstLeagueOverviewHelper
             return '';
         }
 
-        $url = preg_match('#^https?://#i', $path)
-            ? $path
-            : rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+        $url = self::mediaUrl($path);
+
+        if ($url === '') {
+            return '';
+        }
 
         return '<img src="'
             . htmlspecialchars($url, ENT_QUOTES, 'UTF-8')
             . '" alt="' . $label . '" title="' . $label . '" loading="lazy" />';
+    }
+
+    /** Keep malformed legacy config values from silently selecting database 1. */
+    private static function databaseSelector(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $selector = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $selector === false ? 0 : $selector;
+    }
+
+    /**
+     * Build HTTP(S) or site-local image URLs without protocol-relative paths,
+     * userinfo, traversal, encoded control bytes or executable URI schemes.
+     */
+    private static function mediaUrl(string $path): string
+    {
+        $path = trim($path);
+
+        if ($path === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, chr(92))
+            || str_starts_with($path, '//')) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $path)) {
+            $parts = parse_url($path);
+
+            return filter_var($path, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                    ? $path
+                    : '';
+        }
+
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)) {
+            return '';
+        }
+
+        $local = ltrim($path, '/');
+        $decoded = $local;
+
+        for ($depth = 0; $depth < 3; $depth++) {
+            if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
+                || preg_match('/[\x00-\x1F\x7F]/', $decoded)
+                || str_contains($decoded, chr(92))
+                || str_contains($decoded, '?')
+                || str_contains($decoded, '#')) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+
+            if ($next === $decoded) {
+                break;
+            }
+
+            $decoded = $next;
+        }
+
+        return rtrim((string) Uri::root(), '/') . '/' . $local;
     }
 }
