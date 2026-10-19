@@ -34,6 +34,11 @@ final class RoundPaginationHelper
 
     public static function pagenav($project, $cfgWhichDatabase = 0, $seasonId = 0): string
     {
+        // Public static navigation values are shared between render calls.
+        // An invalid project must never leave the previous project's links.
+        self::$prevlink = '';
+        self::$nextlink = '';
+
         if (!$project || (int) ($project->id ?? 0) <= 0) {
             return '';
         }
@@ -57,14 +62,14 @@ final class RoundPaginationHelper
 
         $normalised = [];
         foreach ($rounds as $round) {
-            $slug = (string) ($round->id ?? '');
-            $id = (int) explode(':', $slug, 2)[0];
-            if ($id <= 0) {
+            $value = self::roundIdAndSlug($round->id ?? null);
+            if ($value === null) {
                 continue;
             }
+
             $normalised[] = (object) [
-                'id' => $id,
-                'slug' => $slug !== '' ? $slug : (string) $id,
+                'id' => $value['id'],
+                'slug' => $value['slug'],
                 'roundcode' => (int) ($round->roundcode ?? 0),
             ];
         }
@@ -174,17 +179,21 @@ final class RoundPaginationHelper
         $options = [];
 
         foreach ($rounds as $round) {
-            $slug = (string) ($round->slug ?? $round->value ?? '');
-            if ($slug === '') {
+            $value = self::roundIdAndSlug($round->slug ?? $round->value ?? null);
+            if ($value === null) {
                 continue;
             }
 
-            $url = self::roundUrl($params, $slug, $params['division'], '');
-            $options[] = HTMLHelper::_('select.option', $url, (string) ($round->text ?? $slug));
+            $url = self::roundUrl($params, $value['slug'], $params['division'], '');
+            $options[] = HTMLHelper::_('select.option', $url, (string) ($round->text ?? $value['slug']));
 
-            if ((int) explode(':', $slug, 2)[0] === $currentRound) {
+            if ($value['id'] === $currentRound) {
                 $currentUrl = $url;
             }
+        }
+
+        if ($options === []) {
+            return '';
         }
 
         return HTMLHelper::_(
@@ -206,6 +215,40 @@ final class RoundPaginationHelper
     public function getprevlink(): string
     {
         return self::$prevlink;
+    }
+
+    /**
+     * Joomla round selectors can contain ID:alias values, but leading
+     * numbers followed by arbitrary text must never turn into valid links.
+     *
+     * @return array{id:int,slug:string}|null
+     */
+    private static function roundIdAndSlug(mixed $raw): ?array
+    {
+        if (!is_int($raw) && !is_string($raw)) {
+            return null;
+        }
+
+        $value = (string) $raw;
+
+        if (!preg_match('/^([0-9]+)(?::([\pL\pN._-]+))?$/Du', $value, $matches)) {
+            return null;
+        }
+
+        $digits = ltrim($matches[1], '0');
+        if ($digits === '') {
+            return null;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($id === false) {
+            return null;
+        }
+
+        return [
+            'id' => $id,
+            'slug' => $id . (isset($matches[2]) ? ':' . $matches[2] : ''),
+        ];
     }
 
     private static function createResultsDataModel($project, int $databaseSelector): ResultsDataModel
