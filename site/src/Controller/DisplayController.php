@@ -39,14 +39,13 @@ final class DisplayController extends BaseController
 
         $view = $this->input->getCmd('view', '');
 
-        if ($rawView !== '' && strtolower($view) !== strtolower($rawView)) {
+        // Reject values modified by Joomla's command filter, including whitespace.
+        // The legacy site entry point applies the same strict validation.
+        if ($rawView !== '' && (
+            strtolower($view) !== strtolower($rawView)
+            || trim($rawView) !== $rawView
+        )) {
             throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
-        }
-
-        // Only an explicitly empty view may select the default.
-        // Whitespace-padded values must not dispatch to a different MVC action.
-        if ($rawView !== '' && trim($rawView) !== $rawView) {
-            throw new \InvalidArgumentException('Invalid SportsManagement view.', 400);
         }
 
         if ($view === '') {
