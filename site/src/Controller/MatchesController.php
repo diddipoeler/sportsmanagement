@@ -221,7 +221,20 @@ final class MatchesController extends BaseController
     /** Read one non-negative POST database selector for ACL, lookup and write. */
     private function postDatabaseSelector(): int
     {
-        return max(0, $this->input->post->getInt('cfg_which_database', 0));
+        $raw = $this->input->post->get('cfg_which_database', 0, 'raw');
+
+        // Do not silently turn malformed selectors into a different database.
+        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+            throw new \InvalidArgumentException('Invalid SportsManagement database selector.', 400);
+        }
+
+        $selector = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        if ($selector === false) {
+            throw new \InvalidArgumentException('Invalid SportsManagement database selector.', 400);
+        }
+
+        return $selector;
     }
 
     /**
