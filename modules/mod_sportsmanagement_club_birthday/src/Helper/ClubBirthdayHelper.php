@@ -37,6 +37,14 @@ final class ClubBirthdayHelper
         $rawMode = $params->get('mode', 'L');
         $mode = is_string($rawMode) && strtoupper($rawMode) === 'BC' ? 'BC' : 'L';
 
+        $seasonSelection = $params->get('s', []);
+
+        // An explicitly configured but invalid season selection must not
+        // silently become an unfiltered query across all clubs.
+        if (self::hasSeasonSelection($seasonSelection) && self::normaliseIds($seasonSelection) === []) {
+            return ['clubs' => [], 'mode' => $mode];
+        }
+
         try {
             $timezone = self::timezone($app);
             $database = SportsManagementDatabaseResolver::resolve(
@@ -46,7 +54,7 @@ final class ClubBirthdayHelper
             $clubs = $this->getClubs(
                 (int) $params->get('limit', 0),
                 max(0, (int) $params->get('maxdays', 0)),
-                $params->get('s', []),
+                $seasonSelection,
                 $database,
                 $timezone,
                 (int) $params->get('sort_order', -1)
@@ -343,6 +351,27 @@ final class ClubBirthdayHelper
             ? ''
             : '<img src="' . htmlspecialchars(Uri::root() . $path, ENT_QUOTES, 'UTF-8')
                 . '" alt="' . $label . '" />';
+    }
+
+    /**
+     * Distinguish a genuinely empty legacy filter from a malformed, nonempty
+     * selection. This prevents invalid input from widening a query.
+     */
+    private static function hasSeasonSelection(mixed $value): bool
+    {
+        foreach (is_array($value) ? $value : [$value] as $entry) {
+            if (!is_string($entry) && !is_int($entry)) {
+                return true;
+            }
+
+            $text = trim((string) $entry);
+
+            if ($text !== '' && $text !== '0') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static function normaliseIds(mixed $values): array
