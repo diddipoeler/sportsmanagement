@@ -380,7 +380,7 @@ final class ClubBirthdayHelper
         $ids = [];
 
         foreach ($values as $value) {
-            if (!is_scalar($value)) {
+            if (!is_string($value) && !is_int($value)) {
                 continue;
             }
 
