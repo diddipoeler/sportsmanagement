@@ -33,13 +33,23 @@ final class ExtraFieldsSaveHelper
 
         $app = self::administratorApplication();
         $task = $app->getInput()->getCmd('task');
-        $db = (new SportsManagementDatabaseResolver())->resolve(null, $database);
+        try {
+            $db = (new SportsManagementDatabaseResolver())->resolve(null, $database);
+        } catch (\Throwable $e) {
+            $this->reportDatabaseError($e);
+
+            return;
+        }
+
         $extraIds = is_array($post['extra_id'] ?? null) ? $post['extra_id'] : [];
 
         foreach ($post['extraf'] as $index => $rawValue) {
-            $fieldId = (int) ($extraIds[$index] ?? 0);
+            $rawId = $extraIds[$index] ?? null;
+            $fieldId = self::positiveFieldId($rawId);
 
-            if ($fieldId <= 0) {
+            // Nested form values are not valid text: PHP 8 emits warnings when
+            // arrays are cast, and storing the word "Array" corrupts the row.
+            if ($fieldId <= 0 || (!is_scalar($rawValue) && $rawValue !== null)) {
                 continue;
             }
 
@@ -53,6 +63,10 @@ final class ExtraFieldsSaveHelper
                 $db->setQuery($query)->execute();
             } catch (\Throwable $e) {
                 $this->reportDatabaseError($e);
+
+                // Never insert a replacement when the old row could not be
+                // removed; that would create duplicate extra-field values.
+                continue;
             }
 
             $value = (string) $rawValue;
@@ -98,19 +112,35 @@ final class ExtraFieldsSaveHelper
         return implode('/', $parts);
     }
 
+    /** Reject partial numeric, boolean, nested and overflowing field identifiers. */
+    private static function positiveFieldId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
     private function reportDatabaseError(\Throwable $e): void
     {
-        $app = self::administratorApplication();
-        $app->enqueueMessage(
-            Text::sprintf(
-                'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                $e->getCode(),
-                $e->getMessage()
-            ),
-            'error'
+        // Keep connection strings, SQL and filesystem locations in the
+        // Joomla server log, not in administrator messages.
+        \Joomla\CMS\Log\Log::add(
+            __METHOD__ . ': ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
         );
-        $app->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__),
+
+        self::administratorApplication()->enqueueMessage(
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
