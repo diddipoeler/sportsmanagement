@@ -173,7 +173,10 @@ final class BirthdayHelper
         }
 
         $people = self::sortPersons(array_values($people), $params->get('sort_order', '-'), false);
-        $limit = max(0, (int) $params->get('limit', 0));
+        // Do not cast non-numeric or overflowing module configuration into a limit.
+        $rawLimit = $params->get('limit', 0);
+        $limit = filter_var($rawLimit, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+        $limit = $limit === false ? 0 : $limit;
         if ($limit > 0) {
             $people = array_slice($people, 0, $limit);
         }
