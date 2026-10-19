@@ -18,6 +18,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
@@ -33,34 +34,58 @@ final class ClubBirthdayHelper
         CMSApplicationInterface $app,
         DatabaseInterface $fallbackDatabase
     ): array {
-        $timezone = self::timezone($app);
-        $database = SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
-        $clubs = $this->getClubs(
-            (int) $params->get('limit', 0),
-            max(0, (int) $params->get('maxdays', 0)),
-            $params->get('s', []),
-            $database,
-            $timezone,
-            (int) $params->get('sort_order', -1)
-        );
+        $rawMode = $params->get('mode', 'L');
+        $mode = is_string($rawMode) && strtoupper($rawMode) === 'BC' ? 'BC' : 'L';
 
-        foreach ($clubs as $club) {
-            $club->birthday_text = self::birthdayText($club, $params, $timezone);
-        }
+        try {
+            $timezone = self::timezone($app);
+            $database = SportsManagementDatabaseResolver::resolve(
+                $fallbackDatabase,
+                self::databaseSelector($params->get('cfg_which_database', 0))
+            );
+            $clubs = $this->getClubs(
+                (int) $params->get('limit', 0),
+                max(0, (int) $params->get('maxdays', 0)),
+                $params->get('s', []),
+                $database,
+                $timezone,
+                (int) $params->get('sort_order', -1)
+            );
 
-        $mode = strtoupper((string) $params->get('mode', 'L'));
-
-        if ($mode !== 'BC') {
-            $mode = 'L';
+            foreach ($clubs as $club) {
+                $club->birthday_text = self::birthdayText($club, $params, $timezone);
+            }
+        } catch (Throwable $e) {
+            // Optional external databases and missing Joomla tables must not
+            // interrupt site rendering or reveal credentials to visitors.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            $clubs = [];
         }
 
         return [
             'clubs' => $clubs,
             'mode' => $mode,
         ];
+    }
+
+    /**
+     * Reject malformed external database selectors while preserving
+     * zero-padded decimal values from legacy module configurations.
+     */
+    private static function databaseSelector(mixed $raw): int
+    {
+        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+            return 0;
+        }
+
+        if (is_string($raw)) {
+            $digits = ltrim($raw, '0');
+            $raw = $digits === '' ? '0' : $digits;
+        }
+
+        $selector = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $selector === false ? 0 : $selector;
     }
 
     public static function sortClubs(array $clubs, int $sort): array
