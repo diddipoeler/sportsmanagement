@@ -41,10 +41,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $requestedLayout = (string) $data['params']->get(
+        $rawLayout = $data['params']->get(
             'which_layout',
             $data['params']->get('layout', 'default_jsm')
         );
+        $requestedLayout = is_string($rawLayout) && preg_match('/^[A-Za-z0-9_-]+$/D', $rawLayout)
+            ? $rawLayout
+            : 'default_jsm';
 
         // The historical Arrobe and TOAST UI layouts depended on legacy jQuery/
         // Bootstrap 4/TUI runtimes. Keep their stored parameter values working,
