@@ -30,6 +30,11 @@ class ClubsController extends SportsManagementAdminController
         $this->assertWritePermission();
 
         $model = $this->getModel();
+
+        if ($model === false || $model === null) {
+            throw new \RuntimeException('SportsManagement club model could not be loaded.', 500);
+        }
+
         if (!$model->saveshort()) {
             $this->app->enqueueMessage('Club inline changes could not be saved completely.', 'warning');
         }
