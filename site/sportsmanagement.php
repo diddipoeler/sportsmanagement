@@ -128,7 +128,8 @@ if ($document instanceof HtmlDocument && $projectId > 0) {
     $projectModel->setProjectId($projectId);
 
     foreach ($projectModel->getProjectTeams(0) as $team) {
-        $teamName = trim((string) ($team->name ?? ''));
+        // Legacy data providers may expose either objects or associative arrays.
+        $teamName = trim((string) (is_array($team) ? ($team['name'] ?? '') : ($team->name ?? '')));
         if ($teamName !== '') {
             $metaKeys[] = $teamName;
         }
