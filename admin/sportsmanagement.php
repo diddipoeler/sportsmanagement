@@ -89,13 +89,16 @@ if ($activeView === '') {
 $input->set('view', $activeView);
 $extensions = ExtensionLanguageHelper::forView($activeView);
 
-// Avoid loading the same extension language repeatedly for duplicate mappings.
-foreach (array_unique($extensions) as $extensionName) {
+// Deduplicate after normalisation: distinct legacy names may map to the same directory.
+$loadedExtensions = [];
+foreach ($extensions as $extensionName) {
     $extension = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
+    $extensionKey = strtolower($extension);
 
-    if ($extension === '') {
+    if ($extension === '' || isset($loadedExtensions[$extensionKey])) {
         continue;
     }
+    $loadedExtensions[$extensionKey] = true;
 
     $basePath = JPATH_SITE
         . '/components/com_sportsmanagement/extensions/'
