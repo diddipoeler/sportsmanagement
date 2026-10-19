@@ -99,6 +99,36 @@ namespace {
         }
     };
 
+    $hasSelection = new \ReflectionMethod($helper, 'hasSeasonSelection');
+    foreach ([
+        [[], false], ['', false], ['0', false], [['', '0'], false],
+        [null, true], [false, true], [true, true],
+        [['7bad'], true], [['0007'], true], [[7], true],
+        [[['nested']], true],
+    ] as [$input, $expected]) {
+        if ($hasSelection->invoke(null, $input) !== $expected) {
+            throw new \RuntimeException('Incorrect club birthday season selection presence.');
+        }
+    }
+
+    // Malformed non-empty seasons must return before database resolution and
+    // must not widen the query to every published club.
+    foreach ([['bad'], ['99999999999999999999999'], [true], [['7']], ['0', 'bad']] as $invalid) {
+        \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector = -1;
+        $result = $helper->getData(
+            new \Joomla\Registry\Registry(['s' => $invalid, 'mode' => 'BC']),
+            new class implements \Joomla\CMS\Application\CMSApplicationInterface {
+                public function get(string $key, string $default): string { return $default; }
+            },
+            new class implements \Joomla\Database\DatabaseInterface {}
+        );
+
+        if ($result !== ['clubs' => [], 'mode' => 'BC']
+            || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== -1) {
+            throw new \RuntimeException('Invalid club birthday season selection reached database resolution.');
+        }
+    }
+
     $params = new \Joomla\Registry\Registry([
         'cfg_which_database' => '0007',
         'mode' => 'BC',
