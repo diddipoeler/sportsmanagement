@@ -89,7 +89,8 @@ if ($activeView === '') {
 $input->set('view', $activeView);
 $extensions = ExtensionLanguageHelper::forView($activeView);
 
-foreach ($extensions as $extensionName) {
+// Avoid loading the same extension language repeatedly for duplicate mappings.
+foreach (array_unique($extensions) as $extensionName) {
     $extension = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
 
     if ($extension === '') {
