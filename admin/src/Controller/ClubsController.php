@@ -44,6 +44,9 @@ class ClubsController extends SportsManagementAdminController
      */
     public function getModel($name = 'Club', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        // Preserve caller options while forcing request-independent model loading.
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }
