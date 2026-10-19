@@ -63,7 +63,7 @@ if (!is_string($rawView)) {
 
 $view = strtolower($input->getCmd('view', 'sportsmanagement'));
 
-if ($rawView !== '' && $view !== strtolower($rawView)) {
+if ($rawView !== '' && ($view !== strtolower($rawView) || trim($rawView) !== $rawView)) {
     throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
 }
 
