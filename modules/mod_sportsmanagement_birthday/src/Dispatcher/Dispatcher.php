@@ -56,8 +56,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         // Helpers may return no records; keep the template data shape stable.
         $data['persons'] = is_array($result['persons'] ?? null) ? $result['persons'] : [];
-        $data['mode'] = (string) ($result['mode'] ?? '');
-        $data['pictureServer'] = (string) ($result['pictureServer'] ?? '');
+        $data['mode'] = is_scalar($result['mode'] ?? null) ? (string) $result['mode'] : 'L';
+        $data['pictureServer'] = is_string($result['pictureServer'] ?? null)
+            ? $result['pictureServer']
+            : '';
 
         $document = $app->getDocument();
 
