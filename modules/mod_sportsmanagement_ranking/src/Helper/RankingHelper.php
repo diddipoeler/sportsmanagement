@@ -115,8 +115,10 @@ final class RankingHelper
             'division' => $divisionId,
         ]);
 
+        $identity = $app->getIdentity();
         $canRefresh = (bool) $params->get('ishd_update', 0)
-            && $app->getIdentity()->authorise('core.manage', 'com_sportsmanagement');
+            && $identity !== null
+            && $identity->authorise('core.manage', 'com_sportsmanagement');
 
         return [
             'project' => $project,
