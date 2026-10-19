@@ -145,7 +145,9 @@ final class RankingHelper
             throw new \RuntimeException('Invalid CSRF token.', 403);
         }
 
-        if (!$app->getIdentity()->authorise('core.manage', 'com_sportsmanagement')) {
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
             throw new \RuntimeException('Not authorised to refresh SportsManagement match data.', 403);
         }
 
