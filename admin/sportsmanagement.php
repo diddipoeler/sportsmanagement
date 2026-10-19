@@ -79,7 +79,7 @@ if (!is_string($rawView)) {
 
 $activeView = $input->getCmd('view', 'cpanel');
 
-if ($rawView !== '' && $activeView !== $rawView) {
+if ($rawView !== '' && ($activeView !== $rawView || trim($rawView) !== $rawView)) {
     throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
 }
 if ($activeView === '') {
