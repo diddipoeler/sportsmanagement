@@ -446,6 +446,7 @@ final class BirthdayHelper
         if ($candidate === ''
             || preg_match('/[\x00-\x1F\x7F\\\\]/', $candidate)
             || str_starts_with($candidate, '//')
+            || strpbrk($candidate, '?#%') !== false
             || preg_match('~^[a-z][a-z0-9+.-]*:~i', $candidate)
             || preg_match('~(?:^|/)\.\.(?:/|$)~', $candidate)
         ) {
