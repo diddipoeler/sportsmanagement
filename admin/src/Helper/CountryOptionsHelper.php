@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 
@@ -24,21 +25,33 @@ final class CountryOptionsHelper
 {
     public static function getOptions(DatabaseInterface $db): array
     {
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('alpha3'),
-                $db->quoteName('name'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_countries'));
-        $db->setQuery($query);
+        try {
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('alpha3'),
+                    $db->quoteName('name'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_countries'));
+            $db->setQuery($query);
+            $rows = $db->loadAssocList() ?: [];
+        } catch (\Throwable $e) {
+            self::reportDatabaseError($e);
+            return [];
+        }
 
         $options = [];
 
-        foreach ($db->loadAssocList() ?: [] as $country) {
+        foreach ($rows as $country) {
+            $code = strtoupper(trim((string) ($country['alpha3'] ?? '')));
+
+            if (!preg_match('/^[A-Z]{3}$/D', $code)) {
+                continue;
+            }
+
             $options[] = HTMLHelper::_(
                 'select.option',
-                (string) $country['alpha3'],
-                Text::_((string) $country['name'])
+                $code,
+                Text::_((string) ($country['name'] ?? $code))
             );
         }
 
@@ -54,38 +67,48 @@ final class CountryOptionsHelper
     {
         $iso2 = strtoupper(trim($iso2));
 
-        if ($iso2 === '') {
+        if (!preg_match('/^[A-Z]{2}$/D', $iso2)) {
             return $fallback;
         }
 
-        $query = $db->createQuery()
-            ->select($db->quoteName('alpha3'))
-            ->from($db->quoteName('#__sportsmanagement_countries'))
-            ->where($db->quoteName('alpha2') . ' = ' . $db->quote($iso2));
-        $db->setQuery($query, 0, 1);
-        $alpha3 = strtoupper(trim((string) $db->loadResult()));
+        try {
+            $query = $db->createQuery()
+                ->select($db->quoteName('alpha3'))
+                ->from($db->quoteName('#__sportsmanagement_countries'))
+                ->where($db->quoteName('alpha2') . ' = ' . $db->quote($iso2));
+            $db->setQuery($query, 0, 1);
+            $alpha3 = strtoupper(trim((string) $db->loadResult()));
+        } catch (\Throwable $e) {
+            self::reportDatabaseError($e);
+            return $fallback;
+        }
 
-        return $alpha3 !== '' ? $alpha3 : $fallback;
+        return preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : $fallback;
     }
 
     public static function getFlag(DatabaseInterface $db, string $countryCode): string
     {
         $countryCode = strtoupper(trim($countryCode));
 
-        if ($countryCode === '') {
+        if (!preg_match('/^[A-Z]{3}$/D', $countryCode)) {
             return '';
         }
 
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('alpha2'),
-                $db->quoteName('name'),
-                $db->quoteName('picture'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_countries'))
-            ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
-        $db->setQuery($query, 0, 1);
-        $country = $db->loadObject();
+        try {
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('alpha2'),
+                    $db->quoteName('name'),
+                    $db->quoteName('picture'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_countries'))
+                ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
+            $db->setQuery($query, 0, 1);
+            $country = $db->loadObject();
+        } catch (\Throwable $e) {
+            self::reportDatabaseError($e);
+            return '';
+        }
 
         if (!$country) {
             return '';
@@ -93,6 +116,7 @@ final class CountryOptionsHelper
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $alpha2 = strtolower(trim((string) ($country->alpha2 ?? '')));
+        $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
         $label = Text::_((string) ($country->name ?? $countryCode));
 
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
@@ -110,12 +134,66 @@ final class CountryOptionsHelper
 
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : ltrim((string) ($country->picture ?? $params->get('ph_flags', '')), '/');
+            : (string) ($country->picture ?? $params->get('ph_flags', ''));
+        $url = self::imageUrl($path);
 
-        return $path !== ''
-            ? '<img src="' . self::escape(Uri::root() . ltrim($path, '/'))
+        return $url !== ''
+            ? '<img src="' . self::escape($url)
                 . '" alt="' . self::escape($label) . '" title="' . self::escape($label) . '" />'
             : '';
+    }
+
+    /** Keep optional administrator country lookups from exposing SQL details. */
+    private static function reportDatabaseError(\Throwable $e): void
+    {
+        Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+    }
+
+    /** Build only safe HTTP(S) or site-relative flag URLs. */
+    private static function imageUrl(string $value): string
+    {
+        $value = trim($value);
+
+        if ($value === '' || preg_match('/[\x00-\x1F\x7F]/', $value)
+            || str_contains($value, chr(92)) || str_starts_with($value, '//')) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $value)) {
+            $parts = parse_url($value);
+
+            return filter_var($value, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                    ? $value
+                    : '';
+        }
+
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $value)) {
+            return '';
+        }
+
+        $path = ltrim($value, '/');
+        $decoded = $path;
+
+        for ($depth = 0; $depth < 3; $depth++) {
+            if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
+                || preg_match('/[\x00-\x1F\x7F]/', $decoded)
+                || str_contains($decoded, chr(92))
+                || str_contains($decoded, '?') || str_contains($decoded, '#')) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+            if ($next === $decoded) {
+                break;
+            }
+            $decoded = $next;
+        }
+
+        return rtrim(Uri::root(), '/') . '/' . $path;
     }
 
     private static function escape(string $value): string
