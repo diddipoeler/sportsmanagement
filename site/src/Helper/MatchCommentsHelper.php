@@ -16,6 +16,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
@@ -55,18 +56,30 @@ final class MatchCommentsHelper
 
     public static function render(object $match, object $homeTeam, object $awayTeam, array $config, ?object $project): string
     {
-        if (self::commentsDisabled((string) ($match->preview ?? ''))) {
+        $preview = $match->preview ?? '';
+
+        if (self::commentsDisabled(is_string($preview) ? $preview : '')) {
             return '';
         }
 
         self::$kunenaEnabled ??= ComponentHelper::isEnabled('com_kunena');
         if (!empty($config['show_project_kunena_link']) && self::$kunenaEnabled) {
-            return self::renderKunena($match, $homeTeam, $awayTeam, $config, $project);
+            try {
+                return self::renderKunena($match, $homeTeam, $awayTeam, $config, $project);
+            } catch (\Throwable $e) {
+                // Kunena is optional. A missing table or incompatible plugin
+                // must not break the match page; try JComments if available.
+                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            }
         }
 
         self::$jcommentsEnabled ??= ComponentHelper::isEnabled('com_jcomments');
         if (self::$jcommentsEnabled) {
-            return self::renderJComments($match, $homeTeam, $awayTeam);
+            try {
+                return self::renderJComments($match, $homeTeam, $awayTeam);
+            } catch (\Throwable $e) {
+                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            }
         }
 
         return Text::_('Comments not available');
