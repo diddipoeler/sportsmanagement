@@ -127,11 +127,15 @@ if ($document instanceof HtmlDocument && $projectId > 0) {
     $projectModel->setDatabaseSelector($input->getInt('cfg_which_database', 0));
     $projectModel->setProjectId($projectId);
 
-    foreach ($projectModel->getProjectTeams(0) as $team) {
-        // Legacy data providers may expose either objects or associative arrays.
-        $teamName = trim((string) (is_array($team) ? ($team['name'] ?? '') : ($team->name ?? '')));
-        if ($teamName !== '') {
-            $metaKeys[] = $teamName;
+    $projectTeams = $projectModel->getProjectTeams(0);
+
+    // Optional SEO metadata must tolerate a legacy model returning no records.
+    if (is_iterable($projectTeams)) {
+        foreach ($projectTeams as $team) {
+            $teamName = trim((string) (is_array($team) ? ($team['name'] ?? '') : ($team->name ?? '')));
+            if ($teamName !== '') {
+                $metaKeys[] = $teamName;
+            }
         }
     }
 }
