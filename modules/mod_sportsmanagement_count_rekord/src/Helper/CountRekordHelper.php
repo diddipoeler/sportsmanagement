@@ -21,7 +21,9 @@ final class CountRekordHelper
 {
     public function getData(Registry $params, object $module, DatabaseInterface $fallbackDatabase): array
     {
-        if (!(int) $params->get('jsm_stat_spielpaarungen', 0)) {
+        $enabled = $params->get('jsm_stat_spielpaarungen', 0);
+
+        if ($enabled !== true && self::nonNegativeInt($enabled) !== 1) {
             return [];
         }
 
@@ -31,7 +33,7 @@ final class CountRekordHelper
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_match'));
             $db->setQuery($query);
-            $count = max(0, (int) $db->loadResult());
+            $count = self::nonNegativeInt($db->loadResult());
         } catch (\Throwable $e) {
             // A missing match table or unavailable external database must not
             // take down the site; details belong in the Joomla error log.
@@ -40,12 +42,12 @@ final class CountRekordHelper
             return [];
         }
 
-        $target = max(0, (int) $params->get('jsm_stat_paarungen', 0));
+        $target = self::nonNegativeInt($params->get('jsm_stat_paarungen', 0));
         $difference = max(0, $target - $count);
         $reached = $count >= $target;
 
         return [(object) [
-            'image' => 'modules/' . $module->module . '/images/matches.png',
+            'image' => 'modules/mod_sportsmanagement_count_rekord/images/matches.png',
             'anzahl' => $count,
             'anzahlbis' => $target,
             'anzahldiff' => $difference,
@@ -57,11 +59,31 @@ final class CountRekordHelper
         ]];
     }
 
+    /**
+     * Validate nonnegative decimal settings without coercing malformed
+     * arrays, booleans, partial numeric strings or overflowing identifiers.
+     */
+    private static function nonNegativeInt(mixed $raw): int
+    {
+        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+            return 0;
+        }
+
+        if (is_string($raw)) {
+            $digits = ltrim($raw, '0');
+            $raw = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? 0 : $number;
+    }
+
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
+            self::nonNegativeInt($params->get('cfg_which_database', 0))
         );
     }
 }
