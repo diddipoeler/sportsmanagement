@@ -125,6 +125,8 @@ namespace {
     }
 
     $input = new class {
+        public int $currentRound = 2;
+
         public function getCmd(string $name, string $default = ''): string
         {
             return $name === 'option' ? 'com_sportsmanagement' : $default;
@@ -132,7 +134,7 @@ namespace {
 
         public function getInt(string $name, int $default = 0): int
         {
-            return $name === 'r' ? 2 : $default;
+            return $name === 'r' ? $this->currentRound : $default;
         }
     };
 
@@ -154,11 +156,21 @@ namespace {
     $html = $helper::pagenav($project);
 
     if (!str_contains($html, 'r=7%3Afinal')
-        || !str_contains($html, 'r=2%3Aopening')
         || str_contains($html, '8invalid')
-        || !str_contains($helper::$nextlink, 'r=7%3Afinal')) {
-        throw new \RuntimeException('Results pagination includes invalid round IDs or loses valid links.');
+        || !str_contains($helper::$nextlink, 'r=7%3Afinal')
+        || $helper::$prevlink !== '') {
+        throw new \RuntimeException('First round navigation includes invalid links.');
     }
+
+    $input->currentRound = 7;
+    $html = $helper::pagenav($project);
+
+    if (!str_contains($html, 'r=2%3Aopening')
+        || !str_contains($helper::$prevlink, 'r=2%3Aopening')
+        || $helper::$nextlink !== '') {
+        throw new \RuntimeException('Second round navigation lost the previous round link.');
+    }
+    $input->currentRound = 2;
 
     if ($helper::pagenav((object) ['id' => 0]) !== ''
         || $helper::$prevlink !== '' || $helper::$nextlink !== '') {
