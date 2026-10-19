@@ -21,6 +21,10 @@ final class TeamsController extends SportsManagementAdminController
         $this->assertWritePermission();
 
         $model = $this->getModel();
+        if ($model === false || $model === null) {
+            throw new \RuntimeException('SportsManagement team model could not be loaded.', 500);
+        }
+
         $ok = $model->saveshort();
         $this->app->enqueueMessage($ok ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')), $ok ? 'message' : 'warning');
         $this->redirectToList();
@@ -30,6 +34,10 @@ final class TeamsController extends SportsManagementAdminController
     {
         $this->assertWritePermission('core.create');
         $model = $this->getModel();
+        if ($model === false || $model === null) {
+            throw new \RuntimeException('SportsManagement team model could not be loaded.', 500);
+        }
+
         $ok = $model->copySelected();
         $this->app->enqueueMessage($ok ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')), $ok ? 'message' : 'warning');
         $this->redirectToList();
