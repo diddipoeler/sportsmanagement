@@ -50,8 +50,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('MatchesHelper')
             ->getData($data['params'], $app, $data['module'], $database);
 
-        $data['matches'] = $result['matches'];
-        $data['legacyUpdateRequested'] = $result['legacy_update_requested'];
+        // Keep template data types stable when optional helper output is missing.
+        $data['matches'] = is_array($result['matches'] ?? null) ? $result['matches'] : [];
+        $data['legacyUpdateRequested'] = (bool) ($result['legacy_update_requested'] ?? false);
 
         $template = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $data['params']->get('template', 'default_tableless'));
         $template = $template !== '' ? $template : 'default_tableless';
