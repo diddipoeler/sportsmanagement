@@ -142,7 +142,9 @@ final class BirthdayHelper
 
         foreach ($rows as $row) {
             $birth = $this->date((string) $row->birthday, $today->getTimezone());
-            if (!$birth) {
+            // Ignore invalid or future dates of birth rather than displaying
+            // negative ages from inconsistent legacy records.
+            if (!$birth || $birth > $today) {
                 continue;
             }
 
