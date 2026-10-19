@@ -1,0 +1,50 @@
+name: Joomla 5/6 extra save comments and club birthday failures
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'site/src/Helper/MatchCommentsHelper.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
+      - '.github/tests/joomla56_admin_extra_field_save_failure_guard.php'
+      - '.github/tests/joomla56_match_comments_optional_failures.php'
+      - '.github/tests/joomla56_club_birthday_db_failure_guard.php'
+      - '.github/workflows/joomla56-extra-save-comments-clubbirthday.yml'
+  pull_request:
+    paths:
+      - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
+      - 'site/src/Helper/MatchCommentsHelper.php'
+      - 'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php'
+      - '.github/tests/joomla56_admin_extra_field_save_failure_guard.php'
+      - '.github/tests/joomla56_match_comments_optional_failures.php'
+      - '.github/tests/joomla56_club_birthday_db_failure_guard.php'
+  workflow_dispatch:
+
+jobs:
+  php-regressions:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax
+        run: |
+          php -l admin/src/Helper/ExtraFieldsSaveHelper.php
+          php -l site/src/Helper/MatchCommentsHelper.php
+          php -l modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php
+          php -l .github/tests/joomla56_admin_extra_field_save_failure_guard.php
+          php -l .github/tests/joomla56_match_comments_optional_failures.php
+          php -l .github/tests/joomla56_club_birthday_db_failure_guard.php
+      - name: Exercise Joomla 5/6 error recovery
+        run: |
+          php .github/tests/joomla56_admin_extra_field_save_failure_guard.php
+          php .github/tests/joomla56_match_comments_optional_failures.php
+          php .github/tests/joomla56_club_birthday_db_failure_guard.php
+          php .github/tests/joomla56_club_birthday_paths.php
