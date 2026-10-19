@@ -46,8 +46,11 @@ final class DisplayController extends BaseController
         }
 
         if ($view === '') {
-            $input->set('view', $this->default_view);
+            $view = $this->default_view;
         }
+
+        // Keep native and legacy administrator view dispatch consistent.
+        $input->set('view', $view);
 
         return parent::display($cachable, $urlparams);
     }
