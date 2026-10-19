@@ -50,8 +50,11 @@ final class DisplayController extends BaseController
         }
 
         if ($view === '') {
-            $this->input->set('view', $this->default_view);
+            $view = $this->default_view;
         }
+
+        // Use the validated canonical view for the MVC lookup, not the raw input.
+        $this->input->set('view', strtolower($view));
 
         return parent::display($cachable, $urlparams);
     }
