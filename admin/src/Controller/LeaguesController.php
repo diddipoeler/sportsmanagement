@@ -21,6 +21,10 @@ final class LeaguesController extends SportsManagementAdminController
 
         $model = $this->getModel();
 
+        if ($model === false || $model === null) {
+            throw new \RuntimeException('SportsManagement league model could not be loaded.', 500);
+        }
+
         if (!$model->saveshort()) {
             $this->app->enqueueMessage('League inline changes could not be saved completely.', 'warning');
         }
@@ -30,6 +34,8 @@ final class LeaguesController extends SportsManagementAdminController
 
     public function getModel($name = 'League', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }
