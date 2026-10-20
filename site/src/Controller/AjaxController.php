@@ -259,10 +259,18 @@ final class AjaxController extends BaseController
         /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = $this->app->getContainer()->get(DatabaseInterface::class);
         $input = $this->app->getInput();
-        $selector = max(0, $input->getInt(
-            'cfg_which_database',
-            (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
-        ));
+        $configuredSelector = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0);
+        $rawSelector = $input->get('cfg_which_database', $configuredSelector, 'raw');
+
+        if (!is_int($rawSelector) && (!is_string($rawSelector) || !preg_match('/^[0-9]+$/D', $rawSelector))) {
+            throw new \InvalidArgumentException('Invalid SportsManagement AJAX database selector.', 400);
+        }
+
+        $selector = filter_var($rawSelector, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        if ($selector === false) {
+            throw new \InvalidArgumentException('Invalid SportsManagement AJAX database selector.', 400);
+        }
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
         $query = $db->createQuery()
             ->select([
