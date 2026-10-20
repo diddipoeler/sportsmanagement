@@ -43,7 +43,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $moduleName = (string) ($data['module']->module ?? 'mod_sportsmanagement_ranking');
+        // The module directory is fixed; never derive a filesystem path from module data.
+        $moduleName = 'mod_sportsmanagement_ranking';
         $style = 'modules/' . $moduleName . '/css/' . $moduleName . '.css';
         $document = $app->getDocument();
 
