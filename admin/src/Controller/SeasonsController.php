@@ -17,7 +17,10 @@ final class SeasonsController extends SportsManagementAdminController
 {
     public function getModel($name = 'Season', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        // Retain caller options while keeping the model request-independent.
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 
     public function applypersons(): void
@@ -26,6 +29,11 @@ final class SeasonsController extends SportsManagementAdminController
 
         $post = $this->input->post->getArray();
         $model = $this->getModel();
+
+        if ($model === false || $model === null) {
+            throw new \RuntimeException('SportsManagement season model could not be loaded.', 500);
+        }
+
         $message = (string) $model->saveshortpersons();
 
         $url = 'index.php?option=com_sportsmanagement'
@@ -46,6 +54,11 @@ final class SeasonsController extends SportsManagementAdminController
 
         $post = $this->input->post->getArray();
         $model = $this->getModel();
+
+        if ($model === false || $model === null) {
+            throw new \RuntimeException('SportsManagement season model could not be loaded.', 500);
+        }
+
         $model->saveshortteams();
 
         $url = 'index.php?option=com_sportsmanagement'
