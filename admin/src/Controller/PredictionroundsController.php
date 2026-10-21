@@ -20,22 +20,31 @@ final class PredictionroundsController extends SportsManagementAdminController
 {
     public function getModel($name = 'Predictionround', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 
     public function saveshort(): void
     {
         $this->checkToken();
+        $this->assertWritePermission('core.edit');
 
         $input = $this->app->getInput();
-        $pks = array_values(array_filter(array_map('intval', $input->get('cid', [], 'array'))));
+        $pks = self::selectedRoundIds($input->get('cid', [], 'array'));
         $messageType = 'message';
 
         if (!$pks) {
             $message = Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICITIONROUNDS_SAVE_NO_SELECT');
             $messageType = 'error';
         } else {
-            $message = $this->getModel()->saveshort($pks, $input->post->getArray());
+            $model = $this->getModel();
+
+            if (!is_object($model)) {
+                throw new \RuntimeException('Predictionround model is unavailable.', 500);
+            }
+
+            $message = $model->saveshort($pks, $input->post->getArray());
 
             if ($message === false) {
                 $message = Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED');
@@ -56,6 +65,7 @@ final class PredictionroundsController extends SportsManagementAdminController
     public function populateFromProjectRounds(): void
     {
         $this->checkToken();
+        $this->assertWritePermission('core.create');
 
         $app = $this->app;
         $predictionId = (int) $app->getUserStateFromRequest(
@@ -75,6 +85,11 @@ final class PredictionroundsController extends SportsManagementAdminController
             $messageType = 'error';
         } else {
             $roundsModel = parent::getModel('Predictionrounds', 'Administrator', ['ignore_request' => true]);
+
+            if (!is_object($roundsModel)) {
+                throw new \RuntimeException('Predictionrounds list model is unavailable.', 500);
+            }
+
             $projectIds = $roundsModel->getPredictionProjectIds($predictionId);
 
             if (!$projectIds) {
@@ -90,7 +105,13 @@ final class PredictionroundsController extends SportsManagementAdminController
                 ));
 
                 if ($roundIdsToAdd) {
-                    $message = $this->getModel()->addPredRoundIds($roundIdsToAdd, $predictionId, $projectId);
+                    $model = $this->getModel();
+
+                    if (!is_object($model)) {
+                        throw new \RuntimeException('Predictionround model is unavailable.', 500);
+                    }
+
+                    $message = $model->addPredRoundIds($roundIdsToAdd, $predictionId, $projectId);
 
                     if ($message === false) {
                         $message = Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED');
@@ -108,5 +129,36 @@ final class PredictionroundsController extends SportsManagementAdminController
             $message,
             $messageType
         );
+    }
+
+    /** Return at most 500 unique positive IDs without permissive integer casts. */
+    private static function selectedRoundIds(mixed $selected): array
+    {
+        if (!is_array($selected)) {
+            return [];
+        }
+
+        $ids = [];
+        foreach (array_slice($selected, 0, 500) as $raw) {
+            if (!is_int($raw) && !is_string($raw)) {
+                continue;
+            }
+
+            if (is_string($raw) && !preg_match('/^[0-9]+$/D', $raw)) {
+                continue;
+            }
+
+            $digits = ltrim((string) $raw, '0');
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id !== false) {
+                $ids[$id] = $id;
+            }
+        }
+
+        return array_values($ids);
     }
 }

@@ -21,9 +21,15 @@ final class PredictionmembershipModel extends PredictionentryModel
     public function registerCurrentUser(): int
     {
         $identity = $this->siteApplication()->getIdentity();
-        $userId = (int) $identity->id;
+        $userId = (int) ($identity->id ?? 0);
+
+        // Reject guests before reading the game or opening a database connection.
+        if ($userId <= 0) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $game = $this->getPredictionGame();
-        if ($userId <= 0 || !$game || $this->predictionGameId <= 0) {
+        if (!$game || $this->predictionGameId <= 0) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 

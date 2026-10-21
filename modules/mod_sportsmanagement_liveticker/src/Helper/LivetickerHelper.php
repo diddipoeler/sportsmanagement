@@ -46,14 +46,19 @@ final class LivetickerHelper
 
         $database = $this->joomlaDatabase($database);
         $db = $this->database($selector, $database);
-        $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
+        $list = $this->getList(
+            $params,
+            $app,
+            self::boundedNumber($params->get('display_num', 5), 5, 1, 100),
+            $db
+        );
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
             : [];
 
         return [
             'listHtml' => $this->buildListHtml($list, $commentary, $params, $app),
-            'updateTimeout' => min(3600, max(1, (int) $params->get('update_timeout', 10))),
+            'updateTimeout' => self::boundedNumber($params->get('update_timeout', 10), 10, 1, 3600),
             'cssFile' => basename((string) $params->get('use_css', 'simple.css')),
             'moduleId' => (int) ($module->id ?? 0),
         ];
@@ -88,7 +93,12 @@ final class LivetickerHelper
 
         $database = $this->joomlaDatabase($database);
         $db = $this->database($selector, $database);
-        $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
+        $list = $this->getList(
+            $params,
+            $app,
+            self::boundedNumber($params->get('display_num', 5), 5, 1, 100),
+            $db
+        );
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
             : [];
@@ -169,7 +179,7 @@ final class LivetickerHelper
         $timestamp = $now->getTimestamp();
         // Legacy parameters are not always constrained by their XML form limits.
         // Bound the query window to one day and the row count to 100 matches.
-        $playtime = min(1440, max(0, (int) $params->get('playtime', 105)));
+        $playtime = self::boundedNumber($params->get('playtime', 105), 105, 0, 1440);
         $limit = min(100, max(1, $limit));
         $timestampFrom = $timestamp - ($playtime * 60);
         $timestampTo = $timestamp + ($playtime * 60);
@@ -454,6 +464,25 @@ final class LivetickerHelper
         } catch (\Throwable) {
             return new DateTimeImmutable('now', new DateTimeZone('UTC'));
         }
+    }
+
+    /** Parse nonnegative numeric settings without partial or overflowing casts. */
+    private static function boundedNumber(mixed $raw, int $default, int $min, int $max): int
+    {
+        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+            return $default;
+        }
+
+        $digits = ltrim((string) $raw, '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $maximum = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($maximum)
+            || (strlen($digits) === strlen($maximum) && strcmp($digits, $maximum) > 0)) {
+            return $max;
+        }
+
+        return min($max, max($min, (int) $digits));
     }
 
     /** Permit only database 0 or 1, including zero-padded legacy settings. */
