@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -128,10 +129,10 @@ final class IcalModel extends SportsManagementProjectModel
 
             return $db->loadObjectList('id') ?: [];
         } catch (\Throwable $exception) {
-            $app->enqueueMessage(
-                Text::_(__METHOD__ . ' ' . $exception->getMessage()),
-                'error'
-            );
+            // SQL details and database credentials belong in server logs, not
+            // in publicly accessible calendar feeds or error messages.
+            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return false;
         }

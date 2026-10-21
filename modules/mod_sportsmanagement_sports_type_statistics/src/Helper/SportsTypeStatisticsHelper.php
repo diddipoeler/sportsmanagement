@@ -19,8 +19,15 @@ final class SportsTypeStatisticsHelper
 {
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
-        $db = $this->database($params, $fallbackDatabase);
-        $sportTypeId = (int) $params->get('sportstypes', 0);
+        $sportTypeId = self::nonNegativeSelector($params->get('sportstypes', 0));
+        $databaseSelector = self::nonNegativeSelector($params->get('cfg_which_database', 0));
+
+        // A malformed selector must never select an unrelated sport or DB.
+        if ($sportTypeId === null || $databaseSelector === null) {
+            return ['sportstype' => null, 'counts' => ['projects' => 0]];
+        }
+
+        $db = $this->database($databaseSelector, $fallbackDatabase);
 
         $sportType = null;
         if ($sportTypeId > 0) {
@@ -329,11 +336,38 @@ final class SportsTypeStatisticsHelper
         return (int) $db->loadResult();
     }
 
-    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    /**
+     * Accept non-negative decimal IDs, including legacy zero-padded values,
+     * but reject partial casts, booleans, arrays and integer overflow.
+     */
+    private static function nonNegativeSelector(mixed $value): ?int
     {
-        return SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
+        if (is_int($value)) {
+            return $value >= 0 ? $value : null;
+        }
+
+        if (!is_string($value) || !preg_match('/^[0-9]+$/D', $value)) {
+            return null;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $maximum = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($maximum)
+            || (strlen($digits) === strlen($maximum) && strcmp($digits, $maximum) > 0)) {
+            return null;
+        }
+
+        return (int) $digits;
+    }
+
+    private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    {
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 }
