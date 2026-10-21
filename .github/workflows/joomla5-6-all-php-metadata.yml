@@ -87,6 +87,12 @@ jobs:
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
           php -l .github/tests/joomla56_ical_error_privacy.php
           php -l .github/tests/joomla56_admin_rounds_write_guards.php
+          php -l site/src/Model/PredictionmembershipModel.php
+          php -l admin/src/Controller/PredictionroundsController.php
+          php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          php -l .github/tests/joomla56_prediction_membership_guest.php
+          php -l .github/tests/joomla56_prediction_rounds_write_guards.php
+          php -l .github/tests/joomla56_prediction_liveticker_followup.php
           php -l admin/src/Controller/ProjectsController.php
           php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
           php -l .github/tests/joomla56_admin_projects_action_feedback.php
@@ -148,3 +154,12 @@ jobs:
 
       - name: Verify Liveticker invalid database settings do not query SQL
         run: php .github/tests/joomla56_liveticker_database_selector.php
+
+      - name: Check prediction membership guest permissions
+        run: php .github/tests/joomla56_prediction_membership_guest.php
+
+      - name: Check administrator prediction round write guards
+        run: php .github/tests/joomla56_prediction_rounds_write_guards.php
+
+      - name: Check Liveticker settings and query bounds
+        run: php .github/tests/joomla56_prediction_liveticker_followup.php

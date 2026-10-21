@@ -4,6 +4,10 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Controller/PredictionrankingController.php'
+      - 'site/src/Model/PredictionmembershipModel.php'
+      - 'admin/src/Controller/PredictionroundsController.php'
+      - '.github/tests/joomla56_prediction_membership_guest.php'
+      - '.github/tests/joomla56_prediction_rounds_write_guards.php'
       - 'admin/src/Controller/PredictionmembersController.php'
       - 'admin/src/Model/PredictionmemberModel.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php'
@@ -34,5 +38,14 @@ jobs:
           php -l admin/src/Model/PredictionmemberModel.php
           php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
           php -l .github/tests/joomla56_prediction_liveticker_followup.php
+          php -l site/src/Model/PredictionmembershipModel.php
+          php -l admin/src/Controller/PredictionroundsController.php
+          php -l .github/tests/joomla56_prediction_membership_guest.php
+          php -l .github/tests/joomla56_prediction_rounds_write_guards.php
+      - name: Test guest membership and administrator prediction rounds
+        run: |
+          php .github/tests/joomla56_prediction_membership_guest.php
+          php .github/tests/joomla56_prediction_rounds_write_guards.php
+
       - name: Check prediction ACL inputs and bounded liveticker runtime
         run: php .github/tests/joomla56_prediction_liveticker_followup.php
