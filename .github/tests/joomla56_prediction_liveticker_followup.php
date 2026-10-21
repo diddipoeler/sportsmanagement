@@ -222,5 +222,38 @@ namespace {
         throw new \RuntimeException('Liveticker minimum list size must be positive.');
     }
 
+    // Invalid module values may not be cast from partially numeric strings.
+    $bounded = new \ReflectionMethod($moduleHelper, 'boundedNumber');
+    foreach ([
+        ['0008', 5, 1, 100, 8],
+        [0, 5, 1, 100, 1],
+        ['2000000', 5, 1, 100, 100],
+        ['99999999999999999999999999999', 5, 1, 100, 100],
+        ['5junk', 5, 1, 100, 5],
+        ['-1', 5, 1, 100, 5],
+        ['5.5', 5, 1, 100, 5],
+        [['5'], 5, 1, 100, 5],
+        [true, 5, 1, 100, 5],
+        [0, 105, 0, 1440, 0],
+        ['10junk', 105, 0, 1440, 105],
+        [3601, 10, 1, 3600, 3600],
+    ] as [$raw, $default, $min, $max, $expected]) {
+        if ($bounded->invoke(null, $raw, $default, $min, $max) !== $expected) {
+            throw new \RuntimeException('Malformed Liveticker numeric config was accepted.');
+        }
+    }
+
+    $badParams = new \Joomla\Registry\Registry([
+        'display_num' => '5junk',
+        'playtime' => '0junk',
+        'update_timeout' => ['10'],
+        'display_commentary' => 0,
+    ]);
+    $output = $moduleHelper->getData($badParams, (object) ['id' => 51], $app, $db);
+    $seconds = $db->query->binds[':timestampTo'] - $db->query->binds[':timestampFrom'];
+    if ($db->limit !== 5 || $seconds !== 105 * 2 * 60 || $output['updateTimeout'] !== 10) {
+        throw new \RuntimeException('Liveticker malformed numeric settings bypassed defaults.');
+    }
+
     echo "Joomla 5/6 prediction token/selection and liveticker bounds OK\n";
 }
