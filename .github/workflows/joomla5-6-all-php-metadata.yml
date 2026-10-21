@@ -68,6 +68,10 @@ jobs:
           php -l site/src/Model/PredictionuserModel.php
           php -l modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
           php -l .github/tests/joomla56_prediction_member_identity.php
+          php -l admin/src/Controller/SeasonsController.php
+          php -l modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
+          php -l .github/tests/joomla56_admin_seasons_controller.php
+          php -l .github/tests/joomla56_ranking_media_urls.php
 
       - name: Check match write guards, AJAX output and module website links
         run: php .github/tests/joomla56_match_write_security.php
@@ -95,3 +99,9 @@ jobs:
 
       - name: Check prediction member ACL with missing Joomla identities
         run: php .github/tests/joomla56_prediction_member_identity.php
+
+      - name: Test administrator Seasons controller model guards
+        run: php .github/tests/joomla56_admin_seasons_controller.php
+
+      - name: Check Ranking module media URLs
+        run: php .github/tests/joomla56_ranking_media_urls.php
