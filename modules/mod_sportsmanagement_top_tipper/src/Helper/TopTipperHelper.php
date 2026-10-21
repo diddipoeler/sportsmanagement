@@ -22,9 +22,10 @@ final class TopTipperHelper
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         $predictionGameId = $this->extractId($params->get('pg', 0));
-        $databaseSelector = max(0, (int) $params->get('cfg_which_database', 0));
+        $databaseSelector = self::databaseSelector($params->get('cfg_which_database', 0));
 
-        if ($predictionGameId <= 0) {
+        // Invalid module settings must not select a different database.
+        if ($predictionGameId <= 0 || $databaseSelector === null) {
             return $this->emptyData();
         }
 
@@ -112,7 +113,7 @@ final class TopTipperHelper
             );
         }
 
-        $limit = max(1, (int) ($config['limit'] ?? 5));
+        $limit = self::boundedLimit($config['limit'] ?? 5);
         $rows = array_slice($rows, 0, $limit, true);
         $rankingProject = $rankingModel->getRankingProject();
 
@@ -221,13 +222,52 @@ final class TopTipperHelper
             'show_average_points', 'show_count_tips', 'show_count_joker', 'show_count_topptips',
             'show_count_difftips', 'show_count_tendtipps', 'show_debug_modus',
         ];
-        $config = ['limit' => max(1, (int) $params->get('limit', 5))];
+        $config = ['limit' => self::boundedLimit($params->get('limit', 5))];
 
         foreach ($keys as $key) {
             $config[$key] = (int) $params->get($key, 0);
         }
 
         return $config;
+    }
+
+    /** Only non-negative decimal database IDs, including zero-padded values. */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value >= 0 ? $value : null;
+        }
+
+        if (!is_string($value) || !preg_match('/^[0-9]+$/D', $value)) {
+            return null;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $maximum = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($maximum)
+            || (strlen($digits) === strlen($maximum) && strcmp($digits, $maximum) > 0)) {
+            return null;
+        }
+
+        return (int) $digits;
+    }
+
+    /** A configured ranking must never render an unbounded user list. */
+    private static function boundedLimit(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 5;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? 5 : min(100, max(1, $number));
     }
 
     private function route(string $view, array $parameters): string

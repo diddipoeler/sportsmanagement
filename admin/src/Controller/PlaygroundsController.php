@@ -15,6 +15,9 @@ final class PlaygroundsController extends SportsManagementAdminController
 {
     public function getModel($name = 'Playground', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        // Keep options provided by Joomla's MVC factory and legacy callers.
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }

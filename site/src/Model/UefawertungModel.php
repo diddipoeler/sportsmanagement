@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 
@@ -127,30 +128,30 @@ final class UefawertungModel extends SportsManagementProjectModel
             return [];
         }
 
-        $db = $this->getDatabase();
-        $query = $db->createQuery()
-            ->select($db->quoteName('season'))
-            ->from($db->quoteName('#__sportsmanagement_uefawertung'))
-            ->where($db->quoteName('season') . ' <= :coefficientYear')
-            ->group($db->quoteName('season'))
-            ->order($db->quoteName('season') . ' DESC')
-            ->bind(':coefficientYear', $coefficientyear, ParameterType::STRING);
+        try {
+            $db = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select($db->quoteName('season'))
+                ->from($db->quoteName('#__sportsmanagement_uefawertung'))
+                ->where($db->quoteName('season') . ' <= :coefficientYear')
+                ->group($db->quoteName('season'))
+                ->order($db->quoteName('season') . ' DESC')
+                ->bind(':coefficientYear', $coefficientyear, ParameterType::STRING);
 
-        $db->setQuery($query, 0, 5);
+            $db->setQuery($query, 0, 5);
 
-        return array_values(array_map('strval', $db->loadColumn() ?: []));
+            return array_values(array_map('strval', $db->loadColumn() ?: []));
+        } catch (\Throwable $e) {
+            $this->reportDatabaseError($e);
+
+            return [];
+        }
     }
 
     private function reportDatabaseError(\Throwable $e): void
     {
-        $app = $this->siteApplication();
-        $app->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-            'error'
-        );
-        $app->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__),
-            'error'
-        );
+        // Log internal SQL and file details without exposing them to visitors.
+        Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+        $this->siteApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
     }
 }
