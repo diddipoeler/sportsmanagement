@@ -214,9 +214,25 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
 
     private function memberId(mixed $value): int
     {
-        if (is_int($value)) {
-            return max(0, $value);
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
         }
-        return max(0, (int) strtok((string) $value, ':'));
+
+        $raw = trim((string) $value);
+
+        // Legacy links use ID:alias. Reject partial casts and oversized IDs.
+        if (!preg_match('/^([0-9]+)(?::[^:\s,;]+)?$/D', $raw, $matches)) {
+            return 0;
+        }
+
+        $digits = ltrim($matches[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 }
