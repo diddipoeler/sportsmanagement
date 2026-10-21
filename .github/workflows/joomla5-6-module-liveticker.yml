@@ -6,12 +6,14 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_liveticker/**'
       - '.github/workflows/joomla5-6-module-liveticker.yml'
+      - '.github/tests/joomla56_liveticker_css_config.php'
       - '.github/tests/joomla56_liveticker_database_selector.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_liveticker/**'
       - '.github/workflows/joomla5-6-module-liveticker.yml'
+      - '.github/tests/joomla56_liveticker_css_config.php'
       - '.github/tests/joomla56_liveticker_database_selector.php'
 
 jobs:
@@ -41,6 +43,11 @@ jobs:
         run: |
           php -l .github/tests/joomla56_liveticker_database_selector.php
           php .github/tests/joomla56_liveticker_database_selector.php
+
+      - name: Test CSS filename configuration
+        run: |
+          php -l .github/tests/joomla56_liveticker_css_config.php
+          php .github/tests/joomla56_liveticker_css_config.php
 
       - name: Validate mandatory PHPDoc metadata
         shell: bash
