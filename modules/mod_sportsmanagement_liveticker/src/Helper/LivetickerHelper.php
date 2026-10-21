@@ -59,7 +59,7 @@ final class LivetickerHelper
         return [
             'listHtml' => $this->buildListHtml($list, $commentary, $params, $app),
             'updateTimeout' => self::boundedNumber($params->get('update_timeout', 10), 10, 1, 3600),
-            'cssFile' => basename((string) $params->get('use_css', 'simple.css')),
+            'cssFile' => self::cssFile($params->get('use_css', 'simple.css')),
             'moduleId' => (int) ($module->id ?? 0),
         ];
     }
@@ -464,6 +464,18 @@ final class LivetickerHelper
         } catch (\Throwable) {
             return new DateTimeImmutable('now', new DateTimeZone('UTC'));
         }
+    }
+
+    /** Only local CSS filenames are allowed in module configuration. */
+    private static function cssFile(mixed $value): string
+    {
+        if (!is_string($value) || $value === ''
+            || !preg_match('/^[A-Za-z0-9_-]+\\.css$/D', $value)
+        ) {
+            return 'simple.css';
+        }
+
+        return $value;
     }
 
     /** Parse nonnegative numeric settings without partial or overflowing casts. */
