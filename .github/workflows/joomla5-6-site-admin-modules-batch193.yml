@@ -57,7 +57,8 @@ jobs:
           grep -Fq -- 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/View/Jlextfederation/HtmlView.php
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Jlextfederation/HtmlView.php
 
-          grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          grep -Fq -- 'use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;' modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          grep -Fq -- "if (!\$app->isClient('site')) {" modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
           grep -Fq -- 'use Joomla\CMS\Document\HtmlDocument;' modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
           grep -Fq -- 'if ($document instanceof HtmlDocument && is_file' modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
           ! grep -Fq -- '$app->getDocument()->getWebAssetManager()' modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php

@@ -65,6 +65,9 @@ jobs:
           php -l .github/tests/joomla56_club_save_contract.php
           php -l .github/tests/phpdoc_metadata.php
           php -l script.joomla56.php
+          php -l site/src/Model/PredictionuserModel.php
+          php -l modules/mod_sportsmanagement_teamplayers/src/Helper/TeamPlayersHelper.php
+          php -l .github/tests/joomla56_prediction_member_identity.php
 
       - name: Check match write guards, AJAX output and module website links
         run: php .github/tests/joomla56_match_write_security.php
@@ -89,3 +92,6 @@ jobs:
 
       - name: Check custom match form write permissions and private errors
         run: php .github/tests/joomla56_match_form_access_contract.php
+
+      - name: Check prediction member ACL with missing Joomla identities
+        run: php .github/tests/joomla56_prediction_member_identity.php

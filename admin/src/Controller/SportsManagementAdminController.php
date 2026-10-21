@@ -39,7 +39,9 @@ abstract class SportsManagementAdminController extends AdminController
      */
     public function saveorder()
     {
-        if (!$this->app->getIdentity()->authorise('core.admin', $this->option)) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', $this->option)) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
@@ -56,7 +58,9 @@ abstract class SportsManagementAdminController extends AdminController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        if (!$this->app->getIdentity()->authorise($action, 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise($action, 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
     }

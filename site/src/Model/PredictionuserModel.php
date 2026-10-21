@@ -36,7 +36,14 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
             return false;
         }
 
-        $identityId = (int) $this->siteApplication()->getIdentity()->id;
+        $identity = $this->siteApplication()->getIdentity();
+
+        // An anonymous or not-yet-initialised identity must not gain edit access.
+        if ($identity === null) {
+            return false;
+        }
+
+        $identityId = (int) ($identity->id ?? 0);
         return ($identityId > 0 && $identityId === $userId) || $this->isAllowedAdmin();
     }
 

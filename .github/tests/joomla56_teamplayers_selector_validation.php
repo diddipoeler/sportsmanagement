@@ -137,6 +137,15 @@ namespace {
     }
     expectSame(0, $db->queries, 'Invalid project/team selectors issued SQL queries');
 
+    foreach (['1junk', '-1', '1.5', true, ['1'], '999999999999999999999999999999'] as $selector) {
+        expectSame($empty, $helper->getData(new Registry([
+            'p' => '12',
+            'team' => '20',
+            'cfg_which_database' => $selector,
+        ]), $db), 'Invalid database configuration must not run an SQL query');
+    }
+    expectSame(0, $db->queries, 'Invalid database selectors issued SQL queries');
+
     expectSame($empty, $helper->getData(new Registry([
         'p' => '12:my-project',
         'team' => '020:my-team',

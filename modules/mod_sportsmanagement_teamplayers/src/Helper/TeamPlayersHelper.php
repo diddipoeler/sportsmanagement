@@ -34,12 +34,14 @@ final class TeamPlayersHelper
     {
         $projectId = $this->positiveId($params->get('p', 0));
         $teamId = $this->positiveId($params->get('team', 0));
+        $databaseSelector = $this->databaseSelector($params->get('cfg_which_database', 0));
 
-        if ($projectId <= 0 || $teamId <= 0) {
+        // Never query another database after a malformed module configuration.
+        if ($projectId <= 0 || $teamId <= 0 || $databaseSelector === null) {
             return ['project' => null, 'players' => [], 'roster' => []];
         }
 
-        $db = $this->database($params, $fallbackDatabase);
+        $db = $this->database($databaseSelector, $fallbackDatabase);
         $project = $this->project($db, $projectId, $teamId);
 
         if (!$project) {
@@ -72,7 +74,7 @@ final class TeamPlayersHelper
             $row->minutes_played = $showMinutes
                 ? (int) ($minutesByPlayer[(int) $row->playerid] ?? 0)
                 : 0;
-            $row->image_url = $this->imageUrl((string) ($row->picture ?: $row->ppic ?? ''));
+            $row->image_url = $this->imageUrl((string) (($row->picture ?? '') ?: ($row->ppic ?? '')));
 
             $positionId = (int) ($row->position_id ?? 0);
             $roster[$positionId][] = $row;
@@ -494,11 +496,38 @@ final class TeamPlayersHelper
         return rtrim((string) Uri::root(), '/') . '/' . $encodedPath;
     }
 
-    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    /**
+     * Accept only canonical non-negative integer selectors, including legacy
+     * zero-padded configuration, without allowing overflow or partial casts.
+     */
+    private function databaseSelector(mixed $value): ?int
     {
-        return SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
+        if (is_int($value)) {
+            return $value >= 0 ? $value : null;
+        }
+
+        if (!is_string($value) || !preg_match('/^[0-9]+$/D', $value)) {
+            return null;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $max = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return null;
+        }
+
+        return (int) $digits;
+    }
+
+    private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    {
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 }

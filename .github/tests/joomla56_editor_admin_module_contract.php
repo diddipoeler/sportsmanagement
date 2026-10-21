@@ -202,6 +202,24 @@ namespace {
     $identity->granted = true;
     $controller->verify('core.edit');
 
+    // A missing Joomla identity must fail closed, not trigger a PHP error.
+    $controller->setTestApplication(new class {
+        public function getIdentity(): ?object
+        {
+            return null;
+        }
+    });
+    $assertDenied();
+
+    try {
+        $controller->saveorder();
+        throw new \RuntimeException('Missing identity was allowed to reorder records.');
+    } catch (\RuntimeException $error) {
+        if ($error->getCode() !== 403) {
+            throw $error;
+        }
+    }
+
     foreach ([
         'ClubsController.php' => ['saveshort' => ''],
         'TeamsController.php' => ['saveshort' => '', 'copysave' => "'core.create'"],
