@@ -380,17 +380,51 @@ final class RankingHelper
         return SiteRouteHelper::view($view, $parameters);
     }
 
+    /**
+     * Allow HTTP(S) images without credentials; resolve local media paths
+     * beneath the Joomla root without traversal or URL interpretation.
+     */
     private function mediaUrl(string $path): string
     {
-        if ($path === '') {
+        $path = trim($path);
+
+        if ($path === ''
+            || preg_match('/[\x00-\x1F\x7F]/', $path)
+            || str_contains($path, '\\')
+        ) {
             return '';
         }
 
-        if (preg_match('#^https?://#i', $path)) {
-            return $path;
+        if (preg_match('~^https?://~i', $path)) {
+            if (preg_match('/[\x00-\x20\x7F]/', $path)
+                || filter_var($path, FILTER_VALIDATE_URL) === false
+            ) {
+                return '';
+            }
+
+            $parts = parse_url($path);
+
+            return is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
+                ? $path
+                : '';
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+        if (str_starts_with($path, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $path)
+            || str_contains($path, '%')
+            || strpbrk($path, '?#') !== false
+        ) {
+            return '';
+        }
+
+        $relative = ltrim($path, '/');
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $relative)));
+
+        return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
     private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
