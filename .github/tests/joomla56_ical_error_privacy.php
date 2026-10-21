@@ -82,6 +82,43 @@ namespace {
         throw new \RuntimeException('Empty project should not query iCalendar database.');
     }
 
+    // Inputs must not be partially cast into another project, team or DB.
+    foreach ([
+        ['5junk', 0, 0],
+        ['5', '2junk', 0],
+        ['5', 0, '1bad'],
+        [true, 0, 0],
+        [['5'], 0, 0],
+        ['999999999999999999999999999', 0, 0],
+    ] as [$project, $team, $selector]) {
+        if ($model->getResultsPlan($project, $team, 0, 0, 'ASC', $selector) !== []) {
+            throw new \RuntimeException('Malformed iCalendar selector reached a database.');
+        }
+    }
+
+    $extractId = new \ReflectionMethod($model, 'nonNegativeSelector');
+
+    foreach ([
+        ['0005:my-project', true, 5],
+        ['007:mein-team', true, 7],
+        ['001', false, 1],
+        ['0000', false, 0],
+        ['5junk', true, null],
+        ['5:bad:alias', true, null],
+        ['1junk', false, null],
+        [true, true, null],
+        [['7'], true, null],
+        ['999999999999999999999999', false, null],
+    ] as [$value, $allowAlias, $expected]) {
+        if ($extractId->invoke(null, $value, $allowAlias) !== $expected) {
+            throw new \RuntimeException('iCalendar ID parser accepted invalid data.');
+        }
+    }
+
+    if ($model->testApp->messages !== [] || \Joomla\CMS\Log\Log::$entries !== []) {
+        throw new \RuntimeException('Invalid iCalendar selector generated SQL or an error message.');
+    }
+
     if ($model->getResultsPlan(5) !== false) {
         throw new \RuntimeException('iCalendar database failures must retain the legacy false result.');
     }
