@@ -72,6 +72,12 @@ jobs:
           php -l modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php
           php -l .github/tests/joomla56_admin_seasons_controller.php
           php -l .github/tests/joomla56_ranking_media_urls.php
+          php -l site/src/Model/PredictionmemberModel.php
+          php -l admin/src/Controller/DivisionsController.php
+          php -l modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          php -l .github/tests/joomla56_prediction_registration_dates.php
+          php -l .github/tests/joomla56_admin_divisions_model_guards.php
+          php -l .github/tests/joomla56_new_project_identity_selector.php
 
       - name: Check match write guards, AJAX output and module website links
         run: php .github/tests/joomla56_match_write_security.php
@@ -105,3 +111,12 @@ jobs:
 
       - name: Check Ranking module media URLs
         run: php .github/tests/joomla56_ranking_media_urls.php
+
+      - name: Reject invalid prediction registration dates
+        run: php .github/tests/joomla56_prediction_registration_dates.php
+
+      - name: Verify administrator Divisions model guards
+        run: php .github/tests/joomla56_admin_divisions_model_guards.php
+
+      - name: Test New Project module identity and database selectors
+        run: php .github/tests/joomla56_new_project_identity_selector.php

@@ -9,6 +9,8 @@ on:
       - 'admin/tmpl/divisions/**'
       - 'admin/src/View/Divisions/**'
       - 'admin/src/Model/DivisionsModel.php'
+      - 'admin/src/Controller/DivisionsController.php'
+      - '.github/tests/joomla56_admin_divisions_model_guards.php'
       - '.github/workflows/joomla5-6-admin-divisions.yml'
   pull_request:
     branches:
@@ -18,6 +20,8 @@ on:
       - 'admin/tmpl/divisions/**'
       - 'admin/src/View/Divisions/**'
       - 'admin/src/Model/DivisionsModel.php'
+      - 'admin/src/Controller/DivisionsController.php'
+      - '.github/tests/joomla56_admin_divisions_model_guards.php'
       - '.github/workflows/joomla5-6-admin-divisions.yml'
 
 jobs:
@@ -47,6 +51,12 @@ jobs:
             test -f "$file"
             php -l "$file"
           done
+
+      - name: Test native Divisions list controller guards
+        run: |
+          php -l admin/src/Controller/DivisionsController.php
+          php -l .github/tests/joomla56_admin_divisions_model_guards.php
+          php .github/tests/joomla56_admin_divisions_model_guards.php
 
       - name: Validate native divisions contracts
         shell: bash

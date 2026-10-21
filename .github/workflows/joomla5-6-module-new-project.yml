@@ -42,6 +42,11 @@ jobs:
           php -l .github/tests/joomla56_new_project_article_images.php
           php .github/tests/joomla56_new_project_article_images.php
 
+      - name: Test article ACL and configured database selection
+        run: |
+          php -l .github/tests/joomla56_new_project_identity_selector.php
+          php .github/tests/joomla56_new_project_identity_selector.php
+
       - name: Validate module manifest
         shell: bash
         run: |
