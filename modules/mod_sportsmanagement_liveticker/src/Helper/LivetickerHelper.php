@@ -32,8 +32,20 @@ final class LivetickerHelper
             throw new \RuntimeException('SportsManagement Liveticker requires the Joomla site application.', 500);
         }
 
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        // Malformed module settings must not switch to a different database.
+        if ($selector === null) {
+            return [
+                'listHtml' => '',
+                'updateTimeout' => 10,
+                'cssFile' => 'simple.css',
+                'moduleId' => (int) ($module->id ?? 0),
+            ];
+        }
+
         $database = $this->joomlaDatabase($database);
-        $db = $this->database($params, $database);
+        $db = $this->database($selector, $database);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
@@ -68,8 +80,14 @@ final class LivetickerHelper
 
         $params = new Registry();
         $params->loadString((string) ($module->params ?? ''));
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($selector === null) {
+            return '';
+        }
+
         $database = $this->joomlaDatabase($database);
-        $db = $this->database($params, $database);
+        $db = $this->database($selector, $database);
         $list = $this->getList($params, $app, (int) $params->get('display_num', 5), $db);
         $commentary = (bool) $params->get('display_commentary', 1)
             ? $this->getListCommentary($list, $db)
@@ -438,10 +456,22 @@ final class LivetickerHelper
         }
     }
 
-    private function database(Registry $params, DatabaseInterface $joomlaDatabase): DatabaseInterface
+    /** Permit only database 0 or 1, including zero-padded legacy settings. */
+    private static function databaseSelector(mixed $value): ?int
     {
-        $selector = (int) $params->get('cfg_which_database', 0) === 1 ? 1 : 0;
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
 
+        if (!is_string($value) || !preg_match('/^0*([01])$/D', $value, $matches)) {
+            return null;
+        }
+
+        return (int) $matches[1];
+    }
+
+    private function database(int $selector, DatabaseInterface $joomlaDatabase): DatabaseInterface
+    {
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }
 
