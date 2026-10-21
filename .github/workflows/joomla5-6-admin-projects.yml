@@ -8,6 +8,8 @@ on:
       - 'admin/src/View/Projects/**'
       - 'admin/src/Model/ProjectModel.php'
       - 'admin/src/Model/ProjectsModel.php'
+      - 'admin/src/Controller/ProjectsController.php'
+      - '.github/tests/joomla56_admin_projects_action_feedback.php'
       - 'admin/tmpl/project/**'
       - 'admin/tmpl/projects/**'
       - 'admin/views/project/**'
@@ -19,6 +21,8 @@ on:
       - 'admin/src/View/Projects/**'
       - 'admin/src/Model/ProjectModel.php'
       - 'admin/src/Model/ProjectsModel.php'
+      - 'admin/src/Controller/ProjectsController.php'
+      - '.github/tests/joomla56_admin_projects_action_feedback.php'
       - 'admin/tmpl/project/**'
       - 'admin/tmpl/projects/**'
       - 'admin/views/project/**'
@@ -43,6 +47,12 @@ jobs:
           php -l admin/views/project/tmpl/panel.php
           php -l admin/views/projects/view.html.php
           php -l admin/views/projects/tmpl/default.php
+      - name: Verify Projects controller ACL and successful save feedback
+        run: |
+          php -l admin/src/Controller/ProjectsController.php
+          php -l .github/tests/joomla56_admin_projects_action_feedback.php
+          php .github/tests/joomla56_admin_projects_action_feedback.php
+
       - name: Validate native Project stack
         run: |
           grep -Fq 'namespace Diddipoeler\Component\SportsManagement\Administrator\View\Project;' admin/src/View/Project/HtmlView.php

@@ -6,11 +6,13 @@ on:
     paths:
       - 'modules/mod_sportsmanagement_liveticker/**'
       - '.github/workflows/joomla5-6-module-liveticker.yml'
+      - '.github/tests/joomla56_liveticker_database_selector.php'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_liveticker/**'
       - '.github/workflows/joomla5-6-module-liveticker.yml'
+      - '.github/tests/joomla56_liveticker_database_selector.php'
 
 jobs:
   native-liveticker-module:
@@ -34,6 +36,11 @@ jobs:
             php -l "$file"
           done
           node --check modules/mod_sportsmanagement_liveticker/js/turtushout.js
+
+      - name: Test Liveticker database selectors and empty safe output
+        run: |
+          php -l .github/tests/joomla56_liveticker_database_selector.php
+          php .github/tests/joomla56_liveticker_database_selector.php
 
       - name: Validate mandatory PHPDoc metadata
         shell: bash

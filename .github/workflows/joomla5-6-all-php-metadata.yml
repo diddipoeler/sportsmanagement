@@ -87,6 +87,10 @@ jobs:
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
           php -l .github/tests/joomla56_ical_error_privacy.php
           php -l .github/tests/joomla56_admin_rounds_write_guards.php
+          php -l admin/src/Controller/ProjectsController.php
+          php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          php -l .github/tests/joomla56_admin_projects_action_feedback.php
+          php -l .github/tests/joomla56_liveticker_database_selector.php
 
       - name: Check match write guards, AJAX output and module website links
         run: php .github/tests/joomla56_match_write_security.php
@@ -138,3 +142,9 @@ jobs:
 
       - name: Test Rounds write permissions and missing models
         run: php .github/tests/joomla56_admin_rounds_write_guards.php
+
+      - name: Test administrator Projects permissions and success messages
+        run: php .github/tests/joomla56_admin_projects_action_feedback.php
+
+      - name: Verify Liveticker invalid database settings do not query SQL
+        run: php .github/tests/joomla56_liveticker_database_selector.php
