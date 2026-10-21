@@ -29,7 +29,7 @@ jobs:
           from pathlib import Path
           view = Path('admin/src/View/Rounds/HtmlView.php').read_text()
           legacy = Path('admin/views/rounds/view.html.php').read_text()
-          for needle in ('instanceof RoundsModel', '$app = $this->getApplication();', '$model->getState()', '$model->getItems()', '$model->getPagination()', '$model->getFilterForm()', '$model->getActiveFilters()'):
+          for needle in ('instanceof RoundsModel', '$app = SportsManagementAdministratorApplicationResolver::resolve();', '$model->getState()', '$model->getItems()', '$model->getPagination()', '$model->getFilterForm()', '$model->getActiveFilters()'):
               if needle not in view: raise SystemExit(f'missing rounds contract: {needle}')
           if 'class_alias(HtmlView::class' not in legacy: raise SystemExit('rounds legacy view is not an alias')
           for needle in ('use Joomla\\CMS\\Factory;', 'Factory::getApplication()', "$this->get('", 'BaseDatabaseModel::getInstance('):
