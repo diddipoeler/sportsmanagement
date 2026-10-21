@@ -93,6 +93,12 @@ jobs:
           php -l .github/tests/joomla56_prediction_membership_guest.php
           php -l .github/tests/joomla56_prediction_rounds_write_guards.php
           php -l .github/tests/joomla56_prediction_liveticker_followup.php
+          php -l site/src/Model/UefawertungModel.php
+          php -l admin/src/Controller/PlaygroundsController.php
+          php -l modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php
+          php -l .github/tests/joomla56_site_uefa_error_privacy.php
+          php -l .github/tests/joomla56_admin_playgrounds_model_options.php
+          php -l .github/tests/joomla56_top_tipper_module_settings.php
           php -l admin/src/Controller/ProjectsController.php
           php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
           php -l .github/tests/joomla56_admin_projects_action_feedback.php
@@ -163,3 +169,12 @@ jobs:
 
       - name: Check Liveticker settings and query bounds
         run: php .github/tests/joomla56_prediction_liveticker_followup.php
+
+      - name: Verify UEFA site model hides SQL details from visitors
+        run: php .github/tests/joomla56_site_uefa_error_privacy.php
+
+      - name: Verify Playground controller preserves MVC factory options
+        run: php .github/tests/joomla56_admin_playgrounds_model_options.php
+
+      - name: Verify Top Tipper database and list limit settings
+        run: php .github/tests/joomla56_top_tipper_module_settings.php

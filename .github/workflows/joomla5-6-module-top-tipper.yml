@@ -8,6 +8,7 @@ on:
       - 'modules/mod_sportsmanagement_top_tipper/**'
       - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-top-tipper.yml'
+      - '.github/tests/joomla56_top_tipper_module_settings.php'
   pull_request:
     branches:
       - master
@@ -15,6 +16,7 @@ on:
       - 'modules/mod_sportsmanagement_top_tipper/**'
       - 'site/src/Helper/SiteRouteHelper.php'
       - '.github/workflows/joomla5-6-module-top-tipper.yml'
+      - '.github/tests/joomla56_top_tipper_module_settings.php'
 
 jobs:
   top-tipper-contract:
@@ -22,6 +24,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Regression tests for numeric settings and safe database selection
+        run: |
+          php -l .github/tests/joomla56_top_tipper_module_settings.php
+          php .github/tests/joomla56_top_tipper_module_settings.php
 
       - name: Validate Top Tipper migration
         shell: bash
