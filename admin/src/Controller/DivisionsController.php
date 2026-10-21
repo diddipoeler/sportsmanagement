@@ -24,7 +24,8 @@ class DivisionsController extends SportsManagementAdminController
     {
         $this->assertWritePermission('core.create');
 
-        $message = $this->getModel()->massadd();
+        $model = $this->requireDivisionModel();
+        $message = $model->massadd();
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', $message);
     }
 
@@ -32,7 +33,8 @@ class DivisionsController extends SportsManagementAdminController
     {
         $this->assertWritePermission('core.create');
 
-        $message = $this->getModel()->divisiontoproject();
+        $model = $this->requireDivisionModel();
+        $message = $model->divisiontoproject();
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=divisions&pid=' . $this->getProjectId(),
             $message
@@ -41,7 +43,10 @@ class DivisionsController extends SportsManagementAdminController
 
     public function getModel($name = 'Division', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        // Preserve custom MVC options while disabling request-dependent model state.
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 
     public function saveOrder(): void
@@ -49,7 +54,7 @@ class DivisionsController extends SportsManagementAdminController
         $this->assertWritePermission('core.admin');
 
         $input = $this->app->getInput();
-        $model = $this->getModel();
+        $model = $this->requireDivisionModel();
         $pks = $input->post->get('cid', [], 'array');
         $order = $input->post->get('order', [], 'array');
         $message = $model->saveorder($pks, $order);
@@ -64,7 +69,7 @@ class DivisionsController extends SportsManagementAdminController
     {
         $this->assertWritePermission();
 
-        $model = $this->getModel();
+        $model = $this->requireDivisionModel();
         $message = $model->saveshort();
 
         $this->setRedirect(
@@ -72,6 +77,18 @@ class DivisionsController extends SportsManagementAdminController
             $message === false ? Text::_('JERROR_AN_ERROR_HAS_OCCURRED') : $message,
             $message === false ? 'warning' : 'message'
         );
+    }
+
+    /** Abort administrator list writes when Joomla cannot load the model. */
+    private function requireDivisionModel(): object
+    {
+        $model = $this->getModel();
+
+        if (!is_object($model)) {
+            throw new \RuntimeException('SportsManagement division model could not be loaded.', 500);
+        }
+
+        return $model;
     }
 
     private function getProjectId(): int

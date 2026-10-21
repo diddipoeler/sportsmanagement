@@ -187,13 +187,20 @@ final class PredictionmemberModel extends PredictionuserModel
             $time .= ':00';
         }
 
-        try {
-            $timezone = new DateTimeZone('UTC');
-            $parsed = new DateTimeImmutable($date . ' ' . $time, $timezone);
-            return $parsed->format('Y-m-d H:i:s');
-        } catch (\Throwable) {
+        // Do not let PHP normalise impossible dates or clock values.
+        if (!preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/D', $date)
+            || !preg_match('/^([0-9]{1,2}):([0-9]{2})(?::([0-9]{2}))?$/D', $time, $parts)
+        ) {
             return $fallback;
         }
+
+        $canonicalTime = sprintf('%02d:%s:%s', (int) $parts[1], $parts[2], $parts[3] ?? '00');
+        $expected = $date . ' ' . $canonicalTime;
+        $parsed = DateTimeImmutable::createFromFormat('!Y-m-d H:i:s', $expected, new DateTimeZone('UTC'));
+
+        return $parsed instanceof DateTimeImmutable && $parsed->format('Y-m-d H:i:s') === $expected
+            ? $expected
+            : $fallback;
     }
 
     private function serialiseSingleSelections(array $selections): string

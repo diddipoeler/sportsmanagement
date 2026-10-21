@@ -41,8 +41,14 @@ final class NewProjectHelper
         CMSApplicationInterface $app,
         ?DatabaseInterface $joomlaDatabase = null
     ): array {
+        $databaseSelector = $this->databaseSelector($params->get('cfg_which_database', 0));
+
+        // Invalid module settings must not silently select another database.
+        if ($databaseSelector === null) {
+            return [];
+        }
+
         $joomlaDatabase = $this->joomlaDatabase($joomlaDatabase);
-        $databaseSelector = (int) $params->get('cfg_which_database', 0);
         $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
         [$start, $end] = $this->todayRange($app);
 
@@ -102,7 +108,8 @@ final class NewProjectHelper
 
         $identity = $app->getIdentity();
 
-        return $identity->authorise('core.manage', 'com_sportsmanagement')
+        return $identity !== null
+            && $identity->authorise('core.manage', 'com_sportsmanagement')
             && $identity->authorise('core.create', 'com_content.category.' . $categoryId);
     }
 
@@ -142,7 +149,8 @@ final class NewProjectHelper
 
         $identity = $app->getIdentity();
 
-        if (!$identity->authorise('core.manage', 'com_sportsmanagement')
+        if ($identity === null
+            || !$identity->authorise('core.manage', 'com_sportsmanagement')
             || !$identity->authorise('core.create', 'com_content.category.' . $categoryId)) {
             throw new \RuntimeException('Not authorised to create project articles.', 403);
         }
@@ -219,6 +227,36 @@ final class NewProjectHelper
             'errors' => $errors,
             'module_id' => $moduleId,
         ];
+    }
+
+    /**
+     * Accept only non-negative decimal database selectors, including legacy
+     * zero-padded parameters; do not turn invalid values into database zero.
+     */
+    private function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value >= 0 ? $value : null;
+        }
+
+        if (!is_string($value) || !preg_match('/^[0-9]+$/D', $value)) {
+            return null;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $maximum = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($maximum)
+            || (strlen($digits) === strlen($maximum) && strcmp($digits, $maximum) > 0)) {
+            return null;
+        }
+
+        return (int) $digits;
     }
 
     private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
