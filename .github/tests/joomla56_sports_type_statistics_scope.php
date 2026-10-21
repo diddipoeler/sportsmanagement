@@ -272,5 +272,36 @@ namespace {
         throw new \RuntimeException('Unconfigured sport must not trigger statistics queries');
     }
 
+    // Malformed Joomla module settings must not issue any database queries.
+    $parseSelector = new \ReflectionMethod($helper, 'nonNegativeSelector');
+
+    foreach ([
+        [0, 0], [7, 7], ['000', 0], ['0007', 7],
+        [-1, null], ['-7', null], ['7junk', null],
+        ['7.5', null], [true, null], [['7'], null],
+        ['999999999999999999999999999', null],
+    ] as [$raw, $expected]) {
+        if ($parseSelector->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Invalid sport statistics selector was accepted.');
+        }
+    }
+
+    foreach ([
+        ['sportstypes' => '7junk'],
+        ['sportstypes' => ['7']],
+        ['sportstypes' => '999999999999999999999999999'],
+        ['sportstypes' => 7, 'cfg_which_database' => '1bad'],
+        ['sportstypes' => 7, 'cfg_which_database' => true],
+        ['sportstypes' => 7, 'cfg_which_database' => -1],
+    ] as $settings) {
+        $guardDb = new SportsStatsDatabase();
+        $guardData = $helper->getData(new \Joomla\Registry\Registry($settings), $guardDb);
+
+        if ($guardDb->queries !== []
+            || $guardData !== ['sportstype' => null, 'counts' => ['projects' => 0]]) {
+            throw new \RuntimeException('Invalid sport statistics configuration performed SQL.');
+        }
+    }
+
     echo "Sports Type Statistics project dimensions and icon URLs OK\n";
 }
