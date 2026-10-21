@@ -63,5 +63,18 @@ namespace {
         throw new \RuntimeException('Authorised prediction administrator lost edit access.');
     }
 
+    $parseId = new \ReflectionMethod($model, 'memberId');
+    foreach ([
+        [12, 12], ['12', 12], ['0012:my-team', 12],
+        [null, 0], [true, 0], [12.5, 0], [['12'], 0],
+        ['12junk', 0], ['12:bad:extra', 0],
+        ['-12', 0], ['0', 0], ['12,13', 0],
+        ['999999999999999999999999999', 0],
+    ] as [$raw, $expected]) {
+        if ($parseId->invoke($model, $raw) !== $expected) {
+            throw new \RuntimeException('Malformed prediction member ID accepted: ' . var_export($raw, true));
+        }
+    }
+
     echo "Prediction member identity ACL regressions passed.\n";
 }
