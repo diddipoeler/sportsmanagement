@@ -117,7 +117,7 @@ jobs:
           grep -Fq "getHelper('PlaygroundTickerHelper')" "$dispatcher"
           grep -Fq 'getWebAssetManager()' "$dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
-          grep -Fq 'DatabaseInterface::class' "$helper"
+          grep -Fq 'DatabaseInterface $fallbackDatabase' "$helper"
           grep -Fq 'getInput()->getInt' "$helper"
           grep -Fq 'Factory::getContainer()' "$legacy_helper"
           grep -Fq 'new PlaygroundTickerHelper()' "$legacy_helper"
