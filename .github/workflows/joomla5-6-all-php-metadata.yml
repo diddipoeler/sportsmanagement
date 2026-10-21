@@ -82,6 +82,11 @@ jobs:
           php -l admin/src/Controller/SmquotetxtController.php
           php -l modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
           php -l .github/tests/joomla56_jsonfeed_selected_calendar_ids.php
+          php -l site/src/Model/IcalModel.php
+          php -l admin/src/Controller/RoundsController.php
+          php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
+          php -l .github/tests/joomla56_ical_error_privacy.php
+          php -l .github/tests/joomla56_admin_rounds_write_guards.php
 
       - name: Check match write guards, AJAX output and module website links
         run: php .github/tests/joomla56_match_write_security.php
@@ -127,3 +132,9 @@ jobs:
 
       - name: Test calendar JSON feed ID count for integer and CSV inputs
         run: php .github/tests/joomla56_jsonfeed_selected_calendar_ids.php
+
+      - name: Ensure calendar failures do not expose SQL details
+        run: php .github/tests/joomla56_ical_error_privacy.php
+
+      - name: Test Rounds write permissions and missing models
+        run: php .github/tests/joomla56_admin_rounds_write_guards.php
