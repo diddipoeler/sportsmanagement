@@ -54,14 +54,51 @@ final class IcalModel extends SportsManagementProjectModel
         }
     }
 
+    /** Accept decimal IDs and legacy ID:alias slugs, rejecting partial casts. */
+    private static function nonNegativeSelector(mixed $value, bool $allowAlias = false): ?int
+    {
+        if (is_int($value)) {
+            return $value >= 0 ? $value : null;
+        }
+
+        if (!is_string($value)) {
+            return null;
+        }
+
+        $pattern = $allowAlias
+            ? '/^([0-9]+)(?::[\pL\pN_-]+)?$/Du'
+            : '/^([0-9]+)$/D';
+
+        if (!preg_match($pattern, $value, $matches)) {
+            return null;
+        }
+
+        $digits = ltrim($matches[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $max = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return null;
+        }
+
+        return (int) $digits;
+    }
+
     public function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC', $cfg_which_database = 0)
     {
-        $projectId = max(0, (int) $projectid);
-        $teamId = max(0, (int) $teamid);
-        $databaseSelector = max(0, (int) $cfg_which_database);
-        $direction = strtoupper((string) $ordering) === 'DESC' ? 'DESC' : 'ASC';
+        $projectId = self::nonNegativeSelector($projectid, true);
+        $teamId = self::nonNegativeSelector($teamid, true);
+        $databaseSelector = self::nonNegativeSelector($cfg_which_database);
+        $direction = is_string($ordering) && strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
 
-        if ($projectId <= 0) {
+        // Malformed selectors must not silently expose a different project.
+        if ($projectId === null || $projectId <= 0
+            || $teamId === null || $databaseSelector === null) {
             return [];
         }
 
