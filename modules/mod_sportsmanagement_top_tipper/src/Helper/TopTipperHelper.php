@@ -265,6 +265,12 @@ final class TopTipperHelper
             return 5;
         }
 
+        // Legacy module parameters can contain leading zeroes.
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
         $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
         return $number === false ? 5 : min(100, max(1, $number));
