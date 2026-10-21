@@ -12,6 +12,7 @@ on:
       - '.github/tests/inline_hockey_api_security.php'
       - '.github/tests/joomla56_inline_hockey_external_ids.php'
       - '.github/tests/joomla56_ranking_inline_hockey_safety.php'
+      - '.github/tests/joomla56_ranking_media_urls.php'
       - '.github/workflows/joomla5-6-ranking-inline-hockey-safety.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -24,6 +25,7 @@ on:
       - '.github/tests/inline_hockey_api_security.php'
       - '.github/tests/joomla56_inline_hockey_external_ids.php'
       - '.github/tests/joomla56_ranking_inline_hockey_safety.php'
+      - '.github/tests/joomla56_ranking_media_urls.php'
       - '.github/workflows/joomla5-6-ranking-inline-hockey-safety.yml'
 
 permissions:
@@ -56,12 +58,15 @@ jobs:
             .github/tests/joomla56_inline_hockey_external_ids.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_ranking_inline_hockey_safety.php .github/tests/inline_hockey_api_security.php; do
+          for file in "${files[@]}" .github/tests/joomla56_ranking_inline_hockey_safety.php .github/tests/joomla56_ranking_media_urls.php .github/tests/inline_hockey_api_security.php; do
             php -l "$file"
           done
 
       - name: Ranking window and trusted HTTP checks
         run: php .github/tests/joomla56_ranking_inline_hockey_safety.php
+
+      - name: Check Ranking module media URLs
+        run: php .github/tests/joomla56_ranking_media_urls.php
 
       - name: Existing Inline Hockey URL checks
         run: php .github/tests/inline_hockey_api_security.php
