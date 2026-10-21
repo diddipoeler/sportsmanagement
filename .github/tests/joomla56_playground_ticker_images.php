@@ -157,5 +157,27 @@ namespace {
         }
     }
 
+    // Invalid module database selections must not issue any SQL.
+    $fallbackDb = new class implements \Joomla\Database\DatabaseInterface {};
+    $dbSelector = new \ReflectionMethod($helper, 'databaseSelector');
+    foreach ([0, '0', '000', 1, '1', '0001'] as $valid) {
+        $expected = str_ends_with((string) $valid, '1') ? 1 : 0;
+        if ($dbSelector->invoke($helper, new \Joomla\Registry\Registry([
+            'cfg_which_database' => $valid,
+        ]), $app) !== $expected) {
+            throw new \RuntimeException('Valid legacy playground database selector was rejected.');
+        }
+    }
+    foreach ([2, -1, '2', '-1', '1junk', '1.5', true, ['1'],
+        '99999999999999999999'] as $invalid) {
+        $badParams = new \Joomla\Registry\Registry([
+            'p' => 0,
+            'cfg_which_database' => $invalid,
+        ]);
+        if ($helper->getData($badParams, $app, $fallbackDb) !== []) {
+            throw new \RuntimeException('Malformed playground database selector was accepted.');
+        }
+    }
+
     echo "Playground ticker picture server and image URL contracts OK\n";
 }

@@ -35,6 +35,12 @@ final class PlaygroundTickerHelper
 
         $limit = max(1, (int) $params->get('limit', 1));
         $whichDatabase = $this->databaseSelector($params, $app);
+
+        // Reject malformed configuration rather than silently using DB zero.
+        if ($whichDatabase === null) {
+            return [];
+        }
+
         $db = SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
             $whichDatabase
@@ -163,11 +169,25 @@ final class PlaygroundTickerHelper
         return Uri::root();
     }
 
-    private function databaseSelector(Registry $params, CMSApplicationInterface $app): int
+    /**
+     * The legacy ticker supports Joomla DB 0 or alternate DB 1.
+     * Accept zero-padded settings without permitting partial numeric casts.
+     */
+    private function databaseSelector(Registry $params, CMSApplicationInterface $app): ?int
     {
-        return (int) $params->get(
+        $raw = $params->get(
             'cfg_which_database',
             $app->getInput()->getInt('cfg_which_database', 0)
-        ) === 1 ? 1 : 0;
+        );
+
+        if (is_int($raw)) {
+            return $raw === 0 || $raw === 1 ? $raw : null;
+        }
+
+        if (!is_string($raw) || !preg_match('/^0*(?:0|1)$/D', $raw)) {
+            return null;
+        }
+
+        return str_ends_with($raw, '1') ? 1 : 0;
     }
 }

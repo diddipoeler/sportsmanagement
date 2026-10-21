@@ -80,6 +80,10 @@ final class JsonfeedModel extends SportsManagementModel
                 if (is_int($part)) {
                     if ($part > 0) {
                         $ids[$part] = $part;
+                        // Integer arrays must obey the same limit as CSV IDs.
+                        if (count($ids) >= self::MAX_CALENDAR_IDS) {
+                            return array_values($ids);
+                        }
                     }
                     continue;
                 }

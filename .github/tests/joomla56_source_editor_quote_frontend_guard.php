@@ -188,10 +188,12 @@ namespace {
     if (($controller->redirect['type'] ?? '') !== 'error') {
         throw new \RuntimeException('Malformed source filename caused no error.');
     }
-    $controller->model = false;
-    $controller->save();
-    if (($controller->redirect['type'] ?? '') !== 'error') {
-        throw new \RuntimeException('Missing Joomla source-editor model was not handled.');
+    foreach ([false, null] as $missingModel) {
+        $controller->model = $missingModel;
+        $controller->save();
+        if (($controller->redirect['type'] ?? '') !== 'error') {
+            throw new \RuntimeException('Missing Joomla source-editor model was not handled.');
+        }
     }
 
     foreach ([

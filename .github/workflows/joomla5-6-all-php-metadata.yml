@@ -78,6 +78,10 @@ jobs:
           php -l .github/tests/joomla56_prediction_registration_dates.php
           php -l .github/tests/joomla56_admin_divisions_model_guards.php
           php -l .github/tests/joomla56_new_project_identity_selector.php
+          php -l site/src/Model/JsonfeedModel.php
+          php -l admin/src/Controller/SmquotetxtController.php
+          php -l modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
+          php -l .github/tests/joomla56_jsonfeed_selected_calendar_ids.php
 
       - name: Check match write guards, AJAX output and module website links
         run: php .github/tests/joomla56_match_write_security.php
@@ -120,3 +124,6 @@ jobs:
 
       - name: Test New Project module identity and database selectors
         run: php .github/tests/joomla56_new_project_identity_selector.php
+
+      - name: Test calendar JSON feed ID count for integer and CSV inputs
+        run: php .github/tests/joomla56_jsonfeed_selected_calendar_ids.php

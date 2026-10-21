@@ -44,7 +44,8 @@ final class SmquotetxtController extends FormController
         $data = $this->app->getInput()->post->get('jform', [], 'array');
         $data = is_array($data) ? $data : [];
         $model = $this->getModel();
-        $success = $model !== false && $model->save($data);
+        // Joomla may return false or null when a model cannot be resolved.
+        $success = is_object($model) && $model->save($data);
         $task = $this->getTask();
         $fileName = rawurlencode(is_string($data['filename'] ?? null) ? $data['filename'] : '');
 
@@ -54,7 +55,7 @@ final class SmquotetxtController extends FormController
                     'index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name=' . $fileName,
                     false
                 ),
-                $model !== false
+                is_object($model)
                     ? ($model->getError() ?: Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'))
                     : Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'),
                 'error'
