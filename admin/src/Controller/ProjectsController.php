@@ -47,7 +47,9 @@ final class ProjectsController extends SportsManagementAdminController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        if (!$this->app->getIdentity()->authorise($permission, 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise($permission, 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
@@ -59,8 +61,8 @@ final class ProjectsController extends SportsManagementAdminController
 
         $result = $model->{$method}();
         $ok = $result !== false;
-        $message = $ok && is_string($result)
-            ? $result
+        $message = $ok
+            ? (is_string($result) ? $result : Text::_('JLIB_APPLICATION_SAVE_SUCCESS'))
             : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
         $this->setRedirect(
             Route::_('index.php?option=com_sportsmanagement&view=projects', false),
