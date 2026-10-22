@@ -158,6 +158,12 @@ jobs:
       - name: Ensure calendar failures do not expose SQL details
         run: php .github/tests/joomla56_ical_error_privacy.php
 
+      - name: Test project-position write permissions and missing MVC models
+        run: |
+          php -l admin/src/Controller/ProjectpositionsController.php
+          php -l .github/tests/joomla56_admin_projectpositions_write.php
+          php .github/tests/joomla56_admin_projectpositions_write.php
+
       - name: Test Rounds write permissions and missing models
         run: php .github/tests/joomla56_admin_rounds_write_guards.php
 
