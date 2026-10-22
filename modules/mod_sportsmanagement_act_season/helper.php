@@ -106,7 +106,13 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
 
     private static function siteApplication(): CMSApplicationInterface
     {
-        return SportsManagementSiteApplicationResolver::resolve();
+        $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement ActSeason legacy helper requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 
     private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
@@ -115,8 +121,11 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
             return $database;
         }
 
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement ActSeason database service is unavailable.', 500);
+        }
 
         return $database;
     }
