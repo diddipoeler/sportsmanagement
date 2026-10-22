@@ -12,11 +12,19 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\PositionlistField;
 
 if (!class_exists(PositionlistField::class)) {
-    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PositionlistField.php';
-
-    if (is_file($nativeField)) {
-        require_once $nativeField;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PositionlistField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
+}
+
+if (!class_exists(PositionlistField::class)) {
+    throw new \RuntimeException('SportsManagement native Positionlist field could not be loaded.', 500);
 }
 
 if (!class_exists(PositionlistField::class)) {
