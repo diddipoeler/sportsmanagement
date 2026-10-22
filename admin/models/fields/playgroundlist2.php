@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\Playgroundlist2Field;
 
 if (!class_exists(Playgroundlist2Field::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/Playgroundlist2Field.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/Playgroundlist2Field.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
+    }
 }
 
 if (!class_exists(Playgroundlist2Field::class)) {
