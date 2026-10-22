@@ -52,11 +52,6 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = self::siteApplication();
-
-            if (!$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement TeamPlayers legacy helper requires the Joomla site application.', 500);
-            }
-
             $database = self::joomlaDatabase($database);
             $data = (new TeamPlayersHelper())->getData($registry, $database);
 
@@ -83,7 +78,13 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
 
         private static function siteApplication(): CMSApplicationInterface
         {
-            return SportsManagementSiteApplicationResolver::resolve();
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement TeamPlayers legacy helper requires the Joomla site application.', 500);
+            }
+
+            return $app;
         }
 
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
@@ -92,8 +93,11 @@ if (!class_exists('modSportsmanagementTeamPlayersHelper', false)) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement TeamPlayers database service is unavailable.', 500);
+            }
 
             return $database;
         }
