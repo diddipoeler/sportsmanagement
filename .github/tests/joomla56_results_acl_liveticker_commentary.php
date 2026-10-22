@@ -175,5 +175,27 @@ namespace {
         throw new \RuntimeException('No commentary query should run without positive match IDs.');
     }
 
+    // A truncated selection must not trigger comments for unrelated matches.
+    $db->query = null;
+    $invalid = $ticker->getListCommentary([
+        (object) ['match_id' => '11garbage'],
+        (object) ['match_id' => '999999999999999999999999'],
+        (object) ['match_id' => -1],
+        (object) ['match_id' => true],
+        (object) ['match_id' => [11]],
+        null,
+    ], $db);
+    if ($invalid !== [] || $db->query !== null) {
+        throw new \RuntimeException('Malformed live commentary match IDs caused a query.');
+    }
+
+    $db->rows = [];
+    $rows = array_fill(0, 110, (object) ['match_id' => 11]);
+    $rows[100] = (object) ['match_id' => 99];
+    $ticker->getListCommentary($rows, $db);
+    if (($db->query->whereIn['match_id'] ?? []) !== [11]) {
+        throw new \RuntimeException('Liveticker accepted IDs beyond the configured match bound.');
+    }
+
     echo "Joomla 5/6 project-scoped results, component ACL and liveticker comments OK\n";
 }
