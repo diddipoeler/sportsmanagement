@@ -52,6 +52,10 @@ $siteApplication = static function (): CMSApplicationInterface {
 
 $app = $siteApplication();
 
+if (!$app->isClient('site')) {
+    throw new \RuntimeException('SportsManagement site entry point requires the Joomla site application.', 500);
+}
+
 $input = $app->getInput();
 $document = $app->getDocument();
 $rawView = $input->get('view', 'sportsmanagement', 'raw');
