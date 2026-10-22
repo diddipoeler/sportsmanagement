@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Administrator\Controller\AjaxControll
 if (!class_exists(AjaxController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/AjaxController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native administrator Ajax controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(AjaxController::class)) {
