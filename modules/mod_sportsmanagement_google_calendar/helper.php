@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Module\SportsManagementGoogleCalendar\Site\Helper\GoogleCalendarHelper;
+use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
 
 $nativeDependencies = [
@@ -50,11 +51,23 @@ if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
                 return [];
             }
 
-            return (new GoogleCalendarHelper())->loadNextEvents(
-                $this->apiKey,
-                $this->calendarId,
-                max(1, (int) $maxEvents)
-            );
+            $maxEvents = min(2500, max(1, (int) $maxEvents));
+
+            try {
+                return (new GoogleCalendarHelper())->loadNextEvents(
+                    $this->apiKey,
+                    $this->calendarId,
+                    $maxEvents
+                );
+            } catch (\Throwable $e) {
+                Log::add(
+                    __METHOD__ . ': Google Calendar data is unavailable (' . get_class($e) . ')',
+                    Log::ERROR,
+                    'jsmerror'
+                );
+
+                return [];
+            }
         }
     }
 }
