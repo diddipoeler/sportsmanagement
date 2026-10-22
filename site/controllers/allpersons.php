@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\AllpersonsController;
 if (!class_exists(AllpersonsController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/AllpersonsController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Allpersons controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(AllpersonsController::class)) {
