@@ -36,8 +36,22 @@ if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
         public function __construct($params = null)
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
-            $this->apiKey = trim((string) $registry->get('api_key', ''));
-            $this->calendarId = trim((string) $registry->get('calendar_id', ''));
+            $rawApiKey = $registry->get('api_key', '');
+            $rawCalendarId = $registry->get('calendar_id', '');
+
+            if (!is_string($rawApiKey) || !is_string($rawCalendarId)) {
+                return;
+            }
+
+            $apiKey = trim($rawApiKey);
+            $calendarId = trim($rawCalendarId);
+
+            if (preg_match('/[\x00-\x1F\x7F]/', $apiKey . $calendarId)) {
+                return;
+            }
+
+            $this->apiKey = $apiKey;
+            $this->calendarId = $calendarId;
         }
 
         public static function duration(object $event): string
