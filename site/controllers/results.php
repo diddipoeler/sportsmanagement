@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\ResultsController;
 if (!class_exists(ResultsController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/ResultsController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Results controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(ResultsController::class)) {
