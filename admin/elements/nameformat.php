@@ -19,6 +19,10 @@ if (!class_exists(NameformatField::class)) {
     }
 }
 
-if (class_exists(NameformatField::class) && !class_exists('JFormFieldNameFormat', false)) {
+if (!class_exists(NameformatField::class)) {
+    throw new \RuntimeException('SportsManagement native Nameformat field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldNameFormat', false)) {
     class_alias(NameformatField::class, 'JFormFieldNameFormat');
 }
