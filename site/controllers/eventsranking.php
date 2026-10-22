@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\EventsrankingControll
 if (!class_exists(EventsrankingController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/EventsrankingController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Eventsranking controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(EventsrankingController::class)) {
