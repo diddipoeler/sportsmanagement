@@ -12,10 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\LeaguelistField;
 
 if (!class_exists(LeaguelistField::class)) {
-    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/LeaguelistField.php';
-
-    if (is_file($nativeField)) {
-        require_once $nativeField;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/LeaguelistField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
 }
 
