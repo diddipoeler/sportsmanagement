@@ -137,8 +137,14 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
 
         private static function joomlaDatabase(): DatabaseInterface
         {
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException(
+                    'SportsManagement PlaygroundPlan database service is unavailable.',
+                    500
+                );
+            }
 
             return $database;
         }
