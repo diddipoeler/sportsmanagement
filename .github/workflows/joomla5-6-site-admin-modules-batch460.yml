@@ -1,0 +1,82 @@
+name: Joomla 5/6 site admin modules batch 460
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/legacy/matchreportplayer.php'
+      - 'site/legacy/rosterplayer.php'
+      - 'site/legacy/resultsmatch.php'
+      - 'site/legacy/resultsround.php'
+      - 'admin/elements/projects.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch460.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/legacy/matchreportplayer.php'
+      - 'site/legacy/rosterplayer.php'
+      - 'site/legacy/resultsmatch.php'
+      - 'site/legacy/resultsround.php'
+      - 'admin/elements/projects.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch460.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/legacy/matchreportplayer.php
+            site/legacy/rosterplayer.php
+            site/legacy/resultsmatch.php
+            site/legacy/resultsround.php
+            admin/elements/projects.php
+            modules/mod_sportsmanagement_playgroundplan/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+      - name: Validate Joomla 5/6 compatibility contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- "class_alias(ProjectsField::class, 'JFormFieldProjects')" admin/elements/projects.php
+          grep -Fq -- "is_file($nativeField)" admin/elements/projects.php
+          ! grep -Fq -- 'sportsmanagementHelper::getDBConnection()' admin/elements/projects.php
+          ! grep -Fq -- 'select.genericlist' admin/elements/projects.php
+
+          for file in site/legacy/matchreportplayer.php site/legacy/rosterplayer.php; do
+            grep -Fq -- 'is_file($legacyPlayerModel)' "$file"
+            grep -Fq -- "class_exists('sportsmanagementModelPlayer')" "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          for file in site/legacy/resultsmatch.php site/legacy/resultsround.php; do
+            grep -Fq -- 'is_file($nativeModel)' "$file"
+            grep -Fq -- 'class_exists(ResultsDataModel::class)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          grep -Fq -- 'instanceof DatabaseInterface' modules/mod_sportsmanagement_playgroundplan/helper.php
+          grep -Fq -- 'PlaygroundPlan database service is unavailable.' modules/mod_sportsmanagement_playgroundplan/helper.php
