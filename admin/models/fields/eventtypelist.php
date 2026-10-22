@@ -27,10 +27,6 @@ if (!class_exists(EventtypelistField::class)) {
     throw new \RuntimeException('SportsManagement native Eventtypelist field could not be loaded.', 500);
 }
 
-if (!class_exists(EventtypelistField::class)) {
-    throw new \RuntimeException('SportsManagement native Eventtypelist field could not be loaded.', 500);
-}
-
 if (!class_exists('JFormFieldeventtypelist', false)) {
     class_alias(EventtypelistField::class, 'JFormFieldeventtypelist');
 }
