@@ -1,0 +1,97 @@
+name: Joomla 5/6 site admin modules batch 470
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/player/view.html.php'
+      - 'site/views/teamstats/view.html.php'
+      - 'site/views/rivals/view.html.php'
+      - 'admin/models/fields/statstypelist.php'
+      - 'admin/models/fields/federationslist.php'
+      - 'admin/models/fields/matchdaylist.php'
+      - 'admin/models/fields/projectpositionreferee.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch470.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/player/view.html.php'
+      - 'site/views/teamstats/view.html.php'
+      - 'site/views/rivals/view.html.php'
+      - 'admin/models/fields/statstypelist.php'
+      - 'admin/models/fields/federationslist.php'
+      - 'admin/models/fields/matchdaylist.php'
+      - 'admin/models/fields/projectpositionreferee.php'
+      - 'modules/mod_sportsmanagement_club_birthday/helper.php'
+      - 'modules/mod_sportsmanagement_clubicons/helper.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch470.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/player/view.html.php
+            site/views/teamstats/view.html.php
+            site/views/rivals/view.html.php
+            admin/models/fields/statstypelist.php
+            admin/models/fields/federationslist.php
+            admin/models/fields/matchdaylist.php
+            admin/models/fields/projectpositionreferee.php
+            modules/mod_sportsmanagement_club_birthday/helper.php
+            modules/mod_sportsmanagement_clubicons/helper.php
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+      - name: Validate Joomla 5/6 compatibility contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             admin/models/fields/statstypelist.php             admin/models/fields/federationslist.php             admin/models/fields/matchdaylist.php             admin/models/fields/projectpositionreferee.php; do
+            grep -Fq -- 'SportsManagementDatabaseTrait.php' "$file"
+            grep -Fq -- 'SportsManagementListField.php' "$file"
+            grep -Fq -- 'is_file($nativeField)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/matchdaylist.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/projectpositionreferee.php
+
+          for file in site/views/player/view.html.php site/views/teamstats/view.html.php site/views/rivals/view.html.php; do
+            grep -Fq -- 'SportsManagementSiteApplicationResolver.php' "$file"
+            grep -Fq -- 'is_file($nativeView)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_club_birthday/helper.php
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_clubicons/helper.php
+
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          grep -Fq -- 'instanceof DatabaseInterface' modules/mod_sportsmanagement_teamstats_ranking/helper.php
+          grep -Fq -- 'Team Stats Ranking database service is unavailable.' modules/mod_sportsmanagement_teamstats_ranking/helper.php
