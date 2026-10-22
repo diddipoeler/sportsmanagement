@@ -12,10 +12,14 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\SportstypelistField;
 
 if (!class_exists(SportstypelistField::class)) {
-    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportstypelistField.php';
-
-    if (is_file($nativeField)) {
-        require_once $nativeField;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportstypelistField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
 }
 
