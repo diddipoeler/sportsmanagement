@@ -12,11 +12,19 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\AgegrouplistField;
 
 if (!class_exists(AgegrouplistField::class)) {
-    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/AgegrouplistField.php';
-
-    if (is_file($nativeField)) {
-        require_once $nativeField;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/AgegrouplistField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
+}
+
+if (!class_exists(AgegrouplistField::class)) {
+    throw new \RuntimeException('SportsManagement native Agegrouplist field could not be loaded.', 500);
 }
 
 if (!class_exists(AgegrouplistField::class)) {
