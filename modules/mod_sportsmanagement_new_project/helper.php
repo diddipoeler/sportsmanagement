@@ -70,7 +70,13 @@ if (!class_exists('modJSMNewProjectHelper', false)) {
 
         private static function siteApplication(): CMSApplicationInterface
         {
-            return SportsManagementSiteApplicationResolver::resolve();
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement New Project legacy helper requires the Joomla site application.', 500);
+            }
+
+            return $app;
         }
     }
 }
