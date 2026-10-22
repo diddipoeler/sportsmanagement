@@ -1,0 +1,84 @@
+name: Joomla 5/6 site admin modules batch 464
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/ical/view.html.php'
+      - 'site/views/scoresheet/view.html.php'
+      - 'admin/models/fields/parentdivision.php'
+      - 'admin/models/fields/playgroundlist.php'
+      - 'admin/models/fields/projectlist.php'
+      - 'admin/models/fields/personlist.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch464.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/ical/view.html.php'
+      - 'site/views/scoresheet/view.html.php'
+      - 'admin/models/fields/parentdivision.php'
+      - 'admin/models/fields/playgroundlist.php'
+      - 'admin/models/fields/projectlist.php'
+      - 'admin/models/fields/personlist.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch464.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/ical/view.html.php
+            site/views/scoresheet/view.html.php
+            admin/models/fields/parentdivision.php
+            admin/models/fields/playgroundlist.php
+            admin/models/fields/projectlist.php
+            admin/models/fields/personlist.php
+            modules/mod_sportsmanagement_google_calendar/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+      - name: Validate Joomla 5/6 compatibility contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             admin/models/fields/parentdivision.php             admin/models/fields/playgroundlist.php             admin/models/fields/projectlist.php             admin/models/fields/personlist.php; do
+            grep -Fq -- 'SportsManagementDatabaseTrait.php' "$file"
+            grep -Fq -- 'SportsManagementListField.php' "$file"
+            grep -Fq -- 'is_file($nativeField)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/parentdivision.php
+
+          for file in site/views/ical/view.html.php site/views/scoresheet/view.html.php; do
+            grep -Fq -- "class_exists('sportsmanagementModelNextMatch', false)" "$file"
+            grep -Fq -- 'is_file($legacyNextmatchModel)' "$file"
+            grep -Fq -- 'Nextmatch model facade could not be loaded.' "$file"
+          done
+
+          grep -Fq -- '!is_string($rawApiKey)' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq -- '!is_string($rawCalendarId)' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq -- "preg_match('/[\\x00-\\x1F\\x7F]/'" modules/mod_sportsmanagement_google_calendar/helper.php
