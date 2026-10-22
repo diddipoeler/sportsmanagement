@@ -12,9 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Site\View\Ranking\HtmlView;
 
 if (!class_exists(HtmlView::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementHtmlView.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementProjectHtmlView.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/View/Ranking/HtmlView.php';
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementHtmlView.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/View/SportsManagementProjectHtmlView.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/View/Ranking/HtmlView.php',
+    ] as $nativeView) {
+        if (is_file($nativeView)) {
+            require_once $nativeView;
+        }
+    }
 }
 
 if (!class_exists(HtmlView::class)) {
