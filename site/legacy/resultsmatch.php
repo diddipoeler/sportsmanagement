@@ -11,14 +11,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Site\Model\ResultsDataModel;
-use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 
-if (!class_exists(ResultsDataModel::class)) {
+if (!class_exists(ResultsDataModel::class) || !class_exists(SportsManagementSiteApplicationResolver::class)) {
     foreach ([
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
         JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsDataModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
     ] as $nativeModel) {
         if (is_file($nativeModel)) {
             require_once $nativeModel;
@@ -26,8 +26,8 @@ if (!class_exists(ResultsDataModel::class)) {
     }
 }
 
-if (!class_exists(ResultsDataModel::class)) {
-    throw new \RuntimeException('SportsManagement native ResultsData model could not be loaded.', 500);
+if (!class_exists(ResultsDataModel::class) || !class_exists(SportsManagementSiteApplicationResolver::class)) {
+    throw new \RuntimeException('SportsManagement native results runtime could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementModelMatch', false)) {
@@ -35,8 +35,11 @@ if (!class_exists('sportsmanagementModelMatch', false)) {
     {
         public static function getProjectPositionsOptions($id = 0, $personType = 1, $projectId = 0)
         {
-            /** @var SiteApplication $app */
-            $app = Factory::getContainer()->get(SiteApplication::class);
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement results compatibility adapter requires the Joomla site application.', 500);
+            }
 
             $model = new ResultsDataModel();
             $model->setDatabaseSelector(
