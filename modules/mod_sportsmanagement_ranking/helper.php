@@ -155,13 +155,22 @@ class modJSMRankingHelper extends stdClass
 
     private static function siteApplication()
     {
-        return SportsManagementSiteApplicationResolver::resolve();
+        $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Ranking legacy helper requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Ranking database service is unavailable.', 500);
+        }
 
         return $database;
     }
