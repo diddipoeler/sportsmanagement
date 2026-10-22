@@ -19,6 +19,10 @@ if (!class_exists(RankingcolumnsField::class)) {
     }
 }
 
-if (class_exists(RankingcolumnsField::class) && !class_exists('JFormFieldrankingcolumns', false)) {
+if (!class_exists(RankingcolumnsField::class)) {
+    throw new \RuntimeException('SportsManagement native Rankingcolumns field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldrankingcolumns', false)) {
     class_alias(RankingcolumnsField::class, 'JFormFieldrankingcolumns');
 }
