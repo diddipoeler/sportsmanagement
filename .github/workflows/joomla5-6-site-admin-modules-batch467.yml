@@ -1,0 +1,86 @@
+name: Joomla 5/6 site admin modules batch 467
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/views/teamplan/view.html.php'
+      - 'admin/models/fields/templatelist.php'
+      - 'admin/models/fields/currentround.php'
+      - 'admin/models/fields/favteam.php'
+      - 'admin/models/fields/acteventtype.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch467.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/views/teamplan/view.html.php'
+      - 'admin/models/fields/templatelist.php'
+      - 'admin/models/fields/currentround.php'
+      - 'admin/models/fields/favteam.php'
+      - 'admin/models/fields/acteventtype.php'
+      - 'modules/mod_sportsmanagement_teamplayers/helper.php'
+      - 'modules/mod_sportsmanagement_ranking/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch467.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/views/teamplan/view.html.php
+            admin/models/fields/templatelist.php
+            admin/models/fields/currentround.php
+            admin/models/fields/favteam.php
+            admin/models/fields/acteventtype.php
+            modules/mod_sportsmanagement_teamplayers/helper.php
+            modules/mod_sportsmanagement_ranking/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+      - name: Validate Joomla 5/6 compatibility contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             admin/models/fields/templatelist.php             admin/models/fields/currentround.php             admin/models/fields/favteam.php             admin/models/fields/acteventtype.php; do
+            grep -Fq -- 'SportsManagementDatabaseTrait.php' "$file"
+            grep -Fq -- 'SportsManagementListField.php' "$file"
+            grep -Fq -- 'is_file($nativeField)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/currentround.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/favteam.php
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/acteventtype.php
+
+          grep -Fq -- 'SportsManagementSiteApplicationResolver.php' site/views/teamplan/view.html.php
+          grep -Fq -- 'is_file($nativeView)' site/views/teamplan/view.html.php
+          grep -Fq -- 'native Teamplan view could not be loaded.' site/views/teamplan/view.html.php
+
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_teamplayers/helper.php
+          grep -Fq -- 'TeamPlayers database service is unavailable.' modules/mod_sportsmanagement_teamplayers/helper.php
+
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_ranking/helper.php
+          grep -Fq -- 'Ranking database service is unavailable.' modules/mod_sportsmanagement_ranking/helper.php
