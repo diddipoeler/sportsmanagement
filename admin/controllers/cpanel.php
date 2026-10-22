@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Administrator\Controller\CpanelContro
 if (!class_exists(CpanelController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/CpanelController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native administrator Cpanel controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(CpanelController::class)) {
