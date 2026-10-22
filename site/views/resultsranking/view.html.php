@@ -19,24 +19,47 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'results' . DIRECTORY_SEPARATOR . 'view.html.php';
+$resultsViewFile = JPATH_COMPONENT_SITE . '/views/results/view.html.php';
 
-if (!class_exists(ResultsrankingDataModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsrankingDataModel.php';
+if (!class_exists('sportsmanagementViewResults', false) && is_file($resultsViewFile)) {
+    require_once $resultsViewFile;
 }
 
-if (!class_exists(RankingModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php';
+if (!class_exists('sportsmanagementViewResults')) {
+    throw new \RuntimeException('SportsManagement Results parent view could not be loaded.', 500);
 }
 
-if (!class_exists(ClubinfoModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ClubinfoModel.php';
-}
+$nativeDependencies = [
+    ResultsrankingDataModel::class => [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsrankingDataModel.php',
+    ],
+    RankingModel::class => [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/RankingModel.php',
+    ],
+    ClubinfoModel::class => [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/ClubinfoModel.php',
+    ],
+    ClubLogoHistoryAdapter::class => [
+        JPATH_SITE . '/components/com_sportsmanagement/src/Legacy/ClubLogoHistoryAdapter.php',
+    ],
+];
 
-if (!class_exists(ClubLogoHistoryAdapter::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Legacy/ClubLogoHistoryAdapter.php';
+foreach ($nativeDependencies as $class => $files) {
+    if (!class_exists($class)) {
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                require_once $file;
+            }
+        }
+    }
+
+    if (!class_exists($class)) {
+        throw new \RuntimeException('SportsManagement results-ranking dependency could not be loaded: ' . $class, 500);
+    }
 }
 
 /**
