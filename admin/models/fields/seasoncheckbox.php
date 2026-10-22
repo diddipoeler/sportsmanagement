@@ -12,10 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\SeasoncheckboxField;
 
 if (!class_exists(SeasoncheckboxField::class)) {
-    $nativeField = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SeasoncheckboxField.php';
-
-    if (is_file($nativeField)) {
-        require_once $nativeField;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SeasoncheckboxField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
 }
 
