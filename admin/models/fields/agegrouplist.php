@@ -27,10 +27,6 @@ if (!class_exists(AgegrouplistField::class)) {
     throw new \RuntimeException('SportsManagement native Agegrouplist field could not be loaded.', 500);
 }
 
-if (!class_exists(AgegrouplistField::class)) {
-    throw new \RuntimeException('SportsManagement native Agegrouplist field could not be loaded.', 500);
-}
-
 if (!class_exists('JFormFieldagegrouplist', false)) {
     class_alias(AgegrouplistField::class, 'JFormFieldagegrouplist');
 }
