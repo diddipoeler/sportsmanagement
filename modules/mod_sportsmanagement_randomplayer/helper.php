@@ -50,18 +50,19 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
             $app = self::siteApplication();
-
-            if (!$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement RandomPlayer legacy helper requires the Joomla site application.', 500);
-            }
-
             $database = self::joomlaDatabase($database);
 
             return (new RandomPlayerHelper())->getData($registry, $database);
         }
         private static function siteApplication(): CMSApplicationInterface
         {
-            return SportsManagementSiteApplicationResolver::resolve();
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement RandomPlayer legacy helper requires the Joomla site application.', 500);
+            }
+
+            return $app;
         }
 
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
