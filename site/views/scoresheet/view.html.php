@@ -17,11 +17,15 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-require_once JPATH_SITE
-	. DIRECTORY_SEPARATOR . 'components'
-	. DIRECTORY_SEPARATOR . 'com_sportsmanagement'
-	. DIRECTORY_SEPARATOR . 'models'
-	. DIRECTORY_SEPARATOR . 'nextmatch.php';
+$legacyNextmatchModel = JPATH_SITE . '/components/com_sportsmanagement/models/nextmatch.php';
+
+if (!class_exists('sportsmanagementModelNextMatch', false) && is_file($legacyNextmatchModel)) {
+    require_once $legacyNextmatchModel;
+}
+
+if (!class_exists('sportsmanagementModelNextMatch')) {
+    throw new \RuntimeException('SportsManagement legacy Nextmatch model facade could not be loaded.', 500);
+}
 
 /**
  * sportsmanagementViewScoresheet
