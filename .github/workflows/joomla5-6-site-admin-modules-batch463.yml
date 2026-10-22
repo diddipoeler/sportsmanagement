@@ -1,0 +1,75 @@
+name: Joomla 5/6 site admin modules batch 463
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'admin/models/fields/gcalendar.php'
+      - 'admin/models/fields/teamlist.php'
+      - 'admin/models/fields/userlist.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch463.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'admin/models/fields/gcalendar.php'
+      - 'admin/models/fields/teamlist.php'
+      - 'admin/models/fields/userlist.php'
+      - 'modules/mod_sportsmanagement_google_calendar/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch463.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/sportsmanagement.php
+            admin/models/fields/gcalendar.php
+            admin/models/fields/teamlist.php
+            admin/models/fields/userlist.php
+            modules/mod_sportsmanagement_google_calendar/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+      - name: Validate Joomla 5/6 compatibility contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          grep -Fq -- "requires the Joomla site application" site/sportsmanagement.php
+          grep -Fq -- "isClient('site')" site/sportsmanagement.php
+
+          for file in admin/models/fields/gcalendar.php admin/models/fields/teamlist.php; do
+            grep -Fq -- 'SportsManagementDatabaseTrait.php' "$file"
+            grep -Fq -- 'SportsManagementListField.php' "$file"
+            grep -Fq -- 'is_file($nativeField)' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/userlist.php
+          grep -Fq -- 'is_file($nativeField)' admin/models/fields/userlist.php
+
+          grep -Fq -- 'min(2500, max(1, (int) $maxEvents))' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq -- 'catch (\Throwable $e)' modules/mod_sportsmanagement_google_calendar/helper.php
+          grep -Fq -- "Log::ERROR" modules/mod_sportsmanagement_google_calendar/helper.php
