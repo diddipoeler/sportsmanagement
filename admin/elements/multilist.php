@@ -19,6 +19,10 @@ if (!class_exists(MultilistField::class)) {
     }
 }
 
-if (class_exists(MultilistField::class) && !class_exists('JFormFieldMultiList', false)) {
+if (!class_exists(MultilistField::class)) {
+    throw new \RuntimeException('SportsManagement native Multilist field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldMultiList', false)) {
     class_alias(MultilistField::class, 'JFormFieldMultiList');
 }
