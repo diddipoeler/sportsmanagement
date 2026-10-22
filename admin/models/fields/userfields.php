@@ -12,7 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\UserfieldsField;
 
 if (!class_exists(UserfieldsField::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/UserfieldsField.php';
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/UserfieldsField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
+    }
 }
 
 if (!class_exists(UserfieldsField::class)) {
