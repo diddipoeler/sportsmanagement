@@ -69,6 +69,11 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
                 ? (string) $teamFormat
                 : 'name';
             $teamId = (int) $teamId;
+
+            if ($teamId <= 0) {
+                return '';
+            }
+
             $db = self::database();
             $query = $db->createQuery()
                 ->select($db->quoteName($field))
@@ -86,6 +91,11 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
                 ? (string) $logo
                 : 'logo_big';
             $teamId = (int) $teamId;
+
+            if ($teamId <= 0) {
+                return '';
+            }
+
             $db = self::database();
             $query = $db->createQuery()
                 ->select($db->quoteName('c.' . $field))
