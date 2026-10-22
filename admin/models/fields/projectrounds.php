@@ -12,13 +12,22 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Field\ProjectroundsField;
 
 if (!class_exists(ProjectroundsField::class)) {
-    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ProjectroundsField.php';
-
-    if (is_file($fieldFile)) {
-        require_once $fieldFile;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementDatabaseTrait.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/SportsManagementListField.php',
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/ProjectroundsField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
 }
 
-if (class_exists(ProjectroundsField::class) && !class_exists('JFormFieldprojectrounds', false)) {
+if (!class_exists(ProjectroundsField::class)) {
+    throw new \RuntimeException('SportsManagement native Projectrounds field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldprojectrounds', false)) {
     class_alias(ProjectroundsField::class, 'JFormFieldprojectrounds');
 }
