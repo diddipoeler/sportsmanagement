@@ -53,14 +53,7 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            if ($database === null) {
-                $app = self::siteApplication();
-
-                if (!$app->isClient('site')) {
-                    throw new \RuntimeException('SportsManagement legacy module helper requires the Joomla site application.', 500);
-                }
-            }
-
+            self::siteApplication();
             $database = self::joomlaDatabase($database);
 
             return (new TeamStatsRankingHelper())->getData($registry, $database);
@@ -68,7 +61,13 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
 
         private static function siteApplication(): CMSApplicationInterface
         {
-            return SportsManagementSiteApplicationResolver::resolve();
+            $app = SportsManagementSiteApplicationResolver::resolve();
+
+            if (!$app->isClient('site')) {
+                throw new \RuntimeException('SportsManagement Team Stats Ranking legacy helper requires the Joomla site application.', 500);
+            }
+
+            return $app;
         }
 
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
@@ -77,8 +76,11 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement Team Stats Ranking database service is unavailable.', 500);
+            }
 
             return $database;
         }
