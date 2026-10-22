@@ -12,13 +12,19 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\RoundsField;
 
 if (!class_exists(RoundsField::class)) {
-    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/RoundsField.php';
-
-    if (is_file($fieldFile)) {
-        require_once $fieldFile;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/RoundsField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
 }
 
-if (class_exists(RoundsField::class) && !class_exists('JFormFieldRounds', false)) {
+if (!class_exists(RoundsField::class)) {
+    throw new \RuntimeException('SportsManagement native Rounds field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldRounds', false)) {
     class_alias(RoundsField::class, 'JFormFieldRounds');
 }
