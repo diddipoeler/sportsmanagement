@@ -12,13 +12,19 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Field\PlaygroundsField;
 
 if (!class_exists(PlaygroundsField::class)) {
-    $fieldFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PlaygroundsField.php';
-
-    if (is_file($fieldFile)) {
-        require_once $fieldFile;
+    foreach ([
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Field/PlaygroundsField.php',
+    ] as $nativeField) {
+        if (is_file($nativeField)) {
+            require_once $nativeField;
+        }
     }
 }
 
-if (class_exists(PlaygroundsField::class) && !class_exists('JFormFieldPlaygrounds', false)) {
+if (!class_exists(PlaygroundsField::class)) {
+    throw new \RuntimeException('SportsManagement native Playgrounds field could not be loaded.', 500);
+}
+
+if (!class_exists('JFormFieldPlaygrounds', false)) {
     class_alias(PlaygroundsField::class, 'JFormFieldPlaygrounds');
 }
