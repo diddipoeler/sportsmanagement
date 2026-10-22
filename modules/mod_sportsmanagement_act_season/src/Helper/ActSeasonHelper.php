@@ -32,6 +32,8 @@ final class ActSeasonHelper
             return ['list' => [], 'federations' => [], 'countriesByFederation' => []];
         }
 
+        $databaseSelector = 0;
+
         try {
             $databaseSelector = $this->normaliseDatabaseSelector($componentParams->get('cfg_which_database', 0));
             $db = $this->database($databaseSelector, $fallbackDatabase);
