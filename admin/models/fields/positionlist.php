@@ -27,10 +27,6 @@ if (!class_exists(PositionlistField::class)) {
     throw new \RuntimeException('SportsManagement native Positionlist field could not be loaded.', 500);
 }
 
-if (!class_exists(PositionlistField::class)) {
-    throw new \RuntimeException('SportsManagement native Positionlist field could not be loaded.', 500);
-}
-
 if (!class_exists('JFormFieldpositionlist', false)) {
     class_alias(PositionlistField::class, 'JFormFieldpositionlist');
 }
