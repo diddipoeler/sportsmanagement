@@ -131,10 +131,18 @@ final class LivetickerHelper
     {
         $matchIds = [];
 
-        foreach ($list as $row) {
-            $matchId = (int) ($row->match_id ?? 0);
+        foreach (array_slice($list, 0, 100) as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
 
-            if ($matchId > 0) {
+            $rawId = $row->match_id ?? null;
+            if (!is_int($rawId) && (!is_string($rawId) || !preg_match('/^[0-9]+$/D', $rawId))) {
+                continue;
+            }
+
+            $matchId = filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($matchId !== false) {
                 $matchIds[$matchId] = $matchId;
             }
         }

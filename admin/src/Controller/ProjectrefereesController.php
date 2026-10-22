@@ -23,9 +23,10 @@ final class ProjectrefereesController extends SportsManagementAdminController
     public function saveshort(): void
     {
         $this->checkToken();
+        $this->assertWritePermission('core.edit');
 
         $input = $this->app->getInput();
-        $model = $this->getModel();
+        $model = $this->projectrefereeModel();
         $success = $model->saveshort(
             $input->post->get('cid', [], 'array'),
             $input->post->getArray()
@@ -40,6 +41,9 @@ final class ProjectrefereesController extends SportsManagementAdminController
 
     public function publish(): void
     {
+        $this->checkToken();
+        $this->assertWritePermission('core.edit.state');
+
         $model = $this->projectrefereeModel();
         $ids = (array) $this->app->getInput()->post->get('cid', [], 'array');
         $notifier = new FinderRelationNotifier($model->getDatabase());
@@ -52,7 +56,9 @@ final class ProjectrefereesController extends SportsManagementAdminController
 
     public function getModel($name = 'Projectreferee', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 
     private function projectrefereeModel(): ProjectrefereeModel

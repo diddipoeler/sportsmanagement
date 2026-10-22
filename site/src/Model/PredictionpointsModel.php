@@ -15,6 +15,12 @@ final class PredictionpointsModel extends PredictionresultsModel
 {
     public function recalculatePoints(array $config): int
     {
+        // Enforce permissions in the model as well as the controller: other
+        // callers must not be able to recalculate scores without admin rights.
+        if (!$this->isAllowedAdmin()) {
+            throw new \RuntimeException('Not authorised to recalculate prediction points.', 403);
+        }
+
         $project = $this->getResultsProject();
         if (!$project) {
             return 0;
