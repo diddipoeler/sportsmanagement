@@ -1,0 +1,77 @@
+name: Joomla 5/6 site admin modules batch 466
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/helpers/countries.php'
+      - 'admin/models/fields/positionlist.php'
+      - 'admin/models/fields/agegrouplist.php'
+      - 'admin/models/fields/eventtypelist.php'
+      - 'admin/models/fields/projectrounds.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch466.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/helpers/countries.php'
+      - 'admin/models/fields/positionlist.php'
+      - 'admin/models/fields/agegrouplist.php'
+      - 'admin/models/fields/eventtypelist.php'
+      - 'admin/models/fields/projectrounds.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/helper.php'
+      - '.github/workflows/joomla5-6-site-admin-modules-batch466.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate migrated PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/helpers/countries.php
+            admin/models/fields/positionlist.php
+            admin/models/fields/agegrouplist.php
+            admin/models/fields/eventtypelist.php
+            admin/models/fields/projectrounds.php
+            modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          )
+
+          for file in "${files[@]}"; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file"
+            done
+            grep -Fq -- '@version    5.6.0' "$file"
+          done
+
+      - name: Validate Joomla 5/6 compatibility contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for file in             admin/models/fields/positionlist.php             admin/models/fields/agegrouplist.php             admin/models/fields/eventtypelist.php             admin/models/fields/projectrounds.php; do
+            grep -Fq -- 'SportsManagementDatabaseTrait.php' "$file"
+            grep -Fq -- 'SportsManagementListField.php' "$file"
+            grep -Fq -- 'is_file($nativeField)' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
+          done
+
+          grep -Fq -- 'SportsManagementAdministratorApplicationResolver.php' admin/models/fields/projectrounds.php
+
+          grep -Fq -- 'instanceof DatabaseInterface' site/helpers/countries.php
+          grep -Fq -- 'country database service is unavailable.' site/helpers/countries.php
+
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_firstleagueoverview/helper.php
+          grep -Fq -- 'FirstLeagueOverview legacy bridge requires the Joomla site application.' modules/mod_sportsmanagement_firstleagueoverview/helper.php
