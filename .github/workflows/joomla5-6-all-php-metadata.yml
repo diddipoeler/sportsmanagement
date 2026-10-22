@@ -87,6 +87,12 @@ jobs:
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
           php -l .github/tests/joomla56_ical_error_privacy.php
           php -l .github/tests/joomla56_admin_rounds_write_guards.php
+          php -l site/src/Model/PredictionpointsModel.php
+          php -l admin/src/Controller/ProjectrefereesController.php
+          php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+          php -l .github/tests/joomla56_prediction_points_model_acl.php
+          php -l .github/tests/joomla56_projectreferees_write_guards.php
+          php -l .github/tests/joomla56_results_acl_liveticker_commentary.php
           php -l site/src/Model/PredictionmembershipModel.php
           php -l admin/src/Controller/PredictionroundsController.php
           php -l modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
@@ -178,3 +184,12 @@ jobs:
 
       - name: Verify Top Tipper database and list limit settings
         run: php .github/tests/joomla56_top_tipper_module_settings.php
+
+      - name: Verify direct prediction scoring permissions
+        run: php .github/tests/joomla56_prediction_points_model_acl.php
+
+      - name: Verify project referee write permissions and missing models
+        run: php .github/tests/joomla56_projectreferees_write_guards.php
+
+      - name: Verify bounded Liveticker commentary match IDs
+        run: php .github/tests/joomla56_results_acl_liveticker_commentary.php
