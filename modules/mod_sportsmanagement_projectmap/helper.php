@@ -94,8 +94,11 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement ProjectMap database service is unavailable.', 500);
+            }
 
             return $database;
         }
