@@ -11,7 +11,7 @@
  */
 \defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
-use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
@@ -53,7 +53,7 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 	/**
 	 * Resolve the Joomla site application for legacy project callers.
 	 */
-	private static function siteApplication(): SiteApplication
+	private static function siteApplication(): CMSApplicationInterface
 	{
 		if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
 			$resolverFile = JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php';
@@ -67,7 +67,13 @@ class sportsmanagementModelProject extends BaseDatabaseModel
 			throw new \RuntimeException('SportsManagement site application resolver could not be loaded.', 500);
 		}
 
-		return SportsManagementSiteApplicationResolver::resolve();
+		$app = SportsManagementSiteApplicationResolver::resolve();
+
+		if (!$app->isClient('site')) {
+			throw new \RuntimeException('SportsManagement legacy Project model requires the Joomla site application.', 500);
+		}
+
+		return $app;
 	}
 
 	static $_project = null;
