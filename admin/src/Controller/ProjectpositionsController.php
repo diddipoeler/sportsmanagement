@@ -21,9 +21,15 @@ final class ProjectpositionsController extends SportsManagementAdminController
     public function store(): void
     {
         $this->checkToken();
+        $this->assertWritePermission('core.edit');
 
         $post = $this->app->getInput()->post->getArray();
         $model = $this->getModel();
+
+        if (!is_object($model)) {
+            throw new \RuntimeException('Projectposition model is unavailable.', 500);
+        }
+
         $success = $model->store($post);
 
         $this->setRedirect(
@@ -35,6 +41,8 @@ final class ProjectpositionsController extends SportsManagementAdminController
 
     public function getModel($name = 'Projectposition', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }
