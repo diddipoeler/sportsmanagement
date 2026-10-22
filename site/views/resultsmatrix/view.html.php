@@ -16,12 +16,32 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'results' . DIRECTORY_SEPARATOR . 'view.html.php';
+$resultsViewFile = JPATH_COMPONENT_SITE . '/views/results/view.html.php';
+
+if (!class_exists('sportsmanagementViewResults', false) && is_file($resultsViewFile)) {
+    require_once $resultsViewFile;
+}
+
+if (!class_exists('sportsmanagementViewResults')) {
+    throw new \RuntimeException('SportsManagement Results parent view could not be loaded.', 500);
+}
 
 if (!class_exists(MatrixModel::class)) {
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php';
-    require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatrixModel.php';
+    foreach ([
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/SportsManagementProjectModel.php',
+        JPATH_SITE . '/components/com_sportsmanagement/src/Model/MatrixModel.php',
+    ] as $nativeModel) {
+        if (is_file($nativeModel)) {
+            require_once $nativeModel;
+        }
+    }
+}
+
+if (!class_exists(MatrixModel::class)) {
+    throw new \RuntimeException('SportsManagement native Matrix model could not be loaded.', 500);
 }
 
 /**
