@@ -60,17 +60,19 @@ if (!class_exists('modJSMClubiconsHelper', false)) {
 
     private static function siteApplication(): CMSApplicationInterface
     {
-        return SportsManagementSiteApplicationResolver::resolve();
+        $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Clubicons legacy helper requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 
     public function __construct($params, $module)
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $app = self::siteApplication();
-
-        if (!$app->isClient('site')) {
-            throw new \RuntimeException('SportsManagement Clubicons legacy helper requires the Joomla site application.', 500);
-        }
 
         $result = (new ClubiconsHelper())->getData($registry, $module, $app);
         $this->project = $result['project'];
