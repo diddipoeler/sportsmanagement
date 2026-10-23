@@ -28,9 +28,16 @@ final class CalendarHelper
 
     public static function normaliseLayout(string $layout): string
     {
+        $layout = trim($layout);
+
+        // A legacy module parameter must not supply a path or traversal segment.
+        if ($layout === '' || !preg_match('/^[A-Za-z0-9_-]+$/D', $layout)) {
+            return 'default_jsm';
+        }
+
         return match ($layout) {
             'default_arrobefr', 'default_tuicalendar' => 'default_jsm',
-            default => $layout !== '' ? $layout : 'default_jsm',
+            default => $layout,
         };
     }
 
