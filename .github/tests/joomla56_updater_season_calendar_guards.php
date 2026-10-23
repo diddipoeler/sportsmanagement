@@ -25,7 +25,7 @@ $checks = [
     ],
     'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php' => [
         'strlen($layout) > 100',
-        "preg_match('/^[A-Za-z0-9_-]+$/D', $layout)",
+        'preg_match(\'/^[A-Za-z0-9_-]+$/D\', $layout)',
         "return 'default_jsm';",
     ],
 ];
