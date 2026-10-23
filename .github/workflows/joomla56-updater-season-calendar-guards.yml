@@ -1,0 +1,35 @@
+name: Joomla 5/6 updater season calendar guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/controllers/season.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_updater_season_calendar_guards.php'
+      - '.github/workflows/joomla56-updater-season-calendar-guards.yml'
+  pull_request:
+    paths:
+      - 'site/controllers/updsportsmanagement.php'
+      - 'admin/controllers/season.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_updater_season_calendar_guards.php'
+      - '.github/workflows/joomla56-updater-season-calendar-guards.yml'
+
+jobs:
+  guard-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Lint changed PHP
+        run: |
+          php -l site/controllers/updsportsmanagement.php
+          php -l admin/controllers/season.php
+          php -l modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
+          php -l .github/tests/joomla56_updater_season_calendar_guards.php
+      - name: Regression contracts
+        run: php .github/tests/joomla56_updater_season_calendar_guards.php
