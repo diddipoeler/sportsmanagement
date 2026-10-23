@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\PredictiongameControl
 if (!class_exists(PredictiongameController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/PredictiongameController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Predictiongame controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(PredictiongameController::class)) {
