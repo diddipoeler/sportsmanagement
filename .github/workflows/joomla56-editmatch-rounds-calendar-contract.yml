@@ -1,0 +1,35 @@
+name: Joomla 5/6 editmatch rounds calendar contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/editmatch.php'
+      - 'admin/controllers/rounds.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_editmatch_rounds_calendar_bridge.php'
+      - '.github/workflows/joomla56-editmatch-rounds-calendar-contract.yml'
+  pull_request:
+    paths:
+      - 'site/controllers/editmatch.php'
+      - 'admin/controllers/rounds.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_editmatch_rounds_calendar_bridge.php'
+      - '.github/workflows/joomla56-editmatch-rounds-calendar-contract.yml'
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l site/controllers/editmatch.php
+          php -l admin/controllers/rounds.php
+          php -l modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
+          php -l .github/tests/joomla56_editmatch_rounds_calendar_bridge.php
+      - name: Check migration contracts
+        run: php .github/tests/joomla56_editmatch_rounds_calendar_bridge.php
