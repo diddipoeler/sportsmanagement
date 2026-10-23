@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\TreetonodeController;
 if (!class_exists(TreetonodeController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/TreetonodeController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Treetonode controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(TreetonodeController::class)) {
