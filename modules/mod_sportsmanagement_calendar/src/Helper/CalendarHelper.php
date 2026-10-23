@@ -136,7 +136,7 @@ final class CalendarHelper
         $app->getLanguage()->load('mod_sportsmanagement_calendar');
 
         $calendar = new \JSMCalendar();
-        $dayNameLength = max(1, (int) $params->get('cal_length_days', 2));
+        $dayNameLength = min(20, max(1, (int) $params->get('cal_length_days', 2)));
 
         $calendar->dayNames = [
             substr(Text::_('SUN'), 0, $dayNameLength),
@@ -162,7 +162,7 @@ final class CalendarHelper
             Text::_('DECEMBER'),
         ];
 
-        $calendar->startDay = (int) $params->get('cal_start_day', 0);
+        $calendar->startDay = min(6, max(0, (int) $params->get('cal_start_day', 0)));
         $calendar->lightbox = (int) $params->get('lightbox', 1);
         $calendar->lightbox_on_pageload = (int) $params->get('lightbox_on_pageload', 0);
         $calendar->usedteams = $params->get('usedteams', '');
