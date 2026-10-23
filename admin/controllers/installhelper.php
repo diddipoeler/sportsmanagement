@@ -12,8 +12,20 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\InstallhelperController;
 
 if (!class_exists(InstallhelperController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/InstallhelperController.php';
+    foreach ([
+        __DIR__ . '/../src/Controller/SportsManagementFormController.php',
+        __DIR__ . '/../src/Controller/InstallhelperController.php',
+    ] as $dependency) {
+        if (!is_file($dependency)) {
+            throw new \RuntimeException('SportsManagement administrator controller dependency is missing: ' . basename($dependency), 500);
+        }
+
+        require_once $dependency;
+    }
+}
+
+if (!class_exists(InstallhelperController::class)) {
+    throw new \RuntimeException('SportsManagement native Installhelper controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerinstallhelper', false)) {
