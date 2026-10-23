@@ -331,7 +331,7 @@ function downmediwiki() {
 
 
 
-location.reload();
+//location.reload();
 }
 ";
 
