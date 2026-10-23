@@ -30,9 +30,15 @@ $nativeDependencies = [
 ];
 
 foreach ($nativeDependencies as $class => $file) {
-    if (!class_exists($class, false) && is_file($file)) {
-        require_once $file;
+    if (class_exists($class)) {
+        continue;
     }
+
+    if (!is_file($file)) {
+        throw new \RuntimeException('SportsManagement Birthday dependency file is missing: ' . basename($file), 500);
+    }
+
+    require_once $file;
 }
 
 foreach ([
