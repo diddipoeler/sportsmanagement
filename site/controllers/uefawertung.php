@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\UefawertungController
 if (!class_exists(UefawertungController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/UefawertungController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Uefawertung controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(UefawertungController::class)) {
