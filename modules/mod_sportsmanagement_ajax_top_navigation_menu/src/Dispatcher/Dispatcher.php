@@ -80,9 +80,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ['core']
             );
     
+            // Joomla's script options expect an array; do not forward malformed helper data.
+            $clientConfig = $data['clientConfig'] ?? [];
             $document->addScriptOptions(
                 'mod_sportsmanagement_ajax_top_navigation_menu.' . (int) $data['module']->id,
-                $data['clientConfig'] ?? []
+                is_array($clientConfig) ? $clientConfig : []
             );
         }
 
