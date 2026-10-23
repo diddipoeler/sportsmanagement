@@ -12,7 +12,17 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlxmlexportsController;
 
 if (!class_exists(JlxmlexportsController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JlxmlexportsController.php';
+    $nativeController = __DIR__ . '/../src/Controller/JlxmlexportsController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native XML export controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
+}
+
+if (!class_exists(JlxmlexportsController::class)) {
+    throw new \RuntimeException('SportsManagement native XML export controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerjlxmlexports', false)) {
