@@ -55,7 +55,7 @@ final class CalendarHelper
         $params->set('layout', $layout);
 
         $input = $app->getInput();
-        $ajaxModuleId = $input->getInt('ajaxmodid', 0);
+        $ajaxModuleId = max(0, $input->getInt('ajaxmodid', 0));
         $ajax = $input->getInt('ajaxCalMod', 0) === 1
             && ($ajaxModuleId === 0 || $ajaxModuleId === (int) ($module->id ?? 0))
             ? 1
@@ -115,7 +115,7 @@ final class CalendarHelper
             'document' => $document,
             'lightbox' => $lightbox,
             'inject_container' => $injectContainer,
-            'selected_team' => $input->getInt('jlcteam', 0),
+            'selected_team' => max(0, $input->getInt('jlcteam', 0)),
             'calendar' => $calendarData,
             'matches' => $matches,
             'tui_events' => self::buildTuiEvents($matches, $offset),
