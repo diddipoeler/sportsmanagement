@@ -12,8 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\LeaguesController;
 
 if (!class_exists(LeaguesController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementAdminController.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/LeaguesController.php';
+    foreach ([
+        __DIR__ . '/../src/Controller/SportsManagementAdminController.php',
+        __DIR__ . '/../src/Controller/LeaguesController.php',
+    ] as $dependency) {
+        if (!is_file($dependency)) {
+            throw new \RuntimeException('SportsManagement administrator controller dependency is missing: ' . basename($dependency), 500);
+        }
+
+        require_once $dependency;
+    }
 }
 
 if (!class_exists(LeaguesController::class)) {
