@@ -145,14 +145,19 @@ final class CalendarHelper
         $calendar = new \JSMCalendar();
         $dayNameLength = min(20, max(1, (int) $params->get('cal_length_days', 2)));
 
+        // Truncate by characters rather than bytes for translated weekday labels.
+        $shortDayName = static fn (string $name): string => function_exists('mb_substr')
+            ? mb_substr($name, 0, $dayNameLength, 'UTF-8')
+            : substr($name, 0, $dayNameLength);
+
         $calendar->dayNames = [
-            substr(Text::_('SUN'), 0, $dayNameLength),
-            substr(Text::_('MON'), 0, $dayNameLength),
-            substr(Text::_('TUE'), 0, $dayNameLength),
-            substr(Text::_('WED'), 0, $dayNameLength),
-            substr(Text::_('THU'), 0, $dayNameLength),
-            substr(Text::_('FRI'), 0, $dayNameLength),
-            substr(Text::_('SAT'), 0, $dayNameLength),
+            $shortDayName(Text::_('SUN')),
+            $shortDayName(Text::_('MON')),
+            $shortDayName(Text::_('TUE')),
+            $shortDayName(Text::_('WED')),
+            $shortDayName(Text::_('THU')),
+            $shortDayName(Text::_('FRI')),
+            $shortDayName(Text::_('SAT')),
         ];
         $calendar->monthNames = [
             Text::_('JANUARY'),
