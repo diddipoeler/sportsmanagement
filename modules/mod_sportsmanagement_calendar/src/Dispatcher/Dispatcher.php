@@ -62,9 +62,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $helper = $this->getHelperFactory()->getHelper('CalendarHelper');
 
-        return array_merge(
-            $data,
-            $helper->getData($data['params'], $data['module'], $app)
-        );
+        $payload = $helper->getData($data['params'], $data['module'], $app);
+
+        if (!is_array($payload)) {
+            throw new \RuntimeException('SportsManagement Calendar helper must return layout data as an array.', 500);
+        }
+
+        return array_merge($data, $payload);
     }
 }
