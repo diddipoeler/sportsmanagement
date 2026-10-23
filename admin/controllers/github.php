@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Administrator\Controller\GithubContro
 if (!class_exists(GithubController::class)) {
     $nativeController = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/GithubController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native administrator Github controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(GithubController::class)) {
