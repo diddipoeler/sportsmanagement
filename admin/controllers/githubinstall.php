@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\GithubinstallController;
 
 if (!class_exists(GithubinstallController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/GithubinstallController.php';
+    $nativeController = __DIR__ . '/../src/Controller/GithubinstallController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native administrator Githubinstall controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(GithubinstallController::class)) {
