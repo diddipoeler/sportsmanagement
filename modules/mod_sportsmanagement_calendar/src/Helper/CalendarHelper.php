@@ -179,8 +179,9 @@ final class CalendarHelper
         $calendar->lightbox_on_pageload = (int) $params->get('lightbox_on_pageload', 0);
         $calendar->usedteams = $params->get('usedteams', '');
         $calendar->usedclubs = $params->get('usedclubs', '');
-        $calendar->modid = $moduleId;
-        $calendar->ajax = $ajax;
+        // Never pass negative module IDs or non-boolean AJAX flags into the legacy runtime.
+        $calendar->modid = max(0, $moduleId);
+        $calendar->ajax = $ajax === 1 ? 1 : 0;
 
         \JSMCalendar::$prefix = (string) $params->get('custom_prefix', '');
         \JSMCalendar::$params = $params;
