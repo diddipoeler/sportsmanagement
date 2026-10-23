@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\PredictionrankingCont
 if (!class_exists(PredictionrankingController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/PredictionrankingController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Predictionranking controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(PredictionrankingController::class)) {
