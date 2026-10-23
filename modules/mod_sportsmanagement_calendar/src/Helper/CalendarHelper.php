@@ -31,7 +31,7 @@ final class CalendarHelper
         $layout = trim($layout);
 
         // A legacy module parameter must not supply a path or traversal segment.
-        if ($layout === '' || !preg_match('/^[A-Za-z0-9_-]+$/D', $layout)) {
+        if ($layout === '' || strlen($layout) > 100 || !preg_match('/^[A-Za-z0-9_-]+$/D', $layout)) {
             return 'default_jsm';
         }
 
