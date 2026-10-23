@@ -1,0 +1,35 @@
+name: Joomla 5/6 controller and dispatcher dependency contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/controllers/predictionranking.php'
+      - 'admin/controllers/githubinstall.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_controller_dispatcher_dependency_contract.php'
+      - '.github/workflows/joomla56-controller-dispatcher-dependency-contract.yml'
+  pull_request:
+    paths:
+      - 'site/controllers/predictionranking.php'
+      - 'admin/controllers/githubinstall.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_controller_dispatcher_dependency_contract.php'
+      - '.github/workflows/joomla56-controller-dispatcher-dependency-contract.yml'
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Check PHP syntax
+        run: |
+          php -l site/controllers/predictionranking.php
+          php -l admin/controllers/githubinstall.php
+          php -l modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_controller_dispatcher_dependency_contract.php
+      - name: Check dependency and metadata contracts
+        run: php .github/tests/joomla56_controller_dispatcher_dependency_contract.php
