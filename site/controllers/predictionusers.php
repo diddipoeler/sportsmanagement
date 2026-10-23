@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\PredictionusersContro
 if (!class_exists(PredictionusersController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/PredictionusersController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Predictionusers controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(PredictionusersController::class)) {
