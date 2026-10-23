@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\EditmatchController;
 if (!class_exists(EditmatchController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/EditmatchController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Editmatch controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(EditmatchController::class)) {
