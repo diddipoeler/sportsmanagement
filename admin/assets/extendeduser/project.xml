@@ -16,6 +16,10 @@
 	  <field name="ergebnisspielplan" default="28/58" type="textarea" rows="25" cols="80" class="span12" label="ergebnisspielplan" description="ergebnisspielplan">
 		</field>
 	  
+	  <field name="spieleeinbeziehen" type="extensionradiobutton" default="0" label="spieleeinbeziehen" description="spieleeinbeziehen">
+			<option value="0">Nein</option>
+			<option value="1">Ja</option>
+		</field>
 	  
     
     <field name="weltfussballlink" type="textarea" rows="1" cols="100" label="weltfussballlink" description="weltfussballlink">
@@ -26,6 +30,7 @@
     
     <field name="futbolmelink" type="textarea" rows="1" cols="100" label="futbolmelink" description="futbolmelink">
 		</field>
+	  
 		<field name="futbolmelinkfertig" type="extensionradiobutton" default="0" label="futbolmelinkfertig" description="futbolmelinkfertig">
 			<option value="0">Nein</option>
 			<option value="1">Ja</option>
