@@ -100,7 +100,7 @@ final class CalendarHelper
         if ($document instanceof HtmlDocument) {
             $this->registerAssets(
                 $document->getWebAssetManager(),
-                (string) $module->module,
+                (string) ($module->module ?? 'mod_sportsmanagement_calendar'),
                 $layout
             );
         }
