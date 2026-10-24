@@ -175,8 +175,8 @@ final class CalendarHelper
         ];
 
         $calendar->startDay = min(6, max(0, (int) $params->get('cal_start_day', 0)));
-        $calendar->lightbox = (int) $params->get('lightbox', 1);
-        $calendar->lightbox_on_pageload = (int) $params->get('lightbox_on_pageload', 0);
+        $calendar->lightbox = (int) $params->get('lightbox', 1) === 1 ? 1 : 0;
+        $calendar->lightbox_on_pageload = (int) $params->get('lightbox_on_pageload', 0) === 1 ? 1 : 0;
         $calendar->usedteams = $params->get('usedteams', '');
         $calendar->usedclubs = $params->get('usedclubs', '');
         // Never pass negative module IDs or non-boolean AJAX flags into the legacy runtime.
