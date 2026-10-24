@@ -109,7 +109,7 @@ final class CalendarHelper
         $injectContainer = (int) $params->get('inject', 0) === 1
             ? (string) $params->get('inject_container', 'sportsmanagement')
             : '';
-        $calendarData = $this->showCal($params, $year, $month, (int) $module->id, $ajax, $app);
+        $calendarData = $this->showCal($params, $year, $month, max(0, (int) ($module->id ?? 0)), $ajax, $app);
         $matches = \JSMCalendar::$matches;
         $offset = (string) $app->get('offset', 'UTC');
 
