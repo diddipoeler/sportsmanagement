@@ -105,7 +105,7 @@ final class CalendarHelper
             );
         }
 
-        $lightbox = (int) $params->get('lightbox', 1);
+        $lightbox = (int) $params->get('lightbox', 1) === 1 ? 1 : 0;
         $injectContainer = (int) $params->get('inject', 0) === 1
             ? (string) $params->get('inject_container', 'sportsmanagement')
             : '';
