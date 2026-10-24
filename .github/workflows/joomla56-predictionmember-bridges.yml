@@ -1,0 +1,30 @@
+name: Joomla 5/6 prediction member bridges
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/predictionmember.php'
+      - 'admin/controllers/predictionmembers.php'
+      - '.github/tests/joomla56_predictionmember_bridges.php'
+      - '.github/workflows/joomla56-predictionmember-bridges.yml'
+  pull_request:
+    paths:
+      - 'admin/controllers/predictionmember.php'
+      - 'admin/controllers/predictionmembers.php'
+      - '.github/tests/joomla56_predictionmember_bridges.php'
+      - '.github/workflows/joomla56-predictionmember-bridges.yml'
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: |
+          php -l admin/controllers/predictionmember.php
+          php -l admin/controllers/predictionmembers.php
+          php -l .github/tests/joomla56_predictionmember_bridges.php
+      - name: Bridge contracts
+        run: php .github/tests/joomla56_predictionmember_bridges.php
