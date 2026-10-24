@@ -1,0 +1,32 @@
+name: Joomla 5/6 predictiongroup calendar contract
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/predictiongroup.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_predictiongroup_calendar_contract.php'
+      - '.github/workflows/joomla56-predictiongroup-calendar-contract.yml'
+  pull_request:
+    paths:
+      - 'admin/controllers/predictiongroup.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_predictiongroup_calendar_contract.php'
+      - '.github/workflows/joomla56-predictiongroup-calendar-contract.yml'
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Syntax checks
+        run: |
+          php -l admin/controllers/predictiongroup.php
+          php -l modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
+          php -l .github/tests/joomla56_predictiongroup_calendar_contract.php
+      - name: Regression contract
+        run: php .github/tests/joomla56_predictiongroup_calendar_contract.php
