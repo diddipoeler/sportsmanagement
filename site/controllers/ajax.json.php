@@ -18,10 +18,10 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 // Load the native AJAX dependency chain explicitly so the compatibility bridge
 // remains functional even before Joomla has rebuilt that cache.
 $nativeDependencies = [
-    SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
-    SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
-    AjaxModel::class => JPATH_SITE . '/components/com_sportsmanagement/src/Model/AjaxModel.php',
-    AjaxController::class => JPATH_SITE . '/components/com_sportsmanagement/src/Controller/AjaxController.php',
+    SportsManagementDatabaseResolver::class => __DIR__ . '/../src/Service/SportsManagementDatabaseResolver.php',
+    SiteRouteHelper::class => __DIR__ . '/../src/Helper/SiteRouteHelper.php',
+    AjaxModel::class => __DIR__ . '/../src/Model/AjaxModel.php',
+    AjaxController::class => __DIR__ . '/../src/Controller/AjaxController.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
