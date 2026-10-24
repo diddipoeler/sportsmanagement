@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\UpdateController;
 
 if (!class_exists(UpdateController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/UpdateController.php';
+    $nativeController = __DIR__ . '/../src/Controller/UpdateController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Update controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(UpdateController::class)) {
