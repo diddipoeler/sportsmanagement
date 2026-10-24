@@ -106,9 +106,13 @@ final class CalendarHelper
         }
 
         $lightbox = (int) $params->get('lightbox', 1) === 1 ? 1 : 0;
+        $rawInjectContainer = $params->get('inject_container', 'sportsmanagement');
         $injectContainer = (int) $params->get('inject', 0) === 1
-            ? (string) $params->get('inject_container', 'sportsmanagement')
-            : '';
+            && is_string($rawInjectContainer)
+            && strlen($rawInjectContainer) <= 100
+            && preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $rawInjectContainer)
+                ? $rawInjectContainer
+                : '';
         $calendarData = $this->showCal($params, $year, $month, max(0, (int) ($module->id ?? 0)), $ajax, $app);
         $matches = \JSMCalendar::$matches;
         $offset = (string) $app->get('offset', 'UTC');
