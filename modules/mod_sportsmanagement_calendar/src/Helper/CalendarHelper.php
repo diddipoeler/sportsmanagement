@@ -95,6 +95,8 @@ final class CalendarHelper
         $year = self::normaliseYear($year);
         $month = max(1, min(12, $month));
         $day = max(0, min(31, $day));
+
+        // Day zero denotes the monthly overview; invalid dates must not be rendered.
         if ($day !== 0 && !checkdate($month, $day, $year)) {
             $day = 0;
         }
