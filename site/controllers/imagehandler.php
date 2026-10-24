@@ -14,9 +14,11 @@ use Diddipoeler\Component\SportsManagement\Site\Controller\ImagehandlerControlle
 if (!class_exists(ImagehandlerController::class)) {
     $nativeController = __DIR__ . '/../src/Controller/ImagehandlerController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native site Imagehandler controller file is missing.', 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(ImagehandlerController::class)) {
