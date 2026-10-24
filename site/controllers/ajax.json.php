@@ -29,8 +29,8 @@ foreach ($nativeDependencies as $class => $file) {
         continue;
     }
 
-    if (!is_file($file)) {
-        throw new \RuntimeException('SportsManagement Ajax dependency file is missing: ' . basename($file), 500);
+    if (!is_file($file) || !is_readable($file)) {
+        throw new \RuntimeException('SportsManagement Ajax dependency file is missing or unreadable: ' . basename($file), 500);
     }
 
     require_once $file;
