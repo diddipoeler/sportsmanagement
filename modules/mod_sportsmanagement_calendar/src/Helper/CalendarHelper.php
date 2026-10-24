@@ -95,6 +95,9 @@ final class CalendarHelper
         $year = self::normaliseYear($year);
         $month = max(1, min(12, $month));
         $day = max(0, min(31, $day));
+        if ($day !== 0 && !checkdate($month, $day, $year)) {
+            $day = 0;
+        }
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
