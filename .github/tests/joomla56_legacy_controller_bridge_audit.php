@@ -31,6 +31,14 @@ $validatedBridges = [
     'projectteam.php', 'projectteams.php',
     'projectposition.php', 'projectpositions.php',
     'projectreferee.php', 'projectreferees.php',
+    'joomleagueimport.php', 'joomleagueimports.php', 'jlxmlimport.php',
+    'jsmgcalendar.php', 'jsmgcalendars.php', 'jsmgcalendarimport.php',
+    'jlextdbbimport.php', 'jlextdfbkeyimport.php',
+    'jlextdfbnetplayerimport.php', 'jlextlmoimports.php',
+    'jlextprofleagimport.php', 'jlextsisimport.php',
+    'jlexthandballnet.php',
+    'smimageimport.php', 'smimageimports.php',
+    'smquotetxt.php', 'transifex.php',
 ];
 
 foreach ($validatedBridges as $name) {
