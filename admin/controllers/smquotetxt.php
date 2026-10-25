@@ -12,11 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\SmquotetxtController;
 
 if (!class_exists(SmquotetxtController::class)) {
-    $nativeController = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SmquotetxtController.php';
+    $nativeController = __DIR__ . '/../src/Controller/SmquotetxtController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement administrator controller file is missing: ' . basename($nativeController), 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(SmquotetxtController::class)) {
