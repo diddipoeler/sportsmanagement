@@ -59,6 +59,17 @@ $validatedBridges = [
     'teamtrainingsdatas.php', 'update.php',
 ];
 
+$availableFiles = array_map('basename', glob($controllerDirectory . '/*.php') ?: []);
+$missingFromAudit = array_diff($availableFiles, $validatedBridges);
+$missingFromDirectory = array_diff($validatedBridges, $availableFiles);
+
+foreach ($missingFromAudit as $name) {
+    $errors[] = "$name: controller missing from bridge audit";
+}
+foreach ($missingFromDirectory as $name) {
+    $errors[] = "$name: audited controller missing from directory";
+}
+
 foreach ($validatedBridges as $name) {
     $file = $controllerDirectory . '/' . $name;
     $source = @file_get_contents($file);
