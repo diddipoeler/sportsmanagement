@@ -12,11 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\TransifexController;
 
 if (!class_exists(TransifexController::class)) {
-    $nativeController = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/TransifexController.php';
+    $nativeController = __DIR__ . '/../src/Controller/TransifexController.php';
 
-    if (is_file($nativeController)) {
-        require_once $nativeController;
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement administrator controller file is missing: ' . basename($nativeController), 500);
     }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(TransifexController::class)) {
