@@ -7,12 +7,22 @@
  * @copyright  Copyright (C) diddipoeler
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
+\defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextdfbnetplayerimportController;
 
 if (!class_exists(JlextdfbnetplayerimportController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JlextdfbnetplayerimportController.php';
+    $nativeController = __DIR__ . '/../src/Controller/JlextdfbnetplayerimportController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Jlextdfbnetplayerimport controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
+}
+
+if (!class_exists(JlextdfbnetplayerimportController::class)) {
+    throw new \RuntimeException('SportsManagement native Jlextdfbnetplayerimport controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerjlextdfbnetplayerimport', false)) {
