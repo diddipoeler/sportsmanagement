@@ -12,7 +12,10 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
 
+
+//echo '<pre>'.print_r($this->team,true).'</pre>';
 $this->notes = array();
 $this->notes[] = Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_SIMPLE_LEAGUE');
 echo $this->loadTemplate('jsm_notes');
@@ -34,7 +37,7 @@ $js = "\n";
 $js .= "
 function downmediwiki() {
 //alert('downmediwiki');
-alert('".implode('\r',$mediawikitable)."');
+//alert('".implode('\r',$mediawikitable)."');
 
 
 
@@ -44,11 +47,137 @@ alert('".implode('\r',$mediawikitable)."');
 
 $this->document->addScriptDeclaration($js);
 
+if(isset($_POST['insertwikipage'])) {
+$params = ComponentHelper::getParams('com_sportsmanagement');
+$apiUrl = $params->get('mediawikilink');
+$username = $params->get('mediawikiusername');
+$password = $params->get('mediawikipassword');
+//Factory::getApplication()->enqueueMessage(__LINE__.' mediawikilink: '.$apiUrl, 'message');
 
+// 1. Variablen definieren
+$pageTitle = $this->team->name;
+$pageText = '';
+foreach ( $mediawikitable as $key => $value ) {
+    $pageText .= "$value\n";
+}
+
+/** cURL-Session */
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_COOKIEJAR, '');
+curl_setopt($ch, CURLOPT_COOKIEFILE, '');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+/** Login-Token holen */
+curl_setopt($ch, CURLOPT_URL, $apiUrl . '?action=query&meta=tokens&type=login&format=json');
+$response = json_decode(curl_exec($ch), true);
+$loginToken = $response['query']['tokens']['logintoken'];
+//Factory::getApplication()->enqueueMessage(__LINE__.' token: '.$loginToken, 'message');
+
+/** Login */
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+    'action' => 'login',
+    'lgname' => $username,
+    'lgpassword' => $password,
+    'lgtoken' => $loginToken,
+    'format' => 'json'
+]));
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_exec($ch);
+
+/** CSRF-Token holen */
+curl_setopt($ch, CURLOPT_POST, false);
+curl_setopt($ch, CURLOPT_URL, $apiUrl . '?action=query&meta=tokens&format=json');
+$response = json_decode(curl_exec($ch), true);
+$csrfToken = $response['query']['tokens']['csrftoken'];
+//Factory::getApplication()->enqueueMessage(__LINE__.' csrftoken: '.$csrfToken, 'message');
+
+// ZIEL: Wir suchen den Abschnitt mit diesem Namen
+$targetSectionTitle = "Saisonstationen ".$this->team->tname;
+$newSectionContent  = $pageText;
+
+// 5. Schritt A: Abschnitte der Seite abfragen, um die Nummer (Index) zu finden
+$params = [
+    "action" => "parse",
+    "page"   => $this->team->name,
+    "prop"   => "sections",
+    "format" => "json"
+];
+curl_setopt($ch, CURLOPT_URL, $apiUrl . "?" . http_build_query($params));
+curl_setopt($ch, CURLOPT_POST, false);
+$response = json_decode(curl_exec($ch), true);
+
+//Factory::getApplication()->enqueueMessage(__LINE__.' response: <pre>'.print_r($response,true).'</pre>', 'message');
+
+$sectionIndex = null;
+if (isset($response['parse']['sections'])) {
+    foreach ($response['parse']['sections'] as $sec) {
+        // MediaWiki speichert den Namen oft bereinigt (line). Wir vergleichen ihn.
+        if (trim($sec['line']) === trim($targetSectionTitle)) {
+            $sectionIndex = $sec['index'];
+            break;
+        }
+    }
+}
+
+//Factory::getApplication()->enqueueMessage(__LINE__.' sectionIndex: '.$sectionIndex, 'message');
+
+// Prüfen, ob der Abschnitt gefunden wurde
+if ($sectionIndex === null) {
+Factory::getApplication()->enqueueMessage("Fehler: Ein Abschnitt mit dem Titel '$targetSectionTitle' wurde nicht gefunden.", 'error');
+   // die("Fehler: Ein Abschnitt mit dem Titel '$targetSectionTitle' wurde nicht gefunden.");
+}
+  else
+  {
+// 5. Schritt B: Den gefundenen Abschnitt mit neuem Text überschreiben
+$editParams = [
+    "action"   => "edit",
+    "title"    => $this->team->name,
+    "section"  => $sectionIndex, // Der Index des gefundenen Abschnitts (z.B. "2")
+    "text"     => "== " . $targetSectionTitle . " ==\n" . $newSectionContent, // Die Überschrift muss i.d.R. wieder mitgegeben werden, sonst verschwindet sie
+    "summary"  => "Abschnitt '$targetSectionTitle' per API aktualisiert",
+    "token"    => $csrfToken,
+    "format"   => "json"
+];
+
+//Factory::getApplication()->enqueueMessage(__LINE__.' editParams <pre>'.print_r($editParams,true).'</pre>', 'message');
+
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($editParams));
+$result = json_decode(curl_exec($ch), true);
+
+// Ergebnis prüfen
+if (isset($result['edit']['result']) && $result['edit']['result'] === 'Success') {
+   // echo "Abschnitt erfolgreich ersetzt!";
+  Factory::getApplication()->enqueueMessage("Abschnitt " . $targetSectionTitle . " erfolgreich ersetzt!", 'message');
+} else {
+    //echo "Fehler beim Ersetzen: " . print_r($result, true);
+  Factory::getApplication()->enqueueMessage(__LINE__.' Fehler beim Ersetzen: <pre>'.print_r($result,true).'</pre>', 'error');
+}
+
+curl_close($ch);
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+  }
 
 
 ?>
+<form action="" method="post">
 <button name="insertwikipage" onclick="javascript:downmediwiki()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/mediawiki.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI'), array('width' => 40));?>  Mediawiki</button>
+</form>
+
 <table class="<?PHP echo $this->config['table_class']; ?>">
     <thead>
     <tr class="sectiontableheader">
@@ -58,15 +187,15 @@ $this->document->addScriptDeclaration($js);
             style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></th>
         <th class="" nowrap=""
             style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
-		<?php
-		if ($this->project->project_type == 'DIVISIONS_LEAGUE')
-		{
-			?>
+        <?php
+        if ($this->project->project_type == 'DIVISIONS_LEAGUE')
+        {
+            ?>
             <th class="" nowrap=""
                 style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_DIVISION'); ?></th>
-			<?php
-		}
-		?>
+            <?php
+        }
+        ?>
         <th class="" nowrap=""
             style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_RANK'); ?></th>
         <th class="" nowrap=""
@@ -80,216 +209,216 @@ $this->document->addScriptDeclaration($js);
         <th class="" nowrap=""
             style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS'); ?></th>
 
-		<?PHP
-		if ($this->config['show_teams_roster_mean_age'])
-		{
-			?>
+        <?PHP
+        if ($this->config['show_teams_roster_mean_age'])
+        {
+            ?>
             <th class="" nowrap=""
                 style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE'); ?></th>
-			<?PHP
-		}
+            <?PHP
+        }
 
-		if ($this->config['show_teams_roster_market_value'])
-		{
-			?>
+        if ($this->config['show_teams_roster_market_value'])
+        {
+            ?>
             <th class="" nowrap=""
                 style="background:#BDBDBD;"><?php echo Text::_('COM_SPORTSMANAGEMENT_EURO_MARKET_VALUE'); ?></th>
-			<?PHP
-		}
-		?>
+            <?PHP
+        }
+        ?>
 
 
     </tr>
     </thead>
-	<?php
-	$k = 0;
+    <?php
+    $k = 0;
 
-	foreach ($this->seasons as $season) if ( $season->project_type == 'SIMPLE_LEAGUE')
-	{
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-		$routeparameter['p']                  = $season->project_slug;
-		$routeparameter['type']               = 0;
-		$routeparameter['r']                  = $season->round_slug;
-		$routeparameter['from']               = 0;
-		$routeparameter['to']                 = 0;
-		$routeparameter['division']           = $season->division_slug;
-		$ranking_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
+    foreach ($this->seasons as $season) if ( $season->project_type == 'SIMPLE_LEAGUE')
+    {
+        $routeparameter                       = array();
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+        $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+        $routeparameter['p']                  = $season->project_slug;
+        $routeparameter['type']               = 0;
+        $routeparameter['r']                  = $season->round_slug;
+        $routeparameter['from']               = 0;
+        $routeparameter['to']                 = 0;
+        $routeparameter['division']           = $season->division_slug;
+        $ranking_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
 
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-		$routeparameter["p"]                  = $season->project_slug;
-		$routeparameter['r']                  = $season->round_slug;
-		$routeparameter['division']           = $season->division_slug;
-		$routeparameter['mode']               = '';
-		$routeparameter['order']              = '';
-		$routeparameter['layout']             = '';
-		$results_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
+        $routeparameter                       = array();
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+        $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+        $routeparameter["p"]                  = $season->project_slug;
+        $routeparameter['r']                  = $season->round_slug;
+        $routeparameter['division']           = $season->division_slug;
+        $routeparameter['mode']               = '';
+        $routeparameter['order']              = '';
+        $routeparameter['layout']             = '';
+        $results_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
 
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-		$routeparameter['p']                  = $season->project_slug;
-		$routeparameter['tid']                = $this->team->slug;
-		$routeparameter['division']           = $season->division_slug;
-		$routeparameter['mode']               = 0;
-		$routeparameter['ptid']               = $season->ptid;
-		$teamplan_link                        = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
+        $routeparameter                       = array();
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+        $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+        $routeparameter['p']                  = $season->project_slug;
+        $routeparameter['tid']                = $this->team->slug;
+        $routeparameter['division']           = $season->division_slug;
+        $routeparameter['mode']               = 0;
+        $routeparameter['ptid']               = $season->ptid;
+        $teamplan_link                        = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
 
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-		$routeparameter['p']                  = $season->project_slug;
-		$routeparameter['tid']                = $this->team->slug;
-		$teamstats_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
+        $routeparameter                       = array();
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+        $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+        $routeparameter['p']                  = $season->project_slug;
+        $routeparameter['tid']                = $this->team->slug;
+        $teamstats_link                       = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats', $routeparameter);
 
-		$routeparameter                       = array();
-		$routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
-		$routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
-		$routeparameter['p']                  = $season->project_slug;
-		$routeparameter['tid']                = $season->team_slug;
-		$routeparameter['ptid']               = $season->ptid;
-		$players_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
-		?>
+        $routeparameter                       = array();
+        $routeparameter['cfg_which_database'] = Factory::getApplication()->input->getInt('cfg_which_database', 0);
+        $routeparameter['s']                  = Factory::getApplication()->input->getInt('s', 0);
+        $routeparameter['p']                  = $season->project_slug;
+        $routeparameter['tid']                = $season->team_slug;
+        $routeparameter['ptid']               = $season->ptid;
+        $players_link                         = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
+        ?>
         <tr class="">
             <td><?php echo $season->season; ?></td>
             <td><?php echo JSMCountries::getCountryFlag($season->leaguecountry).''.$season->league; ?></td>
             <td><?php
-		if ( $this->config['show_team_hist_picture'] )
-		{
-				$picture = !$season->season_picture ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
+        if ( $this->config['show_team_hist_picture'] )
+        {
+                $picture = !$season->season_picture ? sportsmanagementHelper::getDefaultPlaceholder('team') : $season->season_picture;
 
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory' . $season->ptid . '-' . $season->projectid,
-					$picture,
-					$this->team->name,
-					'50',
-					'',
-					$this->modalwidth,
-					$this->modalheight,
-					$this->overallconfig['use_jquery_modal']
-				);
-	}
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory' . $season->ptid . '-' . $season->projectid,
+                    $picture,
+                    $this->team->name,
+                    '50',
+                    '',
+                    $this->modalwidth,
+                    $this->modalheight,
+                    $this->overallconfig['use_jquery_modal']
+                );
+    }
 else
       {
         //echo HTMLHelper::image('media/com_sportsmanagement/jl_images/icon_copyright_2.png', '', 'height="30"');
         echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory' . $season->ptid . '-' . $season->projectid,
-					'media/com_sportsmanagement/jl_images/icon_copyright_2.png',
-					$this->team->name,
-					'50',
-					'',
-					$this->modalwidth,
-					$this->modalheight,
-					$this->overallconfig['use_jquery_modal']
-				);
-        
-      }	
+                    'media/com_sportsmanagement/jl_images/icon_copyright_2.png',
+                    $this->team->name,
+                    '50',
+                    '',
+                    $this->modalwidth,
+                    $this->modalheight,
+                    $this->overallconfig['use_jquery_modal']
+                );
 
-		 if ($this->showediticon)
-				{
+      }
+
+         if ($this->showediticon)
+                {
       $link = "index.php?option=com_sportsmanagement&tmpl=component&view=editprojectteam&ptid=" . $season->ptid . "&tid=" . $this->teamid . "&p=" . $season->projectid;
-					$ausgabe = sportsmanagementHelperHtml::getBootstrapModalImage(
-						'teamedit' . $season->ptid,
-						'administrator/components/com_sportsmanagement/assets/images/teams.png',
-						Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
-						'20',
-						$link,
-						$this->modalwidth,
-						$this->modalheight,
-						$this->overallconfig['use_jquery_modal']
-					);
+                    $ausgabe = sportsmanagementHelperHtml::getBootstrapModalImage(
+                        'teamedit' . $season->ptid,
+                        'administrator/components/com_sportsmanagement/assets/images/teams.png',
+                        Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMINFO_EDIT_DETAILS'),
+                        '20',
+                        $link,
+                        $this->modalwidth,
+                        $this->modalheight,
+                        $this->overallconfig['use_jquery_modal']
+                    );
       echo $ausgabe;
     }
-			 
-				?></td>
-			<?php if ($this->project->project_type == 'DIVISIONS_LEAGUE')
-			{
-				?>
+
+                ?></td>
+            <?php if ($this->project->project_type == 'DIVISIONS_LEAGUE')
+            {
+                ?>
                 <td><?php echo $season->division_name; ?></td>
-			<?php } ?>
-			<?php
-			if ($this->config['show_teams_ranking_link'] == 1)
-				:
-				?>
+            <?php } ?>
+            <?php
+            if ($this->config['show_teams_ranking_link'] == 1)
+                :
+                ?>
                 <td><?php echo HTMLHelper::link($ranking_link, $season->rank); ?></td>
-			<?php else
+            <?php else
 
-				:
-				?>
+                :
+                ?>
                 <td><?php echo $season->rank; ?></td>
-			<?php endif; ?>
+            <?php endif; ?>
             <td><?php echo $season->games; ?></td>
-			<?php
-			if ($this->config['show_teams_results_link'] == 1)
-				:
-				?>
+            <?php
+            if ($this->config['show_teams_results_link'] == 1)
+                :
+                ?>
                 <td><?php echo HTMLHelper::link($results_link, $season->points); ?></td>
-			<?php else
+            <?php else
 
-				:
-				?>
+                :
+                ?>
                 <td><?php echo $season->points; ?></td>
-			<?php endif; ?>
-			<?php
-			if ($this->config['show_teams_teamplan_link'] == 1)
-				:
-				?>
+            <?php endif; ?>
+            <?php
+            if ($this->config['show_teams_teamplan_link'] == 1)
+                :
+                ?>
                 <td><?php echo HTMLHelper::link($teamplan_link, $season->series); ?></td>
-			<?php else
+            <?php else
 
-				:
-				?>
+                :
+                ?>
                 <td><?php echo $season->series; ?></td>
-			<?php endif; ?>
-			<?php
-			if ($this->config['show_teams_teamstats_link'] == 1)
-				:
-				?>
+            <?php endif; ?>
+            <?php
+            if ($this->config['show_teams_teamstats_link'] == 1)
+                :
+                ?>
                 <td><?php echo HTMLHelper::link($teamstats_link, $season->goals); ?></td>
-			<?php else
+            <?php else
 
-				:
-				?>
+                :
+                ?>
                 <td><?php echo $season->goals; ?></td>
-			<?php endif; ?>
-			<?php
-			if ($this->config['show_teams_roster_link'] == 1)
-				:
-				?>
+            <?php endif; ?>
+            <?php
+            if ($this->config['show_teams_roster_link'] == 1)
+                :
+                ?>
                 <td><?php echo HTMLHelper::link($players_link, $season->playercnt); ?></td>
-			<?php else
+            <?php else
 
-				:
-				?>
+                :
+                ?>
                 <td><?php echo $season->playercnt; ?></td>
-			<?php endif; ?>
+            <?php endif; ?>
 
-			<?php if ($this->config['show_teams_roster_mean_age'] == 1)
-				:
-				?>
+            <?php if ($this->config['show_teams_roster_mean_age'] == 1)
+                :
+                ?>
                 <td align="right"><?php echo HTMLHelper::link($players_link, $season->playermeanage); ?></td>
-			<?php else
+            <?php else
 
-				:
-				?>
+                :
+                ?>
 
-			<?php endif; ?>
+            <?php endif; ?>
 
-			<?php if ($this->config['show_teams_roster_market_value'] == 1)
-				:
-				?>
+            <?php if ($this->config['show_teams_roster_market_value'] == 1)
+                :
+                ?>
                 <td align="right"><?php echo HTMLHelper::link($players_link, number_format($season->market_value, 0, ",", ".")); ?></td>
-			<?php else
+            <?php else
 
-				:
-				?>
+                :
+                ?>
 
-			<?php endif; ?>
+            <?php endif; ?>
 
         </tr>
-		<?php
-		$k = 1 - $k;
-	}
-	?>
+        <?php
+        $k = 1 - $k;
+    }
+    ?>
 </table>
