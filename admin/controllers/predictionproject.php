@@ -12,8 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\PredictionprojectController;
 
 if (!class_exists(PredictionprojectController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SportsManagementFormController.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/PredictionprojectController.php';
+    foreach ([
+        __DIR__ . '/../src/Controller/SportsManagementFormController.php',
+        __DIR__ . '/../src/Controller/PredictionprojectController.php',
+    ] as $dependency) {
+        if (!is_file($dependency)) {
+            throw new \RuntimeException('SportsManagement administrator controller dependency is missing: ' . basename($dependency), 500);
+        }
+
+        require_once $dependency;
+    }
 }
 
 if (!class_exists(PredictionprojectController::class)) {
