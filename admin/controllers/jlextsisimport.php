@@ -12,7 +12,17 @@ defined('_JEXEC') or die('Restricted access');
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JlextsisimportController;
 
 if (!class_exists(JlextsisimportController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JlextsisimportController.php';
+    $nativeController = __DIR__ . '/../src/Controller/JlextsisimportController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Jlextsisimport controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
+}
+
+if (!class_exists(JlextsisimportController::class)) {
+    throw new \RuntimeException('SportsManagement native Jlextsisimport controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllerjlextsisimport', false)) {
