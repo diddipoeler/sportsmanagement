@@ -21,11 +21,21 @@ $validatedBridges = [
     'jlextassociation.php', 'jlextassociations.php',
     'jlextcountry.php', 'jlextcountries.php',
     'jlextfederation.php', 'jlextfederations.php',
+    'jlextindividualsport.php', 'jlextindividualsportes.php',
+    'predictiongame.php', 'predictiongames.php',
+    'predictiongroup.php', 'predictiongroups.php',
+    'predictionmember.php', 'predictionmembers.php',
+    'predictionround.php', 'predictionrounds.php',
+    'predictiontemplate.php', 'predictiontemplates.php',
+    'project.php', 'projects.php',
+    'projectteam.php', 'projectteams.php',
+    'projectposition.php', 'projectpositions.php',
+    'projectreferee.php', 'projectreferees.php',
 ];
 
 foreach ($validatedBridges as $name) {
     $file = $controllerDirectory . '/' . $name;
-    $source = file_get_contents($file);
+    $source = @file_get_contents($file);
 
     if ($source === false) {
         $errors[] = "$name: unreadable";
