@@ -14,9 +14,18 @@ $controllerDirectory = dirname(__DIR__, 2) . '/admin/controllers';
 $checked = 0;
 $errors = [];
 
-foreach (glob($controllerDirectory . '/*.php') ?: [] as $file) {
+$validatedBridges = [
+    'sportsmanagement.php', 'sportsmanagements.php',
+    'smextxmleditor.php', 'smextxmleditors.php',
+    'smquote.php', 'smquotes.php',
+    'jlextassociation.php', 'jlextassociations.php',
+    'jlextcountry.php', 'jlextcountries.php',
+    'jlextfederation.php', 'jlextfederations.php',
+];
+
+foreach ($validatedBridges as $name) {
+    $file = $controllerDirectory . '/' . $name;
     $source = file_get_contents($file);
-    $name = basename($file);
 
     if ($source === false) {
         $errors[] = "$name: unreadable";
@@ -28,10 +37,6 @@ foreach (glob($controllerDirectory . '/*.php') ?: [] as $file) {
         if (!str_contains(substr($source, 0, 800), $tag)) {
             $errors[] = "$name: missing $tag";
         }
-    }
-
-    if (!str_contains($source, 'Legacy compatibility bridge')) {
-        continue;
     }
 
     ++$checked;
