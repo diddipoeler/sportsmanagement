@@ -21,7 +21,7 @@ $mediawikitable = array();
 $mediawikitable[] = '{| class="wikitable sortable"';
 $mediawikitable[] = '|+ Ligenzugehörigkeit '.$this->team->tname;
 $mediawikitable[] = '|-';
-$mediawikitable[] = '! Saison !! Liga !! Platz !! gespielt !! gewonnen !! unentschieden !! verloren !! Tore !! Punkte';
+$mediawikitable[] = '! Saison !! Liga !! Platz !! gespielt !! g !! u !! v !! Tore !! Punkte';
 
 foreach ($this->seasons as $season) if ( $season->project_type == 'SIMPLE_LEAGUE')
 {
