@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JoomleagueimportController;
 
 if (!class_exists(JoomleagueimportController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JoomleagueimportController.php';
+    $nativeController = __DIR__ . '/../src/Controller/JoomleagueimportController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Joomleagueimport controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(JoomleagueimportController::class)) {
