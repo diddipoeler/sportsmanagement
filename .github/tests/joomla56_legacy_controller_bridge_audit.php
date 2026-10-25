@@ -53,6 +53,10 @@ $validatedBridges = [
     'rosterposition.php', 'rosterpositions.php',
     'statistic.php', 'statistics.php', 'sportstype.php', 'sportstypes.php',
     'teamplayer.php', 'teamplayers.php',
+    'clubname.php', 'clubnames.php', 'cpanel.php',
+    'extrafield.php', 'extrafields.php', 'jlxmlexports.php',
+    'predictionproject.php', 'teamtrainingsdata.php',
+    'teamtrainingsdatas.php', 'update.php',
 ];
 
 foreach ($validatedBridges as $name) {
