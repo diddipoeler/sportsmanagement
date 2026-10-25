@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\JsmgcalendarimportController;
 
 if (!class_exists(JsmgcalendarimportController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/JsmgcalendarimportController.php';
+    $nativeController = __DIR__ . '/../src/Controller/JsmgcalendarimportController.php';
+
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Jsmgcalendarimport controller file is missing.', 500);
+    }
+
+    require_once $nativeController;
 }
 
 if (!class_exists(JsmgcalendarimportController::class)) {
