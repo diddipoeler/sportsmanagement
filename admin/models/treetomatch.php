@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\TreetomatchModel;
 
 if (!class_exists(TreetomatchModel::class)) {
-    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TreetomatchModel.php';
+    $nativeModel = __DIR__ . '/../src/Model/TreetomatchModel.php';
 
     if (is_file($nativeModel)) {
         require_once $nativeModel;
