@@ -43,6 +43,9 @@ $validatedBridges = [
     'agegroup.php', 'agegroups.php', 'currentseason.php',
     'databasetool.php', 'databasetools.php',
     'ajax.php', 'ajaxcalls.php', 'imagehandler.php',
+    'league.php', 'leagues.php', 'club.php', 'clubs.php',
+    'team.php', 'teams.php', 'template.php', 'templates.php',
+    'treeto.php', 'treetomatch.php', 'treetonode.php', 'treetos.php',
 ];
 
 foreach ($validatedBridges as $name) {
