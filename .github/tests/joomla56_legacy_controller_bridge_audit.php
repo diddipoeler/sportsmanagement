@@ -32,7 +32,7 @@ foreach ($validatedBridges as $name) {
         continue;
     }
 
-    // All shipped administrator compatibility bridges must keep their metadata.
+    // The administrator compatibility bridges in this regression set must keep their metadata.
     foreach (['@version', '@author', '@copyright', '@license'] as $tag) {
         if (!str_contains(substr($source, 0, 800), $tag)) {
             $errors[] = "$name: missing $tag";
