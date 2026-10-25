@@ -1,0 +1,27 @@
+name: Joomla 5/6 administrator bridge audit
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/controllers/**'
+      - '.github/tests/joomla56_legacy_controller_bridge_audit.php'
+      - '.github/workflows/joomla56-legacy-controller-bridge-audit.yml'
+  pull_request:
+    paths:
+      - 'admin/controllers/**'
+      - '.github/tests/joomla56_legacy_controller_bridge_audit.php'
+      - '.github/workflows/joomla56-legacy-controller-bridge-audit.yml'
+
+jobs:
+  bridge-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: PHP syntax
+        run: php -l .github/tests/joomla56_legacy_controller_bridge_audit.php
+      - name: Check migrated administrator bridges
+        run: php .github/tests/joomla56_legacy_controller_bridge_audit.php
