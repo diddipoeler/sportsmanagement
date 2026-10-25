@@ -12,7 +12,15 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Controller\SmextxmleditorController;
 
 if (!class_exists(SmextxmleditorController::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Controller/SmextxmleditorController.php';
+    $nativeController = __DIR__ . '/../src/Controller/SmextxmleditorController.php';
+    if (!is_file($nativeController)) {
+        throw new \RuntimeException('SportsManagement native Smextxmleditor controller file is missing.', 500);
+    }
+    require_once $nativeController;
+}
+
+if (!class_exists(SmextxmleditorController::class)) {
+    throw new \RuntimeException('SportsManagement native Smextxmleditor controller could not be loaded.', 500);
 }
 
 if (!class_exists('sportsmanagementControllersmextxmleditor', false)) {
