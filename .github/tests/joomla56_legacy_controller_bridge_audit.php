@@ -39,6 +39,10 @@ $validatedBridges = [
     'jlexthandballnet.php',
     'smimageimport.php', 'smimageimports.php',
     'smquotetxt.php', 'transifex.php',
+    'github.php', 'githubinstall.php', 'installhelper.php',
+    'agegroup.php', 'agegroups.php', 'currentseason.php',
+    'databasetool.php', 'databasetools.php',
+    'ajax.php', 'ajaxcalls.php', 'imagehandler.php',
 ];
 
 foreach ($validatedBridges as $name) {
