@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\JsmgcalendarsMode
 
 if (!class_exists(JsmgcalendarsModel::class)) {
     foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JsmgcalendarsModel.php',
+        __DIR__ . '/../src/Model/SportsManagementListModel.php',
+        __DIR__ . '/../src/Model/JsmgcalendarsModel.php',
     ] as $nativeModel) {
         if (is_file($nativeModel)) {
             require_once $nativeModel;
