@@ -19,7 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 
 $option = Factory::getApplication()->getInput()->getCmd('option');
 
