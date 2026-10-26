@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictionroundsM
 
 if (!class_exists(PredictionroundsModel::class)) {
     $nativeFiles = [
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/PredictionroundsModel.php',
+        __DIR__ . '/../src/Model/SportsManagementListModel.php',
+        __DIR__ . '/../src/Model/PredictionroundsModel.php',
     ];
 
     foreach ($nativeFiles as $nativeFile) {
