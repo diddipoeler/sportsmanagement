@@ -25,8 +25,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagemen
 use Joomla\Utilities\ArrayHelper;
 
 if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
-    $applicationResolverFile = JPATH_ADMINISTRATOR
-        . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+    $applicationResolverFile = __DIR__ . '/../src/Service/SportsManagementAdministratorApplicationResolver.php';
 
     if (is_file($applicationResolverFile)) {
         require_once $applicationResolverFile;
