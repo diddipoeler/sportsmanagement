@@ -15,8 +15,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\AgegroupsModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel;
 
 $nativeDependencies = [
-    SportsManagementListModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-    AgegroupsModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/AgegroupsModel.php',
+    SportsManagementListModel::class => __DIR__ . '/../src/Model/SportsManagementListModel.php',
+    AgegroupsModel::class => __DIR__ . '/../src/Model/AgegroupsModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
