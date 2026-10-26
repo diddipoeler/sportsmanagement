@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextfederationsM
 
 if (!class_exists(JlextfederationsModel::class)) {
     $nativeFiles = [
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlextfederationsModel.php',
+        __DIR__ . '/../src/Model/SportsManagementListModel.php',
+        __DIR__ . '/../src/Model/JlextfederationsModel.php',
     ];
 
     foreach ($nativeFiles as $nativeFile) {
