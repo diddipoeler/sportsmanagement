@@ -12,8 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextfederationModel;
 
 if (!class_exists(JlextfederationModel::class)) {
-    require_once __DIR__ . '/../src/Model/SportsManagementAdminModel.php';
-    require_once __DIR__ . '/../src/Model/JlextfederationModel.php';
+    foreach ([
+        __DIR__ . '/../src/Model/SportsManagementAdminModel.php',
+        __DIR__ . '/../src/Model/JlextfederationModel.php',
+    ] as $dependency) {
+        if (!is_file($dependency)) {
+            throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($dependency), 500);
+        }
+
+        require_once $dependency;
+    }
 }
 
 if (!class_exists(JlextfederationModel::class)) {
