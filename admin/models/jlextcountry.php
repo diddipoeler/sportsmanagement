@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextcountryModel
 
 if (!class_exists(JlextcountryModel::class)) {
     foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlextcountryModel.php',
+        __DIR__ . '/../src/Model/SportsManagementAdminModel.php',
+        __DIR__ . '/../src/Model/JlextcountryModel.php',
     ] as $nativeModel) {
         if (is_file($nativeModel)) {
             require_once $nativeModel;
