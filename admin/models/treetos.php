@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\TreetosModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel;
 
 $nativeDependencies = [
-    SportsManagementListModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-    TreetosModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/TreetosModel.php',
+    SportsManagementListModel::class => __DIR__ . '/../src/Model/SportsManagementListModel.php',
+    TreetosModel::class => __DIR__ . '/../src/Model/TreetosModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
