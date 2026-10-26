@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\JlxmlimportModel;
 
 if (!class_exists(JlxmlimportModel::class)) {
     foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlxmlimportModel.php',
+        __DIR__ . '/../src/Service/SportsManagementAdministratorApplicationResolver.php',
+        __DIR__ . '/../src/Model/JlxmlimportModel.php',
     ] as $nativeFile) {
         if (is_file($nativeFile)) {
             require_once $nativeFile;
