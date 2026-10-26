@@ -16,9 +16,11 @@ if (!class_exists(JlxmlimportModel::class)) {
         __DIR__ . '/../src/Service/SportsManagementAdministratorApplicationResolver.php',
         __DIR__ . '/../src/Model/JlxmlimportModel.php',
     ] as $nativeFile) {
-        if (is_file($nativeFile)) {
-            require_once $nativeFile;
+        if (!is_file($nativeFile)) {
+            throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($nativeFile), 500);
         }
+
+        require_once $nativeFile;
     }
 }
 
