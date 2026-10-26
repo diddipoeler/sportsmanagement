@@ -14,9 +14,9 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementL
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ProjectRelationService;
 
 $nativeDependencies = [
-    SportsManagementListModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-    ProjectRelationService::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/ProjectRelationService.php',
-    ProjectteamsModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ProjectteamsModel.php',
+    SportsManagementListModel::class => __DIR__ . '/../src/Model/SportsManagementListModel.php',
+    ProjectRelationService::class => __DIR__ . '/../src/Service/ProjectRelationService.php',
+    ProjectteamsModel::class => __DIR__ . '/../src/Model/ProjectteamsModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
