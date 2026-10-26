@@ -17,8 +17,6 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Utility\Utility;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Filesystem\File;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -106,12 +104,8 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 
 		if (!File::exists($fileextension))
 		{
-			$to      = 'diddipoeler@gmx.de';
-			$subject = 'LMO-Import Extension';
-			$message = 'LMO-Import Extension wurde auf der Seite : ' . Uri::base() . ' gestartet.';
-			Utility::sendMail('', Uri::base(), $to, $subject, $message);
-
-			$xmlfile = $xmlfile . $message;
+			// Record the first start locally without sending site information to an external address.
+			$xmlfile = 'LMO-Import Extension gestartet.';
 			File::write($fileextension, $xmlfile);
 		}
 
