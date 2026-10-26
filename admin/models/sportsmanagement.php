@@ -12,8 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsmanagementModel;
 
 if (!class_exists(SportsmanagementModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsmanagementModel.php';
+    foreach ([
+        __DIR__ . '/../src/Model/SportsManagementAdminModel.php',
+        __DIR__ . '/../src/Model/SportsmanagementModel.php',
+    ] as $dependency) {
+        if (!is_file($dependency)) {
+            throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($dependency), 500);
+        }
+
+        require_once $dependency;
+    }
 }
 
 if (!class_exists(SportsmanagementModel::class)) {
