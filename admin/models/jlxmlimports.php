@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlxmlimportsModel;
 
 if (!class_exists(JlxmlimportsModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlxmlimportsModel.php';
+    $nativeModel = __DIR__ . '/../src/Model/JlxmlimportsModel.php';
+
+    if (!is_file($nativeModel)) {
+        throw new \RuntimeException('SportsManagement native Jlxmlimports model file is missing.', 500);
+    }
+
+    require_once $nativeModel;
 }
 
 if (!class_exists(JlxmlimportsModel::class)) {
