@@ -12,8 +12,8 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextassociationsModel;
 
 if (!class_exists(JlextassociationsModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlextassociationsModel.php';
+    require_once __DIR__ . '/../src/Model/SportsManagementListModel.php';
+    require_once __DIR__ . '/../src/Model/JlextassociationsModel.php';
 }
 
 if (!class_exists(JlextassociationsModel::class)) {
