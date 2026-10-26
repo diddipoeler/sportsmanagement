@@ -43,12 +43,12 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 
 require_once __DIR__ . '/seasons.php';
-require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
+require_once __DIR__ . '/../../site/helpers/countries.php';
 
 
 // Derive the class name from the driver.
 $class_name = 'icaljsm';
-$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
+$class_file = __DIR__ . '/../helpers/icaljsm.php';
 // Require the driver file
      if (File::exists($class_file)) {
          require_once $class_file;
@@ -62,7 +62,7 @@ $class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'icaljsm.php';
 
 // Derive the class name from the driver.
 $class_name = 'Event';
-$class_file = JPATH_COMPONENT_ADMINISTRATOR . '/helpers/' . 'Event.php';
+$class_file = __DIR__ . '/../helpers/Event.php';
 // Require the driver file
      if (File::exists($class_file)) {
          require_once $class_file;
