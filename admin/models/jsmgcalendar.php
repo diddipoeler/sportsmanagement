@@ -13,13 +13,13 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\JsmgcalendarModel
 
 if (!class_exists(JsmgcalendarModel::class)) {
     foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/JsmgcalendarTable.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JsmgcalendarModel.php',
+        __DIR__ . '/../src/Helper/ActionLogHelper.php',
+        __DIR__ . '/../src/Helper/SportsManagementDatabaseResolver.php',
+        __DIR__ . '/../src/Service/SportsManagementAdministratorApplicationResolver.php',
+        __DIR__ . '/../src/Table/SportsManagementTable.php',
+        __DIR__ . '/../src/Table/JsmgcalendarTable.php',
+        __DIR__ . '/../src/Model/SportsManagementAdminModel.php',
+        __DIR__ . '/../src/Model/JsmgcalendarModel.php',
     ] as $nativeFile) {
         if (is_file($nativeFile)) {
             require_once $nativeFile;
