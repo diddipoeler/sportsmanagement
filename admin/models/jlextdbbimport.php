@@ -55,7 +55,7 @@ require_once __DIR__ . '/../helpers/ical.php';
 require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
 
 use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 
 
 
