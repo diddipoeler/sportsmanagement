@@ -13,7 +13,7 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 use Joomla\Database\DatabaseInterface;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectteamTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementTable;
