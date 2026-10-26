@@ -42,7 +42,7 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 }
 
 
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/seasons.php';
+require_once __DIR__ . '/seasons.php';
 require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
 
 
