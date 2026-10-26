@@ -51,8 +51,8 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 
 
 
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/csvhelper.php';
-require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/ical.php';
+require_once __DIR__ . '/../helpers/csvhelper.php';
+require_once __DIR__ . '/../helpers/ical.php';
 require_once JPATH_SITE . '/components/com_sportsmanagement/helpers/countries.php';
 
 
