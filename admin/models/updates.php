@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\UpdatesModel;
 
 $nativeDependencies = [
-    UpdatesModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/UpdatesModel.php',
+    UpdatesModel::class => __DIR__ . '/../src/Model/UpdatesModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
