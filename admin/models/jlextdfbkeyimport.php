@@ -12,8 +12,16 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextdfbkeyimportModel;
 
 if (!class_exists(JlextdfbkeyimportModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php';
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlextdfbkeyimportModel.php';
+    foreach ([
+        __DIR__ . '/../src/Model/SportsManagementListModel.php',
+        __DIR__ . '/../src/Model/JlextdfbkeyimportModel.php',
+    ] as $dependency) {
+        if (!is_file($dependency)) {
+            throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($dependency), 500);
+        }
+
+        require_once $dependency;
+    }
 }
 
 if (!class_exists(JlextdfbkeyimportModel::class)) {
