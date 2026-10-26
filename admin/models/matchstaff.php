@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\MatchstaffModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementAdminModel;
 
 $nativeDependencies = [
-    SportsManagementAdminModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
-    MatchstaffModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/MatchstaffModel.php',
+    SportsManagementAdminModel::class => __DIR__ . '/../src/Model/SportsManagementAdminModel.php',
+    MatchstaffModel::class => __DIR__ . '/../src/Model/MatchstaffModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
