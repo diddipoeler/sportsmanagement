@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\Predictiontemplat
 
 if (!class_exists(PredictiontemplatesModel::class)) {
     foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/PredictiontemplatesModel.php',
+        __DIR__ . '/../src/Model/SportsManagementListModel.php',
+        __DIR__ . '/../src/Model/PredictiontemplatesModel.php',
     ] as $nativeModel) {
         if (is_file($nativeModel)) {
             require_once $nativeModel;
