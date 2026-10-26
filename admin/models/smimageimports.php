@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\SmimageimportsMod
 
 if (!class_exists(SmimageimportsModel::class)) {
     $nativeFiles = [
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SmimageimportsModel.php',
+        __DIR__ . '/../src/Model/SportsManagementListModel.php',
+        __DIR__ . '/../src/Model/SmimageimportsModel.php',
     ];
 
     foreach ($nativeFiles as $nativeFile) {
