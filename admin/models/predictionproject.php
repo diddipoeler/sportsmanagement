@@ -13,13 +13,13 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\Predictionproject
 
 if (!class_exists(PredictionprojectModel::class)) {
     foreach ([
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ActionLogHelper.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/PredictionprojectTable.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementAdminModel.php',
-        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/PredictionprojectModel.php',
+        __DIR__ . '/../src/Helper/ActionLogHelper.php',
+        __DIR__ . '/../src/Helper/SportsManagementDatabaseResolver.php',
+        __DIR__ . '/../src/Service/SportsManagementAdministratorApplicationResolver.php',
+        __DIR__ . '/../src/Table/SportsManagementTable.php',
+        __DIR__ . '/../src/Table/PredictionprojectTable.php',
+        __DIR__ . '/../src/Model/SportsManagementAdminModel.php',
+        __DIR__ . '/../src/Model/PredictionprojectModel.php',
     ] as $nativeModel) {
         if (is_file($nativeModel)) {
             require_once $nativeModel;
