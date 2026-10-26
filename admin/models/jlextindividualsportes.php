@@ -12,7 +12,7 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\JlextindividualsportesModel;
 
 $nativeDependencies = [
-    JlextindividualsportesModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/JlextindividualsportesModel.php',
+    JlextindividualsportesModel::class => __DIR__ . '/../src/Model/JlextindividualsportesModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
