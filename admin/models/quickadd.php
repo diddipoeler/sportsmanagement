@@ -13,8 +13,8 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\QuickaddModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel;
 
 $nativeDependencies = [
-    SportsManagementListModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-    QuickaddModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/QuickaddModel.php',
+    SportsManagementListModel::class => __DIR__ . '/../src/Model/SportsManagementListModel.php',
+    QuickaddModel::class => __DIR__ . '/../src/Model/QuickaddModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
