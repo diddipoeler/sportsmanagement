@@ -29,7 +29,8 @@ $mediawikitable[] = '! Saison !! Liga !! Platz !! gespielt !! g !! u !! v !! Tor
 foreach ($this->seasons as $season) if ( $season->project_type == 'SIMPLE_LEAGUE')
 {
 $mediawikitable[] = '|-';
-$mediawikitable[] = '|'.$season->season.'||'.$season->league.'||'.$season->rank.'||'.$season->matches_finally.'||'.$season->won_finally.'||'.$season->draws_finally.'||'.$season->lost_finally.'||'.$season->homegoals_finally.'-'.$season->guestgoals_finally.'||'.$season->points_finally.':'.$season->neg_points_finally;
+//$mediawikitable[] = '|'.$season->season.'||'.$season->league.'||'.$season->rank.'||'.$season->matches_finally.'||'.$season->won_finally.'||'.$season->draws_finally.'||'.$season->lost_finally.'||'.$season->homegoals_finally.'-'.$season->guestgoals_finally.'||'.$season->points_finally.':'.$season->neg_points_finally;
+$mediawikitable[] = '|'.$season->season.'||[['.$season->projectname.'|'.$season->league.']]||'.$season->rank.'||'.$season->matches_finally.'||'.$season->won_finally.'||'.$season->draws_finally.'||'.$season->lost_finally.'||'.$season->homegoals_finally.'-'.$season->guestgoals_finally.'||'.$season->points_finally.':'.$season->neg_points_finally;
 }
 $mediawikitable[] = '|}';
 
