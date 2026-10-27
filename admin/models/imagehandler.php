@@ -12,11 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ImagehandlerModel;
 
 if (!class_exists(ImagehandlerModel::class)) {
-    $nativeModel = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/ImagehandlerModel.php';
+    $nativeModel = __DIR__ . '/../src/Model/ImagehandlerModel.php';
 
-    if (is_file($nativeModel)) {
-        require_once $nativeModel;
+    if (!is_file($nativeModel)) {
+        throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($nativeModel), 500);
     }
+
+    require_once $nativeModel;
 }
 
 if (!class_exists(ImagehandlerModel::class)) {
