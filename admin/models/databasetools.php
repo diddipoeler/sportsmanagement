@@ -13,14 +13,20 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolsMode
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SportsManagementListModel;
 
 $nativeDependencies = [
-    SportsManagementListModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SportsManagementListModel.php',
-    DatabasetoolsModel::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/DatabasetoolsModel.php',
+    SportsManagementListModel::class => __DIR__ . '/../src/Model/SportsManagementListModel.php',
+    DatabasetoolsModel::class => __DIR__ . '/../src/Model/DatabasetoolsModel.php',
 ];
 
 foreach ($nativeDependencies as $class => $file) {
-    if (!class_exists($class, false) && is_file($file)) {
-        require_once $file;
+    if (class_exists($class, false)) {
+        continue;
     }
+
+    if (!is_file($file)) {
+        throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($file), 500);
+    }
+
+    require_once $file;
 }
 
 if (!class_exists(DatabasetoolsModel::class)) {
