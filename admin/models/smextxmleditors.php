@@ -12,7 +12,13 @@
 use Diddipoeler\Component\SportsManagement\Administrator\Model\SmextxmleditorsModel;
 
 if (!class_exists(SmextxmleditorsModel::class)) {
-    require_once JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Model/SmextxmleditorsModel.php';
+    $nativeModel = __DIR__ . '/../src/Model/SmextxmleditorsModel.php';
+
+    if (!is_file($nativeModel)) {
+        throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($nativeModel), 500);
+    }
+
+    require_once $nativeModel;
 }
 
 if (!class_exists(SmextxmleditorsModel::class)) {
