@@ -18,9 +18,11 @@ if (!class_exists(JlextcountriesModel::class)) {
     ];
 
     foreach ($nativeFiles as $nativeFile) {
-        if (is_file($nativeFile)) {
-            require_once $nativeFile;
+        if (!is_file($nativeFile)) {
+            throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($nativeFile), 500);
         }
+
+        require_once $nativeFile;
     }
 }
 
