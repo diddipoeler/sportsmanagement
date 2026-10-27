@@ -16,9 +16,11 @@ if (!class_exists(JsmgcalendarsModel::class)) {
         __DIR__ . '/../src/Model/SportsManagementListModel.php',
         __DIR__ . '/../src/Model/JsmgcalendarsModel.php',
     ] as $nativeModel) {
-        if (is_file($nativeModel)) {
-            require_once $nativeModel;
+        if (!is_file($nativeModel)) {
+            throw new \RuntimeException('SportsManagement administrator model dependency is missing: ' . basename($nativeModel), 500);
         }
+
+        require_once $nativeModel;
     }
 }
 
