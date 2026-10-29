@@ -20,7 +20,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\SportsManagementT
 
 $maxImportTime = 1920;
 
-if ((int) ini_get('max_execution_time') < $maxImportTime)
+if ((int) ini_get('max_execution_time') > 0 && (int) ini_get('max_execution_time') < $maxImportTime)
 {
 	@set_time_limit($maxImportTime);
 }
