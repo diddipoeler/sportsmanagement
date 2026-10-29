@@ -42,7 +42,7 @@ final class DisplayController extends BaseController
         // Reject values modified by Joomla's command filter, including whitespace.
         // The legacy site entry point applies the same strict validation.
         if ($rawView !== '' && (
-            strtolower($view) !== strtolower($rawView)
+            $view !== preg_replace('/[^A-Za-z0-9_.-]/', '', $rawView)
             || trim($rawView) !== $rawView
         )) {
             throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
@@ -53,6 +53,7 @@ final class DisplayController extends BaseController
         }
 
         // Use the validated canonical view for the MVC lookup, not the raw input.
+        // Only lowercase ASCII command names; avoid locale-sensitive view handling.
         $this->input->set('view', strtolower($view));
 
         return parent::display($cachable, $urlparams);
