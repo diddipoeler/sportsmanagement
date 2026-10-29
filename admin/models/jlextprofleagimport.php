@@ -72,7 +72,7 @@ $memoryLimitToBytes = static function ($limit): ?float {
         return null; // Unlimited memory.
     }
 
-    if (!preg_match('/^([0-9]+(?:\\.[0-9]+)?)\\s*([KMG]?)$/i', $limit, $matches)) {
+    if (!preg_match('/^([0-9]+(?:\.[0-9]+)?)\s*([KMG]?)$/i', $limit, $matches)) {
         return null;
     }
 
