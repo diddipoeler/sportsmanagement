@@ -151,14 +151,20 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 				{
 					/** Eintrag schon vorhanden, ein update */
 					$nativeTableDependencies = [
-						SportsManagementTable::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/SportsManagementTable.php',
-						ProjectteamTable::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Table/ProjectteamTable.php',
+						SportsManagementTable::class => __DIR__ . '/../src/Table/SportsManagementTable.php',
+						ProjectteamTable::class => __DIR__ . '/../src/Table/ProjectteamTable.php',
 					];
 
 					foreach ($nativeTableDependencies as $class => $file) {
-						if (!class_exists($class, false) && is_file($file)) {
-							require_once $file;
-						}
+						if (class_exists($class, false)) {
+                            continue;
+                        }
+
+                        if (!is_file($file)) {
+                            throw new \RuntimeException('SportsManagement administrator table dependency is missing: ' . basename($file), 500);
+                        }
+
+                        require_once $file;
 					}
 
 					if (!class_exists(ProjectteamTable::class)) {
