@@ -27,9 +27,11 @@ use Joomla\Utilities\ArrayHelper;
 if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
     $applicationResolverFile = __DIR__ . '/../src/Service/SportsManagementAdministratorApplicationResolver.php';
 
-    if (is_file($applicationResolverFile)) {
-        require_once $applicationResolverFile;
+    if (!is_file($applicationResolverFile)) {
+        throw new \RuntimeException('SportsManagement administrator application resolver file is missing: ' . basename($applicationResolverFile), 500);
     }
+
+    require_once $applicationResolverFile;
 }
 
 if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
