@@ -48,8 +48,10 @@ final class DisplayController extends BaseController
             $view = $this->default_view;
         }
 
-        // Keep native and legacy administrator view dispatch consistent.
-        $input->set('view', $view);
+        // Joomla view names are case-insensitive; dispatch their canonical form.
+        // This matches the site's native DisplayController and avoids
+        // case-sensitive class lookup failures on Linux filesystems.
+        $input->set('view', strtolower($view));
 
         return parent::display($cachable, $urlparams);
     }
