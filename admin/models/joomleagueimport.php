@@ -50,7 +50,7 @@ class sportsmanagementModeljoomleagueimport extends ListModel
 	{
 		$app       = Factory::getApplication();
 		$db        = Factory::getContainer()->get(DatabaseInterface::class);
-		$option    = Factory::getApplication()->input->getCmd('option');
+		$option    = Factory::getApplication()->getInput()->getCmd('option');
 		$starttime = microtime();
 		$query     = $db->createQuery();
 
