@@ -45,6 +45,20 @@ jobs:
           else
             mapfile -d '' files < <(git ls-files -z site admin modules | grep -zE '\.php$' || true)
           fi
+          # Recheck the full tree when the validator or this workflow changes.
+          # Otherwise a metadata-policy change could pass without checking any PHP file.
+          if [[ -n "$BASE_SHA" ]] && git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null && \
+             git diff --name-only "$BASE_SHA" HEAD -- .github/scripts/check-php-headers.php .github/workflows/joomla56-php-quality.yml | grep -q .; then
+            mapfile -d '' files < <(git ls-files -z site admin modules | grep -zE '\.php
+            echo "No changed PHP files in site, admin or modules."
+            exit 0
+          fi
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-headers.php "${files[@]}"
+ || true)
+          fi
           if (( ${#files[@]} == 0 )); then
             echo "No changed PHP files in site, admin or modules."
             exit 0
