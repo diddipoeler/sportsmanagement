@@ -45,9 +45,29 @@ if (empty($maxImportMemory))
 }
 
 
-if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
+// Compare memory limits in bytes: integer casts discard PHP K/M/G suffixes.
+$memoryLimitToBytes = static function ($limit): ?float {
+    $limit = trim((string) $limit);
+
+    if ($limit === '-1') {
+        return null; // Unlimited memory.
+    }
+
+    if (!preg_match('/^([0-9]+(?:\\.[0-9]+)?)\\s*([KMG]?)$/i', $limit, $matches)) {
+        return null;
+    }
+
+    $units = ['' => 1, 'K' => 1024, 'M' => 1048576, 'G' => 1073741824];
+
+    return (float) $matches[1] * $units[strtoupper($matches[2])];
+};
+
+$currentMemoryLimit = $memoryLimitToBytes(ini_get('memory_limit'));
+$requestedMemoryLimit = $memoryLimitToBytes($maxImportMemory);
+
+if ($currentMemoryLimit !== null && $requestedMemoryLimit !== null && $currentMemoryLimit < $requestedMemoryLimit)
 {
-	@ini_set('memory_limit', $maxImportMemory);
+    @ini_set('memory_limit', $maxImportMemory);
 }
 
 
