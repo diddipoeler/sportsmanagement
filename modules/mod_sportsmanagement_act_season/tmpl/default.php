@@ -53,7 +53,7 @@ foreach ($list as $row) {
     }
 }
 ?>
-<?php if ((bool) $params->get('show_slider', 0) && $federations !== [] && $countriesByFederation !== [] && $allRowsHaveCountry) : ?>
+<?php if ((bool) $params->get('show_slider', 0) && $list !== [] && $federations !== [] && $countriesByFederation !== [] && $allRowsHaveCountry) : ?>
     <?php echo HTMLHelper::_('bootstrap.startTabSet', 'jsm-act-season-' . (int) $module->id, ['active' => 'fed-0']); ?>
     <?php $tab = 0; foreach ($federations as $fedId => $federation) : ?>
         <?php echo HTMLHelper::_('bootstrap.addTab', 'jsm-act-season-' . (int) $module->id, 'fed-' . $tab, htmlspecialchars(Text::_((string) $federation->name), ENT_QUOTES, 'UTF-8')); ?>
