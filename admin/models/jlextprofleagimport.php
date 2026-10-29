@@ -89,7 +89,13 @@ if ($currentMemoryLimit !== null && $requestedMemoryLimit !== null && $currentMe
     @ini_set('memory_limit', $maxImportMemory);
 }
 
-require_once JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'SofeeXmlParser.php';
+$xmlParserFile = __DIR__ . '/../helpers/SofeeXmlParser.php';
+
+if (!is_file($xmlParserFile)) {
+    throw new \RuntimeException('SportsManagement XML import parser is missing: ' . basename($xmlParserFile), 500);
+}
+
+require_once $xmlParserFile;
 
 
 
