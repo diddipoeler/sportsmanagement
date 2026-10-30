@@ -1,0 +1,37 @@
+name: Joomla 5/6 entrypoints and Matches module follow-up
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'admin/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla56-entrypoint-module-followup.yml'
+  pull_request:
+    paths:
+      - 'site/sportsmanagement.php'
+      - 'admin/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
+      - '.github/workflows/joomla56-entrypoint-module-followup.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  php-compatibility:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Syntax check modified PHP files
+        run: |
+          php -l site/sportsmanagement.php
+          php -l admin/sportsmanagement.php
+          php -l modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+      - name: Verify mandatory PHP file metadata
+        run: php .github/tests/phpdoc_metadata.php --all
