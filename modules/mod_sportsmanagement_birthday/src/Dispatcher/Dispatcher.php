@@ -54,6 +54,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $database
         );
 
+        // Keep rendering safe when a legacy helper supplies no result array.
+        $result = is_array($result) ? $result : [];
+
         // Helpers may return no records; keep the template data shape stable.
         $data['persons'] = is_array($result['persons'] ?? null) ? $result['persons'] : [];
         $data['mode'] = is_scalar($result['mode'] ?? null) ? (string) $result['mode'] : 'L';
