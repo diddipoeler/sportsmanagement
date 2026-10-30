@@ -112,7 +112,7 @@ foreach ($extensions as $extensionName) {
 
 $component = $app->bootComponent('com_sportsmanagement');
 $mvcFactory = $component->getMVCFactory();
-$controllerName = $type !== '' ? ucfirst($type) : 'Display';
+$controllerName = $type !== '' ? ucfirst(strtolower($type)) : 'Display';
 $controllerConfig = [
     'base_path' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement',
 ];
