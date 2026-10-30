@@ -12,7 +12,6 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Dispatcher;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
-
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
@@ -76,8 +75,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Matches database service is unavailable.', 500);
+        }
 
         return $database;
     }
