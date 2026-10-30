@@ -165,6 +165,9 @@ if (!is_string($command) && !is_numeric($command)) {
 $rawCommand = (string) $command;
 $command = $filter->clean($rawCommand, 'cmd');
 
+// Joomla controller names are case-insensitive; use a canonical task prefix.
+// Preserve the action method's spelling for legacy task compatibility.
+
 // Never silently transform an invalid task into another executable action.
 // The Joomla command filter removes unsafe characters; reject such input
 // instead of dispatching the altered controller name or method.
@@ -186,7 +189,7 @@ if (str_contains($command, '.')) {
 
 $component = $app->bootComponent('com_sportsmanagement');
 $mvcFactory = $component->getMVCFactory();
-$controllerName = $type !== '' ? ucfirst($type) : 'Display';
+$controllerName = $type !== '' ? ucfirst(strtolower($type)) : 'Display';
 $controllerConfig = [
     'base_path' => JPATH_SITE . '/components/com_sportsmanagement',
 ];
