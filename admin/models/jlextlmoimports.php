@@ -142,7 +142,7 @@ class sportsmanagementModeljlextlmoimports extends BaseDatabaseModel
 		{
 			if (function_exists('simplexml_load_file'))
 			{
-				return @simplexml_load_file(JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.l98', 'SimpleXMLElement', LIBXML_NOCDATA);
+				return @simplexml_load_file(JPATH_SITE . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'sportsmanagement_import.l98', 'SimpleXMLElement', LIBXML_NOCDATA | LIBXML_NONET);
 			}
 			else
 			{
