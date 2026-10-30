@@ -49,6 +49,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('MatchesHelper')
             ->getData($data['params'], $app, $data['module'], $database);
 
+        // A helper may return null or false when no database data is available.
+        // Avoid offset access on non-arrays in PHP 8.3 and newer.
+        $result = is_array($result) ? $result : [];
+
         // Keep template data types stable when optional helper output is missing.
         $data['matches'] = is_array($result['matches'] ?? null) ? $result['matches'] : [];
         $data['legacyUpdateRequested'] = (bool) ($result['legacy_update_requested'] ?? false);
