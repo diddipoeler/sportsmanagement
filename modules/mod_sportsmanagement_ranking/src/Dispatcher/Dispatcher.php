@@ -56,11 +56,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             );
         }
 
-        $data['list'] = $this->getHelperFactory()->getHelper('RankingHelper')->getData(
+        $ranking = $this->getHelperFactory()->getHelper('RankingHelper')->getData(
             $data['params'],
             $data['module'],
             $app
         );
+
+        // A missing ranking must still be safe for Joomla 5/6 layouts to iterate.
+        $data['list'] = is_array($ranking) ? $ranking : [];
 
         return $data;
     }
