@@ -53,14 +53,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ->getHelper('ProjectMapHelper')
                 ->getMapData($seasonIds, $db);
 
-            $data['projects'] = $mapData['projects'];
+            $data['projects'] = is_array($mapData['projects'] ?? null) ? $mapData['projects'] : [];
 
             $document = $app->getDocument();
 
             if ($document instanceof HtmlDocument) {
                 $document->addScriptOptions(
                     'mod_sportsmanagement_projectmap.mapdata',
-                    $mapData['options']
+                    is_array($mapData['options'] ?? null) ? $mapData['options'] : []
                 );
 
                 $assets = $document->getWebAssetManager();
@@ -85,7 +85,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         } catch (\Throwable $exception) {
             $data['projects'] = [];
             Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
-            $app->enqueueMessage('SportsManagement Project Map: ' . $exception->getMessage(), 'warning');
+            $app->enqueueMessage('SportsManagement Project Map data is currently unavailable.', 'warning');
         }
 
         return $data;
@@ -93,8 +93,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Project Map database service is unavailable.', 500);
+        }
 
         return $database;
     }
