@@ -50,8 +50,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('FirstLeagueOverviewHelper')
             ->getData($data['params'], $database);
 
-        $data['firstleagueoverview'] = $overview['projects'];
-        $data['federations'] = $overview['federations'];
+        $data['firstleagueoverview'] = is_array($overview['projects'] ?? null) ? $overview['projects'] : [];
+        $data['federations'] = is_array($overview['federations'] ?? null) ? $overview['federations'] : [];
 
         $document = $app->getDocument();
 
@@ -72,8 +72,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement First League Overview database service is unavailable.', 500);
+        }
 
         return $database;
     }
