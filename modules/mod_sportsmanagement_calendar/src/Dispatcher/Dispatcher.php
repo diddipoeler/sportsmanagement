@@ -68,6 +68,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement Calendar helper must return layout data as an array.', 500);
         }
 
+        // Helper output may add view variables, but must not replace Joomla's
+        // module, params or template selection with unrelated data.
+        unset($payload['module'], $payload['params'], $payload['layout']);
+
         return array_merge($data, $payload);
     }
 }
