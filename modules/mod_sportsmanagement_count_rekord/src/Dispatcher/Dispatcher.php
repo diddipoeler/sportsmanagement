@@ -37,9 +37,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $database = $this->joomlaDatabase();
-        $data['list'] = $this->getHelperFactory()
+        $records = $this->getHelperFactory()
             ->getHelper('CountRekordHelper')
             ->getData($data['params'], $data['module'], $database);
+
+        $data['list'] = is_array($records) ? $records : [];
 
         return $data;
     }
