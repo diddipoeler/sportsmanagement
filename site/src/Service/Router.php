@@ -52,8 +52,17 @@ class Router extends RouterBase
             return $query;
         }
 
-        $option = (string) ($query['option'] ?? self::COMPONENT);
-        $view = $this->normaliseView((string) ($query['view'] ?? ''));
+        // Reject non-scalar URL selectors before Joomla's route normalisation.
+        // Casting arrays to strings emits PHP warnings and can misroute requests.
+        $rawOption = $query['option'] ?? self::COMPONENT;
+        $rawView = $query['view'] ?? '';
+
+        if (!is_string($rawOption) || !is_string($rawView)) {
+            return $query;
+        }
+
+        $option = $rawOption;
+        $view = $this->normaliseView($rawView);
 
         if ($option !== self::COMPONENT || $view === '') {
             return $query;
