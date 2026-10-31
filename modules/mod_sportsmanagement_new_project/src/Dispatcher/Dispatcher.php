@@ -41,7 +41,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $helper = $this->getHelperFactory()->getHelper('NewProjectHelper');
         $data['params']->set('layout', 'native');
         $database = $this->joomlaDatabase();
-        $data['list'] = $helper->getData($data['params'], $app, $database);
+        $projects = $helper->getData($data['params'], $app, $database);
+        $data['list'] = is_array($projects) ? $projects : [];
         $data['canCreateArticles'] = $helper->canCreateArticles($data['params'], $app);
 
         $document = $app->getDocument();
