@@ -76,6 +76,11 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
 
         if ($app->isClient('administrator')) {
             foreach (ExtensionLanguageHelper::forView($app->getInput()->getCmd('view', '')) as $extensionName) {
+                // Extension language directories must remain inside the component.
+                if (!is_string($extensionName) || !preg_match('/^[A-Za-z0-9_-]+$/D', $extensionName)) {
+                    continue;
+                }
+
                 $basePath = JPATH_SITE
                     . '/components/com_sportsmanagement/extensions/'
                     . $extensionName
