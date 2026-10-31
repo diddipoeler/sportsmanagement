@@ -47,9 +47,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('TeamPlayersHelper')
             ->getData($data['params'], $database);
 
-        $data['project'] = $payload['project'];
-        $data['players'] = $payload['players'];
-        $data['roster'] = $payload['roster'];
+        // Preserve the layout contract even if a helper returns incomplete data.
+        $data['project'] = is_object($payload['project'] ?? null) ? $payload['project'] : null;
+        $data['players'] = is_array($payload['players'] ?? null) ? $payload['players'] : [];
+        $data['roster'] = is_array($payload['roster'] ?? null) ? $payload['roster'] : [];
 
         $document = $app->getDocument();
 
@@ -76,8 +77,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement TeamPlayers database service is unavailable.', 500);
+        }
 
         return $database;
     }
