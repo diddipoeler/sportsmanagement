@@ -49,9 +49,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['params']->set('layout', 'native');
 
         $database = $this->joomlaDatabase();
-        $data['list'] = $this->getHelperFactory()
+        $players = $this->getHelperFactory()
             ->getHelper('RandomPlayerHelper')
             ->getData($data['params'], $database);
+
+        // The native template expects an iterable list, even for empty results.
+        $data['list'] = is_array($players) ? $players : [];
 
         $document = $app->getDocument();
 
