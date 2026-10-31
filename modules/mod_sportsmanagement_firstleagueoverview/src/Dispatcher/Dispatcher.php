@@ -50,6 +50,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('FirstLeagueOverviewHelper')
             ->getData($data['params'], $database);
 
+        // Optional database results must not be assumed to be arrays.
+        $overview = is_array($overview) ? $overview : [];
+
         $data['firstleagueoverview'] = is_array($overview['projects'] ?? null) ? $overview['projects'] : [];
         $data['federations'] = is_array($overview['federations'] ?? null) ? $overview['federations'] : [];
 
