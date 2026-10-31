@@ -27,6 +27,10 @@ on:
       - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   pull_request:
     paths:
@@ -48,6 +52,10 @@ on:
       - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   workflow_dispatch:
 
@@ -88,5 +96,9 @@ jobs:
           php -l modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
