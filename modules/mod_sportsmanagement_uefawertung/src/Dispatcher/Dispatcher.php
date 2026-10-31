@@ -43,8 +43,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('UefaWertungHelper')
             ->getData($data['params'], $app, $database);
 
-        $data['seasons'] = $result['seasons'];
-        $data['rankings'] = $result['rankings'];
+        $data['seasons'] = is_array($result['seasons'] ?? null) ? $result['seasons'] : [];
+        $data['rankings'] = is_array($result['rankings'] ?? null) ? $result['rankings'] : [];
 
         $document = $app->getDocument();
 
@@ -60,8 +60,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement database service is unavailable.', 500);
+        }
 
         return $database;
     }
