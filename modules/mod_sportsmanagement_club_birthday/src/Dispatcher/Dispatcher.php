@@ -47,6 +47,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('ClubBirthdayHelper')
             ->getData($data['params'], $app, $database);
 
+        // Legacy helpers can return no result when club data is unavailable.
+        $result = is_array($result) ? $result : [];
+
         $data['clubs'] = is_array($result['clubs'] ?? null) ? $result['clubs'] : [];
         $data['mode'] = is_string($result['mode'] ?? null) ? $result['mode'] : 'L';
 
