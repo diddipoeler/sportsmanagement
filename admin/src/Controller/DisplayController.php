@@ -35,6 +35,10 @@ final class DisplayController extends BaseController
 
         $view = $input->getCmd('view', '');
 
+        if (!is_string($view)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
+        }
+
         // Reject values changed by the command filter, including whitespace,
         // before passing the view to the Joomla MVC factory.
         if ($rawView !== '' && (
