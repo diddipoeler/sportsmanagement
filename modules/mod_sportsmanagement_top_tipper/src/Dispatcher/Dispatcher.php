@@ -53,9 +53,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $helper = $this->getHelperFactory()->getHelper('TopTipperHelper');
 
-        return array_merge(
-            $data,
-            $helper->getData($data['params'], $data['module'], $app)
-        );
+        $payload = $helper->getData($data['params'], $data['module'], $app);
+
+        // Do not allow helper output to overwrite the Joomla module context.
+        unset($payload['module'], $payload['params'], $payload['layout']);
+
+        return array_merge($data, $payload);
     }
 }
