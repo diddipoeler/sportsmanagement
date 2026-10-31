@@ -45,11 +45,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $database
         );
 
-        $data['source'] = $result['source'];
-        $data['quoteStyle'] = $result['style'];
-        $data['list'] = $result['list'];
-        $data['textLine'] = $result['textLine'];
-        $data['pictureServer'] = $result['pictureServer'];
+        $data['source'] = $result['source'] ?? '';
+        $data['quoteStyle'] = $result['style'] ?? '';
+        $data['list'] = $result['list'] ?? [];
+        $data['textLine'] = $result['textLine'] ?? '';
+        $data['pictureServer'] = $result['pictureServer'] ?? '';
 
         $document = $app->getDocument();
 
@@ -65,8 +65,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement database service is unavailable.', 500);
+        }
 
         return $database;
     }
