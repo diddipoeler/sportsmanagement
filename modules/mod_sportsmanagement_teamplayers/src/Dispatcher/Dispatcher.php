@@ -47,6 +47,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('TeamPlayersHelper')
             ->getData($data['params'], $database);
 
+        $payload = is_array($payload) ? $payload : [];
+
         // Preserve the layout contract even if a helper returns incomplete data.
         $data['project'] = is_object($payload['project'] ?? null) ? $payload['project'] : null;
         $data['players'] = is_array($payload['players'] ?? null) ? $payload['players'] : [];
