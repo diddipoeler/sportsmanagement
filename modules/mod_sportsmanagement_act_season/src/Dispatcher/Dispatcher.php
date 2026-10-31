@@ -53,6 +53,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('ActSeasonHelper')
             ->getData($seasonIds, $componentParams, $app, $database);
 
+        $result = is_array($result) ? $result : [];
+
         $data['list'] = is_array($result['list'] ?? null) ? $result['list'] : [];
         $data['federations'] = is_array($result['federations'] ?? null) ? $result['federations'] : [];
         $data['countriesByFederation'] = is_array($result['countriesByFederation'] ?? null) ? $result['countriesByFederation'] : [];
