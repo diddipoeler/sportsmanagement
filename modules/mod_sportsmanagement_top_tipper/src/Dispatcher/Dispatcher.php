@@ -55,6 +55,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $payload = $helper->getData($data['params'], $data['module'], $app);
 
+        // Some legacy helpers return no data; only arrays may be merged.
+        $payload = is_array($payload) ? $payload : [];
+
         // Do not allow helper output to overwrite the Joomla module context.
         unset($payload['module'], $payload['params'], $payload['layout']);
 
