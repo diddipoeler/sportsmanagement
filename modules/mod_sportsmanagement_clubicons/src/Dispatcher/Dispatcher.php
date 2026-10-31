@@ -47,10 +47,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $app
         );
 
-        $data['project'] = $result['project'];
-        $data['ranking'] = $result['ranking'];
-        $data['teams'] = $result['teams'];
-        $data['count'] = count($result['teams']);
+        $data['project'] = is_object($result['project'] ?? null) ? $result['project'] : null;
+        $data['ranking'] = is_array($result['ranking'] ?? null) ? $result['ranking'] : [];
+        $data['teams'] = is_array($result['teams'] ?? null) ? $result['teams'] : [];
+        $data['count'] = count($data['teams']);
 
         if ($data['count'] <= 0) {
             return $data;
@@ -71,7 +71,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $wam->registerAndUseStyle(
             'mod_sportsmanagement_clubicons.default',
-            'modules/' . $data['module']->module . '/css/default.css',
+            'modules/mod_sportsmanagement_clubicons/css/default.css',
             ['version' => 'auto']
         );
 
