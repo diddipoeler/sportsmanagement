@@ -45,9 +45,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $database
         );
 
+        $result = is_array($result) ? $result : [];
+
         $data['source'] = $result['source'] ?? '';
         $data['quoteStyle'] = $result['style'] ?? '';
-        $data['list'] = $result['list'] ?? [];
+        $data['list'] = is_array($result['list'] ?? null) ? $result['list'] : [];
         $data['textLine'] = $result['textLine'] ?? '';
         $data['pictureServer'] = $result['pictureServer'] ?? '';
 
