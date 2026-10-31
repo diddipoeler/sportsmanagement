@@ -39,6 +39,10 @@ final class DisplayController extends BaseController
 
         $view = $this->input->getCmd('view', '');
 
+        if (!is_string($view)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
+        }
+
         // Reject values modified by Joomla's command filter, including whitespace.
         // The legacy site entry point applies the same strict validation.
         if ($rawView !== '' && (
