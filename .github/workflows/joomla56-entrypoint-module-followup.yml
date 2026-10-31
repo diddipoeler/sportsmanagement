@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/src/Service/Router.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
@@ -38,6 +39,7 @@ on:
   pull_request:
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/src/Service/Router.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
@@ -80,6 +82,7 @@ jobs:
       - name: Syntax check modified PHP files
         run: |
           php -l site/sportsmanagement.php
+          php -l site/src/Service/Router.php
           php -l site/src/Controller/DisplayController.php
           php -l admin/sportsmanagement.php
           php -l admin/src/Controller/DisplayController.php
