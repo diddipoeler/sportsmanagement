@@ -56,16 +56,21 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $joomlaDatabase = $this->joomlaDatabase();
         $helper = $this->getHelperFactory()->getHelper('TeamStatsRankingHelper');
 
-        return array_merge(
-            $data,
-            $helper->getData($data['params'], $joomlaDatabase)
-        );
+        $payload = $helper->getData($data['params'], $joomlaDatabase);
+
+        // Preserve the framework-provided module context and selected layout.
+        unset($payload['module'], $payload['params'], $payload['layout']);
+
+        return array_merge($data, $payload);
     }
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Team Stats Ranking database service is unavailable.', 500);
+        }
 
         return $database;
     }
