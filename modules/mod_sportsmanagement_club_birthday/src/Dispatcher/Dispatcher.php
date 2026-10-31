@@ -47,8 +47,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('ClubBirthdayHelper')
             ->getData($data['params'], $app, $database);
 
-        $data['clubs'] = $result['clubs'];
-        $data['mode'] = $result['mode'];
+        $data['clubs'] = is_array($result['clubs'] ?? null) ? $result['clubs'] : [];
+        $data['mode'] = is_string($result['mode'] ?? null) ? $result['mode'] : 'L';
 
         $document = $app->getDocument();
 
@@ -61,8 +61,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement database service is unavailable.', 500);
+        }
 
         return $database;
     }
