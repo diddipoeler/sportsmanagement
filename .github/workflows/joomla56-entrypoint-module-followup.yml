@@ -12,6 +12,8 @@ on:
       - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   pull_request:
     paths:
@@ -23,6 +25,8 @@ on:
       - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   workflow_dispatch:
 
@@ -48,5 +52,7 @@ jobs:
           php -l modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
