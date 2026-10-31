@@ -58,6 +58,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $payload = $helper->getData($data['params'], $joomlaDatabase);
 
+        // A failed or empty helper response must not break module rendering.
+        $payload = is_array($payload) ? $payload : [];
+
         // Preserve the framework-provided module context and selected layout.
         unset($payload['module'], $payload['params'], $payload['layout']);
 
