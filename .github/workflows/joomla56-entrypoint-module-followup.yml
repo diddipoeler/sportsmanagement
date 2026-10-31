@@ -14,6 +14,11 @@ on:
       - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   pull_request:
     paths:
@@ -54,5 +59,10 @@ jobs:
           php -l modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
