@@ -75,7 +75,14 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
         );
 
         if ($app->isClient('administrator')) {
-            foreach (ExtensionLanguageHelper::forView($app->getInput()->getCmd('view', '')) as $extensionName) {
+            $view = $app->getInput()->getCmd('view', '');
+
+            // A malformed view request must not reach the extension language resolver.
+            if (!is_string($view)) {
+                throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
+            }
+
+            foreach (ExtensionLanguageHelper::forView(strtolower($view)) as $extensionName) {
                 // Extension language directories must remain inside the component.
                 if (!is_string($extensionName) || !preg_match('/^[A-Za-z0-9_-]+$/D', $extensionName)) {
                     continue;
