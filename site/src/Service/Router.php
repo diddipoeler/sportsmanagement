@@ -106,7 +106,13 @@ class Router extends RouterBase
         $segments = [];
         $menuItem = $this->getMenuItemFromQuery($query);
         $menuQuery = $menuItem !== null && isset($menuItem->query) ? (array) $menuItem->query : [];
-        $view = $this->normaliseView((string) ($query['view'] ?? ($menuQuery['view'] ?? '')));
+        $rawView = $query['view'] ?? ($menuQuery['view'] ?? '');
+
+        if (!is_string($rawView)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement route view.', 400);
+        }
+
+        $view = $this->normaliseView($rawView);
 
         if ($view === '') {
             return $segments;
