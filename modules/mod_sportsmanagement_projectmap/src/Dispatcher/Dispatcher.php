@@ -53,6 +53,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ->getHelper('ProjectMapHelper')
                 ->getMapData($seasonIds, $db);
 
+            $mapData = is_array($mapData) ? $mapData : [];
             $data['projects'] = is_array($mapData['projects'] ?? null) ? $mapData['projects'] : [];
 
             $document = $app->getDocument();
