@@ -5,18 +5,24 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
+      - 'admin/src/Extension/SportsManagementComponent.php'
       - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   pull_request:
     paths:
       - 'site/sportsmanagement.php'
+      - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
+      - 'admin/src/Extension/SportsManagementComponent.php'
       - 'modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   workflow_dispatch:
 
@@ -35,9 +41,12 @@ jobs:
       - name: Syntax check modified PHP files
         run: |
           php -l site/sportsmanagement.php
+          php -l site/src/Controller/DisplayController.php
           php -l admin/sportsmanagement.php
           php -l admin/src/Controller/DisplayController.php
+          php -l admin/src/Extension/SportsManagementComponent.php
           php -l modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_birthday/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
