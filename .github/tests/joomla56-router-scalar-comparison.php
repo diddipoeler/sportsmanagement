@@ -52,9 +52,11 @@ namespace {
     $isMenuItem = new \ReflectionMethod($class, 'isSportsManagementMenuItem');
     $menuWithArrayOption = (object) ['query' => ['option' => ['com_sportsmanagement']]];
     $validMenu = (object) ['query' => ['option' => 'com_sportsmanagement']];
+    $menuWithArrayComponent = (object) ['component' => ['com_sportsmanagement']];
 
     if ($isMenuItem->invoke($router, $menuWithArrayOption) !== false
         || $isMenuItem->invoke($router, $validMenu) !== true
+        || $isMenuItem->invoke($router, $menuWithArrayComponent) !== false
     ) {
         fwrite(STDERR, 'SEF menu component selector regression failed.' . PHP_EOL);
         exit(1);
@@ -68,5 +70,5 @@ namespace {
         exit(1);
     }
 
-    echo "SEF scalar comparison and menu selector checks passed.\\n";
+    echo "SEF scalar comparison and menu selector checks passed.\n";
 }
