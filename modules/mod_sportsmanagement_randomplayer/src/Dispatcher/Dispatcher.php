@@ -29,7 +29,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Loads component translations, keeps missing helper output iterable and registers the HTML stylesheet.
      *
      * @return array|false Module layout variables, or false when skipped.
-     * @throws \\RuntimeException On invalid application or helper services.
+     * @throws \RuntimeException On invalid application or helper services.
      */
     protected function getLayoutData(): array|false
     {
@@ -84,7 +84,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * its interface before allowing database queries to run.
      *
      * @return DatabaseInterface Valid database service.
-     * @throws \\RuntimeException When the database service is unavailable.
+     * @throws \RuntimeException When the database service is unavailable.
      */
     private function joomlaDatabase(): DatabaseInterface
     {
