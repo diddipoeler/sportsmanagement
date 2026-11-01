@@ -20,6 +20,17 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Generate the ranking module context using Joomla's native layout.
+     *
+     * Selects the native template, loads component translations, registers
+     * the optional stylesheet when present, and fetches ranking data from
+     * the helper. Missing results become an empty iterable list so the
+     * frontend template can render without PHP type errors.
+     *
+     * @return array|false Ranking template variables, or false if skipped.
+     * @throws \RuntimeException If the dispatcher runs outside the site client.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
