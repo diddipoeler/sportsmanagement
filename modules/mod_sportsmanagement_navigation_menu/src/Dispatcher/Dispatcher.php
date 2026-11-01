@@ -22,6 +22,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Build the navigation menu context for Joomla's site module renderer.
+     *
+     * Loads component translations, queries native navigation data and registers the CSS and deferred script without allowing helper results to overwrite Joomla's module context.
+     *
+     * @return array|false Layout variables, or false if Joomla skips rendering.
+     * @throws \RuntimeException When called outside the site or without a database.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -79,6 +87,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the Joomla database service required by the Navigation Menu helper.
+     *
+     * Reads the database dependency from Joomla's service container and
+     * checks its interface before passing it to the module's query methods.
+     *
+     * @return DatabaseInterface Connection for module data queries.
+     * @throws \RuntimeException If no compatible database service exists.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
