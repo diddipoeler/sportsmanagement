@@ -41,6 +41,14 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
         createRouter as private createFactoryRouter;
     }
 
+    /**
+     * Retrieve the currently active Joomla application from the framework.
+     *
+     * The component uses this application when bootstrapping language files,
+     * regardless of whether the request belongs to site or administrator.
+     *
+     * @return CMSApplicationInterface Current Joomla application.
+     */
     private static function joomlaApplication(): CMSApplicationInterface
     {
         return Factory::getApplication();
@@ -50,6 +58,18 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
      * Load the language sources which were historically loaded from the legacy
      * component entry points. Native Joomla 5/6 dispatcher requests bypass those
      * entry points, so the language bootstrap has to live on the component itself.
+     */
+    /**
+     * Initialise component translations for site and administrator requests.
+     *
+     * Loads shared translations from both clients in precedence order and
+     * the country language file. For administrator views it also validates
+     * the requested view and loads matching extension languages only from
+     * component-owned directories to avoid unsafe filesystem paths.
+     *
+     * @param ContainerInterface $container Joomla dependency injection container.
+     * @return void
+     * @throws \InvalidArgumentException When the administrator view is invalid.
      */
     public function boot(ContainerInterface $container): void
     {
@@ -119,6 +139,17 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
      * Joomla 5 keeps a few legacy routing semantics around menu parsing which
      * are no longer relevant on Joomla 6. Use the compatibility wrapper there,
      * while Joomla 6 continues to use the normal RouterFactory service.
+     */
+    /**
+     * Construct the frontend router appropriate for the Joomla version.
+     *
+     * Joomla 5 requests retain the installed compatibility router when it is
+     * available, preserving historic URLs. Joomla 6 and installations without
+     * the compatibility router use the framework RouterFactory implementation.
+     *
+     * @param CMSApplicationInterface $application Request application.
+     * @param AbstractMenu $menu Active menu for link resolution.
+     * @return RouterInterface Component frontend router.
      */
     public function createRouter(CMSApplicationInterface $application, AbstractMenu $menu): RouterInterface
     {
