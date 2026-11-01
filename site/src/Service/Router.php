@@ -487,6 +487,15 @@ class Router extends RouterBase
 
     private function sameValue($left, $right): bool
     {
+        // Do not treat arrays as the identical string "Array" in PHP 8.
+        if (!is_scalar($left) && $left !== null) {
+            return false;
+        }
+
+        if (!is_scalar($right) && $right !== null) {
+            return false;
+        }
+
         return (string) $left === (string) $right;
     }
 }
