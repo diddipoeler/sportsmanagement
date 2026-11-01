@@ -446,7 +446,17 @@ class Router extends RouterBase
 
         // Some menu implementations expose the numeric component_id instead.
         $component = ComponentHelper::getComponent(self::COMPONENT);
-        $items = $this->menu->getItems('component_id', (int) $component->id);
+        $componentId = $component->id ?? null;
+
+        // Missing component metadata cannot identify a numeric Joomla menu target.
+        if ((!is_int($componentId) && !is_string($componentId))
+            || !ctype_digit((string) $componentId)
+            || (int) $componentId <= 0
+        ) {
+            return [];
+        }
+
+        $items = $this->menu->getItems('component_id', (int) $componentId);
 
         return is_array($items) ? $items : [];
     }
