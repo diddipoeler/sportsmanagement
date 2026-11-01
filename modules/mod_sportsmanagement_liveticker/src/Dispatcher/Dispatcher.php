@@ -23,6 +23,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare the live match ticker and its AJAX refresh endpoint.
+     *
+     * Loads match events, preserves framework-owned layout variables, registers frontend assets and supplies the com_ajax refresh URL for subsequent updates.
+     *
+     * @return array|false Layout variables, or false if Joomla skips rendering.
+     * @throws \RuntimeException When called outside the site or without a database.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -58,7 +66,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ['defer' => true]
             );
 
-            $cssFile = basename((string) ($result['cssFile'] ?? ''));
+            $rawCssFile = $result['cssFile'] ?? '';
+            $cssFile = is_string($rawCssFile) && preg_match('/^[A-Za-z0-9_.-]+\.css$/D', $rawCssFile)
+                ? $rawCssFile
+                : '';
             if ($cssFile !== '') {
                 $assets->registerAndUseStyle(
                     'mod_sportsmanagement_liveticker',
@@ -74,6 +85,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return array_merge($data, $result);
     }
 
+    /**
+     * Resolve the Joomla database service required by the Liveticker helper.
+     *
+     * Reads the database dependency from Joomla's service container and
+     * checks its interface before passing it to the module's query methods.
+     *
+     * @return DatabaseInterface Connection for module data queries.
+     * @throws \RuntimeException If no compatible database service exists.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
