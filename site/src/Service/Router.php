@@ -308,7 +308,16 @@ class Router extends RouterBase
 
     private function getMenuItemFromQuery(array $query): ?object
     {
-        $itemId = (int) ($query['Itemid'] ?? 0);
+        $rawItemId = $query['Itemid'] ?? 0;
+
+        // Menu IDs must be unsigned decimal values, not arrays or partial numbers.
+        if ((!is_int($rawItemId) && !is_string($rawItemId))
+            || !ctype_digit((string) $rawItemId)
+        ) {
+            return null;
+        }
+
+        $itemId = (int) $rawItemId;
 
         if ($itemId <= 0) {
             return null;
