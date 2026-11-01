@@ -24,6 +24,18 @@ final class DisplayController extends BaseController
 {
     protected $default_view = 'cpanel';
 
+    /**
+     * Display an administrator view using Joomla's MVC infrastructure.
+     *
+     * Validate the incoming selector, default to the component control panel
+     * for empty requests, and normalise view names for class resolution on
+     * case-sensitive hosts before invoking the base controller.
+     *
+     * @param bool $cachable Allow caching of the rendered view.
+     * @param array $urlparams Permitted parameters for cacheable requests.
+     * @return mixed Parent controller's render result.
+     * @throws \InvalidArgumentException For malformed view selectors.
+     */
     public function display($cachable = false, $urlparams = [])
     {
         $input = $this->input;
