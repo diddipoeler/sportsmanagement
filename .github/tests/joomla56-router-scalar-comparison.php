@@ -49,7 +49,7 @@ namespace {
         }
     }
 
-    $isMenuItem = new \\ReflectionMethod($class, 'isSportsManagementMenuItem');
+    $isMenuItem = new \ReflectionMethod($class, 'isSportsManagementMenuItem');
     $menuWithArrayOption = (object) ['query' => ['option' => ['com_sportsmanagement']]];
     $validMenu = (object) ['query' => ['option' => 'com_sportsmanagement']];
 
@@ -60,7 +60,7 @@ namespace {
         exit(1);
     }
 
-    $representsQuery = new \\ReflectionMethod($class, 'menuItemRepresentsQuery');
+    $representsQuery = new \ReflectionMethod($class, 'menuItemRepresentsQuery');
     $invalidMenuView = (object) ['query' => ['view' => ['ranking']]];
 
     if ($representsQuery->invoke($router, $invalidMenuView, [], 'ranking', []) !== false) {
