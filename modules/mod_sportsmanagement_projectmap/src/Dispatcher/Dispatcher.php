@@ -24,6 +24,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Assemble project location data and initialise the interactive map.
+     *
+     * Loads current-season projects, supplies JavaScript options, registers dependent map assets and logs helper errors while keeping the module renderable.
+     *
+     * @return array|false Layout data or false if rendering is skipped.
+     * @throws \RuntimeException If the site client or database is unavailable.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -92,6 +100,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the Joomla database service used by the Project Map helper.
+     *
+     * Retrieves the database through Joomla's dependency injection container
+     * and validates the interface before executing helper queries.
+     *
+     * @return DatabaseInterface Database connection for module queries.
+     * @throws \RuntimeException When the database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
