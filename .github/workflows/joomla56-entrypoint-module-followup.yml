@@ -9,6 +9,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
+      - '.github/tests/joomla56-router-scalar-comparison.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
@@ -48,6 +49,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
+      - '.github/tests/joomla56-router-scalar-comparison.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
@@ -127,5 +129,7 @@ jobs:
           php -l modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
+      - name: Regression check for Joomla SEF scalar comparisons
+        run: php .github/tests/joomla56-router-scalar-comparison.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
