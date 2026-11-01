@@ -50,6 +50,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('NativeNavigationMenuHelper')
             ->getData($data['params'], $app, $joomlaDatabase);
 
+        $payload = is_array($payload) ? $payload : [];
+
         // Keep the Joomla-provided module, params and layout immutable.
         unset($payload['module'], $payload['params'], $payload['layout']);
 
