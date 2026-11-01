@@ -22,6 +22,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare the team statistics counters for site rendering.
+     *
+     * Queries the module helper using Joomla's database service, ensures the output is an iterable array and registers the optional HTML stylesheet.
+     * The method rejects administrator execution and preserves Joomla's
+     * original layout context when rendering is skipped.
+     *
+     * @return array|false Template variables, or false when skipped.
+     * @throws \RuntimeException When the site context or database is unavailable.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -57,6 +67,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Obtain a valid Joomla database service for Team Statistics Counter queries.
+     *
+     * Retrieves the registered DatabaseInterface from the service container
+     * and rejects a missing or incompatible instance before helper execution.
+     *
+     * @return DatabaseInterface Database connection used by the module.
+     * @throws \RuntimeException When the Joomla database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
