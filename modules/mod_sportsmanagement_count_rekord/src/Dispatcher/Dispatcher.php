@@ -22,6 +22,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Retrieve the counting and record statistics required by the module.
+     *
+     * Obtains the Joomla database, calls the module helper and guarantees an array for template iteration.
+     *
+     * @return array|false Layout data or false if rendering is skipped.
+     * @throws \RuntimeException If the site client or database is unavailable.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -46,6 +54,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the Joomla database service used by the Count Rekord helper.
+     *
+     * Retrieves the database through Joomla's dependency injection container
+     * and validates the interface before executing helper queries.
+     *
+     * @return DatabaseInterface Database connection for module queries.
+     * @throws \RuntimeException When the database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
