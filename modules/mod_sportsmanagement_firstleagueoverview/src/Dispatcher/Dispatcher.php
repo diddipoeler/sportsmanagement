@@ -23,6 +23,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Populate the first-league overview layout with project and federation data.
+     *
+     * Loads component translations, resolves the Joomla database, normalises
+     * empty helper results, and registers Bootstrap tabs and module CSS for
+     * HTML documents. Non-HTML output retains the data without adding assets.
+     *
+     * @return array|false Joomla layout data or false when rendering is skipped.
+     * @throws \RuntimeException Outside the site client or without a database.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -73,6 +83,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the Joomla database service used for overview queries.
+     *
+     * Ensures the container service implements the database interface before
+     * passing it to the module helper, avoiding invalid dependency types.
+     *
+     * @return DatabaseInterface Database service for helper queries.
+     * @throws \RuntimeException When the database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
