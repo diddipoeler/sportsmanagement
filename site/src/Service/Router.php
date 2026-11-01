@@ -374,7 +374,9 @@ class Router extends RouterBase
             if (
                 is_array($authorisedLevels)
                 && isset($item->access)
-                && !in_array((int) $item->access, $authorisedLevels, true)
+                && (!is_scalar($item->access)
+                    || !ctype_digit((string) $item->access)
+                    || !in_array((int) $item->access, $authorisedLevels, true))
             ) {
                 continue;
             }
