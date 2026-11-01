@@ -72,11 +72,30 @@ final class SiteRouteSchema
         'predictionrules' => ['cfg_which_database' => '', 'prediction_id' => ''],
     ];
 
+    /**
+     * Determine whether a frontend view has a positional SEF route schema.
+     *
+     * A registered view has a fixed argument order used by both route building
+     * and parsing; unknown views must be handled through other routing rules.
+     *
+     * @param string $view Canonical lowercase frontend view name.
+     * @return bool True if the view has a registered positional schema.
+     */
     public static function has(string $view): bool
     {
         return isset(self::VIEWS[$view]);
     }
 
+    /**
+     * Obtain the ordered URL argument defaults for a frontend view.
+     *
+     * The insertion order is part of the legacy public URL contract and must
+     * remain unchanged to avoid shifting values between route segments.
+     * Unknown views return an empty schema rather than raising an error.
+     *
+     * @param string $view Canonical lowercase frontend view name.
+     * @return array<string, string> Ordered route parameters and defaults.
+     */
     public static function defaults(string $view): array
     {
         return self::VIEWS[$view] ?? [];
