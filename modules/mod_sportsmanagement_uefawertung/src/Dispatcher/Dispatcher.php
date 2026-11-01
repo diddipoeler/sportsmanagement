@@ -22,6 +22,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare seasonal UEFA coefficient rankings for the frontend module.
+     *
+     * Retrieves ranking data from the helper through Joomla's database service, normalises empty season and ranking collections, and registers HTML styles.
+     *
+     * @return array|false Layout data or false if rendering is skipped.
+     * @throws \RuntimeException If the site application or database is unavailable.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -60,6 +68,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the Joomla database dependency for the UEFA Ranking helper.
+     *
+     * Uses the dependency injection container and verifies that the resolved
+     * service implements DatabaseInterface before any queries are performed.
+     *
+     * @return DatabaseInterface Valid database connection for module queries.
+     * @throws \RuntimeException When no compatible database service exists.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
