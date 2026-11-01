@@ -5,6 +5,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
@@ -41,6 +44,9 @@ on:
   pull_request:
     paths:
       - 'site/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
@@ -86,6 +92,9 @@ jobs:
       - name: Syntax check modified PHP files
         run: |
           php -l site/sportsmanagement.php
+          php -l modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
           php -l site/src/Service/Router.php
           php -l site/src/Controller/DisplayController.php
           php -l admin/sportsmanagement.php
