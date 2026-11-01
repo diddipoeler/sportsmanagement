@@ -129,7 +129,15 @@ final class PlaygroundTickerHelper
         return array_values(array_map(static fn (int $key): object => $playgrounds[$key], $keys));
     }
 
-    /** Parse a single selected project, optionally in Joomla ID:alias form. */
+    /**
+     * Parse a positive project identifier, optionally in Joomla ID:alias form.
+     *
+     * Rejects unsupported types, invalid aliases, zero IDs and integer
+     * overflows so an invalid project cannot change the database scope.
+     *
+     * @param mixed $value Raw project selector from module settings.
+     * @return int Positive project ID, or zero when invalid.
+     */
     private static function projectId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -155,7 +163,15 @@ final class PlaygroundTickerHelper
         return (int) $digits;
     }
 
-    /** Only a missing or explicitly zero project selection requests all. */
+    /**
+     * Check whether the module explicitly requests playgrounds from all projects.
+     *
+     * Only missing, empty or zero-padded zero values mean unrestricted
+     * selection; an invalid positive identifier must not be treated as zero.
+     *
+     * @param mixed $value Raw configured project selector.
+     * @return bool Whether the all-projects option was explicitly selected.
+     */
     private static function isUnfilteredProject(mixed $value): bool
     {
         return $value === null
@@ -166,6 +182,17 @@ final class PlaygroundTickerHelper
             || (is_string($value) && preg_match('/^0+$/D', trim($value)) === 1);
     }
 
+    /**
+     * Resolve a safe base URL for images of playgrounds.
+     *
+     * Returns the configured external HTTP(S) server only when external data
+     * is selected and the URL has no credentials, query or fragment. Falls
+     * back to the local Joomla root for missing or invalid configuration.
+     *
+     * @param Registry $params Module settings controlling database selection.
+     * @param CMSApplicationInterface $app Active Joomla application.
+     * @return string Image base URL ending in a slash.
+     */
     public function getPictureServer(Registry $params, CMSApplicationInterface $app): string
     {
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
@@ -199,8 +226,15 @@ final class PlaygroundTickerHelper
     }
 
     /**
-     * The legacy ticker supports Joomla DB 0 or alternate DB 1.
-     * Accept zero-padded settings without permitting partial numeric casts.
+     * Determine which database the legacy playground ticker should use.
+     *
+     * Reads the module setting before the request fallback and accepts only
+     * database IDs zero and one, including zero-padded decimal strings.
+     * Invalid selections return null rather than silently selecting database zero.
+     *
+     * @param Registry $params Module database configuration.
+     * @param CMSApplicationInterface $app Application providing fallback input.
+     * @return int|null Database index 0 or 1, or null if invalid.
      */
     private function databaseSelector(Registry $params, CMSApplicationInterface $app): ?int
     {
