@@ -71,7 +71,15 @@ class Router extends RouterBase
         // A legacy/default Itemid must never turn a SportsManagement URL into
         // an unrelated or external menu link. Keep it only when it actually
         // belongs to this component, then let the normal matcher improve it.
-        $currentItemId = (int) ($query['Itemid'] ?? 0);
+        $rawItemId = $query['Itemid'] ?? 0;
+
+        // Invalid menu selectors must not trigger array-to-integer casts.
+        if (!is_int($rawItemId) && !is_string($rawItemId)) {
+            unset($query['Itemid']);
+            $rawItemId = 0;
+        }
+
+        $currentItemId = ctype_digit((string) $rawItemId) ? (int) $rawItemId : 0;
 
         if ($currentItemId > 0) {
             $currentItem = $this->menu->getItem($currentItemId);
