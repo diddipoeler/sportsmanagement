@@ -39,9 +39,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
         $database = $this->joomlaDatabase();
-        $data['trainingsdata'] = $this->getHelperFactory()
+        $trainingsdata = $this->getHelperFactory()
             ->getHelper('TrainingsDataHelper')
             ->getData($data['params'], $database);
+
+        $data['trainingsdata'] = is_array($trainingsdata) ? $trainingsdata : [];
 
         $document = $app->getDocument();
 
