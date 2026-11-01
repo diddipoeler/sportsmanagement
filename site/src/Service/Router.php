@@ -253,6 +253,11 @@ class Router extends RouterBase
 
         foreach ($defaults as $key => $defaultValue) {
             if (array_key_exists($position, $segments)) {
+                // URL path parts must be strings; do not forward arrays to views.
+                if (!is_string($segments[$position])) {
+                    throw new \InvalidArgumentException('Invalid SportsManagement route segment.', 400);
+                }
+
                 $vars[$key] = $segments[$position];
             }
 
