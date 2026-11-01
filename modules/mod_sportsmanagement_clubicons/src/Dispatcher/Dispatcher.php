@@ -29,7 +29,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $params = $data['params'];
-        $template = (string) $params->get('template', 'default');
+        $rawTemplate = $params->get('template', 'default');
+        $template = is_string($rawTemplate) ? $rawTemplate : 'default';
         $template = in_array($template, ['default', 'default_carousel'], true) ? $template : 'default';
         $params->set('layout', $template);
 
@@ -77,9 +78,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ['version' => 'auto']
         );
 
-        $percent = (float) $params->get('max_width_after_mouse_over', 10);
+        $rawPercent = $params->get('max_width_after_mouse_over', 10);
+        $percent = is_numeric($rawPercent) ? (float) $rawPercent : 10.0;
         $scale = max(0.1, (100 + $percent) / 100);
-        $height = max(1, (int) $params->get('picture_height', 50));
+        $rawHeight = $params->get('picture_height', 50);
+        $height = max(1, is_numeric($rawHeight) ? (int) $rawHeight : 50);
         $wam->addInlineStyle(
             '.mod-sportsmanagement-clubicons .img-zoom{' .
             'width:auto;height:' . $height . 'px;transition:transform .2s ease-in-out}' .
