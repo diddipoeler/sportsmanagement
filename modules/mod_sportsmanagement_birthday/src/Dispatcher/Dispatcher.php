@@ -24,6 +24,17 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare birthday records and display settings for the module template.
+     *
+     * Loads translations, passes component settings and the Joomla database
+     * to the birthday helper, and converts missing optional values to safe
+     * template defaults. Enables Bootstrap carousel assets only for relevant
+     * modes in an HTML document.
+     *
+     * @return array|false Birthday template variables, or false if skipped.
+     * @throws \RuntimeException Outside the site application or without a database.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -73,6 +84,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Retrieve the database service used for birthday queries.
+     *
+     * Ensures the container value implements Joomla's DatabaseInterface,
+     * avoiding invalid dependency types in the legacy-compatible helper.
+     *
+     * @return DatabaseInterface Database used to load birthday records.
+     * @throws \RuntimeException If no compatible service is available.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
