@@ -97,6 +97,7 @@ jobs:
           coverage: none
       - name: Syntax check modified PHP files
         run: |
+          php -l .github/tests/joomla56-router-scalar-comparison.php
           php -l site/sportsmanagement.php
           php -l modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
