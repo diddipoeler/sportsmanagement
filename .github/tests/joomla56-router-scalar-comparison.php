@@ -10,7 +10,11 @@
 declare(strict_types=1);
 
 namespace Joomla\CMS\Component\Router {
-    class RouterBase {}
+    class RouterBase
+    {
+        public object $menu;
+        public object $app;
+    }
 }
 
 namespace {
@@ -87,6 +91,26 @@ namespace {
     $parsed = $router->parse($validSegments);
     if (($parsed['view'] ?? null) !== 'ranking' || ($parsed['cfg_which_database'] ?? null) !== '0') {
         fwrite(STDERR, 'Valid positional SEF segment was rejected.' . PHP_EOL);
+        exit(1);
+    }
+
+    // Invalid published metadata must not be treated as a published menu item.
+    $router->menu = new class {
+        public function getItems(string $key, mixed $value): array
+        {
+            return [
+                (object) ['id' => 7, 'component' => 'com_sportsmanagement',
+                    'published' => ['1'], 'query' => ['view' => 'ranking']],
+                (object) ['id' => 8, 'component' => 'com_sportsmanagement',
+                    'published' => 1, 'query' => ['view' => 'ranking']],
+            ];
+        }
+    };
+    $router->app = new \stdClass();
+    $findMenu = new \ReflectionMethod($class, 'findBestMenuItem');
+    $selected = $findMenu->invoke($router, [], 'ranking');
+    if (($selected->id ?? null) !== 8) {
+        fwrite(STDERR, 'Malformed publication metadata influenced SEF menu matching.' . PHP_EOL);
         exit(1);
     }
 
