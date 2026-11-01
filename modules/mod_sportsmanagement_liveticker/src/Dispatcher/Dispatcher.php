@@ -42,6 +42,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('LivetickerHelper')
             ->getData($data['params'], $data['module'], $app, $database);
 
+        $result = is_array($result) ? $result : [];
+
+        // Preserve Joomla's module context regardless of helper output.
+        unset($result['module'], $result['params'], $result['layout']);
+
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
@@ -71,8 +76,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Liveticker database service is unavailable.', 500);
+        }
 
         return $database;
     }
