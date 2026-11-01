@@ -19,6 +19,19 @@ use Joomla\Registry\Registry;
 
 final class TopTipperHelper
 {
+    /**
+     * Prepare the prediction league ranking data used by the Top Tipper module.
+     *
+     * Resolves the configured game and database, reads the active project and
+     * round filters, asks the component model for ranking results, and applies
+     * the module's visibility and result-limit settings without database writes.
+     * Invalid settings yield a complete empty template context.
+     *
+     * @param Registry $params Top Tipper module settings.
+     * @param object $module Joomla module instance.
+     * @param CMSApplicationInterface $app Active site application.
+     * @return array<string, mixed> Ranking data, navigation and template options.
+     */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         $predictionGameId = $this->extractId($params->get('pg', 0));
@@ -159,6 +172,14 @@ final class TopTipperHelper
         ];
     }
 
+    /**
+     * Build a route to the prediction members page for one league member.
+     *
+     * @param int $predictionGameId Prediction game identifier.
+     * @param int $memberId Prediction member identifier.
+     * @param int $databaseSelector Database configuration index.
+     * @return string Joomla-routed member URL.
+     */
     public function memberUrl(int $predictionGameId, int $memberId, int $databaseSelector = 0): string
     {
         return $this->route('predictionusers', [
@@ -168,6 +189,16 @@ final class TopTipperHelper
         ]);
     }
 
+    /**
+     * Build a route to a member's predictions for a project and round.
+     *
+     * @param int $predictionGameId Prediction game identifier.
+     * @param int $memberId Prediction member identifier.
+     * @param int $projectId Project identifier.
+     * @param int $roundId Project round identifier.
+     * @param int $databaseSelector Database configuration index.
+     * @return string Joomla-routed prediction results URL.
+     */
     public function detailsUrl(
         int $predictionGameId,
         int $memberId,
@@ -184,6 +215,18 @@ final class TopTipperHelper
         ]);
     }
 
+    /**
+     * Instantiate a Joomla prediction ranking model with temporary request data.
+     *
+     * Replaces relevant request parameters only while the MVC factory builds
+     * the model and restores every original value in a finally block, including
+     * when model creation throws. Returns null for an unexpected model type.
+     *
+     * @param CMSApplicationInterface $app Active Joomla site application.
+     * @param array $context Temporary model input values.
+     * @param int $databaseSelector Database selector forwarded to the model.
+     * @return PredictionrankingModel|null Resolved model or null.
+     */
     private function createRankingModel(
         CMSApplicationInterface $app,
         array $context,
@@ -219,6 +262,15 @@ final class TopTipperHelper
         return $model;
     }
 
+    /**
+     * Convert allowed Top Tipper display settings into ranking model options.
+     *
+     * Maps the known boolean-style module switches to integers and applies a
+     * bounded result limit, preventing an unbounded ranking view.
+     *
+     * @param Registry $params Module configuration.
+     * @return array<string, int> Sanitised ranking options.
+     */
     private function moduleConfig(Registry $params): array
     {
         $keys = [
