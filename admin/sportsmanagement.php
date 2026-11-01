@@ -98,7 +98,12 @@ $extensions = ExtensionLanguageHelper::forView($activeView);
 // Deduplicate after normalisation: distinct legacy names may map to the same directory.
 $loadedExtensions = [];
 foreach ($extensions as $extensionName) {
-    $extension = preg_replace('/[^A-Z0-9_-]/i', '', (string) $extensionName);
+    // Do not silently change an invalid language extension into another name.
+    if (!is_string($extensionName) || !preg_match('/^[A-Za-z0-9_-]+$/D', $extensionName)) {
+        continue;
+    }
+
+    $extension = $extensionName;
     $extensionKey = strtolower($extension);
 
     if ($extension === '' || isset($loadedExtensions[$extensionKey])) {
