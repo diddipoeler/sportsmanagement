@@ -25,7 +25,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Converts historic layout selections to their supported Joomla 5/6 equivalent and merges helper data without replacing framework-owned context.
      *
      * @return array|false Module layout variables, or false when skipped.
-     * @throws \\RuntimeException On invalid application or helper services.
+     * @throws \RuntimeException On invalid application or helper services.
      */
     protected function getLayoutData(): array|false
     {
