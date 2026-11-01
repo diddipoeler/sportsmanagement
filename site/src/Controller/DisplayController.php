@@ -27,6 +27,18 @@ final class DisplayController extends BaseController
 {
     protected $default_view = 'sportsmanagement';
 
+    /**
+     * Render the requested frontend view through Joomla's MVC dispatcher.
+     *
+     * Reject malformed or filtered selectors, use the historical default
+     * sportsmanagement view for empty requests, and normalise valid view names
+     * before delegating rendering to Joomla's base controller.
+     *
+     * @param bool $cachable Allow caching of the rendered view.
+     * @param array $urlparams Permitted parameters for cacheable requests.
+     * @return mixed Parent controller's render result.
+     * @throws \InvalidArgumentException For malformed view selectors.
+     */
     public function display($cachable = false, $urlparams = [])
     {
         // Joomla only applies the controller default when the view is absent;
