@@ -43,6 +43,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getHelper('UefaWertungHelper')
             ->getData($data['params'], $app, $database);
 
+        $result = is_array($result) ? $result : [];
+
         $data['seasons'] = is_array($result['seasons'] ?? null) ? $result['seasons'] : [];
         $data['rankings'] = is_array($result['rankings'] ?? null) ? $result['rankings'] : [];
 
