@@ -65,7 +65,13 @@ if (!is_string($rawView)) {
     throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
 }
 
-$view = strtolower($input->getCmd('view', 'sportsmanagement'));
+$filteredView = $input->getCmd('view', 'sportsmanagement');
+
+if (!is_string($filteredView)) {
+    throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
+}
+
+$view = strtolower($filteredView);
 
 if ($rawView !== '' && ($view !== strtolower($rawView) || trim($rawView) !== $rawView)) {
     throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
