@@ -348,7 +348,11 @@ class Router extends RouterBase
 
         $best = null;
         $bestScore = PHP_INT_MIN;
-        $currentItemId = (int) ($query['Itemid'] ?? 0);
+        $rawItemId = $query['Itemid'] ?? 0;
+        $currentItemId = (is_int($rawItemId) || is_string($rawItemId))
+            && ctype_digit((string) $rawItemId)
+            ? (int) $rawItemId
+            : 0;
 
         foreach ($items as $item) {
             if (!$this->isSportsManagementMenuItem($item)) {
@@ -368,7 +372,12 @@ class Router extends RouterBase
             }
 
             $menuQuery = isset($item->query) ? (array) $item->query : [];
-            $menuView = $this->normaliseView((string) ($menuQuery['view'] ?? ''));
+            $menuViewValue = $menuQuery['view'] ?? '';
+            if (!is_string($menuViewValue)) {
+                continue;
+            }
+
+            $menuView = $this->normaliseView($menuViewValue);
 
             if ($menuView !== $view) {
                 continue;
