@@ -22,6 +22,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare the native new-project module template and its permissions.
+     *
+     * Loads translations, selects the Joomla 5/6 native layout, queries the
+     * project helper and determines whether the user can create articles.
+     * Adds the module CSS and JavaScript only for HTML documents.
+     *
+     * @return array|false Render variables or false when rendering is skipped.
+     * @throws \RuntimeException Outside the site client or without a database.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -65,6 +75,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Obtain a typed database dependency for the project helper.
+     *
+     * Retrieves the database from Joomla's dependency injection container and
+     * rejects absent or incompatible services before they reach query methods.
+     *
+     * @return DatabaseInterface Valid Joomla database service.
+     * @throws \RuntimeException When the service is not available.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
