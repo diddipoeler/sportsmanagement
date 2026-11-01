@@ -20,6 +20,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Load club anniversary information for the frontend module layout.
+     *
+     * Normalises optional club records and display mode, loads component translations and enables Bootstrap carousel only for the compatible birthday-carousel layout.
+     *
+     * @return array|false Layout variables, or false if Joomla skips rendering.
+     * @throws \RuntimeException When called outside the site or without a database.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -63,6 +71,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the Joomla database service required by the Club Birthday helper.
+     *
+     * Reads the database dependency from Joomla's service container and
+     * checks its interface before passing it to the module's query methods.
+     *
+     * @return DatabaseInterface Connection for module data queries.
+     * @throws \RuntimeException If no compatible database service exists.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
