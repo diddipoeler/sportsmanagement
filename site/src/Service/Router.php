@@ -185,6 +185,11 @@ class Router extends RouterBase
                         $value = $this->getRouteDefaultValue($defaults[$key]);
                     }
 
+                    // Positional route segments must be scalar; arrays trigger warnings.
+                    if (!is_scalar($value)) {
+                        throw new \InvalidArgumentException('Invalid SportsManagement route parameter.', 400);
+                    }
+
                     $segments[] = (string) $value;
                 }
             }
@@ -225,7 +230,11 @@ class Router extends RouterBase
         }
 
         $segments = array_values($segments);
-        $view = $this->normaliseView((string) ($segments[0] ?? ''));
+        if (!is_string($segments[0])) {
+            throw new \InvalidArgumentException('Invalid SportsManagement route segment.', 400);
+        }
+
+        $view = $this->normaliseView($segments[0]);
 
         if ($view === '' || !$this->isKnownSiteView($view)) {
             return [];
