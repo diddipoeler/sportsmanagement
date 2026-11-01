@@ -40,5 +40,14 @@ namespace {
         }
     }
 
-    echo "SEF scalar comparison checks passed.\n";
+    $menuItemLookup = new \ReflectionMethod($class, 'getMenuItemFromQuery');
+
+    foreach ([[], ['Itemid' => ['123']], ['Itemid' => '123x'], ['Itemid' => '-1'], ['Itemid' => new \stdClass()]] as $query) {
+        if ($menuItemLookup->invoke($router, $query) !== null) {
+            fwrite(STDERR, 'Invalid SEF menu ID was accepted.' . PHP_EOL);
+            exit(1);
+        }
+    }
+
+    echo "SEF scalar comparison and menu ID checks passed.\n";
 }
