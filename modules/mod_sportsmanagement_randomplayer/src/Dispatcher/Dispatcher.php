@@ -23,6 +23,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Select a random player and populate the native module template.
+     *
+     * Loads component translations, keeps missing helper output iterable and registers the HTML stylesheet.
+     *
+     * @return array|false Module layout variables, or false when skipped.
+     * @throws \\RuntimeException On invalid application or helper services.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -69,6 +77,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Get the Joomla database service used by the RandomPlayer helper.
+     *
+     * Resolves the service from the dependency injection container and checks
+     * its interface before allowing database queries to run.
+     *
+     * @return DatabaseInterface Valid database service.
+     * @throws \\RuntimeException When the database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
