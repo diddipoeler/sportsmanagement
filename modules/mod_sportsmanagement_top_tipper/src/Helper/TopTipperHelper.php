@@ -57,6 +57,7 @@ final class TopTipperHelper
 
         $currentRound = $discoveryModel->getProjectCurrentRoundId($projectId);
         $roundOptions = $discoveryModel->getRoundOptions();
+        $roundOptions = is_array($roundOptions) ? array_values(array_filter($roundOptions, 'is_object')) : [];
         $roundIds = array_values(array_filter(array_map(
             fn (object $option): int => $this->extractId($option->value ?? 0),
             $roundOptions
