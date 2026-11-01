@@ -9,6 +9,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
+      - 'site/src/Service/SiteRouteSchema.php'
       - '.github/tests/joomla56-router-scalar-comparison.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
@@ -51,6 +52,7 @@ on:
       - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
+      - 'site/src/Service/SiteRouteSchema.php'
       - '.github/tests/joomla56-router-scalar-comparison.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
@@ -103,6 +105,7 @@ jobs:
           php -l modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
           php -l site/src/Service/Router.php
+          php -l site/src/Service/SiteRouteSchema.php
           php -l site/src/Controller/DisplayController.php
           php -l admin/sportsmanagement.php
           php -l admin/src/Controller/DisplayController.php
