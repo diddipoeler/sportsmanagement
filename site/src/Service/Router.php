@@ -364,6 +364,16 @@ class Router extends RouterBase
                 continue;
             }
 
+            // The selected item becomes query['Itemid'] in preprocess().
+            // Never select an item whose identifier cannot be used as an ID.
+            $candidateId = $item->id ?? null;
+            if ((!is_int($candidateId) && !is_string($candidateId))
+                || !ctype_digit((string) $candidateId)
+                || (int) $candidateId <= 0
+            ) {
+                continue;
+            }
+
             // Malformed menu metadata must not be cast from arrays or objects.
             if (isset($item->published)
                 && (!is_scalar($item->published) || (string) $item->published !== '1')
@@ -418,7 +428,6 @@ class Router extends RouterBase
                 continue;
             }
 
-            $candidateId = $item->id ?? null;
             if (($currentItemId > 0)
                 && (is_int($candidateId) || is_string($candidateId))
                 && ctype_digit((string) $candidateId)
