@@ -102,6 +102,8 @@ final class TopTipperHelper
         $rankingData = $rankingModel->getRankingData($rankingConfig, $avatarConfig);
         $rankingData = is_array($rankingData) ? $rankingData : [];
         $rows = is_array($rankingData['allRows'] ?? null) ? $rankingData['allRows'] : [];
+        // Ranking templates expect associative row records, never arbitrary helper values.
+        $rows = array_filter($rows, 'is_array');
         $currentMember = $rankingModel->getPredictionMember();
         $currentMemberId = (int) ($currentMember->id ?? $currentMember->pmID ?? 0);
 
@@ -110,7 +112,8 @@ final class TopTipperHelper
                 $rows,
                 static fn (mixed $row, int|string $key): bool => (is_array($row)
                     && (int) ($row['predictionsCount'] ?? 0) > 0)
-                    || (int) $key === $currentMemberId,
+                    || ($currentMemberId > 0 && ctype_digit((string) $key)
+                        && (int) $key === $currentMemberId),
                 ARRAY_FILTER_USE_BOTH
             );
         }
