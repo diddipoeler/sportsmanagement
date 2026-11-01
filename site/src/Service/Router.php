@@ -58,7 +58,7 @@ class Router extends RouterBase
         $rawView = $query['view'] ?? '';
 
         if (!is_string($rawOption) || !is_string($rawView)) {
-            return $query;
+            throw new \InvalidArgumentException('Invalid SportsManagement route selector.', 400);
         }
 
         $option = $rawOption;
