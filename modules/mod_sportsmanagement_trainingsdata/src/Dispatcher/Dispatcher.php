@@ -22,6 +22,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Retrieve and display the configured training information.
+     *
+     * Loads the shared component translations, obtains training records with the database-backed helper and registers the module stylesheet for HTML output.
+     *
+     * @return array|false Layout data or false if rendering is skipped.
+     * @throws \RuntimeException If the site application or database is unavailable.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -57,6 +65,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the Joomla database dependency for the TrainingsData helper.
+     *
+     * Uses the dependency injection container and verifies that the resolved
+     * service implements DatabaseInterface before any queries are performed.
+     *
+     * @return DatabaseInterface Valid database connection for module queries.
+     * @throws \RuntimeException When no compatible database service exists.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
