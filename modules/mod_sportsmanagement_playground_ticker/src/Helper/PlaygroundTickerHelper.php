@@ -33,7 +33,12 @@ final class PlaygroundTickerHelper
             return [];
         }
 
-        $limit = max(1, (int) $params->get('limit', 1));
+        $rawLimit = $params->get('limit', 1);
+        // Prevent malformed module settings (including arrays) from becoming
+        // PHP warnings or unexpectedly huge random selections.
+        $limit = (is_int($rawLimit) || (is_string($rawLimit) && ctype_digit($rawLimit)))
+            ? min(100, max(1, (int) $rawLimit))
+            : 1;
         $whichDatabase = $this->databaseSelector($params, $app);
 
         // Reject malformed configuration rather than silently using DB zero.
