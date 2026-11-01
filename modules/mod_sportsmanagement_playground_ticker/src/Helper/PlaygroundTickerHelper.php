@@ -91,6 +91,15 @@ final class PlaygroundTickerHelper
         $unique = [];
 
         foreach ($rows as $row) {
+            // Database drivers should return objects, but do not access fields
+            // on malformed rows or merge unrelated records under ID zero.
+            if (!is_object($row) || !isset($row->id_playground)
+                || !ctype_digit((string) $row->id_playground)
+                || (int) $row->id_playground <= 0
+            ) {
+                continue;
+            }
+
             $unique[(int) $row->id_playground] = $row;
         }
 
@@ -150,7 +159,8 @@ final class PlaygroundTickerHelper
             || $this->databaseSelector($params, $app) === 1;
 
         if ($useExternal) {
-            $server = trim((string) $componentParams->get('cfg_which_database_server', ''));
+            $configuredServer = $componentParams->get('cfg_which_database_server', '');
+            $server = is_string($configuredServer) ? trim($configuredServer) : '';
 
             if ($server !== ''
                 && !preg_match('/[\\x00-\\x20\\x7F]/', $server)
