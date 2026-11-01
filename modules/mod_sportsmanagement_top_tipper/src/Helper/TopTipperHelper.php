@@ -108,7 +108,8 @@ final class TopTipperHelper
         if (empty($config['show_all_user'])) {
             $rows = array_filter(
                 $rows,
-                static fn (array $row, int|string $key): bool => (int) ($row['predictionsCount'] ?? 0) > 0
+                static fn (mixed $row, int|string $key): bool => (is_array($row)
+                    && (int) ($row['predictionsCount'] ?? 0) > 0)
                     || (int) $key === $currentMemberId,
                 ARRAY_FILTER_USE_BOTH
             );
