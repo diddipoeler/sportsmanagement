@@ -20,6 +20,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Build the Top Tipper template context for the site application.
+     *
+     * Load translations, register the stylesheet, and merge prediction
+     * ranking data with the Joomla module context. Protect framework-owned
+     * module, params and layout values from being replaced by the helper.
+     *
+     * @return array|false Layout data, or false if rendering is skipped.
+     * @throws \RuntimeException Outside Joomla's site client.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
