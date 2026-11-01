@@ -57,8 +57,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['matches'] = is_array($result['matches'] ?? null) ? $result['matches'] : [];
         $data['legacyUpdateRequested'] = (bool) ($result['legacy_update_requested'] ?? false);
 
-        $template = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $data['params']->get('template', 'default_tableless'));
-        $template = $template !== '' ? $template : 'default_tableless';
+        $rawTemplate = $data['params']->get('template', 'default_tableless');
+        // Never turn an invalid template name into a different valid directory.
+        $template = is_string($rawTemplate) && preg_match('/^[A-Za-z0-9_-]+$/D', $rawTemplate)
+            ? $rawTemplate
+            : 'default_tableless';
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
