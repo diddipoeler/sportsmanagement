@@ -364,7 +364,10 @@ class Router extends RouterBase
                 continue;
             }
 
-            if (isset($item->published) && (int) $item->published !== 1) {
+            // Malformed menu metadata must not be cast from arrays or objects.
+            if (isset($item->published)
+                && (!is_scalar($item->published) || (string) $item->published !== '1')
+            ) {
                 continue;
             }
 
