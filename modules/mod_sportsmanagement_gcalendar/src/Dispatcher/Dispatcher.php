@@ -38,12 +38,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $db = $this->joomlaDatabase();
-        $data = array_merge(
-            $data,
-            $this->getHelperFactory()
-                ->getHelper('GcalendarHelper')
-                ->getData($data['params'], $data['module'], $app, $db)
-        );
+        $payload = $this->getHelperFactory()
+            ->getHelper('GcalendarHelper')
+            ->getData($data['params'], $data['module'], $app, $db);
+        $payload = is_array($payload) ? $payload : [];
+        unset($payload['module'], $payload['params'], $payload['layout']);
+        $data = array_merge($data, $payload);
 
         // The script-options key must be stable and tied to the module instance.
         $moduleId = max(0, (int) ($data['module']->id ?? 0));
@@ -65,7 +65,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     
             $document->addScriptOptions(
                 'mod_sportsmanagement_gcalendar.' . $moduleId,
-                $data['calendarConfig'] ?? []
+                is_array($data['calendarConfig'] ?? null) ? $data['calendarConfig'] : []
             );
         }
 
@@ -76,8 +76,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement GCalendar database service is unavailable.', 500);
+        }
 
         return $database;
     }
