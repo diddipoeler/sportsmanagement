@@ -9,6 +9,18 @@
  */
 declare(strict_types=1);
 
+namespace Joomla\CMS\Component {
+    class ComponentHelper
+    {
+        public static mixed $component = null;
+
+        public static function getComponent(string $name): mixed
+        {
+            return self::$component;
+        }
+    }
+}
+
 namespace Joomla\CMS\Component\Router {
     class RouterBase
     {
@@ -160,6 +172,27 @@ namespace {
     if (($selected->id ?? null) !== 42) {
         fwrite(STDERR, 'Malformed menu ID affected SEF scoring.' . PHP_EOL);
         exit(1);
+    }
+
+    // With no matching menu entries, the component-id fallback must not query
+    // the menu with a missing or malformed component identifier.
+    $router->menu = new class {
+        public function getItems(string $key, mixed $value): array
+        {
+            if ($key === 'component_id') {
+                throw new \RuntimeException('Invalid component ID reached Joomla menu lookup.');
+            }
+
+            return [];
+        }
+    };
+    $getItems = new \ReflectionMethod($class, 'getSportsManagementMenuItems');
+    foreach ([null, (object) ['id' => ['42']], (object) ['id' => 'not-a-number'], (object) ['id' => 0]] as $component) {
+        \Joomla\CMS\Component\ComponentHelper::$component = $component;
+        if ($getItems->invoke($router) !== []) {
+            fwrite(STDERR, 'Invalid Joomla component metadata was accepted.' . PHP_EOL);
+            exit(1);
+        }
     }
 
     echo "SEF scalar comparison and menu selector checks passed.\n";
