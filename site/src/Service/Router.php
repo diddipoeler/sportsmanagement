@@ -440,7 +440,8 @@ class Router extends RouterBase
     {
         $menuQuery = isset($item->query) ? (array) $item->query : [];
 
-        if ($this->normaliseView((string) ($menuQuery['view'] ?? '')) !== $view) {
+        $menuView = $menuQuery['view'] ?? '';
+        if (!is_string($menuView) || $this->normaliseView($menuView) !== $view) {
             return false;
         }
 
@@ -490,7 +491,7 @@ class Router extends RouterBase
 
         $query = isset($item->query) ? (array) $item->query : [];
 
-        return (string) ($query['option'] ?? '') === self::COMPONENT;
+        return ($query['option'] ?? null) === self::COMPONENT;
     }
 
     private function isEmptyRouteValue($value): bool
