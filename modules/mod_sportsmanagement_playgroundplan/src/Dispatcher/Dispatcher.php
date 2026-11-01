@@ -35,9 +35,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
-        $data['list'] = $this->getHelperFactory()
+        $plan = $this->getHelperFactory()
             ->getHelper('PlaygroundPlanHelper')
             ->getData($data['params'], $app, $data['module']);
+        $data['list'] = is_array($plan) ? $plan : [];
 
         $document = $app->getDocument();
 
