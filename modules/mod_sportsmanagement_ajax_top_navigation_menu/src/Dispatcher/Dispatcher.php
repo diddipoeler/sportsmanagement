@@ -20,6 +20,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare the navigation module's data and JavaScript configuration.
+     *
+     * Validates the stored layout, loads navigation helper data without overwriting Joomla context, selects the native layout, and registers Bootstrap tab assets and safe client options.
+     *
+     * @return array|false Module layout variables, or false if skipped.
+     * @throws \RuntimeException When called outside the Joomla site application.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
