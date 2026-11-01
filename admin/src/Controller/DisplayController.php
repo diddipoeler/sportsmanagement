@@ -57,6 +57,7 @@ final class DisplayController extends BaseController
         // case-sensitive class lookup failures on Linux filesystems.
         $input->set('view', strtolower($view));
 
+        // Joomla's parent controller receives only validated view input.
         return parent::display($cachable, $urlparams);
     }
 }
