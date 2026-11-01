@@ -143,5 +143,24 @@ namespace {
         exit(1);
     }
 
+    // A malformed menu ID must not gain the current-Itemid scoring bonus.
+    $router->app = new \stdClass();
+    $router->menu = new class {
+        public function getItems(string $key, mixed $value): array
+        {
+            return [
+                (object) ['id' => ['42'], 'component' => 'com_sportsmanagement',
+                    'published' => 1, 'query' => ['view' => 'ranking']],
+                (object) ['id' => 42, 'component' => 'com_sportsmanagement',
+                    'published' => 1, 'query' => ['view' => 'ranking']],
+            ];
+        }
+    };
+    $selected = $findMenu->invoke($router, ['Itemid' => 42], 'ranking');
+    if (($selected->id ?? null) !== 42) {
+        fwrite(STDERR, 'Malformed menu ID affected SEF scoring.' . PHP_EOL);
+        exit(1);
+    }
+
     echo "SEF scalar comparison and menu selector checks passed.\n";
 }
