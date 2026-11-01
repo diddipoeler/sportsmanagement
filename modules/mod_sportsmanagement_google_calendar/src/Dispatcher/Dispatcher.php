@@ -38,12 +38,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         try {
             $cacheFactory = $this->cacheControllerFactory();
-            $data = array_merge(
-                $data,
-                $this->getHelperFactory()
-                    ->getHelper('GoogleCalendarHelper')
-                    ->getData($data['params'], $data['module'], $app, $cacheFactory)
-            );
+            $payload = $this->getHelperFactory()
+                ->getHelper('GoogleCalendarHelper')
+                ->getData($data['params'], $data['module'], $app, $cacheFactory);
+            $payload = is_array($payload) ? $payload : [];
+            unset($payload['module'], $payload['params'], $payload['layout']);
+            $data = array_merge($data, $payload);
         } catch (\Throwable $exception) {
             // Avoid exposing OAuth/API error details to public site visitors.
             Log::add('JSM Google Calendar: rendering failed (' . get_class($exception) . ')', Log::ERROR, 'com_sportsmanagement');
@@ -57,8 +57,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
     private function cacheControllerFactory(): CacheControllerFactoryInterface
     {
-        /** @var CacheControllerFactoryInterface $cacheFactory */
         $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
+
+        if (!$cacheFactory instanceof CacheControllerFactoryInterface) {
+            throw new \RuntimeException('SportsManagement Google Calendar cache factory is unavailable.', 500);
+        }
 
         return $cacheFactory;
     }
