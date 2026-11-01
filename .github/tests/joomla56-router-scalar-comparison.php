@@ -16,6 +16,7 @@ namespace Joomla\CMS\Component\Router {
 namespace {
     define('_JEXEC', 1);
 
+    require dirname(__DIR__, 2) . '/site/src/Service/SiteRouteSchema.php';
     require dirname(__DIR__, 2) . '/site/src/Service/Router.php';
 
     $class = \Diddipoeler\Component\SportsManagement\Site\Service\Router::class;
@@ -67,6 +68,25 @@ namespace {
 
     if ($representsQuery->invoke($router, $invalidMenuView, [], 'ranking', []) !== false) {
         fwrite(STDERR, 'Invalid SEF menu view was accepted.' . PHP_EOL);
+        exit(1);
+    }
+
+    // A recognised route with malformed positional values must be rejected.
+    $invalidSegments = ['ranking', ['bad']];
+    try {
+        $router->parse($invalidSegments);
+        fwrite(STDERR, 'Invalid positional SEF segment was accepted.' . PHP_EOL);
+        exit(1);
+    } catch (\InvalidArgumentException $exception) {
+        if ($exception->getCode() !== 400) {
+            throw $exception;
+        }
+    }
+
+    $validSegments = ['ranking', '0'];
+    $parsed = $router->parse($validSegments);
+    if (($parsed['view'] ?? null) !== 'ranking' || ($parsed['cfg_which_database'] ?? null) !== '0') {
+        fwrite(STDERR, 'Valid positional SEF segment was rejected.' . PHP_EOL);
         exit(1);
     }
 
