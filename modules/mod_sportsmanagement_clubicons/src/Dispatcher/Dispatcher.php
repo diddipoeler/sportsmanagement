@@ -47,6 +47,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             $app
         );
 
+        $result = is_array($result) ? $result : [];
+
         $data['project'] = is_object($result['project'] ?? null) ? $result['project'] : null;
         $data['ranking'] = is_array($result['ranking'] ?? null) ? $result['ranking'] : [];
         $data['teams'] = is_array($result['teams'] ?? null) ? $result['teams'] : [];
