@@ -100,7 +100,8 @@ final class TopTipperHelper
         $rankingConfig = $config;
         $rankingConfig['show_all_user'] = 1;
         $rankingData = $rankingModel->getRankingData($rankingConfig, $avatarConfig);
-        $rows = $rankingData['allRows'] ?? [];
+        $rankingData = is_array($rankingData) ? $rankingData : [];
+        $rows = is_array($rankingData['allRows'] ?? null) ? $rankingData['allRows'] : [];
         $currentMember = $rankingModel->getPredictionMember();
         $currentMemberId = (int) ($currentMember->id ?? $currentMember->pmID ?? 0);
 
