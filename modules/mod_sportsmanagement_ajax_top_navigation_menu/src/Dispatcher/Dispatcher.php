@@ -41,14 +41,21 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $requestedLayout = trim((string) $data['params']->get('layout', 'default'));
-        if ($requestedLayout === '' || $requestedLayout === '_:native' || $requestedLayout === 'native') {
+        $rawLayout = $data['params']->get('layout', 'default');
+        $requestedLayout = is_string($rawLayout) ? trim($rawLayout) : 'default';
+        if ($requestedLayout === '' || $requestedLayout === '_:native' || $requestedLayout === 'native'
+            || !preg_match('/^(?:[A-Za-z0-9_-]+|[A-Za-z0-9_-]+:[A-Za-z0-9_-]+)$/D', $requestedLayout)
+        ) {
             $requestedLayout = 'default';
         }
 
         $payload = $this->getHelperFactory()
             ->getHelper('AjaxTopNavigationHelper')
             ->getData($data['params'], $data['module'], $app);
+
+        // Only merge data supplied as an array, without replacing Joomla context.
+        $payload = is_array($payload) ? $payload : [];
+        unset($payload['module'], $payload['params'], $payload['layout']);
 
         foreach ($payload as $key => $value) {
             $data[$key] = $value;
