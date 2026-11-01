@@ -21,6 +21,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare random quotation data for the frontend template.
+     *
+     * Loads component settings and language strings, fetches quotations through the database-backed helper, normalises absent records, and registers the module stylesheet for HTML output.
+     *
+     * @return array|false Module layout variables, or false if skipped.
+     * @throws \RuntimeException When called outside the Joomla site application.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -47,11 +55,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $result = is_array($result) ? $result : [];
 
-        $data['source'] = $result['source'] ?? '';
-        $data['quoteStyle'] = $result['style'] ?? '';
+        $data['source'] = is_string($result['source'] ?? null) ? $result['source'] : '';
+        $data['quoteStyle'] = is_string($result['style'] ?? null) ? $result['style'] : '';
         $data['list'] = is_array($result['list'] ?? null) ? $result['list'] : [];
-        $data['textLine'] = $result['textLine'] ?? '';
-        $data['pictureServer'] = $result['pictureServer'] ?? '';
+        $data['textLine'] = is_string($result['textLine'] ?? null) ? $result['textLine'] : '';
+        $data['pictureServer'] = is_string($result['pictureServer'] ?? null) ? $result['pictureServer'] : '';
 
         $document = $app->getDocument();
 
@@ -65,6 +73,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Obtain the Joomla database interface for Random Quotes queries.
+     *
+     * Resolves the service from Joomla's dependency injection container and
+     * rejects missing or incompatible services before invoking the helper.
+     *
+     * @return DatabaseInterface Valid database service.
+     * @throws \RuntimeException If the database dependency is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
