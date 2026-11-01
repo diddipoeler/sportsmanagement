@@ -22,6 +22,17 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Assemble the matches module's template data for Joomla 5/6 rendering.
+     *
+     * Loads frontend and component languages, obtains a typed database service,
+     * and requests matches from the module helper. Normalises empty helper
+     * results and safely chooses optional per-template CSS without allowing
+     * module parameters to introduce arbitrary filesystem paths.
+     *
+     * @return array|false Matches and layout variables, or false if skipped.
+     * @throws \RuntimeException If called outside the site or without a database.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -80,6 +91,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve the database interface required by the matches helper.
+     *
+     * Verifies the dependency injection container supplied a compatible
+     * Joomla database implementation before any match queries are executed.
+     *
+     * @return DatabaseInterface Database used to fetch match records.
+     * @throws \RuntimeException When no compatible database is available.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
