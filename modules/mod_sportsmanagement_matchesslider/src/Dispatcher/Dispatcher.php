@@ -23,6 +23,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare the matches slider data and associated frontend assets.
+     *
+     * Retrieves match data from the helper, normalises missing results and registers the slider stylesheet and deferred JavaScript for HTML documents.
+     * The method rejects administrator execution and preserves Joomla's
+     * original layout context when rendering is skipped.
+     *
+     * @return array|false Template variables, or false when skipped.
+     * @throws \RuntimeException When the site context or database is unavailable.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -65,6 +75,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Obtain a valid Joomla database service for Matches Slider queries.
+     *
+     * Retrieves the registered DatabaseInterface from the service container
+     * and rejects a missing or incompatible instance before helper execution.
+     *
+     * @return DatabaseInterface Database connection used by the module.
+     * @throws \RuntimeException When the Joomla database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
