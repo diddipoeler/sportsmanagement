@@ -174,6 +174,19 @@ namespace {
         exit(1);
     }
 
+    // An invalid ID must not be selected even when it is the only match.
+    $router->menu = new class {
+        public function getItems(string $key, mixed $value): array
+        {
+            return [(object) ['id' => ['42'], 'component' => 'com_sportsmanagement',
+                'published' => 1, 'query' => ['view' => 'ranking']]];
+        }
+    };
+    if ($findMenu->invoke($router, ['Itemid' => 42], 'ranking') !== null) {
+        fwrite(STDERR, 'SEF router selected malformed menu identifier.' . PHP_EOL);
+        exit(1);
+    }
+
     // With no matching menu entries, the component-id fallback must not query
     // the menu with a missing or malformed component identifier.
     $router->menu = new class {
