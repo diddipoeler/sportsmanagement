@@ -114,5 +114,34 @@ namespace {
         exit(1);
     }
 
+    // Authorised access filtering must reject non-scalar menu levels.
+    $router->app = new class {
+        public function getIdentity(): object
+        {
+            return new class {
+                public function getAuthorisedViewLevels(): array
+                {
+                    return [1, 2];
+                }
+            };
+        }
+    };
+    $router->menu = new class {
+        public function getItems(string $key, mixed $value): array
+        {
+            return [
+                (object) ['id' => 9, 'component' => 'com_sportsmanagement',
+                    'published' => 1, 'access' => [1], 'query' => ['view' => 'ranking']],
+                (object) ['id' => 10, 'component' => 'com_sportsmanagement',
+                    'published' => 1, 'access' => 2, 'query' => ['view' => 'ranking']],
+            ];
+        }
+    };
+    $selected = $findMenu->invoke($router, [], 'ranking');
+    if (($selected->id ?? null) !== 10) {
+        fwrite(STDERR, 'Invalid menu access level influenced SEF matching.' . PHP_EOL);
+        exit(1);
+    }
+
     echo "SEF scalar comparison and menu selector checks passed.\n";
 }
