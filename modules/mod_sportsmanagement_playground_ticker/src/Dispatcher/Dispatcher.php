@@ -21,6 +21,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Populate the playground ticker with selected grounds and image URLs.
+     *
+     * Retrieves validated playgrounds and the picture server from the helper, prepares Joomla layout data, and activates the Bootstrap carousel only when the configured mode requests it.
+     *
+     * @return array|false Module layout variables, or false if skipped.
+     * @throws \RuntimeException When called outside the Joomla site application.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -53,7 +61,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ['version' => 'auto']
             );
 
-            if (strtoupper((string) $data['params']->get('mode', 'L')) === 'B') {
+            $rawMode = $data['params']->get('mode', 'L');
+            if (is_string($rawMode) && strtoupper($rawMode) === 'B') {
                 $assets->useScript('bootstrap.carousel');
             }
         }
@@ -61,6 +70,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Obtain the Joomla database interface for Playground Ticker queries.
+     *
+     * Resolves the service from Joomla's dependency injection container and
+     * rejects missing or incompatible services before invoking the helper.
+     *
+     * @return DatabaseInterface Valid database service.
+     * @throws \RuntimeException If the database dependency is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
