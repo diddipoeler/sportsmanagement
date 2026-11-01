@@ -88,12 +88,14 @@ final class PlaygroundTickerHelper
 
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
+        $rows = is_array($rows) ? $rows : [];
         $unique = [];
 
         foreach ($rows as $row) {
             // Database drivers should return objects, but do not access fields
             // on malformed rows or merge unrelated records under ID zero.
             if (!is_object($row) || !isset($row->id_playground)
+                || (!is_int($row->id_playground) && !is_string($row->id_playground))
                 || !ctype_digit((string) $row->id_playground)
                 || (int) $row->id_playground <= 0
             ) {
