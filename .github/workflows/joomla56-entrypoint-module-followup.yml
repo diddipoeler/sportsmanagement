@@ -30,6 +30,7 @@ on:
       - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php'
       - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php'
@@ -66,6 +67,7 @@ on:
       - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php'
       - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php'
@@ -120,6 +122,7 @@ jobs:
           php -l modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php
           php -l modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php
