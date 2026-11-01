@@ -35,6 +35,7 @@ on:
       - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   pull_request:
@@ -65,6 +66,7 @@ on:
       - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php'
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   workflow_dispatch:
@@ -114,6 +116,7 @@ jobs:
           php -l modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_club_birthday/src/Dispatcher/Dispatcher.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
