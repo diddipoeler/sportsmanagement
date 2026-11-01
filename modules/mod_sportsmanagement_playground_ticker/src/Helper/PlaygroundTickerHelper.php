@@ -19,6 +19,18 @@ use Joomla\Registry\Registry;
 
 final class PlaygroundTickerHelper
 {
+    /**
+     * Select distinct playground records for the frontend ticker.
+     *
+     * Validate project, database and result-limit parameters, query the
+     * selected database, discard malformed records and return a bounded random
+     * selection. Invalid project settings never broaden the database query.
+     *
+     * @param Registry $params Module settings and filters.
+     * @param CMSApplicationInterface $app Active application.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla database.
+     * @return array<int, object> Playground records, possibly empty.
+     */
     public function getData(
         Registry $params,
         CMSApplicationInterface $app,
