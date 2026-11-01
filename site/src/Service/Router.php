@@ -485,7 +485,10 @@ class Router extends RouterBase
             return false;
         }
 
-        if (isset($item->component) && (string) $item->component === self::COMPONENT) {
+        // Joomla menu data can be malformed; never stringify arrays or objects.
+        if (isset($item->component) && is_string($item->component)
+            && $item->component === self::COMPONENT
+        ) {
             return true;
         }
 
