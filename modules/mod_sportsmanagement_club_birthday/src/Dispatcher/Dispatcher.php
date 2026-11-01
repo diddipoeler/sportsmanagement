@@ -51,7 +51,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $result = is_array($result) ? $result : [];
 
         $data['clubs'] = is_array($result['clubs'] ?? null) ? $result['clubs'] : [];
-        $data['mode'] = is_string($result['mode'] ?? null) ? $result['mode'] : 'L';
+        $mode = $result['mode'] ?? 'L';
+        $data['mode'] = is_string($mode) && in_array($mode, ['L', 'BC'], true) ? $mode : 'L';
 
         $document = $app->getDocument();
 
