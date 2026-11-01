@@ -418,7 +418,12 @@ class Router extends RouterBase
                 continue;
             }
 
-            if ((int) ($item->id ?? 0) === $currentItemId) {
+            $candidateId = $item->id ?? null;
+            if (($currentItemId > 0)
+                && (is_int($candidateId) || is_string($candidateId))
+                && ctype_digit((string) $candidateId)
+                && (int) $candidateId === $currentItemId
+            ) {
                 ++$score;
             }
 
