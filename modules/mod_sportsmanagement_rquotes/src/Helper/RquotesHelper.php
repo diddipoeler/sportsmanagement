@@ -298,14 +298,15 @@ final class RquotesHelper
         $meta = $this->loadMeta($db, $metaId);
         // A category may have fewer quotes than when this rotation was saved.
         // Keep the stored position within the currently available quote list.
-        $number = min($count, max(1, (int) ($meta->number_reached ?? 1)));
+        $savedNumber = $meta->number_reached ?? 1;
+        $number = min($count, max(1, self::normalisePositiveLimit($savedNumber, 1, $count)));
 
         if (!$meta) {
             $this->storeMeta($db, $metaId, $number, $token, false);
-        } elseif ((string) ($meta->date_modified ?? '') !== $token) {
+        } elseif (!is_string($meta->date_modified ?? null) || $meta->date_modified !== $token) {
             $number = $number >= $count ? 1 : $number + 1;
             $this->storeMeta($db, $metaId, $number, $token, true);
-        } elseif ((int) $meta->number_reached !== $number) {
+        } elseif (self::normalisePositiveLimit($savedNumber, 1, $count) !== $number) {
             // Persist the clamped index so obsolete values do not linger.
             $this->storeMeta($db, $metaId, $number, $token, true);
         }
