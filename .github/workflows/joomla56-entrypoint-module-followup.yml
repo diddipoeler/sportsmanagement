@@ -35,6 +35,8 @@ on:
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php'
+      - '.github/tests/joomla56-teamstats-settings.php'
       - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
@@ -86,6 +88,8 @@ on:
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php'
+      - '.github/tests/joomla56-teamstats-settings.php'
       - 'modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php'
@@ -151,6 +155,8 @@ jobs:
           php -l modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_count_rekord/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_teamstats_ranking/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_teamstats_ranking/src/Helper/TeamStatsRankingHelper.php
+          php -l .github/tests/joomla56-teamstats-settings.php
           php -l modules/mod_sportsmanagement_act_season/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_playground_ticker/src/Dispatcher/Dispatcher.php
@@ -182,5 +188,7 @@ jobs:
         run: php .github/tests/joomla56-rquotes-inputs.php
       - name: Playground Plan venue regression
         run: php .github/tests/joomla56-playgroundplan-venues.php
+      - name: Team Stats Ranking configuration regression
+        run: php .github/tests/joomla56-teamstats-settings.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
