@@ -19,6 +19,17 @@ use Joomla\Registry\Registry;
 
 final class TeamStatsRankingHelper
 {
+    /**
+     * Load and calculate the selected team statistic ranking for the module.
+     *
+     * Validates the configured project and statistic identifiers, chooses the
+     * database, calculates a bounded ranking and resolves its team records.
+     * Missing projects, statistics or database errors produce empty data.
+     *
+     * @param Registry $params Joomla module configuration.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return array<string, mixed> Ranking data, team metadata and selector.
+     */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $projectId = $this->extractId($params->get('p', 0));
@@ -90,6 +101,13 @@ final class TeamStatsRankingHelper
         return $default > 0 ? min($maximum, max(1, $number)) : min($maximum, $number);
     }
 
+    /**
+     * Resolve the SportsManagement database for a validated selector.
+     *
+     * @param int $selector Nonnegative configured database selector.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return DatabaseInterface Selected statistics database.
+     */
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
