@@ -129,14 +129,17 @@ final class PlaygroundPlanHelper
             }
 
             $db->setQuery($query, 0, $limit);
-            $rows = $db->loadObjectList() ?: [];
+            $loadedRows = $db->loadObjectList();
+            $rows = is_array($loadedRows) ? array_values(array_filter($loadedRows, 'is_object')) : [];
             $cfg = self::nonNegativeInteger($params->get('cfg_which_database', 0));
             $season = self::nonNegativeInteger($params->get('s', 0));
             $showLink = self::nonNegativeInteger($params->get('show_playground_link', 1)) === 1;
             $showLogos = self::nonNegativeInteger($params->get('show_club_logo', 1)) === 1;
 
             foreach ($rows as $row) {
-                $row->project_slug = $this->slug((int) $row->project_id, (string) $row->project_alias);
+                $projectId = self::nonNegativeInteger($row->project_id ?? 0);
+                $projectAlias = $row->project_alias ?? '';
+                $row->project_slug = $this->slug($projectId, is_string($projectAlias) ? $projectAlias : '');
 
                 [$playgroundId, $playgroundAlias, $playgroundName, $playgroundPicture] = $this->playground($row);
                 $row->display_playground_name = $playgroundName;
@@ -154,8 +157,8 @@ final class PlaygroundPlanHelper
                 }
 
                 if ($showLogos) {
-                    $row->team1_logo = $this->logo((string) ($row->team1_logo ?? ''), $logoField);
-                    $row->team2_logo = $this->logo((string) ($row->team2_logo ?? ''), $logoField);
+                    $row->team1_logo = $this->logo(is_string($row->team1_logo ?? null) ? $row->team1_logo : '', $logoField);
+                    $row->team2_logo = $this->logo(is_string($row->team2_logo ?? null) ? $row->team2_logo : '', $logoField);
                 } else {
                     $row->team1_logo = '';
                     $row->team2_logo = '';
