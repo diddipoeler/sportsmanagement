@@ -388,6 +388,11 @@ $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'fi
 			$query->where(' mc.round_id = ' . $this->_rid);
 		}
 
+        if (is_numeric($this->getState('filter.state')))
+		{
+			$this->jsmquery->where('mc.published = ' . $this->getState('filter.state'));
+		}
+
 		if ($this->_projectteam)
 		{
 			$query->where('( mc.projectteam1_id = ' . $this->_projectteam . ' OR mc.projectteam2_id = ' . $this->_projectteam . ' )');
