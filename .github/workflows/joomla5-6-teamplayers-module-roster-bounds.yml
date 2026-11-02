@@ -8,6 +8,7 @@ on:
       - '.github/tests/joomla56_teamplayers_module_roster_bounds.php'
       - '.github/tests/joomla56_teamplayers_selector_validation.php'
       - '.github/tests/joomla56_teamplayers_roster_visibility.php'
+      - '.github/tests/joomla56_teamplayers_malformed_rows.php'
       - '.github/workflows/joomla5-6-teamplayers-module-roster-bounds.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -16,6 +17,7 @@ on:
       - '.github/tests/joomla56_teamplayers_module_roster_bounds.php'
       - '.github/tests/joomla56_teamplayers_selector_validation.php'
       - '.github/tests/joomla56_teamplayers_roster_visibility.php'
+      - '.github/tests/joomla56_teamplayers_malformed_rows.php'
       - '.github/workflows/joomla5-6-teamplayers-module-roster-bounds.yml'
 
 permissions:
@@ -43,11 +45,14 @@ jobs:
             .github/tests/joomla56_teamplayers_module_roster_bounds.php
             .github/tests/joomla56_teamplayers_selector_validation.php
             .github/tests/joomla56_teamplayers_roster_visibility.php
+            .github/tests/joomla56_teamplayers_malformed_rows.php
           )
           for file in "${files[@]}"; do php -l "$file"; done
           php .github/tests/phpdoc_metadata.php "${files[@]}"
       - name: Check bounded module roster and minutes queries
         run: php .github/tests/joomla56_teamplayers_module_roster_bounds.php
+      - name: Reject malformed Team Players roster records
+        run: php .github/tests/joomla56_teamplayers_malformed_rows.php
       - name: Keep project selector and visibility regressions green
         shell: bash
         run: |
