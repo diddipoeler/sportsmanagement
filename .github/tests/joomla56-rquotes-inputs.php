@@ -41,4 +41,12 @@ foreach ([['9', 3, 9], [7, 2, 7], ['0002', 3, 2]] as [$saved, $count, $original]
     }
 }
 
+$matchesSavedPosition = new ReflectionMethod($class, 'savedPositionMatches');
+foreach ([[1, 1, true], ['0002', 2, true], ['9', 3, false], [0, 1, false], ['000', 1, false], [['1'], 1, false], ['1junk', 1, false], [PHP_INT_MAX . '0', 1, false]] as [$saved, $current, $expected]) {
+    if ($matchesSavedPosition->invoke(null, $saved, $current) !== $expected) {
+        fwrite(STDERR, 'Random Quotes persisted rotation validation regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Random Quotes input checks passed.\n";
