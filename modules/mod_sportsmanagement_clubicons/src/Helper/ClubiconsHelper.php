@@ -264,7 +264,9 @@ final class ClubiconsHelper
         }
 
         if (preg_match('#^https?://#i', $path)) {
-            return $path;
+            $url = $this->externalWebsiteUrl($path);
+
+            return $url !== '' ? $url : rtrim((string) Uri::root(), '/') . '/' . self::PLACEHOLDERS[$type];
         }
 
         if ((int) $params->get('cfg_which_database', 0) === 1) {
