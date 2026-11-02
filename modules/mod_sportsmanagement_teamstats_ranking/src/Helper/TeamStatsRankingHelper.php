@@ -25,6 +25,7 @@ final class TeamStatsRankingHelper
      * Validates the configured project and statistic identifiers, chooses the
      * database, calculates a bounded ranking and resolves its team records.
      * Missing projects, statistics or database errors produce empty data.
+     * Invalid icon and ranking-order fields fall back to safe defaults.
      *
      * @param Registry $params Joomla module configuration.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -49,9 +50,11 @@ final class TeamStatsRankingHelper
                 return $this->emptyData();
             }
 
-            $stat->icon_url = self::mediaUrl((string) ($stat->icon ?? ''));
+            $rawIcon = $stat->icon ?? '';
+            $stat->icon_url = self::mediaUrl(is_string($rawIcon) ? $rawIcon : '');
             $statParams = $this->statParams($stat);
-            $order = strtoupper((string) $params->get('ranking_order', $statParams->get('ranking_order', 'DESC')));
+            $rawOrder = $params->get('ranking_order', $statParams->get('ranking_order', 'DESC'));
+            $order = is_string($rawOrder) ? strtoupper($rawOrder) : 'DESC';
             $order = $order === 'ASC' ? 'ASC' : 'DESC';
             $limit = self::numericSetting($params->get('limit', 5), 5, 100);
             $ranking = $this->calculateRanking($db, $projectId, $stat, $statParams, $order, $limit);
@@ -693,7 +696,8 @@ final class TeamStatsRankingHelper
     /**
      * Convert aggregated database rows into numeric team totals.
      *
-     * Maps each valid team ID to its aggregated total and skips malformed query rows.
+     * Maps each valid team ID to a finite numeric total. Malformed rows,
+     * unsupported types, invalid IDs and non-finite values are skipped.
      * @param array<int, mixed> $rows Database aggregation result rows.
      * @return array<int, float> Totals keyed by team identifier.
      */
@@ -701,7 +705,27 @@ final class TeamStatsRankingHelper
     {
         $map = [];
         foreach ($rows as $row) {
-            $map[(int) $row->team_id] = (float) $row->total;
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $teamId = $this->extractId($row->team_id ?? null);
+            $total = $row->total ?? null;
+
+            if ($teamId <= 0
+                || (!is_int($total) && !is_float($total) && !is_string($total))
+                || !is_numeric($total)
+            ) {
+                continue;
+            }
+
+            $number = (float) $total;
+
+            if (!is_finite($number)) {
+                continue;
+            }
+
+            $map[$teamId] = $number;
         }
 
         return $map;
@@ -749,13 +773,22 @@ final class TeamStatsRankingHelper
     /**
      * Normalise module selections into unique positive identifiers.
      *
-     * Accepts scalar or array module parameters, parses delimited selectors and rejects malformed values before use in bound SQL conditions.
+     * Accepts integer/string scalars or arrays, parses delimited selectors,
+     * and rejects booleans and objects rather than implicitly casting them
+     * to integers before use in bound SQL conditions.
      * @param mixed $values Raw selection or list of selections.
      * @return array<int, int> Unique validated positive identifiers.
      */
     private function ids(mixed $values): array
     {
-        $values = is_array($values) ? $values : preg_split('/[\s,;|]+/', (string) $values, -1, PREG_SPLIT_NO_EMPTY);
+        if (!is_array($values)) {
+            if (!is_string($values) && !is_int($values)) {
+                return [];
+            }
+
+            $values = preg_split('/[\s,;|]+/', (string) $values, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        }
+
         $ids = [];
 
         foreach ((array) $values as $value) {
