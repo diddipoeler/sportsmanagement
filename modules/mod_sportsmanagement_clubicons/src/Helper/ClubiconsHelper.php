@@ -52,7 +52,9 @@ final class ClubiconsHelper
     /**
      * Build the club icon, team link and ranking data for the module layout.
      *
-     * Selects the configured project and division, calculates the ranking, resolves team links and image URLs, and returns empty collections when there is no suitable project.
+     * Selects the configured project and division, calculates the ranking,
+     * validates optional ranking rows and team identifiers, then resolves
+     * team links and image URLs. Missing projects yield empty collections.
      *
      * @param Registry $params Module configuration.
      * @param object $module Joomla module record.
@@ -73,8 +75,9 @@ final class ClubiconsHelper
         $db = $this->database($params, self::joomlaDatabase());
         $divisionId = $this->firstId($params->get('division_id', 0));
         $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
-        $project = $result['project'];
-        $ranking = $result['ranking'];
+        $result = is_array($result) ? $result : [];
+        $project = is_object($result['project'] ?? null) ? $result['project'] : null;
+        $ranking = is_array($result['ranking'] ?? null) ? $result['ranking'] : [];
 
         if (empty($project->id) || !$ranking) {
             return ['project' => $project ?: null, 'ranking' => [], 'teams' => []];
@@ -86,13 +89,21 @@ final class ClubiconsHelper
             : [];
         $teams = [];
         foreach ($ranking as $row) {
-            $team = $row->team;
-            if (!$team || $row->projectteamid <= 0) {
+            if (!is_object($row) || !is_object($row->team ?? null)) {
                 continue;
             }
 
-            $teams[$row->projectteamid] = [
-                'name' => (string) ($team->name ?? ''),
+            $team = $row->team;
+            $projectTeamId = filter_var($row->projectteamid ?? null, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+            if ($projectTeamId === false) {
+                continue;
+            }
+
+            $name = $team->name ?? '';
+            $teams[$projectTeamId] = [
+                'name' => is_string($name) ? $name : '',
                 'link' => $this->teamLink($params, $project, $team, $websites),
                 'logo_url' => $this->logoUrl($params, $team),
             ];
