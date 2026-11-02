@@ -74,7 +74,8 @@ final class TeamPlayersHelper
             $row->minutes_played = $showMinutes
                 ? (int) ($minutesByPlayer[(int) $row->playerid] ?? 0)
                 : 0;
-            $row->image_url = $this->imageUrl((string) (($row->picture ?? '') ?: ($row->ppic ?? '')));
+            $picture = $row->picture !== '' ? $row->picture : $row->ppic;
+            $row->image_url = $this->imageUrl($picture);
 
             $positionId = (int) ($row->position_id ?? 0);
             $roster[$positionId][] = $row;
@@ -202,10 +203,70 @@ final class TeamPlayersHelper
             return null;
         }
 
-        $project->project_slug = (int) $project->id . ':' . (string) ($project->alias ?? '');
-        $project->team_slug = (int) $project->team_id . ':' . (string) ($project->team_alias ?? '');
+        $project->project_slug = $projectId . ':' . self::textValue($project->alias ?? null);
+        $project->team_slug = $teamId . ':' . self::textValue($project->team_alias ?? null);
 
         return $project;
+    }
+
+    /**
+     * Normalise the roster database response before constructing player links.
+     *
+     * Rejects non-object rows and players without valid roster/person IDs.
+     * Normalises text fields to prevent warnings from malformed legacy data,
+     * and creates safe person route slugs for retained players.
+     *
+     * @param mixed $rows Raw database result.
+     * @return array<int, object> Valid roster records, sequentially indexed.
+     */
+    private function normaliseRosterRows(mixed $rows): array
+    {
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $players = [];
+
+        foreach ($rows as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $playerId = $this->positiveId($row->playerid ?? null);
+            $personId = $this->positiveId($row->pid ?? null);
+
+            if ($playerId <= 0 || $personId <= 0) {
+                continue;
+            }
+
+            $row->playerid = $playerId;
+            $row->pid = $personId;
+
+            foreach ([
+                'firstname', 'nickname', 'lastname', 'person_alias',
+                'country', 'alpha2', 'country_name', 'country_picture',
+                'picture', 'ppic', 'position',
+            ] as $field) {
+                $row->{$field} = self::textValue($row->{$field} ?? null);
+            }
+
+            $row->position_id = $this->positiveId($row->position_id ?? null);
+            $row->person_slug = $personId . ':' . $row->person_alias;
+            $players[] = $row;
+        }
+
+        return $players;
+    }
+
+    /**
+     * Read a legacy text value without converting arrays or objects to text.
+     *
+     * @param mixed $value Raw database string field.
+     * @return string String value or an empty string for invalid types.
+     */
+    private static function textValue(mixed $value): string
+    {
+        return is_string($value) ? $value : '';
     }
 
     /** @return array<int,object> */
@@ -267,13 +328,7 @@ final class TeamPlayersHelper
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
 
         $db->setQuery($query, 0, self::MAX_ROSTER_ROWS);
-        $rows = $db->loadObjectList() ?: [];
-
-        foreach ($rows as $row) {
-            $row->person_slug = (int) ($row->pid ?? 0) . ':' . (string) ($row->person_alias ?? '');
-        }
-
-        return $rows;
+        return $this->normaliseRosterRows($db->loadObjectList());
     }
 
     /** @return array<int,int> */
@@ -371,8 +426,8 @@ final class TeamPlayersHelper
     private function playerUrl(object $player, object $project, Registry $params): string
     {
         return SiteRouteHelper::view('player', [
-            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
-            's' => (int) $params->get('s', $project->season_id ?? 0),
+            'cfg_which_database' => $this->databaseSelector($params->get('cfg_which_database', 0)) ?? 0,
+            's' => $this->positiveId($params->get('s', $project->season_id ?? 0)),
             'p' => (string) ($project->project_slug ?? $project->id ?? ''),
             'tid' => (string) ($project->team_slug ?? $project->team_id ?? ''),
             'pid' => (string) ($player->person_slug ?? $player->pid ?? ''),
@@ -381,9 +436,9 @@ final class TeamPlayersHelper
 
     private function formatName(object $player, int $format): string
     {
-        $first = trim((string) ($player->firstname ?? ''));
-        $nick = trim((string) ($player->nickname ?? ''));
-        $last = trim((string) ($player->lastname ?? ''));
+        $first = trim(self::textValue($player->firstname ?? null));
+        $nick = trim(self::textValue($player->nickname ?? null));
+        $last = trim(self::textValue($player->lastname ?? null));
         $quotedNick = $nick !== '' ? "'" . $nick . "'" : '';
         $parts = match ($format) {
             1 => [$last, $quotedNick, $first],
@@ -417,14 +472,14 @@ final class TeamPlayersHelper
 
     private function flagHtml(object $row, Registry $componentParams): string
     {
-        $alpha3 = strtoupper((string) ($row->country ?? ''));
-        $alpha2 = strtolower((string) ($row->alpha2 ?? ''));
+        $alpha3 = strtoupper(self::textValue($row->country ?? null));
+        $alpha2 = strtolower(self::textValue($row->alpha2 ?? null));
 
         // Database country values are not guaranteed to be valid ISO codes.
         $alpha3 = preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : '';
         $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars(
-            Text::_((string) ($row->country_name ?: $alpha3)),
+            Text::_(self::textValue($row->country_name ?? null) ?: $alpha3),
             ENT_QUOTES,
             'UTF-8'
         );
@@ -442,9 +497,10 @@ final class TeamPlayersHelper
                 : '';
         }
 
+        $picture = $row->country_picture ?? $componentParams->get('ph_flags', '');
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : (string) ($row->country_picture ?? $componentParams->get('ph_flags', ''));
+            : self::textValue($picture);
         $url = $this->imageUrl($path);
 
         return $url !== ''
