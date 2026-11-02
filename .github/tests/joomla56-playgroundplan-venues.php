@@ -30,4 +30,29 @@ foreach ($cases as [$row, $expected]) {
     }
 }
 
+// A lightweight component-configuration double lets this CLI regression
+// exercise placeholder type handling without booting Joomla.
+if (!class_exists('Joomla\\CMS\\Component\\ComponentHelper', false)) {
+    eval('namespace Joomla\\CMS\\Component; class ComponentHelper { public static mixed $params; public static function getParams(string $name): object { return self::$params; } }');
+}
+\Joomla\CMS\Component\ComponentHelper::$params = new class {
+    /**
+     * Return malformed placeholder configuration from the test fixture.
+     *
+     * @param string $key Requested placeholder setting.
+     * @param mixed $default Fallback parameter value.
+     * @return mixed Simulated Joomla component configuration.
+     */
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return ['bad'];
+    }
+};
+$logo = new ReflectionMethod($class, 'logo');
+if ($logo->invoke($helper, '', 'logo_big') !== ''
+    || $logo->invoke($helper, 'valid.png', 'logo_big') !== 'valid.png') {
+    fwrite(STDERR, 'Playground Plan logo placeholder validation regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Playground Plan venue checks passed.\n";
