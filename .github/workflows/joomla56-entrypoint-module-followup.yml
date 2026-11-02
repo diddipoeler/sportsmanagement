@@ -12,6 +12,7 @@ on:
       - 'site/src/Service/SiteRouteSchema.php'
       - '.github/tests/joomla56-router-scalar-comparison.php'
       - '.github/tests/joomla56-playground-ids.php'
+      - '.github/tests/joomla56-clubicons-urls.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
@@ -102,6 +103,7 @@ jobs:
         run: |
           php -l .github/tests/joomla56-router-scalar-comparison.php
           php -l .github/tests/joomla56-playground-ids.php
+          php -l .github/tests/joomla56-clubicons-urls.php
           php -l site/sportsmanagement.php
           php -l modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
@@ -145,5 +147,7 @@ jobs:
         run: php .github/tests/joomla56-router-scalar-comparison.php
       - name: Playground identifier regression checks
         run: php .github/tests/joomla56-playground-ids.php
+      - name: Clubicons URL validation regression checks
+        run: php .github/tests/joomla56-clubicons-urls.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
