@@ -30,4 +30,15 @@ foreach ([['0003', 3], [0, 1], [300, 10], [['2'], 2], ['broken', 2], [PHP_INT_MA
     }
 }
 
+// A rotation position previously saved for a larger quote collection must
+// remain distinguishable from the clamped position and be persisted again.
+foreach ([['9', 3, 9], [7, 2, 7], ['0002', 3, 2]] as [$saved, $count, $original]) {
+    $bounded = $limit->invoke(null, $saved, 1, $count);
+    $unbounded = $limit->invoke(null, $saved, 1, PHP_INT_MAX);
+    if ($unbounded !== $original || $bounded !== min($count, $original)) {
+        fwrite(STDERR, 'Random Quotes saved rotation position regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Random Quotes input checks passed.\n";
