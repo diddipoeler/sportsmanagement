@@ -289,7 +289,15 @@ final class TopTipperHelper
         return $config;
     }
 
-    /** Only non-negative decimal database IDs, including zero-padded values. */
+    /**
+     * Parse the selected prediction database as a non-negative integer.
+     *
+     * Accepts decimal strings with leading zeroes, but rejects malformed
+     * values and integer overflows instead of selecting another database.
+     *
+     * @param mixed $value Raw database selector from module configuration.
+     * @return int|null Database ID or null for invalid input.
+     */
     private static function databaseSelector(mixed $value): ?int
     {
         if (is_int($value)) {
@@ -316,7 +324,16 @@ final class TopTipperHelper
         return (int) $digits;
     }
 
-    /** A configured ranking must never render an unbounded user list. */
+    /**
+     * Bound the number of users rendered in the Top Tipper ranking.
+     *
+     * Accepts integer settings and decimal strings, including zero-padded
+     * values. Malformed settings default to five and valid limits are clamped
+     * between one and one hundred to avoid unbounded result rendering.
+     *
+     * @param mixed $value Raw configured ranking limit.
+     * @return int Safe limit between 1 and 100.
+     */
     private static function boundedLimit(mixed $value): int
     {
         if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
@@ -334,11 +351,30 @@ final class TopTipperHelper
         return $number === false ? 5 : min(100, max(1, $number));
     }
 
+    /**
+     * Produce a Joomla-routed URL for a SportsManagement prediction view.
+     *
+     * Delegates view-specific SEF URL construction to the component route
+     * helper rather than manually assembling query strings.
+     *
+     * @param string $view Target component view name.
+     * @param array<string, mixed> $parameters View query parameters.
+     * @return string URL for navigation to the requested view.
+     */
     private function route(string $view, array $parameters): string
     {
         return SiteRouteHelper::view($view, $parameters);
     }
 
+    /**
+     * Extract the first valid positive numeric ID from request or module data.
+     *
+     * Accepts Joomla ID:alias identifiers and array-valued module selectors,
+     * but rejects partial numbers, unsupported types and integer overflows.
+     *
+     * @param mixed $value Raw value or list of configured identifiers.
+     * @return int Positive identifier, or zero for invalid input.
+     */
     private function extractId(mixed $value): int
     {
         if (is_array($value)) {
@@ -370,6 +406,15 @@ final class TopTipperHelper
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Create a consistent empty prediction-ranking template context.
+     *
+     * Supplies the same layout keys as a successful ranking result with
+     * empty collections, safe IDs and blank URLs when no valid game or
+     * project is available, so templates can render without type warnings.
+     *
+     * @return array<string, mixed> Empty ranking data and navigation values.
+     */
     private function emptyData(): array
     {
         return [
