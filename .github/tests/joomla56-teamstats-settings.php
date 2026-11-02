@@ -26,6 +26,18 @@ foreach ([['0003', 0, PHP_INT_MAX, 3], [0, 0, PHP_INT_MAX, 0],
     }
 }
 
+$precision = new ReflectionMethod($class, 'rankingPrecision');
+foreach ([
+    [0, 0], ['0000', 0], ['0008', 8], [12, 8],
+    [true, 2], [false, 2], [['3'], 2], ['3garbage', 2],
+    [PHP_INT_MAX . '0', 2],
+] as [$raw, $expected]) {
+    if ($precision->invoke(null, $raw) !== $expected) {
+        fwrite(STDERR, 'Team Stats Ranking decimal precision regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 $helper = (new ReflectionClass($class))->newInstanceWithoutConstructor();
 $ids = new ReflectionMethod($class, 'ids');
 
