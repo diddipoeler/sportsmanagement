@@ -271,37 +271,35 @@ final class PlaygroundPlanHelper
     /**
      * Determine the relevant playground for a fixture.
      *
-     * Prefers the match-specific playground, then the project team's ground and finally the club ground.
+     * Prefers the match-specific ground, then the team and club grounds.
+     * Rejects malformed or overflowing IDs and ignores non-string fields
+     * rather than coercing legacy database values into URLs or labels.
      *
      * @param object $row Fixture record containing playground fields.
      * @return array{int, string, string, string} Ground ID, alias, name and image path.
      */
     private function playground(object $row): array
     {
-        if ((int) ($row->playground_id ?? 0) > 0) {
-            return [
-                (int) $row->playground_id,
-                (string) ($row->playground_alias ?? ''),
-                (string) ($row->playground_name ?? ''),
-                (string) ($row->playground_picture ?? ''),
-            ];
-        }
+        foreach ([
+            ['playground_id', 'playground_alias', 'playground_name', 'playground_picture'],
+            ['team_playground_id', 'team_playground_alias', 'team_playground_name', 'playground_team_picture'],
+            ['club_playground_id', 'club_playground_alias', 'club_playground_name', 'playground_club_picture'],
+        ] as [$idField, $aliasField, $nameField, $pictureField]) {
+            $id = self::nonNegativeInteger($row->{$idField} ?? null);
 
-        if ((int) ($row->team_playground_id ?? 0) > 0) {
-            return [
-                (int) $row->team_playground_id,
-                (string) ($row->team_playground_alias ?? ''),
-                (string) ($row->team_playground_name ?? ''),
-                (string) ($row->playground_team_picture ?? ''),
-            ];
-        }
+            if ($id <= 0) {
+                continue;
+            }
 
-        if ((int) ($row->club_playground_id ?? 0) > 0) {
+            $alias = $row->{$aliasField} ?? '';
+            $name = $row->{$nameField} ?? '';
+            $picture = $row->{$pictureField} ?? '';
+
             return [
-                (int) $row->club_playground_id,
-                (string) ($row->club_playground_alias ?? ''),
-                (string) ($row->club_playground_name ?? ''),
-                (string) ($row->playground_club_picture ?? ''),
+                $id,
+                is_string($alias) ? $alias : '',
+                is_string($name) ? $name : '',
+                is_string($picture) ? $picture : '',
             ];
         }
 
