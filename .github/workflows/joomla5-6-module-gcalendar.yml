@@ -5,11 +5,13 @@ on:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_gcalendar/**'
+      - '.github/tests/joomla56_gcalendar_options_rows.php'
       - '.github/workflows/joomla5-6-module-gcalendar.yml'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_gcalendar/**'
+      - '.github/tests/joomla56_gcalendar_options_rows.php'
       - '.github/workflows/joomla5-6-module-gcalendar.yml'
 
 jobs:
@@ -42,6 +44,11 @@ jobs:
           done
           test -f modules/mod_sportsmanagement_gcalendar/js/gcalendar.js
           node --check modules/mod_sportsmanagement_gcalendar/js/gcalendar.js
+
+      - name: Test GCalendar numeric options and malformed records
+        run: |
+          php -l .github/tests/joomla56_gcalendar_options_rows.php
+          php .github/tests/joomla56_gcalendar_options_rows.php
 
       - name: Validate native GCalendar contracts
         shell: bash
