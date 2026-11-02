@@ -5,11 +5,13 @@ on:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
+      - '.github/tests/joomla56_ajax_top_navigation_inputs.php'
       - '.github/workflows/joomla5-6-module-ajax-top-navigation.yml'
   pull_request:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/**'
+      - '.github/tests/joomla56_ajax_top_navigation_inputs.php'
       - '.github/workflows/joomla5-6-module-ajax-top-navigation.yml'
 
 jobs:
@@ -37,6 +39,11 @@ jobs:
             php -l "$file"
           done
           node --check modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js
+
+      - name: Validate AJAX navigation database and federation inputs
+        run: |
+          php -l .github/tests/joomla56_ajax_top_navigation_inputs.php
+          php .github/tests/joomla56_ajax_top_navigation_inputs.php
 
       - name: Validate native AJAX navigation contracts
         shell: bash
