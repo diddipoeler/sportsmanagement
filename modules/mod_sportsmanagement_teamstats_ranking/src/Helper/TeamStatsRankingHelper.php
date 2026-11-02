@@ -105,6 +105,32 @@ final class TeamStatsRankingHelper
     }
 
     /**
+     * Validate ranking decimal precision without converting arrays or booleans.
+     *
+     * Accepts nonnegative integer values and decimal strings, preserving zero
+     * decimals while limiting formatting precision to eight places.
+     * Invalid or overflowing values use the historical two-decimal default.
+     *
+     * @param mixed $value Configured decimal precision.
+     * @return int Number of decimal places between zero and eight.
+     */
+    private static function rankingPrecision(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 2;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? 2 : min(8, $number);
+    }
+
+    /**
      * Resolve the SportsManagement database for a validated selector.
      *
      * @param int $selector Nonnegative configured database selector.
@@ -257,7 +283,7 @@ final class TeamStatsRankingHelper
         int $limit
     ): array {
         $class = strtolower((string) ($stat->class ?? 'basic'));
-        $precision = self::numericSetting($statParams->get('precision', 2), 2, 8);
+        $precision = self::rankingPrecision($statParams->get('precision', 2));
         $percentage = false;
         $values = [];
 
