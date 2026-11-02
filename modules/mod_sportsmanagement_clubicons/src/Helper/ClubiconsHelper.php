@@ -318,12 +318,28 @@ final class ClubiconsHelper
         $db->setQuery($query);
 
         $map = [];
-        foreach ($db->loadObjectList() ?: [] as $row) {
-            // A malformed club URL must not hide a valid team website.
-            foreach ([(string) ($row->club_www ?? ''), (string) ($row->team_www ?? '')] as $candidate) {
+        $websiteRows = $db->loadObjectList() ?: [];
+        foreach (is_array($websiteRows) ? $websiteRows : [] as $row) {
+            if (!is_object($row) || !isset($row->id)
+                || (!is_int($row->id) && !is_string($row->id))) {
+                continue;
+            }
+
+            $teamId = filter_var($row->id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($teamId === false) {
+                continue;
+            }
+
+            // Malformed database fields must not trigger array-to-string warnings.
+            // A rejected club URL must not hide a valid team website.
+            foreach ([$row->club_www ?? '', $row->team_www ?? ''] as $candidate) {
+                if (!is_string($candidate)) {
+                    continue;
+                }
+
                 $url = $this->externalWebsiteUrl($candidate);
                 if ($url !== '') {
-                    $map[(int) $row->id] = $url;
+                    $map[$teamId] = $url;
                     break;
                 }
             }
