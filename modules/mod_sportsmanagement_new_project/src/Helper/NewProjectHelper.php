@@ -224,7 +224,9 @@ final class NewProjectHelper
 
         $identity = $app->getIdentity();
 
-        if ($identity === null
+        $authorId = is_object($identity) ? $this->contentCategoryId($identity->id ?? null) : 0;
+
+        if ($authorId <= 0
             || !$identity->authorise('core.manage', 'com_sportsmanagement')
             || !$identity->authorise('core.create', 'com_content.category.' . $categoryId)) {
             throw new \RuntimeException('Not authorised to create project articles.', 403);
@@ -277,7 +279,7 @@ final class NewProjectHelper
                 'access' => 1,
                 'featured' => 1,
                 'language' => '*',
-                'created_by' => (int) $identity->id,
+                'created_by' => $authorId,
                 'xreference' => 'sportsmanagement-project:' . $projectId,
                 'introtext' => $this->articleIntro($project),
             ];
