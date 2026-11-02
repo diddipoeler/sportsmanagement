@@ -246,7 +246,7 @@ final class TeamStatsRankingHelper
      * @param Registry $statParams Combined statistic settings.
      * @param string $order ASC or DESC ranking direction.
      * @param int $limit Maximum number of result rows.
-     * @return array<int, array<string, int
+     * @return array<int, array<string, mixed>> Ranked team entries and formatted values.
      */
     private function calculateRanking(
         DatabaseInterface $db,
@@ -257,7 +257,7 @@ final class TeamStatsRankingHelper
         int $limit
     ): array {
         $class = strtolower((string) ($stat->class ?? 'basic'));
-        $precision = max(0, min(8, (int) $statParams->get('precision', 2)));
+        $precision = self::numericSetting($statParams->get('precision', 2), 2, 8);
         $percentage = false;
         $values = [];
 
@@ -292,7 +292,7 @@ final class TeamStatsRankingHelper
                     $this->aggregateStatistics($db, $projectId, $this->ids($statParams->get('numerator_ids', []))),
                     $this->aggregateStatistics($db, $projectId, $this->ids($statParams->get('denominator_ids', [])))
                 );
-                $percentage = (int) $statParams->get('show_percent_symbol', 1) === 1;
+                $percentage = in_array($statParams->get('show_percent_symbol', 1), [1, '1'], true);
                 break;
 
             case 'complexsumpergame':
