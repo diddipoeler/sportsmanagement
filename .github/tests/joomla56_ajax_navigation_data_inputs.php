@@ -42,6 +42,33 @@ namespace Joomla\Registry {
         }
     }
 }
+namespace Joomla\CMS {
+    final class Factory
+    {
+        public static mixed $databaseService = null;
+
+        /**
+         * Provide the shared Joomla service container for resolver tests.
+         *
+         * @return object Container capable of resolving database services.
+         */
+        public static function getContainer(): object
+        {
+            return new class {
+                /**
+                 * Return the configured database service.
+                 *
+                 * @param string $id Service class name.
+                 * @return mixed Database service, or invalid fixture value.
+                 */
+                public function get(string $id): mixed
+                {
+                    return Factory::$databaseService;
+                }
+            };
+        }
+    }
+}
 namespace Joomla\CMS\Component {
     final class ComponentHelper
     {
@@ -289,6 +316,26 @@ namespace {
     $before = $db->queries;
     if ($helper->getFavTeams(['11']) !== false || $db->queries !== $before) {
         throw new \RuntimeException('Malformed favourite team project ID reached SQL.');
+    }
+
+    // The helper must use Joomla's public Factory container if no database
+    // was explicitly injected, not the application object.
+    \Joomla\CMS\Factory::$databaseService = $db;
+    $factoryInput = new NavigationInputStub('0008');
+    new $class(new \Joomla\Registry\Registry(), new NavigationAppStub($factoryInput));
+    if ($resolver::$calls !== 2 || $resolver::$selector !== 8) {
+        throw new \RuntimeException('AJAX navigation failed to resolve the public database service.');
+    }
+
+    \Joomla\CMS\Factory::$databaseService = new \stdClass();
+    try {
+        new $class(new \Joomla\Registry\Registry(),
+            new NavigationAppStub(new NavigationInputStub(1)));
+        throw new \RuntimeException('AJAX navigation accepted an invalid database service.');
+    } catch (\RuntimeException $e) {
+        if ($e->getMessage() === 'AJAX navigation accepted an invalid database service.') {
+            throw $e;
+        }
     }
 
     echo "AJAX navigation data selectors and favourite teams passed.\n";
