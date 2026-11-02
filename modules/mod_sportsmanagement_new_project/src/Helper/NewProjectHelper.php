@@ -31,11 +31,28 @@ final class NewProjectHelper
     // action to avoid loading or creating an unlimited number of records.
     private const MAX_DAILY_PROJECTS = 100;
 
+    /**
+     * Resolve the current Joomla site application for AJAX handling.
+     *
+     * Keeps the article writer independent of deprecated global application APIs.
+     *
+     * @return CMSApplicationInterface Active site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Load projects changed during the current site-local calendar day.
+     *
+     * Queries published projects, prepares their routing, country flags and fallback images, and returns bounded results for module rendering or authorised article creation.
+     *
+     * @param Registry $params Module configuration including database selector.
+     * @param CMSApplicationInterface $app Active Joomla site application.
+     * @param DatabaseInterface|null $joomlaDatabase Optional injected Joomla database.
+     * @return array<int, object> Project presentation records.
+     */
     public function getData(
         Registry $params,
         CMSApplicationInterface $app,
@@ -94,6 +111,15 @@ final class NewProjectHelper
         return $rows;
     }
 
+    /**
+     * Check whether the current identity may create project articles.
+     *
+     * Requires an explicitly enabled module setting, a validated content category, SportsManagement management permission and Joomla Content create permission.
+     *
+     * @param Registry $params Article-creation module settings.
+     * @param CMSApplicationInterface $app Active Joomla site application.
+     * @return bool Whether the user may use the article writer.
+     */
     public function canCreateArticles(Registry $params, CMSApplicationInterface $app): bool
     {
         if (!self::articleCreationEnabled($params->get('new_project_article', 0))) {
@@ -113,6 +139,15 @@ final class NewProjectHelper
             && $identity->authorise('core.create', 'com_content.category.' . $categoryId);
     }
 
+    /**
+     * Handle the protected AJAX request to create Joomla content articles.
+     *
+     * Validates the POST CSRF token, published module, configured category and the current user's permissions. Reuses Joomla's content model to save bounded project articles and avoids leaking internal errors.
+     *
+     * @param DatabaseInterface|null $joomlaDatabase Optional injected database service.
+     * @return array<string, mixed> Created/skipped counts, errors and module ID.
+     * @throws \RuntimeException When the request, module, category or access check is invalid.
+     */
     public function createArticlesAjax(?DatabaseInterface $joomlaDatabase = null): array
     {
         $app = self::siteApplication();
@@ -261,8 +296,12 @@ final class NewProjectHelper
     }
 
     /**
-     * Accept only non-negative decimal database selectors, including legacy
-     * zero-padded parameters; do not turn invalid values into database zero.
+     * Validate the database connection selector without unsafe PHP casts.
+     *
+     * Accepts nonnegative integers and zero-padded decimal strings within the platform integer range; rejects malformed and overflow values rather than silently selecting another database.
+     *
+     * @param mixed $value Configured database selector.
+     * @return int|null Valid selector or null when invalid.
      */
     private function databaseSelector(mixed $value): ?int
     {
@@ -290,6 +329,15 @@ final class NewProjectHelper
         return (int) $digits;
     }
 
+    /**
+     * Resolve the Joomla database service for this module.
+     *
+     * Uses an explicitly injected database when provided; otherwise retrieves the registered Joomla DatabaseInterface service.
+     *
+     * @param DatabaseInterface|null $database Optional injected database.
+     * @return DatabaseInterface Active Joomla database connection.
+     * @throws \RuntimeException If the database service is unavailable.
+     */
     private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
     {
         if ($database !== null) {
@@ -305,6 +353,15 @@ final class NewProjectHelper
         return $database;
     }
 
+    /**
+     * Load a published front-end New Project module by identifier.
+     *
+     * Restricts lookup to the New Project module type and Joomla site client before trusting the module's stored configuration.
+     *
+     * @param DatabaseInterface $db Joomla database.
+     * @param int $moduleId Positive module identifier from the request.
+     * @return object|null Published module metadata or null.
+     */
     private function loadPublishedModule(DatabaseInterface $db, int $moduleId): ?object
     {
         $moduleName = 'mod_sportsmanagement_new_project';
@@ -325,6 +382,15 @@ final class NewProjectHelper
         return $module && (int) $module->published === 1 ? $module : null;
     }
 
+    /**
+     * Confirm that an article destination is a published Joomla content category.
+     *
+     * Checks the configured category ID, content extension and publication state before allowing a write operation.
+     *
+     * @param DatabaseInterface $db Joomla database.
+     * @param int $categoryId Positive Joomla content category ID.
+     * @return bool Whether the destination category is valid.
+     */
     private function validContentCategory(DatabaseInterface $db, int $categoryId): bool
     {
         $extension = 'com_content';
@@ -341,6 +407,16 @@ final class NewProjectHelper
         return (int) $db->loadResult() === 1;
     }
 
+    /**
+     * Find project IDs already referenced by articles in a category.
+     *
+     * Searches both legacy numeric references and the current sportsmanagement-project prefixed references to avoid duplicate article creation.
+     *
+     * @param DatabaseInterface $db Joomla database.
+     * @param int $categoryId Target Joomla content category ID.
+     * @param array<int, object> $projects Projects being considered for article creation.
+     * @return array<int, bool> Existing project IDs keyed by identifier.
+     */
     private function existingProjectReferences(DatabaseInterface $db, int $categoryId, array $projects): array
     {
         $projectIds = array_values(array_filter(array_map(static fn($row): int => (int) ($row->id ?? 0), $projects)));
@@ -375,6 +451,14 @@ final class NewProjectHelper
         return $existing;
     }
 
+    /**
+     * Build escaped introductory HTML for a generated project article.
+     *
+     * Escapes project and league names and URLs; adds images only for paths accepted by the module's media URL validator.
+     *
+     * @param object $project Prepared project data.
+     * @return string Safe introductory article markup.
+     */
     private function articleIntro(object $project): string
     {
         $url = htmlspecialchars((string) $project->project_url, ENT_QUOTES, 'UTF-8');
@@ -398,6 +482,15 @@ final class NewProjectHelper
             . $projectImage . '</p>';
     }
 
+    /**
+     * Build the Joomla results-ranking link for a project.
+     *
+     * Passes the project and round slugs together with the selected SportsManagement database to the native route helper.
+     *
+     * @param object $project Project record with prepared route slugs.
+     * @param int $databaseSelector Selected SportsManagement database.
+     * @return string Project results-ranking URL.
+     */
     private function resultsUrl(object $project, int $databaseSelector = 0): string
     {
         return SiteRouteHelper::view('resultsranking', [
@@ -412,6 +505,15 @@ final class NewProjectHelper
         ]);
     }
 
+    /**
+     * Resolve URLs for the flags of the projects' league countries.
+     *
+     * Collects distinct configured country codes and loads their image paths from the SportsManagement countries table.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param array<int, object> $rows Loaded project records.
+     * @return array<string, string> Flag image URLs keyed by uppercase country code.
+     */
     private function countryFlags(DatabaseInterface $db, array $rows): array
     {
         $countries = [];
@@ -447,11 +549,13 @@ final class NewProjectHelper
     }
 
     /**
-     * Convert the site's current calendar day into a half-open UTC range.
-     * SportsManagement stores project.modified in UTC. Calculating both
-     * local midnights independently also handles 23- and 25-hour DST days.
+     * Calculate today's half-open UTC range in the site's timezone.
      *
-     * @return array{0: string, 1: string}
+     * Determines consecutive local midnights independently to handle daylight-saving days of 23 or 25 hours, then converts the boundaries to database UTC timestamps.
+     *
+     * @param CMSApplicationInterface $app Joomla site application for timezone settings.
+     * @param \DateTimeImmutable|null $now Optional reference instant for testing.
+     * @return array{0: string, 1: string} Inclusive UTC start and exclusive UTC end.
      */
     private function todayRange(CMSApplicationInterface $app, ?\DateTimeImmutable $now = null): array
     {
@@ -473,6 +577,14 @@ final class NewProjectHelper
         ];
     }
 
+    /**
+     * Normalise a project or league picture to a safe URL.
+     *
+     * Permits absolute HTTP(S) URLs without credentials and encodes local paths under the Joomla site root; disallows unsafe schemes and traversal.
+     *
+     * @param string $path Relative or absolute image path.
+     * @return string Validated image URL or an empty string.
+     */
     private function mediaUrl(string $path): string
     {
         $path = trim($path);
