@@ -20,6 +20,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare the club icon layout and its display assets.
+     *
+     * Selects an allowed layout, loads club and team data, activates the carousel only when requested and generates the icon zoom style from module settings.
+     *
+     * @return array|false Template context, or false when rendering is skipped.
+     * @throws \RuntimeException When invoked outside Joomla's site client.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
