@@ -177,8 +177,8 @@ final class NewProjectHelper
      * Handle the protected AJAX request to create Joomla content articles.
      *
      * Validates the POST CSRF token, strict positive module identifier, published
-     * module, configured category and current permissions. Malformed project
-     * records are skipped rather than being written as Joomla articles. Reuses Joomla's content model to save bounded project articles and avoids leaking internal errors.
+     * module, configured category, valid author ID and current permissions.
+     * Malformed project records are skipped rather than written as articles. Reuses Joomla's content model to save bounded project articles and avoids leaking internal errors.
      *
      * @param DatabaseInterface|null $joomlaDatabase Optional injected database service.
      * @return array<string, mixed> Created/skipped counts, errors and module ID.
