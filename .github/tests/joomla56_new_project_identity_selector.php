@@ -60,6 +60,32 @@ namespace {
         throw new \RuntimeException('Unauthorised visitor gained article creation permission.');
     }
 
+    $app->identity->allowed = true;
+
+    // Malformed settings must never turn on the article writer or grant
+    // access to an unintended Joomla content category.
+    foreach ([true, ['1'], 9, '1junk', '01', false] as $flag) {
+        if ($helper->canCreateArticles(new \Joomla\Registry\Registry([
+            'new_project_article' => $flag, 'mycategory' => 3,
+        ]), $app)) {
+            throw new \RuntimeException('Malformed New Project article switch granted write permission.');
+        }
+    }
+
+    foreach ([true, ['3'], 3.5, '3junk', 0, '-3', PHP_INT_MAX . '0'] as $category) {
+        if ($helper->canCreateArticles(new \Joomla\Registry\Registry([
+            'new_project_article' => 1, 'mycategory' => $category,
+        ]), $app)) {
+            throw new \RuntimeException('Malformed New Project category granted write permission.');
+        }
+    }
+
+    if (!$helper->canCreateArticles(new \Joomla\Registry\Registry([
+        'new_project_article' => '1', 'mycategory' => '0003',
+    ]), $app)) {
+        throw new \RuntimeException('Valid legacy New Project settings were rejected.');
+    }
+
     $selector = new \ReflectionMethod($helper, 'databaseSelector');
     foreach ([
         [0, 0], [5, 5], ['0', 0], ['0005', 5],
