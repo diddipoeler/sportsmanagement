@@ -9,6 +9,7 @@ on:
       - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
       - '.github/tests/joomla56_calendar_selection_acl.php'
+      - '.github/tests/joomla56_gcalendar_options_rows.php'
       - '.github/workflows/joomla5-6-calendar-selection-acl.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -18,6 +19,7 @@ on:
       - 'admin/src/Service/GoogleCalendarMatchSynchronizer.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
       - '.github/tests/joomla56_calendar_selection_acl.php'
+      - '.github/tests/joomla56_gcalendar_options_rows.php'
       - '.github/workflows/joomla5-6-calendar-selection-acl.yml'
 
 permissions:
@@ -49,9 +51,11 @@ jobs:
             modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_calendar_selection_acl.php; do
+          for file in "${files[@]}" .github/tests/joomla56_calendar_selection_acl.php .github/tests/joomla56_gcalendar_options_rows.php; do
             php -l "$file"
           done
 
       - name: Run calendar selection and ACL regression tests
         run: php .github/tests/joomla56_calendar_selection_acl.php
+      - name: Validate GCalendar configuration and malformed query rows
+        run: php .github/tests/joomla56_gcalendar_options_rows.php
