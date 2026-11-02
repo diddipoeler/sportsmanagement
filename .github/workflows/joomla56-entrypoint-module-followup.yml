@@ -6,6 +6,7 @@ on:
     paths:
       - 'site/sportsmanagement.php'
       - 'modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
       - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
@@ -62,6 +63,7 @@ on:
       - '.github/tests/joomla56-playground-ids.php'
       - 'site/sportsmanagement.php'
       - 'modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php'
       - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
       - 'site/src/Service/Router.php'
@@ -119,6 +121,7 @@ jobs:
           php -l .github/tests/joomla56-top-tipper-flags.php
           php -l site/sportsmanagement.php
           php -l modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
           php -l modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
           php -l site/src/Service/Router.php
