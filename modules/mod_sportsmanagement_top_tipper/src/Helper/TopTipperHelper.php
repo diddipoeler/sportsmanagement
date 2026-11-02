@@ -103,11 +103,11 @@ final class TopTipperHelper
             return $this->emptyData();
         }
 
-        $config = array_merge(
-            $rankingModel->getPredictionTemplateConfig('predictionoverall'),
-            $this->moduleConfig($params)
-        );
+        $templateConfig = $rankingModel->getPredictionTemplateConfig('predictionoverall');
+        $templateConfig = is_array($templateConfig) ? $templateConfig : [];
+        $config = array_merge($templateConfig, $this->moduleConfig($params));
         $avatarConfig = $rankingModel->getPredictionTemplateConfig('predictionusers');
+        $avatarConfig = is_array($avatarConfig) ? $avatarConfig : [];
 
         // The module applies its own small result limit. Ask the component model
         // for the complete computed ranking, then filter/slice without any writes.
@@ -119,7 +119,9 @@ final class TopTipperHelper
         // Ranking templates expect associative row records, never arbitrary helper values.
         $rows = array_filter($rows, 'is_array');
         $currentMember = $rankingModel->getPredictionMember();
-        $currentMemberId = (int) ($currentMember->id ?? $currentMember->pmID ?? 0);
+        $currentMemberId = is_object($currentMember)
+            ? $this->extractId($currentMember->id ?? $currentMember->pmID ?? 0)
+            : 0;
 
         if (empty($config['show_all_user'])) {
             $rows = array_filter(
