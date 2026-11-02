@@ -300,8 +300,8 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
 $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
-$this->setState('filter.roundcode', $this->getUserStateFromRequest($this->context . '.filter.roundcode', 'filter_roundcode', '', 'int'));
-$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
+$this->setState('filter.match_number', $this->getUserStateFromRequest($this->context . '.filter.match_number', 'filter_match_number', '', 'int'));
+$this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
 $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int'));
 $this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
 $this->setState('filter.division', $this->getUserStateFromRequest($this->context . '.filter.division', 'filter_division', 0, 'int'));
@@ -403,10 +403,15 @@ $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'fi
 			$query->where(' divhome.id = ' . $this->_db->Quote($this->getState('filter.division')));
 		}
 
-        if ($this->getState('filter.roundcode'))
+        if ( $this->getState('filter.match_number') == 1 )
 		{
-
+$query->where(' mc.match_number IS NULL '  );
         }
+
+        if (is_numeric($this->getState('filter.state')))
+		{
+			$query->where('mc.published = ' . $this->getState('filter.state'));
+		}
 
 		$query->order(
 			$db->escape($this->getState('list.ordering', 'mc.match_date')) . ' ' .
