@@ -44,6 +44,7 @@ on:
       - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
       - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
@@ -92,6 +93,7 @@ on:
       - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
       - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
@@ -154,6 +156,7 @@ jobs:
           php -l modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php
           php -l modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
