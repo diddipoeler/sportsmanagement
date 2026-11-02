@@ -260,12 +260,12 @@ namespace {
     }
 
     // Build must reject array-valued view selectors before normalising URLs.
-    foreach ([['view' => ['ranking']], ['view' => new \\stdClass()]] as $invalidQuery) {
+    foreach ([['view' => ['ranking']], ['view' => new \stdClass()]] as $invalidQuery) {
         try {
             $router->build($invalidQuery);
             fwrite(STDERR, 'Invalid SEF build view selector was accepted.' . PHP_EOL);
             exit(1);
-        } catch (\\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             if ($exception->getCode() !== 400) {
                 throw $exception;
             }
