@@ -526,7 +526,9 @@ final class NewProjectHelper
     /**
      * Build the Joomla results-ranking link for a project.
      *
-     * Passes the project and round slugs together with the selected SportsManagement database to the native route helper.
+     * Passes the project and round slugs together with the validated SportsManagement
+     * database selector to the native route helper. Preserves selectors greater
+     * than one instead of silently redirecting to the default database.
      *
      * @param object $project Project record with prepared route slugs.
      * @param int $databaseSelector Selected SportsManagement database.
@@ -535,7 +537,7 @@ final class NewProjectHelper
     private function resultsUrl(object $project, int $databaseSelector = 0): string
     {
         return SiteRouteHelper::view('resultsranking', [
-            'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
+            'cfg_which_database' => $databaseSelector >= 0 ? $databaseSelector : 0,
             's' => 0,
             'p' => (string) $project->project_slug,
             'r' => (string) ($project->round_slug ?? ''),
