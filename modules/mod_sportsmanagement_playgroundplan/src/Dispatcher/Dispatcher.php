@@ -20,6 +20,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare the playground schedule layout for the site module.
+     *
+     * Loads the component language, normalises helper data, registers the stylesheet and enables the ticker script only in the configured mode.
+     *
+     * @return array|false Render variables, or false when skipped.
+     * @throws \RuntimeException When the application is not the site client.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -49,7 +57,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 'modules/mod_sportsmanagement_playgroundplan/css/mod_sportsmanagement_playgroundplan.css'
             );
 
-            if ((int) $data['params']->get('mode', 0) === 0) {
+            $rawMode = $data['params']->get('mode', 0);
+            if ((is_int($rawMode) && $rawMode === 0)
+                || (is_string($rawMode) && preg_match('/^0+$/D', $rawMode))) {
                 $wam->registerAndUseScript(
                     'mod_sportsmanagement_playgroundplan.ticker',
                     'modules/mod_sportsmanagement_playgroundplan/js/ticker.js'
