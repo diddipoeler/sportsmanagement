@@ -74,7 +74,49 @@ final class GoogleCalendarHelper
             return ['events' => []];
         }
 
-        return ['events' => is_array($events) ? $events : []];
+        return ['events' => self::normaliseRenderableEvents($events, $maxEvents)];
+    }
+
+    /**
+     * Validate cached Google Calendar events before passing them to the layout.
+     *
+     * The callback cache can contain old or malformed entries. Only object
+     * records are rendered, and all fields used as text or URLs must be
+     * strings so PHP 8 does not convert arrays to "Array" in the template.
+     * The result is bounded to the configured maximum event count.
+     *
+     * @param mixed $events Data supplied by the Joomla callback cache.
+     * @param int $maximum Maximum number of events rendered by the module.
+     * @return array<int, object> Safe event records with scalar display fields.
+     */
+    private static function normaliseRenderableEvents(mixed $events, int $maximum): array
+    {
+        if (!is_array($events)) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($events as $event) {
+            if (!is_object($event)) {
+                continue;
+            }
+
+            $safeEvent = clone $event;
+
+            foreach (['htmlLink', 'summary', 'location', 'jsmStartIso', 'jsmEndIso', 'jsmDuration'] as $field) {
+                $value = $safeEvent->{$field} ?? '';
+                $safeEvent->{$field} = is_string($value) ? $value : '';
+            }
+
+            $result[] = $safeEvent;
+
+            if (count($result) >= $maximum) {
+                break;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -164,6 +206,10 @@ final class GoogleCalendarHelper
                 // Invalid remote dates/time zones may also throw from Joomla's
                 // date parser. Skip that event and retain the valid entries.
                 continue;
+            }
+
+            if (count($events) >= $maxEvents) {
+                break;
             }
         }
 
