@@ -27,7 +27,9 @@ final class PlaygroundPlanHelper
     /**
      * Retrieve the upcoming playground fixtures for the module.
      *
-     * Selects projects and grounds, queries published upcoming matches, and resolves the venue, logos and route data. Errors are logged and an empty list is returned.
+     * Selects projects and grounds, queries published upcoming matches,
+     * discards malformed result rows, and validates project IDs, aliases and
+     * logo fields before preparing venue links. Errors return an empty list.
      *
      * @param Registry $params Module filters and display settings.
      * @param CMSApplicationInterface $app Current Joomla application.
