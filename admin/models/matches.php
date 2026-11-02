@@ -388,9 +388,9 @@ $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'fi
 			$query->where(' mc.round_id = ' . $this->_rid);
 		}
 
-        if (is_numeric($this->getState('filter.state')))
+        if ($this->getState('filter.search'))
 		{
-			$this->jsmquery->where('mc.published = ' . $this->getState('filter.state'));
+			$query->where(' mc.match_number LIKE ' . $this->jsmdb->Quote('%' . $this->getState('filter.search') . '%'));
 		}
 
 		if ($this->_projectteam)
