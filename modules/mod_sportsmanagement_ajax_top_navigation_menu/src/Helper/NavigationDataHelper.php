@@ -87,11 +87,27 @@ final class NavigationDataHelper
         return array_values($ids);
     }
 
+    /**
+     * Resolve the active frontend application using the central resolver.
+     *
+     * Avoids deprecated global site application lookups.
+     *
+     * @return CMSApplicationInterface Active Joomla site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve the Joomla database connection for navigation queries.
+     *
+     * Uses an injected connection when present; otherwise retrieves DatabaseInterface from Joomla's public factory container.
+     *
+     * @param DatabaseInterface|null $database Optional injected database connection.
+     * @param CMSApplicationInterface $application Current Joomla frontend application.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function joomlaDatabase(
         ?DatabaseInterface $database,
         CMSApplicationInterface $application
@@ -144,6 +160,16 @@ final class NavigationDataHelper
     protected $_project = null;
     protected string $_user_name = '';
 
+    /**
+     * Initialise the navigation helper and select its database connection.
+     *
+     * Requires a Joomla site application, rejects malformed database selectors before resolution and restores legacy navigation request state for a selected project.
+     *
+     * @param Registry|array<string,mixed>|string $params Joomla module registry or legacy parameter data.
+     * @param CMSApplicationInterface|null $app Optional injected site application.
+     * @param DatabaseInterface|null $database Optional injected Joomla database.
+     * @return void Initialised helper state.
+     */
     public function __construct(
         $params,
         ?CMSApplicationInterface $app = null,
@@ -185,12 +211,27 @@ final class NavigationDataHelper
         }
     }
 
+    /**
+     * Read the season identifier of the currently selected project.
+     *
+     * Returns zero when the navigation has no selected project.
+     *
+     * @return int Selected season ID or zero.
+     */
     public function getSeasonId()
     {
         $project = $this->getProject();
         return $project ? (int) $project->season_id : 0;
     }
 
+    /**
+     * Load and cache the currently selected project and route slugs.
+     *
+     * Uses bound project or league IDs to load its season, league and round metadata, and updates the legacy navigation state.
+     *
+     * @param int|string $league_id Optional league selector overriding the project ID.
+     * @return object|false Project metadata or false when no project exists.
+     */
     public function getProject($league_id = 0)
     {
         if ($this->_project) {
@@ -247,6 +288,16 @@ final class NavigationDataHelper
         return $this->_project;
     }
 
+    /**
+     * Select a project and update navigation request values.
+     *
+     * Resets cached project/team options, loads the active project and round, and publishes IDs into Joomla's request input.
+     *
+     * @param int|string $project_id Selected project identifier.
+     * @param int|string $team_id Selected team identifier.
+     * @param int|string $division_id Selected division identifier.
+     * @return void Navigation state is updated.
+     */
     public function setProject($project_id, $team_id, $division_id): void
     {
         self::$_project_id = (int) $project_id;
@@ -265,6 +316,13 @@ final class NavigationDataHelper
         $input->set('jlamtopdivisionid', $this->_division_id);
     }
 
+    /**
+     * Return the selected project's league identifier.
+     *
+     * Loads the project when necessary and caches the league ID.
+     *
+     * @return int Positive league ID or zero.
+     */
     public function getLeagueId()
     {
         $project = $this->getProject();
@@ -276,12 +334,26 @@ final class NavigationDataHelper
         return $this->_league_id;
     }
 
+    /**
+     * Return the current round of the selected project.
+     *
+     * Returns zero when no published project is available.
+     *
+     * @return int Current round identifier or zero.
+     */
     public function getCurrentRoundId()
     {
         $project = $this->getProject();
         return $project ? (int) $project->current_round : 0;
     }
 
+    /**
+     * Load federations available for navigation.
+     *
+     * Queries published federations to populate the top-level navigation tabs.
+     *
+     * @return array<int,object> Federation IDs and names.
+     */
     public function getFederations(): array
     {
         $db = $this->_db;
@@ -293,6 +365,14 @@ final class NavigationDataHelper
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build association choices beneath a selected subassociation.
+     *
+     * Loads published child associations using a bound ID and prepends the regional placeholder option.
+     *
+     * @param int|string $assoc_id Parent subassociation identifier.
+     * @return array<int,object> Options for a lower association dropdown.
+     */
     public function getCountrySubSubAssocSelect($assoc_id): array
     {
         $associationId = (int) $assoc_id;
@@ -313,6 +393,14 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Build choices of published subassociations.
+     *
+     * Queries children of a parent association with a bound ID and includes the default option.
+     *
+     * @param int|string $assoc_id Parent association identifier.
+     * @return array<int,object> Subassociation select options.
+     */
     public function getCountrySubAssocSelect($assoc_id): array
     {
         $associationId = (int) $assoc_id;
@@ -333,6 +421,14 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Build country-specific regional association choices.
+     *
+     * Filters published top-level associations by the country code and prepends a placeholder.
+     *
+     * @param string|int $country Country code or legacy country value.
+     * @return array<int,object> Regional association select options.
+     */
     public function getCountryAssocSelect($country): array
     {
         $country = (string) $country;
@@ -354,6 +450,15 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Build and cache country choices for a federation.
+     *
+     * Loads countries participating in leagues, translates their labels, sorts them and stores their federation mapping.
+     *
+     * @param string $federation Display name of the federation.
+     * @param int|string $federationid Positive federation ID.
+     * @return array<int,object> Country select options with placeholder.
+     */
     public function getFederationSelect($federation = '', $federationid = 0): array
     {
         $federationId = (int) $federationid;
@@ -384,6 +489,14 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Look up the cached federation for a country.
+     *
+     * Uses the mapping populated by the federation select query.
+     *
+     * @param string|int $country_id Country identifier to resolve.
+     * @return string|false Associated federation or false when unknown.
+     */
     public function getCountryFederation($country_id)
     {
         if (!$country_id) {
@@ -393,6 +506,13 @@ final class NavigationDataHelper
         return self::$_country_fed[$country_id] ?? false;
     }
 
+    /**
+     * Collect current route parameters from Joomla request input.
+     *
+     * Returns the allowed component view and numeric navigation identifiers for legacy route building.
+     *
+     * @return array<string,int|string> Sanitised request query fields.
+     */
     public function getQueryValues(): array
     {
         $input = $this->_app->getInput();
@@ -415,6 +535,13 @@ final class NavigationDataHelper
         ];
     }
 
+    /**
+     * Return and cache the active Joomla identity's username.
+     *
+     * Uses an empty name for anonymous users.
+     *
+     * @return string Active username or empty string.
+     */
     public function getUserName(): string
     {
         $user = $this->_app->getIdentity();
@@ -422,6 +549,14 @@ final class NavigationDataHelper
         return $this->_user_name;
     }
 
+    /**
+     * Look up the parent of a selected association.
+     *
+     * Uses a bound association ID and returns only a positive parent identifier.
+     *
+     * @param int|string $assoc_id Selected association ID.
+     * @return int|false Parent association ID or false.
+     */
     public function getAssocParentId($assoc_id)
     {
         if ((int) $assoc_id <= 0) {
@@ -441,6 +576,13 @@ final class NavigationDataHelper
         return $result > 0 ? $result : false;
     }
 
+    /**
+     * Look up the current league's association.
+     *
+     * Uses a bound league identifier and ignores empty or zero association results.
+     *
+     * @return int|false Associated federation ID or false.
+     */
     public function getLeagueAssocId()
     {
         if ($this->_league_id <= 0) {
@@ -460,16 +602,39 @@ final class NavigationDataHelper
         return $result > 0 ? $result : false;
     }
 
+    /**
+     * Return the division selected by navigation.
+     *
+     * Reads the cached division identifier.
+     *
+     * @return int Selected division identifier.
+     */
     public function getDivisionId()
     {
         return $this->_division_id;
     }
 
+    /**
+     * Store a selected division for navigation links.
+     *
+     * Replaces the cached division identifier.
+     *
+     * @param int|string $division_id Selected division identifier.
+     * @return void Division selection updated.
+     */
     public function setDivisionID($division_id): void
     {
         $this->_division_id = (int) $division_id;
     }
 
+    /**
+     * Load the valid favourite teams of a project.
+     *
+     * Rejects invalid project and stored IDs, deduplicates up to 100 team IDs and uses a bounded SQL IN selection.
+     *
+     * @param int|string $project_id Selected project identifier.
+     * @return array<int,object>|false Favourite team rows or false.
+     */
     public function getFavTeams($project_id)
     {
         $projectId = self::nonNegativeSelector($project_id) ?? 0;
@@ -500,6 +665,15 @@ final class NavigationDataHelper
         return $db->loadObjectList() ?: false;
     }
 
+    /**
+     * Resolve the season-team record for a project and club.
+     *
+     * Joins the project team to its underlying team with bound identifiers and caches the resulting team ID.
+     *
+     * @param int|string $project_id Selected project ID.
+     * @param int|string $club_id Selected club ID.
+     * @return int|false Season team identifier or false.
+     */
     public function getTeamId($project_id, $club_id)
     {
         $projectId = (int) $project_id;
@@ -524,11 +698,26 @@ final class NavigationDataHelper
         return $this->_team_id;
     }
 
+    /**
+     * Store the selected team for navigation links.
+     *
+     * Updates the cached team identifier.
+     *
+     * @param int|string $team_id Selected team ID.
+     * @return void Team selection updated.
+     */
     public function setTeamID($team_id): void
     {
         $this->_team_id = (int) $team_id;
     }
 
+    /**
+     * Build a list of published seasons.
+     *
+     * Includes a configurable placeholder followed by seasons ordered by name.
+     *
+     * @return array<int,object> Season dropdown options.
+     */
     public function getSeasonSelect(): array
     {
         $db = $this->_db;
@@ -545,11 +734,28 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Read a legacy module navigation setting.
+     *
+     * Provides the same registry lookup used by the compatibility bridge.
+     *
+     * @param string $name Registry key.
+     * @param mixed $default Default when the setting is absent.
+     * @return mixed Configured value or default.
+     */
     protected function getParam($name, $default = null)
     {
         return $this->_params->get($name, $default);
     }
 
+    /**
+     * Build division options for a selected project.
+     *
+     * Optionally filters for subdivisions and includes the configurable default label.
+     *
+     * @param int|string $project_id Selected project ID.
+     * @return array<int,object> Division dropdown options.
+     */
     public function getDivisionSelect($project_id): array
     {
         $projectId = (int) $project_id;
@@ -574,6 +780,15 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Build league options for a country or association.
+     *
+     * Uses bound country and optional association selectors and includes a configurable placeholder.
+     *
+     * @param string|int $country_id Country selector.
+     * @param int|string $associd Optional association identifier.
+     * @return array<int,object> League dropdown options.
+     */
     public function getAssocLeagueSelect($country_id, $associd): array
     {
         $countryId = (string) $country_id;
@@ -603,6 +818,14 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Resolve the league country of a selected project.
+     *
+     * Looks up the country code using a bound project identifier.
+     *
+     * @param int|string $project_id Selected project identifier.
+     * @return string|false Country code or false.
+     */
     public function getProjectCountry($project_id)
     {
         $projectId = (int) $project_id;
@@ -621,6 +844,14 @@ final class NavigationDataHelper
         return $db->loadResult() ?: false;
     }
 
+    /**
+     * Build published league options for a season.
+     *
+     * Filters by season and publication state and includes a placeholder.
+     *
+     * @param int|string $season Selected season ID.
+     * @return array<int,object> League dropdown options.
+     */
     public function getLeagueSelect($season): array
     {
         $seasonId = (int) $season;
@@ -644,6 +875,14 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Build project options for a selected league.
+     *
+     * Loads published projects from the league with bound identifiers, ordering and a default option.
+     *
+     * @param int|string $league_id Selected league ID.
+     * @return array<int,object> Project dropdown options.
+     */
     public function getProjectSelect($league_id): array
     {
         $leagueId = (int) $league_id;
@@ -665,6 +904,14 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Build the team dropdown for a selected project.
+     *
+     * Prepends the configured placeholder to the cached team options.
+     *
+     * @param int|string $project_id Selected project identifier.
+     * @return array<int,object> Team select options.
+     */
     public function getTeamSelect($project_id): array
     {
         return array_merge(
@@ -673,6 +920,14 @@ final class NavigationDataHelper
         );
     }
 
+    /**
+     * Load and cache the selected project's participating teams.
+     *
+     * Queries project teams and their season-team records, reporting database failures through Joomla message handling.
+     *
+     * @param int|string $project_id Selected project identifier.
+     * @return array<int,object> Available team options.
+     */
     protected function getTeamsOptions($project_id): array
     {
         if ($this->_teamoptions !== null) {
@@ -708,6 +963,16 @@ final class NavigationDataHelper
         return $this->_teamoptions;
     }
 
+    /**
+     * Create a component route for a favourite team's navigation view.
+     *
+     * Supports team, roster, club and statistics destinations and returns false for unsupported views.
+     *
+     * @param string $view Requested component view.
+     * @param int|string $team_id Favourite team identifier.
+     * @param int|string $club_id Favourite club identifier.
+     * @return string|false Routed URL or false for unsupported views.
+     */
     public function getLinkFavTeam($view, $team_id, $club_id)
     {
         $base = $this->baseRouteParameters();
@@ -756,6 +1021,13 @@ final class NavigationDataHelper
         return false;
     }
 
+    /**
+     * Load the selected team's club and Joomla slugs.
+     *
+     * Uses a bound team ID to load the club relationship and caches club/team route slugs.
+     *
+     * @return int|false Club identifier or false.
+     */
     public function getClubId()
     {
         if ($this->_team_id <= 0) {
@@ -786,6 +1058,14 @@ final class NavigationDataHelper
         return $this->_club_id;
     }
 
+    /**
+     * Generate a Joomla component link for a selected navigation view.
+     *
+     * Dispatches to the central site route helper for standings, fixtures, roster, club and tournament views, resolving team/club slugs when needed.
+     *
+     * @param string $view Selected navigation view identifier.
+     * @return string|false Routed URL, or false when unavailable.
+     */
     public function getLink($view)
     {
         if (!self::$_project_id) {
@@ -988,6 +1268,13 @@ final class NavigationDataHelper
         }
     }
 
+    /**
+     * Construct common database, season and project routing parameters.
+     *
+     * Reads the already validated database selection and current project route slug.
+     *
+     * @return array<string,int|string> Base Joomla route parameters.
+     */
     private function baseRouteParameters(): array
     {
         $input = $this->_app->getInput();
@@ -999,6 +1286,13 @@ final class NavigationDataHelper
         ];
     }
 
+    /**
+     * Ensure valid team slugs exist for team and roster routes.
+     *
+     * Uses a cached team slug when available or loads the related club metadata.
+     *
+     * @return bool Whether the team route slugs are available.
+     */
     private function ensureTeamSlugs(): bool
     {
         if ($this->_team_id <= 0) {
