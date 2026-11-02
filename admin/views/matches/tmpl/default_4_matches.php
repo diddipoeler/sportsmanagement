@@ -19,6 +19,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Layout\LayoutHelper;
 
 $lang = Factory::getApplication()->getLanguage();
 $currentLanguage = substr($lang->getTag(), 0, 2);
@@ -84,6 +85,10 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 
     <!-- Start games list -->
     <form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
+        <?php
+        /** such und filterfunktionen */
+          echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+        ?>
         <div class="btn-group hidden-phone">
             <label for="limit"
                    class="element-invisible"><?php echo Text::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>

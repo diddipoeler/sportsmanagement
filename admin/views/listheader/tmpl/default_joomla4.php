@@ -83,6 +83,7 @@ case 'projectreferees':
 case 'projectteams':
 case 'projects':
 case 'rounds':
+case 'matches':
 case 'seasons':
 case 'smquotes':
 case 'teamplayers':
