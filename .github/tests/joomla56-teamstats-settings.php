@@ -26,4 +26,35 @@ foreach ([['0003', 0, PHP_INT_MAX, 3], [0, 0, PHP_INT_MAX, 0],
     }
 }
 
+$helper = (new ReflectionClass($class))->newInstanceWithoutConstructor();
+$ids = new ReflectionMethod($class, 'ids');
+
+foreach ([
+    [true, []],
+    [new stdClass(), []],
+    ['1, 002;3', [1, 2, 3]],
+    [['5', ['6'], 'not-a-number', false], [5, 6]],
+] as [$raw, $expected]) {
+    if ($ids->invoke($helper, $raw) !== $expected) {
+        fwrite(STDERR, 'Team Stats Ranking identifier selection regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+$valueMap = new ReflectionMethod($class, 'valueMap');
+$records = [
+    (object) ['team_id' => '002', 'total' => '3.5'],
+    null,
+    ['team_id' => 4, 'total' => 20],
+    (object) ['team_id' => 0, 'total' => 2],
+    (object) ['team_id' => 3, 'total' => 0],
+    (object) ['team_id' => 4, 'total' => ['bad']],
+    (object) ['team_id' => 5, 'total' => INF],
+    (object) ['team_id' => 6, 'total' => '1e309'],
+];
+if ($valueMap->invoke($helper, $records) !== [2 => 3.5, 3 => 0.0]) {
+    fwrite(STDERR, 'Team Stats Ranking aggregate row validation regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Team Stats Ranking numeric settings passed.\n";
