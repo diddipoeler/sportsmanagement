@@ -51,6 +51,15 @@ on:
       - '.github/workflows/joomla56-entrypoint-module-followup.yml'
   pull_request:
     paths:
+      - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56-top-tipper-flags.php'
+      - '.github/tests/joomla56-top-tipper-inputs.php'
+      - '.github/tests/joomla56-clubicons-urls.php'
+      - '.github/tests/joomla56-playground-ids.php'
       - 'site/sportsmanagement.php'
       - 'modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_google_calendar/src/Dispatcher/Dispatcher.php'
