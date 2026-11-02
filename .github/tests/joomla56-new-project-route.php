@@ -47,6 +47,17 @@ namespace {
         }
     }
 
+    $moduleId = new \ReflectionMethod($class, 'contentCategoryId');
+    foreach ([
+        [7, 7], ['0007', 7], ['7garbage', 0], [['7'], 0],
+        [true, 0], [-1, 0], ['0', 0], [PHP_INT_MAX . '0', 0],
+    ] as [$input, $expected]) {
+        if ($moduleId->invoke($helper, $input) !== $expected) {
+            fwrite(STDERR, 'New Project AJAX module identifier regression.' . PHP_EOL);
+            exit(1);
+        }
+    }
+
     $matches = new \\ReflectionMethod($class, 'matchedProjectReferences');
     $found = $matches->invoke(null, [
         '12',
