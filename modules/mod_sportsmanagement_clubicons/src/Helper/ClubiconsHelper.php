@@ -211,8 +211,14 @@ final class ClubiconsHelper
     }
 
     /**
-     * External team links must never be javascript:, data: or protocol-relative
-     * URLs; HTML escaping alone does not make an href scheme safe.
+     * Validate an external team or club website before placing it in a link.
+     *
+     * Permits HTTP(S) URLs with a host, but rejects dangerous schemes,
+     * embedded credentials, control characters and protocol-relative URLs.
+     * This validator is also used for configured external image servers.
+     *
+     * @param string $url Candidate external web address.
+     * @return string Validated URL, or an empty string if unsafe.
      */
     private function externalWebsiteUrl(string $url): string
     {
@@ -262,8 +268,9 @@ final class ClubiconsHelper
         }
 
         if ((int) $params->get('cfg_which_database', 0) === 1) {
-            $server = rtrim((string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server', ''), '/');
-            if ($server !== '') {
+            $configuredServer = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server', '');
+            $server = is_string($configuredServer) ? rtrim(trim($configuredServer), '/') : '';
+            if ($this->externalWebsiteUrl($server) !== '') {
                 return $server . '/' . ltrim($path, '/');
             }
         }
