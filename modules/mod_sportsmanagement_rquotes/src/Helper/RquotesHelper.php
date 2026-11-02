@@ -281,6 +281,25 @@ final class RquotesHelper
      * @param CMSApplicationInterface $app Current Joomla application.
      * @return array<int, object> Quote for this period or an empty list.
      */
+    /**
+     * Check whether persisted rotation metadata already matches a quote index.
+     *
+     * Accepts an integer or zero-padded decimal string representing the same
+     * positive index. Invalid values, zeros and positions beyond the current
+     * collection never match, so they can be repaired in storage.
+     *
+     * @param mixed $savedNumber Value from the rotation metadata row.
+     * @param int $number Positive, bounded current quote index.
+     * @return bool Whether the saved position is already correct.
+     */
+    private static function savedPositionMatches(mixed $savedNumber, int $number): bool
+    {
+        return (is_int($savedNumber) && $savedNumber === $number)
+            || (is_string($savedNumber)
+                && preg_match('/^[0-9]+$/D', $savedNumber) === 1
+                && ltrim($savedNumber, '0') === (string) $number);
+    }
+
     private function periodic(
         DatabaseInterface $db,
         array $categoryIds,
@@ -302,10 +321,7 @@ final class RquotesHelper
         $number = self::normalisePositiveLimit($savedNumber, 1, $count);
         // Invalid, zero or out-of-range saved values must be persisted even
         // if their fallback position happens to match the current index.
-        $savedNumberMatches = (is_int($savedNumber) && $savedNumber === $number)
-            || (is_string($savedNumber)
-                && preg_match('/^[0-9]+$/D', $savedNumber) === 1
-                && ltrim($savedNumber, '0') === (string) $number);
+        $savedNumberMatches = self::savedPositionMatches($savedNumber, $number);
 
         if (!$meta) {
             $this->storeMeta($db, $metaId, $number, $token, false);
