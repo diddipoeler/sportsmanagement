@@ -17,6 +17,7 @@ on:
       - '.github/tests/joomla56-top-tipper-inputs.php'
       - '.github/tests/joomla56-top-tipper-flags.php'
       - '.github/tests/joomla56-rquotes-inputs.php'
+      - '.github/tests/joomla56-playgroundplan-venues.php'
       - 'site/src/Controller/DisplayController.php'
       - 'admin/sportsmanagement.php'
       - 'admin/src/Controller/DisplayController.php'
@@ -61,6 +62,7 @@ on:
       - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56-top-tipper-flags.php'
       - '.github/tests/joomla56-rquotes-inputs.php'
+      - '.github/tests/joomla56-playgroundplan-venues.php'
       - '.github/tests/joomla56-top-tipper-inputs.php'
       - '.github/tests/joomla56-clubicons-urls.php'
       - '.github/tests/joomla56-playground-ids.php'
@@ -124,6 +126,7 @@ jobs:
           php -l .github/tests/joomla56-top-tipper-inputs.php
           php -l .github/tests/joomla56-top-tipper-flags.php
           php -l .github/tests/joomla56-rquotes-inputs.php
+          php -l .github/tests/joomla56-playgroundplan-venues.php
           php -l site/sportsmanagement.php
           php -l modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
@@ -177,5 +180,7 @@ jobs:
         run: php .github/tests/joomla56-top-tipper-flags.php
       - name: Random Quotes numeric settings regression
         run: php .github/tests/joomla56-rquotes-inputs.php
+      - name: Playground Plan venue regression
+        run: php .github/tests/joomla56-playgroundplan-venues.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
