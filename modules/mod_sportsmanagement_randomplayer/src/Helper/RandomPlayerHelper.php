@@ -328,7 +328,7 @@ final class RandomPlayerHelper
 
         if ($path === ''
             || preg_match('/[\\x00-\\x1F\\x7F]/', $path)
-            || str_contains($path, '\\\\')
+            || str_contains($path, '\\')
             || str_starts_with($path, '//')) {
             return '';
         }
