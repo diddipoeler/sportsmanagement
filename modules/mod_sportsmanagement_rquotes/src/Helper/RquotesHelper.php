@@ -270,18 +270,6 @@ final class RquotesHelper
     }
 
     /**
-     * Select a stable quote for a daily, weekly, monthly or yearly period.
-     *
-     * Loads saved rotation metadata, advances or clamps its position when necessary and returns one quote for the current token.
-     *
-     * @param DatabaseInterface $db Quotes database.
-     * @param array<int, int> $categoryIds Category filters.
-     * @param int $metaId Saved rotation record identifier.
-     * @param string $dateFormat PHP date format used for the rotation token.
-     * @param CMSApplicationInterface $app Current Joomla application.
-     * @return array<int, object> Quote for this period or an empty list.
-     */
-    /**
      * Check whether persisted rotation metadata already matches a quote index.
      *
      * Accepts an integer or zero-padded decimal string representing the same
@@ -300,6 +288,18 @@ final class RquotesHelper
                 && ltrim($savedNumber, '0') === (string) $number);
     }
 
+    /**
+     * Select a stable quote for a daily, weekly, monthly or yearly period.
+     *
+     * Loads saved rotation metadata, advances or clamps its position when necessary and returns one quote for the current token.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param array<int, int> $categoryIds Category filters.
+     * @param int $metaId Saved rotation record identifier.
+     * @param string $dateFormat PHP date format used for the rotation token.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @return array<int, object> Quote for this period or an empty list.
+     */
     private function periodic(
         DatabaseInterface $db,
         array $categoryIds,
