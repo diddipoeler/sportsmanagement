@@ -348,7 +348,9 @@ final class RquotesHelper
     /**
      * Query published quote records and their associated person picture.
      *
-     * Applies allowed category filters and an optional daily number, limiting numbered lookups to one record.
+     * Applies allowed category filters and an optional daily number,
+     * limiting numbered lookups to one record. Malformed database rows are
+     * discarded before quote selection or image URL generation.
      *
      * @param DatabaseInterface $db Quotes database.
      * @param array<int, int> $categoryIds Optional category IDs.
@@ -383,7 +385,9 @@ final class RquotesHelper
         // Periodic and today rotations display a single quote. Limit
         // numbered lookups at the database instead of loading duplicates.
         $db->setQuery($query, 0, $dailyNumber !== null ? 1 : 0);
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList();
+
+        return is_array($rows) ? array_values(array_filter($rows, 'is_object')) : [];
     }
 
     /**
