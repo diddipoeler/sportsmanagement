@@ -247,7 +247,9 @@ final class PlaygroundPlanHelper
     /**
      * Choose a team logo or the component placeholder.
      *
-     * Uses the supplied image path when available, otherwise selects the matching configured placeholder size.
+     * Uses the supplied image path when available, otherwise selects the
+     * configured placeholder for the logo size. Invalid non-string Joomla
+     * configuration values produce an empty path without PHP 8 warnings.
      *
      * @param string $path Team image path.
      * @param string $logoField Configured logo size field.
@@ -261,11 +263,13 @@ final class PlaygroundPlanHelper
 
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
 
-        return (string) match ($logoField) {
+        $placeholder = match ($logoField) {
             'logo_small' => $componentParams->get('ph_logo_small', ''),
             'logo_middle' => $componentParams->get('ph_logo_medium', ''),
             default => $componentParams->get('ph_logo_big', ''),
         };
+
+        return is_string($placeholder) ? $placeholder : '';
     }
 
     /**
