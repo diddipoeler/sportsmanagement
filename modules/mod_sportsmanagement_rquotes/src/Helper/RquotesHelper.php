@@ -26,6 +26,17 @@ final class RquotesHelper
     private const MAX_CATEGORY_VALUES = 200;
     private const MAX_CATEGORY_STRING_BYTES = 4096;
 
+    /**
+     * Create the random-quote layout context for the Joomla site module.
+     *
+     * Chooses text or database content, validates media-server configuration, rotates quotes according to the module settings and falls back to empty results on database errors.
+     *
+     * @param Registry $params Module display and selection settings.
+     * @param Registry $componentParams SportsManagement component configuration.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @param DatabaseInterface $fallbackDatabase Default database connection.
+     * @return array<string, mixed> Source, style, quotes, text and picture server.
+     */
     public function getData(
         Registry $params,
         Registry $componentParams,
@@ -123,8 +134,12 @@ final class RquotesHelper
     }
 
     /**
-     * Keep the external-database selector predictable for malformed legacy
-     * module parameters instead of converting arrays or booleans to 1.
+     * Validate the database selector without lossy PHP type conversion.
+     *
+     * Only nonnegative integer values and decimal strings within the PHP integer range are accepted.
+     *
+     * @param mixed $value Raw database selector.
+     * @return int Nonnegative selector, defaulting to zero.
      */
     private static function normaliseDatabaseSelector(mixed $value): int
     {
@@ -142,7 +157,16 @@ final class RquotesHelper
         return $selector === false ? 0 : $selector;
     }
 
-    /** Reject malformed quote-count settings without changing valid bounds. */
+    /**
+     * Choose a bounded positive quote count.
+     *
+     * Rejects malformed values and integer overflow while limiting accepted counts to the configured maximum.
+     *
+     * @param mixed $value Raw configured count.
+     * @param int $default Count used for invalid input.
+     * @param int $maximum Upper bound for the count.
+     * @return int Bounded number of quotes.
+     */
     private static function normalisePositiveLimit(mixed $value, int $default, int $maximum): int
     {
         if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
@@ -159,6 +183,15 @@ final class RquotesHelper
         return $number === false ? $default : min($maximum, max(1, $number));
     }
 
+    /**
+     * Select one random quote from the requested categories.
+     *
+     * Loads eligible records and returns a single randomly selected object or an empty list.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param array<int, int> $categoryIds Category filters.
+     * @return array<int, object> Zero or one quote.
+     */
     private function singleRandom(DatabaseInterface $db, array $categoryIds): array
     {
         $rows = $this->quoteRows($db, $categoryIds);
@@ -169,6 +202,16 @@ final class RquotesHelper
         return [$rows[array_rand($rows)]];
     }
 
+    /**
+     * Select a limited random sample of published quotes.
+     *
+     * Shuffles the eligible rows and returns at most the requested number without duplicates.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param array<int, int> $categoryIds Category filters.
+     * @param int $count Maximum number of quotes.
+     * @return array<int, object> Random quote sample.
+     */
     private function multipleRandom(DatabaseInterface $db, array $categoryIds, int $count): array
     {
         $rows = $this->quoteRows($db, $categoryIds);
@@ -180,6 +223,16 @@ final class RquotesHelper
         return array_slice($rows, 0, min($count, count($rows)));
     }
 
+    /**
+     * Display the next quote in a cookie-tracked sequence.
+     *
+     * Keeps the selected index within current bounds and writes a short-lived cookie only when response headers are available.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param array<int, int> $categoryIds Category filters.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @return array<int, object> The selected quote or an empty list.
+     */
     private function sequential(DatabaseInterface $db, array $categoryIds, CMSApplicationInterface $app): array
     {
         if (count($categoryIds) > 1) {
@@ -216,6 +269,18 @@ final class RquotesHelper
         return [$rows[$index]];
     }
 
+    /**
+     * Select a stable quote for a daily, weekly, monthly or yearly period.
+     *
+     * Loads saved rotation metadata, advances or clamps its position when necessary and returns one quote for the current token.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param array<int, int> $categoryIds Category filters.
+     * @param int $metaId Saved rotation record identifier.
+     * @param string $dateFormat PHP date format used for the rotation token.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @return array<int, object> Quote for this period or an empty list.
+     */
     private function periodic(
         DatabaseInterface $db,
         array $categoryIds,
@@ -254,6 +319,16 @@ final class RquotesHelper
         return $selected ?: [$rows[$number - 1]];
     }
 
+    /**
+     * Return the quote associated with the current day of the year.
+     *
+     * Uses a one-based day number for numbered records and a stable fallback when no matching quote exists.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param array<int, int> $categoryIds Category filters.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @return array<int, object> Zero or one quote for the day.
+     */
     private function todayQuote(DatabaseInterface $db, array $categoryIds, CMSApplicationInterface $app): array
     {
         // PHP's z is zero-based, while configured daily_number values are one-based.
@@ -270,6 +345,16 @@ final class RquotesHelper
         return $available ? [$available[($dayOfYear - 1) % count($available)]] : [];
     }
 
+    /**
+     * Query published quote records and their associated person picture.
+     *
+     * Applies allowed category filters and an optional daily number, limiting numbered lookups to one record.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param array<int, int> $categoryIds Optional category IDs.
+     * @param int|null $dailyNumber Optional one-based daily quote number.
+     * @return array<int, object> Quote records.
+     */
     private function quoteRows(DatabaseInterface $db, array $categoryIds, ?int $dailyNumber = null): array
     {
         $query = $db->createQuery()
@@ -301,6 +386,15 @@ final class RquotesHelper
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load the stored position of a periodic quote rotation.
+     *
+     * Retrieves the selected metadata record or returns null if not found.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param int $metaId Rotation metadata identifier.
+     * @return object|null Persisted rotation record.
+     */
     private function loadMeta(DatabaseInterface $db, int $metaId): ?object
     {
         $query = $db->createQuery()
@@ -317,6 +411,18 @@ final class RquotesHelper
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Persist the quote index and time token for a rotation.
+     *
+     * Updates an existing metadata record or inserts the first record for that period.
+     *
+     * @param DatabaseInterface $db Quotes database.
+     * @param int $metaId Rotation record identifier.
+     * @param int $number One-based selected quote position.
+     * @param string $token Current date period token.
+     * @param bool $exists Whether to update an existing metadata row.
+     * @return void
+     */
     private function storeMeta(
         DatabaseInterface $db,
         int $metaId,
@@ -338,6 +444,15 @@ final class RquotesHelper
         $db->insertObject('#__rquote_meta', $record);
     }
 
+    /**
+     * Choose a line from the configured safe local quote text file.
+     *
+     * Restricts filenames, rejects symbolic links and oversized files, then selects a random or date-indexed nonblank line.
+     *
+     * @param Registry $params Text-file and display settings.
+     * @param CMSApplicationInterface $app Joomla application for local date.
+     * @return string Selected text line or an empty string.
+     */
     private function textLine(Registry $params, CMSApplicationInterface $app): string
     {
         $configured = $params->get('filename', 'rquotes.txt');
@@ -404,6 +519,15 @@ final class RquotesHelper
         return $lines[array_rand($lines)];
     }
 
+    /**
+     * Build a safe image URL for an individual quote.
+     *
+     * Validates HTTP(S) absolute pictures or encodes safe relative image segments against the configured media server.
+     *
+     * @param object $quote Quote record with image fields.
+     * @param string $pictureServer Validated image base URL.
+     * @return string Safe image URL or an empty string.
+     */
     private function pictureUrl(object $quote, string $pictureServer): string
     {
         $path = trim((string) ($quote->person_picture ?? ''));
@@ -457,16 +581,40 @@ final class RquotesHelper
         return rtrim($pictureServer, '/') . '/' . $encodedPath;
     }
 
+    /**
+     * Choose one configured quote category randomly.
+     *
+     * Returns a one-element category filter or an empty filter when none is selected.
+     *
+     * @param array<int, int> $ids Allowed category IDs.
+     * @return array<int, int> One category ID or an empty list.
+     */
     private function randomCategory(array $ids): array
     {
         return $ids ? [$ids[array_rand($ids)]] : [];
     }
 
+    /**
+     * Select the first configured quote category.
+     *
+     * Provides a consistent category for persisted rotation modes.
+     *
+     * @param array<int, int> $ids Allowed category IDs.
+     * @return array<int, int> First ID or an empty list.
+     */
     private function firstCategory(array $ids): array
     {
         return $ids ? [(int) reset($ids)] : [];
     }
 
+    /**
+     * Parse and limit configured quote category identifiers.
+     *
+     * Accepts numeric IDs and Joomla ID:alias strings, removes duplicates and rejects invalid or oversized selectors.
+     *
+     * @param mixed $values Raw scalar or array module selection.
+     * @return array<int, int> Unique positive category IDs.
+     */
     private function normaliseIds(mixed $values): array
     {
         $values = is_array($values) ? $values : [$values];
@@ -499,6 +647,14 @@ final class RquotesHelper
         return array_values($ids);
     }
 
+    /**
+     * Allow only supported random-quote template styles.
+     *
+     * Unknown styles fall back to the default template rather than arbitrary layout names.
+     *
+     * @param string $style Requested style.
+     * @return string Allowed style identifier.
+     */
     private function normaliseStyle(string $style): string
     {
         return in_array($style, ['default', 'bold', 'italic', 'style', 'sticker'], true)
@@ -506,6 +662,14 @@ final class RquotesHelper
             : 'default';
     }
 
+    /**
+     * Return the current time in the Joomla site's configured timezone.
+     *
+     * Falls back to UTC if the configured timezone cannot be instantiated.
+     *
+     * @param CMSApplicationInterface $app Application providing timezone settings.
+     * @return \DateTimeImmutable Current local date and time.
+     */
     private function now(CMSApplicationInterface $app): \DateTimeImmutable
     {
         try {
@@ -517,6 +681,15 @@ final class RquotesHelper
         return new \DateTimeImmutable('now', $timezone);
     }
 
+    /**
+     * Resolve the database configured for quote lookup.
+     *
+     * Delegates connection selection to the SportsManagement database resolver.
+     *
+     * @param int $selector Database configuration identifier.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return DatabaseInterface Resolved quote database.
+     */
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
