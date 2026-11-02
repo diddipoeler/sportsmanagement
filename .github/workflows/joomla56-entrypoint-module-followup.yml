@@ -29,6 +29,8 @@ on:
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/tests/joomla56-new-project-route.php'
       - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
@@ -61,6 +63,8 @@ on:
       - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
+      - '.github/tests/joomla56-new-project-route.php'
       - 'modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56-top-tipper-flags.php'
       - '.github/tests/joomla56-rquotes-inputs.php'
@@ -149,6 +153,8 @@ jobs:
           php -l modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_randomplayer/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_new_project/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          php -l .github/tests/joomla56-new-project-route.php
           php -l modules/mod_sportsmanagement_firstleagueoverview/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php
@@ -190,5 +196,7 @@ jobs:
         run: php .github/tests/joomla56-playgroundplan-venues.php
       - name: Team Stats Ranking configuration regression
         run: php .github/tests/joomla56-teamstats-settings.php
+      - name: New Project database route regression
+        run: php .github/tests/joomla56-new-project-route.php
       - name: Verify mandatory PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
