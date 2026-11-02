@@ -190,10 +190,6 @@ final class PlaygroundPlanHelper
     }
 
     /**
-     * Only accept nonnegative decimal IDs, including zero-padded legacy
-     * settings, without PHP's surprising array or boolean-to-integer casts.
-     */
-    /**
      * Convert a configured numeric selector to a nonnegative integer.
      *
      * Rejects arrays, boolean values, partial numbers and integer overflows; accepts zero-padded decimal strings.
@@ -217,7 +213,6 @@ final class PlaygroundPlanHelper
         return $number === false ? 0 : $number;
     }
 
-    /** Retain a bounded default for malformed fixture display limits. */
     /**
      * Clamp the maximum number of upcoming fixtures.
      *
@@ -381,7 +376,6 @@ final class PlaygroundPlanHelper
         return false;
     }
 
-    /** @return array<int,int> */
     /**
      * Parse the allowed positive IDs from Joomla module selectors.
      *
