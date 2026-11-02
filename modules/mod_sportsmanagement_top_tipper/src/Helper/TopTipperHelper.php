@@ -126,10 +126,15 @@ final class TopTipperHelper
         if (empty($config['show_all_user'])) {
             $rows = array_filter(
                 $rows,
-                static fn (mixed $row, int|string $key): bool => (is_array($row)
-                    && (int) ($row['predictionsCount'] ?? 0) > 0)
-                    || ($currentMemberId > 0 && ctype_digit((string) $key)
-                        && (int) $key === $currentMemberId),
+                fn (mixed $row, int|string $key): bool => (
+                    (is_int($row['predictionsCount'] ?? null)
+                        && $row['predictionsCount'] > 0)
+                    || (is_string($row['predictionsCount'] ?? null)
+                        && ctype_digit($row['predictionsCount'])
+                        && $row['predictionsCount'] !== '0'
+                        && trim($row['predictionsCount'], '0') !== '')
+                    || ($currentMemberId > 0 && $this->extractId($key) === $currentMemberId)
+                ),
                 ARRAY_FILTER_USE_BOTH
             );
         }
