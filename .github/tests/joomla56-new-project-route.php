@@ -47,5 +47,21 @@ namespace {
         }
     }
 
+    $matches = new \\ReflectionMethod($class, 'matchedProjectReferences');
+    $found = $matches->invoke(null, [
+        '12',
+        'sportsmanagement-project:3',
+        'unrelated-project:12',
+        'sportsmanagement-project:12tail',
+        ['12'],
+        '999999999999999999999999999999',
+        '4',
+    ], [3 => 3, 12 => 12]);
+
+    if ($found !== [12 => true, 3 => true]) {
+        fwrite(STDERR, 'New Project exact article references regression.' . PHP_EOL);
+        exit(1);
+    }
+
     echo "New Project database route selectors passed.\n";
 }
