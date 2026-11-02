@@ -261,37 +261,47 @@ final class RandomPlayerHelper
             return $url;
         }
 
-        return $this->mediaUrl((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', ''));
+        $placeholder = ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', '');
+
+        return $this->mediaUrl(is_string($placeholder) ? $placeholder : '');
     }
 
     private function mediaUrl(string $path): string
     {
         $path = trim($path);
 
-        if ($path === '' || str_starts_with($path, '//')
-            || preg_match('/[\x00-\x1F\x7F\\\\]/', $path)) {
+        if ($path === ''
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $path)
+            || str_contains($path, '\\\\')
+            || str_starts_with($path, '//')) {
             return '';
         }
 
         if (preg_match('#^https?://#i', $path)) {
             $parts = parse_url($path);
 
-            return is_array($parts) && !empty($parts['host'])
-                && !isset($parts['user']) && !isset($parts['pass'])
+            return filter_var($path, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass'])
                 ? $path : '';
         }
 
-        // Reject custom URI schemes and traversal even for local images.
-        // Permit a single leading slash for existing Joomla media paths.
+        // Reject alternate URI schemes, encoded traversal and query strings.
+        // Encode local path segments under the Joomla installation root.
         $relativePath = ltrim($path, '/');
-
         if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $relativePath)
-            || preg_match('~(?:^|/)\.\.?(?:/|$)~', $relativePath)
-            || preg_match('~%(?:2e|2f|5c)~i', $relativePath)) {
+            || str_contains($relativePath, ':')
+            || str_contains($relativePath, '%')
+            || strpbrk($relativePath, '?#') !== false
+            || preg_match('~(?:^|/)\\.\\.?(?:/|$)~', $relativePath)) {
             return '';
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . $relativePath;
+        $encoded = implode('/', array_map('rawurlencode', explode('/', $relativePath)));
+
+        return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
     private function formatName(string $firstName, string $nickName, string $lastName, int $format): string
