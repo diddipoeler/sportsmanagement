@@ -204,7 +204,11 @@ final class NewProjectHelper
             throw new \RuntimeException('New Project module is not published.', 404);
         }
 
-        $params = new Registry((string) $module->params);
+        if (!is_string($module->params ?? null)) {
+            throw new \RuntimeException('Invalid New Project module settings.', 409);
+        }
+
+        $params = new Registry($module->params);
 
         if (!self::articleCreationEnabled($params->get('new_project_article', 0))) {
             throw new \RuntimeException('Article creation is disabled for this module.', 403);
@@ -390,7 +394,8 @@ final class NewProjectHelper
     /**
      * Load a published front-end New Project module by identifier.
      *
-     * Restricts lookup to the New Project module type and Joomla site client before trusting the module's stored configuration.
+     * Restricts lookup to the New Project module type and Joomla site client.
+     * Only explicitly published integer/string status values are accepted.
      *
      * @param DatabaseInterface $db Joomla database.
      * @param int $moduleId Positive module identifier from the request.
@@ -413,7 +418,9 @@ final class NewProjectHelper
         $db->setQuery($query, 0, 1);
         $module = $db->loadObject();
 
-        return $module && (int) $module->published === 1 ? $module : null;
+        return is_object($module) && in_array($module->published ?? null, [1, '1'], true)
+            ? $module
+            : null;
     }
 
     /**
@@ -542,7 +549,9 @@ final class NewProjectHelper
     /**
      * Resolve URLs for the flags of the projects' league countries.
      *
-     * Collects distinct configured country codes and loads their image paths from the SportsManagement countries table.
+     * Collects distinct configured country codes and loads their image paths
+     * from the SportsManagement countries table. Malformed country rows and
+     * non-string image fields are ignored.
      *
      * @param DatabaseInterface $db Selected SportsManagement database.
      * @param array<int, object> $rows Loaded project records.
@@ -575,8 +584,19 @@ final class NewProjectHelper
         $db->setQuery($query);
         $result = [];
 
-        foreach ($db->loadObjectList() ?: [] as $country) {
-            $result[strtoupper((string) $country->alpha3)] = $this->mediaUrl((string) $country->picture);
+        $countryRows = $db->loadObjectList();
+
+        foreach (is_array($countryRows) ? $countryRows : [] as $country) {
+            if (!is_object($country) || !is_string($country->alpha3 ?? null)) {
+                continue;
+            }
+
+            $code = strtoupper(trim($country->alpha3));
+            $picture = $country->picture ?? null;
+
+            if ($code !== '' && is_string($picture)) {
+                $result[$code] = $this->mediaUrl($picture);
+            }
         }
 
         return $result;
