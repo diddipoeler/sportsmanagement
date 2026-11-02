@@ -451,7 +451,9 @@ final class NewProjectHelper
     /**
      * Find project IDs already referenced by articles in a category.
      *
-     * Searches both legacy numeric references and the current sportsmanagement-project prefixed references to avoid duplicate article creation.
+     * Searches both legacy numeric references and current prefixed references,
+     * validates project IDs and matches only exact reference formats to avoid
+     * duplicate articles or accidental matches to unrelated content.
      *
      * @param DatabaseInterface $db Joomla database.
      * @param int $categoryId Target Joomla content category ID.
@@ -460,9 +462,21 @@ final class NewProjectHelper
      */
     private function existingProjectReferences(DatabaseInterface $db, int $categoryId, array $projects): array
     {
-        $projectIds = array_values(array_filter(array_map(static fn($row): int => (int) ($row->id ?? 0), $projects)));
+        $projectIds = [];
 
-        if (!$projectIds) {
+        foreach ($projects as $project) {
+            if (!is_object($project)) {
+                continue;
+            }
+
+            $id = $this->databaseSelector($project->id ?? null);
+
+            if ($id !== null && $id > 0) {
+                $projectIds[$id] = $id;
+            }
+        }
+
+        if ($projectIds === []) {
             return [];
         }
 
@@ -481,11 +495,38 @@ final class NewProjectHelper
             ->bind(':categoryId', $categoryId, ParameterType::INTEGER);
         $db->setQuery($query);
 
+        return self::matchedProjectReferences($db->loadColumn() ?: [], $projectIds);
+    }
+
+    /**
+     * Match stored article references against the exact requested project IDs.
+     *
+     * Supports legacy numeric references and the namespaced new-project form
+     * without accepting unrelated trailing digits or malformed database rows.
+     *
+     * @param array<int, mixed> $references Article xreference values.
+     * @param array<int, int> $projectIds Allowed project identifiers keyed by ID.
+     * @return array<int, bool> Existing requested projects keyed by identifier.
+     */
+    private static function matchedProjectReferences(array $references, array $projectIds): array
+    {
         $existing = [];
 
-        foreach ($db->loadColumn() ?: [] as $reference) {
-            if (preg_match('/(\d+)$/', (string) $reference, $match)) {
-                $existing[(int) $match[1]] = true;
+        foreach ($references as $reference) {
+            if (!is_string($reference) && !is_int($reference)) {
+                continue;
+            }
+
+            $text = (string) $reference;
+
+            if (!preg_match('/^(?:sportsmanagement-project:)?([1-9][0-9]*)$/D', $text, $match)) {
+                continue;
+            }
+
+            $id = filter_var($match[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false && isset($projectIds[$id])) {
+                $existing[$id] = true;
             }
         }
 
