@@ -24,6 +24,16 @@ use Joomla\Registry\Registry;
 
 final class PlaygroundPlanHelper
 {
+    /**
+     * Retrieve the upcoming playground fixtures for the module.
+     *
+     * Selects projects and grounds, queries published upcoming matches, and resolves the venue, logos and route data. Errors are logged and an empty list is returned.
+     *
+     * @param Registry $params Module filters and display settings.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @param object $module Joomla module object.
+     * @return array<int, object> Enriched fixture records or an empty list.
+     */
     public function getData(Registry $params, CMSApplicationInterface $app, object $module): array
     {
         try {
@@ -162,6 +172,15 @@ final class PlaygroundPlanHelper
         }
     }
 
+    /**
+     * Select the configured SportsManagement database connection.
+     *
+     * Delegates the database selector to the Joomla-aware resolver, using the provided connection as a fallback.
+     *
+     * @param Registry $params Database configuration.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla database.
+     * @return DatabaseInterface Database selected for fixture queries.
+     */
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
@@ -173,6 +192,14 @@ final class PlaygroundPlanHelper
     /**
      * Only accept nonnegative decimal IDs, including zero-padded legacy
      * settings, without PHP's surprising array or boolean-to-integer casts.
+     */
+    /**
+     * Convert a configured numeric selector to a nonnegative integer.
+     *
+     * Rejects arrays, boolean values, partial numbers and integer overflows; accepts zero-padded decimal strings.
+     *
+     * @param mixed $value Raw configured numeric value.
+     * @return int Nonnegative integer or zero for invalid input.
      */
     private static function nonNegativeInteger(mixed $value): int
     {
@@ -191,6 +218,16 @@ final class PlaygroundPlanHelper
     }
 
     /** Retain a bounded default for malformed fixture display limits. */
+    /**
+     * Clamp the maximum number of upcoming fixtures.
+     *
+     * Accepts positive integer values and zero-padded decimal strings, retaining a bounded default for malformed values.
+     *
+     * @param mixed $value Raw configured maximum.
+     * @param int $default Fallback limit.
+     * @param int $maximum Maximum number of records allowed.
+     * @return int Bounded positive fixture limit.
+     */
     private static function positiveLimit(mixed $value, int $default, int $maximum): int
     {
         if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
@@ -207,6 +244,15 @@ final class PlaygroundPlanHelper
         return $number === false ? $default : min($maximum, max(1, $number));
     }
 
+    /**
+     * Choose a team logo or the component placeholder.
+     *
+     * Uses the supplied image path when available, otherwise selects the matching configured placeholder size.
+     *
+     * @param string $path Team image path.
+     * @param string $logoField Configured logo size field.
+     * @return string Team logo or fallback path.
+     */
     private function logo(string $path, string $logoField): string
     {
         if ($path !== '') {
@@ -222,6 +268,14 @@ final class PlaygroundPlanHelper
         };
     }
 
+    /**
+     * Determine the relevant playground for a fixture.
+     *
+     * Prefers the match-specific playground, then the project team's ground and finally the club ground.
+     *
+     * @param object $row Fixture record containing playground fields.
+     * @return array{int, string, string, string} Ground ID, alias, name and image path.
+     */
     private function playground(object $row): array
     {
         if ((int) ($row->playground_id ?? 0) > 0) {
@@ -254,6 +308,14 @@ final class PlaygroundPlanHelper
         return [0, '', '', ''];
     }
 
+    /**
+     * Select an allowlisted team name column for SQL.
+     *
+     * Rejects unknown configuration fields before composing a dynamic SELECT clause.
+     *
+     * @param string $value Requested team name column.
+     * @return string Safe SQL column name.
+     */
     private function teamField(string $value): string
     {
         return in_array($value, ['name', 'middle_name', 'short_name'], true)
@@ -261,6 +323,14 @@ final class PlaygroundPlanHelper
             : 'middle_name';
     }
 
+    /**
+     * Select an allowlisted club logo column for SQL.
+     *
+     * Rejects unknown configuration fields before composing a dynamic SELECT clause.
+     *
+     * @param string $value Requested club image column.
+     * @return string Safe SQL column name.
+     */
     private function logoField(string $value): string
     {
         return in_array($value, ['logo_small', 'logo_middle', 'logo_big'], true)
@@ -268,6 +338,15 @@ final class PlaygroundPlanHelper
             : 'logo_big';
     }
 
+    /**
+     * Build a Joomla ID-and-alias slug for a record.
+     *
+     * Omits the alias suffix when the database record has no alias.
+     *
+     * @param int $id Record identifier.
+     * @param string $alias Optional URL alias.
+     * @return string Numeric ID or ID:alias slug.
+     */
     private function slug(int $id, string $alias): string
     {
         $alias = trim($alias);
@@ -275,6 +354,14 @@ final class PlaygroundPlanHelper
         return $alias === '' ? (string) $id : $id . ':' . $alias;
     }
 
+    /**
+     * Check whether a project or playground selection was explicitly set.
+     *
+     * Distinguishes blank and zero-valued selectors from malformed entries that must not broaden a query.
+     *
+     * @param mixed $value Scalar or array-valued module selection.
+     * @return bool True when the selector contains an explicit entry.
+     */
     private function hasSelection(mixed $value): bool
     {
         $values = is_array($value) ? $value : [$value];
@@ -295,6 +382,14 @@ final class PlaygroundPlanHelper
     }
 
     /** @return array<int,int> */
+    /**
+     * Parse the allowed positive IDs from Joomla module selectors.
+     *
+     * Accepts scalar or array selectors, comma-separated entries and ID:alias slugs; rejects malformed or overflowing IDs and removes duplicates.
+     *
+     * @param mixed $value Raw selection from module parameters.
+     * @return array<int, int> Unique validated positive IDs.
+     */
     private function ids(mixed $value): array
     {
         $values = is_array($value) ? $value : [$value];
