@@ -113,6 +113,14 @@ final class TeamStatsRankingHelper
         return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 
+    /**
+     * Load a published project and construct Joomla route slugs.
+     *
+     * Fetches the project and optional season alias for the selected project ID.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @return object
+     */
     private function loadProject(DatabaseInterface $db, int $projectId): ?object
     {
         $query = $db->createQuery()
@@ -148,6 +156,15 @@ final class TeamStatsRankingHelper
         return $project;
     }
 
+    /**
+     * Load a published statistic belonging to the selected project.
+     *
+     * Checks position and publication joins before enabling the statistic in the ranking.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @param int $statId Positive statistic identifier.
+     * @return object
+     */
     private function loadStatistic(DatabaseInterface $db, int $projectId, int $statId): ?object
     {
         $query = $db->createQuery()
@@ -188,6 +205,13 @@ final class TeamStatsRankingHelper
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Combine base and specific statistic parameters.
+     *
+     * Loads the base parameters first, then merges statistic-specific overrides while ignoring malformed registry data.
+     * @param object $stat Statistic record containing JSON parameter strings.
+     * @return Registry Combined Joomla statistic settings.
+     */
     private function statParams(object $stat): Registry
     {
         $params = new Registry();
@@ -209,6 +233,18 @@ final class TeamStatsRankingHelper
         return $params;
     }
 
+    /**
+     * Calculate ordered team rankings for a statistic class.
+     *
+     * Supports direct statistics, event sums, ratios, differences and weighted totals, then formats ranked values and ties.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @param object $stat Selected statistic definition.
+     * @param Registry $statParams Combined statistic settings.
+     * @param string $order ASC or DESC ranking direction.
+     * @param int $limit Maximum number of result rows.
+     * @return array<int, array<string, int
+     */
     private function calculateRanking(
         DatabaseInterface $db,
         int $projectId,
@@ -324,6 +360,15 @@ final class TeamStatsRankingHelper
         return $rows;
     }
 
+    /**
+     * Aggregate recorded match statistics by team.
+     *
+     * Filters by the selected project and statistic IDs and sums published match statistic values.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @param array<int, int> $statIds Statistic identifiers to aggregate.
+     * @return array<int, float> Statistic totals keyed by team ID.
+     */
     private function aggregateStatistics(DatabaseInterface $db, int $projectId, array $statIds): array
     {
         if ($statIds === []) {
@@ -375,6 +420,15 @@ final class TeamStatsRankingHelper
         return $this->valueMap($db->loadObjectList() ?: []);
     }
 
+    /**
+     * Aggregate recorded match events by team.
+     *
+     * Sums published match event counts for the selected event IDs and project.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @param array<int, int> $eventIds Event type identifiers to aggregate.
+     * @return array<int, float> Event totals keyed by team ID.
+     */
     private function aggregateEvents(DatabaseInterface $db, int $projectId, array $eventIds): array
     {
         if ($eventIds === []) {
@@ -427,6 +481,15 @@ final class TeamStatsRankingHelper
         return $this->valueMap($db->loadObjectList() ?: []);
     }
 
+    /**
+     * Compute weighted sums of selected match statistics.
+     *
+     * Pairs statistic IDs with configured factors, aggregates the recorded totals and applies the corresponding factor for each team.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @param Registry $params Configured statistic IDs and numeric factors.
+     * @return array<int, float> Weighted totals keyed by team ID.
+     */
     private function weightedStatistics(DatabaseInterface $db, int $projectId, Registry $params): array
     {
         $ids = $this->ids($params->get('stat_ids', []));
@@ -495,6 +558,14 @@ final class TeamStatsRankingHelper
         return $values;
     }
 
+    /**
+     * Count played, published matches for each team in a project.
+     *
+     * Counts distinct fixtures with a recorded result, to serve as the denominator for per-game statistics.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @return array<int, float> Played-match counts keyed by team ID.
+     */
     private function playedMatches(DatabaseInterface $db, int $projectId): array
     {
         $query = $db->createQuery()
@@ -524,6 +595,14 @@ final class TeamStatsRankingHelper
         return $this->valueMap($db->loadObjectList() ?: []);
     }
 
+    /**
+     * Count wins for each team in a published project fixture.
+     *
+     * Compares home and away scores for played matches and counts distinct victories.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project identifier.
+     * @return array<int, float> Win counts keyed by team ID.
+     */
     private function wonMatches(DatabaseInterface $db, int $projectId): array
     {
         $query = $db->createQuery()
@@ -559,6 +638,14 @@ final class TeamStatsRankingHelper
         return $this->valueMap($db->loadObjectList() ?: []);
     }
 
+    /**
+     * Load display metadata and logo URLs for ranked teams.
+     *
+     * Fetches team and club details only for validated IDs and prepares their route slugs and image URLs.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param array<int, int> $teamIds Requested ranked team IDs.
+     * @return array<int, object> Team records keyed by database ID.
+     */
     private function loadTeams(DatabaseInterface $db, array $teamIds): array
     {
         $teamIds = $this->ids($teamIds);
@@ -603,6 +690,13 @@ final class TeamStatsRankingHelper
         return $teams;
     }
 
+    /**
+     * Convert aggregated database rows into numeric team totals.
+     *
+     * Maps each valid team ID to its aggregated total and skips malformed query rows.
+     * @param array<int, mixed> $rows Database aggregation result rows.
+     * @return array<int, float> Totals keyed by team identifier.
+     */
     private function valueMap(array $rows): array
     {
         $map = [];
@@ -613,6 +707,14 @@ final class TeamStatsRankingHelper
         return $map;
     }
 
+    /**
+     * Calculate per-team ratios for two statistic maps.
+     *
+     * Only emits results for positive denominators to avoid division by zero.
+     * @param array<int, float> $numerator Numerator totals keyed by team ID.
+     * @param array<int, float> $denominator Denominator totals keyed by team ID.
+     * @return array<int, float> Ratios keyed by team ID.
+     */
     private function divideMaps(array $numerator, array $denominator): array
     {
         $result = [];
@@ -626,6 +728,14 @@ final class TeamStatsRankingHelper
         return $result;
     }
 
+    /**
+     * Subtract one map of team totals from another.
+     *
+     * Uses the union of team identifiers so missing entries are treated as zero.
+     * @param array<int, float> $add Positive totals keyed by team ID.
+     * @param array<int, float> $sub Totals to subtract by team ID.
+     * @return array<int, float> Differences keyed by team ID.
+     */
     private function subtractMaps(array $add, array $sub): array
     {
         $result = [];
@@ -636,6 +746,13 @@ final class TeamStatsRankingHelper
         return $result;
     }
 
+    /**
+     * Normalise module selections into unique positive identifiers.
+     *
+     * Accepts scalar or array module parameters, parses delimited selectors and rejects malformed values before use in bound SQL conditions.
+     * @param mixed $values Raw selection or list of selections.
+     * @return array<int, int> Unique validated positive identifiers.
+     */
     private function ids(mixed $values): array
     {
         $values = is_array($values) ? $values : preg_split('/[\s,;|]+/', (string) $values, -1, PREG_SPLIT_NO_EMPTY);
@@ -651,6 +768,13 @@ final class TeamStatsRankingHelper
         return array_values($ids);
     }
 
+    /**
+     * Read a positive Joomla ID or ID:alias selector safely.
+     *
+     * Supports one-element selector arrays and zero-padded decimal IDs but rejects unsupported types, invalid formats and integer overflow.
+     * @param mixed $value Raw Joomla identifier or selector.
+     * @return int Positive ID, or zero when invalid.
+     */
     private function extractId(mixed $value): int
     {
         // Single selectors can arrive wrapped in a single-element array.
@@ -686,9 +810,11 @@ final class TeamStatsRankingHelper
     }
 
     /**
-     * Normalize stored icons and club logos before putting them in HTML src.
-     * Remote assets must be ordinary HTTP(S) URLs without credentials;
-     * relative images are encoded under the actual Joomla installation root.
+     * Normalise team logo and statistic icon paths for safe HTML output.
+     *
+     * Allows absolute HTTP(S) URLs without credentials; rejects unsafe relative paths and encodes local media segments beneath the Joomla installation root.
+     * @param string $path Configured remote or local media path.
+     * @return string Encoded media URL or empty string for invalid values.
      */
     public static function mediaUrl(string $path): string
     {
@@ -733,6 +859,12 @@ final class TeamStatsRankingHelper
         return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
+    /**
+     * Build the consistent empty ranking response.
+     *
+     * Returns null project/statistic records and empty lists when configured data is unavailable or fails to load.
+     * @return array<string, mixed> Empty module ranking context.
+     */
     private function emptyData(): array
     {
         return [
