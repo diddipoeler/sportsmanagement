@@ -12,10 +12,25 @@ declare(strict_types=1);
 namespace Joomla\Registry {
     class Registry
     {
+        /**
+         * Initialise the lightweight registry used to test module options.
+         *
+         * @param array<string, mixed> $values Simulated Joomla module parameters.
+         */
         public function __construct(private array $values = [])
         {
         }
 
+        /**
+         * Read one test parameter or return the supplied fallback value.
+         *
+         * Mirrors the Registry getter needed by the Top Tipper helper without
+         * loading a full Joomla installation during PHP CLI regression tests.
+         *
+         * @param string $key Configuration entry name.
+         * @param mixed $default Value returned if no entry is configured.
+         * @return mixed The configured value or the default.
+         */
         public function get(string $key, mixed $default = null): mixed
         {
             return $this->values[$key] ?? $default;
