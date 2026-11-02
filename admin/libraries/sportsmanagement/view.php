@@ -470,6 +470,7 @@ case 'divisions':
 case 'projectreferees':
 case 'projectteams':				
 case 'rounds':
+case 'matches':
 case 'teamplayers':
             
             $this->filterForm    = $this->model->getFilterForm();
