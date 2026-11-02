@@ -23,6 +23,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Build calendar event data and frontend script options.
+     *
+     * Queries the helper through Joomla's database service, preserves framework layout variables, and registers calendar CSS, JavaScript and instance-specific configuration.
+     *
+     * @return array|false Render variables, or false when skipped.
+     * @throws \RuntimeException When the application is not the site client.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -74,6 +82,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Resolve Joomla's database service for calendar event queries.
+     *
+     * Retrieves and validates the typed service from Joomla's dependency
+     * injection container before passing it to the calendar helper.
+     *
+     * @return DatabaseInterface Database service for helper queries.
+     * @throws \RuntimeException When the database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
