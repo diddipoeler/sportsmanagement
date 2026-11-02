@@ -272,8 +272,9 @@ final class TopTipperHelper
     /**
      * Convert allowed Top Tipper display settings into ranking model options.
      *
-     * Maps the known boolean-style module switches to integers and applies a
-     * bounded result limit, preventing an unbounded ranking view.
+     * Maps the known boolean-style switches to strict 0/1 integer options,
+     * rejecting malformed values, and applies a bounded result limit so the
+     * ranking view cannot render an unbounded user list.
      *
      * @param Registry $params Module configuration.
      * @return array<string, int> Sanitised ranking options.
@@ -290,7 +291,10 @@ final class TopTipperHelper
         $config = ['limit' => self::boundedLimit($params->get('limit', 5))];
 
         foreach ($keys as $key) {
-            $config[$key] = (int) $params->get($key, 0);
+            $raw = $params->get($key, 0);
+            // Module switches are boolean flags; do not coerce malformed arrays
+            // or partial numeric strings into enabled options under PHP 8.
+            $config[$key] = ($raw === 1 || $raw === '1') ? 1 : 0;
         }
 
         return $config;
