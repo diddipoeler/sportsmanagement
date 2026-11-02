@@ -844,10 +844,18 @@ final class TeamStatsRankingHelper
     private function divideMaps(array $numerator, array $denominator): array
     {
         $result = [];
+
         foreach ($numerator as $teamId => $value) {
-            $den = (float) ($denominator[$teamId] ?? 0);
-            if ($den > 0) {
-                $result[$teamId] = (float) $value / $den;
+            $den = $denominator[$teamId] ?? null;
+
+            if (!self::finiteNumber($value) || !self::finiteNumber($den) || (float) $den <= 0) {
+                continue;
+            }
+
+            $ratio = (float) $value / (float) $den;
+
+            if (is_finite($ratio)) {
+                $result[$teamId] = $ratio;
             }
         }
 
@@ -858,18 +866,48 @@ final class TeamStatsRankingHelper
      * Subtract one map of team totals from another.
      *
      * Uses the union of team identifiers so missing entries are treated as zero.
+     * Skips invalid or overflowing results instead of generating INF or NAN.
+     *
      * @param array<int, float> $add Positive totals keyed by team ID.
      * @param array<int, float> $sub Totals to subtract by team ID.
-     * @return array<int, float> Differences keyed by team ID.
+     * @return array<int, float> Finite differences keyed by team ID.
      */
     private function subtractMaps(array $add, array $sub): array
     {
         $result = [];
+
         foreach (array_unique(array_merge(array_keys($add), array_keys($sub))) as $teamId) {
-            $result[(int) $teamId] = (float) ($add[$teamId] ?? 0) - (float) ($sub[$teamId] ?? 0);
+            $positive = $add[$teamId] ?? 0.0;
+            $negative = $sub[$teamId] ?? 0.0;
+
+            if (!self::finiteNumber($positive) || !self::finiteNumber($negative)) {
+                continue;
+            }
+
+            $difference = (float) $positive - (float) $negative;
+
+            if (is_finite($difference)) {
+                $result[(int) $teamId] = $difference;
+            }
         }
 
         return $result;
+    }
+
+    /**
+     * Validate a finite numeric operand before statistic arithmetic.
+     *
+     * Rejects booleans, arrays, objects, invalid numeric text and infinity,
+     * including strings that overflow when converted to floating point.
+     *
+     * @param mixed $value Candidate statistic operand.
+     * @return bool True only for a finite integer, float or numeric string.
+     */
+    private static function finiteNumber(mixed $value): bool
+    {
+        return (is_int($value) || is_float($value) || is_string($value))
+            && is_numeric($value)
+            && is_finite((float) $value);
     }
 
     /**
