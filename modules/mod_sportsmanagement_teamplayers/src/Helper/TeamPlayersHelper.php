@@ -28,7 +28,13 @@ final class TeamPlayersHelper
     private const MAX_ROSTER_ROWS = 500;
 
     /**
-     * @return array{project:?object,players:array<int,object>,roster:array<int,array<int,object>>}
+     * Load a published project and its bounded player roster for the module.
+     *
+     * Validates project, team and database selectors; loads a roster capped at 500 rows; optionally aggregates game minutes; prepares player links, flags, photographs and a displayed list capped at 100 players.
+     *
+     * @param Registry $params Joomla module filters and display settings.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return array{project:?object,players:array<int,object>,roster:array<int,array<int,object>>} Project context, displayed players and roster grouped by position.
      */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
@@ -110,8 +116,12 @@ final class TeamPlayersHelper
     }
 
     /**
-     * Joomla selectors may return an integer or an ID:alias string. Reject
-     * partial numeric casts, booleans, arrays and overflowing identifiers.
+     * Parse a positive Joomla numeric ID or ID:alias selector safely.
+     *
+     * Rejects booleans, arrays, partial numbers and integer overflow; accepts zero-padded decimal IDs and safe legacy aliases.
+     *
+     * @param mixed $value Raw numeric or ID:alias selector.
+     * @return int Positive ID, or zero when invalid.
      */
     private function positiveId(mixed $value): int
     {
@@ -139,7 +149,12 @@ final class TeamPlayersHelper
     }
 
     /**
-     * A corrupted module parameter must never bypass the configured bound.
+     * Clamp the configured number of visible team players.
+     *
+     * Accepts nonnegative integer and decimal string configuration, including leading zeros, and returns a safe display bound between one and 100.
+     *
+     * @param mixed $raw Raw module limit setting.
+     * @return int Maximum number of visible player entries.
      */
     private function displayLimit(mixed $raw): int
     {
@@ -167,6 +182,16 @@ final class TeamPlayersHelper
         return max(1, min(self::MAX_PLAYERS, (int) $digits));
     }
 
+    /**
+     * Load the published project/team context used by the module.
+     *
+     * Joins the project, project-team, season-team and team tables with bound identifiers and published-state checks, then builds portable Joomla route slugs.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Positive project ID.
+     * @param int $teamId Positive team ID.
+     * @return object|null Project/team context or null when not published.
+     */
     private function project(DatabaseInterface $db, int $projectId, int $teamId): ?object
     {
         $query = $db->createQuery()
@@ -269,7 +294,15 @@ final class TeamPlayersHelper
         return is_string($value) ? $value : '';
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load the published players for a project team.
+     *
+     * Joins roster, person, project position and country data, bounds the SQL response and normalises malformed records before rendering.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param object $project Loaded project/team context.
+     * @return array<int,object> Valid published player rows.
+     */
     private function roster(DatabaseInterface $db, object $project): array
     {
         $projectId = (int) $project->id;
@@ -331,7 +364,17 @@ final class TeamPlayersHelper
         return $this->normaliseRosterRows($db->loadObjectList());
     }
 
-    /** @return array<int,int> */
+    /**
+     * Aggregate played minutes for the selected roster within one project.
+     *
+     * Runs bounded SQL counts for starters, substitutions and substituted-out players, then clamps calculated minutes to nonnegative totals.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param array<int,int> $playerIds Selected team-player roster IDs.
+     * @param int $gameTime Length of a regular match in minutes.
+     * @param int $projectId Positive project identifier.
+     * @return array<int,int> Played minutes indexed by team-player ID.
+     */
     private function minutesPlayedByPlayer(
         DatabaseInterface $db,
         array $playerIds,
@@ -423,6 +466,16 @@ final class TeamPlayersHelper
         return $minutes;
     }
 
+    /**
+     * Build a native Joomla route to a player's detail page.
+     *
+     * Includes the validated configured database, season, project, team and person identifiers in the component route.
+     *
+     * @param object $player Player record with prepared person slug.
+     * @param object $project Project/team record with prepared slugs.
+     * @param Registry $params Joomla module routing settings.
+     * @return string Player page URL.
+     */
     private function playerUrl(object $player, object $project, Registry $params): string
     {
         return SiteRouteHelper::view('player', [
@@ -434,6 +487,15 @@ final class TeamPlayersHelper
         ]);
     }
 
+    /**
+     * Format a team player's display name.
+     *
+     * Supports the module's legacy name format numbers, including nickname placement, initials and multi-line name layouts.
+     *
+     * @param object $player Player record containing first, last and nickname fields.
+     * @param int $format Configured name presentation mode.
+     * @return string Display name for the player.
+     */
     private function formatName(object $player, int $format): string
     {
         $first = trim(self::textValue($player->firstname ?? null));
@@ -470,6 +532,15 @@ final class TeamPlayersHelper
         return $name;
     }
 
+    /**
+     * Prepare escaped country-flag markup for a roster player.
+     *
+     * Validates ISO country codes, uses the CSS flag collection or a safe media URL, and escapes country labels in HTML attributes.
+     *
+     * @param object $row Player and country details.
+     * @param Registry $componentParams SportsManagement component settings.
+     * @return string Safe country flag HTML or an empty string.
+     */
     private function flagHtml(object $row, Registry $componentParams): string
     {
         $alpha3 = strtoupper(self::textValue($row->country ?? null));
@@ -510,6 +581,14 @@ final class TeamPlayersHelper
             : '';
     }
 
+    /**
+     * Normalise a player or country image into a safe site URL.
+     *
+     * Allows credential-free HTTPS/HTTP absolute URLs and encodes relative Joomla image paths; rejects traversal, encoded paths, non-HTTP schemes and control characters.
+     *
+     * @param string $path Raw configured image path or URL.
+     * @return string Valid media URL or an empty string.
+     */
     private function imageUrl(string $path): string
     {
         $path = trim($path);
@@ -553,8 +632,12 @@ final class TeamPlayersHelper
     }
 
     /**
-     * Accept only canonical non-negative integer selectors, including legacy
-     * zero-padded configuration, without allowing overflow or partial casts.
+     * Validate an external database selector without unsafe integer casts.
+     *
+     * Accepts a nonnegative integer or zero-padded decimal string within PHP's integer range and rejects malformed selectors.
+     *
+     * @param mixed $value Raw Joomla database selection.
+     * @return int|null Valid selector or null when invalid.
      */
     private function databaseSelector(mixed $value): ?int
     {
@@ -582,6 +665,15 @@ final class TeamPlayersHelper
         return (int) $digits;
     }
 
+    /**
+     * Resolve the selected database for Team Players queries.
+     *
+     * Uses the central SportsManagement database resolver for a previously validated selector.
+     *
+     * @param int $selector Nonnegative database identifier.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return DatabaseInterface Selected database connection.
+     */
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
