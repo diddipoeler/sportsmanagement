@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabase
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
@@ -25,6 +26,67 @@ use Joomla\Registry\Registry;
 
 final class NavigationDataHelper
 {
+    /**
+     * Validate a database or team identifier without lossy integer casts.
+     *
+     * Accepts nonnegative integers and decimal strings including leading
+     * zeros; rejects booleans, arrays, negative or overflowing numbers and
+     * partially numeric strings.
+     *
+     * @param mixed $value Raw Joomla selector or stored numeric identifier.
+     * @return int|null Valid nonnegative integer, or null if invalid.
+     */
+    private static function nonNegativeSelector(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $result = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $result === false ? null : $result;
+    }
+
+    /**
+     * Parse a bounded list of favourite team identifiers from a project row.
+     *
+     * Invalid tokens must not silently become valid IDs through PHP integer
+     * casts. Deduplication and a 100-ID cap bound the subsequent SQL IN clause.
+     *
+     * @param mixed $value Comma-separated IDs stored in the project database.
+     * @return array<int,int> Up to 100 distinct positive team identifiers.
+     */
+    private static function favoriteTeamIds(mixed $value): array
+    {
+        if (!is_string($value) || strlen($value) > 8192) {
+            return [];
+        }
+
+        $ids = [];
+
+        foreach (explode(',', $value) as $part) {
+            $part = trim($part);
+            $id = self::nonNegativeSelector($part);
+
+            if ($id === null || $id <= 0) {
+                continue;
+            }
+
+            $ids[$id] = $id;
+
+            if (count($ids) >= 100) {
+                break;
+            }
+        }
+
+        return array_values($ids);
+    }
+
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -38,7 +100,7 @@ final class NavigationDataHelper
             return $database;
         }
 
-        $database = $application->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
 
         if (!$database instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement AJAX navigation database service is unavailable.', 500);
@@ -100,13 +162,17 @@ final class NavigationDataHelper
 
         $joomlaDatabase = self::joomlaDatabase($database, $resolvedApp);
         $input = $this->_app->getInput();
-        $selector = $input->getInt(
-            'cfg_which_database',
-            (int) $this->_params->get(
-                'cfg_which_database',
-                (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
-            )
-        );
+        $componentSelector = ComponentHelper::getParams('com_sportsmanagement')
+            ->get('cfg_which_database', 0);
+        $configuredSelector = $this->_params->get('cfg_which_database', $componentSelector);
+        $requestedSelector = $input->get('cfg_which_database', null, 'RAW');
+        $selector = self::nonNegativeSelector($requestedSelector ?? $configuredSelector);
+
+        if ($selector === null) {
+            throw new \InvalidArgumentException('Invalid SportsManagement navigation database selector.');
+        }
+
+        $input->set('cfg_which_database', $selector);
         $this->_db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
 
         if (self::$_project_id) {
@@ -406,7 +472,12 @@ final class NavigationDataHelper
 
     public function getFavTeams($project_id)
     {
-        $projectId = (int) $project_id;
+        $projectId = self::nonNegativeSelector($project_id) ?? 0;
+
+        if ($projectId <= 0) {
+            return false;
+        }
+
         $db = $this->_db;
         $query = $db->createQuery()
             ->select('fav_team')
@@ -419,7 +490,8 @@ final class NavigationDataHelper
             return false;
         }
 
-        $ids = array_values(array_filter(array_map('intval', explode(',', $teams))));
+        $ids = self::favoriteTeamIds($teams);
+
         if (!$ids) {
             return false;
         }
@@ -925,10 +997,7 @@ final class NavigationDataHelper
         $input = $this->_app->getInput();
 
         return [
-            'cfg_which_database' => $input->getInt(
-                'cfg_which_database',
-                (int) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database', 0)
-            ),
+            'cfg_which_database' => self::nonNegativeSelector($input->get('cfg_which_database', 0, 'RAW')) ?? 0,
             's' => $input->getInt('s', 0),
             'p' => $this->_project_slug,
         ];
