@@ -248,14 +248,13 @@ final class NewProjectHelper
         $errors = [];
 
         foreach ($projects as $project) {
-            $projectId = is_object($project) ? $this->contentCategoryId($project->id ?? null) : 0;
-
             // Do not attempt article writes with malformed project data.
-            if ($projectId <= 0 || !is_string($project->name ?? null)
-                || trim($project->name) === '') {
+            if (!$this->validArticleProject($project)) {
                 $skipped++;
                 continue;
             }
+
+            $projectId = $this->contentCategoryId($project->id);
 
             if (isset($existing[$projectId])) {
                 $skipped++;
@@ -309,6 +308,23 @@ final class NewProjectHelper
             'errors' => $errors,
             'module_id' => $moduleId,
         ];
+    }
+
+    /**
+     * Verify a project record before creating an authorised Joomla article.
+     *
+     * Requires an object with a validated positive project ID and a
+     * nonblank string title; rejects malformed legacy database rows.
+     *
+     * @param mixed $project Candidate project record.
+     * @return bool Whether the record can be used for article creation.
+     */
+    private function validArticleProject(mixed $project): bool
+    {
+        return is_object($project)
+            && $this->contentCategoryId($project->id ?? null) > 0
+            && is_string($project->name ?? null)
+            && trim($project->name) !== '';
     }
 
     /**
