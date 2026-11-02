@@ -8,6 +8,7 @@ on:
       - 'site/src/Service/MatchReadService.php'
       - 'admin/src/Service/PlayerPersistenceService.php'
       - '.github/tests/joomla56_referee_player_calendar_portability.php'
+      - '.github/tests/joomla56_google_calendar_cache_events.php'
       - '.github/workflows/joomla5-6-module-google-calendar.yml'
   pull_request:
     branches: [master]
@@ -16,6 +17,7 @@ on:
       - 'site/src/Service/MatchReadService.php'
       - 'admin/src/Service/PlayerPersistenceService.php'
       - '.github/tests/joomla56_referee_player_calendar_portability.php'
+      - '.github/tests/joomla56_google_calendar_cache_events.php'
       - '.github/workflows/joomla5-6-module-google-calendar.yml'
 
 jobs:
@@ -141,6 +143,11 @@ jobs:
 
           print('Native Google Calendar module contracts OK')
           PY
+
+      - name: Test Google Calendar cached event validation
+        run: |
+          php -l .github/tests/joomla56_google_calendar_cache_events.php
+          php .github/tests/joomla56_google_calendar_cache_events.php
 
       - name: Test portable referee data, player validation and redirect-safe calendar HTTP
         run: php .github/tests/joomla56_referee_player_calendar_portability.php
