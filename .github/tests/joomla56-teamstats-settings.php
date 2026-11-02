@@ -86,4 +86,20 @@ if ($valueMap->invoke($helper, $records) !== [2 => 3.5, 3 => 0.0]) {
     exit(1);
 }
 
+$weightedRows = new ReflectionMethod($class, 'weightedValueMap');
+$rows = [
+    (object) ['team_id' => '2', 'statistic_id' => '3', 'total' => '4'],
+    (object) ['team_id' => '2', 'statistic_id' => 3, 'total' => '1.5'],
+    (object) ['team_id' => '2', 'statistic_id' => 3, 'total' => ['bad']],
+    (object) ['team_id' => 0, 'statistic_id' => 3, 'total' => 4],
+    (object) ['team_id' => 7, 'statistic_id' => 3, 'total' => '1e309'],
+    (object) ['team_id' => 8, 'statistic_id' => 3, 'total' => 1.0e308],
+    (object) ['team_id' => 9, 'statistic_id' => 99, 'total' => 7],
+    null,
+];
+if ($weightedRows->invoke(null, $rows, [3 => 2.0]) !== [2 => 11.0]) {
+    fwrite(STDERR, 'Team Stats Ranking weighted row validation regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Team Stats Ranking numeric settings passed.\n";
