@@ -298,7 +298,9 @@ final class ClubiconsHelper
     /**
      * Retrieve validated external website URLs for ranked teams.
      *
-     * Queries only the participating team IDs and prefers an accepted club website over a team website, ignoring invalid destinations.
+     * Queries only valid positive IDs from the ranking, then prefers a
+     * validated club website over a team website. Malformed ranking entries
+     * and external URLs are excluded from the resulting map.
      *
      * @param DatabaseInterface $db Database used for team lookup.
      * @param array $ranking Calculated ranking rows.
@@ -308,8 +310,18 @@ final class ClubiconsHelper
     {
         $teamIds = [];
         foreach ($ranking as $row) {
-            if ((int) ($row->teamid ?? 0) > 0) {
-                $teamIds[] = (int) $row->teamid;
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $teamId = $row->teamid ?? null;
+            if (!is_int($teamId) && !is_string($teamId)) {
+                continue;
+            }
+
+            $teamId = filter_var($teamId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($teamId !== false) {
+                $teamIds[] = $teamId;
             }
         }
         $teamIds = array_values(array_unique($teamIds));
