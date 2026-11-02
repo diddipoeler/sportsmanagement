@@ -403,6 +403,11 @@ $orderCol = $this->getUserStateFromRequest($this->context . '.filter_order', 'fi
 			$query->where(' divhome.id = ' . $this->_db->Quote($this->getState('filter.division')));
 		}
 
+        if ($this->getState('filter.roundcode'))
+		{
+
+        }
+
 		$query->order(
 			$db->escape($this->getState('list.ordering', 'mc.match_date')) . ' ' .
 			$db->escape($this->getState('list.direction', 'ASC'))
