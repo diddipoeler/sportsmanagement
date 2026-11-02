@@ -32,9 +32,17 @@ final class RandomPlayerHelper
             return [];
         }
 
+        $databaseSelector = self::nonNegativeSelector($params->get('cfg_which_database', 0));
+
+        // Invalid external database selectors must not silently select a
+        // different connection or coerce arrays to integers under PHP 8.
+        if ($databaseSelector === null) {
+            return [];
+        }
+
         $db = SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
+            $databaseSelector
         );
         $projectTeams = $this->getEligibleProjectTeams($db, $projectIds, $teamIds, $seasonId);
 
@@ -80,7 +88,7 @@ final class RandomPlayerHelper
         $row->flag_url = $this->mediaUrl((string) $row->country_picture);
 
         $base = [
-            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
+            'cfg_which_database' => $databaseSelector,
             's' => (int) $row->season_id,
             'p' => $row->project_slug,
         ];
@@ -301,6 +309,31 @@ final class RandomPlayerHelper
         };
 
         return trim(implode(' ', array_values(array_filter($parts, static fn($value) => $value !== ''))));
+    }
+
+    /**
+     * Validate the nonnegative Joomla database selector without integer casts.
+     *
+     * Rejects booleans, arrays, partial numbers and overflows while supporting
+     * zero-padded legacy decimal settings and the default database zero.
+     *
+     * @param mixed $value Raw module database selection.
+     * @return int|null Valid nonnegative selector or null for invalid input.
+     */
+    private static function nonNegativeSelector(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? null : $number;
     }
 
     /** Parse a single positive ID or Joomla ID:alias without prefix casts. */
