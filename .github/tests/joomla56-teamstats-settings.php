@@ -38,6 +38,23 @@ foreach ([
     }
 }
 
+$weights = new ReflectionMethod($class, 'weightFactors');
+foreach ([
+    ['1, 0.5, -2', [1.0, 0.5, -2.0]],
+    ['0,0', [0.0, 0.0]],
+    ['1e2, 2.5', [100.0, 2.5]],
+    [['1', '2'], []],
+    [true, []],
+    ['1,broken', []],
+    ['1,,2', []],
+    ['1e309', []],
+] as [$raw, $expected]) {
+    if ($weights->invoke(null, $raw) !== $expected) {
+        fwrite(STDERR, 'Team Stats Ranking weighting factor regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 $helper = (new ReflectionClass($class))->newInstanceWithoutConstructor();
 $ids = new ReflectionMethod($class, 'ids');
 
