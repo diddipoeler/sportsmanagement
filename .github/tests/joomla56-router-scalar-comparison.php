@@ -14,6 +14,12 @@ namespace Joomla\CMS\Component {
     {
         public static mixed $component = null;
 
+        /**
+         * Return the configured fake component metadata for router tests.
+         *
+         * @param string $name Requested Joomla component name.
+         * @return mixed Component fixture or null.
+         */
         public static function getComponent(string $name): mixed
         {
             return self::$component;
@@ -108,6 +114,13 @@ namespace {
 
     // Invalid published metadata must not be treated as a published menu item.
     $router->menu = new class {
+        /**
+         * Supply deliberately malformed and valid menu records to the router.
+         *
+         * @param string $key Menu field selected by the router.
+         * @param mixed $value Field value being searched.
+         * @return array<int, object> Fixture menu items for filtering.
+         */
         public function getItems(string $key, mixed $value): array
         {
             return [
@@ -128,9 +141,19 @@ namespace {
 
     // Authorised access filtering must reject non-scalar menu levels.
     $router->app = new class {
+        /**
+         * Return a test identity with a fixed authorisation level list.
+         *
+         * @return object Identity fixture for menu access checks.
+         */
         public function getIdentity(): object
         {
             return new class {
+                /**
+                 * Provide the access levels authorised for the test identity.
+                 *
+                 * @return array<int, int> Allowed view level identifiers.
+                 */
                 public function getAuthorisedViewLevels(): array
                 {
                     return [1, 2];
@@ -139,6 +162,13 @@ namespace {
         }
     };
     $router->menu = new class {
+        /**
+         * Supply deliberately malformed and valid menu records to the router.
+         *
+         * @param string $key Menu field selected by the router.
+         * @param mixed $value Field value being searched.
+         * @return array<int, object> Fixture menu items for filtering.
+         */
         public function getItems(string $key, mixed $value): array
         {
             return [
@@ -158,6 +188,13 @@ namespace {
     // A malformed menu ID must not gain the current-Itemid scoring bonus.
     $router->app = new \stdClass();
     $router->menu = new class {
+        /**
+         * Supply deliberately malformed and valid menu records to the router.
+         *
+         * @param string $key Menu field selected by the router.
+         * @param mixed $value Field value being searched.
+         * @return array<int, object> Fixture menu items for filtering.
+         */
         public function getItems(string $key, mixed $value): array
         {
             return [
@@ -176,6 +213,13 @@ namespace {
 
     // An invalid ID must not be selected even when it is the only match.
     $router->menu = new class {
+        /**
+         * Supply deliberately malformed and valid menu records to the router.
+         *
+         * @param string $key Menu field selected by the router.
+         * @param mixed $value Field value being searched.
+         * @return array<int, object> Fixture menu items for filtering.
+         */
         public function getItems(string $key, mixed $value): array
         {
             return [(object) ['id' => ['42'], 'component' => 'com_sportsmanagement',
@@ -190,6 +234,13 @@ namespace {
     // With no matching menu entries, the component-id fallback must not query
     // the menu with a missing or malformed component identifier.
     $router->menu = new class {
+        /**
+         * Supply deliberately malformed and valid menu records to the router.
+         *
+         * @param string $key Menu field selected by the router.
+         * @param mixed $value Field value being searched.
+         * @return array<int, object> Fixture menu items for filtering.
+         */
         public function getItems(string $key, mixed $value): array
         {
             if ($key === 'component_id') {
