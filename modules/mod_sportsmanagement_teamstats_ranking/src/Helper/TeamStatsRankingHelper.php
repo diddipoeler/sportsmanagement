@@ -351,10 +351,51 @@ final class TeamStatsRankingHelper
                 break;
         }
 
+        return self::formatRankingRows($values, $order, $limit, $precision, $percentage);
+    }
+
+    /**
+     * Sort and format finite team statistics into stable ranking positions.
+     *
+     * Discards invalid team identifiers and values before sorting, preserves
+     * equal positions for tied teams and bounds the number of displayed rows.
+     * Percentage formatting also excludes multiplication overflow.
+     *
+     * @param array<int|string, mixed> $values Statistic totals keyed by team ID.
+     * @param string $order ASC for ascending, DESC for descending ranking.
+     * @param int $limit Maximum number of displayed teams.
+     * @param int $precision Decimal places for the rendered total.
+     * @param bool $percentage Whether to display each value as a percentage.
+     * @return array<int, array<string, mixed>> Formatted ranking entries.
+     */
+    private static function formatRankingRows(
+        array $values,
+        string $order,
+        int $limit,
+        int $precision,
+        bool $percentage
+    ): array {
+        $clean = [];
+
+        foreach ($values as $teamId => $value) {
+            $id = filter_var($teamId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id === false || !self::finiteNumber($value)) {
+                continue;
+            }
+
+            $number = (float) $value;
+            if ($percentage && !is_finite($number * 100)) {
+                continue;
+            }
+
+            $clean[$id] = $number;
+        }
+
         if ($order === 'ASC') {
-            asort($values, SORT_NUMERIC);
+            asort($clean, SORT_NUMERIC);
         } else {
-            arsort($values, SORT_NUMERIC);
+            arsort($clean, SORT_NUMERIC);
         }
 
         $rows = [];
@@ -362,26 +403,26 @@ final class TeamStatsRankingHelper
         $lastRank = 0;
         $position = 0;
 
-        foreach ($values as $teamId => $value) {
-            $position++;
+        foreach ($clean as $teamId => $value) {
             if (count($rows) >= $limit) {
                 break;
             }
 
-            $rank = $lastValue !== null && abs((float) $lastValue - (float) $value) < 0.0000001
+            $position++;
+            $rank = $lastValue !== null && abs($lastValue - $value) < 0.0000001
                 ? $lastRank
                 : $position;
-            $lastValue = (float) $value;
+            $lastValue = $value;
             $lastRank = $rank;
 
             $displayValue = $percentage
-                ? number_format(100 * (float) $value, $precision) . '%'
-                : number_format((float) $value, $precision);
+                ? number_format(100 * $value, $precision) . '%'
+                : number_format($value, $precision);
 
             $rows[] = [
-                'team_id' => (int) $teamId,
+                'team_id' => $teamId,
                 'rank' => $rank,
-                'value' => (float) $value,
+                'value' => $value,
                 'total' => $displayValue,
             ];
         }
