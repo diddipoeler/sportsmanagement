@@ -46,7 +46,9 @@ final class NewProjectHelper
     /**
      * Load projects changed during the current site-local calendar day.
      *
-     * Queries published projects, prepares their routing, country flags and fallback images, and returns bounded results for module rendering or authorised article creation.
+     * Queries published projects and rejects malformed IDs, titles and
+     * non-object rows before preparing safe routing, country flags and
+     * image defaults for module rendering or authorised article creation.
      *
      * @param Registry $params Module configuration including database selector.
      * @param CMSApplicationInterface $app Active Joomla site application.
@@ -91,21 +93,53 @@ final class NewProjectHelper
             ->bind(':modifiedEnd', $end, ParameterType::STRING)
             ->order($db->quoteName('p.name') . ' ASC');
         $db->setQuery($query, 0, self::MAX_DAILY_PROJECTS);
-        $rows = $db->loadObjectList() ?: [];
+        $loadedRows = $db->loadObjectList();
+        $rows = [];
+
+        // Ignore malformed legacy records before using them in routes or
+        // the authorised Joomla article writer.
+        foreach (is_array($loadedRows) ? $loadedRows : [] as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $projectId = $this->databaseSelector($row->id ?? null);
+            $name = $row->name ?? null;
+
+            if ($projectId === null || $projectId <= 0
+                || !is_string($name) || trim($name) === '') {
+                continue;
+            }
+
+            $row->name = $name;
+            $rows[] = $row;
+        }
 
         $flags = $this->countryFlags($db, $rows);
-        $placeholder = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');
+        $rawPlaceholder = ComponentHelper::getParams('com_sportsmanagement')->get('ph_project', '');
+        $placeholder = is_string($rawPlaceholder) ? $rawPlaceholder : '';
 
         foreach ($rows as $row) {
-            $row->project_slug = (int) ($row->id ?? 0) . ':' . (string) ($row->project_alias ?? '');
-            $roundId = (int) ($row->round_id ?? 0);
+            $projectId = $this->databaseSelector($row->id);
+            $projectAlias = $row->project_alias ?? '';
+            $row->project_slug = $projectId . ':'
+                . (is_string($projectAlias) ? $projectAlias : '');
+            $roundId = $this->databaseSelector($row->round_id ?? 0) ?? 0;
+            $roundAlias = $row->round_alias ?? '';
             $row->round_slug = $roundId > 0
-                ? $roundId . ':' . (string) ($row->round_alias ?? '')
+                ? $roundId . ':' . (is_string($roundAlias) ? $roundAlias : '')
                 : '';
+            $row->league_name = is_string($row->league_name ?? null) ? $row->league_name : '';
+            $row->country = is_string($row->country ?? null) ? $row->country : '';
             $row->project_url = $this->resultsUrl($row, $databaseSelector);
-            $row->flag_url = $flags[strtoupper(trim((string) ($row->country ?? '')))] ?? '';
-            $row->project_picture = (string) ($row->project_picture ?: $placeholder);
-            $row->league_picture = (string) ($row->league_picture ?: $placeholder);
+            $row->flag_url = $flags[strtoupper(trim($row->country))] ?? '';
+
+            foreach (['project_picture', 'league_picture'] as $pictureField) {
+                $picture = $row->{$pictureField} ?? null;
+                $row->{$pictureField} = is_string($picture) && $picture !== ''
+                    ? $picture
+                    : $placeholder;
+            }
         }
 
         return $rows;
