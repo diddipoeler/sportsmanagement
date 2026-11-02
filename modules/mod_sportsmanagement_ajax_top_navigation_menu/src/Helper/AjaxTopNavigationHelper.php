@@ -267,14 +267,17 @@ final class AjaxTopNavigationHelper
     }
 
     /**
-     * Convert a text module setting without PHP 8 array-to-string warnings.
+     * Convert text and integer module settings without PHP 8 warnings.
+     *
+     * Preserves numeric legacy navigation values while rejecting arrays,
+     * booleans and objects that must not become visible labels or URLs.
      *
      * @param mixed $value Untrusted legacy module or database field.
-     * @return string Value when it is text, or an empty string otherwise.
+     * @return string Safe text, or an empty string for unsupported values.
      */
     private static function textSetting(mixed $value): string
     {
-        return is_string($value) ? $value : '';
+        return is_string($value) || is_int($value) ? (string) $value : '';
     }
 
     /**
