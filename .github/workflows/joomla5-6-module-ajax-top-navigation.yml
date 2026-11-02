@@ -19,9 +19,18 @@ on:
 jobs:
   ajax-top-navigation-module:
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
 
       - name: Lint native module stack
         shell: bash
