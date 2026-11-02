@@ -20,6 +20,17 @@ use Joomla\Registry\Registry;
 
 final class GoogleCalendarHelper
 {
+    /**
+     * Load Google Calendar events for the frontend module.
+     *
+     * Validates the API key and calendar identifier, bounds event count and cache lifetime, and uses Joomla's callback cache. A failed HTTP or cache request produces an empty event list without exposing the API key.
+     *
+     * @param Registry $params Google Calendar API and display configuration.
+     * @param object $module Current Joomla module instance.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @param CacheControllerFactoryInterface $cacheFactory Joomla cache controller factory.
+     * @return array{events: array<int, object>} Validated event records or an empty list.
+     */
     public function getData(
         Registry $params,
         object $module,
@@ -120,8 +131,14 @@ final class GoogleCalendarHelper
     }
 
     /**
-     * Bound legacy module parameters without accepting partial numeric
-     * strings, booleans or arrays as valid event limits or cache lifetimes.
+     * Validate a bounded positive integer parameter.
+     *
+     * Accepts integer and zero-padded decimal string values while rejecting malformed, boolean, array and overflowing inputs. The configured fallback is used when invalid.
+     *
+     * @param mixed $value Raw module setting.
+     * @param int $default Fallback positive value.
+     * @param int $maximum Maximum accepted value.
+     * @return int Validated and clamped positive integer.
      */
     private static function normalisePositiveLimit(mixed $value, int $default, int $maximum): int
     {
@@ -142,9 +159,16 @@ final class GoogleCalendarHelper
     }
 
     /**
-     * Callback-cache entry point. It is public because Joomla's callback cache invokes it.
+     * Fetch and parse the next events through Joomla's callback cache.
      *
-     * @return array<int, object>
+     * Queries the Google Calendar API over HTTPS with redirects disabled, validates the response and parses individual events without breaking the entire result on malformed dates. The number of accepted events remains bounded.
+     *
+     * @param string $apiKey Google Calendar API credential.
+     * @param string $calendarId Calendar identifier from module settings.
+     * @param int $maxEvents Maximum number of events to retrieve.
+     * @return array<int, object> Parsed Google Calendar event records.
+     * @throws \RuntimeException When the HTTP response indicates failure.
+     * @throws \UnexpectedValueException When the API response is malformed.
      */
     public function loadNextEvents(string $apiKey, string $calendarId, int $maxEvents): array
     {
@@ -216,6 +240,14 @@ final class GoogleCalendarHelper
         return $events;
     }
 
+    /**
+     * Format the human-readable time span of a calendar event.
+     *
+     * Uses the exclusive end date for all-day Google Calendar events and formats same-day and multi-day timed events appropriately.
+     *
+     * @param object $event Prepared event with Joomla start and end dates.
+     * @return string Human-readable duration or an empty string for missing dates.
+     */
     public static function duration(object $event): string
     {
         if (!isset($event->startDate, $event->endDate)) {
@@ -256,6 +288,15 @@ final class GoogleCalendarHelper
             . ' - ' . $event->endDate->format($endDateFormat, true);
     }
 
+    /**
+     * Validate and enrich one remote Google Calendar event.
+     *
+     * Parses start and end values, rejects negative or empty all-day ranges, and adds ISO 8601 timestamps and a formatted duration for the template.
+     *
+     * @param object $event Google Calendar API event record.
+     * @return object Event extended with jsmStartIso, jsmEndIso and jsmDuration.
+     * @throws \UnexpectedValueException On malformed or reversed date intervals.
+     */
     public function prepareEvent(object $event): object
     {
         // Remote JSON is untrusted: Google event date fields must be objects.
@@ -286,6 +327,15 @@ final class GoogleCalendarHelper
         return $event;
     }
 
+    /**
+     * Parse one Google Calendar time value as a Joomla date.
+     *
+     * Checks all-day calendar dates and RFC3339 date-time values, including bounds for time zone offsets and invalid date components.
+     *
+     * @param object|null $date Google Calendar start or end object.
+     * @return Date Normalised Joomla calendar date.
+     * @throws \UnexpectedValueException When the value or its time zone is invalid.
+     */
     private function unifyDate(?object $date): Date
     {
         if ($date === null) {
