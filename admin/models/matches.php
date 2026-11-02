@@ -43,7 +43,9 @@ class sportsmanagementModelMatches extends JSMModelList
 			'mc.match_number',
 			'mc.match_date',
 			'mc.id',
-			'mc.ordering'
+			'mc.ordering',
+            'mc.state',
+            'mc.roundcode'
 		);
 		parent::__construct($config);
 		$getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -298,6 +300,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		$list = $this->getUserStateFromRequest($this->context . '.list', 'list', array(), 'array');
 
 $this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+$this->setState('filter.roundcode', $this->getUserStateFromRequest($this->context . '.filter.roundcode', 'filter_roundcode', '', 'int'));
 $this->setState('filter.state', $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_published', '', 'string'));
 $this->setState('list.limit', $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int'));
 $this->setState('list.start', $this->getUserStateFromRequest($this->context . '.limitstart', 'limitstart', 0, 'int'));
