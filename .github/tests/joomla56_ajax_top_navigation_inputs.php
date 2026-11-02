@@ -152,7 +152,7 @@ namespace {
     }
 
     foreach ([
-        ['Label', 'Label'], ['', ''], [false, ''],
+        ['Label', 'Label'], ['', ''], [12, '12'], [false, ''],
         [['Label'], ''], [new \stdClass(), ''],
     ] as [$value, $expected]) {
         if ($text->invoke(null, $value) !== $expected) {
