@@ -522,7 +522,7 @@ final class TeamStatsRankingHelper
     private function weightedStatistics(DatabaseInterface $db, int $projectId, Registry $params): array
     {
         $ids = $this->ids($params->get('stat_ids', []));
-        $factors = array_map('floatval', preg_split('/\s*,\s*/', (string) $params->get('factors', ''), -1, PREG_SPLIT_NO_EMPTY) ?: []);
+        $factors = self::weightFactors($params->get('factors', ''));
 
         if ($ids === [] || count($ids) !== count($factors)) {
             return [];
@@ -585,6 +585,42 @@ final class TeamStatsRankingHelper
         }
 
         return $values;
+    }
+
+    /**
+     * Parse comma-separated finite statistic weighting factors.
+     *
+     * Rejects arrays, booleans, empty entries, partially numeric values and
+     * non-finite results rather than silently converting them to zero or one.
+     *
+     * @param mixed $value Raw factors setting from statistic parameters.
+     * @return array<int, float> Valid weights or an empty list for invalid input.
+     */
+    private static function weightFactors(mixed $value): array
+    {
+        if (!is_string($value) || trim($value) === '') {
+            return [];
+        }
+
+        $factors = [];
+
+        foreach (explode(',', $value) as $part) {
+            $part = trim($part);
+
+            if ($part === '' || !is_numeric($part)) {
+                return [];
+            }
+
+            $factor = (float) $part;
+
+            if (!is_finite($factor)) {
+                return [];
+            }
+
+            $factors[] = $factor;
+        }
+
+        return $factors;
     }
 
     /**
