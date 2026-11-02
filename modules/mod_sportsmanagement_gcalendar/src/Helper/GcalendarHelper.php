@@ -24,6 +24,19 @@ final class GcalendarHelper
     private const MAX_CALENDARS = 50;
     private const MAX_ID_INPUTS = 200;
     private const MAX_ID_STRING_LENGTH = 4096;
+    /**
+     * Build the Joomla GCalendar module configuration and visible calendars.
+     *
+     * Loads authorised calendars, creates the native JSON feed URL and
+     * prepares translated day/month names and bounded presentation options.
+     * Invalid legacy scalar settings are replaced with safe defaults.
+     *
+     * @param Registry $params Joomla calendar module configuration.
+     * @param object $module Current Joomla module record.
+     * @param CMSApplicationInterface $app Active Joomla application.
+     * @param DatabaseInterface $db Database connection for calendar lookups.
+     * @return array{calendars:array<int,object>,calendarIds:array<int,int>,calendarConfig:array<string,mixed>} Calendar options and authorised records.
+     */
     public function getData(
         Registry $params,
         object $module,
@@ -116,10 +129,17 @@ final class GcalendarHelper
     }
 
     /**
-     * Return calendars visible to the current user.
+     * Load only calendars visible to the active Joomla identity.
      *
-     * Public for the legacy helper bridge while native module rendering uses the
-     * same implementation through getData().
+     * Applies selected calendar ID filters and both Joomla view-level
+     * restrictions, with a bounded database result. Invalid configured
+     * selections never fall back to an unrestricted query. Malformed
+     * database rows are removed before they reach module rendering.
+     *
+     * @param Registry $params Calendar selection module settings.
+     * @param CMSApplicationInterface $app Joomla application providing identity.
+     * @param DatabaseInterface $db Database used for calendar retrieval.
+     * @return array<int,object> Authorised and valid calendar records.
      */
     public function getCalendars(
         Registry $params,
@@ -197,7 +217,14 @@ final class GcalendarHelper
     }
 
     /**
-     * @return array<int>
+     * Parse a bounded set of positive calendar IDs from module selections.
+     *
+     * Accepts integers and comma-, semicolon- or whitespace-delimited
+     * decimal strings, including zero-padded legacy IDs. Rejects malformed
+     * values and overflow, deduplicates IDs and caps the result at 50.
+     *
+     * @param mixed $configured Raw Joomla calendar selection.
+     * @return array<int,int> Unique positive calendar IDs.
      */
     private function normaliseCalendarIds(mixed $configured): array
     {
