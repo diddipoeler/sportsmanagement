@@ -102,4 +102,24 @@ if ($weightedRows->invoke(null, $rows, [3 => 2.0]) !== [2 => 11.0]) {
     exit(1);
 }
 
+$divideMaps = new ReflectionMethod($class, 'divideMaps');
+$ratios = $divideMaps->invoke($helper,
+    [1 => 6.0, 2 => INF, 3 => 1.0e308, 4 => ['invalid'], 5 => 2.0],
+    [1 => 3.0, 2 => 1.0, 3 => 1.0e-308, 4 => 2.0, 5 => 0.0]
+);
+if ($ratios !== [1 => 2.0]) {
+    fwrite(STDERR, 'Team Stats Ranking finite ratio regression.' . PHP_EOL);
+    exit(1);
+}
+
+$subtractMaps = new ReflectionMethod($class, 'subtractMaps');
+$differences = $subtractMaps->invoke($helper,
+    [1 => 8.0, 2 => INF, 3 => 1.0e308, 4 => ['invalid']],
+    [1 => 3.0, 2 => 2.0, 3 => -1.0e308, 4 => 1.0]
+);
+if ($differences !== [1 => 5.0]) {
+    fwrite(STDERR, 'Team Stats Ranking finite difference regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Team Stats Ranking numeric settings passed.\n";
