@@ -299,16 +299,20 @@ final class RquotesHelper
         // A category may have fewer quotes than when this rotation was saved.
         // Keep the stored position within the currently available quote list.
         $savedNumber = $meta->number_reached ?? 1;
-        $number = min($count, max(1, self::normalisePositiveLimit($savedNumber, 1, $count)));
+        $number = self::normalisePositiveLimit($savedNumber, 1, $count);
+        // Invalid, zero or out-of-range saved values must be persisted even
+        // if their fallback position happens to match the current index.
+        $savedNumberMatches = (is_int($savedNumber) && $savedNumber === $number)
+            || (is_string($savedNumber)
+                && preg_match('/^[0-9]+$/D', $savedNumber) === 1
+                && ltrim($savedNumber, '0') === (string) $number);
 
         if (!$meta) {
             $this->storeMeta($db, $metaId, $number, $token, false);
         } elseif (!is_string($meta->date_modified ?? null) || $meta->date_modified !== $token) {
             $number = $number >= $count ? 1 : $number + 1;
             $this->storeMeta($db, $metaId, $number, $token, true);
-        // Compare against the original unbounded position: a stored index
-        // above the current quote count must be corrected in the database.
-        } elseif (self::normalisePositiveLimit($savedNumber, 1, PHP_INT_MAX) !== $number) {
+        } elseif (!$savedNumberMatches) {
             // Persist the clamped index so obsolete values do not linger.
             $this->storeMeta($db, $metaId, $number, $token, true);
         }
