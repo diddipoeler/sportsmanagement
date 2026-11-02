@@ -144,5 +144,18 @@ namespace {
         exit(1);
     }
 
+    $flags = new \ReflectionMethod($helper, 'countryFlags');
+    $malformedCountries = [
+        (object) ['country' => ['DEU']],
+        (object) ['country' => new \stdClass()],
+        (object) ['country' => null],
+        null,
+    ];
+
+    if ($flags->invoke($helper, $db, $malformedCountries) !== []) {
+        fwrite(STDERR, 'New Project accepted malformed country selectors.' . PHP_EOL);
+        exit(1);
+    }
+
     echo "New Project published module validation passed.\n";
 }
