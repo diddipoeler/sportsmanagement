@@ -58,6 +58,23 @@ namespace {
         }
     }
 
+    $validProject = new \ReflectionMethod($class, 'validArticleProject');
+    foreach ([
+        [(object) ['id' => 7, 'name' => 'Test project'], true],
+        [(object) ['id' => '0007', 'name' => 'Test'], true],
+        [(object) ['id' => '7invalid', 'name' => 'Test'], false],
+        [(object) ['id' => 7, 'name' => '   '], false],
+        [(object) ['id' => 7, 'name' => ['invalid']], false],
+        [(object) ['id' => 0, 'name' => 'Test'], false],
+        [['id' => 7, 'name' => 'Test'], false],
+        [null, false],
+    ] as [$project, $expected]) {
+        if ($validProject->invoke($helper, $project) !== $expected) {
+            fwrite(STDERR, 'New Project article record validation regression.' . PHP_EOL);
+            exit(1);
+        }
+    }
+
     $matches = new \\ReflectionMethod($class, 'matchedProjectReferences');
     $found = $matches->invoke(null, [
         '12',
