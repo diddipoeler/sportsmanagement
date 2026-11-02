@@ -176,7 +176,7 @@ final class NewProjectHelper
     /**
      * Handle the protected AJAX request to create Joomla content articles.
      *
-     * Validates the POST CSRF token, published module, configured category and the current user's permissions. Reuses Joomla's content model to save bounded project articles and avoids leaking internal errors.
+     * Validates the POST CSRF token, strict positive module identifier, published module, configured category and the current user's permissions. Reuses Joomla's content model to save bounded project articles and avoids leaking internal errors.
      *
      * @param DatabaseInterface|null $joomlaDatabase Optional injected database service.
      * @return array<string, mixed> Created/skipped counts, errors and module ID.
@@ -190,7 +190,7 @@ final class NewProjectHelper
             throw new \RuntimeException('Invalid CSRF token.', 403);
         }
 
-        $moduleId = $app->getInput()->post->getInt('module_id', 0);
+        $moduleId = $this->contentCategoryId($app->getInput()->post->get('module_id', null, 'RAW'));
 
         if ($moduleId <= 0) {
             throw new \RuntimeException('Invalid module.', 400);
