@@ -22,6 +22,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Prepare team statistics rankings for the frontend template.
+     *
+     * Loads the component translations, registers the ranking stylesheet for HTML output and merges helper results without replacing Joomla-owned module or layout values.
+     *
+     * @return array|false Template context, or false when rendering is skipped.
+     * @throws \RuntimeException When invoked outside Joomla's site client.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -67,6 +75,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return array_merge($data, $payload);
     }
 
+    /**
+     * Resolve the database dependency used by the team ranking helper.
+     *
+     * Obtains Joomla's registered DatabaseInterface service and rejects an
+     * incompatible service before the ranking query is executed.
+     *
+     * @return DatabaseInterface Database connection for ranking queries.
+     * @throws \RuntimeException If the database service is unavailable.
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
