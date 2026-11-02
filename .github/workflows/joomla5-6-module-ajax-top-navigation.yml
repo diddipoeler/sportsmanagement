@@ -96,8 +96,11 @@ jobs:
               'runtime league select': (runtime, 'jlamtopleagues'),
               'runtime project select': (runtime, 'jlamtopprojects'),
               'runtime team select': (runtime, 'jlamtopteams'),
-              'runtime ajax links': (runtime, 'id="ajax-nav-list"'),
-              'runtime ajax status': (runtime, 'id="pagination"'),
+              'runtime ajax links': (runtime, 'data-jsm-project-nav-links'),
+              'runtime ajax team links': (runtime, 'data-jsm-team-nav-links'),
+              'runtime ajax status': (runtime, 'data-jsm-pagination'),
+              'javascript project links selector': (javascript, "root.querySelector('[data-jsm-project-nav-links]')"),
+              'javascript pagination selector': (javascript, "root.querySelector('[data-jsm-pagination]')"),
               'native javascript options': (javascript, 'Joomla.getOptions('),
               'native javascript fetch': (javascript, 'await fetch('),
           }
