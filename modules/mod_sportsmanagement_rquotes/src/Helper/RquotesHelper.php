@@ -526,7 +526,9 @@ final class RquotesHelper
     /**
      * Build a safe image URL for an individual quote.
      *
-     * Validates HTTP(S) absolute pictures or encodes safe relative image segments against the configured media server.
+     * Accepts only string-based image fields, validates absolute HTTP(S)
+     * URLs and encodes safe relative segments against the media server.
+     * Missing or malformed image values result in an empty URL.
      *
      * @param object $quote Quote record with image fields.
      * @param string $pictureServer Validated image base URL.
@@ -534,9 +536,11 @@ final class RquotesHelper
      */
     private function pictureUrl(object $quote, string $pictureServer): string
     {
-        $path = trim((string) ($quote->person_picture ?? ''));
+        $personPicture = $quote->person_picture ?? '';
+        $path = is_string($personPicture) ? trim($personPicture) : '';
         if ($path === '') {
-            $path = trim((string) ($quote->picture ?? ''));
+            $quotePicture = $quote->picture ?? '';
+            $path = is_string($quotePicture) ? trim($quotePicture) : '';
         }
         if ($path === '') {
             return '';
