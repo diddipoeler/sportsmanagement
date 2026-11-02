@@ -22,6 +22,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 {
     use HelperFactoryAwareTrait;
 
+    /**
+     * Build the Google Calendar module context using Joomla caching.
+     *
+     * Resolves the cache factory, requests event data from the helper and protects Joomla-owned layout values. Logs service failures without exposing API errors or interrupting public page rendering.
+     *
+     * @return array|false Template context, or false when rendering is skipped.
+     * @throws \RuntimeException When invoked outside Joomla's site client.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -55,6 +63,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         return $data;
     }
 
+    /**
+     * Retrieve Joomla's cache controller factory for calendar requests.
+     *
+     * Uses the dependency injection container rather than legacy cache
+     * initialisation and verifies the service interface before using it.
+     *
+     * @return CacheControllerFactoryInterface Supported Joomla cache factory.
+     * @throws \RuntimeException If the cache factory service is unavailable.
+     */
     private function cacheControllerFactory(): CacheControllerFactoryInterface
     {
         $cacheFactory = Factory::getContainer()->get(CacheControllerFactoryInterface::class);
