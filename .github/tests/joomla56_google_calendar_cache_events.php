@@ -137,7 +137,7 @@ namespace {
         'api_cache_time' => '0003',
     ]);
     $data = $helper->getData($params, (object) [], $application, $factory);
-    if (($data['events'] ?? null) !== $clean || $factory->calls !== 1
+    if (($data['events'] ?? null) != $clean || $factory->calls !== 1
         || ($factory->options['lifetime'] ?? null) !== 3) {
         throw new \RuntimeException('Google Calendar module did not bound cached events.');
     }
