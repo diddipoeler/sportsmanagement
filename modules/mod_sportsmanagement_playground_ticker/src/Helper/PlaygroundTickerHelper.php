@@ -109,12 +109,12 @@ final class PlaygroundTickerHelper
             if (!is_object($row) || !isset($row->id_playground)
                 || (!is_int($row->id_playground) && !is_string($row->id_playground))
                 || !ctype_digit((string) $row->id_playground)
-                || (int) $row->id_playground <= 0
+                || self::projectId($row->id_playground) <= 0
             ) {
                 continue;
             }
 
-            $unique[(int) $row->id_playground] = $row;
+            $unique[self::projectId($row->id_playground)] = $row;
         }
 
         $playgrounds = array_values($unique);
