@@ -23,7 +23,7 @@ final class TeamStatsRankingHelper
     {
         $projectId = $this->extractId($params->get('p', 0));
         $statId = $this->extractId($params->get('sid', 0));
-        $selector = max(0, (int) $params->get('cfg_which_database', 0));
+        $selector = self::numericSetting($params->get('cfg_which_database', 0), 0, PHP_INT_MAX);
 
         if ($projectId <= 0 || $statId <= 0) {
             return $this->emptyData();
@@ -42,7 +42,7 @@ final class TeamStatsRankingHelper
             $statParams = $this->statParams($stat);
             $order = strtoupper((string) $params->get('ranking_order', $statParams->get('ranking_order', 'DESC')));
             $order = $order === 'ASC' ? 'ASC' : 'DESC';
-            $limit = max(1, (int) $params->get('limit', 5));
+            $limit = self::numericSetting($params->get('limit', 5), 5, 100);
             $ranking = $this->calculateRanking($db, $projectId, $stat, $statParams, $order, $limit);
             $teams = $this->loadTeams($db, array_column($ranking, 'team_id'));
 
@@ -56,6 +56,38 @@ final class TeamStatsRankingHelper
         } catch (\Throwable) {
             return $this->emptyData();
         }
+    }
+
+    /**
+     * Validate a decimal module setting before using it in database queries.
+     *
+     * Rejects booleans, arrays, partial numeric strings and values outside
+     * the PHP integer range. Zero-padded legacy settings remain supported.
+     * Positive limits are capped to keep module queries bounded.
+     *
+     * @param mixed $value Raw Joomla module parameter.
+     * @param int $default Value used for invalid or nonpositive limits.
+     * @param int $maximum Maximum accepted value.
+     * @return int Normalised selector or bounded record limit.
+     */
+    private static function numericSetting(mixed $value, int $default, int $maximum): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return $default;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        if ($number === false) {
+            return $default;
+        }
+
+        return $default > 0 ? min($maximum, max(1, $number)) : min($maximum, $number);
     }
 
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
