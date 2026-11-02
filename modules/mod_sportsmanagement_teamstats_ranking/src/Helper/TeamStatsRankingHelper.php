@@ -575,13 +575,53 @@ final class TeamStatsRankingHelper
         $db->setQuery($query);
         $rows = $db->loadObjectList() ?: [];
         $factorById = array_combine($ids, $factors) ?: [];
+
+        return self::weightedValueMap($rows, $factorById);
+    }
+
+    /**
+     * Sum weighted statistic rows while rejecting malformed legacy data.
+     *
+     * Only positive integer team/statistic IDs and finite numeric totals
+     * contribute to the result. Invalid or overflowing calculations are
+     * discarded instead of contaminating the entire ranking with INF or NAN.
+     *
+     * @param array<int, mixed> $rows Database aggregate records.
+     * @param array<int, float> $factorById Weight for each statistic identifier.
+     * @return array<int, float> Finite weighted totals keyed by team ID.
+     */
+    private static function weightedValueMap(array $rows, array $factorById): array
+    {
         $values = [];
 
         foreach ($rows as $row) {
-            $teamId = (int) $row->team_id;
-            $statId = (int) $row->statistic_id;
-            $values[$teamId] = ($values[$teamId] ?? 0.0)
-                + (float) ($factorById[$statId] ?? 0.0) * (float) $row->total;
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $teamId = filter_var($row->team_id ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            $statId = filter_var($row->statistic_id ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            $total = $row->total ?? null;
+
+            if ($teamId === false || $statId === false || !array_key_exists($statId, $factorById)
+                || (!is_int($total) && !is_float($total) && !is_string($total))
+                || !is_numeric($total)) {
+                continue;
+            }
+
+            $weight = $factorById[$statId];
+            $number = (float) $total;
+
+            if (!is_finite($number) || !is_finite($weight)) {
+                continue;
+            }
+
+            $contribution = $weight * $number;
+            $next = ($values[$teamId] ?? 0.0) + $contribution;
+
+            if (is_finite($contribution) && is_finite($next)) {
+                $values[$teamId] = $next;
+            }
         }
 
         return $values;
