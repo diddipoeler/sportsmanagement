@@ -245,7 +245,9 @@ final class ClubiconsHelper
     /**
      * Resolve the configured club logo or its placeholder image.
      *
-     * Selects an allowed image field, substitutes the matching placeholder if needed, and produces an absolute URL from the image server or Joomla root.
+     * Accepts only known image fields and string-based image paths. Invalid
+     * configuration and missing images use the matching local placeholder;
+     * external image URLs are validated before inclusion in the layout.
      *
      * @param Registry $params Logo and database options.
      * @param object $team Team image fields.
@@ -253,12 +255,14 @@ final class ClubiconsHelper
      */
     private function logoUrl(Registry $params, object $team): string
     {
-        $type = (string) $params->get('logotype', 'logo_big');
+        $configuredType = $params->get('logotype', 'logo_big');
+        $type = is_string($configuredType) ? $configuredType : 'logo_big';
         if (!array_key_exists($type, self::PLACEHOLDERS)) {
             $type = 'logo_big';
         }
 
-        $path = trim((string) ($team->{$type} ?? ''));
+        $configuredPath = $team->{$type} ?? '';
+        $path = is_string($configuredPath) ? trim($configuredPath) : '';
         if ($path === '') {
             $path = self::PLACEHOLDERS[$type];
         }
