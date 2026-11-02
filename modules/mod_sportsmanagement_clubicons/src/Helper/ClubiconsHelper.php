@@ -24,6 +24,14 @@ use Joomla\Registry\Registry;
 
 final class ClubiconsHelper
 {
+    /**
+     * Obtain the typed Joomla database service for club information queries.
+     *
+     * Resolves the dependency from Joomla's service container and rejects invalid services.
+     *
+     * @return DatabaseInterface Active Joomla database connection.
+     * @throws \RuntimeException If the database service is unavailable.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
@@ -41,6 +49,16 @@ final class ClubiconsHelper
         'team_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png',
     ];
 
+    /**
+     * Build the club icon, team link and ranking data for the module layout.
+     *
+     * Selects the configured project and division, calculates the ranking, resolves team links and image URLs, and returns empty collections when there is no suitable project.
+     *
+     * @param Registry $params Module configuration.
+     * @param object $module Joomla module record.
+     * @param CMSApplicationInterface $app Active site application.
+     * @return array<string, mixed> Project, ranking and teams for the template.
+     */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         if (!$app->isClient('site')) {
@@ -87,6 +105,15 @@ final class ClubiconsHelper
         ];
     }
 
+    /**
+     * Determine the project used to render club icons.
+     *
+     * Prefers the current component project when configured and valid; otherwise selects the first configured project identifier.
+     *
+     * @param Registry $params Project selection settings.
+     * @param CMSApplicationInterface $app Application request source.
+     * @return int Positive project ID, or zero for no valid project.
+     */
     private function projectId(Registry $params, CMSApplicationInterface $app): int
     {
         $input = $app->getInput();
@@ -101,6 +128,14 @@ final class ClubiconsHelper
         return $this->firstId($params->get('project_ids', 0));
     }
 
+    /**
+     * Extract the first valid positive identifier from a module selector.
+     *
+     * Accepts an ID or Joomla ID:alias slug, and rejects malformed or overflowing values instead of relying on partial integer conversion.
+     *
+     * @param mixed $value Scalar or list of configured identifiers.
+     * @return int Valid positive ID, or zero for invalid input.
+     */
     private function firstId(mixed $value): int
     {
         if (is_array($value)) {
@@ -124,6 +159,17 @@ final class ClubiconsHelper
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Construct the configured destination URL for a club icon.
+     *
+     * Routes internal team and club views through the component router, or uses a validated external club URL for the website-link mode.
+     *
+     * @param Registry $params Link mode and database settings.
+     * @param object $project Current project record.
+     * @param object $team Team record.
+     * @param array<int, string> $websites Validated external websites.
+     * @return string Route URL, or an empty string when disabled.
+     */
     private function teamLink(Registry $params, object $project, object $team, array $websites): string
     {
         $teamLink = (int) $params->get('teamlink', 0);
@@ -190,6 +236,15 @@ final class ClubiconsHelper
             : '';
     }
 
+    /**
+     * Resolve the configured club logo or its placeholder image.
+     *
+     * Selects an allowed image field, substitutes the matching placeholder if needed, and produces an absolute URL from the image server or Joomla root.
+     *
+     * @param Registry $params Logo and database options.
+     * @param object $team Team image fields.
+     * @return string Absolute image URL.
+     */
     private function logoUrl(Registry $params, object $team): string
     {
         $type = (string) $params->get('logotype', 'logo_big');
@@ -216,6 +271,15 @@ final class ClubiconsHelper
         return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
     }
 
+    /**
+     * Retrieve validated external website URLs for ranked teams.
+     *
+     * Queries only the participating team IDs and prefers an accepted club website over a team website, ignoring invalid destinations.
+     *
+     * @param DatabaseInterface $db Database used for team lookup.
+     * @param array $ranking Calculated ranking rows.
+     * @return array<int, string> Safe URLs indexed by team ID.
+     */
     private function websiteMap(DatabaseInterface $db, array $ranking): array
     {
         $teamIds = [];
@@ -255,6 +319,15 @@ final class ClubiconsHelper
         return $map;
     }
 
+    /**
+     * Resolve the configured local or external SportsManagement database.
+     *
+     * Delegates selection to the database resolver, retaining the Joomla connection as the fallback for supported configurations.
+     *
+     * @param Registry $params Database selection setting.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return DatabaseInterface Selected database connection.
+     */
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
