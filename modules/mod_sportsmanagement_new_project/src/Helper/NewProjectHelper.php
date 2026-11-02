@@ -562,7 +562,11 @@ final class NewProjectHelper
         $countries = [];
 
         foreach ($rows as $row) {
-            $country = strtoupper(trim((string) ($row->country ?? '')));
+            if (!is_object($row) || !is_string($row->country ?? null)) {
+                continue;
+            }
+
+            $country = strtoupper(trim($row->country));
 
             if ($country !== '') {
                 $countries[$country] = $country;
