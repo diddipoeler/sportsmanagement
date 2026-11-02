@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_randomplayer/**'
+      - '.github/tests/joomla56_randomplayer_media_database.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-randomplayer.yml'
@@ -12,6 +13,7 @@ on:
     branches: [master]
     paths:
       - 'modules/mod_sportsmanagement_randomplayer/**'
+      - '.github/tests/joomla56_randomplayer_media_database.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
       - '.github/workflows/joomla5-6-module-randomplayer.yml'
@@ -23,6 +25,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Check Random Player database and media regression
+        run: |
+          php -l .github/tests/joomla56_randomplayer_media_database.php
+          php .github/tests/joomla56_randomplayer_media_database.php
 
       - name: Validate RandomPlayer module
         shell: bash
