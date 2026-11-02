@@ -306,7 +306,9 @@ final class RquotesHelper
         } elseif (!is_string($meta->date_modified ?? null) || $meta->date_modified !== $token) {
             $number = $number >= $count ? 1 : $number + 1;
             $this->storeMeta($db, $metaId, $number, $token, true);
-        } elseif (self::normalisePositiveLimit($savedNumber, 1, $count) !== $number) {
+        // Compare against the original unbounded position: a stored index
+        // above the current quote count must be corrected in the database.
+        } elseif (self::normalisePositiveLimit($savedNumber, 1, PHP_INT_MAX) !== $number) {
             // Persist the clamped index so obsolete values do not linger.
             $this->storeMeta($db, $metaId, $number, $token, true);
         }
