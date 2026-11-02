@@ -96,11 +96,11 @@ final class NewProjectHelper
 
     public function canCreateArticles(Registry $params, CMSApplicationInterface $app): bool
     {
-        if (!(int) $params->get('new_project_article', 0)) {
+        if (!self::articleCreationEnabled($params->get('new_project_article', 0))) {
             return false;
         }
 
-        $categoryId = (int) $params->get('mycategory', 0);
+        $categoryId = $this->contentCategoryId($params->get('mycategory', 0));
 
         if ($categoryId <= 0) {
             return false;
@@ -137,11 +137,11 @@ final class NewProjectHelper
 
         $params = new Registry((string) $module->params);
 
-        if (!(int) $params->get('new_project_article', 0)) {
+        if (!self::articleCreationEnabled($params->get('new_project_article', 0))) {
             throw new \RuntimeException('Article creation is disabled for this module.', 403);
         }
 
-        $categoryId = (int) $params->get('mycategory', 0);
+        $categoryId = $this->contentCategoryId($params->get('mycategory', 0));
 
         if ($categoryId <= 0 || !$this->validContentCategory($joomlaDatabase, $categoryId)) {
             throw new \RuntimeException('The configured content category is invalid.', 409);
@@ -227,6 +227,37 @@ final class NewProjectHelper
             'errors' => $errors,
             'module_id' => $moduleId,
         ];
+    }
+
+    /**
+     * Decide whether a module explicitly enables article creation.
+     *
+     * Joomla module parameters may originate from JSON or legacy settings.
+     * Only integer one and decimal string "1" enable this sensitive action;
+     * arrays, booleans and partially numeric strings must not grant access.
+     *
+     * @param mixed $value Configured article-creation switch.
+     * @return bool Whether creation was explicitly enabled.
+     */
+    private static function articleCreationEnabled(mixed $value): bool
+    {
+        return $value === 1 || $value === '1';
+    }
+
+    /**
+     * Validate the configured Joomla content category for article writes.
+     *
+     * Reuses strict nonnegative selector validation but requires a positive
+     * category ID. Invalid, overflowing and partial numeric values return 0.
+     *
+     * @param mixed $value Configured content category identifier.
+     * @return int Positive category ID, or zero for invalid input.
+     */
+    private function contentCategoryId(mixed $value): int
+    {
+        $categoryId = $this->databaseSelector($value);
+
+        return $categoryId !== null && $categoryId > 0 ? $categoryId : 0;
     }
 
     /**
