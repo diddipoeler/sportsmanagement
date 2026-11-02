@@ -485,11 +485,7 @@ final class NavigationDataHelper
             ->where('id = :favoriteTeamsProjectId')
             ->bind(':favoriteTeamsProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query);
-        $teams = trim((string) $db->loadResult());
-        if ($teams === '') {
-            return false;
-        }
-
+        $teams = $db->loadResult();
         $ids = self::favoriteTeamIds($teams);
 
         if (!$ids) {
