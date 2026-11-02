@@ -21,6 +21,15 @@ use Joomla\Registry\Registry;
 
 final class RandomPlayerHelper
 {
+    /**
+     * Select a random eligible player for the Joomla module.
+     *
+     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images.
+     *
+     * @param Registry $params Module filters and display options.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return array<string, object> Selected player context, or an empty result.
+     */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $projectIds = $this->normaliseIds($params->get('p'));
@@ -104,6 +113,17 @@ final class RandomPlayerHelper
         return ['player' => $row];
     }
 
+    /**
+     * Find eligible project teams in the requested season.
+     *
+     * Uses bound project and season IDs, optional team filters and published roster joins to select project teams with player records.
+     *
+     * @param DatabaseInterface $db Resolved SportsManagement database.
+     * @param array<int, int> $projectIds Allowed project IDs.
+     * @param array<int, int> $teamIds Optional allowed team IDs.
+     * @param int $seasonId Positive season identifier.
+     * @return array<int, object> Eligible project team records.
+     */
     private function getEligibleProjectTeams(
         DatabaseInterface $db,
         array $projectIds,
@@ -155,6 +175,17 @@ final class RandomPlayerHelper
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load eligible published players of a project team.
+     *
+     * Joins person, season roster, position, team and country metadata using bound project-team, project and season identifiers.
+     *
+     * @param DatabaseInterface $db Resolved SportsManagement database.
+     * @param int $projectTeamId Positive project-team identifier.
+     * @param int $projectId Positive project identifier.
+     * @param int $seasonId Positive season identifier.
+     * @return array<int, object> Matching player records.
+     */
     private function getPlayersForProjectTeam(
         DatabaseInterface $db,
         int $projectTeamId,
@@ -245,11 +276,28 @@ final class RandomPlayerHelper
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build a native SportsManagement Joomla view URL.
+     *
+     * Delegates route generation to the component's site routing helper.
+     *
+     * @param string $view Component view to display.
+     * @param array<string, mixed> $parameters Route query parameters.
+     * @return string Joomla-routed relative or absolute URL.
+     */
     private function route(string $view, array $parameters): string
     {
         return SiteRouteHelper::view($view, $parameters);
     }
 
+    /**
+     * Select a safe player image or configured fallback.
+     *
+     * Checks that the player image resolves to a valid media URL and, for local paths, exists inside the Joomla site root; rejects malformed placeholder settings.
+     *
+     * @param string $path Player or roster picture path.
+     * @return string Valid player image URL or safe placeholder.
+     */
     private function picture(string $path): string
     {
         $url = $this->mediaUrl($path);
@@ -266,6 +314,14 @@ final class RandomPlayerHelper
         return $this->mediaUrl(is_string($placeholder) ? $placeholder : '');
     }
 
+    /**
+     * Build a validated URL for a Random Player image.
+     *
+     * Accepts credential-free HTTP(S) URLs or local media paths without traversal, encoded escapes or query components. Encodes each local path segment under Joomla's installation root.
+     *
+     * @param string $path Relative image path or absolute HTTP(S) URL.
+     * @return string Safe media URL or an empty string.
+     */
     private function mediaUrl(string $path): string
     {
         $path = trim($path);
@@ -304,6 +360,17 @@ final class RandomPlayerHelper
         return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
+    /**
+     * Format a player's first, last and nickname for display.
+     *
+     * Respects the configured name arrangement and removes empty name fragments from the result.
+     *
+     * @param string $firstName Player's first name.
+     * @param string $nickName Optional nickname.
+     * @param string $lastName Player's last name.
+     * @param int $format Configured name format selector.
+     * @return string Formatted player name.
+     */
     private function formatName(string $firstName, string $nickName, string $lastName, int $format): string
     {
         $nick = $nickName !== '' ? "'{$nickName}'" : '';
@@ -346,7 +413,14 @@ final class RandomPlayerHelper
         return $number === false ? null : $number;
     }
 
-    /** Parse a single positive ID or Joomla ID:alias without prefix casts. */
+    /**
+     * Parse a positive Joomla identifier or ID:alias selector.
+     *
+     * Allows Unicode aliases and zero-padded decimal IDs while rejecting unsupported types, malformed strings and overflowing numbers.
+     *
+     * @param mixed $value Raw ID or ID:alias value.
+     * @return int Positive ID or zero for invalid input.
+     */
     private static function positiveId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -372,6 +446,14 @@ final class RandomPlayerHelper
         return (int) $digits;
     }
 
+    /**
+     * Collect unique positive project or team IDs from module settings.
+     *
+     * Accepts scalar or multiselect inputs, splits comma/semicolon/whitespace-separated lists, and ignores invalid or overflowing IDs.
+     *
+     * @param mixed $value Raw Joomla module selector.
+     * @return array<int, int> Unique validated positive identifiers.
+     */
     private function normaliseIds(mixed $value): array
     {
         $values = is_array($value) ? $value : [$value];
