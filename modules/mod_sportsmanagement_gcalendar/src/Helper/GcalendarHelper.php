@@ -57,8 +57,7 @@ final class GcalendarHelper
             $color = '135CAE';
         }
 
-        $rawCompact = $params->get('compact_events', 1);
-        $compact = max(0, min(2, is_scalar($rawCompact) ? (int) $rawCompact : 1));
+        $compact = self::boundedOption($params->get('compact_events', 1), 1, 2);
         $feedUrl = Route::_(
             'index.php?option=com_sportsmanagement&view=jsonfeed&compact=' . $compact
                 . '&format=raw&gcids=' . implode(',', $calendarIds),
@@ -70,13 +69,12 @@ final class GcalendarHelper
             'calendarIds' => $calendarIds,
             'calendarConfig' => [
                 'feedUrl' => $feedUrl,
-                'weekStart' => max(0, min(6, is_scalar($params->get('weekstart', 0)) ? (int) $params->get('weekstart', 0) : 0)),
+                'weekStart' => self::boundedOption($params->get('weekstart', 0), 0, 6),
                 'titleFormat' => is_string($params->get('titleformat_month', 'M Y'))
                     ? $params->get('titleformat_month', 'M Y') : 'M Y',
                 'timeFormat' => is_string($params->get('timeformat_month', 'g:i a'))
                     ? $params->get('timeformat_month', 'g:i a') : 'g:i a',
-                'calendarHeight' => max(0, is_scalar($params->get('calendar_height', 0))
-                    ? (int) $params->get('calendar_height', 0) : 0),
+                'calendarHeight' => self::boundedOption($params->get('calendar_height', 0), 0, 4000),
                 'eventColor' => '#' . $color,
                 'compactMode' => $compact,
                 'dayNamesMin' => $dayNamesMin,
@@ -87,6 +85,34 @@ final class GcalendarHelper
                 'todayLabel' => Text::_('JTODAY'),
             ],
         ];
+    }
+
+    /**
+     * Read a bounded nonnegative integer from a legacy Joomla module option.
+     *
+     * Accepts integers and decimal strings with optional leading zeros.
+     * Booleans, arrays, fractional values, partial numeric strings and
+     * integer overflow fall back to the configured default.
+     *
+     * @param mixed $value Raw module configuration option.
+     * @param int $default Safe fallback for malformed values.
+     * @param int $maximum Upper bound for the option.
+     * @return int Nonnegative option value clamped to the maximum.
+     */
+    private static function boundedOption(mixed $value, int $default, int $maximum): int
+    {
+        if (!is_int($value) && (!is_string($value) || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return $default;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? $default : min($maximum, $number);
     }
 
     /**
@@ -150,7 +176,24 @@ final class GcalendarHelper
         // to display all calendars visible to the current user.
         $db->setQuery($query, 0, self::MAX_CALENDARS);
 
-        return $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList();
+
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $calendars = [];
+
+        foreach ($rows as $row) {
+            if (!is_object($row)
+                || $this->normaliseCalendarIds([$row->id ?? null]) === []) {
+                continue;
+            }
+
+            $calendars[] = $row;
+        }
+
+        return $calendars;
     }
 
     /**
@@ -174,14 +217,25 @@ final class GcalendarHelper
                     if ($part > 0) {
                         $ids[$part] = $part;
                     }
+
+                    if (count($ids) >= self::MAX_CALENDARS) {
+                        return array_values($ids);
+                    }
+
                     continue;
                 }
 
-                if (!preg_match('/^[1-9][0-9]*$/D', $part)) {
+                if (!preg_match('/^[0-9]+$/D', $part)) {
                     continue;
                 }
 
-                $id = filter_var($part, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                $digits = ltrim($part, '0');
+
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
                 if ($id !== false) {
                     $ids[$id] = $id;
                 }
