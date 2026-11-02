@@ -122,4 +122,30 @@ if ($differences !== [1 => 5.0]) {
     exit(1);
 }
 
+$formatRanking = new ReflectionMethod($class, 'formatRankingRows');
+$ranking = $formatRanking->invoke(null, [
+    2 => 3.0,
+    3 => 3.0,
+    4 => 1.5,
+    0 => 99.0,
+    5 => INF,
+    6 => ['invalid'],
+], 'DESC', 3, 1, false);
+if (array_column($ranking, 'team_id') !== [2, 3, 4]
+    || array_column($ranking, 'rank') !== [1, 1, 3]) {
+    fwrite(STDERR, 'Team Stats Ranking display filtering regression.' . PHP_EOL);
+    exit(1);
+}
+
+$percentRanking = $formatRanking->invoke(null, [
+    2 => 0.25,
+    3 => 1.0e308,
+    4 => 0.125,
+], 'DESC', 3, 1, true);
+if (array_column($percentRanking, 'team_id') !== [2, 4]
+    || array_column($percentRanking, 'total') !== ['25.0%', '12.5%']) {
+    fwrite(STDERR, 'Team Stats Ranking percentage overflow regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Team Stats Ranking numeric settings passed.\n";
