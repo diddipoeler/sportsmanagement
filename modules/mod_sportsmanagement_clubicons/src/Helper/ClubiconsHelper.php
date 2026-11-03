@@ -94,10 +94,8 @@ final class ClubiconsHelper
             }
 
             $team = $row->team;
-            $projectTeamId = filter_var($row->projectteamid ?? null, FILTER_VALIDATE_INT, [
-                'options' => ['min_range' => 1],
-            ]);
-            if ($projectTeamId === false) {
+            $projectTeamId = $this->firstId($row->projectteamid ?? null);
+            if ($projectTeamId <= 0) {
                 continue;
             }
 
@@ -143,32 +141,39 @@ final class ClubiconsHelper
     /**
      * Extract the first valid positive identifier from a module selector.
      *
-     * Accepts numeric and zero-padded Joomla ID:alias slugs, rejecting
-     * malformed aliases, partial numbers, zero and integer overflow.
+     * Scans up to 100 configured values instead of discarding a valid project
+     * when a previous legacy value is empty or malformed. Accepts positive
+     * integers, zero-padded IDs and safe Joomla ID:alias slugs; nested arrays,
+     * partial numbers and overflowing IDs never produce a valid result.
      *
      * @param mixed $value Scalar or list of configured identifiers.
-     * @return int Valid positive ID, or zero for invalid input.
+     * @return int First valid positive ID, or zero if none is valid.
      */
     private function firstId(mixed $value): int
     {
-        if (is_array($value)) {
-            $value = reset($value);
+        $values = is_array($value) ? array_slice($value, 0, 100) : [$value];
+
+        foreach ($values as $candidate) {
+            if (!is_int($candidate) && !is_string($candidate)) {
+                continue;
+            }
+
+            $candidate = trim((string) $candidate);
+
+            if (strlen($candidate) > 255
+                || preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $candidate, $matches) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($matches[1], '0');
+            $id = $digits === '' ? 0 : self::nonNegativeInteger($digits);
+
+            if ($id > 0) {
+                return $id;
+            }
         }
 
-        if (!is_int($value) && !is_string($value)) {
-            return 0;
-        }
-
-        $value = trim((string) $value);
-
-        // Accept zero-padded Joomla IDs and optional safe ID:alias slugs.
-        if (!preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $value, $matches)) {
-            return 0;
-        }
-
-        $digits = ltrim($matches[1], '0');
-
-        return $digits === '' ? 0 : self::nonNegativeInteger($digits);
+        return 0;
     }
 
     /**
@@ -431,13 +436,9 @@ final class ClubiconsHelper
                 continue;
             }
 
-            $teamId = $row->teamid ?? null;
-            if (!is_int($teamId) && !is_string($teamId)) {
-                continue;
-            }
+            $teamId = $this->firstId($row->teamid ?? null);
 
-            $teamId = filter_var($teamId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-            if ($teamId !== false) {
+            if ($teamId > 0) {
                 $teamIds[] = $teamId;
             }
         }
@@ -460,13 +461,13 @@ final class ClubiconsHelper
         $map = [];
         $websiteRows = $db->loadObjectList() ?: [];
         foreach (is_array($websiteRows) ? $websiteRows : [] as $row) {
-            if (!is_object($row) || !isset($row->id)
-                || (!is_int($row->id) && !is_string($row->id))) {
+            if (!is_object($row)) {
                 continue;
             }
 
-            $teamId = filter_var($row->id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
-            if ($teamId === false) {
+            $teamId = $this->firstId($row->id ?? null);
+
+            if ($teamId <= 0) {
                 continue;
             }
 
