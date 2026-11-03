@@ -123,4 +123,24 @@ if ($ids->invoke($helper, $manyIds) !== $expectedIds
     exit(1);
 }
 
+$slug = new ReflectionMethod($class, 'slug');
+foreach ([
+    [7, 'home-ground', '7:home-ground'],
+    [7, '  städtisches-stadion  ', '7:städtisches-stadion'],
+    [7, '', '7'],
+    [7, 'bad/route', '7'],
+    [7, 'bad?foo=1', '7'],
+    [7, 'bad#fragment', '7'],
+    [7, 'bad:alias', '7'],
+    [7, 'bad%2Falias', '7'],
+    [7, "bad\\nheader", '7'],
+    [7, str_repeat('a', 256), '7'],
+    [7, "\\xFF", '7'],
+] as [$id, $alias, $expected]) {
+    if ($slug->invoke($helper, $id, $alias) !== $expected) {
+        fwrite(STDERR, 'Playground Plan route alias validation regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Playground Plan venue checks passed.\n";
