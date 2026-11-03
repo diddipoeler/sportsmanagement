@@ -64,6 +64,11 @@ foreach ([
     ['7invalid', 0], ['7:bad/slug', 0], ['7:bad:alias', 0],
     ['7:valid_alias', 7], [false, 0], [['7'], 0],
     [PHP_INT_MAX . '0', 0],
+    [['bad', '0008:club'], 8],
+    [[null, '0', '0009'], 9],
+    [[['9'], '10'], 10],
+    [array_fill(0, 100, 'bad') + [100 => '7'], 0],
+    [str_repeat('1', 256), 0],
 ] as [$raw, $expected]) {
     if ($firstId->invoke($helper, $raw) !== $expected) {
         fwrite(STDERR, 'Clubicons project ID and slug regression.' . PHP_EOL);
