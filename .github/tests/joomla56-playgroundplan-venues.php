@@ -90,7 +90,11 @@ $hasSelection = new ReflectionMethod($class, 'hasSelection');
 foreach ([
     ['', false], ['0', false], ['000', false], [0, false],
     [['000', ''], false], ['0007', true], ['7:main', true],
+    ['0,000; 00', false], [['0;000', ' 00 '], false],
+    [', ; ', false], ['0;7', true], [['0,0', '7'], true],
     [['000', '7'], true], ['invalid', true], [true, true],
+    ['0:alias', true], [str_repeat('0', 4097), true],
+    [array_fill(0, 201, '0'), true],
 ] as [$raw, $expected]) {
     if ($hasSelection->invoke($helper, $raw) !== $expected) {
         fwrite(STDERR, 'Playground Plan zero-padded selector regression.' . PHP_EOL);
