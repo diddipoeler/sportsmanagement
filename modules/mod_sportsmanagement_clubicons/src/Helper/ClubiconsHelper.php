@@ -486,29 +486,29 @@ final class ClubiconsHelper
             $websiteRows = $db->loadObjectList() ?: [];
 
             foreach (is_array($websiteRows) ? $websiteRows : [] as $row) {
-            if (!is_object($row)) {
-                continue;
-            }
-
-            $teamId = $this->firstId($row->id ?? null);
-
-            if ($teamId <= 0) {
-                continue;
-            }
-
-            // Malformed database fields must not trigger array-to-string warnings.
-            // A rejected club URL must not hide a valid team website.
-            foreach ([$row->club_www ?? '', $row->team_www ?? ''] as $candidate) {
-                if (!is_string($candidate)) {
+                if (!is_object($row)) {
                     continue;
                 }
 
-                $url = self::externalWebsiteUrl($candidate);
-                if ($url !== '') {
-                    $map[$teamId] = $url;
-                    break;
+                $teamId = $this->firstId($row->id ?? null);
+
+                if ($teamId <= 0) {
+                    continue;
                 }
-            }
+
+                // Malformed database fields must not trigger array-to-string warnings.
+                // A rejected club URL must not hide a valid team website.
+                foreach ([$row->club_www ?? '', $row->team_www ?? ''] as $candidate) {
+                    if (!is_string($candidate)) {
+                        continue;
+                    }
+
+                    $url = self::externalWebsiteUrl($candidate);
+                    if ($url !== '') {
+                        $map[$teamId] = $url;
+                        break;
+                    }
+                }
         }
         }
 
