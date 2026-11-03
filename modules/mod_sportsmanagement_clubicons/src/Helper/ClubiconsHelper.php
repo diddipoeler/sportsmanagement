@@ -456,7 +456,8 @@ final class ClubiconsHelper
      * Queries only valid positive IDs from the ranking, then prefers a
      * validated club website over a team website. Malformed ranking entries
      * and external URLs are excluded from the resulting map. Requests use
-     * bounded groups of team IDs instead of one unbounded SQL IN clause.
+     * bounded groups of team IDs instead of one unbounded SQL IN clause;
+     * unexpected database rows cannot add websites for unrelated teams.
      *
      * @param DatabaseInterface $db Database used for team lookup.
      * @param array $ranking Calculated ranking rows.
@@ -483,37 +484,61 @@ final class ClubiconsHelper
                 ->whereIn($db->quoteName('t.id'), $batchIds, ParameterType::INTEGER);
             $db->setQuery($query);
 
-            $websiteRows = $db->loadObjectList() ?: [];
+            $map += $this->validatedWebsiteRows($db->loadObjectList(), $batchIds);
+        }
 
-            foreach (is_array($websiteRows) ? $websiteRows : [] as $row) {
-                if (!is_object($row)) {
+        return $map;
+    }
+
+    /**
+     * Match database website rows to the requested team IDs only.
+     *
+     * Database adapters or test doubles can return malformed or unexpected
+     * rows. Reject unrelated and invalid IDs before adding links to the
+     * result map, prefer a valid club website over the team website and
+     * retain the first usable URL for duplicate team records.
+     *
+     * @param mixed $rows Raw database results for a single lookup batch.
+     * @param array<int, int> $requestedIds Validated requested team IDs.
+     * @return array<int, string> Verified HTTP(S) URLs keyed by requested team ID.
+     */
+    private function validatedWebsiteRows(mixed $rows, array $requestedIds): array
+    {
+        if (!is_array($rows) || $requestedIds === []) {
+            return [];
+        }
+
+        $allowed = array_fill_keys($requestedIds, true);
+        $map = [];
+
+        foreach ($rows as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $rawTeamId = $row->id ?? null;
+
+            if (!is_int($rawTeamId) && !is_string($rawTeamId)) {
+                continue;
+            }
+
+            $teamId = $this->firstId($rawTeamId);
+
+            if ($teamId <= 0 || !isset($allowed[$teamId]) || isset($map[$teamId])) {
+                continue;
+            }
+
+            // A malformed club URL must not suppress a valid team fallback.
+            foreach ([$row->club_www ?? '', $row->team_www ?? ''] as $candidate) {
+                if (!is_string($candidate)) {
                     continue;
                 }
 
-                $rawTeamId = $row->id ?? null;
+                $url = self::externalWebsiteUrl($candidate);
 
-                if (!is_int($rawTeamId) && !is_string($rawTeamId)) {
-                    continue;
-                }
-
-                $teamId = $this->firstId($rawTeamId);
-
-                if ($teamId <= 0) {
-                    continue;
-                }
-
-                // Malformed database fields must not trigger array-to-string warnings.
-                // A rejected club URL must not hide a valid team website.
-                foreach ([$row->club_www ?? '', $row->team_www ?? ''] as $candidate) {
-                    if (!is_string($candidate)) {
-                        continue;
-                    }
-
-                    $url = self::externalWebsiteUrl($candidate);
-                    if ($url !== '') {
-                        $map[$teamId] = $url;
-                        break;
-                    }
+                if ($url !== '') {
+                    $map[$teamId] = $url;
+                    break;
                 }
             }
         }
