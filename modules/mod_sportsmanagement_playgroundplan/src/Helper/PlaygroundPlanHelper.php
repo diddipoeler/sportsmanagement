@@ -24,6 +24,10 @@ use Joomla\Registry\Registry;
 
 final class PlaygroundPlanHelper
 {
+    private const MAX_SELECTION_ENTRIES = 200;
+    private const MAX_SELECTION_BYTES = 4096;
+    private const MAX_SELECTION_IDS = 100;
+
     /**
      * Retrieve the upcoming playground fixtures for the module.
      *
@@ -416,7 +420,10 @@ final class PlaygroundPlanHelper
     /**
      * Parse the allowed positive IDs from Joomla module selectors.
      *
-     * Accepts scalar or array selectors, comma-separated entries and ID:alias slugs; rejects malformed or overflowing IDs and removes duplicates.
+     * Accepts scalar or array selectors, comma-separated entries and ID:alias
+     * slugs; rejects malformed or overflowing IDs and removes duplicates.
+     * Limits input items, string sizes and distinct IDs to keep the bound
+     * SQL IN clauses and legacy module configuration processing predictable.
      *
      * @param mixed $value Raw selection from module parameters.
      * @return array<int, int> Unique validated positive IDs.
@@ -426,8 +433,9 @@ final class PlaygroundPlanHelper
         $values = is_array($value) ? $value : [$value];
         $ids = [];
 
-        foreach ($values as $entry) {
-            if (!is_string($entry) && !is_int($entry)) {
+        foreach (array_slice($values, 0, self::MAX_SELECTION_ENTRIES) as $entry) {
+            if ((!is_string($entry) && !is_int($entry))
+                || (is_string($entry) && strlen($entry) > self::MAX_SELECTION_BYTES)) {
                 continue;
             }
 
@@ -450,6 +458,10 @@ final class PlaygroundPlanHelper
 
                 if ($id !== false) {
                     $ids[$id] = $id;
+
+                    if (count($ids) >= self::MAX_SELECTION_IDS) {
+                        return array_values($ids);
+                    }
                 }
             }
         }
