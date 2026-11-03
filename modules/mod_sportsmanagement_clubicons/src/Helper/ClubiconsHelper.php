@@ -509,7 +509,7 @@ final class ClubiconsHelper
                         break;
                     }
                 }
-        }
+            }
         }
 
         return $map;
