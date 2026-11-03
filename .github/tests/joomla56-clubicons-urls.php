@@ -113,4 +113,22 @@ foreach ([
     }
 }
 
+$imageServerBase = new ReflectionMethod($class, 'safeImageServerBase');
+foreach ([
+    ['https://images.example.org/assets/', 'https://images.example.org/assets'],
+    ['http://images.example.org', 'http://images.example.org'],
+    ['https://images.example.org/assets?version=1', ''],
+    ['https://images.example.org/assets#logo', ''],
+    ['https://user:pass@images.example.org', ''],
+    ['javascript:alert(1)', ''],
+    ['//images.example.org', ''],
+    [null, ''],
+    [['https://images.example.org'], ''],
+] as [$server, $expected]) {
+    if ($imageServerBase->invoke(null, $server) !== $expected) {
+        fwrite(STDERR, 'Clubicons remote image server regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Clubicons URL validation checks passed.\n";
