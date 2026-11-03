@@ -49,4 +49,17 @@ foreach ([[1, 1, true], ['0002', 2, true], ['9', 3, false], [0, 1, false], ['000
     }
 }
 
+$nextSequentialIndex = new ReflectionMethod($class, 'nextSequentialIndex');
+foreach ([
+    [0, 3, 1], ['0002', 3, 0], [2, 3, 0],
+    [3, 3, null], [-1, 3, null], ['2invalid', 3, null],
+    [true, 3, null], [['1'], 3, null], [null, 3, null],
+    [PHP_INT_MAX . '0', 3, null], [0, 0, null],
+] as [$raw, $count, $expected]) {
+    if ($nextSequentialIndex->invoke(null, $raw, $count) !== $expected) {
+        fwrite(STDERR, 'Random Quotes sequential cookie index regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Random Quotes input checks passed.\n";
