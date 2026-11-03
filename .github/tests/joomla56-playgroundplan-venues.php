@@ -98,4 +98,25 @@ foreach ([
     }
 }
 
+$ids = new ReflectionMethod($class, 'ids');
+foreach ([
+    [['0002', '3:home', '2', 5], [2, 3, 5]],
+    [[true, ['9'], '4invalid', PHP_INT_MAX . '0'], []],
+    [[str_repeat('1', 4097), '7'], [7]],
+    [array_fill(0, 200, '0') + [200 => '7'], []],
+] as [$input, $expected]) {
+    if ($ids->invoke($helper, $input) !== $expected) {
+        fwrite(STDERR, 'Playground Plan bounded selection validation regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+$manyIds = implode(',', range(1, 150));
+$expectedIds = range(1, 100);
+if ($ids->invoke($helper, $manyIds) !== $expectedIds
+    || $ids->invoke($helper, range(1, 300)) !== $expectedIds) {
+    fwrite(STDERR, 'Playground Plan selection maximum regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Playground Plan venue checks passed.\n";
