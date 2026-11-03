@@ -392,25 +392,32 @@ final class PlaygroundPlanHelper
     /**
      * Check whether a project or playground selection was explicitly set.
      *
-     * Distinguishes blank and zero-valued selectors, including zero-padded
-     * legacy settings, from malformed entries that must not broaden a query.
+     * Treats empty values and zero-only entries separated by spaces, commas
+     * or semicolons as an unrestricted Joomla selection. Malformed types,
+     * oversized fields and nonzero tokens remain explicit so rejected IDs
+     * never accidentally broaden the fixture query to all projects.
      *
      * @param mixed $value Scalar or array-valued module selection.
-     * @return bool True when the selector contains an explicit entry.
+     * @return bool True when a nonblank, nonzero or invalid entry is present.
      */
     private function hasSelection(mixed $value): bool
     {
         $values = is_array($value) ? $value : [$value];
 
+        if (count($values) > self::MAX_SELECTION_ENTRIES) {
+            return true;
+        }
+
         foreach ($values as $entry) {
-            if (!is_string($entry) && !is_int($entry)) {
+            if ((!is_string($entry) && !is_int($entry))
+                || (is_string($entry) && strlen($entry) > self::MAX_SELECTION_BYTES)) {
                 return true;
             }
 
-            $text = trim((string) $entry);
-
-            if ($text !== '' && preg_match('/^0+$/D', $text) !== 1) {
-                return true;
+            foreach (preg_split('/[\\s,;]+/', (string) $entry, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
+                if (preg_match('/^0+$/D', $part) !== 1) {
+                    return true;
+                }
             }
         }
 
