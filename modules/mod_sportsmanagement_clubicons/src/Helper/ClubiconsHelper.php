@@ -43,6 +43,8 @@ final class ClubiconsHelper
         return $database;
     }
 
+    private const WEBSITE_QUERY_BATCH_SIZE = 200;
+
     private const PLACEHOLDERS = [
         'logo_big' => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png',
         'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png',
@@ -453,7 +455,8 @@ final class ClubiconsHelper
      *
      * Queries only valid positive IDs from the ranking, then prefers a
      * validated club website over a team website. Malformed ranking entries
-     * and external URLs are excluded from the resulting map.
+     * and external URLs are excluded from the resulting map. Requests use
+     * bounded groups of team IDs instead of one unbounded SQL IN clause.
      *
      * @param DatabaseInterface $db Database used for team lookup.
      * @param array $ranking Calculated ranking rows.
@@ -461,37 +464,28 @@ final class ClubiconsHelper
      */
     private function websiteMap(DatabaseInterface $db, array $ranking): array
     {
-        $teamIds = [];
-        foreach ($ranking as $row) {
-            if (!is_object($row)) {
-                continue;
-            }
+        $teamIds = $this->rankingTeamIds($ranking);
 
-            $teamId = $this->firstId($row->teamid ?? null);
-
-            if ($teamId > 0) {
-                $teamIds[] = $teamId;
-            }
-        }
-        $teamIds = array_values(array_unique($teamIds));
-        if (!$teamIds) {
+        if ($teamIds === []) {
             return [];
         }
 
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('t.id'),
-                $db->quoteName('t.website', 'team_www'),
-                $db->quoteName('c.website', 'club_www'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_team', 't'))
-            ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
-            ->whereIn($db->quoteName('t.id'), $teamIds, ParameterType::INTEGER);
-        $db->setQuery($query);
-
         $map = [];
-        $websiteRows = $db->loadObjectList() ?: [];
-        foreach (is_array($websiteRows) ? $websiteRows : [] as $row) {
+        foreach (array_chunk($teamIds, self::WEBSITE_QUERY_BATCH_SIZE) as $batchIds) {
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('t.id'),
+                    $db->quoteName('t.website', 'team_www'),
+                    $db->quoteName('c.website', 'club_www'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_team', 't'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_club', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('t.club_id'))
+                ->whereIn($db->quoteName('t.id'), $batchIds, ParameterType::INTEGER);
+            $db->setQuery($query);
+
+            $websiteRows = $db->loadObjectList() ?: [];
+
+            foreach (is_array($websiteRows) ? $websiteRows : [] as $row) {
             if (!is_object($row)) {
                 continue;
             }
@@ -516,8 +510,38 @@ final class ClubiconsHelper
                 }
             }
         }
+        }
 
         return $map;
+    }
+
+    /**
+     * Collect unique valid team IDs from ranking rows for website lookups.
+     *
+     * Discards malformed ranking entries, canonicalises old zero-padded IDs
+     * and preserves their first-seen order. The caller queries the resulting
+     * IDs in batches to avoid excessively large bound SQL IN expressions.
+     *
+     * @param array<int, mixed> $ranking Raw calculated ranking rows.
+     * @return array<int, int> Valid distinct positive team identifiers.
+     */
+    private function rankingTeamIds(array $ranking): array
+    {
+        $ids = [];
+
+        foreach ($ranking as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $id = $this->firstId($row->teamid ?? null);
+
+            if ($id > 0) {
+                $ids[$id] = $id;
+            }
+        }
+
+        return array_values($ids);
     }
 
     /**
