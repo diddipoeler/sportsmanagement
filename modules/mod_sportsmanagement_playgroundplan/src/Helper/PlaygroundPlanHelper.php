@@ -127,11 +127,11 @@ final class PlaygroundPlanHelper
                 $matchPlaygroundPlaceholders = $query->bindArray($playgroundIds, ParameterType::INTEGER);
                 $teamPlaygroundPlaceholders = $query->bindArray($playgroundIds, ParameterType::INTEGER);
                 $clubPlaygroundPlaceholders = $query->bindArray($playgroundIds, ParameterType::INTEGER);
-                $query->where(
-                    '(m.playground_id IN (' . implode(',', $matchPlaygroundPlaceholders) . ')'
-                    . ' OR (pt1.standard_playground IN (' . implode(',', $teamPlaygroundPlaceholders) . ') AND m.playground_id IS NULL)'
-                    . ' OR (c1.standard_playground IN (' . implode(',', $clubPlaygroundPlaceholders) . ') AND m.playground_id IS NULL AND pt1.standard_playground IS NULL))'
-                );
+                $query->where(self::playgroundSelectionClause(
+                    $matchPlaygroundPlaceholders,
+                    $teamPlaygroundPlaceholders,
+                    $clubPlaygroundPlaceholders
+                ));
             }
 
             $db->setQuery($query, 0, $limit);
@@ -179,6 +179,33 @@ final class PlaygroundPlanHelper
 
             return [];
         }
+    }
+
+    /**
+     * Build the bound venue-filter SQL for match, team and club playgrounds.
+     *
+     * Treats both NULL and zero as an unset legacy playground ID. A match
+     * ground takes precedence; the first team's ground is used only when
+     * none is set for the match, followed by the club ground if both are
+     * unset. Placeholder names originate from Joomla Query::bindArray().
+     *
+     * @param array<int, string> $matchPlaceholders Bound match-ground parameters.
+     * @param array<int, string> $teamPlaceholders Bound team-ground parameters.
+     * @param array<int, string> $clubPlaceholders Bound club-ground parameters.
+     * @return string SQL predicate selecting only the requested grounds.
+     */
+    private static function playgroundSelectionClause(
+        array $matchPlaceholders,
+        array $teamPlaceholders,
+        array $clubPlaceholders
+    ): string {
+        $unsetMatch = '(m.playground_id IS NULL OR m.playground_id = 0)';
+        $unsetTeam = '(pt1.standard_playground IS NULL OR pt1.standard_playground = 0)';
+
+        return '(m.playground_id IN (' . implode(',', $matchPlaceholders) . ')'
+            . ' OR (pt1.standard_playground IN (' . implode(',', $teamPlaceholders) . ') AND ' . $unsetMatch . ')'
+            . ' OR (c1.standard_playground IN (' . implode(',', $clubPlaceholders) . ') AND ' . $unsetMatch
+            . ' AND ' . $unsetTeam . '))';
     }
 
     /**
