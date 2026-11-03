@@ -77,4 +77,25 @@ foreach ([
     }
 }
 
+$invalidCategorySelection = new ReflectionMethod($class, 'invalidCategorySelection');
+foreach ([
+    [[], [], false],
+    ['', [], false],
+    [null, [], false],
+    [0, [], false],
+    ['000', [], false],
+    [['0', ''], [], false],
+    ['bad', [], true],
+    [['bad'], [], true],
+    [['0', 'bad'], [], true],
+    [true, [], true],
+    [['2'], [2], false],
+    [['2', 'bad'], [2], false],
+] as [$raw, $ids, $expected]) {
+    if ($invalidCategorySelection->invoke(null, $raw, $ids) !== $expected) {
+        fwrite(STDERR, 'Random Quotes invalid category broadening regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Random Quotes input checks passed.\n";
