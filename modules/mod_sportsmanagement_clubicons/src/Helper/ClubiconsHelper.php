@@ -84,7 +84,7 @@ final class ClubiconsHelper
         }
 
         // Fetch club websites only for the configured external-link mode.
-        $websites = (int) $params->get('teamlink', 0) === 5
+        $websites = self::nonNegativeInteger($params->get('teamlink', 0)) === 5
             ? $this->websiteMap($db, $ranking)
             : [];
         $teams = [];
@@ -119,7 +119,8 @@ final class ClubiconsHelper
     /**
      * Determine the project used to render club icons.
      *
-     * Prefers the current component project when configured and valid; otherwise selects the first configured project identifier.
+     * Prefers a strictly validated project ID from the current component
+     * request when enabled; otherwise uses the configured project identifier.
      *
      * @param Registry $params Project selection settings.
      * @param CMSApplicationInterface $app Application request source.
@@ -129,11 +130,11 @@ final class ClubiconsHelper
     {
         $input = $app->getInput();
         if (
-            (int) $params->get('usepfromcomponent', 0) === 1
+            self::nonNegativeInteger($params->get('usepfromcomponent', 0)) === 1
             && $input->getCmd('option', '') === 'com_sportsmanagement'
-            && $input->getInt('p', 0) > 0
+            && $this->firstId($input->get('p', null, 'RAW')) > 0
         ) {
-            return $input->getInt('p', 0);
+            return $this->firstId($input->get('p', null, 'RAW'));
         }
 
         return $this->firstId($params->get('project_ids', 0));
@@ -142,7 +143,8 @@ final class ClubiconsHelper
     /**
      * Extract the first valid positive identifier from a module selector.
      *
-     * Accepts an ID or Joomla ID:alias slug, and rejects malformed or overflowing values instead of relying on partial integer conversion.
+     * Accepts numeric and zero-padded Joomla ID:alias slugs, rejecting
+     * malformed aliases, partial numbers, zero and integer overflow.
      *
      * @param mixed $value Scalar or list of configured identifiers.
      * @return int Valid positive ID, or zero for invalid input.
@@ -159,13 +161,38 @@ final class ClubiconsHelper
 
         $value = trim((string) $value);
 
-        // Accept a Joomla ID or an ID:alias slug, not an arbitrary prefix
-        // such as "12evil" or an overflowing decimal number.
-        if (!preg_match('/^([1-9][0-9]*)(?::[^\s:]+)?$/D', $value, $matches)) {
+        // Accept zero-padded Joomla IDs and optional safe ID:alias slugs.
+        if (!preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $value, $matches)) {
             return 0;
         }
 
-        $id = filter_var($matches[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        $digits = ltrim($matches[1], '0');
+
+        return $digits === '' ? 0 : self::nonNegativeInteger($digits);
+    }
+
+    /**
+     * Parse a nonnegative module selector without PHP's partial number casts.
+     *
+     * Allows integers and zero-padded decimal strings within the PHP integer
+     * range. Booleans, arrays, negative numbers, whitespace and trailing
+     * characters are rejected, preventing invalid route and database values.
+     *
+     * @param mixed $value Untrusted configured selector or database value.
+     * @return int Valid nonnegative selector, or zero for invalid input.
+     */
+    private static function nonNegativeInteger(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
         return $id === false ? 0 : $id;
     }
@@ -183,19 +210,19 @@ final class ClubiconsHelper
      */
     private function teamLink(Registry $params, object $project, object $team, array $websites): string
     {
-        $teamLink = (int) $params->get('teamlink', 0);
+        $teamLink = self::nonNegativeInteger($params->get('teamlink', 0));
         if ($teamLink === 0) {
             return '';
         }
 
         if ($teamLink === 5) {
-            $teamId = (int) ($team->id ?? 0);
+            $teamId = $this->firstId($team->id ?? 0);
             return $this->externalWebsiteUrl((string) ($websites[$teamId] ?? ''));
         }
 
         $common = [
-            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
-            's' => (int) $params->get('s', 0),
+            'cfg_which_database' => self::nonNegativeInteger($params->get('cfg_which_database', 0)),
+            's' => self::nonNegativeInteger($params->get('s', 0)),
             'p' => (string) ($project->slug ?? $project->id ?? ''),
         ];
 
@@ -297,7 +324,7 @@ final class ClubiconsHelper
 
         $encodedPath = implode('/', array_map('rawurlencode', explode('/', $safePath)));
 
-        if ((int) $params->get('cfg_which_database', 0) === 1) {
+        if (self::nonNegativeInteger($params->get('cfg_which_database', 0)) === 1) {
             $configuredServer = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server', '');
             $server = is_string($configuredServer) ? rtrim(trim($configuredServer), '/') : '';
             if ($this->externalWebsiteUrl($server) !== '') {
@@ -434,7 +461,7 @@ final class ClubiconsHelper
     {
         return SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
+            self::nonNegativeInteger($params->get('cfg_which_database', 0))
         );
     }
 }
