@@ -63,4 +63,38 @@ foreach ([
     }
 }
 
+$safeAvatarPath = new ReflectionMethod($class, 'safeAvatarPath');
+foreach ([
+    ['images/avatars/club player.png', 'images/avatars/club player.png'],
+    ['media/avatars/münchen.webp', 'media/avatars/münchen.webp'],
+    ['image.JPG', 'image.JPG'],
+    ['../configuration.php', ''],
+    ['images/../secret.png', ''],
+    ['images/./photo.png', ''],
+    ['/images/avatar.png', ''],
+    ['//example.org/avatar.png', ''],
+    ['https://example.org/photo.png', ''],
+    ['images/%2e%2e/photo.png', ''],
+    ['images\\\\avatar.png', ''],
+    ['images/avatar.png?size=2', ''],
+    ['images/avatar.png#hash', ''],
+    ['images//avatar.png', ''],
+    ["images/photo\\n.png", ''],
+    ['images/file.svg', ''],
+    [str_repeat('a', 1025) . '.png', ''],
+    [false, ''],
+    [['avatar.png'], ''],
+] as [$raw, $expected]) {
+    if ($safeAvatarPath->invoke(null, $raw) !== $expected) {
+        fwrite(STDERR, 'Top Tipper avatar path regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+if ($class::avatarUrl('../configuration.php') !== ''
+    || $class::avatarUrl(['photo.png']) !== '') {
+    fwrite(STDERR, 'Top Tipper invalid avatar URL regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Top Tipper input checks passed.\n";
