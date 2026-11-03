@@ -161,4 +161,27 @@ if ($batchSize !== 200
     exit(1);
 }
 
+$validatedWebsiteRows = new ReflectionMethod($class, 'validatedWebsiteRows');
+$websiteResults = [
+    (object) ['id' => '0007', 'club_www' => 'javascript:alert(1)', 'team_www' => 'https://team.example.org'],
+    (object) ['id' => 8, 'club_www' => 'https://club.example.org', 'team_www' => 'https://team8.example.org'],
+    (object) ['id' => '7', 'club_www' => 'https://duplicate.example.org'],
+    (object) ['id' => 99, 'club_www' => 'https://unrequested.example.org'],
+    (object) ['id' => ['7'], 'team_www' => 'https://array.example.org'],
+    (object) ['id' => 9, 'club_www' => ['invalid'], 'team_www' => 'https://ninth.example.org'],
+    new stdClass(),
+    ['id' => 7, 'team_www' => 'https://array-row.example.org'],
+];
+$expectedWebsites = [
+    7 => 'https://team.example.org',
+    8 => 'https://club.example.org',
+    9 => 'https://ninth.example.org',
+];
+if ($validatedWebsiteRows->invoke($helper, $websiteResults, [7, 8, 9]) !== $expectedWebsites
+    || $validatedWebsiteRows->invoke($helper, $websiteResults, []) !== []
+    || $validatedWebsiteRows->invoke($helper, new stdClass(), [7]) !== []) {
+    fwrite(STDERR, 'Clubicons unexpected website rows regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Clubicons URL validation checks passed.\n";
