@@ -39,4 +39,28 @@ foreach ([['0001', 1], [0, 0], ['-1', null], [['1'], null], [PHP_INT_MAX . '0', 
     }
 }
 
+$rankingType = new ReflectionMethod($class, 'rankingType');
+foreach ([
+    [0, 0], [1, 1], [2, 2], ['1', 1], ['0002', 2],
+    ['000', 0], ['3', 0], [-1, 0], ['2invalid', 0],
+    [' 2', 0], [true, 0], [[2], 0], [PHP_INT_MAX . '0', 0],
+] as [$raw, $expected]) {
+    if ($rankingType->invoke(null, $raw) !== $expected) {
+        fwrite(STDERR, 'Top Tipper ranking type validation regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+$enabledSwitch = new ReflectionMethod($class, 'enabledSwitch');
+foreach ([
+    [1, true], ['1', true], [0, false], ['0', false],
+    [true, false], [false, false], ['1invalid', false],
+    [['1'], false], ['01', false], [null, false],
+] as [$raw, $expected]) {
+    if ($enabledSwitch->invoke(null, $raw) !== $expected) {
+        fwrite(STDERR, 'Top Tipper round switch validation regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Top Tipper input checks passed.\n";
