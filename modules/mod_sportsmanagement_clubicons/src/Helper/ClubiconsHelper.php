@@ -490,7 +490,13 @@ final class ClubiconsHelper
                     continue;
                 }
 
-                $teamId = $this->firstId($row->id ?? null);
+                $rawTeamId = $row->id ?? null;
+
+                if (!is_int($rawTeamId) && !is_string($rawTeamId)) {
+                    continue;
+                }
+
+                $teamId = $this->firstId($rawTeamId);
 
                 if ($teamId <= 0) {
                     continue;
@@ -518,7 +524,7 @@ final class ClubiconsHelper
     /**
      * Collect unique valid team IDs from ranking rows for website lookups.
      *
-     * Discards malformed ranking entries, canonicalises old zero-padded IDs
+     * Discards non-scalar and malformed ranking IDs, canonicalises old zero-padded IDs
      * and preserves their first-seen order. The caller queries the resulting
      * IDs in batches to avoid excessively large bound SQL IN expressions.
      *
@@ -534,7 +540,13 @@ final class ClubiconsHelper
                 continue;
             }
 
-            $id = $this->firstId($row->teamid ?? null);
+            $rawTeamId = $row->teamid ?? null;
+
+            if (!is_int($rawTeamId) && !is_string($rawTeamId)) {
+                continue;
+            }
+
+            $id = $this->firstId($rawTeamId);
 
             if ($id > 0) {
                 $ids[$id] = $id;
