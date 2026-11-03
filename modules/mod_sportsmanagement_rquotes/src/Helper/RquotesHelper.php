@@ -413,7 +413,8 @@ final class RquotesHelper
      *
      * Applies allowed category filters and an optional daily number,
      * limiting numbered lookups to one record. Malformed database rows are
-     * discarded before quote selection or image URL generation.
+     * discarded before quote selection or image URL generation. Each quote
+     * must also have a valid positive record ID to participate in rotations.
      *
      * @param DatabaseInterface $db Quotes database.
      * @param array<int, int> $categoryIds Optional category IDs.
@@ -450,7 +451,52 @@ final class RquotesHelper
         $db->setQuery($query, 0, $dailyNumber !== null ? 1 : 0);
         $rows = $db->loadObjectList();
 
-        return is_array($rows) ? array_values(array_filter($rows, 'is_object')) : [];
+        return self::validQuoteRows($rows);
+    }
+
+    /**
+     * Keep only quote objects with valid positive primary keys.
+     *
+     * Some old or custom database drivers may return malformed entries.
+     * Excluding them before selecting a quote avoids blank quote records and
+     * incorrect collection sizes in sequential or periodic rotations.
+     *
+     * @param mixed $rows Raw result of a Joomla database quote query.
+     * @return array<int, object> Quote objects with validated numeric IDs.
+     */
+    private static function validQuoteRows(mixed $rows): array
+    {
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $valid = [];
+
+        foreach ($rows as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $id = $row->id ?? null;
+
+            if (!is_int($id) && (!is_string($id) || preg_match('/^[0-9]+$/D', $id) !== 1)) {
+                continue;
+            }
+
+            $digits = is_string($id) ? ltrim($id, '0') : $id;
+
+            if ($digits === '' || $digits === 0) {
+                continue;
+            }
+
+            $number = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($number !== false) {
+                $valid[] = $row;
+            }
+        }
+
+        return $valid;
     }
 
     /**
