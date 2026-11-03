@@ -55,4 +55,35 @@ if ($logo->invoke($helper, '', 'logo_big') !== ''
     exit(1);
 }
 
+$validFixtureRows = new ReflectionMethod($class, 'validFixtureRows');
+$validFirst = (object) ['project_id' => '0007'];
+$validSecond = (object) ['project_id' => 8];
+$fixtures = [
+    $validFirst,
+    (object) ['project_id' => 0],
+    (object) ['project_id' => ['9']],
+    (object) ['project_id' => '4invalid'],
+    (object) ['project_id' => PHP_INT_MAX . '0'],
+    (object) ['project_id' => -1],
+    new stdClass(),
+    ['project_id' => 2],
+    $validSecond,
+];
+if ($validFixtureRows->invoke(null, $fixtures) !== [$validFirst, $validSecond]
+    || $validFixtureRows->invoke(null, new stdClass()) !== []) {
+    fwrite(STDERR, 'Playground Plan invalid project row regression.' . PHP_EOL);
+    exit(1);
+}
+
+$nonNegativeInteger = new ReflectionMethod($class, 'nonNegativeInteger');
+foreach ([
+    [['7'], 0], [false, 0], ['7invalid', 0],
+    [PHP_INT_MAX . '0', 0], ['0002', 2],
+] as [$value, $expected]) {
+    if ($nonNegativeInteger->invoke(null, $value) !== $expected) {
+        fwrite(STDERR, 'Playground Plan season identifier regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Playground Plan venue checks passed.\n";
