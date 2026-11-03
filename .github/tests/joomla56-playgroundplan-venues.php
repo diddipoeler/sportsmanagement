@@ -143,4 +143,16 @@ foreach ([
     }
 }
 
+$venueClause = new ReflectionMethod($class, 'playgroundSelectionClause');
+$clause = $venueClause->invoke(null, [':match1'], [':team1'], [':club1']);
+if (!str_contains($clause, 'm.playground_id IN (:match1)')
+    || !str_contains($clause, 'pt1.standard_playground IN (:team1)')
+    || !str_contains($clause, 'c1.standard_playground IN (:club1)')
+    || substr_count($clause, '(m.playground_id IS NULL OR m.playground_id = 0)') !== 2
+    || !str_contains($clause, '(pt1.standard_playground IS NULL OR pt1.standard_playground = 0)')
+    || strpos($clause, 'AND (pt1.standard_playground IS NULL OR pt1.standard_playground = 0)') === false) {
+    fwrite(STDERR, 'Playground Plan zero-valued legacy venue fallback regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Playground Plan venue checks passed.\n";
