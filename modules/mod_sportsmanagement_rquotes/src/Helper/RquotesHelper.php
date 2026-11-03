@@ -87,7 +87,21 @@ final class RquotesHelper
             ];
         }
 
-        $categoryIds = $this->normaliseIds($params->get('category', []));
+        $categorySelection = $params->get('category', []);
+        $categoryIds = $this->normaliseIds($categorySelection);
+
+        // An explicitly malformed filter must not broaden the query to
+        // every published quote when no valid category survives parsing.
+        if (self::invalidCategorySelection($categorySelection, $categoryIds)) {
+            return [
+                'source' => 'db',
+                'style' => $style,
+                'list' => [],
+                'textLine' => '',
+                'pictureServer' => $pictureServer,
+            ];
+        }
+
         $rawRotation = $params->get('rotate', 'single_random');
         $rotation = is_string($rawRotation) ? strtolower($rawRotation) : 'single_random';
 
@@ -711,6 +725,42 @@ final class RquotesHelper
         }
 
         return array_values($ids);
+    }
+
+    /**
+     * Detect an explicitly invalid category filter that selects no valid IDs.
+     *
+     * Blank selectors and Joomla's numeric zero mean no category restriction.
+     * A malformed nonblank selector must instead return no quotes, avoiding a
+     * query against all categories after validation rejects its entries.
+     *
+     * @param mixed $selection Original scalar or array module selection.
+     * @param array<int, int> $categoryIds Validated positive category IDs.
+     * @return bool Whether a configured but invalid filter would be broadened.
+     */
+    private static function invalidCategorySelection(mixed $selection, array $categoryIds): bool
+    {
+        if ($categoryIds !== []) {
+            return false;
+        }
+
+        foreach (is_array($selection) ? $selection : [$selection] as $entry) {
+            if ($entry === null || $entry === 0) {
+                continue;
+            }
+
+            if (is_string($entry)) {
+                $text = trim($entry);
+
+                if ($text === '' || preg_match('/^0+$/D', $text) === 1) {
+                    continue;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
