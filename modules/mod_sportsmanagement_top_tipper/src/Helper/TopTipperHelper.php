@@ -15,6 +15,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Model\PredictionrankingModel;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 final class TopTipperHelper
@@ -177,6 +178,77 @@ final class TopTipperHelper
                 (object) ['value' => 2, 'text' => Text::_('COM_SPORTSMANAGEMENT_RANKING_SECOND_HALF_RANKING')],
             ],
         ];
+    }
+
+    /**
+     * Resolve a local member avatar to a safe public Joomla media URL.
+     *
+     * Validates the supplied relative filename before using the filesystem;
+     * checks that the resolved file stays within the Joomla installation,
+     * and only returns a URL for an existing regular image file.
+     *
+     * @param mixed $avatarPath Untrusted avatar filename from ranking data.
+     * @return string Public image URL, or empty string when unsafe or missing.
+     */
+    public static function avatarUrl(mixed $avatarPath): string
+    {
+        $path = self::safeAvatarPath($avatarPath);
+
+        if ($path === '' || !defined('JPATH_ROOT')) {
+            return '';
+        }
+
+        $root = realpath(JPATH_ROOT);
+        $file = realpath(JPATH_ROOT . '/' . $path);
+
+        if ($root === false || $file === false
+            || !str_starts_with($file, rtrim($root, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR)
+            || !is_file($file)) {
+            return '';
+        }
+
+        $encodedPath = implode('/', array_map('rawurlencode', explode('/', $path)));
+
+        return rtrim((string) Uri::root(), '/') . '/' . $encodedPath;
+    }
+
+    /**
+     * Validate a relative avatar image filename without filesystem access.
+     *
+     * Rejects non-string values, absolute paths, traversal segments, encoded
+     * path tricks, URL parameters, backslashes and control characters. Allows
+     * regular image formats in nested Joomla media folders, including Unicode
+     * and spaces in legacy filenames.
+     *
+     * @param mixed $value Untrusted avatar path.
+     * @return string Safe relative image path, or empty string for invalid data.
+     */
+    private static function safeAvatarPath(mixed $value): string
+    {
+        if (!is_string($value)) {
+            return '';
+        }
+
+        $path = trim($value);
+
+        if ($path === '' || strlen($path) > 1024
+            || str_starts_with($path, '/')
+            || str_contains($path, '\\')
+            || str_contains($path, ':')
+            || str_contains($path, '%')
+            || strpbrk($path, '?#') !== false
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $path) === 1
+            || preg_match('/\\.(?:png|jpe?g|gif|webp)$/iD', $path) !== 1) {
+            return '';
+        }
+
+        foreach (explode('/', $path) as $segment) {
+            if ($segment === '' || $segment === '.' || $segment === '..') {
+                return '';
+            }
+        }
+
+        return $path;
     }
 
     /**
