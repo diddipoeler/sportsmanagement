@@ -46,6 +46,7 @@ on:
       - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php'
+      - 'modules/mod_sportsmanagement_top_tipper/tmpl/default.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
@@ -101,6 +102,7 @@ on:
       - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php'
+      - 'modules/mod_sportsmanagement_top_tipper/tmpl/default.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php'
@@ -170,6 +172,7 @@ jobs:
           php -l modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_top_tipper/src/Helper/TopTipperHelper.php
+          php -l modules/mod_sportsmanagement_top_tipper/tmpl/default.php
           php -l modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_teamstatistics_counter/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
