@@ -12,7 +12,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Uri\Uri;
+use Diddipoeler\Module\SportsManagementTopTipper\Site\Helper\TopTipperHelper;
 
 if (!$predictionGame || !$predictionProject) {
     return;
@@ -168,10 +168,7 @@ $buildRoute = static function (string $view, array $values) use ($databaseSelect
                 $isCurrent = $memberId === (int) $currentMemberId;
                 $canProfile = !empty($member->show_profile) || $isCurrent;
                 $name = (string) (($member->aliasName ?? '') ?: ($member->name ?? ''));
-                $avatar = ltrim((string) ($member->avatar ?? ''), '/');
-                $avatarUrl = $avatar !== '' && is_file(JPATH_ROOT . '/' . $avatar)
-                    ? rtrim(Uri::root(), '/') . '/' . $avatar
-                    : '';
+                $avatarUrl = TopTipperHelper::avatarUrl($member->avatar ?? null);
                 $memberUrl = $canProfile ? $buildRoute('predictionusers', [
                     'prediction_id' => $gameId,
                     'uid' => $memberId,
