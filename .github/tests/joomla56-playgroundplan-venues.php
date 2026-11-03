@@ -86,4 +86,16 @@ foreach ([
     }
 }
 
+$hasSelection = new ReflectionMethod($class, 'hasSelection');
+foreach ([
+    ['', false], ['0', false], ['000', false], [0, false],
+    [['000', ''], false], ['0007', true], ['7:main', true],
+    [['000', '7'], true], ['invalid', true], [true, true],
+] as [$raw, $expected]) {
+    if ($hasSelection->invoke($helper, $raw) !== $expected) {
+        fwrite(STDERR, 'Playground Plan zero-padded selector regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Playground Plan venue checks passed.\n";
