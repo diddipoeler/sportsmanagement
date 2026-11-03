@@ -374,19 +374,27 @@ final class PlaygroundPlanHelper
     }
 
     /**
-     * Build a Joomla ID-and-alias slug for a record.
+     * Build a safe Joomla ID-and-alias slug for a record.
      *
-     * Omits the alias suffix when the database record has no alias.
+     * Permits normal Unicode letters, digits, underscores and hyphens in
+     * database aliases. Invalid UTF-8, route delimiters, control characters
+     * and oversized values are omitted so legacy data cannot inject URL
+     * parameters or paths into generated playground links.
      *
-     * @param int $id Record identifier.
-     * @param string $alias Optional URL alias.
-     * @return string Numeric ID or ID:alias slug.
+     * @param int $id Validated positive project or playground identifier.
+     * @param string $alias Optional untrusted database alias.
+     * @return string Numeric ID or ID:alias slug with a validated suffix.
      */
     private function slug(int $id, string $alias): string
     {
         $alias = trim($alias);
 
-        return $alias === '' ? (string) $id : $id . ':' . $alias;
+        if ($alias === '' || strlen($alias) > 255
+            || preg_match('/^[\\p{L}\\p{N}_-]+$/uD', $alias) !== 1) {
+            return (string) $id;
+        }
+
+        return $id . ':' . $alias;
     }
 
     /**
