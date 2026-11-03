@@ -57,4 +57,31 @@ foreach ([
     }
 }
 
+$firstId = new ReflectionMethod($class, 'firstId');
+foreach ([
+    [7, 7], ['0007', 7], ['0007:club-2', 7],
+    [['0007', '8'], 7], ['0', 0], ['000', 0],
+    ['7invalid', 0], ['7:bad/slug', 0], ['7:bad:alias', 0],
+    ['7:valid_alias', 7], [false, 0], [['7'], 0],
+    [PHP_INT_MAX . '0', 0],
+] as [$raw, $expected]) {
+    if ($firstId->invoke($helper, $raw) !== $expected) {
+        fwrite(STDERR, 'Clubicons project ID and slug regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+$nonNegativeInteger = new ReflectionMethod($class, 'nonNegativeInteger');
+foreach ([
+    [0, 0], [5, 5], ['0002', 2], ['000', 0],
+    [true, 0], [false, 0], [null, 0], [['2'], 0],
+    ['2invalid', 0], [' 2', 0], [-1, 0],
+    [PHP_INT_MAX . '0', 0],
+] as [$raw, $expected]) {
+    if ($nonNegativeInteger->invoke(null, $raw) !== $expected) {
+        fwrite(STDERR, 'Clubicons numeric module selector regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Clubicons URL validation checks passed.\n";
