@@ -47,7 +47,7 @@ final class TopTipperHelper
         $requestedRound = $this->extractId($input->get('r', 0, 'raw'));
         $requestedFrom = $this->extractId($input->get('from', 0, 'raw'));
         $requestedTo = $this->extractId($input->get('to', 0, 'raw'));
-        $rankingType = max(0, min(2, $input->getInt('type', 0)));
+        $rankingType = self::rankingType($input->get('type', 0, 'raw'));
 
         $discoveryModel = $this->createRankingModel($app, [
             'prediction_id' => $predictionGameId,
@@ -78,7 +78,7 @@ final class TopTipperHelper
         $firstRound = $roundIds[0] ?? $currentRound;
         $lastRound = $roundIds ? (int) end($roundIds) : $currentRound;
 
-        if ((int) $params->get('show_tip_ranking_round', 0) === 1) {
+        if (self::enabledSwitch($params->get('show_tip_ranking_round', 0))) {
             $roundId = $currentRound;
             $fromRound = $currentRound;
             $toRound = $currentRound;
@@ -294,10 +294,50 @@ final class TopTipperHelper
             $raw = $params->get($key, 0);
             // Module switches are boolean flags; do not coerce malformed arrays
             // or partial numeric strings into enabled options under PHP 8.
-            $config[$key] = ($raw === 1 || $raw === '1') ? 1 : 0;
+            $config[$key] = self::enabledSwitch($raw) ? 1 : 0;
         }
 
         return $config;
+    }
+
+    /**
+     * Interpret a Joomla module option as an enabled 0/1 switch.
+     *
+     * Only the literal integer 1 or string "1" enables the option.
+     * Rejecting booleans, arrays and partially numeric strings avoids PHP 8
+     * coercion and keeps the round-selection branch consistent with the
+     * configuration passed to the prediction ranking model.
+     *
+     * @param mixed $value Untrusted module option.
+     * @return bool True when this switch is explicitly enabled.
+     */
+    private static function enabledSwitch(mixed $value): bool
+    {
+        return $value === 1 || $value === '1';
+    }
+
+    /**
+     * Validate the requested Top Tipper ranking period.
+     *
+     * The component understands exactly three ranking modes: full season,
+     * first half and second half. Invalid types, partially numeric strings
+     * and out-of-range values fall back to full-season ranking rather than
+     * relying on Joomla integer casts.
+     *
+     * @param mixed $value Raw ranking type request parameter.
+     * @return int Valid ranking mode 0, 1 or 2.
+     */
+    private static function rankingType(mixed $value): int
+    {
+        if ($value === 0 || $value === 1 || $value === 2) {
+            return $value;
+        }
+
+        if (is_string($value) && preg_match('/^0*[012]$/D', $value) === 1) {
+            return (int) $value;
+        }
+
+        return 0;
     }
 
     /**
