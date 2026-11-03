@@ -31,4 +31,30 @@ foreach ($cases as [$input, $expected]) {
         exit(1);
     }
 }
+$safeLogoPath = new ReflectionMethod($class, 'safeRelativeLogoPath');
+foreach ([
+    ['images/teams/club logo.png', 'images/teams/club logo.png'],
+    ['teams/münchen.png', 'teams/münchen.png'],
+    ['logo.png', 'logo.png'],
+    ['../private/config.php', ''],
+    ['images/../config.php', ''],
+    ['images/./logo.png', ''],
+    ['/absolute/logo.png', ''],
+    ['//remote.example/logo.png', ''],
+    ['https://remote.example/logo.png', ''],
+    ['images\\\\private.png', ''],
+    ['images/%2e%2e/config.php', ''],
+    ['images/logo.png?token=1', ''],
+    ['images/logo.png#fragment', ''],
+    ['images//logo.png', ''],
+    ["images/logo\\n.png", ''],
+    [false, ''],
+    [['logo.png'], ''],
+] as [$path, $expected]) {
+    if ($safeLogoPath->invoke(null, $path) !== $expected) {
+        fwrite(STDERR, 'Clubicons relative image path regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Clubicons URL validation checks passed.\n";
