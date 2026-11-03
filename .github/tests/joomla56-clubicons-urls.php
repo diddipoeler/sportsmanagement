@@ -131,4 +131,34 @@ foreach ([
     }
 }
 
+$rankingTeamIds = new ReflectionMethod($class, 'rankingTeamIds');
+$rankingRows = [
+    (object) ['teamid' => '0007'],
+    (object) ['teamid' => 7],
+    (object) ['teamid' => '0008'],
+    (object) ['teamid' => '8garbage'],
+    (object) ['teamid' => ['9']],
+    new stdClass(),
+    ['teamid' => 9],
+    (object) ['teamid' => PHP_INT_MAX . '0'],
+];
+if ($rankingTeamIds->invoke($helper, $rankingRows) !== [7, 8]) {
+    fwrite(STDERR, 'Clubicons ranking website IDs regression.' . PHP_EOL);
+    exit(1);
+}
+
+$manyRankingRows = array_map(
+    static fn(int $id): object => (object) ['teamid' => $id],
+    range(1, 420)
+);
+$websiteIds = $rankingTeamIds->invoke($helper, $manyRankingRows);
+$batchSize = (new ReflectionClass($class))->getConstant('WEBSITE_QUERY_BATCH_SIZE');
+$websiteBatches = array_chunk($websiteIds, $batchSize);
+if ($batchSize !== 200
+    || array_map('count', $websiteBatches) !== [200, 200, 20]
+    || array_merge(...$websiteBatches) !== range(1, 420)) {
+    fwrite(STDERR, 'Clubicons website SQL batching regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Clubicons URL validation checks passed.\n";
