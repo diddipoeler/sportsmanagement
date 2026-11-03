@@ -207,7 +207,8 @@ final class ClubiconsHelper
      *
      * Routes internal team and club views through the component router only
      * with verified project/team/club identifiers and safe matching slugs;
-     * external website mode retains its separate validated URL handling.
+     * external website mode retains its separate validated URL handling and
+     * ignores malformed non-string values in the website map.
      *
      * @param Registry $params Link mode and database settings.
      * @param object $project Current project record.
@@ -224,7 +225,9 @@ final class ClubiconsHelper
 
         if ($teamLink === 5) {
             $teamId = $this->firstId($team->id ?? 0);
-            return $this->externalWebsiteUrl((string) ($websites[$teamId] ?? ''));
+            $website = $websites[$teamId] ?? null;
+
+            return is_string($website) ? $this->externalWebsiteUrl($website) : '';
         }
 
         $projectSlug = self::validatedRouteSlug($project->slug ?? null, $project->id ?? null);
@@ -332,7 +335,8 @@ final class ClubiconsHelper
      * configuration and missing images use the matching local placeholder;
      * external image URLs are validated before inclusion in the layout.
      * Relative paths must remain within the media base and are URL-encoded
-     * per segment; invalid paths use a trusted local placeholder.
+     * per segment; invalid paths use a trusted local placeholder. A remote
+     * image server must not contain URL query strings or fragments.
      *
      * @param Registry $params Logo and database options.
      * @param object $team Team image fields.
@@ -371,13 +375,40 @@ final class ClubiconsHelper
 
         if (self::nonNegativeInteger($params->get('cfg_which_database', 0)) === 1) {
             $configuredServer = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server', '');
-            $server = is_string($configuredServer) ? rtrim(trim($configuredServer), '/') : '';
-            if ($this->externalWebsiteUrl($server) !== '') {
+            $server = self::safeImageServerBase($configuredServer);
+            if ($server !== '') {
                 return $server . '/' . $encodedPath;
             }
         }
 
         return rtrim((string) Uri::root(), '/') . '/' . $encodedPath;
+    }
+
+    /**
+     * Validate an external image server base before appending logo paths.
+     *
+     * An otherwise valid website URL containing a query or fragment cannot
+     * act as an image directory: appending a path would change the query or
+     * fragment instead of the requested resource. Rejects malformed values,
+     * credentials and unsafe schemes through the website URL validator.
+     *
+     * @param mixed $value Configured remote image server URL.
+     * @return string Safe HTTP(S) base URL without a trailing slash, or empty.
+     */
+    private static function safeImageServerBase(mixed $value): string
+    {
+        if (!is_string($value)) {
+            return '';
+        }
+
+        $server = rtrim(trim($value), '/');
+
+        if ($server === '' || parse_url($server, PHP_URL_QUERY) !== null
+            || parse_url($server, PHP_URL_FRAGMENT) !== null) {
+            return '';
+        }
+
+        return (new self())->externalWebsiteUrl($server) !== '' ? $server : '';
     }
 
     /**
