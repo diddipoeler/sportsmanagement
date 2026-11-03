@@ -98,4 +98,24 @@ foreach ([
     }
 }
 
+$validQuoteRows = new ReflectionMethod($class, 'validQuoteRows');
+$firstQuote = (object) ['id' => '0002', 'quote' => 'First'];
+$secondQuote = (object) ['id' => 3, 'quote' => 'Second'];
+$rawQuotes = [
+    $firstQuote,
+    null,
+    ['id' => 4],
+    (object) ['id' => ['3']],
+    (object) ['id' => '3invalid'],
+    (object) ['id' => '0'],
+    (object) ['id' => PHP_INT_MAX . '0'],
+    new stdClass(),
+    $secondQuote,
+];
+if ($validQuoteRows->invoke(null, $rawQuotes) !== [$firstQuote, $secondQuote]
+    || $validQuoteRows->invoke(null, new stdClass()) !== []) {
+    fwrite(STDERR, 'Random Quotes invalid database row regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Random Quotes input checks passed.\n";
