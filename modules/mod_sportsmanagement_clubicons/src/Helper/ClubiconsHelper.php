@@ -259,6 +259,8 @@ final class ClubiconsHelper
      * Accepts only known image fields and string-based image paths. Invalid
      * configuration and missing images use the matching local placeholder;
      * external image URLs are validated before inclusion in the layout.
+     * Relative paths must remain within the media base and are URL-encoded
+     * per segment; invalid paths use a trusted local placeholder.
      *
      * @param Registry $params Logo and database options.
      * @param object $team Team image fields.
@@ -274,6 +276,7 @@ final class ClubiconsHelper
 
         $configuredPath = $team->{$type} ?? '';
         $path = is_string($configuredPath) ? trim($configuredPath) : '';
+
         if ($path === '') {
             $path = self::PLACEHOLDERS[$type];
         }
@@ -284,15 +287,62 @@ final class ClubiconsHelper
             return $url !== '' ? $url : rtrim((string) Uri::root(), '/') . '/' . self::PLACEHOLDERS[$type];
         }
 
+        // An untrusted database path must never escape the media base or
+        // introduce URL parameters through a local or external image server.
+        $safePath = self::safeRelativeLogoPath($path);
+
+        if ($safePath === '') {
+            return rtrim((string) Uri::root(), '/') . '/' . self::PLACEHOLDERS[$type];
+        }
+
+        $encodedPath = implode('/', array_map('rawurlencode', explode('/', $safePath)));
+
         if ((int) $params->get('cfg_which_database', 0) === 1) {
             $configuredServer = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_server', '');
             $server = is_string($configuredServer) ? rtrim(trim($configuredServer), '/') : '';
             if ($this->externalWebsiteUrl($server) !== '') {
-                return $server . '/' . ltrim($path, '/');
+                return $server . '/' . $encodedPath;
             }
         }
 
-        return rtrim((string) Uri::root(), '/') . '/' . ltrim($path, '/');
+        return rtrim((string) Uri::root(), '/') . '/' . $encodedPath;
+    }
+
+    /**
+     * Validate a relative team logo file path before joining it to a URL.
+     *
+     * Rejects absolute paths, traversal segments, encoded traversal, URI
+     * schemes, backslashes, query strings and control characters. Safe
+     * nested paths and Unicode or spaced filenames are retained unchanged
+     * for per-segment URL encoding by the calling method.
+     *
+     * @param mixed $path Raw image filename or relative media path.
+     * @return string Validated relative path, or empty string when unsafe.
+     */
+    private static function safeRelativeLogoPath(mixed $path): string
+    {
+        if (!is_string($path)) {
+            return '';
+        }
+
+        $path = trim($path);
+
+        if ($path === '' || str_starts_with($path, '/')
+            || str_contains($path, '\\')
+            || str_contains($path, ':')
+            || str_contains($path, '%')
+            || strpbrk($path, '?#') !== false
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $path) === 1) {
+            return '';
+        }
+
+        foreach (explode('/', $path) as $segment) {
+            if ($segment === '' || $segment === '.' || $segment === '..') {
+                return '';
+            }
+        }
+
+        return $path;
     }
 
     /**
