@@ -84,4 +84,28 @@ foreach ([
     }
 }
 
+$routeSlug = new ReflectionMethod($class, 'validatedRouteSlug');
+foreach ([
+    ['7:team-main', 7, '7:team-main'],
+    ['0007:städtisch', '0007', '7:städtisch'],
+    ['7:other', 8, '8'],
+    ['7:bad/path', 7, '7'],
+    ['7:bad?query', 7, '7'],
+    ['7:bad%2falias', 7, '7'],
+    ['7:bad:alias', 7, '7'],
+    ['7:bad#fragment', 7, '7'],
+    [str_repeat('x', 256), 7, '7'],
+    [['7:bad'], 7, '7'],
+    ['7:good', ['7'], ''],
+    ['7:good', 0, ''],
+    ['7:good', PHP_INT_MAX . '0', ''],
+    ['7:good', true, ''],
+    [null, 7, '7'],
+] as [$rawSlug, $id, $expected]) {
+    if ($routeSlug->invoke(null, $rawSlug, $id) !== $expected) {
+        fwrite(STDERR, 'Clubicons route slug validation regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Clubicons URL validation checks passed.\n";
