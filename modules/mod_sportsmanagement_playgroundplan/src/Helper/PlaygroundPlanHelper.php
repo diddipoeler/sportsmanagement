@@ -388,7 +388,8 @@ final class PlaygroundPlanHelper
     /**
      * Check whether a project or playground selection was explicitly set.
      *
-     * Distinguishes blank and zero-valued selectors from malformed entries that must not broaden a query.
+     * Distinguishes blank and zero-valued selectors, including zero-padded
+     * legacy settings, from malformed entries that must not broaden a query.
      *
      * @param mixed $value Scalar or array-valued module selection.
      * @return bool True when the selector contains an explicit entry.
@@ -404,7 +405,7 @@ final class PlaygroundPlanHelper
 
             $text = trim((string) $entry);
 
-            if ($text !== '' && $text !== '0') {
+            if ($text !== '' && preg_match('/^0+$/D', $text) !== 1) {
                 return true;
             }
         }
