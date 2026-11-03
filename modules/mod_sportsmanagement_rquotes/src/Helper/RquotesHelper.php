@@ -249,11 +249,9 @@ final class RquotesHelper
         }
 
         $cookie = $app->getInput()->cookie;
-        $current = $cookie->getInt('rquote', -1);
-        // Reject an out-of-range or stale index if the quotes list changed.
-        $index = $current >= 0 && $current < count($rows)
-            ? ($current + 1) % count($rows)
-            : random_int(0, count($rows) - 1);
+        $next = self::nextSequentialIndex($cookie->get('rquote', null, 'RAW'), count($rows));
+        // Do not interpret malformed or outdated cookie data as a valid index.
+        $index = $next ?? random_int(0, count($rows) - 1);
 
         // Modules may render after Joomla has started sending the response.
         // Avoid PHP header warnings while still returning the selected quote.
@@ -267,6 +265,34 @@ final class RquotesHelper
         }
 
         return [$rows[$index]];
+    }
+
+    /**
+     * Derive the next sequential quote index from a validated cookie value.
+     *
+     * Accepts only nonnegative integers or decimal strings within the current
+     * quote count. Rejects arrays, booleans, partial numbers and overflow;
+     * null indicates that the caller should choose a fresh random position.
+     *
+     * @param mixed $rawIndex Untrusted sequence position from the cookie.
+     * @param int $count Number of available quotes.
+     * @return int|null Next zero-based index, or null for invalid input.
+     */
+    private static function nextSequentialIndex(mixed $rawIndex, int $count): ?int
+    {
+        if ($count <= 0 || (!is_int($rawIndex)
+            && (!is_string($rawIndex) || preg_match('/^[0-9]+$/D', $rawIndex) !== 1))) {
+            return null;
+        }
+
+        if (is_string($rawIndex)) {
+            $digits = ltrim($rawIndex, '0');
+            $rawIndex = $digits === '' ? '0' : $digits;
+        }
+
+        $index = filter_var($rawIndex, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $index === false || $index >= $count ? null : ($index + 1) % $count;
     }
 
     /**
