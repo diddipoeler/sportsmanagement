@@ -227,7 +227,7 @@ final class ClubiconsHelper
             $teamId = $this->firstId($team->id ?? 0);
             $website = $websites[$teamId] ?? null;
 
-            return is_string($website) ? $this->externalWebsiteUrl($website) : '';
+            return is_string($website) ? self::externalWebsiteUrl($website) : '';
         }
 
         $projectSlug = self::validatedRouteSlug($project->slug ?? null, $project->id ?? null);
@@ -306,7 +306,7 @@ final class ClubiconsHelper
      * @param string $url Candidate external web address.
      * @return string Validated URL, or an empty string if unsafe.
      */
-    private function externalWebsiteUrl(string $url): string
+    private static function externalWebsiteUrl(string $url): string
     {
         $url = trim($url);
 
@@ -358,7 +358,7 @@ final class ClubiconsHelper
         }
 
         if (preg_match('#^https?://#i', $path)) {
-            $url = $this->externalWebsiteUrl($path);
+            $url = self::externalWebsiteUrl($path);
 
             return $url !== '' ? $url : rtrim((string) Uri::root(), '/') . '/' . self::PLACEHOLDERS[$type];
         }
@@ -408,7 +408,7 @@ final class ClubiconsHelper
             return '';
         }
 
-        return (new self())->externalWebsiteUrl($server) !== '' ? $server : '';
+        return self::externalWebsiteUrl($server) !== '' ? $server : '';
     }
 
     /**
@@ -509,7 +509,7 @@ final class ClubiconsHelper
                     continue;
                 }
 
-                $url = $this->externalWebsiteUrl($candidate);
+                $url = self::externalWebsiteUrl($candidate);
                 if ($url !== '') {
                     $map[$teamId] = $url;
                     break;
