@@ -200,7 +200,9 @@ final class ClubiconsHelper
     /**
      * Construct the configured destination URL for a club icon.
      *
-     * Routes internal team and club views through the component router, or uses a validated external club URL for the website-link mode.
+     * Routes internal team and club views through the component router only
+     * with verified project/team/club identifiers and safe matching slugs;
+     * external website mode retains its separate validated URL handling.
      *
      * @param Registry $params Link mode and database settings.
      * @param object $project Current project record.
@@ -220,32 +222,70 @@ final class ClubiconsHelper
             return $this->externalWebsiteUrl((string) ($websites[$teamId] ?? ''));
         }
 
+        $projectSlug = self::validatedRouteSlug($project->slug ?? null, $project->id ?? null);
+        $teamSlug = self::validatedRouteSlug($team->team_slug ?? null, $team->id ?? null);
+        $clubSlug = self::validatedRouteSlug($team->club_slug ?? null, $team->club_id ?? null);
+
+        if ($projectSlug === '' || ($teamLink >= 1 && $teamLink <= 3 && $teamSlug === '')
+            || ($teamLink === 4 && $clubSlug === '')) {
+            return '';
+        }
+
         $common = [
             'cfg_which_database' => self::nonNegativeInteger($params->get('cfg_which_database', 0)),
             's' => self::nonNegativeInteger($params->get('s', 0)),
-            'p' => (string) ($project->slug ?? $project->id ?? ''),
+            'p' => $projectSlug,
         ];
 
         return match ($teamLink) {
             1 => SiteRouteHelper::view('teaminfo', $common + [
-                'tid' => (string) ($team->team_slug ?? $team->id ?? ''),
+                'tid' => $teamSlug,
                 'ptid' => 0,
             ]),
             2 => SiteRouteHelper::view('roster', $common + [
-                'tid' => (string) ($team->team_slug ?? $team->id ?? ''),
+                'tid' => $teamSlug,
                 'ptid' => 0,
             ]),
             3 => SiteRouteHelper::view('teamplan', $common + [
-                'tid' => (string) ($team->team_slug ?? $team->id ?? ''),
+                'tid' => $teamSlug,
                 'division' => 0,
                 'mode' => 0,
                 'ptid' => 0,
             ]),
             4 => SiteRouteHelper::view('clubinfo', $common + [
-                'cid' => (string) ($team->club_slug ?? $team->club_id ?? ''),
+                'cid' => $clubSlug,
             ]),
             default => '',
         };
+    }
+
+    /**
+     * Validate a Joomla ID:alias route slug against its source record ID.
+     *
+     * Accepts positive integer IDs or a matching numeric ID and a safe
+     * Unicode alias. Invalid, mismatched or oversized aliases fall back to
+     * the verified numeric record ID; missing or malformed IDs produce no
+     * route so arrays and objects never trigger PHP 8 conversion warnings.
+     *
+     * @param mixed $slug Untrusted route slug from a ranking record.
+     * @param mixed $recordId Identifier of the referenced Joomla record.
+     * @return string Verified ID:alias slug, numeric ID, or empty string.
+     */
+    private static function validatedRouteSlug(mixed $slug, mixed $recordId): string
+    {
+        $id = self::nonNegativeInteger($recordId);
+
+        if ($id <= 0) {
+            return '';
+        }
+
+        if (is_string($slug) && strlen($slug) <= 255
+            && preg_match('/^([0-9]+):([\\p{L}\\p{N}_-]+)$/uD', $slug, $matches) === 1
+            && self::nonNegativeInteger($matches[1]) === $id) {
+            return $id . ':' . $matches[2];
+        }
+
+        return (string) $id;
     }
 
     /**
