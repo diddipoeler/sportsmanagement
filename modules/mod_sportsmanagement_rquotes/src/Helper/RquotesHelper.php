@@ -667,7 +667,9 @@ final class RquotesHelper
     /**
      * Parse and limit configured quote category identifiers.
      *
-     * Accepts numeric IDs and Joomla ID:alias strings, removes duplicates and rejects invalid or oversized selectors.
+     * Accepts numeric IDs, zero-padded legacy identifiers and Joomla ID:alias
+     * strings, removes duplicates and rejects zero, malformed or overflowing
+     * selectors before using category IDs in bound SQL filters.
      *
      * @param mixed $values Raw scalar or array module selection.
      * @return array<int, int> Unique positive category IDs.
@@ -684,12 +686,19 @@ final class RquotesHelper
             }
 
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                // Preserve Joomla's optional numeric ID:alias syntax.
-                if (!preg_match('/^([1-9][0-9]*)(?::[A-Za-z0-9_-]+)?$/D', $part, $match)) {
+                // Joomla selectors may include leading zeroes and ID:alias
+                // values. Validate the complete field before normalising IDs.
+                if (!preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $part, $match)) {
                     continue;
                 }
 
-                $id = filter_var($match[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+                $digits = ltrim($match[1], '0');
+
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
                 if ($id !== false) {
                     $ids[$id] = $id;
