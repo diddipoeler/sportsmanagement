@@ -62,4 +62,19 @@ foreach ([
     }
 }
 
+$normaliseIds = new ReflectionMethod($class, 'normaliseIds');
+$helper = (new ReflectionClass($class))->newInstanceWithoutConstructor();
+foreach ([
+    [['0002', '03:league', '2', 5], [2, 3, 5]],
+    ['0008:league, 9; 010', [8, 9, 10]],
+    [['000', '0:invalid', '-2', '4invalid', '7:valid'], [7]],
+    [[true, ['3'], '5.2', PHP_INT_MAX . '0'], []],
+    [['1:valid', '1:duplicate', '002:other'], [1, 2]],
+] as [$raw, $expected]) {
+    if ($normaliseIds->invoke($helper, $raw) !== $expected) {
+        fwrite(STDERR, 'Random Quotes zero-padded category selection regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Random Quotes input checks passed.\n";
