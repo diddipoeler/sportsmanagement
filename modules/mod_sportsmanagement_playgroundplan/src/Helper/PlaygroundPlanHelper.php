@@ -132,7 +132,7 @@ final class PlaygroundPlanHelper
 
             $db->setQuery($query, 0, $limit);
             $loadedRows = $db->loadObjectList();
-            $rows = is_array($loadedRows) ? array_values(array_filter($loadedRows, 'is_object')) : [];
+            $rows = self::validFixtureRows($loadedRows);
             $cfg = self::nonNegativeInteger($params->get('cfg_which_database', 0));
             $season = self::nonNegativeInteger($params->get('s', 0));
             $showLink = self::nonNegativeInteger($params->get('show_playground_link', 1)) === 1;
@@ -152,7 +152,7 @@ final class PlaygroundPlanHelper
                 if ($showLink && $playgroundId > 0) {
                     $row->playground_link = SiteRouteHelper::view('playground', [
                         'cfg_which_database' => $cfg,
-                        's' => $season ?: (int) ($row->season_id ?? 0),
+                        's' => $season ?: self::nonNegativeInteger($row->season_id ?? 0),
                         'p' => $row->project_slug,
                         'pgid' => $row->display_playground_slug,
                     ]);
@@ -175,6 +175,35 @@ final class PlaygroundPlanHelper
 
             return [];
         }
+    }
+
+    /**
+     * Retain only upcoming fixtures associated with a valid project.
+     *
+     * Legacy database drivers can return malformed non-object rows or
+     * invalid project identifiers. Discard such records before generating
+     * Joomla project slugs and links, preventing routes to project zero.
+     *
+     * @param mixed $rows Raw fixture query result.
+     * @return array<int, object> Fixture rows with positive numeric project IDs.
+     */
+    private static function validFixtureRows(mixed $rows): array
+    {
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $valid = [];
+
+        foreach ($rows as $row) {
+            if (!is_object($row) || self::nonNegativeInteger($row->project_id ?? null) <= 0) {
+                continue;
+            }
+
+            $valid[] = $row;
+        }
+
+        return $valid;
     }
 
     /**
