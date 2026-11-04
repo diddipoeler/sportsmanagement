@@ -176,11 +176,11 @@ $topTipperHelper = new TopTipperHelper();
                     (int) $roundId,
                     (int) $databaseSelector
                 ) : '';
-                $predictionCount = max(0, (int) ($row['predictionsCount'] ?? 0));
-                $points = (int) ($row['totalPoints'] ?? 0);
+                $predictionCount = TopTipperHelper::rankingInteger($row['predictionsCount'] ?? null);
+                $points = TopTipperHelper::rankingInteger($row['totalPoints'] ?? null, true);
                 ?>
                 <tr<?php echo $isCurrent ? ' class="table-warning"' : ''; ?>>
-                    <td class="text-center"><?php echo htmlspecialchars((string) ($row['rank'] ?? ''), ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td class="text-center"><?php echo htmlspecialchars(is_scalar($row['rank'] ?? null) ? (string) $row['rank'] : '', ENT_QUOTES, 'UTF-8'); ?></td>
                     <?php if (!empty($config['show_user_icon'])) : ?>
                         <td class="text-center">
                             <?php if ($avatarUrl !== '') : ?>
@@ -217,16 +217,16 @@ $topTipperHelper = new TopTipperHelper();
                         <td class="text-end"><?php echo $predictionCount; ?></td>
                     <?php endif; ?>
                     <?php if (!empty($config['show_count_joker'])) : ?>
-                        <td class="text-end"><?php echo (int) ($row['totalJoker'] ?? 0); ?></td>
+                        <td class="text-end"><?php echo TopTipperHelper::rankingInteger($row['totalJoker'] ?? null); ?></td>
                     <?php endif; ?>
                     <?php if (!empty($config['show_count_topptips'])) : ?>
-                        <td class="text-end"><?php echo (int) ($row['totalTop'] ?? 0); ?></td>
+                        <td class="text-end"><?php echo TopTipperHelper::rankingInteger($row['totalTop'] ?? null); ?></td>
                     <?php endif; ?>
                     <?php if (!empty($config['show_count_difftips'])) : ?>
-                        <td class="text-end"><?php echo (int) ($row['totalDiff'] ?? 0); ?></td>
+                        <td class="text-end"><?php echo TopTipperHelper::rankingInteger($row['totalDiff'] ?? null); ?></td>
                     <?php endif; ?>
                     <?php if (!empty($config['show_count_tendtipps'])) : ?>
-                        <td class="text-end"><?php echo (int) ($row['totalTend'] ?? 0); ?></td>
+                        <td class="text-end"><?php echo TopTipperHelper::rankingInteger($row['totalTend'] ?? null); ?></td>
                     <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
