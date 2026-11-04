@@ -70,12 +70,11 @@ final class TopTipperHelper
         }
 
         $currentRound = $discoveryModel->getProjectCurrentRoundId($projectId);
-        $roundOptions = $discoveryModel->getRoundOptions();
-        $roundOptions = is_array($roundOptions) ? array_values(array_filter($roundOptions, 'is_object')) : [];
-        $roundIds = array_values(array_filter(array_map(
-            fn (object $option): int => $this->extractId($option->value ?? 0),
+        $roundOptions = self::validRoundOptions($discoveryModel->getRoundOptions());
+        $roundIds = array_map(
+            static fn (object $option): int => (int) $option->value,
             $roundOptions
-        )));
+        );
         $firstRound = $roundIds[0] ?? $currentRound;
         $lastRound = $roundIds ? (int) end($roundIds) : $currentRound;
 
@@ -315,6 +314,80 @@ final class TopTipperHelper
         $number = filter_var($normalised, FILTER_VALIDATE_INT);
 
         return $number === false ? 0 : $number;
+    }
+
+    /**
+     * Parse a single Joomla round option ID or ID:alias slug.
+     *
+     * Accepts positive scalar identifiers, including zero-padded IDs and
+     * ASCII alias suffixes. Unlike module multi-selectors, option values are
+     * individual records: arrays, floats, booleans and partial numeric
+     * prefixes must not be silently accepted.
+     *
+     * @param mixed $value Raw round option value.
+     * @return int Positive round identifier, or zero for invalid input.
+     */
+    public static function roundOptionId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $text = trim((string) $value);
+
+        if (strlen($text) > 255
+            || preg_match('/^([0-9]+)(?::[A-Za-z0-9_-]+)?$/D', $text, $matches) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($matches[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Filter and normalise the model's selectable project rounds.
+     *
+     * Removes invalid, duplicated or non-object round entries before they
+     * reach the template. Copies valid option objects to avoid mutating data
+     * owned by the component model; their values become positive integers.
+     *
+     * @param mixed $options Raw prediction ranking model round options.
+     * @return array<int, object> Valid unique round options in original order.
+     */
+    private static function validRoundOptions(mixed $options): array
+    {
+        if (!is_array($options)) {
+            return [];
+        }
+
+        $rows = [];
+        $seen = [];
+
+        foreach ($options as $option) {
+            if (!is_object($option)) {
+                continue;
+            }
+
+            $id = self::roundOptionId($option->value ?? null);
+
+            if ($id <= 0 || isset($seen[$id])) {
+                continue;
+            }
+
+            $seen[$id] = true;
+            $copy = clone $option;
+            $copy->value = $id;
+            $rows[] = $copy;
+        }
+
+        return $rows;
     }
 
     /**
