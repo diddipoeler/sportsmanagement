@@ -46,6 +46,18 @@ foreach ([
 if (!class_exists('modJSMRandomplayerHelper', false)) {
     final class modJSMRandomplayerHelper
     {
+        /**
+         * Load random-player data for older module templates and integrations.
+         *
+         * Wraps legacy parameter arrays in Joomla Registry, verifies that
+         * the active application is the site client, obtains a Joomla database
+         * service and delegates the data retrieval to RandomPlayerHelper.
+         *
+         * @param Registry|array $params Module settings, passed by reference for compatibility.
+         * @param DatabaseInterface|null $database Optional database service override.
+         * @return array Player details prepared by the native module helper.
+         * @throws \RuntimeException When the site client or database is unavailable.
+         */
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -54,6 +66,15 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
 
             return (new RandomPlayerHelper())->getData($registry, $database);
         }
+        /**
+         * Obtain the current Joomla frontend application.
+         *
+         * Uses the component's shared application resolver and rejects
+         * non-site execution contexts before loading public player data.
+         *
+         * @return CMSApplicationInterface Valid Joomla site application.
+         * @throws \RuntimeException If the active client is not the site.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
@@ -65,6 +86,17 @@ if (!class_exists('modJSMRandomplayerHelper', false)) {
             return $app;
         }
 
+        /**
+         * Resolve the database service used for random-player queries.
+         *
+         * Accepts an explicitly supplied Joomla database instance or
+         * retrieves DatabaseInterface from Joomla's dependency container,
+         * rejecting an unexpected service type instead of continuing.
+         *
+         * @param DatabaseInterface|null $database Optional caller-supplied service.
+         * @return DatabaseInterface A valid Joomla database service.
+         * @throws \RuntimeException If the service cannot be resolved.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
