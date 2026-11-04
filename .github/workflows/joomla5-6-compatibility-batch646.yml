@@ -60,12 +60,16 @@ jobs:
               raise SystemExit('getNextRoundByToday() no longer returns the raw round rows')
 
           teamplan = Path('site/src/Model/TeamplanModel.php').read_text()
-          start = teamplan.index('private function loadPlanMatches')
-          end = teamplan.index('private function loadRefereesByMatch', start)
-          segment = teamplan[start:end]
+          round_start = teamplan.index('private function loadRoundMatches')
+          plan_start = teamplan.index('private function loadPlanMatches', round_start)
+          plan_end = teamplan.index('private function loadRefereesByMatch', plan_start)
+          # RoundMatch results use the PHP slug/time normalisation below.
+          # The separate list query in loadPlanMatches must also stay portable.
+          segment = teamplan[round_start:plan_start]
+          plan_segment = teamplan[plan_start:plan_end]
           for mysql_specific in ('DATE_FORMAT(', 'CONCAT_WS'):
-              if mysql_specific in segment:
-                  raise SystemExit(f'MySQL-specific {mysql_specific} remains in TeamplanModel::loadPlanMatches()')
+              if mysql_specific in segment or mysql_specific in plan_segment:
+                  raise SystemExit(f'MySQL-specific {mysql_specific} remains in TeamplanModel match loaders')
           for required in (
               '$match->match_slug =',
               '$match->round_slug =',
