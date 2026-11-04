@@ -17,6 +17,12 @@ use Joomla\Database\ParameterType;
 
 final class PredictionusersModel extends SportsManagementPredictionReadModel
 {
+    /**
+     * Ensure the selected prediction project belongs to the active game.
+     * Confirms the inherited project selection against configured
+     * prediction projects and clears IDs that are not eligible.
+     * @return int Eligible project ID or zero.
+     */
     public function getProjectId(): int
     {
         $projectId = parent::getProjectId();
@@ -34,6 +40,12 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return 0;
     }
 
+    /**
+     * Validate the selected round against the active prediction project.
+     * Looks up the project/round relation with bound identifiers
+     * before exposing a round to the prediction-user profile view.
+     * @return int Project-owned round ID or zero.
+     */
     public function getRoundId(): int
     {
         $roundId = parent::getRoundId();
@@ -59,15 +71,27 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return $this->roundId;
     }
 
+    /**
+     * Extract a positive numeric ID for the displayed prediction member.
+     * Validates the ID or Joomla ID:alias slug before profile links
+     * and member statistics use that identifier.
+     * @return int Member ID or zero when unavailable.
+     */
     public function getSelectedMemberNumericId(): int
     {
         $member = $this->getPredictionMember();
         return $this->extractMemberId($member->pmID ?? $member->id ?? 0);
     }
 
+    /**
+     * Check whether the logged-in Joomla user joined the prediction game.
+     * Returns false for guests or invalid games and loads membership
+     * using the authenticated user and game as bound SQL filters.
+     * @return bool Whether the current user is a prediction member.
+     */
     public function isPredictionMember(): bool
     {
-        $userId = (int) $this->siteApplication()->getIdentity()->id;
+        $userId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         if ($userId <= 0 || $this->predictionGameId <= 0) {
             return false;
         }
@@ -85,6 +109,13 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return (bool) $db->loadResult();
     }
 
+    /**
+     * Create selectable members for the prediction users overview.
+     * Joins game members to Joomla user display names, choosing
+     * full names or usernames based on template configuration.
+     * @param array $config Profile display settings.
+     * @return array<int,object> Member value/text options.
+     */
     public function getMemberOptions(array $config = []): array
     {
         if ($this->predictionGameId <= 0) {
@@ -107,7 +138,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
             ->bind(':memberOptionsPredictionId', $predictionGameId, ParameterType::INTEGER);
 
         if (!$this->isAllowedAdmin()) {
-            $userId = (int) $this->siteApplication()->getIdentity()->id;
+            $userId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
             if ($userId <= 0) {
                 return [];
             }
@@ -119,6 +150,13 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build the prediction projects filter for user profiles.
+     * Optionally includes the all-project choice and then each
+     * configured game project with its display name.
+     * @param bool $includeAll Whether to include the zero/all choice.
+     * @return array<int,object> Available project options.
+     */
     public function getProjectOptions(bool $includeAll = true): array
     {
         $options = [];
@@ -136,6 +174,13 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return $options;
     }
 
+    /**
+     * Calculate aggregated prediction statistics for one game member.
+     * Loads ranking position, totals, prediction counts and point
+     * subcategories using the selected project and prediction game.
+     * @param object $member Prediction member whose totals are requested.
+     * @return array<string,mixed> Member scoring statistics.
+     */
     public function getMemberStats(object $member): array
     {
         $memberId = $this->extractMemberId($member->pmID ?? $member->id ?? 0);
@@ -188,21 +233,49 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return $stats;
     }
 
+    /**
+     * Resolve a member's stored favourite teams for visible projects.
+     * Parses project/team associations and loads matching team labels
+     * without enforcing championship start-time privacy.
+     * @param object $member Member with serialized favourite teams.
+     * @return array<int,mixed> Displayable favourite team selections.
+     */
     public function getFavouriteTeams(object $member): array
     {
         return $this->resolveTeamSelections((string) ($member->fav_team ?? ''), false, false, (int) ($member->user_id ?? 0));
     }
 
+    /**
+     * Resolve the member's saved champion predictions by project.
+     * Hides competitive champion choices until the related project
+     * has started unless the viewer owns the profile or is authorised.
+     * @param object $member Member with saved champion tips.
+     * @return array<int,mixed> Visible champion team selections.
+     */
     public function getChampionTips(object $member): array
     {
         return $this->resolveTeamSelections((string) ($member->champ_tipp ?? ''), false, true, (int) ($member->user_id ?? 0));
     }
 
+    /**
+     * Resolve multiple final-four team predictions for each project.
+     * Preserves multiple selected teams and respects hidden-until
+     * start settings for visitors who do not own the member profile.
+     * @param object $member Member with serialized final-four tips.
+     * @return array<int,mixed> Visible final-four predictions.
+     */
     public function getFinal4Tips(object $member): array
     {
         return $this->resolveTeamSelections((string) ($member->final4_tipp ?? ''), true, true, (int) ($member->user_id ?? 0));
     }
 
+    /**
+     * Load chronological points records for the prediction user chart.
+     * Uses the current game, member and optional project selection
+     * to assemble round-by-round scoring data.
+     * @param object $member Member whose score history is requested.
+     * @return array<int,mixed> Time-series points records.
+     */
     public function getPointsChartData(object $member): array
     {
         $userId = (int) ($member->user_id ?? 0);
@@ -251,6 +324,13 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         }, $rows);
     }
 
+    /**
+     * Load ranking-position history for a prediction member.
+     * Collects project/round ranking records scoped to the active
+     * game and member for display in a frontend chart.
+     * @param object $member Prediction member to chart.
+     * @return array<int,mixed> Historical ranking positions.
+     */
     public function getRankingChartData(object $member): array
     {
         $memberId = $this->extractMemberId($member->pmID ?? $member->id ?? 0);
@@ -328,6 +408,15 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return $series;
     }
 
+    /**
+     * Resolve the avatar URL permitted by the profile configuration.
+     * Supports the component's own profile image and allowed external
+     * providers, returning an empty URL when photos are disabled
+     * or when a chosen provider is not accessible.
+     * @param object $member Profile member with user/photo fields.
+     * @param array $config Profile avatar configuration.
+     * @return string Resolved image path or empty string.
+     */
     public function getAvatarPath(object $member, array $config): string
     {
         if (empty($config['show_photo'])) {
@@ -382,14 +471,30 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
     }
 
+    /**
+     * Check visibility of a prediction member's private profile.
+     * Allows publicly visible profiles, the authenticated owner and
+     * authorised game administrators, denying anonymous access
+     * to profiles marked private.
+     * @param object $member Member privacy and ownership fields.
+     * @return bool Whether the profile details may be shown.
+     */
     public function canViewMemberProfile(object $member): bool
     {
-        $identityId = (int) $this->siteApplication()->getIdentity()->id;
+        $identityId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         return !empty($member->show_profile)
             || ($identityId > 0 && $identityId === (int) ($member->user_id ?? 0))
             || $this->isAllowedAdmin();
     }
 
+    /**
+     * Calculate the member's overall rank within the prediction game.
+     * Aggregates points for all eligible members, optionally for
+     * one selected project, and determines this member's position.
+     * @param int $memberId Selected member ID.
+     * @param int $projectId Optional project scope.
+     * @return int Computed rank position.
+     */
     private function getOverallMemberRank(int $memberId, int $projectId): int
     {
         $predictionGameId = $this->predictionGameId;
@@ -438,6 +543,17 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return 0;
     }
 
+    /**
+     * Translate saved project/team tips to displayable team names.
+     * Validates project membership, checks the viewer's identity and
+     * competitive-tip visibility rules, and loads matching project
+     * teams for public or owner-only profile sections.
+     * @param string $raw Serialized saved project/team selections.
+     * @param bool $multiple Whether each project can hold several teams.
+     * @param bool $hideBeforeStart Whether competitive picks stay hidden.
+     * @param int $memberUserId Joomla account owning the predictions.
+     * @return array<int,mixed> Allowed team selections per project.
+     */
     private function resolveTeamSelections(string $raw, bool $multiple, bool $hideBeforeStart, int $memberUserId): array
     {
         $selections = $this->parseMemberTeamSelections($raw, $multiple);
@@ -445,7 +561,7 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
             return [];
         }
 
-        $identityId = (int) $this->siteApplication()->getIdentity()->id;
+        $identityId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         $ownProfile = $identityId > 0 && $identityId === $memberUserId;
         $selectedProjectId = $this->getProjectId();
         $rows = [];
@@ -482,23 +598,51 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return $rows;
     }
 
+    /**
+     * Parse legacy semicolon-separated project/team IDs safely.
+     * Rejects malformed, overflowing or partially numeric ID pairs,
+     * preserving either the latest selected team or a list of teams
+     * for each project, depending on the requested mode.
+     * @param string $raw Stored project,team entry list.
+     * @param bool $multiple Whether to retain multiple team IDs per project.
+     * @return array<int,mixed> Valid project/team selections.
+     */
     private function parseMemberTeamSelections(string $raw, bool $multiple): array
     {
         $result = [];
+
         foreach (array_filter(array_map('trim', explode(';', $raw))) as $part) {
-            [$projectId, $teamId] = array_pad(array_map('intval', explode(',', $part, 2)), 2, 0);
+            $pair = array_map('trim', explode(',', $part));
+
+            if (count($pair) !== 2) {
+                continue;
+            }
+
+            $projectId = $this->extractMemberId($pair[0]);
+            $teamId = $this->extractMemberId($pair[1]);
+
             if ($projectId <= 0 || $teamId <= 0) {
                 continue;
             }
+
             if ($multiple) {
                 $result[$projectId][] = $teamId;
             } else {
                 $result[$projectId] = $teamId;
             }
         }
+
         return $result;
     }
 
+    /**
+     * Validate and load a team relation within its competition project.
+     * Uses bound project and team identifiers to prevent selecting
+     * teams from an unrelated project in member profile displays.
+     * @param int $projectId Owning competition project.
+     * @param int $projectTeamId Selected project-team relation.
+     * @return object|null Matched team option or null.
+     */
     private function getProjectTeamById(int $projectId, int $projectTeamId): ?object
     {
         if ($projectId <= 0 || $projectTeamId <= 0) {
@@ -522,6 +666,13 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Determine whether a project's competitive team tips may be shown.
+     * Uses the project's start date and timezone and delays public
+     * visibility until the day after a scheduled project start.
+     * @param object $predictionProject Prediction competition date metadata.
+     * @return bool Whether competitive predictions are public.
+     */
     private function isProjectTipVisible(object $predictionProject): bool
     {
         $startDate = (string) ($predictionProject->start_date ?? '');
@@ -538,15 +689,41 @@ final class PredictionusersModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Parse a positive member or project-team ID without partial casts.
+     * Accepts decimal IDs and valid Joomla ID:alias slugs while
+     * rejecting invalid types, malformed input and overflow.
+     * @param mixed $value Raw selection identifier.
+     * @return int Positive numeric identifier or zero.
+     */
     private function extractMemberId(mixed $value): int
     {
-        if (is_int($value)) {
-            return max(0, $value);
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
         }
-        $value = (string) $value;
-        return max(0, (int) strtok($value, ':'));
+
+        $raw = trim((string) $value);
+        if (!preg_match('/^([0-9]+)(?::[^:\\s,;]+)?$/D', $raw, $matches)) {
+            return 0;
+        }
+
+        $digits = ltrim($matches[1], '0');
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
+    /**
+     * Detect a finished match based on regular or decision scores.
+     * Checks either team's score and tie-breaking result fields
+     * before using a fixture for member statistics.
+     * @param object $row Fixture score data.
+     * @return bool Whether a match result exists.
+     */
     private function hasPlayedResult(object $row): bool
     {
         return $row->homeResult !== null

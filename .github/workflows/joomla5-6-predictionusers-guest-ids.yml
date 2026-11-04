@@ -1,0 +1,35 @@
+name: Joomla 5/6 prediction users guest and selection safety
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/PredictionusersModel.php'
+      - '.github/tests/joomla56_predictionusers_guest_ids.php'
+      - '.github/workflows/joomla5-6-predictionusers-guest-ids.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  users:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint prediction users model and test
+        run: |
+          php -l site/src/Model/PredictionusersModel.php
+          php -l .github/tests/joomla56_predictionusers_guest_ids.php
+      - name: Check anonymous user and stored-team validation
+        run: php .github/tests/joomla56_predictionusers_guest_ids.php
