@@ -20,6 +20,15 @@ use Joomla\Registry\Registry;
 
 final class LeagueModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native Joomla league table for edits and inline saves.
+     * Uses LeagueTable with the model's active database for league rows
+     * and delegates other table types to the parent MVC factory.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy table class prefix.
+     * @param array $config Additional table construction options.
+     * @return mixed LeagueTable or parent-resolved table.
+     */
     public function getTable($type = 'League', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'League') === 0) {
@@ -29,6 +38,15 @@ final class LeagueModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Load historical league logos together with season labels.
+     * Queries season-scoped league-logo records and optionally
+     * returns only display logo values for the backend editor.
+     * @param mixed $leagueId League identifier to retrieve.
+     * @param mixed $seasonId Optional season restriction.
+     * @param mixed $logoonly Whether to limit results to logos.
+     * @return array<int,object> Matching league logo history records.
+     */
     public function getlogohistoryLeague($leagueId = 0, $seasonId = 0, $logoonly = false): array
     {
         $db = $this->getDatabase();
@@ -111,10 +129,17 @@ final class LeagueModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Save league properties edited inline in the administrator list.
+     * Validates posted league IDs without partial integer conversion,
+     * loads each table row, applies submitted country, association,
+     * age group and publication flags, then checks and stores changes.
+     * @return bool Whether all selected league rows were saved.
+     */
     public function saveshort(): bool
     {
         $input = $this->administratorApplication()->getInput();
-        $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
+        $ids = self::normaliseSelectionIds($input->post->get('cid', [], 'array'));
         $post = $input->post->getArray();
         $result = true;
 
@@ -140,6 +165,13 @@ final class LeagueModel extends SportsManagementAdminModel
         return $result;
     }
 
+    /**
+     * Prepare league form values for the native Joomla save pipeline.
+     * Merges legacy form group fields, validates dates into stored format
+     * and sanitises league media paths before persistence.
+     * @param array $data Submitted Joomla league form values.
+     * @return array Normalised league data ready for validation.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $post = $this->administratorApplication()->getInput()->post->getArray();
@@ -172,6 +204,16 @@ final class LeagueModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Persist optional logo history and extra fields after league save.
+     * Reads supplemental POST data, writes season-specific logo history,
+     * handles extra-field errors as warnings and restores the selected
+     * league ID in administrator user state.
+     * @param array $data Saved league form data.
+     * @param int $id Persisted league identifier.
+     * @param bool $isNew Whether the record was newly created.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         $app = $this->administratorApplication();
@@ -188,6 +230,14 @@ final class LeagueModel extends SportsManagementAdminModel
         $app->setUserState('com_sportsmanagement.league_id', $id);
     }
 
+    /**
+     * Normalise a league founding/dissolution date and year metadata.
+     * Accepts empty and zero dates, converts supported human date formats
+     * and extracts the stored four-digit year when available.
+     * @param array $data Submitted league data.
+     * @param string $field Date field to normalise.
+     * @return array League data with normalised date and year.
+     */
     private function normaliseLeagueDate(array $data, string $field): array
     {
         $value = trim((string) ($data[$field] ?? ''));
@@ -221,6 +271,53 @@ final class LeagueModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Parse positive league or season IDs from Joomla form selections.
+     * Accepts decimal IDs and ID:alias slugs, rejecting malformed
+     * strings, booleans, nested structures and overflowing values.
+     * @param mixed $values Raw submitted ID collection.
+     * @return array<int> Unique validated positive IDs.
+     */
+    private static function normaliseSelectionIds(mixed $values): array
+    {
+        $ids = [];
+
+        foreach ((array) $values as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if (!preg_match('/^([0-9]+)(?::[^:\\s,;]+)?$/D', $raw, $matches)) {
+                continue;
+            }
+
+            $digits = ltrim($matches[1], '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $ids[$id] = $id;
+            }
+        }
+
+        return array_values($ids);
+    }
+
+    /**
+     * Upsert historical league logos for selected competition seasons.
+     * Validates the posted season identifiers, sanitises the chosen logo
+     * and inserts or updates league-logo rows with bound league/season
+     * IDs, reporting individual database errors to administrators.
+     * @param array $post Additional league form submission fields.
+     * @param int $leagueId Saved league ID.
+     * @return void
+     */
     private function storeLogoHistory(array $post, int $leagueId): void
     {
         if ($leagueId <= 0 || empty($post['season_history'])) {
@@ -228,7 +325,7 @@ final class LeagueModel extends SportsManagementAdminModel
         }
 
         $logo = MediaHelper::getCleanMediaFieldValue((string) ($post['league_logo_history'] ?? ''));
-        $seasonIds = array_values(array_unique(array_filter(array_map('intval', (array) $post['season_history']))));
+        $seasonIds = self::normaliseSelectionIds($post['season_history']);
 
         if ($seasonIds === []) {
             return;

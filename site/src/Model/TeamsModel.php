@@ -30,6 +30,14 @@ final class TeamsModel extends SportsManagementProjectModel
     public $team = null;
     public $club = null;
 
+    /**
+     * Prepare the native frontend team listing with project and division state.
+     * Copies the selected Joomla project, division and database context
+     * to compatibility properties still consumed by third-party layouts.
+     * @param array $config Native Joomla MVC model options.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -44,6 +52,14 @@ final class TeamsModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load the teams attached to the selected competition project.
+     * Joins project teams to their names, clubs and competition
+     * statistics, optionally including standard playground details
+     * for frontend fixtures and club/team overviews.
+     * @param bool $includePlayground Whether venue data should be included.
+     * @return array<int,object> Selected project team records.
+     */
     public function getTeams(bool $includePlayground = false): array
     {
         if ($this->projectId <= 0) {

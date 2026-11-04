@@ -25,6 +25,15 @@ use Joomla\Database\ParameterType;
  */
 final class MatchModel extends SportsManagementAdminModel
 {
+    /**
+     * Return the native MatchTable for Joomla administrator editing.
+     * Instantiates the component's match table with the current
+     * database service, delegating other table types to the MVC parent.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy table namespace prefix.
+     * @param array $config Optional Joomla table factory options.
+     * @return mixed MatchTable or parent table.
+     */
     public function getTable($type = 'Match', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Match') === 0) {
@@ -34,6 +43,14 @@ final class MatchModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Normalise match-editor fields prior to Joomla model persistence.
+     * Reads missing IDs from Joomla input, converts numeric match flags
+     * and prepares match scheduling and media values in a form
+     * accepted by the native match table.
+     * @param array $data Submitted match editor values.
+     * @return array Validated and transformed match data.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $input = $this->administratorApplication()->getInput();
@@ -61,6 +78,13 @@ final class MatchModel extends SportsManagementAdminModel
         return parent::prepareSportsManagementData($data);
     }
 
+    /**
+     * Load a match with its project, round and home/away team context.
+     * Joins the fixture to round and team records for the native
+     * match editing and related data services.
+     * @param int $matchId Match record identifier.
+     * @return object|null Match with team context, or null.
+     */
     public function getMatchData(int $matchId): ?object
     {
         if ($matchId <= 0) {
@@ -402,9 +426,55 @@ final class MatchModel extends SportsManagementAdminModel
         return array_values(array_unique(array_filter(array_map('intval', $db->loadColumn() ?: []))));
     }
 
+    /**
+     * Validate match IDs before any destructive related-data delete.
+     * Accepts positive decimal IDs and Joomla ID:alias slugs,
+     * deduplicates selections and rejects malformed or overflowing IDs.
+     * @param mixed $values Raw match selections from Joomla controller.
+     * @return array<int> Valid unique match identifiers.
+     */
+    private static function normaliseSelectionIds(mixed $values): array
+    {
+        $ids = [];
+
+        foreach ((array) $values as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if (!preg_match('/^([0-9]+)(?::[^:\\s,;]+)?$/D', $raw, $matches)) {
+                continue;
+            }
+
+            $digits = ltrim($matches[1], '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $ids[$id] = $id;
+            }
+        }
+
+        return array_values($ids);
+    }
+
+    /**
+     * Delete matches and their linked events, rosters and statistics.
+     * Rejects malformed match selections, starts a database transaction,
+     * removes available relation-table rows and delegates match-row
+     * deletion to Joomla's native parent model, rolling back on errors.
+     * @param mixed $pks Selected match identifiers, by reference.
+     * @return bool True when the deletion succeeds or nothing is selected.
+     */
     public function delete(&$pks)
     {
-        $ids = array_values(array_unique(array_filter(array_map('intval', (array) $pks), static fn (int $id): bool => $id > 0)));
+        $ids = self::normaliseSelectionIds($pks);
 
         if (!$ids) {
             return true;
