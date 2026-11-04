@@ -17,7 +17,16 @@ use Joomla\CMS\Language\Text;
 /** Native Joomla 5/6 list controller for Google calendars. */
 final class JsmgcalendarsController extends SportsManagementAdminController
 {
-    /** Explicit POST-only provisioning of the configured Google API library. */
+    /**
+     * Provision the configured Google Calendar API integration.
+     *
+     * Verifies the Joomla form token and component core.admin permission,
+     * loads the native Google calendar model and checks API readiness.
+     * Redirects to the calendars overview with translated status feedback.
+     *
+     * @return void
+     * @throws \RuntimeException For denied access or an unavailable model.
+     */
     public function installgoogleapi(): void
     {
         $this->checkToken();
@@ -43,6 +52,17 @@ final class JsmgcalendarsController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Resolve the administrator Google calendar model via Joomla MVC.
+     *
+     * Preserves caller-supplied factory configuration while using
+     * request-independent model loading for the calendar actions.
+     *
+     * @param string $name Requested calendar model name.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Additional Joomla model factory options.
+     * @return mixed Resolved model or the parent's failure result.
+     */
     public function getModel($name = 'Jsmgcalendar', $prefix = 'Administrator', $config = [])
     {
         $config['ignore_request'] = true;
