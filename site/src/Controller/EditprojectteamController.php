@@ -18,16 +18,47 @@ use Joomla\CMS\MVC\Controller\FormController;
 /** Joomla 5/6 frontend controller for project-team editing. */
 final class EditprojectteamController extends FormController
 {
+    /**
+     * Apply project-team changes via the controller's secured save task.
+     *
+     * Reuses save() so Joomla's CSRF token and component ACL checks apply
+     * equally to Apply and Save actions.
+     *
+     * @param string|null $key Optional legacy record key.
+     * @param string|null $urlVar Optional URL record identifier.
+     * @return bool Whether the model update succeeded.
+     */
     public function apply($key = null, $urlVar = null)
     {
         return $this->save($key, $urlVar);
     }
 
+    /**
+     * Retain the legacy project-team submit task without writing records.
+     *
+     * Actual changes must use save(), which validates the form token and
+     * edit authorisation before calling the project-team model.
+     *
+     * @return bool Always true.
+     */
     public function submit()
     {
         return true;
     }
 
+    /**
+     * Save edited project-team values submitted through the frontend form.
+     *
+     * Validates Joomla's form token and the user's component edit rights
+     * before delegating persistence to EditprojectteamModel::updItem().
+     * Keeps the selected IDs in the editor redirect after Apply or errors;
+     * closes the editor popup after an ordinary successful Save.
+     *
+     * @param string|null $key Optional legacy record key.
+     * @param string|null $urlVar Optional legacy URL identifier.
+     * @return bool True on successful persistence, otherwise false.
+     * @throws \RuntimeException When authorisation or model resolution fails.
+     */
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
@@ -68,6 +99,15 @@ final class EditprojectteamController extends FormController
         return true;
     }
 
+    /**
+     * Exit the frontend project-team editing popup without saving.
+     *
+     * Sets the component close-view redirect and preserves legacy
+     * controller expectations by returning true.
+     *
+     * @param string|null $key Optional legacy record identifier.
+     * @return bool Always true.
+     */
     public function cancel($key = null)
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', 'cancel');
@@ -75,7 +115,15 @@ final class EditprojectteamController extends FormController
         return true;
     }
 
-    /** Require component-level ACL for native frontend project-team writes. */
+    /**
+     * Check whether the Joomla identity may edit project-team records.
+     *
+     * Requires core.edit for com_sportsmanagement independently of
+     * successful CSRF verification so unauthorised users cannot write.
+     *
+     * @return void
+     * @throws \RuntimeException When component edit permission is missing.
+     */
     private function assertEditorPermission(): void
     {
         if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
@@ -83,6 +131,15 @@ final class EditprojectteamController extends FormController
         }
     }
 
+    /**
+     * Obtain the native project-team edit model from Joomla's MVC factory.
+     *
+     * Rejects missing or unexpected models before calling updItem(), so
+     * controller write actions operate only on the supported model type.
+     *
+     * @return EditprojectteamModel The validated project-team edit model.
+     * @throws \RuntimeException If the model is unavailable.
+     */
     private function editProjectTeamModel(): EditprojectteamModel
     {
         $model = $this->getModel('Editprojectteam');
