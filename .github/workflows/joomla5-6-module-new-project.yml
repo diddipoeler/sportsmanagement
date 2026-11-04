@@ -120,7 +120,11 @@ jobs:
           grep -q "bootComponent('com_content')" /tmp/new-project-writer.php
           grep -q "createModel('Article', 'Administrator'" /tmp/new-project-writer.php
           grep -q 'model->save' /tmp/new-project-writer.php
-          grep -q "'created_by' => (int) \$identity->id" /tmp/new-project-writer.php
+          # The author is derived from the authenticated Joomla identity,
+          # validated as a positive ID and only then passed to Content MVC.
+          grep -Fq '$authorId = is_object($identity) ? $this->contentCategoryId($identity->id ?? null) : 0;' /tmp/new-project-writer.php
+          grep -Fq 'if ($authorId <= 0' /tmp/new-project-writer.php
+          grep -Fq "'created_by' => \$authorId" /tmp/new-project-writer.php
           grep -q "sportsmanagement-project:" /tmp/new-project-writer.php
 
           if grep -E 'insertObject|#__content_frontpage|triggerEvent|created_by[[:space:]]*=[[:space:]]*62' /tmp/new-project-writer.php; then
