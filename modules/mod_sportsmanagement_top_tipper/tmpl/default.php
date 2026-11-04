@@ -92,10 +92,10 @@ $topTipperHelper = new TopTipperHelper();
                 <label class="form-label" for="top-tipper-from-<?php echo (int) $module->id; ?>">From</label>
                 <select class="form-select form-select-sm" name="from" id="top-tipper-from-<?php echo (int) $module->id; ?>">
                     <?php foreach ($roundOptions as $option) :
-                        $value = (int) strtok((string) ($option->value ?? '0'), ':');
+                        $value = TopTipperHelper::roundOptionId($option->value ?? null);
                         ?>
                         <option value="<?php echo $value; ?>"<?php echo $value === (int) $fromRound ? ' selected' : ''; ?>>
-                            <?php echo htmlspecialchars((string) ($option->text ?? $value), ENT_QUOTES, 'UTF-8'); ?>
+                            <?php echo htmlspecialchars(is_string($option->text ?? null) ? $option->text : (string) $value, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -104,10 +104,10 @@ $topTipperHelper = new TopTipperHelper();
                 <label class="form-label" for="top-tipper-to-<?php echo (int) $module->id; ?>">To</label>
                 <select class="form-select form-select-sm" name="to" id="top-tipper-to-<?php echo (int) $module->id; ?>">
                     <?php foreach ($roundOptions as $option) :
-                        $value = (int) strtok((string) ($option->value ?? '0'), ':');
+                        $value = TopTipperHelper::roundOptionId($option->value ?? null);
                         ?>
                         <option value="<?php echo $value; ?>"<?php echo $value === (int) $toRound ? ' selected' : ''; ?>>
-                            <?php echo htmlspecialchars((string) ($option->text ?? $value), ENT_QUOTES, 'UTF-8'); ?>
+                            <?php echo htmlspecialchars(is_string($option->text ?? null) ? $option->text : (string) $value, ENT_QUOTES, 'UTF-8'); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
