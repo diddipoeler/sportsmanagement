@@ -117,8 +117,10 @@ final class TopTipperHelper
         $rankingData = $rankingModel->getRankingData($rankingConfig, $avatarConfig);
         $rankingData = is_array($rankingData) ? $rankingData : [];
         $rows = is_array($rankingData['allRows'] ?? null) ? $rankingData['allRows'] : [];
-        // Ranking templates expect associative row records, never arbitrary helper values.
-        $rows = array_filter($rows, 'is_array');
+        // Only render ranking rows with a valid member key and member object.
+        // Filter before applying the limit so malformed records cannot consume
+        // display slots intended for valid ranked members.
+        $rows = self::validRankingRows($rows);
         $currentMember = $rankingModel->getPredictionMember();
         $currentMemberId = is_object($currentMember)
             ? $this->extractId($currentMember->id ?? $currentMember->pmID ?? 0)
@@ -285,6 +287,37 @@ final class TopTipperHelper
     }
 
     /**
+     * Read a signed or nonnegative ranking statistic without partial PHP casts.
+     *
+     * Ranking models may return integers or decimal strings from database
+     * drivers. Accepts those formats, including zero-padded strings, while
+     * rejecting arrays, floats, booleans, trailing text and integer overflow.
+     * Negative results are allowed only for signed points and similar scores.
+     *
+     * @param mixed $value Raw ranking statistic.
+     * @param bool $allowNegative Whether negative values are valid.
+     * @return int Safe ranking statistic, or zero when invalid.
+     */
+    public static function rankingInteger(mixed $value, bool $allowNegative = false): int
+    {
+        if (is_int($value)) {
+            return $allowNegative || $value >= 0 ? $value : 0;
+        }
+
+        if (!is_string($value) || strlen($value) > 255
+            || preg_match($allowNegative ? '/^-?[0-9]+$/D' : '/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $negative = str_starts_with($value, '-');
+        $digits = ltrim($negative ? substr($value, 1) : $value, '0');
+        $normalised = ($negative && $digits !== '' ? '-' : '') . ($digits === '' ? '0' : $digits);
+        $number = filter_var($normalised, FILTER_VALIDATE_INT);
+
+        return $number === false ? 0 : $number;
+    }
+
+    /**
      * Build a route to the prediction members page for one league member.
      *
      * @param int $predictionGameId Prediction game identifier.
@@ -381,6 +414,31 @@ final class TopTipperHelper
         $model->setDatabaseSelector($databaseSelector);
 
         return $model;
+    }
+
+    /**
+     * Keep only ranking records that can be rendered as member rows.
+     *
+     * Preserves the ranking order and member IDs while dropping unexpected
+     * scalar records, malformed member keys and rows without a member object.
+     * This runs before slicing to avoid losing valid rows to corrupt entries.
+     *
+     * @param mixed $rows Untrusted ranking collection returned by the model.
+     * @return array<int|string, array<string, mixed>> Displayable member rows.
+     */
+    private static function validRankingRows(mixed $rows): array
+    {
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        return array_filter(
+            $rows,
+            static fn (mixed $row, int|string $key): bool => is_array($row)
+                && is_object($row['member'] ?? null)
+                && self::validMemberId($key) > 0,
+            ARRAY_FILTER_USE_BOTH
+        );
     }
 
     /**
