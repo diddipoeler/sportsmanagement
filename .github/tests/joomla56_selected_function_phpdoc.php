@@ -42,6 +42,7 @@ $paths = [
     'admin/src/Model/DivisionsModel.php',
     'admin/src/Model/SeasonsModel.php',
     'admin/src/Model/ProjectsModel.php',
+    'admin/src/Model/MatchesModel.php',
     'admin/src/Model/TeamsModel.php',
     'admin/src/Model/PlaygroundsModel.php',
     'admin/src/Controller/SeasonsController.php',

@@ -17,6 +17,15 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator list model for matches. */
 final class MatchesModel extends SportsManagementListModel
 {
+    /**
+     * Configure the native administrator match list model and sortable fields.
+     * Registers match date, number, ordering and publication columns
+     * with Joomla's list-model factory while retaining explicitly
+     * provided filter fields in caller configuration.
+     * @param array $config Joomla model configuration options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -29,6 +38,15 @@ final class MatchesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore match-list project, round, team and season context.
+     * Reads administrator request selections or remembered Joomla user
+     * state, resets incompatible round/team selectors, and applies list
+     * filters for the selected match management view.
+     * @param string $ordering Default fixture sort field.
+     * @param string $direction Default ordering direction.
+     * @return void
+     */
     protected function populateState($ordering = 'mc.match_date', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -66,6 +84,13 @@ final class MatchesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the filtered backend list query for fixtures.
+     * Joins match rows with editorial and division information and
+     * restricts results by selected project, round, team and other
+     * administrator filters while applying approved sort columns.
+     * @return \Joomla\Database\DatabaseQuery Joomla match-list query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -241,9 +266,17 @@ final class MatchesModel extends SportsManagementListModel
         return $items;
     }
 
+    /**
+     * Verify or create the image folder for one valid match report.
+     * Validates the numeric fixture ID before building a path beneath
+     * the component media directory and only then ensures the folder
+     * exists for uploaded match photographs.
+     * @param mixed $matchId Match ID or Joomla ID:alias route segment.
+     * @return bool Whether the match-report picture directory is available.
+     */
     public function checkMatchPicturePath($matchId): bool
     {
-        $matchId = (int) $matchId;
+        $matchId = self::strictMatchId($matchId);
         if ($matchId <= 0) {
             return false;
         }
@@ -255,6 +288,14 @@ final class MatchesModel extends SportsManagementListModel
         return is_dir($destination) || @mkdir($destination, 0775, true) || is_dir($destination);
     }
 
+    /**
+     * Count fixtures in a project, optionally for a selected team.
+     * Uses a bound project ID and an optional home/away team filter
+     * to support match totals in administrator project reports.
+     * @param mixed $projectId Project identifier for the fixture count.
+     * @param mixed $projectTeamId Optional project-team relation ID.
+     * @return int Number of matching fixtures.
+     */
     public function getMatchesCount($projectId = 0, $projectTeamId = 0)
     {
         $projectId = (int) $projectId;
@@ -284,6 +325,13 @@ final class MatchesModel extends SportsManagementListModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Return fixtures assigned to the requested round.
+     * Rejects invalid round IDs and queries the match table with an
+     * integer binding, ordering fixtures chronologically.
+     * @param mixed $roundId Requested match round.
+     * @return array<int,object> Fixture records in date order.
+     */
     public function getMatchesByRound($roundId)
     {
         $roundId = (int) $roundId;
@@ -303,6 +351,13 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load the project and sport-type data for match management.
+     * Uses the bound project ID and a left join to sport metadata,
+     * returning null for missing or invalid project selections.
+     * @param int $projectId Project to look up.
+     * @return object|null Project with sport name or null.
+     */
     public function getProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -328,6 +383,13 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load one match round by its numeric identifier.
+     * Rejects nonpositive round IDs and returns a single Joomla
+     * database record if that round exists.
+     * @param int $roundId Requested round identifier.
+     * @return object|null Match round record or null.
+     */
     public function getRound(int $roundId): ?object
     {
         if ($roundId <= 0) {
@@ -345,6 +407,13 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * List the rounds associated with a specific project.
+     * Fetches round names, dates and ordering with a bound project
+     * ID for the administrator match-round selectors.
+     * @param int $projectId Project whose rounds are needed.
+     * @return array<int,object> Sorted project rounds.
+     */
     public function getRounds(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -370,6 +439,14 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build match-editor team selector options scoped to a project.
+     * Joins project-team and season-team records to team names and
+     * optionally filters by division for the selected project.
+     * @param int $projectId Project owning the teams.
+     * @param int $divisionId Optional division restriction.
+     * @return array<int,object> Project team value/text options.
+     */
     public function getProjectTeamOptions(int $projectId, int $divisionId = 0): array
     {
         if ($projectId <= 0) {
@@ -407,6 +484,13 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List divisions represented by teams in the current project.
+     * Uses a project-scoped join and grouping so each available
+     * division appears once in the administrator fixture filters.
+     * @param int $projectId Project whose divisions are requested.
+     * @return array<int,object> Division value/text options.
+     */
     public function getDivisionOptions(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -434,6 +518,13 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Resolve available venues for a selection of project teams.
+     * Collects project-team IDs, joins related playground records and
+     * returns display names and pictures suitable for a match editor.
+     * @param array<int,object> $projectTeams Selected project-team options.
+     * @return array<int,object> Venue selection records.
+     */
     public function getPlaygroundOptions(array $projectTeams): array
     {
         $ids = [];
@@ -491,11 +582,23 @@ final class MatchesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Discover the physical match-table columns used by the editor.
+     * Asks Joomla's database driver for the match schema instead
+     * of relying on a deprecated table introspection helper.
+     * @return array<string,mixed> Match table column metadata.
+     */
     public function getMatchTableColumns(): array
     {
         return $this->getDatabase()->getTableColumns('#__sportsmanagement_match', false) ?: [];
     }
 
+    /**
+     * Expose the active match administration routing parameters.
+     * Returns remembered project, round, team and season identifiers
+     * so list and edit actions can preserve their selection context.
+     * @return array<string,int> Current administrator match context.
+     */
     public function getContextParams(): array
     {
         return [
@@ -506,6 +609,48 @@ final class MatchesModel extends SportsManagementListModel
         ];
     }
 
+    /**
+     * Parse a positive fixture ID without partial integer conversion.
+     * Accepts decimal IDs and standard Joomla ID:alias slugs, rejecting
+     * booleans, arrays, negative values, malformed slugs and overflow.
+     * @param mixed $value Raw match identifier.
+     * @return int Valid positive match ID or zero.
+     */
+    private static function strictMatchId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+        if (!preg_match('/^([0-9]+)(?::[^:\s,;]+)?$/D', $raw, $matches)) {
+            return 0;
+        }
+
+        $digits = ltrim($matches[1], '0');
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Count selected roster records associated with a fixture and team.
+     * Joins match-player or match-staff rows to season-team relations,
+     * filters by match, project team and season, and respects the
+     * requested person category and player-only setting.
+     * @param string $matchTable Trusted match-player or match-staff table.
+     * @param string $relationField Trusted roster relation column.
+     * @param int $matchId Fixture ID to count.
+     * @param int $projectTeamId Selected project-team relation.
+     * @param int $seasonId Current competition season.
+     * @param int $personType Roster person category.
+     * @param bool $playersOnly Whether to limit to player entries.
+     * @return int Number of matching roster records.
+     */
     private function countRosterRows(
         string $matchTable,
         string $relationField,
