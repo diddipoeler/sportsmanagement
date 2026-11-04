@@ -50,6 +50,7 @@ $paths = [
     'admin/src/Model/TeamsModel.php',
     'admin/src/Model/PlaygroundsModel.php',
     'admin/src/Model/SportstypesModel.php',
+    'admin/src/Model/RoundsModel.php',
     'modules/mod_sportsmanagement_matchesslider/src/Helper/MatchesSliderHelper.php',
     'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php',
     'admin/src/Controller/SeasonsController.php',

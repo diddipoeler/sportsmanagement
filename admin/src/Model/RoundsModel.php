@@ -24,6 +24,14 @@ final class RoundsModel extends SportsManagementListModel
 {
     public static int $_project_id = 0;
 
+    /**
+     * Initialise the Joomla administrator round list and selected project.
+     * Registers supported round sort fields, calls the native list model
+     * and restores the project ID from Joomla input or administrator state.
+     * @param array $config Native list-model configuration.
+     * @param MVCFactoryInterface|null $factory Joomla MVC factory instance.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -51,6 +59,14 @@ final class RoundsModel extends SportsManagementListModel
         $app->setUserState('com_sportsmanagement.pid', self::$_project_id);
     }
 
+    /**
+     * Return the first round available for a competition project.
+     * Uses the selected SportsManagement database and ordered round
+     * navigation records, returning false if none are available.
+     * @param mixed $projectid Competition project identifier.
+     * @param mixed $cfg_which_database Database selection for round records.
+     * @return mixed First round navigation row or false.
+     */
     public static function getFirstRound($projectid, $cfg_which_database = 0)
     {
         $rows = self::getNavigationRounds((int) $projectid, (int) $cfg_which_database);
@@ -58,6 +74,14 @@ final class RoundsModel extends SportsManagementListModel
         return $rows[0] ?? false;
     }
 
+    /**
+     * Return the final round in the project's navigation sequence.
+     * Queries the ordered project rounds and selects the final row
+     * without relying on a fixed number of rounds.
+     * @param mixed $projectid Project whose last round is requested.
+     * @param mixed $cfg_which_database Configured database selector.
+     * @return mixed Final round navigation record or false.
+     */
     public static function getLastRound($projectid, $cfg_which_database = 0)
     {
         $rows = self::getNavigationRounds((int) $projectid, (int) $cfg_which_database);
@@ -65,6 +89,15 @@ final class RoundsModel extends SportsManagementListModel
         return $rows ? $rows[array_key_last($rows)] : false;
     }
 
+    /**
+     * Find the preceding round for a selected competition round.
+     * Locates the numeric or Joomla ID:alias round entry and moves
+     * one position backward, clamping to the first record.
+     * @param mixed $roundid Current round identifier or slug.
+     * @param mixed $projectid Project whose rounds are navigated.
+     * @param mixed $cfg_which_database Selected SportsManagement database.
+     * @return mixed Previous round navigation record or false.
+     */
     public static function getPreviousRound($roundid, $projectid, $cfg_which_database = 0)
     {
         $rows = self::getNavigationRounds((int) $projectid, (int) $cfg_which_database);
@@ -77,6 +110,15 @@ final class RoundsModel extends SportsManagementListModel
         return $rows[max(0, $index - 1)] ?? false;
     }
 
+    /**
+     * Find the following round in the current project.
+     * Resolves the supplied numeric or Joomla slug identifier against
+     * the sorted rounds and clamps navigation at the last round.
+     * @param mixed $roundid Current round ID or Joomla ID:alias.
+     * @param mixed $projectid Competition project identifier.
+     * @param mixed $cfg_which_database Selected database configuration.
+     * @return mixed Next round navigation record or false.
+     */
     public static function getNextRound($roundid, $projectid, $cfg_which_database = 0)
     {
         $rows = self::getNavigationRounds((int) $projectid, (int) $cfg_which_database);
@@ -89,6 +131,13 @@ final class RoundsModel extends SportsManagementListModel
         return $rows[min(count($rows) - 1, $index + 1)] ?? false;
     }
 
+    /**
+     * Count all rounds assigned to a selected project.
+     * Uses the project identifier as a bound integer parameter and
+     * reports database errors through Joomla's administrator messages.
+     * @param mixed $project_id Selected project ID.
+     * @return int Number of project rounds or zero on failure.
+     */
     public function getRoundsCount($project_id): int
     {
         $projectId = (int) $project_id;
@@ -115,6 +164,13 @@ final class RoundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Return ordered round identifiers for a selected project.
+     * Queries the project's rounds using a bound ID and sorts by
+     * roundcode and identifier for consistent scheduling.
+     * @param mixed $project_id Project owning the rounds.
+     * @return array<int> Sorted round IDs.
+     */
     public function getRoundsIds($project_id): array
     {
         $projectId = (int) $project_id;
@@ -143,6 +199,13 @@ final class RoundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Find the project round relevant to the current UTC date.
+     * Uses Joomla Date, the project round start/end fields and
+     * a bound project ID to locate the next scheduled round.
+     * @param mixed $projectid Project to inspect for upcoming rounds.
+     * @return array Matching round information or an empty array.
+     */
     public function getNextRoundByToday($projectid): array
     {
         $projectId = (int) $projectid;
@@ -317,6 +380,15 @@ final class RoundsModel extends SportsManagementListModel
         return true;
     }
 
+    /**
+     * Build selectable round options for the given project and database.
+     * Applies the project ID as a bound SQL parameter and accepts only
+     * ASC/DESC ordering to produce legacy round selection records.
+     * @param mixed $project_id Project identifier.
+     * @param mixed $ordering Requested sort direction.
+     * @param mixed $cfg_which_database SportsManagement database selector.
+     * @return mixed Project round dropdown options.
+     */
     public static function getRoundsOptions($project_id, $ordering = 'ASC', $cfg_which_database = 0)
     {
         $projectId = (int) $project_id;
@@ -476,6 +548,14 @@ final class RoundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Restore the administrator round-list filters and project context.
+     * Reads project selection from Joomla input/user state, sets
+     * search, publication and tournament state, and prepares sorting.
+     * @param string $ordering Default roundcode ordering.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'r.roundcode', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -509,6 +589,12 @@ final class RoundsModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the filtered administrator round list for a project.
+     * Loads project and season context, joins scheduled round metadata
+     * and applies safe sort and publication filtering to the list query.
+     * @return \Joomla\Database\DatabaseQuery Native rounds-list SQL query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -608,6 +694,13 @@ final class RoundsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Include project and list filters in the Joomla list-cache key.
+     * Prevents stale round lists from being reused across projects,
+     * search results, tournaments or publication states.
+     * @param string $id Base Joomla store identifier.
+     * @return string Project and filter specific cache key.
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . self::$_project_id;
@@ -618,6 +711,15 @@ final class RoundsModel extends SportsManagementListModel
         return parent::getStoreId($id);
     }
 
+    /**
+     * Load ordered navigation records for a competition project.
+     * Queries round IDs, aliases and round codes from the chosen
+     * SportsManagement connection and constructs Joomla ID:alias
+     * navigation slugs; database failures are reported to administrators.
+     * @param int $projectId Competition project identifier.
+     * @param int $databaseConfig Database connection selector.
+     * @return array<int,array<string,mixed>> Ordered round navigation rows.
+     */
     private static function getNavigationRounds(int $projectId, int $databaseConfig): array
     {
         if ($projectId <= 0) {
@@ -654,10 +756,37 @@ final class RoundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Locate a round within an ordered navigation collection.
+     * Accepts only positive numeric IDs or Joomla ID:alias slugs,
+     * rejecting partially numeric and oversized values before
+     * comparing the result to project round records.
+     * @param array<int,array<string,mixed>> $rows Ordered round navigation rows.
+     * @param mixed $roundId Raw round identifier or Joomla slug.
+     * @return int|null Matching list index or null.
+     */
     private static function findRoundIndex(array $rows, $roundId): ?int
     {
-        $needle = (string) $roundId;
-        $numericNeedle = (int) explode(':', $needle, 2)[0];
+        if (!is_int($roundId) && !is_string($roundId)) {
+            return null;
+        }
+
+        $needle = trim((string) $roundId);
+
+        if (!preg_match('/^([0-9]+)(?::[^:\\s,;]+)?$/D', $needle, $matches)) {
+            return null;
+        }
+
+        $digits = ltrim($matches[1], '0');
+        $numericNeedle = $digits === '' ? false : filter_var(
+            $digits,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]]
+        );
+
+        if ($numericNeedle === false) {
+            return null;
+        }
 
         foreach ($rows as $index => $row) {
             if ((string) ($row['id'] ?? '') === $needle || (int) ($row['round_id'] ?? 0) === $numericNeedle) {
@@ -668,10 +797,24 @@ final class RoundsModel extends SportsManagementListModel
         return null;
     }
 
+    /**
+     * Resolve the database configured for administrator round navigation.
+     * Delegates database selection to the component's administrator
+     * database resolver, preserving the legacy external DB choice.
+     * @param int $databaseConfig Primary or external database selection.
+     * @return DatabaseInterface Effective SportsManagement database.
+     */
     private static function resolveSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve($databaseConfig);
     }
+    /**
+     * Load and validate the Joomla administrator application service.
+     * Retrieves AdministratorApplication through Joomla's container
+     * and rejects a mismatched application client.
+     * @return AdministratorApplication Current administrator application.
+     * @throws \RuntimeException If the service is not the administrator client.
+     */
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
