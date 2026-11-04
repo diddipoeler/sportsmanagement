@@ -17,6 +17,17 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native Joomla 5/6 OAuth/import controller for Google calendars. */
 final class JsmgcalendarimportController extends BaseController
 {
+    /**
+     * Import a Google calendar or complete its OAuth callback.
+     *
+     * Distinguishes the OAuth return from a normal administrator form,
+     * validates the Joomla token for normal submissions, and requires
+     * component administrator access on both paths. Delegates to the
+     * native model and redirects with translated feedback.
+     *
+     * @return void
+     * @throws \RuntimeException If administrator permission is missing.
+     */
     public function import(): void
     {
         $input = $this->app->getInput();
