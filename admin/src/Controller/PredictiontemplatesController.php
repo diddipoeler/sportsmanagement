@@ -1,13 +1,31 @@
-<?php    /**
-     * Create a local prediction-template override from a master template.
-     *
-     * Validates the Joomla form token, reads integer-filtered prediction
-     * and template IDs, then delegates creation to PredictiontemplatesModel.
-     * Afterwards redirects back to the selected prediction templates view
-     * with the success or failure message.
-     *
-     * @return void
-     * @throws \RuntimeException If Joomla form token validation fails.
+<?php
+/**
+ * Joomla 5/6 SportsManagement administrator controller.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
+
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiontemplatesModel;
+use Joomla\CMS\Language\Text;
+
+/**
+ * Native Joomla 5/6 list controller for prediction templates.
+ */
+final class PredictiontemplatesController extends SportsManagementAdminController
+{
+    public function getModel($name = 'Predictiontemplate', $prefix = 'Administrator', $config = [])
+    {
+        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+    }
+
+    /**
+     * Create one local prediction-template override from the configured master game.
      */
     public function createOverride(): void
     {
