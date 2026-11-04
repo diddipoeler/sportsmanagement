@@ -19,6 +19,14 @@ use Joomla\CMS\Session\Session;
 
 final class PredictionrankingController extends BaseController
 {
+    /**
+     * Apply a prediction ranking project/round selection and redirect.
+     * Requires a valid Joomla POST token, loads the native ranking model
+     * and preserves game, project, group, round, ranking options and
+     * the selected SportsManagement database in the destination URL.
+     * @return void
+     * @throws \RuntimeException If CSRF validation or model resolution fails.
+     */
     public function selectprojectround(): void
     {
         if (!Session::checkToken('post')) {

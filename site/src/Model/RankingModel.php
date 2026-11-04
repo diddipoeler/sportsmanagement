@@ -26,6 +26,14 @@ use Throwable;
  */
 final class RankingModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise the native ranking model's project and list state.
+     * Passes configuration and Joomla MVC factory to its parent and
+     * prepares model-specific state used for league ranking queries.
+     * @param array $config Joomla MVC model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -300,6 +308,13 @@ final class RankingModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Retrieve project teams indexed for ranking and division lookups.
+     * Loads team records from the selected project and optionally filters
+     * them by division so league-table calculations can use stable IDs.
+     * @param int $divisionId Optional division identifier for filtering.
+     * @return array Project team records indexed for ranking calculations.
+     */
     public function getProjectTeamsIndexed(int $divisionId = 0): array
     {
         $teams = [];
@@ -312,6 +327,14 @@ final class RankingModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Retrieve the historical club logo for a team and season.
+     * Uses the requested season/team identifiers to load matching
+     * logo history records for the ranking and team presentation.
+     * @param int $seasonId Season whose logo history is requested.
+     * @param int $teamId Team whose historical logo is needed.
+     * @return array Matching historical logo records.
+     */
     public function getLogoHistory(int $seasonId, int $teamId): array
     {
         if ($seasonId <= 0 || $teamId <= 0) {
@@ -374,6 +397,13 @@ final class RankingModel extends SportsManagementProjectModel
         return $colors;
     }
 
+    /**
+     * Resolve a ranking round identifier to its database record.
+     * Accepts the selected round within the model's project context
+     * and returns null when no matching round can be loaded.
+     * @param int $roundId Requested ranking round ID.
+     * @return object|null Resolved round record, or null if unavailable.
+     */
     private function resolveRound(int $roundId): ?object
     {
         if ($roundId <= 0) {
@@ -436,6 +466,13 @@ final class RankingModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Log a ranking database failure without exposing SQL details.
+     * Records the exception for administrators and provides a safe
+     * user-facing error path for failed frontend ranking queries.
+     * @param \Throwable $e Database exception to record.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(
