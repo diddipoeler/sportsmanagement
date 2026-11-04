@@ -56,8 +56,9 @@ jobs:
           grep -F 'is_file($nativeField)' admin/models/fields/federationslist.php
           grep -F 'SportsManagement native Federationslist field could not be loaded.' admin/models/fields/federationslist.php
           grep -F "class_alias(FederationslistField::class, 'JFormFieldFederationsList')" admin/models/fields/federationslist.php
-          grep -F 'is_file($nativeHelper)' modules/mod_sportsmanagement_count_rekord/helper.php
-          grep -F 'SportsManagement CountRekord helper could not be loaded.' modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -F "CountRekordHelper::class => __DIR__ . '/src/Helper/CountRekordHelper.php'" modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -F 'is_file($file)' modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -F 'SportsManagement CountRekord dependency could not be loaded:' modules/mod_sportsmanagement_count_rekord/helper.php
       - name: Reject stale metadata
         run: |
           ! grep -R '@version[[:space:]]\+4\.24' \

@@ -43,6 +43,16 @@ foreach ([
 if (!class_exists('modJSMStatistikRekordHelper', false)) {
     final class modJSMStatistikRekordHelper
     {
+        /**
+         * Provide the legacy CountRekord module API over the native helper.
+         * Converts old module parameters to Joomla Registry, requires the
+         * frontend application and forwards the effective database connection
+         * to the namespaced Joomla 5/6 CountRekordHelper.
+         * @param mixed $params Joomla Registry or legacy configuration.
+         * @param mixed $module Current Joomla module record.
+         * @param DatabaseInterface|null $database Optional injected connection.
+         * @return array Statistics and display data for the module.
+         */
         public static function getData($params, $module, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -57,11 +67,24 @@ if (!class_exists('modJSMStatistikRekordHelper', false)) {
             return (new CountRekordHelper())->getData($registry, $module, $database);
         }
 
+        /**
+         * Retrieve the current Joomla site application for the module bridge.
+         * Delegates resolution to the component's native application
+         * service to avoid deprecated static Joomla application calls.
+         * @return CMSApplicationInterface Active site application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             return SportsManagementSiteApplicationResolver::resolve();
         }
 
+        /**
+         * Resolve the Joomla-managed database used by the legacy module.
+         * Loads DatabaseInterface through Joomla's service container and
+         * fails explicitly when the service has the wrong type.
+         * @return DatabaseInterface Active Joomla database connection.
+         * @throws \RuntimeException If no valid database service exists.
+         */
         private static function joomlaDatabase(): DatabaseInterface
         {
             $database = Factory::getContainer()->get(DatabaseInterface::class);

@@ -9,11 +9,28 @@
  */
 declare(strict_types=1);
 
+namespace Joomla\CMS\Language {
+    final class Text
+    {
+        /**
+         * Return a language key without a Joomla runtime in this unit test.
+         *
+         * @param string $key Joomla translation identifier.
+         * @return string The untranslated identifier.
+         */
+        public static function _(string $key): string
+        {
+            return $key;
+        }
+    }
+}
+
 namespace Joomla\CMS\MVC\Controller {
     class BaseController
     {
         protected $app;
         public mixed $testModel = false;
+        public array $lastModelConfig = [];
         public array $redirect = [];
         public bool $validToken = true;
         public int $tokenChecks = 0;
@@ -34,6 +51,8 @@ namespace Joomla\CMS\MVC\Controller {
 
         public function getModel($name = '', $prefix = '', $config = [])
         {
+            $this->lastModelConfig = $config;
+
             return $this->testModel;
         }
 
@@ -53,9 +72,14 @@ namespace {
     final class ToolApp
     {
         public bool $adminAllowed = true;
+        public bool $missingIdentity = false;
 
-        public function getIdentity(): object
+        public function getIdentity(): ?object
         {
+            if ($this->missingIdentity) {
+                return null;
+            }
+
             return new class($this) {
                 public function __construct(private ToolApp $application) {}
 
@@ -79,6 +103,17 @@ namespace {
     $app = new ToolApp();
     $controller = new DatabasetoolController([], null, $app);
 
+    $controller->getModel('Databasetool', 'Administrator', [
+        'ignore_request' => false,
+        'custom_flag' => ['preserved' => true],
+    ]);
+    if ($controller->lastModelConfig !== [
+        'ignore_request' => true,
+        'custom_flag' => ['preserved' => true],
+    ]) {
+        throw new \RuntimeException('Database tool model dropped caller options or allowed request state.');
+    }
+
     $controller->updatetemplatemasters();
     ensure(($controller->redirect['type'] ?? '') === 'warning',
         'Unimplemented template-master maintenance must not report success.');
@@ -97,6 +132,11 @@ namespace {
             return $table !== $this->failedTable;
         }
     };
+    $controller->testModel = null;
+    $controller->repair();
+    ensure(($controller->redirect['type'] ?? '') === 'error',
+        'Missing database-tool models must be rejected without fatal errors.');
+
     $controller->testModel = $model;
 
     foreach (['repair', 'optimize', 'truncate', 'truncatejl'] as $task) {
@@ -134,6 +174,15 @@ namespace {
     ensure($model->actions === [], 'Unauthorized truncation must not issue SQL actions.');
 
     $app->adminAllowed = true;
+    $app->missingIdentity = true;
+    try {
+        $controller->truncate();
+        throw new \RuntimeException('Missing administrator identity was accepted.');
+    } catch (\RuntimeException $e) {
+        ensure($e->getCode() === 403, 'Missing Joomla identity must fail with 403.');
+    }
+    $app->missingIdentity = false;
+    ensure($model->actions === [], 'Missing identity must not issue SQL actions.');
     $controller->validToken = false;
     try {
         $controller->truncate();

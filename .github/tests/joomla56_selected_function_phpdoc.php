@@ -38,6 +38,8 @@ $paths = [
     'admin/src/Controller/SeasonsController.php',
     'admin/src/Controller/DivisionsController.php',
     'admin/src/Controller/LeaguesController.php',
+    'admin/src/Controller/DatabasetoolController.php',
+    'modules/mod_sportsmanagement_count_rekord/helper.php',
     'admin/src/Model/ClubnamesModel.php',
     'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php',
     'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php',
