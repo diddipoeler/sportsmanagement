@@ -18,6 +18,16 @@ use Joomla\CMS\Language\Text;
  */
 final class ProjectpositionsController extends SportsManagementAdminController
 {
+    /**
+     * Save project-position assignments submitted by an administrator.
+     *
+     * Checks Joomla's form token and component edit access, reads the
+     * posted assignment data, passes it to the native position model and
+     * closes the editing popup with translated success or error feedback.
+     *
+     * @return void
+     * @throws \RuntimeException For denied access or missing model.
+     */
     public function store(): void
     {
         $this->checkToken();
@@ -39,6 +49,17 @@ final class ProjectpositionsController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Resolve an administrator project-position model through Joomla MVC.
+     *
+     * Uses request-independent loading and preserves the model name,
+     * namespace and additional options supplied by the caller.
+     *
+     * @param string $name Requested position model.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Additional model factory options.
+     * @return mixed Resolved MVC model or the parent's failure result.
+     */
     public function getModel($name = 'Projectposition', $prefix = 'Administrator', $config = [])
     {
         $config['ignore_request'] = true;
