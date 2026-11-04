@@ -201,4 +201,27 @@ if (count($roundOptions) !== 2
     exit(1);
 }
 
+$validProjectOptions = new ReflectionMethod($class, 'validProjectOptions');
+$originalProject = (object) ['project_id' => '0007:team-a', 'projectName' => 'Junior League'];
+$invalidNameProject = (object) ['project_id' => '8', 'projectName' => ['invalid']];
+$cleanProjects = $validProjectOptions->invoke(null, [
+    $originalProject,
+    (object) ['project_id' => 7, 'projectName' => 'Duplicate'],
+    (object) ['project_id' => '9garbage', 'projectName' => 'Invalid'],
+    $invalidNameProject,
+    (object) ['project_id' => ['10'], 'projectName' => 'Invalid'],
+    'bad',
+]);
+if (count($cleanProjects) !== 2
+    || $cleanProjects[0]->project_id !== 7
+    || $cleanProjects[0]->projectName !== 'Junior League'
+    || $cleanProjects[1]->project_id !== 8
+    || $cleanProjects[1]->projectName !== '8'
+    || $originalProject->project_id !== '0007:team-a'
+    || $cleanProjects[0] === $originalProject
+    || $validProjectOptions->invoke(null, new stdClass()) !== []) {
+    fwrite(STDERR, 'Top Tipper project selector sanitisation regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Top Tipper input checks passed.\n";
