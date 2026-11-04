@@ -13,6 +13,20 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
     class SportsManagementAdminController
     {
         public array $lastConfig = [];
+        public bool $modelUnavailable = false;
+
+        /**
+         * Simulate the parent controller's authorization guard for test calls.
+         *
+         * The isolated test focuses on model resolution, so no full Joomla
+         * user/session container is required to reach that code path.
+         *
+         * @param string $permission Requested Joomla component action.
+         * @return void
+         */
+        protected function assertWritePermission(string $permission = 'core.edit'): void
+        {
+        }
 
         /**
          * Capture the options passed to the Joomla MVC model factory.
@@ -29,7 +43,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
         {
             $this->lastConfig = $config;
 
-            return (object) ['name' => $name, 'prefix' => $prefix];
+            return $this->modelUnavailable ? null : (object) ['name' => $name, 'prefix' => $prefix];
         }
     }
 }
@@ -60,5 +74,23 @@ namespace {
         throw new \RuntimeException('Agegroups default model must ignore request state.');
     }
 
-    echo "Administrator Agegroups MVC options OK\n";
+    $controller->modelUnavailable = true;
+
+    foreach (['saveshort', 'import'] as $operation) {
+        try {
+            $controller->{$operation}();
+        } catch (\RuntimeException $error) {
+            if ($error->getCode() === 500
+                && str_contains($error->getMessage(), 'age-group')
+                && str_contains($error->getMessage(), 'model could not be loaded')) {
+                continue;
+            }
+
+            throw $error;
+        }
+
+        throw new \RuntimeException('Missing age-group model was not rejected for ' . $operation);
+    }
+
+    echo "Administrator Agegroups MVC options and missing-model guards OK\n";
 }

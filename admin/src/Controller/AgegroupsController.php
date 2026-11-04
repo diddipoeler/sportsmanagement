@@ -22,12 +22,21 @@ class AgegroupsController extends SportsManagementAdminController
 {
     /**
      * Save the short values of the selected age groups.
+     *
+     * Checks the administrator's write permission, requires a valid MVC
+     * model with the inline-save operation, and redirects with a status
+     * message rather than dereferencing a missing legacy model.
      */
     public function saveshort(): void
     {
         $this->assertWritePermission();
 
         $model = $this->getModel();
+
+        if (!is_object($model) || !method_exists($model, 'saveshort')) {
+            throw new \RuntimeException('SportsManagement age-group model could not be loaded.', 500);
+        }
+
         $message = $model->saveshort();
 
         $this->setRedirect(
@@ -39,12 +48,20 @@ class AgegroupsController extends SportsManagementAdminController
 
     /**
      * Import an age-group file through the existing model implementation.
+     *
+     * Requires category creation permission and a valid native import
+     * model before delegating the import and redirecting to the list view.
      */
     public function import(): void
     {
         $this->assertWritePermission('core.create');
 
         $model = $this->getModel();
+
+        if (!is_object($model) || !method_exists($model, 'importAgeGroupFile')) {
+            throw new \RuntimeException('SportsManagement age-group import model could not be loaded.', 500);
+        }
+
         $message = $model->importAgeGroupFile();
 
         $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups', $message);
