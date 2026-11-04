@@ -20,6 +20,16 @@ use Joomla\CMS\Session\Session;
  */
 final class TeamtrainingsdatasController extends SportsManagementAdminController
 {
+    /**
+     * Save modified team-training ordering through the historic task name.
+     *
+     * Rejects an invalid Joomla session token, compares the posted order
+     * against its original values and delegates changed lists to the native
+     * parent ordering operation. Otherwise returns to the teams view.
+     *
+     * @return mixed Parent save result, or true for unchanged order.
+     * @throws \RuntimeException When the session token is invalid.
+     */
     public function saveorder()
     {
         if (!Session::checkToken()) {
@@ -43,6 +53,18 @@ final class TeamtrainingsdatasController extends SportsManagementAdminController
         return true;
     }
 
+    /**
+     * Resolve training data models for legacy task and model aliases.
+     *
+     * Maps the old teamtrainingsdata singular and plural model names to
+     * Trainingdata and uses request-independent model loading while
+     * retaining the remaining Joomla MVC factory settings.
+     *
+     * @param string $name Native or historical training model name.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Additional factory configuration.
+     * @return mixed Native training model or parent failure result.
+     */
     public function getModel($name = 'Trainingdata', $prefix = 'Administrator', $config = [])
     {
         $normalisedName = strtolower((string) $name);
