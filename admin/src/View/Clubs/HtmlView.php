@@ -29,6 +29,12 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /** Native Joomla 5/6 clubs list view. */
 final class HtmlView extends BaseHtmlView
 {
+    /**
+     * Resolve the native Joomla administrator application for the club view.
+     * Uses the component application service instead of obsolete
+     * static application factories when creating dependent MVC models.
+     * @return CMSApplicationInterface Active Joomla administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
@@ -44,6 +50,14 @@ final class HtmlView extends BaseHtmlView
     public $modelclub = null;
     public ?ClubTable $table = null;
 
+    /**
+     * Render the native club list using Joomla's MVC view API.
+     * Loads the ClubsModel, pagination and state, verifies model errors,
+     * initialises dependent club/season/association models, and prepares
+     * the toolbar and filters before delegating to parent display().
+     * @param mixed $tpl Optional Joomla layout override.
+     * @return mixed Result returned by Joomla's base HTML view.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -70,6 +84,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Prepare the season, nation and association filter widgets.
+     * Creates selector options via namespaced Joomla MVC models, keeps
+     * the current list-state choices and returns HTML controls used by
+     * the frontend-compatible administrator template.
+     * @param mixed $factory Active Joomla MVCFactory.
+     * @param ClubsModel $model Club list model supplying filters and database.
+     * @return array<string,mixed> Prepared filter widget collection.
+     */
     private function buildFilterLists($factory, ClubsModel $model): array
     {
         $lists = [];
@@ -130,6 +153,12 @@ final class HtmlView extends BaseHtmlView
         return $lists;
     }
 
+    /**
+     * Build the administrator toolbar for club management.
+     * Adds list title and inline-save, create, edit, import and export
+     * actions using native Joomla ToolbarHelper commands.
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE'), 'users');

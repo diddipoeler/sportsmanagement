@@ -50,11 +50,12 @@ jobs:
           model=admin/src/Model/ClubModel.php
           table=admin/src/Table/ClubTable.php
           bridge=admin/tables/club.php
-          view=admin/views/clubs/view.html.php
+          view=admin/src/View/Clubs/HtmlView.php
+          legacyview=admin/views/clubs/view.html.php
           extrahelper=admin/src/Helper/ExtraFieldsSaveHelper.php
           datehelper=admin/src/Helper/SportsManagementDateHelper.php
           locationhelper=admin/src/Helper/LocationHelper.php
-          files=("$controller" "$model" "$table" "$bridge" "$view" "$extrahelper" "$datehelper" "$locationhelper")
+          files=("$controller" "$model" "$table" "$bridge" "$view" "$legacyview" "$extrahelper" "$datehelper" "$locationhelper")
 
           for file in "${files[@]}"; do
             test -f "$file"
@@ -102,7 +103,8 @@ jobs:
           grep -Fq "createModel('Club', 'Administrator')" "$view"
           grep -Fq "createModel('Seasons', 'Administrator')" "$view"
           grep -Fq "createModel('Jlextassociations', 'Administrator')" "$view"
-          grep -Fq 'new ClubTable($this->model->getDatabase())' "$view"
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewClubs')" "$legacyview"
+          grep -Fq 'new ClubTable($model->getSportsManagementDatabase())' "$view"
           grep -Fq "HTMLHelper::_('select.genericlist'" "$view"
 
           if grep -E -- 'Joomla\\CMS\\Filesystem\\|mkdir\(|file_put_contents\(' "$model"; then
