@@ -19,13 +19,30 @@ use Joomla\CMS\Language\Text;
  */
 final class PredictiontemplatesController extends SportsManagementAdminController
 {
+    /**
+     * Retrieve an administrator prediction-template model using Joomla MVC.
+     *
+     * Defaults to request-independent model loading while retaining other
+     * configuration options supplied by the caller.
+     *
+     * @param string $name Requested model name.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Additional model factory options.
+     * @return mixed Joomla model or parent failure result.
+     */
     public function getModel($name = 'Predictiontemplate', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
     }
 
     /**
-     * Create one local prediction-template override from the configured master game.
+     * Create an override from the master prediction game's template.
+     *
+     * Verifies the submitted Joomla form token, obtains filtered prediction
+     * and template identifiers, and delegates creation to the native model.
+     * Redirects back to the selected prediction game with result feedback.
+     *
+     * @return void
      */
     public function createOverride(): void
     {
