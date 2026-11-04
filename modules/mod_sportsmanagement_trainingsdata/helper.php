@@ -42,6 +42,18 @@ foreach ([
 if (!class_exists('modJSMTrainingsData', false)) {
     final class modJSMTrainingsData
     {
+        /**
+         * Retrieve the training session rows for legacy module callers.
+         *
+         * Normalises module settings into Joomla Registry, checks that the
+         * active application is the public site, resolves a database service
+         * and delegates the query to the native TrainingsDataHelper.
+         *
+         * @param Registry|array $params Module parameters.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Training records prepared for the module template.
+         * @throws \RuntimeException For an invalid client or database.
+         */
         public static function getData($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -56,19 +68,41 @@ if (!class_exists('modJSMTrainingsData', false)) {
             return (new TrainingsDataHelper())->getData($registry, $database);
         }
 
+        /**
+         * Resolve the Joomla application for the training-data adapter.
+         *
+         * Returns the central SportsManagement site application resolver's
+         * result, which the caller verifies is the public site client.
+         *
+         * @return CMSApplicationInterface Current Joomla application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             return SportsManagementSiteApplicationResolver::resolve();
         }
 
+        /**
+         * Retrieve a valid Joomla database service for training queries.
+         *
+         * Uses the caller-supplied service when available; otherwise obtains
+         * DatabaseInterface from Joomla's dependency injection container
+         * and rejects an unexpected service before returning it.
+         *
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return DatabaseInterface Validated Joomla database service.
+         * @throws \RuntimeException If the container service is unavailable.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement TrainingsData database service is unavailable.', 500);
+            }
 
             return $database;
         }
