@@ -1,0 +1,35 @@
+name: Joomla 5/6 prediction member selection validation
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/PredictionuserModel.php'
+      - '.github/tests/joomla56_predictionuser_selection_map.php'
+      - '.github/workflows/joomla5-6-predictionuser-selections.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  member-selections:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint prediction model and regression
+        run: |
+          php -l site/src/Model/PredictionuserModel.php
+          php -l .github/tests/joomla56_predictionuser_selection_map.php
+      - name: Reject partial and overflowing prediction member IDs
+        run: php .github/tests/joomla56_predictionuser_selection_map.php

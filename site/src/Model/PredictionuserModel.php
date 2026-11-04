@@ -17,17 +17,37 @@ use Joomla\Database\ParameterType;
 
 class PredictionuserModel extends SportsManagementPredictionReadModel
 {
+    /**
+     * Return the prediction-game member currently selected for editing.
+     * Delegates membership lookup to the native prediction read model,
+     * preserving its selected game and member context for the controller.
+     * @return object Current prediction-member record.
+     */
     public function getEditableMember(): object
     {
         return $this->getPredictionMember();
     }
 
+    /**
+     * Extract the validated numeric identifier of the selected member.
+     * Normalises legacy ID:alias member links and rejects invalid or
+     * oversized identifiers before they are reused in site routes.
+     * @return int Positive member ID, or zero when invalid.
+     */
     public function getSelectedMemberNumericId(): int
     {
         $member = $this->getEditableMember();
         return $this->memberId($member->pmID ?? $member->id ?? 0);
     }
 
+    /**
+     * Check ownership or administrator permission for a prediction member.
+     * Rejects missing membership, invalid prediction games and anonymous Joomla
+     * identities; grants access only to the owning user or an allowed
+     * prediction administrator.
+     * @param object|null $member Member to check, or current selection.
+     * @return bool True if the active user can edit this member.
+     */
     public function canEditMember(?object $member = null): bool
     {
         $member ??= $this->getEditableMember();
@@ -47,6 +67,12 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return ($identityId > 0 && $identityId === $userId) || $this->isAllowedAdmin();
     }
 
+    /**
+     * Merge the prediction site's profile editing template options.
+     * Combines overall, ranking and prediction-user settings so the
+     * frontend form uses the same presentation configuration as views.
+     * @return array Merged prediction member form configuration.
+     */
     public function getEditConfig(): array
     {
         return array_merge(
@@ -56,11 +82,23 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         );
     }
 
+    /**
+     * Provide the prediction-group options for a profile editor.
+     * Returns the game's defined groups as Joomla select entries.
+     * @return array Available prediction group options.
+     */
     public function getPredictionGroupOptions(): array
     {
         return $this->getPredictionGroupList();
     }
 
+    /**
+     * List project-specific team options for prediction favourites.
+     * Joins project teams through their season and club team records,
+     * filters with a bound project identifier, and orders by team name.
+     * @param int $projectId Project to load team choices for.
+     * @return array<int,object> Team value/text entries for this project.
+     */
     public function getProjectTeamOptions(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -83,6 +121,14 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build editable predictions for each configured game project.
+     * Parses saved favourite, champion and final-four selections, loads
+     * each project's eligible teams and determines whether the project
+     * is still open to competitive member changes.
+     * @param object $member Prediction member containing stored selections.
+     * @return array<int,array> Per-project form metadata and saved choices.
+     */
     public function getEditProjects(object $member): array
     {
         $favourites = $this->parseMemberTeamSelections((string) ($member->fav_team ?? ''), false);
@@ -112,6 +158,12 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return $rows;
     }
 
+    /**
+     * Determine whether a member may switch prediction groups.
+     * Permits changes only while all configured prediction projects
+     * remain open for competitive edits; missing projects deny changes.
+     * @return bool Whether the group picker may be edited.
+     */
     public function canChangeGroup(): bool
     {
         $projects = $this->getPredictionProjects();
@@ -128,6 +180,14 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return true;
     }
 
+    /**
+     * Check a project's configured prediction start deadline.
+     * Converts the start date and time using its configured timezone,
+     * rejects missing dates and falls back to a UNIX timestamp when
+     * timezone or date parsing raises an exception.
+     * @param object $project Project with start date/time and timezone.
+     * @return bool Whether predictions are still editable.
+     */
     public function isProjectOpenForCompetitiveEdits(object $project): bool
     {
         $startDate = trim((string) ($project->start_date ?? ''));
@@ -150,6 +210,13 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Validate a requested prediction group against current game options.
+     * Treats zero as an unset group and otherwise requires an exact
+     * match to one of the available group identifiers.
+     * @param int $groupId Selected prediction group or zero.
+     * @return bool Whether the group may be selected.
+     */
     public function isValidGroupId(int $groupId): bool
     {
         if ($groupId === 0) {
@@ -165,6 +232,14 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return false;
     }
 
+    /**
+     * Verify that a selected team belongs to its prediction project.
+     * Treats zero as an unset selection and otherwise performs a bound
+     * project/team lookup rather than accepting arbitrary team IDs.
+     * @param int $projectId Project whose team is being selected.
+     * @param int $projectTeamId Selected project-team identifier.
+     * @return bool Whether the team choice is valid.
+     */
     public function isValidProjectTeamId(int $projectId, int $projectTeamId): bool
     {
         if ($projectTeamId === 0) {
@@ -173,17 +248,44 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return $this->getProjectTeamById($projectId, $projectTeamId) !== null;
     }
 
+    /**
+     * Decode stored favourite or champion selections for templates.
+     * Converts semicolon-separated decimal project/team ID pairs into
+     * a map, optionally allowing multiple team selections per project.
+     * @param string $raw Stored project,team pairs delimited by semicolons.
+     * @param bool $multiple Whether to retain multiple teams per project.
+     * @return array<int,mixed> Valid selections indexed by project ID.
+     */
     public function selectionMap(string $raw, bool $multiple = false): array
     {
         return $this->parseMemberTeamSelections($raw, $multiple);
     }
 
+    /**
+     * Strictly parse legacy project/team pairs without partial integer casts.
+     * Trims separators and whitespace, ignores missing, malformed or
+     * overflowing IDs and retains either one or several choices per
+     * project according to the form field's multiplicity.
+     * @param string $raw Stored semicolon-separated project/team values.
+     * @param bool $multiple Whether to accumulate team IDs per project.
+     * @return array<int,mixed> Accepted ID pairs grouped by project.
+     */
     private function parseMemberTeamSelections(string $raw, bool $multiple): array
     {
         $result = [];
         foreach (array_filter(array_map('trim', explode(';', $raw))) as $part) {
-            [$projectId, $teamId] = array_pad(array_map('intval', explode(',', $part, 2)), 2, 0);
-            if ($projectId <= 0 || $teamId <= 0) {
+            $pair = array_map('trim', explode(',', $part));
+
+            if (count($pair) !== 2) {
+                continue;
+            }
+
+            // Legacy values use decimal project/team pairs. Never turn a
+            // malformed ID such as "17junk" into a valid project or team.
+            $projectId = filter_var($pair[0], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            $teamId = filter_var($pair[1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($projectId === false || $teamId === false) {
                 continue;
             }
             if ($multiple) {
@@ -195,6 +297,14 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return $result;
     }
 
+    /**
+     * Resolve a project-team selection within the correct project.
+     * Loads at most one project-team row with both IDs bound as integers
+     * so a team from an unrelated project cannot pass validation.
+     * @param int $projectId Project scope for the selection.
+     * @param int $projectTeamId Team relation to verify.
+     * @return object|null Matching project-team record or null.
+     */
     private function getProjectTeamById(int $projectId, int $projectTeamId): ?object
     {
         if ($projectId <= 0 || $projectTeamId <= 0) {
@@ -212,6 +322,13 @@ class PredictionuserModel extends SportsManagementPredictionReadModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Parse a positive prediction member ID or Joomla ID:alias slug.
+     * Rejects invalid types, partial numeric casts and values outside
+     * the PHP integer range before returning a member identifier.
+     * @param mixed $value Raw member ID or URL slug.
+     * @return int Valid positive member ID, or zero.
+     */
     private function memberId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
