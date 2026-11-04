@@ -100,7 +100,7 @@ jobs:
               'web asset manager': (dispatcher, 'getWebAssetManager()'),
               'database resolver': (helper, 'SportsManagementDatabaseResolver::resolve('),
               'application interface': (helper, 'CMSApplicationInterface $app'),
-              'facade site application': (facade, 'Factory::getContainer()->get(SiteApplication::class)'),
+              'facade site application': (facade, 'SportsManagementSiteApplicationResolver::resolve()'),
               'facade database': (facade, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'escaped layout': (template, 'htmlspecialchars('),
           }

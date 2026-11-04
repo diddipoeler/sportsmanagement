@@ -22,6 +22,14 @@ final class AvatarfromcomponentField extends ListField
 {
     protected $type = 'avatarfromcomponent';
 
+    /**
+     * Build the list of installed avatar providers for administrator forms.
+     * Begins with Joomla's native user avatar choice, verifies the
+     * administrator application through the component resolver and
+     * queries installed extensions to include only available integrations.
+     * If discovery fails, the built-in Joomla option remains available.
+     * @return array<int,object> Parent options and installed avatar providers.
+     */
     protected function getOptions(): array
     {
         $providers = [

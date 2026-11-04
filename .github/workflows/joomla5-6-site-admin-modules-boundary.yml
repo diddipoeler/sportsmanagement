@@ -47,8 +47,13 @@ jobs:
             failures=1
           fi
 
-          if ! grep -Fq 'get(AdministratorApplication::class)' "$avatar"; then
-            echo 'Administrator avatar field must resolve AdministratorApplication from the container.'
+          if ! grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' "$avatar"; then
+            echo 'Administrator avatar field must resolve an authorised Joomla administrator application.'
+            failures=1
+          fi
+
+          if ! grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$avatar"; then
+            echo 'Administrator avatar field must use Joomla DI for the database.'
             failures=1
           fi
 

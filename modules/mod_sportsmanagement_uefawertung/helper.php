@@ -45,16 +45,41 @@ foreach ([
 if (!class_exists('modJSMUefaWERTUNG', false)) {
     final class modJSMUefaWERTUNG
     {
+        /**
+         * Return country UEFA ranking totals using the legacy module facade.
+         * Converts legacy module parameters to Joomla Registry, delegates to
+         * the native helper and exposes only the ranked countries slice.
+         * @param mixed $params Registry or legacy settings array.
+         * @param DatabaseInterface|null $database Optional Joomla database connection.
+         * @return array Country ranking results for the chosen seasons.
+         */
         public static function getData($params, ?DatabaseInterface $database = null): array
         {
             return self::result($params, $database)['rankings'];
         }
 
+        /**
+         * Return ranking season labels through the legacy module API.
+         * Shares the native result-building path with getData() and returns
+         * the selected list of season names instead of country points.
+         * @param mixed $params Registry or legacy settings array.
+         * @param DatabaseInterface|null $database Optional Joomla database connection.
+         * @return array<string> Display names of selected ranking seasons.
+         */
         public static function getSeasonNames($params, ?DatabaseInterface $database = null): array
         {
             return self::result($params, $database)['seasons'];
         }
 
+        /**
+         * Prepare UEFA ranking data with Joomla 5/6 services.
+         * Validates the site application, resolves the primary database from
+         * Joomla DI unless one is provided, and delegates the ranking query
+         * to the native namespaced module helper.
+         * @param mixed $params Original module configuration.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array{seasons:array,rankings:array} Ranking module payload.
+         */
         private static function result($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -69,11 +94,24 @@ if (!class_exists('modJSMUefaWERTUNG', false)) {
             return (new UefaWertungHelper())->getData($registry, $app, $database);
         }
 
+        /**
+         * Resolve the active Joomla site application for legacy module calls.
+         * Uses SportsManagement's namespaced application resolver, avoiding
+         * deprecated static getApplication() access and wrong-client requests.
+         * @return CMSApplicationInterface Current site application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             return SportsManagementSiteApplicationResolver::resolve();
         }
 
+        /**
+         * Obtain the Joomla database service or an explicitly supplied instance.
+         * Uses Joomla's dependency-injection container when the module does
+         * not receive a database from its caller.
+         * @param DatabaseInterface|null $database Explicit database when available.
+         * @return DatabaseInterface Effective Joomla database connection.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
