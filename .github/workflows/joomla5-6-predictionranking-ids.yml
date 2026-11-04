@@ -1,0 +1,35 @@
+name: Joomla 5/6 prediction ranking ID selectors
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/PredictionrankingModel.php'
+      - '.github/tests/joomla56_predictionranking_ids.php'
+      - '.github/workflows/joomla5-6-predictionranking-ids.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ranking-ids:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint ranking model and selection tests
+        run: |
+          php -l site/src/Model/PredictionrankingModel.php
+          php -l .github/tests/joomla56_predictionranking_ids.php
+      - name: Test ranking project and team ID validation
+        run: php .github/tests/joomla56_predictionranking_ids.php

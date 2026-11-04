@@ -26,6 +26,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
     private int $limit = 0;
     private int $limitStart = 0;
 
+    /**
+     * Resolve the ranking project from permitted prediction game projects.
+     * Parses the legacy project selector, rejects invalid or foreign
+     * projects and falls back to the game's first eligible project.
+     * @return int Selected project ID or zero.
+     */
     public function getProjectId(): int
     {
         $projects = $this->getPredictionProjects();
@@ -46,6 +52,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $this->projectId;
     }
 
+    /**
+     * Resolve the displayed ranking round for the chosen project.
+     * Validates its relation to the selected project and falls back
+     * to the project's current round when the request is invalid.
+     * @return int Valid ranking round ID or zero.
+     */
     public function getRoundId(): int
     {
         if ($this->roundId <= 0) {
@@ -65,6 +77,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $this->roundId;
     }
 
+    /**
+     * Select the first round included in accumulated ranking results.
+     * Reads the requested lower bound and verifies the round belongs
+     * to the same project as the ranking before using it.
+     * @return int First ranking round ID.
+     */
     public function getFromRoundId(): int
     {
         if ($this->fromRoundId <= 0) {
@@ -80,6 +98,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $this->fromRoundId;
     }
 
+    /**
+     * Select the final round for aggregated ranking results.
+     * Validates the requested round and ensures the range is not
+     * reversed relative to the selected first round.
+     * @return int Last ranking round ID.
+     */
     public function getToRoundId(): int
     {
         if ($this->toRoundId <= 0) {
@@ -98,6 +122,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $this->toRoundId;
     }
 
+    /**
+     * Load and cache prediction project details needed by the ranking.
+     * Joins the current competition project to its prediction configuration
+     * and rejects unknown game/project combinations.
+     * @return object|null Selected prediction project or null.
+     */
     public function getRankingProject(): ?object
     {
         if ($this->rankingProject !== null) {
@@ -148,6 +178,13 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $this->rankingProject;
     }
 
+    /**
+     * Retrieve the current round for a project via Joomla's DB API.
+     * Uses a bound positive project ID and returns zero when the project
+     * cannot be selected from the database.
+     * @param int|null $projectId Optional explicit project identifier.
+     * @return int Current competition round ID.
+     */
     public function getProjectCurrentRoundId(?int $projectId = null): int
     {
         $projectId ??= $this->getProjectId();
@@ -165,6 +202,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Build the list of available projects for the ranking selector.
+     * Maps configured prediction projects to Joomla value/text
+     * options preserving display names and numeric IDs.
+     * @return array<int,object> Project selector options.
+     */
     public function getProjectOptions(): array
     {
         $options = [];
@@ -177,6 +220,13 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $options;
     }
 
+    /**
+     * Create round dropdown options for the selected prediction project.
+     * Delegates to the shared round-name lookup and normalises
+     * each value through the strict Joomla ID parser.
+     * @param array<int>|null $allowedRoundIds Optional allowed round filter.
+     * @return array<int,object> Round value/text options.
+     */
     public function getRoundOptions(?array $allowedRoundIds = null): array
     {
         $options = [];
@@ -189,6 +239,15 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $options;
     }
 
+    /**
+     * Calculate and cache ranking rows for the selected prediction game.
+     * Loads permitted prediction members, applies round range, project
+     * scoring rules and avatar settings, and prepares paginated
+     * member rows with totals and unpaginated ranking data.
+     * @param array $config Prediction ranking options.
+     * @param array $avatarConfig Avatar rendering settings.
+     * @return array Ranking rows, count and full rankings.
+     */
     public function getRankingData(array $config, array $avatarConfig): array
     {
         if ($this->rankingData !== null) {
@@ -308,6 +367,13 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $this->rankingData = ['rows' => $rows, 'total' => $total, 'allRows' => $allRows];
     }
 
+    /**
+     * Construct Joomla Pagination for the member ranking.
+     * Initialises the configured page limit when needed and ensures
+     * a positive effective page size even for empty rankings.
+     * @param int $total Total members matching ranking filters.
+     * @return Pagination Joomla pagination object.
+     */
     public function getPagination(int $total): Pagination
     {
         if ($this->limit === 0 && $total > 0) {
@@ -316,6 +382,12 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return new Pagination($total, $this->limitStart, max(1, $this->limit ?: $total ?: 1));
     }
 
+    /**
+     * Return the configured page size for the ranking list.
+     * Initialises the limit from Joomla user state if the ranking
+     * has not yet calculated its pagination settings.
+     * @return int Positive page size.
+     */
     public function getLimit(): int
     {
         if ($this->limit <= 0) {
@@ -324,16 +396,35 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $this->limit;
     }
 
+    /**
+     * Return the current pagination offset for ranking records.
+     * Uses the starting row calculated by configurePagination().
+     * @return int Nonnegative first row index.
+     */
     public function getLimitStart(): int
     {
         return $this->limitStart;
     }
 
+    /**
+     * Read the map template configuration for this ranking project.
+     * Combines default map XML options and project-specific settings
+     * through the shared prediction template configuration loader.
+     * @return array<string,mixed> Effective map template settings.
+     */
     public function getMapConfig(): array
     {
         return $this->getProjectTemplateConfig('map', $this->getProjectId());
     }
 
+    /**
+     * Build geographical KML data for visible prediction members.
+     * Only generates geodata when a compatible profile source is
+     * configured and its user table exists, using the game's
+     * member records and stored coordinates.
+     * @param array $avatarConfig Profile image/source configuration.
+     * @return string|null Generated KML path or null when unavailable.
+     */
     public function buildPredictionKml(array $avatarConfig): ?string
     {
         if ($this->predictionGameId <= 0 || ($avatarConfig['show_image_from'] ?? '') !== 'com_cbe') {
@@ -391,6 +482,14 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return Uri::root() . 'tmp/' . rawurlencode((string) $this->predictionGameId) . '-prediction.kml';
     }
 
+    /**
+     * Read the champion prediction and available reward for a project.
+     * Matches the selected project team in a member's saved picks
+     * and loads the project's champion-tip scoring configuration.
+     * @param int $projectId Competition project ID.
+     * @param string $tip Serialized champion selection.
+     * @return array Champion tip and scoring data.
+     */
     private function getChampionTipData(int $projectId, string $tip): array
     {
         $teamId = $this->extractTipTeamId($tip, $projectId);
@@ -420,6 +519,14 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         ];
     }
 
+    /**
+     * Load final-four tip scores and related project configuration.
+     * Compares the member's saved final-four team picks against
+     * the configured project values and point rules.
+     * @param int $projectId Competition project ID.
+     * @param string $tips Serialized final-four selections.
+     * @return array Final-four tip points and values.
+     */
     private function getFinal4TipData(int $projectId, string $tips): array
     {
         $predictionGameId = $this->predictionGameId;
@@ -455,6 +562,13 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $result;
     }
 
+    /**
+     * Determine whether a competition project has started for scoring.
+     * Uses the project's date, time and timezone; treats invalid
+     * dates or timezones as started to avoid disclosing predictions.
+     * @param object $project Prediction project start settings.
+     * @return bool Whether the project is considered started.
+     */
     private function isProjectStarted(object $project): bool
     {
         $date = (string) ($project->start_date ?? '');
@@ -473,6 +587,14 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Choose regular, overtime or shootout result for tip scoring.
+     * Clones the fixture row and selects the requested score mode
+     * without mutating source match data used elsewhere in ranking.
+     * @param object $row Result record containing all score variants.
+     * @param int $mode Result calculation mode.
+     * @return object Match result data normalised for ranking.
+     */
     private function normaliseResultForScoring(object $row, int $mode): object
     {
         $copy = clone $row;
@@ -495,6 +617,13 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $copy;
     }
 
+    /**
+     * Detect whether any regular or decision result is recorded.
+     * Considers scores and winner decisions for both teams before
+     * awarding fixture points in ranking calculations.
+     * @param object $row Fixture result record.
+     * @return bool Whether the match has a result.
+     */
     private function hasPlayedResult(object $row): bool
     {
         return $row->homeResult !== null
@@ -503,17 +632,47 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
             || $row->awayDecision !== null;
     }
 
+    /**
+     * Parse the chosen team ID for one specific prediction project.
+     * Reads semicolon-separated project,team entries and rejects
+     * malformed or overflowing IDs instead of partially casting
+     * invalid stored predictions to valid team identifiers.
+     * @param string $tips Serialized project/team selections.
+     * @param int $projectId Project whose tip should be extracted.
+     * @return int Valid team ID or zero.
+     */
     private function extractTipTeamId(string $tips, int $projectId): int
     {
-        foreach (array_filter(explode(';', $tips), static fn(string $value): bool => trim($value) !== '') as $entry) {
-            [$entryProject, $teamId] = array_pad(array_map('intval', explode(',', $entry, 2)), 2, 0);
-            if ($entryProject === $projectId) {
+        if ($projectId <= 0) {
+            return 0;
+        }
+
+        foreach (explode(';', $tips) as $entry) {
+            $pair = array_map('trim', explode(',', $entry, 2));
+
+            if (count($pair) !== 2) {
+                continue;
+            }
+
+            $entryProject = $this->extractId($pair[0]);
+            $teamId = $this->extractId($pair[1]);
+
+            if ($entryProject === $projectId && $teamId > 0) {
                 return $teamId;
             }
         }
+
         return 0;
     }
 
+    /**
+     * Merge ranking map XML defaults and project template overrides.
+     * Loads project settings, optionally inherits from its master
+     * template and returns the effective configuration fields.
+     * @param string $template Requested prediction template identifier.
+     * @param int $projectId Project whose overrides should apply.
+     * @return array<string,mixed> Final presentation configuration.
+     */
     private function getProjectTemplateConfig(string $template, int $projectId): array
     {
         $defaults = $this->loadXmlDefaults($template);
@@ -549,6 +708,14 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Retrieve stored template parameters for a specific project.
+     * Queries Joomla's template configuration table by bound
+     * template name and project ID, returning null if absent.
+     * @param string $template Template configuration name.
+     * @param int $projectId Project to look up.
+     * @return string|null Serialized project template parameters.
+     */
     private function loadProjectTemplateParams(string $template, int $projectId): ?string
     {
         $db = $this->getDatabase();
@@ -564,6 +731,13 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $value === null ? null : (string) $value;
     }
 
+    /**
+     * Read default values from the prediction template XML.
+     * Restricts the filename to its basename and extracts the
+     * default attributes of declared fields when a template exists.
+     * @param string $template Template name to load.
+     * @return array<string,mixed> Default template field values.
+     */
     private function loadXmlDefaults(string $template): array
     {
         $file = JPATH_SITE . '/components/com_sportsmanagement/settings/default/' . basename($template) . '.xml';
@@ -588,6 +762,14 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return $defaults;
     }
 
+    /**
+     * Verify a ranking round belongs to the active competition project.
+     * Counts the matching Joomla round row with both identifiers bound
+     * so a request cannot select a round from another project.
+     * @param int $roundId Round identifier to validate.
+     * @param int $projectId Owning project ID.
+     * @return bool True when the relation exists.
+     */
     private function roundBelongsToProject(int $roundId, int $projectId): bool
     {
         if ($roundId <= 0 || $projectId <= 0) {
@@ -605,6 +787,14 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         return (int) $db->loadResult() > 0;
     }
 
+    /**
+     * Apply Joomla user-state pagination and normalise list offsets.
+     * Uses a bounded positive page size, chooses an appropriate
+     * start row and supports an explicit show-all ranking mode.
+     * @param int $total Total matching ranking rows.
+     * @param bool $showAll Whether all rankings should be included.
+     * @return void
+     */
     private function configurePagination(int $total, bool $showAll): void
     {
         if ($showAll) {
@@ -623,11 +813,29 @@ final class PredictionrankingModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Strictly parse a numeric Joomla project, round or team ID slug.
+     * Accepts decimal IDs and ID:alias strings but rejects invalid
+     * characters, partial numeric conversions and values above PHP_INT_MAX.
+     * @param string $value Raw ID or legacy Joomla ID:alias segment.
+     * @return int Positive ID or zero when invalid.
+     */
     private function extractId(string $value): int
     {
-        if ($value === '') {
+        $value = trim($value);
+
+        if (!preg_match('/^([0-9]+)(?::[^:\\s,;]+)?$/D', $value, $matches)) {
             return 0;
         }
-        return max(0, (int) strtok($value, ':'));
+
+        $digits = ltrim($matches[1], '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 }
