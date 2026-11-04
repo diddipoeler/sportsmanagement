@@ -53,9 +53,10 @@ jobs:
         run: |
           grep -F 'is_file($nativeField)' admin/models/fields/playgroundlist.php
           grep -F 'SportsManagement native Playgroundlist field could not be loaded.' admin/models/fields/playgroundlist.php
+          grep -F 'MatchesSliderHelper::class => __DIR__' modules/mod_sportsmanagement_matchesslider/helper.php
           grep -F "class_alias(PlaygroundlistField::class, 'JFormFieldplaygroundlist')" admin/models/fields/playgroundlist.php
-          grep -F 'is_file($nativeHelper)' modules/mod_sportsmanagement_matchesslider/helper.php
-          grep -F 'SportsManagement native MatchesSlider module helper could not be loaded.' modules/mod_sportsmanagement_matchesslider/helper.php
+          grep -F 'is_file($file)' modules/mod_sportsmanagement_matchesslider/helper.php
+          grep -F 'SportsManagement MatchesSlider dependency could not be loaded:' modules/mod_sportsmanagement_matchesslider/helper.php
           grep -F "class_alias(MatchesSliderHelper::class, 'modMatchesSliderHelper')" modules/mod_sportsmanagement_matchesslider/helper.php
       - name: Reject stale metadata
         run: |

@@ -57,9 +57,10 @@ jobs:
         run: |
           grep -F 'is_file($nativeField)' admin/models/fields/countryassociation.php
           grep -F 'SportsManagement native Countryassociation field could not be loaded.' admin/models/fields/countryassociation.php
+          grep -F 'MatchesHelper::class => __DIR__' modules/mod_sportsmanagement_matches/helper.php
           grep -F "class_alias(CountryassociationField::class, 'JFormFieldcountryassociation')" admin/models/fields/countryassociation.php
-          grep -F 'is_file($nativeHelper)' modules/mod_sportsmanagement_matches/helper.php
-          grep -F 'SportsManagement native Matches module helper could not be loaded.' modules/mod_sportsmanagement_matches/helper.php
+          grep -F 'is_file($file)' modules/mod_sportsmanagement_matches/helper.php
+          grep -F 'SportsManagement Matches dependency could not be loaded:' modules/mod_sportsmanagement_matches/helper.php
           grep -F "class_alias(MatchesHelper::class, 'modMatchesSportsmanagementHelper')" modules/mod_sportsmanagement_matches/helper.php
       - name: Reject stale metadata
         run: |
