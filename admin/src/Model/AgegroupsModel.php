@@ -19,6 +19,13 @@ use Joomla\Database\ParameterType;
  */
 class AgegroupsModel extends SportsManagementListModel
 {
+    /**
+     * Configure the list model's allowed sort and filter fields.
+     * Registers the age-group database columns and their aliases before
+     * initialising Joomla's namespaced list model with MVCFactory.
+     * @param array $config Joomla list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -39,6 +46,14 @@ class AgegroupsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore administrator filter and ordering state for age groups.
+     * Reads search, publication, sport and country filters from the Joomla
+     * application and restricts ordering to registered sortable fields.
+     * @param string $ordering Default database ordering column.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -79,6 +94,12 @@ class AgegroupsModel extends SportsManagementListModel
         $this->setState('list.direction', $direction === 'DESC' ? 'DESC' : 'ASC');
     }
 
+    /**
+     * Build the Joomla database query for the age-group list.
+     * Joins sport and editor names, applies bound search/filter values and
+     * uses an explicit allowlist for user-selected ordering columns.
+     * @return \Joomla\Database\DatabaseQuery Query for the filtered list.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -172,6 +193,14 @@ class AgegroupsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load age groups formatted as Joomla selector option objects.
+     * Optionally filters by country and includes either age ranges and
+     * cutoff dates or the country code in the visible option label.
+     * @param string $country Optional country filter.
+     * @param bool $infoText Whether to include age limits in option labels.
+     * @return array<int,object> Database-backed option records.
+     */
     public function getAgeGroups(string $country = '', bool $infoText = false): array
     {
         $db = $this->getDatabase();

@@ -26,6 +26,12 @@ final class MatchesController extends BaseController
 {
     private ?MatchMutationService $matchMutationService = null;
 
+    /**
+     * Save a match event through the Joomla-native mutation service.
+     * Checks the POST token, edit privileges and parent-match scope before
+     * persisting event fields and returning the legacy JSON response.
+     * @return void
+     */
     public function saveevent(): void
     {
         $this->assertWritePermission();
@@ -55,6 +61,12 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
+    /**
+     * Save a match-player substitution from an authenticated AJAX request.
+     * Checks the supplied parent match and project against edit permissions
+     * before passing substitution details to the shared mutation service.
+     * @return void
+     */
     public function savesubst(): void
     {
         $this->assertWritePermission();
@@ -79,6 +91,12 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
+    /**
+     * Delete a recorded substitution from its persisted parent match.
+     * Looks up the substitution's match rather than trusting a client-supplied
+     * parent ID, checks permission and emits the legacy result format.
+     * @return void
+     */
     public function removeSubst(): void
     {
         $this->assertWritePermission();
@@ -94,6 +112,12 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
+    /**
+     * Save match commentary through the shared mutation service.
+     * Validates CSRF and access to the requested match, then serialises the
+     * translated success or error message for legacy AJAX consumers.
+     * @return void
+     */
     public function savecomment(): void
     {
         $this->assertWritePermission();
@@ -117,6 +141,12 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
+    /**
+     * Delete a match event after verifying its persisted match scope.
+     * Authorises the actual parent match and returns an ID-bearing JSON
+     * response compatible with existing frontend event controls.
+     * @return void
+     */
     public function removeEvent(): void
     {
         $this->assertWritePermission();
@@ -132,6 +162,12 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
+    /**
+     * Delete a match commentary entry only for an editable match.
+     * Uses the database parent relationship to prevent the request from
+     * deleting an entry that belongs to another match or project.
+     * @return void
+     */
     public function removeCommentary(): void
     {
         $this->assertWritePermission();
@@ -147,6 +183,12 @@ final class MatchesController extends BaseController
         $this->sendLegacyJson($response);
     }
 
+    /**
+     * Resolve Joomla's DatabaseInterface from its service container.
+     * Provides the default database connection used for ACL and selected
+     * SportsManagement database resolution.
+     * @return DatabaseInterface Joomla-managed database service.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -155,6 +197,12 @@ final class MatchesController extends BaseController
         return $database;
     }
 
+    /**
+     * Create or reuse the match-write service for this POST request.
+     * Uses a single validated database selector for both permission checks
+     * and mutations, and includes the current user and UTC modification time.
+     * @return MatchMutationService Service for event, substitution and comment writes.
+     */
     private function mutationService(): MatchMutationService
     {
         if ($this->matchMutationService instanceof MatchMutationService) {
@@ -182,6 +230,12 @@ final class MatchesController extends BaseController
         return $this->matchMutationService;
     }
 
+    /**
+     * Require a valid POST token and component edit permission.
+     * Rejects unauthorised requests before any match mutation is attempted.
+     * @return void
+     * @throws \RuntimeException On CSRF failure or insufficient permissions.
+     */
     private function assertWritePermission(): void
     {
         if (!Session::checkToken('post')) {
@@ -270,6 +324,13 @@ final class MatchesController extends BaseController
         }
     }
 
+    /**
+     * Send a JSON-encoded string in the historical match AJAX format.
+     * Preserves compatibility with existing match-editor scripts while setting
+     * the HTTP content type and ending the request after output.
+     * @param string $response Legacy status-and-message response string.
+     * @return void
+     */
     private function sendLegacyJson(string $response): void
     {
         $app = $this->app;

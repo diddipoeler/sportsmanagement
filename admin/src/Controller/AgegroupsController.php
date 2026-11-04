@@ -52,9 +52,19 @@ class AgegroupsController extends SportsManagementAdminController
 
     /**
      * Resolve the namespaced Agegroup model through Joomla's MVCFactory.
+     *
+     * Preserve caller-supplied configuration while forcing request-independent
+     * model loading so existing extensions can still customise the model.
+     *
+     * @param string $name Model name to resolve.
+     * @param string $prefix Joomla MVC client prefix.
+     * @param array $config Additional configuration for the model.
+     * @return mixed Model instance returned by the parent controller.
      */
     public function getModel($name = 'Agegroup', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }

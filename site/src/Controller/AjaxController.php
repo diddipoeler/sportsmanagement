@@ -22,6 +22,12 @@ use Joomla\Database\DatabaseInterface;
 /** Native JSON endpoints used by the Joomla 5/6 frontend. */
 final class AjaxController extends BaseController
 {
+    /**
+     * Return the canonical URL for the selected SportsManagement view.
+     * Validates the view command and uses the native AJAX model to resolve
+     * project, team and division inputs before emitting a JSON link response.
+     * @return void
+     */
     public function getLink(): void
     {
         $input = $this->app->getInput();
@@ -56,6 +62,12 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return JSON options for teams assigned to the requested project.
+     * Reads a nonnegative project identifier and delegates the list query to
+     * the native AJAX model instead of producing HTML or a legacy response.
+     * @return void
+     */
     public function getProjectTeams(): void
     {
         $input = $this->app->getInput();
@@ -64,6 +76,11 @@ final class AjaxController extends BaseController
         ));
     }
 
+    /**
+     * Return project selection options for the requested league.
+     * Normalises the league identifier before serialising the model result to JSON.
+     * @return void
+     */
     public function getProjectSelect(): void
     {
         $input = $this->app->getInput();
@@ -72,6 +89,12 @@ final class AjaxController extends BaseController
         ));
     }
 
+    /**
+     * Return league options filtered by country and association.
+     * Reads the country and association request values and delegates the lookup
+     * to the AJAX model before writing the JSON payload.
+     * @return void
+     */
     public function getAssocLeagueSelect(): void
     {
         $input = $this->app->getInput();
@@ -81,6 +104,12 @@ final class AjaxController extends BaseController
         ));
     }
 
+    /**
+     * Load second-level subassociation options for an AJAX selector.
+     * Tries the native model, uses the legacy association query only when needed,
+     * and returns a structured JSON error if both lookups fail.
+     * @return void
+     */
     public function getCountrySubSubAssocSelect(): void
     {
         $input = $this->app->getInput();
@@ -119,6 +148,12 @@ final class AjaxController extends BaseController
         $this->sendJson($options);
     }
 
+    /**
+     * Load first-level subassociation options for an AJAX selector.
+     * Tries the native lookup and a compatible fallback while preserving
+     * its empty-selection placeholder and reporting unrecoverable failures.
+     * @return void
+     */
     public function getCountrySubAssocSelect(): void
     {
         $input = $this->app->getInput();
@@ -157,6 +192,12 @@ final class AjaxController extends BaseController
         $this->sendJson($options);
     }
 
+    /**
+     * Return the regional associations available for a selected country.
+     * Handles an unselected country explicitly, then tries native and legacy
+     * lookups so existing association selectors receive usable JSON options.
+     * @return void
+     */
     public function getcountryassoc(): void
     {
         $input = $this->app->getInput();
@@ -201,6 +242,12 @@ final class AjaxController extends BaseController
         $this->sendJson($options);
     }
 
+    /**
+     * Return a route string for the requested SportsManagement view.
+     * Rejects unsafe or malformed view names, normalises the supported alias
+     * and passes project/team/division choices to the native route helper.
+     * @return void
+     */
     public function getroute(): void
     {
         $input = $this->app->getInput();
@@ -228,6 +275,12 @@ final class AjaxController extends BaseController
         $this->sendJson($link);
     }
 
+    /**
+     * Return a JSON list of projects filtered by sport, league and season.
+     * Bounds the three numeric request values before delegating the lookup
+     * to the native AJAX model.
+     * @return void
+     */
     public function getprojectsoptions(): void
     {
         $input = $this->app->getInput();
@@ -239,6 +292,12 @@ final class AjaxController extends BaseController
     }
 
     // AjaxModel::getLink() owns route construction via SiteRouteHelper::view().
+    /**
+     * Retrieve and type-check the native AJAX model from MVCFactory.
+     * Only an AjaxModel can handle the controller's asynchronous requests.
+     * @return AjaxModel Model used for native AJAX lookups.
+     * @throws \RuntimeException If the factory returns an unexpected model.
+     */
     private function ajaxModel(): AjaxModel
     {
         $model = $this->getModel('Ajax');
@@ -250,6 +309,16 @@ final class AjaxController extends BaseController
         return $model;
     }
 
+    /**
+     * Query association options using the legacy-compatible database schema.
+     * Resolves the selected database and filters the association hierarchy,
+     * returning placeholder options expected by existing frontend selectors.
+     * @param string $country Country code, or empty when filtering by parent.
+     * @param int $parentId Parent association identifier.
+     * @param string $prompt Label for the unselected option.
+     * @param string $nonePrompt Label displayed when no associations are found.
+     * @return array Association select options.
+     */
     private function legacyAssociationOptions(
         string $country,
         int $parentId,
@@ -299,6 +368,14 @@ final class AjaxController extends BaseController
         ], $rows);
     }
 
+    /**
+     * Log an AJAX lookup failure without exposing internal error details.
+     * Records the exception for administrators while returning only the stage
+     * identifier to the caller for safe error aggregation.
+     * @param string $stage Name of the failed lookup stage.
+     * @param \Throwable $error Failure raised by that stage.
+     * @return string Safe failure-stage marker.
+     */
     private function ajaxErrorMessage(string $stage, \Throwable $error): string
     {
         // Keep the existing native/fallback diagnostic stages on the server;
@@ -312,6 +389,14 @@ final class AjaxController extends BaseController
         return $stage;
     }
 
+    /**
+     * Emit a generic JSON failure response for an AJAX lookup.
+     * Keeps exception details out of public responses, using Joomla's
+     * translated generic message instead.
+     * @param string $task Failing AJAX operation.
+     * @param array $errors Internal lookup failures already logged.
+     * @return void
+     */
     private function sendAjaxError(string $task, array $errors): void
     {
         // The endpoint is read-only and retains its existing JSON response
@@ -322,6 +407,13 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Write a JSON response and terminate the Joomla request.
+     * Sets JSON MIME and no-store headers and encodes the payload for
+     * the site's AJAX consumers without rendering a Joomla template.
+     * @param mixed $payload Data to serialise in the HTTP response.
+     * @return void
+     */
     private function sendJson(mixed $payload): void
     {
         $app = $this->app;
