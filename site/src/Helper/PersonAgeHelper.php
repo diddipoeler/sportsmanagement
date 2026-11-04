@@ -16,6 +16,17 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
  */
 final class PersonAgeHelper
 {
+    /**
+     * Calculate completed years between a birth date and a reference date.
+     *
+     * Preserves the historic zero-date sentinel, which uses today's date
+     * when no reference date is provided. Returns '-' for malformed or
+     * missing dates and subtracts one year before the birthday occurs.
+     *
+     * @param string $date Birth date in YYYY-MM-DD format.
+     * @param string $secondDate Reference date, or zero-date for today.
+     * @return int|string Completed years, or '-' for invalid date input.
+     */
     public static function calculate(string $date, string $secondDate = '0000-00-00'): int|string
     {
         $birth = self::parseDate($date);
@@ -48,7 +59,14 @@ final class PersonAgeHelper
     }
 
     /**
-     * @return array{0:int,1:int,2:int}|null
+     * Parse a SportsManagement date into numeric year, month and day.
+     *
+     * Rejects the historical zero-date sentinel and strings not matching
+     * YYYY-MM-DD. The method only validates the expected text layout;
+     * the numeric parts are returned for the legacy age calculation.
+     *
+     * @param string $date Date text to parse.
+     * @return array{0:int,1:int,2:int}|null Date parts or null.
      */
     private static function parseDate(string $date): ?array
     {
