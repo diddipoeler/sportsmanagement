@@ -47,6 +47,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
 
     private static $database = null;
 
+    /**
+     * Initialise club and project context for the native Joomla frontend model.
+     * Reads site selectors, resolves the component database and logs missing project context.
+     *
+     * @param mixed $config Argument used to resolve __construct.
+     * @param mixed $factory Argument used to resolve __construct.
+     * @return void Value produced by __construct.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -62,6 +70,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Trace successor clubs to find the earliest linked club.
+     * Uses parameter-bound lookups and records previously seen IDs to avoid loops.
+     *
+     * @param mixed $club_id Argument used to resolve getFirstClubId.
+     * @param mixed $new_club_id Argument used to resolve getFirstClubId.
+     * @return mixed Value produced by getFirstClubId.
+     */
     public static function getFirstClubId($club_id = 0, $new_club_id = 0)
     {
         $clubId = max(0, (int) $club_id);
@@ -92,6 +108,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $clubId;
     }
 
+    /**
+     * Render the prepared club-history tree as nested HTML lists.
+     * Uses the parent-child category map and appends club links and icons to the HTML buffer.
+     *
+     * @param mixed $parent Argument used to resolve generateTree.
+     * @param mixed $tree Argument used to resolve generateTree.
+     * @return void Value produced by generateTree.
+     */
     public static function generateTree($parent, $tree = 0): void
     {
         $parentId = (int) $parent;
@@ -129,6 +153,19 @@ final class ClubinfoModel extends SportsManagementProjectModel
         self::$historyhtmltree .= '</ul>';
     }
 
+    /**
+     * Flatten a club history hierarchy using depth-first traversal.
+     * Accumulates child club records by identifier up to a configurable maximum depth.
+     *
+     * @param mixed $id Argument used to resolve fbTreeRecurse.
+     * @param mixed $indent Argument used to resolve fbTreeRecurse.
+     * @param mixed $list Argument used to resolve fbTreeRecurse.
+     * @param mixed $children Argument used to resolve fbTreeRecurse.
+     * @param mixed $maxlevel Argument used to resolve fbTreeRecurse.
+     * @param mixed $level Argument used to resolve fbTreeRecurse.
+     * @param mixed $type Argument used to resolve fbTreeRecurse.
+     * @return mixed Value produced by fbTreeRecurse.
+     */
     public static function fbTreeRecurse($id, $indent, $list, &$children, $maxlevel = 9999, $level = 0, $type = 1)
     {
         $id = (int) $id;
@@ -165,6 +202,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $list;
     }
 
+    /**
+     * Load a configured RSS feed for the club information page.
+     * Uses Joomla's feed factory, tries alternative sources and optionally limits result entries.
+     *
+     * @param mixed $rssfeedlink Argument used to resolve getRssFeeds.
+     * @param mixed $rssitems Argument used to resolve getRssFeeds.
+     * @return mixed Value produced by getRssFeeds.
+     */
     public static function getRssFeeds($rssfeedlink, $rssitems)
     {
         $limit = max(0, (int) $rssitems);
@@ -195,6 +240,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return [];
     }
 
+    /**
+     * Retrieve club logo history together with season names.
+     * Filters by the selected club and optionally by season for historical displays.
+     *
+     * @param mixed $clubId Argument used to resolve getLogoHistory.
+     * @param mixed $seasonId Argument used to resolve getLogoHistory.
+     * @return array Value produced by getLogoHistory.
+     */
     public function getLogoHistory($clubId = 0, $seasonId = 0): array
     {
         $clubId = max(0, (int) $clubId);
@@ -226,6 +279,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Find the association attached to a club.
+     * Performs a bound database query for the association ID and returns the matching row.
+     *
+     * @param mixed $associations Argument used to resolve getClubAssociation.
+     * @return mixed Value produced by getClubAssociation.
+     */
     public static function getClubAssociation($associations)
     {
         $associationId = max(0, (int) $associations);
@@ -244,6 +304,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load the initial club record with a Joomla routing slug.
+     * Retrieves its linked project context for navigation from historical club views.
+     *
+     * @param mixed $club_id Argument used to resolve getFirstClub.
+     * @return mixed Value produced by getFirstClub.
+     */
     public static function getFirstClub($club_id = 0)
     {
         $clubId = max(0, (int) $club_id);
@@ -288,6 +355,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $club;
     }
 
+    /**
+     * Retrieve venue records belonging to the club and its teams.
+     * Combines and deduplicates stadium IDs before loading their display information.
+     *
+     * @param mixed $show_teams_of_club Argument used to resolve getPlaygrounds.
+     * @return mixed Value produced by getPlaygrounds.
+     */
     public static function getPlaygrounds($show_teams_of_club = 1)
     {
         $stadiums = self::getStadiums($show_teams_of_club);
@@ -322,6 +396,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Collect the standard stadiums used by a club.
+     * Includes its default playground and optional related-team venues without duplicates.
+     *
+     * @param mixed $show_teams_of_club Argument used to resolve getStadiums.
+     * @return mixed Value produced by getStadiums.
+     */
     public static function getStadiums($show_teams_of_club = 1)
     {
         $club = self::getClub();
@@ -375,6 +456,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return array_values($stadiums);
     }
 
+    /**
+     * Resolve the currently selected club and cache its metadata.
+     * Reads Joomla request context, optionally updates visit counts and prepares club data for the view.
+     *
+     * @param mixed $inserthits Argument used to resolve getClub.
+     * @param mixed $club_id Argument used to resolve getClub.
+     * @return mixed Value produced by getClub.
+     */
     public static function getClub($inserthits = 0, $club_id = 0)
     {
         $input = self::frontendApplication()->getInput();
@@ -409,6 +498,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return self::$club;
     }
 
+    /**
+     * Increment a club's page-view counter when enabled.
+     * Writes an increment using a bound club identifier only when hit tracking is requested.
+     *
+     * @param mixed $clubid Argument used to resolve updateHits.
+     * @param mixed $inserthits Argument used to resolve updateHits.
+     * @return void Value produced by updateHits.
+     */
     public static function updateHits($clubid = 0, $inserthits = 0): void
     {
         $clubId = max(0, (int) $clubid);
@@ -426,6 +523,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         $db->execute();
     }
 
+    /**
+     * Find teams associated with this club and project.
+     * Builds their display fields and legacy URL slugs for the club information view.
+     *
+     * @param mixed $show_teams_of_club Argument used to resolve getTeamsByClubId.
+     * @return mixed Value produced by getTeamsByClubId.
+     */
     public static function getTeamsByClubId($show_teams_of_club = 1)
     {
         if (self::$clubid <= 0 || self::$projectid <= 0) {
@@ -536,6 +640,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Collect historical predecessors of a selected club.
+     * Resets the output buffer and traverses the historical links without revisiting nodes.
+     *
+     * @param mixed $clubid Argument used to resolve getClubHistory.
+     * @return mixed Value produced by getClubHistory.
+     */
     public static function getClubHistory($clubid)
     {
         self::$historyobj = [];
@@ -544,6 +655,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return self::$historyobj;
     }
 
+    /**
+     * Generate the legacy HTML version of a club's history.
+     * Initialises tree buffers and loads historic clubs, names and logos recursively.
+     *
+     * @param mixed $clubid Argument used to resolve getClubHistoryHTML.
+     * @return mixed Value produced by getClubHistoryHTML.
+     */
     public static function getClubHistoryHTML($clubid)
     {
         self::ensureHelpers();
@@ -560,6 +678,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return self::$historyhtml;
     }
 
+    /**
+     * Prepare hierarchical data for the historical club tree.
+     * Traverses predecessors and successors into the legacy tree record structure.
+     *
+     * @param mixed $clubid Argument used to resolve getClubHistoryTree.
+     * @param mixed $new_club_id Argument used to resolve getClubHistoryTree.
+     * @return mixed Value produced by getClubHistoryTree.
+     */
     public static function getClubHistoryTree($clubid, $new_club_id)
     {
         self::ensureHelpers();
@@ -574,6 +700,15 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return self::$jgcat_rows;
     }
 
+    /**
+     * Encode sorted historic clubs for the legacy dTree visualisation.
+     * Creates root labels, icons and Joomla links for each history node.
+     *
+     * @param mixed $clubtree Argument used to resolve getSortClubHistoryTree.
+     * @param mixed $root_catid Argument used to resolve getSortClubHistoryTree.
+     * @param mixed $cat_name Argument used to resolve getSortClubHistoryTree.
+     * @return mixed Value produced by getSortClubHistoryTree.
+     */
     public static function getSortClubHistoryTree($clubtree, $root_catid, $cat_name)
     {
         $rootId = max(0, (int) $root_catid);
@@ -611,6 +746,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $script;
     }
 
+    /**
+     * Group history categories by parent before ordering.
+     * Produces a child lookup and fills the sorted list using recursive traversal.
+     *
+     * @param mixed $cats Argument used to resolve sortCategoryList.
+     * @param mixed $catssorted Argument used to resolve sortCategoryList.
+     * @return mixed Value produced by sortCategoryList.
+     */
     public static function sortCategoryList(&$cats, &$catssorted)
     {
         $children = [];
@@ -627,6 +770,15 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $children;
     }
 
+    /**
+     * Append descendants to a sorted history list.
+     * Recurses into valid distinct child IDs to preserve hierarchy order.
+     *
+     * @param mixed $catid Argument used to resolve sortCategoryListRecurse.
+     * @param mixed $children Argument used to resolve sortCategoryListRecurse.
+     * @param mixed $catssorted Argument used to resolve sortCategoryListRecurse.
+     * @return void Value produced by sortCategoryListRecurse.
+     */
     public static function sortCategoryListRecurse($catid, &$children, &$catssorted): void
     {
         $catId = (int) $catid;
@@ -643,6 +795,12 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Build the current club's formatted postal address.
+     * Combines location, postal code, region and resolved country display names.
+     *
+     * @return mixed Value produced by getAddressString.
+     */
     public static function getAddressString()
     {
         $club = self::getClub();
@@ -672,6 +830,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return implode(', ', $parts);
     }
 
+    /**
+     * Restrict displayed text to a maximum word count.
+     * Leaves shorter text intact and appends ellipsis only when truncation occurs.
+     *
+     * @param mixed $text Argument used to resolve limitText.
+     * @param mixed $wordcount Argument used to resolve limitText.
+     * @return mixed Value produced by limitText.
+     */
     public function limitText($text, $wordcount)
     {
         $wordCount = max(0, (int) $wordcount);
@@ -687,9 +853,21 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return implode(' ', array_slice($words, 0, $wordCount)) . '...';
     }
 
+    /**
+     * Authorise Joomla users to edit the selected club.
+     * Denies guests, verifies component/task ACL and supports an assigned authenticated club administrator.
+     *
+     * @param mixed $task Argument used to resolve hasEditPermission.
+     * @return bool Value produced by hasEditPermission.
+     */
     public function hasEditPermission($task = null): bool
     {
         $identity = $this->siteApplication()->getIdentity();
+
+        if ($identity === null) {
+            return false;
+        }
+
         $action = trim((string) $task);
         $allowed = $identity->authorise('core.edit', 'com_sportsmanagement');
         if (!$allowed && $action !== '') {
@@ -704,6 +882,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $allowed;
     }
 
+    /**
+     * Recursively load predecessor-club database records.
+     * Maintains a visited set to avoid cyclic history relations and repeated queries.
+     *
+     * @param mixed $clubId Argument used to resolve loadClubHistory.
+     * @param mixed $seen Argument used to resolve loadClubHistory.
+     * @return void Value produced by loadClubHistory.
+     */
     private static function loadClubHistory(int $clubId, array $seen): void
     {
         if ($clubId <= 0 || isset($seen[$clubId])) {
@@ -735,6 +921,14 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Build formatted HTML for historic club predecessors.
+     * Loads historical names, foundation years and logos into the shared markup buffer.
+     *
+     * @param mixed $clubId Argument used to resolve loadClubHistoryHtml.
+     * @param mixed $seen Argument used to resolve loadClubHistoryHtml.
+     * @return void Value produced by loadClubHistoryHtml.
+     */
     private static function loadClubHistoryHtml(int $clubId, array $seen): void
     {
         if ($clubId <= 0 || isset($seen[$clubId])) {
@@ -800,6 +994,15 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Populate club-history tree nodes and successor references.
+     * Queries linked clubs, assigns legacy tree metadata and prevents repeated visits.
+     *
+     * @param mixed $clubId Argument used to resolve loadClubHistoryTree.
+     * @param mixed $newClubId Argument used to resolve loadClubHistoryTree.
+     * @param mixed $seen Argument used to resolve loadClubHistoryTree.
+     * @return void Value produced by loadClubHistoryTree.
+     */
     private static function loadClubHistoryTree(int $clubId, int $newClubId, array $seen): void
     {
         if ($clubId <= 0 || isset($seen[$clubId])) {
@@ -844,6 +1047,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Find the most recent project URL slug for a club.
+     * Joins team, season and project relations to determine its latest linked competition.
+     *
+     * @param mixed $clubId Argument used to resolve findLatestProjectSlugForClub.
+     * @return string Value produced by findLatestProjectSlugForClub.
+     */
     private static function findLatestProjectSlugForClub(int $clubId): string
     {
         $db = self::database();
@@ -862,6 +1072,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return (string) ($db->loadResult() ?: '0');
     }
 
+    /**
+     * Find the greatest related project identifier for this club.
+     * Uses project-team and season-team joins to calculate the latest association.
+     *
+     * @param mixed $clubId Argument used to resolve findLatestProjectIdForClub.
+     * @return int Value produced by findLatestProjectIdForClub.
+     */
     private static function findLatestProjectIdForClub(int $clubId): int
     {
         $db = self::database();
@@ -879,6 +1096,13 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return (int) ($db->loadResult() ?: 0);
     }
 
+    /**
+     * Resolve a three-letter country code to its display label.
+     * Uses the country table and Joomla translation, falling back to the original code.
+     *
+     * @param mixed $iso3 Argument used to resolve getShortCountryName.
+     * @return string Value produced by getShortCountryName.
+     */
     private static function getShortCountryName(string $iso3): string
     {
         $iso3 = trim($iso3);
@@ -910,16 +1134,45 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $shortName !== '' ? $shortName : $iso3;
     }
 
+    /**
+     * Parse legacy club ID and ID:alias selectors safely.
+     * Deduplicates positive IDs and rejects malformed, overflowing or partially numeric values.
+     *
+     * @param mixed $value Argument used to resolve normaliseIds.
+     * @return array Value produced by normaliseIds.
+     */
     private static function normaliseIds($value): array
     {
-        $parts = is_array($value)
-            ? $value
-            : preg_split('/[|,]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
+        if (is_array($value)) {
+            $parts = $value;
+        } elseif (is_int($value) || is_string($value)) {
+            $parts = preg_split('/[|,]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        } else {
+            return [];
+        }
 
         $ids = [];
-        foreach ($parts ?: [] as $part) {
-            $id = (int) $part;
-            if ($id > 0) {
+
+        foreach ($parts as $part) {
+            if (!is_int($part) && !is_string($part)) {
+                continue;
+            }
+
+            $raw = trim((string) $part);
+
+            if (!preg_match('/^([0-9]+)(?::[^:\s,;|]+)?$/D', $raw, $matches)) {
+                continue;
+            }
+
+            $digits = ltrim($matches[1], '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
                 $ids[$id] = $id;
             }
         }
@@ -927,11 +1180,23 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return array_values($ids);
     }
 
+    /**
+     * Retrieve Joomla's active frontend application.
+     * Delegates to the component's namespaced site application resolver instead of legacy factories.
+     *
+     * @return CMSApplicationInterface Value produced by frontendApplication.
+     */
     private static function frontendApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve the effective SportsManagement database connection.
+     * Reuses the model connection or selects the configured primary/external database via the resolver.
+     *
+     * @return DatabaseInterface Value produced by database.
+     */
     private static function database(): DatabaseInterface
     {
         if (self::$database instanceof DatabaseInterface) {
@@ -946,6 +1211,12 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return self::$database;
     }
 
+    /**
+     * Retrieve Joomla's primary database service from the container.
+     * Uses the DatabaseInterface dependency-injection service for site queries.
+     *
+     * @return DatabaseInterface Value produced by joomlaDatabase.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -954,6 +1225,12 @@ final class ClubinfoModel extends SportsManagementProjectModel
         return $database;
     }
 
+    /**
+     * Conditionally load the old routing helper for compatibility.
+     * Skips inclusion when the legacy helper class has already been made available.
+     *
+     * @return void Value produced by ensureHelpers.
+     */
     private static function ensureHelpers(): void
     {
         if (!class_exists('sportsmanagementHelperRoute')) {

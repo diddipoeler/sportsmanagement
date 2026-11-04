@@ -30,6 +30,7 @@ $paths = [
     'site/src/Model/RankingModel.php',
     'site/src/Model/PredictionuserModel.php',
     'site/src/Model/PredictionentryModel.php',
+    'site/src/Model/ClubinfoModel.php',
     'site/src/Model/UpdsportsmanagementModel.php',
     'site/src/Controller/UpdsportsmanagementController.php',
     'site/src/Service/SportsManagementSiteApplicationResolver.php',
