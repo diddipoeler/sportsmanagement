@@ -10,24 +10,19 @@
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
-use Joomla\CMS\Language\Text;
 use Diddipoeler\Module\SportsManagementTopTipper\Site\Helper\TopTipperHelper;
+use Joomla\CMS\Language\Text;
 
 if (!$predictionGame || !$predictionProject) {
     return;
 }
 
-$gameId = (int) ($predictionGame->id ?? 0);
+$gameId = TopTipperHelper::validMemberId($predictionGame->id ?? null);
 $config = $topTipperConfig ?? [];
 $tableClass = trim((string) $params->get('table_class', 'table'));
 $tableClass = str_replace('table-condensed', 'table-sm', $tableClass);
 $moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
-$buildRoute = static function (string $view, array $values) use ($databaseSelector): string {
-    return SiteRouteHelper::view($view, array_merge([
-        'cfg_which_database' => (int) $databaseSelector,
-    ], $values));
-};
+$topTipperHelper = new TopTipperHelper();
 ?>
 <div class="jsm-top-tipper<?php echo $moduleClass !== '' ? ' ' . htmlspecialchars($moduleClass, ENT_QUOTES, 'UTF-8') : ''; ?>"
      id="mod-sportsmanagement-top-tipper-<?php echo (int) $module->id; ?>">
@@ -164,21 +159,23 @@ $buildRoute = static function (string $view, array $values) use ($databaseSelect
                 if (!is_object($member)) {
                     continue;
                 }
-                $memberId = (int) $memberId;
+                $memberId = TopTipperHelper::validMemberId($memberId);
+                if ($memberId <= 0) {
+                    continue;
+                }
                 $isCurrent = $memberId === (int) $currentMemberId;
                 $canProfile = !empty($member->show_profile) || $isCurrent;
-                $name = (string) (($member->aliasName ?? '') ?: ($member->name ?? ''));
+                $rawName = ($member->aliasName ?? '') ?: ($member->name ?? '');
+                $name = is_string($rawName) ? $rawName : '';
                 $avatarUrl = TopTipperHelper::avatarUrl($member->avatar ?? null);
-                $memberUrl = $canProfile ? $buildRoute('predictionusers', [
-                    'prediction_id' => $gameId,
-                    'uid' => $memberId,
-                ]) : '';
-                $detailsUrl = $canProfile ? $buildRoute('predictionresults', [
-                    'prediction_id' => $gameId,
-                    'uid' => $memberId,
-                    'pj' => (int) $projectId,
-                    'r' => (int) $roundId,
-                ]) : '';
+                $memberUrl = $canProfile ? $topTipperHelper->memberUrl($gameId, $memberId, (int) $databaseSelector) : '';
+                $detailsUrl = $canProfile ? $topTipperHelper->detailsUrl(
+                    $gameId,
+                    $memberId,
+                    (int) $projectId,
+                    (int) $roundId,
+                    (int) $databaseSelector
+                ) : '';
                 $predictionCount = max(0, (int) ($row['predictionsCount'] ?? 0));
                 $points = (int) ($row['totalPoints'] ?? 0);
                 ?>
