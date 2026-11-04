@@ -28,6 +28,16 @@ final class SmimageimportsController extends SportsManagementAdminController
      * @return void
      * @throws \RuntimeException On invalid token, insufficient permission or missing model.
      */
+    /**
+     * Import an image package through the native administrator model.
+     *
+     * Validates Joomla's POST CSRF token and component create permission
+     * before resolving SmimageimportModel and starting the import.
+     * Reports errors returned by the model and redirects to the list view.
+     *
+     * @return void
+     * @throws \RuntimeException For invalid token, insufficient access or missing model.
+     */
     public function import(): void
     {
         if (!Session::checkToken('post')) {
@@ -63,6 +73,17 @@ final class SmimageimportsController extends SportsManagementAdminController
      * @param string $prefix Administrator model namespace.
      * @param array $config Additional model factory configuration.
      * @return mixed MVC factory model instance or the parent's failure result.
+     */
+    /**
+     * Obtain the administrator image import model through Joomla's MVC factory.
+     *
+     * Uses request-independent loading by default and retains model factory
+     * options explicitly supplied by Joomla or another caller.
+     *
+     * @param string $name Model name, defaulting to Smimageimport.
+     * @param string $prefix Administrator MVC namespace.
+     * @param array $config Additional MVC factory configuration.
+     * @return mixed Joomla model instance or the parent's failure result.
      */
     public function getModel($name = 'Smimageimport', $prefix = 'Administrator', $config = [])
     {
