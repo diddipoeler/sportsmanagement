@@ -18,11 +18,26 @@ use Joomla\CMS\MVC\Controller\FormController;
 /** Joomla 5/6 frontend controller for club editing. */
 final class EditclubController extends FormController
 {
+    /**
+     * Apply changes to the current club through the secured save action.
+     * Delegates to save(), which validates the Joomla form token, verifies
+     * component or club editing rights and updates the club using its model.
+     * @param string|null $key Optional legacy record identifier.
+     * @param string|null $urlVar Optional URL record identifier.
+     * @return bool Whether saving the club succeeded.
+     */
     public function apply($key = null, $urlVar = null)
     {
         return $this->save($key, $urlVar);
     }
 
+    /**
+     * Close the club edit popup without saving submitted changes.
+     * Redirects to the legacy component close view, preserving existing
+     * editor behaviour for frontend forms.
+     * @param string|null $key Optional record identifier.
+     * @return bool Always true after the redirect is set.
+     */
     public function cancel($key = null)
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', 'cancel');
@@ -30,6 +45,14 @@ final class EditclubController extends FormController
         return true;
     }
 
+    /**
+     * Open a club edit form, checking out the requested club first.
+     * Checks edit authorisation, reads the integer-filtered club ID and
+     * checks out the corresponding table record for the current user when
+     * the record exists, then delegates view rendering to Joomla.
+     * @return void
+     * @throws \RuntimeException If the current user cannot edit clubs.
+     */
     public function load(): void
     {
         $this->assertEditorPermission();
@@ -48,6 +71,17 @@ final class EditclubController extends FormController
         parent::display();
     }
 
+    /**
+     * Persist changes from the frontend club editing form.
+     * Checks Joomla's form token and component or club-specific editing
+     * rights, normalises submitted team merge IDs and delegates the update
+     * to EditclubModel. Redirects to the editor on failure or Apply, and
+     * closes the popup following a successful ordinary Save.
+     * @param string|null $key Optional record key for legacy callers.
+     * @param string|null $urlVar Optional URL record identifier.
+     * @return bool True when the model update succeeded.
+     * @throws \RuntimeException When authorisation or model resolution fails.
+     */
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
@@ -93,6 +127,13 @@ final class EditclubController extends FormController
         return true;
     }
 
+    /**
+     * Load and type-check the native frontend club editing model.
+     * Ensures update and checkout operations use an EditclubModel returned
+     * by Joomla's MVC factory rather than an unavailable or invalid model.
+     * @return EditclubModel Native club editing model.
+     * @throws \RuntimeException If the expected model is unavailable.
+     */
     private function editClubModel(): EditclubModel
     {
         $model = $this->getModel('Editclub');
@@ -107,6 +148,14 @@ final class EditclubController extends FormController
     /**
      * Convert only complete positive decimal team IDs to the legacy list
      * format. Never pass nested data or arbitrary text to the table layer.
+     */
+    /**
+     * Convert submitted team IDs into a safe legacy comma-separated list.
+     * Rejects nested values, non-decimal strings, zero and integer overflow,
+     * normalises leading zeros and removes duplicates without expanding
+     * arbitrary user input into database expressions.
+     * @param mixed $mergeTeams Raw team IDs submitted with the edit form.
+     * @return string Deduplicated positive decimal IDs, comma-separated.
      */
     private function normalizeMergeTeams(mixed $mergeTeams): string
     {
@@ -144,6 +193,13 @@ final class EditclubController extends FormController
         return implode(',', $ids);
     }
     /** Ensure a frontend editor cannot write using a token without component ACL. */
+    /**
+     * Require frontend permissions for changing club records.
+     * Allows users authorised for core.edit or club.edit on the component
+     * and rejects any other identity even if the form token is valid.
+     * @return void
+     * @throws \RuntimeException When club editing rights are missing.
+     */
     private function assertEditorPermission(): void
     {
         $identity = $this->app->getIdentity();
