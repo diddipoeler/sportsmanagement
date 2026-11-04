@@ -24,6 +24,14 @@ final class SportstypesModel extends SportsManagementListModel
     public string $_identifier = 'sportstypes';
     public int $count_result = 0;
 
+    /**
+     * Register the administrator sports-type list's sortable and filterable columns.
+     * Initialises Joomla's native list model with sports-category name, icon,
+     * publication and audit fields while keeping explicit MVC factory options.
+     * @param array $config Native list-model configuration.
+     * @param MVCFactoryInterface|null $factory Joomla MVC factory or null.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -42,6 +50,14 @@ final class SportstypesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load the stored sport-category list search and publication filters.
+     * Restores Joomla administrator user state and delegates default sort
+     * handling to the base list model.
+     * @param string $ordering Default sports-category ordering.
+     * @param string $direction Default ascending/descending direction.
+     * @return void
+     */
     protected function populateState($ordering = 's.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -57,6 +73,12 @@ final class SportstypesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the administrator sport-types listing with safe filters.
+     * Queries sport-category metadata, applies search and publication filters
+     * and sorts using the model's supported Joomla list columns.
+     * @return \Joomla\Database\DatabaseQuery Filtered sports-type list query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -127,6 +149,12 @@ final class SportstypesModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Return the available sport categories for Joomla select controls.
+     * Reads sport ID, translated display name and icon metadata
+     * ordered alphabetically for use in administrator dropdowns.
+     * @return array<int,object> Sport category value/text options.
+     */
     public function getSportsTypes(): array
     {
         $db = $this->getDatabase();
@@ -150,6 +178,13 @@ final class SportstypesModel extends SportsManagementListModel
         return $result;
     }
 
+    /**
+     * Count competition projects assigned to one sports category.
+     * Uses a bound positive sports-type ID and returns zero for
+     * an absent or invalid sport selection.
+     * @param mixed $sporttypeid Sport identifier whose projects are counted.
+     * @return int Number of projects for that sport.
+     */
     public function getProjectsCount($sporttypeid = 0): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -167,26 +202,58 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Count all playgrounds independently of a selected sports type.
+     * Provides the legacy global venue total for the sport statistics dashboard.
+     * @param mixed $sporttypeid Unused legacy sports-type selector.
+     * @return int Total venue records across the component.
+     */
     public function getPlaygroundsOnlyCount($sporttypeid = 0): int
     {
         return $this->countTable('#__sportsmanagement_playground');
     }
 
+    /**
+     * Count all leagues irrespective of the selected sports type.
+     * Preserves the dashboard's global league total, distinct from
+     * the project-linked sports-filtered league count.
+     * @param mixed $sporttypeid Unused compatibility parameter.
+     * @return int Total leagues across sports.
+     */
     public function getLeaguesOnlyCount($sporttypeid = 0): int
     {
         return $this->countTable('#__sportsmanagement_league');
     }
 
+    /**
+     * Count all registered people in the component.
+     * Returns the global people total used by the sports statistics overview.
+     * @param mixed $sporttypeid Unused compatibility parameter.
+     * @return int Total person records.
+     */
     public function getPersonsOnlyCount($sporttypeid = 0): int
     {
         return $this->countTable('#__sportsmanagement_person');
     }
 
+    /**
+     * Count all clubs without restricting to a sports type.
+     * Supplies the global club total for administrator statistics.
+     * @param mixed $sporttypeid Unused compatibility parameter.
+     * @return int Total clubs in the component.
+     */
     public function getClubsOnlyCount($sporttypeid = 0): int
     {
         return $this->countTable('#__sportsmanagement_club');
     }
 
+    /**
+     * Count distinct leagues used by projects for one sports type.
+     * Filters projects by a bound sports-category identifier and
+     * counts distinct linked league IDs instead of all stored leagues.
+     * @param mixed $sporttypeid Sport identifier to count.
+     * @return int Number of leagues represented by that sport.
+     */
     public function getLeaguesCount($sporttypeid = 0): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -205,11 +272,24 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Count all stored seasons irrespective of the sport.
+     * Keeps the legacy administrator overview's global season total.
+     * @param mixed $sporttypeid Unused compatibility parameter.
+     * @return int Total season records.
+     */
     public function getSeasonsOnlyCount($sporttypeid = 0): int
     {
         return $this->countTable('#__sportsmanagement_season');
     }
 
+    /**
+     * Count the unique seasons associated with a particular sport.
+     * Queries distinct project season IDs using a bound sports-category
+     * identifier so other sports do not inflate the result.
+     * @param mixed $sporttypeid Sports category to filter.
+     * @return int Distinct seasons containing projects for the sport.
+     */
     public function getSeasonsCount($sporttypeid = 0): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -228,6 +308,13 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Count project-team assignments in the selected sport.
+     * Delegates to the shared project relation counter with the
+     * trusted project-team association table and join criteria.
+     * @param mixed $sporttypeid Sports type whose team assignments are counted.
+     * @return int Project-team relation count.
+     */
     public function getProjectTeamsCount($sporttypeid = 0): int
     {
         return $this->countProjectRelation(
@@ -238,6 +325,13 @@ final class SportstypesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Count project-team player assignments belonging to a sport.
+     * Joins the project, team and roster relations and filters
+     * through a bound sports type before counting assignments.
+     * @param mixed $sporttypeid Sports category to count.
+     * @return int Number of relevant team-player relations.
+     */
     public function getProjectTeamsPlayersCount($sporttypeid = 0): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -270,6 +364,13 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Count divisions belonging to projects for one sports type.
+     * Uses the shared project-scoped relation counter for the
+     * trusted division table and project relation column.
+     * @param mixed $sporttypeid Selected sports category.
+     * @return int Number of matching project divisions.
+     */
     public function getProjectDivisionsCount($sporttypeid = 0): int
     {
         return $this->countProjectRelation(
@@ -280,6 +381,13 @@ final class SportstypesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Count project rounds linked to the chosen sports type.
+     * Delegates to the trusted project relation counting helper
+     * so rounds in unrelated sports remain outside the total.
+     * @param mixed $sporttypeid Selected sport category.
+     * @return int Matching competition rounds.
+     */
     public function getProjectRoundsCount($sporttypeid = 0): int
     {
         return $this->countProjectRelation(
@@ -290,6 +398,13 @@ final class SportstypesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Count fixtures assigned to projects of the selected sport.
+     * Joins matches through rounds to sports-scoped projects
+     * using a bound sports-category ID.
+     * @param mixed $sporttypeid Sports type to count.
+     * @return int Number of matching fixtures.
+     */
     public function getProjectMatchesCount($sporttypeid = 0): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -317,6 +432,14 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Group a sport's fixture events by event type and display name.
+     * Uses project and round relations to scope event rows,
+     * groups the events for dashboard charts and returns their
+     * names and occurrence totals.
+     * @param mixed $sporttypeid Sports category for match events.
+     * @return array<int,object> Grouped event-type summary rows.
+     */
     public function getProjectMatchesEventsNameCount($sporttypeid = 0): array
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -372,6 +495,13 @@ final class SportstypesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count event records attached to fixtures of a sports type.
+     * Joins match events through the match/round/project hierarchy
+     * so event totals exclude unrelated competitions.
+     * @param mixed $sporttypeid Sports category for event counting.
+     * @return int Number of matching match-event rows.
+     */
     public function getProjectMatchesEventsCount($sporttypeid = 0): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -404,6 +534,13 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Count match statistic records within one sports type.
+     * Filters joined match statistics by project sports-category
+     * to avoid mixing separate sports in the dashboard.
+     * @param mixed $sporttypeid Sport category for match statistics.
+     * @return int Number of matching statistic rows.
+     */
     public function getProjectMatchesStatsCount($sporttypeid = 0): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -436,6 +573,14 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Load the total row count from an approved component table.
+     * Builds a basic COUNT query and delegates execution/error
+     * handling to the shared count loader; only trusted call sites
+     * supply the table identifier.
+     * @param string $table Trusted table name to count.
+     * @return int Total table rows or zero when the query fails.
+     */
     private function countTable(string $table): int
     {
         $db = $this->getDatabase();
@@ -446,6 +591,16 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Count records in a trusted project-linked table for a sport.
+     * Joins the relation to the project table with a fixed caller-provided
+     * ON clause and binds the sports-category identifier.
+     * @param string $table Trusted project relation table.
+     * @param string $alias SQL alias for the relation table.
+     * @param string $join Trusted relation-to-project join expression.
+     * @param mixed $sporttypeid Sport category whose relations are counted.
+     * @return int Project-related records for the selected sport.
+     */
     private function countProjectRelation(string $table, string $alias, string $join, $sporttypeid): int
     {
         $sporttypeId = max(0, (int) $sporttypeid);
@@ -467,6 +622,13 @@ final class SportstypesModel extends SportsManagementListModel
         return $this->loadCount($query);
     }
 
+    /**
+     * Execute a COUNT query and safely expose the resulting integer.
+     * Uses Joomla DatabaseInterface and resets count_result to zero
+     * when the database raises an exception.
+     * @param mixed $query Database query created by the counting methods.
+     * @return int Nonnegative count result or zero on failure.
+     */
     private function loadCount($query): int
     {
         try {

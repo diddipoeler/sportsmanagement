@@ -45,6 +45,14 @@ final class MatchesHelper
     use NativeFormatTrait;
     use NativeLinkTrait;
 
+    /**
+     * Resolve the primary Joomla database for the matches module.
+     * Uses an injected connection or obtains DatabaseInterface from
+     * Joomla's container, failing explicitly when unavailable.
+     * @param DatabaseInterface|null $database Optional injected connection.
+     * @return DatabaseInterface Current Joomla database.
+     * @throws \RuntimeException When no database service is available.
+     */
     private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
     {
         if ($database !== null) {

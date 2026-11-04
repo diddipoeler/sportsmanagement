@@ -29,6 +29,14 @@ final class MatchesSliderHelper
     private const MAX_FILTER_VALUE_BYTES = 4096;
     private const MAX_MATCH_ROWS = 500;
 
+    /**
+     * Obtain the primary Joomla database used by the matches slider.
+     * Returns an injected DatabaseInterface when available; otherwise
+     * loads the database from Joomla's DI container and rejects invalid services.
+     * @param DatabaseInterface|null $database Optional injected Joomla connection.
+     * @return DatabaseInterface Resolved primary database.
+     * @throws \RuntimeException If the database service is unavailable.
+     */
     private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
     {
         if ($database !== null) {
@@ -309,6 +317,16 @@ final class MatchesSliderHelper
         return true;
     }
 
+    /**
+     * Build a Joomla results or ranking link for a slider fixture.
+     * Maps configured link modes to supported site views and preserves
+     * the season, project and database selection in the route.
+     * @param object $match Fixture and project context.
+     * @param Registry $params Slider link configuration.
+     * @param int $databaseMode Selected SportsManagement database.
+     * @param int $seasonId Active season identifier.
+     * @return string Joomla route to fixture results or ranking.
+     */
     private function matchLink(object $match, Registry $params, int $databaseMode, int $seasonId): string
     {
         $view = match ((string) $params->get('p_link_func', 'results')) {
@@ -334,6 +352,14 @@ final class MatchesSliderHelper
         return SiteRouteHelper::view($view, $query);
     }
 
+    /**
+     * Find and validate the configured base URL for fixture images.
+     * Uses the external database picture server when selected, checks
+     * the URL for unsafe credentials and invalid components, and falls
+     * back to Joomla's site root where appropriate.
+     * @param int $databaseMode Primary or external database selection.
+     * @return string Sanitised image base URL.
+     */
     private function pictureServer(int $databaseMode): string
     {
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
@@ -362,6 +388,14 @@ final class MatchesSliderHelper
         return rtrim($server, '/') . '/';
     }
 
+    /**
+     * Produce a safe browser URL for the selected fixture image.
+     * Rejects control characters, backslashes, malformed external URLs
+     * and unsafe paths before combining the image with the base server.
+     * @param string $path Stored image path or absolute external image URL.
+     * @param string $pictureServer Validated module image server.
+     * @return string Safe image URL or an empty string.
+     */
     private function mediaUrl(string $path, string $pictureServer): string
     {
         $path = trim($path);
@@ -441,6 +475,14 @@ final class MatchesSliderHelper
         return array_values($ids);
     }
 
+    /**
+     * Resolve the active SportsManagement connection for slider queries.
+     * Delegates primary or external connection selection to the native
+     * Joomla 5/6 database resolver and its configured selector.
+     * @param int $databaseMode Configured SportsManagement database mode.
+     * @param DatabaseInterface $fallbackDatabase Joomla primary connection.
+     * @return DatabaseInterface Database used for match slider data.
+     */
     private function database(int $databaseMode, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
