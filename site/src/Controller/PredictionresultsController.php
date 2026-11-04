@@ -20,6 +20,17 @@ use Joomla\CMS\Session\Session;
 
 final class PredictionresultsController extends BaseController
 {
+    /**
+     * Apply the selected prediction project and round to the results page.
+     *
+     * Accepts only requests with a valid Joomla POST CSRF token, resolves the
+     * results model and redirects to its canonical results route. The selected
+     * game, round, project, prediction member, group and database are preserved
+     * by the route builder rather than being copied from unvalidated input.
+     *
+     * @return void
+     * @throws \RuntimeException When the token is invalid or the model is unavailable.
+     */
     public function selectprojectround(): void
     {
         if (!Session::checkToken('post')) {
@@ -30,6 +41,16 @@ final class PredictionresultsController extends BaseController
         $this->setRedirect($this->buildResultsRoute($model));
     }
 
+    /**
+     * Recalculate prediction points for the currently selected results.
+     *
+     * Verifies the Joomla POST token and the points model's administrative
+     * permission before changing stored results. Afterwards, displays the
+     * number of updated scores and redirects back to the selected results view.
+     *
+     * @return void
+     * @throws \RuntimeException When the token, permission or model is invalid.
+     */
     public function recalculatepoints(): void
     {
         if (!Session::checkToken('post')) {
@@ -49,6 +70,15 @@ final class PredictionresultsController extends BaseController
         $this->setRedirect($this->buildResultsRoute($model));
     }
 
+    /**
+     * Resolve and verify the Joomla MVC model for prediction results.
+     *
+     * Prevents subsequent result-navigation code from operating on a missing
+     * or unrelated model returned by the component MVC factory.
+     *
+     * @return PredictionresultsModel The validated results model.
+     * @throws \RuntimeException When the model cannot be resolved.
+     */
     private function getPredictionResultsModel(): PredictionresultsModel
     {
         $model = $this->getModel('Predictionresults');
@@ -58,6 +88,15 @@ final class PredictionresultsController extends BaseController
         return $model;
     }
 
+    /**
+     * Resolve the model responsible for recalculating prediction scores.
+     *
+     * Ensures that permission checks and score updates are performed only
+     * through the expected native Joomla 5/6 prediction-points model.
+     *
+     * @return PredictionpointsModel The validated points model.
+     * @throws \RuntimeException When the model cannot be resolved.
+     */
     private function getPredictionPointsModel(): PredictionpointsModel
     {
         $model = $this->getModel('Predictionpoints');
@@ -67,6 +106,16 @@ final class PredictionresultsController extends BaseController
         return $model;
     }
 
+    /**
+     * Build the canonical frontend route for the selected prediction results.
+     *
+     * Collects the game, selected round, project, member and group from the
+     * results model and forwards the selected database ID from Joomla input
+     * to the shared prediction route helper.
+     *
+     * @param PredictionresultsModel $model Model providing the current selection.
+     * @return string Route for the prediction results view.
+     */
     private function buildResultsRoute(PredictionresultsModel $model): string
     {
         $input = $this->input;
