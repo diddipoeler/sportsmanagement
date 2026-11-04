@@ -1,66 +1,13 @@
-<?php
-/**
- * Native Joomla 5/6 controller for SportsManagement prediction users.
- *
- * @version    5.6.0
- * @author     diddipoeler
- * @copyright  Copyright (C) diddipoeler
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- */
-namespace Diddipoeler\Component\SportsManagement\Site\Controller;
-
-\defined('_JEXEC') or die;
-
-use Diddipoeler\Component\SportsManagement\Site\Helper\PredictionRouteHelper;
-use Diddipoeler\Component\SportsManagement\Site\Model\PredictionmemberModel;
-use Diddipoeler\Component\SportsManagement\Site\Model\PredictionusersModel;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Controller\BaseController;
-use Joomla\CMS\Session\Session;
-
-final class PredictionusersController extends BaseController
-{
-    public function select(): void
-    {
-        $this->checkPostToken();
-        $model = $this->getPredictionUsersModel();
-        $this->setRedirect($this->buildMemberRoute($model));
-    }
-
-    public function selectprojectround(): void
-    {
-        $this->checkPostToken();
-        $model = $this->getPredictionUsersModel();
-        $this->setRedirect($this->buildMemberRoute($model));
-    }
-
-    /**
-     * Compatibility target for historic predictionusers.savememberdata forms.
-     * The write itself is handled by the native, target-validating writer model.
+<?php    /**
+     * Cancel editing a prediction member and return to its editor route.
+     *
+     * Keeps the historic task name, verifies the submitted Joomla POST token
+     * and resolves the selected member without changing stored information.
+     *
+     * @param string|null $key Unused legacy record identifier.
+     * @return void
+     * @throws \RuntimeException On invalid token or unavailable model.
      */
-    public function savememberdata(): void
-    {
-        $this->checkPostToken();
-        $model = $this->getPredictionMemberModel();
-        $member = $model->getEditableMember();
-
-        if (!$model->canEditMember($member)) {
-            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-        }
-
-        $app = $this->app;
-        $saved = $model->saveMember($this->input->post->getArray());
-        $app->enqueueMessage(
-            Text::_($saved
-                ? 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_MSG_1'
-                : 'COM_SPORTSMANAGEMENT_PRED_USERS_CONTROLLER_ERROR_3'),
-            $saved ? 'message' : 'error'
-        );
-
-        $this->setRedirect($this->buildEditorRoute($model));
-    }
-
-    /** Compatibility target for historic predictionusers.cancel forms. */
     public function cancel($key = null): void
     {
         $this->checkPostToken();
@@ -68,6 +15,15 @@ final class PredictionusersController extends BaseController
         $this->setRedirect($this->buildEditorRoute($model));
     }
 
+    /**
+     * Require a valid Joomla POST CSRF token for member operations.
+     *
+     * Stops state-changing or selection tasks before resolving models when
+     * the request lacks the token expected by Joomla's session service.
+     *
+     * @return void
+     * @throws \RuntimeException If CSRF token verification fails.
+     */
     private function checkPostToken(): void
     {
         if (!Session::checkToken('post')) {
@@ -75,6 +31,15 @@ final class PredictionusersController extends BaseController
         }
     }
 
+    /**
+     * Resolve the Joomla frontend model for prediction-user selection.
+     *
+     * Checks the MVC factory result so that member navigation never reads
+     * data from a missing or incompatible component model.
+     *
+     * @return PredictionusersModel Validated prediction users model.
+     * @throws \RuntimeException If the expected model is unavailable.
+     */
     private function getPredictionUsersModel(): PredictionusersModel
     {
         $model = $this->getModel('Predictionusers');
@@ -84,6 +49,15 @@ final class PredictionusersController extends BaseController
         return $model;
     }
 
+    /**
+     * Resolve the Joomla model for editing prediction members.
+     *
+     * Requires the native PredictionmemberModel so permission checks and
+     * member writes use the same component-level data access implementation.
+     *
+     * @return PredictionmemberModel Validated member model.
+     * @throws \RuntimeException If the model is unavailable.
+     */
     private function getPredictionMemberModel(): PredictionmemberModel
     {
         $model = $this->getModel('Predictionmember');
@@ -93,6 +67,16 @@ final class PredictionusersController extends BaseController
         return $model;
     }
 
+    /**
+     * Construct the prediction member navigation URL.
+     *
+     * Reads game, project, group and round context from the validated model;
+     * takes the selected member ID from POST as a filtered integer and
+     * preserves the current SportsManagement database selector.
+     *
+     * @param PredictionusersModel $model Model exposing prediction selection.
+     * @return string Canonical prediction member URL.
+     */
     private function buildMemberRoute(PredictionusersModel $model): string
     {
         $input = $this->input;
@@ -108,6 +92,15 @@ final class PredictionusersController extends BaseController
         );
     }
 
+    /**
+     * Construct the return URL for the prediction-member editor.
+     *
+     * Reads the selected member, game, project, group and round from the
+     * editor model and preserves the active SportsManagement database ID.
+     *
+     * @param PredictionmemberModel $model Native editable-member model.
+     * @return string Canonical URL for the member editor.
+     */
     private function buildEditorRoute(PredictionmemberModel $model): string
     {
         $input = $this->input;
