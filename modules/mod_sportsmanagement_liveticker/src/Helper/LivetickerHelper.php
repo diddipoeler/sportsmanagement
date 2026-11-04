@@ -26,6 +26,17 @@ use Joomla\Registry\Registry;
 
 final class LivetickerHelper
 {
+    /**
+     * Prepare live-match data and display settings for the module.
+     * Requires the Joomla site client, validates the configured database
+     * selector and obtains bounded fixture/commentary records used to
+     * render the current match list.
+     * @param Registry $params Live ticker module configuration.
+     * @param object $module Current Joomla module instance.
+     * @param CMSApplicationInterface $app Active frontend app.
+     * @param DatabaseInterface|null $database Optional injected Joomla database.
+     * @return array Live-ticker view data.
+     */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app, ?DatabaseInterface $database = null): array
     {
         if (!$app->isClient('site')) {
@@ -106,11 +117,25 @@ final class LivetickerHelper
         return $this->buildListHtml($list, $commentary, $params, $app);
     }
 
+    /**
+     * Resolve the native Joomla frontend application for AJAX actions.
+     * Obtains the service through the SportsManagement application
+     * resolver and does not use obsolete static factory calls.
+     * @return CMSApplicationInterface Current Joomla site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Return a caller-provided or Joomla-managed database connection.
+     * Uses an injected database for tests and module dispatchers;
+     * otherwise validates the DatabaseInterface service from Joomla DI.
+     * @param DatabaseInterface|null $database Optional explicit connection.
+     * @return DatabaseInterface Connection for ticker queries.
+     * @throws \RuntimeException When the database service is unavailable.
+     */
     private function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
     {
         if ($database !== null) {
@@ -295,6 +320,16 @@ final class LivetickerHelper
         }
     }
 
+    /**
+     * Render escaped live-ticker markup from match and commentary data.
+     * Applies module settings for competition names, flags, kickoff,
+     * results and event details while keeping displayed values HTML safe.
+     * @param array $list Prepared live-match records.
+     * @param array $commentary Commentary mapped to match IDs.
+     * @param Registry $params Live-ticker display preferences.
+     * @param CMSApplicationInterface $app Joomla site application.
+     * @return string HTML representing the live match list.
+     */
     private function buildListHtml(
         array $list,
         array $commentary,
@@ -420,6 +455,15 @@ final class LivetickerHelper
         return $html . '</tbody></table></div></div></div>';
     }
 
+    /**
+     * Select the requested team-name length for a ticker fixture.
+     * Chooses full, middle or short names from the match record
+     * according to the module's team display mode.
+     * @param object $match Match record with team name variants.
+     * @param string $side Team field prefix.
+     * @param int $mode Requested name length.
+     * @return string Selected team name.
+     */
     private function teamName(object $match, string $side, int $mode): string
     {
         return match ($mode) {
@@ -429,6 +473,13 @@ final class LivetickerHelper
         };
     }
 
+    /**
+     * Format a match's period-by-period results for display.
+     * Combines the stored split-score lists for both participants
+     * into a consistent text representation.
+     * @param object $match Match row containing split result strings.
+     * @return string Formatted split scores.
+     */
     private function splitResults(object $match): string
     {
         $left = explode(';', (string) ($match->team1_result_split ?? ''));
@@ -451,6 +502,15 @@ final class LivetickerHelper
         return implode(' ', $parts);
     }
 
+    /**
+     * Render a safe HTML image element for the ticker.
+     * Escapes the source and alt text, preserves an optional explicit
+     * width and omits the element when no image URL was supplied.
+     * @param string $src Safe image URL.
+     * @param string $alt Alternative text for the image.
+     * @param int|null $width Optional image width.
+     * @return string Image HTML or empty string.
+     */
     private function image(string $src, string $alt, ?int $width = null): string
     {
         if ($src === '') {
@@ -463,6 +523,13 @@ final class LivetickerHelper
             . $widthAttribute . ' loading="lazy">';
     }
 
+    /**
+     * Return the current instant in Joomla's configured timezone.
+     * Falls back to UTC when stored timezone data is invalid so live
+     * match-window calculations do not fail.
+     * @param CMSApplicationInterface $app Active Joomla site application.
+     * @return DateTimeImmutable Current timezone-aware instant.
+     */
     private function getNow(CMSApplicationInterface $app): DateTimeImmutable
     {
         $timezone = (string) $app->get('offset', 'UTC');
@@ -519,11 +586,26 @@ final class LivetickerHelper
         return (int) $matches[1];
     }
 
+    /**
+     * Resolve the selected SportsManagement database for a ticker request.
+     * Uses the validated selector and shared component resolver to
+     * keep fixture and commentary lookups on the same connection.
+     * @param int $selector Validated database selector.
+     * @param DatabaseInterface $joomlaDatabase Joomla fallback connection.
+     * @return DatabaseInterface Effective SportsManagement connection.
+     */
     private function database(int $selector, DatabaseInterface $joomlaDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector);
     }
 
+    /**
+     * Resolve the Joomla module whose AJAX refresh was requested.
+     * Rejects nonpositive IDs and checks that the module retrieved by
+     * ModuleHelper matches the requested configured module.
+     * @param int $moduleId Numeric Joomla module identifier.
+     * @return object|null Module record or null if unavailable.
+     */
     private function requestedModule(int $moduleId): ?object
     {
         if ($moduleId <= 0) {
@@ -545,6 +627,13 @@ final class LivetickerHelper
         return $module;
     }
 
+    /**
+     * Escape a database-derived string before insertion into ticker HTML.
+     * Uses HTML entity encoding with substitute handling for malformed
+     * UTF-8 input, avoiding HTML injection from club and event fields.
+     * @param string $value Text needing safe HTML presentation.
+     * @return string Escaped UTF-8 HTML text.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');

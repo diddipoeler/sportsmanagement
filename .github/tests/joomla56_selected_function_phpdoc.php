@@ -37,6 +37,8 @@ $paths = [
     'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php',
     'modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php',
     'modules/mod_sportsmanagement_gcalendar/helper.php',
+    'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php',
+    'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php',
 ];
 $errors = [];
 $methods = 0;
