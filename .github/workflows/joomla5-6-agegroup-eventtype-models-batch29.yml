@@ -54,7 +54,7 @@ jobs:
             grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
           done
 
-          grep -Fq 'class sportsmanagementModelagegroup extends AgegroupModel' admin/models/agegroup.php
+          grep -Fq "class_alias(AgegroupModel::class, 'sportsmanagementModelagegroup')" admin/models/agegroup.php
           grep -Fq "class_alias(AgegroupsModel::class, 'sportsmanagementModelagegroups')" admin/models/agegroups.php
           grep -Fq "class_alias(EventtypeModel::class, 'sportsmanagementModeleventtype')" admin/models/eventtype.php
           grep -Fq "class_alias(EventtypesModel::class, 'sportsmanagementModelEventtypes')" admin/models/eventtypes.php

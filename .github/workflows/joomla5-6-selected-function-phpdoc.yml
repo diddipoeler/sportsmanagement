@@ -4,15 +4,9 @@ on:
   push:
     branches: [joomla5-6]
     paths:
-      - 'site/src/Controller/ResultsController.php'
-      - 'site/src/Controller/PredictionentryController.php'
-      - 'site/src/Controller/AjaxController.php'
-      - 'site/src/Controller/MatchesController.php'
-      - 'admin/src/Model/AgegroupsModel.php'
-      - 'admin/src/Controller/AgegroupsController.php'
-      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
-      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
-      - 'modules/mod_sportsmanagement_gcalendar/helper.php'
+      - 'site/**/*.php'
+      - 'admin/**/*.php'
+      - 'modules/**/*.php'
       - '.github/tests/joomla56_selected_function_phpdoc.php'
       - '.github/workflows/joomla5-6-selected-function-phpdoc.yml'
   pull_request:

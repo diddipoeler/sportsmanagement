@@ -1,0 +1,35 @@
+name: Joomla 5/6 frontend person editor identity guard
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/EditpersonController.php'
+      - '.github/tests/joomla56_site_editperson_identity.php'
+      - '.github/workflows/joomla5-6-site-editperson-identity.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Controller/EditpersonController.php'
+      - '.github/tests/joomla56_site_editperson_identity.php'
+      - '.github/workflows/joomla5-6-site-editperson-identity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  editor-identity:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint frontend person editor and regression test
+        run: |
+          php -l site/src/Controller/EditpersonController.php
+          php -l .github/tests/joomla56_site_editperson_identity.php
+      - name: Deny missing and guest identities; accept authorised editors
+        run: php .github/tests/joomla56_site_editperson_identity.php
