@@ -33,6 +33,15 @@ class NavigationMenuHelper
     private ?object $project = null;
     private ?array $teamOptions = null;
 
+    /**
+     * Initialise the navigation helper and optional Joomla dependencies.
+     * Uses supplied params, site application and database when available
+     * and derives selected navigation state for existing legacy callers.
+     * @param Registry|null $params Optional module configuration.
+     * @param CMSApplicationInterface|null $app Optional active site application.
+     * @param DatabaseInterface|null $db Optional database connection.
+     * @return void
+     */
     public function __construct(
         ?Registry $params = null,
         ?CMSApplicationInterface $app = null,
@@ -50,6 +59,16 @@ class NavigationMenuHelper
         }
     }
 
+    /**
+     * Configure native module navigation data for the current request.
+     * Resolves the requested SportsManagement database, reads project
+     * and team state and returns the helper plus selectors required by
+     * the Joomla module layout.
+     * @param Registry $params Navigation module configuration.
+     * @param CMSApplicationInterface $app Site application context.
+     * @param DatabaseInterface $joomlaDatabase Base database connection.
+     * @return array Prepared navigation template data.
+     */
     public function getData(
         Registry $params,
         CMSApplicationInterface $app,
@@ -75,6 +94,12 @@ class NavigationMenuHelper
         ];
     }
 
+    /**
+     * Read the active project, division, league and team selection.
+     * Combines the module's configured defaults with Joomla frontend
+     * request parameters, normalising the identifiers used by select menus.
+     * @return void
+     */
     private function initialiseState(): void
     {
         $input = $this->app->getInput();
@@ -89,6 +114,12 @@ class NavigationMenuHelper
         $this->teamOptions = null;
     }
 
+    /**
+     * Load the selected project and cache its navigation metadata.
+     * Returns false when no valid project was selected; otherwise
+     * retrieves the current project context needed by related selectors.
+     * @return object|false Selected project record or false.
+     */
     public function getProject(): object|false
     {
         if ($this->project !== null) {
@@ -140,6 +171,12 @@ class NavigationMenuHelper
         return $this->project ?: false;
     }
 
+    /**
+     * Render the Joomla season dropdown for the navigation menu.
+     * Loads available season options, includes the configured prompt and
+     * marks the season associated with the current project.
+     * @return string HTML selection control for seasons.
+     */
     public function getSeasonSelect(): string
     {
         $options = [
@@ -161,6 +198,12 @@ class NavigationMenuHelper
         return HTMLHelper::_('select.genericlist', $options, 's', ['class' => 'jlnav-select form-select'], 'value', 'text', $this->getSeasonId());
     }
 
+    /**
+     * Return the season identifier of the selected project.
+     * Uses cached project data when possible and reports zero when the
+     * navigation has no active project.
+     * @return int Selected season ID or zero.
+     */
     public function getSeasonId(): int
     {
         $project = $this->getProject();
@@ -168,6 +211,12 @@ class NavigationMenuHelper
         return $project ? (int) $project->season_id : 0;
     }
 
+    /**
+     * Render the division dropdown scoped to the current project.
+     * Returns false without a project and otherwise includes configured
+     * prompt text and project division options.
+     * @return string|false Division selector HTML or false.
+     */
     public function getDivisionSelect(): string|false
     {
         $project = $this->getProject();
@@ -202,11 +251,22 @@ class NavigationMenuHelper
         return HTMLHelper::_('select.genericlist', $options, 'd', ['class' => 'jlnav-division form-select'], 'value', 'text', $this->divisionId);
     }
 
+    /**
+     * Expose the division identifier from the navigation selection.
+     * Allows legacy template code to read the normalised current state.
+     * @return int Selected division ID or zero.
+     */
     public function getDivisionId(): int
     {
         return $this->divisionId;
     }
 
+    /**
+     * Build the league selection control for the frontend menu.
+     * Queries league options in the selected database and renders the
+     * module's configured translated prompt and selected value.
+     * @return string League selection HTML.
+     */
     public function getLeagueSelect(): string
     {
         $options = [
@@ -228,6 +288,12 @@ class NavigationMenuHelper
         return HTMLHelper::_('select.genericlist', $options, 'l', ['class' => 'jlnav-select form-select'], 'value', 'text', $this->getLeagueId());
     }
 
+    /**
+     * Return the current project's league identifier.
+     * Avoids assuming a project exists when navigation is displayed
+     * outside a SportsManagement component view.
+     * @return int League ID or zero.
+     */
     public function getLeagueId(): int
     {
         $project = $this->getProject();
@@ -235,6 +301,12 @@ class NavigationMenuHelper
         return $project ? (int) $project->league_id : 0;
     }
 
+    /**
+     * Render the project dropdown with its configured filtering.
+     * Combines module selectors and current navigation context to
+     * produce linkable Joomla select options for available projects.
+     * @return string Project selection HTML.
+     */
     public function getProjectSelect(): string
     {
         $options = [
@@ -306,6 +378,12 @@ class NavigationMenuHelper
         return HTMLHelper::_('select.genericlist', $options, 'p', ['class' => 'jlnav-project form-select'], 'value', 'text', $this->projectId);
     }
 
+    /**
+     * Render the team selector for the active project.
+     * Returns false without a valid project and otherwise uses the
+     * project-scoped team options prepared by getTeamsOptions().
+     * @return string|false Team select HTML or false.
+     */
     public function getTeamSelect(): string|false
     {
         if ($this->projectId <= 0) {
@@ -323,6 +401,12 @@ class NavigationMenuHelper
         return HTMLHelper::_('select.genericlist', $options, 'tid', ['class' => 'jlnav-team form-select'], 'value', 'text', $this->teamId);
     }
 
+    /**
+     * Query and cache the teams available for this project.
+     * Restricts entries to the selected project and reuses cached
+     * options for multiple navigation controls in the same request.
+     * @return array<int,object> Project team selection records.
+     */
     protected function getTeamsOptions(): array
     {
         if ($this->teamOptions !== null) {
@@ -357,11 +441,23 @@ class NavigationMenuHelper
         return $this->teamOptions;
     }
 
+    /**
+     * Return the selected team identifier for navigation links.
+     * Exposes the helper's normalised team state to legacy templates.
+     * @return int Current team ID or zero.
+     */
     public function getTeamId(): int
     {
         return $this->teamId;
     }
 
+    /**
+     * Construct a frontend URL for a supported navigation destination.
+     * Rejects separators and missing projects, then forwards selected
+     * database, project, division and team context to the site router.
+     * @param mixed $view Requested SportsManagement view or separator.
+     * @return string|false Routed destination, or false when unavailable.
+     */
     public function getLink($view): string|false
     {
         if ($this->projectId <= 0 || $view === 'separator') {
@@ -497,6 +593,14 @@ class NavigationMenuHelper
         }
     }
 
+    /**
+     * Read a module option while respecting a supplied default.
+     * Provides a compatibility facade for older navigation templates
+     * without exposing the underlying Registry property.
+     * @param string $name Module option name.
+     * @param mixed $default Fallback when the setting is absent.
+     * @return mixed Configured option or supplied fallback.
+     */
     protected function getParam(string $name, mixed $default = null): mixed
     {
         return $this->params->get($name, $default);
@@ -512,6 +616,12 @@ class NavigationMenuHelper
         return (string) $id . ($alias === null ? '' : ':' . (string) $alias);
     }
 
+    /**
+     * Obtain the Joomla site application for legacy helper construction.
+     * Resolves the app through the component's dedicated Joomla 5/6
+     * service instead of relying on deprecated global factories.
+     * @return CMSApplicationInterface Active Joomla frontend application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();

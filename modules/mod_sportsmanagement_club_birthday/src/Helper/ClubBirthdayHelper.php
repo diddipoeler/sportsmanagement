@@ -29,6 +29,16 @@ use Throwable;
 
 final class ClubBirthdayHelper
 {
+    /**
+     * Prepare club anniversaries for the native Joomla birthday module.
+     * Validates mode and season settings, resolves the chosen database,
+     * loads eligible clubs and formats anniversary information for the
+     * frontend layout without expanding malformed season selections.
+     * @param Registry $params Club birthday module options.
+     * @param CMSApplicationInterface $app Current Joomla site application.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla database.
+     * @return array Module presentation data and anniversary entries.
+     */
     public function getData(
         Registry $params,
         CMSApplicationInterface $app,
@@ -96,6 +106,14 @@ final class ClubBirthdayHelper
         return $selector === false ? 0 : $selector;
     }
 
+    /**
+     * Order upcoming club anniversaries by date and configured age rule.
+     * Uses the number of days until the next anniversary as the primary
+     * sort key, with age ordering to break otherwise equivalent entries.
+     * @param array<int,object> $clubs Anniversary records to sort.
+     * @param int $sort Signed ordering option for club age.
+     * @return array<int,object> Sorted club anniversaries.
+     */
     public static function sortClubs(array $clubs, int $sort): array
     {
         $ageDirection = $sort < 0 ? -1 : 1;
@@ -116,6 +134,18 @@ final class ClubBirthdayHelper
         return $clubs;
     }
 
+    /**
+     * Retrieve eligible clubs and calculate upcoming anniversaries.
+     * Filters by configured seasons, computes date differences in the
+     * site timezone and limits results before returning display records.
+     * @param int $limit Maximum number of clubs to return.
+     * @param int $maxDays Maximum days until the next anniversary.
+     * @param mixed $seasonIds Requested season IDs.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param DateTimeZone $timezone Joomla site timezone.
+     * @param int $sortOrder Configured anniversary ordering.
+     * @return array<int,object> Club records with computed anniversary data.
+     */
     private function getClubs(
         int $limit,
         int $maxDays,
@@ -236,6 +266,15 @@ final class ClubBirthdayHelper
         return $limit > 0 ? array_slice($clubs, 0, $limit) : $clubs;
     }
 
+    /**
+     * Format the message displayed for a club's next anniversary.
+     * Uses today, tomorrow or days-remaining messages and applies the
+     * module's language and date-format preferences.
+     * @param object $club Club with computed remaining days.
+     * @param Registry $params Module text and formatting options.
+     * @param DateTimeZone $timezone Site date timezone.
+     * @return string Display-ready anniversary label.
+     */
     private static function birthdayText(object $club, Registry $params, DateTimeZone $timezone): string
     {
         $when = match ((int) $club->days_to_birthday) {
@@ -266,6 +305,14 @@ final class ClubBirthdayHelper
         ]);
     }
 
+    /**
+     * Create a Joomla frontend URL for a club in a project.
+     * Builds a routed club information link using the project and club
+     * identifiers instead of manually concatenating template parameters.
+     * @param int $projectId Context project identifier.
+     * @param int $clubId Club to display.
+     * @return string Joomla-routed club information URL.
+     */
     private static function clubLink(int $projectId, int $clubId): string
     {
         return Route::_(SiteRouteHelper::view('clubinfo', [
@@ -274,6 +321,14 @@ final class ClubBirthdayHelper
         ]));
     }
 
+    /**
+     * Resolve the club picture or configured fallback logo safely.
+     * Accepts only local media paths beneath the Joomla installation
+     * and returns an empty URL when neither candidate is valid.
+     * @param string $picture Club's configured logo or picture path.
+     * @param Registry $params Module placeholder and presentation settings.
+     * @return string Safe browser image URL or an empty string.
+     */
     private static function pictureUrl(string $picture, Registry $params): string
     {
         $root = realpath(JPATH_ROOT);
@@ -304,6 +359,13 @@ final class ClubBirthdayHelper
         return '';
     }
 
+    /**
+     * Validate a local club image path before using it in HTML.
+     * Rejects schemes, protocol-relative paths, path traversal and
+     * control characters in untrusted picture fields.
+     * @param string $candidate Raw local media path.
+     * @return string Valid relative path, or an empty string.
+     */
     private static function localImagePath(string $candidate): string
     {
         $candidate = trim($candidate);
@@ -321,6 +383,14 @@ final class ClubBirthdayHelper
         return ltrim($candidate, '/');
     }
 
+    /**
+     * Create an escaped country flag marker for a club anniversary.
+     * Normalises country codes, respects the flag display setting and
+     * keeps untrusted country names safe when rendered as HTML.
+     * @param object $row Club and country data from the database.
+     * @param Registry $params Module flag presentation preferences.
+     * @return string Safe country flag HTML fragment.
+     */
     private static function flagHtml(object $row, Registry $params): string
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
@@ -374,6 +444,13 @@ final class ClubBirthdayHelper
         return false;
     }
 
+    /**
+     * Parse season identifiers from legacy module selector values.
+     * Accepts numeric scalars and delimited lists, deduplicates valid
+     * positive IDs and ignores malformed or overflowing inputs.
+     * @param mixed $values Raw Joomla season selection.
+     * @return array<int> Normalised positive season identifiers.
+     */
     private static function normaliseIds(mixed $values): array
     {
         $values = is_array($values) ? $values : [$values];
@@ -406,6 +483,13 @@ final class ClubBirthdayHelper
         return array_values($ids);
     }
 
+    /**
+     * Resolve the club-anniversary timezone from Joomla configuration.
+     * Falls back to UTC if the configured timezone cannot be instantiated
+     * so anniversary calculations remain available.
+     * @param CMSApplicationInterface $app Joomla application with an offset.
+     * @return DateTimeZone Effective module timezone.
+     */
     private static function timezone(CMSApplicationInterface $app): DateTimeZone
     {
         try {

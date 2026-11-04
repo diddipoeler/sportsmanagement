@@ -34,6 +34,8 @@ $paths = [
     'admin/src/Model/ClubnamesModel.php',
     'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php',
     'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php',
+    'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php',
+    'modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php',
     'modules/mod_sportsmanagement_gcalendar/helper.php',
 ];
 $errors = [];
