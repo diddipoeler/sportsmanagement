@@ -20,6 +20,14 @@ use Joomla\CMS\Session\Session;
 
 final class PredictionusersController extends BaseController
 {
+    /**
+     * Select a prediction member and redirect to its canonical page.
+     *
+     * Checks the Joomla POST token and uses the native prediction users
+     * model to preserve game, project, group, round and database context.
+     *
+     * @return void
+     */
     public function select(): void
     {
         $this->checkPostToken();
@@ -27,6 +35,14 @@ final class PredictionusersController extends BaseController
         $this->setRedirect($this->buildMemberRoute($model));
     }
 
+    /**
+     * Apply a project and round selection to prediction member navigation.
+     *
+     * Validates the Joomla POST token, resolves the prediction users
+     * model and redirects using its currently selected context.
+     *
+     * @return void
+     */
     public function selectprojectround(): void
     {
         $this->checkPostToken();
@@ -35,8 +51,13 @@ final class PredictionusersController extends BaseController
     }
 
     /**
-     * Compatibility target for historic predictionusers.savememberdata forms.
-     * The write itself is handled by the native, target-validating writer model.
+     * Save submitted prediction member details using the native writer model.
+     *
+     * Validates the POST token, resolves the member and checks whether the
+     * current user may edit that specific member. Reports the save result
+     * and redirects back to the member editor without leaking write access.
+     *
+     * @return void
      */
     public function savememberdata(): void
     {
@@ -60,7 +81,15 @@ final class PredictionusersController extends BaseController
         $this->setRedirect($this->buildEditorRoute($model));
     }
 
-    /** Compatibility target for historic predictionusers.cancel forms. */
+    /**
+     * Cancel prediction member editing without modifying stored data.
+     *
+     * Validates the form token and returns to the selected member's
+     * editor route using its current game and project context.
+     *
+     * @param string|null $key Unused legacy record key.
+     * @return void
+     */
     public function cancel($key = null): void
     {
         $this->checkPostToken();
@@ -68,6 +97,14 @@ final class PredictionusersController extends BaseController
         $this->setRedirect($this->buildEditorRoute($model));
     }
 
+    /**
+     * Reject prediction member requests with an invalid POST CSRF token.
+     *
+     * Uses Joomla's session token verification before a form selection
+     * or member update is allowed to continue.
+     *
+     * @return void
+     */
     private function checkPostToken(): void
     {
         if (!Session::checkToken('post')) {
@@ -75,6 +112,14 @@ final class PredictionusersController extends BaseController
         }
     }
 
+    /**
+     * Resolve the native prediction users model for member navigation.
+     *
+     * Verifies the MVC factory result so route construction cannot
+     * proceed with an unavailable or incompatible model.
+     *
+     * @return PredictionusersModel Validated prediction users model.
+     */
     private function getPredictionUsersModel(): PredictionusersModel
     {
         $model = $this->getModel('Predictionusers');
@@ -84,6 +129,14 @@ final class PredictionusersController extends BaseController
         return $model;
     }
 
+    /**
+     * Resolve the native model responsible for prediction member editing.
+     *
+     * Ensures member access checks and writes run through the expected
+     * Joomla 5/6 component model implementation.
+     *
+     * @return PredictionmemberModel Validated member model.
+     */
     private function getPredictionMemberModel(): PredictionmemberModel
     {
         $model = $this->getModel('Predictionmember');
@@ -93,6 +146,15 @@ final class PredictionusersController extends BaseController
         return $model;
     }
 
+    /**
+     * Build a member page URL from the selected prediction context.
+     *
+     * Reads game, project, group and round from the model and uses
+     * Joomla's integer-filtered selected member and database inputs.
+     *
+     * @param PredictionusersModel $model Source of selection data.
+     * @return string Canonical member URL.
+     */
     private function buildMemberRoute(PredictionusersModel $model): string
     {
         $input = $this->input;
@@ -108,6 +170,15 @@ final class PredictionusersController extends BaseController
         );
     }
 
+    /**
+     * Build an editor return URL from the selected prediction member.
+     *
+     * Preserves the member, game, project, group, round and selected
+     * SportsManagement database across form submissions and cancellation.
+     *
+     * @param PredictionmemberModel $model Current member editing model.
+     * @return string Canonical member editor URL.
+     */
     private function buildEditorRoute(PredictionmemberModel $model): string
     {
         $input = $this->input;
