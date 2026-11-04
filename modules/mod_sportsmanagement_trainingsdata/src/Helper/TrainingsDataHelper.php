@@ -19,6 +19,15 @@ use Joomla\Registry\Registry;
 
 final class TrainingsDataHelper
 {
+    /**
+     * Load the configured team's training schedule for a Joomla module.
+     * Validates the team ID or ID:alias slug and the database selector,
+     * uses bound SQL parameters, orders sessions by weekday/start time
+     * and logs database failures without exposing connection details.
+     * @param Registry $params TrainingsData module settings.
+     * @param DatabaseInterface $fallbackDatabase Joomla fallback database.
+     * @return array<int,object> Training sessions or an empty list on failure.
+     */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $teamId = self::positiveId($params->get('teams', 0));
@@ -27,8 +36,14 @@ final class TrainingsDataHelper
             return [];
         }
 
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($selector === null) {
+            return [];
+        }
+
         try {
-            $db = $this->database($params, $fallbackDatabase);
+            $db = $this->database($selector, $fallbackDatabase);
             $query = $db->createQuery()
                 ->select([
                     $db->quoteName('dayofweek'),
@@ -82,11 +97,37 @@ final class TrainingsDataHelper
         return (int) $decimal;
     }
 
-    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    /**
+     * Accept only the two configured SportsManagement database choices.
+     * Allows integer zero/one and decimal strings with leading zeroes,
+     * rejecting malformed or partially numeric values instead of coercing
+     * them into another database selection.
+     * @param mixed $raw Raw cfg_which_database module setting.
+     * @return int|null Allowed database selector or null when invalid.
+     */
+    private static function databaseSelector(mixed $raw): ?int
     {
-        return SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
+        if (is_int($raw)) {
+            return $raw === 0 || $raw === 1 ? $raw : null;
+        }
+
+        if (!is_string($raw) || !preg_match('/^0*([01])$/D', $raw, $matches)) {
+            return null;
+        }
+
+        return (int) $matches[1];
+    }
+
+    /**
+     * Resolve the already-validated database selected by the module.
+     * Keeps the connection selection in the component's Joomla 5/6
+     * database resolver rather than using deprecated Joomla factories.
+     * @param int $selector Validated primary/external database setting.
+     * @param DatabaseInterface $fallbackDatabase Joomla database service.
+     * @return DatabaseInterface Effective connection for training queries.
+     */
+    private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    {
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 }

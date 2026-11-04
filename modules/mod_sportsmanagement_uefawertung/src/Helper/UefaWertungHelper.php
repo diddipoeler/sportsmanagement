@@ -95,6 +95,14 @@ final class UefaWertungHelper
         return (int) $digits;
     }
 
+    /**
+     * Resolve the human-readable season label for a UEFA ranking query.
+     * Looks up a single season by its bound numeric ID and trims the label
+     * before collecting ranking seasons and country points.
+     * @param DatabaseInterface $db Active SportsManagement database.
+     * @param int $seasonId Requested season identifier.
+     * @return string Season label, or an empty string when not found.
+     */
     private function seasonName(DatabaseInterface $db, int $seasonId): string
     {
         $query = $db->createQuery()

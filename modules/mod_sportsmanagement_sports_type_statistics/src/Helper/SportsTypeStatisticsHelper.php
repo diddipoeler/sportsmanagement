@@ -17,6 +17,15 @@ use Joomla\Registry\Registry;
 
 final class SportsTypeStatisticsHelper
 {
+    /**
+     * Load the selected sport and its scoped statistics for module display.
+     * Validates sport and database selectors, resolves the Joomla or external
+     * SportsManagement connection and computes project, league, season, venue,
+     * team, player and fixture totals for the selected sport only.
+     * @param Registry $params Sports type statistics module parameters.
+     * @param DatabaseInterface $fallbackDatabase Primary Joomla database.
+     * @return array Sport metadata and aggregate count values.
+     */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $sportTypeId = self::nonNegativeSelector($params->get('sportstypes', 0));
@@ -130,6 +139,14 @@ final class SportsTypeStatisticsHelper
         return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
+    /**
+     * Count projects belonging to a single sports category.
+     * Uses a bound sport-type identifier and returns zero for invalid IDs
+     * instead of counting projects across unrelated sports.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $sportTypeId Positive sports category identifier.
+     * @return int Number of projects in that sports category.
+     */
     private function countProjects(DatabaseInterface $db, int $sportTypeId): int
     {
         if ($sportTypeId <= 0) {
@@ -225,6 +242,15 @@ final class SportsTypeStatisticsHelper
         return count($grounds);
     }
 
+    /**
+     * Count rows linked to projects of the selected sport.
+     * Joins a trusted project-relation table to the projects dataset and
+     * scopes the result by the bound sports category ID.
+     * @param DatabaseInterface $db Selected database connection.
+     * @param string $table Trusted project relation table name.
+     * @param int $sportTypeId Sports category identifier.
+     * @return int Related records within that sport.
+     */
     private function countProjectRelation(DatabaseInterface $db, string $table, int $sportTypeId): int
     {
         if ($sportTypeId <= 0) {
@@ -299,6 +325,14 @@ final class SportsTypeStatisticsHelper
         return (int) $db->loadResult();
     }
 
+    /**
+     * Count fixtures belonging to projects of a sports category.
+     * Joins match rounds back to projects so the aggregation excludes
+     * matches from other configured sports.
+     * @param DatabaseInterface $db Selected database connection.
+     * @param int $sportTypeId Sports category to count.
+     * @return int Total matching fixture records.
+     */
     private function countMatches(DatabaseInterface $db, int $sportTypeId): int
     {
         if ($sportTypeId <= 0) {
@@ -317,6 +351,15 @@ final class SportsTypeStatisticsHelper
         return (int) $db->loadResult();
     }
 
+    /**
+     * Count match-related detail rows within the selected sport.
+     * Joins a trusted match-child table through fixtures and rounds to
+     * sport-filtered projects, avoiding cross-sport aggregate leakage.
+     * @param DatabaseInterface $db Selected database connection.
+     * @param string $table Trusted match detail table.
+     * @param int $sportTypeId Selected sport-type ID.
+     * @return int Matching detail records.
+     */
     private function countMatchChild(DatabaseInterface $db, string $table, int $sportTypeId): int
     {
         if ($sportTypeId <= 0) {
@@ -366,6 +409,14 @@ final class SportsTypeStatisticsHelper
         return (int) $digits;
     }
 
+    /**
+     * Choose the configured SportsManagement database for statistics.
+     * Uses the component's Joomla 5/6 resolver and the previously
+     * validated database selector while retaining the Joomla fallback.
+     * @param int $selector Validated database selection.
+     * @param DatabaseInterface $fallbackDatabase Joomla database instance.
+     * @return DatabaseInterface Effective statistics database.
+     */
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);

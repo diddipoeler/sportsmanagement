@@ -50,6 +50,10 @@ $paths = [
     'modules/mod_sportsmanagement_club_birthday/src/Helper/ClubBirthdayHelper.php',
     'modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php',
     'modules/mod_sportsmanagement_gcalendar/helper.php',
+    'modules/mod_sportsmanagement_projectmap/src/Helper/ProjectMapHelper.php',
+    'modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php',
+    'modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php',
+    'modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php',
     'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php',
     'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php',
 ];

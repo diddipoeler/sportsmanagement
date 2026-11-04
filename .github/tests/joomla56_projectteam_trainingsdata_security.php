@@ -208,6 +208,18 @@ namespace {
     if ($trainingDb->queries !== 0) {
         throw new \RuntimeException('Invalid module team selection queried SQL.');
     }
+    // Reject malformed database choices before querying any selected database.
+    foreach (['1garbage', '2', '-1', [], true, 1.5, '1e0'] as $badSelector) {
+        if ($module->getData(new \Joomla\Registry\Registry([
+            'teams' => '12', 'cfg_which_database' => $badSelector
+        ]), $trainingDb) !== []) {
+            throw new \RuntimeException('Invalid training database selector was accepted.');
+        }
+    }
+    if ($trainingDb->queries !== 0) {
+        throw new \RuntimeException('Invalid training database choice reached SQL.');
+    }
+
     $rows = $module->getData(new \Joomla\Registry\Registry(['teams' => '0012:fußball']), $trainingDb);
     if (count($rows) !== 1 || $trainingDb->queries !== 1
         || $trainingDb->query->binds[':teamId'] !== 12) {

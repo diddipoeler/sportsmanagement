@@ -23,6 +23,15 @@ final class ProjectMapHelper
     private const MAX_FILTER_BYTES = 4096;
     private const MAX_PROJECT_ROWS = 5000;
 
+    /**
+     * Assemble the complete project-map payload for the frontend template.
+     * Loads eligible projects for the requested seasons and combines them
+     * with map appearance, regional groupings and per-country links that
+     * the JavaScript map renderer expects.
+     * @param mixed $seasonIds Season identifiers from the module settings.
+     * @param DatabaseInterface $db Active SportsManagement database connection.
+     * @return array{projects:array,options:array} Project rows and map settings.
+     */
     public function getMapData($seasonIds, DatabaseInterface $db): array
     {
         $projects = $this->getData($seasonIds, $db);
@@ -39,6 +48,15 @@ final class ProjectMapHelper
         ];
     }
 
+    /**
+     * Fetch current top-level league projects for map countries.
+     * Normalises season selectors, joins project, league, country and federation
+     * records, and retains the latest project per country using a bounded
+     * query that is compatible with MySQL ONLY_FULL_GROUP_BY.
+     * @param mixed $seasonIds Season IDs or delimited legacy values.
+     * @param DatabaseInterface $db Connection used for the project query.
+     * @return array<int,object> Most recent matching project for each country.
+     */
     public function getData($seasonIds, DatabaseInterface $db): array
     {
         $seasonIds = $this->normaliseSeasonIds($seasonIds);
@@ -104,6 +122,12 @@ final class ProjectMapHelper
         return array_values($projectsByCountry);
     }
 
+    /**
+     * Return the default appearance and navigation configuration for the map.
+     * Defines colours, borders, hover behaviour, popup style and zoom options
+     * as an array for the frontend JavaScript map implementation.
+     * @return array<string,mixed> Default map renderer configuration.
+     */
     public function getMainSettings(): array
     {
         return [
@@ -166,6 +190,13 @@ final class ProjectMapHelper
         ];
     }
 
+    /**
+     * Group project countries into their international federations.
+     * Creates region metadata, escapes federation image URLs for HTML output
+     * and deduplicates country codes within each federation region.
+     * @param array<int,object> $projects Country-specific map projects.
+     * @return array<string,array> Region descriptions and country lists.
+     */
     public function createRegions(array $projects): array
     {
         $regions = [];
@@ -199,6 +230,14 @@ final class ProjectMapHelper
         return $regions;
     }
 
+    /**
+     * Build country-specific map labels, popups and ranking destinations.
+     * Constructs Joomla ranking routes for each selected project, translates
+     * country and competition labels, and escapes database text before
+     * insertion into JavaScript-driven map HTML.
+     * @param array<int,object> $projects Selected country projects.
+     * @return array<string,array> Country settings indexed by code.
+     */
     public function createStateSpecific(array $projects): array
     {
         $stateSpecific = [];
@@ -251,6 +290,13 @@ final class ProjectMapHelper
         return $stateSpecific;
     }
 
+    /**
+     * Encode a map option array for embedding in a JavaScript object.
+     * Uses JSON_HEX escaping to protect special HTML characters and drops
+     * the outer JSON braces for compatibility with the legacy map template.
+     * @param array $data Map configuration data to encode.
+     * @return string JSON object body, or an empty string on failure.
+     */
     public function toJavascriptObjectBody(array $data): string
     {
         $json = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
@@ -258,6 +304,14 @@ final class ProjectMapHelper
         return is_string($json) && strlen($json) >= 2 ? substr($json, 1, -1) : '';
     }
 
+    /**
+     * Validate and limit legacy season-filter IDs before SQL binding.
+     * Accepts numeric scalars or delimited strings, enforces input size and
+     * item limits, rejects malformed/overflowed numbers, and returns a
+     * deduplicated list of safe positive integers.
+     * @param mixed $seasonIds Raw season filter input.
+     * @return array<int> Valid unique season identifiers.
+     */
     private function normaliseSeasonIds($seasonIds): array
     {
         if (is_int($seasonIds) || is_string($seasonIds)) {
