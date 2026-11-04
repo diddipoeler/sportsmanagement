@@ -60,7 +60,8 @@ jobs:
 
           grep -Fq "SportsManagement native About model could not be loaded." site/models/about.php
           grep -Fq "SportsManagement native Allpersons controller could not be loaded." site/controllers/allpersons.php
-          grep -Fq "SportsManagement CountRekord helper could not be loaded." modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -Fq 'SportsManagement CountRekord dependency could not be loaded:' modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -Fq "CountRekordHelper::class => __DIR__ . '/src/Helper/CountRekordHelper.php'" modules/mod_sportsmanagement_count_rekord/helper.php
 
           grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_count_rekord/services/provider.php
           grep -Fq 'HelperFactory' modules/mod_sportsmanagement_count_rekord/services/provider.php

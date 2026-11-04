@@ -6,6 +6,7 @@ on:
     paths:
       - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'site/src/View/Editmatch/HtmlView.php'
+      - 'site/src/View/SportsManagementHtmlView.php'
       - 'modules/mod_sportsmanagement_count_rekord/helper.php'
       - '.github/workflows/joomla5-6-compatibility-batch685.yml'
   pull_request:
@@ -13,6 +14,7 @@ on:
     paths:
       - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
       - 'site/src/View/Editmatch/HtmlView.php'
+      - 'site/src/View/SportsManagementHtmlView.php'
       - 'modules/mod_sportsmanagement_count_rekord/helper.php'
       - '.github/workflows/joomla5-6-compatibility-batch685.yml'
 
@@ -37,6 +39,7 @@ jobs:
           files=(
             admin/src/Helper/SportsManagementDatabaseResolver.php
             site/src/View/Editmatch/HtmlView.php
+            site/src/View/SportsManagementHtmlView.php
             modules/mod_sportsmanagement_count_rekord/helper.php
           )
 
@@ -63,12 +66,18 @@ jobs:
               raise SystemExit('Administrator DB resolver should have exactly one Joomla DB container access')
 
           editmatch = Path('site/src/View/Editmatch/HtmlView.php').read_text()
-          if 'private static function joomlaDatabase(): DatabaseInterface' not in editmatch:
-              raise SystemExit('Editmatch view Joomla DB helper is missing')
+          base_view = Path('site/src/View/SportsManagementHtmlView.php').read_text()
+          # The native match view inherits the shared site view database resolver.
+          if 'extends SportsManagementHtmlView' not in editmatch:
+              raise SystemExit('Editmatch view no longer inherits the site view base')
+          if 'protected static function joomlaDatabase(): DatabaseInterface' not in base_view:
+              raise SystemExit('Shared site view Joomla DB helper is missing')
           if '$joomlaDatabase = self::joomlaDatabase();' not in editmatch:
-              raise SystemExit('Editmatch view bypasses centralized Joomla DB access')
-          if editmatch.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
-              raise SystemExit('Editmatch view should have exactly one Joomla DB container access')
+              raise SystemExit('Editmatch view bypasses the shared Joomla DB helper')
+          if base_view.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('Shared site view should use Joomla DI exactly once')
+          if 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $selector)' not in editmatch:
+              raise SystemExit('Editmatch view must resolve its selected database')
 
           count_rekord = Path('modules/mod_sportsmanagement_count_rekord/helper.php').read_text()
           if 'private static function siteApplication(): CMSApplicationInterface' not in count_rekord:

@@ -97,13 +97,11 @@ jobs:
           for file in "${helpers[@]}"; do
             grep -Fq -- '?DatabaseInterface $database = null' "$file"
 
-            if grep -Fq -- 'Factory::getContainer()' "$file"; then
-              echo "$file still uses Factory::getContainer()" >&2
-              exit 1
-            fi
-
-            if grep -Fq -- 'use Joomla\CMS\Factory;' "$file"; then
-              echo "$file still imports Factory" >&2
+            # Factory::getContainer() is supported in Joomla 5/6 and is
+            # required for these compatibility shims to resolve DatabaseInterface.
+            # Reject only deprecated static factory methods.
+            if grep -Eq -- 'Factory::get(Dbo|DBO|Application|User)\(|JFactory::' "$file"; then
+              echo "$file still uses a legacy static Joomla factory API" >&2
               exit 1
             fi
 

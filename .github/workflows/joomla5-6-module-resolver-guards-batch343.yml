@@ -50,5 +50,10 @@ jobs:
             done
             grep -Fq -- '@version    5.6.0' "$file"
             grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
-            grep -Fq -- 'SportsManagement site application resolver could not be loaded.' "$file"
+            # Direct legacy inclusion must load and validate the native
+            # site application resolver, rather than expect a specific error text.
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::class' "$file"
+            grep -Fq -- 'is_file($file)' "$file"
+            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            grep -Fq -- "!\$app->isClient('site')" "$file"
           done

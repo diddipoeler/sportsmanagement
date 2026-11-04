@@ -63,6 +63,7 @@ jobs:
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Predictiongame/HtmlView.php
 
           grep -Fq -- 'SportsManagement CountRekord legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_count_rekord/helper.php
-          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -Fq -- "!\$app->isClient('site')" modules/mod_sportsmanagement_count_rekord/helper.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_count_rekord/helper.php
 
           echo 'Joomla 5/6 batch 180 contracts OK.'
