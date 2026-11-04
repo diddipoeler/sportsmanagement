@@ -97,4 +97,42 @@ if ($class::avatarUrl('../configuration.php') !== ''
     exit(1);
 }
 
+foreach ([
+    [7, 7], ['0007', 7], ['7', 7],
+    [0, 0], ['000', 0], [-1, 0],
+    ['7:alias', 0], ['7invalid', 0], [' 7', 0],
+    [true, 0], [false, 0], [['7'], 0],
+    [PHP_INT_MAX . '0', 0], [str_repeat('0', 256) . '7', 0],
+] as [$raw, $expected]) {
+    if ($class::validMemberId($raw) !== $expected) {
+        fwrite(STDERR, 'Top Tipper ranking member ID regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+foreach ([
+    [0, 7, 0],
+    [7, 0, 0],
+    [-1, 7, 0],
+    [7, 7, -1],
+] as [$gameId, $memberId, $selector]) {
+    if ($helper->memberUrl($gameId, $memberId, $selector) !== '') {
+        fwrite(STDERR, 'Top Tipper invalid member link regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+foreach ([
+    [0, 7, 3, 2, 0],
+    [7, 0, 3, 2, 0],
+    [7, 7, 0, 2, 0],
+    [7, 7, 3, -1, 0],
+    [7, 7, 3, 2, -1],
+] as [$gameId, $memberId, $projectId, $roundId, $selector]) {
+    if ($helper->detailsUrl($gameId, $memberId, $projectId, $roundId, $selector) !== '') {
+        fwrite(STDERR, 'Top Tipper invalid details link regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Top Tipper input checks passed.\n";
