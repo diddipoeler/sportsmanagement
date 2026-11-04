@@ -31,9 +31,9 @@ $topTipperHelper = new TopTipperHelper();
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
             <?php if (!empty($config['show_project_name'])) : ?>
                 <strong>
-                    <?php echo htmlspecialchars((string) ($predictionGame->name ?? ''), ENT_QUOTES, 'UTF-8'); ?>
+                    <?php echo htmlspecialchars(is_string($predictionGame->name ?? null) ? $predictionGame->name : '', ENT_QUOTES, 'UTF-8'); ?>
                     <?php if (!empty($predictionProject->projectName)) : ?>
-                        <span class="text-muted">— <?php echo htmlspecialchars((string) $predictionProject->projectName, ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="text-muted">— <?php echo htmlspecialchars(is_string($predictionProject->projectName) ? $predictionProject->projectName : '', ENT_QUOTES, 'UTF-8'); ?></span>
                     <?php endif; ?>
                 </strong>
             <?php endif; ?>
@@ -45,10 +45,10 @@ $topTipperHelper = new TopTipperHelper();
                     </label>
                     <select class="form-select form-select-sm" name="pj" id="top-tipper-project-<?php echo (int) $module->id; ?>">
                         <?php foreach ($predictionProjects as $project) :
-                            $value = (int) ($project->project_id ?? 0);
+                            $value = TopTipperHelper::roundOptionId($project->project_id ?? null);
                             ?>
                             <option value="<?php echo $value; ?>"<?php echo $value === (int) $projectId ? ' selected' : ''; ?>>
-                                <?php echo htmlspecialchars((string) ($project->projectName ?? $value), ENT_QUOTES, 'UTF-8'); ?>
+                                <?php echo htmlspecialchars(is_string($project->projectName ?? null) ? $project->projectName : (string) $value, ENT_QUOTES, 'UTF-8'); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
