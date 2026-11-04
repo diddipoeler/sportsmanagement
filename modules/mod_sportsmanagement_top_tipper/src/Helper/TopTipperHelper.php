@@ -252,15 +252,52 @@ final class TopTipperHelper
     }
 
     /**
+     * Validate an identifier used as the key of a ranking member row.
+     *
+     * Accepts positive integer values and zero-padded decimal strings.
+     * Partial numbers, slugs, arrays, booleans and out-of-range integers are
+     * rejected rather than being truncated by PHP's integer casts.
+     *
+     * @param mixed $value Raw member key or prediction game identifier.
+     * @return int Positive identifier, or zero when invalid.
+     */
+    public static function validMemberId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $text = (string) $value;
+
+        if ($text === '' || strlen($text) > 255 || preg_match('/^[0-9]+$/D', $text) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($text, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
      * Build a route to the prediction members page for one league member.
      *
      * @param int $predictionGameId Prediction game identifier.
      * @param int $memberId Prediction member identifier.
      * @param int $databaseSelector Database configuration index.
-     * @return string Joomla-routed member URL.
+     * @return string Joomla-routed member URL, or empty for invalid IDs.
      */
     public function memberUrl(int $predictionGameId, int $memberId, int $databaseSelector = 0): string
     {
+        if ($predictionGameId <= 0 || $memberId <= 0 || $databaseSelector < 0) {
+            return '';
+        }
+
         return $this->route('predictionusers', [
             'prediction_id' => $predictionGameId,
             'cfg_which_database' => $databaseSelector,
@@ -276,7 +313,7 @@ final class TopTipperHelper
      * @param int $projectId Project identifier.
      * @param int $roundId Project round identifier.
      * @param int $databaseSelector Database configuration index.
-     * @return string Joomla-routed prediction results URL.
+     * @return string Joomla-routed prediction results URL, or empty for invalid IDs.
      */
     public function detailsUrl(
         int $predictionGameId,
@@ -285,6 +322,11 @@ final class TopTipperHelper
         int $roundId,
         int $databaseSelector = 0
     ): string {
+        if ($predictionGameId <= 0 || $memberId <= 0 || $projectId <= 0
+            || $roundId < 0 || $databaseSelector < 0) {
+            return '';
+        }
+
         return $this->route('predictionresults', [
             'prediction_id' => $predictionGameId,
             'cfg_which_database' => $databaseSelector,
