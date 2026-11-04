@@ -16,6 +16,13 @@ use Joomla\Registry\Registry;
 
 final class AboutModel extends SportsManagementModel
 {
+    /**
+     * Collect version and support information for the component About view.
+     * Reads the installed Joomla extension manifest when available and
+     * returns the documentation, support and contributor links expected by
+     * the frontend template without requiring a legacy manifest parser.
+     * @return object Version and project information for the About page.
+     */
     public function getAbout(): object
     {
         $version = '';

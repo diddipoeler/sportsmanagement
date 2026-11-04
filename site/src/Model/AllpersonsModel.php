@@ -36,6 +36,14 @@ final class AllpersonsModel extends SportsManagementListModel
     public bool $use_current_season = false;
     public array $columns = [];
 
+    /**
+     * Initialise person-list filter fields and request preferences.
+     * Reads pagination and season settings from the Joomla application
+     * and configures permitted person columns before parent construction.
+     * @param array $config Joomla list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $input = $this->siteApplication()->getInput();
@@ -68,6 +76,12 @@ final class AllpersonsModel extends SportsManagementListModel
         return $this->getDatabase();
     }
 
+    /**
+     * Calculate the effective pagination start for the person list.
+     * Uses cached totals when possible and moves an out-of-range
+     * requested offset back to the final valid page.
+     * @return int Nonnegative first-row offset.
+     */
     public function getStart()
     {
         $this->setState('list.start', $this->limitstart);
@@ -92,6 +106,13 @@ final class AllpersonsModel extends SportsManagementListModel
         return $this->cache[$store] = $start;
     }
 
+    /**
+     * Build a filtered and joined person-directory query.
+     * Links persons to their teams, projects and positions, optionally
+     * selects only allowed data columns, and applies bound search/nation
+     * filters and restricted ordering to avoid unsafe SQL identifiers.
+     * @return \Joomla\Database\DatabaseQuery Person list query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -191,6 +212,14 @@ final class AllpersonsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Prepare frontend directory filters, columns and pagination.
+     * Restores Joomla user preferences, whitelists requested display
+     * columns and restricts sorting and direction to known person fields.
+     * @param string|null $ordering Joomla default ordering.
+     * @param string|null $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         $app = $this->siteApplication();
@@ -222,6 +251,13 @@ final class AllpersonsModel extends SportsManagementListModel
         $this->setState('filter_order_Dir', $filterOrderDir);
     }
 
+    /**
+     * Whitelist and deduplicate requested person-directory columns.
+     * Only permits column identifiers listed in SELECTABLE_COLUMNS so
+     * frontend parameters never become unvalidated SQL select fields.
+     * @param mixed $columns Requested scalar or array of column names.
+     * @return array<int,string> Unique approved person fields.
+     */
     private function normaliseSelectColumns($columns): array
     {
         $requested = array_map('strval', (array) $columns);

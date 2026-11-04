@@ -23,6 +23,14 @@ final class AllclubsModel extends SportsManagementListModel
     protected $use_current_season = false;
     protected $sports_type = 0;
 
+    /**
+     * Configure frontend club-list ordering and season preferences.
+     * Reads pagination and current-season flags from Joomla's site input
+     * and registers allowed club columns before the list model is built.
+     * @param array $config Native Joomla model settings.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $input = $this->siteApplication()->getInput();
@@ -36,6 +44,12 @@ final class AllclubsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Calculate a valid pagination offset for the club list.
+     * Caches the result, ensures negative starts cannot escape the list,
+     * and adjusts the start when the requested page exceeds the row count.
+     * @return int Starting offset for the current page.
+     */
     public function getStart()
     {
         $this->setState('list.start', $this->limitstart);
@@ -60,6 +74,12 @@ final class AllclubsModel extends SportsManagementListModel
         return $this->cache[$store] = $start;
     }
 
+    /**
+     * Build the frontend club listing query with related team context.
+     * Joins clubs to teams and projects, filters by name, nation, sport
+     * and optionally season, and restricts sorting to approved columns.
+     * @return \Joomla\Database\DatabaseQuery Project-aware club listing query.
+     */
     protected function getListQuery()
     {
         $input = $this->siteApplication()->getInput();
@@ -153,6 +173,14 @@ final class AllclubsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Restore club-list filters and ordering from Joomla user state.
+     * Uses the site's pagination default, preserves search and nation
+     * filters, and normalises requested sorting against the allowlist.
+     * @param string|null $ordering Default Joomla ordering.
+     * @param string|null $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         $defaultLimit = (int) $this->siteApplication()->getConfig()->get('list_limit', 20);

@@ -30,6 +30,12 @@ final class IcalModel extends SportsManagementProjectModel
     public ?object $team = null;
     public ?object $club = null;
 
+    /**
+     * Retrieve Joomla's primary database connection from its container.
+     * The calendar feed uses this service when no alternative database
+     * selector is configured for the requested SportsManagement project.
+     * @return DatabaseInterface Active Joomla database service.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -38,6 +44,15 @@ final class IcalModel extends SportsManagementProjectModel
         return $database;
     }
 
+    /**
+     * Initialise iCalendar compatibility selectors for the current request.
+     * Copies project, division, team and database settings from the
+     * native model and Joomla input to legacy static fields expected
+     * by older calendar entry points.
+     * @param array $config MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -89,6 +104,19 @@ final class IcalModel extends SportsManagementProjectModel
         return (int) $digits;
     }
 
+    /**
+     * Load published fixtures used by the iCalendar exporter.
+     * Validates the project, team and database selectors, chooses the
+     * SportsManagement connection, joins fixture and venue details and
+     * returns match rows keyed by ID; failures are logged without leaking SQL.
+     * @param mixed $projectid Project ID or Joomla ID:alias slug.
+     * @param mixed $teamid Optional team ID or slug.
+     * @param mixed $divisionid Legacy division argument.
+     * @param mixed $playgroundid Legacy playground argument.
+     * @param mixed $ordering ASC or DESC match ordering.
+     * @param mixed $cfg_which_database Selected SportsManagement database.
+     * @return array|false Published fixtures or false on a query error.
+     */
     public function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC', $cfg_which_database = 0)
     {
         $projectId = self::nonNegativeSelector($projectid, true);
