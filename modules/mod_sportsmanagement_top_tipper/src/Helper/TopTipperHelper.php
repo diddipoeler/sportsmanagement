@@ -62,7 +62,7 @@ final class TopTipperHelper
         }
 
         $game = $discoveryModel->getPredictionGame();
-        $projects = $discoveryModel->getPredictionProjects();
+        $projects = self::validProjectOptions($discoveryModel->getPredictionProjects());
         $projectId = $discoveryModel->getProjectId();
 
         if (!$game || $projectId <= 0) {
@@ -314,6 +314,48 @@ final class TopTipperHelper
         $number = filter_var($normalised, FILTER_VALIDATE_INT);
 
         return $number === false ? 0 : $number;
+    }
+
+    /**
+     * Normalise project selector entries provided by the prediction model.
+     *
+     * Supports legacy scalar IDs and Joomla ID:alias slugs in project_id.
+     * Rejects malformed and duplicate records and ensures projectName is
+     * always a displayable string. Copies records to avoid modifying model
+     * objects used elsewhere in the component.
+     *
+     * @param mixed $projects Raw project list returned by the model.
+     * @return array<int, object> Unique valid project options in source order.
+     */
+    private static function validProjectOptions(mixed $projects): array
+    {
+        if (!is_array($projects)) {
+            return [];
+        }
+
+        $result = [];
+        $seen = [];
+
+        foreach ($projects as $project) {
+            if (!is_object($project)) {
+                continue;
+            }
+
+            $id = self::roundOptionId($project->project_id ?? null);
+
+            if ($id <= 0 || isset($seen[$id])) {
+                continue;
+            }
+
+            $seen[$id] = true;
+            $copy = clone $project;
+            $copy->project_id = $id;
+            $name = $project->projectName ?? null;
+            $copy->projectName = is_string($name) && trim($name) !== '' ? $name : (string) $id;
+            $result[] = $copy;
+        }
+
+        return $result;
     }
 
     /**
