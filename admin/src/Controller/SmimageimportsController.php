@@ -18,6 +18,16 @@ use Joomla\CMS\Session\Session;
 /** Native Joomla 5/6 list controller for image-package imports. */
 final class SmimageimportsController extends SportsManagementAdminController
 {
+    /**
+     * Import an administrator-selected image package.
+     *
+     * Requires a valid Joomla POST token and component core.create access,
+     * resolves the native image import model and delegates the import.
+     * Reports model errors and returns to the image-import overview.
+     *
+     * @return void
+     * @throws \RuntimeException On invalid token, insufficient permission or missing model.
+     */
     public function import(): void
     {
         if (!Session::checkToken('post')) {
@@ -43,8 +53,19 @@ final class SmimageimportsController extends SportsManagementAdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=smimageimports');
     }
 
+    /**
+     * Retrieve the native Joomla administrator image-import model.
+     *
+     * Defaults to request-independent loading while retaining additional
+     * MVC configuration passed by Joomla or a caller.
+     *
+     * @param string $name Model name, defaulting to Smimageimport.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Additional model factory configuration.
+     * @return mixed MVC factory model instance or the parent's failure result.
+     */
     public function getModel($name = 'Smimageimport', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
     }
 }
