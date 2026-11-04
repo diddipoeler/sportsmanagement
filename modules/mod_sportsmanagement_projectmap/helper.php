@@ -44,11 +44,27 @@ foreach ([
 if (!class_exists('modJSMprojectmaphelper', false)) {
     final class modJSMprojectmaphelper
     {
+        /**
+         * Create the native Joomla 5/6 project map helper.
+         *
+         * Centralises helper construction for old module templates that
+         * still call the historical static project-map facade.
+         *
+         * @return ProjectMapHelper Native map service.
+         */
         private static function helper(): ProjectMapHelper
         {
             return new ProjectMapHelper();
         }
 
+        /**
+         * Return configured map options as a JavaScript object body.
+         *
+         * Delegates retrieval and JavaScript formatting to the native
+         * ProjectMapHelper, preserving the legacy template output format.
+         *
+         * @return string Serialised map configuration for the template.
+         */
         public static function getmain_settings(): string
         {
             $helper = self::helper();
@@ -56,6 +72,18 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
             return $helper->toJavascriptObjectBody($helper->getMainSettings());
         }
 
+        /**
+         * Load project map markers for the requested seasons.
+         *
+         * Requires an active Joomla site application, obtains a valid
+         * database service and lets the native helper fetch map data
+         * for the selected season identifiers.
+         *
+         * @param mixed $seasonIds Selected season IDs in the legacy format.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Project map data for the module.
+         * @throws \RuntimeException If the client or database is unavailable.
+         */
         public static function getData($seasonIds, ?DatabaseInterface $database = null): array
         {
             $app = self::siteApplication();
@@ -69,6 +97,15 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
             return self::helper()->getData($seasonIds, $database);
         }
 
+        /**
+         * Aggregate project data by geographic region for the map.
+         *
+         * Normalises the provided projects to an array and serialises the
+         * region data in the legacy JavaScript object-body format.
+         *
+         * @param array|mixed $projects Source project records.
+         * @return string Serialised regional map data.
+         */
         public static function createregions($projects): string
         {
             $helper = self::helper();
@@ -76,6 +113,15 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
             return $helper->toJavascriptObjectBody($helper->createRegions((array) $projects));
         }
 
+        /**
+         * Prepare state-specific project map data for older templates.
+         *
+         * Delegates grouping to the native map helper and serialises
+         * the resulting values as a JavaScript object body.
+         *
+         * @param array|mixed $projects Project records to group by state.
+         * @return string Serialised state-specific map data.
+         */
         public static function createstate_specific($projects): string
         {
             $helper = self::helper();
@@ -83,11 +129,30 @@ if (!class_exists('modJSMprojectmaphelper', false)) {
             return $helper->toJavascriptObjectBody($helper->createStateSpecific((array) $projects));
         }
 
+        /**
+         * Resolve the Joomla site application for project-map requests.
+         *
+         * Returns the shared component application resolver's result.
+         * The public data-loading method checks its site-client status.
+         *
+         * @return CMSApplicationInterface Resolved Joomla application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             return SportsManagementSiteApplicationResolver::resolve();
         }
 
+        /**
+         * Obtain the Joomla database service for project-map queries.
+         *
+         * Uses an explicitly provided database when available, otherwise
+         * requests DatabaseInterface from Joomla's service container
+         * and checks the resulting service before using it.
+         *
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return DatabaseInterface Validated Joomla database service.
+         * @throws \RuntimeException If the service cannot be resolved.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
