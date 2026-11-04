@@ -16,6 +16,13 @@ use Joomla\CMS\Router\Route;
 
 final class TeamsController extends SportsManagementAdminController
 {
+    /**
+     * Save shortened team fields from the administrator team list.
+     * Checks component edit access, invokes the team model's saveshort()
+     * method, reports success or failure and redirects to the team overview.
+     *
+     * @return void
+     */
     public function saveshort(): void
     {
         $this->assertWritePermission();
@@ -30,6 +37,13 @@ final class TeamsController extends SportsManagementAdminController
         $this->redirectToList();
     }
 
+    /**
+     * Copy the selected team records through the administrator model.
+     * Checks core.create permission before delegating the copy operation,
+     * then displays a result message and redirects to the current team list.
+     *
+     * @return void
+     */
     public function copysave(): void
     {
         $this->assertWritePermission('core.create');
@@ -43,12 +57,29 @@ final class TeamsController extends SportsManagementAdminController
         $this->redirectToList();
     }
 
+    /**
+     * Resolve the administrator team model using Joomla's MVC factory.
+     * Preserves caller configuration while defaulting to request-independent
+     * loading of the team editing model.
+     *
+     * @param string $name Model name.
+     * @param string $prefix Administrator MVC namespace.
+     * @param array $config Additional factory settings.
+     * @return mixed The resulting Joomla model or parent failure result.
+     */
     public function getModel($name = 'Team', $prefix = 'Administrator', $config = [])
     {
         // Preserve the native list default and caller-provided model options.
         return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
     }
 
+    /**
+     * Redirect to the administrator teams view after a write operation.
+     * Preserves the optional integer-filtered club identifier in the URL,
+     * allowing administrators to return to the previously selected club.
+     *
+     * @return void
+     */
     private function redirectToList(): void
     {
         $clubId = $this->input->getInt('club_id');
