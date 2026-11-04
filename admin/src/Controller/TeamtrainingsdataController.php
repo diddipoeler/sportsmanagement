@@ -24,6 +24,19 @@ use Joomla\Input\Input;
  */
 final class TeamtrainingsdataController extends SportsManagementFormController
 {
+    /**
+     * Initialise the legacy training form controller as a team form proxy.
+     *
+     * Defaults the item and list views to team and teams, respectively,
+     * while forwarding the MVC factory, application, request input and
+     * form factory services to the native Joomla parent controller.
+     *
+     * @param array $config Controller view and task configuration.
+     * @param MVCFactoryInterface|null $factory Joomla MVC factory.
+     * @param CMSWebApplicationInterface|null $app Joomla web application.
+     * @param Input|null $input Request input service.
+     * @param FormFactoryInterface|null $formFactory Joomla form factory.
+     */
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
@@ -37,6 +50,18 @@ final class TeamtrainingsdataController extends SportsManagementFormController
         parent::__construct($config, $factory, $app, $input, $formFactory);
     }
 
+    /**
+     * Resolve a team model for historic team training form tasks.
+     *
+     * Rewrites the former Teamtrainingsdata model alias to Team and
+     * forwards the chosen name and caller's model configuration to
+     * Joomla's administrator MVC model factory.
+     *
+     * @param string $name Legacy or native model name.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Additional Joomla model factory options.
+     * @return mixed Resolved team model or parent failure result.
+     */
     public function getModel($name = 'Team', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
         if ($name === '' || strcasecmp((string) $name, 'Teamtrainingsdata') === 0) {
