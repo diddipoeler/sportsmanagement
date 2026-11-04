@@ -1,0 +1,35 @@
+name: Joomla 5/6 Agegroups model options regression
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/AgegroupsController.php'
+      - '.github/tests/joomla56_admin_agegroups_model_options.php'
+      - '.github/workflows/joomla5-6-admin-agegroups-model-options.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/AgegroupsController.php'
+      - '.github/tests/joomla56_admin_agegroups_model_options.php'
+      - '.github/workflows/joomla5-6-admin-agegroups-model-options.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  model-options:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint controller and regression test
+        run: |
+          php -l admin/src/Controller/AgegroupsController.php
+          php -l .github/tests/joomla56_admin_agegroups_model_options.php
+      - name: Verify Joomla MVC configuration preservation
+        run: php .github/tests/joomla56_admin_agegroups_model_options.php
