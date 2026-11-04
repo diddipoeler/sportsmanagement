@@ -23,6 +23,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
     private ?object $entryProject = null;
     private ?array $entryConfig = null;
 
+    /**
+     * Combine prediction-overall and entry-specific display settings.
+     * Caches the merged template configuration and supplies defaults for
+     * match selection, table appearance, deadlines, logos and help text.
+     * @return array<string,mixed> Effective entry presentation configuration.
+     */
     public function getEntryConfig(): array
     {
         if ($this->entryConfig !== null) {
@@ -55,6 +61,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $this->entryConfig;
     }
 
+    /**
+     * Resolve the selected prediction project against eligible projects.
+     * Preserves a valid selected project, otherwise selects the first
+     * configured prediction project and uses zero when none are available.
+     * @return int Current valid project ID, or zero.
+     */
     public function getProjectId(): int
     {
         $projects = $this->getPredictionProjects();
@@ -76,6 +88,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $this->projectId;
     }
 
+    /**
+     * Select a round belonging to the chosen prediction project.
+     * Validates project/round relations and optional allowed-round filters,
+     * prefers the current project round, then falls back to an allowed option.
+     * @return int Valid project round ID, or zero if unavailable.
+     */
     public function getRoundId(): int
     {
         $projectId = $this->getProjectId();
@@ -105,6 +123,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $this->roundId;
     }
 
+    /**
+     * Load and cache the project selected for prediction entry.
+     * Rejects missing selections and reuses a cached project record only
+     * while it matches the currently resolved project identifier.
+     * @return object|null Selected project record or null.
+     */
     public function getEntryProject(): ?object
     {
         $projectId = $this->getProjectId();
@@ -125,13 +149,20 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return null;
     }
 
+    /**
+     * Find the authenticated prediction member allowed to enter tips.
+     * Returns an empty member for guests or unknown games, prevents normal
+     * members from switching to other accounts and allows administrators
+     * to select a member only according to prediction permissions.
+     * @return object Resolved member or a zero-valued unauthorised record.
+     */
     public function getEntryMember(): object
     {
         if ($this->entryMember !== null) {
             return $this->entryMember;
         }
 
-        $identityId = (int) $this->siteApplication()->getIdentity()->id;
+        $identityId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         if ($identityId <= 0 || $this->predictionGameId <= 0) {
             return $this->entryMember = $this->emptyMember();
         }
@@ -155,15 +186,27 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $this->entryMember = $member;
     }
 
+    /**
+     * Return the validated numeric ID of the entry member.
+     * Parses legacy prediction member ID:alias values and returns zero
+     * for invalid or unselected membership records.
+     * @return int Selected positive member ID, or zero.
+     */
     public function getSelectedMemberNumericId(): int
     {
         $member = $this->getEntryMember();
         return $this->extractMemberId($member->pmID ?? $member->id ?? 0);
     }
 
+    /**
+     * Check whether the signed-in Joomla user belongs to the game.
+     * Rejects guest identities and invalid games, then queries membership
+     * by both bound game ID and authenticated Joomla user ID.
+     * @return bool True when an associated member exists.
+     */
     public function isCurrentUserMember(): bool
     {
-        $identityId = (int) $this->siteApplication()->getIdentity()->id;
+        $identityId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         if ($identityId <= 0 || $this->predictionGameId <= 0) {
             return false;
         }
@@ -181,9 +224,15 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return (bool) $db->loadResult();
     }
 
+    /**
+     * Determine whether the logged-in game member awaits approval.
+     * Checks the membership approval flag for the active user using bound
+     * game/user selectors without exposing unrelated member records.
+     * @return bool True when the current membership is unapproved.
+     */
     public function isNotApprovedCurrentMember(): bool
     {
-        $identityId = (int) $this->siteApplication()->getIdentity()->id;
+        $identityId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         if ($identityId <= 0 || $this->predictionGameId <= 0) {
             return false;
         }
@@ -202,6 +251,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $approved !== null && (int) $approved !== 1;
     }
 
+    /**
+     * Verify that tips may be submitted for the selected game member.
+     * Requires valid game/member IDs, allows an approved member to act
+     * for their own Joomla identity or an authorised game administrator.
+     * @param object|null $member Member to check, defaults to selected entry member.
+     * @return bool Whether this caller may act for the member.
+     */
     public function canActAsEntryMember(?object $member = null): bool
     {
         $member ??= $this->getEntryMember();
@@ -211,7 +267,7 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             return false;
         }
 
-        $identityId = (int) $this->siteApplication()->getIdentity()->id;
+        $identityId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         if ($identityId === $memberUserId) {
             return (int) ($member->approved ?? 0) === 1;
         }
@@ -219,6 +275,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $this->isAllowedAdmin();
     }
 
+    /**
+     * List prediction members selectable by an authorised administrator.
+     * Uses the game's member records and configured username/full-name
+     * display preference; normal users never receive the full selection.
+     * @return array<int,object> Member options with approval information.
+     */
     public function getMemberOptions(): array
     {
         if (!$this->isAllowedAdmin() || $this->predictionGameId <= 0) {
@@ -244,6 +306,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build selector options for prediction projects in the game.
+     * Maps valid configured project identifiers and display names into
+     * the value/text objects expected by Joomla form controls.
+     * @return array<int,object> Available prediction projects.
+     */
     public function getProjectOptions(): array
     {
         $options = [];
@@ -259,6 +327,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $options;
     }
 
+    /**
+     * Load allowed rounds belonging to the selected project.
+     * Filters the Joomla round table by the bound project ID and
+     * optional configured allowed rounds, ordered by ascending round ID.
+     * @return array<int,object> Project round value/text options.
+     */
     public function getRoundOptions(): array
     {
         $projectId = $this->getProjectId();
@@ -286,6 +360,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load fixtures and existing tips for the selected entry context.
+     * Combines game, project, round and member selectors to retrieve
+     * match information, tip values, deadlines and presentation fields
+     * for the current prediction-entry table.
+     * @return array<int,object> Fixture and member tip entry records.
+     */
     public function getEntryMatches(): array
     {
         $project = $this->getEntryProject();
@@ -404,6 +485,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $rows;
     }
 
+    /**
+     * Load the current member's additional round prediction values.
+     * Looks up goals, penalties and card predictions for the active
+     * game, project and round; returns zeroed defaults when not selected.
+     * @return object Extra round-tip fields with default zeros.
+     */
     public function getRoundExtras(): object
     {
         $member = $this->getEntryMember();
@@ -438,6 +525,12 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $db->loadObject() ?: $empty;
     }
 
+    /**
+     * Count jokers already used by a member within the project.
+     * Uses a bound game, member and project scope to sum recorded joker
+     * values so entry limits can be enforced by the form.
+     * @return int Number of previously used project jokers.
+     */
     public function getMemberProjectJokerCount(): int
     {
         $member = $this->getEntryMember();
@@ -462,6 +555,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Render translated instructions for the prediction entry view.
+     * Selects standard or Toto game wording and composes an HTML
+     * help section from the component's Joomla language strings.
+     * @param int $gameMode Zero for standard mode, nonzero for Toto.
+     * @return string HTML-formatted entry help text.
+     */
     public function createHelpText(int $gameMode = 0): string
     {
         $mode = $gameMode === 0
@@ -477,16 +577,35 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             . '</ul><hr>';
     }
 
+    /**
+     * Detect the frontend request for creating a prediction member.
+     * Checks Joomla's numeric s parameter without accepting arbitrary
+     * non-numeric values as an enabled request.
+     * @return bool Whether the new-member view was requested.
+     */
     public function isNewMemberRequest(): bool
     {
         return $this->siteApplication()->getInput()->getInt('s', 0) === 1;
     }
 
+    /**
+     * Detect completion of the prediction entry flow.
+     * Checks the eok request parameter to select the successful
+     * submission state used by the frontend template.
+     * @return bool Whether the completed-entry flag is set.
+     */
     public function isEntryDoneRequest(): bool
     {
         return $this->siteApplication()->getInput()->getInt('eok', 0) === 1;
     }
 
+    /**
+     * Check whether any fixture in this round remains open for editing.
+     * Uses the already-calculated editable flag on each fixture to
+     * decide if round-level extra predictions should still be shown.
+     * @param array<int,object> $matches Prepared prediction fixtures.
+     * @return bool True when at least one fixture permits editing.
+     */
     public function isRoundExtrasEditable(array $matches): bool
     {
         foreach ($matches as $match) {
@@ -497,6 +616,17 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return false;
     }
 
+    /**
+     * Determine whether an individual fixture may still be tipped.
+     * Allows an administrator tip override when configured; otherwise
+     * rejects matches with results or expired deadlines, using the
+     * project timezone and the configured round closing rule.
+     * @param object $match Fixture being evaluated.
+     * @param object $project Prediction project with timezone and start settings.
+     * @param object $member Selected prediction member.
+     * @param array $config Effective entry rules.
+     * @return bool Whether the tip can be changed.
+     */
     protected function isMatchEditable(object $match, object $project, object $member, array $config): bool
     {
         if ($this->isAllowedAdmin() && !empty($member->admintipp)) {
@@ -520,11 +650,19 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Validate configured match, team or round selector identifiers.
+     * Parses numeric Joomla IDs and optional ID:alias slugs, rejects
+     * partial casts and integer overflow, and deduplicates positive IDs
+     * before they are used in SQL filters.
+     * @param mixed $value Raw configured IDs or delimited selector string.
+     * @return array<int> Unique validated positive IDs.
+     */
     protected function normaliseIdList(mixed $value): array
     {
         if (is_array($value)) {
             $values = $value;
-        } elseif (is_scalar($value)) {
+        } elseif (is_int($value) || is_string($value)) {
             $values = preg_split('/[;,\s]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [];
         } else {
             return [];
@@ -532,29 +670,76 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
 
         $ids = [];
         foreach ($values as $item) {
-            if (is_scalar($item) && preg_match('/^\s*(\d+)/', (string) $item, $match)) {
-                $id = (int) $match[1];
-                if ($id > 0) {
-                    $ids[$id] = $id;
-                }
+            if (!is_int($item) && !is_string($item)) {
+                continue;
+            }
+
+            $raw = trim((string) $item);
+            if (!preg_match('/^([0-9]+)(?::[^:\s,;]+)?$/D', $raw, $match)) {
+                continue;
+            }
+
+            $digits = ltrim($match[1], '0');
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+            if ($id !== false) {
+                $ids[$id] = $id;
             }
         }
+
         return array_values($ids);
     }
 
+    /**
+     * Parse a legacy prediction-member numeric ID or ID:alias slug.
+     * Rejects arrays, malformed strings, negative values and oversized
+     * identifiers instead of relying on partial integer casting.
+     * @param mixed $value Raw member selection.
+     * @return int Positive valid member ID or zero.
+     */
     protected function extractMemberId(mixed $value): int
     {
-        if (is_int($value)) {
-            return max(0, $value);
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
         }
-        return max(0, (int) strtok((string) $value, ':'));
+
+        $raw = trim((string) $value);
+        if (!preg_match('/^([0-9]+)(?::[^:\s,;]+)?$/D', $raw, $matches)) {
+            return 0;
+        }
+
+        $digits = ltrim($matches[1], '0');
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
+    /**
+     * Construct a safe placeholder for missing or unauthorised members.
+     * Sets membership, user and permission fields to zero so site views
+     * do not accidentally treat a guest as an approved prediction member.
+     * @return object Empty prediction membership record.
+     */
     private function emptyMember(): object
     {
         return (object) ['id' => 0, 'pmID' => 0, 'user_id' => 0, 'approved' => 0, 'admintipp' => 0];
     }
 
+    /**
+     * Read an optional configured list of rounds available for tipping.
+     * Only applies the selection when the entry form enables restricted
+     * round picking and validates all resulting IDs before querying.
+     * @return array<int> Allowed round IDs, or empty for no restriction.
+     */
     private function allowedRoundIds(): array
     {
         $config = $this->getEntryConfig();
@@ -564,6 +749,14 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return $this->normaliseIdList($config['predictionroundid'] ?? null);
     }
 
+    /**
+     * Confirm that a round is assigned to the selected project.
+     * Uses both identifiers as bound SQL parameters to prevent selecting
+     * a round from an unrelated SportsManagement project.
+     * @param int $projectId Current prediction project.
+     * @param int $roundId Round to validate.
+     * @return bool Whether the round belongs to the project.
+     */
     private function roundBelongsToProject(int $projectId, int $roundId): bool
     {
         if ($projectId <= 0 || $roundId <= 0) {
@@ -581,6 +774,16 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return (bool) $db->loadResult();
     }
 
+    /**
+     * Calculate a fixture's final prediction submission instant.
+     * Uses the match start, first fixture of a prediction round or project
+     * start according to configured closing rules, and adjusts using
+     * the project's timezone and allowed closing-time offset.
+     * @param object $match Fixture date and round identifier.
+     * @param object $project Prediction project with start date/time.
+     * @param array $config Entry closing-time configuration.
+     * @return DateTimeImmutable|null Deadline, or null when no valid date exists.
+     */
     private function getMatchDeadline(object $match, object $project, array $config): ?DateTimeImmutable
     {
         $baseDate = (string) ($match->match_date ?? '');
@@ -607,6 +810,14 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Look up the prediction deadline rule for a game/project round.
+     * Reads the published tip-round configuration and falls back to
+     * beginning-of-match closing when no specific rule is stored.
+     * @param int $roundId Round whose deadline is requested.
+     * @param int $projectId Project owning the round.
+     * @return string Configured deadline strategy.
+     */
     private function getRoundDeadlineRule(int $roundId, int $projectId): string
     {
         if ($roundId <= 0 || $projectId <= 0) {
@@ -628,6 +839,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return (string) ($db->loadResult() ?: 'BEGIN_OF_MATCH');
     }
 
+    /**
+     * Find the earliest published, non-cancelled fixture in a round.
+     * Uses a bound round ID and SQL MIN() to establish the closing
+     * deadline when predictions close at the first match of the round.
+     * @param int $roundId Selected match round identifier.
+     * @return string Earliest scheduled match date or empty string.
+     */
     private function getFirstRoundMatchDate(int $roundId): string
     {
         if ($roundId <= 0) {
@@ -645,6 +863,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return (string) ($db->loadResult() ?: '');
     }
 
+    /**
+     * Resolve the prediction project's configured timezone safely.
+     * Builds a DateTimeZone from project settings and uses UTC when
+     * the stored timezone string is invalid.
+     * @param object $project Prediction project timezone configuration.
+     * @return DateTimeZone Effective timezone for entry deadlines.
+     */
     private function projectTimezone(object $project): DateTimeZone
     {
         try {
@@ -654,6 +879,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Check whether a fixture already contains scored or decided results.
+     * Looks at regular and decision scores for either team so completed
+     * matches cannot be edited after recorded results are available.
+     * @param object $match Fixture result fields.
+     * @return bool Whether any match result is present.
+     */
     private function matchHasResult(object $match): bool
     {
         return $match->team1_result !== null
@@ -662,6 +894,15 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
             || $match->team2_result_decision !== null;
     }
 
+    /**
+     * Choose the preferred team-name field for the prediction table.
+     * Accepts only full, middle or short-name settings and falls back
+     * to the stored full team name when a selected variant is unavailable.
+     * @param object $row Prepared match/team row.
+     * @param string $side Team field prefix for the match.
+     * @param array $config Prediction display settings.
+     * @return string Trimmed team display name.
+     */
     private function teamDisplayName(object $row, string $side, array $config): string
     {
         $field = (string) ($config['prediction_team_name'] ?? 'short_name');
@@ -673,6 +914,15 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return trim((string) ($row->{$property} ?? $row->{$fallback} ?? ''));
     }
 
+    /**
+     * Find the requested club logo variant in a match row.
+     * Only accepts configured small, middle and large logo fields,
+     * returning an empty path when logos are disabled or absent.
+     * @param object $row Match/team presentation fields.
+     * @param string $side Team field prefix for the match.
+     * @param array $config Logo display settings.
+     * @return string Configured logo path or empty string.
+     */
     private function teamLogo(object $row, string $side, array $config): string
     {
         $choice = (string) ($config['show_logo_small'] ?? 'no_logo');
@@ -683,6 +933,14 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         return trim((string) ($row->{$property} ?? ''));
     }
 
+    /**
+     * Format a fixture time using the prediction project's timezone.
+     * Leaves invalid or zeroed dates empty and falls back to the
+     * original date text if the PHP date parser rejects it.
+     * @param string $value Stored match date/time.
+     * @param object $project Project timezone configuration.
+     * @return string Localised display date or original value.
+     */
     private function formatMatchDate(string $value, object $project): string
     {
         if ($value === '' || $value === '0000-00-00 00:00:00') {
@@ -695,6 +953,13 @@ class PredictionentryModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Aggregate submitted tendency tips for selected match identifiers.
+     * Uses a bound prediction game and integer match ID filter, groups
+     * by match and tendency, and returns counts for optional table stats.
+     * @param array $matchIds Fixture IDs for the current entry round.
+     * @return array Grouped tendency totals by match.
+     */
     private function getTipTendencies(array $matchIds): array
     {
         $ids = array_values(array_filter(array_map('intval', $matchIds)));
