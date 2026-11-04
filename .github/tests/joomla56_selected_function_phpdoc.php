@@ -20,6 +20,7 @@ $paths = [
     'site/src/Model/AboutModel.php',
     'site/src/Model/AllclubsModel.php',
     'site/src/Model/AllpersonsModel.php',
+    'site/src/Model/AllleaguesModel.php',
     'site/src/Model/IcalModel.php',
     'site/src/Controller/EditpersonController.php',
     'site/src/Controller/PredictionentryController.php',

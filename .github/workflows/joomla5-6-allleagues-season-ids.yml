@@ -1,0 +1,35 @@
+name: Joomla 5/6 all-leagues season filter safety
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/AllleaguesModel.php'
+      - '.github/tests/joomla56_allleagues_season_ids.php'
+      - '.github/workflows/joomla5-6-allleagues-season-ids.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seasons:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint league model and season selection test
+        run: |
+          php -l site/src/Model/AllleaguesModel.php
+          php -l .github/tests/joomla56_allleagues_season_ids.php
+      - name: Reject malformed or overflowing season IDs
+        run: php .github/tests/joomla56_allleagues_season_ids.php
