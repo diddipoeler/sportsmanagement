@@ -135,4 +135,37 @@ foreach ([
     }
 }
 
+$validRankingRows = new ReflectionMethod($class, 'validRankingRows');
+$firstMember = ['member' => (object) ['id' => 7], 'totalPoints' => 3];
+$secondMember = ['member' => (object) ['id' => 8], 'totalPoints' => 5];
+$inputRows = [
+    'bogus' => $firstMember,
+    0 => $firstMember,
+    7 => ['member' => ['id' => 7]],
+    8 => 'invalid',
+    '0007' => $firstMember,
+    9 => $secondMember,
+];
+$expectedRows = ['0007' => $firstMember, 9 => $secondMember];
+if ($validRankingRows->invoke(null, $inputRows) !== $expectedRows
+    || $validRankingRows->invoke(null, new stdClass()) !== []) {
+    fwrite(STDERR, 'Top Tipper malformed ranking rows regression.' . PHP_EOL);
+    exit(1);
+}
+
+foreach ([
+    [7, false, 7], ['0007', false, 7], ['0', false, 0],
+    [-1, false, 0], [-1, true, -1], ['-0005', true, -5],
+    ['-0', true, 0], ['-2', false, 0],
+    ['7invalid', false, 0], [' 7', false, 0],
+    [1.5, false, 0], [true, false, 0],
+    [['7'], false, 0], [PHP_INT_MAX . '0', true, 0],
+    [str_repeat('0', 256), false, 0],
+] as [$raw, $allowNegative, $expected]) {
+    if ($class::rankingInteger($raw, $allowNegative) !== $expected) {
+        fwrite(STDERR, 'Top Tipper ranking numeric field regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
 echo "Top Tipper input checks passed.\n";
