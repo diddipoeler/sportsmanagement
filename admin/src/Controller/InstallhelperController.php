@@ -18,6 +18,15 @@ use Joomla\CMS\Language\Text;
  */
 final class InstallhelperController extends SportsManagementFormController
 {
+    /**
+     * Save sport types in the SportsManagement installer wizard.
+     * Checks the Joomla token and component admin permission, obtains
+     * posted form data and delegates persistence to the native installer
+     * model. Reports validation warnings and returns to step one, or
+     * advances to step two when the save completes successfully.
+     * @return void
+     * @throws \RuntimeException If administrator access is missing.
+     */
     public function savesportstype(): void
     {
         $this->checkToken();
