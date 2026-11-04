@@ -31,6 +31,31 @@ namespace Joomla\CMS\MVC\Controller {
     }
 }
 
+namespace Joomla\CMS\Application {
+    interface CMSApplicationInterface {}
+}
+
+namespace Diddipoeler\Component\SportsManagement\Site\Service {
+    class SportsManagementSiteApplicationResolver
+    {
+        public static ?\Joomla\CMS\Application\CMSApplicationInterface $application = null;
+
+        /**
+         * Return the fake site application injected for native MVC tests.
+         *
+         * @return \Joomla\CMS\Application\CMSApplicationInterface
+         */
+        public static function resolve(): \Joomla\CMS\Application\CMSApplicationInterface
+        {
+            if (self::$application === null) {
+                throw new \RuntimeException('Test application not configured.');
+            }
+
+            return self::$application;
+        }
+    }
+}
+
 namespace Joomla\CMS\MVC\Model {
     class FormModel
     {
@@ -71,6 +96,7 @@ namespace {
     use Diddipoeler\Component\SportsManagement\Site\Model\UpdsportsmanagementModel;
     use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
     use Joomla\CMS\MVC\Model\FormModel;
+    use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
     use Joomla\CMS\Session\Session;
 
     \define('_JEXEC', 1);
@@ -101,12 +127,17 @@ namespace {
         }
     }
 
-    final class FakeApplication
+    final class FakeApplication implements \Joomla\CMS\Application\CMSApplicationInterface
     {
         public bool $canEdit = false;
+        public bool $missingIdentity = false;
 
-        public function getIdentity(): object
+        public function getIdentity(): ?object
         {
+            if ($this->missingIdentity) {
+                return null;
+            }
+
             return new class($this) {
                 public function __construct(private FakeApplication $app)
                 {
@@ -148,6 +179,9 @@ namespace {
 
     $database = new FakeDatabase();
     FormModel::$database = $database;
+    $app = new FakeApplication();
+    $app->canEdit = true;
+    SportsManagementSiteApplicationResolver::$application = $app;
     $model = new UpdsportsmanagementModel();
 
     foreach ([
@@ -166,7 +200,7 @@ namespace {
     assertSameValue('Good', $database->writes[0][1]->greeting ?? null, 'Greeting should be trimmed.');
     $database->writes = [];
 
-    $app = new FakeApplication();
+    $app->canEdit = false;
     $post = new FakePost(['jform' => ['id' => '12', 'greeting' => 'Hello']]);
     $controller = new UpdsportsmanagementController([], null, $app, (object) ['post' => $post]);
 
@@ -186,6 +220,16 @@ namespace {
         assertSameValue(403, $e->getCode(), 'Unauthorized writes must return 403.');
     }
     assertSameValue([], $database->writes, 'Denied frontend writes must not touch the database.');
+
+    $app->missingIdentity = true;
+    try {
+        $controller->submit();
+        throw new \RuntimeException('Updater must reject an absent Joomla user identity.');
+    } catch (\RuntimeException $e) {
+        assertSameValue(403, $e->getCode(), 'Absent identity must return 403.');
+    }
+    $app->missingIdentity = false;
+    assertSameValue([], $database->writes, 'Missing identity must not cause a write.');
 
     $app->canEdit = true;
     ob_start();

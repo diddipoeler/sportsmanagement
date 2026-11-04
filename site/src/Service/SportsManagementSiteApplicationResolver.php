@@ -16,6 +16,16 @@ use Joomla\CMS\Factory;
 
 final class SportsManagementSiteApplicationResolver
 {
+    /**
+     * Return a validated Joomla site application from dependency injection.
+     *
+     * Prevents administrator or missing application services from being used
+     * to handle SportsManagement frontend requests and removes reliance on
+     * the legacy static Joomla application factory.
+     *
+     * @return SiteApplication Active Joomla frontend application.
+     * @throws \RuntimeException When no matching site service is available.
+     */
     public static function resolve(): SiteApplication
     {
         // Use Joomla's application service instead of the removed legacy Factory::getApplication() API.

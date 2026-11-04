@@ -23,11 +23,40 @@ use Throwable;
  */
 final class UpdsportsmanagementModel extends FormModel
 {
+    /**
+     * Resolve the Joomla site application for the native update model.
+     *
+     * Loads the namespaced application resolver when legacy callers directly
+     * include this model before Joomla has registered component autoloading.
+     * The resolver selects the current site application from Joomla DI.
+     *
+     * @return CMSApplicationInterface Active Joomla frontend application.
+     * @throws \RuntimeException If the resolver file is unavailable.
+     */
     private function siteApplication(): CMSApplicationInterface
     {
+        if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
+            $resolverFile = dirname(__DIR__) . '/Service/SportsManagementSiteApplicationResolver.php';
+
+            if (!is_file($resolverFile)) {
+                throw new \RuntimeException('SportsManagement site application resolver is missing.', 500);
+            }
+
+            require_once $resolverFile;
+        }
+
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Load the Joomla XML form used to edit a sample SportsManagement record.
+     * Uses the native FormModel loader and the component form name,
+     * reporting a failure through the application instead of returning
+     * an incomplete form when Joomla cannot load the definition.
+     * @param array $data Existing record fields for the form.
+     * @param bool $loadData Whether Joomla should load stored form data.
+     * @return Form|false Loaded Joomla form, or false on failure.
+     */
     public function getForm($data = [], $loadData = true): Form|false
     {
         try {
@@ -45,6 +74,12 @@ final class UpdsportsmanagementModel extends FormModel
         }
     }
 
+    /**
+     * Load the sample record selected by the current frontend request.
+     * Applies active menu parameters when present, resolves the item ID
+     * from model state or input, and uses a bound ID for the database lookup.
+     * @return object|null Selected sample record or null if unavailable.
+     */
     public function getItem(): ?object
     {
         $app = $this->siteApplication();
@@ -86,6 +121,14 @@ final class UpdsportsmanagementModel extends FormModel
         }
     }
 
+    /**
+     * Update a sample record only for a Joomla user with edit permission.
+     * Rejects malformed IDs and greetings, trims the accepted text and
+     * delegates the update to Joomla's database API; failed database writes
+     * return false and may report an error through the site application.
+     * @param array $data Submitted record fields including id and greeting.
+     * @return bool True after a successful authorised update.
+     */
     public function updItem(array $data): bool
     {
         // Controller CSRF checks must not be the only write protection:

@@ -20,6 +20,16 @@ use RuntimeException;
 /** Joomla 5/6 controller for the small SportsManagement sample record updater. */
 final class UpdsportsmanagementController extends BaseController
 {
+    /**
+     * Handle a CSRF-protected frontend update for the sample component record.
+     *
+     * Verifies the POST token and Joomla component edit permission, requires
+     * the native update model, then displays the historical success or
+     * failure message after attempting the authorised database mutation.
+     *
+     * @return bool Whether the sample record was updated.
+     * @throws RuntimeException When the token, identity or model is invalid.
+     */
     public function submit(): bool
     {
         if (!Session::checkToken('post')) {
@@ -27,7 +37,9 @@ final class UpdsportsmanagementController extends BaseController
         }
 
         // CSRF protection alone does not grant permission to modify records.
-        if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
             throw new RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
