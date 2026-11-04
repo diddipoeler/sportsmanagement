@@ -19,16 +19,48 @@ use Joomla\Database\ParameterType;
  */
 final class ProjectNavigationHelper
 {
+    /**
+     * Find the preceding project in the current project's league.
+     *
+     * Uses the supplied Joomla database connection and the shared
+     * navigation query to search for the nearest lower project name.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param object $project Current project containing league_id and name.
+     * @return object|null Previous project record, or null if none exists.
+     */
     public static function previous(DatabaseInterface $db, object $project): ?object
     {
         return self::find($db, $project, false);
     }
 
+    /**
+     * Find the following project within the current project's league.
+     *
+     * Uses the same parameterised query as previous(), ordered by
+     * ascending name to select the nearest following project.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param object $project Current project containing league_id and name.
+     * @return object|null Next project record, or null if none exists.
+     */
     public static function next(DatabaseInterface $db, object $project): ?object
     {
         return self::find($db, $project, true);
     }
 
+    /**
+     * Query the nearest project in a requested navigation direction.
+     *
+     * Rejects empty project names and invalid league IDs, binds league
+     * and name parameters using Joomla DatabaseInterface, and limits
+     * the result to one neighbouring project in the same league.
+     *
+     * @param DatabaseInterface $db Joomla database connection.
+     * @param object $project Current project providing league and name.
+     * @param bool $next True to search forward; false for backward.
+     * @return object|null Adjacent project or null if no match exists.
+     */
     private static function find(DatabaseInterface $db, object $project, bool $next): ?object
     {
         $leagueId = (int) ($project->league_id ?? 0);
