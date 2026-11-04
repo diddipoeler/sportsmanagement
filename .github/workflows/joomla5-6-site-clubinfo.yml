@@ -40,8 +40,8 @@ jobs:
           for token in [
               'Site\\View\\Clubinfo',
               'instanceof ClubinfoModel',
-              '$model->getDatabase()',
-              '$this->getApplication()->getIdentity()',
+              '$model->getSportsManagementDatabase()',
+              '$this->app->getIdentity()',
               'getWebAssetManager()',
           ]:
               assert token in view, f'missing native Clubinfo contract: {token}'
