@@ -18,6 +18,18 @@ use Joomla\CMS\Router\Route;
 /** Native Joomla 5/6 controller for SportsManagement XML exports. */
 final class JlxmlexportsController extends BaseController
 {
+    /**
+     * Export data for the explicitly selected SportsManagement project.
+     *
+     * Requires component management permission, rejects missing or malformed
+     * positive project IDs, loads the administrator export model and verifies
+     * its exportData() method before writing the download response. Returns
+     * administrators to the selected project export view afterwards.
+     *
+     * @return bool True after the export model completes successfully.
+     * @throws \RuntimeException When access or export model resolution fails.
+     * @throws \UnexpectedValueException If the project ID is invalid.
+     */
     public function export(): bool
     {
         // The download includes whole project exports. A valid administrator
@@ -63,6 +75,15 @@ final class JlxmlexportsController extends BaseController
         return true;
     }
 
+    /**
+     * Retrieve the XML export model from the booted Joomla component.
+     *
+     * Resolves the model through the component's native MVC factory using
+     * the administrator namespace and request-independent model loading.
+     *
+     * @return object XML export model provided by Joomla MVC.
+     * @throws \RuntimeException If Joomla cannot resolve the export model.
+     */
     private function getExportModel(): object
     {
         $model = $this->app
