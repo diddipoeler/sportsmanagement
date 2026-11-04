@@ -17,6 +17,16 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native administrator controller for the GitHub helper view. */
 final class GithubController extends BaseController
 {
+    /**
+     * Create a GitHub issue through the component's administrator model.
+     *
+     * Requires a valid Joomla form token and the core.manage permission for
+     * com_sportsmanagement before invoking the model. Redirects to the result
+     * layout with either a success or an error message after the attempt.
+     *
+     * @return void
+     * @throws \RuntimeException When the current user lacks manage permission.
+     */
     public function addissue(): void
     {
         $this->checkToken();
@@ -36,6 +46,14 @@ final class GithubController extends BaseController
         );
     }
 
+    /**
+     * Close the administrator GitHub helper workflow without submitting data.
+     *
+     * Redirects the component popup to its close view using Joomla's
+     * translated close message; no issue creation is attempted.
+     *
+     * @return void
+     */
     public function cancel(): void
     {
         $this->setRedirect(
@@ -44,6 +62,18 @@ final class GithubController extends BaseController
         );
     }
 
+    /**
+     * Retrieve an administrator MVC model without applying request state.
+     *
+     * Supplies the native Joomla administrator prefix and enables
+     * ignore_request unless the caller explicitly provided a different
+     * configuration value, avoiding unintended state from query parameters.
+     *
+     * @param string $name Model name, defaulting to the GitHub integration.
+     * @param string $prefix MVC model class prefix.
+     * @param array $config Additional model factory configuration.
+     * @return mixed The model instance or the parent controller's failure result.
+     */
     public function getModel($name = 'Github', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, $config + ['ignore_request' => true]);
