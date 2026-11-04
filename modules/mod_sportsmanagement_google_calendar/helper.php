@@ -33,6 +33,14 @@ if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
         protected string $apiKey = '';
         protected string $calendarId = '';
 
+        /**
+         * Initialise the legacy Google Calendar helper from module settings.
+         * Converts incoming settings to Joomla Registry, accepts only string
+         * API keys and calendar IDs, and rejects control characters before
+         * storing trimmed configuration for later event retrieval.
+         * @param Registry|array|null $params Settings supplied by the module.
+         * @return void
+         */
         public function __construct($params = null)
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
@@ -54,11 +62,26 @@ if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
             $this->calendarId = $calendarId;
         }
 
+        /**
+         * Format the duration of a Google Calendar event.
+         * Delegates to the native Joomla 5/6 GoogleCalendarHelper method so
+         * legacy template callers use the same event duration format.
+         * @param object $event Calendar event returned by the integration.
+         * @return string Formatted duration of the event.
+         */
         public static function duration(object $event): string
         {
             return GoogleCalendarHelper::duration($event);
         }
 
+        /**
+         * Retrieve the upcoming calendar entries for the configured calendar.
+         * Returns an empty list when credentials are absent, clamps the event
+         * limit to 1 through 2500 and delegates fetching to the native helper.
+         * Logs an error category without exposing API credentials on failure.
+         * @param int|string $maxEvents Requested maximum number of events.
+         * @return array Upcoming event records, or an empty array on failure.
+         */
         public function nextEvents($maxEvents): array
         {
             if ($this->apiKey === '' || $this->calendarId === '') {
