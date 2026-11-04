@@ -14,8 +14,19 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller;
 /** Native Joomla 5/6 list controller for event types. */
 final class EventtypesController extends SportsManagementAdminController
 {
+    /**
+     * Load the native event-type editor model through Joomla's MVC factory.
+     * Retain options provided by callers while overriding ignore_request, so
+     * the model starts from explicit editor state instead of request filters.
+     * @param string $name Requested model name.
+     * @param string $prefix Joomla administrator MVC namespace prefix.
+     * @param array $config Additional configuration options from the caller.
+     * @return mixed Model produced by the inherited Joomla factory.
+     */
     public function getModel($name = 'Eventtype', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }

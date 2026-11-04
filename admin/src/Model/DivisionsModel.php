@@ -22,6 +22,14 @@ class DivisionsModel extends SportsManagementListModel
 {
     private int $projectId = 0;
 
+    /**
+     * Configure sortable columns for the project-divisions list.
+     * Retains caller configuration while registering division properties
+     * and their aliases with the native Joomla list-model constructor.
+     * @param array $config Joomla list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -36,6 +44,14 @@ class DivisionsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore the selected project and division-list filters.
+     * Obtains the project selection and user-backed search/order state
+     * from the administrator application before querying divisions.
+     * @param string $ordering Default division-list column.
+     * @param string $direction Default sorting direction.
+     * @return void
+     */
     protected function populateState($ordering = 'dv.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -78,6 +94,12 @@ class DivisionsModel extends SportsManagementListModel
         $this->setState('list.direction', $direction === 'DESC' ? 'DESC' : 'ASC');
     }
 
+    /**
+     * Build a project-scoped database query for the divisions list.
+     * Joins related division information, filters by selected project
+     * and publication/search settings, and applies validated ordering.
+     * @return \Joomla\Database\DatabaseQuery Query for the list view.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -143,6 +165,12 @@ class DivisionsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Return the project identifier selected for division administration.
+     * Ensures the model's lazy Joomla state has been initialised before
+     * reading the project ID shared by the list and edit actions.
+     * @return int Selected project identifier, or zero.
+     */
     public function getProjectId(): int
     {
         $this->getState();
@@ -150,6 +178,12 @@ class DivisionsModel extends SportsManagementListModel
         return (int) $this->getState('project.id', $this->projectId);
     }
 
+    /**
+     * Load the project associated with the current division selection.
+     * Returns null for a missing project identifier instead of querying
+     * an unrestricted or unrelated project record.
+     * @return object|null Project record when the selection is valid.
+     */
     public function getProject(): ?object
     {
         $projectId = $this->getProjectId();
@@ -176,6 +210,13 @@ class DivisionsModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Build ID/name selector options for divisions in one project.
+     * Rejects nonpositive project IDs and restricts database rows to
+     * the selected project before returning Joomla select options.
+     * @param int $projectId Project whose divisions may be selected.
+     * @return array<int,object> Project-specific division options.
+     */
     public function getDivisions(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -198,6 +239,13 @@ class DivisionsModel extends SportsManagementListModel
         return $db->loadObjectList('value');
     }
 
+    /**
+     * Count divisions belonging to the requested project.
+     * Performs a project-scoped count query and returns zero when no
+     * valid positive project identifier is supplied.
+     * @param int $projectId Project to count division records for.
+     * @return int Number of matching divisions.
+     */
     public function getProjectDivisionsCount(int $projectId): int
     {
         if ($projectId <= 0) {
@@ -216,6 +264,13 @@ class DivisionsModel extends SportsManagementListModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Differentiate Joomla list-cache entries by project and filter state.
+     * Adds project, search and publication selectors to the inherited
+     * store identifier so unrelated backend selections are not mixed.
+     * @param string $id Parent list-model cache key.
+     * @return string State-specific cache key.
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . (int) $this->getState('project.id');

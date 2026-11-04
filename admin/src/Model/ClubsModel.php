@@ -22,6 +22,14 @@ use Joomla\Database\ParameterType;
  */
 class ClubsModel extends SportsManagementListModel
 {
+    /**
+     * Register the supported club-list filters and sortable columns.
+     * Passes the approved column aliases to Joomla's list-model constructor
+     * and preserves caller-provided filter fields when present.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Factory used for native MVC dependencies.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -39,6 +47,14 @@ class ClubsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Populate the administrator's club search and sort preferences.
+     * Restores session-backed filters from the current Joomla application
+     * and constrains ordering to registered database columns.
+     * @param string $ordering Default sort column.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'a.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -106,6 +122,12 @@ class ClubsModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the filtered query used by the administrator club list.
+     * Loads club fields and related display data, applies administrator
+     * filters with bound parameters and restricts ORDER BY to safe columns.
+     * @return \Joomla\Database\DatabaseQuery Query supplied to the list model.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -256,6 +278,12 @@ class ClubsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Build a club selector for administrator forms and filters.
+     * Loads club identifiers, readable names and supporting metadata in
+     * the order expected by Joomla form controls.
+     * @return array<int,object> Club records formatted as select options.
+     */
     public function getClubListSelect(): array
     {
         $db = $this->getDatabase();

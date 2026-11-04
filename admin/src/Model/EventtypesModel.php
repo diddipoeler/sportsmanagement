@@ -19,6 +19,14 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 list model for event types. */
 final class EventtypesModel extends SportsManagementListModel
 {
+    /**
+     * Register filter and ordering fields for the event-types list.
+     * Initialises Joomla's list model with event and sport-type aliases
+     * without discarding custom configuration supplied by MVCFactory.
+     * @param array $config List-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -34,6 +42,14 @@ final class EventtypesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore the administrator's event-type filters.
+     * Loads the search query, publication state and selected sport type
+     * from Joomla user state for consistent navigation between requests.
+     * @param string $ordering Default event-type ordering.
+     * @param string $direction Default ascending/descending direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -44,6 +60,12 @@ final class EventtypesModel extends SportsManagementListModel
         $this->setState('filter.sports_type', $app->getUserStateFromRequest($this->context . '.filter.sports_type', 'filter_sports_type', '', 'int'));
     }
 
+    /**
+     * Create the filtered database query for event-type records.
+     * Joins event types to sports categories and applies allowed search,
+     * publication and sort criteria for Joomla's backend list view.
+     * @return \Joomla\Database\DatabaseQuery List query with bound filter inputs.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -176,6 +198,13 @@ final class EventtypesModel extends SportsManagementListModel
         return $items;
     }
 
+    /**
+     * Load published event types for a specified sports category.
+     * Uses the SportsManagement database resolver, joins translated sport
+     * names and returns sorted value/text pairs for legacy selectors.
+     * @param int $sportsTypeId Optional positive sport-type filter.
+     * @return array<int,object> Available published event options.
+     */
     public static function getEvents(int $sportsTypeId = 0): array
     {
         $db = (new SportsManagementDatabaseResolver())->resolve();

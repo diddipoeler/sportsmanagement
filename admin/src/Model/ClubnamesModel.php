@@ -16,6 +16,14 @@ use Joomla\Database\ParameterType;
 
 final class ClubnamesModel extends SportsManagementListModel
 {
+    /**
+     * Define the database fields available for alias-list filtering.
+     * Initialises the native list model with safe sort-column aliases
+     * while respecting an explicitly supplied filter-fields collection.
+     * @param array $config Model construction configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -30,6 +38,14 @@ final class ClubnamesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore the club-alias list state and legacy country filter.
+     * Invokes the parent list-state implementation and honours the old
+     * country-filter request name without re-entering lazy state loading.
+     * @param string $ordering Default alias ordering.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -44,6 +60,12 @@ final class ClubnamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the administrator query for alternative club names.
+     * Selects club-name fields and checkout editor details, filters
+     * by search text, country and state, and safely resolves sorting.
+     * @return \Joomla\Database\DatabaseQuery Query for alias list pagination.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -115,6 +137,13 @@ final class ClubnamesModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * List club aliases for a selected country or for all countries.
+     * Retrieves short and long club names in a stable order for use
+     * in backend forms and legacy alias selectors.
+     * @param string $country Optional country code to filter by.
+     * @return array<int,object> Club-name records.
+     */
     public function getClubNames(string $country = ''): array
     {
         $db = $this->getDatabase();
