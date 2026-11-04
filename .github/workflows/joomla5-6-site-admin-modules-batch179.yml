@@ -56,6 +56,7 @@ jobs:
           grep -Fq -- 'Native Joomla 5/6 administrator prediction management dashboard.' admin/src/View/Predictions/HtmlView.php
 
           grep -Fq -- 'SportsManagement UEFA ranking legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_uefawertung/helper.php
-          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_uefawertung/helper.php
+          grep -Fq -- "!\$app->isClient('site')" modules/mod_sportsmanagement_uefawertung/helper.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_uefawertung/helper.php
 
           echo 'Joomla 5/6 batch 179 contracts OK.'

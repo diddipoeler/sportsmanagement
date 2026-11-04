@@ -107,8 +107,10 @@ jobs:
             modules/mod_sportsmanagement_uefawertung/helper.php
           )
           for file in "${helpers[@]}"; do
-            if grep -Fq -- 'Factory::getContainer()' "$file"; then
-              echo "$file still uses Factory::getContainer()" >&2
+            # Factory::getContainer() is supported Joomla 5/6 DI. Deny
+            # removed global factories, not the database service container.
+            if grep -Eq -- 'Factory::get(Dbo|DBO|Application|User)\(|JFactory::' "$file"; then
+              echo "$file still uses a deprecated static Joomla factory" >&2
               exit 1
             fi
             grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
