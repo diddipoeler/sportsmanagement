@@ -20,6 +20,15 @@ final class ProjectsModel extends SportsManagementListModel
 {
     public string $_identifier = 'projects';
 
+    /**
+     * Register filterable and sortable fields for administrator projects.
+     * Initialises Joomla's native list model with the approved project,
+     * league, season, age-group and publication aliases while retaining
+     * custom filter configuration supplied by the MVC factory.
+     * @param array $config Joomla list-model construction options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -42,6 +51,14 @@ final class ProjectsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load the projects search-filter form from component definitions.
+     * Registers the component's legacy form directory with Joomla Form
+     * so migrated backend views can still display their search filters.
+     * @param array $data Values to populate filter controls.
+     * @param bool $loadData Whether saved filter state should be loaded.
+     * @return mixed Native Joomla filter form result.
+     */
     public function getFilterForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
@@ -49,10 +66,19 @@ final class ProjectsModel extends SportsManagementListModel
         return parent::getFilterForm($data, $loadData);
     }
 
+    /**
+     * Find a project for one league within selected seasons.
+     * Rejects invalid season and league identifiers, performs a
+     * bound project lookup, and returns null when no matching project
+     * exists or the database reports a failure.
+     * @param mixed $season_ids Season IDs from Joomla administrator filters.
+     * @param mixed $league_id League identifier to match.
+     * @return int|null Matching project ID or null.
+     */
     public function existcurrentseason($season_ids = [], $league_id = 0): ?int
     {
         $seasonIds = $this->normaliseIds($season_ids);
-        $leagueId = (int) $league_id;
+        $leagueId = $this->normaliseIds([$league_id])[0] ?? 0;
 
         if (!$seasonIds || $leagueId <= 0) {
             return null;
@@ -78,6 +104,15 @@ final class ProjectsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Restore project filters and safe sort state in the administrator.
+     * Reads legacy search, country, season, league, age-group and other
+     * filters through Joomla input, synchronises shared user state and
+     * avoids recursive lazy-state initialisation while populating.
+     * @param string $ordering Default project ordering.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'p.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -128,6 +163,13 @@ final class ProjectsModel extends SportsManagementListModel
         $input->set('projects_search_associations_leagues', $association);
     }
 
+    /**
+     * Build the filtered Joomla projects list query.
+     * Joins project, league, sport, season and assignment information,
+     * uses bound parameters for user filters and restricts ordering to
+     * a trusted field map supported by the backend list view.
+     * @return \Joomla\Database\DatabaseQuery Native project-list query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -330,11 +372,41 @@ final class ProjectsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Convert raw season filter values to unique positive integers.
+     * Accepts only whole decimal identifiers, tolerates padded numeric
+     * strings and rejects partial casts, booleans, overflow or nested
+     * values before the identifiers reach a database whereIn() clause.
+     * @param mixed $ids Administrator selection of season IDs.
+     * @return array<int> Unique validated season identifiers.
+     */
     private function normaliseIds($ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', (array) $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        $valid = [];
+        $maximum = (string) PHP_INT_MAX;
+
+        foreach ((array) $ids as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $digits = trim((string) $value);
+
+            if (!preg_match('/^[0-9]+$/D', $digits)) {
+                continue;
+            }
+
+            $digits = ltrim($digits, '0');
+
+            if ($digits === '' || strlen($digits) > strlen($maximum)
+                || (strlen($digits) === strlen($maximum) && strcmp($digits, $maximum) > 0)) {
+                continue;
+            }
+
+            $id = (int) $digits;
+            $valid[$id] = $id;
+        }
+
+        return array_values($valid);
     }
 }

@@ -16,6 +16,14 @@ use Joomla\Database\ParameterType;
 
 final class TeamsModel extends SportsManagementListModel
 {
+    /**
+     * Configure sortable fields for the native team administration list.
+     * Registers team, club, country, age-group and sports-type columns
+     * with Joomla ListModel while retaining user-provided filter settings.
+     * @param array $config Joomla list model configuration.
+     * @param MVCFactoryInterface|null $factory Native MVC factory or null.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -43,6 +51,14 @@ final class TeamsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore legacy team search, country and age-group filters.
+     * Reads the Joomla administrator input, adds compatibility state for
+     * old filter parameter names and leaves sorting to approved columns.
+     * @param string $ordering Default team ordering.
+     * @param string $direction Default list direction.
+     * @return void
+     */
     protected function populateState($ordering = 't.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -87,6 +103,12 @@ final class TeamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Create a filtered list query for team management.
+     * Joins clubs, age groups and sports types, applies search, state,
+     * club and season-assignment criteria and validates ORDER BY fields.
+     * @return \Joomla\Database\DatabaseQuery Team administration query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -236,6 +258,12 @@ final class TeamsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load backend selector options needed by inline team editing.
+     * Queries the allowed related lookup tables and provides option
+     * collections used by the teams list's editable fields.
+     * @return array<string,array> Options for inline team controls.
+     */
     public function getInlineOptions(): array
     {
         $db = $this->getDatabase();
@@ -259,6 +287,12 @@ final class TeamsModel extends SportsManagementListModel
         ];
     }
 
+    /**
+     * Load team names and metadata for Joomla backend selectors.
+     * Returns team identifiers and display fields, including club and
+     * short-name properties, ordered for stable dropdown rendering.
+     * @return array<int,object> Team selector records.
+     */
     public function getTeamListSelect(): array
     {
         $db = $this->getDatabase();
@@ -285,6 +319,13 @@ final class TeamsModel extends SportsManagementListModel
         return $rows;
     }
 
+    /**
+     * Find project teams that use a given standard playground.
+     * Joins project-team, season-team and team records for the venue
+     * and groups results into the legacy nested project/team display shape.
+     * @param mixed $playgroundId Playground identifier.
+     * @return array<int,object> Project-team context indexed by relation ID.
+     */
     public function getTeams($playgroundId): array
     {
         $playgroundId = (int) $playgroundId;
@@ -355,6 +396,13 @@ final class TeamsModel extends SportsManagementListModel
         return $result;
     }
 
+    /**
+     * Resolve team records referenced by a collection of fixtures.
+     * Collects and deduplicates home and away team IDs, queries them
+     * with Joomla's bound whereIn() and indexes names by team ID.
+     * @param mixed $games Match records containing team1/team2 IDs, by reference.
+     * @return array<int,object> Referenced teams keyed by identifier.
+     */
     public function getTeamsFromMatches(&$games): array
     {
         $ids = [];
@@ -389,6 +437,13 @@ final class TeamsModel extends SportsManagementListModel
         return $result;
     }
 
+    /**
+     * Differentiate cached team lists by layout and selected filters.
+     * Appends season, club, country, age-group, sports type and state
+     * to Joomla's inherited store ID to avoid mixing list selections.
+     * @param string $id Base cache key.
+     * @return string Filter-specific Joomla list cache key.
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . (string) $this->getState('layout');

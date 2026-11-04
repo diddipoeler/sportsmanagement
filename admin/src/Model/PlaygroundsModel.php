@@ -16,6 +16,14 @@ use Joomla\Database\ParameterType;
 
 final class PlaygroundsModel extends SportsManagementListModel
 {
+    /**
+     * Define sortable and searchable fields for playground administration.
+     * Registers venue, associated club, country, publication and
+     * ordering aliases with Joomla's native list model.
+     * @param array $config Joomla list-model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -34,6 +42,14 @@ final class PlaygroundsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore the legacy country filter for the playground list.
+     * Reads the current Joomla state bag directly to avoid recursive
+     * initialisation and accepts the old filter_search_nation parameter.
+     * @param string $ordering Default venue name ordering.
+     * @param string $direction Default sorting direction.
+     * @return void
+     */
     protected function populateState($ordering = 'v.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -49,6 +65,13 @@ final class PlaygroundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the filtered playground list with associated clubs.
+     * Selects venue details and club metadata, applies country/search
+     * and publication state filters, and restricts ordering to
+     * whitelisted columns expected by Joomla's backend list view.
+     * @return \Joomla\Database\DatabaseQuery Playground administration query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -113,6 +136,12 @@ final class PlaygroundsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Return playground rows for standard backend dropdown controls.
+     * Loads identifiers, venue names, country, shorthand and club
+     * context in alphabetical order with Joomla value/text aliases.
+     * @return array<int,object> Playground selector options.
+     */
     public function getPlaygroundListSelect(): array
     {
         $db = $this->getDatabase();
@@ -132,6 +161,15 @@ final class PlaygroundsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Collect venues linked to the selected project-team records.
+     * Rejects empty project-team selections, joins associated clubs
+     * and teams, and optionally includes pictures in distinct venue
+     * options with readable name/short-name labels.
+     * @param mixed $picture Whether to include playground picture fields.
+     * @param mixed $projectteams Project-team selector objects.
+     * @return array<int,object> Matching playground option records.
+     */
     public function getPlaygrounds($picture = false, $projectteams = []): array
     {
         $ids = [];
