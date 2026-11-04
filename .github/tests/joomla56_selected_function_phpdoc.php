@@ -60,6 +60,7 @@ $paths = [
     'admin/src/Controller/DivisionsController.php',
     'admin/src/Controller/LeaguesController.php',
     'admin/src/Controller/DatabasetoolController.php',
+    'admin/src/Model/DatabasetoolModel.php',
     'modules/mod_sportsmanagement_count_rekord/helper.php',
     'admin/src/Model/ClubnamesModel.php',
     'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php',

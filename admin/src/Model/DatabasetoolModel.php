@@ -45,6 +45,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
     public string $storeSuccessColor = 'green';
     public string $existingInDbColor = 'orange';
 
+    /**
+     * Normalise a database error code and message for legacy consumers.
+     * Recognises MySQL duplicate-column and duplicate-key errors so maintenance actions can distinguish warnings from failures.
+     *
+     * @param mixed $getcode Parameter used by the native getExeptionMessage() operation.
+     * @param mixed $getmessage Parameter used by the native getExeptionMessage() operation.
+     * @return array Result of the getExeptionMessage() operation.
+     */
     public static function getExeptionMessage($getcode = '', $getmessage = ''): array
     {
         $code = (int) $getcode;
@@ -66,6 +74,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         ];
     }
 
+    /**
+     * Capture a high-resolution timestamp for database maintenance timing.
+     * Returns PHP microtime as a float for elapsed-time calculations.
+     *
+     * @return float Result of the getRunTime() operation.
+     */
     public static function getRunTime(): float
     {
         return microtime(true);
@@ -77,6 +91,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return false;
     }
 
+    /**
+     * Create start, end and delta memory statistics for the admin interface.
+     * Produces legacy display rows containing the measurement label and byte count.
+     *
+     * @param mixed $startmemory Parameter used by the native getMemory() operation.
+     * @param mixed $endmemory Parameter used by the native getMemory() operation.
+     * @return array Result of the getMemory() operation.
+     */
     public function getMemory($startmemory, $endmemory): array
     {
         $rows = [];
@@ -95,6 +117,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $rows;
     }
 
+    /**
+     * Calculate elapsed query time from scalar or legacy microtime values.
+     * Accepts numeric timestamps or space-separated microtime strings and rounds the duration to milliseconds.
+     *
+     * @param mixed $starttime Parameter used by the native getQueryTime() operation.
+     * @param mixed $endtime Parameter used by the native getQueryTime() operation.
+     * @return float Result of the getQueryTime() operation.
+     */
     public function getQueryTime($starttime, $endtime): float
     {
         if (is_numeric($starttime) && is_numeric($endtime)) {
@@ -107,6 +137,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return round(($end[0] ?? 0.0) - ($start[0] ?? 0.0) + ($end[1] ?? 0.0) - ($start[1] ?? 0.0), 3);
     }
 
+    /**
+     * Enumerate tables owned by the SportsManagement component.
+     * Restricts discovery to the configured Joomla database prefix and component-specific table names.
+     *
+     * @return array Result of the getSportsManagementTables() operation.
+     */
     public function getSportsManagementTables(): array
     {
         self::$jsmtables = $this->componentTables('sportsmanagement_');
@@ -114,6 +150,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return self::$jsmtables;
     }
 
+    /**
+     * Enumerate legacy JoomLeague tables eligible for controlled cleanup.
+     * Uses prefix-matched table discovery instead of accepting arbitrary database table names.
+     *
+     * @return array Result of the getJoomleagueTablesTruncate() operation.
+     */
     public function getJoomleagueTablesTruncate(): array
     {
         self::$jsmtables = $this->componentTables('joomleague_');
@@ -121,6 +163,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return self::$jsmtables;
     }
 
+    /**
+     * Validate the discovered JoomLeague tables against supported import mappings.
+     * Checks source/destination tables and builds a status list for the administrator migration interface.
+     *
+     * @param mixed $tables Parameter used by the native checkImportTablesJlJsm() operation.
+     * @return array Result of the checkImportTablesJlJsm() operation.
+     */
     public function checkImportTablesJlJsm($tables): array
     {
         $db = self::sportsDatabase();
@@ -175,6 +224,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $rows;
     }
 
+    /**
+     * Retrieve legacy import table mappings from the component's registry.
+     * Uses the native query builder and shared error-tolerant object-list loader.
+     *
+     * @return array Result of the getJoomleagueImportTables() operation.
+     */
     public function getJoomleagueImportTables(): array
     {
         $db = self::sportsDatabase();
@@ -185,6 +240,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $this->loadObjectList($db, $query);
     }
 
+    /**
+     * Scan the Joomla database for legacy JoomLeague tables.
+     * Sorts discovered tables and compares them with the recorded import mappings.
+     *
+     * @return array Result of the getJoomleagueTables() operation.
+     */
     public function getJoomleagueTables(): array
     {
         $db = self::sportsDatabase();
@@ -219,6 +280,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $tables;
     }
 
+    /**
+     * Convert imported legacy template parameters to Joomla-compatible JSON.
+     * Examines migrated template configuration rows and normalises nonempty parameter data.
+     *
+     * @return void Result of the setParamstoJSON() operation.
+     */
     public function setParamstoJSON(): void
     {
         $db = self::sportsDatabase();
@@ -267,6 +334,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Execute a previously prepared database statement and record affected rows.
+     * Updates legacy static row-count properties and reports SQL failures via the Joomla administrator application.
+     *
+     * @param mixed $setModelVar Parameter used by the native runJoomlaQuery() operation.
+     * @param mixed $db Parameter used by the native runJoomlaQuery() operation.
+     * @return bool Result of the runJoomlaQuery() operation.
+     */
     public static function runJoomlaQuery($setModelVar = '', $db = null): bool
     {
         $database = $db instanceof DatabaseInterface ? $db : self::sportsDatabase();
@@ -289,6 +364,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Replace obsolete JoomLeague translation prefixes in migrated data.
+     * Updates only predefined component tables and fields using the shared string replacement routine.
+     *
+     * @return void Result of the setNewComponentName() operation.
+     */
     public function setNewComponentName(): void
     {
         foreach ([
@@ -301,6 +382,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Rewrite historical media paths for supported component records.
+     * Applies the known Joomla 5/6 image path substitutions to a fixed list of picture and icon columns.
+     *
+     * @return void Result of the setNewPicturePath() operation.
+     */
     public function setNewPicturePath(): void
     {
         foreach ([
@@ -323,6 +410,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Run a controlled maintenance operation on one component database table.
+     * Accepts only REPAIR, OPTIMIZE or TRUNCATE and validates the table against the selected Joomla database prefix and actual tables.
+     *
+     * @param mixed $table Parameter used by the native setSportsManagementTableQuery() operation.
+     * @param mixed $command Parameter used by the native setSportsManagementTableQuery() operation.
+     * @return bool Result of the setSportsManagementTableQuery() operation.
+     */
     public function setSportsManagementTableQuery($table, $command): bool
     {
         $db = self::sportsDatabase();
@@ -346,6 +441,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return self::runJoomlaQuery(self::class, $db);
     }
 
+    /**
+     * Validate configured quote imports and load permitted XML quote sources.
+     * Normalises quote type tokens, restricts file locations and builds status output for the administration page.
+     *
+     * @param mixed $sm_quotes Parameter used by the native checkQuotes() operation.
+     * @return string Result of the checkQuotes() operation.
+     */
     public function checkQuotes($sm_quotes): string
     {
         $db = self::sportsDatabase();
@@ -417,6 +519,17 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $this->my_text;
     }
 
+    /**
+     * Write a structured database tool error into the Joomla log.
+     * Includes the reporting class, function, source filename and line while ignoring empty error descriptions.
+     *
+     * @param mixed $class Parameter used by the native writeErrorLog() operation.
+     * @param mixed $function Parameter used by the native writeErrorLog() operation.
+     * @param mixed $file Parameter used by the native writeErrorLog() operation.
+     * @param mixed $text Parameter used by the native writeErrorLog() operation.
+     * @param mixed $line Parameter used by the native writeErrorLog() operation.
+     * @return void Result of the writeErrorLog() operation.
+     */
     public static function writeErrorLog($class, $function, $file, $text, $line): void
     {
         if ((string) $text === '') {
@@ -430,6 +543,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Import standard age groups for the selected nation and sport.
+     * Sanitises the country token and uses parameter-bound sport-category lookups to determine required defaults.
+     *
+     * @param mixed $search_nation Parameter used by the native insertAgegroup() operation.
+     * @param mixed $filter_sports_type Parameter used by the native insertAgegroup() operation.
+     * @return string Result of the insertAgegroup() operation.
+     */
     public function insertAgegroup($search_nation, $filter_sports_type): string
     {
         $db = self::sportsDatabase();
@@ -504,6 +625,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $this->my_text;
     }
 
+    /**
+     * Verify or populate country associations configured for the component.
+     * Normalises the configured country list and uses existing SportsManagement records to determine missing associations.
+     *
+     * @return bool Result of the checkAssociations() operation.
+     */
     public function checkAssociations(): bool
     {
         $db = self::sportsDatabase();
@@ -610,6 +737,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return true;
     }
 
+    /**
+     * Import bundled country data from the component's SQL file.
+     * Rejects missing or unreadable files, executes the bundled statements and returns a translated success or failure message.
+     *
+     * @return string Result of the insertCountries() operation.
+     */
     public function insertCountries(): string
     {
         $db = self::sportsDatabase();
@@ -642,6 +775,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $this->countryStatus(true);
     }
 
+    /**
+     * Create a standard sport-type definition from an approved XML structure.
+     * Validates the sport name, reads its built-in XML and populates default events and positions for the new sport.
+     *
+     * @param mixed $type Parameter used by the native insertSportType() operation.
+     * @return mixed Result of the insertSportType() operation.
+     */
     public function insertSportType($type)
     {
         $token = strtolower(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $type) ?? '');
@@ -691,6 +831,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $id;
     }
 
+    /**
+     * Read the bundled standard event and position structure for a sport.
+     * Validates the sport type token, parses XML without network access and populates import arrays for later bootstrap writes.
+     *
+     * @param mixed $type Parameter used by the native checkSportTypeStructur() operation.
+     * @return bool Result of the checkSportTypeStructur() operation.
+     */
     public function checkSportTypeStructur($type): bool
     {
         $token = strtolower(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $type) ?? '');
@@ -740,6 +887,16 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return true;
     }
 
+    /**
+     * Insert missing event and position defaults for an existing sports category.
+     * Uses the cached XML definitions and avoids duplicating named records already linked to the sports-type ID.
+     *
+     * @param mixed $name Parameter used by the native addStandardForSportType() operation.
+     * @param mixed $id Parameter used by the native addStandardForSportType() operation.
+     * @param mixed $type Parameter used by the native addStandardForSportType() operation.
+     * @param mixed $update Parameter used by the native addStandardForSportType() operation.
+     * @return void Result of the addStandardForSportType() operation.
+     */
     public function addStandardForSportType($name, $id, $type, $update = 0): void
     {
         $sportTypeId = (int) $id;
@@ -821,6 +978,15 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Construct a name/sport-scoped lookup query for bootstrap records.
+     * Restricts selectable tables to the eventtype and position allowlist and binds the supplied search name and sport ID.
+     *
+     * @param mixed $tablename Parameter used by the native build_SelectQuery() operation.
+     * @param mixed $param1 Parameter used by the native build_SelectQuery() operation.
+     * @param mixed $st_id Parameter used by the native build_SelectQuery() operation.
+     * @return mixed Result of the build_SelectQuery() operation.
+     */
     public function build_SelectQuery($tablename, $param1, $st_id = 0)
     {
         $table = $this->allowedBootstrapTable((string) $tablename, ['eventtype', 'position']);
@@ -838,6 +1004,17 @@ final class DatabasetoolModel extends BaseDatabaseModel
             ->bind(':bootstrapSportTypeId', $sportTypeId, ParameterType::INTEGER);
     }
 
+    /**
+     * Build a SQL insert for a standard sport event type.
+     * Requires the whitelisted eventtype table and quotes the event name, alias, icon and ordering fields safely.
+     *
+     * @param mixed $tablename Parameter used by the native build_InsertQuery_Event() operation.
+     * @param mixed $param1 Parameter used by the native build_InsertQuery_Event() operation.
+     * @param mixed $param2 Parameter used by the native build_InsertQuery_Event() operation.
+     * @param mixed $sports_type_id Parameter used by the native build_InsertQuery_Event() operation.
+     * @param mixed $order_count Parameter used by the native build_InsertQuery_Event() operation.
+     * @return mixed Result of the build_InsertQuery_Event() operation.
+     */
     public function build_InsertQuery_Event($tablename, $param1, $param2, $sports_type_id, $order_count)
     {
         $table = $this->allowedBootstrapTable((string) $tablename, ['eventtype']);
@@ -858,6 +1035,19 @@ final class DatabasetoolModel extends BaseDatabaseModel
             ]));
     }
 
+    /**
+     * Build an insert query for a standard sport position.
+     * Allows only the position table, validates the configured switch column against the physical schema and safely inserts position details.
+     *
+     * @param mixed $tablename Parameter used by the native build_InsertQuery_Position() operation.
+     * @param mixed $param1 Parameter used by the native build_InsertQuery_Position() operation.
+     * @param mixed $param2 Parameter used by the native build_InsertQuery_Position() operation.
+     * @param mixed $param3 Parameter used by the native build_InsertQuery_Position() operation.
+     * @param mixed $param4 Parameter used by the native build_InsertQuery_Position() operation.
+     * @param mixed $sports_type_id Parameter used by the native build_InsertQuery_Position() operation.
+     * @param mixed $order_count Parameter used by the native build_InsertQuery_Position() operation.
+     * @return mixed Result of the build_InsertQuery_Position() operation.
+     */
     public function build_InsertQuery_Position($tablename, $param1, $param2, $param3, $param4, $sports_type_id, $order_count)
     {
         $table = $this->allowedBootstrapTable((string) $tablename, ['position']);
@@ -886,6 +1076,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
             ]));
     }
 
+    /**
+     * Create a relation insert for a sport position and event type.
+     * Uses the fixed component relation table, checks import_id support and inserts numeric position/event identifiers.
+     *
+     * @param mixed $param1 Parameter used by the native build_InsertQuery_PositionEventType() operation.
+     * @param mixed $param2 Parameter used by the native build_InsertQuery_PositionEventType() operation.
+     * @return mixed Result of the build_InsertQuery_PositionEventType() operation.
+     */
     public function build_InsertQuery_PositionEventType($param1, $param2)
     {
         $db = self::sportsDatabase();
@@ -898,6 +1096,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
             ->values(implode(',', [(int) $param1, (int) $param2, 0]));
     }
 
+    /**
+     * List existing tables with a permitted component prefix.
+     * Filters the database driver table list to the current Joomla prefix plus the requested namespace and sorts it predictably.
+     *
+     * @param mixed $needle Parameter used by the native componentTables() operation.
+     * @return array Result of the componentTables() operation.
+     */
     private function componentTables(string $needle): array
     {
         $db = self::sportsDatabase();
@@ -912,6 +1117,16 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $tables;
     }
 
+    /**
+     * Replace an obsolete translation or path fragment in a trusted column.
+     * Uses parameter-bound search and replacement strings to update only matching entries in a predefined table and field.
+     *
+     * @param mixed $table Parameter used by the native replaceFieldValue() operation.
+     * @param mixed $field Parameter used by the native replaceFieldValue() operation.
+     * @param mixed $search Parameter used by the native replaceFieldValue() operation.
+     * @param mixed $replace Parameter used by the native replaceFieldValue() operation.
+     * @return int Result of the replaceFieldValue() operation.
+     */
     private function replaceFieldValue(string $table, string $field, string $search, string $replace): int
     {
         $db = self::sportsDatabase();
@@ -938,6 +1153,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $affected;
     }
 
+    /**
+     * Construct translated administrator feedback for country bootstrap results.
+     * Stores a success or error message with the configured colour used by the legacy database-tool view.
+     *
+     * @param mixed $success Parameter used by the native countryStatus() operation.
+     * @return string Result of the countryStatus() operation.
+     */
     private function countryStatus(bool $success): string
     {
         if ($success) {
@@ -951,6 +1173,13 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $this->my_text;
     }
 
+    /**
+     * Read trusted local bootstrap XML without external entity or network access.
+     * Rejects missing/unreadable files, enables safe libxml error handling and returns parsed XML or null.
+     *
+     * @param mixed $file Parameter used by the native loadXml() operation.
+     * @return ?\SimpleXMLElement Result of the loadXml() operation.
+     */
     private function loadXml(string $file): ?\SimpleXMLElement
     {
         if (!is_file($file) || !is_readable($file)) {
@@ -969,6 +1198,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Execute a Joomla query and return object rows with error reporting.
+     * Uses the provided DatabaseInterface and enqueues an administrator error message instead of propagating SQL exceptions.
+     *
+     * @param mixed $db Parameter used by the native loadObjectList() operation.
+     * @param mixed $query Parameter used by the native loadObjectList() operation.
+     * @return array Result of the loadObjectList() operation.
+     */
     private function loadObjectList(DatabaseInterface $db, $query): array
     {
         try {
@@ -982,6 +1219,16 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Find an existing sport event or position by name and sports-type ID.
+     * Builds a parameter-bound single-record lookup so defaults are not inserted twice.
+     *
+     * @param mixed $db Parameter used by the native findNamedSportRow() operation.
+     * @param mixed $table Parameter used by the native findNamedSportRow() operation.
+     * @param mixed $name Parameter used by the native findNamedSportRow() operation.
+     * @param mixed $sportTypeId Parameter used by the native findNamedSportRow() operation.
+     * @return int Result of the findNamedSportRow() operation.
+     */
     private function findNamedSportRow(DatabaseInterface $db, string $table, string $name, int $sportTypeId): int
     {
         $query = $db->createQuery()
@@ -996,6 +1243,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Add the legacy import_id column when a trusted bootstrap table lacks it.
+     * Inspects current table columns and performs the required schema update through the guarded query runner.
+     *
+     * @param mixed $db Parameter used by the native ensureImportIdColumn() operation.
+     * @param mixed $table Parameter used by the native ensureImportIdColumn() operation.
+     * @return void Result of the ensureImportIdColumn() operation.
+     */
     private function ensureImportIdColumn(DatabaseInterface $db, string $table): void
     {
         $columns = $db->getTableColumns($table, false);
@@ -1011,6 +1266,14 @@ final class DatabasetoolModel extends BaseDatabaseModel
         self::runJoomlaQuery(self::class, $db);
     }
 
+    /**
+     * Enforce the exact allowlist of tables used by sport bootstrap SQL.
+     * Rejects punctuation, whitespace and table names that are not explicitly permitted to prevent arbitrary table selection.
+     *
+     * @param mixed $table Parameter used by the native allowedBootstrapTable() operation.
+     * @param mixed $allowed Parameter used by the native allowedBootstrapTable() operation.
+     * @return string Result of the allowedBootstrapTable() operation.
+     */
     private function allowedBootstrapTable(string $table, array $allowed): string
     {
         $clean = preg_replace('/[^A-Za-z0-9_]/', '', $table) ?? '';
@@ -1022,6 +1285,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $clean;
     }
 
+    /**
+     * Resolve the primary SportsManagement database through Joomla DI.
+     * Obtains DatabaseInterface from the service container and delegates its selection to the administrator database resolver.
+     *
+     * @return DatabaseInterface Result of the sportsDatabase() operation.
+     */
     private static function sportsDatabase(): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve(
@@ -1029,6 +1298,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
             Factory::getContainer()->get(DatabaseInterface::class)
         );
     }
+    /**
+     * Resolve the native Joomla administrator application for database tooling.
+     * Loads AdministratorApplication from the container and checks its client type before maintenance error reporting.
+     *
+     * @return AdministratorApplication Result of the resolveAdministratorApplication() operation.
+     */
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
