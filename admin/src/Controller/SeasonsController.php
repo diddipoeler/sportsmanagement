@@ -15,6 +15,15 @@ use Joomla\CMS\Router\Route;
 
 final class SeasonsController extends SportsManagementAdminController
 {
+    /**
+     * Load a native season model while preserving MVC factory configuration.
+     * Forces ignore_request so writes are not populated from unrelated
+     * list filters while keeping caller-provided options intact.
+     * @param string $name Requested model name.
+     * @param string $prefix Joomla administrator MVC prefix.
+     * @param array $config Additional MVC factory options.
+     * @return mixed Native season model result.
+     */
     public function getModel($name = 'Season', $prefix = 'Administrator', $config = [])
     {
         // Retain caller options while keeping the model request-independent.
@@ -23,6 +32,14 @@ final class SeasonsController extends SportsManagementAdminController
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Apply selected person assignments to the current season.
+     * Checks edit permission, verifies the required Joomla model exists,
+     * normalises request selection values and delegates assignment writes
+     * to the season form model.
+     * @return void
+     * @throws \RuntimeException When the native model cannot be loaded.
+     */
     public function applypersons(): void
     {
         $this->assertWritePermission();
@@ -48,6 +65,13 @@ final class SeasonsController extends SportsManagementAdminController
         $this->setRedirect(Route::_($url, false), $message);
     }
 
+    /**
+     * Apply selected team assignments to the current season.
+     * Checks administrative edit rights and model availability before
+     * delegating the POSTed season-team assignments to the native model.
+     * @return void
+     * @throws \RuntimeException When the native model is unavailable.
+     */
     public function applyteams(): void
     {
         $this->assertWritePermission();
@@ -70,6 +94,13 @@ final class SeasonsController extends SportsManagementAdminController
         $this->setRedirect(Route::_($url, false));
     }
 
+    /**
+     * Extract a scalar selection value from a legacy request field.
+     * Accepts a direct nonarray input or searches an array for its first
+     * scalar candidate; returns zero for arrays with no usable values.
+     * @param mixed $value Request value or legacy list of values.
+     * @return mixed First accepted scalar value, or zero.
+     */
     private function scalarInput($value)
     {
         if (!is_array($value)) {

@@ -24,6 +24,14 @@ use Joomla\Database\ParameterType;
  */
 final class SeasonsModel extends SportsManagementListModel
 {
+    /**
+     * Register safe season-list and assignment ordering fields.
+     * Prepares aliases used by the normal list and team/person assignment
+     * layouts before Joomla's native list model is initialised.
+     * @param array $config Joomla MVC list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional native MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -45,6 +53,14 @@ final class SeasonsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Select the active season layout, filters and list sort order.
+     * Applies layout-specific default ordering for season, team or person
+     * views and restores request and user-state filters in the admin app.
+     * @param string $ordering Default season ordering.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 's.name', $direction = 'DESC')
     {
         $app = $this->administratorApplication();
@@ -89,6 +105,12 @@ final class SeasonsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Choose the database query for the current season-list layout.
+     * Returns the standard season list or a team/person assignment query
+     * scoped to the selected season depending on Joomla's view state.
+     * @return \Joomla\Database\DatabaseQuery Appropriate season or assignment query.
+     */
     protected function getListQuery()
     {
         $layout = (string) $this->getState('layout');
@@ -101,6 +123,12 @@ final class SeasonsModel extends SportsManagementListModel
         };
     }
 
+    /**
+     * Build the normal administrator season listing query.
+     * Loads season properties and related editor data, applies list filters
+     * and uses the validated ordering selected by the administrator.
+     * @return \Joomla\Database\DatabaseQuery Filtered seasons query.
+     */
     private function getDefaultSeasonsQuery()
     {
         $db = $this->getDatabase();
@@ -166,6 +194,13 @@ final class SeasonsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Build the list of teams eligible for a season assignment.
+     * Uses the selected season to determine existing assignments and
+     * prepares team rows for the administrator assignment layout.
+     * @param int $seasonId Active season identifier.
+     * @return \Joomla\Database\DatabaseQuery Season/team assignment query.
+     */
     private function getAssignTeamsQuery(int $seasonId)
     {
         $db = $this->getDatabase();
@@ -206,6 +241,13 @@ final class SeasonsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Build the list of persons eligible for season assignment.
+     * Uses a season-scoped subquery to determine current membership
+     * and presents available people for the assignment interface.
+     * @param int $seasonId Active season identifier.
+     * @return \Joomla\Database\DatabaseQuery Season/person assignment query.
+     */
     private function getAssignPersonsQuery(int $seasonId)
     {
         $db = $this->getDatabase();
@@ -261,6 +303,13 @@ final class SeasonsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load Joomla selection options for teams associated with a season.
+     * Applies the supplied season identifier and returns team IDs and
+     * names suitable for the backend season editors.
+     * @param mixed $seasonId Requested season ID.
+     * @return array<int,object> Season team value/text options.
+     */
     public function getSeasonTeams($seasonId = 0): array
     {
         $db = $this->getDatabase();
@@ -285,6 +334,13 @@ final class SeasonsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Look up the display name of one season by identifier.
+     * Queries only the selected record and returns an empty string
+     * when the season is not present in the database.
+     * @param mixed $seasonId Requested season ID.
+     * @return string Stored season name or an empty string.
+     */
     public function getSeasonName($seasonId = 0): string
     {
         $db = $this->getDatabase();
@@ -300,6 +356,13 @@ final class SeasonsModel extends SportsManagementListModel
         return (string) ($db->loadResult() ?? '');
     }
 
+    /**
+     * Retrieve seasons for backend forms or detailed list usage.
+     * Selects either raw record fields or Joomla value/text aliases
+     * according to the requested option mode.
+     * @param bool $selectOptions Whether to return selector aliases.
+     * @return array<int,object> Season records or dropdown options.
+     */
     public function getSeasons(bool $selectOptions = false): array
     {
         $db = $this->getDatabase();
@@ -326,6 +389,13 @@ final class SeasonsModel extends SportsManagementListModel
         return $seasons;
     }
 
+    /**
+     * Build a cache key that includes the season assignment context.
+     * Adds the chosen layout, season and filter settings so cached
+     * list results are not shared across unrelated administrative views.
+     * @param string $id Parent Joomla cache identifier.
+     * @return string Context-specific list cache key.
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . (string) $this->getState('layout');
