@@ -44,7 +44,15 @@ if (!class_exists('modJSMNewProjectHelper', false)) {
     final class modJSMNewProjectHelper
     {
         /**
-         * Compatibility adapter for extensions still calling the historical helper signature.
+         * Retrieve project records for older module templates and integrations.
+         *
+         * Converts the historical article and category parameters into a
+         * Joomla Registry, uses the native site helper to query projects,
+         * and maps project, league and round fields onto legacy aliases.
+         *
+         * @param int|string $newProjectArticle Optional article identifier.
+         * @param int|string $categoryId Optional category identifier.
+         * @return array Project records adapted for the legacy template.
          */
         public static function getData($newProjectArticle = 0, $categoryId = 0): array
         {
@@ -68,6 +76,15 @@ if (!class_exists('modJSMNewProjectHelper', false)) {
             return $result;
         }
 
+        /**
+         * Resolve the Joomla site application for the legacy module adapter.
+         *
+         * Delegates to the component's shared application resolver and
+         * refuses to execute outside the public Joomla site client.
+         *
+         * @return CMSApplicationInterface Current Joomla frontend application.
+         * @throws \RuntimeException If the active client is not the site.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
