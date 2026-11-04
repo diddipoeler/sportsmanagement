@@ -25,11 +25,24 @@ use Joomla\Registry\Registry;
 
 final class RankingHelper
 {
+    /**
+     * Resolve the active Joomla site application from the service container.
+     * The legacy AJAX refresh action uses the same application context as
+     * the module dispatcher rather than obsolete global factory access.
+     * @return CMSApplicationInterface Active site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Retrieve Joomla's database service through dependency injection.
+     * Checks the returned object implements the expected interface so
+     * ranking queries cannot continue with an invalid database service.
+     * @return DatabaseInterface Joomla-managed database connection.
+     * @throws \RuntimeException If the database service is unavailable.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
@@ -41,6 +54,16 @@ final class RankingHelper
         return $database;
     }
 
+    /**
+     * Prepare league ranking data for display in the Joomla 5/6 module.
+     * Resolves a selected project, collects ranking rows and permitted
+     * presentation options, and creates team links and emblem/flag URLs
+     * for the frontend template.
+     * @param Registry $params Ranking module configuration.
+     * @param object $module Current Joomla module record.
+     * @param CMSApplicationInterface $app Active site application.
+     * @return array Ranking rows and template configuration, or an empty list.
+     */
     public function getData(Registry $params, object $module, CMSApplicationInterface $app): array
     {
         if (!$app->isClient('site')) {
@@ -133,6 +156,13 @@ final class RankingHelper
         ];
     }
 
+    /**
+     * Refresh ranking data through the module's server-side AJAX task.
+     * Validates the site context and request token, enforces configured
+     * refresh permissions and checks the project's pending match data
+     * before performing the optional inline-hockey update.
+     * @return array Refresh result and affected-project metadata.
+     */
     public function refreshAjax(): array
     {
         $app = self::siteApplication();
@@ -230,6 +260,15 @@ final class RankingHelper
         return ['updated' => true, 'pending' => $pending, 'project_id' => $projectId];
     }
 
+    /**
+     * Resolve country flag resources for the teams in a ranking.
+     * Uses the row countries and Joomla module preferences to collect
+     * the flag URLs needed by the ranking display.
+     * @param Registry $params Module presentation settings.
+     * @param array $rows Ranking rows containing teams.
+     * @param CMSApplicationInterface $app Active Joomla application.
+     * @return array Country-code-to-flag mapping.
+     */
     private function countryFlags(Registry $params, array $rows, CMSApplicationInterface $app): array
     {
         $countries = [];
@@ -261,6 +300,15 @@ final class RankingHelper
         return $map;
     }
 
+    /**
+     * Generate the configured destination for a ranking team link.
+     * Chooses the supported team or roster view and retains the current
+     * project, season and database selection when building the Joomla route.
+     * @param Registry $params Team-link module settings.
+     * @param object $project Project supplying route IDs.
+     * @param object $team Team to link.
+     * @return string Route URL or an empty string if links are disabled.
+     */
     private function teamUrl(Registry $params, object $project, object $team): string
     {
         $base = [
@@ -278,6 +326,15 @@ final class RankingHelper
         };
     }
 
+    /**
+     * Choose a team's visual marker according to module display settings.
+     * Supports country flags or one of the configured club logo sizes
+     * and passes the selected image through the safe media URL helper.
+     * @param object $team Team row with logo paths.
+     * @param int $type Requested marker type.
+     * @param array $flags Resolved country flag URLs.
+     * @return string Safe image URL, or an empty string.
+     */
     private function logoUrl(object $team, int $type, array $flags): string
     {
         if ($type === 2) {
@@ -296,6 +353,14 @@ final class RankingHelper
         return $this->mediaUrl($path);
     }
 
+    /**
+     * Resolve the value of a requested table column from a ranking row.
+     * Maps supported legacy column names to statistics exposed by the
+     * ranking item instead of dynamically evaluating a database column.
+     * @param string $column Column identifier from module configuration.
+     * @param object $item Ranking row and computed statistics.
+     * @return mixed Value for the selected statistics column.
+     */
     private function columnValue(string $column, object $item): mixed
     {
         $key = strtolower(str_replace('jl_', '', trim($column)));
@@ -332,6 +397,15 @@ final class RankingHelper
         };
     }
 
+    /**
+     * Limit ranking rows to a window around a selected team.
+     * Locates the highlighted team and selects neighbouring table rows
+     * so a compact module still shows its league position in context.
+     * @param array $ranking Full ordered ranking rows.
+     * @param int $teamId Team that should remain visible.
+     * @param int $limit Maximum rows to display.
+     * @return array Contiguous subset of ranking rows.
+     */
     private function shrinkAroundTeam(array $ranking, int $teamId, int $limit): array
     {
         foreach ($ranking as $index => $item) {
@@ -352,6 +426,13 @@ final class RankingHelper
         return $ranking;
     }
 
+    /**
+     * Extract one validated positive identifier from a module selection.
+     * Supports scalar and first-array-entry values while rejecting
+     * nondecimal, invalid and overflowing identifiers.
+     * @param mixed $value Raw module ID selection.
+     * @return int Positive selected ID, or zero if invalid.
+     */
     private function firstId(mixed $value): int
     {
         if (is_array($value)) {
@@ -375,6 +456,13 @@ final class RankingHelper
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Build a Joomla frontend URL using the shared site route helper.
+     * Keeps ranking destinations consistent with component routing aliases.
+     * @param string $view Target SportsManagement view.
+     * @param array $parameters Parameters supplied to the view route.
+     * @return string Joomla-routed URL.
+     */
     private function route(string $view, array $parameters): string
     {
         return SiteRouteHelper::view($view, $parameters);
@@ -427,6 +515,14 @@ final class RankingHelper
         return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
+    /**
+     * Resolve the chosen SportsManagement database for ranking queries.
+     * Uses the injected Joomla database as a fallback and delegates the
+     * database selection to the component's native resolver.
+     * @param Registry $params Module options containing the database selector.
+     * @param CMSApplicationInterface $app Joomla site application context.
+     * @return DatabaseInterface Connection used to load ranking data.
+     */
     private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(

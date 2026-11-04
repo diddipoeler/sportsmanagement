@@ -28,6 +28,17 @@ final class BirthdayHelper
     private const MAX_FILTER_VALUES = 200;
     private const MAX_FILTER_VALUE_LENGTH = 4096;
 
+    /**
+     * Prepare birthday entries for the Joomla 5/6 frontend module.
+     * Resolves project/team and database selections, loads eligible persons,
+     * computes upcoming birthdays in the site timezone and returns the
+     * display-ready names, pictures, flags and links used by the template.
+     * @param Registry $params Birthday module configuration.
+     * @param Registry $componentParams SportsManagement component defaults.
+     * @param CMSApplicationInterface $app Active Joomla site application.
+     * @param DatabaseInterface $fallbackDatabase Joomla database connection.
+     * @return array Module data including filtered birthday records.
+     */
     public function getData(
         Registry $params,
         Registry $componentParams,
@@ -278,6 +289,16 @@ final class BirthdayHelper
         return (int) $decimal;
     }
 
+    /**
+     * Resolve the effective team filter for birthday queries.
+     * Uses configured teams when favourites are disabled; otherwise derives
+     * the team IDs associated with the selected projects and applies bounds
+     * to avoid unrestricted queries for invalid selections.
+     * @param DatabaseInterface $db Database for favourite-team lookups.
+     * @param Registry $params Module selection settings.
+     * @param array<int> $projectIds Valid selected project identifiers.
+     * @return array<int> Unique selected team identifiers.
+     */
     private function resolveTeamIds(DatabaseInterface $db, Registry $params, array $projectIds): array
     {
         if (!(bool) $params->get('use_fav', 0)) {
@@ -299,6 +320,13 @@ final class BirthdayHelper
         }
     }
 
+    /**
+     * Validate and deduplicate IDs supplied by legacy module parameters.
+     * Accepts bounded integer and numeric-string selections, discarding
+     * malformed, nonpositive and overflowing values before database filtering.
+     * @param mixed $values Raw scalar or array of Joomla selection values.
+     * @return array<int> Unique positive identifiers.
+     */
     private function normaliseIds(mixed $values): array
     {
         $values = is_array($values) ? $values : [$values];
@@ -337,6 +365,12 @@ final class BirthdayHelper
         return array_values($ids);
     }
 
+    /**
+     * Return the current calendar day using Joomla's configured timezone.
+     * Falls back to UTC when a stored site timezone cannot be constructed.
+     * @param CMSApplicationInterface $app Application supplying the timezone offset.
+     * @return \DateTimeImmutable Midnight today in the selected timezone.
+     */
     private function today(CMSApplicationInterface $app): \DateTimeImmutable
     {
         try {
@@ -347,6 +381,14 @@ final class BirthdayHelper
         return new \DateTimeImmutable('today', $timezone);
     }
 
+    /**
+     * Parse a birthday or other database date without accepting rollovers.
+     * Requires a valid year-month-day value in the supplied timezone and
+     * returns null for malformed dates instead of silently normalising them.
+     * @param string $value Date stored in Y-m-d format.
+     * @param \DateTimeZone $timezone Timezone used for date creation.
+     * @return \DateTimeImmutable|null Valid date, or null on failure.
+     */
     private function date(string $value, \DateTimeZone $timezone): ?\DateTimeImmutable
     {
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d', trim($value), $timezone);
@@ -359,6 +401,14 @@ final class BirthdayHelper
             : null;
     }
 
+    /**
+     * Calculate the next occurrence of a person's birthday.
+     * Starts with the current year and advances to the following year
+     * when that day has already passed, preserving immutable date handling.
+     * @param \DateTimeImmutable $birth Original date of birth.
+     * @param \DateTimeImmutable $today Current date in the site timezone.
+     * @return \DateTimeImmutable Next birthday on or after today.
+     */
     private function nextBirthday(\DateTimeImmutable $birth, \DateTimeImmutable $today): \DateTimeImmutable
     {
         $year = (int) $today->format('Y');
@@ -376,6 +426,14 @@ final class BirthdayHelper
         return $birthday;
     }
 
+    /**
+     * Format a person's name according to the module's display preference.
+     * Delegates firstname, nickname and lastname ordering to the shared
+     * SportsManagement person-name formatter.
+     * @param object $row Person database record.
+     * @param int $format Configured name display format.
+     * @return string Display name for the birthday list.
+     */
     private function displayName(object $row, int $format): string
     {
         return PersonNameFormatter::format(
@@ -387,6 +445,14 @@ final class BirthdayHelper
         );
     }
 
+    /**
+     * Build a native Joomla route to the birthday person's detail page.
+     * Selects player, staff or referee view from the person's record and
+     * keeps season/project/database routing information in the generated link.
+     * @param object $row Person and assignment details.
+     * @param int $databaseSelector Selected SportsManagement database.
+     * @return string Routed person detail URL.
+     */
     private function personLink(object $row, int $databaseSelector): string
     {
         $view = match ((int) $row->type) { 2 => 'staff', 3 => 'referee', default => 'player' };
@@ -403,11 +469,26 @@ final class BirthdayHelper
         return SiteRouteHelper::view($view, $query);
     }
 
+    /**
+     * Construct a Joomla-compatible ID-and-alias route segment.
+     * Returns an empty string when no valid positive identifier is present.
+     * @param int $id Record identifier.
+     * @param string $alias Human-readable route alias.
+     * @return string Route slug, or an empty string.
+     */
     private function slug(int $id, string $alias): string
     {
         return $id > 0 ? $id . ':' . $alias : '';
     }
 
+    /**
+     * Resolve a person's portrait for safe frontend presentation.
+     * Respects the display preference and restricts local file references
+     * to the Joomla installation root before generating a browser URL.
+     * @param object $row Person row containing an optional image path.
+     * @param bool $show Whether the module should show portraits.
+     * @return string Safe picture URL, or an empty string.
+     */
     private function pictureUrl(object $row, bool $show): string
     {
         if (!$show) {
@@ -442,6 +523,14 @@ final class BirthdayHelper
         return '';
     }
 
+    /**
+     * Validate a configured local media path before file resolution.
+     * Rejects URL schemes, control characters, unsafe separators and
+     * path traversal syntax so untrusted image settings cannot escape
+     * the Joomla media directory.
+     * @param string $candidate Raw image path from person/module data.
+     * @return string Normalised local path, or an empty string if unsafe.
+     */
     private function localImagePath(string $candidate): string
     {
         $candidate = trim($candidate);
@@ -459,6 +548,14 @@ final class BirthdayHelper
         return ltrim($candidate, '/');
     }
 
+    /**
+     * Render a country's flag or accessible country label for a person.
+     * Normalises the stored country codes and uses module display settings
+     * while escaping text that originated from database records.
+     * @param object $row Person record with country information.
+     * @param Registry $params Birthday module display settings.
+     * @return string HTML fragment for the country marker.
+     */
     private function flagHtml(object $row, Registry $params): string
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
@@ -477,6 +574,16 @@ final class BirthdayHelper
         return $path === '' ? '' : '<img src="' . htmlspecialchars(Uri::root() . $path, ENT_QUOTES, 'UTF-8') . '" alt="' . $label . '" />';
     }
 
+    /**
+     * Build the localized text shown beside an upcoming birthday.
+     * Chooses today, tomorrow or days-remaining wording and combines it
+     * with date and age information according to configured message options.
+     * @param object $row Person row containing computed remaining days.
+     * @param \DateTimeImmutable $birthday Upcoming birthday occurrence.
+     * @param \DateTimeImmutable $birth Original birth date.
+     * @param Registry $params Configured birthday message templates.
+     * @return string Human-readable birthday label.
+     */
     private function birthdayText(object $row, \DateTimeImmutable $birthday, \DateTimeImmutable $birth, Registry $params): string
     {
         $when = match ((int) $row->days_to_birthday) {
@@ -498,6 +605,14 @@ final class BirthdayHelper
         );
     }
 
+    /**
+     * Resolve the SportsManagement data connection for a module selection.
+     * Uses the component's database resolver and retains the Joomla
+     * connection if the requested alternative is unavailable.
+     * @param int $selector Validated SportsManagement database selector.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla database.
+     * @return DatabaseInterface Effective data connection.
+     */
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         try {

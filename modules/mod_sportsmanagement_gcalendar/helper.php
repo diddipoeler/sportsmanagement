@@ -42,6 +42,15 @@ foreach ([
 if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
     final class sportsmanagementModGCalendarHelper
     {
+        /**
+         * Provide the legacy static interface for GCalendar module lookups.
+         * Converts older parameter arrays into a Joomla Registry, validates
+         * the site application and delegates authorised calendar loading to
+         * the native namespaced GcalendarHelper implementation.
+         * @param mixed $params Module selection settings or Registry instance.
+         * @param DatabaseInterface|null $database Optional preselected database.
+         * @return array List of calendars available to the current user.
+         */
         public static function getCalendars($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -56,11 +65,24 @@ if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
             return (new GcalendarHelper())->getCalendars($registry, $app, $database);
         }
 
+        /**
+         * Resolve Joomla's active site application for legacy callers.
+         * Uses the component's site application resolver rather than the
+         * removed global Joomla application factories.
+         * @return CMSApplicationInterface Current Joomla site application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             return SportsManagementSiteApplicationResolver::resolve();
         }
 
+        /**
+         * Resolve the database connection for compatibility calendar queries.
+         * Honours an explicitly injected database, otherwise requests Joomla's
+         * DatabaseInterface through the service container.
+         * @param DatabaseInterface|null $database Optional caller-supplied connection.
+         * @return DatabaseInterface Effective calendar database.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
