@@ -168,4 +168,37 @@ foreach ([
     }
 }
 
+foreach ([
+    [7, 7], ['0007', 7], ['0008:round-one', 8],
+    ['0', 0], ['0:round', 0], ['8garbage', 0],
+    ['8:bad/path', 0], [true, 0], [false, 0],
+    [['8'], 0], [PHP_INT_MAX . '0', 0],
+] as [$value, $expected]) {
+    if ($class::roundOptionId($value) !== $expected) {
+        fwrite(STDERR, 'Top Tipper single round option ID regression.' . PHP_EOL);
+        exit(1);
+    }
+}
+
+$validRoundOptions = new ReflectionMethod($class, 'validRoundOptions');
+$sourceFirst = (object) ['value' => '0007:round-one', 'text' => 'Round seven'];
+$sourceDuplicate = (object) ['value' => 7, 'text' => 'Duplicate'];
+$sourceSecond = (object) ['value' => '8', 'text' => 'Round eight'];
+$roundOptions = $validRoundOptions->invoke(null, [
+    $sourceFirst,
+    (object) ['value' => ['9'], 'text' => 'Malformed'],
+    $sourceDuplicate,
+    (object) ['value' => '8garbage', 'text' => 'Malformed'],
+    $sourceSecond,
+    ['value' => 10],
+]);
+if (count($roundOptions) !== 2
+    || $roundOptions[0]->value !== 7 || $roundOptions[1]->value !== 8
+    || $sourceFirst->value !== '0007:round-one'
+    || $roundOptions[0] === $sourceFirst
+    || $validRoundOptions->invoke(null, new stdClass()) !== []) {
+    fwrite(STDERR, 'Top Tipper invalid and duplicate round options regression.' . PHP_EOL);
+    exit(1);
+}
+
 echo "Top Tipper input checks passed.\n";
