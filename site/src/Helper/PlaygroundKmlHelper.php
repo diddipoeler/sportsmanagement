@@ -17,6 +17,21 @@ use Joomla\Filesystem\Folder;
 /** Write the optional playground KML file without loading the legacy map helper. */
 final class PlaygroundKmlHelper
 {
+    /**
+     * Write a KML placemark file for a playground with valid coordinates.
+     *
+     * Rejects missing or nonfinite latitude/longitude values and IDs
+     * outside the expected range, escapes the playground name and address
+     * for XML output and writes the KML file in Joomla's site tmp folder.
+     * Returns false when directory creation or file writing fails.
+     *
+     * @param int $playgroundId Positive playground record ID.
+     * @param string $address Location address for KML metadata.
+     * @param string $name Playground display name.
+     * @param float|null $latitude Latitude in the range -90 to 90.
+     * @param float|null $longitude Longitude in the range -180 to 180.
+     * @return bool True when the KML file was written successfully.
+     */
     public static function write(
         int $playgroundId,
         string $address,
