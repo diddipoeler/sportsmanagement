@@ -91,7 +91,7 @@ final class JlxmlexportsController extends BaseController
             ->getMVCFactory()
             ->createModel('Jlxmlexports', 'Administrator', ['ignore_request' => true]);
 
-        if ($model === null) {
+        if (!is_object($model)) {
             throw new \RuntimeException('SportsManagement XML export model not found.', 500);
         }
 
