@@ -74,6 +74,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $kmlpath = '';
     public string $kmlfile = '';
 
+    /**
+     * Initialise the club profile view with legacy template input access.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -81,21 +85,42 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->jinput = $this->input;
     }
 
+    /**
+     * Skip historical presentation bootstrap for native club profile views.
+     * @return bool False because native services provide the dependencies.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Avoid legacy jQuery loading on the native club profile page.
+     * @return bool False when no legacy jQuery is required.
+     */
     protected function requiresJquery(): bool
     {
         return false;
     }
 
+    /**
+     * Determine whether the configured legacy JCE media box is needed.
+     * @return bool True only for the historic modal mode 2.
+     */
     protected function requiresJceMediaBox(): bool
     {
         return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
     }
 
+    /**
+     * Prepare the full frontend club profile and historical information.
+     * Validates the club model, fetches the club, association, teams,
+     * venues, extended data and logo history, and optionally builds RSS,
+     * KML, predecessor trees and successor history. Sets the translated
+     * browser title and registers assets through Joomla document services.
+     * @return void
+     * @throws \RuntimeException If the required club model is unavailable.
+     */
     protected function prepareView(): void
     {
         $this->document = $this->getDocument();
@@ -150,9 +175,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
 
         $identity = $this->app->getIdentity();
-        $this->showediticon = $identity->authorise('core.edit', 'com_sportsmanagement')
+        $this->showediticon = $identity !== null && (
+            $identity->authorise('core.edit', 'com_sportsmanagement')
             || $identity->authorise('club.edit', 'com_sportsmanagement')
-            || ((int) $identity->id > 0 && (int) ($this->club->admin ?? 0) === (int) $identity->id);
+            || ((int) $identity->id > 0 && (int) ($this->club->admin ?? 0) === (int) $identity->id)
+        );
         $this->address_string = LocationAddressHelper::build($database, $this->club);
 
         if (!empty($this->config['show_club_rssfeed'])) {
