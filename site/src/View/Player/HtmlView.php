@@ -53,6 +53,17 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public bool $hasStatus = false;
     public string $playername = '';
 
+    /**
+     * Prepare the player profile, team history and optional statistics.
+     *
+     * Validates the native player model, selects the configured database
+     * and loads the player's teams, contact visibility, game records,
+     * statistics, extended fields and formatted display name. Registers
+     * player CSS and preserves the legacy time-model template contract.
+     *
+     * @return void
+     * @throws \RuntimeException If the player model cannot be resolved.
+     */
     protected function prepareView(): void
     {
         $playerModel = $this->getModel();
@@ -236,6 +247,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->setModel($playerTimeModel, true);
     }
 
+    /**
+     * Retrieve published event-type IDs for the current sport.
+     *
+     * Queries the component's selected database, optionally filters on
+     * the current project sport type and returns the IDs as integers.
+     * Database errors are reported to Joomla and yield an empty list.
+     *
+     * @param PlayerModel $model Native player model with database access.
+     * @return array<int> Published event-type identifiers.
+     */
     private function loadPersonEventIds(PlayerModel $model): array
     {
         $db = $model->getSportsManagementDatabase();
@@ -260,6 +281,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Check whether the player's extended form contains nonempty values.
+     *
+     * Iterates Joomla form fieldsets and their fields, returning false
+     * when no extended form is available or all values are empty.
+     *
+     * @return bool True when an extended field contains a value.
+     */
     private function hasExtendedValues(): bool
     {
         if (!$this->extended || !method_exists($this->extended, 'getFieldsets')) {
