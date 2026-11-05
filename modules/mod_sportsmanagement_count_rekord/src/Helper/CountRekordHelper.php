@@ -19,6 +19,19 @@ use Joomla\Registry\Registry;
 
 final class CountRekordHelper
 {
+    /**
+     * Build the record-count module data for the configured match target.
+     *
+     * Checks whether the match counter is enabled, resolves the selected
+     * SportsManagement database, counts existing fixtures and compares
+     * the result with the configured target. Database failures are logged
+     * and represented as an empty collection to keep the site responsive.
+     *
+     * @param Registry $params Validated Joomla module parameters.
+     * @param object $module Current Joomla module record, retained for compatibility.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return array Record count, target, difference and translated output.
+     */
     public function getData(Registry $params, object $module, DatabaseInterface $fallbackDatabase): array
     {
         $enabled = $params->get('jsm_stat_spielpaarungen', 0);
@@ -60,6 +73,15 @@ final class CountRekordHelper
     }
 
     /**
+     * Convert a numeric module setting to a validated nonnegative integer.
+     *
+     * Rejects arrays, booleans, partial decimal strings, negative values
+     * and integers too large for the runtime. Normalises leading zeros
+     * without silently converting malformed settings into valid IDs.
+     *
+     * @param mixed $raw Raw Joomla module parameter.
+     * @return int Parsed nonnegative integer, or zero for invalid input.
+     */    /**
      * Validate nonnegative decimal settings without coercing malformed
      * arrays, booleans, partial numeric strings or overflowing identifiers.
      */
@@ -79,6 +101,16 @@ final class CountRekordHelper
         return $number === false ? 0 : $number;
     }
 
+    /**
+     * Select the database connection used for match record counting.
+     *
+     * Uses the central SportsManagement resolver with a validated database
+     * selector and the provided Joomla connection as the fallback.
+     *
+     * @param Registry $params Joomla module configuration.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return DatabaseInterface Selected SportsManagement connection.
+     */
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
