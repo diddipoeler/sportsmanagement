@@ -35,7 +35,13 @@ abstract class SportsManagementAdminController extends AdminController
     protected $team_club_id = 0;
 
     /**
-     * SportsManagement historically restricts manual ordering to core.admin.
+     * Save administrator list ordering only for component administrators.
+     *
+     * Requires core.admin on the component before delegating to Joomla's
+     * standard AdminController order-saving workflow.
+     *
+     * @return mixed Result of Joomla's parent saveorder() operation.
+     * @throws \RuntimeException If administrator permission is denied.
      */
     public function saveorder()
     {
@@ -49,8 +55,15 @@ abstract class SportsManagementAdminController extends AdminController
     }
 
     /**
-     * Protect legacy administrator write tasks that bypass Joomla's standard
-     * AdminController save routines. Tokens must come from POST requests.
+     * Enforce the Joomla POST form token and component write permission.
+     *
+     * Protects legacy write actions which bypass the normal Joomla save
+     * workflow. Checks both the session token and the requested ACL action
+     * on com_sportsmanagement before the caller can modify any records.
+     *
+     * @param string $action Joomla ACL action, defaulting to core.edit.
+     * @return void
+     * @throws \RuntimeException If the token or permission is invalid.
      */
     protected function assertWritePermission(string $action = 'core.edit'): void
     {
@@ -66,7 +79,12 @@ abstract class SportsManagementAdminController extends AdminController
     }
 
     /**
-     * Close a modal workflow instead of returning to a regular list view.
+     * Close a legacy administrator modal without changing stored records.
+     *
+     * Redirects to the standard component close view in Joomla's
+     * component-only layout for popup-based edit workflows.
+     *
+     * @return void
      */
     public function cancel(): void
     {
