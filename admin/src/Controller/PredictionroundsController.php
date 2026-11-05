@@ -18,6 +18,17 @@ use Joomla\CMS\Language\Text;
  */
 final class PredictionroundsController extends SportsManagementAdminController
 {
+    /**
+     * Resolve a prediction-round model through Joomla administrator MVC.
+     *
+     * Preserves caller model options while using request-independent
+     * loading for editing and importing prediction rounds.
+     *
+     * @param string $name Requested prediction round model.
+     * @param string $prefix Joomla administrator MVC prefix.
+     * @param array $config Additional Joomla model factory options.
+     * @return mixed Parent controller model or failure value.
+     */
     public function getModel($name = 'Predictionround', $prefix = 'Administrator', $config = [])
     {
         $config['ignore_request'] = true;
@@ -25,13 +36,23 @@ final class PredictionroundsController extends SportsManagementAdminController
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Save inline changes to the selected prediction-game rounds.
+     *
+     * Checks the Joomla form token and edit permission, validates
+     * POSTed round identifiers, delegates storage to the native model
+     * and redirects with translated success or failure feedback.
+     *
+     * @return void
+     * @throws \RuntimeException If the prediction round model is missing.
+     */
     public function saveshort(): void
     {
         $this->checkToken();
         $this->assertWritePermission('core.edit');
 
         $input = $this->app->getInput();
-        $pks = self::selectedRoundIds($input->get('cid', [], 'array'));
+        $pks = self::selectedRoundIds($input->post->get('cid', [], 'array'));
         $messageType = 'message';
 
         if (!$pks) {
@@ -60,6 +81,15 @@ final class PredictionroundsController extends SportsManagementAdminController
     }
 
     /**
+     * Add missing project rounds to the active prediction game.
+     *
+     * Requires a valid Joomla token and create permission; compares
+     * available project rounds with existing prediction rounds and
+     * forwards only missing IDs to the native write model.
+     *
+     * @return void
+     * @throws \RuntimeException If a required Joomla model is unavailable.
+     */    /**
      * Add missing SportsManagement project rounds to the selected prediction game.
      */
     public function populateFromProjectRounds(): void
@@ -131,7 +161,15 @@ final class PredictionroundsController extends SportsManagementAdminController
         );
     }
 
-    /** Return at most 500 unique positive IDs without permissive integer casts. */
+    /**
+     * Validate a bounded collection of selected prediction round IDs.
+     *
+     * Ignores invalid, zero and overflowing values and deduplicates
+     * positive decimal identifiers before an administrator write.
+     *
+     * @param mixed $selected Raw selected round identifiers.
+     * @return array<int> Up to 500 unique positive round IDs.
+     */    /** Return at most 500 unique positive IDs without permissive integer casts. */
     private static function selectedRoundIds(mixed $selected): array
     {
         if (!is_array($selected)) {
