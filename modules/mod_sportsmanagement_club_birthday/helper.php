@@ -48,6 +48,18 @@ foreach ([
 if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
     final class modSportsmanagementClubBirthdayHelper
     {
+        /**
+         * Load club birthday information for legacy module templates.
+         *
+         * Normalises settings into Joomla Registry, retrieves the public
+         * site application and a valid database service, then delegates
+         * record lookup to the native Joomla 5/6 ClubBirthdayHelper.
+         *
+         * @param Registry|array $params Module configuration.
+         * @param DatabaseInterface|null $database Optional database service.
+         * @return array Birthday records prepared for display.
+         * @throws \RuntimeException If the client or database is unavailable.
+         */
         public static function getData($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -57,11 +69,30 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
             return (new ClubBirthdayHelper())->getData($registry, $app, $database);
         }
 
+        /**
+         * Sort club birthday records using the native helper's rules.
+         *
+         * Preserves the public legacy sorting method expected by older
+         * Joomla module layouts and third-party integrations.
+         *
+         * @param array $clubs Club birthday records to sort.
+         * @param int $sort Legacy birthday sorting mode.
+         * @return array Sorted club birthday records.
+         */
         public static function jsm_birthday_sort(array $clubs, int $sort): array
         {
             return ClubBirthdayHelper::sortClubs($clubs, $sort);
         }
 
+        /**
+         * Resolve and verify the Joomla frontend application.
+         *
+         * Loads the active application through the component resolver and
+         * rejects non-site clients before requesting public birthday data.
+         *
+         * @return CMSApplicationInterface Valid site application.
+         * @throws \RuntimeException When running outside the frontend.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
@@ -73,6 +104,17 @@ if (!class_exists('modSportsmanagementClubBirthdayHelper', false)) {
             return $app;
         }
 
+        /**
+         * Retrieve a valid database service for birthday queries.
+         *
+         * Uses the optional injected database or resolves the service
+         * from Joomla's dependency container, verifying its interface
+         * before returning it to the native module helper.
+         *
+         * @param DatabaseInterface|null $database Optional service override.
+         * @return DatabaseInterface Joomla database connection.
+         * @throws \RuntimeException If the database service is invalid.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
