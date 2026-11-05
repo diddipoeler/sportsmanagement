@@ -26,11 +26,30 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $projectteamid = [];
     public string $content = '';
 
+    /**
+     * Skip the legacy presentation bootstrap for this Joomla 5/6 view.
+     *
+     * The namespaced model and modern project view provide the required
+     * services without loading historical global presentation helpers.
+     *
+     * @return bool False: no legacy dependencies are required.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Prepare project rounds, fixtures and favourite-team information.
+     *
+     * Requires the native AllprojectroundsModel, reads filtered table
+     * and favourite-team display options, loads the active project's
+     * matches, rounds and teams, and builds the rendered round columns.
+     * Sets the translated page heading for the selected competition.
+     *
+     * @return void
+     * @throws \RuntimeException If the native rounds model is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var AllprojectroundsModel $model */
