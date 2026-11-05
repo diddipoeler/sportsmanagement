@@ -24,11 +24,12 @@ final class LeaguesController extends SportsManagementAdminController
      */
     public function saveshort(): void
     {
+        $this->checkToken();
         $this->assertWritePermission();
 
         $model = $this->getModel();
 
-        if ($model === false || $model === null) {
+        if (!is_object($model)) {
             throw new \RuntimeException('SportsManagement league model could not be loaded.', 500);
         }
 
