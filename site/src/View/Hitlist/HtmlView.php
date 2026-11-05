@@ -19,6 +19,18 @@ final class HtmlView extends SportsManagementHtmlView
     public string $tableclass = 'table';
     public array $model_hits = [];
 
+    /**
+     * Prepare and render the configured frontend entity hit lists.
+     *
+     * Resolves the native hit-list model, reads Joomla-filtered display
+     * options and queries enabled entity categories using an allowlisted
+     * table name. Resets legacy static hit results before collecting
+     * fresh counts so repeated renders do not reuse stale categories.
+     *
+     * @param string|null $tpl Optional Joomla layout name.
+     * @return mixed Result of the parent Joomla view renderer.
+     * @throws \RuntimeException If HitlistModel cannot be resolved.
+     */
     public function display($tpl = null)
     {
         /** @var HitlistModel $model */
@@ -27,6 +39,10 @@ final class HtmlView extends SportsManagementHtmlView
         if (!$model instanceof HitlistModel) {
             throw new \RuntimeException('Hitlist view requires HitlistModel.', 500);
         }
+
+        // The legacy model stores data in a static property shared by views.
+        // Clear it so disabled categories do not leak from earlier renders.
+        HitlistModel::$_success_text = [];
 
         $this->tableclass = $this->input->getString('table_class', 'table');
         $maxHits = max(0, $this->input->getInt('max_hits', 20));
