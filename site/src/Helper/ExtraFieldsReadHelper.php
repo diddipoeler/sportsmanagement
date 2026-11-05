@@ -17,6 +17,17 @@ use Joomla\Database\ParameterType;
 /** Read configured frontend extra fields and their current item values. */
 final class ExtraFieldsReadHelper
 {
+    /**
+     * Check whether a frontend template defines user extra fields.
+     *
+     * Validates the template identifier before querying the selected
+     * SportsManagement database with a bound string parameter. Returns
+     * false for missing templates and failed database requests.
+     *
+     * @param DatabaseInterface $db Active component database connection.
+     * @param string $templateName Configured frontend template identifier.
+     * @return bool True when at least one extra field is configured.
+     */
     public static function hasFields(DatabaseInterface $db, string $templateName): bool
     {
         $templateName = self::templateName($templateName);
@@ -39,7 +50,18 @@ final class ExtraFieldsReadHelper
         }
     }
 
-    /** @return array<int, object> */
+    /**
+     * Load configured frontend extra fields and a selected item's values.
+     *
+     * Rejects invalid item IDs and template identifiers, then performs a
+     * parameterised left join so fields without a value still appear in
+     * their configured order. Query failures return an empty collection.
+     *
+     * @param DatabaseInterface $db Active component database.
+     * @param int $itemId Record whose extra field values are requested.
+     * @param string $templateName Frontend template identifier.
+     * @return array<int, object> Extra field definitions and values.
+     */
     public static function load(DatabaseInterface $db, int $itemId, string $templateName): array
     {
         $templateName = self::templateName($templateName);
@@ -74,6 +96,16 @@ final class ExtraFieldsReadHelper
         }
     }
 
+    /**
+     * Validate a frontend extra-field template identifier.
+     *
+     * Trims whitespace and allows only ASCII letters, digits, underscores
+     * and hyphens, with a maximum length of 128 characters. Rejecting
+     * malformed input avoids selecting unrelated template fields.
+     *
+     * @param string $templateName Raw template name to validate.
+     * @return string Validated identifier or an empty string.
+     */
     private static function templateName(string $templateName): string
     {
         $templateName = trim($templateName);
