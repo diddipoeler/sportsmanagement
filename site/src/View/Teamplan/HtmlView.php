@@ -44,21 +44,42 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public bool $groupMatchesByDate = false;
     public $document;
 
+    /**
+     * Disable legacy presentation bootstrap for the native team plan view.
+     * @return bool False because the view uses namespaced services.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Avoid loading jQuery as a general team plan presentation dependency.
+     * Individual export assets can register their own dependencies.
+     * @return bool False for the default page renderer.
+     */
     protected function requiresJquery(): bool
     {
         return false;
     }
 
+    /**
+     * Determine whether the legacy configured JCE lightbox is needed.
+     * @return bool True only for the configured media box mode.
+     */
     protected function requiresJceMediaBox(): bool
     {
         return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
     }
 
+    /**
+     * Prepare team fixture lists, referees, match events and Joomla assets.
+     * Loads the required TeamplanModel, resolves the selected database,
+     * builds match collections, registers optional print and calendar
+     * assets, and sets a translated page title for the team or project.
+     * @return void
+     * @throws \RuntimeException If TeamplanModel cannot be resolved.
+     */
     protected function prepareView(): void
     {
         $this->document = $this->getDocument();
@@ -150,6 +171,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->config['table_class'] = (string) ($this->config['table_class'] ?? 'table');
     }
 
+    /**
+     * Populate per-match events and optional substitutions for the fixture list.
+     * Ignores invalid match identifiers and reads event data using the
+     * native TeamplanModel for each valid match.
+     * @param TeamplanModel $model Native model used for match event lookups.
+     * @return void
+     */
     private function prepareMatchEventData(TeamplanModel $model): void
     {
         foreach ($this->matches as $match) {
@@ -165,6 +193,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Attach referee assignments to the loaded team fixtures.
+     * Collects unique valid match identifiers, performs a batched query
+     * through the native view-data model and associates results by match ID.
+     * @param TeamplanViewDataModel $viewDataModel Referee lookup model.
+     * @return void
+     */
     private function attachReferees(TeamplanViewDataModel $viewDataModel): void
     {
         $matchIds = [];
