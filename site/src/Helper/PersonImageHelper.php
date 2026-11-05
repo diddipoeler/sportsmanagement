@@ -16,11 +16,28 @@ use Joomla\CMS\Uri\Uri;
 
 final class PersonImageHelper
 {
+    /**
+     * Resolve the configured default player picture for missing images.
+     *
+     * Reads the component's ph_player option using Joomla parameters
+     * and returns the trimmed placeholder path for site templates.
+     *
+     * @return string Placeholder picture path, possibly empty.
+     */
     public static function placeholder(): string
     {
         return trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', ''));
     }
 
+    /**
+     * Choose the first nonempty player picture other than the placeholder.
+     *
+     * Checks candidate paths in priority order so views can prefer
+     * personal pictures and fall back to the configured default.
+     *
+     * @param string ...$candidates Possible picture paths in priority order.
+     * @return string Selected path or the configured placeholder.
+     */
     public static function resolve(string ...$candidates): string
     {
         $placeholder = self::placeholder();
@@ -37,8 +54,15 @@ final class PersonImageHelper
     }
 
     /**
-     * Return a safe browser image URL without allowing malformed legacy paths
-     * to escape the site's public image directory.
+     * Convert a configured player picture into a browser-accessible image URL.
+     *
+     * Rejects control characters, unsupported URL schemes, credential-bearing
+     * remote URLs and path traversal (including encoded traversal segments).
+     * Prefixes accepted relative paths with a validated picture server URL,
+     * falling back to Joomla's site root when the configured host is invalid.
+     *
+     * @param string $picture Candidate URL or relative picture path.
+     * @return string Validated image URL or an empty string if unsafe.
      */
     public static function url(string $picture): string
     {
