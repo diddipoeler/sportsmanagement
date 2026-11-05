@@ -21,6 +21,17 @@ use Joomla\Registry\Registry;
 
 final class ActSeasonHelper
 {
+    /**
+     * Load current-season projects and group their countries by federation.
+     * Validates selected season IDs, resolves the configured database and
+     * uses bound SQL parameters to load published current-season leagues.
+     * Builds translated labels, safe flags and project/round route segments.
+     * @param mixed $seasonIds Season IDs or legacy selection values.
+     * @param Registry $componentParams SportsManagement component options.
+     * @param CMSApplicationInterface $app Joomla site application for messages.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla database.
+     * @return array{list:array,federations:array,countriesByFederation:array} Season listing and federation groups.
+     */
     public function getData(
         mixed $seasonIds,
         Registry $componentParams,
@@ -128,6 +139,13 @@ final class ActSeasonHelper
         ];
     }
 
+    /**
+     * Validate the configured SportsManagement database selector.
+     * Rejects malformed and overflowing values and accepts nonnegative
+     * decimal integers, including legacy values with leading zeros.
+     * @param mixed $rawSelector Raw database selector setting.
+     * @return int Valid selector or zero for malformed input.
+     */
     private function normaliseDatabaseSelector(mixed $rawSelector): int
     {
         if (!is_int($rawSelector) && (!is_string($rawSelector) || !preg_match('/^[0-9]+$/D', $rawSelector))) {
@@ -145,6 +163,13 @@ final class ActSeasonHelper
         return $selector === false ? 0 : $selector;
     }
 
+    /**
+     * Parse a deduplicated list of positive season identifiers.
+     * Accepts numeric IDs or legacy delimited strings and rejects
+     * nested, malformed or overflowing input before SQL binding.
+     * @param mixed $ids Requested season IDs or delimited values.
+     * @return array<int> Unique positive season identifiers.
+     */
     private function normaliseIds(mixed $ids): array
     {
         if (is_string($ids)) {
@@ -178,6 +203,14 @@ final class ActSeasonHelper
         return array_values($normalised);
     }
 
+    /**
+     * Render a federation country's flag in the configured style.
+     * Validates country codes before CSS or image rendering and escapes
+     * country labels and URLs for safe HTML attribute output.
+     * @param object $row Current-season country data.
+     * @param Registry $params Flag display and placeholder options.
+     * @return string Safe flag HTML or an empty string.
+     */
     private function flagHtml(object $row, Registry $params): string
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
@@ -231,11 +264,23 @@ final class ActSeasonHelper
             . '" alt="' . $label . '" title="' . $label . '" />';
     }
 
+    /**
+     * Create a Joomla-compatible numeric ID and alias route segment.
+     * @param int $id Positive record identifier.
+     * @param string $alias URL alias for the selected record.
+     * @return string ID:alias segment or empty text for invalid IDs.
+     */
     private function slug(int $id, string $alias): string
     {
         return $id > 0 ? $id . ':' . $alias : '';
     }
 
+    /**
+     * Resolve the requested component database via the native resolver.
+     * @param int $selector Validated component database selector.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla database.
+     * @return DatabaseInterface Effective SportsManagement connection.
+     */
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
