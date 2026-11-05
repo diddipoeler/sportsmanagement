@@ -57,6 +57,12 @@ final class HtmlView extends SportsManagementHtmlView
     public string $divclasscontainer = 'container-fluid';
     public string $divclassrow = 'row';
 
+    /**
+     * Initialise the results view and register legacy template adapters.
+     * Bootstraps compatibility facades for historical results layouts and
+     * adds the shared global template directory to the Joomla view.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -67,6 +73,15 @@ final class HtmlView extends SportsManagementHtmlView
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
+    /**
+     * Prepare and render the current project's match results.
+     * Requires the native ResultsModel, loads project and round state,
+     * fixtures and team metadata, and prepares optional match events,
+     * referees, RSS, compatibility facades and web assets.
+     * @param string|null $tpl Optional Joomla template layout.
+     * @return mixed Parent view rendering result.
+     * @throws \RuntimeException If the native results model is unavailable.
+     */
     public function display($tpl = null)
     {
         /** @var ResultsModel $model */
@@ -217,6 +232,12 @@ final class HtmlView extends SportsManagementHtmlView
         );
     }
 
+    /**
+     * Register compatibility aliases used by historical results templates.
+     * Loads available legacy comments and country helpers and associates
+     * the native results model with the former global model class name.
+     * @return void
+     */
     private function registerLegacyRuntimeFacades(): void
     {
         if (!class_exists('sportsmanagementModelResults', false)) {
@@ -235,6 +256,13 @@ final class HtmlView extends SportsManagementHtmlView
         }
     }
 
+    /**
+     * Load optional fixture details for the public results overview.
+     * Queries events, substitutions and referees in batches through the
+     * namespaced view-data model and optionally fetches the project RSS.
+     * @param ResultsModel $model Native match results model.
+     * @return void
+     */
     private function prepareDisplayData(ResultsModel $model): void
     {
         $matchIds = array_values(array_filter(array_map(
@@ -279,6 +307,12 @@ final class HtmlView extends SportsManagementHtmlView
         }
     }
 
+    /**
+     * Publish current results data to compatibility facades.
+     * Keeps existing third-party templates connected to project, round,
+     * team, event and referee data provided by the modern view.
+     * @return void
+     */
     private function syncLegacyCompatibility(): void
     {
         ResultsLegacyHtmlCompatibility::$project = $this->project;
@@ -300,6 +334,13 @@ final class HtmlView extends SportsManagementHtmlView
         );
     }
 
+    /**
+     * Register results styles and optional modal assets with Joomla.
+     * Provides the compatible image server constant and uses the Web
+     * Asset Manager only for HTML documents.
+     * @param bool $editLayout Whether the current layout edits results.
+     * @return void
+     */
     private function prepareAssets(bool $editLayout): void
     {
         $base = Uri::root(true);
@@ -350,6 +391,13 @@ final class HtmlView extends SportsManagementHtmlView
 
     }
 
+    /**
+     * Set the results page title and optional project RSS feed link.
+     * Uses a distinct title for results editing and adds an RSS alternate
+     * link only for the public results overview.
+     * @param bool $editLayout Whether the current layout edits results.
+     * @return void
+     */
     private function prepareDocument(bool $editLayout): void
     {
         $title = $editLayout
