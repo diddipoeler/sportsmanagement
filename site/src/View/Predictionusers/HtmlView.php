@@ -31,6 +31,14 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public int $rankingMemberMax = 0;
     private PredictionusersModel $usersModel;
 
+    /**
+     * Prepare prediction member details, rankings and charts.
+     * Checks the prediction users model, resolves member profile visibility,
+     * loads relevant tips and statistics only for permitted profiles,
+     * and calculates chart maximum values for the existing templates.
+     * @return void
+     * @throws \RuntimeException If PredictionusersModel is unavailable.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -100,6 +108,12 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         }
     }
 
+    /**
+     * Render the prediction member avatar when photos are enabled.
+     * Uses the model's avatar selection and falls back to a placeholder
+     * for local image paths not present on disk.
+     * @return string Joomla-rendered avatar markup or empty text.
+     */
     public function memberAvatar(): string
     {
         if (empty($this->config['show_photo']) || $this->predictionMemberID <= 0) {
@@ -120,6 +134,10 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         return HTMLHelper::image($picture, $name, ['title' => $name, 'class' => 'img-fluid']);
     }
 
+    /**
+     * Choose the public member name according to template preferences.
+     * @return string Full name or username, with username fallback.
+     */
     public function memberDisplayName(): string
     {
         $name = !empty($this->config['show_full_name'])
@@ -133,6 +151,12 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         return $name;
     }
 
+    /**
+     * Render the member name with an optional external profile link.
+     * Escapes the member text and delegates supported Joomla Contacts or
+     * Community Builder routes to the legacy route compatibility helper.
+     * @return string Escaped or linked member name markup.
+     */
     public function memberNameLink(): string
     {
         $name = htmlspecialchars($this->memberDisplayName(), ENT_QUOTES, 'UTF-8');
@@ -157,6 +181,11 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         return $name;
     }
 
+    /**
+     * Render the available prediction members as a Joomla dropdown.
+     * @param PredictionusersModel $model Native prediction user model.
+     * @return string HTML form selector for the active member.
+     */
     private function buildMemberSelector(PredictionusersModel $model): string
     {
         $options = [HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'))];
