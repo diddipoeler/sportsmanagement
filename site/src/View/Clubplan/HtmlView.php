@@ -45,21 +45,41 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $teamseasons = [];
     public array $lists = [];
 
+    /**
+     * Disable legacy presentation dependencies in the club schedule view.
+     * @return bool False because the native view supplies its own services.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Do not require jQuery for the base club schedule presentation.
+     * @return bool False for the default page layout.
+     */
     protected function requiresJquery(): bool
     {
         return false;
     }
 
+    /**
+     * Check whether the configured historical media box is needed.
+     * @return bool True only when the legacy modal mode is selected.
+     */
     protected function requiresJceMediaBox(): bool
     {
         return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
     }
 
+    /**
+     * Build the club fixture schedule and its interactive filters.
+     * Requires the native ClubplanModel, selects the configured club and
+     * match type, loads home/away fixtures and optional referee details,
+     * then prepares selection lists, RSS metadata and Joomla web assets.
+     * @return void
+     * @throws \RuntimeException If ClubplanModel is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var ClubplanModel $model */
@@ -156,6 +176,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->config['table_class'] = $this->config['table_class'] ?? 'table';
     }
 
+    /**
+     * Prepare extra match information in batched model queries.
+     * Collects unique valid fixture and project IDs, loads favourite team
+     * settings and optionally assigns referees for the displayed matches.
+     * @return void
+     */
     private function preparePresentationData(): void
     {
         $matches = [];
@@ -189,6 +215,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Build Joomla select options for team categories, projects and seasons.
+     * Also prepares the home, away and combined match-type choices.
+     * @return array<string,array> Filter options for the club schedule.
+     */
     private function buildLists(): array
     {
         $fromTeamArt = [HTMLHelper::_('select.option', '', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'))];
