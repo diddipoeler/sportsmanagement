@@ -62,21 +62,42 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $activeTableId = '';
     public string $activeTableTitle = '';
 
+    /**
+     * Skip legacy presentation bootstrap in the native ranking view.
+     * @return bool False because the namespaced view uses modern services.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Avoid adding a general jQuery dependency to the ranking view.
+     * Optional presentation assets register their own dependencies.
+     * @return bool False for the base ranking layout.
+     */
     protected function requiresJquery(): bool
     {
         return false;
     }
 
+    /**
+     * Determine whether to load the configured JCE media lightbox.
+     * @return bool True for legacy modal mode two.
+     */
     protected function requiresJceMediaBox(): bool
     {
         return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
     }
 
+    /**
+     * Prepare rankings, division options, presentation data and page assets.
+     * Validates the RankingModel, selects the current project and rounds,
+     * calculates home/away and historical tables, loads team metadata,
+     * sorts configured columns, sets up map/RSS feeds and browser title.
+     * @return void
+     * @throws \RuntimeException If RankingModel cannot be resolved.
+     */
     protected function prepareView(): void
     {
         /** @var RankingModel $model */
@@ -167,6 +188,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->getDocument()->setTitle($title);
     }
 
+    /**
+     * Sort configured ranking tables using the selected display column.
+     * Applies a safe direction to each division in all ranking variants.
+     * @return void
+     */
     private function applyPresentationSorting(): void
     {
         if (empty($this->config['column_sorting']) || $this->sortOrder === '') {
@@ -185,6 +211,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Populate round range and home/away ranking selection lists.
+     * @return void
+     */
     private function buildLists(): void
     {
         $this->lists = [
@@ -198,6 +228,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         ];
     }
 
+    /**
+     * Collect nonzero starting-point adjustments for ranking notes.
+     * Skips unavailable teams and empty point adjustments.
+     * @return array<int,object> Team ranking note entries.
+     */
     private function buildRankingNotes(): array
     {
         if (empty($this->config['show_notes'])) {
@@ -221,6 +256,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         return $notes;
     }
 
+    /**
+     * Load ranking colour definitions for each division.
+     * Uses project defaults for empty or malformed division settings.
+     * @param RankingModel $model Native ranking model for colour parsing.
+     * @return array Division-specific colour arrays.
+     */
     private function buildDivisionColors(RankingModel $model): array
     {
         $colors = [0 => $this->colors];
@@ -257,6 +298,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         return $colors;
     }
 
+    /**
+     * Load the project RSS feed when enabled in component settings.
+     * Reads the optional extended project form and fetches bounded feed items.
+     * @param RankingModel $model Native ranking model.
+     * @return void
+     */
     private function prepareRss(RankingModel $model): void
     {
         if (empty($this->overallconfig['show_project_rss_feed'])) {
@@ -276,6 +323,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Populate optional ranking-map configuration and team positions.
+     * Instantiates the native map model only when ranking maps are enabled.
+     * @param RankingModel $model Native ranking model.
+     * @return void
+     */
     private function prepareMap(RankingModel $model): void
     {
         if (empty($this->config['show_ranking_maps'])) {
@@ -289,6 +342,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->mapTeams = $mapModel->getTeams();
     }
 
+    /**
+     * Register optional ranking export and Leaflet map assets.
+     * Uses Joomla's Web Asset Manager only for HTML documents.
+     * @return void
+     */
     private function prepareAssets(): void
     {
         $document = $this->getDocument();
