@@ -33,6 +33,14 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public string $websiteName = '';
     private PredictionentryModel $entryModel;
 
+    /**
+     * Prepare the prediction entry form and verify current membership.
+     * Requires PredictionentryModel and an existing prediction game, then
+     * loads project, round, member and entry configuration. Hides match
+     * entries for users without permission to submit predictions.
+     * @return void
+     * @throws \RuntimeException If the model or prediction game is unavailable.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -79,11 +87,21 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         $this->roundExtrasEditable = $model->isRoundExtrasEditable($this->matches);
     }
 
+    /**
+     * Generate the prediction help text for the selected game's scoring mode.
+     * @return string Model-generated explanation of scoring and entries.
+     */
     public function helpText(): string
     {
         return $this->entryModel->createHelpText((int) ($this->entryProject->mode ?? 0));
     }
 
+    /**
+     * Build the administrator's prediction member selection dropdown.
+     * Marks unapproved members and selects the currently active member.
+     * @param PredictionentryModel $model Native prediction entry model.
+     * @return string HTML for the Joomla member selector.
+     */
     private function buildMemberSelector(PredictionentryModel $model): string
     {
         $options = [HTMLHelper::_('select.option', 0, Text::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'))];
