@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Sishandball;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Site\Model\SishandballModel;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -33,12 +34,27 @@ final class HtmlView extends BaseHtmlView
     public $statistik = null;
     public $article;
 
+    /**
+     * Prepare and render the configured SIS handball XML display.
+     *
+     * Resolves the Joomla site and component settings, validates the
+     * native SishandballModel, builds the remote results URL and loads
+     * league tables, fixture lists or statistics for the selected view.
+     *
+     * @param string|null $tpl Optional Joomla layout name.
+     * @return void
+     * @throws \RuntimeException If the SIS model is unavailable.
+     */
     public function display($tpl = null): void
     {
         $app = Factory::getContainer()->get(SiteApplication::class);
         $params = $app->getParams();
         $paramsComponent = ComponentHelper::getParams('com_sportsmanagement');
         $model = $this->getModel();
+
+        if (!$model instanceof SishandballModel) {
+            throw new \RuntimeException('Sishandball view requires SishandballModel.', 500);
+        }
 
         $xmlBaseUrl = (string) $paramsComponent->get('sis_xmllink', '');
         $clubNumber = (string) $paramsComponent->get('sis_meinevereinsnummer', '');
