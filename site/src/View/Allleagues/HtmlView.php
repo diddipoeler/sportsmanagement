@@ -34,12 +34,31 @@ final class HtmlView extends SportsManagementHtmlView
     public int $modalheight = 600;
     public int $modalwidth = 900;
 
+    /**
+     * Initialise the league list view with shared component templates.
+     *
+     * Calls the Joomla parent view constructor and registers the
+     * SportsManagement global layouts for legacy listing markup.
+     *
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
+    /**
+     * Prepare and render the frontend league directory.
+     *
+     * Validates the native AllleaguesModel, loads filtered list items,
+     * pagination, country selection and sort state, sanitises the
+     * table CSS class and sets the translated browser page title.
+     *
+     * @param string|null $tpl Optional Joomla layout name.
+     * @return mixed Parent Joomla view render result.
+     * @throws \RuntimeException If the expected model is unavailable.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -68,6 +87,16 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Build the country filter options for the league directory.
+     *
+     * Fetches country choices from the selected component database
+     * and returns both the option collection and Joomla select markup
+     * for the existing frontend filtering template.
+     *
+     * @param AllleaguesModel $model Native directory model.
+     * @return array Country filter options and rendered select control.
+     */
     private function buildFilterLists(AllleaguesModel $model): array
     {
         $options = [
