@@ -13,6 +13,18 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 final class PredictionpointsModel extends PredictionresultsModel
 {
+    /**
+     * Recalculate stored prediction scores for the selected project round.
+     *
+     * Requires prediction administrator permission even when called outside
+     * the controller, retrieves completed match predictions and applies
+     * the configured result and scoring rules. Updates only rows whose
+     * points or classification changed, reducing unnecessary database writes.
+     *
+     * @param array $config Scoring options, including use_match_result.
+     * @return int Number of prediction-result rows successfully updated.
+     * @throws \RuntimeException If prediction administration is not allowed.
+     */
     public function recalculatePoints(array $config): int
     {
         // Enforce permissions in the model as well as the controller: other
