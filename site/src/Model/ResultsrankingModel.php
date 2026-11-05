@@ -21,6 +21,16 @@ final class ResultsrankingModel extends SportsManagementProjectModel
     public static int $cfg_which_database = 0;
     public static int $show_ranking_reiter = 0;
 
+    /**
+     * Initialise results ranking filters from the Joomla site request.
+     *
+     * Calls the native project model constructor, captures the selected
+     * division, round, project, database and ranking tab as legacy static
+     * fields, and synchronises the historical project model when loaded.
+     *
+     * @param array $config Optional Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory MVC factory injection.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
