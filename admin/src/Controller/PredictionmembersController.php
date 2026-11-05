@@ -17,11 +17,24 @@ use Joomla\CMS\Router\Route;
 /** Native Joomla 5/6 list controller for prediction-game members. */
 final class PredictionmembersController extends SportsManagementAdminController
 {
+    /**
+     * Resolve the native administrator prediction member model.
+     * @param string $name Requested prediction member model name.
+     * @param string $prefix Joomla administrator MVC prefix.
+     * @param array $config Additional model options.
+     * @return mixed Model or parent factory failure result.
+     */
     public function getModel($name = 'Predictionmember', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Save selected members into the current prediction game.
+     * Checks the component edit permission and POST token through the
+     * shared administrator guard and forwards positive member IDs to the model.
+     * @return void
+     */
     public function save_memberlist(): void
     {
         $this->assertWritePermission();
@@ -52,6 +65,10 @@ final class PredictionmembersController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Open the legacy prediction member selection layout.
+     * @return void
+     */
     public function editlist(): void
     {
         $this->setRedirect(Route::_(
@@ -60,6 +77,12 @@ final class PredictionmembersController extends SportsManagementAdminController
         ));
     }
 
+    /**
+     * Send a reminder to the selected prediction game members.
+     * Checks administrator edit permission and reads the member selection
+     * and prediction game ID from POST before invoking the native model.
+     * @return void
+     */
     public function reminder(): void
     {
         $this->assertWritePermission();
@@ -87,16 +110,30 @@ final class PredictionmembersController extends SportsManagementAdminController
         $this->setRedirect($this->listUrl($predictionId));
     }
 
+    /**
+     * Approve selected members of the current prediction game.
+     * @return void
+     */
     public function publish(): void
     {
         $this->setApprovalState(1);
     }
 
+    /**
+     * Revoke approval for selected prediction game members.
+     * @return void
+     */
     public function unpublish(): void
     {
         $this->setApprovalState(0);
     }
 
+    /**
+     * Delete selected prediction members and their result rows.
+     * Requires component delete permission and removes result records first
+     * to avoid leaving orphaned prediction results after membership deletion.
+     * @return void
+     */
     public function remove(): void
     {
         $this->assertWritePermission('core.delete');
@@ -130,6 +167,12 @@ final class PredictionmembersController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Change approval state for selected prediction members.
+     * Requires core.edit.state and validates the selected prediction game.
+     * @param int $state One to approve members or zero to unapprove.
+     * @return void
+     */
     private function setApprovalState(int $state): void
     {
         $this->assertWritePermission('core.edit.state');
@@ -161,6 +204,11 @@ final class PredictionmembersController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Build the Joomla administrator prediction member overview URL.
+     * @param int $predictionId Optional prediction game filter identifier.
+     * @return string Routed administrator member-list URL.
+     */
     private function listUrl(int $predictionId = 0): string
     {
         return Route::_(
@@ -170,11 +218,41 @@ final class PredictionmembersController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Validate legacy prediction member identifiers supplied in POST.
+     * Accepts positive decimal IDs only, rejects malformed and oversized
+     * input and removes duplicates before model write operations.
+     * @param array $ids Raw submitted member identifiers.
+     * @return array<int> Unique positive member IDs.
+     */
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        $valid = [];
+
+        foreach (array_slice($ids, 0, 500) as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if (strlen($raw) > 20 || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $valid[$id] = $id;
+            }
+        }
+
+        return array_values($valid);
     }
 }
