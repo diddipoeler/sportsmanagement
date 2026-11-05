@@ -34,6 +34,14 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public int $ausgabeende = 0;
     private PredictionresultsModel $resultsModel;
 
+    /**
+     * Prepare prediction fixtures, members, scoring options and pagination.
+     * Validates PredictionresultsModel and prediction game context, merges
+     * template configuration, selects project/round filters, loads the
+     * results grid and sets the translated Joomla document title.
+     * @return void
+     * @throws \RuntimeException If PredictionresultsModel cannot be resolved.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -90,11 +98,29 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         }
     }
 
+    /**
+     * Calculate the display score for a sample prediction.
+     * Delegates to the native prediction scoring model.
+     * @param int $home Actual home-team result.
+     * @param int $away Actual away-team result.
+     * @param int $tipp Prediction classification.
+     * @param int $tippHome Predicted home-team result.
+     * @param int $tippAway Predicted away-team result.
+     * @param bool $joker Whether joker scoring is enabled.
+     * @return int Calculated example prediction points.
+     */
     public function scoreExample(int $home, int $away, int $tipp, int $tippHome, int $tippAway, bool $joker = false): int
     {
         return $this->resultsModel->scoreExample($home, $away, $tipp, $tippHome, $tippAway, $joker);
     }
 
+    /**
+     * Render a prediction member avatar while respecting profile visibility.
+     * Falls back to the component placeholder for hidden profiles, missing
+     * images and unconfigured avatars.
+     * @param object $member Prediction member with avatar and privacy fields.
+     * @return string Joomla-rendered avatar HTML.
+     */
     public function memberAvatar(object $member): string
     {
         $name = (string) (($member->aliasName ?? '') ?: ($member->name ?? ''));
@@ -114,6 +140,13 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         );
     }
 
+    /**
+     * Render the displayed prediction member name and optional profile link.
+     * Honours profile visibility or current-member access and escapes
+     * the member name before inserting it into link or text markup.
+     * @param array $row Result row containing the prediction member.
+     * @return string Escaped member name or linked display name.
+     */
     public function memberName(array $row): string
     {
         $member = $row['member'];
@@ -128,6 +161,14 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         return htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
     }
 
+    /**
+     * Render the configured team flag or logo for prediction results.
+     * Uses validated local image presence and falls back to the selected
+     * placeholder when the team has no available logo.
+     * @param object $match Prediction fixture with team visuals.
+     * @param string $side Home or away team identifier.
+     * @return string Team image/flag HTML or an empty string.
+     */
     public function teamVisual(object $match, string $side): string
     {
         $prefix = $side === 'away' ? 'away' : 'home';
@@ -160,6 +201,13 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         return '';
     }
 
+    /**
+     * Test whether an image is available as a local file or remote URL.
+     * Checks local paths relative to Joomla's root and recognises HTTP(S)
+     * URLs; does not fetch or verify availability of remote images.
+     * @param string $picture Image path or remote URL.
+     * @return bool Whether the image is locally present or is a remote URL.
+     */
     private function localImageExists(string $picture): bool
     {
         if (preg_match('#^https?://#i', $picture)) {
