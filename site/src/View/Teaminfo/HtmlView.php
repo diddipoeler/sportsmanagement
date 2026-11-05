@@ -41,6 +41,17 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $divclass = '';
     public string $clubAddress = '';
 
+    /**
+     * Prepare a team profile, season history and related club details.
+     *
+     * Validates the native team model, preserves the historical ranking
+     * facade for legacy templates, loads team/club information, training
+     * sessions, extra fields, merged clubs and league ranking summaries.
+     * Builds a readable club address and sets Joomla's page title.
+     *
+     * @return void
+     * @throws \RuntimeException If the team information model is missing.
+     */
     protected function prepareView(): void
     {
         // Joomla injects the Document after constructing the view. Keep the
