@@ -18,8 +18,20 @@ use Joomla\Database\DatabaseInterface;
 /** Joomla 5/6 administrator controller for adding an individual match row. */
 final class JlextindividualsportController extends SportsManagementAdminController
 {
+    /**
+     * Create an individual sport match using the native administrator service.
+     *
+     * Requires a valid Joomla form token and component create permission,
+     * obtains the selected project and round from Joomla user state and
+     * sends the form values to the match service. Reports the result and
+     * returns to the individual match editing popup.
+     *
+     * @return void
+     */
     public function addmatch(): void
     {
+        $this->checkToken();
+
         // This legacy add-match task bypasses Joomla's standard save routine.
         $this->assertWritePermission('core.create');
 
@@ -42,6 +54,15 @@ final class JlextindividualsportController extends SportsManagementAdminControll
         $this->setRedirect($this->editorUrl($post), $message, $type);
     }
 
+    /**
+     * Build the return URL for the individual match editing popup.
+     *
+     * Converts submitted match, round and team identifiers to integers
+     * before including them in the component view route.
+     *
+     * @param array $post Posted individual match selection fields.
+     * @return string URL for the individual sport editor.
+     */
     private function editorUrl(array $post): string
     {
         return 'index.php?option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component'
@@ -51,11 +72,30 @@ final class JlextindividualsportController extends SportsManagementAdminControll
             . '&team2=' . (int) ($post['projectteam2_id'] ?? 0);
     }
 
+    /**
+     * Construct the administrator service responsible for match creation.
+     *
+     * Supplies the effective SportsManagement database connection so
+     * writes use the configured database rather than a global default.
+     *
+     * @return IndividualMatchAdminService Native individual match service.
+     */
     private function adminService(): IndividualMatchAdminService
     {
         return new IndividualMatchAdminService($this->database());
     }
 
+    /**
+     * Resolve the SportsManagement database for administrator match tasks.
+     *
+     * Loads the compatibility database resolver if necessary, reads the
+     * integer-filtered database selector and attempts the legacy connection.
+     * Falls back to Joomla's database container only when it provides a
+     * valid DatabaseInterface implementation.
+     *
+     * @return DatabaseInterface Effective Joomla database connection.
+     * @throws \RuntimeException If the database service is unavailable.
+     */
     private function database(): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
@@ -76,6 +116,12 @@ final class JlextindividualsportController extends SportsManagementAdminControll
         } catch (\Throwable) {
         }
 
-        return \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+        $database = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement individual match database is unavailable.', 500);
+        }
+
+        return $database;
     }
 }
