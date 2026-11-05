@@ -68,7 +68,21 @@ final class MatchesHelper
         return $database;
     }
 
-    /** @return array{matches:array<int,array<string,mixed>>,legacy_update_requested:bool} */
+    /**
+     * Load and format upcoming, live and completed fixtures for the module.
+     *
+     * Validates the Joomla site client and resolves the selected database,
+     * retrieves matches for configured projects, prepares team names,
+     * results, venues, optional referees and navigation links, and sorts
+     * rows by configured live/upcoming priority. Logs unexpected database
+     * errors rather than exposing connection details to site visitors.
+     *
+     * @param Registry $params Joomla Matches module configuration.
+     * @param CMSApplicationInterface $app Current Joomla application.
+     * @param object $module Joomla module record for template compatibility.
+     * @param DatabaseInterface|null $joomlaDatabase Optional database override.
+     * @return array{matches:array<int,array<string,mixed>>,legacy_update_requested:bool} Prepared fixture rows and update flag.
+     */
     public function getData(
         Registry $params,
         CMSApplicationInterface $app,
