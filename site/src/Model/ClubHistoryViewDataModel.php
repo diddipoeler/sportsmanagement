@@ -18,13 +18,28 @@ use Throwable;
  */
 final class ClubHistoryViewDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise the club history data model through Joomla MVC.
+     *
+     * Forwards model configuration and the optional Joomla MVC factory
+     * to the project model without retaining mutable static tree state.
+     *
+     * @param array $config Model initialisation options.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
     /**
-     * @return array<int, object> Clubs keyed by club id.
+     * Read the predecessor and successor clubs required by the club profile.
+     *
+     * Loads club relations and derives an associated published project
+     * slug in a single query. Returns clubs indexed by ID and an empty
+     * result if the selected SportsManagement database query fails.
+     *
+     * @return array<int, object> Related clubs indexed by club identifier.
      */
     public function getRelations(): array
     {
