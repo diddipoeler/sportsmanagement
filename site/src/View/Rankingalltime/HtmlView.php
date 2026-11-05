@@ -34,12 +34,27 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $divisions = [];
     public string $action = '';
 
+    /**
+     * Initialise the all-time ranking view and its historical layouts.
+     *
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/rankingalltime/tmpl');
     }
 
+    /**
+     * Assemble all-time standings over the configured projects and seasons.
+     *
+     * Resolves the native RankingalltimeModel and calculator, merges active
+     * menu settings, loads teams and optional match history, prepares
+     * ranking tables and colours, then sets the page title and messages.
+     *
+     * @return void
+     * @throws \RuntimeException If the all-time ranking model is missing.
+     */
     protected function prepareView(): void
     {
         $dataModel = $this->getModel();
@@ -113,6 +128,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->notes = RankingalltimeCalculatorModel::$rankingalltimenotes;
     }
 
+    /**
+     * Merge ranking options from an active all-time ranking menu item.
+     *
+     * Leaves the view configuration unchanged when the active Joomla menu
+     * item targets another view, preserving the standard view defaults.
+     *
+     * @return bool True when matching menu options were applied.
+     */
     private function mergeActiveMenuParameters(): bool
     {
         $menu = $this->app->getMenu();
