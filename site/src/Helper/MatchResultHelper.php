@@ -18,6 +18,17 @@ use Joomla\CMS\Language\Text;
  */
 final class MatchResultHelper
 {
+    /**
+     * Determine the match outcome from the selected project team's perspective.
+     *
+     * Rejects cancelled matches and missing scores, handles alternate
+     * decision scores where present and compares the home/away values
+     * against the selected team's home or away position.
+     *
+     * @param object $game Match row with results and project team IDs.
+     * @param int $projectTeamId Project team whose result is requested.
+     * @return int|false 1 for a win, 0 for a draw, -1 for a loss, false if unknown.
+     */
     public static function outcome(object $game, int $projectTeamId): int|false
     {
         if ($projectTeamId <= 0 || !empty($game->cancel)) {
@@ -50,6 +61,17 @@ final class MatchResultHelper
         return false;
     }
 
+    /**
+     * Render the win, draw or loss icon for a project team.
+     *
+     * Uses outcome() to select a legacy icon and CSS class, escapes the
+     * translated tooltip label for HTML attributes and returns an empty
+     * string when the result cannot be determined.
+     *
+     * @param object $game Match record containing score information.
+     * @param int $projectTeamId Team to display the result for.
+     * @return string Safe HTML icon markup, or an empty string.
+     */
     public static function renderOutcomeIcon(object $game, int $projectTeamId): string
     {
         $outcome = self::outcome($game, $projectTeamId);
