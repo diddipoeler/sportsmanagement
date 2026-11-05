@@ -18,17 +18,44 @@ use Throwable;
 /** Load only the club coordinates required by the native ranking map. */
 final class RankingMapModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise ranking map data access via the native project model.
+     *
+     * Forwards Joomla model configuration and the optional MVC factory to
+     * the base project model without recreating legacy database services.
+     *
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Select the project whose club locations should be plotted.
+     *
+     * Normalises negative project IDs to zero, which makes getTeams()
+     * return an empty list rather than querying an invalid project.
+     *
+     * @param int $projectId Project record identifier.
+     * @return void
+     */
     public function setProjectId(int $projectId): void
     {
         $this->projectId = max(0, $projectId);
     }
 
-    /** @return array<int,object> */
+    /**
+     * Read ranking-map teams and their associated club coordinates.
+     *
+     * Uses Joomla's parameterised query to join project teams, teams and
+     * clubs, selecting only scoring participants with location values.
+     * Rejects failed queries and filters coordinates outside valid
+     * latitude/longitude bounds or at the empty (0,0) location.
+     *
+     * @return array<int, object> Team and club location records.
+     */
     public function getTeams(): array
     {
         if ($this->projectId <= 0) {
