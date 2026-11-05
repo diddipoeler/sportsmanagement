@@ -79,9 +79,12 @@ if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
         /**
          * Resolve the database connection for compatibility calendar queries.
          * Honours an explicitly injected database, otherwise requests Joomla's
-         * DatabaseInterface through the service container.
+         * DatabaseInterface through the service container and rejects an
+         * unexpected service type rather than returning an invalid database.
+         *
          * @param DatabaseInterface|null $database Optional caller-supplied connection.
          * @return DatabaseInterface Effective calendar database.
+         * @throws \RuntimeException If Joomla cannot provide the service.
          */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
@@ -89,8 +92,11 @@ if (!class_exists('sportsmanagementModGCalendarHelper', false)) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement GCalendar database service is unavailable.', 500);
+            }
 
             return $database;
         }
