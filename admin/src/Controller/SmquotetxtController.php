@@ -20,6 +20,15 @@ use Joomla\CMS\Router\Route;
  */
 final class SmquotetxtController extends FormController
 {
+    /**
+     * Cancel the quote text editor without persisting changes.
+     *
+     * Returns the administrator to the list of editable quote files,
+     * using Joomla's routed component URL.
+     *
+     * @param string|null $key Optional legacy record identifier.
+     * @return bool True after setting the redirect.
+     */
     public function cancel($key = null)
     {
         $this->setRedirect(
@@ -29,6 +38,19 @@ final class SmquotetxtController extends FormController
         return true;
     }
 
+    /**
+     * Save an administrator-edited random-quote module source file.
+     *
+     * Requires a valid Joomla form token and component core.admin
+     * permission because the operation can write executable PHP.
+     * Forwards posted form data to the model, encodes the filename in
+     * redirects and distinguishes Apply, Save and failed operations.
+     *
+     * @param string|null $key Optional form record identifier.
+     * @param string|null $urlVar Optional URL record identifier.
+     * @return bool Whether the module file was saved successfully.
+     * @throws \RuntimeException If administrator permission is missing.
+     */
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
@@ -84,6 +106,17 @@ final class SmquotetxtController extends FormController
         return true;
     }
 
+    /**
+     * Retrieve the native Joomla administrator quote editor model.
+     *
+     * Passes the requested model name, namespace and caller options to
+     * Joomla's MVC factory without discarding model configuration.
+     *
+     * @param string $name Requested editor model name.
+     * @param string $prefix Administrator MVC model namespace.
+     * @param array $config Additional factory settings.
+     * @return mixed MVC model or the parent's failure result.
+     */
     public function getModel($name = 'Smquotetxt', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, $config);
