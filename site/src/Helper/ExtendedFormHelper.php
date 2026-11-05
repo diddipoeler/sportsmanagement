@@ -22,6 +22,18 @@ use Joomla\Registry\Registry;
  */
 final class ExtendedFormHelper
 {
+    /**
+     * Load and bind a legacy extended-data XML form through Joomla services.
+     *
+     * Restricts the form definition to the component's extended assets,
+     * resolves Joomla's form factory and binds the supplied Registry
+     * values after loading its XML. Returns false when the definition
+     * cannot be located or loaded, while reporting parsing errors.
+     *
+     * @param string $data Optional serialised form values.
+     * @param string $file Extended form definition name, without .xml.
+     * @return Form|false Bound Joomla form or false on failure.
+     */
     public static function load(string $data = '', string $file = ''): Form|false
     {
         $file = basename($file);
