@@ -72,7 +72,7 @@ final class RoundsController extends SportsManagementAdminController
         $input = $this->app->getInput();
         $projectId = (int) $this->app->getUserState('com_sportsmanagement.pid', 0);
         $message = $this->requireRoundModel()->saveshort(
-            $input->get('cid', [], 'array'),
+            $input->post->get('cid', [], 'array'),
             $input->post->getArray()
         );
 
