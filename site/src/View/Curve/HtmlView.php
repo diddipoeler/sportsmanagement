@@ -36,11 +36,26 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $round_labels = [];
     public array $flashconfig = [];
 
+    /**
+     * Disable historic global presentation helpers for the native curve view.
+     *
+     * @return bool False because native Joomla services are used.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Prepare team comparison selectors, rankings and chart resources.
+     *
+     * Requires the native CurveModel, resolves the current division and
+     * selected teams, builds dropdown controls, serialises round labels
+     * for the chart and registers Chart.js through Joomla web assets.
+     *
+     * @return void
+     * @throws \RuntimeException When the native curve model is missing.
+     */
     protected function prepareView(): void
     {
         /** @var CurveModel $model */
@@ -152,6 +167,15 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $document->setTitle(Text::_('COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE'));
     }
 
+    /**
+     * Load ranking series for each division displayed in the curve chart.
+     *
+     * Keeps the historical template method name and stores the supplied
+     * chart configuration for existing SportsManagement layouts.
+     *
+     * @param array|mixed $config Chart and display configuration.
+     * @return void
+     */
     public function _setChartdata($config): void
     {
         /** @var CurveModel $model */
@@ -167,6 +191,18 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Build a Joomla select control for one comparison team.
+     *
+     * Enables legacy form submission on change when the interactive
+     * curve chart is not selected.
+     *
+     * @param array $options Team list option objects.
+     * @param string $name HTML input name for the team selector.
+     * @param int $selected Current team identifier.
+     * @param int $divisionId Current division identifier.
+     * @return string Rendered Joomla dropdown markup.
+     */
     private function buildTeamSelect(array $options, string $name, int $selected, int $divisionId): string
     {
         $attributes = 'class="form-select form-select-sm" data-jsm-curve-team';
