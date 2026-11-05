@@ -38,6 +38,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $awaySum = [];
     public string $chart_url = '';
 
+    /**
+     * Prepare the project statistics overview and chart resources.
+     * Validates StatsModel, loads round totals, attendance rankings and
+     * match-day goals, registers chart assets and builds the page title.
+     * @return void
+     * @throws \RuntimeException If StatsModel cannot be loaded.
+     */
     protected function prepareView(): void
     {
         /** @var StatsModel $model */
@@ -100,6 +107,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->headertitle = Text::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
     }
 
+    /**
+     * Build match-day home and away goal series for legacy chart layouts.
+     * Preserves the historical method name while retaining maximum goal
+     * counts and chart configuration for the frontend template.
+     * @param mixed $config Statistics chart configuration.
+     * @return void
+     */
     public function _setChartdata($config): void
     {
         /** @var StatsModel $model */
