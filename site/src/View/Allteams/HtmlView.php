@@ -34,12 +34,31 @@ final class HtmlView extends SportsManagementHtmlView
     public int $modalheight = 600;
     public int $modalwidth = 900;
 
+    /**
+     * Initialise the teams directory view and legacy global templates.
+     *
+     * Forwards Joomla view configuration to its base class and registers
+     * the shared SportsManagement directory template location.
+     *
+     * @param array $config Joomla view configuration options.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
+    /**
+     * Prepare the public teams directory and render its Joomla layout.
+     *
+     * Ensures the expected AllteamsModel is available, loads paginated
+     * records and filtering state, sanitises the table CSS class, builds
+     * country filter widgets and sets the translated document title.
+     *
+     * @param string|null $tpl Optional layout template name.
+     * @return mixed Parent view rendering result.
+     * @throws \RuntimeException If the directory model is unavailable.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -68,6 +87,16 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Build the country selection filter for the public teams directory.
+     *
+     * Uses the active SportsManagement database to populate country
+     * options and renders a Joomla-compatible select control for the
+     * existing frontend directory template.
+     *
+     * @param AllteamsModel $model The native directory model.
+     * @return array Country options and rendered filter HTML.
+     */
     private function buildFilterLists(AllteamsModel $model): array
     {
         $options = [
