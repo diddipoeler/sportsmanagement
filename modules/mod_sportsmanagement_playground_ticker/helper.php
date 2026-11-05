@@ -43,6 +43,18 @@ foreach ([
 if (!class_exists('modJSMPlaygroundTicker', false)) {
     final class modJSMPlaygroundTicker
     {
+    /**
+     * Load playground ticker data for legacy SportsManagement templates.
+     *
+     * Converts module options to Joomla Registry, requires the public
+     * site application and a valid database service, and delegates record
+     * lookup to the namespaced Joomla 5/6 PlaygroundTickerHelper.
+     *
+     * @param Registry|array $params Module configuration.
+     * @param DatabaseInterface|null $database Optional database override.
+     * @return array Playground ticker records prepared for the template.
+     * @throws \RuntimeException If the site client or database is invalid.
+     */
     public static function getData($params, ?DatabaseInterface $database = null): array
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -57,24 +69,56 @@ if (!class_exists('modJSMPlaygroundTicker', false)) {
         return (new PlaygroundTickerHelper())->getData($registry, $app, $database);
     }
 
+    /**
+     * Preserve the historical playground-by-project module helper API.
+     *
+     * Delegates the legacy Spanish-named task to getData() so both
+     * entry points use the same validated Joomla frontend services.
+     *
+     * @param Registry|array $params Module configuration.
+     * @param DatabaseInterface|null $database Optional database override.
+     * @return array Playground ticker records for the selected project.
+     */
     public static function getEstadios_Proyecto($params, ?DatabaseInterface $database = null): array
     {
         return self::getData($params, $database);
     }
 
+    /**
+     * Resolve the Joomla application for the playground module adapter.
+     *
+     * Uses the shared SportsManagement application resolver. The data
+     * entry point verifies the result belongs to Joomla's site client.
+     *
+     * @return CMSApplicationInterface Current Joomla application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Retrieve a valid Joomla database connection for playground queries.
+     *
+     * Uses an explicitly injected database when provided, otherwise
+     * obtains DatabaseInterface from the Joomla dependency container
+     * and checks its type before returning it.
+     *
+     * @param DatabaseInterface|null $database Optional injected service.
+     * @return DatabaseInterface Valid Joomla database connection.
+     * @throws \RuntimeException If the container service is invalid.
+     */
     private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
     {
         if ($database !== null) {
             return $database;
         }
 
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement PlaygroundTicker database service is unavailable.', 500);
+        }
 
         return $database;
     }
