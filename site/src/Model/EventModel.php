@@ -14,9 +14,13 @@ use Diddipoeler\Component\SportsManagement\Site\Service\GoogleCalendarReadServic
 final class EventModel extends SportsManagementModel
 {
     /**
-     * Return one normalized Google Calendar event.
+     * Retrieve one Google Calendar event selected in the frontend request.
      *
-     * @return array<string, mixed>|null
+     * Reads an integer calendar identifier and the requested event ID,
+     * skips requests without either value, loads the calendar read service
+     * when necessary and returns its normalised event representation.
+     *
+     * @return array<string, mixed>|null Event data or null when missing.
      */
     public function getGCalendar(): ?array
     {
@@ -36,6 +40,14 @@ final class EventModel extends SportsManagementModel
         return (new GoogleCalendarReadService($this->getDatabase(), $app))->getEvent($calendarId, $eventId);
     }
 
+    /**
+     * Initialise the event view's component parameters in Joomla model state.
+     *
+     * Makes the active site's component configuration available to the
+     * event view without requiring the legacy model state bootstrap.
+     *
+     * @return void
+     */
     protected function populateState()
     {
         $this->setState('params', $this->siteApplication()->getParams());
