@@ -42,12 +42,13 @@ final class SeasonsController extends SportsManagementAdminController
      */
     public function applypersons(): void
     {
+        $this->checkToken();
         $this->assertWritePermission();
 
         $post = $this->input->post->getArray();
         $model = $this->getModel();
 
-        if ($model === false || $model === null) {
+        if (!is_object($model)) {
             throw new \RuntimeException('SportsManagement season model could not be loaded.', 500);
         }
 
@@ -74,6 +75,7 @@ final class SeasonsController extends SportsManagementAdminController
      */
     public function applyteams(): void
     {
+        $this->checkToken();
         $this->assertWritePermission();
 
         $post = $this->input->post->getArray();
