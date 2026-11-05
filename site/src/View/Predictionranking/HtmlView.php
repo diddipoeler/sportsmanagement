@@ -141,12 +141,38 @@ final class HtmlView extends SportsManagementPredictionHtmlView
      */
     private function normaliseRoundIds(mixed $value): array
     {
-        if (is_array($value)) {
-            return array_values(array_filter(array_map('intval', $value)));
+        $values = is_array($value)
+            ? array_slice($value, 0, 200)
+            : (is_string($value) && strlen($value) <= 4096
+                ? (preg_split('/[,;\s]+/', trim($value), 200, PREG_SPLIT_NO_EMPTY) ?: [])
+                : []);
+
+        $ids = [];
+
+        foreach ($values as $rawId) {
+            if (!is_string($rawId) && !is_int($rawId)) {
+                continue;
+            }
+
+            $rawId = (string) $rawId;
+
+            if (!preg_match('/^[0-9]+$/D', $rawId)) {
+                continue;
+            }
+
+            $digits = ltrim($rawId, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $ids[$id] = $id;
+            }
         }
-        if (is_string($value) && trim($value) !== '') {
-            return array_values(array_filter(array_map('intval', preg_split('/[,;\s]+/', $value) ?: [])));
-        }
-        return [];
+
+        return array_values($ids);
     }
 }
