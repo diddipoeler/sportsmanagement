@@ -19,6 +19,16 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
  */
 final class ProjectTitleHelper
 {
+    /**
+     * Create the data object required for project page title formatting.
+     *
+     * Provides the requested prefix and empty optional properties for
+     * clubs, teams, rounds, players, venues and competition metadata so
+     * native views can populate a consistent structure.
+     *
+     * @param string $prefix Introductory text for the page title.
+     * @return object Mutable object of optional title components.
+     */
     public static function createInfo(string $prefix): object
     {
         return (object) [
@@ -36,6 +46,17 @@ final class ProjectTitleHelper
         ];
     }
 
+    /**
+     * Render a SportsManagement page title using legacy formatting rules.
+     *
+     * Collects available person, venue, team, club and round labels,
+     * combines the project and division, and appends league and season
+     * details according to the existing page_title_format option.
+     *
+     * @param object $titleInfo Title components created by createInfo().
+     * @param int|string $format Legacy numeric page title format selector.
+     * @return string Formatted title including the configured prefix.
+     */
     public static function format(object $titleInfo, int|string $format): string
     {
         $parts = [];
@@ -110,6 +131,16 @@ final class ProjectTitleHelper
         return (string) ($titleInfo->prefix ?? '') . ': ' . implode(' | ', $parts);
     }
 
+    /**
+     * Append a nonempty title segment without inserting blank separators.
+     *
+     * Keeps the segment ordering controlled by format() and filters out
+     * empty optional values from the final joined title.
+     *
+     * @param array $parts Output title segments modified in place.
+     * @param string $value Optional nonempty title segment.
+     * @return void
+     */
     private static function append(array &$parts, string $value): void
     {
         if ($value !== '') {
