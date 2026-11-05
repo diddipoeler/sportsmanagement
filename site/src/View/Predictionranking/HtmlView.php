@@ -37,6 +37,16 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public int $groupRanking = 0;
     public int $rankingType = 0;
 
+    /**
+     * Prepare the prediction game ranking and navigation options.
+     *
+     * Validates the prediction ranking model and game context, merges
+     * template settings, loads rankings and pagination, builds project,
+     * round and group selectors, and optionally prepares the map/KML.
+     *
+     * @return void
+     * @throws \RuntimeException If PredictionrankingModel is unavailable.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -119,6 +129,16 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         $this->getDocument()->setTitle($this->headertitle);
     }
 
+    /**
+     * Convert legacy prediction-round selectors into positive integers.
+     *
+     * Accepts arrays or comma-, semicolon- and whitespace-delimited
+     * strings; ignores malformed, negative and overflowing values.
+     * Returns unique positive round IDs without broadening the filter.
+     *
+     * @param mixed $value Raw template configuration for round selection.
+     * @return array<int> Unique positive round identifiers.
+     */
     private function normaliseRoundIds(mixed $value): array
     {
         if (is_array($value)) {
