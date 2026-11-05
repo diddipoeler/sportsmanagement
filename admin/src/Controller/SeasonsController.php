@@ -81,7 +81,7 @@ final class SeasonsController extends SportsManagementAdminController
         $post = $this->input->post->getArray();
         $model = $this->getModel();
 
-        if ($model === false || $model === null) {
+        if (!is_object($model)) {
             throw new \RuntimeException('SportsManagement season model could not be loaded.', 500);
         }
 
