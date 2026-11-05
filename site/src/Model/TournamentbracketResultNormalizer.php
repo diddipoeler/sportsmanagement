@@ -18,7 +18,13 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 final class TournamentbracketResultNormalizer
 {
     /**
-     * @return array{home:mixed,away:mixed}
+     * Build the home and away scores displayed in a tournament bracket.
+     *
+     * Preserves historic extra-time, shootout and match-decision notation,
+     * including the special handling of draws and numeric shootout scores.
+     *
+     * @param object $match Match row containing regular and optional OT/SO results.
+     * @return array{home:mixed,away:mixed} Normalised display results.
      */
     public function normalise(object $match): array
     {
@@ -66,6 +72,14 @@ final class TournamentbracketResultNormalizer
         return ['home' => $displayHome, 'away' => $displayAway];
     }
 
+    /**
+     * Append a labelled extra result part when its value is present.
+     *
+     * @param mixed $base Base score or previously formatted result.
+     * @param string $label Result part label such as OT, SO or DE.
+     * @param mixed $value Additional result value.
+     * @return mixed Base result with the appended label or unchanged base.
+     */
     private function appendResultPart(mixed $base, string $label, mixed $value): mixed
     {
         if (!$this->hasValue($value)) {
@@ -75,11 +89,23 @@ final class TournamentbracketResultNormalizer
         return (string) ($base ?? '') . ' ' . $label . ':' . (string) $value;
     }
 
+    /**
+     * Determine whether a match result has a value, including numeric zero.
+     *
+     * @param mixed $value Result field to inspect.
+     * @return bool False only for null or empty-string values.
+     */
     private function hasValue(mixed $value): bool
     {
         return $value !== null && $value !== '';
     }
 
+    /**
+     * Check whether a present match result can be used in score arithmetic.
+     *
+     * @param mixed $value Score from a regular or shootout result field.
+     * @return bool True for present numeric scores.
+     */
     private function isNumericScore(mixed $value): bool
     {
         return $this->hasValue($value) && is_numeric($value);
