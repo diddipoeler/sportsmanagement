@@ -49,16 +49,48 @@ foreach ([
 if (!class_exists('modjsmfirstleagueoverview', false)) {
     final class modjsmfirstleagueoverview
     {
+        /**
+         * Retrieve current first-league projects for historical module callers.
+         *
+         * Delegates the request to the shared adapter result() and extracts
+         * the projects collection returned by the native Joomla 5/6 helper.
+         *
+         * @param Registry|array|null $params Module configuration.
+         * @param DatabaseInterface|null $database Optional Joomla database.
+         * @return array Project records for the overview layout.
+         */
         public static function getData($params, ?DatabaseInterface $database = null): array
         {
             return self::result($params, $database)['projects'];
         }
 
+        /**
+         * Retrieve the federation entries associated with first leagues.
+         *
+         * Preserves the legacy static method signature and returns the
+         * federation collection from the native helper's data result.
+         *
+         * @param Registry|array|null $params Module configuration.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Federation records for the module.
+         */
         public static function getfederations($params = null, ?DatabaseInterface $database = null): array
         {
             return self::result($params, $database)['federations'];
         }
 
+        /**
+         * Load the combined first-league overview data from Joomla services.
+         *
+         * Converts legacy parameters to Registry, requires a site application,
+         * resolves a validated database service and calls the native helper
+         * that loads projects and federations.
+         *
+         * @param Registry|array|null $params Legacy or modern module options.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Combined projects and federations keyed collections.
+         * @throws \RuntimeException If no valid site or database is available.
+         */
         private static function result($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) ($params ?? []));
@@ -68,6 +100,15 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
             return (new FirstLeagueOverviewHelper())->getData($registry, $database);
         }
 
+        /**
+         * Require the Joomla frontend application for overview data access.
+         *
+         * Uses the component's application resolver and rejects administrator
+         * clients before any public league records are requested.
+         *
+         * @return CMSApplicationInterface Valid Joomla site application.
+         * @throws \RuntimeException When invoked outside the frontend.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
@@ -79,6 +120,16 @@ if (!class_exists('modjsmfirstleagueoverview', false)) {
             return $app;
         }
 
+        /**
+         * Resolve the Joomla database service used for first-league queries.
+         *
+         * Prefers a caller-injected DatabaseInterface; otherwise retrieves
+         * the service from Joomla's container and validates its interface.
+         *
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return DatabaseInterface Valid database connection.
+         * @throws \RuntimeException If a database service is unavailable.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
