@@ -17,6 +17,17 @@ use Joomla\Database\DatabaseInterface;
 /** Build a plain location address using the selected SportsManagement database. */
 final class LocationAddressHelper
 {
+    /**
+     * Assemble a display-ready location address using a Joomla database.
+     *
+     * Reads address, state, postal code and city from legacy location
+     * records, ignores nested or invalid scalar values and resolves the
+     * three-letter country code to its translated country name when known.
+     *
+     * @param DatabaseInterface $db Active SportsManagement database.
+     * @param object $location Location record from the component.
+     * @return string Comma-separated address with available fields.
+     */
     public static function build(DatabaseInterface $db, object $location): string
     {
         $parts = [];
@@ -47,8 +58,13 @@ final class LocationAddressHelper
     }
 
     /**
-     * Legacy location records can contain malformed nested values. PHP 8+
-     * should not emit "Array to string conversion" warnings on a site page.
+     * Normalise a legacy location field to printable scalar text.
+     *
+     * Accepts strings, integers and floats, discarding arrays and objects
+     * so that PHP 8+ does not emit conversion warnings in frontend views.
+     *
+     * @param mixed $value Raw address property.
+     * @return string Trimmed text, or an empty string for invalid values.
      */
     private static function scalarText(mixed $value): string
     {
@@ -57,6 +73,17 @@ final class LocationAddressHelper
             : '';
     }
 
+    /**
+     * Look up a translated country name for an ISO alpha-3 country code.
+     *
+     * Queries the selected SportsManagement countries table and translates
+     * the returned name through Joomla. Missing tables or database errors
+     * yield an empty value, leaving the original code as a safe fallback.
+     *
+     * @param DatabaseInterface $db Database used by the current component.
+     * @param string $countryCode Uppercase three-letter country code.
+     * @return string Translated country name, or an empty string if unknown.
+     */
     private static function countryName(DatabaseInterface $db, string $countryCode): string
     {
         try {
