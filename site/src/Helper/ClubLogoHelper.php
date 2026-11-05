@@ -19,6 +19,19 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 final class ClubLogoHelper
 {
+    /**
+     * Render a small club logo or country flag in a frontend listing.
+     *
+     * Uses Joomla's flag presentation for country mode, selects the
+     * configured placeholder when a club logo is missing and generates
+     * compact image markup via Joomla HTMLHelper in logo mode.
+     *
+     * @param string $logoSmall Optional club logo path.
+     * @param string $country Country code used when rendering a flag.
+     * @param int $type Display mode: 1 for club logo, 2 for country flag.
+     * @param bool $withSpace Add a small padding style around the logo.
+     * @return string Image or flag HTML, or empty text when unavailable.
+     */
     public static function render(
         string $logoSmall = '',
         string $country = '',
