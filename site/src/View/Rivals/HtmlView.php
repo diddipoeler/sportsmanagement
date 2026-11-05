@@ -30,11 +30,29 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public ?object $team = null;
     public string $pagetitle = '';
 
+    /**
+     * Disable the historical presentation bootstrap for the rivals view.
+     *
+     * The Joomla 5/6 implementation uses a namespaced model, project title
+     * helper and registered web assets instead of legacy global helpers.
+     *
+     * @return bool False because legacy presentation is not required.
+     */
     protected function usesLegacyPresentation(): bool
     {
         return false;
     }
 
+    /**
+     * Prepare the selected team's opponents and browser page title.
+     *
+     * Checks the native RivalsModel, loads division, team and opponent
+     * records, builds the configured project title and registers the
+     * component's JavaScript through Joomla's Web Asset Manager.
+     *
+     * @return void
+     * @throws \RuntimeException If the native rivals model is missing.
+     */
     protected function prepareView(): void
     {
         $this->document = $this->getDocument();
@@ -92,6 +110,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Render a team's club icon with the configured modal dimensions.
+     *
+     * Delegates image and link presentation to the native TeamLogoHelper
+     * while retaining the legacy team image element identifier.
+     *
+     * @param object $team Team record providing the team identifier.
+     * @param string $clubIcon Requested team logo variant or path.
+     * @return string Rendered team icon markup.
+     */
     public function renderClubIcon(object $team, string $clubIcon): string
     {
         $teamId = (int) ($team->team_id ?? $team->id ?? 0);
