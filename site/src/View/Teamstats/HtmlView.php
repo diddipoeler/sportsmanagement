@@ -45,6 +45,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $forSum = [];
     public array $againstSum = [];
 
+    /**
+     * Prepare a team's season statistics and optional goal charts.
+     * Requires TeamstatsModel, loads wins, draws, defeats, attendances,
+     * season summaries, match-day results and the team logo, and sets
+     * the translated Joomla document title.
+     * @return void
+     * @throws \RuntimeException If TeamstatsModel is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var TeamstatsModel $model */
@@ -111,6 +119,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
             . ($teamName !== '' ? ' - ' . $teamName : '');
     }
 
+    /**
+     * Build the team's goals-for and goals-against chart datasets.
+     * Uses the native statistics model to aggregate per-round totals
+     * and the maximum combined goals for the historical chart template.
+     * @param mixed $config Chart presentation configuration.
+     * @return void
+     */
     public function _setChartdata($config): void
     {
         /** @var TeamstatsModel $model */
