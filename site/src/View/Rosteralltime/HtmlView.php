@@ -29,6 +29,17 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $sortColumn = 'pr.lastname';
     public $team = null;
 
+    /**
+     * Prepare the all-time roster for the current team and sport.
+     *
+     * Requires the native RosteralltimeModel, loads paginated players,
+     * position definitions, event types and historical team memberships.
+     * Preserves model-provided warnings and tips, sorting controls and
+     * the translated team-specific page heading for existing templates.
+     *
+     * @return void
+     * @throws \RuntimeException If the roster model is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var RosteralltimeModel $model */
