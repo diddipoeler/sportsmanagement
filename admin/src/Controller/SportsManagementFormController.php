@@ -50,6 +50,20 @@ class SportsManagementFormController extends FormController
     protected $team_id = 0;
     protected $insert_id = 0;
 
+    /**
+     * Initialise the Joomla MVC form controller and legacy component context.
+     *
+     * Preserves injected MVC factory, application, input and form factory,
+     * then resolves the selected SportsManagement database connection and
+     * exposes the legacy properties required by existing edit controllers.
+     *
+     * @param array $config Joomla controller configuration.
+     * @param MVCFactoryInterface|null $factory Optional injected MVC factory.
+     * @param CMSWebApplicationInterface|null $app Optional Joomla application.
+     * @param Input|null $input Optional injected request input.
+     * @param FormFactoryInterface|null $formFactory Optional form factory.
+     * @throws \RuntimeException If Joomla's database service is invalid.
+     */
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
@@ -63,8 +77,11 @@ class SportsManagementFormController extends FormController
         $this->jsmjinput = $this->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option', 'com_sportsmanagement');
 
-        /** @var DatabaseInterface $joomlaDatabase */
         $joomlaDatabase = \Joomla\CMS\Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$joomlaDatabase instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement form database service is unavailable.', 500);
+        }
         $databaseSelector = $this->jsmjinput->getInt(
             'cfg_which_database',
             (int) $this->jsmapp->getUserState($this->jsmoption . '.cfg_which_database', 0)
@@ -78,7 +95,11 @@ class SportsManagementFormController extends FormController
     }
 
     /**
-     * Default import handler for entity forms without an importer.
+     * Redirect unsupported imports back to the administrator entity list.
+     *
+     * Provides translated feedback for forms without a dedicated import task.
+     *
+     * @return void
      */
     public function import(): void
     {
@@ -90,7 +111,11 @@ class SportsManagementFormController extends FormController
     }
 
     /**
-     * Default export handler for entity forms without an exporter.
+     * Redirect unsupported exports back to the administrator entity list.
+     *
+     * Provides translated feedback for forms without a dedicated exporter.
+     *
+     * @return void
      */
     public function export(): void
     {
@@ -102,7 +127,10 @@ class SportsManagementFormController extends FormController
     }
 
     /**
-     * Close a modal edit workflow.
+     * Close the modal component edit dialog without modifying records.
+     *
+     * @param string|null $key Optional legacy form record key.
+     * @return void
      */
     public function cancelmodal($key = null): void
     {
@@ -110,7 +138,14 @@ class SportsManagementFormController extends FormController
     }
 
     /**
-     * Save a form while preserving SportsManagement-specific redirect rules.
+     * Save an administrator form using the legacy SportsManagement workflow.
+     *
+     * Checks the Joomla CSRF token, handles round and player-specific
+     * persistence and preserves the historical save/apply/close redirects.
+     *
+     * @param string|null $key Optional primary record key name.
+     * @param string|null $urlVar Optional record identifier URL variable.
+     * @return bool Whether the record was saved successfully.
      */
     public function save($key = null, $urlVar = null)
     {
@@ -315,13 +350,31 @@ class SportsManagementFormController extends FormController
     }
 
     /**
-     * Resolve administrator models through the component MVCFactory by default.
+     * Resolve an administrator form model using Joomla's MVC factory.
+     *
+     * Preserves the model name, namespace and caller-provided options
+     * when forwarding to the Joomla parent controller.
+     *
+     * @param string $name Requested form model name.
+     * @param string $prefix Joomla MVC model namespace.
+     * @param array $config Additional model factory configuration.
+     * @return mixed Joomla model instance or parent failure result.
      */
     public function getModel($name = '', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Provide the legacy extension point after a successful form save.
+     *
+     * The default implementation intentionally does nothing; child
+     * controllers may override it to handle saved model records.
+     *
+     * @param BaseDatabaseModel $model Saved Joomla database model.
+     * @param array $validData Validated form values.
+     * @return void
+     */
     protected function postSaveHook(BaseDatabaseModel $model, $validData = [])
     {
     }
