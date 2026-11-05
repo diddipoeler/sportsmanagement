@@ -19,12 +19,31 @@ use Joomla\CMS\Language\Text;
  */
 final class ProjectrefereeController extends SportsManagementFormController
 {
+    /**
+     * Delete selected project-referee relations and refresh Finder entries.
+     *
+     * Validates the Joomla form token and component deletion permission,
+     * resolves the native model and identifies related people before
+     * deleting the selected rows. Notifies the Finder index only when the
+     * delete operation succeeds, then returns to the referee overview.
+     *
+     * @return void
+     * @throws \RuntimeException For denied access or an unavailable model.
+     */
     public function remove(): void
     {
         $this->checkToken();
 
+        if (!$this->app->getIdentity()->authorise('core.delete', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $pks = $this->app->getInput()->post->get('cid', [], 'array');
         $model = $this->getModel();
+        if (!is_object($model)) {
+            throw new \RuntimeException('Projectreferee model is unavailable.', 500);
+        }
+
         $notifier = new FinderRelationNotifier($model->getDatabase());
         $personIds = $notifier->projectRefereePeopleForRows((array) $pks);
         $success = $model->delete($pks);
