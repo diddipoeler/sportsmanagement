@@ -27,11 +27,30 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $extended = [];
     public string $title = '';
 
+    /**
+     * Disable the historical presentation bootstrap for referee profiles.
+     *
+     * The native Joomla 5/6 referee view uses its namespaced model and
+     * shared project view services, without the old global helper layer.
+     *
+     * @return bool False because legacy presentation is not required.
+     */
     protected function usesLegacyPresentation(): bool
     {
         return false;
     }
 
+    /**
+     * Populate a referee's profile, history and optional match statistics.
+     *
+     * Requires the native RefereeModel, formats the referee's display name,
+     * loads season history and optionally includes matches and team records.
+     * Decodes any extended person fields and configures the page heading
+     * and historical table classes for the existing template.
+     *
+     * @return void
+     * @throws \RuntimeException If the native referee model is unavailable.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
