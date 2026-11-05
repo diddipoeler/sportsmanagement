@@ -48,11 +48,30 @@ foreach ([
 if (!class_exists('modJSMActSeasonHelper', false)) {
     final class modJSMActSeasonHelper
     {
+    /**
+     * Retrieve the current-season project list for legacy module templates.
+     *
+     * Delegates to the native helper through result() and returns its
+     * list collection, preserving the historic static module interface.
+     *
+     * @param mixed $seasonIds Selected seasons in the legacy input format.
+     * @param DatabaseInterface|null $database Optional database override.
+     * @return array Current-season project records for display.
+     */
     public static function getData($seasonIds, ?DatabaseInterface $database = null): array
     {
         return self::result($seasonIds, $database)['list'];
     }
 
+    /**
+     * Build a unique federation index from current-season project records.
+     *
+     * Ignores invalid rows and federation IDs, then creates one entry
+     * per federation with its identifier and available display name.
+     *
+     * @param array|mixed $data Project or season records containing federations.
+     * @return array Federation objects indexed by their positive ID.
+     */
     public static function getDataFederation($data): array
     {
         $federations = [];
@@ -76,6 +95,16 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
         return $federations;
     }
 
+    /**
+     * Map current-season countries back to their associated federation IDs.
+     *
+     * Reads the component's active season setting, obtains country groups
+     * from the native helper and converts them into legacy alpha3 and
+     * federation pairs expected by existing module templates.
+     *
+     * @param DatabaseInterface|null $database Optional database service.
+     * @return array Country and federation association records.
+     */
     public static function getDataCcountryFederation(?DatabaseInterface $database = null): array
     {
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
@@ -94,6 +123,18 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
         return $rows;
     }
 
+    /**
+     * Resolve all data required by the legacy current-season facade.
+     *
+     * Requires Joomla's frontend application, loads component settings,
+     * obtains a validated database and delegates the season query to
+     * the namespaced Joomla 5/6 ActSeasonHelper implementation.
+     *
+     * @param mixed $seasonIds Requested season identifiers.
+     * @param DatabaseInterface|null $database Optional database override.
+     * @return array Native current-season result collections.
+     * @throws \RuntimeException If the site client or database is unavailable.
+     */
     private static function result($seasonIds, ?DatabaseInterface $database = null): array
     {
         $app = self::siteApplication();
@@ -110,6 +151,15 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
         );
     }
 
+    /**
+     * Resolve a valid Joomla site application for current-season queries.
+     *
+     * Uses the shared component application resolver and rejects execution
+     * in a non-site client before reading frontend module data.
+     *
+     * @return CMSApplicationInterface Current Joomla frontend application.
+     * @throws \RuntimeException If the active client is not the site.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
@@ -121,6 +171,16 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
         return $app;
     }
 
+    /**
+     * Resolve the effective Joomla database service for season queries.
+     *
+     * Accepts an injected DatabaseInterface or loads the service from
+     * Joomla's container and rejects unexpected instances.
+     *
+     * @param DatabaseInterface|null $database Optional database override.
+     * @return DatabaseInterface Validated database connection.
+     * @throws \RuntimeException If no valid database service is available.
+     */
     private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
     {
         if ($database !== null) {
