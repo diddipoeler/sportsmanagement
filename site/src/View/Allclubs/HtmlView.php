@@ -34,12 +34,31 @@ final class HtmlView extends SportsManagementHtmlView
     public int $modalheight = 600;
     public int $modalwidth = 900;
 
+    /**
+     * Initialise the native club directory with shared component layouts.
+     *
+     * Preserves Joomla's parent view setup and registers the global
+     * SportsManagement templates used by the historic club listing.
+     *
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/tmpl/globalviews');
     }
 
+    /**
+     * Prepare and display the frontend club directory.
+     *
+     * Requires the native AllclubsModel, reads filtered and paginated
+     * clubs, applies the configured sport type and safe table CSS class,
+     * and sets the translated Joomla browser document title.
+     *
+     * @param string|null $tpl Optional Joomla template layout.
+     * @return mixed Result of the parent view renderer.
+     * @throws \RuntimeException When the club model is unavailable.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -71,6 +90,15 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Create the country selector for the club directory.
+     *
+     * Reads available country options from the component database
+     * and returns the options and Joomla's rendered select control.
+     *
+     * @param AllclubsModel $model Native club listing model.
+     * @return array Options and HTML for the country filter.
+     */
     private function buildFilterLists(AllclubsModel $model): array
     {
         $options = [
