@@ -20,6 +20,13 @@ final class RoundsController extends SportsManagementAdminController
 {
     protected $view_list = 'rounds';
 
+    /**
+     * Resolve the round model through Joomla MVC with the administrator namespace.
+     * @param string $name Requested model name.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Joomla MVC factory options.
+     * @return mixed Model instance or parent failure value.
+     */
     public function getModel($name = 'Round', $prefix = 'Administrator', $config = [])
     {
         $config['ignore_request'] = true;
@@ -27,6 +34,12 @@ final class RoundsController extends SportsManagementAdminController
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Create multiple project rounds from an administrator form submission.
+     * Requires the Joomla form token and create permission; delegates
+     * the posted data to the round model and returns to the round list.
+     * @return void
+     */
     public function massadd(): void
     {
         $this->checkToken();
@@ -47,6 +60,12 @@ final class RoundsController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Delete matches belonging to the selected round records.
+     * Checks the CSRF token and delete permission before forwarding
+     * POSTed round IDs to the model and redirecting to the overview.
+     * @return void
+     */
     public function deleteRoundMatches(): void
     {
         $this->checkToken();
@@ -64,6 +83,12 @@ final class RoundsController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Persist inline edits to rounds in the administrator list.
+     * Checks the form token and write rights, then passes submitted
+     * round identifiers and values to the native round model.
+     * @return void
+     */
     public function saveshort(): void
     {
         $this->checkToken();
@@ -83,7 +108,15 @@ final class RoundsController extends SportsManagementAdminController
         );
     }
 
-    /** Resolve a native model before executing legacy write operations. */
+    /**
+     * Obtain a valid round model before legacy write operations.
+     *
+     * Rejects unsuccessful Joomla MVC factory results instead of
+     * calling round write operations on an invalid model instance.
+     *
+     * @return object Native round model.
+     * @throws \RuntimeException If the model is not available.
+     */
     private function requireRoundModel(): object
     {
         $model = $this->getModel();
@@ -95,6 +128,12 @@ final class RoundsController extends SportsManagementAdminController
         return $model;
     }
 
+    /**
+     * Open the round population editor for a project and division.
+     * Uses integer-filtered request values and the selected project
+     * from Joomla session state to construct the editing URL.
+     * @return void
+     */
     public function populate(): void
     {
         $divisionId = $this->app->getInput()->getInt('division_id', 0);
