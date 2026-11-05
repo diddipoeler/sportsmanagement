@@ -37,21 +37,47 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $kmlpath = '';
     public string $kmlfile = '';
 
+    /**
+     * Skip legacy presentation helpers in the native playground view.
+     *
+     * @return bool False because the namespaced view has native services.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Avoid loading legacy jQuery for playground view presentation.
+     *
+     * @return bool False because this view does not depend on jQuery.
+     */
     protected function requiresJquery(): bool
     {
         return false;
     }
 
+    /**
+     * Decide whether the configured legacy media box is required.
+     *
+     * @return bool True only for legacy modal display mode two.
+     */
     protected function requiresJceMediaBox(): bool
     {
         return (int) ($this->overallconfig['use_jquery_modal'] ?? 0) === 2;
     }
 
+    /**
+     * Load playground details, teams, matches and optional map data.
+     *
+     * Validates both native Joomla MVC models, reads the selected
+     * playground and project, prepares address and match collections,
+     * optionally writes a KML placemark, loads extended fields and
+     * registers page metadata and CSS using Joomla document services.
+     *
+     * @return void
+     * @throws \RuntimeException If a required model is unavailable.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
