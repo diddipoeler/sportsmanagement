@@ -20,6 +20,16 @@ final class StatsrankingteamsModel extends SportsManagementStatsRankingModel
 
     protected string $statsTemplate = 'statsrankingteams';
 
+    /**
+     * Load the team ranking rows for every configured project statistic.
+     *
+     * Resolves the requested sort order, ignores invalid statistic objects
+     * and nonpositive statistic IDs, and invokes each statistic's native
+     * getTeamsRanking() method with the selected project and page limits.
+     *
+     * @param mixed $order Optional ranking order selection.
+     * @return array Team ranking rows indexed by statistic identifier.
+     */
     public function getTeamsStats($order = null): array
     {
         $stats = $this->getProjectUniqueStats();
@@ -45,6 +55,16 @@ final class StatsrankingteamsModel extends SportsManagementStatsRankingModel
         return $results;
     }
 
+    /**
+     * Combine per-statistic ranking rows into cumulative team totals.
+     *
+     * Skips invalid team IDs, sums numeric totals by team, preserves each
+     * statistic's value under its ID and sorts the combined entries by
+     * descending total for display in the team statistics table.
+     *
+     * @param array $teamsstats Rankings grouped by statistic identifier.
+     * @return array Team totals sorted from highest to lowest.
+     */
     public function getTeamsTotal($teamsstats = []): array
     {
         $totals = [];
