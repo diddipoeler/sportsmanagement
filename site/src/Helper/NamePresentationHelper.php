@@ -18,6 +18,18 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 final class NamePresentationHelper
 {
+    /**
+     * Format a team's display name using the configured legacy name style.
+     *
+     * Prefers short, middle or full names according to the requested
+     * format and falls back to the next available name when necessary.
+     * Escapes the displayed text and optionally wraps it in a Joomla link.
+     *
+     * @param object $team Team record containing full and abbreviated names.
+     * @param int|string $format Legacy team-name format selector.
+     * @param string $link Optional destination URL.
+     * @return string HTML-safe team name or linked name.
+     */
     public static function team(object $team, int|string $format = 2, string $link = ''): string
     {
         $format = (int) $format;
@@ -32,6 +44,17 @@ final class NamePresentationHelper
         return $link !== '' ? HTMLHelper::link($link, $name) : $name;
     }
 
+    /**
+     * Render a person's name using the configured SportsManagement style.
+     *
+     * Supports first/last name ordering, quoted nicknames and initial
+     * variants, omits empty name parts and escapes the final text for
+     * safe display in native Joomla 5/6 views.
+     *
+     * @param object $person Person record with firstname, nickname and lastname.
+     * @param int|string $format Legacy person-name layout identifier.
+     * @return string HTML-escaped display name.
+     */
     public static function person(object $person, int|string $format = 0): string
     {
         $first = trim((string) ($person->firstname ?? ''));
@@ -68,11 +91,29 @@ final class NamePresentationHelper
         return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
     }
 
+    /**
+     * Read the first character of a name for initial-based formats.
+     *
+     * Uses multibyte substring handling when PHP mbstring is available,
+     * falling back to the standard substring function otherwise.
+     *
+     * @param string $value Name text from which to take an initial.
+     * @return string First available character, or an empty string.
+     */
     private static function firstCharacter(string $value): string
     {
         return function_exists('mb_substr') ? mb_substr($value, 0, 1) : substr($value, 0, 1);
     }
 
+    /**
+     * Select the first usable text value from a list of name candidates.
+     *
+     * Trims each candidate and returns its text as soon as it is
+     * nonempty, preserving the configured fallback order.
+     *
+     * @param mixed ...$values Name candidates ordered by preference.
+     * @return string First nonempty name, or an empty string.
+     */
     private static function firstNonEmpty(mixed ...$values): string
     {
         foreach ($values as $value) {
