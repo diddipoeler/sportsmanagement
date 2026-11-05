@@ -21,6 +21,15 @@ use Joomla\CMS\Router\Route;
  */
 final class SmextxmleditorController extends FormController
 {
+    /**
+     * Cancel the extended source editor without saving changes.
+     *
+     * Redirects to the administrator's XML/PHP editor overview using
+     * Joomla's route builder, preserving the historic form workflow.
+     *
+     * @param string|null $key Optional legacy record key.
+     * @return bool True once the redirect has been configured.
+     */
     public function cancel($key = null)
     {
         $this->setRedirect(
@@ -30,6 +39,19 @@ final class SmextxmleditorController extends FormController
         return true;
     }
 
+    /**
+     * Save extended XML/PHP source edited by a component administrator.
+     *
+     * Requires Joomla's form token and component core.admin permission
+     * because this task can write executable PHP files. Resolves the
+     * native editor model, reports persistence failures and redirects
+     * to the editor after Apply or the overview after a normal Save.
+     *
+     * @param string|null $key Optional form record identifier.
+     * @param string|null $urlVar Optional URL identifier field.
+     * @return bool Whether the native model saved the submitted content.
+     * @throws \RuntimeException If access is denied or the model is missing.
+     */
     public function save($key = null, $urlVar = null)
     {
         $this->checkToken();
@@ -82,6 +104,17 @@ final class SmextxmleditorController extends FormController
         return true;
     }
 
+    /**
+     * Retrieve the native Joomla 5/6 extended source editor model.
+     *
+     * Forwards the requested administrator model name and all supplied
+     * factory options to the parent Joomla MVC controller.
+     *
+     * @param string $name Requested editor model name.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Optional MVC model factory configuration.
+     * @return mixed Joomla model or the parent's failure result.
+     */
     public function getModel($name = 'Smextxmleditor', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, $config);
