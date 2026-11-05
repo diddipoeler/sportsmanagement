@@ -18,6 +18,16 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native Joomla 5/6 controller for the SIS import workflow. */
 final class JlextsisimportController extends BaseController
 {
+    /**
+     * Execute the administrator SIS import workflow.
+     *
+     * Requires Joomla's form token and component core.admin permission
+     * before calling the native SIS importer model, then redirects to
+     * the XML import edit view on completion.
+     *
+     * @return bool True after the model import completes.
+     * @throws \RuntimeException If access or model resolution fails.
+     */
     public function save()
     {
         $this->checkToken();
@@ -42,6 +52,15 @@ final class JlextsisimportController extends BaseController
         return true;
     }
 
+    /**
+     * Resolve the SIS importer through the Joomla 5/6 MVC component factory.
+     *
+     * Boots com_sportsmanagement and requests its administrator import
+     * model with request-independent state; rejects an unexpected model.
+     *
+     * @return JlextsisimportModel Valid native importer model.
+     * @throws \RuntimeException If the importer cannot be resolved.
+     */
     private function getImportModel(): JlextsisimportModel
     {
         $model = $this->app
