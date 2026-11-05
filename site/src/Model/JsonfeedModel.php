@@ -17,9 +17,14 @@ final class JsonfeedModel extends SportsManagementModel
     private const MAX_ID_INPUTS = 200;
     private const MAX_ID_STRING_LENGTH = 4096;
     /**
-     * Return normalized Google Calendar event arrays for the JSON feed.
+     * Read selected Google Calendar events for the frontend JSON feed.
      *
-     * @return array<int, array<string, mixed>>
+     * Accepts the gcids list or the legacy gcid selector, limits the
+     * requested identifiers, rejects an empty selection rather than
+     * returning all calendars, and passes optional start/end timestamps
+     * to the native GoogleCalendarReadService.
+     *
+     * @return array<int, array<string, mixed>> Events for selected calendars.
      */
     public function getGoogleCalendarFeeds(): array
     {
@@ -48,7 +53,14 @@ final class JsonfeedModel extends SportsManagementModel
     }
 
     /**
-     * @return array<int>
+     * Validate, normalise and limit calendar IDs supplied by a request.
+     *
+     * Accepts integer IDs and comma/space/semicolon-delimited strings,
+     * ignores malformed or overflowing values, removes duplicates and
+     * enforces bounds on input count, entry size and returned IDs.
+     *
+     * @param mixed $value Raw calendar selection supplied by Joomla input.
+     * @return array<int> Up to MAX_CALENDAR_IDS validated positive IDs.
      */
     private function normalizeCalendarIds(mixed $value): array
     {
