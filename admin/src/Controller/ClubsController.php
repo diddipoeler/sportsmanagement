@@ -23,15 +23,23 @@ use Joomla\CMS\Router\Route;
 class ClubsController extends SportsManagementAdminController
 {
     /**
-     * Save the short values of the selected clubs.
+     * Save inline changes for selected clubs in the administrator list.
+     *
+     * Requires a valid Joomla form token and component edit permission,
+     * resolves the native club model and reports failed writes before
+     * redirecting to the club overview.
+     *
+     * @return void
+     * @throws \RuntimeException If Joomla cannot resolve the club model.
      */
     public function saveshort(): void
     {
+        $this->checkToken();
         $this->assertWritePermission();
 
         $model = $this->getModel();
 
-        if ($model === false || $model === null) {
+        if (!is_object($model)) {
             throw new \RuntimeException('SportsManagement club model could not be loaded.', 500);
         }
 
@@ -45,7 +53,15 @@ class ClubsController extends SportsManagementAdminController
     }
 
     /**
-     * Resolve the namespaced Club model through Joomla's MVCFactory.
+     * Resolve the native Club editor model using Joomla's MVC factory.
+     *
+     * Preserves caller options while using request-independent model
+     * loading for administrator edit operations.
+     *
+     * @param string $name Requested club model name.
+     * @param string $prefix Administrator model namespace.
+     * @param array $config Additional Joomla model settings.
+     * @return mixed Model instance or the parent controller's failure result.
      */
     public function getModel($name = 'Club', $prefix = 'Administrator', $config = [])
     {
