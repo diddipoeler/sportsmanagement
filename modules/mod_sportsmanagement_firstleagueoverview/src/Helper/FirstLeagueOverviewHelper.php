@@ -24,7 +24,16 @@ use Joomla\Registry\Registry;
 final class FirstLeagueOverviewHelper
 {
     /**
-     * @return array{projects: array<int,object>, federations: array<int,object>}
+     * Load the latest published first-league projects and their federations.
+     *
+     * Selects the configured SportsManagement database, retrieves one
+     * current project per league, prepares ranking links and country flags
+     * and limits federation tabs to those associated with visible projects.
+     * Database failures are logged without exposing SQL details in HTML.
+     *
+     * @param Registry $params Joomla first-league module settings.
+     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
+     * @return array{projects: array<int,object>, federations: array<int,object>} Public league overview.
      */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
@@ -55,7 +64,15 @@ final class FirstLeagueOverviewHelper
         }
     }
 
-    /** @return array<int,object> */
+    /**
+     * Select the most recent published project for each supported league.
+     *
+     * Joins published projects, leagues and countries, orders by season
+     * and project IDs, and derives portable ID:alias routing segments.
+     *
+     * @param DatabaseInterface $db Selected component database connection.
+     * @return array<int,object> One current project record per league.
+     */
     private function latestProjects(DatabaseInterface $db): array
     {
         $championsComplete = 1;
@@ -118,7 +135,15 @@ final class FirstLeagueOverviewHelper
         return $projects;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load federation labels and safely resolved image URLs.
+     *
+     * Queries the native federations table and builds an ID-indexed
+     * collection used by the public first-league navigation tabs.
+     *
+     * @param DatabaseInterface $db SportsManagement database connection.
+     * @return array<int,object> Federation records indexed by ID.
+     */
     private function getFederations(DatabaseInterface $db): array
     {
         $query = $db->createQuery()
@@ -185,6 +210,16 @@ final class FirstLeagueOverviewHelper
         return $visible;
     }
 
+    /**
+     * Create the frontend ranking URL for the selected league project.
+     *
+     * Uses the shared Joomla site routing helper and preserves the
+     * configured component database selection and season identifier.
+     *
+     * @param object $project Project record including the ID:alias slug.
+     * @param Registry $params Module database and display settings.
+     * @return string Routed ranking page URL.
+     */
     private function rankingLink(object $project, Registry $params): string
     {
         return SiteRouteHelper::view('ranking', [
@@ -199,6 +234,16 @@ final class FirstLeagueOverviewHelper
         ]);
     }
 
+    /**
+     * Render a country flag for the first-league overview.
+     *
+     * Validates ISO country codes, supports the configured CSS flag mode
+     * and otherwise resolves a safely escaped image URL and label.
+     *
+     * @param object $row League project with country codes and picture.
+     * @param Registry $componentParams Component flag preferences.
+     * @return string Safe flag HTML or empty text if unavailable.
+     */
     private function flagHtml(object $row, Registry $componentParams): string
     {
         $alpha3 = strtoupper((string) ($row->country ?? ''));
@@ -239,7 +284,15 @@ final class FirstLeagueOverviewHelper
             . '" alt="' . $label . '" title="' . $label . '" loading="lazy" />';
     }
 
-    /** Keep malformed legacy config values from silently selecting database 1. */
+    /**
+     * Parse the database selector without coercing malformed legacy settings.
+     *
+     * Accepts positive integer or decimal configuration values including
+     * leading zeros, returning the default connection for invalid input.
+     *
+     * @param mixed $value Raw Joomla module database selection.
+     * @return int Normalised nonnegative database selector.
+     */
     private static function databaseSelector(mixed $value): int
     {
         if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
@@ -257,8 +310,14 @@ final class FirstLeagueOverviewHelper
     }
 
     /**
-     * Build HTTP(S) or site-local image URLs without protocol-relative paths,
-     * userinfo, traversal, encoded control bytes or executable URI schemes.
+     * Construct a safe remote or site-relative media URL.
+     *
+     * Rejects unsupported schemes, embedded credentials, control bytes,
+     * encoded traversal segments and malformed paths before producing
+     * a browser image URL relative to Joomla's frontend root.
+     *
+     * @param string $path Configured image path or full HTTP(S) URL.
+     * @return string Validated media URL or empty text when invalid.
      */
     private static function mediaUrl(string $path): string
     {
