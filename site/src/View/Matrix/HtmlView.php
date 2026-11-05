@@ -29,6 +29,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $divisions = [];
     public array $favteams = [];
 
+    /**
+     * Initialise the matrix view and register historic layout paths.
+     * @param array $config Joomla view configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -38,6 +42,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/matrix/tmpl');
     }
 
+    /**
+     * Prepare the project results matrix and division-based presentations.
+     * Validates the native MatrixModel, loads the current round, teams and
+     * results, optionally builds the Russian matrix and division notes,
+     * and registers the component stylesheet and translated document title.
+     * @return void
+     * @throws \RuntimeException If MatrixModel is unavailable.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -101,6 +113,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Attach escaped starting-point adjustment notes to each division.
+     * Finds the divisions related to match results and formats team
+     * names, point differences and reasons for the existing matrix template.
+     * @return void
+     */
     private function attachDivisionRankingNotes(): void
     {
         $rankingReasons = [];
