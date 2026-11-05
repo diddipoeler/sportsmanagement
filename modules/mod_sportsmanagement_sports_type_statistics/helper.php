@@ -42,6 +42,18 @@ foreach ([
 if (!class_exists('modJSMSportsHelper', false)) {
     final class modJSMSportsHelper
     {
+        /**
+         * Retrieve sport-type statistics in the historical module structure.
+         *
+         * Converts module settings to Joomla Registry, loads the native
+         * statistics data and maps its count and sport-type fields back
+         * onto the keys expected by older template overrides.
+         *
+         * @param Registry|array $params Legacy settings passed by reference.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Legacy sport type and counter entries.
+         * @throws \RuntimeException If the database cannot be resolved.
+         */
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -79,14 +91,28 @@ if (!class_exists('modJSMSportsHelper', false)) {
             return $legacy;
         }
 
+        /**
+         * Resolve the Joomla database service for sport-type statistics.
+         *
+         * Returns the supplied database or resolves DatabaseInterface
+         * through Joomla's dependency injection container, checking
+         * the service before using it for queries.
+         *
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return DatabaseInterface Valid Joomla database service.
+         * @throws \RuntimeException If the service is unavailable.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
                 return $database;
             }
 
-            /** @var DatabaseInterface $database */
             $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$database instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement Sports Type Statistics database service is unavailable.', 500);
+            }
 
             return $database;
         }
