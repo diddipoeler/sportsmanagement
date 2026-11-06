@@ -37,6 +37,11 @@ final class ClubplanModel extends SportsManagementProjectModel
     public $teamprojects = 0;
     public $teamseasons = 0;
 
+    /**
+     * Initialise the selected club, project and plan display filters.
+     * @param array $config Joomla frontend model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -54,16 +59,34 @@ final class ClubplanModel extends SportsManagementProjectModel
         self::setEndDate($input->getString('enddate', ''));
     }
 
+    /**
+     * Set the start of the club plan date window.
+     * @param mixed $date Parseable date or empty value.
+     * @return void
+     */
     public static function setStartDate($date): void
     {
         self::$startdate = self::normaliseDate($date);
     }
 
+    /**
+     * Set the end of the club plan date window.
+     * @param mixed $date Parseable date or empty value.
+     * @return void
+     */
     public static function setEndDate($date): void
     {
         self::$enddate = self::normaliseDate($date);
     }
 
+    /**
+     * Render the club's small logo with optional icon spacing.
+     * @param string $logo_small Small club logo file.
+     * @param string $country Country code used by icon fallback.
+     * @param int $type Requested icon style.
+     * @param int|bool $with_space Whether to add padding.
+     * @return string Club logo HTML markup.
+     */
     public static function getClubIconHtmlSimple($logo_small, $country, $type = 1, $with_space = 0)
     {
         $type = (int) $type;
@@ -95,6 +118,10 @@ final class ClubplanModel extends SportsManagementProjectModel
         return '';
     }
 
+    /**
+     * Load the current club record with cached metadata.
+     * @return object|null Club record or null when unavailable.
+     */
     public function getClub(): ?object
     {
         if ($this->club !== null) {
@@ -121,6 +148,10 @@ final class ClubplanModel extends SportsManagementProjectModel
         return $this->club ?: null;
     }
 
+    /**
+     * List available team age groups for the selected club.
+     * @return array<int,object> Age-group options.
+     */
     public function getTeamsArt(): array
     {
         if (self::$clubid <= 0) {
@@ -143,6 +174,10 @@ final class ClubplanModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List projects featuring teams of the selected club.
+     * @return array<int,object> Project selection options.
+     */
     public function getTeamsProjects(): array
     {
         if (self::$clubid <= 0) {
@@ -167,6 +202,10 @@ final class ClubplanModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List seasons featuring teams of the selected club.
+     * @return array<int,object> Season selection options.
+     */
     public function getTeamsSeasons(): array
     {
         if (self::$clubid <= 0) {
@@ -190,6 +229,12 @@ final class ClubplanModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load the club's matches within the configured date range.
+     * @param string $orderBy Requested match order, ASC or DESC.
+     * @param int $type Schedule selection mode.
+     * @return array<int,object> Club match records.
+     */
     public function getAllMatches($orderBy = 'ASC', $type = 0): array
     {
         $direction = strtoupper((string) $orderBy) === 'DESC' ? 'DESC' : 'ASC';
@@ -362,6 +407,10 @@ final class ClubplanModel extends SportsManagementProjectModel
         return $this->allmatches;
     }
 
+    /**
+     * Read the club's teams for the plan and selection controls.
+     * @return array<int,object> Club team records.
+     */
     public function getTeams(): array
     {
         if (self::$clubid <= 0) {
@@ -384,6 +433,10 @@ final class ClubplanModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Determine the club plan's selected or configured start date.
+     * @return string Normalised plan start date.
+     */
     public function getStartDate(): string
     {
         if (!empty(self::$startdate)) {
@@ -405,6 +458,10 @@ final class ClubplanModel extends SportsManagementProjectModel
         return self::$startdate;
     }
 
+    /**
+     * Determine the club plan's selected or configured end date.
+     * @return string Normalised plan end date.
+     */
     public function getEndDate(): string
     {
         if (!empty(self::$enddate)) {
@@ -417,6 +474,11 @@ final class ClubplanModel extends SportsManagementProjectModel
         return self::$enddate;
     }
 
+    /**
+     * Load another project's season and schedule configuration.
+     * @param int $projectId Project identifier.
+     * @return object|null Project record when available.
+     */
     private function loadProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -436,6 +498,11 @@ final class ClubplanModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Parse date input and produce the date-only format.
+     * @param mixed $date Date or date-like value.
+     * @return string|null Date in YYYY-MM-DD form or null if invalid.
+     */
     private static function normaliseDate($date): ?string
     {
         $value = trim((string) $date);
