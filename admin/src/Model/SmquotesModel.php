@@ -19,6 +19,11 @@ use Joomla\Database\ParameterType;
  */
 final class SmquotesModel extends SportsManagementListModel
 {
+    /**
+     * Register the supported quote-list filters and sort fields.
+     * @param array $config Joomla administrator model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -33,6 +38,12 @@ final class SmquotesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load quote text, published-state and category filters.
+     * @param string $ordering Default quote ordering field.
+     * @param string $direction Default sorting direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.quote', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -52,6 +63,12 @@ final class SmquotesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build a filtered and sorted administrator quote query.
+     * Uses bound values for search, category and publication filters
+     * and a fixed map of permitted ORDER BY columns.
+     * @return mixed Joomla database query for quotes.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
