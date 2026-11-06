@@ -165,6 +165,16 @@ final class GithubModel extends BaseDatabaseModel
         return $decoded;
     }
 
+    /**
+     * Send a GitHub REST API request using Joomla's HTTP client.
+     * Constructs request headers and optional bearer authentication,
+     * and returns false when a network or transport error occurs.
+     * @param string $method HTTP method such as GET or POST.
+     * @param string $path GitHub API path relative to its trusted host.
+     * @param array|null $payload Optional JSON request body.
+     * @param string $token Optional GitHub authentication token.
+     * @return mixed Joomla HTTP response or false on failure.
+     */
     private function request(string $method, string $path, ?array $payload = null, string $token = '')
     {
         $headers = [
@@ -203,6 +213,10 @@ final class GithubModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Validate the configured GitHub account and repository names.
+     * @return array{0:string,1:string} Owner and repository or empty values.
+     */
     private function repositoryCoordinates(): array
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -218,6 +232,12 @@ final class GithubModel extends BaseDatabaseModel
         return [$owner, $repository];
     }
 
+    /**
+     * Resolve the configured or explicitly supplied GitHub API token.
+     * Prefers the component's configured token over transient form input.
+     * @param string $submitted Optional submitted token.
+     * @return string GitHub token or an empty string.
+     */
     private function githubToken(string $submitted = ''): string
     {
         $configured = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('gh_token', ''));
@@ -229,6 +249,11 @@ final class GithubModel extends BaseDatabaseModel
         return trim($submitted);
     }
 
+    /**
+     * Reduce a submitted GitHub issue label to supported labels.
+     * @param string $label Candidate issue label.
+     * @return string Supported label or bug as a fallback.
+     */
     private function normaliseLabel(string $label): string
     {
         $allowed = ['bug', 'duplicate', 'enhancement', 'invalid', 'question', 'wontfix'];
@@ -236,11 +261,23 @@ final class GithubModel extends BaseDatabaseModel
         return in_array($label, $allowed, true) ? $label : 'bug';
     }
 
+    /**
+     * Check one GitHub repository coordinate for safe characters.
+     * @param string $value Owner or repository slug.
+     * @return bool Whether the slug is syntactically accepted.
+     */
     private function isRepositoryPart(string $value): bool
     {
         return $value !== '' && preg_match('/^[A-Za-z0-9_.-]+$/', $value) === 1;
     }
 
+    /**
+     * Log and display a GitHub API failure to the administrator.
+     * @param int $status HTTP response status.
+     * @param mixed $decoded JSON-decoded error body.
+     * @param string $body Raw response body.
+     * @return void
+     */
     private function reportApiError(int $status, $decoded, string $body): void
     {
         $message = is_object($decoded) && isset($decoded->message)
@@ -253,8 +290,19 @@ final class GithubModel extends BaseDatabaseModel
         $this->administratorApplication()->enqueueMessage($safeMessage, 'error');
     }
 
+    /**
+     * Resolve the active Joomla administrator application service.
+     * @return AdministratorApplication Valid Joomla admin application.
+     * @throws \RuntimeException If the service is unavailable.
+     */
     private function administratorApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $application = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$application instanceof AdministratorApplication || !$application->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement GitHub requires the Joomla administrator application.', 500);
+        }
+
+        return $application;
     }
 }
