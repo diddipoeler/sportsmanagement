@@ -23,6 +23,12 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 final class JlextlmoimportsController extends BaseController
 {
+    /**
+     * Start the legacy LMO import workflow in the Joomla administrator.
+     * Requires a POST token and component administrator permission
+     * before staging uploads or invoking the native importer model.
+     * @return bool Whether the import workflow was started.
+     */
     public function save()
     {
         $this->checkToken();
@@ -61,6 +67,13 @@ final class JlextlmoimportsController extends BaseController
         return true;
     }
 
+    /**
+     * Validate and stage an LMO L98 document or ZIP archive.
+     * Rejects invalid uploads, empty or oversized files and symlink
+     * destinations; uses unique temporary names before promotion.
+     * @param array $upload Joomla uploaded file metadata.
+     * @return bool True when a supported L98 file was staged.
+     */
     private function prepareImportFile(array $upload): bool
     {
         $temporaryPath = (string) ($upload['tmp_name'] ?? '');
@@ -133,6 +146,13 @@ final class JlextlmoimportsController extends BaseController
         return true;
     }
 
+    /**
+     * Safely stage an L98 entry from an uploaded LMO ZIP archive.
+     * Avoids arbitrary archive extraction and removes the temporary ZIP.
+     * @param string $archiveFile Temporary ZIP archive path.
+     * @param string $importFile Staged LMO import destination.
+     * @return bool Whether extraction and staging succeeded.
+     */
     private function prepareArchive(string $archiveFile, string $importFile): bool
     {
         // Read a single supported ZIP entry directly. Never extract into
@@ -159,6 +179,11 @@ final class JlextlmoimportsController extends BaseController
         return true;
     }
 
+    /**
+     * Resolve the native Joomla administrator LMO import model.
+     * @return JlextlmoimportsModel Validated importer model.
+     * @throws \RuntimeException If Joomla cannot create the importer.
+     */
     private function getImportModel(): JlextlmoimportsModel
     {
         $model = $this->app
