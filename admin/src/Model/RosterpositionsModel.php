@@ -16,6 +16,12 @@ use Joomla\Database\ParameterType;
 
 final class RosterpositionsModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the administrator roster-position list model.
+     * Registers supported filter fields and safe ordering columns.
+     * @param array $config Joomla list model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -31,6 +37,14 @@ final class RosterpositionsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load roster-position search and publication filters.
+     * Preserves the historical filter_published request parameter
+     * for compatibility with older administrator list URLs.
+     * @param string $ordering Default roster-position sort field.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -62,6 +76,12 @@ final class RosterpositionsModel extends SportsManagementListModel
         $this->setState('filter.state', $state);
     }
 
+    /**
+     * Build the filtered and sorted roster-position database query.
+     * Selects roster positions and editor names, applies bound search
+     * terms and limits sort columns to configured fields.
+     * @return mixed Joomla query for roster-position records.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -136,6 +156,10 @@ final class RosterpositionsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Return the predefined home-team player positioning coordinates.
+     * @return array<string,array<int,array>> Home roster layout coordinates.
+     */
     public function getRosterHome(): array
     {
         return [
@@ -155,6 +179,10 @@ final class RosterpositionsModel extends SportsManagementListModel
         ];
     }
 
+    /**
+     * Return the predefined away-team player positioning coordinates.
+     * @return array<string,array<int,array>> Away roster layout coordinates.
+     */
     public function getRosterAway(): array
     {
         return [
