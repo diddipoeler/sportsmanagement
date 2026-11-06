@@ -21,6 +21,12 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native Joomla 5/6 controller for the DFB.net CSV/ICS import workflow. */
 final class JlextdfbnetplayerimportController extends BaseController
 {
+    /**
+     * Start the DFBnet player import after validating the administrator request.
+     * Checks the Joomla form token and permissions, prepares uploaded data
+     * and delegates import processing to the native importer model.
+     * @return mixed Controller import workflow result.
+     */
     public function save()
     {
         $this->checkToken();
@@ -94,6 +100,10 @@ final class JlextdfbnetplayerimportController extends BaseController
         return true;
     }
 
+    /**
+     * Build the translated status text for the DFBnet import process.
+     * @return string Import progress or error message.
+     */
     private function getImportMessage(string $whichFile, bool $update): string
     {
         if ($whichFile === 'playerfile') {
@@ -111,6 +121,13 @@ final class JlextdfbnetplayerimportController extends BaseController
         return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_ICSFILE');
     }
 
+    /**
+     * Validate and stage a DFBnet player import document.
+     * Validates the incoming upload metadata, extension and size before
+     * moving the file to a temporary destination.
+     * @param array $upload Joomla uploaded file metadata.
+     * @return bool Whether a supported file was staged.
+     */
     private function prepareImportFile(array $upload, string $option): bool
     {
         $temporaryPath = (string) ($upload['tmp_name'] ?? '');
@@ -172,6 +189,13 @@ final class JlextdfbnetplayerimportController extends BaseController
         return true;
     }
 
+    /**
+     * Stage a supported file from an uploaded DFBnet ZIP archive.
+     * Uses the native bounded ZIP staging service and deletes the archive.
+     * @param string $archiveFile Temporary ZIP archive filename.
+     * @param string $importFile Staged import destination.
+     * @return bool Whether archive staging succeeded.
+     */
     private function prepareArchive(string $archiveFile, string $importFile, string $option): bool
     {
         // Read a single supported ZIP entry directly. Never extract into
@@ -196,6 +220,11 @@ final class JlextdfbnetplayerimportController extends BaseController
         return true;
     }
 
+    /**
+     * Report the upload failure and redirect to the importer screen.
+     * @param string $message Translated upload error message.
+     * @return bool False to indicate the failed import.
+     */
     private function redirectUploadError(string $option, string $languageKey): bool
     {
         $message = Text::_($languageKey);
@@ -209,6 +238,11 @@ final class JlextdfbnetplayerimportController extends BaseController
         return false;
     }
 
+    /**
+     * Require the native Joomla DFBnet player import model.
+     * @return mixed Resolved importer model.
+     * @throws \RuntimeException If the importer cannot be loaded.
+     */
     private function getImportModel(): JlextdfbnetplayerimportModel
     {
         $model = $this->app
