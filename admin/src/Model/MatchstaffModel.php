@@ -20,6 +20,12 @@ use Joomla\Database\ParameterType;
  */
 final class MatchstaffModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the administrator form for match staff assignments.
+     * @param array $data Existing form values.
+     * @param bool $loadData Whether persisted values should be loaded.
+     * @return mixed Joomla form instance or load error.
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -147,6 +153,12 @@ final class MatchstaffModel extends SportsManagementAdminModel
         return $rows;
     }
 
+    /**
+     * Update the sequence of selected match staff associations.
+     * @param array|null $pks Match staff row IDs.
+     * @param array|null $order Desired ordering values.
+     * @return bool Whether changes were saved.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
@@ -176,6 +188,13 @@ final class MatchstaffModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Resolve the native match staff table via Joomla MVC.
+     * @param string $type Table name.
+     * @param string $prefix Legacy Joomla table namespace.
+     * @param array $config Additional table options.
+     * @return mixed Matchstaff table or parent fallback.
+     */
     public function getTable($type = 'matchstaff', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchstaff') === 0) {
@@ -185,16 +204,28 @@ final class MatchstaffModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Check administrator permission for the selected staff record.
+     * @param array $data Current staff relation.
+     * @param string $key Record ID key.
+     * @return bool Whether editing is permitted.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 
+    /**
+     * Resolve the current project's identifier for match staff.
+     * @return int Selected project ID or zero.
+     */
     private function resolveProjectId(int $projectId): int
     {
         if ($projectId > 0) {
