@@ -31,6 +31,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $familyclub = [];
     public $document;
 
+    /**
+     * Assemble historical club family trees for teams in the project.
+     * Validates TeamstreeModel, derives predecessor and successor club
+     * relations, builds compatibility tree markup and registers the
+     * historical tree presentation assets and Joomla page title.
+     * @return void
+     * @throws \RuntimeException If the team tree model is unavailable.
+     */
     protected function prepareView(): void
     {
         $this->document = $this->getDocument();
