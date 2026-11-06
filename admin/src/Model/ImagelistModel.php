@@ -40,6 +40,10 @@ final class ImagelistModel extends ListModel
     /** @var array<int, object> */
     public array $items = [];
 
+    /**
+     * Initialise the image list model with administrator pagination state.
+     * @param array $config Joomla list model configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -49,13 +53,15 @@ final class ImagelistModel extends ListModel
     }
 
     /**
-     * Build the requested image file list.
+     * Read the requested image files from the trusted component folder.
      *
-     * @param string $path      Relative image directory.
-     * @param mixed  $scopeName Retained legacy scope parameter.
-     * @param array  $post      Filter data.
+     * Uses a validated relative path and builds file data for the Joomla
+     * image browser without traversing outside the component image root.
      *
-     * @return array<int, object>
+     * @param string $path Relative image directory.
+     * @param mixed $scopeName Retained legacy scope parameter.
+     * @param array $post Image list filters.
+     * @return array<int,object> Matching image files.
      */
     public function getFiles($path, $scopeName = '', $post = []): array
     {
@@ -167,6 +173,10 @@ final class ImagelistModel extends ListModel
         return $this->items;
     }
 
+    /**
+     * Build Joomla pagination for the currently selected image files.
+     * @return Pagination Image list pagination object.
+     */
     public function getPagination(): Pagination
     {
         $store = $this->getStoreId('getPagination');
@@ -176,6 +186,10 @@ final class ImagelistModel extends ListModel
         return $this->cache[$store];
     }
 
+    /**
+     * Get the number of files matching the image browser filters.
+     * @return int Total selected file count.
+     */
     public function getTotal(): int
     {
         $store = $this->getStoreId('getTotal');
@@ -184,6 +198,10 @@ final class ImagelistModel extends ListModel
         return $this->cache[$store];
     }
 
+    /**
+     * Normalise the image list page start against the current file total.
+     * @return int First index of the current image page.
+     */
     public function getStart(): int
     {
         $store = $this->getStoreId('getstart');
@@ -203,6 +221,12 @@ final class ImagelistModel extends ListModel
         return $this->cache[$store];
     }
 
+    /**
+     * Restore pagination, published state and sorting for the image list.
+     * @param string|null $ordering Optional default sorting column.
+     * @param string|null $direction Optional default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         /** @var AdministratorApplication $app */
@@ -256,7 +280,9 @@ final class ImagelistModel extends ListModel
     }
 
     /**
-     * @return array<int, object>
+     * Clear the current image list and reset its pagination state.
+     *
+     * @return array<int,object> Empty image list.
      */
     private function resetFiles(): array
     {
@@ -266,6 +292,11 @@ final class ImagelistModel extends ListModel
         return $this->items;
     }
 
+    /**
+     * Reject malformed image paths outside the configured base folder.
+     * @param string $path Requested relative image folder.
+     * @return string|null Normalised relative folder or null if invalid.
+     */
     private function normaliseRelativePath(string $path): ?string
     {
         $path = trim(str_replace('\\', '/', $path), '/');
