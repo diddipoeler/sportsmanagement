@@ -33,11 +33,23 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public bool $multiple_events = false;
     public string $pagetitle = '';
 
+    /**
+     * Disable legacy helper loading for the native event rankings view.
+     * @return bool False because native presentation services are used.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Prepare the event-ranking table and its selected project context.
+     * Checks EventsrankingModel, resolves the team and sport, loads paginated
+     * event rankings and team choices, builds the formatted page title and
+     * registers the component JavaScript with Joomla web assets.
+     * @return void
+     * @throws \RuntimeException If the event ranking model is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var EventsrankingModel $model */
