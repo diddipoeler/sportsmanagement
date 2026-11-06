@@ -22,7 +22,12 @@ use Joomla\CMS\Language\Text;
 class AgegroupModel extends SportsManagementAdminModel
 {
     /**
-     * Import the configured age groups for all configured sport types and countries.
+     * Import configured age groups for the selected sports and countries.
+     *
+     * Resolves the native database and control-panel models before
+     * inserting the configured sport and age-group mappings.
+     *
+     * @return void
      */
     public function importAgeGroupFile(): void
     {
@@ -62,9 +67,12 @@ class AgegroupModel extends SportsManagementAdminModel
     }
 
     /**
-     * Save the short values of selected age groups from the list view.
+     * Save selected age group names and aliases from the compact list.
      *
-     * @return string|false Status text on success, false on storage failure.
+     * Loads selected IDs from Joomla POST, regenerates URL-safe aliases,
+     * updates audit columns and rolls back on failed table writes.
+     *
+     * @return string|false Translated success result or false on failure.
      */
     public function saveshort()
     {
@@ -74,7 +82,31 @@ class AgegroupModel extends SportsManagementAdminModel
         $user = $app->getIdentity();
         $pks = $input->post->get('cid', [], 'array');
         $post = $input->post->getArray();
-        $pks = array_values(array_filter(array_map('intval', (array) $pks), static fn (int $id): bool => $id > 0));
+        $selected = is_array($pks) ? $pks : [];
+        $pks = [];
+
+        foreach (array_slice($selected, 0, 500) as $raw) {
+            if (!is_string($raw) && !is_int($raw)) {
+                continue;
+            }
+
+            $value = trim((string) $raw);
+
+            if (strlen($value) > 20 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+            $id = $digits !== ''
+                ? filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+                : false;
+
+            if ($id !== false) {
+                $pks[$id] = $id;
+            }
+        }
+
+        $pks = array_values($pks);
 
         if (!$pks) {
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE_NO_SELECT');
@@ -97,7 +129,7 @@ class AgegroupModel extends SportsManagementAdminModel
                 $table->name = trim((string) ($post['name' . $pk] ?? $table->name));
                 $table->alias = OutputFilter::stringURLSafe($table->name);
                 $table->modified = $modified;
-                $table->modified_by = (int) $user->id;
+                $table->modified_by = (int) ($user?->id ?? 0);
 
                 if (!$table->store()) {
                     throw new \RuntimeException((string) $table->getError());
