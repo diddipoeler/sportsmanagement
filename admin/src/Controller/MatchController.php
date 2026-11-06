@@ -30,25 +30,58 @@ final class MatchController extends SportsManagementFormController
 {
     private const MAX_PRESS_REPORT_BYTES = 52428800;
 
+    /**
+     * Close the match batch-add workflow and return to the match list.
+     * @return void
+     */
     public function cancelmassadd(): void
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=matches&massadd=0');
     }
 
+    /**
+     * Open the historical match batch-add layout.
+     * @return void
+     */
     public function massadd(): void
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=matches&layout=massadd&massadd=1');
     }
 
+    /**
+     * Delete selected matches after a valid POST token and delete permission.
+     * @return bool Whether all requested match rows were deleted.
+     */
     public function remove()
     {
         $this->assertMatchWritePermission('core.delete');
 
         $input = $this->app->getInput();
-        $pks = array_values(array_filter(array_map(
-            'intval',
-            (array) $input->post->get('cid', [], 'array')
-        )));
+        $selected = $input->post->get('cid', [], 'array');
+        $pks = [];
+
+        foreach (array_slice(is_array($selected) ? $selected : [], 0, 500) as $raw) {
+            if (!is_string($raw) && !is_int($raw)) {
+                continue;
+            }
+
+            $value = trim((string) $raw);
+
+            if (strlen($value) > 20 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+            $id = $digits !== ''
+                ? filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+                : false;
+
+            if ($id !== false) {
+                $pks[$id] = $id;
+            }
+        }
+
+        $pks = array_values($pks);
         $model = $this->getModel('Match', 'Administrator', ['ignore_request' => false]);
         $success = $model !== false && $pks !== [] && $model->delete($pks);
 
@@ -70,6 +103,11 @@ final class MatchController extends SportsManagementFormController
         return true;
     }
 
+    /**
+     * Open a match-specific image folder in Joomla's media manager.
+     * Requires component edit permission and validates the match identifier.
+     * @return bool Whether the media folder was prepared successfully.
+     */
     public function picture()
     {
         $this->assertMatchPermission('core.edit');
@@ -100,6 +138,12 @@ final class MatchController extends SportsManagementFormController
         return true;
     }
 
+    /**
+     * Copy source fixtures into the selected project and round.
+     * Checks the POST token and create permission and uses the chosen
+     * component database for the selected fixtures.
+     * @return bool Whether the copy operation succeeded.
+     */
     public function copyfrom()
     {
         $this->assertMatchWritePermission('core.create');
@@ -266,6 +310,11 @@ final class MatchController extends SportsManagementFormController
         return $success;
     }
 
+    /**
+     * Create a match in the currently selected project and round.
+     * Validates the Joomla POST token and component create permission.
+     * @return bool Whether the match was saved.
+     */
     public function addmatch()
     {
         $this->assertMatchWritePermission('core.create');
@@ -297,6 +346,11 @@ final class MatchController extends SportsManagementFormController
         return $success;
     }
 
+    /**
+     * Export selected matches to the configured Google Calendar.
+     * Checks the Joomla edit permission and POST token.
+     * @return bool Whether the export operation completed.
+     */
     public function insertgooglecalendar()
     {
         $this->assertMatchWritePermission('core.edit');
@@ -344,6 +398,10 @@ final class MatchController extends SportsManagementFormController
         }
     }
 
+    /**
+     * Open the legacy press-report editor for an authorised match.
+     * @return mixed Parent controller display result.
+     */
     public function pressebericht()
     {
         $this->assertMatchPermission('core.edit');
@@ -357,6 +415,12 @@ final class MatchController extends SportsManagementFormController
         return parent::display();
     }
 
+    /**
+     * Upload and validate a press-report attachment for the match.
+     * Requires component edit permission and POST token, verifies upload
+     * size and location and redirects to the report or an error page.
+     * @return bool Whether the press report was saved.
+     */
     public function savepressebericht()
     {
         $this->assertMatchWritePermission('core.edit');
@@ -535,21 +599,42 @@ final class MatchController extends SportsManagementFormController
         $this->assertMatchPermission($permission);
     }
 
+    /**
+     * Require a valid Joomla identity with the requested component ACL.
+     * @param string $permission Required component permission.
+     * @return void
+     * @throws \RuntimeException If access is denied.
+     */
     private function assertMatchPermission(string $permission): void
     {
-        if (!$this->app->getIdentity()->authorise($permission, 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise($permission, 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
     }
 
+    /**
+     * Obtain Joomla's database interface through its dependency container.
+     * @return DatabaseInterface Valid Joomla database service.
+     * @throws \RuntimeException If the service is unavailable.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement match database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Return the upload size cap for match press-report attachments.
+     * Honours component media settings up to the maximum supported size.
+     * @return int Maximum accepted uploaded file size in bytes.
+     */
     private function maxPressReportBytes(): int
     {
         $configured = (int) ComponentHelper::getParams('com_media')->get('upload_maxsize', 10);
@@ -565,6 +650,13 @@ final class MatchController extends SportsManagementFormController
         return min($bytes, self::MAX_PRESS_REPORT_BYTES);
     }
 
+    /**
+     * Check whether a press report resolves beneath the trusted folder.
+     * Uses real paths to reject traversal and links outside the base path.
+     * @param string $baseDirectory Trusted destination directory.
+     * @param string $candidate Candidate report file path.
+     * @return bool True for an existing regular file beneath the directory.
+     */
     private function isSafePressReportPath(string $baseDirectory, string $candidate): bool
     {
         $base = realpath($baseDirectory);
@@ -580,6 +672,13 @@ final class MatchController extends SportsManagementFormController
         return str_starts_with($path, $base);
     }
 
+    /**
+     * Check basic file size and content properties for a press report.
+     * Rejects empty, oversized, unreadable and binary-like uploads.
+     * @param string $path Uploaded press report filename.
+     * @param int $maxBytes Configured upload size limit.
+     * @return bool True for a valid report file.
+     */
     private function isValidPressReportFile(string $path, int $maxBytes): bool
     {
         if (!is_file($path)) {
