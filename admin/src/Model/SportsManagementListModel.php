@@ -30,12 +30,25 @@ abstract class SportsManagementListModel extends ListModel
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Load the administrator list filter form from component form paths.
+     * @param array $data Optional existing filter form values.
+     * @param bool $loadData Whether Joomla should load model state.
+     * @return mixed Joomla filter form returned by the parent list model.
+     */
     public function getFilterForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
         return parent::getFilterForm($data, $loadData);
     }
 
+    /**
+     * Read list model state while guarding against recursive initialisation.
+     * Returns the existing state for re-entrant calls from populateState.
+     * @param string|null $property Requested state property.
+     * @param mixed $default Default value for a missing property.
+     * @return mixed State object or requested state value.
+     */
     public function getState($property = null, $default = null)
     {
         if ($this->stateReadInProgress) {
@@ -57,6 +70,13 @@ abstract class SportsManagementListModel extends ListModel
         return $this->getDatabase();
     }
 
+    /**
+     * Bind the list model to the chosen administrator database.
+     * Attempts the active configured SportsManagement connection and falls
+     * back to the primary Joomla database when resolution fails.
+     * @param DatabaseInterface $db Default Joomla database connection.
+     * @return void
+     */
     public function setDatabase(DatabaseInterface $db): void
     {
         try {
