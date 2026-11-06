@@ -21,6 +21,12 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native Joomla 5/6 controller for the ProfiLeague XML import workflow. */
 final class JlextprofleagimportController extends BaseController
 {
+    /**
+     * Start a ProfiLeague XML import from uploaded or existing staging data.
+     * Requires a valid Joomla form token and component admin permission,
+     * normalises the staged source and delegates loading to the importer.
+     * @return bool Whether the import workflow advanced.
+     */
     public function save()
     {
         $this->checkToken();
@@ -82,6 +88,14 @@ final class JlextprofleagimportController extends BaseController
         return true;
     }
 
+    /**
+     * Validate and stage an uploaded ProfiLeague XML document.
+     * Accepts bounded XML or ZIP inputs, avoids symlink destinations and
+     * uses a random temporary upload name before moving the file.
+     * @param array $upload Joomla uploaded file metadata.
+     * @param string $importFile XML staging destination.
+     * @return bool Whether a valid document was staged.
+     */
     private function prepareImportFile(array $upload, string $importFile): bool
     {
         $temporaryPath = (string) ($upload['tmp_name'] ?? '');
@@ -153,6 +167,13 @@ final class JlextprofleagimportController extends BaseController
         return true;
     }
 
+    /**
+     * Stage an XML entry from a ProfiLeague ZIP upload.
+     * Avoids arbitrary archive extraction and deletes the staged ZIP.
+     * @param string $archiveFile Temporary ZIP archive path.
+     * @param string $importFile Destination XML import path.
+     * @return bool Whether the supported XML entry was staged.
+     */
     private function prepareArchive(string $archiveFile, string $importFile): bool
     {
         // Read a single supported ZIP entry directly. Never extract into
@@ -179,6 +200,13 @@ final class JlextprofleagimportController extends BaseController
         return true;
     }
 
+    /**
+     * Convert legacy ProfiLeague source markup to import-friendly UTF-8.
+     * Removes historical HTML wrappers and converts ISO-8859-1 when the
+     * required PHP encoding extension is available.
+     * @param string $source Raw imported document content.
+     * @return string Normalised import document.
+     */
     private function normaliseSource(string $source): string
     {
         $source = str_replace(
@@ -228,6 +256,11 @@ final class JlextprofleagimportController extends BaseController
         return $source;
     }
 
+    /**
+     * Resolve and validate the native ProfiLeague administrator model.
+     * @return JlextprofleagimportModel Native importer model.
+     * @throws \RuntimeException If the model is unavailable.
+     */
     private function getImportModel(): JlextprofleagimportModel
     {
         $model = $this->app
