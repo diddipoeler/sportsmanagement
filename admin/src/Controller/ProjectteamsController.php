@@ -24,6 +24,10 @@ use Joomla\Database\ParameterType;
 
 final class ProjectteamsController extends SportsManagementAdminController
 {
+    /**
+     * Save inline project-team fields and refresh affected Finder records.
+     * @return void
+     */
     public function saveshort(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -40,6 +44,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
+    /**
+     * Assign a selected season-team to a project and notify Finder.
+     * @return void
+     */
     public function addteam(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -57,6 +65,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
+    /**
+     * Save match playground selections for project teams.
+     * @return void
+     */
     public function set_playground_match(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -65,6 +77,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
+    /**
+     * Save standard playground assignments for project teams.
+     * @return void
+     */
     public function set_playground(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -73,6 +89,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
+    /**
+     * Persist selected teams in a project and refresh Finder relations.
+     * @return void
+     */
     public function assign(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -100,6 +120,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
     }
 
+    /**
+     * Update selected project-team match group associations.
+     * @return void
+     */
     public function matchgroups(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -107,6 +131,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($model->matchgroups(), $model->getError());
     }
 
+    /**
+     * Update project-team season references and notify Finder.
+     * @return void
+     */
     public function setseasonid(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -123,6 +151,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
+    /**
+     * Delete selected project-team rows and their Finder associations.
+     * @return void
+     */
     public function delete(): void
     {
         $this->assertPostAndPermission('core.delete');
@@ -139,6 +171,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
+    /**
+     * Release administrator checkouts for selected project teams.
+     * @return void
+     */
     public function checkin(): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -148,6 +184,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->redirectProjectTeams($ok, $model->getError());
     }
 
+    /**
+     * Prepare the project-team copy dialog and available destinations.
+     * @return void
+     */
     public function copy(): void
     {
         $this->assertPostAndPermission('core.create');
@@ -190,6 +230,10 @@ final class ProjectteamsController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Copy selected project-team rows to the requested destination.
+     * @return void
+     */
     public function storecopy(): void
     {
         $this->assertPostAndPermission('core.create');
@@ -215,20 +259,65 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
     }
 
+    /**
+     * Publish selected project-team relations.
+     * @return void
+     */
     public function publish(): void { $this->state(1); }
+    /**
+     * Unpublish selected project-team relations.
+     * @return void
+     */
     public function unpublish(): void { $this->state(0); }
+    /**
+     * Archive selected project-team relations.
+     * @return void
+     */
     public function archive(): void { $this->state(2); }
+    /**
+     * Move selected project-team relations to the trash.
+     * @return void
+     */
     public function trash(): void { $this->state(-2); }
+    /**
+     * Enable ranking score calculation for selected project teams.
+     * @return void
+     */
     public function use_table_yes(): void { $this->flag('score', 1); }
+    /**
+     * Disable ranking score calculation for selected project teams.
+     * @return void
+     */
     public function use_table_no(): void { $this->flag('score', 0); }
+    /**
+     * Enable final-points calculations for project-team relations.
+     * @return void
+     */
     public function use_table_points_yes(): void { $this->flag('finally', 1); }
+    /**
+     * Disable final-points calculations for project-team relations.
+     * @return void
+     */
     public function use_table_points_no(): void { $this->flag('finally', 0); }
 
+    /**
+     * Resolve the administrator project-teams list model via Joomla MVC.
+     * Preserves additional caller options with request-dependent list state.
+     * @param string $name Requested model name.
+     * @param string $prefix Administrator MVC namespace.
+     * @param array $config Caller model factory options.
+     * @return mixed Resolved model or parent failure result.
+     */
     public function getModel($name = 'Projectteams', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => false]);
+        return parent::getModel($name, $prefix, array_replace(['ignore_request' => false], $config));
     }
 
+    /**
+     * Change publication state of selected project-team relations.
+     * @param int $value Requested Joomla publication state.
+     * @return void
+     */
     private function state(int $value): void
     {
         $this->assertPostAndPermission('core.edit.state');
@@ -245,6 +334,12 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->messageAndRedirect($model, $ok);
     }
 
+    /**
+     * Set a ranking score or final-points flag on selected team records.
+     * @param string $flag Trusted score or final-points flag.
+     * @param int $value Flag value, zero or one.
+     * @return void
+     */
     private function flag(string $flag, int $value): void
     {
         $this->assertPostAndPermission('core.edit');
@@ -253,6 +348,11 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->messageAndRedirect($model, $ok);
     }
 
+    /**
+     * Require a native ProjectteamsModel for list operations.
+     * @return ProjectteamsModel Valid model instance.
+     * @throws \RuntimeException If the list model cannot be resolved.
+     */
     private function model(): ProjectteamsModel
     {
         $model = $this->getModel();
@@ -262,6 +362,11 @@ final class ProjectteamsController extends SportsManagementAdminController
         return $model;
     }
 
+    /**
+     * Require the native ProjectteamModel for individual row updates.
+     * @return ProjectteamModel Valid editor model.
+     * @throws \RuntimeException If the editor model cannot be resolved.
+     */
     private function projectteamModel(): ProjectteamModel
     {
         $model = parent::getModel('Projectteam', 'Administrator', ['ignore_request' => true]);
@@ -271,11 +376,19 @@ final class ProjectteamsController extends SportsManagementAdminController
         return $model;
     }
 
+    /**
+     * Create the Finder relation notifier using the selected database.
+     * @return FinderRelationNotifier Finder update service.
+     */
     private function finderNotifier(): FinderRelationNotifier
     {
         return new FinderRelationNotifier($this->database());
     }
 
+    /**
+     * Resolve the active SportsManagement administrator database.
+     * @return DatabaseInterface Component database connection.
+     */
     private function database(): DatabaseInterface
     {
         $input = $this->app->getInput();
@@ -290,34 +403,62 @@ final class ProjectteamsController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Obtain Joomla's database service from the dependency container.
+     * @return DatabaseInterface Primary Joomla database.
+     * @throws \RuntimeException If the service does not implement DatabaseInterface.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement project-teams database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Require a valid POST token and component ACL permission.
+     * @param string $permission Required Joomla ACL action.
+     * @return void
+     * @throws \RuntimeException If the token or permission is invalid.
+     */
     private function assertPostAndPermission(string $permission): void
     {
         if (!Session::checkToken('post')) {
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
-        if (!$this->app->getIdentity()->authorise($permission, 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise($permission, 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
     }
 
+    /**
+     * Report a project-teams model result and redirect to the project list.
+     * @param ProjectteamsModel $model Native project-teams model.
+     * @param bool $ok Whether the model operation succeeded.
+     * @return void
+     */
     private function messageAndRedirect(ProjectteamsModel $model, bool $ok): void
     {
         $this->app->enqueueMessage(
             $ok ? Text::_('JSAVE') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')),
             $ok ? 'message' : 'warning'
         );
-        $pid = (int) $model->getContextParams()['pid'];
+        $pid = (int) ($model->getContextParams()['pid'] ?? 0);
         $this->setRedirect(Route::_('index.php?option=com_sportsmanagement&view=projectteams&pid=' . $pid, false));
     }
 
+    /**
+     * Redirect to the current project/team list with operation feedback.
+     * @param bool $ok Whether the operation succeeded.
+     * @param string $error Optional user-visible failure message.
+     * @return void
+     */
     private function redirectProjectTeams(bool $ok, string $error = ''): void
     {
         $input = $this->app->getInput();
@@ -335,11 +476,44 @@ final class ProjectteamsController extends SportsManagementAdminController
         $this->setRedirect(Route::_($url, false));
     }
 
+    /**
+     * Validate a bounded set of submitted project-team row identifiers.
+     * Rejects malformed, zero and overflowing IDs before write operations.
+     * @param mixed $ids Raw selected project-team IDs.
+     * @return array<int> Up to 500 unique positive IDs.
+     */
     private function normaliseIds($ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', (array) $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        if (!is_array($ids)) {
+            return [];
+        }
+
+        $valid = [];
+
+        foreach (array_slice($ids, 0, 500) as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if (strlen($raw) > 20 || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $valid[$id] = $id;
+            }
+        }
+
+        return array_values($valid);
     }
 }
