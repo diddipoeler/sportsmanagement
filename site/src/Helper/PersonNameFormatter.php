@@ -13,6 +13,17 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 final class PersonNameFormatter
 {
+    /**
+     * Format a person's full name using legacy SportsManagement format IDs.
+     * Supports prefixes, first names, nicknames, last names and initials
+     * in the order expected by existing component templates.
+     * @param string|null $prefix Optional title or name prefix.
+     * @param string $firstName Person's first name.
+     * @param string $nickName Optional nickname.
+     * @param string $lastName Person's last name.
+     * @param int|string $format Legacy name formatting variant.
+     * @return string Formatted display name.
+     */
     public static function format(
         ?string $prefix,
         string $firstName,
@@ -134,6 +145,12 @@ final class PersonNameFormatter
         return implode(' ', $parts);
     }
 
+    /**
+     * Append a nonempty name fragment to the ordered output parts.
+     * @param array<int,string> $parts Mutable formatted-name fragments.
+     * @param string $value Text fragment to add.
+     * @return void
+     */
     private static function append(array &$parts, string $value): void
     {
         if ($value !== '') {
@@ -141,6 +158,12 @@ final class PersonNameFormatter
         }
     }
 
+    /**
+     * Return the first character of a name with a trailing period.
+     * Uses UTF-8-aware extraction when the mbstring extension is present.
+     * @param string $value First or last name.
+     * @return string Initial with period or empty text.
+     */
     private static function initial(string $value): string
     {
         if ($value === '') {
