@@ -27,6 +27,15 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
 {
     private ?CMSApplicationInterface $application = null;
 
+    /**
+     * Prepare navigation menu data using the supplied Joomla site context.
+     * Stores the site application for route-aware menu link generation
+     * and delegates project/team selection to the base navigation helper.
+     * @param Registry $params Module navigation configuration.
+     * @param CMSApplicationInterface $app Joomla site application.
+     * @param DatabaseInterface $joomlaDatabase Primary Joomla connection.
+     * @return array Prepared navigation menu data.
+     */
     public function getData(
         Registry $params,
         CMSApplicationInterface $app,
@@ -37,6 +46,13 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
         return parent::getData($params, $app, $joomlaDatabase);
     }
 
+    /**
+     * Build a supported SportsManagement project navigation URL.
+     * Rejects empty, padded, unsupported view names and routes team-specific
+     * views only when a valid team identifier is selected.
+     * @param mixed $view Configured navigation view name.
+     * @return string|false Routed Joomla link or false when unavailable.
+     */
     public function getLink($view): string|false
     {
         // Stored configuration must specify a non-empty, unpadded view name.
