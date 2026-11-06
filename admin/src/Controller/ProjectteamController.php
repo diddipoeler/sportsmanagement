@@ -23,13 +23,23 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 form controller for a project-team record. */
 final class ProjectteamController extends SportsManagementFormController
 {
+    /**
+     * Replace selected project-team assignments in the administrator.
+     * Requires a valid POST token and edit permission, snapshots the old
+     * Finder relations, updates selected season-team references and
+     * notifies Joomla Finder after successful changes.
+     * @return void
+     * @throws \RuntimeException If the token, permission or model is invalid.
+     */
     public function storechangeteams(): void
     {
         if (!Session::checkToken('post')) {
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
@@ -58,11 +68,27 @@ final class ProjectteamController extends SportsManagementFormController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
     }
 
+    /**
+     * Resolve the native project-team editor model via Joomla MVC.
+     * Preserves additional caller settings while defaulting to request-
+     * independent model loading for project-team write operations.
+     * @param string $name Requested project-team model name.
+     * @param string $prefix Administrator MVC namespace.
+     * @param array $config Additional model factory configuration.
+     * @return mixed Resolved model or parent failure result.
+     */
     public function getModel($name = 'Projectteam', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
     }
 
+    /**
+     * Replace project-team relations with selected season-team IDs.
+     * Reads validated project-team IDs from POST, resolves each selected
+     * team in the project's season and stores the new association.
+     * @param ProjectteamModel $model Native project-team model.
+     * @return bool True if all eligible team assignments succeeded.
+     */
     private function replaceSelectedTeams(ProjectteamModel $model): bool
     {
         $input = $this->app->getInput();
@@ -140,6 +166,15 @@ final class ProjectteamController extends SportsManagementFormController
         return true;
     }
 
+    /**
+     * Resolve a selected team relation for the required season.
+     * Supports a season-team ID and the legacy raw team-ID fallback,
+     * creating a missing association for the expected season if needed.
+     * @param ProjectteamModel $model Native project-team model for errors.
+     * @param int $selectedId Selected team or season-team relation ID.
+     * @param int $expectedSeasonId Season required by the project.
+     * @return object|null Selected season-team data or null on failure.
+     */
     private function resolveSeasonTeamSelection(
         ProjectteamModel $model,
         int $selectedId,
@@ -208,6 +243,14 @@ final class ProjectteamController extends SportsManagementFormController
         }
     }
 
+    /**
+     * Find or create a team association for the requested season.
+     * Uses bound integer parameters to query existing season-team rows.
+     * @param ProjectteamModel $model Native project-team model for errors.
+     * @param int $teamId Raw team identifier.
+     * @param int $seasonId Required season identifier.
+     * @return int Season-team association ID, or zero on failure.
+     */
     private function ensureSeasonTeam(ProjectteamModel $model, int $teamId, int $seasonId): int
     {
         if ($teamId <= 0 || $seasonId <= 0) {
@@ -243,6 +286,11 @@ final class ProjectteamController extends SportsManagementFormController
         }
     }
 
+    /**
+     * Resolve the SportsManagement database for project-team updates.
+     * Uses the selected database option from Joomla request or user state.
+     * @return DatabaseInterface Resolved component database connection.
+     */
     private function database(): DatabaseInterface
     {
         $app = $this->app;
@@ -258,19 +306,61 @@ final class ProjectteamController extends SportsManagementFormController
         );
     }
 
+    /**
+     * Get the native Joomla database interface from its container.
+     * @return DatabaseInterface Primary Joomla database connection.
+     * @throws \RuntimeException If the container has no valid database service.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement project-team database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Validate selected project-team relation identifiers from POST.
+     * Keeps up to 500 distinct positive decimal integers, rejecting
+     * malformed and overflowing values rather than coercing them.
+     * @param mixed $ids Raw selected project-team identifiers.
+     * @return array<int> Valid unique project-team row IDs.
+     */
     private function normaliseIds(mixed $ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', (array) $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        if (!is_array($ids)) {
+            return [];
+        }
+
+        $valid = [];
+
+        foreach (array_slice($ids, 0, 500) as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if (strlen($raw) > 20 || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $valid[$id] = $id;
+            }
+        }
+
+        return array_values($valid);
     }
 }
