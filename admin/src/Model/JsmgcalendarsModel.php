@@ -25,7 +25,15 @@ use Joomla\Filesystem\Folder;
 /** Native Joomla 5/6 administrator list model for Google calendars. */
 final class JsmgcalendarsModel extends SportsManagementListModel
 {
-    /** Ensure the configured Google API package is available. */
+    /**
+     * Ensure that the configured Google API library is installed.
+     *
+     * Requires component administrator permission before downloading or
+     * installing a missing API package.
+     *
+     * @return bool Whether the Google API library is available.
+     * @throws \RuntimeException If administrator permission is missing.
+     */
     public function check_google_api(): bool
     {
         $identity = $this->administratorApplication()->getIdentity();
@@ -110,6 +118,12 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the Google calendar list with access-level restrictions.
+     * Limits results to explicitly selected calendar IDs and restricts
+     * non-administrators to calendars at their authorised view levels.
+     * @return mixed Joomla database query with access restrictions.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -135,7 +149,9 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         $app = Factory::getContainer()->get(AdministratorApplication::class);
         $user = $app->getIdentity();
 
-        if (!$user->authorise('core.admin', 'com_sportsmanagement')) {
+        if ($user === null) {
+            $query->where('1 = 0');
+        } elseif (!$user->authorise('core.admin', 'com_sportsmanagement')) {
             $levels = array_values(array_unique(array_filter(array_map(
                 'intval',
                 $user->getAuthorisedViewLevels()
@@ -153,6 +169,11 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Locate a Google API composer package within an extracted folder.
+     * @param string $directory Extracted package directory.
+     * @return string|null Package root or null if composer metadata is absent.
+     */
     private function findGoogleApiRoot(string $directory): ?string
     {
         if (File::exists($directory . '/composer.json')) {
@@ -173,6 +194,13 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         return null;
     }
 
+    /**
+     * Copy an extracted Google API package into its component folder.
+     * @param string $source Extracted package directory.
+     * @param string $destination Installed API directory.
+     * @return void
+     * @throws \RuntimeException If a directory or file cannot be copied.
+     */
     private function copyDirectory(string $source, string $destination): void
     {
         if (!is_dir($destination) && !Folder::create($destination)) {
@@ -198,6 +226,11 @@ final class JsmgcalendarsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Remove a temporary extracted package directory when present.
+     * @param string $directory Directory to delete.
+     * @return void
+     */
     private function removeDirectory(string $directory): void
     {
         if (is_dir($directory)) {
