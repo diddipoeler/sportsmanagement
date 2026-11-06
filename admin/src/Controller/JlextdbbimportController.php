@@ -21,6 +21,12 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native Joomla 5/6 controller for the DBB CSV/ICS import workflow. */
 final class JlextdbbimportController extends BaseController
 {
+    /**
+     * Start the administrator DBB CSV/ICS import workflow.
+     * Requires a valid Joomla form token and component administrator
+     * permission, handles optional uploads and starts the import model.
+     * @return bool Whether the import workflow advanced.
+     */
     public function save()
     {
         $this->checkToken();
@@ -83,6 +89,13 @@ final class JlextdbbimportController extends BaseController
         return true;
     }
 
+    /**
+     * Validate and stage an uploaded DBB CSV, ICS or ZIP archive.
+     * Enforces upload and file-size checks, stages a random temporary
+     * filename and prevents replacement of symbolic-link destinations.
+     * @param array $upload Joomla uploaded file metadata.
+     * @return bool True when a supported file was staged successfully.
+     */
     private function prepareImportFile(array $upload): bool
     {
         $temporaryPath = (string) ($upload['tmp_name'] ?? '');
@@ -139,6 +152,14 @@ final class JlextdbbimportController extends BaseController
         return true;
     }
 
+    /**
+     * Stage a supported CSV/ICS entry from a DBB ZIP archive.
+     * Reads an allowed archive entry without extracting arbitrary files
+     * to the Joomla temporary directory and deletes the uploaded archive.
+     * @param string $archiveFile Temporary uploaded ZIP path.
+     * @param string $importFile Destination import file path.
+     * @return bool Whether staging was successful.
+     */
     private function prepareArchive(string $archiveFile, string $importFile): bool
     {
         // Read a single supported ZIP entry directly. Never extract into
@@ -165,6 +186,11 @@ final class JlextdbbimportController extends BaseController
         return true;
     }
 
+    /**
+     * Resolve the native administrator DBB import model via Joomla MVC.
+     * @return JlextdbbimportModel Validated importer model.
+     * @throws \RuntimeException If the model cannot be resolved.
+     */
     private function getImportModel(): JlextdbbimportModel
     {
         $model = $this->app
