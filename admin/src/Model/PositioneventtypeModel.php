@@ -19,6 +19,13 @@ use Joomla\Database\ParameterType;
  */
 final class PositioneventtypeModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native position-event-type association table.
+     * @param string $type Table name.
+     * @param string $prefix Legacy Joomla table prefix.
+     * @param array $config Optional table settings.
+     * @return mixed Native position-event table or parent table.
+     */
     public function getTable($type = 'positioneventtype', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'positioneventtype') === 0) {
@@ -28,6 +35,12 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Update ordering of selected position event-type relationships.
+     * @param array|null $pks Ordered association identifiers.
+     * @param array|null $order Matching ordering values.
+     * @return bool Whether the changes succeeded.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
@@ -54,6 +67,15 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Synchronise event types assigned to a selected playing position.
+     * Deletes removed links and inserts or reorders current selections
+     * within the optionally managed database transaction.
+     * @param array $data Selected position event-type values.
+     * @param int $position_id Parent position identifier.
+     * @param bool $manageTransaction Whether to manage the transaction here.
+     * @return bool True when all assignments were stored.
+     */
     public function store($data, $position_id, bool $manageTransaction = true)
     {
         $positionId = (int) $position_id;
@@ -132,13 +154,21 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Check the administrator's permission to edit an event-type relation.
+     * @param array $data Selected association data.
+     * @param string $key Record identifier key.
+     * @return bool Whether editing is allowed.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
