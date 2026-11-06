@@ -22,6 +22,13 @@ use Joomla\Http\HttpFactory;
 /** Native Joomla 5/6 administrator form model for countries. */
 final class JlextcountryModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native country table for the administrator editor.
+     * @param string $type Requested table name.
+     * @param string $prefix Joomla table namespace.
+     * @param array $config Optional table configuration.
+     * @return mixed Country table or parent fallback.
+     */
     public function getTable($type = 'jlextcountry', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextcountry') === 0) {
@@ -31,6 +38,12 @@ final class JlextcountryModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Normalise optional country-map fields before saving.
+     * Converts empty map JSON and metadata fields to null.
+     * @param array $data Submitted country form data.
+     * @return array Prepared country data.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         if (array_key_exists('countrymap_mapdata', $data) && trim((string) $data['countrymap_mapdata']) === '') {
@@ -44,7 +57,15 @@ final class JlextcountryModel extends SportsManagementAdminModel
         return $data;
     }
 
-    /** Import postal-code data for the selected countries. */
+    /**
+     * Import postal-code archives for selected countries.
+     *
+     * Reads the configured remote source, downloads and imports supported
+     * files while reporting failures through Joomla administrator messages.
+     *
+     * @param array $pks Selected country identifiers.
+     * @return bool Whether all requested country imports succeeded.
+     */
     public function importplz(array $pks): bool
     {
         $app = $this->administratorApplication();
