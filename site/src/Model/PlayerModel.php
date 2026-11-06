@@ -28,6 +28,11 @@ final class PlayerModel extends SportsManagementProjectModel
     private int $personId = 0;
     private int $teamPlayerId = 0;
 
+    /**
+     * Initialise the selected player and team-player identifiers.
+     * @param array $config Joomla site model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -37,16 +42,30 @@ final class PlayerModel extends SportsManagementProjectModel
         $this->teamPlayerId = max(0, $input->getInt('pt', 0));
     }
 
+    /**
+     * Return the current player profile person identifier.
+     * @return int Selected person ID or zero.
+     */
     public function getPersonId(): int
     {
         return $this->personId;
     }
 
+    /**
+     * Return the selected season team-player relation ID.
+     * @return int Team-player relation ID or zero.
+     */
     public function getTeamPlayerId(): int
     {
         return $this->teamPlayerId;
     }
 
+    /**
+     * Find the staff relation associated with a person and project.
+     * @param int|null $projectId Project ID, or current project when omitted.
+     * @param int|null $personId Person ID, or current person when omitted.
+     * @return object|null Team staff relation or null when unavailable.
+     */
     public function getTeamStaff(?int $projectId = null, ?int $personId = null): ?object
     {
         $projectId ??= $this->projectId;
@@ -90,6 +109,13 @@ final class PlayerModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Fetch matching player and team assignment records.
+     * @param int $projectId Project ID or zero for current project.
+     * @param int $personId Person ID or zero for current person.
+     * @param int $teamPlayerId Optional exact team-player relation ID.
+     * @return array<int,object> Matching player assignments.
+     */
     public function getTeamPlayer(int $projectId = 0, int $personId = 0, int $teamPlayerId = 0): array
     {
         $projectId = $projectId > 0 ? $projectId : $this->projectId;
@@ -147,6 +173,12 @@ final class PlayerModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * List project team memberships for the selected person.
+     * @param int|null $projectId Project or current project.
+     * @param int|null $personId Person or current person.
+     * @return array<int,object> Person's team membership records.
+     */
     public function getTeamPlayers(?int $projectId = null, ?int $personId = null): array
     {
         $projectId ??= $this->projectId;
@@ -211,6 +243,13 @@ final class PlayerModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load the player's historical teams and playing positions.
+     * @param int $sportsTypeId Optional sport-type filter.
+     * @param string $order History order, ASC or DESC.
+     * @param int $personType Person type filter.
+     * @return array<int,object> Historical player assignments.
+     */
     public function getPlayerHistory(int $sportsTypeId = 0, string $order = 'ASC', int $personType = 1): array
     {
         if ($this->personId <= 0) {
@@ -313,6 +352,11 @@ final class PlayerModel extends SportsManagementProjectModel
         return $history;
     }
 
+    /**
+     * Find event types applicable to the player's historical positions.
+     * @param int $sportsTypeId Optional sports-type filter.
+     * @return array<int,object> Available event types.
+     */
     public function getAllEvents(int $sportsTypeId = 0): array
     {
         $history = $this->getPlayerHistory($sportsTypeId, 'ASC', 1);
@@ -348,6 +392,11 @@ final class PlayerModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Report a caught database error through Joomla site messages.
+     * @param Throwable $e Database or query exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(
