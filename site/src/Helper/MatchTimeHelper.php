@@ -19,6 +19,17 @@ use Joomla\CMS\Language\Text;
  */
 final class MatchTimeHelper
 {
+    /**
+     * Format a match start time and optionally display live-match status.
+     * Uses Joomla date formatting and component locale strings, then
+     * calculates a live game label when the match falls into its configured
+     * regular or additional time window.
+     * @param object $game Match record with a match_date field.
+     * @param array<string,mixed> $config Match time presentation settings.
+     * @param array<string,mixed> $overallConfig Global component date options.
+     * @param object|null $project Optional project period configuration.
+     * @return string HTML-formatted match time or live-match label.
+     */
     public static function format(
         object $game,
         array $config,
@@ -84,6 +95,16 @@ final class MatchTimeHelper
             . $style . '>' . $text . '</acronym></i></b>';
     }
 
+    /**
+     * Build the translated current match period or half-time label.
+     * Calculates elapsed play minutes from the configured period length
+     * and break duration for a currently active fixture.
+     * @param int $now Current Unix timestamp.
+     * @param int $matchStamp Match start timestamp.
+     * @param array<string,mixed> $config Live presentation settings.
+     * @param object $project Match duration and break settings.
+     * @return string Formatted current-match period label.
+     */
     private static function actualTime(int $now, int $matchStamp, array $config, object $project): string
     {
         $goneSinceBegin = intdiv(max(0, $now - $matchStamp), 60);
