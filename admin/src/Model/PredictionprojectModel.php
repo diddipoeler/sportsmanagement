@@ -20,6 +20,14 @@ use Joomla\Registry\Registry;
  */
 final class PredictionprojectModel extends SportsManagementAdminModel
 {
+    /**
+     * Prepare the prediction project form and conditional joker fields.
+     * Enables joker and final-four scoring inputs when corresponding
+     * prediction settings are active.
+     * @param array $data Form values.
+     * @param bool $loadData Whether to populate saved values.
+     * @return mixed Joomla form or false.
+     */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
@@ -48,6 +56,12 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Save prediction project ordering in one database transaction.
+     * @param array|null $pks Prediction project row IDs.
+     * @param array|null $order New ordering values.
+     * @return bool Whether ordering changes succeeded.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
@@ -101,6 +115,13 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Resolve the native prediction-project table.
+     * @param string $type Joomla table name.
+     * @param string $prefix Legacy table prefix.
+     * @param array $config Additional table options.
+     * @return mixed Native PredictionprojectTable or parent table.
+     */
     public function getTable($type = 'predictionproject', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictionproject') === 0) {
@@ -110,6 +131,12 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Prepare prediction project settings for storage.
+     * Serialises extended form values and final-four league IDs.
+     * @param array $data Submitted prediction project settings.
+     * @return array Prepared database values.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $post = $this->administratorApplication()->getInput()->post->getArray();
@@ -130,16 +157,30 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         return parent::prepareSportsManagementData($data);
     }
 
+    /**
+     * Verify the current identity's permission to edit a prediction project.
+     * Preserves standard Joomla ACL as a fallback for record-specific rights.
+     * @param array $data Prediction project record.
+     * @param string $key Record identifier property.
+     * @return bool Whether edit access is granted.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 
+    /**
+     * Load stored prediction project values or pending form state.
+     * Expands the comma-delimited final-four league IDs into a form array.
+     * @return mixed Prediction project form data.
+     */
     protected function loadFormData()
     {
         $data = $this->administratorApplication()->getUserState(
@@ -161,6 +202,12 @@ final class PredictionprojectModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Look up a prediction project by game identifier.
+     * Uses a bound database parameter and returns the first project row.
+     * @param int $prediction_id Selected prediction game ID.
+     * @return object|false Prediction project or false when unavailable.
+     */
     public function getPredictionProject($prediction_id = 0)
     {
         $predictionId = (int) $prediction_id;
