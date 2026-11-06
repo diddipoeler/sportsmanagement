@@ -13,6 +13,17 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 final class PredictionRouteHelper
 {
+    /**
+     * Build the prediction member display or profile edit URL.
+     * @param int $predictionId Prediction game identifier.
+     * @param int $userId Selected prediction member identifier.
+     * @param string|null $task Optional edit task.
+     * @param int $projectId Selected prediction project.
+     * @param int $groupId Prediction member group.
+     * @param int $roundId Selected prediction round.
+     * @param int $database Component database selector.
+     * @return string Frontend member profile or edit URL.
+     */
     public static function member(
         int $predictionId,
         int $userId = 0,
@@ -39,6 +50,17 @@ final class PredictionRouteHelper
         return SiteRouteHelper::view($view, $parameters);
     }
 
+    /**
+     * Build the prediction entry page URL with optional extra filters.
+     * @param int $predictionId Prediction game identifier.
+     * @param int $userId Selected prediction member ID.
+     * @param int $projectId Selected project ID.
+     * @param int $groupId Prediction group ID.
+     * @param int $roundId Current prediction round ID.
+     * @param int $database Component database selector.
+     * @param array<string,mixed> $extra Optional extra query values.
+     * @return string Routed prediction entry URL.
+     */
     public static function entry(
         int $predictionId,
         int $userId = 0,
@@ -60,6 +82,19 @@ final class PredictionRouteHelper
         return SiteRouteHelper::view('predictionentry', $parameters);
     }
 
+    /**
+     * Build the prediction ranking URL for selected game and filters.
+     * @param int $predictionId Prediction game ID.
+     * @param int $projectId Project ID.
+     * @param int $roundId Round ID.
+     * @param int $groupId Prediction group ID.
+     * @param int $groupRank Group-ranking selector.
+     * @param int $type Ranking type selector.
+     * @param int $from First round filter.
+     * @param int $to Last round filter.
+     * @param int $database Database selection.
+     * @return string Routed prediction ranking URL.
+     */
     public static function ranking(
         int $predictionId,
         int $projectId = 0,
@@ -84,6 +119,16 @@ final class PredictionRouteHelper
         ]);
     }
 
+    /**
+     * Build the prediction results page URL for selected filters.
+     * @param int $predictionId Prediction game ID.
+     * @param int $roundId Selected round ID.
+     * @param int $projectId Project ID.
+     * @param int $userId Prediction member ID.
+     * @param int $groupId Prediction group ID.
+     * @param int $database Component database selector.
+     * @return string Routed prediction results URL.
+     */
     public static function results(
         int $predictionId,
         int $roundId = 0,
