@@ -29,6 +29,11 @@ final class TeamplanModel extends SportsManagementProjectModel
     private int $projectTeamId = 0;
     private int $mode = 0;
 
+    /**
+     * Initialise the team plan with selected team, project-team and mode.
+     * @param array $config Joomla site model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -39,11 +44,20 @@ final class TeamplanModel extends SportsManagementProjectModel
         $this->mode = max(0, $input->getInt('mode', 0));
     }
 
+    /**
+     * Load schedule rounds with a validated sort direction.
+     * @param string $ordering Requested direction, ASC or DESC.
+     * @return array<int,object> Scheduled round records.
+     */
     public function getPlanRounds(string $ordering = 'ASC'): array
     {
         return $this->getRounds($this->normaliseOrdering($ordering), true);
     }
 
+    /**
+     * Index teams in the plan by project-team identifier.
+     * @return array<int,object> Project teams indexed by membership ID.
+     */
     public function getPlanTeams(): array
     {
         $teams = [];
@@ -60,11 +74,19 @@ final class TeamplanModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Return the current user's preferred teams for the schedule.
+     * @return array List of favourite teams.
+     */
     public function getPlanFavTeams(): array
     {
         return $this->getFavTeams();
     }
 
+    /**
+     * Find event types configured for the active project.
+     * @return array<int,object> Project event types.
+     */
     public function getPlanProjectEvents(): array
     {
         if ($this->projectId <= 0) {
@@ -103,11 +125,19 @@ final class TeamplanModel extends SportsManagementProjectModel
         return $db->loadObjectList('id') ?: [];
     }
 
+    /**
+     * Return the selected division used for the team plan.
+     * @return object|null Current division, if available.
+     */
     public function getPlanDivision(): ?object
     {
         return $this->getDivision();
     }
 
+    /**
+     * Resolve the project-team relation of the selected team.
+     * @return int Project-team identifier or zero.
+     */
     public function getProjectTeamId(): int
     {
         if ($this->projectId <= 0 || $this->teamId <= 0) {
@@ -142,6 +172,11 @@ final class TeamplanModel extends SportsManagementProjectModel
         return $this->projectTeamId;
     }
 
+    /**
+     * Load the selected team's scheduled matches with display options.
+     * @param array $config Schedule ordering and referee settings.
+     * @return array<int,object> Team schedule matches.
+     */
     public function getMatches(array $config): array
     {
         $ordering = $this->normaliseOrdering((string) ($config['plan_order'] ?? 'DESC'));
@@ -154,6 +189,11 @@ final class TeamplanModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Load plan matches where the selected team serves as referee.
+     * @param array $config Schedule display options.
+     * @return array<int,object> Refereed match records.
+     */
     public function getMatchesRefering(array $config): array
     {
         $ordering = $this->normaliseOrdering((string) ($config['plan_order'] ?? 'DESC'));
@@ -167,6 +207,12 @@ final class TeamplanModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Group selected team matches by round code.
+     * @param array $config Schedule display options.
+     * @param array $rounds Round objects to include.
+     * @return array<int,array<int,object>> Matches indexed by round code.
+     */
     public function getMatchesPerRound(array $config, array $rounds): array
     {
         $ordering = $this->normaliseOrdering((string) ($config['plan_order'] ?? 'DESC'));
@@ -186,6 +232,14 @@ final class TeamplanModel extends SportsManagementProjectModel
         return $matchesPerRound;
     }
 
+    /**
+     * Query matches for one project round and optional team filters.
+     * @param int $roundCode Requested round code.
+     * @param string $ordering Validated sorting direction.
+     * @param bool $withPlayground Whether to load playground data.
+     * @param bool $withReferees Whether to attach referees.
+     * @return array<int,object> Round matches.
+     */
     private function loadRoundMatches(
         int $roundCode,
         string $ordering,
@@ -304,6 +358,14 @@ final class TeamplanModel extends SportsManagementProjectModel
         return $matches;
     }
 
+    /**
+     * Query team schedule matches for the selected context.
+     * @param string $ordering Validated sorting direction.
+     * @param int $refereeProjectTeamId Optional team acting as referee.
+     * @param bool $withPlayground Whether playground data is included.
+     * @param bool $withReferees Whether referee data is included.
+     * @return array<int,object> Matching plan records.
+     */
     private function loadPlanMatches(
         string $ordering,
         int $refereeProjectTeamId,
@@ -477,6 +539,11 @@ final class TeamplanModel extends SportsManagementProjectModel
         return $matches;
     }
 
+    /**
+     * Attach referee information to each selected match.
+     * @param array $matches Matches to enrich with referee arrays.
+     * @return void
+     */
     private function loadRefereesByMatch(array $matches): void
     {
         if ($matches === []) {
@@ -579,6 +646,10 @@ final class TeamplanModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Find direct child divisions of the selected division.
+     * @return array<int> Child division identifiers.
+     */
     private function getDirectChildDivisionIds(): array
     {
         if ($this->divisionId <= 0) {
@@ -597,6 +668,10 @@ final class TeamplanModel extends SportsManagementProjectModel
         return array_values(array_filter(array_map('intval', $db->loadColumn() ?: [])));
     }
 
+    /**
+     * Resolve project-team membership when only team ID is known.
+     * @return void
+     */
     private function ensureProjectTeamId(): void
     {
         if ($this->projectTeamId <= 0 && $this->teamId > 0) {
@@ -604,6 +679,11 @@ final class TeamplanModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Accept only ASC or DESC for the schedule sort direction.
+     * @param string $ordering Requested direction.
+     * @return string Normalised SQL order direction.
+     */
     private function normaliseOrdering(string $ordering): string
     {
         return strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
