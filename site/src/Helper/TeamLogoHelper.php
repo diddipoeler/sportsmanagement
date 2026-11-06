@@ -17,6 +17,17 @@ use Joomla\CMS\Uri\Uri;
 /** Resolve and render team/club logos without legacy team or project models. */
 final class TeamLogoHelper
 {
+    /**
+     * Render the best available team logo with its configured popup style.
+     * @param object $team Team or project-team image record.
+     * @param string $target Modal element identifier.
+     * @param bool $preferSmall Whether to prefer small logo variants.
+     * @param int $previewHeight Preview height in pixels.
+     * @param int $modalWidth Popup width in pixels.
+     * @param int $modalHeight Popup height in pixels.
+     * @param int $mode Image popup mode.
+     * @return string Logo markup or empty text.
+     */
     public static function render(
         object $team,
         string $target,
@@ -43,6 +54,17 @@ final class TeamLogoHelper
         );
     }
 
+    /**
+     * Render one configured team image variant with placeholder fallback.
+     * @param object $team Team record with picture fields.
+     * @param string $property Allowed logo property name.
+     * @param string $target Modal element identifier.
+     * @param int $previewHeight Preview height in pixels.
+     * @param int $modalWidth Popup width in pixels.
+     * @param int $modalHeight Popup height in pixels.
+     * @param int $mode Image display mode.
+     * @return string Logo markup or empty text.
+     */
     public static function renderVariant(
         object $team,
         string $property,
@@ -78,6 +100,17 @@ final class TeamLogoHelper
         );
     }
 
+    /**
+     * Render a selected team picture through the shared modal helper.
+     * @param object $team Team record used for alt text.
+     * @param string $target Popup identifier.
+     * @param string $picture Picture URL or site path.
+     * @param int $previewHeight Preview height.
+     * @param int $modalWidth Popup width.
+     * @param int $modalHeight Popup height.
+     * @param int $mode Popup rendering mode.
+     * @return string Rendered team image markup.
+     */
     private static function renderPicture(
         object $team,
         string $target,
@@ -106,6 +139,12 @@ final class TeamLogoHelper
         );
     }
 
+    /**
+     * Find the first available team picture in preferred priority order.
+     * @param object $team Team or project-team record.
+     * @param bool $preferSmall Whether smaller logos take precedence.
+     * @return string Picture path or an empty string.
+     */
     private static function picture(object $team, bool $preferSmall): string
     {
         $candidates = $preferSmall
@@ -123,6 +162,11 @@ final class TeamLogoHelper
         return '';
     }
 
+    /**
+     * Resolve the configured fallback logo for an image variant.
+     * @param string $property Team logo property to render.
+     * @return string Configured placeholder image path.
+     */
     private static function placeholder(string $property): string
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -134,6 +178,11 @@ final class TeamLogoHelper
         });
     }
 
+    /**
+     * Test whether a team picture is local or a remote HTTP(S) URL.
+     * @param string $picture Configured image URL or path.
+     * @return bool Whether the path exists or uses HTTP(S).
+     */
     private static function pictureExists(string $picture): bool
     {
         if ($picture === '' || preg_match('#^https?://#i', $picture)) {
