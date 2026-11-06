@@ -25,6 +25,13 @@ final class PredictionroundModel extends SportsManagementAdminModel
         'BEGIN_OF_MATCH',
     ];
 
+    /**
+     * Resolve the native prediction round table.
+     * @param string $type Requested Joomla table.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Optional table settings.
+     * @return mixed PredictionroundTable or parent result.
+     */
     public function getTable($type = 'predictionround', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictionround') === 0) {
@@ -34,12 +41,20 @@ final class PredictionroundModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Save selected prediction-round scoring and lock settings.
+     * Uses the supported lock modes and a database transaction so that
+     * all selected round changes are committed or rolled back together.
+     * @param array $pks Round IDs, normalised in place.
+     * @param array $post Submitted scoring and lock options.
+     * @return string|false Translated success message or false on failure.
+     */
     public function saveshort(&$pks, &$post)
     {
         $pks = array_values(array_filter(array_map('intval', (array) $pks), static fn (int $id): bool => $id > 0));
         $post = (array) $post;
         $date = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $userId = (int) $this->administratorApplication()->getIdentity()->id;
+        $userId = (int) ($this->administratorApplication()->getIdentity()?->id ?? 0);
         $db = $this->getDatabase();
         $transactionStarted = false;
 
@@ -89,6 +104,14 @@ final class PredictionroundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Create missing prediction rounds for a project and game.
+     * Initialises lock modes and audit fields in a single transaction.
+     * @param array $projRoundsIdsToAdd Project round IDs to add.
+     * @param int $prediction_id Prediction game ID.
+     * @param int $project_id Project ID.
+     * @return string|false Translated result or false on failure.
+     */
     public function addPredRoundIds($projRoundsIdsToAdd, $prediction_id, $project_id)
     {
         $roundIds = array_values(array_unique(array_filter(
@@ -98,7 +121,7 @@ final class PredictionroundModel extends SportsManagementAdminModel
         $predictionId = (int) $prediction_id;
         $projectId = (int) $project_id;
         $date = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $userId = (int) $this->administratorApplication()->getIdentity()->id;
+        $userId = (int) ($this->administratorApplication()->getIdentity()?->id ?? 0);
         $count = 0;
         $db = $this->getDatabase();
         $transactionStarted = false;
