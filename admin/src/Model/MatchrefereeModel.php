@@ -20,6 +20,12 @@ use Joomla\Database\ParameterType;
  */
 final class MatchrefereeModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the match referee assignment form for administrators.
+     * @param array $data Optional form values.
+     * @param bool $loadData Whether to load stored form values.
+     * @return mixed Joomla match referee form.
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -223,6 +229,12 @@ final class MatchrefereeModel extends SportsManagementAdminModel
         return $items;
     }
 
+    /**
+     * Save selected referee association ordering values.
+     * @param array|null $pks Referee row IDs.
+     * @param array|null $order Updated ordering values.
+     * @return bool Whether the save succeeded.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
@@ -252,6 +264,13 @@ final class MatchrefereeModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Resolve the native match referee table via Joomla MVC.
+     * @param string $type Requested table.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Optional Joomla table options.
+     * @return mixed Match referee table or parent fallback.
+     */
     public function getTable($type = 'matchreferee', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchreferee') === 0) {
@@ -261,13 +280,21 @@ final class MatchrefereeModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Determine whether the current user can edit a referee record.
+     * @param array $data Selected match referee relation.
+     * @param string $key Record identifier field.
+     * @return bool Whether editing is permitted.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
