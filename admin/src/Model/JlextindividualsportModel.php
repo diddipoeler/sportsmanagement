@@ -44,7 +44,7 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
         $app = $this->administratorApplication();
         return (new IndividualMatchAdminService($this->getDatabase()))->generateSingles(
             $app->getInput()->post->getArray(),
-            (int) ($app->getIdentity()?->id ?? 0),
+            $this->requireImportIdentityId($app),
             Factory::getDate()->toSql()
         );
     }
@@ -72,7 +72,7 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
         return (new IndividualMatchWriteService($this->getDatabase()))->saveShort(
             $input->post->getArray(),
             $ids,
-            (int) ($app->getIdentity()?->id ?? 0),
+            $this->requireImportIdentityId($app),
             Factory::getDate()->toSql()
         );
     }
@@ -142,6 +142,24 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
      * Resolve the component database for compatibility match readers.
      * @return DatabaseInterface Selected SportsManagement database.
      */
+    /**
+     * Require a signed-in administrator for individual match writes.
+     *
+     * @param mixed $app Active Joomla administrator application.
+     * @return int Authenticated user ID.
+     * @throws \RuntimeException If there is no current user identity.
+     */
+    private function requireImportIdentityId($app): int
+    {
+        $identity = $app->getIdentity();
+
+        if ($identity === null || (int) $identity->id <= 0) {
+            throw new \RuntimeException('Individual match write requires an authenticated administrator.', 403);
+        }
+
+        return (int) $identity->id;
+    }
+
     private static function sportsDatabase(): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve();
