@@ -14,6 +14,14 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 /** Date conversion used by native site templates. */
 final class SportsManagementDateHelper
 {
+    /**
+     * Convert between SQL, historical compact and display date formats.
+     * Validates day/month/year and optional SQL time components before
+     * converting; returns an empty string for invalid input.
+     * @param string $date Date value in a supported format.
+     * @param int $direction One for SQL-to-display, otherwise display-to-SQL.
+     * @return string Normalised date or an empty string on invalid input.
+     */
     public static function convertDate(string $date, int $direction = 1): string
     {
         $date = trim($date);
