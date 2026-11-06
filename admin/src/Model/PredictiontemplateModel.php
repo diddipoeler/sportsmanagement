@@ -20,6 +20,13 @@ use Joomla\Database\ParameterType;
  */
 final class PredictiontemplateModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native prediction template table for administrator edits.
+     * @param string $type Requested table name.
+     * @param string $prefix Legacy Joomla table namespace.
+     * @param array $config Additional Joomla table settings.
+     * @return mixed PredictiontemplateTable or parent Joomla table.
+     */
     public function getTable($type = 'predictiontemplate', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictiontemplate') === 0) {
@@ -29,6 +36,12 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Serialise submitted prediction template parameters into JSON.
+     * Preserves the parent admin model's further data preparation logic.
+     * @param array $data Submitted prediction template values.
+     * @return array Prepared model persistence values.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $post = $this->administratorApplication()->getInput()->post->getArray();
@@ -44,6 +57,14 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
         return parent::prepareSportsManagementData($data);
     }
 
+    /**
+     * Notify administrators after a prediction template has been saved.
+     * Uses the existing translated creation notice for new templates.
+     * @param array $data Saved prediction template values.
+     * @param int $id Saved record identifier.
+     * @param bool $isNew Whether the record was newly inserted.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($isNew) {
@@ -56,6 +77,11 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
         parent::afterSportsManagementSave($data, $id, $isNew);
     }
 
+    /**
+     * Load a prediction game record using a bound numeric identifier.
+     * @param mixed $id Requested prediction game identifier.
+     * @return object|false|null Prediction game or missing/error result.
+     */
     public function getPredictionGame($id)
     {
         $predictionId = (int) $id;
@@ -77,13 +103,23 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Check whether the current identity may edit a prediction template.
+     * Delegates to normal Joomla admin permissions if the record-specific
+     * action is not granted or the user has no identity.
+     * @param array $data Selected prediction template row.
+     * @param string $key Identifier field name.
+     * @return bool Whether Joomla permits the edit.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
