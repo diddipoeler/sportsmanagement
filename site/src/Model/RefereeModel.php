@@ -23,6 +23,12 @@ final class RefereeModel extends SportsManagementProjectModel
 
     public $_data = null;
 
+    /**
+     * Initialise a referee profile with project and person context.
+     * Maintains legacy PersonModel context used by older templates.
+     * @param array $config Joomla site model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -37,6 +43,10 @@ final class RefereeModel extends SportsManagementProjectModel
         PersonModel::$cfg_which_database = self::$cfg_which_database;
     }
 
+    /**
+     * Load the selected referee's personal record and URL slug.
+     * @return object|null Person profile or null when unavailable.
+     */
     public function getPerson(): ?object
     {
         if (self::$personid <= 0) {
@@ -60,6 +70,10 @@ final class RefereeModel extends SportsManagementProjectModel
         return $person;
     }
 
+    /**
+     * Find the referee's assignment to the selected project.
+     * @return object|null Referee assignment or null when unavailable.
+     */
     public function getReferee(): ?object
     {
         if (self::$projectid <= 0 || self::$personid <= 0) {
@@ -103,6 +117,10 @@ final class RefereeModel extends SportsManagementProjectModel
         return $referee;
     }
 
+    /**
+     * Index the current project's team records by project-team ID.
+     * @return array<int,object> Teams indexed by project-team identifier.
+     */
     public function getTeamsIndexedByProjectTeamId(): array
     {
         $teams = [];
@@ -118,6 +136,12 @@ final class RefereeModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Read the referee's historical project assignments.
+     * Caches the resulting records for the active person context.
+     * @param string $order Ascending or descending history order.
+     * @return array<int,object> Referee history rows.
+     */
     public function getHistory($order = 'ASC')
     {
         if (self::$personid <= 0) {
@@ -174,6 +198,12 @@ final class RefereeModel extends SportsManagementProjectModel
         return self::$_history;
     }
 
+    /**
+     * Count the referee's match assignments in the given project.
+     * @param int $project_id Project identifier.
+     * @param int $person_id Referee person identifier.
+     * @return int Number of match appointments.
+     */
     public function getPresenceStats($project_id, $person_id)
     {
         $projectId = max(0, (int) $project_id);
@@ -199,6 +229,10 @@ final class RefereeModel extends SportsManagementProjectModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Find the selected referee's matches in the active project.
+     * @return array<int,object> Match records with participating teams.
+     */
     public function getGames()
     {
         if (self::$personid <= 0 || self::$projectid <= 0) {
@@ -252,6 +286,12 @@ final class RefereeModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Combine the numeric person identifier with the optional alias.
+     * @param int $id Person identifier.
+     * @param string $alias Person URL alias.
+     * @return string Joomla-compatible identifier and alias.
+     */
     private function slug(int $id, string $alias): string
     {
         $alias = trim($alias);
