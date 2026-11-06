@@ -17,6 +17,11 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 list model for SportsManagement extra fields. */
 final class ExtrafieldsModel extends SportsManagementListModel
 {
+    /**
+     * Register available extra-field list filters and sorting columns.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -34,6 +39,12 @@ final class ExtrafieldsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load the extra-field search and publication filters.
+     * @param string $ordering Default field sort.
+     * @param string $direction Default sorting direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -42,6 +53,11 @@ final class ExtrafieldsModel extends SportsManagementListModel
         $this->setState('filter.state', $app->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string'));
     }
 
+    /**
+     * Query extra-field definitions for the administrator list.
+     * Filters and sorts configured fields using native database queries.
+     * @return mixed Joomla database query for extra field definitions.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -98,6 +114,11 @@ final class ExtrafieldsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Get the names of populated extra fields for a project.
+     * @param int $projectId Project identifier.
+     * @return string Existing project extra-field summary.
+     */
     public function getExtraFieldsProject(int $projectId = 0): string
     {
         $projectTemplate = 'project';
@@ -120,6 +141,12 @@ final class ExtrafieldsModel extends SportsManagementListModel
         return implode('<br>', $db->loadColumn() ?: []);
     }
 
+    /**
+     * List extra fields optionally scoped to backend/frontend templates.
+     * @param string $templateBackend Backend template identifier.
+     * @param string $templateFrontend Frontend template identifier.
+     * @return array<int,object> Available extra-field definitions.
+     */
     public function getExtraFields(string $templateBackend = '', string $templateFrontend = ''): array
     {
         $db = $this->getDatabase();
