@@ -32,6 +32,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public string $title = '';
     public $extended = null;
 
+    /**
+     * Prepare the selected staff member's frontend profile.
+     * Validates StaffModel, loads the person's biography, team history
+     * and statistics, builds the configured display name and registers
+     * the Joomla staff stylesheet and translated document title.
+     * @return void
+     * @throws \RuntimeException If StaffModel is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var StaffModel $model */
