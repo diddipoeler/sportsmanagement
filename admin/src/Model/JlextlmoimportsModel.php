@@ -37,13 +37,21 @@ final class JlextlmoimportsModel extends \sportsmanagementModeljlextlmoimports i
 {
     use MailerFactoryAwareTrait;
 
+    /**
+     * Initialise the legacy LMO importer through Joomla MVC compatibility.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct();
     }
 
     /**
-     * Preserve the historical extension-start marker without removed Joomla 6 APIs.
+     * Create the historical LMO extension-start marker if missing.
+     * Uses Joomla's current mailer factory to notify the configured legacy
+     * recipient before saving the marker in the site temporary directory.
+     * @return void
      */
     public function checkStartExtension(): void
     {
