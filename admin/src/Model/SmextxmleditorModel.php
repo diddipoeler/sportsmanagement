@@ -25,6 +25,12 @@ final class SmextxmleditorModel extends AdminModel
 {
     private const MAX_SOURCE_BYTES = 1048576;
 
+    /**
+     * Load the extended XML/PHP source editor form.
+     * @param array $data Optional form values.
+     * @param bool $loadData Whether stored values should be loaded.
+     * @return mixed Joomla source-editor form.
+     */
     public function getForm($data = [], $loadData = true)
     {
         FormHelper::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -36,6 +42,13 @@ final class SmextxmleditorModel extends AdminModel
         );
     }
 
+    /**
+     * Save an existing authorised extended source file.
+     * Requires component administrator permission, a bounded source size
+     * and a writable regular file inside the configured editor folder.
+     * @param mixed $data Submitted filename and source contents.
+     * @return bool Whether the write succeeded.
+     */
     public function save($data)
     {
         $this->assertEditorPermission();
@@ -69,6 +82,10 @@ final class SmextxmleditorModel extends AdminModel
         return true;
     }
 
+    /**
+     * Load pending editor form state or the existing source file.
+     * @return mixed Current source editor data.
+     */
     protected function loadFormData()
     {
         $data = $this->administratorApplication()->getUserState(
@@ -83,6 +100,10 @@ final class SmextxmleditorModel extends AdminModel
         return $data;
     }
 
+    /**
+     * Read an existing extended source file for administrator editing.
+     * @return object Source filename and text or empty object on failure.
+     */
     public function getSource()
     {
         $this->assertEditorPermission();
@@ -116,6 +137,11 @@ final class SmextxmleditorModel extends AdminModel
         return $item;
     }
 
+    /**
+     * Require component administrator permission for source editing.
+     * @return void
+     * @throws \RuntimeException When edit access is denied.
+     */
     private function assertEditorPermission(): void
     {
         $identity = $this->administratorApplication()->getIdentity();
@@ -125,6 +151,13 @@ final class SmextxmleditorModel extends AdminModel
         }
     }
 
+    /**
+     * Resolve a validated existing file directly below the editor folder.
+     * Rejects missing, symlinked, out-of-folder and unwritable files.
+     * @param mixed $fileName Requested source file name.
+     * @param bool $forWrite Whether the source must be writable.
+     * @return string|null Trusted real path or null when invalid.
+     */
     private function existingEditorFile(mixed $fileName, bool $forWrite = false): ?string
     {
         if (!is_string($fileName)) {
@@ -161,6 +194,10 @@ final class SmextxmleditorModel extends AdminModel
         return $resolved;
     }
 
+    /**
+     * Resolve the component extended-editor directory.
+     * @return string Absolute editor directory path.
+     */
     private function getEditorPath(): string
     {
         return JPATH_ADMINISTRATOR
@@ -170,11 +207,21 @@ final class SmextxmleditorModel extends AdminModel
             . DIRECTORY_SEPARATOR . 'extended';
     }
 
+    /**
+     * Resolve the current Joomla administrator application.
+     * @return AdministratorApplication Current administrator runtime.
+     */
     private function administratorApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Validate a top-level XML/PHP editor filename.
+     * Rejects traversal and unsupported characters or extensions.
+     * @param string $fileName Requested source filename.
+     * @return string|null Valid filename or null.
+     */
     private function normaliseFileName(string $fileName): ?string
     {
         $fileName = trim($fileName);
