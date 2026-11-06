@@ -17,6 +17,11 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator list model for federations. */
 final class JlextfederationsModel extends SportsManagementListModel
 {
+    /**
+     * Register supported federation list columns and sorting options.
+     * @param array $config Joomla list model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -39,6 +44,12 @@ final class JlextfederationsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Apply federation ordering and the legacy nation filter.
+     * @param string $ordering Default federation sort field.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'objassoc.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -50,6 +61,12 @@ final class JlextfederationsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the filtered and ordered list of federations.
+     * Filters federation name and nation through bound SQL parameters
+     * and restricts sorting to configured fields.
+     * @return mixed Joomla database query for federations.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
