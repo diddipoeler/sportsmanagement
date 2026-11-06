@@ -24,6 +24,10 @@ use Joomla\Database\DatabaseInterface;
 /** Joomla 5/6 administrator controller for match list write actions. */
 final class MatchesController extends SportsManagementAdminController
 {
+    /**
+     * Return the shared legacy JoomlaTune AJAX response instance.
+     * @return object Shared legacy AJAX response.
+     */
     public static function getAjaxResponse()
     {
         static $instance = null;
@@ -35,6 +39,11 @@ final class MatchesController extends SportsManagementAdminController
         return $instance;
     }
 
+    /**
+     * Delete a match event via the native timeline write service.
+     * Requires component delete permission and a valid POST token.
+     * @return void
+     */
     public function removeEvent(): void
     {
         $this->assertWritePermission('core.delete');
@@ -49,6 +58,11 @@ final class MatchesController extends SportsManagementAdminController
         $this->jsonClose($result);
     }
 
+    /**
+     * Delete a match commentary via the native timeline service.
+     * Requires component delete permission and a valid POST token.
+     * @return void
+     */
     public function removeCommentary(): void
     {
         $this->assertWritePermission('core.delete');
@@ -63,6 +77,11 @@ final class MatchesController extends SportsManagementAdminController
         $this->jsonClose($result);
     }
 
+    /**
+     * Remove a match substitution through the native timeline service.
+     * Requires component delete permission and a valid POST token.
+     * @return void
+     */
     public function removeSubst(): void
     {
         $this->assertWritePermission('core.delete');
@@ -77,6 +96,11 @@ final class MatchesController extends SportsManagementAdminController
         $this->jsonClose($result);
     }
 
+    /**
+     * Save a match event from POST using the native timeline service.
+     * Maintains the existing JSON response used by the legacy editor.
+     * @return void
+     */
     public function saveevent(): void
     {
         $this->assertWritePermission('core.edit');
@@ -109,6 +133,11 @@ final class MatchesController extends SportsManagementAdminController
         $this->jsonClose($result);
     }
 
+    /**
+     * Save a match commentary entry from validated POST parameters.
+     * Returns the legacy string-valued JSON response.
+     * @return void
+     */
     public function savecomment(): void
     {
         $this->assertWritePermission('core.edit');
@@ -135,6 +164,11 @@ final class MatchesController extends SportsManagementAdminController
         $this->jsonClose($result);
     }
 
+    /**
+     * Save a player substitution through the native timeline service.
+     * Returns the legacy string-valued JSON response.
+     * @return void
+     */
     public function savesubst(): void
     {
         $this->assertWritePermission('core.edit');
@@ -162,6 +196,10 @@ final class MatchesController extends SportsManagementAdminController
         $this->jsonClose($result);
     }
 
+    /**
+     * Save match statistics and redirect to the statistics editor.
+     * @return void
+     */
     public function savestats(): void
     {
         $this->assertWritePermission();
@@ -184,6 +222,10 @@ final class MatchesController extends SportsManagementAdminController
         $this->setRedirect($this->editRedirect('editstats', $post), $msg);
     }
 
+    /**
+     * Save match player and staff rosters from submitted form data.
+     * @return void
+     */
     public function saveroster(): void
     {
         $this->assertWritePermission();
@@ -215,6 +257,10 @@ final class MatchesController extends SportsManagementAdminController
         $this->setRedirect($this->editRedirect('editlineup', $post), $msg);
     }
 
+    /**
+     * Save match referee appointments and send assignment notifications.
+     * @return void
+     */
     public function saveReferees(): void
     {
         $this->assertWritePermission();
@@ -239,19 +285,34 @@ final class MatchesController extends SportsManagementAdminController
         $this->setRedirect($this->editRedirect('editreferees', $post, false), $msg);
     }
 
+    /**
+     * Include selected matches in result counting.
+     * @return void
+     */
     public function count_result_yes(): void
     {
         $this->setCountResult(1);
         $this->redirectToList();
     }
 
+    /**
+     * Exclude selected matches from result counting.
+     * @return void
+     */
     public function count_result_no(): void
     {
         $this->setCountResult(0);
         $this->redirectToList();
     }
 
-    /** Transitional adapter: saveshort still contains tournament/date-change side effects in the legacy model. */
+    /**
+     * Run the historical short match editor including date-change side effects.
+     *
+     * Requires Joomla's component edit permission and POST session token
+     * before calling the transitional legacy match model.
+     *
+     * @return void
+     */
     public function saveshort(): void
     {
         $this->assertWritePermission();
@@ -260,12 +321,40 @@ final class MatchesController extends SportsManagementAdminController
         $this->redirectToList();
     }
 
+    /**
+     * Update result-count flags for validated selected match IDs.
+     * Requires core.edit.state permission and a valid POST token.
+     * @param int $value Flag value, zero or one.
+     * @return void
+     */
     private function setCountResult(int $value): void
     {
         $this->assertWritePermission('core.edit.state');
 
         $app = $this->app;
-        $ids = array_values(array_filter(array_map('intval', (array) $app->getInput()->post->get('cid', [], 'array'))));
+        $selected = $app->getInput()->post->get('cid', [], 'array');
+        $ids = [];
+
+        foreach (array_slice(is_array($selected) ? $selected : [], 0, 500) as $raw) {
+            if (!is_int($raw) && !is_string($raw)) {
+                continue;
+            }
+
+            $value = trim((string) $raw);
+
+            if (strlen($value) > 20 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+            $id = $digits !== ''
+                ? filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+                : false;
+
+            if ($id !== false) {
+                $ids[$id] = $id;
+            }
+        }
         if (!$ids) {
             return;
         }
@@ -307,6 +396,13 @@ final class MatchesController extends SportsManagementAdminController
         return $db->loadObjectList('value') ?: [];
     }
 
+    /**
+     * Build the match edit redirect or close the modal editor.
+     * @param string $layout Destination edit layout.
+     * @param array $post Submitted form values.
+     * @param bool $withTeam Include current team context.
+     * @return string Joomla administrator match editor URL.
+     */
     private function editRedirect(string $layout, array $post, bool $withTeam = true): string
     {
         $input = $this->app->getInput();
@@ -323,6 +419,15 @@ final class MatchesController extends SportsManagementAdminController
         return $link;
     }
 
+    /**
+     * Perform a protected timeline change and format its result.
+     * Logs errors without exposing internal details to the AJAX caller.
+     * @param callable $action Timeline write callback.
+     * @param string $error Translated failure message.
+     * @param string $success Translated success message.
+     * @param int $id Event or substitution identifier.
+     * @return string Legacy AJAX result payload.
+     */
     private function timelineAction(callable $action, string $error, string $success, int $id): string
     {
         try {
@@ -334,6 +439,11 @@ final class MatchesController extends SportsManagementAdminController
         }
     }
 
+    /**
+     * Return a legacy string-valued JSON response and close Joomla.
+     * @param string $result Preformatted AJAX result.
+     * @return void
+     */
     private function jsonClose(string $result): void
     {
         $app = $this->app;
@@ -349,21 +459,37 @@ final class MatchesController extends SportsManagementAdminController
         $app->close();
     }
 
+    /**
+     * Redirect the administrator to the configured matches list.
+     * @return void
+     */
     private function redirectToList(): void
     {
         $this->setRedirect(Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
     }
 
+    /**
+     * Construct the native match data write service.
+     * @return MatchWriteService Match write service for the active database.
+     */
     private function matchWriteService(): MatchWriteService
     {
         return new MatchWriteService($this->database());
     }
 
+    /**
+     * Construct the native match timeline write service.
+     * @return MatchTimelineWriteService Timeline persistence service.
+     */
     private function timelineWriteService(): MatchTimelineWriteService
     {
         return new MatchTimelineWriteService($this->database());
     }
 
+    /**
+     * Build the referee notification service using Joomla mail support.
+     * @return MatchRefereeNotificationService Referee notification service.
+     */
     private function refereeNotifier(): MatchRefereeNotificationService
     {
         return new MatchRefereeNotificationService(
@@ -373,6 +499,12 @@ final class MatchesController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Resolve the selected SportsManagement match database connection.
+     * Tries the legacy component resolver and falls back to Joomla's
+     * default connection when the selected connection is unavailable.
+     * @return DatabaseInterface Effective component database.
+     */
     private function database(): DatabaseInterface
     {
         if (!class_exists('sportsmanagementHelper', false)) {
@@ -396,14 +528,26 @@ final class MatchesController extends SportsManagementAdminController
         return self::joomlaDatabase();
     }
 
+    /**
+     * Resolve Joomla's database service from the dependency container.
+     * @return DatabaseInterface Joomla database interface.
+     * @throws \RuntimeException When the database service is invalid.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement matches database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Instantiate the compatibility match model for inline saves.
+     * @return object Loaded historical match editor model.
+     */
     private function legacyMatchModel(): object
     {
         if (!class_exists('JSMModelAdmin', false)) {
