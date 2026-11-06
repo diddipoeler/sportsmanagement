@@ -28,6 +28,11 @@ final class GithubinstallModel extends BaseDatabaseModel
     /** @var array<string,string> */
     private array $successText = [];
 
+    /**
+     * Redirect to the component's existing GitHub installation workflow.
+     * Includes the current Joomla form token in the administrator URL.
+     * @return void
+     */
     public function installfolder(): void
     {
         $this->administratorApplication()->redirect(
@@ -115,6 +120,14 @@ final class GithubinstallModel extends BaseDatabaseModel
         return $this->successText;
     }
 
+    /**
+     * Find the expected extracted GitHub archive folder.
+     * Does not reuse an unrelated or stale sportsmanagement directory.
+     * @param string $tmpPath Joomla temporary directory.
+     * @param string $downloadedFile Downloaded archive filename.
+     * @param string $url Original archive URL.
+     * @return string|null Matching extracted folder or null.
+     */
     private function findExtractedDirectory(string $tmpPath, string $downloadedFile, string $url): ?string
     {
         $stems = array_values(array_unique(array_filter([
@@ -137,6 +150,11 @@ final class GithubinstallModel extends BaseDatabaseModel
         return null;
     }
 
+    /**
+     * Check a configured package URL for an HTTP or HTTPS scheme.
+     * @param string $url Candidate GitHub archive location.
+     * @return bool Whether the URL uses an allowed scheme.
+     */
     private function isAllowedUrl(string $url): bool
     {
         if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
@@ -148,8 +166,19 @@ final class GithubinstallModel extends BaseDatabaseModel
         return in_array($scheme, ['http', 'https'], true);
     }
 
+    /**
+     * Resolve and validate the Joomla administrator application service.
+     * @return AdministratorApplication Active Joomla administrator.
+     * @throws \RuntimeException If the application service is unavailable.
+     */
     private function administratorApplication(): AdministratorApplication
     {
-        return Factory::getContainer()->get(AdministratorApplication::class);
+        $application = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$application instanceof AdministratorApplication || !$application->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement GitHub installer requires the Joomla administrator application.', 500);
+        }
+
+        return $application;
     }
 }
