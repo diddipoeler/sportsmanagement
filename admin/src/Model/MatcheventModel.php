@@ -20,6 +20,13 @@ use Joomla\Database\ParameterType;
  */
 final class MatcheventModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the administrator form used to edit match events.
+     * Registers the native and legacy component form directories.
+     * @param array $data Optional form data.
+     * @param bool $loadData Whether to load persisted form values.
+     * @return mixed Joomla form object or failure result.
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -95,6 +102,13 @@ final class MatcheventModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Persist the ordering of selected match events.
+     * Loads each event row and updates only changed ordering values.
+     * @param array|null $pks Event record identifiers.
+     * @param array|null $order New order values aligned with identifiers.
+     * @return bool True when all writable ordering changes succeed.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
@@ -124,6 +138,13 @@ final class MatcheventModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Resolve the native match event table via Joomla MVC.
+     * @param string $type Requested table name.
+     * @param string $prefix Legacy Joomla table prefix.
+     * @param array $config Optional table factory settings.
+     * @return mixed Native MatcheventTable or parent table result.
+     */
     public function getTable($type = 'matchevent', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchevent') === 0) {
@@ -133,13 +154,23 @@ final class MatcheventModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Determine whether the current administrator can edit a match event.
+     * Falls back to the standard model ACL check when a record-specific
+     * permission is not available.
+     * @param array $data Current event record values.
+     * @param string $key Record identifier property.
+     * @return bool Whether the event can be edited.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
