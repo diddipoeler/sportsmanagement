@@ -23,6 +23,11 @@ final class SmimageimportsModel extends SportsManagementListModel
 {
     private const MANIFEST = 'helpers/xml_files/pictures.xml';
 
+    /**
+     * Initialise the administrator image-package list model.
+     * @param array $config Joomla list-model settings.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -37,6 +42,10 @@ final class SmimageimportsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * List distinct image package folders for filter controls.
+     * @return array<int,object> Folder selection options.
+     */
     public function getXMLFolder(): array
     {
         $db = $this->getDatabase();
@@ -61,7 +70,11 @@ final class SmimageimportsModel extends SportsManagementListModel
         }
     }
 
-    /** Refresh the local package manifest from the configured HTTPS endpoint. */
+    /**
+     * Refresh the local image package manifest from the configured HTTPS URL.
+     * Checks the remote response and XML structure before storing it.
+     * @return bool Whether a valid manifest was saved.
+     */
     public function getimagesxml(): bool
     {
         $app = $this->administratorApplication();
@@ -182,6 +195,12 @@ final class SmimageimportsModel extends SportsManagementListModel
         return $files;
     }
 
+    /**
+     * Restore the currently selected image package folder filter.
+     * @param string $ordering Default image sort column.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -198,6 +217,10 @@ final class SmimageimportsModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the image package list with selected filters and sorting.
+     * @return mixed Joomla image-package list query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -248,6 +271,10 @@ final class SmimageimportsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Resolve the component's image package manifest location.
+     * @return string Absolute local manifest filename.
+     */
     private function manifestPath(): string
     {
         return JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/' . self::MANIFEST;
