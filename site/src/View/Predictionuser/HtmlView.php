@@ -24,6 +24,14 @@ final class HtmlView extends SportsManagementPredictionHtmlView
     public int $memberID = 0;
     private PredictionuserModel $editorModel;
 
+    /**
+     * Prepare the prediction member edit page and enforce edit access.
+     * Requires PredictionuserModel and an existing prediction game,
+     * loads the editable member and configuration, verifies permissions
+     * and sets the title and available project/group controls.
+     * @return void
+     * @throws \RuntimeException If model, game, member or permission is missing.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -73,6 +81,10 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         $this->getDocument()->setTitle($this->headertitle);
     }
 
+    /**
+     * Get the editable member's configured public display name.
+     * @return string Full name or username with fallback.
+     */
     public function displayName(): string
     {
         $name = !empty($this->config['show_full_name'])
@@ -84,6 +96,10 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         return $name;
     }
 
+    /**
+     * Extract the member registration date for display.
+     * @return string Date portion or empty text for unset registrations.
+     */
     public function registerDate(): string
     {
         $value = (string) ($this->predictionMember->pmRegisterDate ?? $this->predictionMember->registerDate ?? '');
@@ -93,6 +109,10 @@ final class HtmlView extends SportsManagementPredictionHtmlView
         return substr($value, 0, 10);
     }
 
+    /**
+     * Extract the member registration time for display.
+     * @return string Time portion or empty text for unset registrations.
+     */
     public function registerTime(): string
     {
         $value = (string) ($this->predictionMember->pmRegisterDate ?? $this->predictionMember->registerDate ?? '');
