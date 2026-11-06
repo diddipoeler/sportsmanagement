@@ -34,6 +34,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
 
     private static $database = null;
 
+    /**
+     * Initialise the team profile's project, team and database context.
+     * @param array $config Joomla frontend model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -46,6 +51,12 @@ final class TeaminfoModel extends SportsManagementProjectModel
         self::$database = $this->getDatabase();
     }
 
+    /**
+     * Resolve the selected team record using the active request context.
+     * @param int|bool $inserthits Whether to increment visit counts.
+     * @param int $teamid Explicit team identifier or zero for current selection.
+     * @return object|null Team record or null when unavailable.
+     */
     public static function getTeam($inserthits = 0, $teamid = 0)
     {
         $input = self::frontendApplication()->getInput();
@@ -79,6 +90,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return self::$team;
     }
 
+    /**
+     * Load training sessions for the selected team (legacy spelling).
+     * @param int $projectid Historical project selector.
+     * @return array<int,object> Team training data.
+     */
     public static function getTrainigData($projectid): array
     {
         if (self::$teamid <= 0) {
@@ -98,11 +114,20 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Expose the correctly spelled alias for historical training data.
+     * @param int $projectid Project selector.
+     * @return array<int,object> Team training sessions.
+     */
     public static function getTrainingData($projectid): array
     {
         return self::getTrainigData($projectid);
     }
 
+    /**
+     * Load the selected team's club and cached club metadata.
+     * @return object|null Associated club record.
+     */
     public static function getClub()
     {
         if (self::$club !== null) {
@@ -128,6 +153,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return self::$club;
     }
 
+    /**
+     * Find the selected team within its active project.
+     * @param int|bool $inserthits Whether to increment team visits.
+     * @return object|null Project team record when found.
+     */
     public static function getTeamByProject($inserthits = 0)
     {
         self::updateHits(self::$teamid, $inserthits);
@@ -182,6 +212,12 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return self::$team;
     }
 
+    /**
+     * Increment a team's hit counter when explicitly requested.
+     * @param int $teamid Team identifier.
+     * @param int|bool $inserthits Whether to update hits.
+     * @return void
+     */
     public static function updateHits($teamid = 0, $inserthits = 0): void
     {
         $teamId = max(0, (int) $teamid);
@@ -199,6 +235,12 @@ final class TeaminfoModel extends SportsManagementProjectModel
         $db->execute();
     }
 
+    /**
+     * List team participation across configured seasons.
+     * @param array $config Season-list template settings.
+     * @param int|bool $history Whether historical seasons are requested.
+     * @return array<int,object> Team season records.
+     */
     public static function getSeasons($config, $history = 0): array
     {
         if (self::$teamid <= 0 && self::$projectteamid <= 0) {
@@ -326,6 +368,12 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $seasons;
     }
 
+    /**
+     * Resolve the team's ranking in a project and division.
+     * @param int $projectid Project identifier.
+     * @param int $division_id Selected division identifier.
+     * @return array Ranking rows or empty data.
+     */
     public static function getTeamRanking($projectid, $division_id): array
     {
         $projectId = max(0, (int) $projectid);
@@ -374,6 +422,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return [];
     }
 
+    /**
+     * Find the league name belonging to a project.
+     * @param int $projectid Project identifier.
+     * @return string League name or empty text.
+     */
     public static function getLeague($projectid): string
     {
         $projectId = max(0, (int) $projectid);
@@ -393,6 +446,14 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return (string) ($db->loadResult() ?: '');
     }
 
+    /**
+     * Count relevant team players for a selected season.
+     * @param int $projectid Project ID.
+     * @param int $projectteamid Project-team ID.
+     * @param int $season_id Season ID.
+     * @param int $persontype Optional person-type filter.
+     * @return int Number of matching persons.
+     */
     public static function getPlayerCount($projectid, $projectteamid, $season_id, $persontype = 0): int
     {
         $projectId = max(0, (int) $projectid);
@@ -424,6 +485,14 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Calculate the average player age for the selected roster.
+     * @param int $projectid Project ID.
+     * @param int $projectteamid Project-team ID.
+     * @param int $season_id Season ID.
+     * @param int $persontype Optional person-type filter.
+     * @return float Mean player age.
+     */
     public static function getPlayerMeanAge($projectid, $projectteamid, $season_id, $persontype = 0): float
     {
         $projectId = max(0, (int) $projectid);
@@ -491,6 +560,14 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $count > 0 ? round($age / $count, 2) : 0.0;
     }
 
+    /**
+     * Calculate aggregated market value for the selected players.
+     * @param int $projectid Project ID.
+     * @param int $projectteamid Project-team ID.
+     * @param int $season_id Season ID.
+     * @param int $persontype Optional person-type filter.
+     * @return mixed Market-value aggregate.
+     */
     public static function getPlayerMarketValue($projectid, $projectteamid, $season_id, $persontype = 0)
     {
         $projectId = max(0, (int) $projectid);
@@ -521,6 +598,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $db->loadResult() ?: 0;
     }
 
+    /**
+     * Aggregate season results into per-league performance totals.
+     * @param array $seasonsranking Ranking records across seasons.
+     * @return array Aggregated league statistics.
+     */
     public static function getLeagueRankOverviewDetail($seasonsranking): array
     {
         $overview = [];
@@ -553,6 +635,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $overview;
     }
 
+    /**
+     * Summarise ranked finishes by league and position.
+     * @param array $seasonsranking Seasonal ranking records.
+     * @return array Rank frequencies by league.
+     */
     public static function getLeagueRankOverview($seasonsranking): array
     {
         $overview = [];
@@ -574,6 +661,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $overview;
     }
 
+    /**
+     * Find related clubs from a legacy merged-club ID list.
+     * @param string $merge_clubs Delimited club ID values.
+     * @return array<int,object> Associated club records.
+     */
     public function getMergeClubs($merge_clubs): array
     {
         $ids = [];
@@ -598,9 +690,20 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Check component edit rights or the selected team's administrator.
+     * Returns false when no Joomla user identity is available.
+     * @param string|null $task Optional component permission action.
+     * @return bool Whether the current user may edit.
+     */
     public function hasEditPermission($task = null): bool
     {
         $identity = $this->siteApplication()->getIdentity();
+
+        if ($identity === null) {
+            return false;
+        }
+
         $action = trim((string) $task);
         $allowed = $identity->authorise('core.edit', 'com_sportsmanagement');
         if (!$allowed && $action !== '') {
@@ -615,6 +718,10 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $allowed;
     }
 
+    /**
+     * Resolve or reuse the selected SportsManagement database.
+     * @return DatabaseInterface Component database connection.
+     */
     private static function database(): DatabaseInterface
     {
         if (self::$database instanceof DatabaseInterface) {
@@ -629,19 +736,36 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return self::$database;
     }
 
+    /**
+     * Resolve Joomla's primary database connection and verify its type.
+     * @return DatabaseInterface Primary Joomla database.
+     * @throws \RuntimeException If the database service is invalid.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement team information database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Resolve the active Joomla frontend application.
+     * @return CMSApplicationInterface Site application.
+     */
     private static function frontendApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Load project, league and sports-type metadata for rankings.
+     * @param int $projectId Selected project ID.
+     * @return object|null Project metadata when available.
+     */
     private static function loadProjectInfo(int $projectId): ?object
     {
         $db = self::database();
@@ -662,6 +786,11 @@ final class TeaminfoModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Resolve the current round from project timing configuration.
+     * @param object $project Project schedule configuration.
+     * @return int Current round identifier or zero.
+     */
     private static function resolveCurrentRoundId(object $project): int
     {
         $projectId = (int) ($project->id ?? 0);
