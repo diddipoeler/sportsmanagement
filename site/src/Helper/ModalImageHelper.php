@@ -16,6 +16,22 @@ use Joomla\CMS\Language\Text;
 
 final class ModalImageHelper
 {
+    /**
+     * Render an image with optional Joomla, JCE or popup linking.
+     * Validates image and target URLs, escapes HTML attributes and limits
+     * modal dimensions to positive values before building markup.
+     * @param string $target Optional modal element identifier.
+     * @param string $picture Image URL or site-relative path.
+     * @param string $text Image alt text and popup title.
+     * @param int|string $pictureHeight Displayed image height.
+     * @param string $url Optional link destination.
+     * @param int|string $width Modal width.
+     * @param int|string $height Modal height.
+     * @param int $mode Image popup rendering mode.
+     * @param string $schemaAttribute Image schema attribute name.
+     * @param string $schemaValue Schema attribute value.
+     * @return string Safe image or linked modal markup.
+     */
     public static function render(
         string $target = '',
         string $picture = '',
@@ -116,6 +132,11 @@ final class ModalImageHelper
         return preg_match('~^[a-z][a-z0-9+.-]*:~i', $value) ? '' : $value;
     }
 
+    /**
+     * Escape text for safe insertion into HTML attributes.
+     * @param string $value Attribute or label text.
+     * @return string HTML-escaped text.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
