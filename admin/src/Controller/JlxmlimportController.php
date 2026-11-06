@@ -22,6 +22,13 @@ use Joomla\Registry\Registry;
 /** Native Joomla 5/6 controller for the SportsManagement JLG/XML import workflow. */
 final class JlxmlimportController extends BaseController
 {
+    /**
+     * Initialise the XML import controller and map legacy edit tasks.
+     * @param array $config Joomla controller configuration.
+     * @param mixed $factory Optional MVC factory.
+     * @param mixed $app Optional Joomla application.
+     * @param mixed $input Optional Joomla request input.
+     */
     public function __construct($config = [], $factory = null, $app = null, $input = null)
     {
         parent::__construct($config, $factory, $app, $input);
@@ -31,6 +38,12 @@ final class JlxmlimportController extends BaseController
         }
     }
 
+    /**
+     * Select the XML import layout for the requested editor task.
+     * @param bool $cachable Whether Joomla may cache the view.
+     * @param array $urlparams Permitted URL parameters.
+     * @return mixed Parent Joomla display result.
+     */
     public function display($cachable = false, $urlparams = [])
     {
         $input = $this->input;
@@ -58,6 +71,11 @@ final class JlxmlimportController extends BaseController
         return parent::display($cachable, $urlparams);
     }
 
+    /**
+     * Prepare the XML import selection page and persist form choices.
+     * Requires component administrator permission.
+     * @return mixed Parent controller display result.
+     */
     public function select()
     {
         $this->assertAdminAccess();
@@ -76,6 +94,12 @@ final class JlxmlimportController extends BaseController
         return parent::display();
     }
 
+    /**
+     * Start an XML import from a validated upload or remote project.
+     * Checks Joomla POST token and component admin permission, records
+     * selected import settings and prepares the source for import.
+     * @return bool Whether the import step succeeded.
+     */
     public function save()
     {
         $this->checkToken();
@@ -114,6 +138,10 @@ final class JlxmlimportController extends BaseController
         return true;
     }
 
+    /**
+     * Exit the XML import workflow and return to its overview.
+     * @return bool True after setting the redirect.
+     */
     public function cancel()
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&task=jlxmlimport.display');
@@ -121,6 +149,11 @@ final class JlxmlimportController extends BaseController
         return true;
     }
 
+    /**
+     * Require component administration permission before import actions.
+     * @return void
+     * @throws \RuntimeException When access is denied.
+     */
     private function assertAdminAccess(): void
     {
         $identity = $this->app->getIdentity();
@@ -130,6 +163,13 @@ final class JlxmlimportController extends BaseController
         }
     }
 
+    /**
+     * Fetch project XML export from the configured trusted endpoint.
+     * Validates remote response status and size before staging data.
+     * @param int $projectId Remote project identifier.
+     * @param bool $update Whether the source requests an update export.
+     * @return bool Whether the remote document was staged.
+     */
     private function downloadRemoteImport(int $projectId, bool $update): bool
     {
         $app = $this->app;
@@ -176,6 +216,13 @@ final class JlxmlimportController extends BaseController
         return true;
     }
 
+    /**
+     * Validate and stage an uploaded XML or JLG document.
+     * Uses bounded uploads and safe temporary paths; ZIP files are staged
+     * with a single supported entry instead of arbitrary extraction.
+     * @param array $upload Joomla upload metadata.
+     * @return bool Whether the source was staged.
+     */
     private function prepareImportFile(array $upload): bool
     {
         $temporaryPath = (string) ($upload['tmp_name'] ?? '');
@@ -225,6 +272,13 @@ final class JlxmlimportController extends BaseController
         return true;
     }
 
+    /**
+     * Extract one supported JLG/XML entry from a ZIP import.
+     * Removes the temporary archive regardless of extraction result.
+     * @param string $archiveFile Uploaded archive path.
+     * @param string $importFile Destination import path.
+     * @return bool Whether the import entry was staged.
+     */
     private function prepareArchive(string $archiveFile, string $importFile): bool
     {
         // Read a single supported ZIP entry directly. Never extract into
@@ -249,6 +303,11 @@ final class JlxmlimportController extends BaseController
         return true;
     }
 
+    /**
+     * Report a translated import failure through Joomla messaging.
+     * @param string $languageKey Joomla translation message key.
+     * @return bool False for failed imports.
+     */
     private function reportUploadError(string $languageKey): bool
     {
         $message = Text::_($languageKey);
