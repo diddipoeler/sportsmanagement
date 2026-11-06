@@ -22,6 +22,11 @@ final class AllplaygroundsModel extends SportsManagementListModel
     protected $limit = 0;
     protected $use_current_season = false;
 
+    /**
+     * Initialise the public playground list and supported sort fields.
+     * @param array $config Joomla list model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $input = $this->siteApplication()->getInput();
@@ -34,6 +39,10 @@ final class AllplaygroundsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Calculate the current playground list pagination offset.
+     * @return int Valid starting index for the current page.
+     */
     public function getStart()
     {
         $this->setState('list.start', $this->limitstart);
@@ -58,6 +67,11 @@ final class AllplaygroundsModel extends SportsManagementListModel
         return $this->cache[$store] = $start;
     }
 
+    /**
+     * Build a playground listing with project and club metadata.
+     * Applies published-state and search filters using Joomla queries.
+     * @return mixed Joomla query for playground records.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -143,6 +157,12 @@ final class AllplaygroundsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Read playground search, country and publication filters.
+     * @param string|null $ordering Optional default sort field.
+     * @param string|null $direction Optional sort direction.
+     * @return void
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         $app = $this->siteApplication();
