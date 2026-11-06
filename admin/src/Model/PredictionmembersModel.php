@@ -18,6 +18,11 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator list model for prediction-game members. */
 final class PredictionmembersModel extends SportsManagementListModel
 {
+    /**
+     * Register sortable member, account and prediction-game fields.
+     * @param array $config Administrator list model settings.
+     * @param MVCFactoryInterface|null $factory Joomla MVC factory, if supplied.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -38,6 +43,12 @@ final class PredictionmembersModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Register legacy prediction filter forms before Joomla form loading.
+     * @param array $data Optional initial filter values.
+     * @param bool $loadData Whether to read stored filter values.
+     * @return mixed Joomla administrator filter form.
+     */
     public function getFilterForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/models/forms');
@@ -45,6 +56,12 @@ final class PredictionmembersModel extends SportsManagementListModel
         return parent::getFilterForm($data, $loadData);
     }
 
+    /**
+     * Load the current prediction-game filter from administrator state.
+     * @param string $ordering Default prediction-member sort field.
+     * @param string $direction Default list direction.
+     * @return void
+     */
     protected function populateState($ordering = 'u.username', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -61,6 +78,11 @@ final class PredictionmembersModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build a member list with associated user and prediction game data.
+     * Applies the selected game filter and safe configured sorting.
+     * @return mixed Joomla database query for prediction memberships.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -147,6 +169,11 @@ final class PredictionmembersModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Look up the selected prediction game's display name.
+     * @param int $predictionID Prediction game identifier.
+     * @return string Game name or empty string for an invalid ID.
+     */
     public function getPredictionProjectName($predictionID)
     {
         $predictionId = (int) $predictionID;
@@ -166,6 +193,11 @@ final class PredictionmembersModel extends SportsManagementListModel
         return (string) $db->loadResult();
     }
 
+    /**
+     * List the existing user accounts in a prediction game.
+     * @param int $prediction_id Prediction game identifier.
+     * @return array<int,object> Existing member selection options.
+     */
     public function getPredictionMembers($prediction_id): array
     {
         $predictionId = (int) $prediction_id;
@@ -194,6 +226,11 @@ final class PredictionmembersModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List eligible Joomla accounts not yet in the prediction game.
+     * @param int $prediction_id Prediction game identifier.
+     * @return array<int,object> User selection options.
+     */
     public function getJLUsers($prediction_id): array
     {
         $predictionId = (int) $prediction_id;
@@ -224,6 +261,10 @@ final class PredictionmembersModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List prediction games for administrator selectors.
+     * @return array<int,object> Prediction game selection options.
+     */
     public function getPredictionGames(): array
     {
         $db = $this->getDatabase();
@@ -239,6 +280,11 @@ final class PredictionmembersModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Include active prediction member filters in the cache key.
+     * @param string $id Previous cache identifier.
+     * @return string Filter-specific Joomla cache ID.
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . (string) $this->getState('filter.prediction_id');
