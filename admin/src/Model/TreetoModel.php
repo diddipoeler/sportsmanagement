@@ -18,6 +18,13 @@ use Joomla\Registry\Registry;
 /** Native Joomla 5/6 administrator form model for tournament trees. */
 final class TreetoModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native tournament tree header table.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy Joomla table namespace.
+     * @param array $config Optional table settings.
+     * @return mixed Native TreetoTable or parent result.
+     */
     public function getTable($type = 'Treeto', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Treeto') === 0) {
@@ -27,6 +34,11 @@ final class TreetoModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Read the selected tournament-tree header record.
+     * @param mixed $treeto_id Requested tournament tree ID.
+     * @return object|false Tree data or false for invalid or missing ID.
+     */
     public function getTreeToData($treeto_id)
     {
         $id = (int) $treeto_id;
@@ -46,7 +58,12 @@ final class TreetoModel extends SportsManagementAdminModel
         return $db->loadObject() ?: false;
     }
 
-    /** Generate the complete node set for one tournament tree. */
+    /**
+     * Generate the complete node set for a selected tournament tree.
+     * Bounds the tree depth and requires component edit permission before
+     * creating nodes and assigning project teams.
+     * @return bool Whether the tree was generated.
+     */
     public function setGenerateNode(): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -167,6 +184,11 @@ final class TreetoModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Validate a positive integer ID from tournament POST data.
+     * @param mixed $raw Raw submitted identifier.
+     * @return int Positive ID or zero when invalid.
+     */
     private function positivePostId(mixed $raw): int
     {
         if (!is_string($raw) && !is_int($raw)) {
@@ -186,6 +208,11 @@ final class TreetoModel extends SportsManagementAdminModel
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Read project metadata for tournament-tree generation.
+     * @param int $projectId Selected project identifier.
+     * @return object|null Project row or null when unavailable.
+     */
     public function getProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
