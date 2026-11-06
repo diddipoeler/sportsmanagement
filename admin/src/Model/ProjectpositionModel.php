@@ -20,6 +20,13 @@ use Joomla\Utilities\ArrayHelper;
  */
 final class ProjectpositionModel extends SportsManagementAdminModel
 {
+    /**
+     * Synchronise project-to-position assignments in a transaction.
+     * Deletes obsolete links, inserts missing records and rolls back
+     * all changes when a database operation fails.
+     * @param array $data Project ID and selected position list.
+     * @return bool Whether the assignment update succeeded.
+     */
     public function store(array $data): bool
     {
         $db = $this->getDatabase();
@@ -89,13 +96,22 @@ final class ProjectpositionModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Determine whether the administrator may edit a project position.
+     * Uses record-specific permission or standard model ACL fallback.
+     * @param array $data Current assignment record.
+     * @param string $key Identifier field.
+     * @return bool Whether editing is permitted.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.projectposition.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
