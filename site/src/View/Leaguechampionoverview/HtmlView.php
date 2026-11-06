@@ -28,11 +28,23 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $teamstotal = [];
     public $document;
 
+    /**
+     * Disable legacy presentation bootstrap for the native champion view.
+     * @return bool False because the namespaced view uses modern helpers.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Prepare the historical league champion overview and page assets.
+     * Validates LeaguechampionoverviewModel, loads project season and title
+     * context, champion summaries and historic team totals, then merges
+     * model warnings and registers the component's frontend script.
+     * @return void
+     * @throws \RuntimeException If the overview model is unavailable.
+     */
     protected function prepareView(): void
     {
         $this->document = $this->getDocument();
