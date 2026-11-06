@@ -29,6 +29,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public bool $multiple_stats = false;
     public string $pagetitle = '';
 
+    /**
+     * Prepare the statistics ranking and configured team filters.
+     * Validates StatsrankingModel, loads player statistics and unique
+     * statistic types, restricts teams when requested and creates the
+     * project-aware title and Joomla script registration.
+     * @return void
+     * @throws \RuntimeException If the statistics ranking model is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var StatsrankingModel $model */
