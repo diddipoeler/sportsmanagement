@@ -24,6 +24,13 @@ final class SmimageimportModel extends SportsManagementAdminModel
 {
     private const PACKAGE_SERVER = 'https://sportsmanagement.fussballineuropa.de/jdownloads/';
 
+    /**
+     * Resolve the native pictures table for image import operations.
+     * @param string $type Requested table name.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Optional Joomla table configuration.
+     * @return mixed Native PicturesTable or parent result.
+     */
     public function getTable($type = 'Pictures', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Pictures') === 0) {
@@ -33,7 +40,14 @@ final class SmimageimportModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
-    /** Download and install the selected image archives. */
+    /**
+     * Download and install selected image archives in the component folders.
+     *
+     * Uses configured image destinations and validates relative paths
+     * before writing files into the Joomla installation.
+     *
+     * @return bool Whether the selected image import succeeded.
+     */
     public function import()
     {
         $app = $this->administratorApplication();
@@ -132,16 +146,33 @@ final class SmimageimportModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Check whether the administrator may edit an imported image record.
+     * Uses record-level permission when the current identity is available
+     * and otherwise falls back to the parent model ACL check.
+     * @param array $data Current image record values.
+     * @param string $key Identifier key.
+     * @return bool Whether editing is permitted.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 
+    /**
+     * Check an archive destination path against path traversal.
+     * Rejects absolute paths, traversal segments, control characters
+     * and characters outside the supported filesystem path subset.
+     * @param string $path Relative archive destination path.
+     * @return bool Whether the path is acceptable.
+     */
     private function isSafeRelativePath(string $path): bool
     {
         return $path !== ''
@@ -151,6 +182,11 @@ final class SmimageimportModel extends SportsManagementAdminModel
             && preg_match('#^[A-Za-z0-9._ /-]+$#', $path) === 1;
     }
 
+    /**
+     * URL-encode each segment of a validated image path.
+     * @param string $path Image path separated by slashes.
+     * @return string URL-safe path.
+     */
     private function encodePath(string $path): string
     {
         return implode('/', array_map('rawurlencode', explode('/', $path)));
