@@ -23,6 +23,13 @@ final class SmquoteModel extends SportsManagementAdminModel
 {
     public static int $db_num_rows = 0;
 
+    /**
+     * Resolve the Joomla administrator quote table.
+     * @param string $type Requested quote table type.
+     * @param string $prefix Legacy Joomla table prefix.
+     * @param array $config Optional table creation options.
+     * @return mixed Native SmquoteTable or parent table.
+     */
     public function getTable($type = 'smquote', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'smquote') === 0) {
@@ -32,6 +39,11 @@ final class SmquoteModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Serialise submitted extended quote fields before storage.
+     * @param array $data Submitted quote data.
+     * @return array Normalised data for the parent model.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $post = $this->administratorApplication()->getInput()->post->getArray();
@@ -45,6 +57,15 @@ final class SmquoteModel extends SportsManagementAdminModel
         return parent::prepareSportsManagementData($data);
     }
 
+    /**
+     * Notify administrators after saving and synchronise author images.
+     * Updates quotes by the same author using bound database parameters
+     * when a picture is supplied, then runs the parent save hook.
+     * @param array $data Saved quote data.
+     * @param int $id Saved quote identifier.
+     * @param bool $isNew Whether a new record was inserted.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         $app = $this->administratorApplication();
