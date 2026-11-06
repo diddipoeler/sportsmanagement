@@ -20,6 +20,11 @@ final class AllteamsModel extends SportsManagementListModel
     public int $limit = 0;
     public bool $use_current_season = false;
 
+    /**
+     * Initialise the public teams list using Joomla request filters.
+     * @param array $config Joomla list model options.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $input = $this->siteApplication()->getInput();
@@ -31,6 +36,10 @@ final class AllteamsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Calculate a valid page start for the team listing.
+     * @return int First result index for the current page.
+     */
     public function getStart()
     {
         $this->setState('list.start', $this->limitstart);
@@ -55,6 +64,11 @@ final class AllteamsModel extends SportsManagementListModel
         return $this->cache[$store] = $start;
     }
 
+    /**
+     * Build the filtered teams listing with clubs and project aliases.
+     * Uses Joomla query binding for user-supplied search and filters.
+     * @return mixed Joomla database query for available teams.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -134,6 +148,12 @@ final class AllteamsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Restore team search, publication, country and pagination filters.
+     * @param string|null $ordering Optional default list order.
+     * @param string|null $direction Optional order direction.
+     * @return void
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         $app = $this->siteApplication();
