@@ -17,6 +17,13 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextassociationT
 /** Native Joomla 5/6 administrator form model for associations. */
 final class JlextassociationModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native association table through Joomla MVC.
+     * @param string $type Requested association table name.
+     * @param string $prefix Legacy Joomla table namespace.
+     * @param array $config Optional table settings.
+     * @return mixed Association table or parent result.
+     */
     public function getTable($type = 'jlextassociation', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextassociation') === 0) {
@@ -26,6 +33,13 @@ final class JlextassociationModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Normalise association founding and dissolution dates for storage.
+     * Converts valid configured dates and derives founding/dissolution
+     * year and timestamp values for the existing administrator schema.
+     * @param array $data Submitted association form values.
+     * @return array Prepared association record data.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $founded = trim((string) ($data['founded'] ?? ''));
