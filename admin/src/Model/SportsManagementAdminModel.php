@@ -35,6 +35,12 @@ use Joomla\Registry\Registry;
  */
 abstract class SportsManagementAdminModel extends AdminModel
 {
+    /**
+     * Initialise the SportsManagement administrator form-model base.
+     * @param array $config Joomla admin model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @param FormFactoryInterface|null $formFactory Optional Joomla form factory.
+     */
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
@@ -49,6 +55,13 @@ abstract class SportsManagementAdminModel extends AdminModel
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Bind the administrator form model to its selected component database.
+     * Falls back to Joomla's default connection when external resolution
+     * fails during model construction.
+     * @param DatabaseInterface $db Joomla's default database connection.
+     * @return void
+     */
     public function setDatabase(DatabaseInterface $db): void
     {
         try {
@@ -65,6 +78,12 @@ abstract class SportsManagementAdminModel extends AdminModel
         }
     }
 
+    /**
+     * Load the native Joomla form and SportsManagement custom fields.
+     * @param array $data Existing form values.
+     * @param bool $loadData Whether to load persisted values.
+     * @return mixed Joomla form object or failure result.
+     */
     public function getForm($data = [], $loadData = true)
     {
         FormHelper::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -79,6 +98,10 @@ abstract class SportsManagementAdminModel extends AdminModel
         );
     }
 
+    /**
+     * Load pending administrator form data or the stored item.
+     * @return mixed Current form data.
+     */
     protected function loadFormData()
     {
         $name = strtolower($this->getName());
@@ -94,11 +117,25 @@ abstract class SportsManagementAdminModel extends AdminModel
         return $data;
     }
 
+    /**
+     * Persist a SportsManagement administrator record with audit fields.
+     * Requires an authenticated administrator identity, supports copying
+     * an existing record and invokes preparation and post-save hooks.
+     * @param array $data Submitted form model values.
+     * @return bool Whether the record was saved.
+     */
     public function save($data)
     {
         $app = $this->administratorApplication();
         $input = $app->getInput();
         $user = $app->getIdentity();
+
+        if ($user === null || (int) $user->id <= 0) {
+            $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
+
+            return false;
+        }
+
         $db = $this->getDatabase();
 
         $data['modified'] = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
@@ -159,6 +196,11 @@ abstract class SportsManagementAdminModel extends AdminModel
         return true;
     }
 
+    /**
+     * Convert extended form arrays into serialised registry fields.
+     * @param array $data Submitted admin form values.
+     * @return array Prepared values.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $post = $this->administratorApplication()->getInput()->post->getArray();
@@ -176,6 +218,13 @@ abstract class SportsManagementAdminModel extends AdminModel
         return $data;
     }
 
+    /**
+     * Handle an optional post-save hook in derived admin models.
+     * @param array $data Saved form values.
+     * @param int $id Saved record identifier.
+     * @param bool $isNew Whether a new record was inserted.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
     }
