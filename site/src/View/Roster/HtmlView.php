@@ -34,6 +34,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $playerstats = [];
     public array $lists = [];
 
+    /**
+     * Prepare current-season players, staff and optional roster statistics.
+     * Validates the native RosterModel, reads selected player/staff layouts,
+     * loads team memberships, event data and optional statistics, and
+     * sets a descriptive title and stylesheet for the roster page.
+     * @return void
+     * @throws \RuntimeException If the roster model is unavailable.
+     */
     protected function prepareView(): void
     {
         /** @var RosterModel $model */
