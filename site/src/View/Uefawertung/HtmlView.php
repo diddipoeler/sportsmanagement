@@ -23,11 +23,22 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $uefapoints = [];
     public array $seasonnames = [];
 
+    /**
+     * Disable global legacy rendering dependencies for UEFA coefficients.
+     * @return bool False because this view uses native presentation services.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Prepare UEFA five-year coefficients and season selection controls.
+     * Requires UefawertungModel, loads coefficient years and points, sorts
+     * season labels and sets the Joomla page title from the active menu.
+     * @return void
+     * @throws \RuntimeException If the native UEFA model is unavailable.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
