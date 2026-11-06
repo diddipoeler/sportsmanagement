@@ -21,6 +21,11 @@ final class PredictionroundsModel extends SportsManagementListModel
 {
     public int $prediction_id = 0;
 
+    /**
+     * Initialise the prediction-round list with supported sort fields.
+     * @param array $config Joomla list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -31,6 +36,11 @@ final class PredictionroundsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Count published rounds for a selected prediction game.
+     * @param int $prediction_id Prediction game identifier.
+     * @return int|false Active round count, or false on query error.
+     */
     public function getActivePredictionRoundsCount($prediction_id)
     {
         $predictionId = (int) $prediction_id;
@@ -53,6 +63,11 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List imported round identifiers belonging to a prediction game.
+     * @param int $prediction_id Prediction game identifier.
+     * @return array<int>|false Existing round IDs, or false on failure.
+     */
     public function getPredGamesPredictionRoundsIds($prediction_id)
     {
         $predictionId = (int) $prediction_id;
@@ -74,7 +89,10 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /** Return prediction games for the administrator selector. */
+    /**
+     * List prediction games for the administrator selector.
+     * @return array<int,object> Available prediction games.
+     */
     public function getPredictionGames(): array
     {
         $db = $this->getDatabase();
@@ -97,7 +115,11 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /** Return one prediction game for the rounds header/settings display. */
+    /**
+     * Find a prediction game for the rounds settings header.
+     * @param int $prediction_id Prediction game identifier.
+     * @return object|false Prediction game or false on failure.
+     */
     public function getPredictionGame($prediction_id)
     {
         $predictionId = (int) $prediction_id;
@@ -124,7 +146,11 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /** Return SportsManagement project IDs assigned to a prediction game. */
+    /**
+     * List projects assigned to the selected prediction game.
+     * @param int $prediction_id Prediction game identifier.
+     * @return array<int> Unique project IDs.
+     */
     public function getPredictionProjectIds($prediction_id): array
     {
         $predictionId = (int) $prediction_id;
@@ -152,7 +178,11 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
-    /** Return the round IDs belonging to a SportsManagement project. */
+    /**
+     * List round identifiers for a selected SportsManagement project.
+     * @param int $project_id Project identifier.
+     * @return array<int> Ordered project-round identifiers.
+     */
     public function getProjectRoundIds($project_id): array
     {
         $projectId = (int) $project_id;
@@ -181,6 +211,13 @@ final class PredictionroundsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Resolve the selected prediction game from modern and legacy filters.
+     * Preserves legacy administrator user state for existing redirects.
+     * @param string $ordering Default round sort field.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'roundcode', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -206,6 +243,12 @@ final class PredictionroundsModel extends SportsManagementListModel
         $app->setUserState('com_sportsmanagement.filter.prediction_id', $this->prediction_id);
     }
 
+    /**
+     * Build the administrator prediction-round listing query.
+     * Joins round names and editor details, filters by prediction game
+     * and sorts using the supported Joomla list fields.
+     * @return mixed Joomla database query for prediction rounds.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -263,6 +306,11 @@ final class PredictionroundsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Include the selected prediction game and list filters in cache keys.
+     * @param string $id Existing model cache identifier.
+     * @return string Filter-specific cache key.
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . $this->prediction_id;
