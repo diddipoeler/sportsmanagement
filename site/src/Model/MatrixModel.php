@@ -25,6 +25,11 @@ final class MatrixModel extends SportsManagementProjectModel
     public static int $projectid = 0;
     public static int $cfg_which_database = 0;
 
+    /**
+     * Initialise the matrix with project, division and round context.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -40,11 +45,20 @@ final class MatrixModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Read the selected or explicitly requested division.
+     * @param int|null $divisionId Division identifier or current selection.
+     * @return object|null Division record.
+     */
     public function getDivision(?int $divisionId = null): ?object
     {
         return parent::getDivision($divisionId ?? self::$divisionid);
     }
 
+    /**
+     * Read the currently selected matrix round.
+     * @return object|null Round record or null.
+     */
     public function getRound(): ?object
     {
         if (self::$roundid <= 0) {
@@ -63,6 +77,10 @@ final class MatrixModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * List published divisions in the active project.
+     * @return array<int,object> Project divisions.
+     */
     public function getDivisions(): array
     {
         if ($this->projectId <= 0) {
@@ -138,6 +156,11 @@ final class MatrixModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Index project teams by their project-team IDs.
+     * @param int|null $divisionId Optional division filter.
+     * @return array<int,object> Team records keyed by project-team ID.
+     */
     public function getProjectTeamsIndexed(?int $divisionId = null): array
     {
         $teams = [];
@@ -152,6 +175,12 @@ final class MatrixModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Group matrix results into home and away team pairings.
+     * @param iterable $teams Selected matrix teams.
+     * @param iterable $results Corresponding match results.
+     * @return mixed Team-pair result matrix.
+     */
     public function getRussiaMatrixResults($teams, $results)
     {
         foreach ($teams as $teamRow) {
@@ -208,6 +237,12 @@ final class MatrixModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Load match results for the selected project, round and division.
+     * @param int $projectId Project identifier.
+     * @param int|bool $unpublished Whether to include unpublished results.
+     * @return mixed Matching matrix result rows.
+     */
     public function getMatrixResults($projectId, $unpublished = 0)
     {
         $projectId = (int) $projectId;
@@ -258,6 +293,11 @@ final class MatrixModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Display a failed matrix database operation via Joomla messages.
+     * @param Throwable $e Caught database exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(
