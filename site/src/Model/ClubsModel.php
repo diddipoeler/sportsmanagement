@@ -20,6 +20,12 @@ final class ClubsModel extends SportsManagementProjectModel
     public static int $divisionid = 0;
     public static int $cfg_which_database = 0;
 
+    /**
+     * Initialise the clubs listing using current project and division.
+     * Stores legacy static context values for existing templates.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -30,6 +36,13 @@ final class ClubsModel extends SportsManagementProjectModel
         self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
     }
 
+    /**
+     * Read club records belonging to the selected project and divisions.
+     * Accepts a configured ordering expression and applies the project
+     * and division restrictions through Joomla database queries.
+     * @param string|null $ordering Optional club list sort expression.
+     * @return array<int,object> Project club records.
+     */
     public function getClubs($ordering = null): array
     {
         if ($this->projectId <= 0) {
@@ -106,6 +119,13 @@ final class ClubsModel extends SportsManagementProjectModel
         return $clubs;
     }
 
+    /**
+     * Normalise a club list ordering expression into column and direction.
+     * Falls back to the default ordering on malformed input.
+     * @param mixed $ordering Requested sort expression.
+     * @param string $default Default club database column.
+     * @return string Safe ordering expression.
+     */
     private function normaliseOrdering($ordering, string $default): string
     {
         $ordering = trim((string) $ordering);
