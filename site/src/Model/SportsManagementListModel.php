@@ -33,6 +33,14 @@ abstract class SportsManagementListModel extends ListModel
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Read lazy-initialised list state without re-entrant recursion.
+     * Returns the current state when a legacy populateState hook calls
+     * getState again during Joomla's initialisation.
+     * @param string|null $property Optional state property name.
+     * @param mixed $default Fallback state value.
+     * @return mixed Current model state or requested property.
+     */
     public function getState($property = null, $default = null)
     {
         if ($this->stateReadInProgress) {
@@ -58,17 +66,29 @@ abstract class SportsManagementListModel extends ListModel
     }
 
     /**
-     * Explicitly select the SportsManagement database for compatibility callers
-     * which do not derive their context from the current request.
+     * Resolve and verify the native Joomla database connection.
+     *
+     * @return DatabaseInterface Current Joomla database service.
+     * @throws \RuntimeException If Joomla returns an invalid database service.
      */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement site database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Explicitly select the SportsManagement database for list consumers.
+     * Rebinds the model to the selected database even when no menu/request
+     * context is available, such as in a module or helper.
+     * @param int $selector Database selector (zero or one).
+     * @return void
+     */
     public function setDatabaseSelector(int $selector): void
     {
         $this->databaseSelectorOverride = $selector === 1 ? 1 : 0;
@@ -77,6 +97,12 @@ abstract class SportsManagementListModel extends ListModel
         $this->setDatabase(self::joomlaDatabase());
     }
 
+    /**
+     * Bind the list model to the selected SportsManagement database.
+     * Uses a configured override or the active frontend request selector.
+     * @param DatabaseInterface $db Primary Joomla database connection.
+     * @return void
+     */
     public function setDatabase(DatabaseInterface $db): void
     {
         $selector = $this->databaseSelectorOverride
