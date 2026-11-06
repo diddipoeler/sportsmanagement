@@ -69,6 +69,13 @@ final class RankingPresentationHelper
         return $ranking;
     }
 
+    /**
+     * Render a ranked team's configured statistic as display text.
+     * Handles supported column codes, score pairs and optional model values.
+     * @param object $team Ranking calculation row.
+     * @param string $code Selected ranking column code.
+     * @return string Escaped or formatted statistic.
+     */
     public static function value(object $team, string $code): string
     {
         $code = strtoupper(trim($code));
@@ -112,6 +119,12 @@ final class RankingPresentationHelper
         };
     }
 
+    /**
+     * Render a movement indicator for a team relative to prior ranking.
+     * @param object $team Current ranking row.
+     * @param object|null $previous Previous ranking row, if known.
+     * @return string Escaped HTML trend indicator or empty text.
+     */
     public static function trend(object $team, ?object $previous): string
     {
         if (!$previous || !isset($previous->rank) || !isset($team->rank)) {
@@ -151,6 +164,11 @@ final class RankingPresentationHelper
         return '';
     }
 
+    /**
+     * Map a configured ranking column code to a supported sort key.
+     * @param string $code Ranking presentation column identifier.
+     * @return string Recognised ranking sort key.
+     */
     public static function sortKey(string $code): string
     {
         return match (strtoupper(trim($code))) {
@@ -179,6 +197,13 @@ final class RankingPresentationHelper
         };
     }
 
+    /**
+     * Resolve the numeric or textual statistic used to order teams.
+     * @param object $team Ranked team metrics.
+     * @param string $order Resolved ranking sort key.
+     * @param array $teams Additional project-team metadata.
+     * @return mixed Sort value for the selected column.
+     */
     private static function sortValue(object $team, string $order, array $teams): mixed
     {
         $metadata = $teams[(int) ($team->_ptid ?? 0)] ?? null;
@@ -210,16 +235,34 @@ final class RankingPresentationHelper
         };
     }
 
+    /**
+     * Call an optional ranking calculator method with a safe fallback.
+     * @param object $object Ranking data object.
+     * @param string $method Optional calculated-statistic method.
+     * @param mixed $fallback Value returned if method is unavailable.
+     * @return mixed Computed value or fallback.
+     */
     private static function call(object $object, string $method, mixed $fallback = 0): mixed
     {
         return method_exists($object, $method) ? $object->{$method}() : $fallback;
     }
 
+    /**
+     * Format two result counts separated by a colon.
+     * @param mixed $left First result count.
+     * @param mixed $right Second result count.
+     * @return string Formatted result pair.
+     */
     private static function pair(mixed $left, mixed $right): string
     {
         return self::number($left) . ':' . self::number($right);
     }
 
+    /**
+     * Format a numeric ranking value or escape nonnumeric text.
+     * @param mixed $value Calculated statistic.
+     * @return string Display-ready numeric or escaped value.
+     */
     private static function number(mixed $value): string
     {
         if ($value === '' || $value === null) {
@@ -229,11 +272,21 @@ final class RankingPresentationHelper
         return is_numeric($value) ? (string) ($value + 0) : self::escape((string) $value);
     }
 
+    /**
+     * Format a calculated fraction to at most two decimal places.
+     * @param mixed $value Decimal ranking value.
+     * @return string Normalised decimal display value.
+     */
     private static function decimal(mixed $value): string
     {
         return is_numeric($value) ? rtrim(rtrim(number_format((float) $value, 2, '.', ''), '0'), '.') : '0';
     }
 
+    /**
+     * Validate a CSS colour for use in ranking tables.
+     * @param string $value Configured colour name or functional colour.
+     * @return string Valid CSS colour or empty text.
+     */
     private static function safeColor(string $value): string
     {
         return preg_match('/^(#[0-9a-f]{3,8}|[a-z]+|rgba?\([0-9.,% ]+\)|hsla?\([0-9.,% ]+\))$/i', $value)
@@ -241,6 +294,11 @@ final class RankingPresentationHelper
             : '';
     }
 
+    /**
+     * Escape an arbitrary ranking label for safe HTML output.
+     * @param string $value Raw label text.
+     * @return string Escaped label.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
