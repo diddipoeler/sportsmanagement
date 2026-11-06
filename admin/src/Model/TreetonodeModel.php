@@ -17,6 +17,13 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator form model for one tournament-tree node. */
 final class TreetonodeModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native tournament-tree node table.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Optional table configuration.
+     * @return mixed Native node table or parent table.
+     */
     public function getTable($type = 'Treetonode', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Treetonode') === 0) {
@@ -26,6 +33,11 @@ final class TreetonodeModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Load a tournament-tree node by ID or from the current request.
+     * @param int $nodeId Tree node identifier, or zero for request ID.
+     * @return object|null Selected node or null when unavailable.
+     */
     public function getNode(int $nodeId = 0): ?object
     {
         if ($nodeId <= 0) {
@@ -47,6 +59,11 @@ final class TreetonodeModel extends SportsManagementAdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load matches linked to a tournament-tree node.
+     * @param int $nodeId Node ID or zero to read the current request.
+     * @return array<int,object> Node matches and joined team information.
+     */
     public function getNodeMatch(int $nodeId = 0): array
     {
         if ($nodeId <= 0) {
@@ -89,6 +106,13 @@ final class TreetonodeModel extends SportsManagementAdminModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Unpublish a selected tournament-tree node.
+     * Uses an integer-bound node identifier from the explicit argument
+     * or the administrator POST data.
+     * @param int $nodeId Node ID or zero for posted ID.
+     * @return bool Whether the database update succeeded.
+     */
     public function setUnpublishNode(int $nodeId = 0): bool
     {
         if ($nodeId <= 0) {
@@ -117,6 +141,11 @@ final class TreetonodeModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Find tournament project metadata by integer project ID.
+     * @param int $projectId Project identifier.
+     * @return object|null Project record or null when unavailable.
+     */
     public function getProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -138,6 +167,11 @@ final class TreetonodeModel extends SportsManagementAdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * List project teams for tournament node selection controls.
+     * @param int $projectId Tournament project identifier.
+     * @return array<int,object> Available project team options.
+     */
     public function getProjectTeamsOptions(int $projectId): array
     {
         if ($projectId <= 0) {
