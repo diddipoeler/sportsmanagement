@@ -23,6 +23,12 @@ use Joomla\Filesystem\File;
  */
 final class SmquotetxtModel extends AdminModel
 {
+    /**
+     * Load the administrator quote source file editor form.
+     * @param array $data Existing form values.
+     * @param bool $loadData Whether Joomla should load stored values.
+     * @return mixed Joomla quote editor form.
+     */
     public function getForm($data = [], $loadData = true)
     {
         FormHelper::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -34,6 +40,13 @@ final class SmquotetxtModel extends AdminModel
         );
     }
 
+    /**
+     * Write an authorised change to an existing quote source file.
+     * Requires component administrator rights, bounds source length,
+     * validates the filename and refuses symlink/escape paths.
+     * @param mixed $data Submitted filename and source text.
+     * @return bool Whether the source file was saved.
+     */
     public function save($data)
     {
         // Check permissions at the model boundary too: other Joomla
@@ -86,6 +99,10 @@ final class SmquotetxtModel extends AdminModel
         return true;
     }
 
+    /**
+     * Load the quote editor's pending input or existing source.
+     * @return mixed Current quote editor form data.
+     */
     protected function loadFormData()
     {
         $data = $this->administratorApplication()->getUserState(
@@ -100,6 +117,10 @@ final class SmquotetxtModel extends AdminModel
         return $data;
     }
 
+    /**
+     * Read an existing validated quote-module source file.
+     * @return object Source file descriptor or empty object on failure.
+     */
     public function getSource()
     {
         $fileName = $this->normaliseFileName(
@@ -139,6 +160,10 @@ final class SmquotetxtModel extends AdminModel
         return $item;
     }
 
+    /**
+     * Resolve the installed module folder for quote source editing.
+     * @return string Quote module root directory.
+     */
     private function getEditorPath(): string
     {
         return JPATH_SITE
@@ -146,6 +171,11 @@ final class SmquotetxtModel extends AdminModel
             . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
     }
 
+    /**
+     * Validate a quote source filename against the supported extensions.
+     * @param string $fileName Submitted source filename.
+     * @return string|null Safe filename or null when invalid.
+     */
     private function normaliseFileName(string $fileName): ?string
     {
         $fileName = trim($fileName);
@@ -160,8 +190,13 @@ final class SmquotetxtModel extends AdminModel
     }
 
     /**
-     * Never edit a missing path or follow a symlink outside the module.
-     * Only the module's existing root-level source files are editable.
+     * Resolve only existing, regular quote-module source files.
+     *
+     * Rejects symlink paths, missing files and paths outside the module
+     * root so an administrator cannot edit arbitrary system files.
+     *
+     * @param string $fileName Validated root-level source filename.
+     * @return string|null Existing real file path or null.
      */
     private function validatedExistingFile(string $fileName): ?string
     {
@@ -184,6 +219,10 @@ final class SmquotetxtModel extends AdminModel
             : null;
     }
 
+    /**
+     * Resolve the active Joomla administrator application.
+     * @return AdministratorApplication Current administrator runtime.
+     */
     private function administratorApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
