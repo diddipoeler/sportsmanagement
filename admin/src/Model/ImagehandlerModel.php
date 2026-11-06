@@ -31,6 +31,10 @@ final class ImagehandlerModel extends BaseDatabaseModel
 {
     private ?Pagination $pagination = null;
 
+    /**
+     * Initialise the image browser with request-backed pagination and filters.
+     * @param array $config Joomla image handler model configuration.
+     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -91,6 +95,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
         parent::setDatabase($db);
     }
 
+    /**
+     * Assign a selected large logo to a club record.
+     * @param array $data Club ID and selected image file.
+     * @return bool|string True on success or a failure message.
+     */
     public function saveimageclub(array $data): bool|string
     {
         return $this->updateImageField(
@@ -102,6 +111,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Assign a selected image to a season team-player relation.
+     * @param array $data Team player ID and selected picture.
+     * @return bool|string True on success or a failure message.
+     */
     public function saveimageteamplayer(array $data): bool|string
     {
         return $this->updateImageField(
@@ -113,6 +127,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Assign a selected image to a person record.
+     * @param array $data Player ID and selected picture.
+     * @return bool|string True on success or a failure message.
+     */
     public function saveimageplayer(array $data): bool|string
     {
         return $this->updateImageField(
@@ -125,9 +144,12 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * Return the image metadata for the current page.
+     * Read image metadata for the active page of the image browser.
      *
-     * @return array<int, object>
+     * Uses validated readable files, extracts dimensions and scales the
+     * image preview to the configured maximum size.
+     *
+     * @return array<int,object> Images with size and dimensions.
      */
     public function getImages(): array
     {
@@ -243,6 +265,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
         return $images;
     }
 
+    /**
+     * Format a byte count as a human-readable size.
+     * @param int $size File size in bytes.
+     * @return string Formatted size in bytes, kilobytes or megabytes.
+     */
     public function _parseSize(int $size): string
     {
         if ($size < 1024) {
@@ -257,7 +284,12 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * @return array{0:int,1:int}
+     * Calculate proportional image dimensions for a preview target.
+     *
+     * @param int $width Source image width.
+     * @param int $height Source image height.
+     * @param int $target Target longest-side length.
+     * @return array{0:int,1:int} Scaled width and height.
      */
     public function _imageResize(int $width, int $height, int $target): array
     {
@@ -273,6 +305,10 @@ final class ImagehandlerModel extends BaseDatabaseModel
         ];
     }
 
+    /**
+     * Construct or reuse Joomla pagination for the image browser.
+     * @return Pagination Current image list pagination.
+     */
     public function getPagination(): Pagination
     {
         if ($this->pagination === null) {
@@ -290,6 +326,16 @@ final class ImagehandlerModel extends BaseDatabaseModel
         return $this->pagination;
     }
 
+    /**
+     * Persist a selected image filename in the allowed target record.
+     * Uses a component-controlled table and column, not user-supplied SQL.
+     * @param string $table Database table to update.
+     * @param int $id Target row identifier.
+     * @param string $column Image column name.
+     * @param string $prefix Component image directory prefix.
+     * @param string $picture Selected image filename.
+     * @return bool|string True or a translated/failure string.
+     */
     private function updateImageField(
         string $table,
         int $id,
@@ -315,6 +361,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Extract a usable basename from a chosen image filename.
+     * @param string $picture User-selected picture name or path.
+     * @return string|null Selected basename or null if invalid.
+     */
     private function normaliseImageName(string $picture): ?string
     {
         $picture = trim(str_replace('\\', '/', $picture));
@@ -327,6 +378,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
         return $name;
     }
 
+    /**
+     * Validate an image browser directory relative to its trusted root.
+     * @param string $folder Image folder requested by the browser.
+     * @return string|null Valid relative path or null if invalid.
+     */
     private function normaliseRelativeFolder(string $folder): ?string
     {
         $folder = trim(str_replace('\\', '/', $folder), '/');
@@ -345,12 +401,16 @@ final class ImagehandlerModel extends BaseDatabaseModel
 
         return implode('/', $parts);
     }
+    /**
+     * Resolve and verify the Joomla administrator application service.
+     * @return AdministratorApplication Valid administrator application.
+     * @throws \RuntimeException If the application is unavailable.
+     */
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
-        /** @var AdministratorApplication $app */
         $app = Factory::getContainer()->get(AdministratorApplication::class);
 
-        if (!$app->isClient('administrator')) {
+        if (!$app instanceof AdministratorApplication || !$app->isClient('administrator')) {
             throw new \RuntimeException('SportsManagement image handler model requires the Joomla administrator application.', 500);
         }
 
