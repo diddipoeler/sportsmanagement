@@ -29,18 +29,34 @@ use Joomla\Registry\Registry;
  */
 final class MatchCommentsHelper
 {
+    /**
+     * Resolve the Joomla site application for comment plugin events.
+     * @return SiteApplication Validated Joomla site application.
+     * @throws \RuntimeException When the service is unavailable.
+     */
     private static function siteApplication(): SiteApplication
     {
-        /** @var SiteApplication $application */
         $application = Factory::getContainer()->get(SiteApplication::class);
+
+        if (!$application instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement comments site application is unavailable.', 500);
+        }
 
         return $application;
     }
 
+    /**
+     * Resolve Joomla's database for optional comments integrations.
+     * @return DatabaseInterface Validated Joomla database service.
+     * @throws \RuntimeException When no database service is available.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement comments database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -54,6 +70,16 @@ final class MatchCommentsHelper
     private static bool $jcommentsAvailable = false;
     private static bool $separateComments = false;
 
+    /**
+     * Render enabled Kunena or JComments content for a match.
+     * Falls back to JComments when the optional Kunena integration fails.
+     * @param object $match Current match record.
+     * @param object $homeTeam Home team record.
+     * @param object $awayTeam Away team record.
+     * @param array $config Match comments presentation options.
+     * @param object|null $project Optional project configuration.
+     * @return string Comment markup or an empty string.
+     */
     public static function render(object $match, object $homeTeam, object $awayTeam, array $config, ?object $project): string
     {
         $preview = $match->preview ?? '';
@@ -85,6 +111,15 @@ final class MatchCommentsHelper
         return Text::_('Comments not available');
     }
 
+    /**
+     * Build a Kunena topic link and count for the current match.
+     * @param object $match Current match.
+     * @param object $homeTeam Home team record.
+     * @param object $awayTeam Away team record.
+     * @param array $config Comments display configuration.
+     * @param object|null $project Kunena category settings.
+     * @return string Kunena topic/comment link markup.
+     */
     private static function renderKunena(object $match, object $homeTeam, object $awayTeam, array $config, ?object $project): string
     {
         $categoryId = (int) ($project->sb_catid ?? 0);
@@ -124,6 +159,13 @@ final class MatchCommentsHelper
         return HTMLHelper::link(Route::_($url), $label);
     }
 
+    /**
+     * Run the JComments plugin event for a match if it is available.
+     * @param object $match Current match.
+     * @param object $homeTeam Home team record.
+     * @param object $awayTeam Away team record.
+     * @return string Combined plugin-provided comments markup.
+     */
     private static function renderJComments(object $match, object $homeTeam, object $awayTeam): string
     {
         if (!self::prepareJComments()) {
@@ -146,6 +188,11 @@ final class MatchCommentsHelper
         return implode('', array_unique($output));
     }
 
+    /**
+     * Resolve and cache the Kunena Joomla menu item identifier.
+     * @param DatabaseInterface $db Joomla database connection.
+     * @return int Kunena menu item ID or zero when unavailable.
+     */
     private static function getKunenaItemId(DatabaseInterface $db): int
     {
         if (self::$kunenaItemResolved) {
@@ -166,6 +213,10 @@ final class MatchCommentsHelper
         return self::$kunenaItemId;
     }
 
+    /**
+     * Load the optional SportsManagement JComments content plugin.
+     * @return bool Whether the comments integration can be used.
+     */
     private static function prepareJComments(): bool
     {
         if (self::$jcommentsPrepared) {
@@ -187,6 +238,12 @@ final class MatchCommentsHelper
         return true;
     }
 
+    /**
+     * Render the match comment count as a label or icon.
+     * @param int $count Number of match comments.
+     * @param int $mode Comment count image or text display mode.
+     * @return string Escaped HTML for the comment count.
+     */
     private static function commentCountMarkup(int $count, int $mode): string
     {
         $label = match (true) {
@@ -203,6 +260,11 @@ final class MatchCommentsHelper
         return '<span title="' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '">(' . $count . ')</span>';
     }
 
+    /**
+     * Detect a JComments disable or lock marker in match preview text.
+     * @param string $preview Current match preview content.
+     * @return bool True when comments are explicitly disabled.
+     */
     private static function commentsDisabled(string $preview): bool
     {
         return $preview !== '' && preg_match('/{jcomments\s+(off|lock)}/is', $preview) === 1;
