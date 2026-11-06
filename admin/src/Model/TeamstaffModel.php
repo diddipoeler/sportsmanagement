@@ -19,6 +19,14 @@ use Joomla\Registry\Registry;
 /** Native Joomla 5/6 administrator form model for team staff assignments. */
 final class TeamstaffModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the team-staff administrator form and configured picture fields.
+     * Reads component media settings and assigns the default picture,
+     * directory and media control type.
+     * @param array $data Optional form data.
+     * @param bool $loadData Whether stored values should be loaded.
+     * @return mixed Joomla form or false when unavailable.
+     */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
@@ -41,6 +49,13 @@ final class TeamstaffModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Resolve the native team-staff database table.
+     * @param string $type Requested Joomla table name.
+     * @param string $prefix Legacy table prefix.
+     * @param array $config Optional table settings.
+     * @return mixed Native TeamstaffTable or parent table.
+     */
     public function getTable($type = 'teamstaff', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'teamstaff') === 0) {
@@ -50,7 +65,14 @@ final class TeamstaffModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
-    /** Update selected project-position assignments from a compact list form. */
+    /**
+     * Save selected project-position assignments from the compact staff list.
+     *
+     * Reads staff IDs and position changes from Joomla POST and writes
+     * the assignments in a transaction with rollback on database failure.
+     *
+     * @return bool Whether all selected assignments were saved.
+     */
     public function saveshort(): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -82,6 +104,14 @@ final class TeamstaffModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Update ordering of selected team-staff relationships.
+     * Updates only positive team-staff record identifiers within
+     * a transaction and rolls back when database writes fail.
+     * @param array|null $pks Selected staff IDs.
+     * @param array|null $order Desired ordering values.
+     * @return bool Whether the update succeeded.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $ids = array_values(array_map('intval', (array) $pks));
@@ -119,7 +149,15 @@ final class TeamstaffModel extends SportsManagementAdminModel
         }
     }
 
-    /** Delete dependent match-staff rows before removing team-staff assignments. */
+    /**
+     * Remove team-staff assignments and dependent match-staff records.
+     *
+     * Deletes match staff and statistic relations before delegating the
+     * parent staff deletion, all within one database transaction.
+     *
+     * @param array $pks Selected team-staff IDs, updated on success.
+     * @return bool Whether all related records were deleted.
+     */
     public function delete(&$pks)
     {
         $ids = array_values(array_unique(array_filter(array_map('intval', (array) $pks))));
@@ -155,6 +193,11 @@ final class TeamstaffModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Serialise extended team-staff form fields into registry data.
+     * @param array $data Submitted team-staff values.
+     * @return array Updated model data for saving.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $extended = $this->administratorApplication()->getInput()->post->get('extended', null, 'array');
@@ -168,13 +211,23 @@ final class TeamstaffModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Check edit permission for a team-staff record.
+     * Falls back to Joomla's standard model ACL when no record-specific
+     * edit permission is granted or an identity is absent.
+     * @param array $data Team-staff row data.
+     * @param string $key Record identifier key.
+     * @return bool Whether the record can be edited.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.teamstaff.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
