@@ -18,6 +18,11 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator list model for countries. */
 final class JlextcountriesModel extends SportsManagementListModel
 {
+    /**
+     * Initialise country-list filters and supported ordering columns.
+     * @param array $config Joomla list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -43,6 +48,11 @@ final class JlextcountriesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load federations as country-form selection options.
+     * Reports missing federations and database errors through Joomla messages.
+     * @return array<int,object> Federation option records.
+     */
     public function getFederation(): array
     {
         $app = $this->administratorApplication();
@@ -75,6 +85,13 @@ final class JlextcountriesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Apply federation and country-map filters from the request.
+     * Accepts only supported null/not-null map filter expressions.
+     * @param string $ordering Default country sort column.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'objcountry.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -94,6 +111,11 @@ final class JlextcountriesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the filtered and safely sorted administrator country list.
+     * Joins federation and editor names and applies existing list filters.
+     * @return mixed Joomla database query for countries.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
