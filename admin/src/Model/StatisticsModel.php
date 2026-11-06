@@ -21,6 +21,11 @@ final class StatisticsModel extends SportsManagementListModel
 {
     protected $_identifier = 'statistics';
 
+    /**
+     * Register statistics list filters and sortable columns.
+     * @param array $config Joomla administrator list configuration.
+     * @param MVCFactoryInterface|null $factory Optional model factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -36,6 +41,12 @@ final class StatisticsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Build the filtered statistics administrator query.
+     * Joins sport type and editor information, applies bound search
+     * filters and validates sorting against recognised columns.
+     * @return mixed Joomla database query for statistic definitions.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -103,6 +114,11 @@ final class StatisticsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * List statistics already assigned to a playing position.
+     * @param int $id Playing-position identifier.
+     * @return array<int,object> Assigned statistic selector items.
+     */
     public function getPositionStatsOptions($id): array
     {
         $positionId = max(0, (int) $id);
@@ -136,6 +152,11 @@ final class StatisticsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List statistics not yet assigned to a playing position.
+     * @param int $id Playing-position identifier.
+     * @return array<int,object> Unassigned statistic options.
+     */
     public function getAvailablePositionStatsOptions($id): array
     {
         $positionId = max(0, (int) $id);
@@ -166,6 +187,10 @@ final class StatisticsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load all statistic definitions for a Joomla selection field.
+     * @return array<int,object> Statistic selector items.
+     */
     public function getStatisticListSelect(): array
     {
         $db = $this->getDatabase();
@@ -187,6 +212,12 @@ final class StatisticsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load search, publication, sports type and pagination filters.
+     * @param string $ordering Default statistic sort column.
+     * @param string $direction Default list sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'obj.name', $direction = 'ASC')
     {
         $app = $this->administratorApplication();
