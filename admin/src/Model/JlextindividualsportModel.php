@@ -22,27 +22,48 @@ use Joomla\Database\ParameterType;
 /** Joomla 5/6 compatibility form model for individual-match rows. */
 final class JlextindividualsportModel extends SportsManagementAdminModel
 {
+    /**
+     * Create the native single-match table for individual sports.
+     * @param string $type Requested table type.
+     * @param string $prefix Joomla table prefix.
+     * @param array $config Additional table options.
+     * @return MatchSingleTable Table bound to the component database.
+     */
     public function getTable($type = 'MatchSingle', $prefix = 'Administrator', $config = [])
     {
         return new MatchSingleTable($this->getDatabase());
     }
 
-    /** @return array{0:int,1:int} inserted, failed */
+    /**
+     * Generate individual match rows through the native admin service.
+     *
+     * @return array{0:int,1:int} Numbers of inserted and failed matches.
+     */
     public function generatematchsingles(): array
     {
         $app = $this->administratorApplication();
         return (new IndividualMatchAdminService($this->getDatabase()))->generateSingles(
             $app->getInput()->post->getArray(),
-            (int) $app->getIdentity()->id,
+            (int) ($app->getIdentity()?->id ?? 0),
             Factory::getDate()->toSql()
         );
     }
 
+    /**
+     * Create an individual match through the native admin service.
+     * @param array $post Submitted individual match values.
+     * @return bool Whether a match was added.
+     */
     public function addmatch(array $post = []): bool
     {
         return (new IndividualMatchAdminService($this->getDatabase()))->addMatch($post);
     }
 
+    /**
+     * Persist short-form individual match changes from POST.
+     * Delegates to the native write service and records the current user.
+     * @return bool Whether the changes were saved.
+     */
     public function saveshort(): bool
     {
         $app = $this->administratorApplication();
@@ -51,19 +72,33 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
         return (new IndividualMatchWriteService($this->getDatabase()))->saveShort(
             $input->post->getArray(),
             $ids,
-            (int) $app->getIdentity()->id,
+            (int) ($app->getIdentity()?->id ?? 0),
             Factory::getDate()->toSql()
         );
     }
 
+    /**
+     * Delete selected individual matches via the native service.
+     * @param array $pks Selected match identifiers.
+     * @return bool Whether the matches were deleted.
+     */
     public function delete(&$pks): bool
     {
         return (new IndividualMatchAdminService($this->getDatabase()))->deleteSingles((array) $pks);
     }
 
     /**
-     * Backwards-compatible static reader kept for third-party templates.
-     * New component code uses IndividualMatchReadService instead.
+     * Read individual match rows for a player's selected team and project.
+     *
+     * Backwards-compatible reader for external templates; component code
+     * should prefer IndividualMatchReadService.
+     *
+     * @param int $projectId Project identifier.
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $seasonTeamPersonId Player membership identifier.
+     * @param string $matchType Individual match type.
+     * @param string $homeAway Which team side to select.
+     * @return array<int,object> Individual match records.
      */
     public static function getmatchsingle_rowshome(
         $projectId = 0,
@@ -103,6 +138,10 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * Resolve the component database for compatibility match readers.
+     * @return DatabaseInterface Selected SportsManagement database.
+     */
     private static function sportsDatabase(): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve();
