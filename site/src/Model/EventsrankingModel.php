@@ -33,6 +33,11 @@ final class EventsrankingModel extends SportsManagementProjectModel
     public $_pagination = null;
     public ?string $order = 'desc';
 
+    /**
+     * Initialise event ranking filters from request and template settings.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -54,6 +59,11 @@ final class EventsrankingModel extends SportsManagementProjectModel
         $this->setOrder($input->getCmd('order', 'desc'));
     }
 
+    /**
+     * Set the event ranking direction when ASC or DESC is requested.
+     * @param string $order Requested ordering.
+     * @return string Current ordering.
+     */
     public function setOrder($order)
     {
         $value = strtolower((string) $order);
@@ -63,12 +73,20 @@ final class EventsrankingModel extends SportsManagementProjectModel
         return $this->order;
     }
 
+    /**
+     * Return a single selected project team identifier.
+     * @return int Team identifier or zero.
+     */
     public function getTeamId()
     {
         $ids = self::normaliseIds(self::$teamid);
         return count($ids) === 1 ? $ids[0] : 0;
     }
 
+    /**
+     * Build Joomla pagination for event ranking results.
+     * @return Pagination Current ranking pagination.
+     */
     public function getPagination(): Pagination
     {
         if (!$this->_pagination instanceof Pagination) {
@@ -77,6 +95,10 @@ final class EventsrankingModel extends SportsManagementProjectModel
         return $this->_pagination;
     }
 
+    /**
+     * Count matching team players for the selected event types.
+     * @return int Matching ranking rows.
+     */
     public function getTotal(): int
     {
         if ($this->_total !== null) {
@@ -111,16 +133,33 @@ final class EventsrankingModel extends SportsManagementProjectModel
         return $this->_total;
     }
 
+    /**
+     * Return the ranking page's first row offset.
+     * @return int Pagination start.
+     */
     public static function getLimitStart(): int
     {
         return self::$limitstart;
     }
 
+    /**
+     * Return the selected event ranking page size.
+     * @return int Page size.
+     */
     public static function getLimit(): int
     {
         return self::$limit;
     }
 
+    /**
+     * Load event leaderboards by configured event type.
+     * @param int $limit Optional ranking row limit.
+     * @param int $limitstart Pagination offset.
+     * @param string|null $order Ranking direction.
+     * @param bool $dart Whether special scoring applies.
+     * @param int $sports_type_id Optional sports-type filter.
+     * @return array|null Event ranking data or null.
+     */
     public function getEventRankings($limit = 0, $limitstart = 0, $order = null, $dart = false, $sports_type_id = 0)
     {
         $eventTypes = self::getEventTypes((int) $sports_type_id);
@@ -145,6 +184,11 @@ final class EventsrankingModel extends SportsManagementProjectModel
         return $rankings;
     }
 
+    /**
+     * List event types used in the active ranking context.
+     * @param int $sports_type_id Optional sports-type identifier.
+     * @return array<int,object> Event type options.
+     */
     public static function getEventTypes($sports_type_id = 0): array
     {
         $db = self::database();
@@ -181,6 +225,18 @@ final class EventsrankingModel extends SportsManagementProjectModel
         return $db->loadObjectList('etid') ?: [];
     }
 
+    /**
+     * Query a leaderboard for one or more event types.
+     * @param mixed $eventtype_id Selected event type identifiers.
+     * @param string $order Ranking sort direction.
+     * @param int $limit Row limit.
+     * @param int $limitstart Pagination offset.
+     * @param bool $dart Whether special scoring applies.
+     * @param string $directionspoint Point ordering direction.
+     * @param string $directionscounter Counter ordering direction.
+     * @param int $directionspointpos Point direction selector.
+     * @return array<int,object> Ranking rows.
+     */
     public static function _getEventsRanking($eventtype_id, $order = 'DESC', $limit = 10, $limitstart = 0, $dart = false, $directionspoint = 'DESC', $directionscounter = 'DESC', $directionspointpos = 1): array
     {
         $eventIds = self::normaliseIds($eventtype_id);
@@ -274,6 +330,13 @@ final class EventsrankingModel extends SportsManagementProjectModel
         return $rows;
     }
 
+    /**
+     * Apply project, team and division restrictions to ranking SQL.
+     * @param mixed $query Mutable Joomla query.
+     * @param DatabaseInterface $db Active component database.
+     * @param bool $withMatchJoins Whether match joins are present.
+     * @return void
+     */
     private static function applyRankingFilters($query, DatabaseInterface $db, bool $withMatchJoins): void
     {
         $projectIds = self::normaliseIds(self::$projectid);
@@ -306,19 +369,42 @@ final class EventsrankingModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Parse comma- or pipe-separated IDs with validation.
+     * @param mixed $value Candidate IDs or delimited string.
+     * @return array<int> Unique positive IDs.
+     */
     private static function normaliseIds($value): array
     {
         $parts = is_array($value) ? $value : preg_split('/[|,]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
         $ids = [];
-        foreach ($parts ?: [] as $part) {
-            $id = (int) $part;
-            if ($id > 0) {
+
+        foreach (array_slice($parts ?: [], 0, 500) as $part) {
+            if (!is_int($part) && !is_string($part)) {
+                continue;
+            }
+
+            $text = trim((string) $part);
+
+            if (strlen($text) > 20 || preg_match('/^[0-9]+$/D', $text) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($text, '0');
+            $id = $digits === '' ? false : filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
                 $ids[$id] = $id;
             }
         }
+
         return array_values($ids);
     }
 
+    /**
+     * Resolve the selected SportsManagement database.
+     * @return DatabaseInterface Component database connection.
+     */
     private static function database(): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
@@ -327,10 +413,18 @@ final class EventsrankingModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Resolve the native Joomla database service.
+     * @return DatabaseInterface Valid Joomla database connection.
+     * @throws \RuntimeException When the service is unavailable.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement event ranking database service is unavailable.', 500);
+        }
 
         return $database;
     }
