@@ -18,6 +18,21 @@ use Joomla\Filesystem\Folder;
 /** Write the optional club KML file without loading the legacy map/geocoder helper. */
 final class ClubKmlHelper
 {
+    /**
+     * Generate a KML placemark describing a club and its location.
+     *
+     * Validates the club identifier and geographic coordinate range,
+     * safely escapes XML content and creates the KML file within Joomla's
+     * temporary folder, optionally including a validated picture URL.
+     *
+     * @param int $clubId Club identifier used in the output filename.
+     * @param string $address Club location and description.
+     * @param string $name Club display name.
+     * @param string $picture Optional club image URL or site path.
+     * @param float|null $latitude Latitude in degrees.
+     * @param float|null $longitude Longitude in degrees.
+     * @return bool True when a KML file was written successfully.
+     */
     public static function write(
         int $clubId,
         string $address,
@@ -83,8 +98,14 @@ final class ClubKmlHelper
     }
 
     /**
-     * Use only safe HTTP(S) URLs or paths beneath the site's public root.
-     * Malformed optional image paths must not invalidate the club KML itself.
+     * Resolve an optional picture to a safe KML icon URL.
+     *
+     * Rejects executable URI schemes, control characters, encoded path
+     * traversal and credential-bearing remote URLs, preserving valid
+     * HTTP(S) and site-relative images.
+     *
+     * @param string $picture Candidate image URL or site path.
+     * @return string Valid KML image URL or an empty string.
      */
     private static function pictureUrl(string $picture): string
     {
