@@ -18,6 +18,11 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native Joomla 5/6 controller for the DFB-key schedule importer. */
 final class JlextdfbkeyimportController extends BaseController
 {
+    /**
+     * Select the project and division for a DFB key import.
+     * Requires a valid POST token and component administration access.
+     * @return bool True after redirecting to the selection form.
+     */
     public function getdivisionfirst()
     {
         $this->assertImportPermission();
@@ -33,6 +38,11 @@ final class JlextdfbkeyimportController extends BaseController
         return true;
     }
 
+    /**
+     * Store selected DFB import options and open matchday editing.
+     * Validates the Joomla session token and administrator access.
+     * @return bool True after preparing the next importer layout.
+     */
     public function apply()
     {
         $this->assertImportPermission();
@@ -49,6 +59,13 @@ final class JlextdfbkeyimportController extends BaseController
         return true;
     }
 
+    /**
+     * Validate and persist imported DFB project round records.
+     * Validates project, division, row length and round/date fields before
+     * the native import model receives any records for persistence.
+     * @return mixed Import-save result from the controller workflow.
+     * @throws \UnexpectedValueException For malformed import rows.
+     */
     public function save()
     {
         $this->assertImportPermission();
@@ -129,6 +146,13 @@ final class JlextdfbkeyimportController extends BaseController
         return true;
     }
 
+    /**
+     * Validate and insert DFB match records into selected project rounds.
+     * Checks the requested match numbers, teams and optional dates against
+     * bounded input arrays before creating imported match records.
+     * @return mixed Import-insert operation result.
+     * @throws \UnexpectedValueException If the match input is malformed.
+     */
     public function insert()
     {
         $this->assertImportPermission();
@@ -208,11 +232,23 @@ final class JlextdfbkeyimportController extends BaseController
         return true;
     }
 
+    /**
+     * Resolve the DFB importer model using Joomla administrator MVC.
+     * @param string $name Requested importer model.
+     * @param string $prefix Administrator MVC namespace.
+     * @param array $config Additional Joomla model settings.
+     * @return mixed Model result from the parent controller.
+     */
     public function getModel($name = 'Jlextdfbkeyimport', $prefix = 'Administrator', $config = [])
     {
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Require a valid form token and component core.admin permission.
+     * @return void
+     * @throws \RuntimeException If the import request is unauthorised.
+     */
     private function assertImportPermission(): void
     {
         $this->checkToken();
@@ -223,6 +259,11 @@ final class JlextdfbkeyimportController extends BaseController
         }
     }
 
+    /**
+     * Convert a strictly positive decimal identifier without loose casting.
+     * @param mixed $value Submitted numeric identifier.
+     * @return int Positive integer or zero for invalid input.
+     */
     private static function positiveId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -242,6 +283,11 @@ final class JlextdfbkeyimportController extends BaseController
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Convert an optional identifier, preserving an explicit empty value.
+     * @param mixed $value Optional submitted identifier.
+     * @return int|null Zero for empty, positive ID for valid input or null if invalid.
+     */
     private static function optionalId(mixed $value): ?int
     {
         if ($value === '' || $value === 0 || $value === '0' || $value === null) {
@@ -253,6 +299,14 @@ final class JlextdfbkeyimportController extends BaseController
         return $id > 0 ? $id : null;
     }
 
+    /**
+     * Read an importer form array while enforcing the requested row bound.
+     * @param array $post Submitted form values.
+     * @param string $key Array field to extract.
+     * @param int $maximum Maximum permitted number of rows.
+     * @return array Validated indexed rows.
+     * @throws \UnexpectedValueException For malformed or oversized input.
+     */
     private function rows(array $post, string $key, int $maximum): array
     {
         $raw = $post[$key] ?? [];
@@ -264,6 +318,12 @@ final class JlextdfbkeyimportController extends BaseController
         return array_values($raw);
     }
 
+    /**
+     * Validate a submitted ISO calendar date or an empty value.
+     * Rejects malformed and nonexistent dates without PHP's date rollover.
+     * @param mixed $value Submitted date value.
+     * @return bool Whether the date is valid or omitted.
+     */
     private static function validDateInput(mixed $value): bool
     {
         if ($value === null || $value === '') {
@@ -280,6 +340,12 @@ final class JlextdfbkeyimportController extends BaseController
             && $date->format('Y-m-d') === trim($value);
     }
 
+    /**
+     * Use the submitted nonempty date or its configured fallback.
+     * @param mixed $value Submitted date value.
+     * @param string|null $fallback Optional default date.
+     * @return string|null Normalised date value.
+     */
     private function normaliseDate($value, ?string $fallback): ?string
     {
         return is_string($value) && trim($value) !== '' ? trim($value) : $fallback;
