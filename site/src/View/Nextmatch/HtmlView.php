@@ -57,6 +57,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public $away_highest_away_def = null;
     public array $output = [];
 
+    /**
+     * Retain lazy legacy presentation helpers for optional next-match layouts.
+     * @return bool True while legacy selectable templates require global helpers.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         // Optional/overridden nextmatch templates can still call the remaining
@@ -66,9 +70,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
     }
 
     /**
-     * Nextmatch can be addressed by match/project-team id without an explicit
-     * project parameter. Resolve the match first so the shared project context
-     * loads the project discovered by NextmatchModel.
+     * Resolve the selected next match before loading the project context.
+     *
+     * Supports match or project-team URLs without an explicit project ID.
+     * Lets the native model discover the related project before invoking
+     * shared project-view setup.
+     *
+     * @return void
      */
     protected function prepareProjectContext(): void
     {
@@ -82,6 +90,14 @@ final class HtmlView extends SportsManagementProjectHtmlView
         parent::prepareProjectContext();
     }
 
+    /**
+     * Prepare the next-match page, project context and web assets.
+     * Requires NextmatchModel, loads associated fixture, playground and teams,
+     * prepares form context, match history and rankings, and builds the
+     * translated Joomla document title.
+     * @return void
+     * @throws \RuntimeException If the native next-match model is missing.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
@@ -139,6 +155,16 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->getDocument()->setTitle($pageTitle);
     }
 
+    /**
+     * Populate match participants, referees and related match details.
+     * Loads team and venue data, historical match text, rankings and score
+     * statistics for the selected fixture.
+     * @param NextmatchModel $model Native next-match model.
+     * @param NextmatchViewDataModel $viewDataModel Additional match data model.
+     * @param PlaygroundModel $playgroundModel Native playground data model.
+     * @param int $databaseSelector Selected component database.
+     * @return void
+     */
     private function prepareMatchContext(
         NextmatchModel $model,
         NextmatchViewDataModel $viewDataModel,
@@ -193,6 +219,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->matchcommentary = $viewDataModel->getMatchCommentary((int) $this->match->id);
     }
 
+    /**
+     * Calculate comparable ranking records and match outcome estimates.
+     * Defaults missing teams to empty ranking records to avoid invalid
+     * array property access when no standings are available.
+     * @param NextmatchModel $model Native match view model.
+     * @return void
+     */
     private function prepareRankingContext(NextmatchModel $model): void
     {
         $homeDivisionId = (int) ($this->teams[0]->division_id ?? 0);
@@ -215,6 +248,10 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->chances = $this->calculateChances($this->homeranked, $this->awayranked);
     }
 
+    /**
+     * Create an empty ranking entry for matches without team statistics.
+     * @return object Zero-filled ranking metrics for the preview.
+     */
     private function emptyRankingTeam(): object
     {
         return (object) [
@@ -233,6 +270,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         ];
     }
 
+    /**
+     * Estimate home and away win percentages from team ranking totals.
+     * Returns no estimate when required game counts or goals are zero.
+     * @param object $home Home team ranking record.
+     * @param object $away Away team ranking record.
+     * @return array<int,string>|null Formatted chance percentages or null.
+     */
     private function calculateChances(object $home, object $away): ?array
     {
         $matches1 = (int) ($home->cnt_matches ?? 0);
@@ -267,6 +311,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         ];
     }
 
+    /**
+     * Format a referenced previous or follow-up match for the preview.
+     * Uses the native match view-data model and shared time formatter.
+     * @param NextmatchViewDataModel $viewDataModel Related fixture lookup.
+     * @param int $matchId Related match identifier.
+     * @return string Readable related fixture text or empty string.
+     */
     private function relatedMatchText(NextmatchViewDataModel $viewDataModel, int $matchId): string
     {
         if ($matchId <= 0) {
@@ -290,6 +341,12 @@ final class HtmlView extends SportsManagementProjectHtmlView
         );
     }
 
+    /**
+     * Aggregate prior meeting statistics per league and team side.
+     * Groups historical fixtures by competition and counts wins, draws,
+     * losses and goals for the selected preview team.
+     * @return void
+     */
     private function buildHeadToHeadStats(): void
     {
         if (!$this->games || !isset($this->teams[0])) {
@@ -360,6 +417,13 @@ final class HtmlView extends SportsManagementProjectHtmlView
         }
     }
 
+    /**
+     * Increment the score-distribution bucket for a result pair.
+     * @param string $bucket Home/away grouping key.
+     * @param int $home Recorded home goals.
+     * @param int $away Recorded away goals.
+     * @return void
+     */
     private function incrementScore(string $bucket, int $home, int $away): void
     {
         $key = $home . '-' . $away;
