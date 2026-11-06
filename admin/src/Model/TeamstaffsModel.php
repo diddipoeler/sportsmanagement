@@ -20,6 +20,12 @@ final class TeamstaffsModel extends SportsManagementListModel
 {
     private bool $useNewTable = false;
 
+    /**
+     * Initialise the administrator team-staff list and supported fields.
+     * Uses the legacy table selector to preserve existing deployments.
+     * @param array $config Joomla list model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -36,6 +42,13 @@ final class TeamstaffsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load selected team, season, project and publication filters.
+     * Preserves legacy user state for the team-staff administrator list.
+     * @param string $ordering Default staff sort field.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'ts.ordering', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -88,6 +101,12 @@ final class TeamstaffsModel extends SportsManagementListModel
         $this->setState('filter.state', $state);
     }
 
+    /**
+     * Build the administrator staff list using the selected table mode.
+     * Resolves team and season context and joins people and position
+     * information for the selected staff records.
+     * @return mixed Joomla database query for team staff.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -194,10 +213,41 @@ final class TeamstaffsModel extends SportsManagementListModel
         return $query;
     }
 
-    /** Remove legacy team-staff assignments and their dependent match rows. */
+    /**
+     * Remove legacy team-staff assignments and their match dependencies.
+     *
+     * Validates a bounded list of positive staff IDs and deletes match staff
+     * and statistics before the staff rows in a database transaction.
+     *
+     * @param array $cids Selected staff identifiers.
+     * @return int Number of deleted staff rows, or zero on failure.
+     */
     public function remove($cids)
     {
-        $ids = array_values(array_unique(array_filter(array_map('intval', (array) $cids))));
+        $ids = [];
+
+        foreach (array_slice(is_array($cids) ? $cids : [], 0, 500) as $raw) {
+            if (!is_string($raw) && !is_int($raw)) {
+                continue;
+            }
+
+            $value = trim((string) $raw);
+
+            if (strlen($value) > 20 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+            $id = $digits !== ''
+                ? filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+                : false;
+
+            if ($id !== false) {
+                $ids[$id] = $id;
+            }
+        }
+
+        $ids = array_values($ids);
 
         if (!$ids) {
             return 0;
