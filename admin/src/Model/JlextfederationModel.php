@@ -17,6 +17,13 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\JlextfederationTa
 /** Native Joomla 5/6 administrator form model for federations. */
 final class JlextfederationModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native federation table from Joomla MVC.
+     * @param string $type Requested federation table name.
+     * @param string $prefix Legacy table prefix.
+     * @param array $config Optional Joomla table settings.
+     * @return mixed Native federation table or parent result.
+     */
     public function getTable($type = 'jlextfederation', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'jlextfederation') === 0) {
@@ -26,6 +33,13 @@ final class JlextfederationModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Normalise federation foundation and dissolution dates for storage.
+     * Converts known dates to database format and derives year and timestamp
+     * fields, preserving historical empty-date sentinel values.
+     * @param array $data Submitted federation form fields.
+     * @return array Prepared federation record.
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $founded = trim((string) ($data['founded'] ?? ''));
