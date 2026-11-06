@@ -23,6 +23,11 @@ use Joomla\Database\ParameterType;
  */
 final class CurrentseasonsModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the current-season projects list with sortable fields.
+     * @param array $config Administrator list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -36,11 +41,23 @@ final class CurrentseasonsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Initialise the current-season list ordering via the parent model.
+     * @param string $ordering Default project sort column.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'p.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
     }
 
+    /**
+     * Build a read-only project overview for configured current seasons.
+     * Aggregates division, team, position, referee and round counts,
+     * filters the configured season IDs and allowlists ordering fields.
+     * @return mixed Joomla database query for current-season projects.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
