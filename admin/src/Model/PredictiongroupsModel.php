@@ -19,6 +19,11 @@ use Joomla\Database\ParameterType;
  */
 final class PredictiongroupsModel extends SportsManagementListModel
 {
+    /**
+     * Initialise sortable fields for the prediction-groups list.
+     * @param array $config Joomla list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -32,6 +37,13 @@ final class PredictiongroupsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load prediction group search, publication and game filters.
+     * Preserves Joomla administrator user state across list requests.
+     * @param string $ordering Default group list ordering field.
+     * @param string $direction Default list sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 's.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -56,6 +68,12 @@ final class PredictiongroupsModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the filtered and safely ordered prediction-group query.
+     * Uses bound parameters for group name search and an allowlisted
+     * column map for the administrator's requested ordering.
+     * @return mixed Joomla database query for prediction groups.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
