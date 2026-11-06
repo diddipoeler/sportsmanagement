@@ -112,6 +112,12 @@ class AgegroupModel extends SportsManagementAdminModel
             return Text::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE_NO_SELECT');
         }
 
+        if ($user === null || (int) $user->id <= 0) {
+            $this->setError(Text::_('JERROR_ALERTNOAUTHOR'));
+
+            return false;
+        }
+
         $db = $this->getDatabase();
         $transactionStarted = false;
 
@@ -129,7 +135,7 @@ class AgegroupModel extends SportsManagementAdminModel
                 $table->name = trim((string) ($post['name' . $pk] ?? $table->name));
                 $table->alias = OutputFilter::stringURLSafe($table->name);
                 $table->modified = $modified;
-                $table->modified_by = (int) ($user?->id ?? 0);
+                $table->modified_by = (int) $user->id;
 
                 if (!$table->store()) {
                     throw new \RuntimeException((string) $table->getError());
