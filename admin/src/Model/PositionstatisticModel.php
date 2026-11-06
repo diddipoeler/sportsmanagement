@@ -19,6 +19,13 @@ use Joomla\Database\ParameterType;
  */
 final class PositionstatisticModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native position-statistic association table.
+     * @param string $type Requested table.
+     * @param string $prefix Legacy Joomla table prefix.
+     * @param array $config Optional table options.
+     * @return mixed Native statistic table or parent result.
+     */
     public function getTable($type = 'positionstatistic', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'positionstatistic') === 0) {
@@ -28,6 +35,12 @@ final class PositionstatisticModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Update ordering of selected position-statistic relations.
+     * @param array|null $pks Relation identifiers.
+     * @param array|null $order Matching ordering values.
+     * @return bool Whether all changes succeeded.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
@@ -54,6 +67,15 @@ final class PositionstatisticModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Synchronise statistics assigned to the selected playing position.
+     * Deletes obsolete links and reorders or inserts current relations
+     * within an optional database transaction.
+     * @param array $data Selected position statistic IDs.
+     * @param int $position_id Parent position identifier.
+     * @param bool $manageTransaction Whether to manage the transaction here.
+     * @return bool True when the assignment update succeeds.
+     */
     public function store($data, $position_id, bool $manageTransaction = true)
     {
         $positionId = (int) $position_id;
@@ -132,13 +154,21 @@ final class PositionstatisticModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Check record-specific or fallback Joomla edit permission.
+     * @param array $data Current relation data.
+     * @param string $key Relation ID field.
+     * @return bool Whether editing is allowed.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
