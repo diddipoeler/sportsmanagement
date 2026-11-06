@@ -19,6 +19,14 @@ use Joomla\CMS\Uri\Uri;
  */
 final class SiteRouteHelper
 {
+    /**
+     * Build a Joomla route to the specified SportsManagement frontend view.
+     * The component option and view are authoritative even when additional
+     * caller parameters contain conflicting keys.
+     * @param string $view Target SportsManagement view.
+     * @param array<string,mixed> $parameters Optional route query parameters.
+     * @return string Routed frontend URL.
+     */
     public static function view(string $view, array $parameters = []): string
     {
         // The requested component and view are authoritative: callers may pass
@@ -29,6 +37,13 @@ final class SiteRouteHelper
         ]));
     }
 
+    /**
+     * Build a Joomla router URL from validated component parameters.
+     * Normalises the component option and validates an explicit menu Itemid
+     * before delegating query encoding to Joomla Uri and Route services.
+     * @param array<string,mixed> $parameters Route query components.
+     * @return string Joomla frontend URL.
+     */
     public static function query(array $parameters): string
     {
         // A component route needs an explicit, scalar option. Do not let
