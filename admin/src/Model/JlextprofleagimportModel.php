@@ -35,6 +35,13 @@ if (!class_exists('sportsmanagementModeljlextprofleagimport', false)) {
 /** Native MVCFactory entry point for the ProfiLeague importer. */
 final class JlextprofleagimportModel extends \sportsmanagementModeljlextprofleagimport
 {
+    /**
+     * Initialise the legacy ProfiLeague import engine via native Joomla MVC.
+     * Bypasses the broken historical constructor while retaining its
+     * database, request and debug state setup.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         // The legacy constructor references an undefined $config variable.
