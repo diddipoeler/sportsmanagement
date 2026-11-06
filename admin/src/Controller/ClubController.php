@@ -22,6 +22,18 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\LocationHelper;
  */
 class ClubController extends SportsManagementFormController
 {
+    /**
+     * Enrich a submitted club form with normalised address information.
+     *
+     * Reads Joomla POST form values, converts the historic DDR country
+     * code, optionally resolves coordinates and administrative address
+     * fields, then delegates storage and token validation to the shared
+     * SportsManagement form controller.
+     *
+     * @param string|null $key Optional club record primary key.
+     * @param string|null $urlVar Record identifier query parameter.
+     * @return mixed Parent form controller save result.
+     */
     public function save($key = null, $urlVar = null)
     {
         $input = $this->input;
@@ -73,7 +85,17 @@ class ClubController extends SportsManagementFormController
         return parent::save($key, $urlVar);
     }
 
-    /** @param array<string, mixed> $extended @param array<string, string> $address */
+    /**
+     * Merge nonempty address fields into the club's extended form values.
+     *
+     * Maps the geocoding service's administrative levels, road and locality
+     * properties onto existing SportsManagement extended-field keys.
+     * Existing values remain untouched when no replacement is available.
+     *
+     * @param array<string,mixed> $extended Current extended club fields.
+     * @param array<string,string> $address Resolved location details.
+     * @return array<string,mixed> Updated extended-field collection.
+     */
     private function mergeAddressDetails(array $extended, array $address): array
     {
         $first = static function (array $keys) use ($address): string {
