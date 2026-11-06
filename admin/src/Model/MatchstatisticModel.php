@@ -17,9 +17,17 @@ use Joomla\Database\ParameterType;
 final class MatchstatisticModel extends SportsManagementAdminModel
 {
     /**
-     * Native replacement for legacy getMatchStatsInput().
+     * Read player statistics recorded for the selected match.
      *
-     * @return array<int,array<int,array<int,mixed>>>
+     * Loads match-statistic rows using a bound integer match ID and groups
+     * values by project team, team player and statistic identifier.
+     * Returns the team-keyed empty structure when no match is selected
+     * or the database query fails.
+     *
+     * @param int $matchId Match identifier.
+     * @param int $projectTeam1Id First project team ID.
+     * @param int $projectTeam2Id Second project team ID.
+     * @return array<int,array<int,array<int,mixed>>> Match player statistics.
      */
     public function getMatchStatsInput($matchId = 0, $projectTeam1Id = 0, $projectTeam2Id = 0): array
     {
@@ -72,6 +80,13 @@ final class MatchstatisticModel extends SportsManagementAdminModel
         return $stats;
     }
 
+    /**
+     * Resolve the native match-statistic table through Joomla MVC.
+     * @param string $type Requested table name.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Optional Joomla table factory settings.
+     * @return mixed MatchstatisticTable or parent Joomla table.
+     */
     public function getTable($type = 'matchstatistic', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchstatistic') === 0) {
