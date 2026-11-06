@@ -28,6 +28,11 @@ final class StatsModel extends SportsManagementProjectModel
     public $totalrounds = null;
     public $attendanceranking = null;
 
+    /**
+     * Initialise season statistics for the active project and division.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -37,6 +42,11 @@ final class StatsModel extends SportsManagementProjectModel
         self::$cfg_which_database = max(0, $input->getInt('cfg_which_database', 0));
     }
 
+    /**
+     * Find the highest home or away result in the current competition.
+     * @param string $which Match side: HOME or AWAY.
+     * @return object|null Highest result or null.
+     */
     public function getHighest($which = 'HOME')
     {
         if (self::$projectid <= 0) {
@@ -94,6 +104,10 @@ final class StatsModel extends SportsManagementProjectModel
         return $result;
     }
 
+    /**
+     * Aggregate match and attendance totals for the active season.
+     * @return object|null Season statistics.
+     */
     public function getSeasonTotals()
     {
         if ($this->totals !== null) {
@@ -148,6 +162,10 @@ final class StatsModel extends SportsManagementProjectModel
         return $this->totals;
     }
 
+    /**
+     * Build per-round match and attendance chart data.
+     * @return array<int,object> Round totals.
+     */
     public function getChartData(): array
     {
         if ($this->matchdaytotals !== null) {
@@ -190,6 +208,10 @@ final class StatsModel extends SportsManagementProjectModel
         return $this->matchdaytotals;
     }
 
+    /**
+     * Count rounds in the active project.
+     * @return int Project round count.
+     */
     public function getTotalRounds(): int
     {
         if ($this->totalrounds !== null) {
@@ -211,12 +233,20 @@ final class StatsModel extends SportsManagementProjectModel
         return (int) $this->totalrounds;
     }
 
+    /**
+     * Return the highest team average attendance.
+     * @return int|float Highest mean attendance.
+     */
     public function getBestAvg()
     {
         $ranking = $this->getAttendanceRanking();
         return $ranking ? round((float) $ranking[0]->avgspectatorspt) : 0;
     }
 
+    /**
+     * Rank teams by average and total attendance.
+     * @return array<int,object> Attendance ranking rows.
+     */
     public function getAttendanceRanking(): array
     {
         if ($this->attendanceranking !== null) {
@@ -264,24 +294,40 @@ final class StatsModel extends SportsManagementProjectModel
         return $this->attendanceranking;
     }
 
+    /**
+     * Return the team with the highest average attendance.
+     * @return string|int Team name or zero if unavailable.
+     */
     public function getBestAvgTeam()
     {
         $ranking = $this->getAttendanceRanking();
         return $ranking ? $ranking[0]->team : 0;
     }
 
+    /**
+     * Return the lowest team average attendance.
+     * @return int|float Lowest mean attendance.
+     */
     public function getWorstAvg()
     {
         $ranking = $this->getAttendanceRanking();
         return $ranking ? round((float) $ranking[count($ranking) - 1]->avgspectatorspt) : 0;
     }
 
+    /**
+     * Return the team with the lowest average attendance.
+     * @return string|int Team name or zero if unavailable.
+     */
     public function getWorstAvgTeam()
     {
         $ranking = $this->getAttendanceRanking();
         return $ranking ? $ranking[count($ranking) - 1]->team : 0;
     }
 
+    /**
+     * Build the frontend URL for attendance chart data.
+     * @return string Chart route with encoded separators.
+     */
     public function getChartURL(): string
     {
         $url = SiteRouteHelper::view('stats', [
@@ -294,26 +340,56 @@ final class StatsModel extends SportsManagementProjectModel
         return str_replace('&', '%26', $url);
     }
 
+    /**
+     * Compare attendance rows alphabetically by team name.
+     * @param object $a First team row.
+     * @param object $b Second team row.
+     * @return int Sorting comparison.
+     */
     public function teamNameCmp2(&$a, &$b): int
     {
         return strcasecmp((string) $a->team, (string) $b->team);
     }
 
+    /**
+     * Compare attendance rows by total spectators.
+     * @param object $a First attendance row.
+     * @param object $b Second attendance row.
+     * @return int Sorting comparison.
+     */
     public function totalattendCmp(&$a, &$b): int
     {
         return (int) (($a->sumspectatorspt ?? 0) <=> ($b->sumspectatorspt ?? 0));
     }
 
+    /**
+     * Compare attendance rows by average spectators.
+     * @param object $a First attendance row.
+     * @param object $b Second attendance row.
+     * @return int Sorting comparison.
+     */
     public function avgattendCmp(&$a, &$b): int
     {
         return (int) (($a->avgspectatorspt ?? 0) <=> ($b->avgspectatorspt ?? 0));
     }
 
+    /**
+     * Compare attendance rows by venue capacity.
+     * @param object $a First attendance row.
+     * @param object $b Second attendance row.
+     * @return int Sorting comparison.
+     */
     public function capacityCmp(&$a, &$b): int
     {
         return (int) (($a->capacity ?? 0) <=> ($b->capacity ?? 0));
     }
 
+    /**
+     * Compare attendance rows by average capacity utilisation.
+     * @param object $a First attendance row.
+     * @param object $b Second attendance row.
+     * @return int Sorting comparison.
+     */
     public function utilisationCmp(&$a, &$b): int
     {
         $aCapacity = (float) ($a->capacity ?? 0);
