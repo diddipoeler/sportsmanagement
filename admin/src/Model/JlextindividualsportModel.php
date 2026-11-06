@@ -139,10 +139,6 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
     }
 
     /**
-     * Resolve the component database for compatibility match readers.
-     * @return DatabaseInterface Selected SportsManagement database.
-     */
-    /**
      * Require a signed-in administrator for individual match writes.
      *
      * @param mixed $app Active Joomla administrator application.
@@ -160,6 +156,10 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
         return (int) $identity->id;
     }
 
+    /**
+     * Resolve the component database for compatibility match readers.
+     * @return DatabaseInterface Selected SportsManagement database.
+     */
     private static function sportsDatabase(): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve();
