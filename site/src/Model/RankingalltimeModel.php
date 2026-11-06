@@ -26,6 +26,11 @@ use Throwable;
  */
 final class RankingalltimeModel extends SportsManagementProjectModel
 {
+    /**
+     * Find projects that belong to the selected league.
+     * @param int $useLeagueChampion Whether to restrict to champions.
+     * @return array<int> Project identifiers.
+     */
     public function getProjectIds(int $useLeagueChampion = 0): array
     {
         $leagueId = $this->resolveLeagueId();
@@ -57,6 +62,11 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load project and season names in the selected league.
+     * @param int $useLeagueChampion Whether to restrict to champions.
+     * @return array<int,object> Project descriptions.
+     */
     public function getProjectNames(int $useLeagueChampion = 0): array
     {
         $leagueId = $this->resolveLeagueId();
@@ -98,6 +108,11 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Read all participating teams for selected projects.
+     * @param array<int> $projectIds Project identifiers.
+     * @return array<int,object> Project team records.
+     */
     public function getAllTeams(array $projectIds): array
     {
         $projectIds = $this->normaliseIds($projectIds);
@@ -252,6 +267,11 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Load matches contributing to the all-time league table.
+     * @param array<int> $projectIds Project identifiers.
+     * @return array<int,object> Competition matches.
+     */
     public function getAllMatches(array $projectIds): array
     {
         $projectIds = $this->normaliseIds($projectIds);
@@ -338,6 +358,10 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         return $colors;
     }
 
+    /**
+     * Resolve the league from current league or project parameters.
+     * @return int Selected league ID or zero.
+     */
     private function resolveLeagueId(): int
     {
         $input = $this->siteApplication()->getInput();
@@ -368,11 +392,21 @@ final class RankingalltimeModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Normalise project ID values to unique positive integers.
+     * @param array $ids Candidate identifiers.
+     * @return array<int> Valid unique IDs.
+     */
     private function normaliseIds(array $ids): array
     {
         return array_values(array_unique(array_filter(array_map('intval', $ids), static fn (int $id): bool => $id > 0)));
     }
 
+    /**
+     * Report all-time ranking query failures in the frontend.
+     * @param Throwable $e Caught database exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(
