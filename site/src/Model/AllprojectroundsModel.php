@@ -26,6 +26,11 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
     /** @var array<int,object> */
     public array $result = [];
 
+    /**
+     * Initialise all-round display flags from template and request settings.
+     * @param array $config Joomla site model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -153,6 +158,12 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         return $this->_params;
     }
 
+    /**
+     * Render all selected project rounds in one or two responsive columns.
+     * @param array<int,object> $rounds Project round records.
+     * @param array $config Template display settings.
+     * @return string Escaped HTML for round columns.
+     */
     public function getRoundsColumn(array $rounds, array $config): string
     {
         if (!$rounds) {
@@ -183,6 +194,13 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         return $html;
     }
 
+    /**
+     * Render a round heading, results and optional match details.
+     * @param object $round Project round record.
+     * @param array $config Template display settings.
+     * @param string $columnClass Responsive Bootstrap column classes.
+     * @return string HTML of the round and its fixtures.
+     */
     private function renderRound(object $round, array $config, string $columnClass): string
     {
         $roundId = (int) ($round->id ?? 0);
@@ -208,6 +226,12 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         return $html;
     }
 
+    /**
+     * Render roster, event and referee details for a match.
+     * @param object $match Match row.
+     * @param array $config Match detail visibility settings.
+     * @return string HTML details or an empty string.
+     */
     private function renderMatchDetails(object $match, array $config): string
     {
         if (!(int) ($this->_params['show_matchreport'] ?? 1)) {
@@ -260,6 +284,13 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         return $html;
     }
 
+    /**
+     * Render a labelled match detail line, escaping plain text values.
+     * @param string $label Translated detail label.
+     * @param array<int,string> $values Values to render.
+     * @param bool $allowHtml Whether supplied detail values are trusted HTML.
+     * @return string Detail line markup or empty text.
+     */
     private function detailLine(string $label, array $values, bool $allowHtml = false): string
     {
         if (!$values) {
@@ -477,11 +508,21 @@ final class AllprojectroundsModel extends SportsManagementProjectModel
         return $rows;
     }
 
+    /**
+     * Escape a string for safe rendering in HTML text and attributes.
+     * @param string $value Untrusted display value.
+     * @return string HTML-escaped value.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
 
+    /**
+     * Escape the displayed result value, including nullable values.
+     * @param mixed $value Match score or display value.
+     * @return string HTML-escaped score.
+     */
     private function escapeResult(mixed $value): string
     {
         return $this->escape((string) ($value ?? ''));
