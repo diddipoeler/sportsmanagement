@@ -20,6 +20,13 @@ use Joomla\Registry\Registry;
 
 final class DivisionModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the division edit form and media settings.
+     *
+     * @param array $data data argument.
+     * @param mixed $loadData loadData argument.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
@@ -39,6 +46,10 @@ final class DivisionModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Transfer selected divisions to the requested project.
+     * @return mixed
+     */
     public function divisiontoproject()
     {
         $app = $this->administratorApplication();
@@ -153,6 +164,10 @@ final class DivisionModel extends SportsManagementAdminModel
         return '';
     }
 
+    /**
+     * Create the requested number of division entries in the project.
+     * @return mixed
+     */
     public function massadd()
     {
         $app = $this->administratorApplication();
@@ -207,6 +222,12 @@ final class DivisionModel extends SportsManagementAdminModel
         return Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ROUNDS_ADDED', $created);
     }
 
+    /**
+     * Read the maximum division ordering value in a project.
+     *
+     * @param mixed $project_id project_id argument.
+     * @return int
+     */
     public function getMaxDivision($project_id)
     {
         $projectId = (int) $project_id;
@@ -226,6 +247,12 @@ final class DivisionModel extends SportsManagementAdminModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Count distinct teams appearing in division matches.
+     *
+     * @param int $division_id division_id argument.
+     * @return int
+     */
     public function count_teams_division($division_id = 0)
     {
         $divisionId = (int) $division_id;
@@ -266,6 +293,10 @@ final class DivisionModel extends SportsManagementAdminModel
         return count($teamIds);
     }
 
+    /**
+     * Save selected divisions from the administrator quick edit form.
+     * @return mixed
+     */
     public function saveshort()
     {
         $app = $this->administratorApplication();
@@ -300,6 +331,12 @@ final class DivisionModel extends SportsManagementAdminModel
         return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
     }
 
+    /**
+     * Prepare project and extended fields before division saving.
+     *
+     * @param array $data data argument.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $app = $this->administratorApplication();
