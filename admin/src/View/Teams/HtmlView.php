@@ -26,6 +26,12 @@ final class HtmlView extends BaseHtmlView
     public $inlineOptions = [];
     public $clubId = 0;
 
+    /**
+     * Render the teams administration list with its filters and pagination.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
