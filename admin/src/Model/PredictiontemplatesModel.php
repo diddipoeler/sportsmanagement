@@ -23,6 +23,12 @@ use Joomla\Registry\Registry;
  */
 final class PredictiontemplatesModel extends SportsManagementListModel
 {
+    /**
+     * Initialise prediction template list filters.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -38,6 +44,13 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore selected prediction game and sorting state.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'tmpl.title', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -68,6 +81,10 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         $app->setUserState('com_sportsmanagement.prediction_id', $predictionId);
     }
 
+    /**
+     * Build the filtered prediction template query.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -428,6 +445,13 @@ final class PredictiontemplatesModel extends SportsManagementListModel
         return true;
     }
 
+    /**
+     * Read the prediction template title from XML metadata.
+     *
+     * @param string $viewsPath viewsPath value.
+     * @param string $template template value.
+     * @return string
+     */
     private function getTemplateTitle(string $viewsPath, string $template): string
     {
         $metaFile = $viewsPath . '/' . $template . '/tmpl/default.xml';
