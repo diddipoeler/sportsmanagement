@@ -101,6 +101,10 @@ final class TemplateController extends SportsManagementFormController
         $this->remove();
     }
 
+    /**
+     * Remove selected nonmaster template overrides after token validation.
+     * @return void
+     */
     public function remove(): void
     {
         $this->checkToken();
@@ -226,6 +230,12 @@ final class TemplateController extends SportsManagementFormController
         );
     }
 
+    /**
+     * Build the administrator templates URL for a project.
+     *
+     * @param int $projectId projectId argument.
+     * @return string
+     */
     private function templatesUrl(int $projectId): string
     {
         return Route::_(
