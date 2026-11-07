@@ -20,6 +20,13 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
 {
     public array $savedfb = [];
 
+    /**
+     * Initialise the historical DFB key import adapter.
+     *
+     * @param array $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -32,16 +39,30 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Preserve the legacy import data-loader compatibility hook.
+     * @return null
+     */
     public function _loadData()
     {
         return null;
     }
 
+    /**
+     * Preserve the legacy import data-initialisation hook.
+     * @return null
+     */
     public function _initData()
     {
         return null;
     }
 
+    /**
+     * Read the project type for a validated project ID.
+     *
+     * @param int $project_id project id value.
+     * @return mixed
+     */
     public function getProjectType($project_id = 0)
     {
         $projectId = self::positiveDatabaseId($project_id);
@@ -69,6 +90,13 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List project teams with an optional division restriction.
+     *
+     * @param int $project_id project id value.
+     * @param int $division_id division id value.
+     * @return array
+     */
     public function getProjectteams($project_id = 0, $division_id = 0): array
     {
         $projectId = self::positiveDatabaseId($project_id);
@@ -124,6 +152,13 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Retrieve a DFB schedule key for country and matchday settings.
+     *
+     * @param mixed $number number value.
+     * @param mixed $matchdays matchdays value.
+     * @return array
+     */
     public function getDFBKey($number, $matchdays): array
     {
         $projectId = (int) $this->administratorApplication()->getUserState('com_sportsmanagement.pid', 0);
@@ -179,6 +214,12 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Read the selected project's league country.
+     *
+     * @param int $project_id project id value.
+     * @return string|false
+     */
     public function getCountry($project_id = 0)
     {
         $projectId = (int) $project_id;
@@ -211,6 +252,12 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List competition matchdays for the selected project.
+     *
+     * @param int $project_id project id value.
+     * @return array
+     */
     public function getMatchdays($project_id = 0): array
     {
         $projectId = self::positiveDatabaseId($project_id);
@@ -238,6 +285,13 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count matches belonging to the selected project or division.
+     *
+     * @param int $project_id project id value.
+     * @param int $division_id division id value.
+     * @return int
+     */
     public function getMatches($project_id = 0, $division_id = 0): int
     {
         $projectId = self::positiveDatabaseId($project_id);
@@ -275,6 +329,14 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the DFB-key schedule from selected team slots.
+     *
+     * @param array $post post value.
+     * @param int $project_id project id value.
+     * @param int $division_id division id value.
+     * @return array
+     */
     public function getSchedule($post = [], $project_id = 0, $division_id = 0): array
     {
         $post = is_array($post) ? $post : [];
@@ -386,6 +448,12 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         return $result;
     }
 
+    /**
+     * List divisions attached to a project.
+     *
+     * @param mixed $project_id project id value.
+     * @return array
+     */
     public function getDivisions($project_id): array
     {
         $projectId = (int) $project_id;
@@ -409,6 +477,10 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Check and initialise the DFB key lookup table when needed.
+     * @return bool
+     */
     public function checkTable(): bool
     {
         $db = $this->getDatabase();
@@ -463,6 +535,12 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Report a DFB import database failure to the administrator.
+     *
+     * @param \Throwable $e e value.
+     * @return void
+     */
     private function reportDatabaseError(\Throwable $e): void
     {
         $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
