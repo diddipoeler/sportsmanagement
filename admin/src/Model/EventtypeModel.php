@@ -16,6 +16,13 @@ use Joomla\CMS\Component\ComponentHelper;
 /** Native Joomla 5/6 event-type form model. */
 final class EventtypeModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the event type edit form with configured media fields.
+     *
+     * @param mixed $data data value.
+     * @param mixed $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
