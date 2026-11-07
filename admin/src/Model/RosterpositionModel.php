@@ -14,6 +14,12 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 /** Native Joomla 5/6 roster-position form model. */
 final class RosterpositionModel extends SportsManagementAdminModel
 {
+    /**
+     * Clamp roster position size and normalise home or away aliases.
+     *
+     * @param array $data data value.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $data['players'] = min(11, max(1, (int) ($data['players'] ?? 11)));
