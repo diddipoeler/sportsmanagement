@@ -40,6 +40,12 @@ final class HtmlView extends BaseHtmlView
     public array $logohistory = [];
     public bool $map = false;
 
+    /**
+     * Load and render the playground editing form.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -103,6 +109,12 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Check whether the playground coordinates can be displayed on a map.
+     *
+     * @param CMSApplicationInterface $app app value.
+     * @return void
+     */
     private function configureMapState(CMSApplicationInterface $app): void
     {
         $latitude = is_numeric($this->item->latitude ?? null) ? (float) $this->item->latitude : 255.0;
@@ -115,6 +127,12 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
+    /**
+     * Load the optional seasonal playground logo history form.
+     *
+     * @param CMSApplicationInterface $app app value.
+     * @return ?Form
+     */
     private function loadLogoHistoryForm(CMSApplicationInterface $app): ?Form
     {
         $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms/playgroundlogohistory.xml';
@@ -138,6 +156,12 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
+    /**
+     * Register playground create, edit and save toolbar actions.
+     *
+     * @param bool $isNew isNew value.
+     * @return void
+     */
     private function configureToolbar(bool $isNew): void
     {
         $title = $isNew ? Text::_('JTOOLBAR_NEW') : Text::_('JTOOLBAR_EDIT');
@@ -155,6 +179,10 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::cancel('playground.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
     }
 
+    /**
+     * Register JavaScript to edit additional playground detail rows.
+     * @return void
+     */
     private function registerDetailRowScript(): void
     {
         $document = $this->getDocument();
@@ -171,6 +199,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Resolve and validate the administrator application.
+     * @return AdministratorApplication
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
