@@ -22,6 +22,12 @@ final class TreetonodesModel extends SportsManagementListModel
     private int $projectId = 0;
     private int $treeId = 0;
 
+    /**
+     * Initialise tournament node list filters and default sort fields.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -33,6 +39,13 @@ final class TreetonodesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore tree and project context from request and user state.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'a.row', $direction = 'ASC')
     {
         $app = Factory::getApplication();
@@ -541,6 +554,12 @@ final class TreetonodesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Persist the final leaf node after verifying project scope and edit rights.
+     *
+     * @param mixed $post post value.
+     * @return bool
+     */
     public function storefinishleaf($post): bool
     {
         $this->assertTreeEditAccess();
@@ -575,6 +594,12 @@ final class TreetonodesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List eligible project teams for tournament node assignment.
+     *
+     * @param mixed $project_id project id value.
+     * @return array
+     */
     public function getProjectTeamsOptions($project_id = 0): array
     {
         $projectId = (int) $project_id;
@@ -706,6 +731,12 @@ final class TreetonodesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load the current project or a specified project record.
+     *
+     * @param int $projectId projectId value.
+     * @return ?object
+     */
     public function getProject(int $projectId = 0): ?object
     {
         if ($projectId <= 0) {
@@ -732,6 +763,12 @@ final class TreetonodesModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load tournament tree metadata for the selected tree.
+     *
+     * @param int $treeId treeId value.
+     * @return ?object
+     */
     public function getTreeToData(int $treeId = 0): ?object
     {
         if ($treeId <= 0) {
@@ -754,6 +791,10 @@ final class TreetonodesModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Build the tournament node listing and related match-count query.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $this->getState();
@@ -784,6 +825,12 @@ final class TreetonodesModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Include tree and project context in the list cache key.
+     *
+     * @param mixed $id id value.
+     * @return mixed
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . (int) $this->getState('context.project_id');
@@ -792,6 +839,13 @@ final class TreetonodesModel extends SportsManagementListModel
         return parent::getStoreId($id);
     }
 
+    /**
+     * Check whether a match is attached to a tournament node.
+     *
+     * @param int $nodeId nodeId value.
+     * @param int $matchId matchId value.
+     * @return bool
+     */
     private function hasNodeMatch(int $nodeId, int $matchId): bool
     {
         $db = $this->getDatabase();
@@ -807,6 +861,15 @@ final class TreetonodesModel extends SportsManagementListModel
         return (int) $db->loadResult() > 0;
     }
 
+    /**
+     * Build a tournament bracket team result from a match.
+     *
+     * @param int $teamId teamId value.
+     * @param int $matchId matchId value.
+     * @param array $teamNames teamNames value.
+     * @param object $match match value.
+     * @return object
+     */
     private function bracketTeam(int $teamId, int $matchId, array $teamNames, object $match): object
     {
         $object = new \stdClass();
@@ -820,6 +883,12 @@ final class TreetonodesModel extends SportsManagementListModel
         return $object;
     }
 
+    /**
+     * Build placeholder bracket records for a specified tree depth.
+     *
+     * @param int $depth depth value.
+     * @return array
+     */
     private function emptyBracket(int $depth): array
     {
         $matches = [];
@@ -841,6 +910,12 @@ final class TreetonodesModel extends SportsManagementListModel
         return $matches;
     }
 
+    /**
+     * Resolve project-team display names for selected IDs.
+     *
+     * @param array $teamIds teamIds value.
+     * @return array
+     */
     private function getProjectTeamNames(array $teamIds): array
     {
         $ids = $this->normaliseIds($teamIds);
@@ -870,6 +945,10 @@ final class TreetonodesModel extends SportsManagementListModel
         return $names;
     }
 
+    /**
+     * Require administrator edit permission for tournament node changes.
+     * @return void
+     */
     private function assertTreeEditAccess(): void
     {
         $identity = $this->administratorApplication()->getIdentity();
@@ -879,6 +958,12 @@ final class TreetonodesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Validate a positive tournament node identifier without unsafe numeric casts.
+     *
+     * @param mixed $value value value.
+     * @return int
+     */
     private function strictNodeId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -898,6 +983,12 @@ final class TreetonodesModel extends SportsManagementListModel
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Validate a bounded selection of tournament node IDs and fail closed.
+     *
+     * @param mixed $selected selected value.
+     * @return ?array
+     */
     private function validatedSubmittedNodes(mixed $selected): ?array
     {
         if (!is_array($selected) || count($selected) > 500) {
@@ -921,6 +1012,13 @@ final class TreetonodesModel extends SportsManagementListModel
         return array_values($ids);
     }
 
+    /**
+     * Load a tree only when it belongs to the specified project.
+     *
+     * @param int $treeId treeId value.
+     * @param int $projectId projectId value.
+     * @return ?object
+     */
     private function scopedTree(int $treeId, int $projectId): ?object
     {
         $db = $this->getDatabase();
@@ -936,6 +1034,13 @@ final class TreetonodesModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Verify every selected node belongs to the given tournament tree.
+     *
+     * @param array $ids ids value.
+     * @param int $treeId treeId value.
+     * @return bool
+     */
     private function nodesBelongToTree(array $ids, int $treeId): bool
     {
         if ($ids === []) {
@@ -958,6 +1063,12 @@ final class TreetonodesModel extends SportsManagementListModel
         return $found === $expected;
     }
 
+    /**
+     * Deduplicate positive IDs for internal tournament node lookups.
+     *
+     * @param array $ids ids value.
+     * @return array
+     */
     private function normaliseIds(array $ids): array
     {
         return array_values(array_unique(array_filter(
