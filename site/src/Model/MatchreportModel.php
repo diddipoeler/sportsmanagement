@@ -33,6 +33,13 @@ final class MatchreportModel extends SportsManagementProjectModel
     private ?MatchreportDataModel $dataModel = null;
     private ?MatchreportMatchDataModel $matchDataModel = null;
 
+    /**
+     * Initialise match report context and model services.
+     *
+     * @param array $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -42,16 +49,30 @@ final class MatchreportModel extends SportsManagementProjectModel
         $this->databaseSelector = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
     }
 
+    /**
+     * Return the selected match identifier.
+     * @return int
+     */
     public function getMatchId(): int
     {
         return $this->matchId;
     }
 
+    /**
+     * Return the selected component database mode.
+     * @return int
+     */
     public function getDatabaseSelector(): int
     {
         return $this->databaseSelector;
     }
 
+    /**
+     * Read the match header and joined team details.
+     *
+     * @param ?int $matchId matchId value.
+     * @return object|null
+     */
     public function getMatchData(?int $matchId = null): ?object
     {
         $matchId ??= $this->matchId;
@@ -59,31 +80,69 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->matchDataModel()->getMatchData($matchId);
     }
 
+    /**
+     * Read the match description and team names.
+     *
+     * @param int $matchId matchId value.
+     * @return object|null
+     */
     public function getMatchText(int $matchId): ?object
     {
         return $this->matchDataModel()->getMatchText($matchId);
     }
 
+    /**
+     * Load single-match results for individual sports.
+     *
+     * @param ?int $matchId matchId value.
+     * @return array
+     */
     public function getMatchSingleData(?int $matchId = null): array
     {
         return $this->dataModel()->getMatchSingleData($matchId);
     }
 
+    /**
+     * Load referee assignments for the match.
+     *
+     * @param ?int $matchId matchId value.
+     * @return array
+     */
     public function getMatchReferees(?int $matchId = null): array
     {
         return $this->dataModel()->getMatchReferees($matchId);
     }
 
+    /**
+     * Return match commentary in chronological display order.
+     *
+     * @param ?int $matchId matchId value.
+     * @return array
+     */
     public function getMatchCommentary(?int $matchId = null): array
     {
         return array_reverse($this->dataModel()->getMatchCommentary($matchId));
     }
 
+    /**
+     * Load player substitutions recorded for this match.
+     *
+     * @param ?int $matchId matchId value.
+     * @return array
+     */
     public function getMatchSubstitutions(?int $matchId = null): array
     {
         return $this->dataModel()->getMatchSubstitutions($matchId);
     }
 
+    /**
+     * Load match events using the requested commentary and sort options.
+     *
+     * @param ?int $matchId matchId value.
+     * @param bool $showComments showComments value.
+     * @param bool $sortDescending sortDescending value.
+     * @return array
+     */
     public function getMatchEvents(
         ?int $matchId = null,
         bool $showComments = true,
@@ -92,11 +151,23 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->dataModel()->getMatchEvents($matchId, $showComments, $sortDescending);
     }
 
+    /**
+     * Read the venue record associated with a match.
+     *
+     * @param int $playgroundId playgroundId value.
+     * @return object|null
+     */
     public function getPlayground(int $playgroundId): ?object
     {
         return $this->dataModel()->getPlayground($playgroundId);
     }
 
+    /**
+     * Find a project-team record by its identifier.
+     *
+     * @param int $projectTeamId projectTeamId value.
+     * @return object|null
+     */
     public function getProjectTeamById(int $projectTeamId): ?object
     {
         if ($projectTeamId <= 0) {
@@ -112,6 +183,14 @@ final class MatchreportModel extends SportsManagementProjectModel
         return null;
     }
 
+    /**
+     * Find the billiards captain or selected match participant.
+     *
+     * @param string $positionName positionName value.
+     * @param int $projectTeamId projectTeamId value.
+     * @param int $matchId matchId value.
+     * @return array
+     */
     public function getbillardplayer(
         string $positionName = 'COM_SPORTSMANAGEMENT_GOLF_BILLARD_P_CAPTAIN',
         int $projectTeamId = 0,
@@ -161,6 +240,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Synchronise legacy player position references for this match.
+     * @return void
+     */
     public function checkMatchPlayerProjectPositionID(): void
     {
         if ($this->matchId <= 0 || $this->projectId <= 0) {
@@ -210,6 +293,12 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Read club details by identifier.
+     *
+     * @param int $clubId clubId value.
+     * @return object|null
+     */
     public function getClubinfo(int $clubId): ?object
     {
         if ($clubId <= 0) {
@@ -227,6 +316,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load the round containing the selected match.
+     * @return object|null
+     */
     public function getRound(): ?object
     {
         $match = $this->loadMatch();
@@ -255,6 +348,12 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $round;
     }
 
+    /**
+     * List validated match photographs from the selected directory.
+     *
+     * @param string $folder folder value.
+     * @return array
+     */
     public function getMatchPictures(string $folder): array
     {
         $folder = trim($folder, '/\\');
@@ -294,6 +393,12 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $images;
     }
 
+    /**
+     * Read participating player or staff position definitions.
+     *
+     * @param string $which which value.
+     * @return array
+     */
     public function getMatchPositions(string $which = 'player'): array
     {
         $table = match ($which) {
@@ -341,6 +446,12 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Read selected player or staff records.
+     *
+     * @param string $which which value.
+     * @return array
+     */
     public function getMatchPersons(string $which = 'player'): array
     {
         if ($this->matchId <= 0 || $this->projectId <= 0 || !in_array($which, ['player', 'staff'], true)) {
@@ -420,6 +531,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * List event types configured for this match.
+     * @return array
+     */
     public function getEventTypes(): array
     {
         if ($this->matchId <= 0) {
@@ -456,6 +571,14 @@ final class MatchreportModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load a related Joomla article or match report article.
+     *
+     * @param int $articleId articleId value.
+     * @param int $matchId matchId value.
+     * @param int $categoryId categoryId value.
+     * @return object|null
+     */
     public function getMatchArticle(int $articleId = 0, int $matchId = 0, int $categoryId = 0): ?object
     {
         $component = (string) ComponentHelper::getParams('com_sportsmanagement')->get('which_article_component', 'com_content');
@@ -501,6 +624,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load match-level team statistics.
+     * @return array
+     */
     public function getMatchStats(): array
     {
         $match = $this->loadMatch();
@@ -520,6 +647,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $stats;
     }
 
+    /**
+     * Aggregate player statistics recorded in this match.
+     * @return array
+     */
     public function getPlayersStats(): array
     {
         if ($this->playersBasicStats !== null) {
@@ -534,6 +665,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->playersBasicStats = $stats;
     }
 
+    /**
+     * Aggregate match events by participating player.
+     * @return array
+     */
     public function getPlayersEvents(): array
     {
         if ($this->playersEvents !== null) {
@@ -567,6 +702,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->playersEvents = $events;
     }
 
+    /**
+     * Aggregate staff statistics recorded in the match.
+     * @return array
+     */
     public function getMatchStaffStats(): array
     {
         if ($this->staffBasicStats !== null) {
@@ -599,6 +738,13 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->staffBasicStats = $stats;
     }
 
+    /**
+     * Build team positions for the configured playground schema.
+     *
+     * @param mixed $schema schema value.
+     * @param mixed $which which value.
+     * @return array
+     */
     public function getPlaygroundSchema($schema, $which): array
     {
         $schema = trim((string) $schema);
@@ -634,6 +780,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $positions;
     }
 
+    /**
+     * Create or reuse the detailed match report data reader.
+     * @return MatchreportDataModel
+     */
     private function dataModel(): MatchreportDataModel
     {
         if (!$this->dataModel instanceof MatchreportDataModel) {
@@ -644,6 +794,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->dataModel;
     }
 
+    /**
+     * Create or reuse the match header data model.
+     * @return MatchreportMatchDataModel
+     */
     private function matchDataModel(): MatchreportMatchDataModel
     {
         if (!$this->matchDataModel instanceof MatchreportMatchDataModel) {
@@ -654,6 +808,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->matchDataModel;
     }
 
+    /**
+     * Load and cache the current match record.
+     * @return object|null
+     */
     private function loadMatch(): ?object
     {
         if ($this->match !== null) {
@@ -677,6 +835,10 @@ final class MatchreportModel extends SportsManagementProjectModel
         return $this->match;
     }
 
+    /**
+     * Load raw match statistic rows for summary calculations.
+     * @return array
+     */
     private function loadMatchStatisticRows(): array
     {
         if ($this->matchId <= 0) {
