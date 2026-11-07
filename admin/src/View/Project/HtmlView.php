@@ -47,6 +47,12 @@ final class HtmlView extends BaseHtmlView
     public string $view = 'project';
     public string $tmpl = '';
 
+    /**
+     * Select and render either the project panel or project edit layout.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -72,6 +78,12 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Prepare the project control panel for display.
+     *
+     * @param ProjectModel $model model value.
+     * @return void
+     */
     private function displayPanel(ProjectModel $model): void
     {
         $app = self::administratorApplication();
@@ -120,6 +132,12 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Prepare and render the project edit form and its controls.
+     *
+     * @param ProjectModel $model model value.
+     * @return void
+     */
     private function displayEdit(ProjectModel $model): void
     {
         $app = self::administratorApplication();
@@ -138,7 +156,7 @@ final class HtmlView extends BaseHtmlView
         }
 
         $isNew = (int) ($this->item->id ?? 0) === 0;
-        $userId = (int) $this->user->id;
+        $userId = (int) ($this->user?->id ?? 0);
 
         if (empty($this->item->admin)) {
             $this->form->setValue('admin', null, $userId);
@@ -231,6 +249,10 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::cancel('project.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
     }
 
+    /**
+     * Resolve and validate the administrator application.
+     * @return AdministratorApplication
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -243,14 +265,27 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Resolve and validate the primary Joomla database service.
+     * @return DatabaseInterface
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement project view database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Resolve the selected SportsManagement project database.
+     *
+     * @param mixed $databaseSelector databaseSelector value.
+     * @return DatabaseInterface
+     */
     private function resolveDatabase(mixed $databaseSelector = null): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve(
