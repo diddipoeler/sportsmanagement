@@ -23,6 +23,13 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator model for persons/players. */
 final class PlayerModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the player edit form from the administrator form paths.
+     *
+     * @param array $data data value.
+     * @param bool $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -49,6 +56,14 @@ final class PlayerModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Resolve the native person table for administrator editing.
+     *
+     * @param string $type type value.
+     * @param string $prefix prefix value.
+     * @param array $config config value.
+     * @return mixed
+     */
     public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (in_array(strtolower((string) $type), ['player', 'person'], true)) {
@@ -58,6 +73,12 @@ final class PlayerModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Find the age group matching a supplied player age.
+     *
+     * @param mixed $age age value.
+     * @return int|false
+     */
     public function getAgeGroupID($age)
     {
         if (!is_numeric($age)) {
@@ -82,6 +103,14 @@ final class PlayerModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Read person details by person or season-person identifier.
+     *
+     * @param int $personId personId value.
+     * @param int $seasonPersonId seasonPersonId value.
+     * @param int $insertHits insertHits value.
+     * @return object|false|null
+     */
     public function getPerson($personId = 0, $seasonPersonId = 0, $insertHits = 0)
     {
         $personId = max(0, (int) $personId);
@@ -302,6 +331,12 @@ final class PlayerModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Normalise player names, aliases and date fields before saving.
+     *
+     * @param array $data data value.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $parts = [trim((string) ($data['firstname'] ?? '')), trim((string) ($data['lastname'] ?? ''))];
@@ -334,6 +369,12 @@ final class PlayerModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Import person records from an uploaded CSV document.
+     *
+     * @param string $path path value.
+     * @return bool
+     */
     private function importCsvFile(string $path): bool
     {
         $handle = @fopen($path, 'rb');
@@ -431,6 +472,12 @@ final class PlayerModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Check whether a player record already exists in the database.
+     *
+     * @param array $data data value.
+     * @return bool
+     */
     private function personAlreadyExists(array $data): bool
     {
         $db = $this->getDatabase();
@@ -463,6 +510,18 @@ final class PlayerModel extends SportsManagementAdminModel
         return (bool) $db->setQuery($query, 0, 1)->loadResult();
     }
 
+    /**
+     * Find or create a person's seasonal team relation.
+     *
+     * @param int $personId personId value.
+     * @param int $teamId teamId value.
+     * @param int $seasonId seasonId value.
+     * @param int $personType personType value.
+     * @param string $picture picture value.
+     * @param string $now now value.
+     * @param int $userId userId value.
+     * @return int
+     */
     private function ensureSeasonTeamPerson(
         int $personId,
         int $teamId,
@@ -508,6 +567,17 @@ final class PlayerModel extends SportsManagementAdminModel
         return (int) $db->insertid();
     }
 
+    /**
+     * Find or create a person's season membership.
+     *
+     * @param int $personId personId value.
+     * @param int $seasonId seasonId value.
+     * @param int $personType personType value.
+     * @param string $picture picture value.
+     * @param string $now now value.
+     * @param int $userId userId value.
+     * @return int
+     */
     private function ensureSeasonPerson(
         int $personId,
         int $seasonId,
@@ -549,6 +619,15 @@ final class PlayerModel extends SportsManagementAdminModel
         return (int) $db->insertid();
     }
 
+    /**
+     * Ensure a project referee entry exists for a season person.
+     *
+     * @param int $projectId projectId value.
+     * @param int $seasonPersonId seasonPersonId value.
+     * @param string $now now value.
+     * @param int $userId userId value.
+     * @return void
+     */
     private function ensureProjectReferee(int $projectId, int $seasonPersonId, string $now, int $userId): void
     {
         if ($projectId <= 0 || $seasonPersonId <= 0) {
@@ -581,6 +660,13 @@ final class PlayerModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Find the project position mapping for a sport position.
+     *
+     * @param int $projectId projectId value.
+     * @param int $positionId positionId value.
+     * @return int
+     */
     private function findProjectPosition(int $projectId, int $positionId): int
     {
         if ($projectId <= 0 || $positionId <= 0) {
@@ -599,6 +685,17 @@ final class PlayerModel extends SportsManagementAdminModel
         return (int) $db->setQuery($query, 0, 1)->loadResult();
     }
 
+    /**
+     * Ensure the person's project-position assignment exists.
+     *
+     * @param int $personId personId value.
+     * @param int $projectId projectId value.
+     * @param int $projectPositionId projectPositionId value.
+     * @param int $personType personType value.
+     * @param string $now now value.
+     * @param int $userId userId value.
+     * @return void
+     */
     private function ensurePersonProjectPosition(
         int $personId,
         int $projectId,
@@ -637,6 +734,12 @@ final class PlayerModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Normalise an imported date and timestamp pair.
+     *
+     * @param string $raw raw value.
+     * @return array{0:string|null,1:int}
+     */
     private function normaliseDate(string $raw): array
     {
         $raw = trim($raw);
@@ -658,6 +761,12 @@ final class PlayerModel extends SportsManagementAdminModel
         return $timestamp === false ? [null, 0] : [date('Y-m-d', $timestamp), $timestamp];
     }
 
+    /**
+     * Normalise the list of selected player IDs.
+     *
+     * @param array $ids ids value.
+     * @return array<int>
+     */
     private function normaliseIds(array $ids): array
     {
         return array_values(array_unique(array_filter(array_map('intval', $ids), static fn (int $id): bool => $id > 0)));
