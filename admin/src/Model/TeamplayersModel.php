@@ -23,6 +23,12 @@ final class TeamplayersModel extends SportsManagementListModel
     private ?object $project = null;
     private ?object $teamContext = null;
 
+    /**
+     * Initialise the project-team player list and its filters.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -34,6 +40,13 @@ final class TeamplayersModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore player assignments and list ordering from Joomla state.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'ppl.lastname', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -76,6 +89,10 @@ final class TeamplayersModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the project and team filtered player assignment query.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -152,6 +169,10 @@ final class TeamplayersModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load the active project record used by list actions.
+     * @return ?object
+     */
     public function getProjectContext(): ?object
     {
         if ($this->project === null) {
@@ -160,6 +181,10 @@ final class TeamplayersModel extends SportsManagementListModel
         return $this->project;
     }
 
+    /**
+     * Load the selected team's context for assignments.
+     * @return ?object
+     */
     public function getTeamContext(): ?object
     {
         if ($this->teamContext === null) {
@@ -168,21 +193,44 @@ final class TeamplayersModel extends SportsManagementListModel
         return $this->teamContext;
     }
 
+    /**
+     * List valid project position options for players and staff.
+     * @return array
+     */
     public function getProjectPositionOptions(): array
     {
         return $this->relationService()->getProjectPositions((int) $this->getState('filter.pid'), (int) $this->getState('filter.persontype'));
     }
 
+    /**
+     * Find published project positions matching the selected entries.
+     *
+     * @param mixed $items items value.
+     * @return mixed
+     */
     public function getprojectpublished($items = null)
     {
         return is_array($items) ? $items : [];
     }
 
+    /**
+     * Resolve project position records for selected entries.
+     *
+     * @param mixed $items items value.
+     * @return mixed
+     */
     public function getprojectposition($items = null)
     {
         return is_array($items) ? $items : [];
     }
 
+    /**
+     * List person-position mappings for the selected project.
+     *
+     * @param mixed $projectId projectId value.
+     * @param mixed $personType personType value.
+     * @return array
+     */
     public function PersonProjectPosition($projectId, $personType): array
     {
         $projectId = max(0, (int) $projectId);
@@ -206,6 +254,16 @@ final class TeamplayersModel extends SportsManagementListModel
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * Check and optionally create missing project position relations.
+     *
+     * @param mixed $projectId projectId value.
+     * @param mixed $personType personType value.
+     * @param mixed $teamId teamId value.
+     * @param mixed $seasonId seasonId value.
+     * @param mixed $insert insert value.
+     * @return bool
+     */
     public function checkProjectPositions($projectId, $personType, $teamId, $seasonId, $insert = 1): bool
     {
         $projectId = max(0, (int) $projectId);
@@ -278,6 +336,10 @@ final class TeamplayersModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Save quick-edit player assignment fields for the selected project.
+     * @return bool
+     */
     public function saveShort(): bool
     {
         $app = $this->administratorApplication();
@@ -355,6 +417,12 @@ final class TeamplayersModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Set the publication state of selected player relations.
+     *
+     * @param int $state state value.
+     * @return bool
+     */
     public function setRelationState(int $state): bool
     {
         $app = $this->administratorApplication();
@@ -408,6 +476,10 @@ final class TeamplayersModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Apply the owning club's country to selected team players.
+     * @return bool
+     */
     public function assignPlayersCountry(): bool
     {
         $teamId = (int) $this->getState('filter.team_id');
@@ -453,6 +525,10 @@ final class TeamplayersModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Delete selected person-to-team relations.
+     * @return bool
+     */
     public function deleteRelations(): bool
     {
         $app = $this->administratorApplication();
@@ -520,6 +596,16 @@ final class TeamplayersModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load assigned players appearing in a selected match.
+     *
+     * @param mixed $teamId teamId value.
+     * @param mixed $seasonId seasonId value.
+     * @param mixed $projectTeamId projectTeamId value.
+     * @param mixed $projectId projectId value.
+     * @param mixed $matchId matchId value.
+     * @return array
+     */
     public function getTeamplayersMatch($teamId = 0, $seasonId = 0, $projectTeamId = 0, $projectId = 0, $matchId = 0): array
     {
         $seasonId = max(0, (int) $seasonId);
@@ -556,6 +642,16 @@ final class TeamplayersModel extends SportsManagementListModel
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * List persons belonging to a selected project team.
+     *
+     * @param mixed $teamId teamId value.
+     * @param mixed $seasonId seasonId value.
+     * @param mixed $projectTeamId projectTeamId value.
+     * @param mixed $generate generate value.
+     * @param mixed $projectId projectId value.
+     * @return array
+     */
     public function getProjectTeamplayers($teamId = 0, $seasonId = 0, $projectTeamId = 0, $generate = 0, $projectId = 0): array
     {
         $teamId = max(0, (int) $teamId);
@@ -600,6 +696,10 @@ final class TeamplayersModel extends SportsManagementListModel
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * Return active project and team context parameters.
+     * @return array
+     */
     public function getContextParams(): array
     {
         return [
@@ -611,6 +711,18 @@ final class TeamplayersModel extends SportsManagementListModel
         ];
     }
 
+    /**
+     * Replace a person's project position mapping.
+     *
+     * @param int $personId personId value.
+     * @param int $projectId projectId value.
+     * @param int $projectPositionId projectPositionId value.
+     * @param int $personType personType value.
+     * @param int $published published value.
+     * @param string $now now value.
+     * @param int $userId userId value.
+     * @return void
+     */
     private function replaceProjectPosition(int $personId, int $projectId, int $projectPositionId, int $personType, int $published, string $now, int $userId): void
     {
         $db = $this->getDatabase();
@@ -637,6 +749,15 @@ final class TeamplayersModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load a person-team relation restricted to team and season.
+     *
+     * @param int $relationId relationId value.
+     * @param int $teamId teamId value.
+     * @param int $seasonId seasonId value.
+     * @param int $personType personType value.
+     * @return ?object
+     */
     private function loadValidatedRelation(int $relationId, int $teamId, int $seasonId, int $personType): ?object
     {
         $db = $this->getDatabase();
@@ -687,6 +808,10 @@ final class TeamplayersModel extends SportsManagementListModel
         return array_values($valid);
     }
 
+    /**
+     * Create the service used to maintain person relation mappings.
+     * @return ProjectRelationService
+     */
     private function relationService(): ProjectRelationService
     {
         return $this->relations ??= new ProjectRelationService($this->getDatabase());
