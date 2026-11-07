@@ -29,6 +29,10 @@ final class EditpersonModel extends AdminModel
 
     private ?PersonTable $person = null;
 
+    /**
+     * Resolve the current Joomla frontend application.
+     * @return CMSApplicationInterface Active site application.
+     */
     private function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -101,6 +105,13 @@ final class EditpersonModel extends AdminModel
         return (int) $digits;
     }
 
+    /**
+     * Resolve the native person table for the edit form.
+     * @param string $type Table identifier.
+     * @param string $prefix Legacy table prefix.
+     * @param array $config Table configuration.
+     * @return mixed Native person table or fallback table.
+     */
     public function getTable($type = 'player', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (in_array(strtolower((string) $type), ['player', 'person'], true)) {
@@ -110,6 +121,12 @@ final class EditpersonModel extends AdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Load the Joomla person edit form and its field configuration.
+     * @param array $data Existing person data.
+     * @param bool $loadData Whether stored data should be loaded.
+     * @return mixed Joomla form or false.
+     */
     public function getForm($data = [], $loadData = true)
     {
         FormHelper::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
@@ -141,6 +158,10 @@ final class EditpersonModel extends AdminModel
         return $form;
     }
 
+    /**
+     * Restore saved form data or load the selected person record.
+     * @return mixed Initial form data.
+     */
     protected function loadFormData()
     {
         $app = $this->siteApplication();
@@ -153,6 +174,10 @@ final class EditpersonModel extends AdminModel
         return $data;
     }
 
+    /**
+     * Load or initialise the person table used by the frontend form.
+     * @return PersonTable Current person record.
+     */
     public function getData(): PersonTable
     {
         if ($this->person === null) {
