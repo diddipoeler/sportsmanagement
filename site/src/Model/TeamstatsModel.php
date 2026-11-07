@@ -40,6 +40,11 @@ final class TeamstatsModel extends SportsManagementProjectModel
     public static $nogoals_against = null;
     public static int $cfg_which_database = 0;
 
+    /**
+     * Initialise the team statistics project, team and database context.
+     * @param array $config Joomla site model settings.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -61,6 +66,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         self::getTeam();
     }
 
+    /**
+     * Load and cache the currently selected team record.
+     * @return object|false Team or false when unavailable.
+     */
     public static function getTeam()
     {
         if (self::$team !== null) {
@@ -84,6 +93,12 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return self::$team ?: false;
     }
 
+    /**
+     * Find the highest team result for the selected side and outcome.
+     * @param string $homeaway HOME or AWAY.
+     * @param string $which WIN, DEF or DRAW.
+     * @return object|false Highest match or false.
+     */
     public static function getHighest($homeaway, $which)
     {
         $team = self::getTeam();
@@ -162,6 +177,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return $db->loadObject() ?: false;
     }
 
+    /**
+     * Count team matches without conceding a goal.
+     * @return mixed Cached clean-sheet statistics or false.
+     */
     public static function getNoGoalsAgainst()
     {
         $team = self::getTeam();
@@ -201,6 +220,11 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return self::$nogoals_against;
     }
 
+    /**
+     * Aggregate team season totals for home or away matches.
+     * @param string $which HOME or AWAY.
+     * @return object|false Season total record or false.
+     */
     public static function getSeasonTotals($which)
     {
         $team = self::getTeam();
@@ -269,6 +293,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return $result;
     }
 
+    /**
+     * Load cached team matchday totals.
+     * @return array<int,object> Matchday totals.
+     */
     public static function getMatchDayTotals()
     {
         if (self::$matchdaytotals !== null) {
@@ -285,6 +313,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return self::$matchdaytotals;
     }
 
+    /**
+     * Count rounds in the selected project.
+     * @return int Number of rounds.
+     */
     public static function getTotalRounds(): int
     {
         if (self::$totalrounds !== null) {
@@ -309,12 +341,20 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return (int) self::$totalrounds;
     }
 
+    /**
+     * Return the highest reported attendance for this team.
+     * @return int|float Maximum attendance or zero.
+     */
     public static function getBestAttendance()
     {
         $attendance = self::_getAttendance();
         return $attendance ? max($attendance) : 0;
     }
 
+    /**
+     * Load the team's match attendance values.
+     * @return array<int,int|float> Attendance amounts.
+     */
     public static function _getAttendance(): array
     {
         if (is_array(self::$attendanceranking)) {
@@ -344,23 +384,39 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return self::$attendanceranking;
     }
 
+    /**
+     * Return the lowest reported attendance for this team.
+     * @return int|float Minimum attendance or zero.
+     */
     public static function getWorstAttendance()
     {
         $attendance = self::_getAttendance();
         return $attendance ? min($attendance) : 0;
     }
 
+    /**
+     * Sum all recorded attendances for the team.
+     * @return int|float Total attendance.
+     */
     public static function getTotalAttendance()
     {
         return array_sum(self::_getAttendance());
     }
 
+    /**
+     * Calculate the mean attendance across recorded matches.
+     * @return int|float Rounded mean or zero.
+     */
     public static function getAverageAttendance()
     {
         $attendance = self::_getAttendance();
         return $attendance ? round(array_sum($attendance) / count($attendance), 0) : 0;
     }
 
+    /**
+     * Build the team statistics chart route.
+     * @return string Chart URL or empty string.
+     */
     public static function getChartURL(): string
     {
         if (!class_exists('sportsmanagementHelperRoute', false)) {
@@ -382,6 +438,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         ));
     }
 
+    /**
+     * Resolve an absolute club logo URL for the selected team.
+     * @return string Logo URL or empty string.
+     */
     public static function getLogo(): string
     {
         if (self::$teamid <= 0) {
@@ -400,6 +460,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return $logo === '' ? '' : Uri::root() . ltrim($logo, '/');
     }
 
+    /**
+     * Group match results and outcomes for the selected team.
+     * @return array<string,mixed> Win, draw, loss and forfeit summaries.
+     */
     public static function getResults(): array
     {
         if (self::$projectid <= 0 || self::$teamid <= 0) {
@@ -464,6 +528,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return $results;
     }
 
+    /**
+     * Read per-round team statistics for chart rendering.
+     * @return array<int,object> Chart rows.
+     */
     public function getChartData(): array
     {
         if (self::$projectid <= 0 || self::$teamid <= 0) {
@@ -475,6 +543,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Collect configured player and roster statistic totals.
+     * @return array Team statistic summaries.
+     */
     public function getStats(): array
     {
         $teamStats = [];
@@ -493,6 +565,12 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return $teamStats;
     }
 
+    /**
+     * Build the shared per-round match statistics query.
+     * @param DatabaseInterface $db Selected component database.
+     * @param bool $chart Whether chart-specific values are selected.
+     * @return mixed Joomla database query.
+     */
     private static function matchDayQuery(DatabaseInterface $db, bool $chart)
     {
         $projectId = self::$projectid;
@@ -539,6 +617,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         return $query;
     }
 
+    /**
+     * Create an empty match outcome summary.
+     * @return array<string,mixed> Zeroed results structure.
+     */
     private static function emptyResults(): array
     {
         return [
@@ -548,6 +630,15 @@ final class TeamstatsModel extends SportsManagementProjectModel
         ];
     }
 
+    /**
+     * Classify one match as a win, defeat or draw.
+     * @param array $results Outcome summary, modified in place.
+     * @param object $match Match row.
+     * @param bool $home Whether this is a home match.
+     * @param mixed $own Team's goal count.
+     * @param mixed $other Opponent's goal count.
+     * @return void
+     */
     private static function classifyResult(array &$results, object $match, bool $home, $own, $other): void
     {
         if ($own > $other) {
@@ -562,6 +653,10 @@ final class TeamstatsModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Resolve the configured SportsManagement database connection.
+     * @return DatabaseInterface Component database.
+     */
     private static function database(): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
@@ -570,10 +665,18 @@ final class TeamstatsModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Resolve and validate Joomla's primary database service.
+     * @return DatabaseInterface Primary Joomla connection.
+     * @throws \RuntimeException If the service is invalid.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement team statistics database service is unavailable.', 500);
+        }
 
         return $database;
     }
