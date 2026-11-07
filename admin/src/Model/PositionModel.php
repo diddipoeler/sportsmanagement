@@ -15,6 +15,10 @@ use Joomla\Database\ParameterType;
 
 final class PositionModel extends SportsManagementAdminModel
 {
+    /**
+     * Save selected position properties from the quick-edit form.
+     * @return bool
+     */
     public function saveshort(): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -204,6 +208,12 @@ final class PositionModel extends SportsManagementAdminModel
         return $items;
     }
 
+    /**
+     * Normalise parent position and picture fields before saving.
+     *
+     * @param array $data data value.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $id = (int) ($data['id'] ?? 0);
@@ -218,6 +228,14 @@ final class PositionModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Synchronise position events and statistics after saving.
+     *
+     * @param array $data data value.
+     * @param int $id id value.
+     * @param bool $isNew isNew value.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($id <= 0) {
@@ -300,6 +318,13 @@ final class PositionModel extends SportsManagementAdminModel
         parent::afterSportsManagementSave($data, $id, $isNew);
     }
 
+    /**
+     * Build translated position and sport selection text.
+     *
+     * @param string $name name value.
+     * @param string $sportName sportName value.
+     * @return string
+     */
     private function buildOptionText(string $name, string $sportName): string
     {
         $name = Text::_($name);
