@@ -27,6 +27,10 @@ use Joomla\CMS\Uri\Uri;
 /** Native Joomla 5/6 administrator list view for project matches. */
 final class HtmlView extends BaseHtmlView
 {
+    /**
+     * Resolve the current administrator application for match management.
+     * @return CMSApplicationInterface
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
@@ -64,6 +68,12 @@ final class HtmlView extends BaseHtmlView
     public int $modalheight = 600;
     public int $prefill = 0;
 
+    /**
+     * Prepare and render the filtered administrator match listing.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -237,6 +247,12 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Register match actions and mass-add toolbar controls.
+     *
+     * @param bool $massadd massadd value.
+     * @return void
+     */
     private function addToolbar(bool $massadd): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'), 'calendar');
@@ -267,6 +283,12 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::addNew('match.addmatch', Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
     }
 
+    /**
+     * Prepare formatted selection lists for available project rounds.
+     *
+     * @param array $rounds rounds value.
+     * @return array
+     */
     private function buildRoundLists(array $rounds): array
     {
         $options = [];
@@ -303,6 +325,12 @@ final class HtmlView extends BaseHtmlView
         ];
     }
 
+    /**
+     * Prepend the appropriate team or person selection placeholder.
+     *
+     * @param array $teams teams value.
+     * @return array
+     */
     private function withTeamPlaceholder(array $teams): array
     {
         $label = $this->project_art_id === 3
@@ -312,6 +340,10 @@ final class HtmlView extends BaseHtmlView
         return array_merge([HTMLHelper::_('select.option', 0, $label)], $teams);
     }
 
+    /**
+     * Prepare form options for generating multiple matches.
+     * @return void
+     */
     private function buildMassAddLists(): void
     {
         $createOptions = [
@@ -354,6 +386,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Return the default empty selection lists for match management.
+     * @return array
+     */
     private function emptyLists(): array
     {
         return [
