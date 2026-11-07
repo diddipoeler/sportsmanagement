@@ -35,6 +35,13 @@ final class PlaygroundModel extends SportsManagementAdminModel
     private static ?DatabaseInterface $database = null;
     private static int $cachedPlaygroundId = 0;
 
+    /**
+     * Initialise the playground model and configured database and form services.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     * @param ?FormFactoryInterface $formFactory formFactory value.
+     */
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
@@ -62,6 +69,13 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load playground edit fields and configured media selector.
+     *
+     * @param mixed $data data value.
+     * @param mixed $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
@@ -78,6 +92,14 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Load playground logo history for the selected season.
+     *
+     * @param mixed $playground_id playground id value.
+     * @param mixed $season_id season id value.
+     * @param mixed $logoonly logoonly value.
+     * @return array
+     */
     public function getlogohistoryPlayground($playground_id = 0, $season_id = 0, $logoonly = false): array
     {
         $playgroundId = max(0, (int) $playground_id);
@@ -130,6 +152,12 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $rows;
     }
 
+    /**
+     * Load stored playground description and notice records.
+     *
+     * @param mixed $playground_id playground id value.
+     * @return array
+     */
     public function getPlaygroundNotic($playground_id): array
     {
         $playgroundId = max(0, (int) $playground_id);
@@ -153,6 +181,10 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Build a display address from current playground metadata.
+     * @return string|null
+     */
     public function getAddressString(): ?string
     {
         $playground = self::getPlayground();
@@ -193,6 +225,13 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return implode(', ', array_filter($parts, static fn($value): bool => $value !== ''));
     }
 
+    /**
+     * Load and cache playground details by identifier.
+     *
+     * @param mixed $pgid pgid value.
+     * @param mixed $inserthits inserthits value.
+     * @return object|null
+     */
     public static function getPlayground($pgid = 0, $inserthits = 0)
     {
         $app = self::backendApplication();
@@ -227,6 +266,13 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return self::$playground;
     }
 
+    /**
+     * Increment playground view counts when requested.
+     *
+     * @param mixed $pgid pgid value.
+     * @param mixed $inserthits inserthits value.
+     * @return void
+     */
     public static function updateHits($pgid = 0, $inserthits = 0): void
     {
         $playgroundId = max(0, (int) $pgid);
@@ -246,6 +292,15 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $db->execute();
     }
 
+    /**
+     * List future or past matches at the selected playground.
+     *
+     * @param mixed $project project value.
+     * @param mixed $pgid pgid value.
+     * @param mixed $played played value.
+     * @param mixed $allproject allproject value.
+     * @return array
+     */
     public function getNextGames($project = 0, $pgid = 0, $played = 0, $allproject = 0): array
     {
         $projectId = max(0, (int) $project);
@@ -329,6 +384,12 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Normalise submitted playground media and other save fields.
+     *
+     * @param array $data data value.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $post = $this->administratorApplication()->getInput()->post->getArray();
@@ -355,6 +416,14 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Persist playground details, logos and extended data after saving.
+     *
+     * @param array $data data value.
+     * @param int $id id value.
+     * @param bool $isNew isNew value.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($id <= 0) {
@@ -379,11 +448,19 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $app->setUserState('com_sportsmanagement.playground_id', $id);
     }
 
+    /**
+     * Store date-scoped playground notes and opening information.
+     *
+     * @param array $post post value.
+     * @param int $playgroundId playgroundId value.
+     * @param array $data data value.
+     * @return void
+     */
     private function storePlaygroundDetails(array $post, int $playgroundId, array $data): void
     {
         $db = $this->getDatabase();
         $modified = (string) ($data['modified'] ?? (new Date('now', new \DateTimeZone('UTC')))->toSql());
-        $modifiedBy = (int) ($data['modified_by'] ?? $this->administratorApplication()->getIdentity()->id);
+        $modifiedBy = (int) ($data['modified_by'] ?? ($this->administratorApplication()->getIdentity()?->id ?? 0));
 
         foreach ((array) ($post['date_von'] ?? []) as $key => $dateFrom) {
             $profile = new \stdClass();
@@ -464,6 +541,14 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Store seasonal playground logo history.
+     *
+     * @param array $post post value.
+     * @param int $playgroundId playgroundId value.
+     * @param array $data data value.
+     * @return void
+     */
     private function storeLogoHistory(array $post, int $playgroundId, array $data): void
     {
         $seasonIds = array_values(
@@ -482,7 +567,7 @@ final class PlaygroundModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
         $logo = (string) ($post['playground_logo_history'] ?? '');
         $modified = (string) ($data['modified'] ?? (new Date('now', new \DateTimeZone('UTC')))->toSql());
-        $modifiedBy = (int) ($data['modified_by'] ?? $this->administratorApplication()->getIdentity()->id);
+        $modifiedBy = (int) ($data['modified_by'] ?? ($this->administratorApplication()->getIdentity()?->id ?? 0));
 
         foreach ($seasonIds as $seasonId) {
             $query = $db->createQuery()
@@ -517,6 +602,12 @@ final class PlaygroundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Convert legacy date values into a database-friendly representation.
+     *
+     * @param mixed $value value value.
+     * @return string
+     */
     private function normaliseLegacyDate($value): string
     {
         $value = trim((string) $value);
@@ -529,6 +620,12 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $converted !== '' ? $converted : $value;
     }
 
+    /**
+     * Convert a valid legacy date to its Unix timestamp.
+     *
+     * @param string $date date value.
+     * @return int
+     */
     private function legacyTimestamp(string $date): int
     {
         if ($date === '' || $date === '0000-00-00') {
@@ -538,6 +635,15 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return SportsManagementDateHelper::getTimestamp($date);
     }
 
+    /**
+     * Read per-row input by record ID or original input index.
+     *
+     * @param array $values values value.
+     * @param mixed $key key value.
+     * @param int $id id value.
+     * @param mixed $default default value.
+     * @return mixed
+     */
     private function postArrayValue(array $values, $key, int $id, $default = '')
     {
         if (array_key_exists($id, $values)) {
@@ -551,6 +657,12 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $default;
     }
 
+    /**
+     * Format a supplied time value for legacy playground display.
+     *
+     * @param mixed $value value value.
+     * @return mixed
+     */
     private static function formatTimePresent($value)
     {
         if ($value === null) {
@@ -572,19 +684,34 @@ final class PlaygroundModel extends SportsManagementAdminModel
         return $timestamp === false ? $time : date('H:i', $timestamp);
     }
 
+    /**
+     * Resolve the Joomla administrator application.
+     * @return CMSApplicationInterface
+     */
     private static function backendApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve and validate Joomla's primary database service.
+     * @return DatabaseInterface
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement playground database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Reuse or resolve the active playground database connection.
+     * @return DatabaseInterface
+     */
     private static function getStaticDatabase(): DatabaseInterface
     {
         if (self::$database instanceof DatabaseInterface) {
