@@ -42,6 +42,12 @@ final class HtmlView extends BaseHtmlView
     public $option = 'com_sportsmanagement';
     public string $tmpl = '';
 
+    /**
+     * Render the player editor with person form and related data.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -148,14 +154,25 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Resolve and validate Joomla's primary database service.
+     * @return DatabaseInterface
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement player view database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Resolve and validate the administrator application.
+     * @return AdministratorApplication
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -168,12 +185,16 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Render player edit actions according to the current user's permissions.
+     * @return void
+     */
     private function addToolbar(): void
     {
         $isNew = (int) ($this->item->id ?? 0) === 0;
         $identity = $this->user;
-        $canEdit = $identity->authorise('core.edit', $this->option);
-        $canCreate = $identity->authorise('core.create', $this->option);
+        $canEdit = $identity !== null && $identity->authorise('core.edit', $this->option);
+        $canCreate = $identity !== null && $identity->authorise('core.create', $this->option);
         $mode = Text::_($isNew ? 'JTOOLBAR_NEW' : 'JTOOLBAR_EDIT');
 
         ToolbarHelper::title(
