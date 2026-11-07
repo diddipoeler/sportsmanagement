@@ -19,6 +19,18 @@ use Joomla\CMS\Language\Text;
  */
 final class TeamPresentationHelper
 {
+    /**
+     * Render a team name with configured logo, link and actions.
+     * @param object $team Team display record.
+     * @param string $containerPrefix Unique HTML element prefix.
+     * @param array $config Team display options.
+     * @param bool $isFavourite Whether the team is marked as favourite.
+     * @param object|null $project Optional project metadata.
+     * @param int $databaseSelector Component database selector.
+     * @param int $seasonId Selected season.
+     * @param string|null $link Optional destination URL.
+     * @return string Team name HTML.
+     */
     public static function formatName(
         object $team,
         string $containerPrefix,
@@ -60,6 +72,14 @@ final class TeamPresentationHelper
         return self::wrapLink($output, $link);
     }
 
+    /**
+     * Render configured links for team, club and related views.
+     * @param object $team Team record.
+     * @param array $config Link visibility options.
+     * @param int $databaseSelector Component database selector.
+     * @param int $seasonId Selected season.
+     * @return string Team action HTML.
+     */
     public static function renderActions(
         object $team,
         array $config,
@@ -175,6 +195,14 @@ final class TeamPresentationHelper
         return $actions ? '<ul class="list-inline">' . implode('', $actions) . '</ul>' : '';
     }
 
+    /**
+     * Build an escaped team name with favourite highlighting.
+     * @param object $team Team record.
+     * @param array $config Name format settings.
+     * @param bool $isFavourite Whether this is a favourite team.
+     * @param object|null $project Optional project metadata.
+     * @return string Formatted team name HTML.
+     */
     private static function nameMarkup(
         object $team,
         array $config,
@@ -219,6 +247,11 @@ final class TeamPresentationHelper
         return '<span style="' . self::escape($style) . '">' . $name . '</span>';
     }
 
+    /**
+     * Check whether any standard team navigation action is enabled.
+     * @param array $config Display settings.
+     * @return bool Whether action links are enabled.
+     */
     private static function hasStandardAction(array $config): bool
     {
         foreach ([
@@ -240,6 +273,14 @@ final class TeamPresentationHelper
         return false;
     }
 
+    /**
+     * Render one linked action icon for a team view.
+     * @param string $view Destination view.
+     * @param array $parameters Route parameters.
+     * @param string $icon Action icon path.
+     * @param string $title Accessible title.
+     * @return string Action item HTML.
+     */
     private static function action(string $view, array $parameters, string $icon, string $title): string
     {
         $link = SiteRouteHelper::view($view, $parameters);
@@ -252,16 +293,32 @@ final class TeamPresentationHelper
         return '<li class="list-inline-item">' . HTMLHelper::link($link, $image, ['title' => $title]) . '</li>';
     }
 
+    /**
+     * Wrap a display string in an optional HTML link.
+     * @param string $output Inner HTML.
+     * @param string|null $link Optional destination URL.
+     * @return string Linked or unlinked HTML.
+     */
     private static function wrapLink(string $output, ?string $link): string
     {
         return $link !== null && $link !== '' ? HTMLHelper::link($link, $output) : $output;
     }
 
+    /**
+     * Normalise a user-facing identifier to safe HTML ID characters.
+     * @param string $value Proposed identifier.
+     * @return string Safe element ID.
+     */
     private static function safeId(string $value): string
     {
         return preg_replace('/[^A-Za-z0-9_-]/', '-', $value) ?: 'team-actions';
     }
 
+    /**
+     * Escape text for safe HTML output.
+     * @param string $value Untrusted display text.
+     * @return string Escaped text.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
