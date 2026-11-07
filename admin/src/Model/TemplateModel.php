@@ -21,6 +21,14 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator form model for project templates. */
 final class TemplateModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve a Joomla template configuration table.
+     *
+     * @param mixed $type type value.
+     * @param mixed $prefix prefix value.
+     * @param mixed $config config value.
+     * @return mixed
+     */
     public function getTable($type = 'template', $prefix = 'sportsmanagementTable', $config = [])
     {
         $config['dbo'] = $this->getDatabase();
@@ -306,6 +314,12 @@ final class TemplateModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load project details for the selected template.
+     *
+     * @param int $projectId projectId value.
+     * @return ?object
+     */
     public function getProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -331,6 +345,12 @@ final class TemplateModel extends SportsManagementAdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Count teams assigned to a project.
+     *
+     * @param int $projectId projectId value.
+     * @return int
+     */
     public function getProjectTeamsCount(int $projectId): int
     {
         if ($projectId <= 0) {
@@ -348,6 +368,12 @@ final class TemplateModel extends SportsManagementAdminModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Resolve the project that owns a template configuration.
+     *
+     * @param int $id id value.
+     * @return int
+     */
     public function getProjectIdForTemplate(int $id): int
     {
         if ($id <= 0) {
@@ -365,6 +391,13 @@ final class TemplateModel extends SportsManagementAdminModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Find the XML definition of a project template.
+     *
+     * @param string $template template value.
+     * @param int $projectId projectId value.
+     * @return ?string
+     */
     private function findTemplateXml(string $template, int $projectId): ?string
     {
         $default = JPATH_COMPONENT_SITE . '/settings/default/' . $template . '.xml';
@@ -413,6 +446,10 @@ final class TemplateModel extends SportsManagementAdminModel
 
         return null;
     }
+    /**
+     * Resolve and validate the Joomla administrator application.
+     * @return AdministratorApplication
+     */
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
