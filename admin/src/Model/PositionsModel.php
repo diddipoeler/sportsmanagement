@@ -17,6 +17,12 @@ use Joomla\Database\ParameterType;
 
 final class PositionsModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the position list model and its Joomla configuration.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -35,6 +41,13 @@ final class PositionsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore position list filters and sorting from Joomla user state.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'po.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -60,6 +73,10 @@ final class PositionsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the filtered database query for available positions.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -170,6 +187,10 @@ final class PositionsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * List top-level positions for grouping player and staff roles.
+     * @return array
+     */
     public function getParentsPositions(): array
     {
         $db = $this->getDatabase();
@@ -193,6 +214,13 @@ final class PositionsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List project-specific positions filtered by person category.
+     *
+     * @param mixed $projectId projectId value.
+     * @param mixed $persontype persontype value.
+     * @return array
+     */
     public function getProjectPositions($projectId, $persontype = 1): array
     {
         $projectId = max(0, (int) $projectId);
@@ -226,6 +254,12 @@ final class PositionsModel extends SportsManagementListModel
         return $positions;
     }
 
+    /**
+     * List positions available for the specified project.
+     *
+     * @param mixed $projectId projectId value.
+     * @return array
+     */
     public function getPositions($projectId): array
     {
         $projectId = max(0, (int) $projectId);
@@ -255,6 +289,10 @@ final class PositionsModel extends SportsManagementListModel
         return $positions;
     }
 
+    /**
+     * List every available position regardless of project selection.
+     * @return array
+     */
     public function getAllPositions(): array
     {
         $db = $this->getDatabase();
@@ -283,6 +321,10 @@ final class PositionsModel extends SportsManagementListModel
         return $items;
     }
 
+    /**
+     * Build position selector options for administrator forms.
+     * @return array
+     */
     public function getPositionListSelect(): array
     {
         $db = $this->getDatabase();
