@@ -23,6 +23,13 @@ use Joomla\Database\ParameterType;
 
 final class ClubModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the Joomla club form with configurable logo fields.
+     *
+     * @param array $data data value.
+     * @param bool $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
@@ -83,6 +90,15 @@ final class ClubModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Read previous club logos by club, season and team.
+     *
+     * @param int $club_id club_id value.
+     * @param int $season_id season_id value.
+     * @param int $team_id team_id value.
+     * @param bool $logoonly logoonly value.
+     * @return array
+     */
     public function getlogohistory($club_id = 0, $season_id = 0, $team_id = 0, $logoonly = false)
     {
         $app = $this->administratorApplication();
@@ -123,6 +139,13 @@ final class ClubModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Read an extra field value for the selected club.
+     *
+     * @param int $club_id club_id value.
+     * @param string $fieldtext fieldtext value.
+     * @return mixed
+     */
     public function getuserextrafieldvalue($club_id = 0, $fieldtext = '')
     {
         $clubId = (int) $club_id;
@@ -161,6 +184,10 @@ final class ClubModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Save permitted club quick-edit fields for selected rows.
+     * @return bool
+     */
     public function saveshort(): bool
     {
         $app = $this->administratorApplication();
@@ -204,6 +231,12 @@ final class ClubModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * List teams assigned to the selected club.
+     *
+     * @param mixed $club_id club_id value.
+     * @return array|false
+     */
     public function teamsofclub($club_id)
     {
         $clubId = (int) $club_id;
@@ -226,6 +259,12 @@ final class ClubModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Normalise club fields, media and extended data before saving.
+     *
+     * @param array $data data value.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $app = $this->administratorApplication();
@@ -278,6 +317,14 @@ final class ClubModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Synchronise submitted club teams, logo history and extra fields.
+     *
+     * @param array $data data value.
+     * @param int $id id value.
+     * @param bool $isNew isNew value.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         $app = $this->administratorApplication();
@@ -295,6 +342,12 @@ final class ClubModel extends SportsManagementAdminModel
         $app->setUserState('com_sportsmanagement.club_id', $id);
     }
 
+    /**
+     * Check whether a country has postal code data.
+     *
+     * @param string $country country value.
+     * @return bool
+     */
     private function countryHasPostalCodes(string $country): bool
     {
         $db = $this->getDatabase();
@@ -309,6 +362,12 @@ final class ClubModel extends SportsManagementAdminModel
         return (int) $db->loadResult() > 0;
     }
 
+    /**
+     * Resolve and apply geographical coordinates for a club.
+     *
+     * @param object $table table value.
+     * @return void
+     */
     private function applyCoordinates(object $table): void
     {
         $parts = [];
@@ -343,6 +402,12 @@ final class ClubModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Retrieve a remote logo into the component image directory.
+     *
+     * @param string $url url value.
+     * @return string
+     */
     private function downloadClubLogo(string $url): string
     {
         $parts = parse_url($url);
@@ -378,6 +443,13 @@ final class ClubModel extends SportsManagementAdminModel
         return $relativePath;
     }
 
+    /**
+     * Normalise a club date field to the database format.
+     *
+     * @param array $data data value.
+     * @param string $field field value.
+     * @return array
+     */
     private function normaliseClubDate(array $data, string $field): array
     {
         $value = trim((string) ($data[$field] ?? ''));
@@ -404,6 +476,12 @@ final class ClubModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Apply edited team assignments from the club form.
+     *
+     * @param array $post post value.
+     * @return void
+     */
     private function updateSubmittedTeams(array $post): void
     {
         if (!isset($post['team_id']) || !is_array($post['team_id'])) {
@@ -435,6 +513,13 @@ final class ClubModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Persist configured season-specific club logos.
+     *
+     * @param array $post post value.
+     * @param int $clubId clubId value.
+     * @return void
+     */
     private function storeLogoHistory(array $post, int $clubId): void
     {
         if ($clubId <= 0 || !isset($post['season_history']) || !is_array($post['season_history'])) {
