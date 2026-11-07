@@ -48,6 +48,11 @@ final class ResultsModel extends SportsManagementListModel
     private ResultsAccessModel $accessModel;
     private ResultsEditModel $editModel;
 
+    /**
+     * Initialise results list state and delegated query, edit and access models.
+     * @param array $config Joomla list model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [];
@@ -78,6 +83,10 @@ final class ResultsModel extends SportsManagementListModel
         $this->config = $this->dataModel->getTemplateConfig('results');
     }
 
+    /**
+     * Return cached Joomla pagination for the current result rows.
+     * @return JSMSportsmanagementPagination Current result pagination.
+     */
     public function getPagination()
     {
         $store = $this->getStoreId('getPagination');
@@ -138,21 +147,39 @@ final class ResultsModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Return the current result page size.
+     * @return int Number of rows per page.
+     */
     public function getLimit(): int
     {
         return (int) $this->getState('list.limit');
     }
 
+    /**
+     * Return the current result page offset.
+     * @return int Start row index.
+     */
     public function getLimitStart(): int
     {
         return (int) $this->getState('list.start');
     }
 
+    /**
+     * Get the selected division identifier.
+     * @param int $cfg_which_database Legacy database selector.
+     * @return int Division identifier.
+     */
     public function getDivisionID($cfg_which_database = 0): int
     {
         return self::$divisionid;
     }
 
+    /**
+     * Load the selected division record.
+     * @param int $cfg_which_database Legacy database selector.
+     * @return object|null Division or null.
+     */
     public function getDivision($cfg_which_database = 0): ?object
     {
         return self::$divisionid > 0 ? $this->dataModel->getDivision(self::$divisionid) : null;
@@ -164,51 +191,103 @@ final class ResultsModel extends SportsManagementListModel
         return $this->dataModel->getProject();
     }
 
+    /**
+     * Retrieve the result template display configuration.
+     * @param string $template Template name.
+     * @return array Template settings.
+     */
     public function getTemplateConfig(string $template = 'results'): array
     {
         return $this->dataModel->getTemplateConfig($template);
     }
 
+    /**
+     * Retrieve shared results display configuration.
+     * @return array Overall settings.
+     */
     public function getOverallConfig(): array
     {
         return $this->dataModel->getOverallConfig();
     }
 
+    /**
+     * Resolve the current or specified round's code.
+     * @param int $roundId Optional round ID.
+     * @return string Round code.
+     */
     public function getRoundCode(int $roundId = 0): string
     {
         return $this->dataModel->getRoundCode($roundId > 0 ? $roundId : self::$roundid);
     }
 
+    /**
+     * Load round selector options.
+     * @param string $ordering Round sort direction.
+     * @return array Round options.
+     */
     public function getRoundOptions(string $ordering = 'ASC'): array
     {
         return $this->dataModel->getRoundOptions($ordering);
     }
 
+    /**
+     * Load project rounds and optional slugs.
+     * @param string $ordering Round sort direction.
+     * @param bool $slug Whether to include slugs.
+     * @return array Project round records.
+     */
     public function getRounds(string $ordering = 'ASC', bool $slug = true): array
     {
         return $this->dataModel->getRounds($ordering, $slug);
     }
 
+    /**
+     * Index project teams for the selected division.
+     * @param int $divisionId Optional division ID.
+     * @return array Indexed project teams.
+     */
     public function getProjectTeamsIndexed(int $divisionId = 0): array
     {
         return $this->dataModel->getProjectTeamsIndexed($divisionId);
     }
 
+    /**
+     * Load favourite team records.
+     * @return array Favourite teams.
+     */
     public function getFavTeams(): array
     {
         return $this->dataModel->getFavTeams();
     }
 
+    /**
+     * Load event types for a selected position.
+     * @param int $positionId Optional position ID.
+     * @return array Project event types.
+     */
     public function getProjectEvents(int $positionId = 0): array
     {
         return $this->dataModel->getProjectEvents($positionId);
     }
 
+    /**
+     * Load match event position options.
+     * @param int $positionId Optional position ID.
+     * @param int $personType Person type.
+     * @return array Position options.
+     */
     public function getProjectPositionsOptions(int $positionId = 0, int $personType = 1): array
     {
         return $this->dataModel->getProjectPositionsOptions($positionId, $personType, self::$projectid);
     }
 
+    /**
+     * Resolve the native Joomla match table.
+     * @param string $type Requested table name.
+     * @param string $prefix Legacy table prefix.
+     * @param array $config Table options.
+     * @return mixed MatchTable or parent table.
+     */
     public function getTable($type = 'match', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'match') === 0) {
@@ -223,6 +302,12 @@ final class ResultsModel extends SportsManagementListModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Limit a result description to a given word count.
+     * @param mixed $text Text to shorten.
+     * @param int $wordcount Maximum words.
+     * @return string Truncated text.
+     */
     public function limitText($text, $wordcount): string
     {
         $text = (string) $text;
@@ -239,6 +324,12 @@ final class ResultsModel extends SportsManagementListModel
         return implode(' ', array_slice($words, 0, $wordcount)) . '...';
     }
 
+    /**
+     * Fetch the first available configured RSS feed.
+     * @param string $rssfeedlink Comma-separated feed URLs.
+     * @param int $rssitems Legacy feed item limit.
+     * @return mixed Feed result or empty array.
+     */
     public function getRssFeeds($rssfeedlink, $rssitems)
     {
         $urls = array_values(array_filter(array_map('trim', explode(',', (string) $rssfeedlink))));
@@ -261,6 +352,11 @@ final class ResultsModel extends SportsManagementListModel
         return [];
     }
 
+    /**
+     * Enrich result rows with match content IDs and edit permission flags.
+     * Anonymous users are never granted row edit permission.
+     * @return array|false Enriched results or false on error.
+     */
     public function getData()
     {
         try {
@@ -276,7 +372,9 @@ final class ResultsModel extends SportsManagementListModel
         }
 
         $user = $this->siteApplication()->getIdentity();
-        $projectAllowed = $this->accessModel->isAllowed((int) ($project->editorgroup ?? 0));
+        $userId = (int) ($user?->id ?? 0);
+        $projectAllowed = $userId > 0
+            && $this->accessModel->isAllowed((int) ($project->editorgroup ?? 0));
         $contentIds = $this->getContentIds(array_map(
             static fn ($match): int => (int) ($match->id ?? 0),
             $items
@@ -286,8 +384,9 @@ final class ResultsModel extends SportsManagementListModel
             $matchId = (int) ($match->id ?? 0);
             $match->allowed = false;
 
-            if (((int) ($match->checked_out ?? 0) === 0 || (int) $match->checked_out === (int) $user->id)
-                && ($projectAllowed || $this->accessModel->isMatchAdmin($matchId, (int) $user->id))) {
+            if ($userId > 0
+                && ((int) ($match->checked_out ?? 0) === 0 || (int) $match->checked_out === $userId)
+                && ($projectAllowed || $this->accessModel->isMatchAdmin($matchId, $userId))) {
                 $match->allowed = true;
             }
 
@@ -297,6 +396,12 @@ final class ResultsModel extends SportsManagementListModel
         return $items;
     }
 
+    /**
+     * Check delegated project edit permission.
+     * @param int $cfg_which_database Database selector.
+     * @param int $editorgroup Editor group.
+     * @return bool Whether editing is allowed.
+     */
     public function isAllowed($cfg_which_database = 0, $editorgroup = 0): bool
     {
         if ((int) $cfg_which_database !== self::$cfg_which_database) {
@@ -306,6 +411,13 @@ final class ResultsModel extends SportsManagementListModel
         return $this->accessModel->isAllowed((int) $editorgroup);
     }
 
+    /**
+     * Check delegated match administrator permission.
+     * @param int $matchid Match ID.
+     * @param int $userid Joomla user ID.
+     * @param int $cfg_which_database Database selector.
+     * @return bool Whether the user administers this match.
+     */
     public function isMatchAdmin($matchid = 0, $userid = 0, $cfg_which_database = 0): bool
     {
         if ((int) $cfg_which_database !== self::$cfg_which_database) {
@@ -315,6 +427,13 @@ final class ResultsModel extends SportsManagementListModel
         return $this->accessModel->isMatchAdmin((int) $matchid, (int) $userid);
     }
 
+    /**
+     * Fetch matches and determine each authenticated user's edit flags.
+     * @param int $cfg_which_database Database selector.
+     * @param int $editorgroup Editor group.
+     * @param int $cat_id Content category ID.
+     * @return array Matching result rows.
+     */
     public function getMatches($cfg_which_database = 0, $editorgroup = 0, $cat_id = 0): array
     {
         if ($this->matches === null) {
@@ -330,12 +449,14 @@ final class ResultsModel extends SportsManagementListModel
 
         $allowed = $this->isAllowed($cfg_which_database, $editorgroup);
         $user = $this->siteApplication()->getIdentity();
+        $userId = (int) ($user?->id ?? 0);
         $contentIds = $this->getContentIds(array_keys($this->matches), (int) $cat_id);
 
         foreach ($this->matches as $key => $match) {
             $match->allowed = false;
-            if (((int) ($match->checked_out ?? 0) === 0 || (int) $match->checked_out === (int) $user->id)
-                && ($allowed || $this->isMatchAdmin((int) $match->id, (int) $user->id, $cfg_which_database))) {
+            if ($userId > 0
+                && ((int) ($match->checked_out ?? 0) === 0 || (int) $match->checked_out === $userId)
+                && ($allowed || $this->isMatchAdmin((int) $match->id, $userId, $cfg_which_database))) {
                 $match->allowed = true;
             }
             $match->content_id = (int) ($contentIds[(int) $match->id] ?? 0);
@@ -345,6 +466,12 @@ final class ResultsModel extends SportsManagementListModel
         return $this->matches;
     }
 
+    /**
+     * Fetch the referee teams associated with a match.
+     * @param int $match_id Match ID.
+     * @param int $cfg_which_database Database selector.
+     * @return array Referee team records.
+     */
     public static function getMatchRefereeTeams($match_id = 0, $cfg_which_database = 0): array
     {
         $model = new ResultsDataModel();
@@ -375,10 +502,15 @@ final class ResultsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Check whether the current user may see the edit icon.
+     * @param int $editorgroup Editor group.
+     * @return bool Whether the icon is shown.
+     */
     public function getShowEditIcon($editorgroup = 0): bool
     {
         $user = $this->siteApplication()->getIdentity();
-        if ((int) $user->id <= 0) {
+        if ($user === null || (int) $user->id <= 0) {
             return false;
         }
 
@@ -393,6 +525,12 @@ final class ResultsModel extends SportsManagementListModel
         return false;
     }
 
+    /**
+     * Check delegated team editor permission.
+     * @param int $userid Joomla user ID.
+     * @param int $cfg_which_database Database selector.
+     * @return bool Whether the user edits the team.
+     */
     public function isTeamEditor($userid = 0, $cfg_which_database = 0): bool
     {
         if ((int) $cfg_which_database !== self::$cfg_which_database) {
@@ -402,12 +540,21 @@ final class ResultsModel extends SportsManagementListModel
         return $this->accessModel->isTeamEditor((int) $userid);
     }
 
+    /**
+     * Delegate result edits to the dedicated results edit model.
+     * @param int $cfg_which_database Database selector.
+     * @return bool Whether saving succeeded.
+     */
     public function saveshort($cfg_which_database = 0): bool
     {
         $this->editModel->setDatabaseSelector((int) $cfg_which_database);
         return $this->editModel->saveShort();
     }
 
+    /**
+     * Build the results list query or a guaranteed empty fallback.
+     * @return mixed Joomla database query.
+     */
     protected function getListQuery()
     {
         $query = $this->dataModel->getResultsQuery(self::$roundid, self::$divisionid);
@@ -422,6 +569,12 @@ final class ResultsModel extends SportsManagementListModel
             ->where('1 = 0');
     }
 
+    /**
+     * Restore list pagination and ordering from Joomla user state.
+     * @param string $ordering Default ordering.
+     * @param string $direction Default direction.
+     * @return void
+     */
     protected function populateState($ordering = 'm.match_date', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -442,11 +595,19 @@ final class ResultsModel extends SportsManagementListModel
         self::$limitstart = (int) $start;
     }
 
+    /**
+     * Resolve the Joomla frontend application.
+     * @return CMSApplicationInterface Site application.
+     */
     private static function frontendApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Create the configured results data reader.
+     * @return ResultsDataModel Data reader.
+     */
     private function createDataModel(): ResultsDataModel
     {
         $model = new ResultsDataModel();
@@ -456,6 +617,10 @@ final class ResultsModel extends SportsManagementListModel
         return $model;
     }
 
+    /**
+     * Create the project-scoped results access model.
+     * @return ResultsAccessModel Access model.
+     */
     private function createAccessModel(): ResultsAccessModel
     {
         $model = new ResultsAccessModel();
@@ -464,6 +629,10 @@ final class ResultsModel extends SportsManagementListModel
         return $model;
     }
 
+    /**
+     * Create the configured results write model.
+     * @return ResultsEditModel Edit model.
+     */
     private function createEditModel(): ResultsEditModel
     {
         $model = new ResultsEditModel();
