@@ -23,6 +23,13 @@ final class PredictiongameModel extends SportsManagementAdminModel
 {
     public static int $seasonid = 0;
 
+    /**
+     * Load the prediction game edit form from Joomla form paths.
+     *
+     * @param mixed $data data input.
+     * @param mixed $loadData loadData input.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -35,6 +42,14 @@ final class PredictiongameModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve the native prediction game table.
+     *
+     * @param mixed $type type input.
+     * @param mixed $prefix prefix input.
+     * @param mixed $config config input.
+     * @return mixed
+     */
     public function getTable($type = 'predictiongame', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictiongame') === 0) {
@@ -44,11 +59,23 @@ final class PredictiongameModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Return the administrator script path for prediction game editing.
+     * @return string
+     */
     public function getScript(): string
     {
         return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
     }
 
+    /**
+     * Synchronise administrator and project relations after saving a prediction game.
+     *
+     * @param array $data data input.
+     * @param int $id id input.
+     * @param bool $isNew isNew input.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         $data['id'] = $id;
@@ -64,6 +91,12 @@ final class PredictiongameModel extends SportsManagementAdminModel
         $this->storePredictionProjects($data);
     }
 
+    /**
+     * Synchronise the users assigned to administer a prediction game.
+     *
+     * @param mixed $data data input.
+     * @return mixed
+     */
     public function storePredictionAdmins($data)
     {
         $ids = isset($data['user_ids']) && is_array($data['user_ids'])
@@ -84,6 +117,12 @@ final class PredictiongameModel extends SportsManagementAdminModel
         return $result;
     }
 
+    /**
+     * Synchronise projects included in the prediction game.
+     *
+     * @param mixed $data data input.
+     * @return mixed
+     */
     public function storePredictionProjects($data)
     {
         $ids = isset($data['project_ids']) && is_array($data['project_ids'])
@@ -104,10 +143,20 @@ final class PredictiongameModel extends SportsManagementAdminModel
         return $result;
     }
 
+    /**
+     * Preserve the legacy import entry point without an implementation.
+     * @return void
+     */
     public function import(): void
     {
     }
 
+    /**
+     * Load a prediction game record by identifier.
+     *
+     * @param mixed $id id input.
+     * @return object|false
+     */
     public function getPredictionGame($id = 0)
     {
         $predictionId = (int) $id;
@@ -134,6 +183,12 @@ final class PredictiongameModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load project IDs linked to a prediction game.
+     *
+     * @param mixed $prediction_id prediction id input.
+     * @return array<int>
+     */
     public function getPredictionProjectIDs($prediction_id = 0)
     {
         $predictionId = (int) $prediction_id;
@@ -174,21 +229,45 @@ final class PredictiongameModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Delete administrator relations belonging to selected games.
+     *
+     * @param mixed $cid cid input.
+     * @return bool
+     */
     public function deletePredictionAdmins($cid = [])
     {
         return $this->deleteRelations('#__sportsmanagement_prediction_admin', (array) $cid);
     }
 
+    /**
+     * Delete project relations belonging to selected games.
+     *
+     * @param mixed $cid cid input.
+     * @return bool
+     */
     public function deletePredictionProjects($cid = [])
     {
         return $this->deleteRelations('#__sportsmanagement_prediction_project', (array) $cid);
     }
 
+    /**
+     * Delete membership relations belonging to selected games.
+     *
+     * @param mixed $cid cid input.
+     * @return bool
+     */
     public function deletePredictionMembers($cid = [])
     {
         return $this->deleteRelations('#__sportsmanagement_prediction_member', (array) $cid);
     }
 
+    /**
+     * Delete prediction results belonging to selected games.
+     *
+     * @param mixed $cid cid input.
+     * @return bool
+     */
     public function deletePredictionResults($cid = [])
     {
         return $this->deleteRelations('#__sportsmanagement_prediction_result', (array) $cid);
@@ -271,6 +350,15 @@ final class PredictiongameModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Replace the relation rows of a prediction game with selected IDs.
+     *
+     * @param string $table table input.
+     * @param string $relationColumn relationColumn input.
+     * @param int $predictionId predictionId input.
+     * @param array $ids ids input.
+     * @return bool
+     */
     private function syncRelation(string $table, string $relationColumn, int $predictionId, array $ids): bool
     {
         if ($predictionId <= 0) {
@@ -320,6 +408,13 @@ final class PredictiongameModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Delete a selected relation table's rows for prediction games.
+     *
+     * @param string $table table input.
+     * @param array $predictionIds predictionIds input.
+     * @return bool
+     */
     private function deleteRelations(string $table, array $predictionIds): bool
     {
         $predictionIds = $this->normaliseIds($predictionIds);
@@ -344,18 +439,45 @@ final class PredictiongameModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Normalise submitted prediction game IDs into unique positive integers.
+     *
+     * @param array $ids ids input.
+     * @return array<int>
+     */
     private function normaliseIds(array $ids): array
     {
-        return array_values(
-            array_unique(
-                array_filter(
-                    array_map('intval', $ids),
-                    static fn (int $id): bool => $id > 0
-                )
-            )
-        );
+        $valid = [];
+
+        foreach (array_slice($ids, 0, 500) as $rawId) {
+            if (!is_int($rawId) && !is_string($rawId)) {
+                continue;
+            }
+
+            $value = trim((string) $rawId);
+
+            if (strlen($value) > 20 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+            $id = $digits === '' ? false : filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $valid[$id] = $id;
+            }
+        }
+
+        return array_values($valid);
     }
 
+    /**
+     * Calculate prediction score components from match and tip data.
+     *
+     * @param object $predictionProject predictionProject input.
+     * @param object $predictionResult predictionResult input.
+     * @return array
+     */
     private function calculatePredictionPoints(object $predictionProject, object $predictionResult): array
     {
         $resultHome = $predictionResult->team1_result;
@@ -414,6 +536,12 @@ final class PredictiongameModel extends SportsManagementAdminModel
         return [$tip, $points, $top, $diff, $tend];
     }
 
+    /**
+     * Format a nullable value as a database SQL literal.
+     *
+     * @param mixed $value value input.
+     * @return string
+     */
     private function nullableSqlValue($value): string
     {
         if ($value === null) {
