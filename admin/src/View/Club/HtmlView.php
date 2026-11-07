@@ -42,6 +42,12 @@ final class HtmlView extends BaseHtmlView
     public array $teamsofclub = [];
     public array $extraFields = [];
 
+    /**
+     * Load the club edit form and render its administrator view.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $app = Factory::getContainer()->get(AdministratorApplication::class);
@@ -114,6 +120,13 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Normalise club dates, country values and form defaults.
+     *
+     * @param int $clubId clubId value.
+     * @param CMSApplicationInterface $app app value.
+     * @return void
+     */
     private function normaliseFormValues(int $clubId, CMSApplicationInterface $app): void
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -171,6 +184,12 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
+    /**
+     * Load the optional season-specific club logo history form.
+     *
+     * @param CMSApplicationInterface $app app value.
+     * @return ?Form
+     */
     private function loadLogoHistoryForm(CMSApplicationInterface $app): ?Form
     {
         $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms/clublogohistory.xml';
@@ -194,6 +213,10 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
+    /**
+     * Register the JavaScript asset for club address previews.
+     * @return void
+     */
     private function registerAddressSummaryScript(): void
     {
         $document = $this->getDocument();
