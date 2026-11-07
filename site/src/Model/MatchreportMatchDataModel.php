@@ -19,11 +19,21 @@ use Throwable;
  */
 final class MatchreportMatchDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise a Joomla model for match report data access.
+     * @param array $config Model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Load a complete match report record and joined team and venue details.
+     * @param int $matchId Match identifier.
+     * @return object|null Match report data, or null when unavailable.
+     */
     public function getMatchData(int $matchId): ?object
     {
         if ($matchId <= 0) {
@@ -67,6 +77,11 @@ final class MatchreportMatchDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load match description and home/away team names.
+     * @param int $matchId Match identifier.
+     * @return object|null Match text record or null when unavailable.
+     */
     public function getMatchText(int $matchId): ?object
     {
         if ($matchId <= 0) {
@@ -104,6 +119,11 @@ final class MatchreportMatchDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Display a database query error through the Joomla frontend.
+     * @param Throwable $e Caught database exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(
