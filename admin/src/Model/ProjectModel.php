@@ -28,6 +28,13 @@ final class ProjectModel extends SportsManagementAdminModel
 {
     public static int $db_num_rows = 0;
 
+    /**
+     * Load the Joomla administrator form for project editing.
+     *
+     * @param array $data data value.
+     * @param bool $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -40,6 +47,14 @@ final class ProjectModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve the native project table.
+     *
+     * @param string $type type value.
+     * @param string $prefix prefix value.
+     * @param array $config config value.
+     * @return mixed
+     */
     public function getTable($type = 'Project', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Project') === 0) {
@@ -49,6 +64,12 @@ final class ProjectModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Normalise submitted project fields and modification metadata.
+     *
+     * @param array $data data value.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         if (isset($data['name'])) {
@@ -61,6 +82,10 @@ final class ProjectModel extends SportsManagementAdminModel
         return $data;
     }
 
+    /**
+     * Update league champion flags for selected projects.
+     * @return mixed
+     */
     public function setleaguechampion()
     {
         $app = $this->administratorApplication();
@@ -97,6 +122,15 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load the template configuration for a selected project.
+     *
+     * @param mixed $project_id project_id value.
+     * @param mixed $template template value.
+     * @param int $cfg_which_database cfg_which_database value.
+     * @param string $call_function call_function value.
+     * @return array
+     */
     public static function getTemplateConfig($project_id, $template, $cfg_which_database = 0, $call_function = ''): array
     {
         $projectId = (int) $project_id;
@@ -136,6 +170,13 @@ final class ProjectModel extends SportsManagementAdminModel
         return $registry->toArray();
     }
 
+    /**
+     * Find projects for a selected league and season.
+     *
+     * @param mixed $season_id season_id value.
+     * @param mixed $league_id league_id value.
+     * @return array
+     */
     public static function getProjectsbyCurrentProjectLeagueSeason($season_id, $league_id): array
     {
         $seasonId = (int) $season_id;
@@ -171,6 +212,12 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load a project record by identifier.
+     *
+     * @param mixed $project_id project_id value.
+     * @return object|null
+     */
     public static function getProject($project_id): ?object
     {
         $projectId = (int) $project_id;
@@ -212,6 +259,12 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Read the selected project-team details.
+     *
+     * @param mixed $projectteam_id projectteam_id value.
+     * @return object|null
+     */
     public function getProjectTeam($projectteam_id): ?object
     {
         $projectTeamId = (int) $projectteam_id;
@@ -248,6 +301,13 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * List available teams for a project and optional division.
+     *
+     * @param mixed $project_id project_id value.
+     * @param int $iDivisionId iDivisionId value.
+     * @return array
+     */
     public function getProjectTeamsOptions($project_id, $iDivisionId = 0): array
     {
         $projectId = (int) $project_id;
@@ -343,6 +403,12 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Delete selected projects and their dependent records.
+     *
+     * @param mixed $pks pks value.
+     * @return mixed
+     */
     public function delete(&$pks)
     {
         $ids = $this->normaliseIds($pks);
@@ -361,6 +427,12 @@ final class ProjectModel extends SportsManagementAdminModel
         return parent::delete($pks);
     }
 
+    /**
+     * Remove related project records before deleting projects.
+     *
+     * @param array $pk pk value.
+     * @return bool
+     */
     public function deleteProjectsData($pk = []): bool
     {
         $projectIds = $this->normaliseIds($pk);
@@ -421,6 +493,10 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Duplicate selected projects with their configured data.
+     * @return mixed
+     */
     public function copy()
     {
         $app = $this->administratorApplication();
@@ -489,6 +565,10 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Persist selected projects using the administrator quick-edit fields.
+     * @return mixed
+     */
     public function saveshort()
     {
         $app = $this->administratorApplication();
@@ -559,6 +639,12 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Create missing project extra-field value rows.
+     *
+     * @param int $projectId projectId value.
+     * @return void
+     */
     private function ensureExtraFieldRows(int $projectId): void
     {
         $db = $this->getDatabase();
@@ -592,6 +678,13 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Copy user extra field values between projects.
+     *
+     * @param int $sourceProjectId sourceProjectId value.
+     * @param int $destinationProjectId destinationProjectId value.
+     * @return void
+     */
     private function copyExtraFieldValues(int $sourceProjectId, int $destinationProjectId): void
     {
         $db = $this->getDatabase();
@@ -609,6 +702,12 @@ final class ProjectModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Look up the display name of a season.
+     *
+     * @param int $seasonId seasonId value.
+     * @return string
+     */
     private function getSeasonName(int $seasonId): string
     {
         if ($seasonId <= 0) {
@@ -626,11 +725,27 @@ final class ProjectModel extends SportsManagementAdminModel
         return (string) $db->loadResult();
     }
 
+    /**
+     * Read related database IDs for a list of projects.
+     *
+     * @param string $table table value.
+     * @param string $field field value.
+     * @param array $projectIds projectIds value.
+     * @return array
+     */
     private function loadIdsForProjects(string $table, string $field, array $projectIds): array
     {
         return $this->loadIds($table, $field, $projectIds);
     }
 
+    /**
+     * Read related IDs from an existing database table.
+     *
+     * @param string $table table value.
+     * @param string $field field value.
+     * @param array $ids ids value.
+     * @return array
+     */
     private function loadIds(string $table, string $field, array $ids): array
     {
         if (!$ids) {
@@ -658,6 +773,14 @@ final class ProjectModel extends SportsManagementAdminModel
         return $this->normaliseIds($db->loadColumn() ?: []);
     }
 
+    /**
+     * Delete matching IDs only when the table exists.
+     *
+     * @param string $table table value.
+     * @param string $field field value.
+     * @param array $ids ids value.
+     * @return void
+     */
     private function deleteFromExistingTable(string $table, string $field, array $ids): void
     {
         if (!$ids) {
@@ -684,6 +807,14 @@ final class ProjectModel extends SportsManagementAdminModel
         self::$db_num_rows += (int) $db->getAffectedRows();
     }
 
+    /**
+     * Read stored project template parameter values.
+     *
+     * @param DatabaseInterface $db db value.
+     * @param int $projectId projectId value.
+     * @param string $template template value.
+     * @return string
+     */
     private static function loadTemplateParams(DatabaseInterface $db, int $projectId, string $template): string
     {
         $query = $db->createQuery()
@@ -698,11 +829,21 @@ final class ProjectModel extends SportsManagementAdminModel
         return trim((string) $db->loadResult());
     }
 
+    /**
+     * Resolve the Joomla administrator application.
+     * @return AdministratorApplication
+     */
     private static function backendApplication(): AdministratorApplication
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve the selected SportsManagement database service.
+     *
+     * @param int $whichDatabase whichDatabase value.
+     * @return DatabaseInterface
+     */
     private static function sportsDatabase(int $whichDatabase = 0): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve(
@@ -711,14 +852,27 @@ final class ProjectModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve and validate the primary Joomla database service.
+     * @return DatabaseInterface
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = self::backendApplication()->getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement project database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Normalise selected project identifiers to distinct positive IDs.
+     *
+     * @param mixed $ids ids value.
+     * @return array<int>
+     */
     private function normaliseIds($ids): array
     {
         if (is_string($ids)) {
