@@ -34,6 +34,12 @@ final class HtmlView extends BaseHtmlView
     public int $massadd = 0;
     public int $populate = 0;
 
+    /**
+     * Render round lists, population forms or mass-add layouts.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -99,6 +105,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Add navigation back to the current project control panel.
+     * @return void
+     */
     private function addProjectBackButton(): void
     {
         if ($this->project_id <= 0) {
@@ -111,6 +121,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Build administrator actions for the normal rounds listing.
+     * @return void
+     */
     private function addDefaultToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_TITLE'), 'calendar');
@@ -136,6 +150,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Build controls for automatically populating rounds.
+     * @return void
+     */
     private function addPopulateToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_TITLE'), 'calendar');
@@ -146,6 +164,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Build controls for creating multiple rounds.
+     * @return void
+     */
     private function addMassaddToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSADD_BUTTON'), 'calendar');
