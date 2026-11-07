@@ -41,6 +41,12 @@ final class TemplatesModel extends SportsManagementListModel
         'predictionusers',
     ];
 
+    /**
+     * Initialise template listing with Joomla sort and filter fields.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -57,6 +63,13 @@ final class TemplatesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore current project and template list state.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'tmpl.template', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -71,11 +84,19 @@ final class TemplatesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Return the project ID used by the template list.
+     * @return int
+     */
     public function getProjectId(): int
     {
         return (int) $this->getState('filter.pid', 0);
     }
 
+    /**
+     * Load the current project and its template metadata.
+     * @return ?object
+     */
     public function getProject(): ?object
     {
         $projectId = $this->getProjectId();
@@ -103,6 +124,10 @@ final class TemplatesModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * List projects eligible to provide master templates.
+     * @return array
+     */
     public function getMasterTemplates(): array
     {
         $db = $this->getDatabase();
@@ -183,6 +208,10 @@ final class TemplatesModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Resolve the name of the project's master template.
+     * @return mixed
+     */
     public function getMasterName()
     {
         $projectId = $this->getProjectId();
@@ -214,6 +243,10 @@ final class TemplatesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the database query for configured project templates.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $projectId = $this->getProjectId();
@@ -404,6 +437,12 @@ final class TemplatesModel extends SportsManagementListModel
         return true;
     }
 
+    /**
+     * Find component extensions enabled for a project.
+     *
+     * @param int $projectId projectId value.
+     * @return array
+     */
     private function getActiveExtensions(int $projectId): array
     {
         if (!class_exists('sportsmanagementHelper')) {
@@ -422,6 +461,13 @@ final class TemplatesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Read a template display title from its XML metadata.
+     *
+     * @param string $viewsPath viewsPath value.
+     * @param string $template template value.
+     * @return string
+     */
     private function getTemplateTitle(string $viewsPath, string $template): string
     {
         $metaFile = $viewsPath . '/' . $template . '/tmpl/default.xml';
@@ -438,6 +484,10 @@ final class TemplatesModel extends SportsManagementListModel
 
         return (string) ($xml->layout->attributes()->title ?? '');
     }
+    /**
+     * Resolve and validate the Joomla administrator application.
+     * @return AdministratorApplication
+     */
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
