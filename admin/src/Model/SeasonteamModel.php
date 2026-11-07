@@ -14,13 +14,22 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
  */
 final class SeasonteamModel extends SportsManagementAdminModel
 {
+    /**
+     * Allow season-team editing only when the administrator is authorised.
+     *
+     * @param array $data Selected season-team record.
+     * @param string $key Record ID field.
+     * @return bool Whether the current user may edit the relation.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 }
