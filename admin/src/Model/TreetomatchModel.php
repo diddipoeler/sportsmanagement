@@ -15,6 +15,14 @@ use Diddipoeler\Component\SportsManagement\Administrator\Table\TreetomatchTable;
 
 final class TreetomatchModel extends SportsManagementAdminModel
 {
+    /**
+     * Return the native tournament-tree match table or a parent fallback.
+     *
+     * @param mixed $type type value.
+     * @param mixed $prefix prefix value.
+     * @param mixed $config config value.
+     * @return mixed
+     */
     public function getTable($type = 'treetomatch', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'treetomatch') === 0) {
