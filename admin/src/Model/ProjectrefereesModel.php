@@ -24,6 +24,12 @@ final class ProjectrefereesModel extends SportsManagementListModel
     public int $project_id = 0;
     public int $season_id = 0;
 
+    /**
+     * Initialise the administrator project referee list model.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -44,6 +50,13 @@ final class ProjectrefereesModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Assign selected referees to the requested project.
+     *
+     * @param mixed $cid cid value.
+     * @param mixed $project_id project id value.
+     * @return int
+     */
     public function storeAssigned($cid, $project_id): int
     {
         $seasonPersonIds = $this->normaliseIds((array) $cid);
@@ -108,6 +121,12 @@ final class ProjectrefereesModel extends SportsManagementListModel
         return $added;
     }
 
+    /**
+     * Remove selected project referee assignments.
+     *
+     * @param mixed $cid cid value.
+     * @return int
+     */
     public function unassign($cid): int
     {
         $ids = $this->normaliseIds((array) $cid);
@@ -137,6 +156,12 @@ final class ProjectrefereesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count referees associated with a project.
+     *
+     * @param mixed $project_id project id value.
+     * @return int
+     */
     public function getProjectRefereesCount($project_id): int
     {
         $projectId = (int) $project_id;
@@ -156,6 +181,10 @@ final class ProjectrefereesModel extends SportsManagementListModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Load referee rows used by legacy assignment screens.
+     * @return mixed
+     */
     public function getItems2()
     {
         $db = $this->getDatabase();
@@ -171,6 +200,12 @@ final class ProjectrefereesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load the selected project record.
+     *
+     * @param mixed $project_id project id value.
+     * @return mixed
+     */
     public function getProject($project_id)
     {
         $projectId = (int) $project_id;
@@ -205,6 +240,13 @@ final class ProjectrefereesModel extends SportsManagementListModel
         return $db->loadObject() ?: false;
     }
 
+    /**
+     * List referee positions configured for a project.
+     *
+     * @param mixed $project_id project id value.
+     * @param mixed $persontype persontype value.
+     * @return array
+     */
     public function getProjectPositions($project_id, $persontype = 3): array
     {
         $projectId = (int) $project_id;
@@ -237,6 +279,13 @@ final class ProjectrefereesModel extends SportsManagementListModel
         return $positions;
     }
 
+    /**
+     * Restore project referee filters and list ordering.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'p.lastname', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -280,6 +329,10 @@ final class ProjectrefereesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the filtered database query for project referees.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -388,6 +441,12 @@ final class ProjectrefereesModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Build a cache key from the current referee list state.
+     *
+     * @param mixed $id id value.
+     * @return mixed
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . $this->project_id;
@@ -399,6 +458,12 @@ final class ProjectrefereesModel extends SportsManagementListModel
         return parent::getStoreId($id);
     }
 
+    /**
+     * Normalise selected referee IDs into distinct positive identifiers.
+     *
+     * @param array $ids ids value.
+     * @return array
+     */
     private function normaliseIds(array $ids): array
     {
         return array_values(
