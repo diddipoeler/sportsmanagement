@@ -16,6 +16,10 @@ use Joomla\Database\ParameterType;
 
 final class SeasonModel extends SportsManagementAdminModel
 {
+    /**
+     * Save season-to-person assignments and associated project positions.
+     * @return mixed
+     */
     public function saveshortpersons()
     {
         $app = $this->administratorApplication();
@@ -103,6 +107,10 @@ final class SeasonModel extends SportsManagementAdminModel
         return '';
     }
 
+    /**
+     * Save the season assignments of selected teams.
+     * @return mixed
+     */
     public function saveshortteams()
     {
         $app = $this->administratorApplication();
@@ -164,6 +172,15 @@ final class SeasonModel extends SportsManagementAdminModel
         return $result;
     }
 
+    /**
+     * Find or create the membership of a person in a season.
+     *
+     * @param int $personId personId argument.
+     * @param int $seasonId seasonId argument.
+     * @param string $modified modified argument.
+     * @param int $modifiedBy modifiedBy argument.
+     * @return int
+     */
     private function ensureSeasonPerson(
         int $personId,
         int $seasonId,
@@ -212,6 +229,17 @@ final class SeasonModel extends SportsManagementAdminModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Ensure a person has the selected project playing position.
+     *
+     * @param int $personId personId argument.
+     * @param int $projectId projectId argument.
+     * @param int $positionId positionId argument.
+     * @param int $personType personType argument.
+     * @param string $modified modified argument.
+     * @param int $modifiedBy modifiedBy argument.
+     * @return void
+     */
     private function ensureProjectPersonPosition(
         int $personId,
         int $projectId,
@@ -270,6 +298,15 @@ final class SeasonModel extends SportsManagementAdminModel
         $db->insertObject('#__sportsmanagement_person_project_position', $object);
     }
 
+    /**
+     * Ensure the season person has the required project referee mapping.
+     *
+     * @param int $seasonPersonId seasonPersonId argument.
+     * @param int $projectId projectId argument.
+     * @param string $modified modified argument.
+     * @param int $modifiedBy modifiedBy argument.
+     * @return void
+     */
     private function ensureProjectReferee(
         int $seasonPersonId,
         int $projectId,
@@ -300,6 +337,17 @@ final class SeasonModel extends SportsManagementAdminModel
         $db->insertObject('#__sportsmanagement_project_referee', $object);
     }
 
+    /**
+     * Ensure a person has a seasonal team membership.
+     *
+     * @param int $personId personId argument.
+     * @param int $seasonId seasonId argument.
+     * @param int $teamId teamId argument.
+     * @param int $personType personType argument.
+     * @param string $modified modified argument.
+     * @param int $modifiedBy modifiedBy argument.
+     * @return void
+     */
     private function ensureSeasonTeamPerson(
         int $personId,
         int $seasonId,
@@ -342,6 +390,13 @@ final class SeasonModel extends SportsManagementAdminModel
         $db->insertObject('#__sportsmanagement_season_team_person_id', $object);
     }
 
+    /**
+     * Resolve the team ID from scalar or person-indexed form input.
+     *
+     * @param mixed $teamInput teamInput argument.
+     * @param int $personId personId argument.
+     * @return int
+     */
     private function resolveTeamId($teamInput, int $personId): int
     {
         if (!is_array($teamInput)) {
