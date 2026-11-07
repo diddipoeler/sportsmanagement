@@ -19,6 +19,10 @@ final class TreetonodeController extends SportsManagementFormController
 {
     protected $view_list = 'treetonodes';
 
+    /**
+     * Save short-form tournament tree node values after token and ACL validation.
+     * @return void
+     */
     public function saveshort(): void
     {
         $this->assertTreeWritePermission();
@@ -73,6 +77,10 @@ final class TreetonodeController extends SportsManagementFormController
         );
     }
 
+    /**
+     * Remove a tournament node when the administrator has edit rights.
+     * @return void
+     */
     public function removenode(): void
     {
         $this->assertTreeWritePermission();
@@ -96,6 +104,12 @@ final class TreetonodeController extends SportsManagementFormController
         );
     }
 
+    /**
+     * Cancel node editing and redirect to the selected tournament tree.
+     *
+     * @param mixed $key key argument.
+     * @return bool
+     */
     public function cancel($key = null)
     {
         $this->checkToken();
@@ -105,21 +119,44 @@ final class TreetonodeController extends SportsManagementFormController
         return true;
     }
 
+    /**
+     * Preserve tournament tree context on item redirects.
+     *
+     * @param mixed $recordId recordId argument.
+     * @param string $urlVar urlVar argument.
+     * @return string
+     */
     protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
     {
         return parent::getRedirectToItemAppend($recordId, $urlVar) . $this->contextAppend();
     }
 
+    /**
+     * Preserve tournament tree context on list redirects.
+     * @return string
+     */
     protected function getRedirectToListAppend()
     {
         return parent::getRedirectToListAppend() . $this->contextAppend();
     }
 
+    /**
+     * Resolve the Joomla administrator tournament node model.
+     *
+     * @param string $name name argument.
+     * @param string $prefix prefix argument.
+     * @param array $config config argument.
+     * @return mixed
+     */
     public function getModel($name = 'Treetonode', $prefix = 'Administrator', $config = ['ignore_request' => false])
     {
         return parent::getModel($name, $prefix, $config);
     }
 
+    /**
+     * Append validated tree and project IDs to redirect URLs.
+     * @return string
+     */
     private function contextAppend(): string
     {
         $input = $this->app->getInput();
@@ -130,6 +167,13 @@ final class TreetonodeController extends SportsManagementFormController
             . ($projectId > 0 ? '&pid=' . $projectId : '');
     }
 
+    /**
+     * Build the administrator tournament node URL.
+     *
+     * @param int $treeId treeId argument.
+     * @param int $projectId projectId argument.
+     * @return string
+     */
     private function treeUrl(int $treeId, int $projectId): string
     {
         return Route::_(
@@ -140,6 +184,10 @@ final class TreetonodeController extends SportsManagementFormController
         );
     }
 
+    /**
+     * Require a valid Joomla token and tournament edit permission.
+     * @return void
+     */
     private function assertTreeWritePermission(): void
     {
         $this->checkToken();
@@ -150,6 +198,12 @@ final class TreetonodeController extends SportsManagementFormController
         }
     }
 
+    /**
+     * Validate and deduplicate submitted positive tournament node IDs.
+     *
+     * @param mixed $raw raw argument.
+     * @return array<int>
+     */
     private function normaliseIds(mixed $raw): array
     {
         if (!is_array($raw) || count($raw) > 500) {
