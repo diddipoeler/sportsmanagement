@@ -33,6 +33,11 @@ final class AllprojectsModel extends SportsManagementListModel
         'v.country' => 'l.country',
     ];
 
+    /**
+     * Initialise the public projects list with season and pagination filters.
+     * @param array $config Joomla list-model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $input = $this->siteApplication()->getInput();
@@ -44,6 +49,10 @@ final class AllprojectsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Calculate a valid page offset for the selected project list.
+     * @return int Start index of the current page.
+     */
     public function getStart()
     {
         $this->setState('list.start', $this->limitstart);
@@ -68,6 +77,10 @@ final class AllprojectsModel extends SportsManagementListModel
         return $this->cache[$store] = $start;
     }
 
+    /**
+     * Build the published projects query with league, season and search filters.
+     * @return mixed Joomla database query for the projects list.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -134,6 +147,12 @@ final class AllprojectsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Restore the project-list filters and sorting from Joomla user state.
+     * @param string|null $ordering Optional default ordering.
+     * @param string|null $direction Optional default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         $app = $this->siteApplication();
@@ -164,6 +183,10 @@ final class AllprojectsModel extends SportsManagementListModel
         $this->setState('filter_order_Dir', $filterOrderDir);
     }
 
+    /**
+     * List published leagues for the project filter.
+     * @return array<int,object> League selection options.
+     */
     public function getLeagueOptions(): array
     {
         $db = $this->getDatabase();
@@ -176,6 +199,10 @@ final class AllprojectsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List published seasons for the project filter.
+     * @return array<int,object> Season selection options.
+     */
     public function getSeasonOptions(): array
     {
         $db = $this->getDatabase();
@@ -188,18 +215,38 @@ final class AllprojectsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Normalise requested project filters to unique positive integer IDs.
+     * Rejects malformed tokens and caps input to 500 values.
+     * @param mixed $value Submitted IDs or delimited string.
+     * @return array<int> Valid distinct identifiers.
+     */
     private static function normaliseIds($value): array
     {
         $parts = is_array($value)
             ? $value
             : preg_split('/[|,]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY);
         $ids = [];
-        foreach ($parts ?: [] as $part) {
-            $id = (int) $part;
-            if ($id > 0) {
+
+        foreach (array_slice($parts ?: [], 0, 500) as $part) {
+            if (!is_int($part) && !is_string($part)) {
+                continue;
+            }
+
+            $text = trim((string) $part);
+
+            if (strlen($text) > 20 || preg_match('/^[0-9]+$/D', $text) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($text, '0');
+            $id = $digits === '' ? false : filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
                 $ids[$id] = $id;
             }
         }
+
         return array_values($ids);
     }
 }
