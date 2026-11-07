@@ -31,6 +31,13 @@ if (!class_exists('sportsmanagementModeljlextdfbnetplayerimport', false)) {
 /** Native MVCFactory entry point for the DFB.net importer. */
 final class JlextdfbnetplayerimportModel extends \sportsmanagementModeljlextdfbnetplayerimport
 {
+    /**
+     * Adapt Joomla MVCFactory constructor arguments to the legacy DFB.net player importer.
+     *
+     * @param array $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct();
