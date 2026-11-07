@@ -23,6 +23,10 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
     private int $limit = 0;
     private int $limitStart = 0;
 
+    /**
+     * Return the selected prediction project identifier.
+     * @return int
+     */
     public function getProjectId(): int
     {
         $projects = $this->getPredictionProjects();
@@ -43,6 +47,10 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $this->projectId;
     }
 
+    /**
+     * Resolve the selected prediction round identifier.
+     * @return int
+     */
     public function getRoundId(): int
     {
         if ($this->roundId <= 0) {
@@ -66,6 +74,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $this->roundId;
     }
 
+    /**
+     * Resolve a permitted round from current prediction settings.
+     *
+     * @param array $config config value.
+     * @return int
+     */
     public function getSelectedRoundId(array $config = []): int
     {
         $roundId = $this->getRoundId();
@@ -91,6 +105,10 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $roundId;
     }
 
+    /**
+     * Load and cache the active prediction project.
+     * @return object|null
+     */
     public function getResultsProject(): ?object
     {
         if ($this->resultsProject !== null) {
@@ -140,6 +158,10 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $this->resultsProject;
     }
 
+    /**
+     * Combine configured result display settings for the prediction view.
+     * @return array
+     */
     public function getResultsConfig(): array
     {
         return array_merge(
@@ -149,6 +171,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         );
     }
 
+    /**
+     * Read the current round for a selected project.
+     *
+     * @param ?int $projectId projectId value.
+     * @return int
+     */
     public function getProjectCurrentRoundId(?int $projectId = null): int
     {
         $projectId ??= $this->getProjectId();
@@ -166,6 +194,10 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * List selectable prediction projects.
+     * @return array
+     */
     public function getProjectOptions(): array
     {
         $options = [];
@@ -178,6 +210,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $options;
     }
 
+    /**
+     * List available rounds for the prediction project.
+     *
+     * @param array $config config value.
+     * @return array
+     */
     public function getRoundOptions(array $config = []): array
     {
         $allowed = $this->getConfiguredRoundIds($config);
@@ -191,6 +229,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $options;
     }
 
+    /**
+     * Load project matches eligible for prediction results.
+     *
+     * @param array $config config value.
+     * @return array
+     */
     public function getMatches(array $config = []): array
     {
         $projectId = $this->getProjectId();
@@ -270,6 +314,13 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Calculate and paginate prediction result rows for display.
+     *
+     * @param array $config config value.
+     * @param array $avatarConfig avatarConfig value.
+     * @return array
+     */
     public function getResultsData(array $config, array $avatarConfig): array
     {
         if ($this->resultsData !== null) {
@@ -364,6 +415,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         ];
     }
 
+    /**
+     * Build a Joomla pagination object for prediction result rows.
+     *
+     * @param int $total total value.
+     * @return Pagination
+     */
     public function getPagination(int $total): Pagination
     {
         if ($this->limit <= 0) {
@@ -372,6 +429,10 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return new Pagination($total, $this->limitStart, max(1, $this->limit ?: $total ?: 1));
     }
 
+    /**
+     * Return the configured result page limit.
+     * @return int
+     */
     public function getLimit(): int
     {
         if ($this->limit <= 0) {
@@ -380,17 +441,36 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $this->limit;
     }
 
+    /**
+     * Return the result page start index.
+     * @return int
+     */
     public function getLimitStart(): int
     {
         return $this->limitStart;
     }
 
+    /**
+     * Resolve the current participant's numeric prediction-member ID.
+     * @return int
+     */
     public function getCurrentPredictionMemberNumericId(): int
     {
         $member = $this->getPredictionMember();
         return $this->extractId((string) ($member->pmID ?? '0'));
     }
 
+    /**
+     * Calculate an illustrative prediction score using the configured rules.
+     *
+     * @param int $home home value.
+     * @param int $away away value.
+     * @param int $tipp tipp value.
+     * @param int $tippHome tippHome value.
+     * @param int $tippAway tippAway value.
+     * @param bool $joker joker value.
+     * @return int
+     */
     public function scoreExample(int $home, int $away, int $tipp, int $tippHome, int $tippAway, bool $joker = false): int
     {
         $project = $this->getResultsProject();
@@ -403,6 +483,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         );
     }
 
+    /**
+     * Load deadlines for predicting each selected round.
+     *
+     * @param object $project project value.
+     * @return array
+     */
     private function getRoundClosingTimes(object $project): array
     {
         if ($this->predictionGameId <= 0) {
@@ -454,6 +540,16 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $settings;
     }
 
+    /**
+     * Check whether a participant's prediction can currently be disclosed.
+     *
+     * @param object $row row value.
+     * @param int $memberId memberId value.
+     * @param int $currentMemberId currentMemberId value.
+     * @param object $project project value.
+     * @param array $closingTimes closingTimes value.
+     * @return bool
+     */
     private function mayShowTip(object $row, int $memberId, int $currentMemberId, object $project, array $closingTimes): bool
     {
         if ($memberId === $currentMemberId && $currentMemberId > 0) {
@@ -476,6 +572,13 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $this->nowTimestamp($timezone) >= $latest;
     }
 
+    /**
+     * Calculate the scored points for one prediction result row.
+     *
+     * @param object $project project value.
+     * @param object $row row value.
+     * @return int
+     */
     protected function calculateScore(object $project, object $row): int
     {
         if ($row->homeResult === null || $row->awayResult === null) {
@@ -506,6 +609,13 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         );
     }
 
+    /**
+     * Classify a prediction by exact score, difference and tendency.
+     *
+     * @param object $project project value.
+     * @param object $row row value.
+     * @return array<string,mixed>
+     */
     protected function classifyPrediction(object $project, object $row): array
     {
         $top = 0;
@@ -543,6 +653,14 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return ['top' => $top, 'diff' => $diff, 'tend' => $tend, 'tipp' => $tipp];
     }
 
+    /**
+     * Render the participant's predicted score as text.
+     *
+     * @param object $project project value.
+     * @param object $row row value.
+     * @param string $separator separator value.
+     * @return string
+     */
     private function formatTip(object $project, object $row, string $separator): string
     {
         if ((int) ($project->mode ?? 0) === 0) {
@@ -555,6 +673,13 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $row->prTipp === null ? '-' : (string) $row->prTipp;
     }
 
+    /**
+     * Create a scoring-specific view of a match result.
+     *
+     * @param object $row row value.
+     * @param int $mode mode value.
+     * @return object
+     */
     protected function normaliseResultForScoring(object $row, int $mode): object
     {
         $copy = clone $row;
@@ -579,6 +704,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $copy;
     }
 
+    /**
+     * Determine whether the match has a completed score.
+     *
+     * @param object $row row value.
+     * @return bool
+     */
     protected function hasPlayedResult(object $row): bool
     {
         return $row->homeResult !== null
@@ -587,6 +718,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
             || $row->awayDecision !== null;
     }
 
+    /**
+     * Read explicitly configured round identifiers.
+     *
+     * @param array $config config value.
+     * @return array<int>
+     */
     private function getConfiguredRoundIds(array $config): array
     {
         if (empty($config['use_pred_select_rounds'])) {
@@ -595,6 +732,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return $this->parseIds($config['predictionroundid'] ?? []);
     }
 
+    /**
+     * Parse and deduplicate configured round identifiers.
+     *
+     * @param mixed $value value value.
+     * @return array<int>
+     */
     private function parseIds(mixed $value): array
     {
         $parts = is_array($value) ? $value : preg_split('/[\s,;]+/', trim((string) $value));
@@ -612,6 +755,13 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return array_values(array_unique($ids));
     }
 
+    /**
+     * Check whether a round belongs to the selected project.
+     *
+     * @param int $roundId roundId value.
+     * @param int $projectId projectId value.
+     * @return bool
+     */
     private function roundBelongsToProject(int $roundId, int $projectId): bool
     {
         if ($roundId <= 0 || $projectId <= 0) {
@@ -629,6 +779,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return (int) $db->loadResult() > 0;
     }
 
+    /**
+     * Find the first round of a selected project.
+     *
+     * @param int $projectId projectId value.
+     * @return int
+     */
     private function getFirstProjectRoundId(int $projectId): int
     {
         $db = $this->getDatabase();
@@ -641,6 +797,13 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Set result list limits and offsets for the requested mode.
+     *
+     * @param int $total total value.
+     * @param bool $showAll showAll value.
+     * @return void
+     */
     private function configurePagination(int $total, bool $showAll): void
     {
         if ($showAll) {
@@ -662,14 +825,36 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Extract a positive ID from an optional Joomla-style ID:alias value.
+     *
+     * @param string $value value value.
+     * @return int
+     */
     private function extractId(string $value): int
     {
         if ($value === '') {
             return 0;
         }
-        return max(0, (int) strtok($value, ':'));
+        $numericPart = trim((string) strtok($value, ':'));
+
+        if (strlen($numericPart) > 20 || preg_match('/^[0-9]+$/D', $numericPart) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($numericPart, '0');
+        $id = $digits === '' ? false : filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
+    /**
+     * Parse a date and timezone into a Unix timestamp.
+     *
+     * @param string $dateTime dateTime value.
+     * @param string $timezoneName timezoneName value.
+     * @return int|null
+     */
     private function toTimestamp(string $dateTime, string $timezoneName): ?int
     {
         if (trim($dateTime) === '') {
@@ -687,6 +872,12 @@ class PredictionresultsModel extends SportsManagementPredictionReadModel
         }
     }
 
+    /**
+     * Return the current timestamp with timezone fallback.
+     *
+     * @param string $timezoneName timezoneName value.
+     * @return int
+     */
     private function nowTimestamp(string $timezoneName): int
     {
         try {
