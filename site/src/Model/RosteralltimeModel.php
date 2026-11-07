@@ -40,6 +40,11 @@ final class RosteralltimeModel extends SportsManagementProjectModel
     private ?int $totalCache = null;
     private ?Pagination $paginationCache = null;
 
+    /**
+     * Initialise all-time roster filters and pagination from the request.
+     * @param array $config Joomla list model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -71,6 +76,10 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         $this->setState('filter_order_Dir', 'ASC');
     }
 
+    /**
+     * Calculate a valid pagination offset for the all-time roster.
+     * @return int First row of the current page.
+     */
     public function getStart(): int
     {
         $start = max(0, (int) $this->getState('list.start', $this->limitstart));
@@ -88,6 +97,10 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $start;
     }
 
+    /**
+     * Read the all-time roster's unique player records.
+     * @return array<int,object> Player records for the selected team.
+     */
     public function getItems(): array
     {
         if ($this->itemsCache !== null) {
@@ -125,6 +138,10 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $this->itemsCache = ($db->loadObjectList() ?: []);
     }
 
+    /**
+     * Count unique persons who played for the selected team.
+     * @return int Number of roster members.
+     */
     public function getTotal(): int
     {
         if ($this->totalCache !== null) {
@@ -156,6 +173,10 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $this->totalCache = (int) ($db->loadResult() ?: 0);
     }
 
+    /**
+     * Create or reuse the Joomla pagination for all-time rosters.
+     * @return Pagination Roster pagination instance.
+     */
     public function getPagination(): Pagination
     {
         if (!$this->paginationCache instanceof Pagination) {
@@ -168,6 +189,11 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $this->paginationCache;
     }
 
+    /**
+     * List playing positions for the selected sport type.
+     * @param int $sports_type_id Optional sport identifier.
+     * @return array<int,object> Available playing positions.
+     */
     public function getPlayerPosition($sports_type_id = 1): array
     {
         $sportsTypeId = max(0, (int) $sports_type_id);
@@ -188,6 +214,11 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List published events associated with a playing position.
+     * @param int $positionId Selected position identifier.
+     * @return array<int,object> Associated event types.
+     */
     public function getPositionEventTypes($positionId = 0): array
     {
         $positionId = max(0, (int) $positionId);
@@ -224,6 +255,10 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $grouped;
     }
 
+    /**
+     * Load the selected team's metadata within the current project.
+     * @return object|false Team record or false when unavailable.
+     */
     public function getTeam()
     {
         if ($this->team !== null) {
@@ -251,6 +286,13 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $this->team ?: false;
     }
 
+    /**
+     * Enrich all-time roster persons with positions and statistics.
+     * @param int $persontype Person category, player or staff.
+     * @param array $positioneventtypes Event types to include.
+     * @param array<int,object> $items Base roster entries.
+     * @return array|false Enriched roster or false when no persons are available.
+     */
     public function getTeamPlayers($persontype = 1, $positioneventtypes = [], $items = [])
     {
         $personType = in_array((int) $persontype, [1, 2], true) ? (int) $persontype : 1;
@@ -396,6 +438,11 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $this->_all_time_players;
     }
 
+    /**
+     * Resolve the playing-position history of given persons.
+     * @param array<int> $personIds Person identifiers.
+     * @return array Position records grouped by person.
+     */
     private function loadPersonPositions(array $personIds): array
     {
         if (!$personIds) {
@@ -436,6 +483,11 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $positions;
     }
 
+    /**
+     * Aggregate starters and substitutions for an all-time roster.
+     * @param array<int> $personIds Person identifiers.
+     * @return array Match participation metrics grouped by person.
+     */
     private function loadAllTimeInOutStats(array $personIds): array
     {
         $stats = [];
@@ -514,6 +566,11 @@ final class RosteralltimeModel extends SportsManagementProjectModel
         return $objects;
     }
 
+    /**
+     * Count recorded match events for all-time roster members.
+     * @param array<int> $personIds Person identifiers.
+     * @return array Event counts grouped by person.
+     */
     private function loadAllTimeEventStats(array $personIds): array
     {
         if (!$personIds || self::$teamid <= 0) {
