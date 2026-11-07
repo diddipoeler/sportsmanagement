@@ -21,6 +21,13 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator form model for one project team. */
 final class ProjectteamModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the Joomla project-team administrator form.
+     *
+     * @param array $data data value.
+     * @param mixed $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -33,6 +40,14 @@ final class ProjectteamModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve the native project-team table.
+     *
+     * @param string $type type value.
+     * @param string $prefix prefix value.
+     * @param array $config config value.
+     * @return mixed
+     */
     public function getTable($type = 'Projectteam', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Projectteam') === 0) {
@@ -42,6 +57,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Assign team home grounds to matches of selected project teams.
+     *
+     * @param mixed $post post value.
+     * @return bool
+     */
     public function set_playground_match($post = null): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -72,6 +93,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Find the default playground for a season-team membership.
+     *
+     * @param int $team_id team_id value.
+     * @return int
+     */
     public function getProjectTeamPlayground($team_id = 0): int
     {
         $seasonTeamId = (int) $team_id;
@@ -103,6 +130,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Store the default playground of each selected project team.
+     *
+     * @param mixed $post post value.
+     * @return bool
+     */
     public function set_playground($post = null): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -131,6 +164,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Save quick-edit project-team assignments and division points.
+     * @return bool
+     */
     public function saveshort(): bool
     {
         $app = $this->administratorApplication();
@@ -141,7 +178,15 @@ final class ProjectteamModel extends SportsManagementAdminModel
         $projectId = (int) ($post['pid'] ?? 0);
         $targetProjectId = (int) ($post['all_project_id'] ?? $projectId);
         $date = (new Date('now', new \DateTimeZone('UTC')))->toSql();
-        $userId = (int) $app->getIdentity()->id;
+        $identity = $app->getIdentity();
+
+        if ($identity === null || (int) $identity->id <= 0) {
+            $this->setError('An authenticated administrator is required to update project teams.');
+
+            return false;
+        }
+
+        $userId = (int) $identity->id;
         $associationId = $this->projectAssociation($projectId);
         $divisionPoints = is_array($post['division_points'] ?? null) ? $post['division_points'] : [];
         $result = true;
@@ -235,6 +280,10 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return $result;
     }
 
+    /**
+     * Set the season association of selected project-team members.
+     * @return bool
+     */
     public function setseasonid(): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -266,16 +315,32 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Set whether selected project teams appear in the standings.
+     *
+     * @param int $setzer setzer value.
+     * @return bool
+     */
     public function setusetable($setzer = 0): bool
     {
         return $this->updateSelectedProjectTeams('is_in_score', (int) $setzer);
     }
 
+    /**
+     * Set whether selected teams use final table points.
+     *
+     * @param int $setzer setzer value.
+     * @return bool
+     */
     public function setusetablepoints($setzer = 0): bool
     {
         return $this->updateSelectedProjectTeams('use_finally', (int) $setzer);
     }
 
+    /**
+     * Assign the selected project teams' matches to divisions.
+     * @return bool
+     */
     public function matchgroups(): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -303,6 +368,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Add or remove selected season teams in the current project.
+     *
+     * @param mixed $post post value.
+     * @return bool
+     */
     public function storeAssign($post = null): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -370,6 +441,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Delete project teams and their dependent match assignments.
+     *
+     * @param mixed $pks pks value.
+     * @return mixed
+     */
     public function delete(&$pks)
     {
         $ids = $this->normaliseIds($pks);
@@ -393,6 +470,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return parent::delete($ids);
     }
 
+    /**
+     * Read details for a selected season team.
+     *
+     * @param int $team_id team_id value.
+     * @return mixed
+     */
     public function getProjectTeam($team_id = 0)
     {
         $teamId = (int) $team_id;
@@ -419,6 +502,13 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Update an allowlisted boolean standings field for selected teams.
+     *
+     * @param string $field field value.
+     * @param int $value value value.
+     * @return bool
+     */
     private function updateSelectedProjectTeams(string $field, int $value): bool
     {
         if (!in_array($field, ['is_in_score', 'use_finally'], true)) {
@@ -443,6 +533,14 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Update permitted division standings points for a selected team.
+     *
+     * @param int $projectTeamId projectTeamId value.
+     * @param int $divisionId divisionId value.
+     * @param array $values values value.
+     * @return bool
+     */
     private function updateDivisionPoints(int $projectTeamId, int $divisionId, array $values): bool
     {
         $allowed = [
@@ -487,6 +585,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         return $this->execute($query);
     }
 
+    /**
+     * Find the season-team link for a selected project team.
+     *
+     * @param int $projectTeamId projectTeamId value.
+     * @return int
+     */
     private function projectTeamSeasonId(int $projectTeamId): int
     {
         $db = $this->getDatabase();
@@ -507,6 +611,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Resolve the current project's league association.
+     *
+     * @param int $projectId projectId value.
+     * @return int
+     */
     private function projectAssociation(int $projectId): int
     {
         if ($projectId <= 0) {
@@ -534,6 +644,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Check whether the club has configured association values.
+     *
+     * @param int $clubId clubId value.
+     * @return bool
+     */
     private function clubHasAssociation(int $clubId): bool
     {
         $db = $this->getDatabase();
@@ -552,6 +668,12 @@ final class ProjectteamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Execute a database statement and report a failure.
+     *
+     * @param mixed $query query value.
+     * @return bool
+     */
     private function execute($query): bool
     {
         $db = $this->getDatabase();
