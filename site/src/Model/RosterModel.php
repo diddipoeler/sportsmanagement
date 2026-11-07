@@ -32,6 +32,13 @@ final class RosterModel extends SportsManagementProjectModel
 
     public $_teaminout = null;
 
+    /**
+     * Initialise the active team's roster, project and database context.
+     *
+     * @param array $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -54,6 +61,12 @@ final class RosterModel extends SportsManagementProjectModel
         self::$seasonid = (int) ($project->season_id ?? 0);
     }
 
+    /**
+     * Load and cache the selected project's team membership.
+     *
+     * @param string $team_picture_which team picture which value.
+     * @return object|false
+     */
     public static function getProjectTeam($team_picture_which = 'pt')
     {
         if (self::$projectteam !== null) {
@@ -112,6 +125,10 @@ final class RosterModel extends SportsManagementProjectModel
         return self::$projectteam ?: false;
     }
 
+    /**
+     * Load the selected team's record and basic metadata.
+     * @return object|false
+     */
     public static function getTeam()
     {
         if (self::$team !== null) {
@@ -137,6 +154,10 @@ final class RosterModel extends SportsManagementProjectModel
         return self::$team ?: false;
     }
 
+    /**
+     * List playing positions associated with the current project.
+     * @return array<int,object>
+     */
     public function getProjectPositions(): array
     {
         if ($this->projectId <= 0) {
@@ -167,6 +188,13 @@ final class RosterModel extends SportsManagementProjectModel
         return $db->loadObjectList('id') ?: [];
     }
 
+    /**
+     * Aggregate player events according to configured scoring options.
+     *
+     * @param bool $dart dart value.
+     * @param bool $sumeventid sumeventid value.
+     * @return array
+     */
     public static function getPlayerEventStats($dart = false, $sumeventid = false): array
     {
         $playerStats = [];
@@ -207,6 +235,12 @@ final class RosterModel extends SportsManagementProjectModel
         return $playerStats;
     }
 
+    /**
+     * Load roster members grouped by their playing positions.
+     *
+     * @param int $persontype persontype value.
+     * @return array
+     */
     public static function getTeamPlayers($persontype = 1)
     {
         $personType = in_array((int) $persontype, [1, 2], true) ? (int) $persontype : 1;
@@ -304,6 +338,12 @@ final class RosterModel extends SportsManagementProjectModel
         return $byPosition;
     }
 
+    /**
+     * List event types and statistics for a selected position.
+     *
+     * @param int $positionId positionId value.
+     * @return array
+     */
     public static function getPositionEventTypes($positionId = 0): array
     {
         $projectId = self::$projectid;
@@ -337,6 +377,14 @@ final class RosterModel extends SportsManagementProjectModel
         return $grouped;
     }
 
+    /**
+     * Aggregate event counts for the current project's team.
+     *
+     * @param int $eventtype_id eventtype id value.
+     * @param bool $dart dart value.
+     * @param bool $sumeventid sumeventid value.
+     * @return array
+     */
     public static function getTeamEventStat($eventtype_id = 0, $dart = false, $sumeventid = false)
     {
         $eventTypeId = max(0, (int) $eventtype_id);
@@ -401,6 +449,10 @@ final class RosterModel extends SportsManagementProjectModel
             : ($db->loadObjectList('person_id') ?: []);
     }
 
+    /**
+     * Load the roster's configured statistical summaries.
+     * @return array
+     */
     public static function getRosterStats(): array
     {
         $projectTeam = self::getProjectTeam();
@@ -428,6 +480,10 @@ final class RosterModel extends SportsManagementProjectModel
         return $result;
     }
 
+    /**
+     * Find the last played date of the selected team's season.
+     * @return string
+     */
     public static function getLastSeasonDate(): string
     {
         if (self::$projectid <= 0) {
@@ -454,6 +510,13 @@ final class RosterModel extends SportsManagementProjectModel
         return (string) $roundDate->lastday;
     }
 
+    /**
+     * Load a player's roster membership for a selected round.
+     *
+     * @param mixed $round_id round id value.
+     * @param mixed $player_id player id value.
+     * @return array<int,object>
+     */
     public function getTeamPlayer($round_id, $player_id): array
     {
         $roundId = max(0, (int) $round_id);
@@ -499,6 +562,10 @@ final class RosterModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Read the project's available event statistics definitions.
+     * @return array
+     */
     private static function loadProjectStats(): array
     {
         if (self::$projectid <= 0) {
@@ -555,6 +622,10 @@ final class RosterModel extends SportsManagementProjectModel
         return $stats;
     }
 
+    /**
+     * Resolve the configured SportsManagement component database.
+     * @return DatabaseInterface
+     */
     private static function database(): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
@@ -563,10 +634,17 @@ final class RosterModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Resolve and validate the primary Joomla database service.
+     * @return DatabaseInterface
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement roster database service is unavailable.', 500);
+        }
 
         return $database;
     }
