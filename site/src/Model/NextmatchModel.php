@@ -38,6 +38,11 @@ final class NextmatchModel extends SportsManagementProjectModel
     private ?array $teams = null;
     private ?array $ranking = null;
 
+    /**
+     * Initialise match, project-team, picture and database selection state.
+     * @param array $config Joomla frontend model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -53,16 +58,31 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Return the selected SportsManagement database mode.
+     * @return int Current database selector.
+     */
     public function getDatabaseSelector(): int
     {
         return $this->databaseSelector;
     }
 
+    /**
+     * Return whether next-match pictures are requested.
+     * @return int Picture display option.
+     */
     public function getShowPics(): int
     {
         return $this->showPics;
     }
 
+    /**
+     * Find a match for a project team or explicit match identifier.
+     * @param int $projectId Selected project ID.
+     * @param int $projectTeamId Selected project-team ID.
+     * @param int $matchId Optional exact match ID.
+     * @return object|null Selected match or null when unavailable.
+     */
     public function getSpecifiedMatch(int $projectId, int $projectTeamId, int $matchId): ?object
     {
         if ($this->match !== null) {
@@ -151,6 +171,10 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $this->match;
     }
 
+    /**
+     * Read and cache the selected upcoming or specified match.
+     * @return object|null Match record or null.
+     */
     public function getMatch(): ?object
     {
         if ($this->match !== null) {
@@ -206,6 +230,10 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $this->match;
     }
 
+    /**
+     * Load the two project-team records for the selected match.
+     * @return array<int,object>|null Home and away teams, or null.
+     */
     public function getMatchTeams(): ?array
     {
         if ($this->teams !== null) {
@@ -231,6 +259,10 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $this->teams;
     }
 
+    /**
+     * Read the referees assigned to the selected match.
+     * @return array<int,object> Referee and position records.
+     */
     public function getReferees(): array
     {
         $match = $this->getMatch();
@@ -284,46 +316,85 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Find the home team's largest win on home ground.
+     * @return object|null Matching result or null.
+     */
     public function getHomeHighestHomeWin(): ?object
     {
         return $this->highestForTeam(0, 'HOME', 'WIN');
     }
 
+    /**
+     * Find the away team's largest win on away ground.
+     * @return object|null Matching result or null.
+     */
     public function getAwayHighestHomeWin(): ?object
     {
         return $this->highestForTeam(1, 'AWAY', 'WIN');
     }
 
+    /**
+     * Find the home team's largest home defeat.
+     * @return object|null Matching result or null.
+     */
     public function getHomeHighestHomeDef(): ?object
     {
         return $this->highestForTeam(0, 'HOME', 'LOST');
     }
 
+    /**
+     * Find the away team's largest away defeat.
+     * @return object|null Matching result or null.
+     */
     public function getAwayHighestHomeDef(): ?object
     {
         return $this->highestForTeam(1, 'AWAY', 'LOST');
     }
 
+    /**
+     * Find the home team's largest away win.
+     * @return object|null Matching result or null.
+     */
     public function getHomeHighestAwayWin(): ?object
     {
         return $this->highestForTeam(0, 'AWAY', 'WIN');
     }
 
+    /**
+     * Find the away team's largest home win.
+     * @return object|null Matching result or null.
+     */
     public function getAwayHighestAwayWin(): ?object
     {
         return $this->highestForTeam(1, 'HOME', 'WIN');
     }
 
+    /**
+     * Find the home team's largest away defeat.
+     * @return object|null Matching result or null.
+     */
     public function getHomeHighestAwayDef(): ?object
     {
         return $this->highestForTeam(0, 'AWAY', 'LOST');
     }
 
+    /**
+     * Find the away team's largest home defeat.
+     * @return object|null Matching result or null.
+     */
     public function getAwayHighestAwayDef(): ?object
     {
         return $this->highestForTeam(1, 'HOME', 'LOST');
     }
 
+    /**
+     * Look up the largest win or defeat for a team and playing side.
+     * @param int $teamId Team identifier.
+     * @param string $whichTeam HOME or AWAY selection.
+     * @param string $gameType WIN or LOST selection.
+     * @return object|null Largest matching result or null.
+     */
     public function _getHighestMatches(int $teamId, string $whichTeam, string $gameType): ?object
     {
         if ($teamId <= 0 || $this->projectId <= 0) {
@@ -392,6 +463,10 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $match;
     }
 
+    /**
+     * Combine historical head-to-head matches and shared projects.
+     * @return array<int,object> Direct encounters and related fixtures.
+     */
     public function getGames(): array
     {
         $teams = $this->getMatchTeams();
@@ -436,6 +511,12 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $result;
     }
 
+    /**
+     * Resolve project-team names from a supplied list of matches.
+     * @param mixed $games Match rows passed by reference for compatibility.
+     * @param array $config Optional team display settings.
+     * @return array<int,object> Teams represented in the matches.
+     */
     public function getTeamsFromMatches(&$games, $config = []): array
     {
         if (empty($games) || !is_iterable($games)) {
@@ -502,6 +583,10 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $teams;
     }
 
+    /**
+     * Estimate home and away win or draw chances from team rankings.
+     * @return array|null Calculated chances or null with insufficient history.
+     */
     public function getChances(): ?array
     {
         $home = $this->getHomeRanked();
@@ -539,16 +624,28 @@ final class NextmatchModel extends SportsManagementProjectModel
         ];
     }
 
+    /**
+     * Return the home team's ranking or a blank ranking record.
+     * @return object Home team ranking data.
+     */
     public function getHomeRanked(): object
     {
         return $this->getRankedTeam(0);
     }
 
+    /**
+     * Return the away team's ranking or a blank ranking record.
+     * @return object Away team ranking data.
+     */
     public function getAwayRanked(): object
     {
         return $this->getRankedTeam(1);
     }
 
+    /**
+     * Load and cache rankings through the legacy ranking adapter.
+     * @return array Project team rankings indexed by project-team ID.
+     */
     public function _getRanking(): array
     {
         if ($this->ranking !== null) {
@@ -578,6 +675,11 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $this->ranking;
     }
 
+    /**
+     * Load each team's configured number of previous games.
+     * @param array $config Display settings for recent matches.
+     * @return array<int,array> Recent matches by project-team ID.
+     */
     public function getPreviousX($config = []): array
     {
         $match = $this->getMatch();
@@ -591,6 +693,13 @@ final class NextmatchModel extends SportsManagementProjectModel
         ];
     }
 
+    /**
+     * Load one project's team matches before the selected round.
+     * @param int $currentRoundCode Current round code.
+     * @param int $projectTeamId Project-team identifier.
+     * @param array $config Optional recent-match settings.
+     * @return array<int,object> Recent matches in display order.
+     */
     public function _getTeamPreviousX(int $currentRoundCode, int $projectTeamId, $config = []): array
     {
         $config = is_array($config) && $config !== [] ? $config : $this->getTemplateConfig('nextmatch');
@@ -680,6 +789,13 @@ final class NextmatchModel extends SportsManagementProjectModel
         return array_reverse($rows);
     }
 
+    /**
+     * Resolve the specified side's largest result for this fixture.
+     * @param int $index Zero-based match team index.
+     * @param string $whichTeam HOME or AWAY side.
+     * @param string $gameType WIN or LOST selection.
+     * @return object|null Historical match or null.
+     */
     private function highestForTeam(int $index, string $whichTeam, string $gameType): ?object
     {
         $teams = $this->getMatchTeams();
@@ -690,6 +806,11 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $this->_getHighestMatches((int) ($teams[$index]->team_id ?? 0), $whichTeam, $gameType);
     }
 
+    /**
+     * Find a team's ranking or create a compatibility fallback.
+     * @param int $index Zero-based match team index.
+     * @return object Ranking data or empty ranking record.
+     */
     private function getRankedTeam(int $index): object
     {
         $match = $this->getMatch();
@@ -718,6 +839,11 @@ final class NextmatchModel extends SportsManagementProjectModel
         ];
     }
 
+    /**
+     * Normalise match start time and playground route slug.
+     * @param object|null $match Loaded match row.
+     * @return object|null Updated match or null.
+     */
     private function normaliseMatch(?object $match): ?object
     {
         if ($match === null) {
@@ -737,6 +863,11 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $match;
     }
 
+    /**
+     * Find and enrich the selected project-team record.
+     * @param int $projectTeamId Project-team identifier.
+     * @return object|null Team record or null.
+     */
     private function loadProjectTeam(int $projectTeamId): ?object
     {
         if ($projectTeamId <= 0) {
@@ -787,6 +918,12 @@ final class NextmatchModel extends SportsManagementProjectModel
         return $team;
     }
 
+    /**
+     * Find direct head-to-head fixtures for an ordered pair of teams.
+     * @param int $homeTeamId Home team identifier.
+     * @param int $awayTeamId Away team identifier.
+     * @return array<int,object> Past encounters.
+     */
     private function loadHeadToHeadGames(int $homeTeamId, int $awayTeamId): array
     {
         $db = $this->getDatabase();
@@ -861,6 +998,13 @@ final class NextmatchModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Find projects shared by teams without a previous encounter.
+     * @param int $homeTeamId First team identifier.
+     * @param int $awayTeamId Second team identifier.
+     * @param array<int> $excludedProjectIds Projects already represented by matches.
+     * @return array<int,object> Additional shared project records.
+     */
     private function loadSharedProjectsWithoutMatches(int $homeTeamId, int $awayTeamId, array $excludedProjectIds): array
     {
         $db = $this->getDatabase();
