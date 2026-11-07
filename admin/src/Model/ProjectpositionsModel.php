@@ -20,6 +20,12 @@ use Joomla\Database\ParameterType;
  */
 final class ProjectpositionsModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the project positions list model.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -90,6 +96,13 @@ final class ProjectpositionsModel extends SportsManagementListModel
         return $items;
     }
 
+    /**
+     * Update selected positions assigned to a project.
+     *
+     * @param mixed $items items value.
+     * @param mixed $project_id project id value.
+     * @return mixed
+     */
     public function updateprojectpositions($items = null, $project_id = 0)
     {
         $items = is_iterable($items) ? $items : [];
@@ -146,6 +159,13 @@ final class ProjectpositionsModel extends SportsManagementListModel
         return true;
     }
 
+    /**
+     * Assign standard sport positions to a project.
+     *
+     * @param mixed $project_id project id value.
+     * @param mixed $sports_type_id sports type id value.
+     * @return bool
+     */
     public function insertStandardProjectPositions($project_id = 0, $sports_type_id = 0): bool
     {
         $projectId = (int) $project_id;
@@ -191,6 +211,12 @@ final class ProjectpositionsModel extends SportsManagementListModel
         return true;
     }
 
+    /**
+     * List child positions for the specified sport.
+     *
+     * @param mixed $sports_type_id sports type id value.
+     * @return mixed
+     */
     public function getSubPositions($sports_type_id = 1)
     {
         $sportsTypeId = (int) $sports_type_id;
@@ -220,6 +246,12 @@ final class ProjectpositionsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count positions assigned to the selected project.
+     *
+     * @param mixed $project_id project id value.
+     * @return int
+     */
     public function getProjectPositionsCount($project_id): int
     {
         $projectId = (int) $project_id;
@@ -239,6 +271,13 @@ final class ProjectpositionsModel extends SportsManagementListModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Restore project position selection and list ordering.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'po.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -256,6 +295,10 @@ final class ProjectpositionsModel extends SportsManagementListModel
         $this->setState('filter.pid', $input->getInt('pid'));
     }
 
+    /**
+     * Build the filtered query for project positions.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
