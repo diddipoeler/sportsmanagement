@@ -55,6 +55,11 @@ final class CurveModel extends SportsManagementProjectModel
     private int $requestSeasonId = 0;
     private array $divisionDataCache = [];
 
+    /**
+     * Initialise curve filters, selected teams and legacy state.
+     * @param array $config Joomla frontend model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -80,6 +85,11 @@ final class CurveModel extends SportsManagementProjectModel
         $this->syncLegacyState();
     }
 
+    /**
+     * Resolve two comparable teams from favourites or related fixtures.
+     * Updates compatibility state after determining team identifiers.
+     * @return void
+     */
     public function determineTeam1And2(): void
     {
         if ($this->selectedTeamId1 === 0 && $this->selectedTeamId2 === 0) {
@@ -116,16 +126,30 @@ final class CurveModel extends SportsManagementProjectModel
         $this->syncLegacyState();
     }
 
+    /**
+     * Return the first selected team's identifier.
+     * @return int Team identifier or zero.
+     */
     public function getSelectedTeamId1(): int
     {
         return $this->selectedTeamId1;
     }
 
+    /**
+     * Return the second selected team's identifier.
+     * @return int Team identifier or zero.
+     */
     public function getSelectedTeamId2(): int
     {
         return $this->selectedTeamId2;
     }
 
+    /**
+     * Set the two team identifiers and update legacy state.
+     * @param int $teamId1 First team ID.
+     * @param int $teamId2 Second team ID.
+     * @return void
+     */
     public function setSelectedTeamIds(int $teamId1, int $teamId2): void
     {
         $this->selectedTeamId1 = max(0, $teamId1);
@@ -133,21 +157,37 @@ final class CurveModel extends SportsManagementProjectModel
         $this->syncLegacyState();
     }
 
+    /**
+     * Return the division selected for the curve.
+     * @return int Selected division identifier.
+     */
     public function getCurveDivisionId(): int
     {
         return $this->curveDivisionId;
     }
 
+    /**
+     * Return the SportsManagement database selector.
+     * @return int Selected connection mode.
+     */
     public function getDatabaseSelector(): int
     {
         return $this->databaseSelector;
     }
 
+    /**
+     * Return the requested season identifier.
+     * @return int Season identifier or zero.
+     */
     public function getRequestSeasonId(): int
     {
         return $this->requestSeasonId;
     }
 
+    /**
+     * Get the configured division level for ranking presentation.
+     * @return int Division display level.
+     */
     public function getDivLevel()
     {
         if ($this->divlevel === null) {
@@ -157,6 +197,11 @@ final class CurveModel extends SportsManagementProjectModel
         return $this->divlevel;
     }
 
+    /**
+     * Look up the first selected team within a division's curve data.
+     * @param int $division Optional division identifier.
+     * @return object|false Team record or false.
+     */
     public function getTeam1($division = 0)
     {
         if ($this->selectedTeamId1 <= 0) {
@@ -170,6 +215,11 @@ final class CurveModel extends SportsManagementProjectModel
         return false;
     }
 
+    /**
+     * Build or reuse the cached standings curve for a division.
+     * @param int $division Selected division identifier.
+     * @return array Team and per-round ranking data.
+     */
     public function getDataByDivision($division = 0): array
     {
         $divisionId = max(0, (int) $division);
@@ -220,6 +270,11 @@ final class CurveModel extends SportsManagementProjectModel
         return $this->divisionDataCache[$divisionId] = $teams;
     }
 
+    /**
+     * Look up the second selected team within a division's curve data.
+     * @param int $division Optional division identifier.
+     * @return object|false Team record or false.
+     */
     public function getTeam2($division = 0)
     {
         if ($this->selectedTeamId2 <= 0) {
@@ -233,11 +288,19 @@ final class CurveModel extends SportsManagementProjectModel
         return false;
     }
 
+    /**
+     * Expose the curve's current division identifier.
+     * @return int Current division ID.
+     */
     public function getDivisionId(): int
     {
         return $this->curveDivisionId;
     }
 
+    /**
+     * List published divisions of the active project.
+     * @return array<int,object> Published division rows.
+     */
     public function getDivisions(): array
     {
         if ($this->projectId <= 0) {
@@ -256,11 +319,21 @@ final class CurveModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List project teams restricted to a division.
+     * @param int $divisionId Division identifier or zero.
+     * @return array<int,object> Available project team rows.
+     */
     public function getTeamsForDivision(int $divisionId = 0): array
     {
         return $this->getProjectTeams(max(0, $divisionId));
     }
 
+    /**
+     * Parse configured chart color ranges and descriptions.
+     * @param string $configColors Semicolon-delimited color settings.
+     * @return array<int,array<string,string>> Chart color intervals.
+     */
     public function getColors(string $configColors = ''): array
     {
         $colors = [[
@@ -295,6 +368,13 @@ final class CurveModel extends SportsManagementProjectModel
         ]];
     }
 
+    /**
+     * Find a previous or upcoming match involving the selected team.
+     * @param int $teamId Team identifier.
+     * @param int $expiryTime Time window in seconds.
+     * @param bool $upcoming Whether to find an upcoming match.
+     * @return object|null Related match or null.
+     */
     private function findRelatedMatch(int $teamId, int $expiryTime, bool $upcoming): ?object
     {
         $projectId = $this->projectId;
@@ -355,6 +435,10 @@ final class CurveModel extends SportsManagementProjectModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Synchronise selected curve filters to deprecated static properties.
+     * @return void
+     */
     private function syncLegacyState(): void
     {
         self::$projectid = $this->projectId;
