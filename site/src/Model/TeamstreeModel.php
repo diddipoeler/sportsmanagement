@@ -13,6 +13,10 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 
 final class TeamstreeModel extends SportsManagementProjectModel
 {
+    /**
+     * Load the current division's project teams for the team tree.
+     * @return array<int,object> Project team records.
+     */
     public function getTeamsForTree(): array
     {
         return $this->getProjectTeams($this->getDivisionId());
