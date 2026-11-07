@@ -27,6 +27,13 @@ final class RoundModel extends SportsManagementAdminModel
 {
     public static int $db_num_rows = 0;
 
+    /**
+     * Load the Joomla round edit form.
+     *
+     * @param mixed $data data value.
+     * @param mixed $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -39,6 +46,14 @@ final class RoundModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve the native round database table.
+     *
+     * @param mixed $type type value.
+     * @param mixed $prefix prefix value.
+     * @param mixed $config config value.
+     * @return mixed
+     */
     public function getTable($type = 'Round', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'Round') === 0) {
@@ -48,6 +63,13 @@ final class RoundModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Read a round's numeric round code.
+     *
+     * @param mixed $round_id round id value.
+     * @param mixed $cfg_which_database cfg which database value.
+     * @return mixed
+     */
     public static function getRoundcode($round_id = 0, $cfg_which_database = 0)
     {
         $roundId = (int) $round_id;
@@ -74,6 +96,14 @@ final class RoundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Resolve a round identifier by round code and project.
+     *
+     * @param mixed $roundcode roundcode value.
+     * @param mixed $project_id project id value.
+     * @param mixed $cfg_which_database cfg which database value.
+     * @return mixed
+     */
     public static function getRoundId($roundcode, $project_id, $cfg_which_database = 0)
     {
         $roundCode = (int) $roundcode;
@@ -112,6 +142,13 @@ final class RoundModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load a round by its identifier.
+     *
+     * @param mixed $round_id round id value.
+     * @param mixed $cfg_which_database cfg which database value.
+     * @return mixed
+     */
     public static function getRound($round_id, $cfg_which_database = 0)
     {
         $roundId = (int) $round_id;
@@ -261,6 +298,12 @@ final class RoundModel extends SportsManagementAdminModel
         return $message;
     }
 
+    /**
+     * Count the configured rounds in a project.
+     *
+     * @param mixed $project_id project id value.
+     * @return int
+     */
     public function getMaxRound($project_id): int
     {
         $projectId = (int) $project_id;
@@ -280,6 +323,12 @@ final class RoundModel extends SportsManagementAdminModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Delete rounds after removing dependent match rows.
+     *
+     * @param mixed $pks pks value.
+     * @return mixed
+     */
     public function delete(&$pks)
     {
         if (!$this->deleteRoundMatches((array) $pks)) {
@@ -355,6 +404,12 @@ final class RoundModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Normalise selected round IDs for internal list operations.
+     *
+     * @param array $ids ids value.
+     * @return array
+     */
     private function normaliseIds(array $ids): array
     {
         return array_values(
@@ -367,11 +422,21 @@ final class RoundModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve the Joomla administrator application.
+     * @return CMSApplicationInterface
+     */
     private static function backendApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve the configured SportsManagement database connection.
+     *
+     * @param int $databaseConfig databaseConfig value.
+     * @return DatabaseInterface
+     */
     private static function getSportsManagementDatabase(int $databaseConfig = 0): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve($databaseConfig);
