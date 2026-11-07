@@ -22,6 +22,13 @@ use Joomla\Registry\Registry;
 /** Native Joomla 5/6 administrator form model for team-person assignments. */
 final class TeamplayerModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the team player form and its configurable fields.
+     *
+     * @param array $data data value.
+     * @param bool $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -47,6 +54,14 @@ final class TeamplayerModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Resolve the native team-player table.
+     *
+     * @param string $type type value.
+     * @param string $prefix prefix value.
+     * @param array $config config value.
+     * @return mixed
+     */
     public function getTable($type = 'teamplayer', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'teamplayer') === 0) {
@@ -460,6 +475,12 @@ final class TeamplayerModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load the selected person by ID.
+     *
+     * @param int $personId personId value.
+     * @return object|null
+     */
     public function getPerson(int $personId): ?object
     {
         if ($personId <= 0) {
@@ -474,6 +495,12 @@ final class TeamplayerModel extends SportsManagementAdminModel
         return $db->setQuery($query, 0, 1)->loadObject() ?: null;
     }
 
+    /**
+     * Load project and sport type metadata.
+     *
+     * @param int $projectId projectId value.
+     * @return object|null
+     */
     public function getProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -490,6 +517,13 @@ final class TeamplayerModel extends SportsManagementAdminModel
         return $db->setQuery($query, 0, 1)->loadObject() ?: null;
     }
 
+    /**
+     * List available project positions for a person type.
+     *
+     * @param int $projectId projectId value.
+     * @param int $personType personType value.
+     * @return array
+     */
     public function getProjectPositions(int $projectId, int $personType): array
     {
         $projectId = max(0, $projectId);
@@ -505,6 +539,18 @@ final class TeamplayerModel extends SportsManagementAdminModel
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * Replace the mapping of a person to a project position.
+     *
+     * @param int $personId personId value.
+     * @param int $projectId projectId value.
+     * @param int $projectPositionId projectPositionId value.
+     * @param int $personType personType value.
+     * @param int $published published value.
+     * @param string $now now value.
+     * @param int $userId userId value.
+     * @return void
+     */
     private function replaceProjectPosition(
         int $personId,
         int $projectId,
@@ -536,6 +582,12 @@ final class TeamplayerModel extends SportsManagementAdminModel
         ]);
     }
 
+    /**
+     * Index project-position relationships by ID.
+     *
+     * @param int $projectId projectId value.
+     * @return array
+     */
     private function getProjectPositionMap(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -554,6 +606,12 @@ final class TeamplayerModel extends SportsManagementAdminModel
         return $map;
     }
 
+    /**
+     * Normalise a date to the database date format.
+     *
+     * @param string $value value value.
+     * @return string
+     */
     private function normaliseDate(string $value): string
     {
         $value = trim($value);
@@ -596,6 +654,12 @@ final class TeamplayerModel extends SportsManagementAdminModel
         return (int) $db->loadResult() === $personId;
     }
 
+    /**
+     * Deduplicate submitted positive record IDs.
+     *
+     * @param array $ids ids value.
+     * @return array<int>
+     */
     private function normaliseIds(array $ids): array
     {
         $valid = [];
