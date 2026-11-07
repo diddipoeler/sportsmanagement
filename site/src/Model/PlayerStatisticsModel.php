@@ -28,12 +28,22 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
     private int $databaseSelector = 0;
     private ?PlayerModel $playerModel = null;
 
+    /**
+     * Initialise the player statistics database selector.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
         $this->databaseSelector = $this->siteApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
     }
 
+    /**
+     * Set the selected database for the player statistic models.
+     * @param int $selector Requested database selector.
+     * @return void
+     */
     public function setDatabaseSelector(int $selector): void
     {
         $this->databaseSelector = $selector === 1 ? 1 : 0;
@@ -44,8 +54,9 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
         }
     }
 
-    /**
-     * Statistics configured for the current player's project positions.
+        /**
+     * List project position statistics for the selected player.
+     * @return array Configured statistic objects keyed by ID.
      */
     public function getStats(): array
     {
@@ -67,8 +78,9 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
         return $stats;
     }
 
-    /**
-     * Per-match statistics used by the player game-history table.
+        /**
+     * Read match-by-match statistic values for the selected player.
+     * @return array Per-match statistics.
      */
     public function getPlayerStatsByGame(): array
     {
@@ -130,8 +142,10 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
         return $displayStats;
     }
 
-    /**
-     * Career statistic totals grouped by project and project team.
+        /**
+     * Aggregate player statistics over the player's project history.
+     * @param int $sportsTypeId Optional sport type.
+     * @return array Per-project statistic totals.
      */
     public function getPlayerStatsByProject(int $sportsTypeId = 0): array
     {
@@ -186,9 +200,11 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
         return $result;
     }
 
-    /**
-     * Build the SMStatistic objects used for career calculations with the
-     * selected SportsManagement database rather than Joomla's default DB.
+        /**
+     * Build career statistic objects for a person and sport.
+     * @param int $personId Person identifier.
+     * @param int $sportsTypeId Optional sport type.
+     * @return array Career statistic objects.
      */
     public function getCareerStats(int $personId, int $sportsTypeId = 0): array
     {
@@ -251,6 +267,10 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
         return $stats;
     }
 
+    /**
+     * Create or reuse the delegated player model.
+     * @return PlayerModel Player reader.
+     */
     private function player(): PlayerModel
     {
         if ($this->playerModel === null) {
@@ -261,6 +281,10 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
         return $this->playerModel;
     }
 
+    /**
+     * Load the legacy base class used by career statistics.
+     * @return bool Whether the statistic base class is available.
+     */
     private function loadStatisticBase(): bool
     {
         if (class_exists('SMStatistic')) {
@@ -276,6 +300,11 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
         return class_exists('SMStatistic');
     }
 
+    /**
+     * Display a Joomla error message for a database failure.
+     * @param Throwable $e Caught query exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(
