@@ -36,6 +36,12 @@ final class HtmlView extends BaseHtmlView
     public string $sortDirection = 'ASC';
     public string $sortColumn = 'pre.name';
 
+    /**
+     * Render the administrator list of prediction games.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -87,6 +93,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Create prediction game list actions in the administrator toolbar.
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE'), 'list');
@@ -95,6 +105,10 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::editList('predictiongame.edit');
         ToolbarHelper::addNew('predictiongame.add');
     }
+    /**
+     * Resolve and validate the Joomla administrator application.
+     * @return AdministratorApplication
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
