@@ -24,6 +24,11 @@ final class ScoresheetModel extends SportsManagementProjectModel
     public static int $matchid = 0;
     public static int $projectid = 0;
 
+    /**
+     * Initialise the scoresheet with match, project and database context.
+     * @param array $config Joomla site model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -38,6 +43,12 @@ final class ScoresheetModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Read the selected match and participating team data.
+     * @param int $matchid Match identifier.
+     * @param int $cfg_which_database Database selector.
+     * @return mixed Match row or empty array when unavailable.
+     */
     public function getMatch($matchid = 0, $cfg_which_database = 0)
     {
         $matchId = max(0, (int) $matchid);
@@ -104,6 +115,13 @@ final class ScoresheetModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Read team players for the selected season.
+     * @param int $teamid Team identifier.
+     * @param int $seasonid Season identifier.
+     * @param int $cfg_which_database Database selector.
+     * @return array<int,object> Team player records.
+     */
     public function getTeamPlayer($teamid = 0, $seasonid = 0, $cfg_which_database = 0)
     {
         $teamId = max(0, (int) $teamid);
@@ -140,14 +158,27 @@ final class ScoresheetModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Resolve and validate the native Joomla database connection.
+     * @return DatabaseInterface Joomla database connection.
+     * @throws \RuntimeException When the database service is invalid.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement scoresheet database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Select the component database for a scoresheet lookup.
+     * @param int $selector Requested database selector.
+     * @return DatabaseInterface Selected database connection.
+     */
     private function database(int $selector): DatabaseInterface
     {
         if ($selector === self::$cfg_which_database) {
