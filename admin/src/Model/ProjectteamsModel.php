@@ -37,6 +37,12 @@ final class ProjectteamsModel extends SportsManagementListModel
     private ?ProjectRelationService $relations = null;
     private ?object $project = null;
 
+    /**
+     * Initialise the project-team list model and Joomla list filters.
+     *
+     * @param mixed $config config input.
+     * @param ?MVCFactoryInterface $factory factory input.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -52,6 +58,13 @@ final class ProjectteamsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore selected project, division and pagination filters.
+     *
+     * @param mixed $ordering ordering input.
+     * @param mixed $direction direction input.
+     * @return mixed
+     */
     protected function populateState($ordering = 't.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -101,6 +114,10 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the project-team listing query using current filters.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -349,6 +366,10 @@ final class ProjectteamsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load the selected project's competition and season context.
+     * @return ?object
+     */
     public function getProjectContext(): ?object
     {
         if ($this->project === null) {
@@ -358,6 +379,13 @@ final class ProjectteamsModel extends SportsManagementListModel
         return $this->project;
     }
 
+    /**
+     * Find projects matching the selected league and season.
+     *
+     * @param int $seasonId seasonId input.
+     * @param int $leagueId leagueId input.
+     * @return array
+     */
     public function getProjectsByLeagueSeason(int $seasonId, int $leagueId): array
     {
         if ($seasonId <= 0 || $leagueId <= 0) {
@@ -388,16 +416,33 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List division options for the active project.
+     * @return array
+     */
     public function getDivisionOptions(): array
     {
         return $this->relationService()->getDivisions((int) $this->getState('filter.pid'));
     }
 
+    /**
+     * List playground options for assigning project teams.
+     * @return array
+     */
     public function getPlaygroundOptions(): array
     {
         return $this->relationService()->getPlaygrounds();
     }
 
+    /**
+     * Read one division-specific scoring field of a project team.
+     *
+     * @param mixed $project_id project id input.
+     * @param mixed $projectteamid projectteamid input.
+     * @param mixed $division_id division id input.
+     * @param mixed $field field input.
+     * @return mixed
+     */
     public function getProjectTeamDivisionPoints($project_id = 0, $projectteamid = 0, $division_id = 0, $field = '')
     {
         $allowed = [
@@ -434,6 +479,15 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Check whether a project team is assigned to a division.
+     *
+     * @param mixed $projectteamid projectteamid input.
+     * @param mixed $id id input.
+     * @param mixed $project_id project id input.
+     * @param mixed $team_id team id input.
+     * @return bool
+     */
     public function checkProjectTeamDivision($projectteamid = 0, $id = 0, $project_id = 0, $team_id = 0): bool
     {
         $projectTeamId = (int) $projectteamid;
@@ -483,6 +537,13 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Add a team to the selected project using the season relation.
+     *
+     * @param mixed $team_id team id input.
+     * @param mixed $project_id project id input.
+     * @return bool
+     */
     public function addNewProjectTeam($team_id, $project_id): bool
     {
         $teamId = (int) $team_id;
@@ -518,6 +579,12 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Store submitted project-team data while maintaining relations.
+     *
+     * @param mixed $data data input.
+     * @return bool
+     */
     public function store($data): bool
     {
         $projectId = (int) ($data['id'] ?? 0);
@@ -589,6 +656,10 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load country-specific teams and their picture metadata.
+     * @return array
+     */
     public function getCountryTeamsPicture(): array
     {
         $project = $this->getProjectContext();
@@ -623,6 +694,12 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List teams belonging to the specified season.
+     *
+     * @param mixed $season_id season id input.
+     * @return array
+     */
     public function getCountryTeams($season_id = 0): array
     {
         $project = $this->getProjectContext();
@@ -669,6 +746,12 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List selectable teams, optionally filtered by country.
+     *
+     * @param mixed $country country input.
+     * @return array
+     */
     public function getTeams($country = ''): array
     {
         $project = $this->getProjectContext();
@@ -739,6 +822,10 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Assign a selected team to the active project.
+     * @return bool
+     */
     public function setNewTeamID(): bool
     {
         $input = $this->administratorApplication()->getInput();
@@ -784,6 +871,12 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load the complete available team list for a project.
+     *
+     * @param mixed $pid pid input.
+     * @return array
+     */
     public function getAllTeams($pid): array
     {
         $projectId = (int) $pid;
@@ -868,6 +961,14 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load project teams with usage and division filters.
+     *
+     * @param mixed $project_id project id input.
+     * @param mixed $in_used in used input.
+     * @param mixed $divisionid divisionid input.
+     * @return array
+     */
     public function getProjectTeams($project_id = 0, $in_used = false, $divisionid = 0): array
     {
         $projectId = (int) $project_id;
@@ -966,6 +1067,15 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Retrieve teams with optional division and ID restrictions.
+     *
+     * @param mixed $projectid projectid input.
+     * @param mixed $divisionid divisionid input.
+     * @param mixed $team_ids team ids input.
+     * @param mixed $cfg_which_database cfg which database input.
+     * @return array
+     */
     public function getAllProjectTeams($projectid = 0, $divisionid = 0, $team_ids = null, $cfg_which_database = 0): array
     {
         $projectId = (int) $projectid;
@@ -1043,6 +1153,13 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Copy selected project-team assignments to another project.
+     *
+     * @param mixed $dest dest input.
+     * @param mixed $ptids ptids input.
+     * @return bool
+     */
     public function copy($dest, $ptids): bool
     {
         $destinationProjectId = (int) $dest;
@@ -1135,6 +1252,12 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count existing project-team assignments.
+     *
+     * @param mixed $project_id project id input.
+     * @return int
+     */
     public function getProjectTeamsCount($project_id): int
     {
         $projectId = (int) $project_id;
@@ -1154,6 +1277,13 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count matches belonging to a project or project team.
+     *
+     * @param mixed $project_id project id input.
+     * @param mixed $projectteam_id projectteam id input.
+     * @return int
+     */
     public function getMatchesCount($project_id = 0, $projectteam_id = 0): int
     {
         $projectId = (int) $project_id;
@@ -1186,6 +1316,10 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Persist quick edits for selected project-team records.
+     * @return bool
+     */
     public function saveShort(): bool
     {
         $app = $this->administratorApplication();
@@ -1258,26 +1392,56 @@ final class ProjectteamsModel extends SportsManagementListModel
         return $ok;
     }
 
+    /**
+     * Update the publication state of selected project teams.
+     *
+     * @param int $state state input.
+     * @return bool
+     */
     public function setProjectTeamState(int $state): bool
     {
         return $this->updateSelectedFlag('published', $state, true);
     }
 
+    /**
+     * Toggle standings inclusion for selected project teams.
+     *
+     * @param int $value value input.
+     * @return bool
+     */
     public function setScoreFlag(int $value): bool
     {
         return $this->updateSelectedFlag('is_in_score', $value, false);
     }
 
+    /**
+     * Toggle use of final standings for selected project teams.
+     *
+     * @param int $value value input.
+     * @return bool
+     */
     public function setFinallyFlag(int $value): bool
     {
         return $this->updateSelectedFlag('use_finally', $value, false);
     }
 
+    /**
+     * Return project-team selection parameters used by list actions.
+     * @return array
+     */
     public function getContextParams(): array
     {
         return ['pid' => (int) $this->getState('filter.pid')];
     }
 
+    /**
+     * Update a whitelisted flag across selected project teams.
+     *
+     * @param string $field field input.
+     * @param int $value value input.
+     * @param bool $metadata metadata input.
+     * @return bool
+     */
     private function updateSelectedFlag(string $field, int $value, bool $metadata): bool
     {
         $app = $this->administratorApplication();
@@ -1315,11 +1479,25 @@ final class ProjectteamsModel extends SportsManagementListModel
         return $ok;
     }
 
+    /**
+     * Verify that a project-team record belongs to the selected project.
+     *
+     * @param int $id id input.
+     * @param int $projectId projectId input.
+     * @return bool
+     */
     private function projectTeamBelongsToProject(int $id, int $projectId): bool
     {
         return $this->loadProjectTeam($id, $projectId) !== null;
     }
 
+    /**
+     * Load a project-team record with matching project ownership.
+     *
+     * @param int $id id input.
+     * @param int $projectId projectId input.
+     * @return ?object
+     */
     private function loadProjectTeam(int $id, int $projectId): ?object
     {
         $db = $this->getDatabase();
@@ -1344,6 +1522,12 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load competition context for the selected project.
+     *
+     * @param int $projectId projectId input.
+     * @return ?object
+     */
     private function loadProjectSelectionContext(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -1378,6 +1562,13 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Resolve or create a season-team relation for a project team.
+     *
+     * @param int $teamId teamId input.
+     * @param int $seasonId seasonId input.
+     * @return int
+     */
     private function ensureSeasonTeamId(int $teamId, int $seasonId): int
     {
         if ($teamId <= 0 || $seasonId <= 0) {
@@ -1407,6 +1598,14 @@ final class ProjectteamsModel extends SportsManagementListModel
         return (int) $db->insertid();
     }
 
+    /**
+     * Resolve or create a project-team relation with optional defaults.
+     *
+     * @param int $projectId projectId input.
+     * @param int $seasonRelationId seasonRelationId input.
+     * @param array $defaults defaults input.
+     * @return int
+     */
     private function ensureProjectTeamId(int $projectId, int $seasonRelationId, array $defaults = []): int
     {
         if ($projectId <= 0 || $seasonRelationId <= 0) {
@@ -1437,6 +1636,12 @@ final class ProjectteamsModel extends SportsManagementListModel
         return (int) $db->insertid();
     }
 
+    /**
+     * List season-team relations assigned to the project.
+     *
+     * @param int $projectId projectId input.
+     * @return array
+     */
     private function assignedSeasonRelationIds(int $projectId): array
     {
         $db = $this->getDatabase();
@@ -1455,6 +1660,15 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Copy linked player or staff entries between project teams.
+     *
+     * @param string $table table input.
+     * @param array $fields fields input.
+     * @param int $sourceProjectTeamId sourceProjectTeamId input.
+     * @param int $destinationProjectTeamId destinationProjectTeamId input.
+     * @return void
+     */
     private function copyLegacyProjectTeamPeople(
         string $table,
         array $fields,
@@ -1496,6 +1710,15 @@ final class ProjectteamsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Read a submitted per-row integer with a default value.
+     *
+     * @param array $post post input.
+     * @param string $field field input.
+     * @param int $id id input.
+     * @param int $default default input.
+     * @return int
+     */
     private function postedRowInt(array $post, string $field, int $id, int $default): int
     {
         if (isset($post[$field]) && is_array($post[$field]) && array_key_exists($id, $post[$field])) {
@@ -1544,6 +1767,10 @@ final class ProjectteamsModel extends SportsManagementListModel
         return array_values($valid);
     }
 
+    /**
+     * Create the project-team relation service used for assignments.
+     * @return ProjectRelationService
+     */
     private function relationService(): ProjectRelationService
     {
         return $this->relations ??= new ProjectRelationService($this->getDatabase());
