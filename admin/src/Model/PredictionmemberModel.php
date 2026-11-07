@@ -26,6 +26,12 @@ use Joomla\Registry\Registry;
 /** Native Joomla 5/6 administrator model for prediction-game members. */
 final class PredictionmemberModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the prediction member form from the administrator form paths.
+     * @param array $data Existing form data.
+     * @param bool $loadData Whether to load stored form values.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -38,6 +44,13 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve the native prediction member table.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Optional table configuration.
+     * @return mixed
+     */
     public function getTable($type = 'predictionmember', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictionmember') === 0) {
@@ -306,6 +319,10 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $sent;
     }
 
+    /**
+     * List prediction groups for member selection.
+     * @return array<int,object>
+     */
     public function getPredictionGroups(): array
     {
         $db = $this->getDatabase();
@@ -373,6 +390,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Delete selected prediction members for one game.
+     * @param array $cid Member IDs.
+     * @param int $predictionId Prediction game ID.
+     * @return bool
+     */
     public function deletePredictionMembers($cid = [], $predictionId = 0): bool
     {
         $ids = $this->normaliseIds((array) $cid);
@@ -398,6 +421,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Delete stored tips belonging to selected prediction members.
+     * @param array $cid Member IDs.
+     * @param int $prediction_id Prediction game ID.
+     * @return bool
+     */
     public function deletePredictionResults($cid = [], $prediction_id = 0): bool
     {
         $memberIds = $this->normaliseIds((array) $cid);
@@ -438,6 +467,13 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Send approval or rejection notices to prediction members.
+     * @param array<int> $memberIds Prediction member IDs.
+     * @param bool $approved Whether membership was approved.
+     * @param int $predictionGameId Prediction game ID.
+     * @return void
+     */
     private function sendApprovalStateMails(array $memberIds, bool $approved, int $predictionGameId): void
     {
         $config = Factory::getContainer()->get('config');
@@ -485,6 +521,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Load user contact details for a prediction member.
+     * @param int $memberId Member ID.
+     * @return object|null
+     */
     private function getPredictionMemberContact(int $memberId): ?object
     {
         $db = $this->getDatabase();
@@ -508,6 +549,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Collect email addresses for a prediction member.
+     * @param int $memberId Member ID.
+     * @return array<int,string>
+     */
     private function getPredictionMemberEmails(int $memberId): array
     {
         $member = $this->getPredictionMemberContact($memberId);
@@ -515,6 +561,10 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $member && !empty($member->email) ? [(string) $member->email] : [];
     }
 
+    /**
+     * Load Joomla accounts enabled for system mail.
+     * @return array<int,string>
+     */
     private function getSystemMailRecipients(): array
     {
         $db = $this->getDatabase();
@@ -529,6 +579,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
     }
 
+    /**
+     * Read administrator email addresses for a prediction game.
+     * @param int $predictionGameId Game ID.
+     * @return array<int,string>
+     */
     private function getPredictionAdminEmails(int $predictionGameId): array
     {
         if ($predictionGameId <= 0) {
@@ -553,6 +608,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return array_values(array_filter(array_map('strval', $db->loadColumn() ?: [])));
     }
 
+    /**
+     * Find the first linked project of a prediction game.
+     * @param int $predictionId Game ID.
+     * @return object|null
+     */
     private function getFirstPredictionProject(int $predictionId): ?object
     {
         $db = $this->getDatabase();
@@ -567,6 +627,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Read the settings for one linked prediction project.
+     * @param int $predictionId Game ID.
+     * @param int $projectId Project ID.
+     * @return object|null
+     */
     private function getPredictionProjectSettings(int $predictionId, int $projectId): ?object
     {
         $db = $this->getDatabase();
@@ -582,6 +648,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load the selected prediction game record.
+     * @param int $predictionId Game ID.
+     * @return object|null
+     */
     private function getPredictionGame(int $predictionId): ?object
     {
         $db = $this->getDatabase();
@@ -595,6 +666,11 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * List project IDs attached to a prediction game.
+     * @param int $predictionId Game ID.
+     * @return array<int>
+     */
     private function getPredictionProjectIds(int $predictionId): array
     {
         $db = $this->getDatabase();
@@ -609,6 +685,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $this->normaliseIds($db->loadColumn() ?: []);
     }
 
+    /**
+     * Merge template configuration values for a prediction game.
+     * @param int $predictionId Game ID.
+     * @param string $template Template identifier.
+     * @return array
+     */
     private function getPredictionTemplateConfig(int $predictionId, string $template): array
     {
         $db = $this->getDatabase();
@@ -661,6 +743,13 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $values;
     }
 
+    /**
+     * Read game matches and user tips for a linked project.
+     * @param int $predictionId Game ID.
+     * @param int $projectId Project ID.
+     * @param int $userId Joomla user ID.
+     * @return array<int,object>
+     */
     private function getPredictionGamesMatches(int $predictionId, int $projectId, int $userId): array
     {
         $db = $this->getDatabase();
@@ -712,6 +801,14 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Count matching prediction tips for a game and match.
+     * @param int $predictionId Game ID.
+     * @param int $projectId Project ID.
+     * @param int $matchId Match ID.
+     * @param int $type Tip type.
+     * @return int
+     */
     private function getTippCount(int $predictionId, int $projectId, int $matchId, int $type): int
     {
         $db = $this->getDatabase();
@@ -738,6 +835,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Calculate awarded points for an individual prediction result.
+     * @param object $settings Scoring settings.
+     * @param object $result Match and prediction result.
+     * @return int
+     */
     private function calculatePredictionPoints(object $settings, object $result): int
     {
         $resultHome = $result->team1_result ?? null;
@@ -794,6 +897,12 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return (int) $settings->{'points_tipp' . $suffix};
     }
 
+    /**
+     * Render a team logo with a safe placeholder when missing.
+     * @param string $path Image path.
+     * @param string $teamName Team display name.
+     * @return string
+     */
     private function teamLogo(string $path, string $teamName): string
     {
         if ($path === '' || !is_file(JPATH_ROOT . '/' . ltrim($path, '/'))) {
@@ -856,6 +965,13 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         return $this->normaliseIds($db->loadColumn() ?: []);
     }
 
+    /**
+     * Delete selected rows using a caller-controlled table and column.
+     * @param string $table Internal database table.
+     * @param string $column Internal ID column.
+     * @param array<int> $ids IDs to delete.
+     * @return bool
+     */
     private function deleteByIds(string $table, string $column, array $ids): bool
     {
         $db = $this->getDatabase();
@@ -874,11 +990,34 @@ final class PredictionmemberModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Validate and deduplicate positive prediction record identifiers.
+     * @param array $ids Candidate record identifiers.
+     * @return array<int>
+     */
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(
-            array_map('intval', $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        $validIds = [];
+
+        foreach (array_slice($ids, 0, 500) as $rawId) {
+            if (!is_int($rawId) && !is_string($rawId)) {
+                continue;
+            }
+
+            $value = trim((string) $rawId);
+
+            if (strlen($value) > 20 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+            $id = $digits === '' ? false : filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $validIds[$id] = $id;
+            }
+        }
+
+        return array_values($validIds);
     }
 }
