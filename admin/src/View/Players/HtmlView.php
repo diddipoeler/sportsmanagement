@@ -57,6 +57,12 @@ final class HtmlView extends BaseHtmlView
     public string $prj_name = '';
     public string $team_name = '';
 
+    /**
+     * Render the filtered player administration list and its actions.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $this->app = self::administratorApplication();
@@ -178,6 +184,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Resolve and validate the Joomla administrator application.
+     * @return AdministratorApplication
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -190,6 +200,10 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Create the administrator toolbar for player management.
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE'), 'users');
