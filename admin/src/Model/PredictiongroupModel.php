@@ -19,6 +19,13 @@ use Joomla\CMS\Language\Text;
  */
 final class PredictiongroupModel extends SportsManagementAdminModel
 {
+    /**
+     * Resolve the native prediction group database table.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy table namespace.
+     * @param array $config Optional table configuration.
+     * @return mixed Prediction group table or parent fallback.
+     */
     public function getTable($type = 'predictiongroup', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'predictiongroup') === 0) {
@@ -28,6 +35,13 @@ final class PredictiongroupModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Notify the administrator when a prediction group has been created.
+     * @param array $data Saved prediction group values.
+     * @param int $id Saved group identifier.
+     * @param bool $isNew Whether a new group was inserted.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($isNew) {
