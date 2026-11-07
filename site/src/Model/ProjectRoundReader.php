@@ -16,6 +16,11 @@ use Joomla\Database\ParameterType;
 
 final class ProjectRoundReader
 {
+    /**
+     * Create a project-scoped round reader and normalise its project ID.
+     * @param DatabaseInterface $database Component database connection.
+     * @param int $projectId Project identifier.
+     */
     public function __construct(
         private DatabaseInterface $database,
         private int $projectId
@@ -23,6 +28,12 @@ final class ProjectRoundReader
         $this->projectId = max(0, $this->projectId);
     }
 
+    /**
+     * Read project rounds in ascending or descending order.
+     * @param string $ordering Requested round direction.
+     * @param bool $slug Whether to include round aliases.
+     * @return array<int,object> Project round rows.
+     */
     public function getRounds(string $ordering = 'ASC', bool $slug = true): array
     {
         if ($this->projectId <= 0) {
@@ -55,12 +66,24 @@ final class ProjectRoundReader
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Resolve the current round identifier for a project.
+     * @param object|null $project Optional project details.
+     * @param bool $persist Whether automatic round changes may be saved.
+     * @return int Current round ID or zero.
+     */
     public function getCurrentRoundId(?object $project = null, bool $persist = true): int
     {
         $round = $this->getCurrentRound($project, $persist);
         return $round ? (int) $round->id : 0;
     }
 
+    /**
+     * Determine the current round from project timing rules.
+     * @param object|null $project Optional project details.
+     * @param bool $persist Whether automatic selection may be persisted.
+     * @return object|null Current round record.
+     */
     public function getCurrentRound(?object $project = null, bool $persist = true): ?object
     {
         if ($this->projectId <= 0) {
@@ -103,6 +126,13 @@ final class ProjectRoundReader
         return $round ?: null;
     }
 
+    /**
+     * Find the round selected by automatic scheduling.
+     * @param int $autoMode Automatic mode selector.
+     * @param int $autoTime Schedule time offset in seconds.
+     * @param int $currentRoundId Previously selected round.
+     * @return object|null Matching round.
+     */
     private function findAutomaticRound(int $autoMode, int $autoTime, int $currentRoundId): ?object
     {
         $db = $this->database;
@@ -158,6 +188,11 @@ final class ProjectRoundReader
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load a round belonging to the selected project.
+     * @param int $roundId Round identifier.
+     * @return object|null Selected round or null.
+     */
     private function loadRound(int $roundId): ?object
     {
         if ($roundId <= 0) {
@@ -181,6 +216,11 @@ final class ProjectRoundReader
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Select a fallback round when no automatic round matches.
+     * @param int $autoMode Automatic selection mode.
+     * @return object|null Fallback round.
+     */
     private function loadFallbackRound(int $autoMode): ?object
     {
         $db = $this->database;
@@ -199,6 +239,10 @@ final class ProjectRoundReader
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Read the current project's round schedule configuration.
+     * @return object|null Project record.
+     */
     private function loadProject(): ?object
     {
         $db = $this->database;
