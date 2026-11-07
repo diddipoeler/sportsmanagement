@@ -23,11 +23,22 @@ use Throwable;
  */
 final class ResultsEditModel extends SportsManagementModel
 {
+    /**
+     * Initialise the frontend results edit model.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Save compact match results only when selected IDs pass access checks.
+     * @param array $post Submitted result form data.
+     * @param array $matchIds Selected match IDs.
+     * @return bool Whether all selected match changes succeeded.
+     */
     public function saveShort(array $post = [], array $matchIds = []): bool
     {
         $app = $this->siteApplication();
@@ -41,13 +52,34 @@ final class ResultsEditModel extends SportsManagementModel
             $matchIds = (array) $input->post->get('cid', [], 'array');
         }
 
-        $matchIds = array_values(array_unique(array_filter(
-            array_map('intval', $matchIds),
-            static fn (int $id): bool => $id > 0
-        )));
+        $validIds = [];
+
+        foreach ($matchIds as $rawId) {
+            if (!is_int($rawId) && (!is_string($rawId) || preg_match('/^[1-9][0-9]*$/D', $rawId) !== 1)) {
+                return false;
+            }
+
+            $matchId = filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($matchId === false) {
+                return false;
+            }
+
+            $validIds[$matchId] = $matchId;
+        }
+
+        $matchIds = array_values($validIds);
 
         if (!$matchIds) {
             return true;
+        }
+
+        $access = new ResultsAccessModel();
+        $access->setDatabaseSelector($input->getInt('cfg_which_database', 0));
+        $access->setProjectId($input->getInt('p', 0));
+
+        if (!$access->canEditMatches($matchIds)) {
+            return false;
         }
 
         if (!class_exists(SportsManagementDateHelper::class)) {
@@ -179,6 +211,11 @@ final class ResultsEditModel extends SportsManagementModel
         return $success;
     }
 
+    /**
+     * Read the current match date for partial result updates.
+     * @param int $matchId Match identifier.
+     * @return string Stored date or empty string.
+     */
     private function getCurrentMatchDate(int $matchId): string
     {
         $db = $this->getDatabase();
@@ -196,6 +233,11 @@ final class ResultsEditModel extends SportsManagementModel
         }
     }
 
+    /**
+     * Check the persisted project's leg-based scoring setting.
+     * @param int $matchId Match identifier.
+     * @return bool Whether the match uses legs.
+     */
     private function matchUsesLegs(int $matchId): bool
     {
         if ($matchId <= 0) {
@@ -223,6 +265,11 @@ final class ResultsEditModel extends SportsManagementModel
         return (int) $db->loadResult() === 1;
     }
 
+    /**
+     * Normalise a submitted time to hours and minutes.
+     * @param string $time Input time string.
+     * @return string HH:MM time string.
+     */
     private function normaliseTime(string $time): string
     {
         $time = trim($time);
@@ -240,6 +287,11 @@ final class ResultsEditModel extends SportsManagementModel
         return '00:00';
     }
 
+    /**
+     * Normalise submitted split scores as trimmed strings.
+     * @param mixed $values Submitted split score array.
+     * @return array<int,string> Normalised split values.
+     */
     private function normaliseSplitValues($values): array
     {
         if (!is_array($values)) {
@@ -252,6 +304,16 @@ final class ResultsEditModel extends SportsManagementModel
         );
     }
 
+    /**
+     * Apply submitted home and away numeric scores when valid.
+     * @param object $record Match update object.
+     * @param array $post Submitted fields.
+     * @param int $matchId Match identifier.
+     * @param string $homeField Home result field.
+     * @param string $awayField Away result field.
+     * @param bool $allowEmptyClear Whether both empty fields clear scores.
+     * @return void
+     */
     private function assignNumericPair(
         object $record,
         array $post,
@@ -281,6 +343,14 @@ final class ResultsEditModel extends SportsManagementModel
         }
     }
 
+    /**
+     * Copy an allowed form field to the update object when submitted.
+     * @param object $record Match update object.
+     * @param array $post Submitted fields.
+     * @param string $field Allowed match field.
+     * @param int $matchId Match identifier.
+     * @return void
+     */
     private function assignIfPresent(object $record, array $post, string $field, int $matchId): void
     {
         $key = $field . $matchId;
@@ -289,6 +359,14 @@ final class ResultsEditModel extends SportsManagementModel
         }
     }
 
+    /**
+     * Copy an allowed numeric form field into the match update object.
+     * @param object $record Match update object.
+     * @param array $post Submitted fields.
+     * @param string $field Allowed numeric field.
+     * @param int $matchId Match identifier.
+     * @return void
+     */
     private function assignIntIfPresent(object $record, array $post, string $field, int $matchId): void
     {
         $key = $field . $matchId;
