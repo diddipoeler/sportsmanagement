@@ -27,6 +27,12 @@ final class HtmlView extends BaseHtmlView
     public array $pred_admins = [];
     public array $pred_projects = [];
 
+    /**
+     * Load the selected prediction game and render its edit form.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -64,6 +70,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Register save, apply and cancel actions for prediction games.
+     * @return void
+     */
     private function addToolbar(): void
     {
         $isNew = (int) ($this->item->id ?? 0) <= 0;
@@ -78,6 +88,10 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::save('predictiongame.save');
         ToolbarHelper::cancel('predictiongame.cancel');
     }
+    /**
+     * Resolve and validate the Joomla administrator application.
+     * @return AdministratorApplication
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
