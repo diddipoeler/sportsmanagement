@@ -37,6 +37,13 @@ if (!class_exists('sportsmanagementModeljlextdbbimport', false)) {
  */
 final class JlextdbbimportModel extends \sportsmanagementModeljlextdbbimport
 {
+    /**
+     * Adapt Joomla MVCFactory constructor arguments to the legacy DBB importer.
+     *
+     * @param array $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct();
