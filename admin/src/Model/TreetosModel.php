@@ -17,6 +17,12 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator list model for tournament trees. */
 final class TreetosModel extends SportsManagementListModel
 {
+    /**
+     * Initialise tournament tree list filters and ordering.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -31,6 +37,13 @@ final class TreetosModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore the active project filter from Joomla request and user state.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'tt.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -52,6 +65,10 @@ final class TreetosModel extends SportsManagementListModel
         $app->setUserState('com_sportsmanagement.treetos.division', $divisionId);
     }
 
+    /**
+     * Return the project identifier selected for tournament trees.
+     * @return int
+     */
     public function getProjectId(): int
     {
         return (int) $this->getState('filter.pid', 0);
@@ -177,6 +194,12 @@ final class TreetosModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Strictly validate a submitted positive tree or project ID.
+     *
+     * @param mixed $value value value.
+     * @return int
+     */
     private function positiveId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -196,6 +219,10 @@ final class TreetosModel extends SportsManagementListModel
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Build a project-scoped tournament tree listing query.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -235,6 +262,10 @@ final class TreetosModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load the project whose tournament trees are being managed.
+     * @return ?object
+     */
     public function getProject(): ?object
     {
         $projectId = $this->getProjectId();
