@@ -39,6 +39,12 @@ final class HtmlView extends BaseHtmlView
     public int $projectId = 0;
     public string $tmpl = '';
 
+    /**
+     * Prepare the match edit form with results and associated records.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         /** @var AdministratorApplication $app */
@@ -118,6 +124,13 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Load available referee assignments and roles for the match.
+     *
+     * @param MatchModel $model model value.
+     * @param int $matchId matchId value.
+     * @return void
+     */
     private function prepareReferees(MatchModel $model, int $matchId): void
     {
         if ($matchId <= 0 || $this->projectId <= 0) {
@@ -140,6 +153,10 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_TITLE'), 'users');
     }
 
+    /**
+     * Remove unused leg-scoring fields for projects without legs.
+     * @return void
+     */
     private function prepareScoreFields(): void
     {
         if ((int) ($this->project->use_legs ?? 0) === 1) {
@@ -150,6 +167,12 @@ final class HtmlView extends BaseHtmlView
         $this->form->removeField('team2_legs');
     }
 
+    /**
+     * Register the administrator toolbar for creating or editing a match.
+     *
+     * @param bool $isNew isNew value.
+     * @return void
+     */
     private function addToolbar(bool $isNew): void
     {
         ToolbarHelper::title(
