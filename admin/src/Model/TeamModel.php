@@ -26,6 +26,13 @@ final class TeamModel extends SportsManagementAdminModel
 {
     public static $change_training_date = false;
 
+    /**
+     * Load the team edit form with configured media and seasonal fields.
+     *
+     * @param array $data data value.
+     * @param bool $loadData loadData value.
+     * @return mixed
+     */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
@@ -60,6 +67,10 @@ final class TeamModel extends SportsManagementAdminModel
         return $form;
     }
 
+    /**
+     * Save selected team values in the administrator quick edit form.
+     * @return bool
+     */
     public function saveshort(): bool
     {
         $app = $this->administratorApplication();
@@ -95,6 +106,10 @@ final class TeamModel extends SportsManagementAdminModel
         return $result;
     }
 
+    /**
+     * Copy the selected team records and related values.
+     * @return bool
+     */
     public function copySelected(): bool
     {
         $app = $this->administratorApplication();
@@ -144,6 +159,13 @@ final class TeamModel extends SportsManagementAdminModel
             : ($this->getError() ?: Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT'));
     }
 
+    /**
+     * Load logo data for a team and selected logo size.
+     *
+     * @param mixed $team_id team id value.
+     * @param string $club_logo club logo value.
+     * @return array|false
+     */
     public static function getTeamLogo($team_id, $club_logo = 'small')
     {
         $teamId = (int) $team_id;
@@ -172,6 +194,13 @@ final class TeamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Read a team by its ID or project-team membership.
+     *
+     * @param int $team_id team id value.
+     * @param int $pro_team_id pro team id value.
+     * @return object|false|null
+     */
     public function getTeam($team_id = 0, $pro_team_id = 0)
     {
         $teamId = (int) $team_id;
@@ -202,6 +231,12 @@ final class TeamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Delete one stored team training entry.
+     *
+     * @param mixed $id id value.
+     * @return bool
+     */
     public function DeleteTrainigData($id)
     {
         $trainingId = (int) $id;
@@ -227,6 +262,12 @@ final class TeamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Apply submitted changes to existing training entries.
+     *
+     * @param mixed $post post value.
+     * @return bool
+     */
     public function UpdateTrainigData($post)
     {
         $ids = array_values(array_filter(array_map('intval', (array) ($post['tdids'] ?? []))));
@@ -286,6 +327,13 @@ final class TeamModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * List team training entries for a team or project team.
+     *
+     * @param int $team_id team id value.
+     * @param int $pro_team_id pro team id value.
+     * @return array|false
+     */
     public function getTrainigData($team_id = 0, $pro_team_id = 0)
     {
         $teamId = (int) $team_id;
@@ -322,6 +370,12 @@ final class TeamModel extends SportsManagementAdminModel
         return $result;
     }
 
+    /**
+     * Create a new training entry for the given team.
+     *
+     * @param int $team_id team id value.
+     * @return bool
+     */
     public function addNewTrainigData($team_id = 0)
     {
         $teamId = (int) $team_id;
@@ -347,6 +401,12 @@ final class TeamModel extends SportsManagementAdminModel
         }
     }
 
+    /**
+     * Normalise submitted team fields before saving.
+     *
+     * @param array $data data value.
+     * @return array
+     */
     protected function prepareSportsManagementData(array $data): array
     {
         $app = $this->administratorApplication();
@@ -369,6 +429,14 @@ final class TeamModel extends SportsManagementAdminModel
         return parent::prepareSportsManagementData($data);
     }
 
+    /**
+     * Synchronise seasons and training data after a team save.
+     *
+     * @param array $data data value.
+     * @param int $id id value.
+     * @param bool $isNew isNew value.
+     * @return void
+     */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         $app = $this->administratorApplication();
@@ -397,6 +465,13 @@ final class TeamModel extends SportsManagementAdminModel
         $app->setUserState('com_sportsmanagement.team_id', $id);
     }
 
+    /**
+     * Synchronise the selected season associations for a team.
+     *
+     * @param array $data data value.
+     * @param int $teamId teamId value.
+     * @return void
+     */
     private function syncSeasons(array $data, int $teamId): void
     {
         if (!isset($data['season_ids']) || !is_array($data['season_ids']) || $teamId <= 0) {
@@ -461,6 +536,10 @@ final class TeamModel extends SportsManagementAdminModel
         $db->setQuery($query)->execute();
     }
 
+    /**
+     * Preserve the training-change flag in Joomla user state.
+     * @return void
+     */
     private function rememberTrainingChange(): void
     {
         $this->administratorApplication()->setUserState(
@@ -469,19 +548,36 @@ final class TeamModel extends SportsManagementAdminModel
         );
     }
 
+    /**
+     * Resolve Joomla's primary database connection.
+     * @return DatabaseInterface
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement team database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Resolve the active Joomla administrator application.
+     * @return CMSApplicationInterface
+     */
     private static function backendApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Convert a time string to a nonnegative second count.
+     *
+     * @param string $time time value.
+     * @return int
+     */
     private static function timeToSeconds(string $time): int
     {
         $parts = array_map('intval', explode(':', trim($time)));
