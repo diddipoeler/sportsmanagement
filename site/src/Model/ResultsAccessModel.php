@@ -20,20 +20,35 @@ use Throwable;
  */
 final class ResultsAccessModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise results permission checks in the Joomla model context.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Set the project used for match access checks.
+     * @param int $projectId Selected project ID.
+     * @return void
+     */
     public function setProjectId(int $projectId): void
     {
         $this->projectId = max(0, $projectId);
     }
 
+    /**
+     * Check authenticated project-level result editing permissions.
+     * @param int $editorGroup Optional editor group ID.
+     * @return bool Whether result editing is allowed.
+     */
     public function isAllowed(int $editorGroup = 0): bool
     {
         $user = $this->siteApplication()->getIdentity();
-        if ((int) $user->id <= 0) {
+        if ($user === null || (int) $user->id <= 0) {
             return false;
         }
 
@@ -57,6 +72,12 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         return false;
     }
 
+    /**
+     * Check whether a user administers the selected match.
+     * @param int $matchId Match identifier.
+     * @param int $userId Optional user identifier.
+     * @return bool Whether match administration is granted.
+     */
     public function isMatchAdmin(int $matchId, int $userId = 0): bool
     {
         if ($matchId <= 0) {
@@ -64,7 +85,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         }
 
         if ($userId <= 0) {
-            $userId = (int) $this->siteApplication()->getIdentity()->id;
+            $userId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         }
 
         if ($userId <= 0) {
@@ -118,6 +139,11 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Check whether a user may edit results for a project team.
+     * @param int $userId Optional user identifier.
+     * @return bool Whether team editing is granted.
+     */
     public function isTeamEditor(int $userId = 0): bool
     {
         if ($this->projectId <= 0) {
@@ -125,7 +151,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
         }
 
         if ($userId <= 0) {
-            $userId = (int) $this->siteApplication()->getIdentity()->id;
+            $userId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         }
 
         if ($userId <= 0) {
@@ -202,7 +228,7 @@ final class ResultsAccessModel extends SportsManagementProjectModel
             return true;
         }
 
-        $userId = (int) $this->siteApplication()->getIdentity()->id;
+        $userId = (int) ($this->siteApplication()->getIdentity()?->id ?? 0);
         foreach ($matchIds as $matchId) {
             if (!$this->isMatchAdmin($matchId, $userId)) {
                 return false;
