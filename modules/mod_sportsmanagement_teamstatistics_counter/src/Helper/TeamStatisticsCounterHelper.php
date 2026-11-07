@@ -20,6 +20,12 @@ use Joomla\Registry\Registry;
 
 final class TeamStatisticsCounterHelper
 {
+    /**
+     * Build team statistics and match counters for the frontend module.
+     * @param Registry $params Module configuration.
+     * @param DatabaseInterface $fallbackDatabase Joomla database fallback.
+     * @return array{project:object|null,team:object|null,stats:array} Module data.
+     */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $projectId = self::positiveId($params->get('p', 0));
@@ -116,11 +122,24 @@ final class TeamStatisticsCounterHelper
         return (int) $digits;
     }
 
+    /**
+     * Resolve the configured component database for module queries.
+     * @param int $selector Database selector.
+     * @param DatabaseInterface $fallbackDatabase Default database.
+     * @return DatabaseInterface Selected connection.
+     */
     private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 
+    /**
+     * Resolve project-team membership for a project and team.
+     * @param DatabaseInterface $db Component database.
+     * @param int $projectId Project identifier.
+     * @param int $teamId Team identifier.
+     * @return int Project-team ID or zero.
+     */
     private function getProjectTeamId(DatabaseInterface $db, int $projectId, int $teamId): int
     {
         if ($projectId <= 0 || $teamId <= 0) {
@@ -144,6 +163,12 @@ final class TeamStatisticsCounterHelper
         return (int) ($db->loadResult() ?: 0);
     }
 
+    /**
+     * Read team metadata and build its Joomla route slug.
+     * @param DatabaseInterface $db Component database.
+     * @param int $teamId Team identifier.
+     * @return object|null Team or null.
+     */
     private function getTeam(DatabaseInterface $db, int $teamId): ?object
     {
         if ($teamId <= 0) {
@@ -167,6 +192,12 @@ final class TeamStatisticsCounterHelper
         return $team;
     }
 
+    /**
+     * Read project metadata and build its Joomla route slug.
+     * @param DatabaseInterface $db Component database.
+     * @param int $projectId Project identifier.
+     * @return object|null Project or null.
+     */
     private function getProject(DatabaseInterface $db, int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -189,6 +220,15 @@ final class TeamStatisticsCounterHelper
         return $project;
     }
 
+    /**
+     * Prepare legacy TeamstatsModel static context and reset cached statistics.
+     * @param int $projectId Project identifier.
+     * @param int $teamId Team identifier.
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $databaseSelector Database mode.
+     * @param object|null $team Optional team record.
+     * @return void
+     */
     private function prepareModelContext(
         int $projectId,
         int $teamId,
