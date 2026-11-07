@@ -24,6 +24,12 @@ final class PredictiongamesModel extends SportsManagementListModel
 {
     public int $prediction_id = 0;
 
+    /**
+     * Initialise the prediction game list context and filters.
+     *
+     * @param mixed $config config value.
+     * @param ?MVCFactoryInterface $factory factory value.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -48,6 +54,13 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load users administering a given prediction game.
+     *
+     * @param mixed $pred_id pred id value.
+     * @param mixed $list list value.
+     * @return mixed
+     */
     public static function getAdmins($pred_id = 0, $list = false)
     {
         $predictionId = (int) $pred_id;
@@ -68,6 +81,13 @@ final class PredictiongamesModel extends SportsManagementListModel
         return $list ? ($db->loadObjectList() ?: []) : array_map('intval', $db->loadColumn() ?: []);
     }
 
+    /**
+     * Load projects linked to a prediction game.
+     *
+     * @param mixed $pred_id pred id value.
+     * @param mixed $all all value.
+     * @return mixed
+     */
     public function getChilds($pred_id, $all = false)
     {
         if (is_array($pred_id)) {
@@ -112,6 +132,14 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Load matches and recorded tips for a prediction participant.
+     *
+     * @param mixed $predictionGameID predictionGameID value.
+     * @param mixed $predictionProjectID predictionProjectID value.
+     * @param mixed $userID userID value.
+     * @return array
+     */
     public function getPredictionGamesMatches($predictionGameID, $predictionProjectID, $userID): array
     {
         $predictionGameId = (int) $predictionGameID;
@@ -226,6 +254,10 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * List prediction games available to the administrator.
+     * @return array
+     */
     public function getPredictionGames(): array
     {
         $db = $this->getDatabase();
@@ -248,6 +280,12 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Find the specified prediction game record.
+     *
+     * @param mixed $prediction_id prediction id value.
+     * @return mixed
+     */
     public function getPredictionGame($prediction_id)
     {
         $predictionId = (int) $prediction_id;
@@ -274,6 +312,12 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count active prediction rounds for a game.
+     *
+     * @param mixed $prediction_id prediction id value.
+     * @return int
+     */
     public function getActivePredictionRoundsCount($prediction_id): int
     {
         $predictionId = (int) $prediction_id;
@@ -301,6 +345,12 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Count rounds belonging to a project.
+     *
+     * @param mixed $project_id project id value.
+     * @return int
+     */
     public function getProjectRoundsCount($project_id): int
     {
         $projectId = (int) $project_id;
@@ -327,6 +377,13 @@ final class PredictiongamesModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Restore prediction game filters and list ordering.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'pre.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -363,6 +420,10 @@ final class PredictiongamesModel extends SportsManagementListModel
         );
     }
 
+    /**
+     * Build the administrator prediction game listing query.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -427,6 +488,12 @@ final class PredictiongamesModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Build the prediction game list cache identifier.
+     *
+     * @param mixed $id id value.
+     * @return mixed
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . $this->prediction_id;
@@ -436,6 +503,10 @@ final class PredictiongamesModel extends SportsManagementListModel
         return parent::getStoreId($id);
     }
 
+    /**
+     * Resolve the database connection used for prediction games.
+     * @return DatabaseInterface
+     */
     private static function getSportsManagementDatabase(): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve(
