@@ -41,6 +41,12 @@ final class HtmlView extends BaseHtmlView
     public bool $changeTrainingDate = false;
     public string $tmpl = '';
 
+    /**
+     * Load and render the editable team with its contextual fields.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -132,6 +138,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Register team editor validation and interaction scripts.
+     * @return void
+     */
     private function registerTeamScript(): void
     {
         $document = $this->getDocument();
@@ -151,6 +161,10 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Resolve and validate the current administrator application.
+     * @return AdministratorApplication
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -163,11 +177,15 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Build team editing toolbar actions based on user permissions.
+     * @return void
+     */
     private function addToolbar(): void
     {
         $isNew = (int) ($this->item->id ?? 0) === 0;
-        $canEdit = $this->user->authorise('core.edit', $this->option);
-        $canCreate = $this->user->authorise('core.create', $this->option);
+        $canEdit = $this->user !== null && $this->user->authorise('core.edit', $this->option);
+        $canCreate = $this->user !== null && $this->user->authorise('core.create', $this->option);
 
         ToolbarHelper::title(
             $isNew
