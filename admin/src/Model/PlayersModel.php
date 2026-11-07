@@ -16,6 +16,11 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator list model for persons/players. */
 final class PlayersModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the administrator players list with its default filters.
+     *
+     * @param mixed $config config value.
+     */
     public function __construct($config = [])
     {
         $config['filter_fields'] = [
@@ -28,6 +33,10 @@ final class PlayersModel extends SportsManagementListModel
         parent::__construct($config);
     }
 
+    /**
+     * Build the filtered query for persons and player assignments.
+     * @return mixed
+     */
     protected function getListQuery()
     {
         $app = $this->administratorApplication();
@@ -195,6 +204,10 @@ final class PlayersModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * List persons eligible for assignment to selected teams.
+     * @return array
+     */
     public function getPersonsToAssign(): array
     {
         $ids = self::normaliseSelectedIds(
@@ -252,6 +265,10 @@ final class PlayersModel extends SportsManagementListModel
         return array_values($valid);
     }
 
+    /**
+     * Load project teams for person assignment selection.
+     * @return array
+     */
     public function getProjectTeamList(): array
     {
         $projectId = (int) $this->administratorApplication()->getUserState('com_sportsmanagement.pid', 0);
@@ -268,6 +285,12 @@ final class PlayersModel extends SportsManagementListModel
         return $db->setQuery($query)->loadObjectList();
     }
 
+    /**
+     * Resolve the display name of the specified team.
+     *
+     * @param mixed $teamId teamId value.
+     * @return string
+     */
     public function getTeamName($teamId): string
     {
         $teamId = max(0, (int) $teamId);
@@ -284,6 +307,12 @@ final class PlayersModel extends SportsManagementListModel
         return (string) $db->setQuery($query, 0, 1)->loadResult();
     }
 
+    /**
+     * Resolve the display name of a project team.
+     *
+     * @param mixed $projectTeamId projectTeamId value.
+     * @return string
+     */
     public function getProjectTeamName($projectTeamId): string
     {
         $projectTeamId = max(0, (int) $projectTeamId);
@@ -302,6 +331,10 @@ final class PlayersModel extends SportsManagementListModel
         return (string) $db->setQuery($query, 0, 1)->loadResult();
     }
 
+    /**
+     * Load all matching persons for the current list filters.
+     * @return array
+     */
     public function getPersons(): array
     {
         $db = $this->getDatabase();
@@ -313,6 +346,10 @@ final class PlayersModel extends SportsManagementListModel
         return $db->setQuery($query)->loadObjectList();
     }
 
+    /**
+     * Build person selection records for an administrator form.
+     * @return array
+     */
     public function getPersonListSelect(): array
     {
         $db = $this->getDatabase();
@@ -340,6 +377,10 @@ final class PlayersModel extends SportsManagementListModel
         return $results;
     }
 
+    /**
+     * List the available playing or staff positions.
+     * @return array
+     */
     public function getPositionOptions(): array
     {
         $db = $this->getDatabase();
@@ -351,6 +392,10 @@ final class PlayersModel extends SportsManagementListModel
         return $db->setQuery($query)->loadObjectList();
     }
 
+    /**
+     * List age-group options for the active player filter.
+     * @return array
+     */
     public function getAgeGroupOptions(): array
     {
         $db = $this->getDatabase();
@@ -362,6 +407,12 @@ final class PlayersModel extends SportsManagementListModel
         return $db->setQuery($query)->loadObjectList();
     }
 
+    /**
+     * Resolve the selected project's display name.
+     *
+     * @param int $projectId projectId value.
+     * @return string
+     */
     public function getProjectName(int $projectId): string
     {
         if ($projectId <= 0) {
@@ -377,6 +428,13 @@ final class PlayersModel extends SportsManagementListModel
         return (string) $db->setQuery($query, 0, 1)->loadResult();
     }
 
+    /**
+     * Restore player list filters and sorting from Joomla user state.
+     *
+     * @param mixed $ordering ordering value.
+     * @param mixed $direction direction value.
+     * @return mixed
+     */
     protected function populateState($ordering = 'pl.lastname', $direction = 'ASC')
     {
         $ordering = $ordering ?: 'pl.lastname';
