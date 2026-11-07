@@ -29,15 +29,26 @@ use Joomla\Database\DatabaseInterface;
  */
 final class HtmlView extends BaseHtmlView
 {
+    /**
+     * Resolve the active Joomla administrator application.
+     * @return CMSApplicationInterface
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve and validate the primary Joomla database service.
+     * @return DatabaseInterface
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement projects view database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -63,6 +74,12 @@ final class HtmlView extends BaseHtmlView
     public string $sortDirection = 'ASC';
     public string $sortColumn = 'p.name';
 
+    /**
+     * Prepare and render the projects administration list.
+     *
+     * @param mixed $tpl tpl value.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $this->items = $this->get('Items') ?: [];
@@ -151,6 +168,10 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Register project list actions and permission-dependent toolbar entries.
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE'), 'projects');
