@@ -32,6 +32,12 @@ final class HtmlView extends SportsManagementHtmlView
     public int $teamId = 0;
     public int $personId = 0;
 
+    /**
+     * Render the editable person profile and bind its requested fields.
+     *
+     * @param mixed $tpl tpl argument.
+     * @return mixed
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -82,6 +88,10 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Normalise unset person birth and death dates for the form.
+     * @return void
+     */
     private function normaliseDates(): void
     {
         if ((int) ($this->item->id ?? 0) > 0) {
@@ -102,6 +112,10 @@ final class HtmlView extends SportsManagementHtmlView
         $this->form->setValue('deathday', null, '');
     }
 
+    /**
+     * Fill extended person selector fields using current item values.
+     * @return void
+     */
     private function bindRequestFields(): void
     {
         foreach ([
@@ -116,6 +130,13 @@ final class HtmlView extends SportsManagementHtmlView
         }
     }
 
+    /**
+     * Build the optional extended XML-backed person form.
+     *
+     * @param string $data data argument.
+     * @param string $file file argument.
+     * @return Form|false
+     */
     private function buildExtendedForm(string $data, string $file): Form|false
     {
         $xmlFile = JPATH_ADMINISTRATOR
