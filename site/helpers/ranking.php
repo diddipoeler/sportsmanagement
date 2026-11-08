@@ -1669,12 +1669,12 @@ function array_multisort(&$a, array $column_names) {
 	}
 	
 	/**
-	 * Point comparison
+	 * Compare the overall ranking points of two teams.
+	 * Uses the configured ASC or DESC ranking direction to determine the team order without changing either team's accumulated points.
 	 *
-	 * @param   JSMRankingTeam a
-	 * @param   JSMRankingTeam b
-	 *
-	 * @return integer
+	 * @param JSMRankingTeamClass $a First team whose points are compared.
+	 * @param JSMRankingTeamClass $b Second team whose points are compared.
+	 * @return int Signed point comparison suitable for a sorting callback.
 	 */
 	function _cmpPoints($a, $b)
 	{
@@ -1712,12 +1712,12 @@ function array_multisort(&$a, array $column_names) {
 
 
 	/**
-	 * Point comparison
+	 * Compare penalty-point adjustments for two teams in the table.
+	 * Applies the historical penalty_points ordering used by the ranking engine when penalty points form a configured tie-breaker.
 	 *
-	 * @param   JSMRankingTeam a
-	 * @param   JSMRankingTeam b
-	 *
-	 * @return integer
+	 * @param JSMRankingTeamClass $a First team and its penalty-point total.
+	 * @param JSMRankingTeamClass $b Second team and its penalty-point total.
+	 * @return int Signed penalty-point sorting result.
 	 */
 	function _cmpPenaltypoints($a, $b)
 	{
@@ -2065,12 +2065,12 @@ $res = -($b->cnt_matches - $a->cnt_matches);
 	}
 
 	/**
-	 * OT_wins comparison
+	 * Order teams by their number of overtime victories.
+	 * Compares the cnt_wot totals in descending order for use when overtime wins are part of the ranking criteria.
 	 *
-	 * @param   JSMRankingTeam a
-	 * @param   JSMRankingTeam b
-	 *
-	 * @return integer
+	 * @param JSMRankingTeamClass $a First team and its overtime-win count.
+	 * @param JSMRankingTeamClass $b Second team and its overtime-win count.
+	 * @return int Signed number of overtime wins.
 	 */
 	function _cmpWOT($a, $b)
 	{
@@ -2079,12 +2079,12 @@ $res = -($b->cnt_matches - $a->cnt_matches);
 	}
 
 	/**
-	 * SO_wins comparison
+	 * Order teams by their number of shootout victories.
+	 * Compares the cnt_wso totals in descending order for ranking templates that award a shootout-win tie-breaker.
 	 *
-	 * @param   JSMRankingTeam a
-	 * @param   JSMRankingTeam b
-	 *
-	 * @return integer
+	 * @param JSMRankingTeamClass $a First team and its shootout-win count.
+	 * @param JSMRankingTeamClass $b Second team and its shootout-win count.
+	 * @return int Signed number of shootout wins.
 	 */
 	function _cmpWSO($a, $b)
 	{
