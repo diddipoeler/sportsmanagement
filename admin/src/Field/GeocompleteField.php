@@ -23,6 +23,14 @@ final class GeocompleteField extends TextField
 {
     protected $type = 'Geocomplete';
 
+    /**
+     * Render the read-only location text field with map-data attribution.
+     *
+     * Keeps the inherited Joomla text-field markup and appends a safe
+     * OpenStreetMap copyright link without performing a network request.
+     *
+     * @return string Original field markup followed by provider attribution.
+     */
     protected function getInput(): string
     {
         return parent::getInput()
