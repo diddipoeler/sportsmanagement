@@ -7,6 +7,9 @@ on:
       - 'modules/mod_sportsmanagement_calendar/services/provider.php'
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
+      - 'modules/mod_sportsmanagement_calendar/calendarFunctions.php'
+      - '.github/tests/joomla56_calendar_legacy_functions.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js'
@@ -18,6 +21,9 @@ on:
       - 'modules/mod_sportsmanagement_calendar/services/provider.php'
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
+      - 'modules/mod_sportsmanagement_calendar/calendarFunctions.php'
+      - '.github/tests/joomla56_calendar_legacy_functions.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js'
@@ -40,17 +46,25 @@ jobs:
           dispatcher=modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
           renderer=modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
           runtime=modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          legacy=modules/mod_sportsmanagement_calendar/calendarFunctions.php
+          legacy_runtime=modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
           helper=modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
           script=modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js
           template=modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php
 
-          for file in "$provider" "$dispatcher" "$renderer" "$runtime" "$helper" "$template"; do
+          for file in "$provider" "$dispatcher" "$renderer" "$runtime" "$helper" "$template" "$legacy" "$legacy_runtime" .github/tests/joomla56_calendar_legacy_functions.php; do
             test -f "$file"
             php -l "$file"
           done
 
           test -f "$script"
           node --check "$script"
+
+          # Legacy compatibility API must retain required attribution and
+          # describe each named function before a PHP upgrade.
+          php .github/scripts/check-php-headers.php "$legacy" "$legacy_runtime"
+          php .github/scripts/check-php-function-docs.php "$legacy" "$legacy_runtime"
+          php .github/tests/joomla56_calendar_legacy_functions.php
 
           grep -Fq 'ModuleDispatcherFactory' "$provider"
           grep -Fq 'HelperFactory' "$provider"
