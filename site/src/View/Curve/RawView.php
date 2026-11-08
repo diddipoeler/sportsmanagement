@@ -24,6 +24,16 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
  */
 final class RawView extends BaseHtmlView
 {
+    /**
+     * Verify the native curve model without producing an HTML response.
+     *
+     * Preserves the historical raw endpoint behaviour, but explicitly
+     * rejects an unresolved Joomla 5/6 model instead of continuing silently.
+     *
+     * @param string|null $tpl Reserved Joomla template suffix.
+     * @return void
+     * @throws \RuntimeException When the CurveModel is unavailable.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();

@@ -9,10 +9,10 @@
  */
 declare(strict_types=1);
 
-namespace Joomla\CMS {
-    class Factory
+namespace Diddipoeler\Component\SportsManagement\Site\Service {
+    class SportsManagementSiteApplicationResolver
     {
-        public static function getApplication(): object
+        public static function resolve(): object
         {
             return new class {
                 public function getDocument(): object

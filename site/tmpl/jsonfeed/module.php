@@ -14,10 +14,10 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Router\Route;
 
-Factory::getApplication()->getDocument()->setMimeEncoding('application/json');
+SportsManagementSiteApplicationResolver::resolve()->getDocument()->setMimeEncoding('application/json');
 
 $grouped = [];
 

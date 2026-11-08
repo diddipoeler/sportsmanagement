@@ -9,10 +9,10 @@
  */
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Router\Route;
 
-$app = Factory::getApplication();
+$app = SportsManagementSiteApplicationResolver::resolve();
 $app->getDocument()->setMimeEncoding('application/json');
 $itemId = $app->getInput()->getInt('Itemid', 0);
 
