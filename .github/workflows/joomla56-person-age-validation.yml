@@ -7,6 +7,10 @@ on:
       - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
+      - 'admin/src/Helper/ExtendedFormHelper.php'
+      - 'site/src/Service/PersonExtraFieldReadService.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
+      - '.github/tests/joomla56-extra-fields-calendar-year.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
@@ -24,6 +28,10 @@ on:
       - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
+      - 'admin/src/Helper/ExtendedFormHelper.php'
+      - 'site/src/Service/PersonExtraFieldReadService.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
+      - '.github/tests/joomla56-extra-fields-calendar-year.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
@@ -59,6 +67,10 @@ jobs:
           php -l admin/src/Helper/PersonAgeHelper.php
           php -l admin/src/Helper/ExtraSelectOptionsHelper.php
           php -l admin/src/Helper/LocationHelper.php
+          php -l admin/src/Helper/ExtendedFormHelper.php
+          php -l site/src/Service/PersonExtraFieldReadService.php
+          php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
+          php -l .github/tests/joomla56-extra-fields-calendar-year.php
           php -l site/src/Helper/SiteRouteHelper.php
           php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
           php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
@@ -78,6 +90,8 @@ jobs:
         run: php .github/tests/joomla56-jevents-date-validation.php
       - name: Verify routing and calendar date inputs
         run: php .github/tests/joomla56-site-route-calendar-date.php
+      - name: Verify extra-field queries and calendar year options
+        run: php .github/tests/joomla56-extra-fields-calendar-year.php
       - name: Verify documentation in changed runtime classes
         run: |
           php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
