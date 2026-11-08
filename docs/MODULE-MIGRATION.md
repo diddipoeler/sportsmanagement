@@ -130,3 +130,7 @@ Static gates are not a substitute for installing and rendering the modules on re
 5. Finish the remaining `projectteams` / `teamplayers` special relation actions on the native relation service.
 6. Remove retained legacy module entry/helper/default-template files only after no installed/update path requires them.
 7. Add Joomla 5.4 and Joomla 6.1 module install/render smoke tests.
+
+## Safe rendering of database quotations
+
+The native `mod_sportsmanagement_rquotes` layouts now share `QuoteText::render()` for database-backed quotes. The output retains line breaks and encoded text while treating all other stored HTML markup as plain text, preventing imported quote tags and attributes from executing in Joomla 5/6 pages. The `joomla56_rquotes_output_encoding.php` regression test covers entity encoding, newline preservation and script/attribute injection on PHP 8.3/8.4. Existing quote records are not modified.

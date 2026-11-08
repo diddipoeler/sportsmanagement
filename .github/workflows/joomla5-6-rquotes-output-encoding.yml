@@ -1,0 +1,36 @@
+name: Joomla 5/6 quote rendering
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_rquotes/**'
+      - '.github/tests/joomla56_rquotes_output_encoding.php'
+      - '.github/workflows/joomla5-6-rquotes-output-encoding.yml'
+  pull_request:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_rquotes/**'
+      - '.github/tests/joomla56_rquotes_output_encoding.php'
+      - '.github/workflows/joomla5-6-rquotes-output-encoding.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - name: Check PHP syntax
+        run: |
+          php -l modules/mod_sportsmanagement_rquotes/src/Helper/QuoteText.php
+          php -l modules/mod_sportsmanagement_rquotes/tmpl/_rquote.php
+          php -l modules/mod_sportsmanagement_rquotes/tmpl/sticker.php
+      - name: Check quote encoding
+        run: php .github/tests/joomla56_rquotes_output_encoding.php
+      - name: Check Joomla 5/6 file headers and function documentation
+        run: |
+          php .github/scripts/check-php-function-docs.php modules/mod_sportsmanagement_rquotes/src/Helper/QuoteText.php

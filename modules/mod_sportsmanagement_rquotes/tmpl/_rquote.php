@@ -8,17 +8,15 @@
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Uri\Uri;
+use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\QuoteText;
 
 $quotemarks = (int) $params->get('quotemarks', 0);
 $showPicture = (bool) $params->get('showpicture', 0);
 $author = htmlspecialchars((string) ($rquote->author ?? ''), ENT_QUOTES, 'UTF-8');
-$quote = (string) ($rquote->quote ?? '');
+$quote = QuoteText::render($rquote->quote ?? '');
 $pictureUrl = (string) ($rquote->picture_url ?? '');
 $quoteAssetBase = rtrim(Uri::root(true), '/') . '/modules/mod_sportsmanagement_rquotes/assets/images/';
 
-if ($quotemarks > 0) {
-    $quote = strip_tags($quote, '<img><br><a>');
-}
 ?>
 <strong>
     <p>

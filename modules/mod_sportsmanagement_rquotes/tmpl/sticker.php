@@ -8,6 +8,7 @@
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Diddipoeler\Module\SportsManagementRquotes\Site\Helper\QuoteText;
 
 if (($source ?? 'db') === 'text') {
     require __DIR__ . '/textfile.php';
@@ -59,7 +60,7 @@ if ($borderShadow) {
 
             <div class="row"
                  style="text-align:left;font-style:<?php echo (bool) $params->get('text_italic', 1) ? 'italic' : 'normal'; ?>;font-size:<?php echo $textSize; ?>px;color:<?php echo $textColor; ?>;display:block;margin:0 0 10px 10px;clear:both;">
-                <?php echo (string) ($rquote->quote ?? ''); ?>
+                <?php echo QuoteText::render($rquote->quote ?? ''); ?>
             </div>
 
             <div class="row"
