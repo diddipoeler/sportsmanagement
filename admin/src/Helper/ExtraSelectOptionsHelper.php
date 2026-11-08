@@ -26,6 +26,8 @@ final class ExtraSelectOptionsHelper
      * branch used by administrator forms and lists. Uses bound parameters
      * for exact field names and returns an empty list for missing or invalid
      * definitions, without exposing database diagnostics in the form.
+     * The legacy comma-delimited option collection is capped to avoid
+     * excessive rendering work, and blank values are omitted.
      *
      * @param string $view Backend or frontend template identifier.
      * @param string $field Extra-field name whose choices are requested.
@@ -88,7 +90,17 @@ final class ExtraSelectOptionsHelper
             return [];
         }
 
-        $values = explode(',', (string) $result->select_columns);
+        // Bound the legacy comma-delimited option definition before allocating
+        // a potentially excessive collection of Joomla HTML option objects.
+        if (strlen($result->select_columns) > 16384) {
+            return [];
+        }
+
+        $values = explode(',', $result->select_columns);
+
+        if (count($values) > 256) {
+            return [];
+        }
         $rawLabels = $result->select_values ?? '';
         $labels = is_string($rawLabels) && trim($rawLabels) !== ''
             ? explode(',', $rawLabels)
@@ -96,10 +108,17 @@ final class ExtraSelectOptionsHelper
         $options = [];
 
         foreach ($values as $key => $value) {
+            $value = trim($value);
+            $label = trim($labels[$key] ?? $value);
+
+            if ($value === '') {
+                continue;
+            }
+
             $options[] = HTMLHelper::_(
                 'select.option',
                 $value,
-                $labels[$key] ?? $value
+                $label !== '' ? $label : $value
             );
         }
 
