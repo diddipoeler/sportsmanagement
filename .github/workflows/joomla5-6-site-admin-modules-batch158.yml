@@ -83,8 +83,12 @@ jobs:
           grep -Fq 'use Joomla\CMS\Application\SiteApplication;' site/views/sishandball/view.html.php
           ! grep -Fq 'Factory::getApplication()' site/views/sishandball/view.html.php
 
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
-          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          # The calendar runtime now resolves its site application centrally;
+          # the public Factory container is used only for database services.
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq 'use Joomla\CMS\Application\CMSApplicationInterface;' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq "isClient('site')" modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          ! grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
           ! grep -Fq 'Factory::getApplication()' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
 
           echo 'Joomla 5/6 batch 158 contracts OK.'

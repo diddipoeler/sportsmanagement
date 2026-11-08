@@ -66,8 +66,10 @@ jobs:
           ! grep -Fq -- 'Factory::getApplication()' admin/src/View/Smquotetxt/HtmlView.php
           grep -Fq -- 'Native Joomla 5/6 administrator list view for random-quote source files.' admin/src/View/Smquotestxt/HtmlView.php
 
-          grep -Fq -- 'private static function siteApplication(): SiteApplication' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
-          grep -Fq -- 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq -- 'private static function siteApplication(): CMSApplicationInterface' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          grep -Fq -- "isClient('site')" modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          ! grep -Fq -- 'Factory::getApplication()' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
           grep -Fq -- 'SportsManagement Calendar runtime requires the Joomla site application.' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
           grep -Fq -- 'self::siteApplication()' modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
 
