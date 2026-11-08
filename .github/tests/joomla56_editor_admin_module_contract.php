@@ -231,7 +231,9 @@ namespace {
 
         foreach ($tasks as $task => $argument) {
             $pattern = '~function\s+' . preg_quote($task, '~')
-                . '\(\):\s*void\s*\{\s*\$this->assertWritePermission\('
+                // Some native writes validate the CSRF token before checking ACL.
+                // Both guards must still run before loading or mutating a model.
+                . '\(\):\s*void\s*\{\s*(?:\$this->checkToken\(\);\s*)?\$this->assertWritePermission\('
                 . preg_quote($argument, '~') . '\);~';
 
             if (!is_string($source) || preg_match($pattern, $source) !== 1) {
