@@ -23,6 +23,15 @@ final class InlineHockeyClubLogoService
     private const LOGO_DIRECTORY = 'images/com_sportsmanagement/database/clubs/large';
     private const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
 
+    /**
+     * Initialise the Inline Hockey club-logo synchronisation service.
+     * Receives the Joomla database, restricted external API client and project link reader used for controlled logo imports.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @param InlineHockeyApiClient $api External Inline Hockey API client.
+     * @param InlineHockeyProjectService $projects Project metadata reader.
+     * @return void
+     */
     public function __construct(
         private readonly DatabaseInterface $db,
         private readonly InlineHockeyApiClient $api,
@@ -30,6 +39,16 @@ final class InlineHockeyClubLogoService
     ) {
     }
 
+    /**
+     * Synchronise missing club logos from the imported Inline Hockey schedule.
+     * Fetches paginated fixtures, visits each unique home or away club once and downloads only logos that are not already customised locally.
+     *
+     * @param int $projectId Project being imported.
+     * @param string $matchLink Optional schedule endpoint; falls back to project metadata.
+     * @param string $username Optional API authentication user.
+     * @param string $password Optional API authentication password.
+     * @return int Number of club logo records successfully synchronised.
+     */
     public function syncProjectLogos(
         int $projectId,
         string $matchLink = '',
@@ -101,6 +120,16 @@ final class InlineHockeyClubLogoService
         return $synced;
     }
 
+    /**
+     * Download one club's image and store its Joomla club-logo reference.
+     * Rejects unapproved extensions, sanitises the filename, creates the component image directory when needed and leaves existing non-placeholder logos untouched.
+     *
+     * @param int $clubId Club record identifier.
+     * @param string $logoHref External approved image URL.
+     * @param string $username Optional API authentication username.
+     * @param string $password Optional API authentication password.
+     * @return bool Whether the club logo was newly synchronised.
+     */
     private function syncClubLogo(
         int $clubId,
         string $logoHref,
@@ -147,6 +176,13 @@ final class InlineHockeyClubLogoService
         return true;
     }
 
+    /**
+     * Read the stored large-logo path of one SportsManagement club.
+     * Uses a bound club identifier and a limited query to decide whether a custom logo already exists.
+     *
+     * @param int $clubId Club record identifier.
+     * @return string Current club image path, or an empty string.
+     */
     private function currentLogo(int $clubId): string
     {
         $query = $this->db->createQuery()

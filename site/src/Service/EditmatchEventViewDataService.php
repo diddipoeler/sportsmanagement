@@ -18,6 +18,15 @@ use Joomla\Database\ParameterType;
 /** Native read service for the frontend editmatch event/commentary layout. */
 final class EditmatchEventViewDataService
 {
+    /**
+     * Create the frontend event and commentary view reader with explicit database scopes.
+     * Separates Joomla's default database, the configured external sports database for commentary and the component sports database for match events.
+     *
+     * @param DatabaseInterface $joomlaDatabase Joomla's primary database connection.
+     * @param DatabaseInterface $selectedSportsDatabase Selected sports connection for commentary.
+     * @param DatabaseInterface $componentSportsDatabase Connection selected for component match events.
+     * @return void
+     */
     public function __construct(
         private readonly DatabaseInterface $joomlaDatabase,
         private readonly DatabaseInterface $selectedSportsDatabase,
@@ -25,6 +34,13 @@ final class EditmatchEventViewDataService
     ) {
     }
 
+    /**
+     * Read both team names and project-team IDs for one frontend match.
+     * Resolves home and away team names through the season and project relations, returning no row when the match identifier is invalid.
+     *
+     * @param int $matchId Parent fixture identifier.
+     * @return object|null Home and away team details, or null.
+     */
     public function getMatchTeams(int $matchId): ?object
     {
         if ($matchId <= 0) {
@@ -53,7 +69,13 @@ final class EditmatchEventViewDataService
         return $db->loadObject() ?: null;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load the published event types configured for the selected project.
+     * Joins project positions to their allowed event types and localises the unique option labels for the edit-match event dropdown.
+     *
+     * @param int $projectId Project defining the available event types.
+     * @return array<int,object> Localised event-type option rows.
+     */
     public function getEventsOptions(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -91,7 +113,13 @@ final class EditmatchEventViewDataService
         return $events;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Read a fixture's commentary in reverse event-time order.
+     * Queries the explicitly selected sports database with a bound match ID, preserving the legacy external-database selection policy.
+     *
+     * @param int $matchId Fixture whose commentary is requested.
+     * @return array<int,object> Commentary entries ordered by newest first.
+     */
     public function getMatchCommentary(int $matchId): array
     {
         if ($matchId <= 0) {
@@ -111,7 +139,13 @@ final class EditmatchEventViewDataService
         return $db->loadObjectList() ?: [];
     }
 
-    /** @return array<int,object> */
+    /**
+     * Read match events with team names and associated player details.
+     * Uses the component sports database and bound match identifier, enriches event rows with participant names and sorts by increasing event time.
+     *
+     * @param int $matchId Fixture whose scored and disciplinary events are requested.
+     * @return array<int,object> Match events with formatted player names.
+     */
     public function getMatchEvents(int $matchId): array
     {
         if ($matchId <= 0) {

@@ -18,10 +18,24 @@ use Joomla\Http\HttpFactory;
 /** Read-only OpenLigaDB preview service for the legacy extension UI. */
 final class OpenLigaDbPreviewService
 {
+    /**
+     * Create the read-only OpenLigaDB preview service for a Joomla project.
+     * Uses an injected database driver to locate the configured OpenLigaDB link without changing any match records.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $db)
     {
     }
 
+    /**
+     * Retrieve the external OpenLigaDB endpoint configured for the project.
+     * Reads the project's link-type backend extra-field value using bound identifiers and returns an empty string for invalid projects.
+     *
+     * @param int $projectId Project whose OpenLigaDB endpoint should be read.
+     * @return string Saved endpoint URL, or an empty string.
+     */
     public function getProjectLink(int $projectId): string
     {
         if ($projectId <= 0) {
@@ -53,7 +67,13 @@ final class OpenLigaDbPreviewService
         return trim((string) $this->db->loadResult());
     }
 
-    /** @return list<array<string,mixed>> */
+    /**
+     * Fetch the current OpenLigaDB match preview as a JSON list.
+     * Restricts requests to approved HTTPS OpenLigaDB hosts, disables HTTP redirects, enforces a response status check and parses JSON without running arbitrary external endpoint URLs.
+     *
+     * @param string $url OpenLigaDB endpoint from the project's custom field.
+     * @return list<array<string,mixed>> Match records returned by the service.
+     */
     public function fetchMatches(string $url): array
     {
         $url = trim($url);
@@ -85,8 +105,12 @@ final class OpenLigaDbPreviewService
         return array_values(array_filter($matches, 'is_array'));
     }
 
-    /** @param list<array<string,mixed>> $matches
-     *  @return array{matches:int,teams:int,playgrounds:int,goals:int}
+    /**
+     * Summarise a fetched set of OpenLigaDB matches for the import preview.
+     * Counts fixtures, distinct team identifiers, distinct venues and the total goal entries without modifying the stored project data.
+     *
+     * @param list<array<string,mixed>> $matches Parsed OpenLigaDB fixture records.
+     * @return array{matches:int,teams:int,playgrounds:int,goals:int} Preview counters.
      */
     public function summarize(array $matches): array
     {
@@ -124,6 +148,13 @@ final class OpenLigaDbPreviewService
         ];
     }
 
+    /**
+     * Validate an external URL against the approved OpenLigaDB HTTPS hosts.
+     * Rejects embedded credentials, alternate ports, malformed URLs, control characters and unrelated hosts to reduce server-side request forgery risks.
+     *
+     * @param string $url Candidate URL from a user-editable project field.
+     * @return bool Whether the URL may be fetched by the preview service.
+     */
     private function isAllowedUrl(string $url): bool
     {
         // The project field is editable and ultimately drives a server-side

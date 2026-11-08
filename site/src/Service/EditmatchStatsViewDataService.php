@@ -23,10 +23,24 @@ use Joomla\Database\ParameterType;
  */
 final class EditmatchStatsViewDataService
 {
+    /**
+     * Create the native frontend edit-match statistics read service.
+     * Retains the Joomla default database connection used by the legacy editor's team and statistic queries.
+     *
+     * @param DatabaseInterface $db Joomla database driver for the edit-match editor.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $db)
     {
     }
 
+    /**
+     * Load the home and away team names used by the statistics editor.
+     * Joins the match to both project teams, season-team relations and team names using a bound fixture identifier.
+     *
+     * @param int $matchId Parent match identifier.
+     * @return object|null Team names and project-team IDs, or null.
+     */
     public function getMatchTeams(int $matchId): ?object
     {
         if ($matchId <= 0) {
@@ -55,7 +69,14 @@ final class EditmatchStatsViewDataService
         return $db->loadObject() ?: null;
     }
 
-    /** @return array<int,object> */
+    /**
+     * List nominated match staff and their sport-specific positions.
+     * Filters staff to the given match and project team, includes published people and combines name and project-position details for the editor.
+     *
+     * @param int $projectTeamId Team whose staff roster is requested.
+     * @param int $matchId Fixture identifier.
+     * @return array<int,object> Staff rows keyed by season-team-person identifier.
+     */
     public function getMatchStaff(int $projectTeamId, int $matchId): array
     {
         if ($projectTeamId <= 0 || $matchId <= 0) {
@@ -113,7 +134,13 @@ final class EditmatchStatsViewDataService
         return $rows;
     }
 
-    /** @return array<int,EditmatchStatisticDefinition> */
+    /**
+     * Retrieve the statistics definitions allowed by a project's positions.
+     * Joins the published project-position configuration to statistic records and wraps each database row in a native EditmatchStatisticDefinition value object.
+     *
+     * @param int $projectId Project whose statistics editor should be configured.
+     * @return array<int,EditmatchStatisticDefinition> Ordered statistic definitions.
+     */
     public function getInputStatistics(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -146,6 +173,15 @@ final class EditmatchStatsViewDataService
         );
     }
 
+    /**
+     * Group existing player statistics for the selected match by team and player.
+     * Loads saved match statistic values and indexes them as project-team, team-player and statistic identifiers, retaining empty buckets for both teams.
+     *
+     * @param int $matchId Parent match identifier.
+     * @param int $projectTeam1Id Home project-team identifier.
+     * @param int $projectTeam2Id Away project-team identifier.
+     * @return array<int,array<int,array<int,mixed>>> Saved player statistic input values.
+     */
     public function getMatchStatsInput(int $matchId, int $projectTeam1Id, int $projectTeam2Id): array
     {
         $stats = [
@@ -175,6 +211,15 @@ final class EditmatchStatsViewDataService
         return $stats;
     }
 
+    /**
+     * Group existing staff statistics for the selected match by team and staff member.
+     * Queries the match-staff statistic table and creates the nested project-team, staff and statistic mapping expected by the editor.
+     *
+     * @param int $matchId Parent match identifier.
+     * @param int $projectTeam1Id Home project-team identifier.
+     * @param int $projectTeam2Id Away project-team identifier.
+     * @return array<int,array<int,array<int,mixed>>> Saved match staff statistic values.
+     */
     public function getMatchStaffStatsInput(int $matchId, int $projectTeam1Id, int $projectTeam2Id): array
     {
         $stats = [
