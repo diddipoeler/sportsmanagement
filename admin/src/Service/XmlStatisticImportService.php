@@ -25,15 +25,24 @@ use RuntimeException;
  */
 final class XmlStatisticImportService
 {
+    /**
+     * Create the statistic XML import writer using Joomla's database driver.
+     * Stores the database connection used to match or insert statistic definitions from legacy XML documents.
+     *
+     * @param DatabaseInterface $database Joomla database driver.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Import selected statistic definitions from a legacy SportsManagement XML file.
+     * Reuses explicitly selected local statistics, matches existing entries by name and class, applies database-column filtering and inserts new definitions with escaped result messages.
      *
-     * @return array<string, string>
+     * @param array<string,mixed> $post Administrator selections and field overrides.
+     * @param array<string,mixed> $parsedData Parsed statistic definition objects.
+     * @return array<string,string> HTML status messages for matched or created statistics.
      */
     public function import(array $post, array $parsedData): array
     {
@@ -108,6 +117,13 @@ final class XmlStatisticImportService
         return ['Importing statistic data:' => $message];
     }
 
+    /**
+     * Load a statistic definition using its existing database identifier.
+     * Uses a bound identifier to check whether a statistic chosen in the administrator import form still exists.
+     *
+     * @param int $id Local statistic record identifier.
+     * @return object|null Statistic ID, name and class, or null.
+     */
     private function findById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -124,6 +140,14 @@ final class XmlStatisticImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Find a statistic that already has the imported name and implementation class.
+     * Binds both fields to avoid inserting duplicate statistic definitions and to preserve previously configured local values.
+     *
+     * @param string $name Display name of the statistic.
+     * @param string $class Statistic calculation class or category.
+     * @return object|null Matching existing statistic definition, or null.
+     */
     private function findByNameAndClass(string $name, string $class): ?object
     {
         $query = $this->database->createQuery()
@@ -142,6 +166,14 @@ final class XmlStatisticImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Keep only statistic properties supported by the current Joomla database schema.
+     * Copies allowed columns from the imported statistic object and ignores values for columns not present in the installed table.
+     *
+     * @param object $source Prepared imported statistic definition.
+     * @param string $table Trusted statistic destination table name.
+     * @return object Record containing valid statistic table columns.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -156,6 +188,13 @@ final class XmlStatisticImportService
         return $row;
     }
 
+    /**
+     * Escape imported statistic labels for safe administrator status markup.
+     * Encodes HTML control characters and quotes when reporting imported or reused definitions.
+     *
+     * @param string $value Imported statistic display value.
+     * @return string HTML-escaped text.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');

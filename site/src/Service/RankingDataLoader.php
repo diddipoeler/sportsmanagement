@@ -23,12 +23,26 @@ final class RankingDataLoader
     private const DEFAULT_RANKING_ORDER = 'POINTS, PLAYEDASC, DIFF, FOR';
     private const DEFAULT_SORT_ORDER = 'DESC, ASC, DESC, DESC';
 
+    /**
+     * Create the ranking input reader with the Joomla database driver.
+     * Stores the database connection used by the native ranking calculator to load projects, teams, configuration and fixtures.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $db)
     {
     }
 
     /**
-     * @return array{project:?object, teams:array<int,RankingRow>, matches:array<int,object>, config:array, colors:array}
+     * Assemble the complete data set for a project's native ranking table.
+     * Loads the project, inherited ranking template settings, eligible teams, published scored matches and optional round-range filters, then parses colour rules for display.
+     *
+     * @param int $projectId Ranking project identifier.
+     * @param int $divisionId Optional division to limit teams and games.
+     * @param int $fromRoundId Optional first round in the requested range.
+     * @param int $toRoundId Optional last round in the requested range.
+     * @return array{project:?object,teams:array<int,RankingRow>,matches:array<int,object>,config:array,colors:array} Ranking engine input.
      */
     public function load(int $projectId, int $divisionId = 0, int $fromRoundId = 0, int $toRoundId = 0): array
     {
@@ -51,6 +65,13 @@ final class RankingDataLoader
         ];
     }
 
+    /**
+     * Read a ranking project's sport, season, league and active round metadata.
+     * Joins the project to its sport type and optional season, league and round, generating the ID:alias slugs required by frontend links.
+     *
+     * @param int $projectId Requested SportsManagement project ID.
+     * @return object|null Project metadata with routing slugs, or null.
+     */
     private function loadProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -82,6 +103,14 @@ final class RankingDataLoader
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Resolve a project's effective ranking template configuration.
+     * Starts with defaults, reads project overrides and then master-template overrides when available, safely falling back when configuration data is missing or malformed.
+     *
+     * @param string $template Ranking template name.
+     * @param object $project Project record including project and master-template IDs.
+     * @return array Effective template settings with default values.
+     */
     private function loadTemplateConfig(string $template, object $project): array
     {
         $defaults = $this->loadDefaultTemplateConfig($template);
@@ -108,6 +137,14 @@ final class RankingDataLoader
         }
     }
 
+    /**
+     * Load a saved template's raw registry configuration string.
+     * Uses bound project and template keys to retrieve one persisted template configuration row.
+     *
+     * @param string $template Target template name.
+     * @param int $projectId Project or master-template project identifier.
+     * @return string|null Stored registry parameters, or null when absent.
+     */
     private function loadSavedTemplateParams(string $template, int $projectId): ?string
     {
         $db = $this->db;
@@ -123,6 +160,13 @@ final class RankingDataLoader
         return $value === null ? null : (string) $value;
     }
 
+    /**
+     * Read installed default ranking settings from a trusted template XML file.
+     * Initialises core ranking and sort defaults, optionally loads XML field default attributes and preserves built-in values when the file or SimpleXML is unavailable.
+     *
+     * @param string $template Name of the installed template's default XML file.
+     * @return array<string,mixed> Default ranking configuration values.
+     */
     private function loadDefaultTemplateConfig(string $template): array
     {
         $defaults = [
@@ -150,7 +194,14 @@ final class RankingDataLoader
         return $defaults;
     }
 
-    /** @return array<int, RankingRow> */
+    /**
+     * Create ranking rows from a project's eligible team and final-table relations.
+     * Tries division-scoped project teams, stored final-division rows and fallback final standings, preserving precomputed scores and team metadata when final values are enabled.
+     *
+     * @param int $projectId Owning project ID.
+     * @param int $divisionId Optional division ID.
+     * @return array<int,RankingRow> Initial ranking rows keyed by project-team ID.
+     */
     private function loadTeams(int $projectId, int $divisionId): array
     {
         $records = $this->queryProjectTeams($projectId, $divisionId, false);
@@ -203,6 +254,13 @@ final class RankingDataLoader
         return $rows;
     }
 
+    /**
+     * Build a consistent field selection for ranking team and final-division queries.
+     * Chooses which score and division relation supplies the standings values, while including team, club, logo and route slug metadata.
+     *
+     * @param bool $divisionRelation Whether final-division values come from the division relation.
+     * @return array<int,string> Quoted SQL selection columns and aliases.
+     */
     private function projectTeamSelect(bool $divisionRelation): array
     {
         $db = $this->db;
@@ -248,6 +306,15 @@ final class RankingDataLoader
         ];
     }
 
+    /**
+     * Load project teams using normal or final-division scoring policies.
+     * Joins season teams, club and division data and optionally restricts teams to matches in a division or recorded final-division standings.
+     *
+     * @param int $projectId Owning project identifier.
+     * @param int $divisionId Optional division identifier.
+     * @param bool $divisionFinal Whether to select final division-related standings.
+     * @return array<int,object> Eligible team and ranking-metadata records.
+     */
     private function queryProjectTeams(int $projectId, int $divisionId, bool $divisionFinal): array
     {
         $db = $this->db;
@@ -283,6 +350,13 @@ final class RankingDataLoader
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Read project teams with stored final standings when ordinary team queries are empty.
+     * Uses the project-team final-score flag to return only teams eligible for final-table results.
+     *
+     * @param int $projectId Owning ranking project.
+     * @return array<int,object> Project-team records with saved final standing values.
+     */
     private function queryFinalProjectTeams(int $projectId): array
     {
         $db = $this->db;
@@ -301,7 +375,15 @@ final class RankingDataLoader
         return $db->loadObjectList() ?: [];
     }
 
-    /** @return array<int, object> */
+    /**
+     * Load published, uncancelled, countable fixtures required for ranking calculation.
+     * Restricts matches to project and optional division, keeps sport-specific small-bore scoring policy and maps each fixture's score, bonus, decision and round details.
+     *
+     * @param int $projectId Ranking project identifier.
+     * @param int $divisionId Optional division filter.
+     * @param string $sportType Sport type controlling special result requirements.
+     * @return array<int,object> Countable match records keyed by match ID.
+     */
     private function loadMatches(int $projectId, int $divisionId, string $sportType): array
     {
         $db = $this->db;
@@ -348,6 +430,16 @@ final class RankingDataLoader
         return $matches;
     }
 
+    /**
+     * Limit ranking fixtures to the requested inclusive round-code interval.
+     * Looks up the parent project's round codes and retains fixtures between selected start and end boundaries while preserving match keys.
+     *
+     * @param array<int,object> $matches Previously loaded ranking matches.
+     * @param int $projectId Project whose rounds define the range.
+     * @param int $fromRoundId Optional first round identifier.
+     * @param int $toRoundId Optional last round identifier.
+     * @return array<int,object> Fixtures within the selected round-code interval.
+     */
     private function filterRoundRange(array $matches, int $projectId, int $fromRoundId, int $toRoundId): array
     {
         if ($fromRoundId <= 0 && $toRoundId <= 0) {
@@ -372,6 +464,13 @@ final class RankingDataLoader
         });
     }
 
+    /**
+     * Parse legacy ranking-colour rules into structured ranges.
+     * Splits semicolon-separated rules into from, to, colour and description fields while ignoring incomplete entries.
+     *
+     * @param string $config Semicolon-separated four-field ranking colour definitions.
+     * @return array<int,array{from:string,to:string,color:string,description:string}> Parsed ranking-colour rules.
+     */
     private function parseColors(string $config): array
     {
         $colors = [];

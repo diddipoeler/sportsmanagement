@@ -21,6 +21,14 @@ final class XmlClubImportService
 {
     private readonly PlaygroundGeocoder $geocoder;
 
+    /**
+     * Initialise standalone club XML import with Joomla's database and a geocoder.
+     * Uses the injected playground geocoder if available, otherwise creates a native geocoder to enrich imported club locations.
+     *
+     * @param DatabaseInterface $database Joomla database driver.
+     * @param PlaygroundGeocoder|null $geocoder Optional geocoding service.
+     * @return void
+     */
     public function __construct(
         private readonly DatabaseInterface $database,
         ?PlaygroundGeocoder $geocoder = null
@@ -29,10 +37,12 @@ final class XmlClubImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Import standalone club records from a parsed XML document.
+     * Matches explicitly selected or existing clubs, validates names and countries, filters unknown database columns, resets foreign playground references and records created clubs with escaped status messages.
      *
-     * @return array<string, string>
+     * @param array<string,mixed> $post Administrator form selections and club overrides.
+     * @param array<string,mixed> $parsedData Parsed XML club data objects.
+     * @return array<string,string> Escaped HTML messages describing reused or newly created clubs.
      */
     public function import(array $post, array $parsedData): array
     {
@@ -129,6 +139,13 @@ final class XmlClubImportService
         return ['Importing club data:' => $message];
     }
 
+    /**
+     * Look up an existing club with the specified database record identifier.
+     * Uses a bound numeric ID and a single-record query to avoid inadvertently selecting a different club.
+     *
+     * @param int $id Existing club identifier.
+     * @return object|null Club record with name and country, or null.
+     */
     private function findById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -145,6 +162,14 @@ final class XmlClubImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Look up a club matching both its submitted name and country code.
+     * Binds both match fields to the Joomla database query to detect duplicates before creating new records.
+     *
+     * @param string $name Club name from XML or the administrator form.
+     * @param string $country Normalised country code.
+     * @return object|null Matching existing club row, or null.
+     */
     private function findByNameAndCountry(string $name, string $country): ?object
     {
         $query = $this->database->createQuery()
@@ -163,6 +188,14 @@ final class XmlClubImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Retain source XML values that map to writable club table columns.
+     * Uses Joomla's table schema to strip unknown XML fields and the original record ID, preventing imported IDs from replacing local primary keys.
+     *
+     * @param object $source Parsed external club row.
+     * @param string $table Trusted destination club table name.
+     * @return object Column-compatible values excluding source IDs.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -181,6 +214,14 @@ final class XmlClubImportService
         return $row;
     }
 
+    /**
+     * Restrict the final club object to actual destination table columns.
+     * Removes transient or geocoder-produced properties that are not part of the installed club table schema.
+     *
+     * @param object $source Prepared local club record.
+     * @param string $table Trusted destination database table.
+     * @return object Club object containing supported table columns only.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -195,6 +236,13 @@ final class XmlClubImportService
         return $row;
     }
 
+    /**
+     * Convert a historical numeric country selection to its legacy ISO-like code.
+     * Preserves nonnumeric codes and resolves numeric legacy selectors through the original country index mapping, including late-added countries.
+     *
+     * @param string $country Raw XML or form country value.
+     * @return string Normalised country code, or the original unmapped value.
+     */
     private function normaliseCountry(string $country): string
     {
         $country = trim($country);
@@ -220,12 +268,26 @@ final class XmlClubImportService
         return $countries[(int) $country] ?? $country;
     }
 
+    /**
+     * Format an escaped import status message for a reused club.
+     * Preserves the legacy administrator HTML message format while escaping the club name to prevent output markup injection.
+     *
+     * @param string $name Name of the reused existing club.
+     * @return string HTML status line indicating that local club data was reused.
+     */
     private function existingMessage(string $name): string
     {
         return '<span style="color:orange">Using existing club data: </span><strong>'
             . $this->escape($name) . '</strong><br />';
     }
 
+    /**
+     * Encode imported strings safely for administrator import-result markup.
+     * Escapes HTML quotes and special characters before embedding external club values in the import report.
+     *
+     * @param string $value Club name, country or other import summary value.
+     * @return string HTML-escaped display text.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
