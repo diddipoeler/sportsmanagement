@@ -20,15 +20,35 @@ use Joomla\Database\DatabaseInterface;
 /** Player-specific form preparation and relation persistence for Joomla 5/6. */
 final class PlayerPersistenceService
 {
+    /**
+     * Create the administrator player persistence service.
+     * Retains the supplied Joomla database dependency for profile updates and season-person relation operations.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Resolve the Joomla administrator application for player form processing.
+     * Provides access to the current form input and user state without relying on deprecated global application APIs.
+     *
+     * @return CMSApplicationInterface Current administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Normalise player form values before Joomla's model saves the record.
+     * Copies approved request fields, converts numeric IDs and dates, derives double-player names and selects a safe default profile image.
+     *
+     * @param array $data Submitted form values, optionally containing nested request data.
+     * @return array Sanitised values ready for player persistence.
+     */
     public function prepare(array $data): array
     {
         $request = isset($data['request']) && is_array($data['request']) ? $data['request'] : [];
@@ -86,6 +106,14 @@ final class PlayerPersistenceService
         return $data;
     }
 
+    /**
+     * Finish saving player-specific user state and related records.
+     * Stores the new person ID, updates season and club assignments if requested, and invokes the historical extra-field hook when available.
+     *
+     * @param int $personId Newly persisted player/person identifier.
+     * @param array $post Original submitted request data.
+     * @return void
+     */
     public function afterSave(int $personId, array $post): void
     {
         if ($personId <= 0) {
@@ -118,6 +146,16 @@ final class PlayerPersistenceService
         }
     }
 
+    /**
+     * Synchronise a person's season, club and playing-position relations.
+     * Normalises selected season IDs, updates or inserts current records and removes deselected assignments within a rollback-safe database transaction.
+     *
+     * @param int $personId Saved person identifier.
+     * @param array $seasonIds Selected season IDs.
+     * @param array $clubIds Club IDs indexed by season.
+     * @param array $positionIds Position IDs indexed by season.
+     * @return void
+     */
     private function syncSeasonAssignments(int $personId, array $seasonIds, array $clubIds, array $positionIds): void
     {
         $seasonIds = $this->normaliseIds($seasonIds);
@@ -166,6 +204,13 @@ final class PlayerPersistenceService
         }
     }
 
+    /**
+     * Derive the display name of a doubles team from its two member profiles.
+     * Reads both player records and builds a combined surname unless the configured sport explicitly requires the original team naming.
+     *
+     * @param array $data Player form data updated in place.
+     * @return void
+     */
     private function applyDoublePersonName(array &$data): void
     {
         $firstId = max(0, (int) ($data['person_id1'] ?? 0));
@@ -204,6 +249,13 @@ final class PlayerPersistenceService
         $data['lastname'] = implode(' - ', $names);
     }
 
+    /**
+     * Convert supported date formats to a valid database date.
+     * Rejects empty, zero and impossible dates, avoiding PHP's silent date rollover and locale-dependent natural-language parsing.
+     *
+     * @param string $raw Date supplied by the administrator.
+     * @return string|null ISO date in Y-m-d format or null.
+     */
     private function normaliseDate(string $raw): ?string
     {
         $raw = trim($raw);
@@ -228,6 +280,13 @@ final class PlayerPersistenceService
         return null;
     }
 
+    /**
+     * Validate and deduplicate IDs from multiselect form values.
+     * Accepts positive integers and zero-padded numeric strings while rejecting arrays, booleans, partial numbers and overflowing values.
+     *
+     * @param array $ids Untrusted form selection values.
+     * @return array<int, int> Positive unique IDs.
+     */
     private function normaliseIds(array $ids): array
     {
         $normalised = [];

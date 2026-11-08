@@ -23,12 +23,25 @@ use Joomla\Http\HttpFactory;
  */
 final class PlaygroundGeocoder
 {
+    /**
+     * Create the administrator playground geocoder with a database connection.
+     * Uses this driver to resolve SportsManagement country codes before composing geocoding queries.
+     *
+     * @param DatabaseInterface $database Joomla connection used for country lookups.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $database)
     {
     }
 
     /**
-     * @return array{state:string, latitude:?float, longitude:?float}|null
+     * Look up a playground's state and coordinates with OpenStreetMap Nominatim.
+     *
+     * Builds an address from the available playground fields, performs a bounded
+     * HTTP lookup and validates external JSON data before returning normalised values.
+     *
+     * @param object $playground Address, city, ZIP code and country of the venue.
+     * @return array{state:string, latitude:?float, longitude:?float}|null Geocoded data or null on failure.
      */
     public function geocode(object $playground): ?array
     {
@@ -124,6 +137,13 @@ final class PlaygroundGeocoder
         ];
     }
 
+    /**
+     * Expand a country code into a name suitable for geocoding searches.
+     * Uses a parameter-bound alpha3 lookup and returns the original code if the country is unknown or the database request fails.
+     *
+     * @param string $code SportsManagement three-letter country code.
+     * @return string Country name, original code or empty string.
+     */
     private function getCountryName(string $code): string
     {
         $code = trim($code);
@@ -156,6 +176,15 @@ final class PlaygroundGeocoder
         return is_string($value) ? trim($value) : '';
     }
 
+    /**
+     * Validate a numeric coordinate returned by the external geocoding service.
+     * Rejects nonnumeric and out-of-range latitude or longitude values rather than storing invalid coordinates.
+     *
+     * @param mixed $value External coordinate value.
+     * @param float $minimum Allowed lower boundary.
+     * @param float $maximum Allowed upper boundary.
+     * @return float|null Valid coordinate or null.
+     */
     private function coordinate(mixed $value, float $minimum, float $maximum): ?float
     {
         if (!is_numeric($value)) {

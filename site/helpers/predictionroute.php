@@ -36,6 +36,19 @@ if (!class_exists(SiteRouteHelper::class)) {
  */
 class JSMPredictionHelperRoute
 {
+    /**
+     * Build the Joomla route to a prediction game's results page.
+     * Carries game, group, project, round and user identifiers to the native router and preserves the caller's optional URL fragment.
+     *
+     * @param int|string $predictionID Prediction game identifier.
+     * @param int|string $roundID Optional round identifier.
+     * @param int|string $projectID Optional project identifier.
+     * @param int|string $userID Optional prediction user identifier.
+     * @param string $anchor Optional fragment appended to the resolved URL.
+     * @param int|string $groupID Optional prediction group identifier.
+     * @param int $cfg_which_database Selected SportsManagement database.
+     * @return string Routed prediction results URL.
+     */
     public static function getPredictionResultsRoute(
         $predictionID,
         $roundID = 0,
@@ -82,6 +95,22 @@ class JSMPredictionHelperRoute
         return Uri::buildQuery($parts);
     }
 
+    /**
+     * Generate a prediction ranking URL using Joomla's native component router.
+     * Preserves legacy league, group ranking, round and range filters without forcing a potentially incorrect menu item.
+     *
+     * @param int|string $predictionID Prediction game identifier.
+     * @param int|string $projectID Optional related project.
+     * @param int|string $roundID Optional round filter.
+     * @param string $anchor Historical fragment argument retained for compatibility.
+     * @param int|string $groupID Optional prediction group.
+     * @param int|string $groupRank Optional group ranking filter.
+     * @param int|string $type Ranking display mode.
+     * @param int|string $from Optional beginning of the ranking period.
+     * @param int|string $to Optional end of the ranking period.
+     * @param int $cfg_which_database Database selector.
+     * @return string Routed prediction ranking URL.
+     */
     public static function getPredictionRankingRoute(
         $predictionID,
         $projectID = 0,
@@ -107,6 +136,14 @@ class JSMPredictionHelperRoute
         ]);
     }
 
+    /**
+     * Build the page URL for a prediction game's rules.
+     * Passes only the prediction game and selected database to the Joomla component router.
+     *
+     * @param int|string $predictionID Prediction game identifier.
+     * @param int $cfg_which_database Selected database.
+     * @return string Routed prediction rules URL.
+     */
     public static function getPredictionRulesRoute($predictionID, $cfg_which_database = 0)
     {
         return SiteRouteHelper::view('predictionrules', [
@@ -115,6 +152,19 @@ class JSMPredictionHelperRoute
         ]);
     }
 
+    /**
+     * Create the route to a member's prediction entry form.
+     * Includes the game, round, group, project and user context in the canonical native predictionentry view.
+     *
+     * @param int|string $predictionID Prediction game identifier.
+     * @param int|string $userID Optional prediction user.
+     * @param int|string $roundID Optional round.
+     * @param int|string $projectID Optional project.
+     * @param string $anchor Historical fragment argument retained for compatibility.
+     * @param int|string $groupID Optional prediction group.
+     * @param int $cfg_which_database Database selector.
+     * @return string Routed entry form URL.
+     */
     public static function getPredictionTippEntryRoute(
         $predictionID,
         $userID = 0,
@@ -134,6 +184,19 @@ class JSMPredictionHelperRoute
         ]);
     }
 
+    /**
+     * Resolve a prediction member list or a member edit view.
+     * The edit task selects predictionuser with its edit layout, while ordinary member requests select predictionusers.
+     *
+     * @param int|string $predictionID Prediction game identifier.
+     * @param int|string $userID Optional member identifier.
+     * @param string|int $task Legacy task; edit selects the edit layout.
+     * @param int|string $projectID Optional project.
+     * @param int|string $groupID Optional prediction group.
+     * @param int|string $roundID Optional round.
+     * @param int $cfg_which_database Database selector.
+     * @return string Routed member page URL.
+     */
     public static function getPredictionMemberRoute(
         $predictionID,
         $userID = 0,
