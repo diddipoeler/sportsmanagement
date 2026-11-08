@@ -17,12 +17,22 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
  */
 final class ExtensionLanguageHelper
 {
-    /** @return list<string> */
+    /**
+     * Find an optional frontend extension language directory for a given view.
+     *
+     * Rejects path separators and unsupported characters before examining
+     * the component's language extension folder. Only installed, safe view
+     * names are returned, so callers never load arbitrary filesystem paths.
+     *
+     * @param string $view Joomla administrator view identifier.
+     * @return list<string> Available extension view name, or an empty list.
+     */
     public static function forView(string $view): array
     {
         // Do not silently strip path separators into another extension name.
         // Administrator view names must already consist of safe Joomla command characters.
-        if (!preg_match('/^[A-Z0-9_-]+$/i', $view)) {
+        if ($view === '' || strlen($view) > 100
+            || preg_match('/^[A-Z0-9_-]+$/iD', $view) !== 1) {
             return [];
         }
 
