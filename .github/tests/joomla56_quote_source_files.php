@@ -49,7 +49,6 @@ namespace {
         }
         rmdir($directory);
         rmdir(dirname($directory));
-        rmdir($root . '/modules');
         rmdir($root);
     }
 

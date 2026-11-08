@@ -16,6 +16,16 @@ $app = SportsManagementSiteApplicationResolver::resolve();
 $app->getDocument()->setMimeEncoding('application/json');
 $itemId = $app->getInput()->getInt('Itemid', 0);
 
+/**
+ * Derive a gentle display colour for JSON calendar event entries.
+ *
+ * Normalises configured hexadecimal colours, falls back to the component
+ * accent for invalid input and blends the resulting RGB channels with white
+ * so calendar entries remain readable in Joomla's standard calendar widget.
+ *
+ * @param string $color Event colour supplied by calendar configuration.
+ * @return string Normalised six-digit hexadecimal display colour.
+ */
 $fadeColor = static function (string $color): string {
     $hex = strtoupper(ltrim(trim($color), '#'));
 

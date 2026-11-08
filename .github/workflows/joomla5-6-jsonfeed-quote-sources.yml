@@ -1,0 +1,53 @@
+name: Joomla 5/6 native JSON feeds and quote sources
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Jsonfeed/**'
+      - 'site/src/View/Curve/**'
+      - 'site/tmpl/jsonfeed/**'
+      - 'admin/src/Model/SmquotestxtModel.php'
+      - 'admin/src/View/Smquotestxt/**'
+      - 'admin/src/Model/TrainingdataModel.php'
+      - '.github/tests/joomla56_jsonfeed_*'
+      - '.github/tests/joomla56_quote_source_files.php'
+      - '.github/workflows/joomla5-6-jsonfeed-quote-sources.yml'
+  pull_request:
+    branches: [joomla5-6]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint native source files
+        run: |
+          php -l site/src/View/Jsonfeed/RawView.php
+          php -l site/src/View/Curve/RawView.php
+          php -l site/tmpl/jsonfeed/default.php
+          php -l site/tmpl/jsonfeed/module.php
+          php -l admin/src/Model/SmquotestxtModel.php
+          php -l admin/src/View/Smquotestxt/HtmlView.php
+          php -l admin/src/Model/TrainingdataModel.php
+      - name: Verify Joomla 5/6 MVC and safe feed output
+        run: |
+          php .github/tests/joomla56_jsonfeed_view_native.php
+          php .github/tests/joomla56_jsonfeed_selected_calendar_ids.php
+          php .github/tests/joomla56_jsonfeed_module_bounds.php
+          php .github/tests/joomla56_jsonfeed_default_contract.php
+          php .github/tests/joomla56_quote_source_files.php
+      - name: Verify PHPDoc function descriptions in migrated classes
+        run: |
+          php .github/scripts/check-php-function-docs.php site/src/View/Jsonfeed/RawView.php site/src/View/Curve/RawView.php admin/src/Model/SmquotestxtModel.php admin/src/View/Smquotestxt/HtmlView.php admin/src/Model/TrainingdataModel.php

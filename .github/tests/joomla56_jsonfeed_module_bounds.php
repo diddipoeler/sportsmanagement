@@ -12,12 +12,30 @@ declare(strict_types=1);
 namespace Diddipoeler\Component\SportsManagement\Site\Service {
     class SportsManagementSiteApplicationResolver
     {
+        /**
+         * Provide a minimal Joomla site application for the JSON template.
+         *
+         * The dummy application exposes only the document MIME-type setter.
+         *
+         * @return object Site application stand-in.
+         */
         public static function resolve(): object
         {
             return new class {
+                /**
+                 * Return a document stub used to verify JSON rendering.
+                 *
+                 * @return object Document accepting the JSON MIME type.
+                 */
                 public function getDocument(): object
                 {
                     return new class {
+                        /**
+                         * Accept the MIME type selected by the native layout.
+                         *
+                         * @param string $type MIME type for calendar data.
+                         * @return void
+                         */
                         public function setMimeEncoding(string $type): void {}
                     };
                 }
@@ -29,6 +47,13 @@ namespace Diddipoeler\Component\SportsManagement\Site\Service {
 namespace Joomla\CMS\Router {
     class Route
     {
+        /**
+         * Return a synthetic Joomla route without performing routing.
+         *
+         * @param string $route Raw component URL.
+         * @param bool $xhtml Whether Joomla would escape ampersands.
+         * @return string Unchanged URL for assertions.
+         */
         public static function _(string $route, bool $xhtml = true): string
         {
             return $route;
@@ -42,6 +67,15 @@ namespace {
     $view = new class {
         public array $events = [];
 
+        /**
+         * Execute the real compact calendar template and decode its JSON.
+         *
+         * Captures generated output and ensures any rendering error is
+         * rethrown after restoring output buffering.
+         *
+         * @param string $path Path to the module JSON template.
+         * @return array Decoded events grouped by calendar day.
+         */
         public function render(string $path): array
         {
             ob_start();
