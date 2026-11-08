@@ -1,0 +1,45 @@
+name: Joomla 5/6 native ranking calculator regression
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/RankingCalculator.php'
+      - 'site/src/Service/RankingRow.php'
+      - '.github/tests/joomla56_ranking_calculator_pure.php'
+      - '.github/workflows/joomla5-6-ranking-calculator-regression.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Service/RankingCalculator.php'
+      - 'site/src/Service/RankingRow.php'
+      - '.github/tests/joomla56_ranking_calculator_pure.php'
+      - '.github/workflows/joomla5-6-ranking-calculator-regression.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  ranking-regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Syntax and PHPDoc checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l site/src/Service/RankingCalculator.php
+          php -l site/src/Service/RankingRow.php
+          php -l .github/tests/joomla56_ranking_calculator_pure.php
+          php .github/scripts/check-php-headers.php site/src/Service/RankingCalculator.php site/src/Service/RankingRow.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/RankingCalculator.php site/src/Service/RankingRow.php
+      - name: Pure in-memory standings regression
+        run: php .github/tests/joomla56_ranking_calculator_pure.php

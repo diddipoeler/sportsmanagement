@@ -73,7 +73,19 @@ jobs:
             site/src/Service/InlineHockeyClubLogoService.php \
             site/src/Service/EditmatchEventViewDataService.php \
             site/src/Service/EditmatchStatsViewDataService.php \
-            admin/src/Service/MatchTimelineWriteService.php
+            admin/src/Service/MatchTimelineWriteService.php \
+            admin/src/Service/MatchWriteService.php \
+            admin/src/Service/FinderRelationNotifier.php \
+            admin/src/Service/XmlClubImportService.php \
+            admin/src/Service/XmlStatisticImportService.php \
+            admin/src/Service/XmlPositionImportService.php \
+            admin/src/Service/XmlPositionEventTypeImportService.php \
+            site/src/Service/RankingDataLoader.php \
+            site/src/Service/RankingCalculator.php \
+            site/src/Service/NextmatchRankingCalculator.php \
+            modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php \
+            modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php \
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
 
       - name: Check changed first-party PHP files
         shell: bash
