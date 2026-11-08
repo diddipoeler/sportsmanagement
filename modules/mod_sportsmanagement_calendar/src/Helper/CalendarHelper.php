@@ -289,6 +289,12 @@ final class CalendarHelper
      * Module-instance-safe calendar fragment refresh.
      *
      * Endpoint: index.php?option=com_ajax&module=sportsmanagement_calendar&method=refresh&format=raw
+     *
+     * Resolves an enabled calendar module, renders its current layout in an
+     * output buffer and extracts the module-specific fragment between markers.
+     * Invalid module identifiers or missing markers return empty output.
+     *
+     * @return string Rendered calendar HTML fragment, or empty text if unavailable.
      */
     public function refreshAjax(): string
     {
@@ -330,6 +336,11 @@ final class CalendarHelper
      * Read-only event feed kept for existing calendar integrations.
      *
      * Endpoint: index.php?option=com_ajax&module=sportsmanagement_calendar&method=get&format=raw
+     *
+     * Validates the requested module and calendar filters before converting
+     * its permitted match rows to the calendar's read-only event feed.
+     *
+     * @return string Encoded event feed, or empty text for an unavailable module.
      */
     public function getAjax(): string
     {
@@ -450,6 +461,9 @@ final class CalendarHelper
      * Load the calendar's shared compatibility services once per request.
      * Initialises necessary component definitions and legacy calendar
      * classes without repeating bootstrap work for multiple modules.
+     * Marks the runtime ready only after all required files load, so a failed
+     * bootstrap does not leave the next calendar instance half-initialized.
+     *
      * @return void
      */
     private function bootstrapRuntime(): void
@@ -458,8 +472,9 @@ final class CalendarHelper
             return;
         }
 
-        self::$runtimeBooted = true;
-
+        // Mark initialization complete only after dependencies have loaded.
+        // Failed bootstrap attempts must not leave later module instances
+        // treating a partially initialized runtime as ready.
         if (!\defined('JSM_PATH')) {
             \define('JSM_PATH', 'components/com_sportsmanagement');
         }
@@ -484,6 +499,8 @@ final class CalendarHelper
         require_once $base . '/calendarClass.php';
         require_once $base . '/calendarFunctions.php';
         require_once $base . '/connectors/calendarRuntime_j5.php';
+
+        self::$runtimeBooted = true;
     }
 
     /**
