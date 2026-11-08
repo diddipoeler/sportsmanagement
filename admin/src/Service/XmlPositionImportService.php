@@ -36,10 +36,12 @@ final class XmlPositionImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Import a hierarchy of sport types, parent positions and child positions from XML.
+     * Resolves or creates the sport type, maps original parent-position IDs to local rows and imports selected positions using that mapping, reporting reused and newly created entities.
      *
-     * @return array<string, string>
+     * @param array<string,mixed> $post Administrator selection and override values.
+     * @param array<string,mixed> $parsedData Parsed sport and position XML collections.
+     * @return array<string,string> HTML status messages for the imported hierarchy.
      */
     public function import(array $post, array $parsedData): array
     {
@@ -103,10 +105,13 @@ final class XmlPositionImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Resolve or create parent positions required by the imported sport hierarchy.
+     * Matches selected existing rows or deduplicates names under the root parent, then maps original XML IDs to local position IDs for subsequent child imports.
      *
-     * @return array{oldIdMap:array<int,int>,keyIds:array<int,int>,message:string}
+     * @param array<string,mixed> $post Administrator parent-position selections.
+     * @param array<string,mixed> $parsedData XML parent-position collection.
+     * @param object $sportType Local sport-type record.
+     * @return array Parent IDs keyed by original ID and form index, together with HTML messages.
      */
     private function processParentPositions(array $post, array $parsedData, object $sportType): array
     {
@@ -194,11 +199,14 @@ final class XmlPositionImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $parentMap
+     * Resolve or insert child positions while preserving their imported parent references.
+     * Uses the parent-position conversion table, matches previously stored positions by local parent and name and builds a form-index map of resolved database identifiers.
      *
-     * @return array{keyIds:array<int,int>,message:string}
+     * @param array<string,mixed> $post Administrator position selections and overrides.
+     * @param array<string,mixed> $parsedData Parsed XML position records.
+     * @param object $sportType Local sport-type record.
+     * @param array<int,int> $parentMap Original XML parent IDs mapped to local IDs.
+     * @return array Position IDs by form index and escaped import status messages.
      */
     private function processPositions(
         array $post,
@@ -274,10 +282,12 @@ final class XmlPositionImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Build a verified parent-position ID mapping from an already prepared import form.
+     * Checks that each old XML parent ID has a positive selected local ID and that the destination position still exists before mapping it.
      *
-     * @return array<int, int>
+     * @param array<string,mixed> $post Prepared administrator import form values.
+     * @param array<string,mixed> $parsedData XML parent-position collection.
+     * @return array<int,int> Original XML parent IDs mapped to existing local position IDs.
      */
     private function buildParentMapFromPost(array $post, array $parsedData): array
     {

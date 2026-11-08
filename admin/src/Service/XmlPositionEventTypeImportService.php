@@ -80,10 +80,14 @@ final class XmlPositionEventTypeImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Map imported position or event-type IDs to their prepared local database IDs.
+     * Combines the original XML source collection with resolved form fields, accepting only positive source and destination IDs before linking positions to event types.
      *
-     * @return array<int, int>
+     * @param array<string,mixed> $post Prepared form selections.
+     * @param array<string,mixed> $parsedData Parsed XML import collections.
+     * @param string $collection Source collection name, such as position or event.
+     * @param string $fieldPrefix Form prefix containing resolved local IDs.
+     * @return array<int,int> Mapping from original XML entity ID to local database ID.
      */
     private function buildPreparedMap(
         array $post,

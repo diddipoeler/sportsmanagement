@@ -72,7 +72,7 @@ jobs:
             exit 1
           fi
 
-          grep -Fq 'SportsManagement Navigation Menu helper could not be loaded.' modules/mod_sportsmanagement_navigation_menu/helper.php
+          grep -Fq 'SportsManagement Navigation Menu dependency could not be loaded:' modules/mod_sportsmanagement_navigation_menu/helper.php
           grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_navigation_menu/services/provider.php
           grep -Fq 'HelperFactory' modules/mod_sportsmanagement_navigation_menu/services/provider.php
           grep -Fq 'final class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php

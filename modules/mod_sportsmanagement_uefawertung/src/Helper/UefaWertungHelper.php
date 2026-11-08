@@ -21,7 +21,13 @@ use Joomla\Registry\Registry;
 final class UefaWertungHelper
 {
     /**
-     * @return array{seasons:array<int,string>,rankings:array<int,array{country:string,points:array<string,float>,total:float}>}
+     * Build UEFA coefficient rankings over the latest available five seasons.
+     * Validates the requested season, resolves the configured SportsManagement database, collects distinct seasons and country coefficients, and returns an empty payload with safe logging on failure.
+     *
+     * @param Registry $params UEFA ranking module settings.
+     * @param CMSApplicationInterface $app Frontend application for user-visible errors.
+     * @param DatabaseInterface $fallbackDatabase Joomla's primary database service.
+     * @return array{seasons:array<int,string>,rankings:array<int,array{country:string,points:array<string,float>,total:float}>} Ranked countries and season labels.
      */
     public function getData(
         Registry $params,
@@ -150,8 +156,12 @@ final class UefaWertungHelper
     }
 
     /**
-     * @param array<int,string> $seasons
-     * @return array<int,array{country:string,points:array<string,float>,total:float}>
+     * Aggregate UEFA points by country across all selected ranking seasons.
+     * Loads per-country season scores, ignores countries missing a required season and sorts complete country totals descending with alphabetical ties.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database driver.
+     * @param array<int,string> $seasons Chronologically selected UEFA coefficient seasons.
+     * @return array<int,array{country:string,points:array<string,float>,total:float}> Countries ranked by combined points.
      */
     private function rankings(DatabaseInterface $db, array $seasons): array
     {
