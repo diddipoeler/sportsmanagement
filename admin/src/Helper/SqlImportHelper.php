@@ -17,6 +17,18 @@ use Joomla\Database\DatabaseInterface;
 /** Execute bundled SportsManagement SQL files with Joomla's SQL splitter. */
 final class SqlImportHelper
 {
+    /**
+     * Execute the statements in an existing SportsManagement SQL import file.
+     *
+     * Verifies that the selected file is readable, splits its contents using
+     * Joomla's installer parser, and skips empty statements. Database errors
+     * propagate to the caller so failed migrations cannot appear successful.
+     *
+     * @param DatabaseInterface $db Joomla database connection for import.
+     * @param string $sqlFile Absolute path to the trusted SQL script.
+     * @return void
+     * @throws \RuntimeException If the requested import cannot be read.
+     */
     public static function importFile(DatabaseInterface $db, string $sqlFile): void
     {
         if (!is_file($sqlFile) || !is_readable($sqlFile)) {
@@ -46,7 +58,13 @@ final class SqlImportHelper
                 $statement = $statement['query'] ?? '';
             }
 
-            $statement = trim((string) $statement);
+            // Joomla's SQL splitter may return structured rows; ignore any
+            // malformed value rather than casting an array or object to text.
+            if (!is_string($statement)) {
+                continue;
+            }
+
+            $statement = trim($statement);
 
             if ($statement === '') {
                 continue;
