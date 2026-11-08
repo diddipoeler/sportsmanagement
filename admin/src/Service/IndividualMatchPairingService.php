@@ -14,7 +14,17 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service;
 final class IndividualMatchPairingService
 {
     /**
-     * @return array<int, object>
+     * Generate individual match cards for the selected competition format.
+     *
+     * Resolves the historical pairing pattern, skips positions absent from either
+     * roster and returns objects with player IDs and their original position codes.
+     *
+     * @param int $mode Pairing format from the administrator match generator.
+     * @param array<string, int> $homePositions Home players indexed by position code.
+     * @param array<string, int> $awayPositions Away players indexed by position code.
+     * @param int $homeCount Number of available home players for pattern selection.
+     * @param int $awayCount Number of available away players for pattern selection.
+     * @return array<int, object> Generated pairing cards.
      */
     public function build(
         int $mode,
@@ -69,7 +79,15 @@ final class IndividualMatchPairingService
         ];
     }
 
-    /** @return array<int, array{0:string,1:string}> */
+    /**
+     * Convert a compact match-card definition to ordered home/away positions.
+     *
+     * Each comma-delimited element contains a home and away code separated by
+     * a colon; the resulting pairs are used to generate stable match cards.
+     *
+     * @param string $definition Comma-delimited home:away position pairs.
+     * @return array<int, array{0:string,1:string}> Ordered position pairs.
+     */
     private function pairs(string $definition): array
     {
         $pairs = [];

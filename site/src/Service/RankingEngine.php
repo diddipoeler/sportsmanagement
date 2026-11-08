@@ -18,11 +18,27 @@ use Joomla\Database\DatabaseInterface;
  */
 final class RankingEngine
 {
+    /**
+     * Create the read-only ranking engine with its database dependency.
+     * Keeps the database instance immutable so the loader and calculator operate on the same Joomla 5/6 connection.
+     *
+     * @param DatabaseInterface $db Joomla database driver used by the ranking data loader.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $db)
     {
     }
 
     /**
+     * Calculate the table for a project, optionally limited to a division and rounds.
+     *
+     * Loads project, team, match and display settings through RankingDataLoader,
+     * calculates the ordered team rows and returns an empty result for missing projects.
+     *
+     * @param int $projectId Project whose table is requested.
+     * @param int $divisionId Optional division filter, zero for all divisions.
+     * @param int $fromRoundId Optional first round identifier.
+     * @param int $toRoundId Optional last round identifier.
      * @return array{project: object, ranking: array<int, RankingRow>, config: array, colors: array, matches: int}
      */
     public function calculate(
