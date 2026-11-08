@@ -62,7 +62,10 @@ foreach ([
     [7, 7], ['0007', 7], ['0007:club-2', 7],
     [['0007', '8'], 7], ['0', 0], ['000', 0],
     ['7invalid', 0], ['7:bad/slug', 0], ['7:bad:alias', 0],
-    ['7:valid_alias', 7], [false, 0], [['7'], 0],
+    // A one-element ID list is valid, just like the multi-element list
+    // above. Nested lists remain invalid and may not be coerced.
+    ['7:valid_alias', 7], [false, 0], [['7'], 7],
+    [[['7']], 0],
     [PHP_INT_MAX . '0', 0],
     [['bad', '0008:club'], 8],
     [[null, '0', '0009'], 9],
