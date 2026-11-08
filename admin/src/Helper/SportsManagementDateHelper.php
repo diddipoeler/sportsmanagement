@@ -21,6 +21,12 @@ final class SportsManagementDateHelper
      * Direction 1 converts YYYY-MM-DD to DD-MM-YYYY.
      * Any other direction converts DD-MM-YYYY to YYYY-MM-DD.
      * Compact DDMMYYYY and DDMMYY inputs are always converted to YYYY-MM-DD.
+     * The function retains legacy substring conversion behavior; callers
+     * should use toSqlDate() when strict calendar validation is required.
+     *
+     * @param string $date Legacy date text supplied by a component form.
+     * @param int $direction Conversion direction; 1 means ISO to display format.
+     * @return string Converted date text or empty text for unsupported compact input.
      */
     public static function convertDate(string $date, int $direction = 1): string
     {
@@ -57,7 +63,12 @@ final class SportsManagementDateHelper
      *
      * Joomla calendar fields can submit the configured display format while
      * MySQL/MariaDB strict mode only accepts ISO dates for DATE columns.
-     * Empty and historical zero-date values become NULL.
+     * Empty and historical zero-date values become NULL. Recognized date
+     * formats are round-trip checked to reject PHP's silent date rollover;
+     * unknown input is returned unchanged for upstream validation.
+     *
+     * @param string|null $date Date text from Joomla forms or database fields.
+     * @return string|null ISO-formatted date, original unknown input, or null for empty dates.
      */
     public static function toSqlDate(?string $date): ?string
     {
@@ -82,6 +93,13 @@ final class SportsManagementDateHelper
 
     /**
      * Preserve getTimestamp() for the no-offset calls used by native code.
+     *
+     * Treats missing values and legacy database zero timestamps as the
+     * current moment. Parses other values through PHP before producing a
+     * Joomla date timestamp; invalid input returns zero.
+     *
+     * @param string|null $date Date/time value, or null to use the current time.
+     * @return int Unix timestamp, or zero when parsing fails.
      */
     public static function getTimestamp(?string $date = null): int
     {
