@@ -154,3 +154,7 @@ The native GCalendar module no longer assumes that the optional PHP mbstring ext
 ## Navigation menu database selector safety (8 November 2026)
 
 The native Navigation Menu module now validates `cfg_which_database` before selecting the SportsManagement database. Only integer 0/1 and zero-padded decimal equivalents are accepted; malformed arrays, booleans, negative values and partial numeric strings cannot silently redirect the module to a different configured connection. The native dispatcher skips rendering when the helper returns no safe navigation payload, and a PHP 8.3/8.4 test guards both the selector and dispatch contract.
+
+## Regression CI maintenance after native navigation selector migration
+
+The general site/admin/modules batch-264 contract now permits Joomla 5/6's supported `Factory::getContainer()->get(DatabaseInterface::class)` lookup in existing module dispatchers, while still rejecting removed `Factory::getDbo()` APIs and protected application container access. The New Project article-reference test also had a double namespace separator before `ReflectionMethod`, which is now valid PHP syntax. Both corrections address failures revealed by the broader branch CI run; no production business logic was changed in those two files.

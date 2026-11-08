@@ -142,9 +142,15 @@ jobs:
               echo "$file still contains a concrete SiteApplication runtime check" >&2
               exit 1
             fi
-            if grep -Fq -- 'Factory::getContainer()' "$file"; then
-              echo "$file still uses the global Factory container" >&2
+            # Factory::getContainer()->get(DatabaseInterface::class) is
+            # supported in Joomla 5/6 and used by existing module stacks.
+            # Block the removed global DBO APIs and protected app container.
+            if grep -Eq -- 'Factory::getDbo\\(|Factory::getDBO\\(|\\$app->getContainer\\(' "$file"; then
+              echo "$file still uses a removed or protected database API" >&2
               exit 1
+            fi
+            if grep -Fq -- 'Factory::getContainer()' "$file"; then
+              grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' "$file"
             fi
           done
           echo 'Joomla 5/6 batch 264 contracts OK.'

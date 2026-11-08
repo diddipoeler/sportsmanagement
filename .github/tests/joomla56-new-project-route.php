@@ -76,7 +76,7 @@ namespace {
         }
     }
 
-    $matches = new \\ReflectionMethod($class, 'matchedProjectReferences');
+    $matches = new \ReflectionMethod($class, 'matchedProjectReferences');
     $found = $matches->invoke(null, [
         '12',
         'sportsmanagement-project:3',
