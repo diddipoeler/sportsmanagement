@@ -169,7 +169,7 @@ final class RquotesHelper
             || parse_url($url, PHP_URL_PASS) !== null
             || parse_url($url, PHP_URL_QUERY) !== null
             || parse_url($url, PHP_URL_FRAGMENT) !== null
-            || preg_match('/[\\x00-\\x1F\\x7F]/', $url)) {
+            || preg_match('/[\x00-\x1F\x7F]/', $url)) {
             return '';
         }
 
