@@ -99,7 +99,8 @@ namespace {
 
     $root = dirname(__DIR__, 2) . '/admin/src/Model/';
     foreach (['SeasonteamModel.php', 'SeasonpersonModel.php',
-        'SeasonteampersonModel.php', 'PredictiongroupModel.php'] as $name) {
+        'SeasonteampersonModel.php', 'PredictiongroupModel.php',
+        'SportsmanagementModel.php'] as $name) {
         require_once $root . $name;
     }
 
@@ -152,6 +153,23 @@ namespace {
 
     if ($identity->checks !== 0) {
         throw new \RuntimeException('Relation models still query unrelated message ACL assets.');
+    }
+
+    // The legacy sample table really defines message.<id> as its record
+    // ACL asset. Preserve that permission while fixing null identities.
+    $legacy = new \Diddipoeler\Component\SportsManagement\Administrator\Model\SportsmanagementModel();
+    $legacyEdit = new \ReflectionMethod($legacy, 'allowEdit');
+
+    $base::$identity = null;
+    $base::$parentDecision = true;
+    if ($legacyEdit->invoke($legacy, ['id' => 42]) !== false) {
+        throw new \RuntimeException('Legacy sample record accepted a missing administrator identity.');
+    }
+
+    $base::$identity = $identity;
+    $base::$parentDecision = false;
+    if ($legacyEdit->invoke($legacy, ['id' => 42]) !== true) {
+        throw new \RuntimeException('Legacy sample record lost its real message asset ACL.');
     }
 
     $group = new \Diddipoeler\Component\SportsManagement\Administrator\Model\PredictiongroupModel();
