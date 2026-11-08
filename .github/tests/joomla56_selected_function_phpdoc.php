@@ -16,6 +16,12 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $paths = [
+    'site/src/View/Clubs/HtmlView.php',
+    'site/src/Controller/EventsrankingController.php',
+    'admin/src/Model/CpanelModel.php',
+    'admin/src/View/Cpanel/HtmlView.php',
+    'admin/src/Model/StatisticModel.php',
+    'admin/src/Service/SportsManagementAdministratorApplicationResolver.php',
     'site/src/Controller/ResultsController.php',
     'site/src/Model/AboutModel.php',
     'site/src/Model/AllclubsModel.php',

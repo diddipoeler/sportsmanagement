@@ -16,6 +16,14 @@ use Joomla\CMS\Factory;
 
 final class SportsManagementAdministratorApplicationResolver
 {
+    /**
+     * Resolve the active Joomla administrator application from its container.
+     * Rejects missing services and non-administrator clients to prevent
+     * backend operations from running in a frontend request.
+     *
+     * @return AdministratorApplication Valid backend application.
+     * @throws \RuntimeException When no administrator application exists.
+     */
     public static function resolve(): AdministratorApplication
     {
         $app = Factory::getContainer()->get(AdministratorApplication::class);

@@ -31,6 +31,13 @@ final class CpanelModel extends SportsManagementListModel
     public string $storeSuccessColor = 'green';
     public string $existingInDbColor = 'orange';
 
+    /**
+     * Provide a valid empty list query for the administrator dashboard.
+     * The dashboard is not a record list; inherited list and pagination calls
+     * must not enumerate or mutate any SportsManagement tables.
+     *
+     * @return \Joomla\Database\DatabaseQuery A query returning zero rows.
+     */
     protected function getListQuery()
     {
         // The dashboard does not render a record list, but the legacy view asks
@@ -38,6 +45,13 @@ final class CpanelModel extends SportsManagementListModel
         return $this->getDatabase()->createQuery()->select('1 AS id')->where('1 = 0');
     }
 
+    /**
+     * Read the installed SportsManagement extension version from Joomla.
+     * Queries the primary Joomla extension registry and decodes manifest_cache,
+     * rather than relying on an optional external sports database.
+     *
+     * @return string Installed version or an empty string when absent.
+     */
     public function getVersion(): string
     {
         $componentElement = 'com_sportsmanagement';
@@ -57,6 +71,13 @@ final class CpanelModel extends SportsManagementListModel
         return is_array($manifest) ? (string) ($manifest['version'] ?? '') : '';
     }
 
+    /**
+     * Load recent GitHub commit information for the control panel.
+     * Reads the configured account and repository, requests JSON from the
+     * GitHub API and converts valid entries into presentation-safe objects.
+     *
+     * @return array Recent formatted commits, or an empty array.
+     */
     public function getGithubRequests(): array
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -74,6 +95,14 @@ final class CpanelModel extends SportsManagementListModel
         return is_array($payload) ? self::processData($payload, $params) : [];
     }
 
+    /**
+     * Normalise a configured repository slug for GitHub URLs.
+     * Removes disallowed characters, folds separators and lowercases the
+     * result before it is URL-encoded by its callers.
+     *
+     * @param mixed $repo Raw repository name.
+     * @return string Normalised repository slug.
+     */
     public static function toAscii($repo): string
     {
         $clean = preg_replace("/[^a-zA-Z0-9\\/_|+ '\\-]/", '', (string) $repo) ?? '';
@@ -82,6 +111,14 @@ final class CpanelModel extends SportsManagementListModel
         return preg_replace("/[\\/_|+ '\\-]+/", '-', $clean) ?? '';
     }
 
+    /**
+     * Request and decode JSON from the GitHub REST API.
+     * Restricts requests to HTTPS GitHub API paths, supplies required headers
+     * and handles HTTP, transport and malformed JSON failures without output.
+     *
+     * @param mixed $req URL of the API resource.
+     * @return array|null Decoded response, or null on failure.
+     */
     public static function getJSON($req): ?array
     {
         $url = trim((string) $req);
@@ -113,6 +150,15 @@ final class CpanelModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Transform GitHub commit rows into dashboard presentation entries.
+     * Escapes external messages and names, builds encoded issue/profile links,
+     * formats dates with Joomla and caps the displayed commit count.
+     *
+     * @param mixed $obj Raw decoded commit records.
+     * @param mixed $params Dashboard rendering preferences.
+     * @return array Prepared commit entries.
+     */
     public static function processData($obj, $params): array
     {
         if (!is_array($obj)) {
@@ -193,6 +239,14 @@ final class CpanelModel extends SportsManagementListModel
         return $github;
     }
 
+    /**
+     * Look up an installed plugin by its exact Joomla extension element.
+     * Uses a bound database query against the primary extension registry
+     * and returns zero for unknown or empty plugin identifiers.
+     *
+     * @param mixed $plugin Plugin element identifier.
+     * @return int Installed extension ID, or zero.
+     */
     public function getInstalledPlugin($plugin): int
     {
         $element = trim((string) $plugin);
@@ -215,11 +269,25 @@ final class CpanelModel extends SportsManagementListModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Return the count of countries in the configured sports database.
+     * Uses the shared count query for the dashboard's country indicator.
+     *
+     * @return int Number of stored countries.
+     */
     public function checkcountry(): int
     {
         return $this->countRows('#__sportsmanagement_countries');
     }
 
+    /**
+     * Count sport types matching a case-insensitive search fragment.
+     * Normalises the search term, rejects empty input and binds the
+     * LIKE pattern rather than interpolating values into SQL.
+     *
+     * @param mixed $type Sport-type name fragment.
+     * @return int Matching sport-type record count.
+     */
     public function checksporttype($type): int
     {
         $search = strtoupper(trim((string) $type));
@@ -240,6 +308,14 @@ final class CpanelModel extends SportsManagementListModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Count entries in a trusted SportsManagement table.
+     * Quotes the internal table identifier and returns an aggregate row
+     * count using the database selected for the administrator component.
+     *
+     * @param string $table Trusted component table identifier.
+     * @return int Number of table rows.
+     */
     private function countRows(string $table): int
     {
         $db = $this->getDatabase();
@@ -252,6 +328,14 @@ final class CpanelModel extends SportsManagementListModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Resolve Joomla's primary database interface for extension metadata.
+     * Validates the administrator context and retrieves the service from
+     * Joomla's dependency injection container.
+     *
+     * @return DatabaseInterface The primary Joomla database.
+     * @throws \RuntimeException If the database service is missing.
+     */
     private function getJoomlaDatabase(): DatabaseInterface
     {
         $this->administratorApplication();
@@ -266,6 +350,15 @@ final class CpanelModel extends SportsManagementListModel
         return $db;
     }
 
+    /**
+     * Render a safely escaped contributor name and optional GitHub profile link.
+     * Only creates a link for a nonempty login; both the display text and
+     * URL path component are encoded for HTML output.
+     *
+     * @param string $login Contributor account login.
+     * @param string $name Contributor display name.
+     * @return string Escaped HTML label or profile link.
+     */
     private static function profileLink(string $login, string $name): string
     {
         $label = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');

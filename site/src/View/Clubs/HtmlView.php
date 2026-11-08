@@ -19,15 +19,33 @@ final class HtmlView extends SportsManagementProjectHtmlView
 {
     public array $clubs = [];
 
+    /**
+     * Use only namespaced Joomla 5/6 presentation services for the club list.
+     * The native model and template supply the data without global helper loading.
+     *
+     * @return bool False because legacy presentation dependencies are unnecessary.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Load and prepare the published clubs of the active project and division.
+     * Verifies the native model, reads its division and club records, and updates
+     * the translated page heading and Joomla document title.
+     *
+     * @return void
+     * @throws \RuntimeException When the MVC model is not a ClubsModel.
+     */
     protected function prepareView(): void
     {
-        /** @var ClubsModel $model */
         $model = $this->getModel();
+
+        if (!$model instanceof ClubsModel) {
+            throw new \RuntimeException('Clubs view requires ClubsModel.', 500);
+        }
+
         $this->division = $model->getDivision();
         $this->clubs = $model->getClubs();
 

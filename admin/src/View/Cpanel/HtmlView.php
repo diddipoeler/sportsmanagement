@@ -28,6 +28,12 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 final class HtmlView extends BaseHtmlView
 {
+    /**
+     * Resolve the current Joomla administrator application.
+     * Delegates to the native service resolver to reject frontend contexts.
+     *
+     * @return CMSApplicationInterface Valid backend application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
@@ -38,6 +44,15 @@ final class HtmlView extends BaseHtmlView
     public array $dashboardLinks = [];
     public $params;
 
+    /**
+     * Build and render the native SportsManagement administrator dashboard.
+     * Loads the dashboard model and component settings, prepares counts,
+     * shortcuts and an authorised toolbar, then selects the native layout.
+     *
+     * @param string|null $tpl Optional template name.
+     * @return void
+     * @throws \RuntimeException When the native dashboard model is unavailable.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -57,6 +72,13 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Create the dashboard title and administrator toolbar actions.
+     * Displays preferences only when the current identity has core.admin
+     * permission for the SportsManagement component.
+     *
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_MANAGER'), 'home');
@@ -67,6 +89,13 @@ final class HtmlView extends BaseHtmlView
         }
     }
 
+    /**
+     * Build the dashboard's grouped administration navigation.
+     * Collects translated labels, icons and component view routes into
+     * presentation-only arrays without invoking legacy controllers.
+     *
+     * @return array Grouped native dashboard shortcuts.
+     */
     private function buildDashboardLinks(): array
     {
         return [
@@ -132,6 +161,16 @@ final class HtmlView extends BaseHtmlView
         ];
     }
 
+    /**
+     * Construct one component dashboard shortcut and its visual metadata.
+     * Encodes the view and optional layout parameters for the resulting URL.
+     *
+     * @param string $view Joomla component view name.
+     * @param string $label Language key for the caption.
+     * @param string $icon Joomla icon class.
+     * @param string $layout Optional layout name.
+     * @return array{url:string,label:string,icon:string} Shortcut fields.
+     */
     private function link(string $view, string $label, string $icon, string $layout = ''): array
     {
         $url = 'index.php?option=com_sportsmanagement&view=' . rawurlencode($view);
