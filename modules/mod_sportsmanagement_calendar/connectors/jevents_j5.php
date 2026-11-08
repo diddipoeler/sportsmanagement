@@ -110,7 +110,10 @@ final class JEventsConnector extends JSMCalendar
 
     /**
      * Verify that the JEvents adapter and its data-model entry point are available.
-     * Lazily loads the optional JEvents PHP files, validates the external model API and reports a frontend warning rather than fatally requiring an uninstalled extension.
+     * Lazily loads the optional JEvents PHP files, validates the external
+     * model API and catches incompatible provider initialization errors.
+     * Missing or broken optional integrations generate frontend warnings
+     * rather than preventing the calendar module from rendering.
      *
      * @return bool Whether the JEvents model is ready for calendar data retrieval.
      */
@@ -125,21 +128,36 @@ final class JEventsConnector extends JSMCalendar
             return false;
         }
 
-        require_once $defines;
-        require_once $model;
+        try {
+            require_once $defines;
+            require_once $model;
 
-        if (!class_exists('JEventsDataModel')) {
-            self::raiseError('JEvents connector disabled: JEventsDataModel is unavailable.');
+            if (!class_exists('JEventsDataModel')) {
+                self::raiseError('JEvents connector disabled: JEventsDataModel is unavailable.');
+                return false;
+            }
+
+            $provider = new \JEventsDataModel();
+
+            if (!is_callable([$provider, 'getCalendarData'])) {
+                self::raiseError('JEvents connector disabled: getCalendarData() is unavailable.');
+                return false;
+            }
+
+            self::$jevent = $provider;
+
+            return true;
+        } catch (\Throwable $exception) {
+            // An incompatible optional extension must not abort the host page.
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement JEvents provider initialization failed (' . get_class($exception) . ').',
+                \Joomla\CMS\Log\Log::WARNING,
+                'com_sportsmanagement'
+            );
+            self::raiseError('JEvents connector disabled: calendar provider could not be initialized.');
+
             return false;
         }
-
-        self::$jevent = new \JEventsDataModel();
-        if (!is_callable([self::$jevent, 'getCalendarData'])) {
-            self::raiseError('JEvents connector disabled: getCalendarData() is unavailable.');
-            return false;
-        }
-
-        return true;
     }
 
     /**
