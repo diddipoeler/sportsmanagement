@@ -17,8 +17,9 @@ final class EventModel extends SportsManagementModel
      * Retrieve one Google Calendar event selected in the frontend request.
      *
      * Reads an integer calendar identifier and the requested event ID,
-     * skips requests without either value, loads the calendar read service
-     * when necessary and returns its normalised event representation.
+     * rejects non-string, oversized or control-character-containing IDs,
+     * loads the calendar read service when needed and returns the event
+     * only if the authenticated Joomla frontend is allowed to read it.
      *
      * @return array<string, mixed>|null Event data or null when missing.
      */
@@ -27,9 +28,18 @@ final class EventModel extends SportsManagementModel
         $app = $this->siteApplication();
         $input = $app->getInput();
         $calendarId = $input->getInt('gcid', 0);
-        $eventId = trim((string) $input->get('eventID', '', 'raw'));
+        $rawEventId = $input->get('eventID', '', 'raw');
 
-        if ($calendarId <= 0 || $eventId === '') {
+        // Joomla Input can return an array for a repeated or bracketed
+        // eventID parameter. Do not cast arrays or objects into event IDs.
+        if ($calendarId <= 0 || !is_string($rawEventId) || strlen($rawEventId) > 512
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $rawEventId)) {
+            return null;
+        }
+
+        $eventId = trim($rawEventId);
+
+        if ($eventId === '') {
             return null;
         }
 

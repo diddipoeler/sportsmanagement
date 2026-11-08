@@ -76,3 +76,7 @@ The historical Sportsmanagement sample-record model is different: its legacy tab
 ## Native calendar event-ID safety and database failure handling (8 November 2026)
 
 The site Google Calendar reader now checks actual ASCII control characters in remote event IDs without rejecting ordinary IDs containing `x`. Failure to prepare or execute the authorised calendar SQL query is logged only inside Joomla, returning no calendar data rather than crashing public event views. Every named method in `GoogleCalendarReadService` now has descriptive PHPDoc, and the selected-function audit includes the service.
+
+## Frontend calendar event request and view guards (8 November 2026)
+
+The native EventModel rejects array/object/numeric, oversized and ASCII-control-character event IDs before creating the Google Calendar read service. Event HtmlView now validates its EventModel before attempting to render the event title. The new `joomla56_event_mvc_request_validation.php` regression test covers malformed requests, missing models, valid event titles and missing-event layout fallback on PHP 8.3/8.4.

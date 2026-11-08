@@ -22,6 +22,8 @@ $paths = [
     'site/src/View/Clubs/HtmlView.php',
     'site/src/View/Jsonfeed/RawView.php',
     'site/src/Service/GoogleCalendarReadService.php',
+    'site/src/Model/EventModel.php',
+    'site/src/View/Event/HtmlView.php',
     'site/src/View/Curve/RawView.php',
     'admin/src/Model/SmquotestxtModel.php',
     'admin/src/View/Smquotestxt/HtmlView.php',
