@@ -151,7 +151,14 @@ final class LivetickerHelper
         return $database;
     }
 
-    /** @return array<int,array<int,object>> */
+    /**
+     * Load a bounded set of commentary entries for displayed live matches.
+     * Validates and deduplicates up to one hundred match IDs, queries at most one thousand recent commentary rows and groups them under their match identifiers.
+     *
+     * @param array<int,object> $list Live match rows whose commentary should be shown.
+     * @param DatabaseInterface $db Selected sports database driver.
+     * @return array<int,array<int,object>> Commentary rows grouped by match ID.
+     */
     public function getListCommentary(array $list, DatabaseInterface $db): array
     {
         $matchIds = [];
@@ -201,7 +208,16 @@ final class LivetickerHelper
         return $matches;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Read the live ticker's upcoming and recently played fixtures within its time window.
+     * Clamps the configured playtime and row count, queries matching project and team data and prepares a bounded list for the Joomla frontend ticker.
+     *
+     * @param Registry $params Live ticker module settings.
+     * @param CMSApplicationInterface $app Active Joomla site application.
+     * @param int $limit Requested maximum number of fixtures.
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @return array<int,object> Enriched fixture rows for the live ticker.
+     */
     public function getList(
         Registry $params,
         CMSApplicationInterface $app,
@@ -541,7 +557,13 @@ final class LivetickerHelper
         }
     }
 
-    /** Only local CSS filenames are allowed in module configuration. */
+    /**
+     * Validate the ticker's configured local stylesheet filename.
+     * Accepts only a simple alphanumeric, underscore or hyphen CSS basename so module settings cannot request arbitrary filesystem paths.
+     *
+     * @param mixed $value Raw CSS file setting.
+     * @return string Valid local CSS filename, or simple.css as fallback.
+     */
     private static function cssFile(mixed $value): string
     {
         if (!is_string($value) || $value === ''
@@ -553,7 +575,16 @@ final class LivetickerHelper
         return $value;
     }
 
-    /** Parse nonnegative numeric settings without partial or overflowing casts. */
+    /**
+     * Normalise a numeric ticker setting into a configured safe integer range.
+     * Rejects malformed or partially numeric settings, uses defaults for unsupported types and clamps large valid integers to the supplied maximum.
+     *
+     * @param mixed $raw Raw module setting.
+     * @param int $default Value used when the input cannot be parsed.
+     * @param int $min Minimum supported integer.
+     * @param int $max Maximum supported integer.
+     * @return int Parsed value constrained to the configured bounds.
+     */
     private static function boundedNumber(mixed $raw, int $default, int $min, int $max): int
     {
         if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
@@ -572,7 +603,13 @@ final class LivetickerHelper
         return min($max, max($min, (int) $digits));
     }
 
-    /** Permit only database 0 or 1, including zero-padded legacy settings. */
+    /**
+     * Validate a ticker database choice against the primary and external options.
+     * Accepts integer zero or one and their zero-padded legacy string forms, returning null for unrelated or malformed selectors.
+     *
+     * @param mixed $value Raw cfg_which_database setting.
+     * @return int|null Selected database index, or null for invalid input.
+     */
     private static function databaseSelector(mixed $value): ?int
     {
         if (is_int($value)) {

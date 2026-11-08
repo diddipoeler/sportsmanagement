@@ -69,7 +69,13 @@ final class UefaWertungHelper
         }
     }
 
-    /** Validate Joomla's numeric season selector (including ID:alias). */
+    /**
+     * Parse the configured UEFA ranking season identifier without lossy PHP casting.
+     * Supports a complete decimal season ID or ID:alias slug while rejecting booleans, partial strings, zero and integer overflow.
+     *
+     * @param mixed $value Raw Joomla season selector.
+     * @return int Positive season record ID, or zero if invalid.
+     */
     private static function positiveSeasonId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -115,7 +121,14 @@ final class UefaWertungHelper
         return trim((string) $db->loadResult());
     }
 
-    /** @return array<int,string> */
+    /**
+     * Select up to five ranking seasons ending with the requested season label.
+     * Retrieves distinct available UEFA season names through a bound query, excludes empty values and returns the selected seasons in natural chronological order.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database driver.
+     * @param string $seasonName Upper season label boundary.
+     * @return array<int,string> Up to five chronological UEFA ranking season labels.
+     */
     private function rankingSeasons(DatabaseInterface $db, string $seasonName): array
     {
         $query = $db->createQuery()

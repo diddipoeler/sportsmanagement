@@ -71,7 +71,13 @@ final class TrainingsDataHelper
         }
     }
 
-    /** Parse Joomla's optional ID:alias without accepting partial numeric IDs. */
+    /**
+     * Parse a positive Joomla team identifier or ID:alias slug for training queries.
+     * Accepts complete nonnegative decimal IDs with optional URL-safe alias suffixes and rejects unknown types, partial IDs or values beyond PHP's integer range.
+     *
+     * @param mixed $value Raw team selector from module settings.
+     * @return int Valid positive team ID, or zero for invalid input.
+     */
     private static function positiveId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
