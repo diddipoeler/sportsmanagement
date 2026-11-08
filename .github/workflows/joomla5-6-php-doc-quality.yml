@@ -85,7 +85,11 @@ jobs:
             site/src/Service/NextmatchRankingCalculator.php \
             modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php \
             modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php \
-            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php
+            modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php \
+            site/src/Service/InlineHockeyClubTeamImportService.php \
+            site/src/Service/EditmatchLineupViewDataService.php \
+            admin/src/Service/XmlPersonImportService.php \
+            admin/src/Service/XmlTeamImportService.php
 
       - name: Check changed first-party PHP files
         shell: bash
