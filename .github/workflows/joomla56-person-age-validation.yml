@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Helper/PersonAgeHelper.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - '.github/tests/joomla56-person-age-validation.php'
@@ -12,6 +13,7 @@ on:
   pull_request:
     paths:
       - 'admin/src/Helper/PersonAgeHelper.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - '.github/tests/joomla56-person-age-validation.php'
@@ -37,6 +39,7 @@ jobs:
       - name: Check PHP syntax
         run: |
           php -l admin/src/Helper/PersonAgeHelper.php
+          php -l admin/src/Helper/ExtraSelectOptionsHelper.php
           php -l .github/tests/joomla56-person-age-validation.php
           php -l site/src/Service/IndividualMatchReadService.php
           php -l modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
