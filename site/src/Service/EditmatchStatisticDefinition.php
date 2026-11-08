@@ -32,6 +32,15 @@ final class EditmatchStatisticDefinition
     public int $position_id;
     private int $calculated;
 
+    /**
+     * Populate the frontend statistic definition from a database row.
+     *
+     * Preserves its identifier, name, abbreviated label and icon, and
+     * resolves calculated-statistic metadata without loading legacy classes.
+     *
+     * @param object $row Statistic row returned by the Joomla model.
+     * @return void
+     */
     public function __construct(object $row)
     {
         $this->id = (int) ($row->id ?? 0);
@@ -45,13 +54,29 @@ final class EditmatchStatisticDefinition
         );
     }
 
+    /**
+     * Return whether this statistic is configured as a calculated value.
+     *
+     * @return int Stored calculation indicator used by the editmatch form.
+     */
     public function getCalculated(): int
     {
         return $this->calculated;
     }
 
+    /**
+     * Render the statistic icon or an escaped abbreviated text fallback.
+     *
+     * Bounds the configured image height to avoid unsafe CSS dimensions and
+     * uses Joomla's HTML image helper for the configured statistic icon.
+     *
+     * @param int $eventsPictureHeight Requested image height in pixels.
+     * @return string Statistic icon markup or escaped short-name fallback.
+     */
     public function getImage(int $eventsPictureHeight = 30): string
     {
+        $eventsPictureHeight = min(512, max(1, $eventsPictureHeight));
+
         if ($this->icon !== '') {
             $iconPath = $this->icon;
 
@@ -77,6 +102,17 @@ final class EditmatchStatisticDefinition
             . '</span>';
     }
 
+    /**
+     * Read the legacy statistic class's calculated flag without executing it.
+     *
+     * Resolves the configured class basename beneath the administrator
+     * statistics directory and caches the stored calculation metadata.
+     * Missing or unrecognized classes retain the database fallback flag.
+     *
+     * @param string $class Legacy statistic class name or filename stem.
+     * @param int $fallback Calculated flag stored in the database record.
+     * @return int Resolved calculation flag or the database fallback.
+     */
     private static function resolveCalculated(string $class, int $fallback): int
     {
         $class = basename(trim($class));
