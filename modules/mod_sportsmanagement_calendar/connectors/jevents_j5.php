@@ -44,7 +44,9 @@ final class JEventsConnector extends JSMCalendar
 
     /**
      * Load JEvents calendar entries for the month requested by the module.
-     * Checks that JEvents is installed, parses the calendar's starting date, requests the relevant month from JEventsDataModel and appends normalised events to the shared match array.
+     * Checks that JEvents is installed, validates the calendar's starting
+     * date without accepting rollover dates, requests the relevant month
+     * from JEventsDataModel and appends normalised events to the match array.
      *
      * @param array $caldates Date and time boundaries selected by the calendar.
      * @param Registry $params Module settings, retained for event headings.
@@ -59,7 +61,7 @@ final class JEventsConnector extends JSMCalendar
 
         $start = substr((string) ($caldates['start'] ?? ''), 0, 10);
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $start);
-        if (!$date) {
+        if (!$date instanceof \DateTimeImmutable || $date->format('Y-m-d') !== $start) {
             return [];
         }
 
@@ -125,6 +127,9 @@ final class JEventsConnector extends JSMCalendar
      * Convert JEvents day and event records into SportsManagement calendar rows.
      * Normalises titles, locations, date/time ranges and event metadata, and appends every formatted event to the shared cross-connector collection.
      *
+     * Invalid day records and event entries are ignored rather than causing
+     * property-access warnings when optional provider data is malformed.
+     *
      * @param array $rows Date-grouped JEvents data returned by the provider.
      * @param array $matches Shared calendar rows extended in-place.
      * @return array<int,array> Newly formatted event records.
@@ -134,11 +139,15 @@ final class JEventsConnector extends JSMCalendar
         $newRows = [];
 
         foreach ($rows as $row) {
-            if (empty($row['events']) || !is_iterable($row['events'])) {
+            if (!is_array($row) || empty($row['events']) || !is_iterable($row['events'])) {
                 continue;
             }
 
             foreach ($row['events'] as $event) {
+                if (!is_object($event)) {
+                    continue;
+                }
+
                 $formatted = [
                     'link' => self::buildLink($event, (int) ($row['year'] ?? 0), (int) ($row['month'] ?? 0)),
                     'date' => date('Y-m-d', (int) ($row['cellDate'] ?? 0)) . ' ' . date('H:i', (int) ($event->_dtstart ?? 0)),
