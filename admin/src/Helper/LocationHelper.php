@@ -21,6 +21,10 @@ final class LocationHelper
     /**
      * Resolve one address to latitude/longitude.
      *
+     * Delegates to the validated geocoding request and exposes only the two
+     * coordinate fields expected by legacy administrator club forms.
+     *
+     * @param string $address Address text to geocode, including street and city.
      * @return array{latitude:string,longitude:string}|array{}
      */
     public function resolve(string $address): array
@@ -42,7 +46,10 @@ final class LocationHelper
      *
      * Public Nominatim usage is intentionally limited to an explicit save
      * operation. Rendering an administrator form never triggers this request.
+     * Rejects control characters and excessively long addresses, validates
+     * coordinate ranges, and ignores malformed response values.
      *
+     * @param string $address Address to resolve through the Nominatim API.
      * @return array{latitude:string,longitude:string,address:array<string,string>}|array{}
      */
     public function resolveDetailed(string $address): array
