@@ -19,7 +19,8 @@ final class CalendarDate
      * Convert a timestamp or date input into Joomla's calendar date object.
      * Interprets integer timestamps in the requested timezone and delegates
      * date strings to Joomla Date. Rejects nested values, booleans and
-     * oversized date strings instead of casting them to unexpected text.
+     * oversized date strings or integer-overflowing timestamps instead of
+     * casting them to unexpected values.
      * Returns null when conversion fails.
      *
      * @param mixed $value Unix timestamp, numeric timestamp string or date value.
@@ -31,6 +32,19 @@ final class CalendarDate
         if ((!is_int($value) && !is_string($value))
             || (is_string($value) && (trim($value) === '' || strlen($value) > 128))) {
             return null;
+        }
+
+        // Numeric strings exceeding the PHP integer range would silently
+        // saturate when cast and produce an unrelated calendar date.
+        if (is_string($value) && ctype_digit($value)) {
+            $digits = ltrim($value, '0');
+            $digits = $digits === '' ? '0' : $digits;
+            $limit = (string) PHP_INT_MAX;
+
+            if (strlen($digits) > strlen($limit)
+                || (strlen($digits) === strlen($limit) && strcmp($digits, $limit) > 0)) {
+                return null;
+            }
         }
 
         try {
