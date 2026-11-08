@@ -19,6 +19,16 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 final class SmextxmleditorsModel extends BaseDatabaseModel
 {
+    /**
+     * Enumerate readable extended XML and PHP editor files from Joomla.
+     *
+     * Only first-level regular files with an approved basename and an XML
+     * or PHP extension are returned. Symbolic links, unreadable files and
+     * traversal-like names are ignored; a missing or replaced directory
+     * yields an empty list instead of breaking administrator navigation.
+     *
+     * @return array<int, string> Naturally sorted local editor filenames.
+     */
     public function getXMLFiles(): array
     {
         $path = JPATH_ADMINISTRATOR
@@ -27,24 +37,29 @@ final class SmextxmleditorsModel extends BaseDatabaseModel
             . DIRECTORY_SEPARATOR . 'assets'
             . DIRECTORY_SEPARATOR . 'extended';
 
-        if (!is_dir($path)) {
+        if (!is_dir($path) || is_link($path) || !is_readable($path)) {
             return [];
         }
 
         $files = [];
 
-        foreach (new DirectoryIterator($path) as $fileInfo) {
-            if (!$fileInfo->isFile()) {
-                continue;
+        try {
+            foreach (new DirectoryIterator($path) as $fileInfo) {
+                if (!$fileInfo->isFile() || $fileInfo->isLink() || !$fileInfo->isReadable()) {
+                    continue;
+                }
+
+                $name = $fileInfo->getFilename();
+
+                if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*\\.(?:xml|php)$/iD', $name)
+                    || str_contains($name, '..')) {
+                    continue;
+                }
+
+                $files[] = $name;
             }
-
-            $extension = strtolower($fileInfo->getExtension());
-
-            if (!in_array($extension, ['xml', 'php'], true)) {
-                continue;
-            }
-
-            $files[] = $fileInfo->getFilename();
+        } catch (\UnexpectedValueException) {
+            return [];
         }
 
         natcasesort($files);

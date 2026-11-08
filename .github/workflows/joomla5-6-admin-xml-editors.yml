@@ -1,0 +1,39 @@
+name: Joomla 5/6 extended XML editors
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/SmextxmleditorsModel.php'
+      - 'admin/src/View/Smextxmleditors/HtmlView.php'
+      - '.github/tests/joomla56_admin_extended_editor_files.php'
+      - '.github/workflows/joomla5-6-admin-xml-editors.yml'
+  pull_request:
+    branches: [joomla5-6]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  editor-files:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint Joomla MVC sources
+        run: |
+          php -l admin/src/Model/SmextxmleditorsModel.php
+          php -l admin/src/View/Smextxmleditors/HtmlView.php
+          php -l .github/tests/joomla56_admin_extended_editor_files.php
+          php .github/tests/phpdoc_metadata.php admin/src/Model/SmextxmleditorsModel.php admin/src/View/Smextxmleditors/HtmlView.php
+      - name: Exercise native XML editor filename and view validation
+        run: php .github/tests/joomla56_admin_extended_editor_files.php
+      - name: Verify descriptive function PHPDoc
+        run: php .github/scripts/check-php-function-docs.php admin/src/Model/SmextxmleditorsModel.php admin/src/View/Smextxmleditors/HtmlView.php

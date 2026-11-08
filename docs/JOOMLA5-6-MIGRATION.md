@@ -96,3 +96,7 @@ The administrator `TrainingsdataModel` now requires an authenticated identity an
 ## Joomla root and JSON frontend view error isolation (8 November 2026)
 
 Root and JSON HTML views now use `SportsManagementViewErrorReporter`: private model errors are written to Joomla's component log, and a translated generic runtime error is raised to the visitor rather than exposing database connection details or returning a silent false page. The native JSON stylesheet still loads for healthy forms. The PHP 8.3/8.4 standalone `joomla56_site_view_error_privacy.php` regression covers private error logging, public exceptions and successful view rendering.
+
+## Native XML/PHP extended file editor listing (8 November 2026)
+
+`SmextxmleditorsModel` now lists only readable regular XML/PHP files with safe basenames from its expected administrator extended assets folder. Symlinks, traversal-style names and missing folders are excluded. The associated native view requires `SmextxmleditorsModel` and privately logs any model errors instead of exposing SQL messages in public/admin error pages. `joomla56_admin_extended_editor_files.php` tests file enumeration, view dispatch, log privacy and toolbar behaviour on PHP 8.3/8.4.

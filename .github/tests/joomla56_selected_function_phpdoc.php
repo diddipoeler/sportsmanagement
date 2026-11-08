@@ -38,6 +38,8 @@ $paths = [
     'admin/src/Model/SportstypeModel.php',
     'admin/src/Model/EventtypeModel.php',
     'admin/src/Model/SpecialextensionsModel.php',
+    'admin/src/Model/SmextxmleditorsModel.php',
+    'admin/src/View/Smextxmleditors/HtmlView.php',
     'site/src/Controller/EventsrankingController.php',
     'admin/src/Model/CpanelModel.php',
     'admin/src/View/Cpanel/HtmlView.php',
