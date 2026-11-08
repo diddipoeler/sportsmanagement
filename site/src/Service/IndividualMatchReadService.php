@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Service;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
@@ -33,6 +34,8 @@ final class IndividualMatchReadService
      * person, match type and HOME/AWAY side. Rejects invalid record IDs and
      * unsupported match-type values and unknown HOME/AWAY selectors before
      * querying the Joomla database; unsupported sides never silently map HOME.
+     * Database failures are logged without exposing SQL details in the frontend
+     * and return an empty result to preserve the read-only roster display.
      *
      * @param int $projectId Owning project identifier.
      * @param int $projectTeamId Project-team relation identifier.
@@ -74,8 +77,19 @@ final class IndividualMatchReadService
             ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
             ->bind(':seasonTeamPersonId', $seasonTeamPersonId, ParameterType::INTEGER)
             ->bind(':matchType', $matchType, ParameterType::STRING);
-        $db->setQuery($query);
+        try {
+            $db->setQuery($query);
 
-        return $db->loadObjectList() ?: [];
+            return $db->loadObjectList() ?: [];
+        } catch (\Throwable $exception) {
+            // Database diagnostics belong in server logs, not a public roster.
+            Log::add(
+                __METHOD__ . ': individual match lookup failed (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+
+            return [];
+        }
     }
 }
