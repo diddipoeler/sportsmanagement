@@ -15,21 +15,25 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 final class SeasonteamModel extends SportsManagementAdminModel
 {
     /**
-     * Allow season-team editing only when the administrator is authorised.
+     * Authorise edits to season-team relations through Joomla's form model.
      *
-     * @param array $data Selected season-team record.
-     * @param string $key Record ID field.
-     * @return bool Whether the current user may edit the relation.
+     * Rejects requests without an administrator identity and delegates
+     * record-level ACL checks to the native parent AdminModel. The former
+     * message.<id> ACL lookup belongs to a different table and must not
+     * grant permission to edit a season-team assignment.
+     *
+     * @param array $data Season-team record values.
+     * @param string $key Key containing the relation identifier.
+     * @return bool Whether the native Joomla ACL check permits editing.
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
-
         $identity = $this->administratorApplication()->getIdentity();
 
-        return ($identity !== null && $identity->authorise(
-            'core.edit',
-            'com_sportsmanagement.message.' . $id
-        )) || parent::allowEdit($data, $key);
+        if ($identity === null) {
+            return false;
+        }
+
+        return parent::allowEdit($data, $key);
     }
 }

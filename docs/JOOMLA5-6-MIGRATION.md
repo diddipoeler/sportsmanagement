@@ -66,3 +66,7 @@ Added detailed function-level PHPDoc to the Joomla 5/6 UEFA coefficient and proj
 ## Administrator match commentary read error handling (8 November 2026)
 
 `admin/src/Model/MatchcommentaryModel.php` now documents its scoped chronological read query and sends database exception details to Joomla's private log rather than into the model's public error list. A generic translated error is retained for the view. The standalone `joomla56_admin_match_commentary_privacy.php` test checks empty IDs, the bound match identifier, successful reads and confidential query failures on PHP 8.3/8.4.
+
+## Season relation ACL and prediction group save semantics (8 November 2026)
+
+Administrator Seasonteam, Seasonperson and Seasonteamperson form models now require an authenticated identity and delegate record editing decisions to Joomla's native parent AdminModel. Their historical lookups against `com_sportsmanagement.message.<id>` referenced unrelated ACL assets and could override Joomla's intended permission result. Creation notifications for Predictiongroup use the number of inserted records (one) instead of the generated database ID. `joomla56_admin_season_relation_acl.php` covers no identity, denied/granted native ACL and translated notification count.

@@ -1,0 +1,42 @@
+name: Joomla 5/6 administrator relation ACL
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/SeasonteamModel.php'
+      - 'admin/src/Model/SeasonpersonModel.php'
+      - 'admin/src/Model/SeasonteampersonModel.php'
+      - 'admin/src/Model/PredictiongroupModel.php'
+      - '.github/tests/joomla56_admin_season_relation_acl.php'
+      - '.github/workflows/joomla5-6-admin-relations-acl.yml'
+  pull_request:
+    branches: [joomla5-6]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  relations-acl:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP lint
+        run: |
+          php -l admin/src/Model/SeasonteamModel.php
+          php -l admin/src/Model/SeasonpersonModel.php
+          php -l admin/src/Model/SeasonteampersonModel.php
+          php -l admin/src/Model/PredictiongroupModel.php
+          php -l .github/tests/joomla56_admin_season_relation_acl.php
+      - name: Run relation ACL regression
+        run: php .github/tests/joomla56_admin_season_relation_acl.php
+      - name: Check descriptive PHPDoc
+        run: php .github/scripts/check-php-function-docs.php admin/src/Model/SeasonteamModel.php admin/src/Model/SeasonpersonModel.php admin/src/Model/SeasonteampersonModel.php admin/src/Model/PredictiongroupModel.php

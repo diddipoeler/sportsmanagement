@@ -36,17 +36,22 @@ final class PredictiongroupModel extends SportsManagementAdminModel
     }
 
     /**
-     * Notify the administrator when a prediction group has been created.
-     * @param array $data Saved prediction group values.
-     * @param int $id Saved group identifier.
-     * @param bool $isNew Whether a new group was inserted.
+     * Announce a successfully inserted prediction group to administrators.
+     *
+     * Translation pluralisation counts newly created records (exactly one),
+     * not the assigned row's primary key. An existing group update does
+     * not produce an additional creation notification.
+     *
+     * @param array $data Persisted prediction group form values.
+     * @param int $id Newly saved group identifier, not a record count.
+     * @param bool $isNew Whether the save inserted a new prediction group.
      * @return void
      */
     protected function afterSportsManagementSave(array $data, int $id, bool $isNew): void
     {
         if ($isNew) {
             $this->administratorApplication()->enqueueMessage(
-                Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', $id),
+                Text::plural('COM_SPORTSMANAGEMENT_N_ITEMS_CREATED', 1),
                 'message'
             );
         }

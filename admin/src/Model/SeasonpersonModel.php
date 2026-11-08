@@ -14,13 +14,25 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
  */
 final class SeasonpersonModel extends SportsManagementAdminModel
 {
+    /**
+     * Authorise changes to a person-season assignment in Joomla's model.
+     *
+     * Requires an active administrator identity and defers the actual
+     * record ACL decision to Joomla's form model, rather than inspecting
+     * the unrelated legacy message.<id> permission.
+     *
+     * @param array $data Person-season record fields.
+     * @param string $key Name of the record identifier field.
+     * @return bool Whether Joomla permits editing this assignment.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
+        $identity = $this->administratorApplication()->getIdentity();
 
-        return $this->administratorApplication()->getIdentity()->authorise(
-            'core.edit',
-            'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        if ($identity === null) {
+            return false;
+        }
+
+        return parent::allowEdit($data, $key);
     }
 }
