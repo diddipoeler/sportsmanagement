@@ -68,7 +68,12 @@ jobs:
             modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php \
             modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php \
             modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php \
-            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php \
+            site/src/Service/OpenLigaDbPreviewService.php \
+            site/src/Service/InlineHockeyClubLogoService.php \
+            site/src/Service/EditmatchEventViewDataService.php \
+            site/src/Service/EditmatchStatsViewDataService.php \
+            admin/src/Service/MatchTimelineWriteService.php
 
       - name: Check changed first-party PHP files
         shell: bash
