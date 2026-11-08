@@ -169,7 +169,9 @@ final class CalendarFunctions
 
     /**
      * Create a bounded year selector around the requested calendar year.
-     * Accepts valid four-digit years and otherwise uses the current year, rendering five years on either side without trusting malformed request data.
+     * Accepts years between 1970 and 9999, otherwise uses the current
+     * year. Renders at most five neighbouring years on either side without
+     * emitting year values outside the supported calendar range.
      *
      * @param mixed $selected Requested display year.
      * @return string Year option HTML.
@@ -178,12 +180,12 @@ final class CalendarFunctions
     {
         $year = is_int($selected) || is_string($selected) ? trim((string) $selected) : '';
         $selected = preg_match('/^[0-9]{4}$/D', $year) === 1
-            && (int) $year >= 1970
+            && (int) $year >= 1970 && (int) $year <= 9999
             ? (int) $year
             : (int) date('Y');
         $options = '';
 
-        for ($year = $selected - 5; $year <= $selected + 5; $year++) {
+        for ($year = max(1970, $selected - 5); $year <= min(9999, $selected + 5); $year++) {
             $isSelected = $year === $selected ? ' selected' : '';
             $options .= '<option value="' . $year . '"' . $isSelected . '>' . $year . '</option>';
         }
