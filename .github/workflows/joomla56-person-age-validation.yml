@@ -6,6 +6,7 @@ on:
     paths:
       - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
@@ -18,6 +19,7 @@ on:
     paths:
       - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
@@ -48,6 +50,7 @@ jobs:
         run: |
           php -l admin/src/Helper/PersonAgeHelper.php
           php -l admin/src/Helper/ExtraSelectOptionsHelper.php
+          php -l admin/src/Helper/LocationHelper.php
           php -l .github/tests/joomla56-person-age-validation.php
           php -l .github/tests/joomla56-livescore-date-boundaries.php
           php -l site/src/Service/IndividualMatchReadService.php
@@ -63,5 +66,5 @@ jobs:
         run: php .github/tests/joomla56-jevents-date-validation.php
       - name: Verify documentation in changed runtime classes
         run: |
-          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
           php .github/scripts/check-php-file-headers.php
