@@ -133,7 +133,7 @@ namespace {
     $options = CountryOptionsHelper::getOptions(new SmCountryDatabase());
     $codes = array_map(static fn (object $entry): string => $entry->value, $options);
 
-    if ($codes !== ['FRA', 'ESP', 'DEU']) {
+    if ($codes !== ['FRA', 'DEU', 'ESP']) {
         throw new \RuntimeException('Country options were not filtered and sorted by name.');
     }
 
