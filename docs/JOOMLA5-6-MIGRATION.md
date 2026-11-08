@@ -84,3 +84,7 @@ The native EventModel rejects array/object/numeric, oversized and ASCII-control-
 ## Administrator sports-type and extension-list compatibility (8 November 2026)
 
 The Sportstype administrator form now normalises invalid legacy media-field configuration to Joomla's media field instead of casting arrays or loading malformed field types. Optional database column-size hints remain nonfatal; the single-row sports-type lookup logs SQL exceptions privately with a generic administrator error. The filesystem-backed SpecialextensionsModel now excludes symlinked extension directories and has complete function PHPDoc. Regression tests and a PHP 8.3/8.4 workflow cover form-field validation, SQL error privacy, file enumeration and the empty list query.
+
+## Training-data assignment ACL follow-up (8 November 2026)
+
+The administrator `TrainingsdataModel` now requires an authenticated identity and delegates editing rights to Joomla's parent form-model ACL instead of consulting the unrelated legacy `com_sportsmanagement.message.<id>` asset. The season-relation ACL regression now includes training assignments, including missing identities, denied permissions and permitted edits.

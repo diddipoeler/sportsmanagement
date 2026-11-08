@@ -9,6 +9,7 @@ on:
       - 'admin/src/Model/SeasonteampersonModel.php'
       - 'admin/src/Model/PredictiongroupModel.php'
       - 'admin/src/Model/SportsmanagementModel.php'
+      - 'admin/src/Model/TrainingsdataModel.php'
       - '.github/tests/joomla56_admin_season_relation_acl.php'
       - '.github/workflows/joomla5-6-admin-relations-acl.yml'
   pull_request:
@@ -37,8 +38,9 @@ jobs:
           php -l admin/src/Model/SeasonteampersonModel.php
           php -l admin/src/Model/PredictiongroupModel.php
           php -l admin/src/Model/SportsmanagementModel.php
+          php -l admin/src/Model/TrainingsdataModel.php
           php -l .github/tests/joomla56_admin_season_relation_acl.php
       - name: Run relation ACL regression
         run: php .github/tests/joomla56_admin_season_relation_acl.php
       - name: Check descriptive PHPDoc
-        run: php .github/scripts/check-php-function-docs.php admin/src/Model/SeasonteamModel.php admin/src/Model/SeasonpersonModel.php admin/src/Model/SeasonteampersonModel.php admin/src/Model/PredictiongroupModel.php admin/src/Model/SportsmanagementModel.php
+        run: php .github/scripts/check-php-function-docs.php admin/src/Model/SeasonteamModel.php admin/src/Model/SeasonpersonModel.php admin/src/Model/SeasonteampersonModel.php admin/src/Model/PredictiongroupModel.php admin/src/Model/SportsmanagementModel.php admin/src/Model/TrainingsdataModel.php

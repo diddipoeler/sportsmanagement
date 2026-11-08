@@ -100,7 +100,7 @@ namespace {
     $root = dirname(__DIR__, 2) . '/admin/src/Model/';
     foreach (['SeasonteamModel.php', 'SeasonpersonModel.php',
         'SeasonteampersonModel.php', 'PredictiongroupModel.php',
-        'SportsmanagementModel.php'] as $name) {
+        'SportsmanagementModel.php', 'TrainingsdataModel.php'] as $name) {
         require_once $root . $name;
     }
 
@@ -109,6 +109,7 @@ namespace {
         \Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonteamModel::class,
         \Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonpersonModel::class,
         \Diddipoeler\Component\SportsManagement\Administrator\Model\SeasonteampersonModel::class,
+        \Diddipoeler\Component\SportsManagement\Administrator\Model\TrainingsdataModel::class,
     ];
 
     $identity = new class {

@@ -34,6 +34,7 @@ $paths = [
     'admin/src/Model/SeasonteampersonModel.php',
     'admin/src/Model/PredictiongroupModel.php',
     'admin/src/Model/SportsmanagementModel.php',
+    'admin/src/Model/TrainingsdataModel.php',
     'admin/src/Model/SportstypeModel.php',
     'admin/src/Model/SpecialextensionsModel.php',
     'site/src/Controller/EventsrankingController.php',

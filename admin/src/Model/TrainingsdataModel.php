@@ -13,13 +13,25 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 final class TrainingsdataModel extends SportsManagementAdminModel
 {
+    /**
+     * Authorise a training-data assignment through the native Joomla ACL.
+     *
+     * Rejects a missing administrator identity and delegates permission to
+     * Joomla's parent form model. The previous message.<id> asset applies
+     * only to the unrelated legacy example table, not training records.
+     *
+     * @param array $data Training-data assignment values.
+     * @param string $key Field holding the selected assignment ID.
+     * @return bool Whether Joomla permits editing the training assignment.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $id = (int) ($data[$key] ?? 0);
+        $identity = $this->administratorApplication()->getIdentity();
 
-        return $this->administratorApplication()->getIdentity()->authorise(
-            'core.edit',
-            'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        if ($identity === null) {
+            return false;
+        }
+
+        return parent::allowEdit($data, $key);
     }
 }
