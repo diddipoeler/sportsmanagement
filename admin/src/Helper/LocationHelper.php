@@ -47,7 +47,8 @@ final class LocationHelper
      * Public Nominatim usage is intentionally limited to an explicit save
      * operation. Rendering an administrator form never triggers this request.
      * Rejects control characters and excessively long addresses, validates
-     * coordinate ranges, and ignores malformed response values.
+     * coordinate ranges, and ignores malformed response values. Bounds the
+     * downloaded JSON payload before decoding to avoid excessive allocations.
      *
      * @param string $address Address to resolve through the Nominatim API.
      * @return array{latitude:string,longitude:string,address:array<string,string>}|array{}
@@ -76,11 +77,12 @@ final class LocationHelper
             $statusCode = $response->getStatusCode();
             $body = (string) $response->getBody();
 
-            if ($statusCode < 200 || $statusCode >= 300 || $body === '') {
+            if ($statusCode < 200 || $statusCode >= 300 || $body === ''
+                || strlen($body) > 1048576) {
                 return [];
             }
 
-            $data = json_decode($body, true);
+            $data = json_decode($body, true, 32);
             $result = is_array($data) ? ($data[0] ?? null) : null;
 
             if (!is_array($result) || !isset($result['lat'], $result['lon'])) {
