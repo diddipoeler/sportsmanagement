@@ -119,7 +119,8 @@ namespace {
         smCheckInvalidView($invalidView);
     }
 
-    foreach ([null, false, true, [], new \stdClass(), '', '  ', str_repeat('a', 129)] as $invalidDate) {
+    foreach ([null, false, true, [], new \stdClass(), '', '  ', str_repeat('a', 129),
+        (string) PHP_INT_MAX . '0', str_repeat('9', 80)] as $invalidDate) {
         smCheckInvalidCalendarValue($invalidDate);
     }
 
