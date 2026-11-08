@@ -11,6 +11,7 @@ on:
       - 'admin/src/Helper/ActionLogHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
       - 'admin/src/Helper/SqlImportHelper.php'
       - 'site/src/Service/MatchReadService.php'
       - '.github/tests/joomla56-sql-import-validation.php'
@@ -43,6 +44,7 @@ on:
       - 'admin/src/Helper/ActionLogHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
       - 'admin/src/Helper/SqlImportHelper.php'
       - 'site/src/Service/MatchReadService.php'
       - '.github/tests/joomla56-sql-import-validation.php'
@@ -93,6 +95,7 @@ jobs:
           php -l admin/src/Helper/ActionLogHelper.php
           php -l admin/src/Helper/ExtraFieldsReadHelper.php
           php -l admin/src/Helper/CountryOptionsHelper.php
+          php -l admin/src/Helper/RemoteImageDownloadHelper.php
           php -l admin/src/Helper/SqlImportHelper.php
           php -l site/src/Service/MatchReadService.php
           php -l .github/tests/joomla56-sql-import-validation.php
@@ -133,5 +136,5 @@ jobs:
         run: php .github/tests/joomla56-sql-import-validation.php
       - name: Verify documentation in changed runtime classes
         run: |
-          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php admin/src/Helper/RemoteImageDownloadHelper.php admin/src/Helper/CountryOptionsHelper.php admin/src/Helper/SqlImportHelper.php site/src/Service/MatchReadService.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
           php .github/scripts/check-php-file-headers.php
