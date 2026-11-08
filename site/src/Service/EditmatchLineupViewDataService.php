@@ -17,10 +17,24 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 read service for the edit-match lineup layout. */
 final class EditmatchLineupViewDataService
 {
+    /**
+     * Initialise the frontend match-lineup read service.
+     * Uses Joomla's selected database driver to read team, player, substitution and staff data required by the frontend match editor.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $db)
     {
     }
 
+    /**
+     * Read the project-team identifiers and team names for a fixture.
+     * Joins the match to its two season-team and underlying team records, returning null for an invalid match identifier.
+     *
+     * @param int $matchId Parent match identifier.
+     * @return object|null Home and away team details, or null.
+     */
     public function getMatchTeams(int $matchId): ?object
     {
         if ($matchId <= 0) {
@@ -49,7 +63,17 @@ final class EditmatchLineupViewDataService
         return $db->loadObject() ?: null;
     }
 
-    /** @return array<int,object> */
+    /**
+     * List available registered team people for a specific project, season and person type.
+     * Joins person and season-team relations, applies the project scope and excludes selected person IDs to populate the editable lineup choices.
+     *
+     * @param int $projectTeamId Owning project-team identifier.
+     * @param array<int,int|string> $excludedPersonIds Already nominated season-team-person IDs.
+     * @param int $personType Requested person category, such as player or staff.
+     * @param int $seasonId Selected season.
+     * @param int $projectId Owning project.
+     * @return array<int,object> Eligible person options and associated position metadata.
+     */
     public function getTeamPersons(
         int $projectTeamId,
         array $excludedPersonIds,
@@ -114,7 +138,16 @@ final class EditmatchLineupViewDataService
         return $db->loadObjectList() ?: [];
     }
 
-    /** @return array<int,object> */
+    /**
+     * Read an existing match's starting players for one project position.
+     * Uses match, project and team constraints to retrieve assigned player IDs, shirt numbers, captain flags and ordering fields.
+     *
+     * @param int $teamId Project-team identifier whose roster is being edited.
+     * @param int $projectPositionId Project-specific position identifier.
+     * @param int $matchId Parent fixture identifier.
+     * @param int $projectId Owning project identifier.
+     * @return array<int,object> Nominated player entries for the selected position.
+     */
     public function getRoster(int $teamId, int $projectPositionId, int $matchId, int $projectId): array
     {
         if ($teamId <= 0 || $projectPositionId <= 0 || $matchId <= 0 || $projectId <= 0) {
@@ -163,7 +196,15 @@ final class EditmatchLineupViewDataService
         return $db->loadObjectList('value') ?: [];
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load a project's match substitution entries for the specified team.
+     * Reads incoming and outgoing player, position and timestamp data for the match in the order needed by the lineup editor.
+     *
+     * @param int $teamId Project-team identifier.
+     * @param int $matchId Parent fixture identifier.
+     * @param int $projectId Owning project identifier.
+     * @return array<int,object> Substitution entries and participant identifiers.
+     */
     public function getSubstitutions(int $teamId, int $matchId, int $projectId): array
     {
         if ($teamId <= 0 || $matchId <= 0 || $projectId <= 0) {
@@ -212,7 +253,15 @@ final class EditmatchLineupViewDataService
         return $db->loadObjectList() ?: [];
     }
 
-    /** @return array<int,object> */
+    /**
+     * Read nominated staff members for the selected project team and match.
+     * Resolves season-team-person records, project positions and published person names so the editor can preserve existing staff assignments.
+     *
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $matchId Parent fixture identifier.
+     * @param int $projectId Owning project identifier.
+     * @return array<int,object> Staff roster entries with position and display information.
+     */
     public function getMatchStaff(int $projectTeamId, int $matchId, int $projectId): array
     {
         if ($projectTeamId <= 0 || $matchId <= 0 || $projectId <= 0) {

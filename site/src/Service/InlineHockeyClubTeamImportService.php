@@ -22,12 +22,28 @@ final class InlineHockeyClubTeamImportService
     private const SPORTS_TYPE = 'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY';
     private const CLUBS_URL = 'https://www.ishd.de/vereine.json';
 
+    /**
+     * Create an Inline Hockey club, team and player import service.
+     * Stores Joomla's database and the restricted Inline Hockey API client used to retrieve schedules and register entities.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @param InlineHockeyApiClient $api Client for the Inline Hockey API.
+     * @return void
+     */
     public function __construct(
         private readonly DatabaseInterface $db,
         private readonly InlineHockeyApiClient $api
     ) {
     }
 
+    /**
+     * Import club records from the paginated Inline Hockey clubs endpoint.
+     * Walks the configured API pages, validates club IDs, skips records already in the local database and creates missing SportsManagement club entries.
+     *
+     * @param string $username Optional API login name.
+     * @param string $password Optional API password.
+     * @return int Number of newly imported clubs.
+     */
     public function importClubs(string $username = '', string $password = ''): int
     {
         $firstPage = $this->api->fetchJson(self::CLUBS_URL, $username, $password);
@@ -70,6 +86,14 @@ final class InlineHockeyClubTeamImportService
         return $imported;
     }
 
+    /**
+     * Import Inline Hockey team records linked to existing local clubs.
+     * Ensures the sport type is available, fetches teams for stored clubs and creates only team IDs not already represented in the component database.
+     *
+     * @param string $username Optional API login name.
+     * @param string $password Optional API password.
+     * @return int Number of newly registered teams.
+     */
     public function importTeams(string $username = '', string $password = ''): int
     {
         $sportsTypeId = $this->ensureSportsType();
@@ -142,6 +166,14 @@ final class InlineHockeyClubTeamImportService
         return $changed;
     }
 
+    /**
+     * Import Inline Hockey players from participating club teams.
+     * Uses local team and club references to request player rosters and inserts only players not already known to the component.
+     *
+     * @param string $username Optional API login name.
+     * @param string $password Optional API password.
+     * @return int Number of newly registered players.
+     */
     public function importPlayers(string $username = '', string $password = ''): int
     {
         $query = $this->db->createQuery()
@@ -225,6 +257,12 @@ final class InlineHockeyClubTeamImportService
         return $changed;
     }
 
+    /**
+     * Find or create the SportsManagement skater-hockey sport type.
+     * Queries the translated Inline Hockey sport identifier and creates the matching sport-type record if none exists.
+     *
+     * @return int Local skater-hockey sport type identifier, or zero on failure.
+     */
     private function ensureSportsType(): int
     {
         $name = self::SPORTS_TYPE;
@@ -246,6 +284,13 @@ final class InlineHockeyClubTeamImportService
         return (int) $this->db->insertid();
     }
 
+    /**
+     * Determine whether an external club identifier already exists locally.
+     * Checks the component's club table using a bound numeric ID before creating an imported club.
+     *
+     * @param int $clubId External club identifier used by the import.
+     * @return bool Whether the club already has a local record.
+     */
     private function clubExists(int $clubId): bool
     {
         $query = $this->db->createQuery()
@@ -258,6 +303,13 @@ final class InlineHockeyClubTeamImportService
         return (int) $this->db->loadResult() > 0;
     }
 
+    /**
+     * Determine whether an imported Inline Hockey player already has a person row.
+     * Uses a bound person identifier to avoid duplicate player creation in recurring imports.
+     *
+     * @param int $personId External person identifier.
+     * @return bool Whether the player already exists in the component database.
+     */
     private function personExists(int $personId): bool
     {
         $query = $this->db->createQuery()
@@ -270,6 +322,13 @@ final class InlineHockeyClubTeamImportService
         return (int) $this->db->loadResult() > 0;
     }
 
+    /**
+     * Check whether an imported team identifier already exists locally.
+     * Uses a bound team identifier so repeated Inline Hockey synchronization does not insert duplicate team rows.
+     *
+     * @param int $teamId External team identifier.
+     * @return bool Whether the team is already present.
+     */
     private function teamExists(int $teamId): bool
     {
         $query = $this->db->createQuery()
