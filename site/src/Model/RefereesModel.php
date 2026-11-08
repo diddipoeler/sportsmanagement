@@ -22,6 +22,15 @@ final class RefereesModel extends SportsManagementProjectModel
     public static int $cfg_which_database = 0;
     public static int $projectid = 0;
 
+    /**
+     * Initialise the native referee-list context for the active project.
+     * Captures filtered project and database selectors, then updates the
+     * remaining legacy static fields for dependent template overrides.
+     *
+     * @param array $config Optional Joomla model settings.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -35,6 +44,14 @@ final class RefereesModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load published referees assigned to the selected project.
+     * Joins the season/person, project position and referee relationships,
+     * counts appearances in project matches and derives person route slugs
+     * before returning the ordered native referee list.
+     *
+     * @return array<int, object> Project referee records and match counts.
+     */
     public function getReferees(): array
     {
         if ($this->projectId <= 0) {

@@ -23,11 +23,27 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $roundname = [];
     public string $pagetitle = '';
 
+    /**
+     * Keep tournament node rendering within the native Joomla 5/6 view.
+     * The namespaced model and project title helper provide all required data,
+     * so global legacy presentation classes are not loaded.
+     *
+     * @return bool Always false; legacy presentation helpers are unnecessary.
+     */
     protected function requiresLegacyPresentationDependencies(): bool
     {
         return false;
     }
 
+    /**
+     * Prepare the current tournament's node list, round metadata and page title.
+     * Requires the native TreetonodeModel, reads selected project and division
+     * context, builds the translated title with ProjectTitleHelper and sets
+     * both the view heading and Joomla browser document title.
+     *
+     * @return void
+     * @throws \RuntimeException If Joomla cannot load TreetonodeModel.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();

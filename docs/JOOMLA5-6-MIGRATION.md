@@ -58,3 +58,7 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 - The administrator quote-file picker lists only readable, regular TXT files that satisfy the frontend module reader's basename contract; symlinks, scripts, and unsafe filenames are excluded.
 - Training data creation messages use the actual number of created records (one) instead of a database record ID.
 - Added named-function documentation and targeted regression tests for JSON view dispatch and quote-source filtering.
+
+## Native frontend documentation follow-up (8 November 2026)
+
+Added detailed function-level PHPDoc to the Joomla 5/6 UEFA coefficient and project referee read models and tournament-node view. These classes retain their existing read-only query and template behaviour; the selected-function PHPDoc CI gate now covers all named methods in the updated files.

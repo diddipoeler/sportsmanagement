@@ -20,6 +20,15 @@ final class UefawertungModel extends SportsManagementProjectModel
 {
     public string $coefficientyear = '';
 
+    /**
+     * Initialise the UEFA coefficient season selector from Joomla's request.
+     * Uses the POST value for submitted filters and otherwise falls back to
+     * the GET parameter while initialising the shared native project model.
+     *
+     * @param array $config Optional Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -32,6 +41,14 @@ final class UefawertungModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Retrieve the seasons available in the stored UEFA coefficient table.
+     * Reads grouped season identifiers in descending order, preserving the
+     * season names needed by the native selection field. Database errors
+     * are logged and produce an empty list for the frontend view.
+     *
+     * @return array<int, object> Available season ID and name records.
+     */
     public function getcoefficientyears(): array
     {
         $db = $this->getDatabase();
@@ -55,11 +72,28 @@ final class UefawertungModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Resolve the five UEFA seasons preceding or including the selected year.
+     * Delegates to the common bounded season query so column headers match
+     * the exact seasons used by the coefficient totals.
+     *
+     * @param string $coefficientyear Selected upper season bound.
+     * @return array<int, string> Ordered season labels for the table.
+     */
     public function getSeasonNames($coefficientyear = ''): array
     {
         return $this->getCoefficientSeasons((string) $coefficientyear);
     }
 
+    /**
+     * Aggregate country coefficient points over the selected five-season window.
+     * Loads only rows for the season identifiers returned by the bounded lookup,
+     * groups points by country and season, fills missing seasons with zero
+     * and sorts the total points descending for the native frontend table.
+     *
+     * @param string $coefficientyear Selected last season of the coefficient window.
+     * @return array<int, object> Country rows with season points and total.
+     */
     public function getcoefficientyearspoints($coefficientyear = ''): array
     {
         $seasons = $this->getCoefficientSeasons((string) $coefficientyear);
@@ -122,6 +156,14 @@ final class UefawertungModel extends SportsManagementProjectModel
         return $ranking;
     }
 
+    /**
+     * Look up the five most recent coefficient seasons up to a selected year.
+     * Uses a bound database parameter and explicit five-row result limit;
+     * an empty selector or database failure produces an empty season list.
+     *
+     * @param string $coefficientyear Maximum coefficient season name.
+     * @return array<int, string> Up to five descending coefficient seasons.
+     */
     private function getCoefficientSeasons(string $coefficientyear): array
     {
         if ($coefficientyear === '') {
@@ -148,6 +190,14 @@ final class UefawertungModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Record a UEFA coefficient query failure without disclosing private SQL.
+     * The full exception is written only to Joomla's error log and the
+     * current site request receives a generic translated error message.
+     *
+     * @param \Throwable $e Database or query exception to record.
+     * @return void
+     */
     private function reportDatabaseError(\Throwable $e): void
     {
         // Log internal SQL and file details without exposing them to visitors.

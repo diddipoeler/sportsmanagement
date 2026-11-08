@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $paths = [
+    'site/src/Model/UefawertungModel.php',
+    'site/src/Model/RefereesModel.php',
+    'site/src/View/Treetonode/HtmlView.php',
     'site/src/View/Clubs/HtmlView.php',
     'site/src/View/Jsonfeed/RawView.php',
     'site/src/View/Curve/RawView.php',
