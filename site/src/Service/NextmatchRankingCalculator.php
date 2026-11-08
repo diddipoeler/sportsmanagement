@@ -29,7 +29,17 @@ use Joomla\Database\ParameterType;
  */
 final class NextmatchRankingCalculator
 {
-    /** @return array<int, object> keyed by project-team id */
+    /**
+     * Calculate the standings displayed beside a particular next-match or tournament round.
+     * Loads the relevant division teams and games up to the chosen round, applies the project's point and decision policy and sorts the resulting in-memory table.
+     *
+     * @param DatabaseInterface $db Selected Joomla SportsManagement database.
+     * @param object $project Project settings including sport type and point rules.
+     * @param array $rankingConfig Configured ordering and tie-break criteria.
+     * @param int $currentRoundId Optional round limiting matches that contribute to standings.
+     * @param int $divisionId Optional division whose teams should appear.
+     * @return array<int,object> Calculated and ordered team ranking records.
+     */
     public static function calculate(
         DatabaseInterface $db,
         object $project,
@@ -71,7 +81,15 @@ final class NextmatchRankingCalculator
         );
     }
 
-    /** @return array<int, int> */
+    /**
+     * Find the selected published division and its immediate published children.
+     * Uses bound project and division identifiers to collect the division relation IDs used by team selection, returning an empty list when no division is requested.
+     *
+     * @param DatabaseInterface $db Selected sports database driver.
+     * @param int $projectId Owning project identifier.
+     * @param int $divisionId Requested division identifier.
+     * @return array<int,int> Unique division IDs that may contribute to standings.
+     */
     private static function divisionIds(
         DatabaseInterface $db,
         int $projectId,
@@ -100,7 +118,16 @@ final class NextmatchRankingCalculator
         return array_values(array_unique(array_filter($ids)));
     }
 
-    /** @return array<int, object> */
+    /**
+     * Load ranking-compatible project teams and optional division final standings.
+     * Queries eligible project-team and season-team relations, including stored final results and club metadata, and falls back to the division final-table records where appropriate.
+     *
+     * @param DatabaseInterface $db Selected sports database driver.
+     * @param int $projectId Project whose teams should be ranked.
+     * @param int $divisionId Optional division filter.
+     * @param array<int,int> $divisionIds Included division and child division IDs.
+     * @return array<int,object> Team ranking rows indexed by project-team identifier.
+     */
     private static function loadTeams(
         DatabaseInterface $db,
         int $projectId,
@@ -174,7 +201,15 @@ final class NextmatchRankingCalculator
         return $teams;
     }
 
-    /** @return array<int, object> */
+    /**
+     * Read stored final standings for one division when its normal table is empty.
+     * Joins a project's team relations to division-specific final result counters and team metadata while enforcing the selected division.
+     *
+     * @param DatabaseInterface $db Selected sports database driver.
+     * @param int $projectId Owning project identifier.
+     * @param int $divisionId Division containing the final-table records.
+     * @return array<int,object> Stored division final-table team rows.
+     */
     private static function loadFinalDivisionTeams(
         DatabaseInterface $db,
         int $projectId,
@@ -341,7 +376,16 @@ final class NextmatchRankingCalculator
         return $roundCode !== null ? (int) $roundCode : PHP_INT_MAX;
     }
 
-    /** @return array<int, object> */
+    /**
+     * Read published fixtures contributing to the next-match ranking before a round boundary.
+     * Joins matches with their projects and rounds, includes score and decision fields, skips cancelled or uncounted results and optionally filters by division and round code.
+     *
+     * @param DatabaseInterface $db Selected sports database driver.
+     * @param int $projectId Ranking project identifier.
+     * @param int $roundCode Maximum included round code, or zero for the full table.
+     * @param int $divisionId Optional division filter.
+     * @return array<int,object> Match objects for ranking calculation.
+     */
     private static function loadMatches(
         DatabaseInterface $db,
         int $projectId,
@@ -402,7 +446,15 @@ final class NextmatchRankingCalculator
         return $db->loadObjectList() ?: [];
     }
 
-    /** @param array<int, object> $teams @param array<int, object> $matches */
+    /**
+     * Accumulate match outcomes, score differences, bonus points and sport-specific statistics.
+     * Iterates eligible home/away team matches, applies regular or overtime point rules and updates the provided ranking rows in place.
+     *
+     * @param array<int,object> $teams Mutable ranking team records indexed by project-team ID.
+     * @param array<int,object> $matches Relevant scored fixtures.
+     * @param object $project Project result and sport configuration.
+     * @return void
+     */
     private static function collect(array &$teams, array $matches, object $project): void
     {
         foreach ($matches as $match) {
@@ -698,7 +750,14 @@ final class NextmatchRankingCalculator
         $team->points = $team->sum_points;
     }
 
-    /** @return array{0: float, 1: float, 2: float} */
+    /**
+     * Read the project's configured win, draw and loss points for one result type.
+     * Chooses regular-time, overtime or penalty values and substitutes the standard three, one and zero defaults for missing or nonnumeric entries.
+     *
+     * @param object $project Project point configuration.
+     * @param int $resultType Ordinary, extra-time or penalty result category.
+     * @return array{0:float,1:float,2:float} Win, draw and loss point values.
+     */
     private static function pointRule(object $project, int $resultType): array
     {
         $property = match ($resultType) {
@@ -718,7 +777,18 @@ final class NextmatchRankingCalculator
         return [(float) $values[0], (float) $values[1], (float) $values[2]];
     }
 
-    /** @return array<int, object> */
+    /**
+     * Sort next-match team rankings through configured criteria and tie-break groups.
+     * Applies score and final-table criteria, recalculates head-to-head statistics for tied groups and assigns stable ranking positions to result rows.
+     *
+     * @param array<int,object> $teams Collected ranking values.
+     * @param array<int,object> $initialTeams Original team standings before applying matches.
+     * @param array<int,object> $matches Fixtures used to resolve head-to-head ties.
+     * @param object $project Project sport and point policy.
+     * @param array $config Ranking criterion and direction preferences.
+     * @param bool $useFinalTableRank Whether stored final-table ranks take precedence.
+     * @return array<int,object> Ordered team rows with ranking positions.
+     */
     private static function buildRanking(
         array $teams,
         array $initialTeams,
@@ -814,7 +884,17 @@ final class NextmatchRankingCalculator
         ], true);
     }
 
-    /** @param array<int, object> $h2h */
+    /**
+     * Compare two next-match ranking records by the specified metric.
+     * Selects configured or intrinsic sort directions for goals, points, penalties and other criteria, using derived head-to-head rows where requested.
+     *
+     * @param string $criterion Ranking metric from project configuration.
+     * @param string $order Configured ASC or DESC direction.
+     * @param object $a First team ranking object.
+     * @param object $b Second team ranking object.
+     * @param array<int,object> $h2h Optional miniature head-to-head standings.
+     * @return int Negative, zero or positive ordering result.
+     */
     private static function compare(
         string $criterion,
         string $order,
@@ -861,7 +941,16 @@ final class NextmatchRankingCalculator
         };
     }
 
-    /** @return array<int, object> */
+    /**
+     * Recalculate results among only the teams that remain tied in a ranking group.
+     * Clones the relevant initial team rows, filters matches to fixtures played between those teams and reapplies the project's scoring policy.
+     *
+     * @param array<int,object> $groupTeams Currently tied team records.
+     * @param array<int,object> $initialTeams Original unmodified ranking rows.
+     * @param array<int,object> $matches All eligible project fixtures.
+     * @param object $project Project point rules and sport settings.
+     * @return array<int,object> Ranking rows computed only from matches among tied teams.
+     */
     private static function headToHead(
         array $groupTeams,
         array $initialTeams,
@@ -890,7 +979,13 @@ final class NextmatchRankingCalculator
         return $h2hTeams;
     }
 
-    /** @return array<int, object> */
+    /**
+     * Copy the ranking team objects before applying calculated game statistics.
+     * Creates independent team row objects so sorting and match computations do not change cached or previously loaded standings.
+     *
+     * @param array<int,object> $teams Original project-team ranking records.
+     * @return array<int,object> Cloned ranking rows keyed by team identifier.
+     */
     private static function cloneTeams(array $teams): array
     {
         $copy = [];

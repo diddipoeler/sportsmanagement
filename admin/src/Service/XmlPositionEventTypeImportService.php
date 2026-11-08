@@ -18,6 +18,13 @@ use RuntimeException;
 /** Native writer for project XML import step 8. */
 final class XmlPositionEventTypeImportService
 {
+    /**
+     * Create the position-to-event-type XML relationship importer.
+     * Stores Joomla's database driver for resolving and inserting links between imported position and event-type definitions.
+     *
+     * @param DatabaseInterface $database Joomla database driver.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
@@ -102,6 +109,14 @@ final class XmlPositionEventTypeImportService
         return $map;
     }
 
+    /**
+     * Check whether a position-to-event-type relationship already exists.
+     * Uses bound position and event-type IDs to avoid inserting duplicate mapping records while importing XML relations.
+     *
+     * @param int $positionId Local imported position ID.
+     * @param int $eventId Local imported event-type ID.
+     * @return bool True when the relation row exists.
+     */
     private function linkExists(int $positionId, int $eventId): bool
     {
         $query = $this->database->createQuery()

@@ -24,6 +24,13 @@ use RuntimeException;
  */
 final class XmlPositionImportService
 {
+    /**
+     * Create the Joomla position and sports-type XML import service.
+     * Stores the database used to find or insert sport types, parent positions and individual position definitions.
+     *
+     * @param DatabaseInterface $database Joomla database driver.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
@@ -298,7 +305,13 @@ final class XmlPositionImportService
         return $map;
     }
 
-    /** @param array<string, mixed> $post */
+    /**
+     * Resolve or create the sport type selected for an imported position hierarchy.
+     * Validates the selected existing sport type or builds a new entry from the requested sport name, marking the result as created or reused.
+     *
+     * @param array<string,mixed> $post Sport-type selections and optional new name from the import form.
+     * @return object Sport-type record with identifier, name and creation status.
+     */
     private function resolveSportType(array $post): object
     {
         $id = (int) ($post['sportstype'] ?? 0);
@@ -341,27 +354,63 @@ final class XmlPositionImportService
         return $row;
     }
 
+    /**
+     * Find an existing sport type by its local numeric database ID.
+     * Delegates to the bound common lookup helper for the sports-type table.
+     *
+     * @param int $id Local sport-type identifier.
+     * @return object|null Matching sport type, or null.
+     */
     private function findSportTypeById(int $id): ?object
     {
         return $this->findOne('#__sportsmanagement_sports_type', ['id' => $id]);
     }
 
+    /**
+     * Find a stored sport type matching the imported name.
+     * Uses the common lookup helper to avoid creating a duplicate sports-type record.
+     *
+     * @param string $name Sport-type label from the submitted import.
+     * @return object|null Existing sport type with that name, or null.
+     */
     private function findSportTypeByName(string $name): ?object
     {
         return $this->findOne('#__sportsmanagement_sports_type', ['name' => $name]);
     }
 
+    /**
+     * Resolve an existing position using its local database identifier.
+     * Delegates to a bound position-table lookup when the importer reuses a preselected position.
+     *
+     * @param int $id Local position record identifier.
+     * @return object|null Matching position record, or null.
+     */
     private function findPositionById(int $id): ?object
     {
         return $this->findOne('#__sportsmanagement_position', ['id' => $id]);
     }
 
+    /**
+     * Find a position within its imported parent-position hierarchy.
+     * Restricts the lookup by both name and parent ID so positions under different parent groups remain distinct.
+     *
+     * @param string $name Position label.
+     * @param int $parentId Local parent-position identifier.
+     * @return object|null Existing position in that parent group, or null.
+     */
     private function findPositionByNameAndParent(string $name, int $parentId): ?object
     {
         return $this->findOne('#__sportsmanagement_position', ['name' => $name, 'parent_id' => $parentId]);
     }
 
-    /** @param array<string, int|string> $criteria */
+    /**
+     * Execute a bounded lookup against a trusted internal import table.
+     * Builds a Joomla query from the supplied column/value criteria and binds each parameter according to its integer or string type.
+     *
+     * @param string $table Trusted sport-type or position database table.
+     * @param array<string,int|string> $criteria Internal field/value conditions for the lookup.
+     * @return object|null First matching ID/name record, or null.
+     */
     private function findOne(string $table, array $criteria): ?object
     {
         $query = $this->database->createQuery()
@@ -391,6 +440,14 @@ final class XmlPositionImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Keep only source properties supported by the installed destination table.
+     * Reads Joomla database-column metadata and strips properties not valid for the current position or sport-type schema.
+     *
+     * @param object $source Prepared import record.
+     * @param string $table Trusted destination database table name.
+     * @return object Data object containing only supported column names.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -405,18 +462,41 @@ final class XmlPositionImportService
         return $row;
     }
 
+    /**
+     * Format an administrator status line for a reused imported entity.
+     * Returns a legacy orange status message and HTML-escapes the imported entity name.
+     *
+     * @param string $type Trusted entity label displayed in the import report.
+     * @param string $name Name of the reused position or sport type.
+     * @return string HTML status message identifying the reused entity.
+     */
     private function existingMessage(string $type, string $name): string
     {
         return '<span style="color:orange">Using existing ' . $type . ' data: </span><strong>'
             . $this->escape($name) . '</strong><br />';
     }
 
+    /**
+     * Format an administrator status line for a newly inserted entity.
+     * Returns a legacy green confirmation message and escapes the sport or position name before rendering.
+     *
+     * @param string $type Trusted import entity category.
+     * @param string $name Name of the newly created position or sport type.
+     * @return string HTML status message identifying the new entity.
+     */
     private function createdMessage(string $type, string $name): string
     {
         return '<span style="color:green">Created new ' . $type . ' data: </span><strong>'
             . $this->escape($name) . '</strong><br />';
     }
 
+    /**
+     * Escape XML position names before including them in administrator HTML output.
+     * Encodes special HTML characters and quotes in untrusted values from the import form or XML source.
+     *
+     * @param string $value XML-derived or submitted display value.
+     * @return string HTML-escaped output text.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
