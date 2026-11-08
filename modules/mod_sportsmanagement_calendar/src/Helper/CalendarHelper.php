@@ -337,8 +337,9 @@ final class CalendarHelper
      *
      * Endpoint: index.php?option=com_ajax&module=sportsmanagement_calendar&method=get&format=raw
      *
-     * Validates the requested module and calendar filters before converting
-     * its permitted match rows to the calendar's read-only event feed.
+     * Validates the requested module and accepted calendar view modes before
+     * querying matches. Invalid dates, unknown view types and reversed ranges
+     * return empty output rather than executing an unintended broad query.
      *
      * @return string Encoded event feed, or empty text for an unavailable module.
      */
@@ -356,6 +357,12 @@ final class CalendarHelper
         }
 
         $viewName = $input->getCmd('viewname', 'range');
+
+        // Unknown view modes must never be treated as unrestricted ranges.
+        if (!in_array($viewName, ['day', 'month', 'range', 'arrobefr'], true)) {
+            return '';
+        }
+
         $year = self::normaliseYear($input->getInt('formvalueyear', (int) date('Y')));
         $month = max(1, min(12, $input->getInt('formvaluemonth', (int) date('m'))));
         $day = max(1, min(31, $input->getInt('formvalueday', 1)));
