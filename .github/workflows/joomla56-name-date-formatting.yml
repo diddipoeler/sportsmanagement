@@ -1,0 +1,47 @@
+name: Joomla 5/6 name and date formatting regression
+
+on:
+  push:
+    branches:
+      - joomla5-6
+    paths:
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'admin/src/Helper/NameFormatter.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
+      - '.github/tests/joomla56-name-date-formatting.php'
+      - '.github/workflows/joomla56-name-date-formatting.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/PersonNameFormatter.php'
+      - 'admin/src/Helper/NameFormatter.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
+      - '.github/tests/joomla56-name-date-formatting.php'
+      - '.github/workflows/joomla56-name-date-formatting.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring
+          coverage: none
+      - name: Check PHP syntax
+        run: |
+          php -l site/src/Helper/PersonNameFormatter.php
+          php -l admin/src/Helper/NameFormatter.php
+          php -l admin/src/Helper/SportsManagementDateHelper.php
+          php -l .github/tests/joomla56-name-date-formatting.php
+      - name: Run formatting regressions
+        run: php .github/tests/joomla56-name-date-formatting.php
