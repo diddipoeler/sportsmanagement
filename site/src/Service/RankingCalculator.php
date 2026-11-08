@@ -20,9 +20,14 @@ final class RankingCalculator
     private const DEFAULT_SORT_ORDER = 'DESC, ASC, DESC, DESC';
 
     /**
-     * @param array<int, RankingRow> $seedRows
-     * @param array<int, object> $matches
-     * @return array<int, RankingRow>
+     * Calculate and sort a full project ranking without altering its input rows.
+     * Clones the seeded teams, applies countable fixtures using the project's sport-specific scoring rules and resolves ranking criteria, head-to-head tie-breakers or stored final standings.
+     *
+     * @param array<int,RankingRow> $seedRows Original team rows indexed by project-team ID.
+     * @param array<int,object> $matches Published fixtures with scores and result metadata.
+     * @param object $project Project sport type and point settings.
+     * @param array $config Ranking and tie-break configuration values.
+     * @return array<int,RankingRow> Newly calculated rows ordered by effective rank.
      */
     public function calculate(array $seedRows, array $matches, object $project, array $config): array
     {
@@ -41,7 +46,17 @@ final class RankingCalculator
         return $this->sortRanking($rows, $config, $seedRows, $matches, $project, $useFinalTableRank);
     }
 
-    /** @param array<int, RankingRow> $rows @param array<int, object> $matches */
+    /**
+     * Update ranking totals and match statistics from the selected fixtures.
+     * Applies win, draw, loss, bonus, overtime, shootout and administrative decisions to eligible teams, including special small-bore and Faustball scoring.
+     *
+     * @param array<int,RankingRow> $rows Ranking rows modified in place.
+     * @param array<int,object> $matches Matches whose results contribute to standings.
+     * @param object $project Project score settings and overtime policy.
+     * @param string $sportType SportsManagement sport-type constant.
+     * @param array<int,int>|null $allowedProjectTeams Optional project-team IDs for a head-to-head subset.
+     * @return void
+     */
     public function applyMatches(array &$rows, array $matches, object $project, string $sportType, ?array $allowedProjectTeams = null): void
     {
         if ($sportType === 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION') {
@@ -149,6 +164,15 @@ final class RankingCalculator
         }
     }
 
+    /**
+     * Accumulate individual small-bore shooting scores and per-round rings.
+     * Uses the sport's specialist ring totals rather than generic win/draw match points and optionally restricts matches to the selected head-to-head teams.
+     *
+     * @param array<int,RankingRow> $rows Team rows receiving shooting scores.
+     * @param array<int,object> $matches Scored rifle fixtures.
+     * @param array<int,int>|null $allowedProjectTeams Optional subset of eligible project teams.
+     * @return void
+     */
     private function applySmallBoreMatches(array &$rows, array $matches, ?array $allowedProjectTeams): void
     {
         foreach ($matches as $match) {
@@ -175,7 +199,14 @@ final class RankingCalculator
         }
     }
 
-    /** @return array{0:float,1:float,2:float} */
+    /**
+     * Choose the win, draw and loss point values for a result category.
+     * Parses the project's regular-time, extra-time or penalty point list, using the standard three, one and zero defaults when no values are supplied.
+     *
+     * @param object $project Project scoring configuration.
+     * @param int $resultType Regular, overtime or penalty result type.
+     * @return array{0:float,1:float,2:float} Points for a win, draw and loss.
+     */
     private function pointsForResultType(object $project, int $resultType): array
     {
         $source = match ($resultType) {
@@ -191,6 +222,15 @@ final class RankingCalculator
         ];
     }
 
+    /**
+     * Record the outcome counters for a home team's ordinary or overtime win.
+     * Updates the matching home-win and away-loss counters for regular time, extra time or a shootout decision.
+     *
+     * @param RankingRow $home Home team standing row.
+     * @param RankingRow $away Away team standing row.
+     * @param int $resultType Regular, overtime or shootout result category.
+     * @return void
+     */
     private function recordHomeWin(RankingRow $home, RankingRow $away, int $resultType): void
     {
         if ($resultType === 0) {
@@ -202,6 +242,15 @@ final class RankingCalculator
         }
     }
 
+    /**
+     * Record the outcome counters for an away team's ordinary or overtime win.
+     * Increments the home-loss and away-win statistics according to the match's regular, overtime or shootout result type.
+     *
+     * @param RankingRow $home Home team standing row.
+     * @param RankingRow $away Away team standing row.
+     * @param int $resultType Regular, overtime or shootout result category.
+     * @return void
+     */
     private function recordAwayWin(RankingRow $home, RankingRow $away, int $resultType): void
     {
         if ($resultType === 0) {
@@ -213,6 +262,19 @@ final class RankingCalculator
         }
     }
 
+    /**
+     * Record drawn regular-time matches and their later overtime or shootout winners.
+     * Counts ordinary draws immediately, or examines overtime and shootout scores to update the appropriate win/loss counters.
+     *
+     * @param RankingRow $home Home team standing row.
+     * @param RankingRow $away Away team standing row.
+     * @param int $resultType Regular-time, overtime or shootout category.
+     * @param float $homeOt Home overtime score.
+     * @param float $awayOt Away overtime score.
+     * @param float $homeSo Home shootout score.
+     * @param float $awaySo Away shootout score.
+     * @return void
+     */
     private function recordDraw(RankingRow $home, RankingRow $away, int $resultType, float $homeOt, float $awayOt, float $homeSo, float $awaySo): void
     {
         if ($resultType === 0) {
@@ -228,6 +290,16 @@ final class RankingCalculator
         if ($homeSo < $awaySo) { $away->cnt_wso++; $away->cnt_wso_away++; $home->cnt_lso++; $home->cnt_lso_home++; }
     }
 
+    /**
+     * Apply an administrative match decision to both teams' standings.
+     * Dispatches the recorded winner code to home-win, away-win, both-win or both-loss accounting and awards configured win points as appropriate.
+     *
+     * @param int $winner Administrative result code for the winning side or both sides.
+     * @param RankingRow $home Home team standing row.
+     * @param RankingRow $away Away team standing row.
+     * @param float $winPoints Points awarded for an administrative win.
+     * @return void
+     */
     private function recordDecision(int $winner, RankingRow $home, RankingRow $away, float $winPoints): void
     {
         match ($winner) {
@@ -238,26 +310,81 @@ final class RankingCalculator
         };
     }
 
+    /**
+     * Award an administratively decided win to the home team.
+     * Increments the home win and away loss counters and credits the home row with the configured win points.
+     *
+     * @param RankingRow $home Home ranking row.
+     * @param RankingRow $away Away ranking row.
+     * @param float $points Win points to award.
+     * @return void
+     */
     private function decisionHome(RankingRow $home, RankingRow $away, float $points): void
     {
         $home->cnt_won++; $away->cnt_lost++; $home->sum_points += $points; $away->cnt_lost_home++;
     }
 
+    /**
+     * Award an administratively decided win to the away team.
+     * Increments the away win and home loss counters and credits the away row with the configured win points.
+     *
+     * @param RankingRow $home Home ranking row.
+     * @param RankingRow $away Away ranking row.
+     * @param float $points Win points to award.
+     * @return void
+     */
     private function decisionAway(RankingRow $home, RankingRow $away, float $points): void
     {
         $away->cnt_won++; $home->cnt_lost++; $away->sum_points += $points; $home->cnt_lost_home++;
     }
 
+    /**
+     * Record an administrative result granting a win to both teams.
+     * Credits the two participants with the configured number of win points and increments their win totals.
+     *
+     * @param RankingRow $home Home ranking row.
+     * @param RankingRow $away Away ranking row.
+     * @param float $points Win points awarded to each side.
+     * @return void
+     */
     private function decisionBothWin(RankingRow $home, RankingRow $away, float $points): void
     {
         $home->cnt_won++; $away->cnt_won++; $home->sum_points += $points; $away->sum_points += $points;
     }
 
+    /**
+     * Record an administrative result that counts as a loss for both teams.
+     * Increments the loss counters for each participant without awarding result points.
+     *
+     * @param RankingRow $home Home ranking row.
+     * @param RankingRow $away Away ranking row.
+     * @return void
+     */
     private function decisionBothLose(RankingRow $home, RankingRow $away): void
     {
         $home->cnt_lost++; $away->cnt_lost++; $home->cnt_lost_home++; $away->cnt_lost_home++;
     }
 
+    /**
+     * Accumulate team scores and sport-specific ranking comparison statistics.
+     * Updates score totals and differences for goals, legs, match points, sets and games, including Faustball ball totals when applicable.
+     *
+     * @param RankingRow $row Team row receiving the updated totals.
+     * @param float $for Scores achieved by the team.
+     * @param float $against Scores conceded by the team.
+     * @param float $legsFor Legs won.
+     * @param float $legsAgainst Legs conceded.
+     * @param float $matchPointsFor Individual match points won.
+     * @param float $matchPointsAgainst Individual match points conceded.
+     * @param float $setsFor Sets won.
+     * @param float $setsAgainst Sets conceded.
+     * @param float $gamesFor Games won.
+     * @param float $gamesAgainst Games conceded.
+     * @param float $ballsFor Faustball balls won.
+     * @param float $ballsAgainst Faustball balls conceded.
+     * @param string $sportType Current sport-type identifier.
+     * @return void
+     */
     private function addResultStats(
         RankingRow $row,
         float $for,
@@ -300,7 +427,18 @@ final class RankingCalculator
         }
     }
 
-    /** @param array<int, RankingRow> $rows @return array<int, RankingRow> */
+    /**
+     * Apply ordered ranking criteria while keeping equal teams grouped for tie-breaking.
+     * Evaluates each configured criterion in sequence, recalculates head-to-head subtables when needed and assigns stable rank values to tied and untied teams.
+     *
+     * @param array<int,RankingRow> $rows Newly calculated standings.
+     * @param array $config Ranking criteria and sort directions.
+     * @param array<int,RankingRow> $seedRows Original unmodified ranking rows.
+     * @param array<int,object> $matches Match records used for head-to-head comparisons.
+     * @param object $project Project sport and scoring configuration.
+     * @param bool $useFinalTableRank Whether saved final positions override match tie-breakers.
+     * @return array<int,RankingRow> Standings ordered and annotated with ranks.
+     */
     private function sortRanking(array $rows, array $config, array $seedRows, array $matches, object $project, bool $useFinalTableRank): array
     {
         $criteria = $useFinalTableRank
@@ -351,7 +489,17 @@ final class RankingCalculator
         return $result;
     }
 
-    /** @param array<int, RankingRow>|null $h2h */
+    /**
+     * Compare two ranking rows according to a configured tie-break criterion.
+     * Resolves head-to-head values where available, selects the criterion's natural sort direction and compares points, score differences, win ratios and other ranking metrics.
+     *
+     * @param string $criterion Criterion name from the ranking template.
+     * @param RankingRow $a First team standing.
+     * @param RankingRow $b Second team standing.
+     * @param string $order Requested ordering direction.
+     * @param array<int,RankingRow>|null $h2h Optional head-to-head standings for tied teams.
+     * @return int Signed comparator result for uasort and tie detection.
+     */
     private function compare(string $criterion, RankingRow $a, RankingRow $b, string $order, ?array $h2h): int
     {
         $criterion = strtolower($criterion);
@@ -404,7 +552,13 @@ final class RankingCalculator
         return $direction === 'DESC' ? -$comparison : $comparison;
     }
 
-    /** @param array<int, RankingRow> $rows @return array<int, RankingRow> */
+    /**
+     * Copy ranking rows and attached team records before calculating a new table.
+     * Prevents a ranking request from modifying the caller's cached seed rows or nested team objects while updating match results.
+     *
+     * @param array<int,RankingRow> $rows Original ranking team objects.
+     * @return array<int,RankingRow> Independent copies with cloned team metadata.
+     */
     private function cloneRows(array $rows): array
     {
         $copy = [];
