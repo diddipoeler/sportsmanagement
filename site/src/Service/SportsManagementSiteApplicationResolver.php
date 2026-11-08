@@ -21,7 +21,8 @@ final class SportsManagementSiteApplicationResolver
      *
      * Prevents administrator or missing application services from being used
      * to handle SportsManagement frontend requests and removes reliance on
-     * the legacy static Joomla application factory.
+     * the legacy static Joomla application factory. Container failures are
+     * converted into a predictable runtime exception, retaining the cause.
      *
      * @return SiteApplication Active Joomla frontend application.
      * @throws \RuntimeException When no matching site service is available.
@@ -29,7 +30,11 @@ final class SportsManagementSiteApplicationResolver
     public static function resolve(): SiteApplication
     {
         // Use Joomla's application service instead of the removed legacy Factory::getApplication() API.
-        $app = Factory::getContainer()->get(SiteApplication::class);
+        try {
+            $app = Factory::getContainer()->get(SiteApplication::class);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException('SportsManagement site application service could not be resolved.', 500, $exception);
+        }
 
         if (!$app instanceof SiteApplication || !$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement site application is unavailable.', 500);
