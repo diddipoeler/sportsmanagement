@@ -29,7 +29,9 @@ final class IndividualMatchReadService
 
     /**
      * Fetch the individual games played by a season-team person for a project team.
-     * Restricts the query to the owning project's rounds, selected project team, person, match type and HOME/AWAY side; invalid identifiers return no games.
+     * Restricts the query to the owning project's rounds, selected project team,
+     * person, match type and HOME/AWAY side. Rejects invalid record IDs and
+     * unsupported match-type values before querying the Joomla database.
      *
      * @param int $projectId Owning project identifier.
      * @param int $projectTeamId Project-team relation identifier.
@@ -45,7 +47,9 @@ final class IndividualMatchReadService
         string $matchType = 'SINGLE',
         string $homeAway = 'HOME'
     ): array {
-        if ($projectId <= 0 || $projectTeamId <= 0 || $seasonTeamPersonId <= 0) {
+        if ($projectId <= 0 || $projectTeamId <= 0 || $seasonTeamPersonId <= 0
+            || $matchType === '' || strlen($matchType) > 32
+            || preg_match('/^[A-Za-z0-9_]+$/D', $matchType) !== 1) {
             return [];
         }
 
