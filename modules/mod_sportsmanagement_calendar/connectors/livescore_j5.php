@@ -95,7 +95,10 @@ final class LivescoreConnector extends JSMCalendar
 
     /**
      * Query games from the configured LiveScore table during the requested dates.
-     * Checks the Joomla frontend context, quotes the selected table and date boundaries, and normalises the sort direction before loading the games.
+     * Checks the Joomla frontend context, validates both inclusive ISO date
+     * boundaries, quotes the selected table and values, and normalises sort
+     * order. Malformed or reversed date windows return no rows instead of
+     * querying the entire LiveScore table.
      *
      * @param array $caldates Requested calendar start and end timestamps.
      * @param string $ordering ASC or DESC date order.
@@ -109,6 +112,15 @@ final class LivescoreConnector extends JSMCalendar
             throw new \RuntimeException('SportsManagement Calendar LiveScore requires the Joomla site application.', 500);
         }
 
+        $start = self::normaliseBoundary($caldates['start'] ?? null);
+        $end = self::normaliseBoundary($caldates['end'] ?? null);
+
+        // A missing or malformed window must not scan the complete external
+        // LiveScore table for an otherwise ordinary calendar request.
+        if ($start === null || $end === null || $start > $end) {
+            return [];
+        }
+
         $db = self::joomlaDatabase();
         $table = $this->connectorPrefix !== ''
             ? str_replace('#__', $this->connectorPrefix, '#__livescore_games')
@@ -119,16 +131,50 @@ final class LivescoreConnector extends JSMCalendar
             ->select('*')
             ->from($db->quoteName($table));
 
-        if (!empty($caldates['start'])) {
-            $query->where($db->quoteName('mdate') . ' >= ' . $db->quote((string) $caldates['start']));
-        }
-        if (!empty($caldates['end'])) {
-            $query->where($db->quoteName('mdate') . ' <= ' . $db->quote((string) $caldates['end']));
-        }
+        $query->where($db->quoteName('mdate') . ' >= ' . $db->quote($start));
+        $query->where($db->quoteName('mdate') . ' <= ' . $db->quote($end));
 
         $query->order($db->quoteName('mdate') . ' ' . $direction);
 
         return $db->setQuery($query)->loadObjectList() ?: [];
+    }
+
+    /**
+     * Validate an inclusive LiveScore date boundary before constructing SQL.
+     *
+     * Accepts the legacy module's ISO calendar day or full database timestamp.
+     * The round-trip date and time checks reject invalid days and times rather
+     * than letting PHP roll them into a different date. Non-string settings,
+     * empty values and unexpected formats return null.
+     *
+     * @param mixed $value Calendar date boundary from module runtime data.
+     * @return string|null Validated ISO boundary or null for malformed input.
+     */
+    private static function normaliseBoundary(mixed $value): ?string
+    {
+        if (!is_string($value)) {
+            return null;
+        }
+
+        $value = trim($value);
+        $format = match (strlen($value)) {
+            10 => 'Y-m-d',
+            19 => 'Y-m-d H:i:s',
+            default => null,
+        };
+
+        if ($format === null) {
+            return null;
+        }
+
+        $parsed = \DateTimeImmutable::createFromFormat('!' . $format, $value);
+        $errors = \DateTimeImmutable::getLastErrors();
+
+        return $parsed instanceof \DateTimeImmutable
+            && $parsed->format($format) === $value
+            && (!is_array($errors) || ($errors['warning_count'] === 0 && $errors['error_count'] === 0))
+            ? $value
+            : null;
     }
 
     /**
