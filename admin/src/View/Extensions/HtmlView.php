@@ -24,6 +24,12 @@ final class HtmlView extends BaseHtmlView
 {
     public array $sporttypes = [];
 
+    /**
+     * Render the native administrator extensions overview.
+     * Reads the enabled SportsManagement sport types, registers the overview icon stylesheet with Joomla's WebAssetManager for HTML documents, builds the toolbar and delegates rendering to the Joomla MVC view.
+     * @param string|null $tpl Optional template layout override.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $sporttypes = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_sport_types', []);
@@ -43,6 +49,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Build a local extension shortcut with accessible direction and link behaviour.
+     * Uses the administrator language direction for icon alignment, renders a Joomla-managed icon asset, escapes visible text and link URL, and adds safe new-tab attributes when requested.
+     * @param string $image Icon filename under the component assets/icons directory.
+     * @param string $url Target administrator or extension URL.
+     * @param string $text Translated shortcut label.
+     * @param bool $newWindow Open the link in a separate tab when true.
+     * @return string HTML for the extension shortcut tile.
+     */
     public function addIcon(string $image, string $url, string $text, bool $newWindow = false): string
     {
         $language = self::administratorApplication()->getLanguage();
@@ -60,6 +75,12 @@ final class HtmlView extends BaseHtmlView
             . $icon . '<span>' . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</span></a></div></div>';
     }
 
+    /**
+     * Resolve the active Joomla administrator application from the service container.
+     * Uses the Joomla 5/6 container instead of deprecated global application access and rejects attempts to render the administrator extensions view on the site client.
+     * @return AdministratorApplication Validated administrator application.
+     * @throws \RuntimeException When the current application is not administrator.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -72,6 +93,11 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Configure navigation and title for the SportsManagement extensions page.
+     * Adds a back action to the component control panel and the translated manager title using Joomla's supported administrator toolbar helper.
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::back('JPREV', 'index.php?option=com_sportsmanagement&view=cpanel');

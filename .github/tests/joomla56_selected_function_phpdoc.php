@@ -77,6 +77,20 @@ $paths = [
     'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php',
     'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php',
 ];
+
+// Keep the documented Joomla 5/6 router, image, database and admin view
+// contracts covered alongside all native frontend and administrator modules.
+$paths = array_merge($paths, [
+    'site/router.php',
+    'site/src/Controller/ImagehandlerController.php',
+    'site/src/Service/SportsManagementDatabaseResolver.php',
+    'admin/src/View/Extensions/HtmlView.php',
+    'admin/modules/mod_sportsmanagement_quickicon/services/provider.php',
+]);
+foreach (glob($root . '/modules/mod_sportsmanagement_*/services/provider.php') ?: [] as $provider) {
+    $paths[] = substr($provider, strlen($root) + 1);
+}
+$paths = array_values(array_unique($paths));
 $errors = [];
 $methods = 0;
 

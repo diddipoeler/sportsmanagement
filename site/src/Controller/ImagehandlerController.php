@@ -25,6 +25,12 @@ use Joomla\Http\HttpFactory;
 /** Joomla 5/6 frontend image upload/delete controller. */
 final class ImagehandlerController extends BaseController
 {
+    /**
+     * Handle an authorised frontend image upload or remote-image import.
+     * Checks the POST CSRF token and component upload permissions, selects the configured image directory, validates file or remote URL input, stores the permitted image and reports the filename to the parent Joomla modal.
+     * @return void
+     * @throws \RuntimeException When the request is forged or the user lacks access.
+     */
     public function upload(): void
     {
         if (!Session::checkToken('post')) {
@@ -80,6 +86,12 @@ final class ImagehandlerController extends BaseController
         $this->closeModal($type, $filename, $field, $fieldId);
     }
 
+    /**
+     * Delete selected SportsManagement images from an authorised frontend request.
+     * Verifies the CSRF token and delete permission, validates each basename before touching disk, removes existing original and thumbnail files, and redirects back to the image manager.
+     * @return void
+     * @throws \RuntimeException When the request fails CSRF or authorisation.
+     */
     public function delete(): void
     {
         if (!Session::checkToken('post')) {
@@ -154,6 +166,13 @@ final class ImagehandlerController extends BaseController
         }
     }
 
+    /**
+     * Resolve a permitted SportsManagement image directory below the site root.
+     * Normalises configured directory separators, rejects empty or traversal path elements, optionally creates the directory through Joomla's filesystem API, and returns null when unavailable.
+     * @param string $folder Image category subdirectory relative to the component image root.
+     * @param bool $create Whether a missing category directory may be created.
+     * @return string|null Absolute directory path with trailing separator, or null.
+     */
     private function imageBaseDirectory(string $folder, bool $create = true): ?string
     {
         $folder = trim(str_replace('\\', '/', $folder), '/');
@@ -182,6 +201,13 @@ final class ImagehandlerController extends BaseController
         return is_dir($directory) ? rtrim($directory, '/\\') . '/' : null;
     }
 
+    /**
+     * Store an uploaded temporary file in the selected image directory.
+     * Rejects nonexistent or oversized sources, delegates the move to Joomla's filesystem upload helper, and logs storage failures instead of exposing filesystem details.
+     * @param string $source Server-side temporary upload path.
+     * @param string $target Validated destination path within the image directory.
+     * @return bool Whether Joomla successfully stored the uploaded file.
+     */
     private function uploadFile(string $source, string $target): bool
     {
         if (!is_file($source) || filesize($source) > $this->maxImageBytes()) {
@@ -196,6 +222,13 @@ final class ImagehandlerController extends BaseController
         }
     }
 
+    /**
+     * Download a validated public image into the SportsManagement image directory.
+     * Checks URL scheme, host and extension, disallows HTTP redirects, applies request and size limits, verifies the decoded image MIME type, and writes the image only when all checks succeed.
+     * @param string $url Requested remote image URL.
+     * @param string $baseDir Validated local destination directory.
+     * @return string|null Stored image basename, or null when rejected or unavailable.
+     */
     private function downloadRemoteImage(string $url, string $baseDir): ?string
     {
         $parts = $this->validateRemoteImageUrl($url);
@@ -291,6 +324,12 @@ final class ImagehandlerController extends BaseController
         return $parts;
     }
 
+    /**
+     * Validate a remote image hostname against private-network destinations.
+     * Checks IP literals directly or validates DNS labels and all resolved A/AAAA addresses, rejecting local, private and otherwise unroutable hosts before the HTTP request.
+     * @param string $host Hostname or IP literal from a parsed image URL.
+     * @return bool True only when every discovered address is publicly routable.
+     */
     private function isPublicRemoteHost(string $host): bool
     {
         $host = strtolower(rtrim(trim($host), '.'));
@@ -358,6 +397,12 @@ final class ImagehandlerController extends BaseController
         return true;
     }
 
+    /**
+     * Check whether an IP address is suitable for a public image fetch.
+     * Uses PHP's public-IP validation and additionally excludes IPv4 carrier-grade NAT and benchmarking address blocks that must not be reached server-side.
+     * @param string $address IPv4 or IPv6 address returned by DNS or URL parsing.
+     * @return bool Whether the address is allowed as a remote image host.
+     */
     private function isPublicRemoteIp(string $address): bool
     {
         if (filter_var(
@@ -381,6 +426,11 @@ final class ImagehandlerController extends BaseController
         return true;
     }
 
+    /**
+     * Compute the component's maximum permitted image payload size.
+     * Reads the configured size in kibibytes, enforces a positive minimum and converts it to bytes for both uploaded and downloaded image checks.
+     * @return int Maximum accepted image payload size in bytes.
+     */
     private function maxImageBytes(): int
     {
         return max(
@@ -389,6 +439,12 @@ final class ImagehandlerController extends BaseController
         ) * 1024;
     }
 
+    /**
+     * Normalise a selected image filename before deletion.
+     * Rejects null bytes, path separators, dot traversal and filenames changed by Joomla's path filter so deletion remains confined to the selected image directory.
+     * @param string $image Filename submitted by the image manager.
+     * @return string|null Safe image basename, or null when invalid.
+     */
     private function normaliseImageName(string $image): ?string
     {
         $image = trim(str_replace('\\', '/', $image), '/');
@@ -404,6 +460,15 @@ final class ImagehandlerController extends BaseController
         return $image;
     }
 
+    /**
+     * Notify the parent image selector and close the Joomla modal.
+     * JSON-encodes each callback argument with HTML-safe flags, calls the matching parent selector when available and closes the active Joomla modal without interpolating raw input into JavaScript.
+     * @param string $type Image category used to select the callback.
+     * @param string $filename Newly stored image basename.
+     * @param string $field Target field identifier in the parent form.
+     * @param string $fieldId Target field record identifier.
+     * @return void
+     */
     private function closeModal(string $type, string $filename, string $field, string $fieldId): void
     {
         // Values are embedded inside a <script> element. Escape HTML delimiters
@@ -424,9 +489,15 @@ final class ImagehandlerController extends BaseController
             . '</script>';
     }
 
+    /**
+     * Display a safe browser alert when image processing fails.
+     * Encodes the translated message as a script-safe JSON string before showing an alert and returning the user to the previous browser page.
+     * @param string $message Public-facing, translated error message.
+     * @return void
+     */
     private function showError(string $message): void
     {
-        echo '<script>alert(' . json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        echo '<script>alert(' . json_encode($message, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR)
             . ');window.history.go(-1);</script>';
     }
 }

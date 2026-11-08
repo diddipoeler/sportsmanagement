@@ -66,11 +66,23 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
 {
     private const COMPONENT = 'com_sportsmanagement';
 
+    /**
+     * Resolve the Joomla site application for legacy router calls.
+     * Delegates application lookup to the native site resolver so routing always uses the active Joomla 5/6 site context rather than a global application instance.
+     * @return CMSApplicationInterface Active site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Initialise the legacy-compatible router with Joomla dependencies.
+     * Uses the supplied site application and menu when invoked by Joomla's legacy router bridge; otherwise resolves them from the active site application before constructing the native router.
+     * @param CMSApplicationInterface|null $app Optional Joomla site application.
+     * @param AbstractMenu|null $menu Optional menu service belonging to that application.
+     * @return void
+     */
     public function __construct(?CMSApplicationInterface $app = null, ?AbstractMenu $menu = null)
     {
         $app ??= self::siteApplication();
@@ -172,6 +184,13 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
         return $vars;
     }
 
+    /**
+     * Determine whether an existing menu item can serve this view and language.
+     * Rejects non-object or foreign-component menu entries, verifies the requested view, and accepts only the active language or a language-neutral wildcard.
+     * @param mixed $item Menu item returned by Joomla's menu service.
+     * @param string $view Normalised SportsManagement view name.
+     * @return bool True if the menu entry is suitable for routing.
+     */
     private function isLanguageCompatibleMenuItem($item, string $view): bool
     {
         if (!is_object($item)) {
@@ -192,6 +211,13 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
         return $language === '*' || $currentLanguage === '' || $language === $currentLanguage;
     }
 
+    /**
+     * Select the most suitable accessible menu item for a frontend route.
+     * Scans published SportsManagement menus, excludes inaccessible or foreign-language entries and scores remaining candidates against the route parameters. Ties are resolved deterministically by the smallest menu ID.
+     * @param array $query Validated route variables and optional current Itemid.
+     * @param string $view Normalised frontend view being linked.
+     * @return object|null Best compatible menu item or null when none exists.
+     */
     private function findLanguageCompatibleMenuItem(array $query, string $view): ?object
     {
         $items = $this->menu->getItems('component', self::COMPONENT);
@@ -290,6 +316,11 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
         return $best;
     }
 
+    /**
+     * Read the current Joomla site language tag for multilingual routes.
+     * Returns the language service's tag when available; falls back to an empty value for compatible applications without an exposed language service.
+     * @return string Active language tag, or an empty string if unavailable.
+     */
     private function getCurrentLanguageTag(): string
     {
         if (!method_exists($this->app, 'getLanguage')) {

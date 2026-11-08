@@ -19,6 +19,13 @@ use Joomla\Registry\Registry;
 
 final class SportsManagementDatabaseResolver
 {
+    /**
+     * Choose the authorised database connection for SportsManagement site reads.
+     * Returns Joomla's connection by default, honours component or caller requests for an external database, and falls back to Joomla when connection or entitlement verification fails.
+     * @param DatabaseInterface $joomlaDatabase Joomla-managed fallback connection.
+     * @param int $selector Legacy database selector; 1 explicitly requests external storage.
+     * @return DatabaseInterface Authorised external or Joomla database connection.
+     */
     public static function resolve(DatabaseInterface $joomlaDatabase, int $selector = 0): DatabaseInterface
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -42,6 +49,13 @@ final class SportsManagementDatabaseResolver
         }
     }
 
+    /**
+     * Create a driver-backed SportsManagement external database connection.
+     * Reads connection settings from the component registry, normalises the Joomla database driver name and constructs the connection through DatabaseFactory without using removed legacy database APIs.
+     * @param Registry $params Component configuration containing external connection settings.
+     * @return DatabaseInterface Configured external database driver.
+     * @throws \Throwable When the database driver or configuration is invalid.
+     */
     private static function connectExternal(Registry $params): DatabaseInterface
     {
         $factory = new DatabaseFactory();
@@ -133,6 +147,12 @@ final class SportsManagementDatabaseResolver
             && $now >= $from && $now <= $to;
     }
 
+    /**
+     * Parse a strict UTC entitlement date without accepting relative time strings.
+     * Rejects empty dates, zero-date placeholders and malformed calendar or timestamp values, then returns the exact UNIX timestamp for a valid database date.
+     * @param string $value Stored YYYY-MM-DD or YYYY-MM-DD HH:MM:SS value.
+     * @return int|null UTC timestamp, or null for invalid input.
+     */
     private static function timestamp(string $value): ?int
     {
         $value = trim($value);
@@ -160,6 +180,12 @@ final class SportsManagementDatabaseResolver
         return $date->getTimestamp();
     }
 
+    /**
+     * Convert historical database driver names into Joomla 5/6 driver identifiers.
+     * Maps the PostgreSQL alias to pgsql, supplies mysqli for an unset driver and preserves other configured driver identifiers for DatabaseFactory validation.
+     * @param string $driver Legacy or native driver setting.
+     * @return string Normalised Joomla database driver name.
+     */
     private static function normaliseDriver(string $driver): string
     {
         $driver = strtolower(trim($driver));
