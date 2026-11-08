@@ -20,11 +20,27 @@ use Joomla\Database\DatabaseInterface;
  */
 final class ExtraFieldsSaveHelper
 {
+    /**
+     * Resolve the Joomla administrator application for saving extra fields.
+     *
+     * @return CMSApplicationInterface Active Joomla administrator context.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Persist validated user extra-field values for an administrator entity.
+     *
+     * Ignores invalid field IDs and nested values, handles save-as-copy path
+     * compatibility, and avoids inserting replacements when deletes fail.
+     *
+     * @param array<string,mixed> $post Submitted extra-field form input.
+     * @param int $itemId Identifier of the saved entity.
+     * @param DatabaseInterface|null $database Optional injected database driver.
+     * @return void
+     */
     public function save(array $post, int $itemId, ?DatabaseInterface $database = null): void
     {
         if ($itemId <= 0 || empty($post['extraf']) || !is_array($post['extraf'])) {
@@ -97,6 +113,10 @@ final class ExtraFieldsSaveHelper
 
     /**
      * Preserve the historic save2copy path mutation for extra fields 34 and 69.
+     *
+     * @param string $value Slash-separated path-like stored value.
+     * @param int $segment Path element containing the numeric copy counter.
+     * @return string Value with the legacy counter incremented.
      */
     private function incrementPathSegment(string $value, int $segment): string
     {
@@ -112,7 +132,14 @@ final class ExtraFieldsSaveHelper
         return implode('/', $parts);
     }
 
-    /** Reject partial numeric, boolean, nested and overflowing field identifiers. */
+    /**
+     * Validate one positive extra-field identifier without lossy coercion.
+     *
+     * Rejects booleans, nested values, malformed and overflowing numbers.
+     *
+     * @param mixed $value Raw submitted field ID.
+     * @return int Positive field identifier, or zero if invalid.
+     */
     private static function positiveFieldId(mixed $value): int
     {
         if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
@@ -129,6 +156,14 @@ final class ExtraFieldsSaveHelper
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Report a failed extra-field operation using Joomla's generic message.
+     *
+     * Full diagnostic details remain in the internal component server log.
+     *
+     * @param \Throwable $e Database failure to log.
+     * @return void
+     */
     private function reportDatabaseError(\Throwable $e): void
     {
         // Keep connection strings, SQL and filesystem locations in the
