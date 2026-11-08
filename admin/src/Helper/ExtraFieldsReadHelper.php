@@ -20,12 +20,29 @@ use Joomla\Database\DatabaseInterface;
  */
 final class ExtraFieldsReadHelper
 {
+    /**
+     * Resolve the Joomla administrator application for generic error notices.
+     *
+     * @return CMSApplicationInterface Active administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
-    /** @return array<int, object> */
+    /**
+     * Load field definitions and saved values for one administrator entity.
+     *
+     * Selects only the supported backend/frontend template column and uses
+     * exact template names rather than SQL LIKE wildcard matching. Invalid
+     * IDs or template settings return no records without querying the DB.
+     *
+     * @param int $itemId Entity identifier whose extra fields are requested.
+     * @param string $view Exact extra-field template/view identifier.
+     * @param string $template Either backend or frontend.
+     * @param DatabaseInterface|null $database Optional injected Joomla driver.
+     * @return array<int,object> Ordered extra fields with optional item values.
+     */
     public function getFields(
         int $itemId,
         string $view,
@@ -33,9 +50,8 @@ final class ExtraFieldsReadHelper
         ?DatabaseInterface $database = null
     ): array {
         $view = trim($view);
-        $template = preg_replace('/[^A-Za-z0-9_]/', '', trim($template)) ?: 'backend';
-
-        if ($itemId <= 0 || $view === '') {
+        if ($itemId <= 0 || $view === '' || strlen($view) > 255
+            || !in_array($template, ['backend', 'frontend'], true)) {
             return [];
         }
 
@@ -55,7 +71,7 @@ final class ExtraFieldsReadHelper
                     . ' ON ' . $db->quoteName('ef.id') . ' = ' . $db->quoteName('ev.field_id')
                     . ' AND ' . $db->quoteName('ev.jl_id') . ' = ' . $itemId
                 )
-                ->where($db->quoteName('ef.' . $templateColumn) . ' LIKE ' . $db->quote($view))
+                ->where($db->quoteName('ef.' . $templateColumn) . ' = ' . $db->quote($view))
                 ->order($db->quoteName('ef.ordering') . ' ASC');
 
             $db->setQuery($query);
@@ -68,6 +84,12 @@ final class ExtraFieldsReadHelper
         }
     }
 
+    /**
+     * Log database failures privately and display a generic Joomla warning.
+     *
+     * @param \Throwable $e Error thrown while building or executing the query.
+     * @return void
+     */
     private function reportDatabaseError(\Throwable $e): void
     {
         // Keep SQL statements, connection details and filesystem paths in
