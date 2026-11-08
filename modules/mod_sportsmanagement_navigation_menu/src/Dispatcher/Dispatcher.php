@@ -25,7 +25,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Build the navigation menu context for Joomla's site module renderer.
      *
-     * Loads component translations, queries native navigation data and registers the CSS and deferred script without allowing helper results to overwrite Joomla's module context.
+     * Loads component translations, queries native navigation data and
+     * registers CSS and deferred scripts without allowing helper results
+     * to overwrite Joomla's module context. Invalid module database
+     * selections return false before any navigation links are rendered.
      *
      * @return array|false Layout variables, or false if Joomla skips rendering.
      * @throws \RuntimeException When called outside the site or without a database.
@@ -59,6 +62,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             ->getData($data['params'], $app, $joomlaDatabase);
 
         $payload = is_array($payload) ? $payload : [];
+
+        if ($payload === []) {
+            // Invalid database configuration must not render with missing
+            // navigation selectors or an unintentionally chosen database.
+            return false;
+        }
 
         // Keep the Joomla-provided module, params and layout immutable.
         unset($payload['module'], $payload['params'], $payload['layout']);

@@ -63,7 +63,9 @@ class NavigationMenuHelper
      * Configure native module navigation data for the current request.
      * Resolves the requested SportsManagement database, reads project
      * and team state and returns the helper plus selectors required by
-     * the Joomla module layout.
+     * the Joomla module layout. Malformed external database selectors
+     * produce an empty payload so the native dispatcher can safely skip
+     * rendering instead of silently changing the database connection.
      * @param Registry $params Navigation module configuration.
      * @param CMSApplicationInterface $app Site application context.
      * @param DatabaseInterface $joomlaDatabase Base database connection.
@@ -76,9 +78,17 @@ class NavigationMenuHelper
     ): array {
         $this->params = $params;
         $this->app = $app;
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($selector === null) {
+            // A malformed legacy setting must never become a different
+            // database connection through lossy PHP integer conversion.
+            return [];
+        }
+
         $this->db = SportsManagementDatabaseResolver::resolve(
             $joomlaDatabase,
-            (int) $params->get('cfg_which_database', 0)
+            $selector
         );
         $this->initialiseState();
 
@@ -92,6 +102,30 @@ class NavigationMenuHelper
             'defaultview' => (string) $params->get('project_start', 'ranking'),
             'defaultitemid' => (int) $params->get('custom_item_id', 0),
         ];
+    }
+
+    /**
+     * Validate the native module's primary or external database selection.
+     *
+     * Accepts only zero or one, including decimal strings with optional
+     * leading zeros. Rejects arrays, booleans, negative, floating-point
+     * and partially numeric values before the Joomla database resolver
+     * can access an unintended configured external connection.
+     *
+     * @param mixed $raw Saved cfg_which_database module parameter.
+     * @return int|null Valid selector, or null for malformed configuration.
+     */
+    private static function databaseSelector(mixed $raw): ?int
+    {
+        if (is_int($raw)) {
+            return $raw === 0 || $raw === 1 ? $raw : null;
+        }
+
+        if (!is_string($raw) || !preg_match('/^0*([01])$/D', $raw, $matches)) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 
     /**

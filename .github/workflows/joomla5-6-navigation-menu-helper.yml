@@ -9,6 +9,7 @@ on:
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/tests/joomla56_navigation_database_selector.php'
       - '.github/workflows/joomla5-6-navigation-menu-helper.yml'
   pull_request:
     branches:
@@ -18,14 +19,23 @@ on:
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - 'site/src/Helper/SiteRouteHelper.php'
       - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - '.github/tests/joomla56_navigation_database_selector.php'
       - '.github/workflows/joomla5-6-navigation-menu-helper.yml'
 
 jobs:
   helper-contract:
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
 
       - name: Validate navigation helper migration
         shell: bash
@@ -60,5 +70,9 @@ jobs:
             echo 'Navigation Menu helper regressed to a legacy routing/runtime API' >&2
             exit 1
           fi
+
+          php -l .github/tests/joomla56_navigation_database_selector.php
+          php .github/tests/joomla56_navigation_database_selector.php
+          php .github/scripts/check-php-function-docs.php "$base" "$native" "$route"
 
           echo 'Navigation Menu helper contracts OK'

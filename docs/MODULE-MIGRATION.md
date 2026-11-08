@@ -150,3 +150,7 @@ The native quote text reader now looks first in `modules/mod_sportsmanagement_rq
 ## Locale-safe Google Calendar weekday headings (8 November 2026)
 
 The native GCalendar module no longer assumes that the optional PHP mbstring extension is available. `GcalendarHelper::shortWeekdayLabel()` uses `mb_substr()` where present and a Unicode-aware PCRE fallback elsewhere, avoiding split multibyte characters in German, French, Japanese and Chinese weekday labels. The helper has detailed PHPDoc and `joomla56_gcalendar_weekday_utf8.php` runs within the existing calendar-selection PHP 8.3/8.4 regression matrix.
+
+## Navigation menu database selector safety (8 November 2026)
+
+The native Navigation Menu module now validates `cfg_which_database` before selecting the SportsManagement database. Only integer 0/1 and zero-padded decimal equivalents are accepted; malformed arrays, booleans, negative values and partial numeric strings cannot silently redirect the module to a different configured connection. The native dispatcher skips rendering when the helper returns no safe navigation payload, and a PHP 8.3/8.4 test guards both the selector and dispatch contract.
