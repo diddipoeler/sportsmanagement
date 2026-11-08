@@ -45,51 +45,120 @@ class CalendarRenderer
     public $usedteams = '';
     public $usedclubs = '';
 
+    /**
+     * Read the abbreviated weekday labels configured for calendar columns.
+     * Returns the seven translated or overridden day names used to render the month header.
+     *
+     * @return array<int,string> Abbreviated weekday labels.
+     */
     public function getDayNames(): array
     {
         return $this->dayNames;
     }
 
+    /**
+     * Replace the weekday names used by the calendar renderer.
+     * Accepts the translated weekday label array from the module settings without changing the configured calendar start day.
+     *
+     * @param array<int,string> $names Weekday labels indexed in Sunday-to-Saturday order.
+     * @return void
+     */
     public function setDayNames(array $names): void
     {
         $this->dayNames = $names;
     }
 
+    /**
+     * Read the translated month labels used in calendar navigation.
+     * Exposes the configured month names for the monthly grid and list heading.
+     *
+     * @return array<int,string> Twelve month display names.
+     */
     public function getMonthNames(): array
     {
         return $this->monthNames;
     }
 
+    /**
+     * Replace the month labels used in month and match headings.
+     * Stores the translated January-to-December list supplied by Joomla's module configuration.
+     *
+     * @param array<int,string> $names Localised month names ordered from January.
+     * @return void
+     */
     public function setMonthNames(array $names): void
     {
         $this->monthNames = $names;
     }
 
+    /**
+     * Return the configured first weekday of the calendar grid.
+     * Exposes the Sunday-based start-day index used when calculating column positions.
+     *
+     * @return int Index of the first displayed weekday.
+     */
     public function getStartDay(): int
     {
         return $this->startDay;
     }
 
+    /**
+     * Set the configured first weekday of the monthly calendar.
+     * Converts a legacy module parameter to the integer index used to offset weekday headings.
+     *
+     * @param mixed $day Module value representing the calendar's first weekday.
+     * @return void
+     */
     public function setStartDay($day): void
     {
         $this->startDay = (int) $day;
     }
 
+    /**
+     * Return the configured default calendar month.
+     * Supplies the initial month chosen by the module when no explicit request overrides it.
+     *
+     * @return int Default month number.
+     */
     public function getStartMonth(): int
     {
         return $this->startMonth;
     }
 
+    /**
+     * Set the default month used by legacy calendar layouts.
+     * Converts the saved module month preference into the renderer's integer month field.
+     *
+     * @param mixed $month Legacy module value containing a month number.
+     * @return void
+     */
     public function setStartMonth($month): void
     {
         $this->startMonth = (int) $month;
     }
 
+    /**
+     * Build the complete month view payload for a legacy calendar caller.
+     * Delegates grid, match list and team option rendering to getMonthHTML without changing their established return keys.
+     *
+     * @param int|string $month Month to display.
+     * @param int|string $year Year to display.
+     * @return array{calendar:string,list:array,teamslist:array} Calendar rendering payload.
+     */
     public function getMonthView($month, $year): array
     {
         return $this->getMonthHTML($month, $year);
     }
 
+    /**
+     * Render the month grid, navigational links and associated match/team lists.
+     * Normalises month and year, resolves the Joomla site application, creates escaped navigation attributes and renders event-day links only for actionable dates.
+     *
+     * @param int|string $m Requested month.
+     * @param int|string $y Requested year.
+     * @param int|bool $showYear Whether the year is displayed and navigation enabled.
+     * @return array{calendar:string,list:array,teamslist:array} Month HTML and list data.
+     */
     public function getMonthHTML($m, $y, $showYear = 1): array
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
@@ -285,6 +354,14 @@ class CalendarRenderer
         ];
     }
 
+    /**
+     * Normalise out-of-range month numbers across their corresponding years.
+     * Carries month underflow or overflow into the preceding or following year, preserving valid month values from one through twelve.
+     *
+     * @param int $month Month number that may be outside the normal range.
+     * @param int $year Year to adjust when the month crosses a boundary.
+     * @return array{0:int,1:int} Corrected month and year.
+     */
     public function adjustDate($month, $year): array
     {
         $month = (int) $month;
@@ -303,6 +380,14 @@ class CalendarRenderer
         return [$month, $year];
     }
 
+    /**
+     * Calculate the number of days for a month in the given Gregorian year.
+     * Uses configured month lengths and the leap-year rule for February; invalid month numbers return zero.
+     *
+     * @param int $month Requested month number.
+     * @param int $year Calendar year used for leap-year evaluation.
+     * @return int Number of days in the month, or zero for invalid months.
+     */
     public function getDaysInMonth($month, $year): int
     {
         $month = (int) $month;

@@ -38,6 +38,15 @@ class CalendarRuntime extends \PHPCalendar
     public static array $teams = [];
     public static array $teamslist = [];
 
+    /**
+     * Register one team for the calendar's team-filter dropdown.
+     * Ignores nonpositive or already registered team IDs and stores each distinct team's name and optional image for later select-option rendering.
+     *
+     * @param int|string $id Team identifier.
+     * @param string $name Display name of the team.
+     * @param string $pic Optional team image URL.
+     * @return void
+     */
     public static function addTeam($id, string $name = '', string $pic = ''): void
     {
         $id = (int) $id;
@@ -54,6 +63,15 @@ class CalendarRuntime extends \PHPCalendar
         self::$teamslist[] = $team;
     }
 
+    /**
+     * Convert connector strings to UTF-8 when the calendar conversion setting is enabled.
+     * Preserves the original text if conversion is disabled or unnecessary; otherwise tries iconv and mbstring in sequence before returning the source string.
+     *
+     * @param mixed $text Text supplied by a legacy calendar connector.
+     * @param string $fromenc Original character encoding.
+     * @param string $toenc Desired output encoding.
+     * @return string Converted or original text.
+     */
     public static function jl_utf8_convert($text, string $fromenc = 'iso-8859-1', string $toenc = 'UTF-8')
     {
         $text = (string) $text;
@@ -81,16 +99,40 @@ class CalendarRuntime extends \PHPCalendar
         return $text;
     }
 
+    /**
+     * Compare two calendar values in ascending order.
+     * Retains the named comparison callback used by older connector integrations.
+     *
+     * @param mixed $a First sortable calendar value.
+     * @param mixed $b Second sortable calendar value.
+     * @return int Negative, zero or positive ordering result.
+     */
     public static function asc($a, $b): int
     {
         return $a <=> $b;
     }
 
+    /**
+     * Compare two calendar values in descending order.
+     * Reverses the normal spaceship comparison for descending legacy calendar sorts.
+     *
+     * @param mixed $a First sortable calendar value.
+     * @param mixed $b Second sortable calendar value.
+     * @return int Reverse-order comparator result.
+     */
     public static function desc($a, $b): int
     {
         return $b <=> $a;
     }
 
+    /**
+     * Load and chronologically sort the matches available in a calendar month.
+     * Creates a timezone-aware month window, clears the shared connector caches and fetches SportsManagement, optional JEvents and optional Livescore rows.
+     *
+     * @param int|string $month Requested calendar month.
+     * @param int|string $year Requested calendar year.
+     * @return array<int,array> Date-sorted connector match records.
+     */
     public static function getMatches($month, $year): array
     {
         $month = max(1, min(12, (int) $month));
@@ -142,6 +184,15 @@ class CalendarRuntime extends \PHPCalendar
         return self::$matches;
     }
 
+    /**
+     * Sort calendar connector records by a selected array field.
+     * Uses PHP's usort with ascending or descending direction and supports comparing whole entries when no field is supplied.
+     *
+     * @param array $array Calendar rows to sort.
+     * @param string $comparefunction Sort direction; desc reverses the comparison.
+     * @param string $property Optional associative key used for the comparison.
+     * @return array Sorted calendar records.
+     */
     public static function sortArray(array $array, string $comparefunction, string $property = ''): array
     {
         $descending = strtolower($comparefunction) === 'desc';
@@ -159,6 +210,15 @@ class CalendarRuntime extends \PHPCalendar
         return $array;
     }
 
+    /**
+     * Retrieve event-day metadata for a particular grid date.
+     * Builds the YYYYMMDD lookup key and returns the matching calendar link/title metadata only when the stored payload is an array.
+     *
+     * @param int $day Day of the requested month.
+     * @param int $month Requested month.
+     * @param int $year Requested year.
+     * @return array Calendar link, title and action metadata, or an empty array.
+     */
     public function getDateMeta($day, $month, $year): array
     {
         $date = sprintf('%04d%02d%02d', (int) $year, (int) $month, (int) $day);
@@ -167,6 +227,14 @@ class CalendarRuntime extends \PHPCalendar
         return is_array($meta) ? $meta : [];
     }
 
+    /**
+     * Build a calendar navigation URL while preserving unrelated query parameters.
+     * Reads the current Joomla URI, removes stale day/month/year parameters and adds the requested calendar month and year using RFC3986 encoding.
+     *
+     * @param int $month Destination month.
+     * @param int $year Destination calendar year.
+     * @return string Current site URL with updated calendar query parameters.
+     */
     public function getCalendarLink($month, $year): string
     {
         $uri = Uri::getInstance();
@@ -181,6 +249,14 @@ class CalendarRuntime extends \PHPCalendar
         return $encoded === '' ? $base : $base . '?' . $encoded;
     }
 
+    /**
+     * Build formatted monthly match-list data for the calendar's presentation layer.
+     * Groups connector matches by day and project/match code, emits title and table descriptors and distinguishes today's matches from other dates.
+     *
+     * @param int|string $month Displayed calendar month.
+     * @param int|string $year Displayed calendar year.
+     * @return array<int,array> Match-list row and heading descriptors.
+     */
     public function matches_output($month, $year): array
     {
         $app = self::siteApplication();
@@ -268,6 +344,12 @@ class CalendarRuntime extends \PHPCalendar
         return $format;
     }
 
+    /**
+     * Build the selectable team options used to filter calendar matches.
+     * Sorts the unique teams collected by the calendar connectors and prepends the translated all-teams option.
+     *
+     * @return array<int,object> Joomla select options for the team filter.
+     */
     public function output_teamlist(): array
     {
         if (self::$teams === []) {
@@ -284,6 +366,15 @@ class CalendarRuntime extends \PHPCalendar
         return $options;
     }
 
+    /**
+     * Order connector objects by one property or by their whole values.
+     * Keeps the historical array sort helper while accepting only the asc and desc direction semantics.
+     *
+     * @param array $array Calendar objects or values to sort.
+     * @param string $comparefunction Direction; desc selects reverse order.
+     * @param string $property Optional object property used as the sort key.
+     * @return array Sorted objects or values.
+     */
     public static function sortObject(array $array, string $comparefunction, string $property = ''): array
     {
         $descending = strtolower($comparefunction) === 'desc';
@@ -301,6 +392,12 @@ class CalendarRuntime extends \PHPCalendar
         return $array;
     }
 
+    /**
+     * Resolve the active frontend Joomla application for calendar requests.
+     * Uses the component's site-application resolver and rejects administrator or unsupported clients before reading configuration and language data.
+     *
+     * @return CMSApplicationInterface Verified Joomla site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
