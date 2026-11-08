@@ -127,7 +127,9 @@ class CalendarRuntime extends \PHPCalendar
 
     /**
      * Load and chronologically sort the matches available in a calendar month.
-     * Creates a timezone-aware month window, clears the shared connector caches and fetches SportsManagement, optional JEvents and optional Livescore rows.
+     * Creates a timezone-aware month window with a four-digit year, resets
+     * shared connector caches, and fetches SportsManagement, optional JEvents
+     * and optional LiveScore records before ordering by calendar date.
      *
      * @param int|string $month Requested calendar month.
      * @param int|string $year Requested calendar year.
@@ -136,7 +138,9 @@ class CalendarRuntime extends \PHPCalendar
     public static function getMatches($month, $year): array
     {
         $month = max(1, min(12, (int) $month));
-        $year = max(1970, (int) $year);
+        // Joomla calendar rendering supports four-digit years; clamp legacy
+        // query inputs consistently with CalendarHelper::normaliseYear().
+        $year = min(9999, max(1970, (int) $year));
         $app = self::siteApplication();
         $timezoneName = trim((string) self::$params->get('time_zone', $app->get('offset', 'UTC')));
 
