@@ -64,7 +64,11 @@ jobs:
             site/src/Service/LegacyPresentationLoader.php \
             site/src/Service/InlineHockeyProjectService.php \
             modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php \
-            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php \
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php \
+            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php \
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php \
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
 
       - name: Check changed first-party PHP files
         shell: bash

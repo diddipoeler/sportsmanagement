@@ -1,0 +1,55 @@
+name: Joomla 5/6 calendar connector input regression
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - '.github/tests/joomla56_calendar_connector_ids.php'
+      - '.github/workflows/joomla5-6-calendar-connector-safety.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - '.github/tests/joomla56_calendar_connector_ids.php'
+      - '.github/workflows/joomla5-6-calendar-connector-safety.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  input-regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax and method documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+            modules/mod_sportsmanagement_calendar/connectors/sportsmanagement_j5.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
+          )
+          for file in "${files[@]}" .github/tests/joomla56_calendar_connector_ids.php; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-headers.php "${files[@]}"
+          php .github/scripts/check-php-function-docs.php "${files[@]}"
+      - name: Validate safe module filters and month boundaries
+        run: php .github/tests/joomla56_calendar_connector_ids.php
