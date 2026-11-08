@@ -79,8 +79,10 @@ jobs:
           grep -Fq 'Native Joomla 5/6 administrator SportsManagement Footer view.' admin/src/View/Footer/HtmlView.php
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewFooter')" admin/views/footer/view.html.php
 
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/views/sishandball/view.html.php
-          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' site/views/sishandball/view.html.php
+          # The old SIS handball view now delegates to its native namespaced
+          # view via a guarded alias; it does not directly resolve an app.
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewsishandball')" site/views/sishandball/view.html.php
+          grep -Fq 'use Diddipoeler\Component\SportsManagement\Site\View\Sishandball\HtmlView;' site/views/sishandball/view.html.php
           ! grep -Fq 'Factory::getApplication()' site/views/sishandball/view.html.php
 
           # The calendar runtime now resolves its site application centrally;

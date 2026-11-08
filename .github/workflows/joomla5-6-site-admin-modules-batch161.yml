@@ -61,7 +61,11 @@ jobs:
           ! grep -Fq 'Factory::getApplication()' admin/src/View/Smquote/HtmlView.php
           grep -Fq "requires the Joomla administrator application" admin/src/View/Smquote/HtmlView.php
 
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+          # Optional JEvents integration resolves its frontend application
+          # through the Joomla 5/6 shared resolver rather than a global factory.
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+          grep -Fq 'use Joomla\CMS\Application\CMSApplicationInterface;' modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+          ! grep -Fq 'Factory::getApplication()' modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
           grep -Fq "JEvents connector requires the Joomla site application" modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
 
           echo 'Joomla 5/6 batch 161 contracts OK.'
