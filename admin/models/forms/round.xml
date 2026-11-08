@@ -2,6 +2,7 @@
 <form
 	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
 	<fieldset name="details"
   label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
   description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC">
@@ -88,22 +89,39 @@ readonly="true"
 			<option value="1">JYES</option>
 		</field>
     		
-	</fieldset>		
-  
+	</fieldset>
+
+     <fieldset
+        name="description"
+        label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+        description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC"
+    >
+
+        <field
+            name="notes"
+            type="editor"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION_DESC"
+            width="450"
+            filter="safehtml"
+        />
+
+    </fieldset>
+
   <fieldset name="picture"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type="media"
-				default=""				
+				default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
 				class="inputbox"
-				preview="show"	
-        targetfolder="rounds"			
+				preview="show"
+        targetfolder="rounds"
 				directory=""/>
-				
+
 					<field
 			name="cr_picture"
 			type="text"

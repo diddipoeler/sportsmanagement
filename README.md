@@ -71,6 +71,7 @@ Extensions ?
 
 Änderungen
 ---------------------
+*   02-12-2026: **4.25.00** Kleine Korrekturen
 *   02-02-2025: **4.24.00** Kleine Korrekturen
 *   02-02-2025: **4.23.00** Kleine Korrekturen
 *   31-10-2024: **4.22.00** Neue Sportart Golfbillard

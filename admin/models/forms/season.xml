@@ -37,8 +37,41 @@ filter="unset"
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
 			class="inputbox"/>		
-	</fieldset>		
+	</fieldset>
+
+     <fieldset
+        name="description"
+        label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+        description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC"
+    >
+
+        <field
+            name="notes"
+            type="editor"
+            label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION"
+            description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION_DESC"
+            width="450"
+            filter="safehtml"
+        />
+
+    </fieldset>
 
 
-  		
+<fieldset name="picture"
+    label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+    description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+			<field
+				name="picture"
+				type="media"
+				default=""
+				label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_EDIT_PICTURE"
+				class="inputbox"
+				preview="show"
+                targetfolder="seasons"
+				directory=""/>
+
+
+	</fieldset>
+
 </form>

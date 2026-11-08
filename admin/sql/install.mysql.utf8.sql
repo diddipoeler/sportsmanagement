@@ -1144,6 +1144,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `rdatelast_timestamp` BIGINT( 20 ) NOT NULL DEFAULT  '0',
   `openligaid` int(11) DEFAULT NULL,
   `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
+  `notes` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`)
   )
@@ -1166,6 +1167,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season` (
   `modified_by` INT NULL ,
   `extendeduser` TEXT NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
+  `picture` VARCHAR(250) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC) )
 ENGINE = MyISAM
