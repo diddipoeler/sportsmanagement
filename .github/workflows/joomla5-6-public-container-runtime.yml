@@ -68,7 +68,9 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_projectmap"
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_act_season"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_act_season"
-          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$module_eventsranking"
+          # EventsRanking's native data facade does not need an application
+          # resolver; its database dependency still comes from the public DI container.
+          ! grep -Fq 'SportsManagementSiteApplicationResolver' "$module_eventsranking"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$module_eventsranking"
 
           runtime_roots=(admin/src site/src modules)
