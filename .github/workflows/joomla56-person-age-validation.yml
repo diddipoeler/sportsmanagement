@@ -7,6 +7,10 @@ on:
       - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/tests/joomla56-site-route-calendar-date.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
@@ -20,6 +24,10 @@ on:
       - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
+      - '.github/tests/joomla56-site-route-calendar-date.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
@@ -51,6 +59,10 @@ jobs:
           php -l admin/src/Helper/PersonAgeHelper.php
           php -l admin/src/Helper/ExtraSelectOptionsHelper.php
           php -l admin/src/Helper/LocationHelper.php
+          php -l site/src/Helper/SiteRouteHelper.php
+          php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
+          php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
+          php -l .github/tests/joomla56-site-route-calendar-date.php
           php -l .github/tests/joomla56-person-age-validation.php
           php -l .github/tests/joomla56-livescore-date-boundaries.php
           php -l site/src/Service/IndividualMatchReadService.php
@@ -64,6 +76,8 @@ jobs:
         run: php .github/tests/joomla56-livescore-date-boundaries.php
       - name: Verify JEvents invalid date boundaries
         run: php .github/tests/joomla56-jevents-date-validation.php
+      - name: Verify routing and calendar date inputs
+        run: php .github/tests/joomla56-site-route-calendar-date.php
       - name: Verify documentation in changed runtime classes
         run: |
           php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
