@@ -104,14 +104,18 @@ class CalendarRenderer
 
     /**
      * Set the configured first weekday of the monthly calendar.
-     * Converts a legacy module parameter to the integer index used to offset weekday headings.
+     * Validates legacy settings and bounds the Sunday-based start weekday
+     * to values from zero through six. Invalid values use Sunday (zero).
      *
      * @param mixed $day Module value representing the calendar's first weekday.
      * @return void
      */
     public function setStartDay($day): void
     {
-        $this->startDay = (int) $day;
+        $valid = (is_int($day) || is_string($day))
+            ? filter_var($day, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 6]])
+            : false;
+        $this->startDay = $valid === false ? 0 : $valid;
     }
 
     /**
@@ -127,14 +131,18 @@ class CalendarRenderer
 
     /**
      * Set the default month used by legacy calendar layouts.
-     * Converts the saved module month preference into the renderer's integer month field.
+     * Accepts valid month numbers from one through twelve; invalid saved
+     * values fall back to January without coercing nested settings to integers.
      *
      * @param mixed $month Legacy module value containing a month number.
      * @return void
      */
     public function setStartMonth($month): void
     {
-        $this->startMonth = (int) $month;
+        $valid = (is_int($month) || is_string($month))
+            ? filter_var($month, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 12]])
+            : false;
+        $this->startMonth = $valid === false ? 1 : $valid;
     }
 
     /**
