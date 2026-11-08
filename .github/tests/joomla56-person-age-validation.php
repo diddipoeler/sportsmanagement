@@ -53,5 +53,10 @@ smCheckAge($helper, '2000-01-01', 'not-a-date', null);
 smCheckAge($helper, '0000-00-00', '2026-11-08', null);
 smCheckAge($helper, '2000-01-01 12:30:00', '2026-11-08', 26);
 smCheckAge($helper, '2000-01-01bogus', '2026-11-08', null);
+smCheckAge($helper, '2000-01-01 25:00:00', '2026-11-08', null);
+smCheckAge($helper, '2000-01-01 12:61:00', '2026-11-08', null);
+smCheckAge($helper, '2000-01-01 12:30:65', '2026-11-08', null);
+smCheckAge($helper, '2000-01-01', '2026-11-08 24:00:00', null);
+smCheckAge($helper, '2000-01-01', '2026-11-08 23:59:59', 26);
 
 echo "Joomla 5/6 person-age validation passed.\n";
