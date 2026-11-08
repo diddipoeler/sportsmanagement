@@ -5,11 +5,15 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Helper/PersonAgeHelper.php'
+      - 'site/src/Service/IndividualMatchReadService.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - '.github/tests/joomla56-person-age-validation.php'
       - '.github/workflows/joomla56-person-age-validation.yml'
   pull_request:
     paths:
       - 'admin/src/Helper/PersonAgeHelper.php'
+      - 'site/src/Service/IndividualMatchReadService.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - '.github/tests/joomla56-person-age-validation.php'
       - '.github/workflows/joomla56-person-age-validation.yml'
   workflow_dispatch:
@@ -36,5 +40,6 @@ jobs:
           php -l .github/tests/joomla56-person-age-validation.php
           php -l site/src/Service/IndividualMatchReadService.php
           php -l modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          php -l modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
       - name: Verify age conversion
         run: php .github/tests/joomla56-person-age-validation.php
