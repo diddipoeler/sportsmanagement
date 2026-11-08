@@ -45,6 +45,15 @@ foreach ([
 if (!class_exists('modRquotesHelper', false)) {
     final class modRquotesHelper
     {
+    /**
+     * Render one quote using the selected Joomla module layout.
+     * Normalises module settings, resolves the correct image base URL and provides the quote object to the existing _rquote layout.
+     *
+     * @param object $rquote Quote to render; picture_url may be filled in.
+     * @param Registry|array $params Module parameters passed by reference.
+     * @param object|null $module Module descriptor or a legacy fallback.
+     * @return void
+     */
     public static function renderRquote(&$rquote, &$params, $module = null): void
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -73,46 +82,126 @@ if (!class_exists('modRquotesHelper', false)) {
         include ModuleHelper::getLayoutPath($module->module, '_rquote');
     }
 
+    /**
+     * Retrieve a single random quote from the configured database categories.
+     * Routes the legacy API to the native helper with single_random rotation.
+     *
+     * @param mixed $category Category IDs or configured category values.
+     * @param int $numOfRandom Maximum number of random records.
+     * @param Registry|array $params Legacy module configuration.
+     * @return array Selected quote records.
+     */
     public static function getRandomRquote($category, $numOfRandom, &$params): array
     {
         return self::databaseResult($params, 'single_random', $category, $numOfRandom);
     }
 
+    /**
+     * Retrieve multiple randomly rotated quotes for the requested categories.
+     * Preserves the misspelled legacy method name while passing multiple_random to the native implementation.
+     *
+     * @param mixed $category Category IDs or configured category values.
+     * @param int $numOfRandom Desired number of quotes.
+     * @param Registry|array $params Legacy module configuration.
+     * @return array Selected quote records.
+     */
     public static function getMultyRandomRquote($category, $numOfRandom, &$params): array
     {
         return self::databaseResult($params, 'multiple_random', $category, $numOfRandom);
     }
 
+    /**
+     * Read quotes in their configured sequential rotation.
+     * Converts the category selection and delegates database access to the namespaced Joomla module helper.
+     *
+     * @param mixed $category Category selection.
+     * @param Registry|array $params Legacy module parameters.
+     * @return array Selected quote records.
+     */
     public static function getSequentialRquote($category, &$params): array
     {
         return self::databaseResult($params, 'sequential', $category);
     }
 
+    /**
+     * Select the quote assigned to the current day.
+     * Accepts both historical argument layouts and configures daily rotation before querying the native helper.
+     *
+     * @param mixed $category Category selection.
+     * @param mixed $paramsOrUnused Legacy parameters or ignored positional argument.
+     * @param mixed $maybeParams Optional parameters in the alternate legacy position.
+     * @return array Daily quote records.
+     */
     public static function getDailyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
     {
         return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'daily', $category);
     }
 
+    /**
+     * Select a stable quote for the current week.
+     * Supports older calling conventions and asks the native helper to use weekly rotation.
+     *
+     * @param mixed $category Category selection.
+     * @param mixed $paramsOrUnused Legacy parameters or ignored argument.
+     * @param mixed $maybeParams Optional alternate Registry argument.
+     * @return array Weekly quote records.
+     */
     public static function getWeeklyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
     {
         return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'weekly', $category);
     }
 
+    /**
+     * Select a quote for the current month.
+     * Maintains the old method signature while using native monthly rotation and database handling.
+     *
+     * @param mixed $category Category selection.
+     * @param mixed $paramsOrUnused Legacy arguments or module settings.
+     * @param mixed $maybeParams Optional module settings in the alternate position.
+     * @return array Monthly quote records.
+     */
     public static function getMonthlyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
     {
         return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'monthly', $category);
     }
 
+    /**
+     * Select a quote for the current year.
+     * Normalises historical parameters and requests yearly rotation from the native helper.
+     *
+     * @param mixed $category Category selection.
+     * @param mixed $paramsOrUnused Legacy arguments or module settings.
+     * @param mixed $maybeParams Optional alternate Registry argument.
+     * @return array Yearly quote records.
+     */
     public static function getYearlyRquote($category, $paramsOrUnused = null, $maybeParams = null): array
     {
         return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'yearly', $category);
     }
 
+    /**
+     * Retrieve today's quote using the historical today rotation mode.
+     * Keeps template override calls compatible while passing the selection to the native Joomla 5/6 data provider.
+     *
+     * @param mixed $category Category selection.
+     * @param mixed $paramsOrUnused Legacy arguments or module settings.
+     * @param mixed $maybeParams Optional alternate Registry argument.
+     * @return array Today's quote records.
+     */
     public static function getTodayRquote($category, $paramsOrUnused = null, $maybeParams = null): array
     {
         return self::databaseResult(self::registryArgument($paramsOrUnused, $maybeParams), 'today', $category);
     }
 
+    /**
+     * Load and render a quote line from a text source.
+     * Selects ordinary text-file rotation and keeps the historical textfile layout inclusion for older module overrides.
+     *
+     * @param Registry|array $params Module parameters passed by reference.
+     * @param string $filename Configured text file name.
+     * @param object $module Module descriptor used to resolve the layout.
+     * @return array Selected text lines.
+     */
     public static function getTextFile(&$params, $filename, $module): array
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -120,6 +209,15 @@ if (!class_exists('modRquotesHelper', false)) {
         return self::legacyText($registry, (string) $filename, $module, false);
     }
 
+    /**
+     * Load and render a daily text-file quote.
+     * Uses date-based text rotation through the native helper and retains the legacy layout contract.
+     *
+     * @param Registry|array $params Module parameters passed by reference.
+     * @param string $filename Configured text file name.
+     * @param object $module Module descriptor used to resolve the layout.
+     * @return array Selected text lines.
+     */
     public static function getTextFile2(&$params, $filename, $module): array
     {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -127,6 +225,16 @@ if (!class_exists('modRquotesHelper', false)) {
         return self::legacyText($registry, (string) $filename, $module, true);
     }
 
+    /**
+     * Translate a legacy database quote request into native module settings.
+     * Clones the original Registry, sanitises the category values and sets rotation and record limits without mutating the caller's configuration.
+     *
+     * @param mixed $params Legacy Registry or array configuration.
+     * @param string $rotation Native quote rotation strategy.
+     * @param mixed $category Legacy category selection.
+     * @param int|null $numOfRandom Optional number of quote records.
+     * @return array Selected quote records.
+     */
     private static function databaseResult(
         mixed $params,
         string $rotation,
@@ -145,6 +253,16 @@ if (!class_exists('modRquotesHelper', false)) {
         return self::nativeData($copy)['list'];
     }
 
+    /**
+     * Render text-file quotes using the legacy module layout.
+     * Limits the filename to its basename, selects daily or ordinary text rotation and exposes the old layout variables.
+     *
+     * @param Registry $params Module configuration.
+     * @param string $filename File name without any trusted directory component.
+     * @param object $module Module descriptor.
+     * @param bool $daily Whether to use daily text rotation.
+     * @return array Chosen text lines.
+     */
     private static function legacyText(Registry $params, string $filename, object $module, bool $daily): array
     {
         $copy = clone $params;
@@ -160,6 +278,13 @@ if (!class_exists('modRquotesHelper', false)) {
         return $rows;
     }
 
+    /**
+     * Execute the namespaced quotes helper with Joomla dependencies.
+     * Resolves the site application, database and component parameters, then returns the native structured quote data.
+     *
+     * @param Registry $params Normalised quote source and rotation parameters.
+     * @return array Native quote data with list and textLine keys.
+     */
     private static function nativeData(Registry $params): array
     {
         $app = self::siteApplication();
@@ -173,19 +298,48 @@ if (!class_exists('modRquotesHelper', false)) {
         );
     }
 
+    /**
+     * Obtain the active Joomla frontend application for quote rendering.
+     * Routes through the component application resolver rather than the deprecated global application accessor.
+     *
+     * @return CMSApplicationInterface Active frontend application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
-        return SportsManagementSiteApplicationResolver::resolve();
+        $app = SportsManagementSiteApplicationResolver::resolve();
+
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Rquotes requires the Joomla site application.', 500);
+        }
+
+        return $app;
     }
 
+    /**
+     * Resolve the database driver from Joomla's dependency injection container.
+     * Provides the native quotes helper with a DatabaseInterface rather than relying on legacy database globals.
+     *
+     * @return DatabaseInterface Joomla database driver.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Rquotes database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Select the Registry from two supported historical parameter positions.
+     * Prefers the third argument when provided, otherwise the second argument, and supplies an empty Registry for calls without either.
+     *
+     * @param mixed $first First possible Registry argument.
+     * @param mixed $second Second possible Registry argument.
+     * @return Registry Normalised module configuration.
+     */
     private static function registryArgument($first, $second): Registry
     {
         if ($second instanceof Registry) {
@@ -198,6 +352,13 @@ if (!class_exists('modRquotesHelper', false)) {
         return new Registry();
     }
 
+    /**
+     * Normalise category IDs submitted through legacy Joomla select fields.
+     * Splits comma- or whitespace-delimited values, validates positive integer IDs and deduplicates them before building database filters.
+     *
+     * @param mixed $category Scalar or array category selection.
+     * @return array<int, int> Unique validated category IDs.
+     */
     private static function categoryValues(mixed $category): array
     {
         $values = is_array($category) ? $category : [$category];

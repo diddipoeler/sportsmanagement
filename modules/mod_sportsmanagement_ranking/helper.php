@@ -153,6 +153,12 @@ class modJSMRankingHelper extends stdClass
         return $matchestoupdate;
     }
 
+    /**
+     * Resolve and validate the Joomla frontend application for ranking operations.
+     * Prevents legacy ranking helpers from executing under the administrator client while preserving template-override compatibility.
+     *
+     * @return \Joomla\CMS\Application\CMSApplicationInterface Active site application.
+     */
     private static function siteApplication()
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
@@ -164,6 +170,12 @@ class modJSMRankingHelper extends stdClass
         return $app;
     }
 
+    /**
+     * Obtain the Joomla database service for legacy ranking queries.
+     * Checks the container-provided service implements DatabaseInterface before passing it to SportsManagementDatabaseResolver.
+     *
+     * @return DatabaseInterface Valid database driver.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
