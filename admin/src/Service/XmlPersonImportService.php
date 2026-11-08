@@ -21,6 +21,14 @@ final class XmlPersonImportService
 {
     private readonly PlaygroundGeocoder $geocoder;
 
+    /**
+     * Initialise standalone person XML importing with Joomla's database and geocoder.
+     * Uses an injected geocoder where available, otherwise creates the native service that resolves optional location coordinates.
+     *
+     * @param DatabaseInterface $database Joomla database driver.
+     * @param PlaygroundGeocoder|null $geocoder Optional address geocoding service.
+     * @return void
+     */
     public function __construct(
         private readonly DatabaseInterface $database,
         ?PlaygroundGeocoder $geocoder = null
@@ -29,10 +37,12 @@ final class XmlPersonImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Import selected people from a legacy SportsManagement XML document.
+     * Reuses or creates person records, applies name and age-group overrides, avoids duplicate identities, normalises country/location data and ensures optional season-person relations.
      *
-     * @return array<string, string>
+     * @param array<string,mixed> $post Administrator form selections, overrides and season.
+     * @param array<string,mixed> $parsedData Parsed XML person records.
+     * @return array<string,string> Escaped HTML import status messages.
      */
     public function import(array $post, array $parsedData): array
     {
@@ -174,6 +184,15 @@ final class XmlPersonImportService
         return ['Importing person data:' => $message];
     }
 
+    /**
+     * Apply supported XML information and age-group values to a selected existing person.
+     * Checks the installed schema for each updatable field and leaves the person unchanged when there is no supported information to write.
+     *
+     * @param int $personId Local person identifier to update.
+     * @param object $source Imported person information.
+     * @param int $ageGroupId Validated destination age-group ID.
+     * @return void
+     */
     private function updateExistingPerson(int $personId, object $source, int $ageGroupId): void
     {
         $columns = $this->database->getTableColumns('#__sportsmanagement_person');
@@ -196,6 +215,14 @@ final class XmlPersonImportService
         }
     }
 
+    /**
+     * Ensure the imported person has a team-independent player relation for the season.
+     * Checks the person, season, team-zero and person-type identifiers before inserting a missing season-person relation.
+     *
+     * @param int $personId Existing or newly inserted person ID.
+     * @param int $seasonId Target season identifier.
+     * @return void
+     */
     private function ensureSeasonPerson(int $personId, int $seasonId): void
     {
         if ($personId <= 0 || $seasonId <= 0) {
@@ -233,6 +260,13 @@ final class XmlPersonImportService
         }
     }
 
+    /**
+     * Load a local person record by a bound identifier during XML import.
+     * Selects name, nickname and birthday details so the importer can reuse the chosen person and report their identity.
+     *
+     * @param int $id Local person identifier.
+     * @return object|null Matching person identity, or null.
+     */
     private function findById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -251,6 +285,16 @@ final class XmlPersonImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Look up an existing person using name, nickname and birth date.
+     * Uses a combined bound query to prevent duplicate person creation across repeated imports when all identifying fields match.
+     *
+     * @param string $lastname Person's family name.
+     * @param string $firstname Person's given name.
+     * @param string $nickname Optional nickname.
+     * @param string $birthday Birth date in the import format.
+     * @return object|null Existing person with matching identity, or null.
+     */
     private function findByIdentity(
         string $lastname,
         string $firstname,
@@ -279,6 +323,14 @@ final class XmlPersonImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Retain XML person properties that exist in the local Joomla database schema.
+     * Strips unknown fields and the source database ID to avoid overwriting the destination's primary keys.
+     *
+     * @param object $source Parsed external person record.
+     * @param string $table Trusted destination person table.
+     * @return object Imported values that can be written to local columns.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -297,6 +349,14 @@ final class XmlPersonImportService
         return $row;
     }
 
+    /**
+     * Restrict a prepared person to columns supported by the installed schema.
+     * Drops temporary importer and geocoder properties that are not defined on the destination person table.
+     *
+     * @param object $source Prepared person row.
+     * @param string $table Trusted destination database table.
+     * @return object Person data with supported database fields only.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -311,6 +371,13 @@ final class XmlPersonImportService
         return $row;
     }
 
+    /**
+     * Convert a numeric legacy country index into the historic alpha-three code.
+     * Preserves existing country strings and looks up numerical values in the original JoomLeague mapping when importing old XML records.
+     *
+     * @param string $country Raw address-country value.
+     * @return string Normalised three-character country code, or the original value.
+     */
     private function normaliseCountry(string $country): string
     {
         $country = trim($country);
@@ -336,12 +403,26 @@ final class XmlPersonImportService
         return $countries[(int) $country] ?? $country;
     }
 
+    /**
+     * Build a safe administrator status line for a reused person.
+     * Formats the person's identifying label and HTML-escapes it before inserting it into the legacy import report.
+     *
+     * @param object $person Existing local person record.
+     * @return string HTML status line identifying a reused person.
+     */
     private function existingMessage(object $person): string
     {
         return '<span style="color:orange">Using existing person data: </span><strong>'
             . $this->escape($this->personLabel($person)) . '</strong><br />';
     }
 
+    /**
+     * Format a readable person identity from the stored name and date fields.
+     * Combines surname, given name, optional nickname and birthday so similarly named people are distinguishable in import results.
+     *
+     * @param object $person Person row or prepared imported record.
+     * @return string Human-readable person name and optional identifying details.
+     */
     private function personLabel(object $person): string
     {
         $label = trim((string) ($person->lastname ?? '')) . ', '
@@ -360,6 +441,13 @@ final class XmlPersonImportService
         return trim($label);
     }
 
+    /**
+     * Escape imported person values before displaying administrator status messages.
+     * Encodes HTML-sensitive characters and quotes to prevent XML-derived text from becoming executable markup.
+     *
+     * @param string $value Person label or external import value.
+     * @return string HTML-escaped display text.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');

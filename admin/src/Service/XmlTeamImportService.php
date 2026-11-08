@@ -30,6 +30,14 @@ final class XmlTeamImportService
     /** @var array<int, int> */
     private array $clubIdMap = [];
 
+    /**
+     * Initialise the standalone XML team importer with database and geocoder services.
+     * Stores Joomla's database and a supplied or new playground geocoder for resolving club and venue relationships.
+     *
+     * @param DatabaseInterface $database Joomla database driver.
+     * @param PlaygroundGeocoder|null $geocoder Optional geocoding service.
+     * @return void
+     */
     public function __construct(
         private readonly DatabaseInterface $database,
         ?PlaygroundGeocoder $geocoder = null
@@ -38,10 +46,12 @@ final class XmlTeamImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
+     * Import selected teams and their club/playground dependencies from XML.
+     * Resolves imported venues and clubs first, maps external relation IDs to local values, reuses matching teams and inserts only selected new team rows with escaped messages.
      *
-     * @return array<string, string>
+     * @param array<string,mixed> $post Administrator selections and team/club overrides.
+     * @param array<string,mixed> $parsedData Parsed team, club and playground XML collections.
+     * @return array<string,string> Club, team and venue import-status messages.
      */
     public function import(array $post, array $parsedData): array
     {
@@ -164,11 +174,15 @@ final class XmlTeamImportService
     }
 
     /**
-     * @param array<string, mixed> $post
-     * @param array<string, mixed> $parsedData
-     * @param array<int, int> $playgroundIdMap
+     * Resolve or create the local club associated with one imported team.
+     * Reuses already mapped or name/country-matched clubs; otherwise imports permitted club fields, converts playground IDs and geocodes the new record.
      *
-     * @return array{0:int,1:string}
+     * @param int $key Index of the imported team in the form.
+     * @param object $team Original team XML record.
+     * @param array<string,mixed> $post Administrator club selections and overrides.
+     * @param array<string,mixed> $parsedData Source XML club records.
+     * @param array<int,int> $playgroundIdMap Mapping of external venue IDs to local records.
+     * @return array{0:int,1:string} Resolved local club ID and an escaped status message.
      */
     private function resolveImportedClub(
         int $key,
@@ -256,7 +270,14 @@ final class XmlTeamImportService
         return [$clubId, $message . '<br />'];
     }
 
-    /** @return array<int, int> */
+    /**
+     * Map external playground IDs onto existing or newly selected local venues.
+     * Looks up the form's explicit local venue IDs, otherwise matches venues by name, preventing foreign primary keys from being assigned directly.
+     *
+     * @param array<string,mixed> $post Submitted playground selection and override fields.
+     * @param array<string,mixed> $parsedData Source XML playground records.
+     * @return array<int,int> External venue ID to local playground ID mapping.
+     */
     private function buildPlaygroundIdMap(array $post, array $parsedData): array
     {
         $map = [];
@@ -303,6 +324,14 @@ final class XmlTeamImportService
         return $map;
     }
 
+    /**
+     * Find the source XML club record referenced by an imported team.
+     * Searches the parsed club collection for the team's original club ID without relying on destination database IDs.
+     *
+     * @param int $oldClubId Original club identifier from the source XML.
+     * @param array<string,mixed> $parsedData Parsed source XML collections.
+     * @return object|null Matching source club record, or null.
+     */
     private function findSourceClub(int $oldClubId, array $parsedData): ?object
     {
         if ($oldClubId <= 0) {
@@ -318,6 +347,13 @@ final class XmlTeamImportService
         return null;
     }
 
+    /**
+     * Load a club using its selected local identifier.
+     * Uses a bound numeric database ID to check a club explicitly chosen by the administrator.
+     *
+     * @param int $id Local SportsManagement club ID.
+     * @return object|null Club details including name and country, or null.
+     */
     private function findClubById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -334,6 +370,14 @@ final class XmlTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Find a destination club matching both its name and country.
+     * Binds club identifiers to reuse a previously imported club instead of creating duplicate local records.
+     *
+     * @param string $name Club name.
+     * @param string $country Normalised country code.
+     * @return object|null Existing matching club, or null.
+     */
     private function findClubByNameAndCountry(string $name, string $country): ?object
     {
         $query = $this->database->createQuery()
@@ -352,6 +396,13 @@ final class XmlTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Load a stored team by its local database identifier.
+     * Retrieves the team's identity, names, club association and information for existing-record reuse.
+     *
+     * @param int $id Local team database ID.
+     * @return object|null Matching existing team, or null.
+     */
     private function findTeamById(int $id): ?object
     {
         $query = $this->database->createQuery()
@@ -371,6 +422,15 @@ final class XmlTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Look up a duplicate team by name, middle name and descriptive information.
+     * Uses a bound combination of fields from the import to avoid inserting a team already present under the same identity.
+     *
+     * @param string $name Imported full team name.
+     * @param string $middleName Normalised middle team name.
+     * @param string $info Additional team identity information.
+     * @return object|null Matching local team, or null.
+     */
     private function findTeamByIdentity(string $name, string $middleName, string $info): ?object
     {
         $query = $this->database->createQuery()
@@ -394,6 +454,13 @@ final class XmlTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Find a local playground matching its XML display name.
+     * Uses a bound name query to build a safe venue-ID mapping when the administrator has not selected an explicit existing playground.
+     *
+     * @param string $name Imported playground name.
+     * @return object|null Existing playground ID and name, or null.
+     */
     private function findPlaygroundByName(string $name): ?object
     {
         $query = $this->database->createQuery()
@@ -409,6 +476,14 @@ final class XmlTeamImportService
         return $this->database->loadObject() ?: null;
     }
 
+    /**
+     * Copy only supported imported team or club fields excluding external primary IDs.
+     * Consults the destination table schema before accepting XML properties and converts scalar source values to strings.
+     *
+     * @param object $source XML team or club data object.
+     * @param string $table Trusted local destination table.
+     * @return object Allowed imported values excluding external row identifiers.
+     */
     private function filterSourceFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -427,6 +502,14 @@ final class XmlTeamImportService
         return $row;
     }
 
+    /**
+     * Strip unsupported database columns from a prepared team or club record.
+     * Uses Joomla's table metadata to avoid persisting transient XML or geocoding properties that are not installed.
+     *
+     * @param object $source Prepared team or club row.
+     * @param string $table Trusted local destination table.
+     * @return object Schema-compatible row for the importer.
+     */
     private function filterTableFields(object $source, string $table): object
     {
         $columns = $this->database->getTableColumns($table);
@@ -441,6 +524,13 @@ final class XmlTeamImportService
         return $row;
     }
 
+    /**
+     * Convert historic numeric country references to legacy country-code strings.
+     * Preserves nonnumeric country labels and resolves old database indexes using the existing country mapping.
+     *
+     * @param string $country Raw country value from XML or the import form.
+     * @return string Normalised country code or the original value.
+     */
     private function normaliseCountry(string $country): string
     {
         $country = trim($country);
@@ -466,18 +556,39 @@ final class XmlTeamImportService
         return $countries[(int) $country] ?? $country;
     }
 
+    /**
+     * Format an escaped import report line for an existing club.
+     * Uses the legacy orange status style while escaping the destination club name.
+     *
+     * @param string $name Name of the reused local club.
+     * @return string HTML status line for a reused club.
+     */
     private function existingClubMessage(string $name): string
     {
         return '<span style="color:orange">Using existing club data: </span><strong>'
             . $this->escape($name) . '</strong><br />';
     }
 
+    /**
+     * Format an escaped import report line for a reused team.
+     * Displays the local team's name without allowing untrusted content to render as HTML.
+     *
+     * @param object $team Existing team record.
+     * @return string HTML status line for a reused team.
+     */
     private function existingTeamMessage(object $team): string
     {
         return '<span style="color:orange">Using existing team data: </span><strong>'
             . $this->escape((string) ($team->name ?? '')) . '</strong><br />';
     }
 
+    /**
+     * Escape XML-derived team and club labels for safe administrator reports.
+     * Converts HTML special characters and quotes before including imported strings in status markup.
+     *
+     * @param string $value Team, club or other imported text.
+     * @return string HTML-escaped display text.
+     */
     private function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
