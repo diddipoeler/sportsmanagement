@@ -11,9 +11,7 @@
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Diddipoeler\Module\SportsManagementEventsRanking\Site\Helper\EventsRankingHelper;
-use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Factory;
@@ -23,7 +21,6 @@ use Joomla\Registry\Registry;
 $nativeDependencies = [
     SiteRouteHelper::class => JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php',
     SportsManagementDatabaseResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementDatabaseResolver.php',
-    SportsManagementSiteApplicationResolver::class => JPATH_SITE . '/components/com_sportsmanagement/src/Service/SportsManagementSiteApplicationResolver.php',
     EventsRankingHelper::class => __DIR__ . '/src/Helper/EventsRankingHelper.php',
 ];
 
@@ -36,7 +33,6 @@ foreach ($nativeDependencies as $class => $file) {
 foreach ([
     SiteRouteHelper::class,
     SportsManagementDatabaseResolver::class,
-    SportsManagementSiteApplicationResolver::class,
     EventsRankingHelper::class,
 ] as $requiredClass) {
     if (!class_exists($requiredClass)) {
@@ -58,12 +54,6 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $app = self::siteApplication();
-
-            if (!$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement EventsRanking legacy helper requires the Joomla site application.', 500);
-            }
-
             $database = self::joomlaDatabase($database);
 
             $data = (new EventsRankingHelper())->getData($registry, $database);
@@ -74,17 +64,6 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
                 'eventtypes' => $data['eventtypes'] ?? [],
                 'teams' => [],
             ];
-        }
-
-        /**
-         * Resolve the active site application for legacy event ranking calls.
-         * Lets the facade enforce site-only execution while keeping Joomla's application lookup in one shared service.
-         *
-         * @return CMSApplicationInterface Current Joomla site application.
-         */
-        private static function siteApplication(): CMSApplicationInterface
-        {
-            return SportsManagementSiteApplicationResolver::resolve();
         }
 
         /**
