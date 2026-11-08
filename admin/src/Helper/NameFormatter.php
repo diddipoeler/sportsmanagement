@@ -19,6 +19,20 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
  */
 final class NameFormatter
 {
+    /**
+     * Format administrator person names using the configured legacy layout.
+     *
+     * Combines optional prefixes, first names, nicknames and surnames in the
+     * ordering selected by SportsManagement formats 0–18. Preserves the
+     * historical line-break and punctuation output for existing templates.
+     *
+     * @param string|null $prefix Optional title or name prefix.
+     * @param string $firstName Given name of the person.
+     * @param string $nickName Optional nickname.
+     * @param string $lastName Family name of the person.
+     * @param int $format Legacy formatting variant identifier.
+     * @return string Display name formatted for administrator views.
+     */
     public static function format(
         ?string $prefix,
         string $firstName,
@@ -150,6 +164,16 @@ final class NameFormatter
         return implode(' ', $name);
     }
 
+    /**
+     * Append a nonempty name component to the ordered output collection.
+     *
+     * Avoids introducing empty separators when optional name fields are
+     * absent, while preserving punctuation already present in the value.
+     *
+     * @param array<int,string> $parts Ordered name components, mutated in place.
+     * @param string $value Component to add when nonempty.
+     * @return void
+     */
     private static function append(array &$parts, string $value): void
     {
         if ($value !== '') {
@@ -157,6 +181,15 @@ final class NameFormatter
         }
     }
 
+    /**
+     * Extract the first Unicode character of a name and append a period.
+     *
+     * Prefers mbstring where installed, falls back to a Unicode-aware regex,
+     * and retains the original byte fallback only for malformed input.
+     *
+     * @param string $value Given or family name to abbreviate.
+     * @return string First character and period, or empty text for no name.
+     */
     private static function initial(string $value): string
     {
         if ($value === '') {
@@ -165,6 +198,10 @@ final class NameFormatter
 
         if (function_exists('mb_substr')) {
             return mb_substr($value, 0, 1, 'UTF-8') . '.';
+        }
+
+        if (preg_match('/^./us', $value, $matches) === 1) {
+            return $matches[0] . '.';
         }
 
         return $value[0] . '.';
