@@ -17,6 +17,17 @@ use Joomla\DI\ServiceProviderInterface;
 
 return new class implements ServiceProviderInterface
 {
+    /**
+     * Register the Joomla 5/6 services for the SportsManagement firstleagueoverview module.
+     *
+     * Registers the native dispatcher factory and namespaced helper factory
+     * with the dependency injection container. Finally attaches Joomla's core
+     * module service so the runtime can dispatch the module independently of
+     * its legacy PHP entry point.
+     *
+     * @param Container $container Joomla's module service container.
+     * @return void
+     */
     public function register(Container $container): void
     {
         $container->registerServiceProvider(new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementFirstLeagueOverview'));
