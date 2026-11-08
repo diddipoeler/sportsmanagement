@@ -1,0 +1,41 @@
+name: Joomla 5/6 site view error privacy
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Sportsmanagement/HtmlView.php'
+      - 'site/src/View/Json/HtmlView.php'
+      - 'site/src/Service/SportsManagementViewErrorReporter.php'
+      - '.github/tests/joomla56_site_view_error_privacy.php'
+      - '.github/workflows/joomla5-6-site-view-error-privacy.yml'
+  pull_request:
+    branches: [joomla5-6]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend-errors:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax and metadata
+        run: |
+          php -l site/src/View/Sportsmanagement/HtmlView.php
+          php -l site/src/View/Json/HtmlView.php
+          php -l site/src/Service/SportsManagementViewErrorReporter.php
+          php -l .github/tests/joomla56_site_view_error_privacy.php
+          php .github/tests/phpdoc_metadata.php site/src/View/Sportsmanagement/HtmlView.php site/src/View/Json/HtmlView.php site/src/Service/SportsManagementViewErrorReporter.php
+      - name: Verify root and JSON frontend views
+        run: php .github/tests/joomla56_site_view_error_privacy.php
+      - name: Verify descriptive PHPDoc
+        run: php .github/scripts/check-php-function-docs.php site/src/View/Sportsmanagement/HtmlView.php site/src/View/Json/HtmlView.php site/src/Service/SportsManagementViewErrorReporter.php

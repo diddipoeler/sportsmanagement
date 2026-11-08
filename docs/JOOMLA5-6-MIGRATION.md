@@ -92,3 +92,7 @@ The administrator `TrainingsdataModel` now requires an authenticated identity an
 ## Event-type form field migration follow-up (8 November 2026)
 
 `admin/src/Model/EventtypeModel.php` now validates the configurable Joomla media-field type before setting the event icon edit field. Invalid PHP arrays, objects, numeric identifiers and unsafe field names revert to Joomla's media field. Non-string default icon configuration is ignored without an array-to-string warning. The existing event-types MVC workflow now runs `joomla56_admin_eventtype_media_config.php` and checks the model's detailed PHPDoc.
+
+## Joomla root and JSON frontend view error isolation (8 November 2026)
+
+Root and JSON HTML views now use `SportsManagementViewErrorReporter`: private model errors are written to Joomla's component log, and a translated generic runtime error is raised to the visitor rather than exposing database connection details or returning a silent false page. The native JSON stylesheet still loads for healthy forms. The PHP 8.3/8.4 standalone `joomla56_site_view_error_privacy.php` regression covers private error logging, public exceptions and successful view rendering.
