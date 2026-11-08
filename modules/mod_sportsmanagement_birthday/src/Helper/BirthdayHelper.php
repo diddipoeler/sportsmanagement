@@ -214,7 +214,13 @@ final class BirthdayHelper
         return $selector === false ? 0 : $selector;
     }
 
-    /** Keep the module layout contract even when filtering produces no rows. */
+    /**
+     * Construct the standard response when no birthday records can be displayed.
+     * Keeps the module's persons, mode and pictureServer keys available to templates even when selection filters produce no results.
+     *
+     * @param Registry $params Current module settings.
+     * @return array Empty birthday records with layout metadata.
+     */
     private function emptyData(Registry $params): array
     {
         return [
@@ -224,7 +230,13 @@ final class BirthdayHelper
         ];
     }
 
-    /** Distinguish an explicitly invalid filter from a disabled filter. */
+    /**
+     * Detect whether a birthday filter was explicitly selected by the administrator.
+     * Recursively inspects array values while treating null, empty strings and numeric zero as an inactive filter.
+     *
+     * @param mixed $value Raw module filter value.
+     * @return bool True for a non-empty selection.
+     */
     private static function hasSelection(mixed $value): bool
     {
         if ($value === null || $value === '' || $value === 0 || $value === '0') {
@@ -244,7 +256,15 @@ final class BirthdayHelper
         return false;
     }
 
-    /** Preserve the historical jsm_birthday_sort() ordering contract. */
+    /**
+     * Order birthday entries by upcoming birthday and age.
+     * Sorts first by days to the next birthday, then by age in the requested direction so old module layouts retain predictable ordering.
+     *
+     * @param array $rows Birthday records containing days_to_birthday and age.
+     * @param mixed $arguments Historical sorting direction.
+     * @param bool $keys Legacy key-preservation option.
+     * @return array Ordered birthday rows.
+     */
     public static function sortPersons(array $rows, $arguments = '-', bool $keys = true): array
     {
         $descendingAge = (string) $arguments === '-';

@@ -22,6 +22,14 @@ use Joomla\Registry\Registry;
 
 final class EventsRankingHelper
 {
+    /**
+     * Load event-type rankings for the configured sports projects.
+     * Validates selected projects, events and optional constraints, retrieves summaries through a selected database and returns empty data on recoverable query failures.
+     *
+     * @param Registry $params Module project, event and display settings.
+     * @param DatabaseInterface $fallbackDatabase Primary Joomla database driver.
+     * @return array{project:?object,eventtypes:array,rankings:array} Data for the native module layout.
+     */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
         $empty = ['project' => null, 'eventtypes' => [], 'rankings' => []];
@@ -94,7 +102,13 @@ final class EventsRankingHelper
         }
     }
 
-    /** Positive ID/ID:alias selector; invalid or unset means no constraint. */
+    /**
+     * Parse an optional positive identifier or Joomla ID:alias value.
+     * Rejects malformed and non-scalar input so invalid user filters cannot silently broaden the ranking query.
+     *
+     * @param mixed $value Raw optional record selector.
+     * @return int Valid positive ID or zero when absent or invalid.
+     */
     private static function optionalId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -123,6 +137,13 @@ final class EventsRankingHelper
         return (int) $digits;
     }
 
+    /**
+     * Determine whether a filter contains a meaningful explicit selection.
+     * Distinguishes an unset or all-zero selection from malformed values that must not be treated as an unrestricted query.
+     *
+     * @param mixed $value Scalar or nested array selection.
+     * @return bool Whether a selection was explicitly provided.
+     */
     private static function hasSelection(mixed $value): bool
     {
         if ($value === null || $value === '' || $value === 0 || $value === '0') {
@@ -146,6 +167,14 @@ final class EventsRankingHelper
         return false;
     }
 
+    /**
+     * Fetch the selected project and sport type information for event calculations.
+     * Uses Joomla's query builder to read project metadata and identify sport-specific ranking behaviour.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $projectId Project identifier.
+     * @return object|null Project information or null if not found.
+     */
     private function getProject(DatabaseInterface $db, int $projectId): ?object
     {
         $query = $db->createQuery()
@@ -171,6 +200,15 @@ final class EventsRankingHelper
         return $project;
     }
 
+    /**
+     * Find the event types used by the selected sports projects.
+     * Uses integer-bound project and optional event ID filters and returns event metadata in configured display order.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param array<int,int> $projectIds Selected projects.
+     * @param array<int,int> $eventIds Optional selected event types.
+     * @return array<int,object> Matching event definitions.
+     */
     private function getEventTypes(DatabaseInterface $db, array $projectIds, array $eventIds): array
     {
         if (!$projectIds) {
@@ -203,6 +241,24 @@ final class EventsRankingHelper
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Calculate and enrich an event ranking for one event type.
+     * Aggregates event totals with optional division, team and match filters, applies dart-specific ordering, then attaches safe player, team and image links.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $eventTypeId Event being ranked.
+     * @param array<int,int> $projectIds Projects included in the ranking.
+     * @param int $divisionId Optional division filter.
+     * @param int $teamId Optional team filter.
+     * @param int $matchId Optional match filter.
+     * @param int $limit Maximum number of ranking rows.
+     * @param bool $dart Whether dart-specific scoring is enabled.
+     * @param string $primaryDirection Primary sort direction.
+     * @param string $counterDirection Counter sort direction.
+     * @param int $directionPointPosition Dart point/counter column selector.
+     * @param Registry $params Module display settings.
+     * @return array<int,object> Ordered and enriched ranking rows.
+     */
     private function getRanking(
         DatabaseInterface $db,
         int $eventTypeId,
@@ -330,6 +386,15 @@ final class EventsRankingHelper
         return $rows;
     }
 
+    /**
+     * Resolve the configured link target for a ranked team.
+     * Builds a native route for team information, roster, team plan or club details, returning an empty URL for disabled or unsupported targets.
+     *
+     * @param string $target Configured destination view.
+     * @param array $base Shared project and database route variables.
+     * @param object $row Ranking row with team and club slugs.
+     * @return string Team or club page URL.
+     */
     private function teamRoute(string $target, array $base, object $row): string
     {
         return match ($target) {
@@ -341,11 +406,26 @@ final class EventsRankingHelper
         };
     }
 
+    /**
+     * Create a SportsManagement frontend URL using the native route helper.
+     * Keeps all event ranking links consistent with Joomla's current menu and router configuration.
+     *
+     * @param string $view Component view to open.
+     * @param array $parameters View-specific route parameters.
+     * @return string Resolved frontend URL.
+     */
     private function route(string $view, array $parameters): string
     {
         return SiteRouteHelper::view($view, $parameters);
     }
 
+    /**
+     * Build a publicly accessible portrait URL from a ranking image field.
+     * Validates the media location, checks local paths against the Joomla document root and preserves eligible remote HTTP image URLs.
+     *
+     * @param string $path Original image path or URL.
+     * @return string Valid image URL or an empty string.
+     */
     private function picture(string $path): string
     {
         $url = $this->mediaUrl($path);
@@ -375,6 +455,13 @@ final class EventsRankingHelper
         return $this->mediaUrl((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', ''));
     }
 
+    /**
+     * Normalise a ranking icon or logo path into a browser-ready URL.
+     * Rejects malformed or unsafe URLs and converts permitted relative media paths through Joomla's configured root.
+     *
+     * @param string $path Original icon, country flag or club logo path.
+     * @return string Safe media URL or an empty string.
+     */
     private function mediaUrl(string $path): string
     {
         $path = trim($path);
@@ -408,6 +495,13 @@ final class EventsRankingHelper
             : rtrim((string) Uri::root(), '/') . '/' . $local;
     }
 
+    /**
+     * Validate a local image path before resolving it on the server.
+     * Disallows traversal segments, control characters, protocols and backslashes to prevent unintended file access.
+     *
+     * @param string $path Candidate relative media path.
+     * @return string Safe relative path or an empty string.
+     */
     private function localMediaPath(string $path): string
     {
         $path = trim($path);
@@ -425,6 +519,16 @@ final class EventsRankingHelper
         return ltrim($path, '/');
     }
 
+    /**
+     * Format a player's name according to the event ranking display option.
+     * Combines first name, optional nickname and surname in the historical order configured by the module.
+     *
+     * @param string $firstName Player's first name.
+     * @param string $nickName Optional nickname.
+     * @param string $lastName Player's surname.
+     * @param int $format Configured naming scheme.
+     * @return string Formatted display name.
+     */
     private function formatName(string $firstName, string $nickName, string $lastName, int $format): string
     {
         $nick = $nickName !== '' ? "'{$nickName}'" : '';
@@ -442,6 +546,13 @@ final class EventsRankingHelper
         return trim(implode(' ', array_values(array_filter($parts, static fn($value) => $value !== ''))));
     }
 
+    /**
+     * Extract safe positive numeric identifiers from module filters.
+     * Accepts scalar or array select values, removes duplicates and discards malformed or overflowing numbers before query binding.
+     *
+     * @param mixed $value Raw ID selection.
+     * @return array<int,int> Valid unique identifiers.
+     */
     private function normaliseIds(mixed $value): array
     {
         if (!is_array($value) && !is_string($value) && !is_int($value)) {
@@ -478,11 +589,26 @@ final class EventsRankingHelper
         return array_values($ids);
     }
 
+    /**
+     * Restrict database ordering to an explicitly allowed direction.
+     * Uses ASC only when requested and otherwise defaults to DESC, keeping SQL order clauses independent of raw input.
+     *
+     * @param string $value Requested sorting direction.
+     * @return string ASC or DESC.
+     */
     private function direction(string $value): string
     {
         return strtoupper($value) === 'ASC' ? 'ASC' : 'DESC';
     }
 
+    /**
+     * Resolve the SportsManagement connection selected for event ranking.
+     * Delegates to the native database resolver with a fallback Joomla driver and configured database selector.
+     *
+     * @param Registry $params Module database configuration.
+     * @param DatabaseInterface $fallbackDatabase Joomla's primary database.
+     * @return DatabaseInterface Selected database driver.
+     */
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
