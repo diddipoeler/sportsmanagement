@@ -23,7 +23,7 @@ namespace Joomla\CMS\MVC\View {
         public function setLayout(string $layout): void { $this->layout = $layout; }
 
         /** Record that the native view delegated rendering to Joomla. */
-        public function display($tpl = null): void { $this->rendered = true; }
+        public function display($tpl = null) { $this->rendered = true; }
     }
 }
 
