@@ -23,7 +23,9 @@ final class LegacyPresentationLoader
 
     /**
      * Register a lazy autoloader for legacy global presentation helper classes.
-     * Maps a bounded set of historical helper names to their Joomla 5/6 component paths and registers the SPL loader only once, avoiding deprecated JLoader registration.
+     * Maps a bounded set of historical helper names to their Joomla 5/6
+     * component paths and registers the SPL loader only once. The registered
+     * flag is set after a successful SPL call so failures remain retryable.
      *
      * @return void
      */
@@ -33,7 +35,6 @@ final class LegacyPresentationLoader
             return;
         }
 
-        self::$registered = true;
         $classes = [
             'sportsmanagementHelper' => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sportsmanagement.php',
             'sportsmanagementHelperHtml' => JPATH_SITE . '/components/com_sportsmanagement/helpers/html.php',
@@ -59,5 +60,9 @@ final class LegacyPresentationLoader
                 }
             }
         );
+
+        // Only mark the compatibility loader as registered after SPL accepted
+        // the callback; failed registrations can then be retried safely.
+        self::$registered = true;
     }
 }
