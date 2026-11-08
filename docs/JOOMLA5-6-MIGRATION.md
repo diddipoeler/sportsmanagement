@@ -62,3 +62,7 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 ## Native frontend documentation follow-up (8 November 2026)
 
 Added detailed function-level PHPDoc to the Joomla 5/6 UEFA coefficient and project referee read models and tournament-node view. These classes retain their existing read-only query and template behaviour; the selected-function PHPDoc CI gate now covers all named methods in the updated files.
+
+## Administrator match commentary read error handling (8 November 2026)
+
+`admin/src/Model/MatchcommentaryModel.php` now documents its scoped chronological read query and sends database exception details to Joomla's private log rather than into the model's public error list. A generic translated error is retained for the view. The standalone `joomla56_admin_match_commentary_privacy.php` test checks empty IDs, the bound match identifier, successful reads and confidential query failures on PHP 8.3/8.4.

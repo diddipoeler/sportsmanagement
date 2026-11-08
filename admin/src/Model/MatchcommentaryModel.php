@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\ParameterType;
 
 /**
@@ -18,7 +20,18 @@ use Joomla\Database\ParameterType;
  */
 final class MatchcommentaryModel extends SportsManagementAdminModel
 {
-    /** @return array<int,object> */
+    /**
+     * Read chronologically ordered commentary for one validated match.
+     *
+     * Ignores nonpositive match identifiers and binds the selected match ID
+     * to the native Joomla database query. Database exceptions are logged
+     * server-side while the model receives only a translated generic
+     * message, preventing private SQL or connection details from surfacing
+     * in the administrator view.
+     *
+     * @param int|string $matchId Requested match identifier.
+     * @return array<int, object> Chronological commentary rows or an empty list.
+     */
     public function getMatchCommentary($matchId = 0): array
     {
         $matchId = (int) $matchId;
@@ -39,7 +52,13 @@ final class MatchcommentaryModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            Log::add(
+                'SportsManagement match commentary read failed: ' . $e->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+
             return [];
         }
     }

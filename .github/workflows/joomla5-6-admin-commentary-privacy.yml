@@ -1,0 +1,36 @@
+name: Joomla 5/6 administrator commentary privacy
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/MatchcommentaryModel.php'
+      - '.github/tests/joomla56_admin_match_commentary_privacy.php'
+      - '.github/workflows/joomla5-6-admin-commentary-privacy.yml'
+  pull_request:
+    branches: [joomla5-6]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  commentary:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax
+        run: |
+          php -l admin/src/Model/MatchcommentaryModel.php
+          php -l .github/tests/joomla56_admin_match_commentary_privacy.php
+      - name: Test read-only commentary and private database exceptions
+        run: php .github/tests/joomla56_admin_match_commentary_privacy.php
+      - name: Validate function PHPDoc
+        run: php .github/scripts/check-php-function-docs.php admin/src/Model/MatchcommentaryModel.php

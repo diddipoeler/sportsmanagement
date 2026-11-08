@@ -25,6 +25,7 @@ $paths = [
     'admin/src/Model/SmquotestxtModel.php',
     'admin/src/View/Smquotestxt/HtmlView.php',
     'admin/src/Model/TrainingdataModel.php',
+    'admin/src/Model/MatchcommentaryModel.php',
     'site/src/Controller/EventsrankingController.php',
     'admin/src/Model/CpanelModel.php',
     'admin/src/View/Cpanel/HtmlView.php',
