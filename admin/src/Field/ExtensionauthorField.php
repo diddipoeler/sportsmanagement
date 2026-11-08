@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 
@@ -20,6 +19,11 @@ final class ExtensionauthorField extends FormField
 {
     protected $type = 'ExtensionAuthor';
 
+    /**
+     * Render the localized extension-author field label for administrators.
+     *
+     * @return string HTML wrapper containing the translated author label.
+     */
     protected function getLabel(): string
     {
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
@@ -28,6 +32,11 @@ final class ExtensionauthorField extends FormField
         return '<div style="clear: both;">' . Text::_('COM_SPORTSMANAGEMENT_AUTHOR_LABEL') . '</div>';
     }
 
+    /**
+     * Render static author attribution with a safe external-site link.
+     *
+     * @return string HTML identifying the extension's original author.
+     */
     protected function getInput(): string
     {
         return '<div style="padding-top: 5px; overflow: inherit">'
