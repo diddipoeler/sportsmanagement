@@ -32,7 +32,9 @@ final class PersonExtraFieldReadService
 
     /**
      * Check whether the requested frontend or backend template has custom fields.
-     * Validates the template-column whitelist, then performs a bounded field-definition lookup using a bound template identifier.
+     * Validates the template-column whitelist and template identifier,
+     * then performs a bounded field-definition lookup with an exact, bound
+     * template name so SQL wildcard characters cannot match other forms.
      *
      * @param string $template Extra-field template category: frontend or backend.
      * @param string $templateName Name of the template whose fields are requested.
@@ -41,10 +43,15 @@ final class PersonExtraFieldReadService
     public function hasFields(string $template = 'frontend', string $templateName = 'clubinfo'): bool
     {
         $column = $this->templateColumn($template);
+
+        if ($templateName === '' || strlen($templateName) > 255) {
+            return false;
+        }
+
         $query = $this->database->createQuery()
             ->select($this->database->quoteName('ef.id'))
             ->from($this->database->quoteName('#__sportsmanagement_user_extra_fields', 'ef'))
-            ->where($this->database->quoteName('ef.' . $column) . ' LIKE :templateName')
+            ->where($this->database->quoteName('ef.' . $column) . ' = :templateName')
             ->bind(':templateName', $templateName, ParameterType::STRING);
 
         $this->database->setQuery($query, 0, 1);
@@ -54,7 +61,9 @@ final class PersonExtraFieldReadService
 
     /**
      * Read extra-field definitions and stored values for one person.
-     * Left-joins optional person-specific values to every matching field definition, keeping empty values and returning rows in configured ordering.
+     * Left-joins optional person-specific values to matching field
+     * definitions, keeping empty values and returning rows in configured
+     * ordering. Template names are matched literally, not as SQL patterns.
      *
      * @param int $personId Person identifier whose saved extra-field values should be loaded.
      * @param string $template Extra-field category, frontend or backend.
@@ -66,7 +75,7 @@ final class PersonExtraFieldReadService
         string $template = 'frontend',
         string $templateName = 'clubinfo'
     ): array {
-        if ($personId <= 0) {
+        if ($personId <= 0 || $templateName === '' || strlen($templateName) > 255) {
             return [];
         }
 
@@ -86,7 +95,7 @@ final class PersonExtraFieldReadService
                 . ' AND ' . $this->database->quoteName('ev.jl_id') . ' = :personId'
                 . ')'
             )
-            ->where($this->database->quoteName('ef.' . $column) . ' LIKE :templateName')
+            ->where($this->database->quoteName('ef.' . $column) . ' = :templateName')
             ->bind(':personId', $personId, ParameterType::INTEGER)
             ->bind(':templateName', $templateName, ParameterType::STRING)
             ->order($this->database->quoteName('ef.ordering'));
