@@ -26,10 +26,24 @@ use Joomla\Database\ParameterType;
  */
 final class FinderRelationNotifier
 {
+    /**
+     * Create the relation-change notifier with Joomla's database connection.
+     * Stores the database used to identify affected clubs, teams and people after relation-table edits.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Send Smart Search update events for affected clubs, teams and people.
+     * Deduplicates validated entity IDs, imports Joomla Finder plugins and dispatches typed after-save events; a Finder failure never undoes an already committed relation write.
+     *
+     * @param array ...$entitySets Collections of club, team and person IDs affected by the write.
+     * @return void
+     */
     public function notify(array ...$entitySets): void
     {
         $entities = ['club' => [], 'team' => [], 'person' => []];
@@ -75,11 +89,25 @@ final class FinderRelationNotifier
         }
     }
 
+    /**
+     * Notify Joomla Smart Search that selected person records changed.
+     * Wraps the person ID list into the entity structure required by the generic Finder notifier.
+     *
+     * @param array $personIds Person identifiers to reindex.
+     * @return void
+     */
     public function notifyPeople(array $personIds): void
     {
         $this->notify(['person' => $personIds]);
     }
 
+    /**
+     * Find person IDs referenced by selected season-team-person relation records.
+     * Validates and deduplicates relation IDs before querying, and returns an empty list when the relation lookup fails.
+     *
+     * @param array $relationIds Season-team-person relation record IDs.
+     * @return array<int,int> Related person identifiers safe for Finder updates.
+     */
     public function peopleForTeamRelations(array $relationIds): array
     {
         $ids = $this->normaliseIds($relationIds);
@@ -100,6 +128,15 @@ final class FinderRelationNotifier
         }
     }
 
+    /**
+     * Find a team's player or staff people within one season for reindexing.
+     * Checks team, season and person type before binding those values into the registration query; missing relations yield an empty list.
+     *
+     * @param int $teamId Underlying team identifier.
+     * @param int $seasonId Season identifier.
+     * @param int $personType Player or staff category, restricted to types 1 and 2.
+     * @return array<int,int> Person IDs belonging to the selected team context.
+     */
     public function peopleForTeamContext(int $teamId, int $seasonId, int $personType): array
     {
         if ($teamId <= 0 || $seasonId <= 0 || !in_array($personType, [1, 2], true)) {
@@ -123,6 +160,13 @@ final class FinderRelationNotifier
         }
     }
 
+    /**
+     * Collect Finder entities affected by one project's team relations.
+     * Finds teams, clubs and registered people connected to the given project while excluding unsupported individual-project types.
+     *
+     * @param int $projectId Project whose team relationships changed.
+     * @return array{club:array,team:array,person:array} Affected entity identifiers.
+     */
     public function projectTeamEntitiesForProject(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -135,6 +179,13 @@ final class FinderRelationNotifier
         );
     }
 
+    /**
+     * Collect Finder entity IDs from a set of project-team relation rows.
+     * Normalises relation IDs and restricts the shared relation query to those rows, producing empty entity lists for invalid input.
+     *
+     * @param array $projectTeamIds Project-team relation identifiers.
+     * @return array{club:array,team:array,person:array} Related club, team and person IDs.
+     */
     public function projectTeamEntitiesForRows(array $projectTeamIds): array
     {
         $ids = $this->normaliseIds($projectTeamIds);
@@ -148,6 +199,13 @@ final class FinderRelationNotifier
         );
     }
 
+    /**
+     * Find the people associated with changed project-referee relations.
+     * Joins referee relations to season-person records and returns normalised person IDs for Joomla Smart Search events.
+     *
+     * @param array $projectRefereeIds Changed project-referee relation row IDs.
+     * @return array<int,int> Associated person identifiers.
+     */
     public function projectRefereePeopleForRows(array $projectRefereeIds): array
     {
         $ids = $this->normaliseIds($projectRefereeIds);
@@ -173,6 +231,14 @@ final class FinderRelationNotifier
         }
     }
 
+    /**
+     * Look up club, team and person IDs for a controlled project-team query scope.
+     * Joins project teams with season registrations and their clubs, collecting unique positive entity IDs while treating unavailable Finder lookup data as nonfatal.
+     *
+     * @param string $where Trusted project relation query condition.
+     * @param int|null $projectId Optional project ID bound to the SQL condition.
+     * @return array{club:array,team:array,person:array} Deduplicated affected entities.
+     */
     private function loadProjectTeamEntities(string $where, ?int $projectId = null): array
     {
         $entities = $this->emptyEntities();
@@ -237,11 +303,24 @@ final class FinderRelationNotifier
         return array_map('array_values', $entities);
     }
 
+    /**
+     * Create an empty typed collection for all supported Finder entity categories.
+     * Provides consistent club, team and person result keys when no valid relations exist.
+     *
+     * @return array{club:array,team:array,person:array} Empty Finder entity collections.
+     */
     private function emptyEntities(): array
     {
         return ['club' => [], 'team' => [], 'person' => []];
     }
 
+    /**
+     * Validate and deduplicate positive entity IDs before Finder queries and events.
+     * Accepts positive integers and complete decimal strings, rejects booleans, nonnumeric suffixes, fractional values and overflow IDs.
+     *
+     * @param mixed $ids Scalar or list of candidate entity identifiers.
+     * @return array<int,int> Unique positive integer identifiers.
+     */
     private function normaliseIds(mixed $ids): array
     {
         $normalised = [];

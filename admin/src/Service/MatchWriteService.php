@@ -22,10 +22,24 @@ final class MatchWriteService
 {
     private const MATCH_ROSTER_STARTER = 0;
 
+    /**
+     * Create the administrator match-write service with its Joomla database dependency.
+     * Stores the connection used for transactional player, staff, referee and statistics updates.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Save submitted player and staff statistics for a particular match.
+     * Validates every selected statistic and person identifier before deleting existing values; replaces each selected person's rows inside one transaction.
+     *
+     * @param array $data Submitted match ID, selected people and statistic form entries.
+     * @return bool Whether the statistics update was accepted and committed.
+     */
     public function saveStatistics(array $data): bool
     {
         $matchId = self::validPositiveId($data['match_id'] ?? null);
@@ -95,8 +109,15 @@ final class MatchWriteService
     }
 
     /**
-     * Validate every selected statistics row before any existing values are
-     * deleted. PHP casts malformed strings and arrays to unrelated IDs.
+     * Validate person and statistic identifiers for a submitted statistics section.
+     * Checks the matching player or staff arrays, team assignments and every matching statistic field before any existing values are removed.
+     *
+     * @param array $data Submitted form values.
+     * @param string $flag Form flag indicating that this section was supplied.
+     * @param string $personField Key containing selected person identifiers.
+     * @param string $teamField Key containing corresponding project-team IDs.
+     * @param string $prefix Prefix used by that section's statistic input names.
+     * @return bool Whether every selected statistic has valid identifiers and scalar values.
      */
     private static function validStatisticsSelection(
         array $data,
@@ -140,7 +161,14 @@ final class MatchWriteService
         return true;
     }
 
-    /** Accept only complete decimal IDs within PHP's integer range. */
+    /**
+     * Parse a strictly decimal record identifier without coercing invalid values.
+     * Rejects booleans, partial numeric strings, leading-zero variants and integer overflow; zero can be permitted for intentionally empty selections.
+     *
+     * @param mixed $value Candidate ID from an incoming form.
+     * @param bool $allowZero Whether the unassigned identifier zero is allowed.
+     * @return int|null Parsed identifier, or null if invalid.
+     */
     private static function validPositiveId(mixed $value, bool $allowZero = false): ?int
     {
         $minimum = $allowZero ? 0 : 1;
@@ -158,6 +186,13 @@ final class MatchWriteService
         return $id === false ? null : $id;
     }
 
+    /**
+     * Replace the starting-player assignments for a given fixture and project team.
+     * Validates position, person, ordering, shirt and captain fields before removing existing starter rows and inserting selected players with audit metadata.
+     *
+     * @param array $post Submitted fixture ID, project team, roster positions and shirt details.
+     * @return bool Whether the starting roster was successfully updated.
+     */
     public function updateRoster(array $post): bool
     {
         $matchId = self::validPositiveId($post['id'] ?? null);
@@ -234,6 +269,13 @@ final class MatchWriteService
         });
     }
 
+    /**
+     * Replace the nominated match staff for a project team in a transaction.
+     * Checks that staff and position identifiers match the authoritative list, removes old assignments and inserts the new ordered staff rows.
+     *
+     * @param array $post Submitted match ID, project team and staff positions.
+     * @return bool Whether the replacement staff roster was committed.
+     */
     public function updateStaff(array $post): bool
     {
         $matchId = self::validPositiveId($post['id'] ?? null);
@@ -276,7 +318,13 @@ final class MatchWriteService
         });
     }
 
-    /** @return array{success:bool,added:array<int,array{project_referee_id:int,project_position_id:int}>} */
+    /**
+     * Synchronise a fixture's project-referee assignments without losing retained records.
+     * Checks the submitted referee positions, deletes unselected assignments, updates retained rows and inserts new rows, returning only successfully added referees.
+     *
+     * @param array $post Submitted match ID, referee positions and selected project referee IDs.
+     * @return array{success:bool,added:array<int,array{project_referee_id:int,project_position_id:int}>} Update result and newly added assignments.
+     */
     public function updateReferees(array $post): array
     {
         $matchId = self::validPositiveId($post['id'] ?? null);
@@ -351,6 +399,16 @@ final class MatchWriteService
         return ['success' => $success, 'added' => $success ? $added : []];
     }
 
+    /**
+     * Remove a participant's stored statistics for one match before replacement.
+     * Deletes from the trusted player- or staff-statistic table with the match and participant identifier scoped together.
+     *
+     * @param string $table Internal statistics table to update.
+     * @param int $matchId Parent match identifier.
+     * @param string $personColumn Participant ID column in the selected table.
+     * @param int $personId Player or staff record identifier.
+     * @return void
+     */
     private function deleteStatistics(string $table, int $matchId, string $personColumn, int $personId): void
     {
         $query = $this->db->createQuery()
@@ -360,7 +418,17 @@ final class MatchWriteService
         $this->db->setQuery($query)->execute();
     }
 
-    /** @return array<int,int> */
+    /**
+     * Find existing roster row IDs belonging to the specified match and project team.
+     * Joins participant registrations to their season and project-team relationships and optionally restricts the result to starting players.
+     *
+     * @param string $table Trusted match-player or match-staff table.
+     * @param string $personColumn Participant foreign-key column.
+     * @param int $matchId Parent match identifier.
+     * @param int $projectTeamId Owning project-team identifier.
+     * @param bool $startersOnly Whether to exclude substitution rows.
+     * @return array<int,int> Existing roster record identifiers.
+     */
     private function assignedIds(string $table, string $personColumn, int $matchId, int $projectTeamId, bool $startersOnly): array
     {
         $query = $this->db->createQuery()
@@ -380,7 +448,14 @@ final class MatchWriteService
         return array_values(array_filter(array_map('intval', $this->db->loadColumn() ?: [])));
     }
 
-    /** @param array<int,int> $ids */
+    /**
+     * Delete a collection of existing rows from an internal roster table.
+     * Returns without SQL for an empty list; otherwise deletes only the supplied integer record identifiers.
+     *
+     * @param string $table Trusted roster table to update.
+     * @param array<int,int> $ids Existing row identifiers to remove.
+     * @return void
+     */
     private function deleteIds(string $table, array $ids): void
     {
         if (!$ids) {
@@ -394,8 +469,13 @@ final class MatchWriteService
     }
 
     /**
-     * Check roster/referee IDs and submitted positions before clearing old rows.
-     * Empty selections remain valid: removing all assignments is intentional.
+     * Check submitted roster or referee positions against the authoritative form definition.
+     * Rejects invalid person IDs, ordering keys, malformed position references and extra fields for unknown positions before any assigned rows are deleted.
+     *
+     * @param array $post Complete lineup form submission.
+     * @param array $positions Position definitions made available by the project.
+     * @param string $prefix Name prefix of selected player, staff or referee fields.
+     * @return bool Whether the lineup selection may safely replace existing records.
      */
     private static function validLineupSelection(array $post, array $positions, string $prefix): bool
     {
@@ -436,6 +516,14 @@ final class MatchWriteService
         return true;
     }
 
+    /**
+     * Resolve the project-position identifier from a form position descriptor.
+     * Accepts an object or array containing posid, pposid or value and otherwise uses the provided fallback; invalid positions become zero.
+     *
+     * @param mixed $position Position descriptor from the form or project model.
+     * @param int $fallback Identifier implied by the position key.
+     * @return int Positive project-position identifier, or zero.
+     */
     private static function positionId(mixed $position, int $fallback): int
     {
         if (is_object($position)) {
@@ -449,18 +537,36 @@ final class MatchWriteService
         return self::validPositiveId($id) ?? 0;
     }
 
+    /**
+     * Resolve the active Joomla administrator application for match auditing.
+     * Uses the component's central administrator application resolver instead of deprecated global application access.
+     *
+     * @return CMSApplicationInterface Current Joomla administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
-    /** @return array{0:string,1:int} */
+    /**
+     * Read the administrator user ID and current SQL timestamp for persisted edits.
+     * Captures the modifying identity once so all rows in a transaction receive consistent audit fields.
+     *
+     * @return array{0:string,1:int} Modification time and user identifier.
+     */
     private function auditData(): array
     {
         $app = self::administratorApplication();
         return [Factory::getDate()->toSql(), (int) $app->getIdentity()->id];
     }
 
+    /**
+     * Execute a match-write callback atomically using Joomla's database driver.
+     * Commits after successful execution and attempts rollback on failure before propagating the exception to the caller.
+     *
+     * @param callable $callback Match mutation performed inside a database transaction.
+     * @return bool True after a successful commit.
+     */
     private function transaction(callable $callback): bool
     {
         $this->db->transactionStart();
