@@ -5,13 +5,17 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Controller/EventtypesController.php'
+      - 'admin/src/Model/EventtypeModel.php'
       - '.github/tests/joomla56_admin_eventtypes_model_options.php'
+      - '.github/tests/joomla56_admin_eventtype_media_config.php'
       - '.github/workflows/joomla5-6-admin-eventtypes-model-options.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'admin/src/Controller/EventtypesController.php'
+      - 'admin/src/Model/EventtypeModel.php'
       - '.github/tests/joomla56_admin_eventtypes_model_options.php'
+      - '.github/tests/joomla56_admin_eventtype_media_config.php'
       - '.github/workflows/joomla5-6-admin-eventtypes-model-options.yml'
   workflow_dispatch:
 
@@ -31,5 +35,11 @@ jobs:
         run: |
           php -l admin/src/Controller/EventtypesController.php
           php -l .github/tests/joomla56_admin_eventtypes_model_options.php
+          php -l admin/src/Model/EventtypeModel.php
+          php -l .github/tests/joomla56_admin_eventtype_media_config.php
       - name: Ensure Eventtypes model options survive MVC factory delegation
         run: php .github/tests/joomla56_admin_eventtypes_model_options.php
+      - name: Reject malformed event icon field settings
+        run: php .github/tests/joomla56_admin_eventtype_media_config.php
+      - name: Validate native form method PHPDoc
+        run: php .github/scripts/check-php-function-docs.php admin/src/Model/EventtypeModel.php

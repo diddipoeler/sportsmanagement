@@ -36,6 +36,7 @@ $paths = [
     'admin/src/Model/SportsmanagementModel.php',
     'admin/src/Model/TrainingsdataModel.php',
     'admin/src/Model/SportstypeModel.php',
+    'admin/src/Model/EventtypeModel.php',
     'admin/src/Model/SpecialextensionsModel.php',
     'site/src/Controller/EventsrankingController.php',
     'admin/src/Model/CpanelModel.php',

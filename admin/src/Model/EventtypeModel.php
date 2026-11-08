@@ -17,11 +17,16 @@ use Joomla\CMS\Component\ComponentHelper;
 final class EventtypeModel extends SportsManagementAdminModel
 {
     /**
-     * Load the event type edit form with configured media fields.
+     * Build the native Joomla event-type form with safe media field settings.
      *
-     * @param mixed $data data value.
-     * @param mixed $loadData loadData value.
-     * @return mixed
+     * Retains the configured event icon directory and an optional default
+     * icon, while accepting only a well-formed Joomla media-field type.
+     * Malformed settings saved by older versions cannot cause PHP casts of
+     * arrays or become arbitrary form field class names.
+     *
+     * @param array $data Existing or posted event-type field values.
+     * @param bool $loadData Whether Joomla should load the saved record.
+     * @return mixed Configured Joomla form or false if loading failed.
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -32,13 +37,19 @@ final class EventtypeModel extends SportsManagementAdminModel
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $mediaType = trim((string) $params->get('cfg_which_media_tool', 'media'));
+        $configuredMediaType = $params->get('cfg_which_media_tool', 'media');
+        $mediaType = is_string($configuredMediaType) ? trim($configuredMediaType) : '';
 
-        if ($mediaType === '' || ctype_digit($mediaType)) {
+        // Joomla form types are identifiers, not executable expressions.
+        // Never cast legacy arrays, objects or invalid names to a field type.
+        if (!preg_match('/^[A-Za-z][A-Za-z0-9_-]{0,63}$/D', $mediaType)) {
             $mediaType = 'media';
         }
 
-        $form->setFieldAttribute('icon', 'default', (string) $params->get('ph_icon', ''));
+        $rawIcon = $params->get('ph_icon', '');
+        $defaultIcon = is_string($rawIcon) ? $rawIcon : '';
+
+        $form->setFieldAttribute('icon', 'default', $defaultIcon);
         $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/events');
         $form->setFieldAttribute('icon', 'type', $mediaType);
 

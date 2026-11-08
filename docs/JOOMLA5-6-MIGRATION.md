@@ -88,3 +88,7 @@ The Sportstype administrator form now normalises invalid legacy media-field conf
 ## Training-data assignment ACL follow-up (8 November 2026)
 
 The administrator `TrainingsdataModel` now requires an authenticated identity and delegates editing rights to Joomla's parent form-model ACL instead of consulting the unrelated legacy `com_sportsmanagement.message.<id>` asset. The season-relation ACL regression now includes training assignments, including missing identities, denied permissions and permitted edits.
+
+## Event-type form field migration follow-up (8 November 2026)
+
+`admin/src/Model/EventtypeModel.php` now validates the configurable Joomla media-field type before setting the event icon edit field. Invalid PHP arrays, objects, numeric identifiers and unsafe field names revert to Joomla's media field. Non-string default icon configuration is ignored without an array-to-string warning. The existing event-types MVC workflow now runs `joomla56_admin_eventtype_media_config.php` and checks the model's detailed PHPDoc.
