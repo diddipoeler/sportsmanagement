@@ -69,7 +69,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_eventsranking/helper.php
+          ! grep -Fq 'SportsManagementSiteApplicationResolver' modules/mod_sportsmanagement_eventsranking/helper.php
           grep -Fq 'use Joomla\CMS\Factory;' modules/mod_sportsmanagement_eventsranking/helper.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/helper.php
           ! grep -Fq '$app->getContainer()' modules/mod_sportsmanagement_eventsranking/helper.php

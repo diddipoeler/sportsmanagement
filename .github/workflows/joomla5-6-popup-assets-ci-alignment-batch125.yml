@@ -79,7 +79,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_eventsranking/helper.php
+          ! grep -Fq 'SportsManagementSiteApplicationResolver' modules/mod_sportsmanagement_eventsranking/helper.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/helper.php
           ! grep -Fq '$app->getContainer()' modules/mod_sportsmanagement_eventsranking/helper.php
           echo 'Joomla 5/6 batch 125 contracts OK.'

@@ -59,7 +59,10 @@ jobs:
           grep -Fq -- 'SportsManagement DFB-key import view requires the Joomla administrator application.' admin/src/View/Jlextdfbkeyimport/HtmlView.php
           grep -Fq -- 'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css' admin/src/View/Jlextdfbkeyimport/HtmlView.php
 
-          grep -Fq -- "instanceof SiteApplication || !\$app->isClient('site')" modules/mod_sportsmanagement_eventsranking/helper.php
-          grep -Fq -- 'SportsManagement EventsRanking legacy helper requires the Joomla site application.' modules/mod_sportsmanagement_eventsranking/helper.php
+
+          # Data-only EventsRanking no longer looks up the site application.
+          grep -Fq -- 'EventsRankingHelper::class => __DIR__' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' modules/mod_sportsmanagement_eventsranking/helper.php
+          ! grep -Fq -- 'SportsManagementSiteApplicationResolver' modules/mod_sportsmanagement_eventsranking/helper.php
 
           echo 'Joomla 5/6 batch 174 contracts OK.'

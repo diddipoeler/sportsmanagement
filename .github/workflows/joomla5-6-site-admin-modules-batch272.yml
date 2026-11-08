@@ -120,8 +120,14 @@ jobs:
             modules/mod_sportsmanagement_eventsranking/helper.php
           )
           for file in "${helpers[@]}"; do
-            grep -Fq -- "isClient('site')" "$file"
-            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            if [[ "$file" == modules/mod_sportsmanagement_eventsranking/helper.php ]]; then
+              # Native EventsRanking requires database injection, not a site app.
+              ! grep -Fq -- 'SportsManagementSiteApplicationResolver' "$file"
+              grep -Fq -- 'EventsRankingHelper::class => __DIR__' "$file"
+            else
+              grep -Fq -- "isClient('site')" "$file"
+              grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            fi
             grep -Fq -- 'getContainer()->get(DatabaseInterface::class)' "$file"
           done
           echo 'Joomla 5/6 batch 272 contracts OK.'

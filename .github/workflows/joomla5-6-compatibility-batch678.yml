@@ -69,16 +69,12 @@ jobs:
               raise SystemExit('PersonModel should have exactly one Joomla DB container access')
 
           events = Path('modules/mod_sportsmanagement_eventsranking/helper.php').read_text()
-          if 'private static function siteApplication(): CMSApplicationInterface' not in events:
-              raise SystemExit('EventsRanking legacy site application helper is missing')
           if 'private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface' not in events:
               raise SystemExit('EventsRanking legacy Joomla DB helper is missing')
-          if '$app = self::siteApplication();' not in events:
-              raise SystemExit('EventsRanking legacy helper bypasses centralized site application access')
           if '$database = self::joomlaDatabase($database);' not in events:
               raise SystemExit('EventsRanking legacy helper bypasses centralized Joomla DB access')
-          if events.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
-              raise SystemExit('EventsRanking legacy helper should resolve the site application only in its centralized helper')
+          if 'SportsManagementSiteApplicationResolver' in events:
+              raise SystemExit('EventsRanking data-only facade unexpectedly resolves the site application')
           if events.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
               raise SystemExit('EventsRanking legacy helper should have exactly one Joomla DB container access')
           PY

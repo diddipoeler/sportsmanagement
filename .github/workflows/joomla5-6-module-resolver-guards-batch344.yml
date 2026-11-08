@@ -47,7 +47,13 @@ jobs:
             done
             grep -Fq -- '@version    5.6.0' "$file"
             grep -Fq -- "\\defined('_JEXEC') or die;" "$file"
-            grep -Fq -- 'SportsManagementSiteApplicationResolver::class' "$file"
             grep -Fq -- 'is_file($file)' "$file"
-            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            if [[ "$file" == modules/mod_sportsmanagement_eventsranking/helper.php ]]; then
+              # Database-only native helper does not need an application service.
+              grep -Fq -- 'EventsRankingHelper::class => __DIR__' "$file"
+              ! grep -Fq -- 'SportsManagementSiteApplicationResolver' "$file"
+            else
+              grep -Fq -- 'SportsManagementSiteApplicationResolver::class' "$file"
+              grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            fi
           done

@@ -87,7 +87,7 @@ jobs:
               'compatibility entry helper': (entry, 'new EventsRankingHelper()'),
               'entry site application resolver': (entry, 'SportsManagementSiteApplicationResolver::resolve()'),
               'entry public container': (entry, 'Factory::getContainer()->get(DatabaseInterface::class)'),
-              'legacy helper site application resolver': (legacy_helper, 'SportsManagementSiteApplicationResolver::resolve()'),
+              'legacy helper database-only facade': (legacy_helper, 'EventsRankingHelper::class => __DIR__'),
               'legacy helper public container': (legacy_helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),
               'native namespace': (manifest, '<namespace path="src">Diddipoeler\\Module\\SportsManagementEventsRanking</namespace>'),
               'central site route signature': (site_route, 'public static function view(string $view, array $parameters = []): string'),
@@ -96,6 +96,9 @@ jobs:
           for name, (text, needle) in expected.items():
               if needle not in text:
                   raise SystemExit(f'{name} contract missing: {needle}')
+
+          if 'SportsManagementSiteApplicationResolver' in legacy_helper:
+              raise SystemExit('EventsRanking legacy facade unexpectedly loads a site application')
 
           for name, text in {
               'dispatcher': dispatcher,
