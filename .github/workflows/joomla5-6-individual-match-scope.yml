@@ -4,6 +4,8 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Service/IndividualMatchWriteService.php'
+      - 'admin/src/Service/IndividualMatchAdminService.php'
+      - '.github/tests/joomla56_individual_match_admin_ids.php'
       - 'site/src/Controller/EditmatchController.php'
       - '.github/tests/joomla56_individual_match_scope.php'
       - '.github/workflows/joomla5-6-individual-match-scope.yml'
@@ -28,7 +30,11 @@ jobs:
       - name: PHP syntax
         run: |
           php -l admin/src/Service/IndividualMatchWriteService.php
+          php -l admin/src/Service/IndividualMatchAdminService.php
+          php -l .github/tests/joomla56_individual_match_admin_ids.php
           php -l site/src/Controller/EditmatchController.php
           php -l .github/tests/joomla56_individual_match_scope.php
       - name: Parent project and child record integrity
         run: php .github/tests/joomla56_individual_match_scope.php
+      - name: Validate individual-match admin bulk selection IDs
+        run: php .github/tests/joomla56_individual_match_admin_ids.php
