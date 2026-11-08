@@ -23,6 +23,16 @@ use Joomla\Database\DatabaseInterface;
  */
 final class CountryOptionsHelper
 {
+    /**
+     * Load and alphabetize administrator country selector options.
+     *
+     * Selects registered ISO-3166 alpha-3 country codes, discards malformed
+     * database records and returns translated Joomla option objects.
+     * Database errors are logged privately and produce an empty selector.
+     *
+     * @param DatabaseInterface $db Current Joomla database connection.
+     * @return array<int,object> Sorted country selection options.
+     */
     public static function getOptions(DatabaseInterface $db): array
     {
         try {
@@ -63,6 +73,17 @@ final class CountryOptionsHelper
         return $options;
     }
 
+    /**
+     * Resolve a two-letter ISO country code to the configured alpha-3 code.
+     *
+     * Validates the input before querying and verifies the stored result.
+     * Unsupported codes and database errors return the configured fallback.
+     *
+     * @param DatabaseInterface $db Current Joomla database connection.
+     * @param string $iso2 ISO alpha-2 country identifier.
+     * @param string $fallback Alpha-3 code used when the lookup fails.
+     * @return string Resolved alpha-3 code or the fallback value.
+     */
     public static function iso2To3(DatabaseInterface $db, string $iso2, string $fallback = 'DEU'): string
     {
         $iso2 = strtoupper(trim($iso2));
@@ -86,6 +107,17 @@ final class CountryOptionsHelper
         return preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : $fallback;
     }
 
+    /**
+     * Render an escaped flag icon for an ISO alpha-3 country identifier.
+     *
+     * Retrieves the saved country, honours the component CSS flag setting,
+     * and otherwise builds a validated image URL for the flag graphic.
+     * Invalid country identifiers or missing records return no markup.
+     *
+     * @param DatabaseInterface $db Current Joomla database connection.
+     * @param string $countryCode ISO alpha-3 country identifier.
+     * @return string Escaped flag HTML, or empty text if unavailable.
+     */
     public static function getFlag(DatabaseInterface $db, string $countryCode): string
     {
         $countryCode = strtoupper(trim($countryCode));
@@ -143,13 +175,27 @@ final class CountryOptionsHelper
             : '';
     }
 
-    /** Keep optional administrator country lookups from exposing SQL details. */
+    /**
+     * Log country lookup failures without exposing database details in HTML.
+     *
+     * @param \Throwable $e Country database failure to log.
+     * @return void
+     */
     private static function reportDatabaseError(\Throwable $e): void
     {
         Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
     }
 
-    /** Build only safe HTTP(S) or site-relative flag URLs. */
+    /**
+     * Construct an allowed flag URL from a stored flag image path.
+     *
+     * Rejects URL credentials, unsupported schemes, path traversal, control
+     * characters and backslash-based paths before resolving a site-relative
+     * URL against the Joomla root.
+     *
+     * @param string $value Stored flag path or HTTP(S) URL.
+     * @return string Allowed image URL, or empty text for unsafe input.
+     */
     private static function imageUrl(string $value): string
     {
         $value = trim($value);
@@ -196,6 +242,12 @@ final class CountryOptionsHelper
         return rtrim(Uri::root(), '/') . '/' . $path;
     }
 
+    /**
+     * Encode flag image URLs and accessible labels as safe HTML attributes.
+     *
+     * @param string $value Untrusted image URL or country display name.
+     * @return string UTF-8 HTML-escaped attribute value.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
