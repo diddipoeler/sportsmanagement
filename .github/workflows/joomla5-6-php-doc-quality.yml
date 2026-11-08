@@ -1,0 +1,85 @@
+name: Joomla 5/6 PHP documentation and syntax gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/**/*.php'
+      - 'admin/**/*.php'
+      - 'modules/**/*.php'
+      - '.github/scripts/check-php-function-docs.php'
+      - '.github/scripts/check-php-file-headers.php'
+      - '.github/workflows/joomla5-6-php-doc-quality.yml'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'site/**/*.php'
+      - 'admin/**/*.php'
+      - 'modules/**/*.php'
+      - '.github/scripts/check-php-function-docs.php'
+      - '.github/scripts/check-php-file-headers.php'
+      - '.github/workflows/joomla5-6-php-doc-quality.yml'
+
+jobs:
+  php-documentation:
+    name: File headers, function descriptions and PHP lint
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check all first-party PHP attribution headers
+        run: php .github/scripts/check-php-file-headers.php
+
+      - name: Check the newly documented component and module APIs
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            modules/mod_sportsmanagement_birthday/helper.php \
+            modules/mod_sportsmanagement_eventsranking/helper.php \
+            modules/mod_sportsmanagement_playgroundplan/helper.php \
+            modules/mod_sportsmanagement_teamstats_ranking/helper.php \
+            modules/mod_sportsmanagement_rquotes/helper.php \
+            modules/mod_sportsmanagement_ranking/helper.php \
+            site/helpers/comments.php \
+            site/src/Service/RankingEngine.php \
+            admin/src/Service/IndividualMatchPairingService.php
+
+      - name: Check changed first-party PHP files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            base="$(git merge-base HEAD "origin/$GITHUB_BASE_REF")"
+          else
+            base="$(php -r '$e = json_decode(file_get_contents(getenv("GITHUB_EVENT_PATH")), true); echo $e["before"] ?? "";')"
+          fi
+
+          if [[ ! "$base" =~ ^[0-9a-f]{40}$ ]] || [[ "$base" =~ ^0+$ ]] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            base="$(git rev-parse HEAD^)"
+          fi
+
+          files=()
+          while IFS= read -r -d '' file; do
+            if [[ "$file" =~ ^(site|admin|modules)/.*\.php$ ]] && [[ "$file" != site/libraries/dompdf/vendor/* ]]; then
+              files+=("$file")
+            fi
+          done < <(git diff --name-only --diff-filter=ACMRT -z "$base" HEAD -- site admin modules)
+
+          if (( ${#files[@]} > 0 )); then
+            php .github/scripts/check-php-function-docs.php "${files[@]}"
+            php .github/scripts/check-php-headers.php "${files[@]}"
+            for file in "${files[@]}"; do
+              php -l "$file"
+            done
+          else
+            echo 'No first-party PHP sources changed.'
+          fi
+
+      - name: Run existing Joomla 5/6 module regression checks
+        run: |
+          php .github/tests/joomla56-rquotes-inputs.php
+          php .github/tests/joomla56-playgroundplan-venues.php
+          php .github/tests/joomla56-teamstats-settings.php
