@@ -55,6 +55,13 @@ namespace {
         throw new \RuntimeException('The module must package its default rquotes.txt in the text folder.');
     }
 
+    // Keep the Joomla XML picker and the actual native reader in sync.
+    $manifest = (string) file_get_contents($root . '/mod_sportsmanagement_rquotes.xml');
+    if (!str_contains($manifest, 'directory="modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes"')
+        || !str_contains($manifest, 'fileFilter="\\.txt$"')) {
+        throw new \RuntimeException('The Joomla filelist does not select the packaged quote text directory.');
+    }
+
     try {
         file_put_contents($packagedPath, 'packaged quote');
         file_put_contents($legacyPath, 'legacy quote');
