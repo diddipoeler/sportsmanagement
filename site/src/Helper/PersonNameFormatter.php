@@ -160,7 +160,8 @@ final class PersonNameFormatter
 
     /**
      * Return the first character of a name with a trailing period.
-     * Uses UTF-8-aware extraction when the mbstring extension is present.
+     * Uses UTF-8-aware extraction with mbstring or a Unicode regex fallback,
+     * avoiding broken multi-byte initials on installations without mbstring.
      * @param string $value First or last name.
      * @return string Initial with period or empty text.
      */
@@ -174,6 +175,12 @@ final class PersonNameFormatter
             return mb_substr($value, 0, 1, 'UTF-8') . '.';
         }
 
+        // The Unicode regex preserves full UTF-8 initials when mbstring is unavailable.
+        if (preg_match('/^./us', $value, $matches) === 1) {
+            return $matches[0] . '.';
+        }
+
+        // Keep the legacy fallback for invalidly encoded input.
         return $value[0] . '.';
     }
 }
