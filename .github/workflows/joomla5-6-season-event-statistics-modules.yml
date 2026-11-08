@@ -64,7 +64,13 @@ jobs:
 
           for file in admin/src/Model/SeasonpersonModel.php admin/src/Model/SeasonteamModel.php admin/src/Model/SeasonteampersonModel.php; do
             grep -Fq 'extends SportsManagementAdminModel' "$file"
-            grep -Fq '$this->administratorApplication()->getIdentity()->authorise(' "$file"
+
+            # Both direct authorisation and a separately validated identity are
+            # compatible with Joomla 5/6. The latter safely handles guests.
+            if ! grep -Fq '$this->administratorApplication()->getIdentity()->authorise(' "$file"; then
+              grep -Fq '$identity = $this->administratorApplication()->getIdentity();' "$file"
+              grep -Fq '$identity !== null && $identity->authorise(' "$file"
+            fi
           done
 
           for file in site/src/Model/EventModel.php site/src/Model/HitlistModel.php site/src/Model/JsonfeedModel.php; do
