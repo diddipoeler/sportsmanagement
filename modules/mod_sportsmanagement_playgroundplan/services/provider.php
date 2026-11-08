@@ -17,6 +17,17 @@ use Joomla\DI\ServiceProviderInterface;
 
 return new class () implements ServiceProviderInterface
 {
+    /**
+     * Register Joomla 5/6 services for the SportsManagement playgroundplan module.
+     *
+     * Installs the namespaced dispatcher and helper factories in
+     * Joomla's dependency injection container, then registers the core module
+     * service. This activates the native module runtime in place of the
+     * historical PHP entry-point bootstrap.
+     *
+     * @param Container $container Joomla's module service container.
+     * @return void
+     */
     public function register(Container $container): void
     {
         $container->registerServiceProvider(
