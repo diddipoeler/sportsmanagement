@@ -60,8 +60,11 @@ jobs:
           grep -Fq 'SportsManagement native Clubs field could not be loaded.' admin/models/fields/clubs.php
           grep -Fq "class_alias(ClubsField::class, 'JFormFieldClubs')" admin/models/fields/clubs.php
 
-          grep -Fq 'is_file($nativeHelper)' modules/mod_sportsmanagement_eventsranking/helper.php
-          grep -Fq 'SportsManagement native EventsRanking module helper could not be loaded.' modules/mod_sportsmanagement_eventsranking/helper.php
+          # The current bridge loads multiple native dependencies by class/file pairs.
+          # It no longer uses the earlier single $nativeHelper variable.
+          grep -Fq 'EventsRankingHelper::class => __DIR__' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -Fq 'if (!class_exists($class, false) && is_file($file))' modules/mod_sportsmanagement_eventsranking/helper.php
+          grep -Fq 'SportsManagement EventsRanking dependency could not be loaded:' modules/mod_sportsmanagement_eventsranking/helper.php
 
       - name: Reject stale Batch 52 metadata
         run: |

@@ -55,7 +55,14 @@ jobs:
             for tag in '@version' '@author' '@copyright' '@license'; do
               grep -Fq -- "$tag" "$file"
             done
-            grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            # EventsRanking is a data-only facade: the native helper receives
+            # its database directly and does not need an application resolver.
+            if [[ "$file" != modules/mod_sportsmanagement_eventsranking/helper.php ]]; then
+              grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' "$file"
+            else
+              grep -Fq -- 'EventsRankingHelper::class => __DIR__' "$file"
+              ! grep -Fq -- 'SportsManagementSiteApplicationResolver' "$file"
+            fi
             if grep -Fq -- 'use Joomla\CMS\Application\SiteApplication;' "$file"; then
               echo "$file regressed to concrete SiteApplication coupling" >&2
               exit 1
