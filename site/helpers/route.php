@@ -27,10 +27,19 @@ use Joomla\CMS\Component\ComponentHelper;
  */
 class sportsmanagementHelperRoute
 {
+    /**
+     * Resolve the active Joomla site application for legacy route selection.
+     * Retrieves the site application via Joomla's public dependency-injection container and validates the service before legacy menu lookup code uses it.
+     *
+     * @return SiteApplication Active Joomla frontend application.
+     */
     private static function siteApplication(): SiteApplication
     {
-        /** @var SiteApplication $application */
         $application = Factory::getContainer()->get(SiteApplication::class);
+
+        if (!$application instanceof SiteApplication) {
+            throw new \RuntimeException('SportsManagement routing requires the Joomla site application.', 500);
+        }
 
         return $application;
     }
@@ -490,6 +499,16 @@ class sportsmanagementHelperRoute
 		return $link;
 	}
 
+    /**
+     * Build a frontend link to a project's tournament bracket view.
+     * Preserves the legacy arguments for project, round, season and database selector while letting Joomla's router resolve the final URL.
+     *
+     * @param int|string $projectid Project identifier or ID:alias value.
+     * @param int|string $round Optional tournament round.
+     * @param int $cfg_which_database SportsManagement database selector.
+     * @param int|string $s Optional season identifier.
+     * @return string Joomla-routed tournament bracket URL.
+     */
     public static function gettournamentbracket($projectid, $round = 0, $cfg_which_database = 0, $s = 0)
 	{
 		$params = array("option" => "com_sportsmanagement",
@@ -673,21 +692,22 @@ class sportsmanagementHelperRoute
 
 	
 	/**
-	 * sportsmanagementHelperRoute::getEditLineupRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $matchid
-	 * @param string $layout
-	 * @param integer $team
-	 * @param integer $projectTeam
-	 * @param string $match_date
-	 * @param integer $cfg_which_database
-	 * @param integer $s
-	 * @param integer $r
-	 * @param integer $division
-	 * @param string $oldlayout
-	 * @param integer $doubleevents
-	 * @return
+	 * Build the frontend popup URL for editing a match lineup.
+	 * Carries match, team, project, season and layout context to the editmatch view; Joomla's route builder then resolves an appropriate site menu and language path.
+	 *
+	 * @param int|string $projectid Project identifier.
+	 * @param int|string $matchid Match identifier.
+	 * @param string $layout Match-editor layout name.
+	 * @param int|string $team Optional team identifier.
+	 * @param int|string $projectTeam Optional project-team identifier.
+	 * @param string $match_date Match date passed to the editor.
+	 * @param int $cfg_which_database SportsManagement database selector.
+	 * @param int|string $s Season identifier.
+	 * @param int|string $r Round identifier.
+	 * @param int|string $division Division identifier.
+	 * @param string $oldlayout Previous layout to return to.
+	 * @param int $doubleevents Whether double-event editing is enabled.
+	 * @return string Joomla-routed match-lineup editor URL.
 	 */
 	public static function getEditLineupRoute($projectid, $matchid, $layout = 'editlineup', $team = 0, $projectTeam = 0, $match_date = '0000-00-00', $cfg_which_database = 0, $s = 0, $r = 0, $division = 0, $oldlayout = '',$doubleevents = 0)
 	{

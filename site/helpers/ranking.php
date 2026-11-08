@@ -49,10 +49,19 @@ class JSMRanking extends \stdClass
         return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
     }
 
+    /**
+     * Obtain Joomla's database service for legacy ranking calculations.
+     * Resolves DatabaseInterface from the public dependency-injection container and rejects an invalid service instead of allowing a later type or query failure.
+     *
+     * @return DatabaseInterface Verified Joomla database driver.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Ranking database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -1559,6 +1568,14 @@ function array_multisort(&$a, array $column_names) {
 		return $res;
 	}
 
+	/**
+	 * Compare two ranking rows by their final-table position.
+	 * Uses the spaceship comparison to preserve the legacy final-ranking sort order for teams whose standings are already determined.
+	 *
+	 * @param object $a First ranking team row with _finaltablerank.
+	 * @param object $b Second ranking team row with _finaltablerank.
+	 * @return int Negative, zero or positive comparison result.
+	 */
 	function _cmpFinaltablerank($a, $b)
 	{
 		$res = $a->_finaltablerank <=> $b->_finaltablerank;
@@ -1566,15 +1583,13 @@ function array_multisort(&$a, array $column_names) {
 	}
 
 	/**
-	 * **************************************************************************
+	 * Sort ranking teams by their total score achieved.
+	 * Compares sum_team1_result with the descending legacy score-for ordering used by the ranking template.
 	 *
-	 * Compare functions (callbacks for uasort)
-	 *
-	 * You can add more criteria by just adding more _cmpXxxx functions, with Xxxx
-	 * being the name of your criteria to be set in ranking template setting
-	 *
-	 *****************************************************************************/
-
+	 * @param object $a First team's ranking totals.
+	 * @param object $b Second team's ranking totals.
+	 * @return int Ordering result for uasort() or similar callbacks.
+	 */
 	function _cmpscorefor($a, $b)
 	{
 	    $res = 0;
@@ -1582,6 +1597,14 @@ function array_multisort(&$a, array $column_names) {
 		return (int) $res;
 	}
 
+	/**
+	 * Sort ranking teams by the number of scores conceded.
+	 * Compares the historical sum_team2_result values using the helper's legacy descending comparison order.
+	 *
+	 * @param object $a First team's ranking totals.
+	 * @param object $b Second team's ranking totals.
+	 * @return int Signed comparison result.
+	 */
 	function _cmpscoreagainst($a, $b)
 	{
 	    $res = 0;
@@ -1590,6 +1613,14 @@ function array_multisort(&$a, array $column_names) {
 	}
 
 
+	/**
+	 * Order teams by goals scored using the configured ranking direction.
+	 * Reads the ranking sort preference and compares goalsfor values for ASC or DESC, preserving historical fallback behaviour for unknown directions.
+	 *
+	 * @param object $a First ranking row with goalsfor.
+	 * @param object $b Second ranking row with goalsfor.
+	 * @return int Signed goals-for ordering result.
+	 */
 	function _cmpGoalsfor($a, $b)
 	{
 	    $res = 0;
@@ -1609,6 +1640,14 @@ function array_multisort(&$a, array $column_names) {
 		return (int) $res;
 	}
 
+	/**
+	 * Order teams by goals conceded using the configured ranking direction.
+	 * Uses the ranking's ASC or DESC setting to compare goalsagainst values without altering the stored goal totals.
+	 *
+	 * @param object $a First ranking row with goalsagainst.
+	 * @param object $b Second ranking row with goalsagainst.
+	 * @return int Signed goals-against ordering result.
+	 */
 	function _cmpGoalsagainst($a, $b)
 	{
 	    $res = 0;
