@@ -22,10 +22,10 @@ final class SmquotestxtModel extends BaseDatabaseModel
     /**
      * Enumerate only usable text quote files from the frontend module folder.
      *
-     * Limits enumeration to readable regular files in the module directory,
-     * excludes symlinks and executable PHP sources, and applies the same
-     * basename allowlist as the native module's TXT reader. The resulting
-     * filenames are ordered naturally for the Joomla administrator picker.
+     * Lists the module's packaged quote-text subdirectory selected by its
+     * XML filelist field, excluding symlinks, scripts and unsafe basenames.
+     * The native frontend reader additionally supports old root-level TXT
+     * files for existing configuration values without exposing them here.
      *
      * @return array<int, string> Readable and validated TXT file names.
      */
@@ -33,9 +33,10 @@ final class SmquotestxtModel extends BaseDatabaseModel
     {
         $path = JPATH_SITE
             . DIRECTORY_SEPARATOR . 'modules'
+            . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes'
             . DIRECTORY_SEPARATOR . 'mod_sportsmanagement_rquotes';
 
-        if (!is_dir($path)) {
+        if (!is_dir($path) || is_link($path)) {
             return [];
         }
 

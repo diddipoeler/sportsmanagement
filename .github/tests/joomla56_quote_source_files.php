@@ -17,7 +17,8 @@ namespace {
     $root = sys_get_temp_dir() . '/sportsmanagement-quotes-' . bin2hex(random_bytes(6));
     define('JPATH_SITE', $root);
     define('_JEXEC', 1);
-    $directory = $root . '/modules/mod_sportsmanagement_rquotes';
+    $moduleRoot = $root . '/modules/mod_sportsmanagement_rquotes';
+    $directory = $moduleRoot . '/mod_sportsmanagement_rquotes';
 
     if (!mkdir($directory, 0700, true)) {
         throw new \RuntimeException('Cannot create temporary quote test directory.');
@@ -35,6 +36,10 @@ namespace {
             @symlink($directory . '/q2.txt', $directory . '/linked.txt');
         }
 
+        // Root-level custom TXT files remain a frontend compatibility path,
+        // but are not offered by the module's packaged filelist field.
+        file_put_contents($moduleRoot . '/legacy.txt', 'legacy');
+
         $model = new \Diddipoeler\Component\SportsManagement\Administrator\Model\SmquotestxtModel();
         $listed = $model->getTXTFiles();
 
@@ -48,7 +53,9 @@ namespace {
             }
         }
         rmdir($directory);
-        rmdir(dirname($directory));
+        unlink($moduleRoot . '/legacy.txt');
+        rmdir($moduleRoot);
+        rmdir($root . '/modules');
         rmdir($root);
     }
 

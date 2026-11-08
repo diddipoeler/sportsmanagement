@@ -589,7 +589,10 @@ final class RquotesHelper
     /**
      * Choose a line from the configured safe local quote text file.
      *
-     * Restricts filenames, rejects symbolic links and oversized files, then selects a random or date-indexed nonblank line.
+     * Searches the module's packaged quote-text directory first and falls
+     * back to the module root for upgraded sites with legacy custom files.
+     * Rejects unsafe file names, symlinks and oversized files before reading
+     * and selects a random or day-of-month-indexed nonblank line.
      *
      * @param Registry $params Text-file and display settings.
      * @param CMSApplicationInterface $app Joomla application for local date.
@@ -618,15 +621,31 @@ final class RquotesHelper
             return '';
         }
 
-        $candidate = $root . DIRECTORY_SEPARATOR . $filename;
+        // The XML filelist field ships rquotes.txt in a nested directory.
+        // Older installations can also have customised TXT files in the
+        // module root, so retain a guarded fallback for their saved settings.
+        $path = null;
+        foreach ([$root . '/mod_sportsmanagement_rquotes', $root] as $directory) {
+            if (!is_dir($directory) || is_link($directory)) {
+                continue;
+            }
 
-        if (is_link($candidate)) {
-            return '';
+            $candidate = $directory . DIRECTORY_SEPARATOR . $filename;
+            if (is_link($candidate)) {
+                continue;
+            }
+
+            $resolved = realpath($candidate);
+            if ($resolved === false || dirname($resolved) !== $directory
+                || !is_file($resolved) || !is_readable($resolved)) {
+                continue;
+            }
+
+            $path = $resolved;
+            break;
         }
 
-        $path = realpath($candidate);
-
-        if ($path === false || dirname($path) !== $root || !is_file($path) || !is_readable($path)) {
+        if ($path === null) {
             return '';
         }
 

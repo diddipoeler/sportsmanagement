@@ -63,7 +63,7 @@
           label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_SELECT_TEXT_FILE"
           description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_SELECT_TEXT_FILE_DESC"
           directory="modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes"
-          hide_default="true" hide_none="true" />
+          fileFilter="\.txt$" hide_default="true" hide_none="true" />
         <field name="randomtext" type="extensionradiobutton" default="0"
           class="radio btn-group btn-group-yesno"
           label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_TEXT_FILE_ROTATE"

@@ -138,3 +138,7 @@ The native `mod_sportsmanagement_rquotes` layouts now share `QuoteText::render()
 ## Shared native/legacy quote picture validation
 
 Retained template overrides can still call `modRquotesHelper::renderRquote()`. That compatibility path now uses `RquotesHelper::pictureServer()` and `pictureUrl()`, the same validated remote-server and picture-path resolution as the active native module. Existing prepared image URLs are checked again; invalid credentials, schemes, traversal paths or unsafe external media settings are rejected. `joomla56_rquotes_media_urls.php` exercises those rules in PHP 8.3 and 8.4.
+
+## Packaged quote text directory (8 November 2026)
+
+The native quote text reader now looks first in `modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes/`, matching the shipped `rquotes.txt` file and the module XML filelist path. A guarded fallback to the module root preserves already configured custom text files from older installations. The backend text-file picker uses the packaged directory; its basename filter remains aligned with the frontend reader. Both locations reject symlinked TXT files, invalid filenames and oversized files. The standalone `joomla56_rquotes_text_file_paths.php` regression test validates folder precedence, the default package asset, legacy fallback and malicious names.

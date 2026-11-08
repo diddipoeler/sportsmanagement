@@ -12,6 +12,9 @@ on:
       - 'admin/src/Model/TrainingdataModel.php'
       - '.github/tests/joomla56_jsonfeed_*'
       - '.github/tests/joomla56_quote_source_files.php'
+      - '.github/tests/joomla56_rquotes_text_file_paths.php'
+      - 'modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes.xml'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
       - '.github/workflows/joomla5-6-jsonfeed-quote-sources.yml'
   pull_request:
     branches: [joomla5-6]
@@ -48,6 +51,7 @@ jobs:
           php .github/tests/joomla56_jsonfeed_module_bounds.php
           php .github/tests/joomla56_jsonfeed_default_contract.php
           php .github/tests/joomla56_quote_source_files.php
+          php .github/tests/joomla56_rquotes_text_file_paths.php
       - name: Verify PHPDoc function descriptions in migrated classes
         run: |
           php .github/scripts/check-php-function-docs.php site/src/View/Jsonfeed/RawView.php site/src/View/Curve/RawView.php admin/src/Model/SmquotestxtModel.php admin/src/View/Smquotestxt/HtmlView.php admin/src/Model/TrainingdataModel.php
