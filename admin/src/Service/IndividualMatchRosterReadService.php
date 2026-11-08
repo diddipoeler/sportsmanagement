@@ -17,10 +17,25 @@ use Joomla\Database\ParameterType;
 /** Read-only roster access for the administrator individual-match view. */
 final class IndividualMatchRosterReadService
 {
+    /**
+     * Create the administrator individual-match roster reader.
+     * Keeps the injected Joomla database service for project-team player lists and match-specific rosters.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Load published players belonging to a project team in the requested season.
+     * Joins person records to season-team-person and project-team relations, filters out unpublished people and orders the result by last name.
+     *
+     * @param int $seasonId Season containing the player registrations.
+     * @param int $projectTeamId Project-team identifier.
+     * @return array<int,object> Active person records with season-team-person IDs.
+     */
     public function getProjectTeamPlayers(int $seasonId, int $projectTeamId): array
     {
         if ($seasonId <= 0 || $projectTeamId <= 0) {
@@ -49,10 +64,15 @@ final class IndividualMatchRosterReadService
     }
 
     /**
-     * Native replacement for the legacy getTeamPersons() roster option reader.
+     * Find selectable team members while excluding previously selected roster IDs.
+     * Restricts the people query to project, team, season and person type, joins optional project positions and excludes only validated positive person identifiers.
      *
-     * @param array<int,int|string> $excludedIds Season-team-person ids to omit.
-     * @return array<int,object>
+     * @param int $projectId Owning project identifier.
+     * @param int $seasonId Season of the nominated team.
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $personType Required person category, normally player.
+     * @param array<int,mixed> $excludedIds Existing season-team-person IDs to omit.
+     * @return array<int,object> Available people and their position labels.
      */
     public function getAvailableTeamPersons(
         int $projectId,
@@ -65,10 +85,7 @@ final class IndividualMatchRosterReadService
             return [];
         }
 
-        $excludedIds = array_values(array_unique(array_filter(
-            array_map('intval', $excludedIds),
-            static fn (int $id): bool => $id > 0
-        )));
+        $excludedIds = self::normaliseExcludedIds($excludedIds);
 
         $db = $this->db;
         $query = $db->createQuery()
@@ -135,6 +152,50 @@ final class IndividualMatchRosterReadService
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * Validate excluded person IDs before adding them to a SQL NOT IN list.
+     * Accepts positive integer and decimal-string IDs, deduplicates them and rejects arrays, booleans, partial numbers and integer overflows instead of coercing them into unrelated person IDs.
+     *
+     * @param array<int,mixed> $excludedIds User-supplied excluded person identifiers.
+     * @return array<int,int> Unique valid positive season-team-person IDs.
+     */
+    private static function normaliseExcludedIds(array $excludedIds): array
+    {
+        $valid = [];
+
+        foreach ($excludedIds as $candidate) {
+            if (!is_int($candidate) && !is_string($candidate)) {
+                continue;
+            }
+
+            $raw = trim((string) $candidate);
+            if ($raw === '' || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id !== false) {
+                $valid[$id] = $id;
+            }
+        }
+
+        return array_values($valid);
+    }
+
+    /**
+     * List roster entries already nominated for a particular match and team.
+     * Joins match players to their project-team registrations and position names, retaining starting and substituted players in ordering sequence.
+     *
+     * @param int $seasonId Season containing the nominated people.
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $matchId Parent fixture identifier.
+     * @return array<int,object> Match roster rows with person and position references.
+     */
     public function getMatchRosterPlayers(int $seasonId, int $projectTeamId, int $matchId): array
     {
         if ($seasonId <= 0 || $projectTeamId <= 0 || $matchId <= 0) {

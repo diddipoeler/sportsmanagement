@@ -17,10 +17,29 @@ use Joomla\Database\ParameterType;
 /** Creates the historical five Golf/Billard single rows from numbered starters. */
 final class IndividualMatchGolfSetupService
 {
+    /**
+     * Create the golf and billiards individual-match setup service.
+     * Stores the Joomla database driver used to read the nominated starters and create the corresponding five possible single games.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Create up to five golf or billiards singles from home and away shirt numbers.
+     * Checks the fixture identifiers, returns early when any singles already exist, then pairs shirt numbers one through five in a transaction and records the administrator and modification timestamp.
+     *
+     * @param int $matchId Parent fixture identifier.
+     * @param int $roundId Round containing the fixture.
+     * @param int $homeTeamId Home project-team identifier.
+     * @param int $awayTeamId Away project-team identifier.
+     * @param int $userId Administrator creating the rows.
+     * @param string $modified SQL modification date for inserted games.
+     * @return bool Whether existing rows are sufficient or setup completed successfully.
+     */
     public function ensureSingles(
         int $matchId,
         int $roundId,
@@ -72,6 +91,13 @@ final class IndividualMatchGolfSetupService
         }
     }
 
+    /**
+     * Check whether a parent fixture already has individual games.
+     * Uses a bound match identifier when counting existing single-match rows so repeated setup does not create duplicate games.
+     *
+     * @param int $matchId Parent fixture identifier.
+     * @return bool True when at least one single-match row already exists.
+     */
     private function hasSingles(int $matchId): bool
     {
         $db = $this->db;
@@ -84,6 +110,14 @@ final class IndividualMatchGolfSetupService
         return (int) $db->setQuery($query)->loadResult() > 0;
     }
 
+    /**
+     * Load the starting lineup indexed by shirt numbers one through five.
+     * Joins match-player entries to the nominated project-team roster, excludes substitutes and returns the season-team-person IDs keyed by shirt number.
+     *
+     * @param int $projectTeamId Project-team identifier to inspect.
+     * @param int $matchId Parent fixture identifier.
+     * @return array<int,int> Starter person IDs indexed by shirt number.
+     */
     private function startersByShirtNumber(int $projectTeamId, int $matchId): array
     {
         $db = $this->db;

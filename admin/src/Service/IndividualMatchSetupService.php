@@ -19,10 +19,28 @@ final class IndividualMatchSetupService
     private const SPORT_SMALL_BORE = 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION';
     private const SPORT_TENNIS = 'COM_SPORTSMANAGEMENT_ST_TENNIS';
 
+    /**
+     * Create a placeholder-game setup service using Joomla's database connection.
+     * Stores the database driver used to count existing singles and doubles and add missing match slots transactionally.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Ensure the required number of placeholder games for a supported individual sport.
+     * Reads rifle and tennis match-count settings, counts existing singles and doubles by fixture and type, then inserts only missing empty slots under one transaction.
+     *
+     * @param object $project Project sport settings and configured game counts.
+     * @param int $matchId Parent match identifier.
+     * @param int $roundId Owning round identifier.
+     * @param int $projectTeam1Id Home project-team identifier.
+     * @param int $projectTeam2Id Away project-team identifier.
+     * @return bool False for invalid fixture IDs, true after setup or for other sports.
+     */
     public function ensureMatchSlots(
         object $project,
         int $matchId,
@@ -71,6 +89,14 @@ final class IndividualMatchSetupService
         });
     }
 
+    /**
+     * Count the stored single or double game slots for a fixture.
+     * Quotes the match type and restricts the database count to the requested parent fixture, using only internal table and column names.
+     *
+     * @param int $matchId Parent fixture identifier.
+     * @param string $matchType Game category, such as SINGLE or DOUBLE.
+     * @return int Number of existing placeholder or played games of that type.
+     */
     private function countSlots(int $matchId, string $matchType): int
     {
         $query = $this->db->createQuery()
@@ -82,6 +108,13 @@ final class IndividualMatchSetupService
         return (int) $this->db->loadResult();
     }
 
+    /**
+     * Run game-slot creation atomically through Joomla's database transaction API.
+     * Commits a successful callback and attempts rollback before rethrowing exceptions on failure.
+     *
+     * @param callable $callback Database write work to execute inside the transaction.
+     * @return mixed Result returned by the callback.
+     */
     private function transaction(callable $callback): mixed
     {
         $this->db->transactionStart();

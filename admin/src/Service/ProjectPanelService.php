@@ -16,10 +16,24 @@ use Joomla\Database\DatabaseInterface;
 /** Project dashboard counts and standard-position bootstrap. */
 final class ProjectPanelService
 {
+    /**
+     * Create the administrator project panel data and setup service.
+     * Retains the Joomla database connection used to read project counters and initialise missing standard positions.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Build project panel counters for divisions, teams, referees, positions and rounds.
+     * Returns zeros for an invalid project and can initialise missing sport-specific positions for non-exempt project types before returning the final totals.
+     *
+     * @param object $project Project record containing id, sport type and project kind.
+     * @return array{divisions:int,positions:int,referees:int,teams:int,rounds:int} Panel counts.
+     */
     public function getCounts(object $project): array
     {
         $projectId = (int) ($project->id ?? 0);
@@ -52,6 +66,14 @@ final class ProjectPanelService
         ];
     }
 
+    /**
+     * Initialise missing player and referee positions for a project's sport type.
+     * Loads non-root position definitions of the selected sport, checks each relation for the project and inserts only associations that do not yet exist.
+     *
+     * @param int $projectId Project receiving the standard positions.
+     * @param int $sportsTypeId Sport type providing its position definitions.
+     * @return void
+     */
     private function ensureStandardPositions(int $projectId, int $sportsTypeId): void
     {
         $query = $this->db->createQuery()
@@ -80,6 +102,15 @@ final class ProjectPanelService
         }
     }
 
+    /**
+     * Count rows in an internal project-owned database table.
+     * Uses a trusted internal table name and column identifier with the project ID to return the panel statistic.
+     *
+     * @param string $table SportsManagement table to count.
+     * @param string $field Column linking the records to the project.
+     * @param int $id Project record identifier.
+     * @return int Number of matching database rows.
+     */
     private function count(string $table, string $field, int $id): int
     {
         $query = $this->db->createQuery()
