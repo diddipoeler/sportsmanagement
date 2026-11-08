@@ -34,6 +34,15 @@ final class GoogleCalendarReadService
 
     private bool $googleClientLoaded = false;
 
+    /**
+     * Create the Google Calendar adapter from injected Joomla services.
+     *
+     * Uses the selected component connection and the active application
+     * instead of any legacy global database or application factory.
+     *
+     * @param DatabaseInterface $db Joomla database connection.
+     * @param CMSApplicationInterface $app Current frontend application.
+     */
     public function __construct(
         private readonly DatabaseInterface $db,
         private readonly CMSApplicationInterface $app
@@ -95,14 +104,19 @@ final class GoogleCalendarReadService
     }
 
     /**
-     * Return one normalized event if the calendar and event are accessible.
+     * Resolve one permitted event from the native Google Calendar adapter.
      *
-     * @return array<string, mixed>|null
+     * Rejects invalid calendar selections, oversized IDs and ASCII control
+     * characters before making a database or remote Google API request.
+     *
+     * @param int $calendarId Selected calendar row identifier.
+     * @param string $eventId Opaque Google event ID from the frontend URL.
+     * @return array<string, mixed>|null Visible event, or null if unavailable.
      */
     public function getEvent(int $calendarId, string $eventId): ?array
     {
         if ($calendarId <= 0 || $eventId === '' || strlen($eventId) > 512
-            || preg_match('/[\\x00-\\x1F\\x7F]/', $eventId)) {
+            || preg_match('/[\x00-\x1F\x7F]/', $eventId)) {
             return null;
         }
 
@@ -135,8 +149,14 @@ final class GoogleCalendarReadService
     }
 
     /**
-     * @param array<int> $calendarIds
-     * @return array<int, object>
+     * Read no more than fifty calendars authorised for the Joomla identity.
+     *
+     * Filters invalid requested IDs, applies both calendar access and
+     * content-view levels, and returns an empty result on database errors
+     * while logging diagnostic details only inside Joomla.
+     *
+     * @param array<int> $calendarIds Requested calendar row identifiers.
+     * @return array<int, object> Access-authorised calendars.
      */
     public function getCalendars(array $calendarIds): array
     {
@@ -152,18 +172,28 @@ final class GoogleCalendarReadService
             return [];
         }
 
-        $query = $this->db->createQuery()
-            ->select([
-                $this->db->quoteName('id'),
-                $this->db->quoteName('name'),
-                $this->db->quoteName('calendar_id'),
-                $this->db->quoteName('color'),
-                $this->db->quoteName('params'),
-                $this->db->quoteName('access'),
-                $this->db->quoteName('access_content'),
-            ])
-            ->from($this->db->quoteName('#__sportsmanagement_gcalendar'))
-            ->whereIn($this->db->quoteName('id'), $calendarIds, ParameterType::INTEGER);
+        try {
+            $query = $this->db->createQuery()
+                ->select([
+                    $this->db->quoteName('id'),
+                    $this->db->quoteName('name'),
+                    $this->db->quoteName('calendar_id'),
+                    $this->db->quoteName('color'),
+                    $this->db->quoteName('params'),
+                    $this->db->quoteName('access'),
+                    $this->db->quoteName('access_content'),
+                ])
+                ->from($this->db->quoteName('#__sportsmanagement_gcalendar'))
+                ->whereIn($this->db->quoteName('id'), $calendarIds, ParameterType::INTEGER);
+        } catch (\Throwable $error) {
+            Log::add(
+                'Google Calendar query setup failed: ' . $error->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+
+            return [];
+        }
 
         $user = $this->app->getIdentity();
 
@@ -186,14 +216,32 @@ final class GoogleCalendarReadService
             $query->whereIn($this->db->quoteName('access_content'), $levels, ParameterType::INTEGER);
         }
 
-        $query->order($this->db->quoteName('name') . ' ASC');
-        $this->db->setQuery($query);
+        try {
+            $query->order($this->db->quoteName('name') . ' ASC');
+            $this->db->setQuery($query);
 
-        return $this->db->loadObjectList() ?: [];
+            return $this->db->loadObjectList() ?: [];
+        } catch (\Throwable $error) {
+            Log::add(
+                'Google Calendar query execution failed: ' . $error->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+
+            return [];
+        }
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * Fetch bounded, paginated events from one authorised remote calendar.
+     *
+     * Applies optional start and end timestamps, detects repeating Google
+     * page tokens and converts valid API events into the shared feed format.
+     *
+     * @param object $calendar Selected calendar and OAuth configuration.
+     * @param int|null $start Optional lower timestamp bound.
+     * @param int|null $end Optional upper timestamp bound.
+     * @return array<int, array<string, mixed>> Normalised API events.
      */
     private function fetchCalendarEvents(object $calendar, ?int $start, ?int $end): array
     {
@@ -281,6 +329,15 @@ final class GoogleCalendarReadService
         return $events;
     }
 
+    /**
+     * Create an authenticated Google Calendar API service for one calendar.
+     *
+     * Parses stored OAuth configuration, rejects non-string or incomplete
+     * credentials and returns null if Google cannot initialise the service.
+     *
+     * @param object $calendar Database calendar record with OAuth params.
+     * @return object|null Configured Google Calendar service.
+     */
     private function createService(object $calendar): ?object
     {
         $rawParams = $calendar->params ?? '';
@@ -363,7 +420,14 @@ final class GoogleCalendarReadService
     }
 
     /**
-     * @return array<string, mixed>|null
+     * Convert one Google API event to SportsManagement feed fields.
+     *
+     * Supports timed and all-day events, legacy getter/property layouts
+     * and stable defaults for missing optional titles, URLs and colours.
+     *
+     * @param object $calendar Source calendar configuration.
+     * @param object $googleEvent Google Calendar event object.
+     * @return array<string, mixed>|null Feed event or null when unusable.
      */
     private function normalizeEvent(object $calendar, object $googleEvent): ?array
     {
@@ -407,6 +471,14 @@ final class GoogleCalendarReadService
         ];
     }
 
+    /**
+     * Load the optional Google API client from the component vendor tree.
+     *
+     * Tries the supported legacy autoload paths, caches a successful
+     * load and records a warning if the Google API classes are missing.
+     *
+     * @return bool Whether the API client and calendar service are available.
+     */
     private function loadGoogleClient(): bool
     {
         if ($this->googleClientLoaded) {
@@ -440,6 +512,17 @@ final class GoogleCalendarReadService
         return $this->googleClientLoaded;
     }
 
+    /**
+     * Read a Google API value through a getter or legacy property.
+     *
+     * Handles API client versions that expose data as accessor methods
+     * or plain properties without assuming both interfaces exist.
+     *
+     * @param object $object Google API event or date-time value.
+     * @param string $method Preferred accessor method.
+     * @param string $property Fallback object property.
+     * @return mixed Value provided by the API object.
+     */
     private function callOrProperty(object $object, string $method, string $property): mixed
     {
         if (method_exists($object, $method)) {
@@ -449,6 +532,15 @@ final class GoogleCalendarReadService
         return $object->{$property} ?? null;
     }
 
+    /**
+     * Normalise a configured calendar RGB colour for HTML output.
+     *
+     * Requires six hexadecimal digits and falls back to the component's
+     * standard blue for invalid, missing or malformed colour strings.
+     *
+     * @param string $color Raw colour from a calendar record.
+     * @return string Safe hash-prefixed six-digit colour.
+     */
     private function normalizeColor(string $color): string
     {
         $color = strtoupper(ltrim(trim($color), '#'));
@@ -456,6 +548,15 @@ final class GoogleCalendarReadService
         return preg_match('/^[0-9A-F]{6}$/', $color) ? '#' . $color : '#135CAE';
     }
 
+    /**
+     * Convert a Unix timestamp to the Google API's UTC date format.
+     *
+     * Uses an explicit UTC timezone to prevent the active Joomla
+     * site timezone from changing the calendar's requested range.
+     *
+     * @param int $timestamp Unix timestamp of the event boundary.
+     * @return string RFC 3339 UTC timestamp.
+     */
     private function rfc3339(int $timestamp): string
     {
         return (new \DateTimeImmutable('@' . $timestamp))

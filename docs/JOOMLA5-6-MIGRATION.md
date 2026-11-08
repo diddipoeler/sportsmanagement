@@ -72,3 +72,7 @@ Added detailed function-level PHPDoc to the Joomla 5/6 UEFA coefficient and proj
 Administrator Seasonteam, Seasonperson and Seasonteamperson form models now require an authenticated identity and delegate record editing decisions to Joomla's native parent AdminModel. Their historical lookups against `com_sportsmanagement.message.<id>` referenced unrelated ACL assets and could override Joomla's intended permission result. Creation notifications for Predictiongroup use the number of inserted records (one) instead of the generated database ID. `joomla56_admin_season_relation_acl.php` covers no identity, denied/granted native ACL and translated notification count.
 
 The historical Sportsmanagement sample-record model is different: its legacy table genuinely defines `com_sportsmanagement.message.<id>` as the record ACL asset. This model retains that legitimate per-record permission but now rejects missing administrator identities safely. Its core-database table selection remains unchanged.
+
+## Native calendar event-ID safety and database failure handling (8 November 2026)
+
+The site Google Calendar reader now checks actual ASCII control characters in remote event IDs without rejecting ordinary IDs containing `x`. Failure to prepare or execute the authorised calendar SQL query is logged only inside Joomla, returning no calendar data rather than crashing public event views. Every named method in `GoogleCalendarReadService` now has descriptive PHPDoc, and the selected-function audit includes the service.
