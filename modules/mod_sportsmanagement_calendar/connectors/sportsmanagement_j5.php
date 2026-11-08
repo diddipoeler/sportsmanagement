@@ -27,6 +27,15 @@ final class SportsmanagementConnector extends JSMCalendar
     public static Registry $xparams;
     public static array $favteams = [];
 
+    /**
+     * Collect SportsManagement matches and birthdays for the current calendar window.
+     * Loads the configured project and team filters, optionally collects favourite-team restrictions, and appends formatted fixtures and birthdays to the shared calendar matches.
+     *
+     * @param array $caldates Requested month boundaries and query limits.
+     * @param Registry $params Calendar module settings retained by the connector.
+     * @param array $matches Shared event rows filled by reference.
+     * @return array<int,array> New calendar match and birthday rows.
+     */
     public static function getEntries(array &$caldates, Registry &$params, array &$matches): array
     {
         self::$params = $params;
@@ -52,6 +61,12 @@ final class SportsmanagementConnector extends JSMCalendar
         return array_merge($matchRows, $birthdayRows);
     }
 
+    /**
+     * Retrieve saved favourite-team identifiers from selected SportsManagement projects.
+     * Reads only projects with nonempty favourite-team lists and optionally restricts the query to validated project IDs.
+     *
+     * @return array<int,object> Projects and their saved favourite-team lists.
+     */
     public static function getFavs(): array
     {
         $db = self::database();
@@ -68,6 +83,14 @@ final class SportsmanagementConnector extends JSMCalendar
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * Load published project fixtures matching the selected calendar month and filters.
+     * Joins matches to rounds, projects, leagues and both teams, filters project/team/club/favourites and result settings, then normalises dates in the returned rows.
+     *
+     * @param array $caldates Time and date boundaries, result flags and paging limits.
+     * @param string $ordering Date sort direction, ASC or DESC.
+     * @return array<int,object> Matching fixtures with normalised match dates.
+     */
     public static function loadMatches(array $caldates, string $ordering = 'ASC'): array
     {
         $input = self::siteApplication()->getInput();
@@ -167,6 +190,14 @@ final class SportsmanagementConnector extends JSMCalendar
         return $result;
     }
 
+    /**
+     * Convert SportsManagement fixtures into the calendar's common match format.
+     * Resolves both teams and logos, formats result and date labels, builds routed match-detail links and registers each displayed team for the filter dropdown.
+     *
+     * @param array<int,object> $rows Raw match, project and team relation rows.
+     * @param array $matches Shared calendar entries to extend by reference.
+     * @return array<int,array> Formatted fixture rows for the module.
+     */
     public static function formatMatches(array $rows, array &$matches): array
     {
         if ($rows === []) {
@@ -221,6 +252,13 @@ final class SportsmanagementConnector extends JSMCalendar
         return $newRows;
     }
 
+    /**
+     * Load team and club information for all referenced project-team IDs.
+     * Deduplicates the home and away project-team relations before joining their team names, logo fields and associated projects.
+     *
+     * @param array<int,object> $games Fixtures containing home and away project-team IDs.
+     * @return array<int,object> Team objects keyed by project-team ID.
+     */
     public static function getTeamsFromMatches(array $games): array
     {
         if ($games === []) {
@@ -255,6 +293,13 @@ final class SportsmanagementConnector extends JSMCalendar
         return $db->setQuery($query)->loadObjectList('teamtoolid') ?: [];
     }
 
+    /**
+     * Build a safe HTML team-logo image according to the calendar settings.
+     * Chooses the configured logo field, falls back to the default club image and escapes URLs and captions before rendering the optional height attribute.
+     *
+     * @param object $team Team record including logo and display-name fields.
+     * @return string Escaped image HTML, or an empty string when disabled.
+     */
     public static function buildImage(object $team): string
     {
         $field = (string) self::$xparams->get('team_logos', 'logo_small');
@@ -280,6 +325,13 @@ final class SportsmanagementConnector extends JSMCalendar
             . '"' . $style . ' />';
     }
 
+    /**
+     * Format a calendar team name using the configured display preference.
+     * Chooses between the short or configured alternate name, falling back to the full team name when the preferred field is empty.
+     *
+     * @param object $team Team data with short, middle and full names.
+     * @return string Team name converted for calendar presentation.
+     */
     public static function formatTeamName(object $team): string
     {
         $field = (string) self::$xparams->get('team_names', 'short_name');
@@ -297,6 +349,14 @@ final class SportsmanagementConnector extends JSMCalendar
         return parent::jl_utf8_convert($value !== '' ? $value : $fullName);
     }
 
+    /**
+     * Load calendar birthdays for published players within the selected date range.
+     * Joins players to their season teams and projects, applies project/team/club filters and projects each person's birth date into the requested years without duplicate events.
+     *
+     * @param array $caldates Requested calendar start and end dates.
+     * @param string $ordering Order of stored birth dates, ASC or DESC.
+     * @return array<int,object> Birthday events with date and age information.
+     */
     public static function getBirthdays(array $caldates, string $ordering = 'ASC'): array
     {
         $start = self::parseDate((string) ($caldates['start'] ?? ''));
@@ -381,6 +441,15 @@ final class SportsmanagementConnector extends JSMCalendar
         return $birthdays;
     }
 
+    /**
+     * Convert player birthdays into dated calendar events with player routes.
+     * Optionally embeds existing player portraits, formats team and person names, and builds links to the frontend player page.
+     *
+     * @param array<int,object> $rows Birthday records with project and person details.
+     * @param array $matches Shared event list appended by reference.
+     * @param array $dates Calendar date boundaries used for fallback event years.
+     * @return array<int,array> Formatted player-birthday calendar events.
+     */
     public static function formatBirthdays(array $rows, array &$matches, array $dates): array
     {
         $year = substr((string) ($dates['start'] ?? date('Y')), 0, 4);
@@ -427,6 +496,13 @@ final class SportsmanagementConnector extends JSMCalendar
         return $newRows;
     }
 
+    /**
+     * Convert a stored match date to the frontend user's calendar timezone.
+     * Sets a comparable timestamp, replaces missing legacy dates with null and converts valid fixture dates to Joomla Date while tolerating unavailable timezone data.
+     *
+     * @param object $match Match record modified with timestamp and converted date.
+     * @return void
+     */
     private static function normaliseMatchDate(object $match): void
     {
         $rawDate = (string) ($match->match_date ?? '');
@@ -455,6 +531,13 @@ final class SportsmanagementConnector extends JSMCalendar
         }
     }
 
+    /**
+     * Format the start time of a fixture for the calendar's match list.
+     * Accepts Joomla Date and other DateTimeInterface values or parses the stored database date string, keeping the original value when parsing fails.
+     *
+     * @param object $match Fixture with its normalised or legacy match_date property.
+     * @return string Match start formatted as YYYY-MM-DD HH:MM when available.
+     */
     private static function matchStart(object $match): string
     {
         $matchDate = $match->match_date ?? null;
@@ -468,6 +551,13 @@ final class SportsmanagementConnector extends JSMCalendar
         return $timestamp === false ? (string) $matchDate : date('Y-m-d H:i', $timestamp);
     }
 
+    /**
+     * Check whether a configured image path resolves to a local file.
+     * Supports absolute file references and paths relative to the Joomla root, rejecting empty paths.
+     *
+     * @param string $path Stored image location.
+     * @return bool Whether the referenced file exists on the server.
+     */
     private static function imageExists(string $path): bool
     {
         if ($path === '') {
@@ -481,11 +571,23 @@ final class SportsmanagementConnector extends JSMCalendar
         return is_file(JPATH_ROOT . '/' . ltrim($path, '/'));
     }
 
+    /**
+     * Read the component's default club logo fallback.
+     * Retrieves the placeholder logo configured in com_sportsmanagement when a team's preferred logo file is unavailable.
+     *
+     * @return string Configured fallback image path or an empty string.
+     */
     private static function defaultClubLogo(): string
     {
         return trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_big', ''));
     }
 
+    /**
+     * Resolve and verify the Joomla site application for calendar access.
+     * Uses the shared site-application resolver and rejects administrator clients before reading frontend settings.
+     *
+     * @return \Joomla\CMS\Application\CMSApplicationInterface Active frontend application.
+     */
     private static function siteApplication(): \Joomla\CMS\Application\CMSApplicationInterface
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
@@ -497,14 +599,29 @@ final class SportsmanagementConnector extends JSMCalendar
         return $app;
     }
 
+    /**
+     * Resolve Joomla's database interface through its public dependency container.
+     * Verifies the container service before allowing SQL queries, avoiding deprecated global database accessors.
+     *
+     * @return DatabaseInterface Valid Joomla database connection.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement Calendar database service is unavailable.', 500);
+        }
 
         return $database;
     }
 
+    /**
+     * Choose the default or configured external SportsManagement database.
+     * Verifies site context, reads the calendar database selector and delegates to the component's database resolver.
+     *
+     * @return DatabaseInterface Selected SportsManagement database connection.
+     */
     private static function database(): DatabaseInterface
     {
         self::siteApplication();
@@ -513,14 +630,35 @@ final class SportsmanagementConnector extends JSMCalendar
         return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
     }
 
+    /**
+     * Parse safe positive database IDs from calendar configuration filters.
+     * Supports comma-, space- and semicolon-separated decimal identifiers and deduplicates them, rejecting invalid arrays, partial numbers and overflowing values.
+     *
+     * @param mixed $values Scalar or array of configured project, team or club identifiers.
+     * @return array<int,int> Unique validated positive database IDs.
+     */
     private static function normaliseIds(mixed $values): array
     {
         $values = is_array($values) ? $values : [$values];
         $ids = [];
         foreach ($values as $value) {
+            if (!is_string($value) && !is_int($value)) {
+                continue;
+            }
+
             foreach (preg_split('/[\s,;]+/', (string) $value, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                $id = (int) $part;
-                if ($id > 0) {
+                if (preg_match('/^[0-9]+$/D', $part) !== 1) {
+                    continue;
+                }
+
+                $digits = ltrim($part, '0');
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+                if ($id !== false) {
                     $ids[$id] = $id;
                 }
             }
@@ -529,11 +667,18 @@ final class SportsmanagementConnector extends JSMCalendar
         return array_values($ids);
     }
 
+    /**
+     * Parse a calendar date boundary without accepting PHP's rollover of invalid days.
+     * Extracts the YYYY-MM-DD portion of the boundary and rejects impossible calendar dates instead of silently normalising them into another month.
+     *
+     * @param string $value Calendar date or date-time boundary string.
+     * @return \DateTimeImmutable|null Valid requested day, or null.
+     */
     private static function parseDate(string $value): ?\DateTimeImmutable
     {
         $value = substr(trim($value), 0, 10);
         $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
 
-        return $date instanceof \DateTimeImmutable ? $date : null;
+        return $date instanceof \DateTimeImmutable && $date->format('Y-m-d') === $value ? $date : null;
     }
 }
