@@ -17,6 +17,17 @@ use Joomla\DI\ServiceProviderInterface;
 
 return new class implements ServiceProviderInterface
 {
+    /**
+     * Configure the SportsManagement teamstatistics counter module for Joomla 5/6.
+     *
+     * Registers the namespaced dispatcher and helper factories
+     * with Joomla's dependency injection container, followed by the core
+     * module service. The native dispatcher can then prepare its layout
+     * without relying on a legacy module PHP entry point.
+     *
+     * @param Container $container Joomla module service container.
+     * @return void
+     */
     public function register(Container $container): void
     {
         $container->registerServiceProvider(new ModuleDispatcherFactory('Diddipoeler\\Module\\SportsManagementTeamStatisticsCounter'));
