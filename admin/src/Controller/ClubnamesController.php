@@ -24,6 +24,10 @@ class ClubnamesController extends SportsManagementAdminController
 {
     /**
      * Import alternative club names through the existing model implementation.
+     *
+     * Returns to the administrator club-name list after the import action.
+     *
+     * @return void
      */
     public function import(): void
     {
@@ -35,7 +39,15 @@ class ClubnamesController extends SportsManagementAdminController
     }
 
     /**
-     * Resolve the namespaced Clubname model through Joomla's MVCFactory.
+     * Resolve the namespaced Clubname model through Joomla's MVC factory.
+     *
+     * Always ignores arbitrary request parameters when building the action
+     * model, retaining the existing default model and namespace settings.
+     *
+     * @param string $name Entity model name, Clubname by default.
+     * @param string $prefix Administrator namespace prefix for model discovery.
+     * @param array<string,mixed> $config Optional caller configuration.
+     * @return object Joomla administrator model instance.
      */
     public function getModel($name = 'Clubname', $prefix = 'Administrator', $config = [])
     {
