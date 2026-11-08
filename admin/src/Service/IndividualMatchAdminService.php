@@ -17,10 +17,24 @@ use Joomla\Database\ParameterType;
 /** Administrator CRUD operations for individual match rows. */
 final class IndividualMatchAdminService
 {
+    /**
+     * Create the individual-match writer using Joomla's database abstraction.
+     * Retains the database dependency used by inserted singles, state changes and transactional deletions.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Insert one individual match from the submitted administrator form.
+     * Requires valid parent match and round identifiers, maps the player and team references and sends the row through Joomla's insertObject() API.
+     *
+     * @param array $data Individual match form values.
+     * @return bool Whether Joomla inserted the record.
+     */
     public function addMatch(array $data): bool
     {
         $matchId = (int) ($data['match_id'] ?? 0);
@@ -43,7 +57,15 @@ final class IndividualMatchAdminService
         return (bool) $this->db->insertObject('#__sportsmanagement_match_single', $row);
     }
 
-    /** @return array{0:int,1:int} inserted, failed */
+    /**
+     * Create missing individual games for the supplied home and away players.
+     * Pairs the submitted player lists, skips combinations already in the database and reports inserted and failed records without aborting the entire batch on one insertion error.
+     *
+     * @param array $data Submitted pairings, match/round IDs and team references.
+     * @param int $modifiedBy Administrator identifier stored with generated games.
+     * @param string $modified Timestamp stored with generated games.
+     * @return array{0:int,1:int} Counts of inserted and failed single matches.
+     */
     public function generateSingles(array $data, int $modifiedBy, string $modified): array
     {
         $homePlayers = array_values((array) ($data['teamplayer1_id'] ?? []));
@@ -92,6 +114,14 @@ final class IndividualMatchAdminService
         return [$inserted, $failed];
     }
 
+    /**
+     * Publish or unpublish only the explicitly selected individual games.
+     * Validates and deduplicates selected IDs before building the Joomla update query, then applies it inside a database transaction.
+     *
+     * @param array $ids Selected single-match identifiers from the administrator form.
+     * @param int $state New publication state; zero unpublishes.
+     * @return bool False for an empty selection, true after a successful transaction.
+     */
     public function setPublished(array $ids, int $state): bool
     {
         $ids = $this->normaliseIds($ids);
@@ -109,6 +139,13 @@ final class IndividualMatchAdminService
         });
     }
 
+    /**
+     * Delete only the explicitly selected individual-match records.
+     * Normalises the record IDs to safe positive integers and removes those rows atomically using Joomla's query builder.
+     *
+     * @param array $ids Selected single-match record identifiers.
+     * @return bool False for empty selections, true after successful deletion.
+     */
     public function deleteSingles(array $ids): bool
     {
         $ids = $this->normaliseIds($ids);
@@ -125,6 +162,18 @@ final class IndividualMatchAdminService
         });
     }
 
+    /**
+     * Check whether a specific pairing is already stored for its parent match.
+     * Binds match, round, project-team and player identifiers and limits the lookup to one row to avoid duplicate inserts.
+     *
+     * @param int $roundId Round containing the match.
+     * @param int $matchId Parent match identifier.
+     * @param int $projectTeam1Id Home project-team identifier.
+     * @param int $projectTeam2Id Away project-team identifier.
+     * @param int $homePlayerId Home player identifier.
+     * @param int $awayPlayerId Away player identifier.
+     * @return bool True when the exact pairing already exists.
+     */
     private function singleExists(
         int $roundId,
         int $matchId,
@@ -153,12 +202,48 @@ final class IndividualMatchAdminService
         return (int) $this->db->loadResult() > 0;
     }
 
-    /** @return int[] */
+    /**
+     * Validate and deduplicate untrusted IDs used in bulk match operations.
+     * Accepts integers and decimal strings (including zero-padded ones), and rejects nonpositive, malformed or overflowing values instead of letting intval() turn arrays and booleans into unrelated record IDs.
+     *
+     * @param array $ids Raw selection values.
+     * @return array<int,int> Unique positive record identifiers.
+     */
     private function normaliseIds(array $ids): array
     {
-        return array_values(array_unique(array_filter(array_map('intval', $ids), static fn (int $id): bool => $id > 0)));
+        $normalised = [];
+
+        foreach ($ids as $candidate) {
+            if (!is_int($candidate) && !is_string($candidate)) {
+                continue;
+            }
+
+            $raw = trim((string) $candidate);
+            if ($raw === '' || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+            if ($id !== false) {
+                $normalised[$id] = $id;
+            }
+        }
+
+        return array_values($normalised);
     }
 
+    /**
+     * Execute a database write callback within a Joomla transaction.
+     * Commits a successful callback and attempts a rollback on any exception before rethrowing it to the caller.
+     *
+     * @param callable $callback Work performed inside the transaction.
+     * @return mixed Callback result, preserving its return type.
+     */
     private function transaction(callable $callback): mixed
     {
         $this->db->transactionStart();

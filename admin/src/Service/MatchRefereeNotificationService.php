@@ -22,6 +22,15 @@ use Joomla\Database\ParameterType;
 /** Sends notifications only for newly created referee assignments. */
 final class MatchRefereeNotificationService
 {
+    /**
+     * Create the match-referee notification service with Joomla dependencies.
+     * Reuses the database, mailer factory and application for all mail operations; no messages are sent until notifyNewAssignments() is called.
+     *
+     * @param DatabaseInterface $db Joomla database connection for referee assignments.
+     * @param MailerFactoryInterface $mailerFactory Joomla mailer factory.
+     * @param CMSApplicationInterface $app Administrator application providing mail configuration.
+     * @return void
+     */
     public function __construct(
         private DatabaseInterface $db,
         private MailerFactoryInterface $mailerFactory,
@@ -29,7 +38,14 @@ final class MatchRefereeNotificationService
     ) {
     }
 
-    /** @param array<int,array{project_referee_id:int,project_position_id:int}> $assignments */
+    /**
+     * Email newly assigned referees without disrupting the match save operation.
+     * Rejects malformed referee identifiers, looks up each assigned person with bound database parameters, validates the recipient address and sends at most one notification per referee. Lookup, formatting and mail failures are logged without exposing private diagnostics to the browser.
+     *
+     * @param int $matchId Numeric identifier of the saved match.
+     * @param array<int,mixed> $assignments New referee assignments; invalid entries are ignored.
+     * @return void
+     */
     public function notifyNewAssignments(int $matchId, array $assignments): void
     {
         $template = (string) ComponentHelper::getParams('com_sportsmanagement')->get('ishd_referee_insert_match_mail', '');
@@ -40,7 +56,11 @@ final class MatchRefereeNotificationService
         $notifiedReferees = [];
 
         foreach ($assignments as $assignment) {
-            $projectRefereeId = (int) ($assignment['project_referee_id'] ?? 0);
+            if (!is_array($assignment)) {
+                continue;
+            }
+
+            $projectRefereeId = self::positiveRefereeId($assignment['project_referee_id'] ?? null);
             if ($projectRefereeId <= 0 || isset($notifiedReferees[$projectRefereeId])) {
                 continue;
             }
@@ -51,7 +71,8 @@ final class MatchRefereeNotificationService
                 Log::add(__METHOD__ . ': referee lookup failed: ' . $error->getMessage(), Log::WARNING, 'jsmerror');
                 continue;
             }
-            if (!$context || trim((string) $context->email) === '') {
+            $email = $context !== null ? ($context->email ?? null) : null;
+            if (!is_string($email) || filter_var(trim($email), FILTER_VALIDATE_EMAIL) === false) {
                 continue;
             }
 
@@ -81,7 +102,7 @@ final class MatchRefereeNotificationService
                 if ($mailFrom !== '') {
                     $mailer->setSender([$mailFrom, $fromName]);
                 }
-                $mailer->addRecipient((string) $context->email);
+                $mailer->addRecipient(trim($email));
                 $mailer->setSubject('Neueinteilung Schiedsrichtereinsatz am : ' . $when);
                 $mailer->isHTML(true);
                 $mailer->setBody($body);
@@ -96,6 +117,42 @@ final class MatchRefereeNotificationService
         }
     }
 
+    /**
+     * Parse an untrusted positive referee identifier without lossy type coercion.
+     * Accepts positive integers and zero-padded decimal strings, and rejects booleans, arrays, negative values, partial numbers and values larger than PHP_INT_MAX.
+     *
+     * @param mixed $value Raw project-referee ID from the form.
+     * @return int Valid positive identifier or zero.
+     */
+    private static function positiveRefereeId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        $raw = trim((string) $value);
+        if ($raw === '' || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Read contact and fixture details for a specific match referee.
+     * Joins the match, project referee, season person and team records while binding both identifiers; the resulting object supplies the email-template placeholders.
+     *
+     * @param int $matchId Identifier of the match.
+     * @param int $projectRefereeId Project-referee assignment identifier.
+     * @return object|null Assignment and match details, or null if unavailable.
+     */
     private function context(int $matchId, int $projectRefereeId): ?object
     {
         $query = $this->db->createQuery()
