@@ -71,6 +71,10 @@ jobs:
           grep -Fq "isset(\$parts['pass'])" "$controller"
 
           # Preserve the existing upload/delete safety contracts while hardening remote downloads.
+          # Script-embedded callback values and errors must not terminate <script>.
+          grep -Fq 'JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT' "$controller"
+          grep -Fq '\$identity === null' "$controller"
+
           grep -Fq "Session::checkToken('post')" "$controller"
           grep -Fq "authorise(\$action, 'com_sportsmanagement')" "$controller"
           grep -Fq 'getimagesizefromstring($body)' "$controller"

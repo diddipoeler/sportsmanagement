@@ -32,6 +32,18 @@ use Joomla\Event\DispatcherInterface;
 
 return new class implements ServiceProviderInterface
 {
+    /**
+     * Register the Joomla 5/6 SportsManagement component services.
+     *
+     * Installs the native-first MVC factory, supplies Joomla's form, event,
+     * database, router, cache, user and mail dependencies, and registers the
+     * component dispatcher/router factories. Finally constructs the component
+     * extension used to boot site, administrator and API MVC requests while
+     * preserving the controlled legacy model and controller fallbacks.
+     *
+     * @param Container $container Component dependency injection container.
+     * @return void
+     */
     public function register(Container $container): void
     {
         $container->set(MVCFactoryInterface::class, static function (Container $container): MVCFactoryInterface {

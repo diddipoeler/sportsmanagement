@@ -86,6 +86,7 @@ $paths = array_merge($paths, [
     'site/src/Service/SportsManagementDatabaseResolver.php',
     'admin/src/View/Extensions/HtmlView.php',
     'admin/modules/mod_sportsmanagement_quickicon/services/provider.php',
+    'admin/services/provider.php',
 ]);
 foreach (glob($root . '/modules/mod_sportsmanagement_*/services/provider.php') ?: [] as $provider) {
     $paths[] = substr($provider, strlen($root) + 1);

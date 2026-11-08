@@ -4,16 +4,17 @@ This branch modernises SportsManagement for Joomla 5.4 and Joomla 6 while keepin
 
 ## Migration strategy
 
-The migration is intentionally incremental. SportsManagement still contains important bootstrap logic in the legacy site and administrator entry points, so the modern Joomla component dispatcher must not be enabled before equivalent controller/bootstrap behaviour exists in namespaced classes.
+The migration remains incremental. The Joomla 5/6 component namespace, service provider and namespaced dispatchers are already active. `SportsManagementMVCFactory` resolves native MVC implementations first and retains controlled legacy fallbacks for operations not yet migrated; the site and administrator entry points remain compatibility bridges during this transition.
 
 ### Phase 1 – architecture scaffold
 
 - [x] Create the `joomla5-6` branch from `master`.
 - [x] Add a namespaced component extension class under `admin/src/Extension`.
 - [x] Add the Joomla service-provider scaffold under `admin/services`.
-- [ ] Add the component namespace and `src`/`services` folders to the manifest only when the modern dispatcher can safely take over.
-- [ ] Add namespaced Site and Administrator `DisplayController` classes.
-- [ ] Move shared bootstrap logic out of the legacy entry points into reusable services/helpers.
+- [x] Register the component namespace and the native `src`/`services` folders in the manifest.
+- [x] Add namespaced Site and Administrator `DisplayController` classes.
+- [x] Introduce a native-first MVC factory, extension boot logic and the legacy controller bridges.
+- [ ] Finish isolating the remaining legacy operations in reusable services and models.
 
 ### Phase 2 – MVC migration
 
@@ -38,8 +39,15 @@ The migration is intentionally incremental. SportsManagement still contains impo
 - [ ] Validate update-server metadata.
 - [ ] Produce an installable beta ZIP for Joomla 5.4 and Joomla 6.
 
-## Activation gate
+## Active dispatcher and compatibility boundary
 
-`admin/services/provider.php` is deliberately **not yet listed in `sportsmanagement.xml`**. Once the provider is listed in the manifest Joomla will boot the component through the modern component dispatcher. Activating it before the controller/bootstrap migration would bypass behaviour that currently lives in the legacy `sportsmanagement.php` entry points.
+`sportsmanagement.xml` installs the component namespace and `admin/services`. Joomla boots `admin/services/provider.php` and the native component extension. The native-first MVC factory and the site/administrator `DisplayController` implementations are already in use. Legacy controller, model and view fallbacks remain deliberately available for workflows that have not yet been migrated; do not remove them without migrating and testing their callers.
 
-The provider will be activated only after a namespaced dispatcher/controller path can reproduce the required frontend and administrator bootstrap behaviour.
+## PHPDoc and security progress (8 November 2026)
+
+- All 29 frontend module service providers and the administrator quick-icon provider now document `register()` and its Joomla dependency-injection purpose.
+- Missing method PHPDoc was added to the frontend router, image handler, database resolver, Inline-Hockey API client, match mutation and next-match ranking services, together with administrator extension, GitHub, installer and image-handler views/controllers.
+- Frontend and administrator image-handler scripts now JSON-encode callback strings and errors with HTML-safe flags. The administrator image actions also reject missing or guest identities before checking permissions.
+- The existing file-header audit checks `@version`, `@author`, `@copyright` and `@license` in first-party PHP files. The selected function-PHPDoc gate now includes the newly documented classes and module providers. Bundled vendor code retains its upstream attribution.
+
+**Remaining work:** finish native MVC conversion and legacy API cleanup, audit outstanding function documentation using `.github/tests/joomla56_function_docs_inventory.php`, validate modules and installer on real Joomla 5.4 and Joomla 6 environments, and complete packaging and update tests.

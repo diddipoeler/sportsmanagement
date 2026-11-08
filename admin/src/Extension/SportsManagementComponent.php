@@ -55,11 +55,6 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
     }
 
     /**
-     * Load the language sources which were historically loaded from the legacy
-     * component entry points. Native Joomla 5/6 dispatcher requests bypass those
-     * entry points, so the language bootstrap has to live on the component itself.
-     */
-    /**
      * Initialise component translations for site and administrator requests.
      *
      * Loads shared translations from both clients in precedence order and
@@ -135,11 +130,6 @@ final class SportsManagementComponent extends MVCComponent implements RouterServ
         }
     }
 
-    /**
-     * Joomla 5 keeps a few legacy routing semantics around menu parsing which
-     * are no longer relevant on Joomla 6. Use the compatibility wrapper there,
-     * while Joomla 6 continues to use the normal RouterFactory service.
-     */
     /**
      * Construct the frontend router appropriate for the Joomla version.
      *
