@@ -24,6 +24,18 @@ final class RemoteImageDownloadHelper
     private const MAX_REDIRECTS = 3;
     private const REQUEST_TIMEOUT = 15;
 
+    /**
+     * Download a bounded public image into the permitted component image tree.
+     *
+     * Rejects disallowed URLs and destination paths before requesting remote
+     * content, validates the response as an image, and writes only within the
+     * SportsManagement database image directory.
+     *
+     * @param string $url Remote HTTP(S) image URL.
+     * @param string $absolutePath Destination within the component image folder.
+     * @param int $maxBytes Maximum accepted response body length.
+     * @return bool Whether a valid image was stored successfully.
+     */
     public function download(string $url, string $absolutePath, int $maxBytes): bool
     {
         $maxBytes = max(1, $maxBytes);
@@ -53,6 +65,16 @@ final class RemoteImageDownloadHelper
         }
     }
 
+    /**
+     * Fetch a remote image with bounded redirects and response size.
+     *
+     * Validates every redirected URL and checks both advertised content length
+     * and actual response size. Transport failures are logged internally.
+     *
+     * @param string $url Validated initial image URL.
+     * @param int $maxBytes Maximum number of bytes accepted.
+     * @return string|null Downloaded image bytes or null on failure.
+     */
     private function fetch(string $url, int $maxBytes): ?string
     {
         $currentUrl = $url;
@@ -117,6 +139,15 @@ final class RemoteImageDownloadHelper
         return null;
     }
 
+    /**
+     * Parse and validate a remote HTTP(S) URL before issuing a request.
+     *
+     * Restricts transport schemes and ports, rejects credentials and control
+     * characters, and checks that the resolved host has public addresses.
+     *
+     * @param string $url Potential remote image URL.
+     * @return array<string,mixed>|null Parsed URL parts or null if unsafe.
+     */
     private function validateRemoteUrl(string $url): ?array
     {
         if ($url === ''
@@ -158,6 +189,15 @@ final class RemoteImageDownloadHelper
         return $parts;
     }
 
+    /**
+     * Verify that a DNS name or IP address resolves only to public networks.
+     *
+     * Rejects local hostnames, malformed DNS labels, private addresses and
+     * reserved networks, including resolved IPv4 and IPv6 results.
+     *
+     * @param string $host Hostname or numeric IP address from a remote URL.
+     * @return bool Whether every resolved address is publicly routable.
+     */
     private function isPublicHost(string $host): bool
     {
         $host = strtolower(rtrim(trim($host), '.'));
@@ -227,6 +267,15 @@ final class RemoteImageDownloadHelper
         return true;
     }
 
+    /**
+     * Determine whether an IP address belongs to an allowed public network.
+     *
+     * Applies PHP address flags and additional shared-network exclusions
+     * before permitting external image retrieval.
+     *
+     * @param string $address IPv4 or IPv6 address to check.
+     * @return bool Whether the address is accepted as public.
+     */
     private function isPublicIp(string $address): bool
     {
         if (filter_var(
@@ -249,6 +298,16 @@ final class RemoteImageDownloadHelper
         return true;
     }
 
+    /**
+     * Resolve and validate a redirect from a remote image response.
+     *
+     * Supports absolute, scheme-relative and path-relative locations while
+     * rejecting control characters and unsafe destinations.
+     *
+     * @param string $baseUrl Previous verified request URL.
+     * @param string $location HTTP Location header from the remote response.
+     * @return string|null Fully resolved allowed URL, or null if invalid.
+     */
     private function resolveRedirect(string $baseUrl, string $location): ?string
     {
         $location = trim($location);
@@ -305,6 +364,15 @@ final class RemoteImageDownloadHelper
         return $this->validateRemoteUrl($resolved) !== null ? $resolved : null;
     }
 
+    /**
+     * Confirm the downloaded response has an allowed raster image format.
+     *
+     * Inspects actual image bytes rather than trusting HTTP content-type
+     * headers, and permits only JPEG, PNG, GIF and WebP images.
+     *
+     * @param string $body Remote response body.
+     * @return bool Whether the bytes describe an allowed image.
+     */
     private function isAllowedImageData(string $body): bool
     {
         $info = @getimagesizefromstring($body);
@@ -317,6 +385,15 @@ final class RemoteImageDownloadHelper
             );
     }
 
+    /**
+     * Check that an image destination stays inside the component image tree.
+     *
+     * Rejects traversal segments, symbolic-link path components and
+     * unsupported image filename extensions before writing any data.
+     *
+     * @param string $absolutePath Absolute filesystem destination path.
+     * @return bool Whether the destination is permitted for image storage.
+     */
     private function isAllowedTargetPath(string $absolutePath): bool
     {
         $normalised = str_replace('\\', '/', $absolutePath);
