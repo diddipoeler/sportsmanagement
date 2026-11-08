@@ -42,13 +42,21 @@ final class LivescoreConnector extends JSMCalendar
 
     /**
      * Resolve and validate Joomla's database service for LiveScore lookups.
-     * Obtains DatabaseInterface from the public Joomla dependency injection container instead of relying on removed database globals.
+     * Obtains DatabaseInterface from the Joomla dependency injection container.
+     * Converts missing container services into a controlled runtime exception
+     * and keeps the original cause attached for diagnostic logging.
+     *
+     * @throws \RuntimeException When the database service cannot be obtained.
      *
      * @return DatabaseInterface Valid Joomla database driver.
      */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        try {
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException('SportsManagement LiveScore database service could not be resolved.', 500, $exception);
+        }
 
         if (!$database instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement LiveScore database service is unavailable.', 500);
@@ -62,7 +70,10 @@ final class LivescoreConnector extends JSMCalendar
 
     /**
      * Append LiveScore fixtures inside the requested calendar date window.
-     * Stores connector settings, loads matching games and converts them into rows compatible with the calendar's shared event list.
+     * Validates the optional database table prefix before constructing any
+     * table name, loads matching games and converts them into rows compatible
+     * with the calendar's shared event list. Invalid prefixes safely fall
+     * back to the Joomla default database table prefix.
      *
      * @param array $caldates Date boundaries and optional connector parameters.
      * @param Registry $params Module settings including the configured table prefix.
@@ -72,7 +83,12 @@ final class LivescoreConnector extends JSMCalendar
     public function appendMatches(array &$caldates, Registry &$params, array &$matches): array
     {
         $this->xparams = $params;
-        $this->connectorPrefix = (string) $params->get('prefix', '');
+        $rawPrefix = $params->get('prefix', '');
+        $this->connectorPrefix = is_string($rawPrefix)
+            && strlen($rawPrefix) <= 64
+            && ($rawPrefix === '' || preg_match('/^[A-Za-z0-9_]+$/D', $rawPrefix) === 1)
+                ? $rawPrefix
+                : '';
 
         return $this->formatRows($this->getRows($caldates), $matches);
     }
