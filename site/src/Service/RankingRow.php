@@ -81,77 +81,169 @@ final class RankingRow
     public string $team_url = '';
     public array $column_values = [];
 
+    /**
+     * Initialise a ranking row for one project-team relation.
+     * Stores the selected project-team identifier while leaving all match, point and comparison counters at their declared zero defaults.
+     *
+     * @param int $projectTeamId Project-team record identifier, or zero for an unassigned row.
+     * @return void
+     */
     public function __construct(int $projectTeamId = 0)
     {
         $this->projectteamid = $projectTeamId;
     }
 
+    /**
+     * Return the identifier of the project team represented by this ranking row.
+     * Provides the legacy ptid accessor expected by templates and ranking calculators.
+     *
+     * @return int Project-team relation identifier.
+     */
     public function getPtid(): int
     {
         return $this->projectteamid;
     }
 
+    /**
+     * Return the underlying team identifier from this ranking row.
+     * Exposes the team ID without confusing it with the project-team relation ID.
+     *
+     * @return int Underlying SportsManagement team identifier.
+     */
     public function getTeamid(): int
     {
         return $this->teamid;
     }
 
+    /**
+     * Return the division associated with this project's ranking row.
+     * Keeps division-aware ranking views compatible with their previous public getter.
+     *
+     * @return int Division identifier, or zero when not set.
+     */
     public function getDivisionid(): int
     {
         return $this->divisionid;
     }
 
+    /**
+     * Return the display name assigned to this ranking team.
+     * Reads the row's explicitly populated name field without changing its formatting.
+     *
+     * @return string Team name used in ranking presentations.
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Calculate the team's points including optional starting points.
+     * Adds the configured start-points adjustment when requested, otherwise returns points accumulated from played matches only.
+     *
+     * @param bool $includeStart Whether the starting-point adjustment should be included.
+     * @return float Effective ranking points under the selected policy.
+     */
     public function getPoints(bool $includeStart = true): float
     {
         return $this->sum_points + ($includeStart ? $this->start_points : 0.0);
     }
 
+    /**
+     * Calculate the percentage of played matches that the team won.
+     * Uses wins divided by all completed wins, losses and draws, returning zero for teams with no results.
+     *
+     * @return float Win percentage in the range from zero to one hundred.
+     */
     public function winPct(): float
     {
         $games = $this->cnt_won + $this->cnt_lost + $this->cnt_draw;
         return $games > 0 ? ($this->cnt_won / $games) * 100.0 : 0.0;
     }
 
+    /**
+     * Compute the ratio between points scored and points conceded.
+     * Divides the two aggregate team-score counters and uses a denominator of one if the opposing total is zero.
+     *
+     * @return float Scored-to-conceded result ratio.
+     */
     public function scoreAvg(): float
     {
         return $this->sum_team1_result / ($this->sum_team2_result == 0.0 ? 1.0 : $this->sum_team2_result);
     }
 
+    /**
+     * Express the team-score ratio as a percentage.
+     * Multiplies scoreAvg by one hundred to preserve the established ranking percentage convention.
+     *
+     * @return float Score ratio expressed as a percentage.
+     */
     public function scorePct(): float
     {
         return $this->scoreAvg() * 100.0;
     }
 
+    /**
+     * Compute the ratio of legs won to legs conceded.
+     * Uses the sum of recorded leg scores and substitutes one as the denominator for zero conceded legs.
+     *
+     * @return float Ratio of legs for and against.
+     */
     public function legsRatio(): float
     {
         return $this->sum_team1_legs / ($this->sum_team2_legs == 0.0 ? 1.0 : $this->sum_team2_legs);
     }
 
+    /**
+     * Compute the ratio of match points to negative-point adjustments.
+     * Excludes starting points and divides by the negative-points total, treating a zero denominator as one.
+     *
+     * @return float Ratio of scored points to negative points.
+     */
     public function pointsRatio(): float
     {
         return $this->getPoints(false) / ($this->neg_points == 0.0 ? 1.0 : $this->neg_points);
     }
 
+    /**
+     * Return the average number of goals or scores made per match.
+     * Divides the aggregate team result by the match count and yields the aggregate unchanged when no matches have been recorded.
+     *
+     * @return float Goals-for or score-for average per match.
+     */
     public function getGFA(): float
     {
         return $this->sum_team1_result / ($this->cnt_matches > 0 ? $this->cnt_matches : 1);
     }
 
+    /**
+     * Return the average number of goals or scores conceded per match.
+     * Uses the opponent result total divided by played matches and avoids division by zero for empty standings.
+     *
+     * @return float Goals-against or score-against average per match.
+     */
     public function getGAA(): float
     {
         return $this->sum_team2_result / ($this->cnt_matches > 0 ? $this->cnt_matches : 1);
     }
 
+    /**
+     * Calculate ranking points gained per recorded match.
+     * Uses earned points without starting-point adjustments and substitutes one for an empty match count.
+     *
+     * @return float Points per game.
+     */
     public function getPPG(): float
     {
         return $this->getPoints(false) / ($this->cnt_matches > 0 ? $this->cnt_matches : 1);
     }
 
+    /**
+     * Calculate earned points as a percentage of the maximum available.
+     * Divides earned points by played matches times winpoints where positive, otherwise preserves the raw earned-points value.
+     *
+     * @return float Percentage of maximum points, or raw points when the maximum is zero.
+     */
     public function getPPP(): float
     {
         $maximum = $this->cnt_matches * $this->winpoints;

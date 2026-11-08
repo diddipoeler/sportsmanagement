@@ -19,10 +19,25 @@ use Joomla\Database\ParameterType;
  */
 final class InlineHockeyProjectService
 {
+    /**
+     * Initialise the Inline Hockey project data service.
+     * Uses the injected Joomla database for project metadata and season/project team association queries.
+     *
+     * @param DatabaseInterface $db Database connection supplied by Joomla.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $db)
     {
     }
 
+    /**
+     * Read the external Inline Hockey project link stored in a configured extra field.
+     * Restricts the lookup to the project backend template and link field type, using bound values for project and field identifiers.
+     *
+     * @param int $projectId Project whose external link is requested.
+     * @param string $fieldName Name of the project link extra field.
+     * @return string Stored external project link, or an empty string.
+     */
     public function getMatchLink(int $projectId, string $fieldName = 'jsminlinehockey'): string
     {
         if ($projectId <= 0) {
@@ -54,6 +69,15 @@ final class InlineHockeyProjectService
         return trim((string) $this->db->loadResult());
     }
 
+    /**
+     * Ensure a team has the required season and project association rows.
+     * Reuses an existing season-team relation or inserts it, then finds or creates the matching project-team row without intentionally duplicating an association.
+     *
+     * @param int $teamId Underlying team record identifier.
+     * @param int $projectId Owning project identifier.
+     * @param int $seasonId Season into which the team should be linked.
+     * @return int Project-team relation ID, or zero when required IDs are invalid.
+     */
     public function ensureProjectTeam(int $teamId, int $projectId, int $seasonId): int
     {
         if ($teamId <= 0 || $projectId <= 0 || $seasonId <= 0) {
@@ -90,6 +114,14 @@ final class InlineHockeyProjectService
         return (int) $this->db->insertid();
     }
 
+    /**
+     * Look up an existing association between a team and a season.
+     * Executes a limited query with bound team and season identifiers to locate the season-team row.
+     *
+     * @param int $teamId Underlying team identifier.
+     * @param int $seasonId Season identifier.
+     * @return int Existing season-team record ID, or zero.
+     */
     private function findSeasonTeam(int $teamId, int $seasonId): int
     {
         $query = $this->db->createQuery()
@@ -104,6 +136,14 @@ final class InlineHockeyProjectService
         return (int) ($this->db->loadResult() ?: 0);
     }
 
+    /**
+     * Find a project-team relation for a particular season-team row.
+     * Uses project and season-team identifiers as bound query parameters, ensuring an association is scoped to the expected project.
+     *
+     * @param int $seasonTeamId Season-team relation identifier.
+     * @param int $projectId Owning project identifier.
+     * @return int Matching project-team record ID, or zero.
+     */
     private function findProjectTeam(int $seasonTeamId, int $projectId): int
     {
         $query = $this->db->createQuery()

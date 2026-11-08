@@ -19,10 +19,25 @@ use Joomla\Database\ParameterType;
  */
 final class PersonExtraFieldReadService
 {
+    /**
+     * Create the frontend custom-field reader with an injected database connection.
+     * Stores Joomla's read-only database dependency for person-editing form definitions and values.
+     *
+     * @param DatabaseInterface $database Joomla database driver.
+     * @return void
+     */
     public function __construct(private readonly DatabaseInterface $database)
     {
     }
 
+    /**
+     * Check whether the requested frontend or backend template has custom fields.
+     * Validates the template-column whitelist, then performs a bounded field-definition lookup using a bound template identifier.
+     *
+     * @param string $template Extra-field template category: frontend or backend.
+     * @param string $templateName Name of the template whose fields are requested.
+     * @return bool True when at least one matching custom-field definition exists.
+     */
     public function hasFields(string $template = 'frontend', string $templateName = 'clubinfo'): bool
     {
         $column = $this->templateColumn($template);
@@ -37,6 +52,15 @@ final class PersonExtraFieldReadService
         return (bool) $this->database->loadResult();
     }
 
+    /**
+     * Read extra-field definitions and stored values for one person.
+     * Left-joins optional person-specific values to every matching field definition, keeping empty values and returning rows in configured ordering.
+     *
+     * @param int $personId Person identifier whose saved extra-field values should be loaded.
+     * @param string $template Extra-field category, frontend or backend.
+     * @param string $templateName Template identifier matched against field definitions.
+     * @return array<int,object> Ordered extra-field definitions with optional values.
+     */
     public function fields(
         int $personId,
         string $template = 'frontend',
@@ -72,6 +96,13 @@ final class PersonExtraFieldReadService
         return (array) $this->database->loadObjectList();
     }
 
+    /**
+     * Resolve a safe database column for extra-field template filtering.
+     * Allows only frontend or backend values so callers cannot inject arbitrary column names into Joomla's query builder.
+     *
+     * @param string $template Requested template category.
+     * @return string Whitelisted template_frontend or template_backend column name.
+     */
     private function templateColumn(string $template): string
     {
         if (!in_array($template, ['frontend', 'backend'], true)) {

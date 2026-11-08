@@ -16,11 +16,28 @@ use Joomla\Database\ParameterType;
 
 final class IndividualMatchReadService
 {
+    /**
+     * Create a read-only frontend service for individual match results.
+     * Receives the Joomla database service required for scoped player-to-match lookups.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
-    /** @return array<int,object> */
+    /**
+     * Fetch the individual games played by a season-team person for a project team.
+     * Restricts the query to the owning project's rounds, selected project team, person, match type and HOME/AWAY side; invalid identifiers return no games.
+     *
+     * @param int $projectId Owning project identifier.
+     * @param int $projectTeamId Project-team relation identifier.
+     * @param int $seasonTeamPersonId Season-team-person identifier.
+     * @param string $matchType Individual game type, SINGLE by default.
+     * @param string $homeAway HOME uses the first participant; AWAY uses the second.
+     * @return array<int,object> Individual-match rows for the requested participant.
+     */
     public function getPlayerMatches(
         int $projectId,
         int $projectTeamId,

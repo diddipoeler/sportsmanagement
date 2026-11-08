@@ -21,6 +21,12 @@ final class LegacyPresentationLoader
 {
     private static bool $registered = false;
 
+    /**
+     * Register a lazy autoloader for legacy global presentation helper classes.
+     * Maps a bounded set of historical helper names to their Joomla 5/6 component paths and registers the SPL loader only once, avoiding deprecated JLoader registration.
+     *
+     * @return void
+     */
     public static function register(): void
     {
         if (self::$registered) {
