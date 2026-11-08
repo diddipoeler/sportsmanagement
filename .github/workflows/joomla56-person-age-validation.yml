@@ -10,6 +10,10 @@ on:
       - 'admin/src/Helper/ExtendedFormHelper.php'
       - 'admin/src/Helper/ActionLogHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/SqlImportHelper.php'
+      - 'site/src/Service/MatchReadService.php'
+      - '.github/tests/joomla56-sql-import-validation.php'
       - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
       - '.github/tests/joomla56-extra-fields-calendar-settings.php'
@@ -38,6 +42,10 @@ on:
       - 'admin/src/Helper/ExtendedFormHelper.php'
       - 'admin/src/Helper/ActionLogHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/SqlImportHelper.php'
+      - 'site/src/Service/MatchReadService.php'
+      - '.github/tests/joomla56-sql-import-validation.php'
       - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php'
       - '.github/tests/joomla56-extra-fields-calendar-settings.php'
@@ -84,6 +92,10 @@ jobs:
           php -l admin/src/Helper/ExtendedFormHelper.php
           php -l admin/src/Helper/ActionLogHelper.php
           php -l admin/src/Helper/ExtraFieldsReadHelper.php
+          php -l admin/src/Helper/CountryOptionsHelper.php
+          php -l admin/src/Helper/SqlImportHelper.php
+          php -l site/src/Service/MatchReadService.php
+          php -l .github/tests/joomla56-sql-import-validation.php
           php -l admin/src/Helper/ExtraFieldsSaveHelper.php
           php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
           php -l .github/tests/joomla56-extra-fields-calendar-settings.php
@@ -117,6 +129,8 @@ jobs:
         run: php .github/tests/joomla56-admin-helper-guards.php
       - name: Verify extra-field and calendar module settings
         run: php .github/tests/joomla56-extra-fields-calendar-settings.php
+      - name: Verify SQL import statement parsing
+        run: php .github/tests/joomla56-sql-import-validation.php
       - name: Verify documentation in changed runtime classes
         run: |
           php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
