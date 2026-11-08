@@ -16,12 +16,25 @@ use Joomla\Database\ParameterType;
 
 final class MatchReadService
 {
+    /**
+     * Create the frontend match reader with an injected Joomla database.
+     *
+     * @param DatabaseInterface $db Database driver for read-only match queries.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
     /**
-     * @return array<int,object>
+     * Load individual-match records associated with a parent match.
+     *
+     * Optionally restricts the results to a single match number, using bound
+     * parameters for both selectors and returning no rows for invalid IDs.
+     *
+     * @param int $matchId Parent SportsManagement match identifier.
+     * @param string|null $matchNumber Optional individual-game sequence number.
+     * @return array<int,object> Matching individual-game records.
      */
     public function getSingleMatches(int $matchId, ?string $matchNumber = null): array
     {
@@ -45,6 +58,15 @@ final class MatchReadService
         return $this->db->loadObjectList() ?: [];
     }
 
+    /**
+     * Read one match with its project, season and home/away team metadata.
+     *
+     * Retrieves an individual fixture with left joins so missing optional
+     * team relations do not suppress the match itself.
+     *
+     * @param int $matchId Requested match identifier.
+     * @return object|null Enriched match row, or null if not found.
+     */
     public function getMatch(int $matchId): ?object
     {
         if ($matchId <= 0) {
@@ -78,8 +100,14 @@ final class MatchReadService
     }
 
     /**
-     * @param array<int,int> $excludeIds
-     * @return array<int,object>
+     * Load published matches from a project for match-relation selectors.
+     *
+     * Includes team names, dates and timezone, ordered newest first. Excluded
+     * IDs are filtered to positive integers before generating a NOT IN clause.
+     *
+     * @param int $projectId Project whose related matches are requested.
+     * @param array<int,int> $excludeIds Match IDs to omit from the result.
+     * @return array<int,object> Published match relation options.
      */
     public function getMatchRelations(int $projectId, array $excludeIds = []): array
     {
@@ -109,7 +137,10 @@ final class MatchReadService
             ->order($this->db->quoteName('m.match_date') . ' DESC')
             ->order($this->db->quoteName('t1.short_name') . ' ASC');
 
-        $excludeIds = array_values(array_unique(array_filter(array_map('intval', $excludeIds))));
+        $excludeIds = array_values(array_unique(array_filter(
+            $excludeIds,
+            static fn (mixed $id): bool => is_int($id) && $id > 0
+        )));
         if ($excludeIds) {
             $query->whereNotIn($this->db->quoteName('m.id'), $excludeIds, ParameterType::INTEGER);
         }
@@ -120,7 +151,13 @@ final class MatchReadService
     }
 
     /**
-     * @return array<int,object>
+     * Load recorded match events with their player, team and event labels.
+     *
+     * Uses the parent match identifier and sorts event records chronologically
+     * for frontend match presentations.
+     *
+     * @param int $matchId Parent fixture identifier.
+     * @return array<int,object> Ordered match-event rows.
      */
     public function getEvents(int $matchId): array
     {
@@ -153,7 +190,13 @@ final class MatchReadService
     }
 
     /**
-     * @return array<int,object>
+     * Load the published referees attached to one SportsManagement match.
+     *
+     * Joins project assignments and person details, then constructs Joomla
+     * person ID:alias slugs in PHP for database portability.
+     *
+     * @param int $matchId Parent fixture identifier.
+     * @return array<int,object> Referee assignments including person slugs.
      */
     public function getReferees(int $matchId): array
     {
