@@ -11,6 +11,16 @@ on:
       - 'admin/src/Helper/ActionLogHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Field/ExtensionversionField.php'
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - 'admin/src/Field/ExtensiontranslatorsField.php'
+      - 'admin/src/Field/LanguagecharacterField.php'
+      - 'admin/src/Field/GeocompleteField.php'
+      - 'admin/src/Controller/DatabasetoolsController.php'
+      - 'admin/src/Controller/ClubnamesController.php'
+      - 'site/src/Service/EditmatchStatisticDefinition.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - '.github/tests/joomla56-editmatch-statistic-definition.php'
       - 'site/src/Service/LegacyPresentationLoader.php'
       - '.github/tests/joomla56-countries-legacy-loader.php'
       - 'admin/src/Helper/RemoteImageDownloadHelper.php'
@@ -46,6 +56,16 @@ on:
       - 'admin/src/Helper/ActionLogHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Field/ExtensionversionField.php'
+      - 'admin/src/Field/ExtensionauthorField.php'
+      - 'admin/src/Field/ExtensiontranslatorsField.php'
+      - 'admin/src/Field/LanguagecharacterField.php'
+      - 'admin/src/Field/GeocompleteField.php'
+      - 'admin/src/Controller/DatabasetoolsController.php'
+      - 'admin/src/Controller/ClubnamesController.php'
+      - 'site/src/Service/EditmatchStatisticDefinition.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - '.github/tests/joomla56-editmatch-statistic-definition.php'
       - 'site/src/Service/LegacyPresentationLoader.php'
       - '.github/tests/joomla56-countries-legacy-loader.php'
       - 'admin/src/Helper/RemoteImageDownloadHelper.php'
@@ -99,6 +119,16 @@ jobs:
           php -l admin/src/Helper/ActionLogHelper.php
           php -l admin/src/Helper/ExtraFieldsReadHelper.php
           php -l admin/src/Helper/CountryOptionsHelper.php
+          php -l admin/src/Field/ExtensionversionField.php
+          php -l admin/src/Field/ExtensionauthorField.php
+          php -l admin/src/Field/ExtensiontranslatorsField.php
+          php -l admin/src/Field/LanguagecharacterField.php
+          php -l admin/src/Field/GeocompleteField.php
+          php -l admin/src/Controller/DatabasetoolsController.php
+          php -l admin/src/Controller/ClubnamesController.php
+          php -l site/src/Service/EditmatchStatisticDefinition.php
+          php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
+          php -l .github/tests/joomla56-editmatch-statistic-definition.php
           php -l site/src/Service/LegacyPresentationLoader.php
           php -l .github/tests/joomla56-countries-legacy-loader.php
           php -l admin/src/Helper/RemoteImageDownloadHelper.php
@@ -142,7 +172,9 @@ jobs:
         run: php .github/tests/joomla56-sql-import-validation.php
       - name: Verify country selector and compatibility autoloader
         run: php .github/tests/joomla56-countries-legacy-loader.php
+      - name: Verify editmatch statistic rendering
+        run: php .github/tests/joomla56-editmatch-statistic-definition.php
       - name: Verify documentation in changed runtime classes
         run: |
-          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php admin/src/Helper/RemoteImageDownloadHelper.php admin/src/Helper/CountryOptionsHelper.php admin/src/Helper/SqlImportHelper.php site/src/Service/MatchReadService.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php admin/src/Helper/RemoteImageDownloadHelper.php admin/src/Helper/CountryOptionsHelper.php admin/src/Helper/SqlImportHelper.php site/src/Service/MatchReadService.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php admin/src/Field/ExtensionversionField.php admin/src/Field/ExtensionauthorField.php admin/src/Field/ExtensiontranslatorsField.php admin/src/Field/LanguagecharacterField.php admin/src/Field/GeocompleteField.php admin/src/Controller/DatabasetoolsController.php admin/src/Controller/ClubnamesController.php site/src/Service/EditmatchStatisticDefinition.php modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
           php .github/scripts/check-php-file-headers.php
