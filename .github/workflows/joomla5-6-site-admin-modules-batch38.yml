@@ -76,7 +76,11 @@ jobs:
           grep -Fq 'ModuleDispatcherFactory' modules/mod_sportsmanagement_navigation_menu/services/provider.php
           grep -Fq 'HelperFactory' modules/mod_sportsmanagement_navigation_menu/services/provider.php
           grep -Fq 'final class Dispatcher extends AbstractModuleDispatcher' modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
-          grep -Fq "Factory::getContainer()->get(SiteApplication::class)" modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          # The native navigation helper now receives the site app from the
+          # dispatcher or resolves it with the central Joomla 5/6 resolver.
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          grep -Fq "isClient('site')" modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
+          ! grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
           if grep -Fq 'Factory::getApplication()' modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php; then
             echo 'Legacy Factory::getApplication() remains in NativeNavigationMenuHelper.' >&2
             exit 1
