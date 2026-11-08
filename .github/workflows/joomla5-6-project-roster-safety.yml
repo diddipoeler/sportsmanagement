@@ -1,0 +1,46 @@
+name: Joomla 5/6 project and roster input safety
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/ProjectsViewDataService.php'
+      - 'admin/src/Service/IndividualMatchRosterReadService.php'
+      - '.github/tests/joomla56_project_roster_input_safety.php'
+      - '.github/workflows/joomla5-6-project-roster-safety.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Service/ProjectsViewDataService.php'
+      - 'admin/src/Service/IndividualMatchRosterReadService.php'
+      - '.github/tests/joomla56_project_roster_input_safety.php'
+      - '.github/workflows/joomla5-6-project-roster-safety.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  safety-regression:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax and method documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(admin/src/Service/ProjectsViewDataService.php admin/src/Service/IndividualMatchRosterReadService.php)
+          for file in "${files[@]}" .github/tests/joomla56_project_roster_input_safety.php; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-headers.php "${files[@]}"
+          php .github/scripts/check-php-function-docs.php "${files[@]}"
+      - name: Test project HTML escaping and excluded roster IDs
+        run: php .github/tests/joomla56_project_roster_input_safety.php

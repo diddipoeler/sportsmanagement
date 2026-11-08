@@ -51,7 +51,20 @@ jobs:
             admin/src/Service/IndividualMatchViewService.php \
             admin/src/Service/MatchRefereeNotificationService.php \
             modules/mod_sportsmanagement_calendar/calendarFunctions.php \
-            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php \
+            admin/src/Service/ProjectRelationService.php \
+            admin/src/Service/ProjectsViewDataService.php \
+            admin/src/Service/IndividualMatchGolfSetupService.php \
+            admin/src/Service/IndividualMatchSetupService.php \
+            admin/src/Service/IndividualMatchRosterReadService.php \
+            admin/src/Service/ProjectPanelService.php \
+            site/src/Service/RankingRow.php \
+            site/src/Service/PersonExtraFieldReadService.php \
+            site/src/Service/IndividualMatchReadService.php \
+            site/src/Service/LegacyPresentationLoader.php \
+            site/src/Service/InlineHockeyProjectService.php \
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php \
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
 
       - name: Check changed first-party PHP files
         shell: bash
