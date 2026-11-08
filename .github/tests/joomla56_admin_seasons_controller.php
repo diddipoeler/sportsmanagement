@@ -14,6 +14,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
     {
         protected object $input;
         public array $lastConfig = [];
+        public int $tokenChecks = 0;
+        public int $permissionChecks = 0;
 
         public function __construct()
         {
@@ -29,7 +31,30 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
             };
         }
 
-        protected function assertWritePermission(string $permission = 'core.edit'): void {}
+        /**
+         * Simulate Joomla's inherited form-token check in this isolated MVC test.
+         *
+         * The production SeasonsController invokes checkToken() before its
+         * component ACL guard. The lightweight parent stub must provide that
+         * framework method so the test reaches the missing-model assertion.
+         *
+         * @return void
+         */
+        protected function checkToken(): void
+        {
+            ++$this->tokenChecks;
+        }
+
+        /**
+         * Record each required write-authorisation check in the controller.
+         *
+         * @param string $permission Component ACL action being enforced.
+         * @return void
+         */
+        protected function assertWritePermission(string $permission = 'core.edit'): void
+        {
+            ++$this->permissionChecks;
+        }
 
         public function getModel($name = '', $prefix = '', $config = [])
         {
@@ -62,6 +87,10 @@ namespace {
         }
 
         throw new \RuntimeException('Missing season model was not rejected for ' . $task);
+    }
+
+    if ($controller->tokenChecks !== 2 || $controller->permissionChecks !== 2) {
+        throw new \RuntimeException('Seasons assignment tasks must verify both CSRF tokens and write permissions.');
     }
 
     echo "Administrator Seasons controller model guards OK\n";
