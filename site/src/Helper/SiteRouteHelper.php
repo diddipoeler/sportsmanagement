@@ -22,13 +22,22 @@ final class SiteRouteHelper
     /**
      * Build a Joomla route to the specified SportsManagement frontend view.
      * The component option and view are authoritative even when additional
-     * caller parameters contain conflicting keys.
+     * caller parameters contain conflicting keys. Rejects malformed view
+     * identifiers before they can become route query parameters.
+     *
      * @param string $view Target SportsManagement view.
      * @param array<string,mixed> $parameters Optional route query parameters.
      * @return string Routed frontend URL.
      */
     public static function view(string $view, array $parameters = []): string
     {
+        // Joomla view names are identifiers, never paths or query fragments.
+        // Refuse malformed caller input rather than generating an unsafe route.
+        if ($view === '' || strlen($view) > 100
+            || preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $view) !== 1) {
+            throw new \InvalidArgumentException('Invalid SportsManagement frontend view name.');
+        }
+
         // The requested component and view are authoritative: callers may pass
         // route parameters, but must not redirect this helper to another view.
         return self::query(array_merge($parameters, [
