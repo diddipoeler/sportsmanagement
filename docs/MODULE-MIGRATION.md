@@ -146,3 +146,7 @@ The native quote text reader now looks first in `modules/mod_sportsmanagement_rq
 ## Joomla 5/6 native GCalendar query failure isolation (8 November 2026)
 
 `GcalendarHelper::getCalendars()` now returns an empty calendar list when the Joomla database cannot prepare or execute a calendar read. Driver exception details are kept in Joomla's component error log and are not exposed in module output. Existing access-level conditions, malformed-ID refusal and the 50-calendar bound remain intact. The `joomla56_gcalendar_options_rows.php` test adds both query-setup and execution failure cases, using the existing PHP 8.3/8.4 calendar-selection workflow.
+
+## Locale-safe Google Calendar weekday headings (8 November 2026)
+
+The native GCalendar module no longer assumes that the optional PHP mbstring extension is available. `GcalendarHelper::shortWeekdayLabel()` uses `mb_substr()` where present and a Unicode-aware PCRE fallback elsewhere, avoiding split multibyte characters in German, French, Japanese and Chinese weekday labels. The helper has detailed PHPDoc and `joomla56_gcalendar_weekday_utf8.php` runs within the existing calendar-selection PHP 8.3/8.4 regression matrix.

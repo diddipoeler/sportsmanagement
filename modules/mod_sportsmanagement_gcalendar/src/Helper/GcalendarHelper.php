@@ -56,7 +56,9 @@ final class GcalendarHelper
         $monthNamesShort = [];
 
         for ($day = 0; $day < 7; $day++) {
-            $dayNamesMin[] = mb_substr($date->dayToString($day, true), 0, 2);
+            $dayNamesMin[] = self::shortWeekdayLabel(
+                (string) $date->dayToString($day, true)
+            );
         }
 
         for ($month = 1; $month <= 12; $month++) {
@@ -99,6 +101,32 @@ final class GcalendarHelper
                 'todayLabel' => Text::_('JTODAY'),
             ],
         ];
+    }
+
+    /**
+     * Abbreviate a translated calendar weekday without splitting UTF-8.
+     *
+     * Uses mbstring when available but supports otherwise compatible PHP
+     * installations with a Unicode regular-expression fallback. Names such
+     * as Ägypten or 日曜日 must not be cut in the middle of a multibyte
+     * character while preparing Joomla's calendar day headers.
+     *
+     * @param string $name Translated weekday label from Joomla\CMS\Date\Date.
+     * @return string First two Unicode characters, or an empty label.
+     */
+    public static function shortWeekdayLabel(string $name): string
+    {
+        if (function_exists('mb_substr')) {
+            return mb_substr($name, 0, 2, 'UTF-8');
+        }
+
+        if (preg_match('/^.{1,2}/us', $name, $characters) === 1) {
+            return $characters[0];
+        }
+
+        // The last-resort byte fallback is only for malformed input, since
+        // Joomla's translated weekday names normally contain valid UTF-8.
+        return substr($name, 0, 2);
     }
 
     /**

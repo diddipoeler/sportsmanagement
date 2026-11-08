@@ -11,6 +11,7 @@ on:
       - '.github/tests/joomla56_calendar_selection_acl.php'
       - '.github/tests/joomla56_gcalendar_options_rows.php'
       - '.github/tests/joomla56_calendar_event_id_guard.php'
+      - '.github/tests/joomla56_gcalendar_weekday_utf8.php'
       - '.github/workflows/joomla5-6-calendar-selection-acl.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -22,6 +23,7 @@ on:
       - '.github/tests/joomla56_calendar_selection_acl.php'
       - '.github/tests/joomla56_gcalendar_options_rows.php'
       - '.github/tests/joomla56_calendar_event_id_guard.php'
+      - '.github/tests/joomla56_gcalendar_weekday_utf8.php'
       - '.github/workflows/joomla5-6-calendar-selection-acl.yml'
 
 permissions:
@@ -53,7 +55,7 @@ jobs:
             modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_calendar_selection_acl.php .github/tests/joomla56_gcalendar_options_rows.php .github/tests/joomla56_calendar_event_id_guard.php; do
+          for file in "${files[@]}" .github/tests/joomla56_calendar_selection_acl.php .github/tests/joomla56_gcalendar_options_rows.php .github/tests/joomla56_calendar_event_id_guard.php .github/tests/joomla56_gcalendar_weekday_utf8.php; do
             php -l "$file"
           done
 
@@ -64,4 +66,6 @@ jobs:
       - name: Validate native event IDs and confidential SQL failures
         run: php .github/tests/joomla56_calendar_event_id_guard.php
       - name: Verify detailed native site calendar function PHPDoc
-        run: php .github/scripts/check-php-function-docs.php site/src/Service/GoogleCalendarReadService.php
+        run: php .github/scripts/check-php-function-docs.php site/src/Service/GoogleCalendarReadService.php modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
+      - name: Test Unicode-safe module weekday headings
+        run: php .github/tests/joomla56_gcalendar_weekday_utf8.php
