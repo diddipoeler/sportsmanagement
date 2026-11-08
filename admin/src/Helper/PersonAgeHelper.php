@@ -70,6 +70,18 @@ final class PersonAgeHelper
             return null;
         }
 
+        // A date-time suffix is accepted for database compatibility, but its
+        // clock values must be valid rather than silently ignored.
+        if (strlen($value) > 10) {
+            $hours = (int) substr($value, 11, 2);
+            $minutes = (int) substr($value, 14, 2);
+            $seconds = (int) substr($value, 17, 2);
+
+            if ($hours > 23 || $minutes > 59 || $seconds > 59) {
+                return null;
+            }
+        }
+
         $date = substr($value, 0, 10);
         $parsed = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
         $errors = \DateTimeImmutable::getLastErrors();
