@@ -17,6 +17,11 @@ declare(strict_types=1);
 $root = dirname(__DIR__, 2);
 $paths = [
     'site/src/View/Clubs/HtmlView.php',
+    'site/src/View/Jsonfeed/RawView.php',
+    'site/src/View/Curve/RawView.php',
+    'admin/src/Model/SmquotestxtModel.php',
+    'admin/src/View/Smquotestxt/HtmlView.php',
+    'admin/src/Model/TrainingdataModel.php',
     'site/src/Controller/EventsrankingController.php',
     'admin/src/Model/CpanelModel.php',
     'admin/src/View/Cpanel/HtmlView.php',

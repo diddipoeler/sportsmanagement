@@ -11,6 +11,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Smquotestxt;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\SmquotestxtModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
@@ -21,10 +22,26 @@ final class HtmlView extends BaseHtmlView
 {
     public array $files = [];
 
+    /**
+     * Render validated quote-source text files in the administrator view.
+     *
+     * Requires the namespaced Joomla 5/6 source-list model, retrieves its
+     * filtered filenames, checks model errors and adds the translated title
+     * and back-navigation toolbar before rendering the selected layout.
+     *
+     * @param string|null $tpl Optional Joomla layout suffix.
+     * @return void
+     * @throws \RuntimeException If the expected list model is unavailable.
+     */
     public function display($tpl = null): void
     {
         $model = $this->getModel();
-        $this->files = method_exists($model, 'getTXTFiles') ? $model->getTXTFiles() : [];
+
+        if (!$model instanceof SmquotestxtModel) {
+            throw new \RuntimeException('Quote source list requires SmquotestxtModel.', 500);
+        }
+
+        $this->files = $model->getTXTFiles();
 
         if ($errors = $model->getErrors()) {
             throw new \RuntimeException(implode("\n", $errors), 500);

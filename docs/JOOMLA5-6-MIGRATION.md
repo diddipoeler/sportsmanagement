@@ -51,3 +51,10 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 - The existing file-header audit checks `@version`, `@author`, `@copyright` and `@license` in first-party PHP files. The selected function-PHPDoc gate now includes the newly documented classes and module providers. Bundled vendor code retains its upstream attribution.
 
 **Remaining work:** finish native MVC conversion and legacy API cleanup, audit outstanding function documentation using `.github/tests/joomla56_function_docs_inventory.php`, validate modules and installer on real Joomla 5.4 and Joomla 6 environments, and complete packaging and update tests.
+
+## Follow-up: native JSON feed, quote files and training data (8 November 2026)
+
+- The site JSON feed resolves its application through the Joomla 5/6 site resolver, requires the native JsonfeedModel, and selects the compact layout only for `compact=1`. Both JSON templates no longer call the static Joomla application factory.
+- The administrator quote-file picker lists only readable, regular TXT files that satisfy the frontend module reader's basename contract; symlinks, scripts, and unsafe filenames are excluded.
+- Training data creation messages use the actual number of created records (one) instead of a database record ID.
+- Added named-function documentation and targeted regression tests for JSON view dispatch and quote-source filtering.

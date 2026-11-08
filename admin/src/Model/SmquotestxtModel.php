@@ -19,6 +19,16 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 final class SmquotestxtModel extends BaseDatabaseModel
 {
+    /**
+     * Enumerate only usable text quote files from the frontend module folder.
+     *
+     * Limits enumeration to readable regular files in the module directory,
+     * excludes symlinks and executable PHP sources, and applies the same
+     * basename allowlist as the native module's TXT reader. The resulting
+     * filenames are ordered naturally for the Joomla administrator picker.
+     *
+     * @return array<int, string> Readable and validated TXT file names.
+     */
     public function getTXTFiles(): array
     {
         $path = JPATH_SITE
@@ -32,17 +42,18 @@ final class SmquotestxtModel extends BaseDatabaseModel
         $files = [];
 
         foreach (new DirectoryIterator($path) as $fileInfo) {
-            if (!$fileInfo->isFile()) {
+            if (!$fileInfo->isFile() || $fileInfo->isLink() || !$fileInfo->isReadable()) {
                 continue;
             }
 
-            $extension = strtolower($fileInfo->getExtension());
+            $name = $fileInfo->getFilename();
 
-            if (!in_array($extension, ['txt', 'php'], true)) {
+            if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*\.txt$/iD', $name)
+                || str_contains($name, '..')) {
                 continue;
             }
 
-            $files[] = $fileInfo->getFilename();
+            $files[] = $name;
         }
 
         natcasesort($files);
