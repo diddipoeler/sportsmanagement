@@ -76,7 +76,16 @@ final class ProjectsViewDataService
             ->order($this->db->quoteName('ef.name') . ' ASC');
         $this->db->setQuery($query);
 
-        return implode('<br>', $this->db->loadColumn() ?: []);
+        $names = $this->db->loadColumn() ?: [];
+
+        // Field names are administrator-managed strings and must not become
+        // executable markup in the project list; only the separator is HTML.
+        $safeNames = array_map(
+            static fn ($name): string => htmlspecialchars((string) $name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+            $names
+        );
+
+        return implode('<br>', $safeNames);
     }
 
     /**
