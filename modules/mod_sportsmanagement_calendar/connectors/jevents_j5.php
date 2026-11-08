@@ -47,6 +47,8 @@ final class JEventsConnector extends JSMCalendar
      * Checks that JEvents is installed, validates the calendar's starting
      * date without accepting rollover dates, requests the relevant month
      * from JEventsDataModel and appends normalised events to the match array.
+     * Invalid dates are rejected before loading the optional integration;
+     * external API failures are logged privately and return no events.
      *
      * @param array $caldates Date and time boundaries selected by the calendar.
      * @param Registry $params Module settings, retained for event headings.
@@ -55,20 +57,43 @@ final class JEventsConnector extends JSMCalendar
      */
     public static function getEntries(array $caldates, Registry $params, array &$matches): array
     {
+        // Reject invalid boundaries before loading an optional third-party
+        // extension or invoking its data model.
+        $start = $caldates['start'] ?? null;
+
+        if (!is_string($start) || !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}(?: |$)/D', $start)) {
+            return [];
+        }
+
+        $day = substr($start, 0, 10);
+        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $day);
+
+        if (!$date instanceof \DateTimeImmutable || $date->format('Y-m-d') !== $day) {
+            return [];
+        }
+
         if (!self::checkJEvents()) {
             return [];
         }
 
-        $start = substr((string) ($caldates['start'] ?? ''), 0, 10);
-        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $start);
-        if (!$date instanceof \DateTimeImmutable || $date->format('Y-m-d') !== $start) {
+        self::$xparams = $params;
+
+        try {
+            $data = self::$jevent->getCalendarData((int) $date->format('Y'), (int) $date->format('m'), 1);
+        } catch (\Throwable $exception) {
+            // Optional provider failures must not take down the host page.
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement JEvents calendar lookup failed (' . get_class($exception) . ').',
+                \Joomla\CMS\Log\Log::WARNING,
+                'com_sportsmanagement'
+            );
+
             return [];
         }
 
-        self::$xparams = $params;
-        $data = self::$jevent->getCalendarData((int) $date->format('Y'), (int) $date->format('m'), 1);
-
-        return self::formatEntries((array) ($data['dates'] ?? []), $matches);
+        return self::formatEntries(is_array($data) && isset($data['dates']) && is_array($data['dates'])
+            ? $data['dates']
+            : [], $matches);
     }
 
     /**
