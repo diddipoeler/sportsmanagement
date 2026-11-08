@@ -61,14 +61,26 @@ final class JEventsConnector extends JSMCalendar
         // extension or invoking its data model.
         $start = $caldates['start'] ?? null;
 
-        if (!is_string($start) || !preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}(?: |$)/D', $start)) {
+        if (!is_string($start)) {
             return [];
         }
 
-        $day = substr($start, 0, 10);
-        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $day);
+        $start = trim($start);
+        $format = match (strlen($start)) {
+            10 => 'Y-m-d',
+            19 => 'Y-m-d H:i:s',
+            default => null,
+        };
 
-        if (!$date instanceof \DateTimeImmutable || $date->format('Y-m-d') !== $day) {
+        if ($format === null) {
+            return [];
+        }
+
+        $date = \DateTimeImmutable::createFromFormat('!' . $format, $start);
+        $errors = \DateTimeImmutable::getLastErrors();
+
+        if (!$date instanceof \DateTimeImmutable || $date->format($format) !== $start
+            || (is_array($errors) && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))) {
             return [];
         }
 
