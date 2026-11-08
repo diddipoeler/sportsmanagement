@@ -60,6 +60,15 @@ if (!class_exists(BirthdayHelper::class)) {
 }
 
 if (!function_exists('jsm_birthday_sort')) {
+    /**
+     * Sort birthday rows using the native birthday helper's person ordering.
+     * Keeps the historical global function available to template overrides without duplicating the Joomla 5/6 sorting logic.
+     *
+     * @param array $rows Person records to order.
+     * @param mixed $arguments Legacy sort arguments or separator.
+     * @param bool $keys Whether to preserve the original row keys.
+     * @return array Sorted birthday records.
+     */
     function jsm_birthday_sort(array $rows, $arguments = '-', $keys = true): array
     {
         return BirthdayHelper::sortPersons($rows, $arguments, (bool) $keys);
@@ -69,6 +78,16 @@ if (!function_exists('jsm_birthday_sort')) {
 if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
     final class modSportsmanagementBirthdayDataHelper
     {
+        /**
+         * Load birthday records with explicitly supplied Joomla dependencies.
+         * Verifies that the caller uses the site application, resolves the database service and delegates filtering and formatting to the native helper.
+         *
+         * @param Registry $params Module configuration.
+         * @param Registry $componentParams SportsManagement component configuration.
+         * @param CMSApplicationInterface $app Current Joomla application.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Birthday records and presentation data.
+         */
         public function getData(Registry $params, Registry $componentParams, CMSApplicationInterface $app, ?DatabaseInterface $database = null): array
         {
             if (!$app->isClient('site')) {
@@ -80,6 +99,13 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
             return (new BirthdayHelper())->getData($params, $componentParams, $app, $database);
         }
 
+        /**
+         * Resolve the database service for the dependency-injected birthday data facade.
+         * Uses the supplied database for testing or alternate connections; otherwise retrieves Joomla's typed database service and rejects an invalid service.
+         *
+         * @param DatabaseInterface|null $database Optional database instance.
+         * @return DatabaseInterface Valid Joomla database connection.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
@@ -100,6 +126,14 @@ if (!class_exists('modSportsmanagementBirthdayDataHelper', false)) {
 if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
     final class modSportsmanagementBirthdayHelper
     {
+        /**
+         * Preserve the legacy static birthday helper API for older module layouts.
+         * Normalises array parameters to Registry, obtains component settings and the site application, and delegates retrieval to the native Joomla helper.
+         *
+         * @param Registry|array $params Legacy module parameters.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Birthday records and presentation data.
+         */
         public static function getData($params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -119,11 +153,24 @@ if (!class_exists('modSportsmanagementBirthdayHelper', false)) {
             );
         }
 
+        /**
+         * Find the active Joomla site application through the component resolver.
+         * Avoids deprecated global application lookups in Joomla 5/6 module execution.
+         *
+         * @return CMSApplicationInterface Current Joomla application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             return SportsManagementSiteApplicationResolver::resolve();
         }
 
+        /**
+         * Obtain a database connection for the legacy static birthday facade.
+         * Prefers an explicitly supplied connection and validates the container service before passing it to the native module implementation.
+         *
+         * @param DatabaseInterface|null $database Optional database instance.
+         * @return DatabaseInterface Valid Joomla database connection.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {

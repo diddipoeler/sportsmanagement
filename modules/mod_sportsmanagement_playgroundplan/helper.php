@@ -51,6 +51,13 @@ foreach ([
 if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
     final class modSportsmanagementPlaygroundplanHelper
     {
+        /**
+         * Load the venue schedule using the native Joomla 5/6 playground plan helper.
+         * Normalises legacy parameters and supplies the resolved site application and a fallback module descriptor.
+         *
+         * @param Registry|array $params Module parameters passed by reference.
+         * @return array Playground plan entries and presentation data.
+         */
         public static function getData(&$params): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -63,6 +70,14 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             );
         }
 
+        /**
+         * Look up a team's requested display name by its numeric identifier.
+         * Restricts the selectable name column to a fixed allowlist and binds the team ID as an integer, returning an empty string for invalid IDs.
+         *
+         * @param int|string $teamId Numeric team identifier.
+         * @param string $teamFormat Allowed name, middle_name or short_name field.
+         * @return string Team display name or an empty string.
+         */
         public static function getTeams($teamId, $teamFormat): string
         {
             $field = in_array((string) $teamFormat, ['name', 'middle_name', 'short_name'], true)
@@ -85,6 +100,14 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             return (string) ($db->loadResult() ?? '');
         }
 
+        /**
+         * Return the configured club logo for a sports management team.
+         * Uses an allowlisted logo column and a bound team ID, then falls back to the component's placeholder image when no club logo exists.
+         *
+         * @param int|string $teamId Numeric team identifier.
+         * @param string $logo Allowed club logo variant.
+         * @return string Image path or configured fallback image path.
+         */
         public static function getTeamLogo($teamId, $logo = 'logo_big'): string
         {
             $field = in_array((string) $logo, ['logo_small', 'logo_middle', 'logo_big'], true)
@@ -123,6 +146,12 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             };
         }
 
+        /**
+         * Resolve and validate the Joomla frontend application.
+         * Prevents legacy playground-plan lookups from executing in the administrator application.
+         *
+         * @return CMSApplicationInterface Active site application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
@@ -134,6 +163,12 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             return $app;
         }
 
+        /**
+         * Select the database connection configured for the current playground plan.
+         * Reads the input override or component default and passes that selector to SportsManagementDatabaseResolver.
+         *
+         * @return DatabaseInterface Selected SportsManagement database connection.
+         */
         private static function database(): DatabaseInterface
         {
             $app = self::siteApplication();
@@ -145,6 +180,12 @@ if (!class_exists('modSportsmanagementPlaygroundplanHelper', false)) {
             return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
         }
 
+        /**
+         * Fetch the database driver through Joomla's dependency injection container.
+         * Checks the returned service type so a missing or invalid service produces a clear error.
+         *
+         * @return DatabaseInterface Joomla database driver.
+         */
         private static function joomlaDatabase(): DatabaseInterface
         {
             $database = Factory::getContainer()->get(DatabaseInterface::class);

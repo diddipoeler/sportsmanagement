@@ -76,11 +76,24 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
             ];
         }
 
+        /**
+         * Resolve the active site application for legacy event ranking calls.
+         * Lets the facade enforce site-only execution while keeping Joomla's application lookup in one shared service.
+         *
+         * @return CMSApplicationInterface Current Joomla site application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             return SportsManagementSiteApplicationResolver::resolve();
         }
 
+        /**
+         * Obtain the database service used for event rankings.
+         * Accepts an injected connection for tests or other supported databases; otherwise validates the Joomla container service.
+         *
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return DatabaseInterface Valid Joomla database connection.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
@@ -96,6 +109,14 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
             return $database;
         }
 
+        /**
+         * Render a team or country logo supplied by the native event ranking model.
+         * Selects the appropriate prepared URL according to the requested logo type and returns no markup when the image is absent.
+         *
+         * @param object $item Event ranking row containing image URLs.
+         * @param int $type Logo selector; 2 chooses the country icon.
+         * @return string Image HTML or an empty string.
+         */
         public static function getLogo(object $item, int $type = 1): string
         {
             $url = $type === 2
@@ -109,11 +130,30 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
             return HTMLHelper::_('image', $url, '', ['width' => 20, 'class' => $type === 2 ? 'teamcountry' : 'teamlogo']);
         }
 
+        /**
+         * Read the prepared team link from a native event ranking row.
+         * Maintains the legacy signature expected by existing module overrides; routing is performed by the native data provider.
+         *
+         * @param object $team Ranking team with an optional team_url property.
+         * @param mixed $params Retained compatibility argument.
+         * @param mixed $project Retained compatibility argument.
+         * @return string Team URL or an empty string.
+         */
         public static function getTeamLink(object $team, $params = null, $project = null): string
         {
             return (string) ($team->team_url ?? '');
         }
 
+        /**
+         * Write the safely escaped event participant name and its optional link.
+         * Escapes the display text before output and wraps it in a Joomla link only when the native row supplies a URL.
+         *
+         * @param object $item Event participant row.
+         * @param mixed $team Retained compatibility argument.
+         * @param mixed $params Retained compatibility argument.
+         * @param mixed $project Retained compatibility argument.
+         * @return void
+         */
         public static function printName(object $item, $team = null, $params = null, $project = null): void
         {
             $name = htmlspecialchars((string) ($item->display_name ?? ''), ENT_QUOTES, 'UTF-8');
@@ -122,6 +162,13 @@ if (!class_exists('modSMEventsrankingHelper', false)) {
             echo $url !== '' ? HTMLHelper::link($url, $name) : $name;
         }
 
+        /**
+         * Render an event icon or fall back to its translated label.
+         * Uses Joomla HTML generation for a configured icon and displays text when the icon is empty or still points to the generic placeholder.
+         *
+         * @param object $event Event type carrying its label and optional icon.
+         * @return string Icon HTML or translated text.
+         */
         public static function getEventIcon(object $event): string
         {
             $name = Text::_((string) ($event->name ?? ''));

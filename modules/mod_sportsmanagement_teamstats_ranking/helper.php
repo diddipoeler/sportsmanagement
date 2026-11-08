@@ -50,6 +50,14 @@ foreach ([
 if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
     final class modSportsmanagementTeamStatHelper
     {
+        /**
+         * Retrieve the team statistics ranking through the native module helper.
+         * Converts legacy parameters to Registry, validates the site application and passes the selected database connection to the namespaced service.
+         *
+         * @param Registry|array $params Module configuration passed by reference.
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return array Ranking rows and accompanying display data.
+         */
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -59,6 +67,12 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             return (new TeamStatsRankingHelper())->getData($registry, $database);
         }
 
+        /**
+         * Resolve the current Joomla site application for team statistics.
+         * Rejects administrator execution so the legacy facade matches the native frontend module lifecycle.
+         *
+         * @return CMSApplicationInterface Active site application.
+         */
         private static function siteApplication(): CMSApplicationInterface
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
@@ -70,6 +84,13 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             return $app;
         }
 
+        /**
+         * Resolve the database dependency for team statistics rankings.
+         * Uses an injected database when supplied and otherwise validates the service retrieved from Joomla's container.
+         *
+         * @param DatabaseInterface|null $database Optional database override.
+         * @return DatabaseInterface Valid Joomla database driver.
+         */
         private static function joomlaDatabase(?DatabaseInterface $database = null): DatabaseInterface
         {
             if ($database !== null) {
@@ -85,6 +106,14 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             return $database;
         }
 
+        /**
+         * Build team logo markup or a textual country badge for a ranking row.
+         * Respects the historical type selector, escapes the country code and returns no markup when the requested image is unavailable.
+         *
+         * @param object $item Team statistics ranking row.
+         * @param int $type 1 for team image or 2 for country code.
+         * @return string Safe HTML for the image or badge.
+         */
         public static function getLogo(object $item, int $type = 1): string
         {
             if ($type === 1 && !empty($item->logo_big)) {
@@ -105,6 +134,15 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             return '';
         }
 
+        /**
+         * Construct a route for a team, roster, plan or club details page.
+         * Normalises legacy module settings, builds the season and project route parameters and rejects unsupported link types.
+         *
+         * @param object $item Team statistics ranking row.
+         * @param Registry|array $params Module link configuration.
+         * @param object $project Current project and season identifiers.
+         * @return string Joomla route URL, or an empty string if disabled.
+         */
         public static function getTeamLink(object $item, $params, object $project): string
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
@@ -139,6 +177,13 @@ if (!class_exists('modSportsmanagementTeamStatHelper', false)) {
             return SiteRouteHelper::view($view, $query);
         }
 
+        /**
+         * Render the icon associated with a team statistic.
+         * Generates an image with its translated title for custom icons, otherwise returns an escaped translated statistic name.
+         *
+         * @param object $stat Statistic definition including optional icon and name.
+         * @return string Image markup or escaped statistic label.
+         */
         public static function getStatIcon(object $stat): string
         {
             if (!empty($stat->icon) && $stat->icon !== 'media/com_sportsmanagement/event_icons/event.gif') {
