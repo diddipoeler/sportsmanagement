@@ -29,15 +29,30 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
 
 final class LivescoreConnector extends JSMCalendar
 {
+    /**
+     * Resolve the Joomla site application for the LiveScore connector.
+     * Uses the shared frontend application resolver before inspecting calendar preferences or executing the provider query.
+     *
+     * @return CMSApplicationInterface Active Joomla frontend application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve and validate Joomla's database service for LiveScore lookups.
+     * Obtains DatabaseInterface from the public Joomla dependency injection container instead of relying on removed database globals.
+     *
+     * @return DatabaseInterface Valid Joomla database driver.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement LiveScore database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -45,6 +60,15 @@ final class LivescoreConnector extends JSMCalendar
     private Registry $xparams;
     private string $connectorPrefix = '';
 
+    /**
+     * Append LiveScore fixtures inside the requested calendar date window.
+     * Stores connector settings, loads matching games and converts them into rows compatible with the calendar's shared event list.
+     *
+     * @param array $caldates Date boundaries and optional connector parameters.
+     * @param Registry $params Module settings including the configured table prefix.
+     * @param array $matches Shared calendar rows populated by reference.
+     * @return array<int,array> New LiveScore calendar rows.
+     */
     public function appendMatches(array &$caldates, Registry &$params, array &$matches): array
     {
         $this->xparams = $params;
@@ -53,6 +77,14 @@ final class LivescoreConnector extends JSMCalendar
         return $this->formatRows($this->getRows($caldates), $matches);
     }
 
+    /**
+     * Query games from the configured LiveScore table during the requested dates.
+     * Checks the Joomla frontend context, quotes the selected table and date boundaries, and normalises the sort direction before loading the games.
+     *
+     * @param array $caldates Requested calendar start and end timestamps.
+     * @param string $ordering ASC or DESC date order.
+     * @return array<int,object> Matching LiveScore game records.
+     */
     private function getRows(array $caldates, string $ordering = 'ASC'): array
     {
         $app = self::siteApplication();
@@ -83,6 +115,14 @@ final class LivescoreConnector extends JSMCalendar
         return $db->setQuery($query)->loadObjectList() ?: [];
     }
 
+    /**
+     * Convert LiveScore fixtures into a common calendar entry structure.
+     * Maps fixture dates, competing teams and season references to the shared calendar representation, adding a live result label.
+     *
+     * @param array<int,object> $rows Raw provider game records.
+     * @param array $matches Calendar entries to extend in-place.
+     * @return array<int,array> Formatted LiveScore events.
+     */
     private function formatRows(array $rows, array &$matches): array
     {
         $newRows = [];

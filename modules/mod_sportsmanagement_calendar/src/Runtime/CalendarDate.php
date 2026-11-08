@@ -15,6 +15,14 @@ use Joomla\CMS\Date\Date;
 
 final class CalendarDate
 {
+    /**
+     * Convert a timestamp or date input into Joomla's calendar date object.
+     * Interprets integer timestamps in the requested timezone and delegates date strings to Joomla Date, returning null for invalid or unsupported conversions.
+     *
+     * @param mixed $value Unix timestamp, numeric timestamp string or date value.
+     * @param string $offset Joomla site timezone, defaulting to UTC.
+     * @return Date|null Timezone-aware Joomla Date, or null if conversion failed.
+     */
     public static function fromValue(mixed $value, string $offset): ?Date
     {
         try {

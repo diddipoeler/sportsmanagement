@@ -28,6 +28,12 @@ if (!class_exists(SportsManagementSiteApplicationResolver::class)) {
 
 final class JEventsConnector extends JSMCalendar
 {
+    /**
+     * Resolve the Joomla frontend application for calendar connector diagnostics.
+     * Reuses the component's site application resolver, avoiding removed global Joomla application accessors.
+     *
+     * @return CMSApplicationInterface Active Joomla site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -36,6 +42,15 @@ final class JEventsConnector extends JSMCalendar
     public static Registry $xparams;
     private static $jevent;
 
+    /**
+     * Load JEvents calendar entries for the month requested by the module.
+     * Checks that JEvents is installed, parses the calendar's starting date, requests the relevant month from JEventsDataModel and appends normalised events to the shared match array.
+     *
+     * @param array $caldates Date and time boundaries selected by the calendar.
+     * @param Registry $params Module settings, retained for event headings.
+     * @param array $matches Shared calendar rows populated by reference.
+     * @return array<int,array> JEvents records formatted for the module.
+     */
     public static function getEntries(array $caldates, Registry $params, array &$matches): array
     {
         if (!self::checkJEvents()) {
@@ -54,6 +69,12 @@ final class JEventsConnector extends JSMCalendar
         return self::formatEntries((array) ($data['dates'] ?? []), $matches);
     }
 
+    /**
+     * Verify that the JEvents adapter and its data-model entry point are available.
+     * Lazily loads the optional JEvents PHP files, validates the external model API and reports a frontend warning rather than fatally requiring an uninstalled extension.
+     *
+     * @return bool Whether the JEvents model is ready for calendar data retrieval.
+     */
     private static function checkJEvents(): bool
     {
         $base = JPATH_SITE . '/components/com_jevents';
@@ -82,6 +103,13 @@ final class JEventsConnector extends JSMCalendar
         return true;
     }
 
+    /**
+     * Display a nonfatal calendar connector warning in the Joomla frontend.
+     * Rejects unsupported Joomla clients and forwards missing-extension diagnostics through the application's notification queue.
+     *
+     * @param string $message Safe, user-visible warning text.
+     * @return void
+     */
     private static function raiseError(string $message): void
     {
         $app = self::siteApplication();
@@ -93,6 +121,14 @@ final class JEventsConnector extends JSMCalendar
         $app->enqueueMessage($message, 'warning');
     }
 
+    /**
+     * Convert JEvents day and event records into SportsManagement calendar rows.
+     * Normalises titles, locations, date/time ranges and event metadata, and appends every formatted event to the shared cross-connector collection.
+     *
+     * @param array $rows Date-grouped JEvents data returned by the provider.
+     * @param array $matches Shared calendar rows extended in-place.
+     * @return array<int,array> Newly formatted event records.
+     */
     private static function formatEntries(array $rows, array &$matches): array
     {
         $newRows = [];
@@ -134,6 +170,15 @@ final class JEventsConnector extends JSMCalendar
         return $newRows;
     }
 
+    /**
+     * Route a JEvents occurrence to its detail page.
+     * Preserves occurrence, year, month and UID information and uses Joomla's routing service so the result fits the active site configuration.
+     *
+     * @param object $event JEvents event occurrence metadata.
+     * @param int $year Event year.
+     * @param int $month Event month.
+     * @return string Joomla-routed JEvents event URL.
+     */
     private static function buildLink(object $event, int $year, int $month): string
     {
         $router = JPATH_SITE . '/components/com_jevents/router.php';
