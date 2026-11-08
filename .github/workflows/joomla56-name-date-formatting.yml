@@ -43,5 +43,7 @@ jobs:
           php -l admin/src/Helper/NameFormatter.php
           php -l admin/src/Helper/SportsManagementDateHelper.php
           php -l .github/tests/joomla56-name-date-formatting.php
-      - name: Run formatting regressions
+      - name: Run formatting regressions with mbstring
         run: php .github/tests/joomla56-name-date-formatting.php
+      - name: Run formatting regressions without loaded extensions
+        run: php -n .github/tests/joomla56-name-date-formatting.php
