@@ -97,6 +97,7 @@ $paths = [
     'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php',
     'modules/mod_sportsmanagement_rquotes/src/Helper/QuoteText.php',
     'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php',
+    'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php',
     'modules/mod_sportsmanagement_rquotes/helper.php',
 ];
 

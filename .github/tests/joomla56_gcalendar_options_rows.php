@@ -21,6 +21,27 @@ namespace Joomla\Database {
     }
 }
 
+namespace Joomla\CMS\Log {
+    final class Log
+    {
+        public const ERROR = 1;
+        public static array $entries = [];
+
+        /**
+         * Capture details of calendar database failures in the Joomla log.
+         *
+         * @param string $message Internal diagnostic text.
+         * @param int $level Logging severity.
+         * @param string $category Joomla component log namespace.
+         * @return void
+         */
+        public static function add(string $message, int $level, string $category): void
+        {
+            self::$entries[] = [$message, $level, $category];
+        }
+    }
+}
+
 namespace Joomla\Registry {
     final class Registry
     {
@@ -124,13 +145,22 @@ namespace {
         public mixed $rows = [];
         public int $queryCount = 0;
         public int $limit = 0;
+        public bool $failCreate = false;
+        public bool $failLoad = false;
 
         /**
          * Construct a fluent query builder fixture.
          *
          * @return GCalendarQueryStub Fake Joomla query.
          */
-        public function createQuery(): GCalendarQueryStub { return new GCalendarQueryStub(); }
+        public function createQuery(): GCalendarQueryStub
+        {
+            if ($this->failCreate) {
+                throw new \RuntimeException('DB create query: password=private');
+            }
+
+            return new GCalendarQueryStub();
+        }
 
         /**
          * Simulate Joomla SQL identifier quoting.
@@ -159,7 +189,14 @@ namespace {
          *
          * @return mixed Simulated calendar rows or malformed result.
          */
-        public function loadObjectList(): mixed { return $this->rows; }
+        public function loadObjectList(): mixed
+        {
+            if ($this->failLoad) {
+                throw new \RuntimeException('DB execute: password=private');
+            }
+
+            return $this->rows;
+        }
     }
 
     $app = new class implements \Joomla\CMS\Application\CMSApplicationInterface {
@@ -201,5 +238,31 @@ namespace {
         throw new \RuntimeException('GCalendar accepted a malformed database result.');
     }
 
-    echo "GCalendar option and row validation passed.\n";
+    // Temporary database failures must not abort frontend module rendering
+    // or disclose driver credentials in the returned calendar list.
+    $db->failCreate = true;
+    if ($helper->getCalendars(new \Joomla\Registry\Registry(), $app, $db) !== []) {
+        throw new \RuntimeException('GCalendar query setup failure escaped the module helper.');
+    }
+
+    $db->failCreate = false;
+    $db->failLoad = true;
+    if ($helper->getCalendars(new \Joomla\Registry\Registry(), $app, $db) !== []) {
+        throw new \RuntimeException('GCalendar query execution failure escaped the module helper.');
+    }
+
+    $logs = \Joomla\CMS\Log\Log::$entries;
+    if (count($logs) !== 2) {
+        throw new \RuntimeException('GCalendar database failures were not logged.');
+    }
+
+    foreach ($logs as [$message, $level, $category]) {
+        if ($level !== \Joomla\CMS\Log\Log::ERROR
+            || $category !== 'com_sportsmanagement'
+            || !str_contains($message, 'password=private')) {
+            throw new \RuntimeException('GCalendar diagnostic details were not logged correctly.');
+        }
+    }
+
+    echo "GCalendar option, row and private database failure validation passed.\n";
 }

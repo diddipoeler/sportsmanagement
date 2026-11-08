@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementGcalendar\Site\Helper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Route;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -135,6 +136,8 @@ final class GcalendarHelper
      * restrictions, with a bounded database result. Invalid configured
      * selections never fall back to an unrestricted query. Malformed
      * database rows are removed before they reach module rendering.
+     * Query or connection failures are logged privately and yield an
+     * empty module list rather than crashing the Joomla site page.
      *
      * @param Registry $params Calendar selection module settings.
      * @param CMSApplicationInterface $app Joomla application providing identity.
@@ -146,9 +149,19 @@ final class GcalendarHelper
         CMSApplicationInterface $app,
         DatabaseInterface $db
     ): array {
-        $query = $db->createQuery()
-            ->select('*')
-            ->from($db->quoteName('#__sportsmanagement_gcalendar'));
+        try {
+            $query = $db->createQuery()
+                ->select('*')
+                ->from($db->quoteName('#__sportsmanagement_gcalendar'));
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement GCalendar query setup failed: ' . $exception->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+
+            return [];
+        }
 
         $rawCalendarIds = $params->get('calendarids', []);
         // Only a genuinely empty selection means all visible calendars.
@@ -191,12 +204,21 @@ final class GcalendarHelper
             $query->whereIn($db->quoteName('access_content'), $levels, ParameterType::INTEGER);
         }
 
-        $query->order($db->quoteName('name') . ' ASC');
-        // Match the JSON feed bound, including when the module is configured
-        // to display all calendars visible to the current user.
-        $db->setQuery($query, 0, self::MAX_CALENDARS);
+        try {
+            $query->order($db->quoteName('name') . ' ASC');
+            // Match the JSON feed bound even when all permitted calendars
+            // are requested: never remove the 50-calendar database limit.
+            $db->setQuery($query, 0, self::MAX_CALENDARS);
+            $rows = $db->loadObjectList();
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement GCalendar query execution failed: ' . $exception->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
 
-        $rows = $db->loadObjectList();
+            return [];
+        }
 
         if (!is_array($rows)) {
             return [];

@@ -142,3 +142,7 @@ Retained template overrides can still call `modRquotesHelper::renderRquote()`. T
 ## Packaged quote text directory (8 November 2026)
 
 The native quote text reader now looks first in `modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes/`, matching the shipped `rquotes.txt` file and the module XML filelist path. A guarded fallback to the module root preserves already configured custom text files from older installations. The backend text-file picker uses the packaged directory; its basename filter remains aligned with the frontend reader. Both locations reject symlinked TXT files, invalid filenames and oversized files. The standalone `joomla56_rquotes_text_file_paths.php` regression test validates folder precedence, the default package asset, legacy fallback and malicious names.
+
+## Joomla 5/6 native GCalendar query failure isolation (8 November 2026)
+
+`GcalendarHelper::getCalendars()` now returns an empty calendar list when the Joomla database cannot prepare or execute a calendar read. Driver exception details are kept in Joomla's component error log and are not exposed in module output. Existing access-level conditions, malformed-ID refusal and the 50-calendar bound remain intact. The `joomla56_gcalendar_options_rows.php` test adds both query-setup and execution failure cases, using the existing PHP 8.3/8.4 calendar-selection workflow.
