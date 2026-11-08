@@ -57,7 +57,7 @@ jobs:
             exit 1
           fi
 
-          for legacy_import in             'use Joomla\CMS\Factory;'             'use Joomla\CMS\Router\Router;'             'use Joomla\CMS\Component\Router\RouterBase;'             'use Joomla\CMS\Language\Text;'; do
+          for legacy_import in             'use Joomla\CMS\Router\Router;'             'use Joomla\CMS\Component\Router\RouterBase;'             'use Joomla\CMS\Language\Text;'; do
             if grep -Fq -- "$legacy_import" site/helpers/route.php; then
               echo "Unused route import remains: $legacy_import"
               exit 1

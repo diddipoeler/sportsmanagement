@@ -51,5 +51,5 @@ jobs:
           ! grep -Fq -- 'getVar("view")' site/helpers/ranking.php
           grep -Fq -- "getCmd('view')" site/helpers/ranking.php
           for file in admin/models/fields/teams.php admin/models/fields/favteam.php admin/models/fields/imageselect.php; do
-            grep -Fq -- 'throw new \\RuntimeException' "$file"
+            grep -Fq -- 'throw new \RuntimeException' "$file"
           done

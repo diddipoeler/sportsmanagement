@@ -41,6 +41,7 @@ jobs:
           grep -Fq -- 'SportsManagementSiteApplicationResolver::resolve()' site/helpers/ranking.php
           ! grep -Fq -- 'Factory::getApplication()' site/helpers/ranking.php
           ! grep -Fq -- '$app->input' site/helpers/ranking.php
-          grep -Fq -- 'is_file($nativePagination)' site/models/pagination.php
+          grep -Fq -- 'is_file($nativeFile)' site/models/pagination.php
+          grep -Fq -- 'class_alias(NativePagination::class' site/models/pagination.php
           grep -Fq -- 'throw new \RuntimeException' site/models/pagination.php
           ! grep -Fq -- 'Restricted access' site/models/pagination.php

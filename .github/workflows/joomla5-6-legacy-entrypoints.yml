@@ -165,7 +165,8 @@ jobs:
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' site/router.php
           grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/helpers/route.php
           grep -Fq 'class_alias(JSMSportsmanagementPagination::class' site/helpers/jsmpagination.php
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' site/legacy/resultsmatch.php
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' site/legacy/resultsmatch.php
+          ! grep -Fq 'Factory::getApplication()' site/legacy/resultsmatch.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/sportsmanagement.php
           grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/helpers/transifex.php
           grep -Fq 'use Joomla\Filesystem\File;' admin/helpers/transifex.php
