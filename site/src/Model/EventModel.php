@@ -33,7 +33,7 @@ final class EventModel extends SportsManagementModel
         // Joomla Input can return an array for a repeated or bracketed
         // eventID parameter. Do not cast arrays or objects into event IDs.
         if ($calendarId <= 0 || !is_string($rawEventId) || strlen($rawEventId) > 512
-            || preg_match('/[\\x00-\\x1F\\x7F]/', $rawEventId)) {
+            || preg_match('/[\x00-\x1F\x7F]/', $rawEventId)) {
             return null;
         }
 
