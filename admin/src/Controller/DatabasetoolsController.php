@@ -23,7 +23,15 @@ use Joomla\CMS\MVC\Controller\BaseController;
 final class DatabasetoolsController extends BaseController
 {
     /**
-     * Preserve the historical default action-model routing.
+     * Preserve the historical default database maintenance action model.
+     *
+     * Sets ignore_request to avoid uncontrolled request data influencing the
+     * administrator model instance supplied by Joomla's MVC factory.
+     *
+     * @param string $name Action model name, Databasetool by default.
+     * @param string $prefix Administrator MVC namespace prefix.
+     * @param array<string,mixed> $config Optional model creation flags.
+     * @return object Joomla database-tools model created by the parent.
      */
     public function getModel($name = 'Databasetool', $prefix = 'Administrator', $config = [])
     {
