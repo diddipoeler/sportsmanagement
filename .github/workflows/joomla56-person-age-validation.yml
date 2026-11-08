@@ -8,6 +8,9 @@ on:
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
       - 'admin/src/Helper/ExtendedFormHelper.php'
+      - 'admin/src/Helper/ActionLogHelper.php'
+      - 'admin/src/Helper/ExtensionLanguageHelper.php'
+      - '.github/tests/joomla56-admin-helper-guards.php'
       - 'site/src/Service/PersonExtraFieldReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
       - '.github/tests/joomla56-extra-fields-calendar-year.php'
@@ -29,6 +32,9 @@ on:
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
       - 'admin/src/Helper/ExtendedFormHelper.php'
+      - 'admin/src/Helper/ActionLogHelper.php'
+      - 'admin/src/Helper/ExtensionLanguageHelper.php'
+      - '.github/tests/joomla56-admin-helper-guards.php'
       - 'site/src/Service/PersonExtraFieldReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
       - '.github/tests/joomla56-extra-fields-calendar-year.php'
@@ -68,6 +74,9 @@ jobs:
           php -l admin/src/Helper/ExtraSelectOptionsHelper.php
           php -l admin/src/Helper/LocationHelper.php
           php -l admin/src/Helper/ExtendedFormHelper.php
+          php -l admin/src/Helper/ActionLogHelper.php
+          php -l admin/src/Helper/ExtensionLanguageHelper.php
+          php -l .github/tests/joomla56-admin-helper-guards.php
           php -l site/src/Service/PersonExtraFieldReadService.php
           php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
           php -l .github/tests/joomla56-extra-fields-calendar-year.php
@@ -92,6 +101,8 @@ jobs:
         run: php .github/tests/joomla56-site-route-calendar-date.php
       - name: Verify extra-field queries and calendar year options
         run: php .github/tests/joomla56-extra-fields-calendar-year.php
+      - name: Verify administrator helper guards
+        run: php .github/tests/joomla56-admin-helper-guards.php
       - name: Verify documentation in changed runtime classes
         run: |
           php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php
