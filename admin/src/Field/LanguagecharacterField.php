@@ -18,6 +18,14 @@ final class LanguagecharacterField extends ListField
 {
     protected $type = 'languagecharacter';
 
+    /**
+     * Append Unicode letter options appropriate for the active language.
+     *
+     * Uses Greek, Russian or Latin upper-case letter ranges while retaining
+     * inherited Joomla field options and UTF-8-safe character labels.
+     *
+     * @return array<int,object> Parent options followed by character choices.
+     */
     protected function getOptions(): array
     {
         $tag = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage()->getTag();
