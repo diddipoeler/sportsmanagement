@@ -49,9 +49,20 @@ namespace Joomla\CMS\Uri {
 }
 
 namespace Joomla\CMS\Date {
-    /** Minimal Joomla date object for verifying input validation. */
+    /** Joomla-like date stub accepting timezone names, as Joomla Date does. */
     class Date extends \DateTime
     {
+        /**
+         * Convert Joomla's timezone name argument to a PHP timezone object.
+         *
+         * @param string $time Source date or UNIX timestamp expression.
+         * @param string $tz Joomla timezone identifier.
+         * @return void
+         */
+        public function __construct(string $time = 'now', string $tz = 'UTC')
+        {
+            parent::__construct($time, new \DateTimeZone($tz));
+        }
     }
 }
 
