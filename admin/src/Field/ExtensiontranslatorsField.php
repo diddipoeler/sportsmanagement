@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 use SimpleXMLElement;
@@ -23,6 +22,17 @@ final class ExtensiontranslatorsField extends FormField
 
     private string $translators = '';
 
+    /**
+     * Initialize the translators field from its Joomla XML configuration.
+     *
+     * Reads an optional translation key only if the inherited field setup
+     * succeeds; no stale translator text is reused between form instances.
+     *
+     * @param SimpleXMLElement $element XML definition of the field.
+     * @param mixed $value Initial field value.
+     * @param string|null $group Optional Joomla form group.
+     * @return bool Whether field initialization was successful.
+     */
     public function setup(SimpleXMLElement $element, $value, $group = null): bool
     {
         $result = parent::setup($element, $value, $group);
@@ -35,6 +45,11 @@ final class ExtensiontranslatorsField extends FormField
         return $result;
     }
 
+    /**
+     * Display a translated label only for configured translator credits.
+     *
+     * @return string HTML label, or an empty label wrapper when unused.
+     */
     protected function getLabel(): string
     {
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
@@ -45,6 +60,11 @@ final class ExtensiontranslatorsField extends FormField
             . '</div>';
     }
 
+    /**
+     * Render translator attribution as escaped HTML if it is configured.
+     *
+     * @return string Safely escaped translator credits or empty text.
+     */
     protected function getInput(): string
     {
         if ($this->translators === '') {
