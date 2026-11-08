@@ -27,7 +27,8 @@ final class CountryOptionsHelper
      * Load and alphabetize administrator country selector options.
      *
      * Selects registered ISO-3166 alpha-3 country codes, discards malformed
-     * database records and returns translated Joomla option objects.
+     * database records, including nested/invalid code or name values,
+     * and returns translated Joomla option objects.
      * Database errors are logged privately and produce an empty selector.
      *
      * @param DatabaseInterface $db Current Joomla database connection.
@@ -52,17 +53,27 @@ final class CountryOptionsHelper
         $options = [];
 
         foreach ($rows as $country) {
-            $code = strtoupper(trim((string) ($country['alpha3'] ?? '')));
+            // Older imports can leave malformed or nested country values.
+            // Avoid PHP 8 array-to-string warnings during option rendering.
+            if (!is_array($country)) {
+                continue;
+            }
+
+            $rawCode = $country['alpha3'] ?? null;
+
+            if (!is_string($rawCode)) {
+                continue;
+            }
+
+            $code = strtoupper(trim($rawCode));
 
             if (!preg_match('/^[A-Z]{3}$/D', $code)) {
                 continue;
             }
 
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $code,
-                Text::_((string) ($country['name'] ?? $code))
-            );
+            $name = $country['name'] ?? $code;
+            $label = is_string($name) && $name !== '' ? $name : $code;
+            $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
         }
 
         usort(
