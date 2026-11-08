@@ -20,6 +20,14 @@ namespace Diddipoeler\Module\SportsManagementCalendar\Site\Runtime;
  */
 final class CalendarFunctions
 {
+    /**
+     * Render a legacy monthly calendar without relying on removed Joomla helpers.
+     * Validates the requested month and year, lays out up to six complete weeks and includes backward-compatible data attributes for the calendar navigation controls.
+     *
+     * @param mixed $year Requested calendar year; invalid values use the current year.
+     * @param mixed $month Requested calendar month; invalid values use the current month.
+     * @return void Writes the complete legacy calendar HTML.
+     */
     public static function render($year = '', $month = ''): void
     {
         $year = filter_var(
@@ -134,9 +142,19 @@ final class CalendarFunctions
         <?php
     }
 
+    /**
+     * Create the month selector for the alternative legacy calendar layout.
+     * Generates twelve month options, marks a valid requested month as selected and avoids casting non-scalar filter input into a calendar month.
+     *
+     * @param mixed $selected Requested calendar month.
+     * @return string Month option HTML.
+     */
     public static function monthList($selected = ''): string
     {
-        $selected = (int) $selected;
+        $selected = (is_int($selected) || is_string($selected))
+            && preg_match('/^[0-9]+$/D', trim((string) $selected)) === 1
+            ? (int) $selected
+            : 0;
         $options = '';
 
         for ($month = 1; $month <= 12; $month++) {
@@ -149,9 +167,20 @@ final class CalendarFunctions
         return $options;
     }
 
+    /**
+     * Create a bounded year selector around the requested calendar year.
+     * Accepts valid four-digit years and otherwise uses the current year, rendering five years on either side without trusting malformed request data.
+     *
+     * @param mixed $selected Requested display year.
+     * @return string Year option HTML.
+     */
     public static function yearList($selected = ''): string
     {
-        $selected = (int) ($selected ?: date('Y'));
+        $year = is_int($selected) || is_string($selected) ? trim((string) $selected) : '';
+        $selected = preg_match('/^[0-9]{4}$/D', $year) === 1
+            && (int) $year >= 1970
+            ? (int) $year
+            : (int) date('Y');
         $options = '';
 
         for ($year = $selected - 5; $year <= $selected + 5; $year++) {
@@ -162,9 +191,16 @@ final class CalendarFunctions
         return $options;
     }
 
+    /**
+     * Format the historical event sidebar heading for a given date.
+     * Accepts date strings or integer inputs, falls back to today for unsupported or unparseable values and never casts arrays or objects to strings.
+     *
+     * @param mixed $date Optional date supplied by a calendar override.
+     * @return string Escaped static heading markup with weekday and date.
+     */
     public static function events($date = ''): string
     {
-        $value = trim((string) $date);
+        $value = is_string($date) || is_int($date) ? trim((string) $date) : '';
         $timestamp = $value !== '' ? strtotime($value) : time();
 
         if ($timestamp === false) {
