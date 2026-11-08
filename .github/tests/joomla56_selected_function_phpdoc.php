@@ -90,6 +90,14 @@ $paths = array_merge($paths, [
 foreach (glob($root . '/modules/mod_sportsmanagement_*/services/provider.php') ?: [] as $provider) {
     $paths[] = substr($provider, strlen($root) + 1);
 }
+$paths = array_merge($paths, [
+    'admin/src/Controller/ImagehandlerController.php',
+    'admin/src/View/Github/HtmlView.php',
+    'admin/src/View/Installhelper/HtmlView.php',
+    'site/src/Service/InlineHockeyApiClient.php',
+    'site/src/Service/MatchMutationService.php',
+    'site/src/Service/NextmatchRankingCalculator.php',
+]);
 $paths = array_values(array_unique($paths));
 $errors = [];
 $methods = 0;

@@ -21,6 +21,15 @@ final class InlineHockeyApiClient
     private const API_HOSTS = ['ishd.de', 'www.ishd.de', 'api.ishd.de'];
     private const IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif', 'webp'];
 
+    /**
+     * Fetch a JSON response from the official Inline-Hockey API.
+     * Accepts only recognised HTTPS API hosts, rejects URL credentials and unsafe redirects, optionally adds Basic authentication and decodes the returned JSON object.
+     * @param string $url Trusted ISHD API URL.
+     * @param string $username Optional API account name.
+     * @param string $password Optional API password.
+     * @return object Decoded API payload.
+     * @throws \RuntimeException On an invalid endpoint or unusable response.
+     */
     public function fetchJson(string $url, string $username = '', string $password = ''): object
     {
         $parts = parse_url($url);
@@ -78,6 +87,15 @@ final class InlineHockeyApiClient
         return $payload;
     }
 
+    /**
+     * Download an image from the permitted ISHD web endpoints.
+     * Normalises a trusted image path, checks its extension, retrieves the response within the configured limits and returns verified image data for the importer.
+     * @param string $urlOrPath ISHD image path or URL.
+     * @param string $username Optional authentication name.
+     * @param string $password Optional authentication secret.
+     * @return string Downloaded image contents.
+     * @throws \RuntimeException On an invalid URL or unsupported image response.
+     */
     public function fetchIshdImage(string $urlOrPath, string $username = '', string $password = ''): string
     {
         $url = $this->normaliseIshdImageUrl($urlOrPath);
@@ -146,6 +164,12 @@ final class InlineHockeyApiClient
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Normalise an API-provided pagination count to a safe bound.
+     * Accepts small numeric integers or decimal strings and clamps the result between one page and the client-wide maximum to prevent unbounded imports.
+     * @param mixed $rawPages API pagination value.
+     * @return int Safe number of pages to request.
+     */
     public function pageCount(mixed $rawPages): int
     {
         if (!is_int($rawPages)
@@ -156,6 +180,13 @@ final class InlineHockeyApiClient
         return min(self::MAX_API_PAGES, max(1, (int) $rawPages));
     }
 
+    /**
+     * Create the URL for a selected Inline-Hockey API page.
+     * Rewrites an existing page query parameter without duplicating it, appends the parameter when missing and preserves any URL fragment.
+     * @param string $url Existing API URL.
+     * @param int $page Requested page number, clamped to at least one.
+     * @return string API URL with an updated page parameter.
+     */
     public function pageUrl(string $url, int $page): string
     {
         $page = max(1, $page);
@@ -201,6 +232,13 @@ final class InlineHockeyApiClient
         return $headers;
     }
 
+    /**
+     * Resolve an ISHD logo path to an approved absolute HTTPS URL.
+     * Converts relative and protocol-relative paths, rejects control characters, credentials, nonstandard ports and hosts outside the trusted ISHD domain.
+     * @param string $urlOrPath Remote logo URL or relative logo path.
+     * @return string Fully qualified, validated HTTPS URL.
+     * @throws \RuntimeException When the image destination is invalid.
+     */
     private function normaliseIshdImageUrl(string $urlOrPath): string
     {
         $url = trim($urlOrPath);

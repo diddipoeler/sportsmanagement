@@ -223,6 +223,13 @@ final class NextmatchRankingCalculator
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build an in-memory ranking row for a project team.
+     * Copies identifiers, division context, starting points and score flags from the database row into the mutable metric object used to aggregate matches.
+     * @param object $row Project-team database record.
+     * @param int $divisionId Default division when the record has no division.
+     * @return object Initialised ranking team state.
+     */
     private static function newTeam(object $row, int $divisionId): object
     {
         $team = (object) [
@@ -307,6 +314,14 @@ final class NextmatchRankingCalculator
         return $team;
     }
 
+    /**
+     * Resolve a round's numeric ordering code within its project.
+     * Reads the matching project round using bound identifiers and returns a sentinel for invalid or missing rounds so ranking filters stay deterministic.
+     * @param DatabaseInterface $db SportsManagement database connection.
+     * @param int $projectId Project containing the round.
+     * @param int $roundId Requested round identifier.
+     * @return int Round ordering code or sentinel when missing.
+     */
     private static function roundCode(DatabaseInterface $db, int $projectId, int $roundId): int
     {
         if ($roundId <= 0) {
@@ -456,6 +471,23 @@ final class NextmatchRankingCalculator
         }
     }
 
+    /**
+     * Accumulate a played match result into both team ranking rows.
+     * Updates wins, draws, losses, points and overtime or shootout counters based on the match score and its configured result type.
+     * @param object $home Mutable home team ranking row.
+     * @param object $away Mutable away team ranking row.
+     * @param float $homeScore Home regular score.
+     * @param float $awayScore Away regular score.
+     * @param int $resultType Match result classification.
+     * @param float $homeOt Home overtime score.
+     * @param float $awayOt Away overtime score.
+     * @param float $homeSo Home shootout score.
+     * @param float $awaySo Away shootout score.
+     * @param float $winPoints Points awarded for a win.
+     * @param float $drawPoints Points awarded for a draw.
+     * @param float $lossPoints Points awarded for a loss.
+     * @return void
+     */
     private static function collectSportingResult(
         object $home,
         object $away,
@@ -563,6 +595,16 @@ final class NextmatchRankingCalculator
         $away->neg_points += $winPoints - $drawPoints;
     }
 
+    /**
+     * Apply a match decision result to the affected teams.
+     * Adjusts the win, loss and point counters when the winner is decided by an administrative result rather than ordinary score comparison.
+     * @param object $home Mutable home team ranking row.
+     * @param object $away Mutable away team ranking row.
+     * @param int $teamWon Decision winner code.
+     * @param float $winPoints Points for the awarded winner.
+     * @param float $lossPoints Points deducted or recorded for the losing outcome.
+     * @return void
+     */
     private static function collectDecisionResult(
         object $home,
         object $away,
@@ -605,6 +647,22 @@ final class NextmatchRankingCalculator
         }
     }
 
+    /**
+     * Aggregate match scoring categories for one ranking team.
+     * Accumulates goals/results, legs, match points, sets and games in the ranking object's for/against totals for later table criteria.
+     * @param object $team Mutable ranking team data.
+     * @param float $for Points or goals scored.
+     * @param float $against Points or goals conceded.
+     * @param float $legsFor Legs won.
+     * @param float $legsAgainst Legs lost.
+     * @param float $matchpointsFor Match points won.
+     * @param float $matchpointsAgainst Match points conceded.
+     * @param float $setsFor Sets won.
+     * @param float $setsAgainst Sets lost.
+     * @param float $gamesFor Games won.
+     * @param float $gamesAgainst Games lost.
+     * @return void
+     */
     private static function collectScore(
         object $team,
         float $for,
@@ -739,6 +797,12 @@ final class NextmatchRankingCalculator
         return $result;
     }
 
+    /**
+     * Check whether a configured ranking sort criterion is supported.
+     * Matches the requested criterion against the explicit set of score, head-to-head, win percentage and competition-specific table metrics.
+     * @param string $criterion Ranking template sort criterion.
+     * @return bool Whether the calculator can evaluate this criterion.
+     */
     private static function supportsCriterion(string $criterion): bool
     {
         return in_array($criterion, [
@@ -837,6 +901,11 @@ final class NextmatchRankingCalculator
         return $copy;
     }
 
+    /**
+     * Create an empty numerical ranking row for comparison defaults.
+     * Initialises neutral score and point counters used when a team lacks calculated ranking values.
+     * @return object Zero-initialised ranking metrics.
+     */
     private static function blankTeam(): object
     {
         return (object) [
@@ -847,11 +916,23 @@ final class NextmatchRankingCalculator
         ];
     }
 
+    /**
+     * Calculate total ranking points including configured starting points.
+     * Combines match-earned sum_points with the project's initial team points.
+     * @param object $team Ranking metrics for one team.
+     * @return float Effective points total.
+     */
     private static function points(object $team): float
     {
         return (float) ($team->sum_points ?? 0) + (float) ($team->_startpoints ?? 0);
     }
 
+    /**
+     * Calculate the ratio of earned points to recorded negative points.
+     * Uses a denominator of one when no negative points are recorded to avoid division by zero.
+     * @param object $team Ranking metrics for one team.
+     * @return float Points ratio for ranking comparison.
+     */
     private static function pointsRatio(object $team): float
     {
         $negative = (float) ($team->neg_points ?? 0);
@@ -859,6 +940,12 @@ final class NextmatchRankingCalculator
         return (float) ($team->sum_points ?? 0) / ($negative == 0.0 ? 1.0 : $negative);
     }
 
+    /**
+     * Calculate the team's scored-to-conceded result ratio.
+     * Compares accumulated result totals and uses a safe denominator when no opposing result is recorded.
+     * @param object $team Ranking metrics for one team.
+     * @return float Scored-to-conceded result ratio.
+     */
     private static function scoreRatio(object $team): float
     {
         $against = (float) ($team->sum_team2_result ?? 0);
@@ -866,6 +953,12 @@ final class NextmatchRankingCalculator
         return (float) ($team->sum_team1_result ?? 0) / ($against == 0.0 ? 1.0 : $against);
     }
 
+    /**
+     * Calculate the ranking ratio for won and lost legs.
+     * Divides accumulated legs-for values by legs-against, avoiding zero denominators in sports with no recorded losses.
+     * @param object $team Ranking metrics for one team.
+     * @return float Legs ratio.
+     */
     private static function legsRatio(object $team): float
     {
         $against = (float) ($team->sum_team2_legs ?? 0);
@@ -873,6 +966,12 @@ final class NextmatchRankingCalculator
         return (float) ($team->sum_team1_legs ?? 0) / ($against == 0.0 ? 1.0 : $against);
     }
 
+    /**
+     * Calculate a team's match-winning percentage.
+     * Counts wins, draws and losses as played matches and returns zero for teams without any completed matches.
+     * @param object $team Ranking metrics for one team.
+     * @return float Winning percentage between zero and one hundred.
+     */
     private static function winPct(object $team): float
     {
         $games = (int) ($team->cnt_won ?? 0) + (int) ($team->cnt_draw ?? 0) + (int) ($team->cnt_lost ?? 0);
@@ -880,16 +979,38 @@ final class NextmatchRankingCalculator
         return $games > 0 ? ((float) ($team->cnt_won ?? 0) / $games) * 100 : 0.0;
     }
 
+    /**
+     * Compare two ranking metrics with the configured ordering direction.
+     * Dispatches to ascending or descending floating-point comparison while keeping a stable integer comparator contract.
+     * @param mixed $a First metric value.
+     * @param mixed $b Second metric value.
+     * @param string $order Sort direction (ASC or DESC).
+     * @return int Three-way comparison result.
+     */
     private static function numericByOrder(mixed $a, mixed $b, string $order): int
     {
         return $order === 'ASC' ? self::numericAsc($a, $b) : self::numericDesc($a, $b);
     }
 
+    /**
+     * Compare two ranking values in ascending numerical order.
+     * Converts values to floats before applying PHP's spaceship comparison for ranking tie breaks.
+     * @param mixed $a First metric value.
+     * @param mixed $b Second metric value.
+     * @return int Three-way ascending comparison result.
+     */
     private static function numericAsc(mixed $a, mixed $b): int
     {
         return (float) $a <=> (float) $b;
     }
 
+    /**
+     * Compare two ranking values in descending numerical order.
+     * Converts values to floats and reverses the comparison order for highest-value-first ranking.
+     * @param mixed $a First metric value.
+     * @param mixed $b Second metric value.
+     * @return int Three-way descending comparison result.
+     */
     private static function numericDesc(mixed $a, mixed $b): int
     {
         return (float) $b <=> (float) $a;

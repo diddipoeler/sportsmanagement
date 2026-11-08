@@ -25,6 +25,13 @@ final class HtmlView extends BaseHtmlView
     public array $sportstypeOptions = [];
     public string $selectedSportstype = '';
 
+    /**
+     * Render the two-step Joomla 5/6 administrator install helper.
+     * Verifies the administrator application, validates the requested wizard step, builds the selected sport-type context, chooses the appropriate layout and adds navigation toolbar items.
+     * @param string|null $tpl Optional Joomla view template override.
+     * @return void
+     * @throws \RuntimeException When the current application is not administrator.
+     */
     public function display($tpl = null)
     {
         /** @var AdministratorApplication $app */
@@ -50,6 +57,11 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Create the supported sport-type choices for extension installation.
+     * Builds Joomla option objects for the installation wizard from translated sporting discipline names, including an initial unfiltered selection.
+     * @return array List of translated sport-type select options.
+     */
     private function buildSportstypeOptions(): array
     {
         $types = [

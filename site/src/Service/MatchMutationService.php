@@ -28,6 +28,14 @@ final class MatchMutationService
     private const MATCH_ROSTER_SUBSTITUTE_IN = 1;
     private const MATCH_ROSTER_SUBSTITUTE_OUT = 2;
 
+    /**
+     * Initialise the match mutation service with authorised runtime context.
+     * Retains Joomla and SportsManagement database connections along with the identity performing edits and the modification timestamp for subsequent event, substitution and commentary writes.
+     * @param DatabaseInterface $joomlaDatabase Joomla-managed connection for event and commentary writes.
+     * @param DatabaseInterface $sportsDatabase SportsManagement match data connection.
+     * @param int $userId Authenticated actor responsible for edits.
+     * @param string $modified Modification timestamp recorded on changed rows.
+     */
     public function __construct(
         private readonly DatabaseInterface $joomlaDatabase,
         private readonly DatabaseInterface $sportsDatabase,
@@ -36,6 +44,12 @@ final class MatchMutationService
     ) {
     }
 
+    /**
+     * Validate and persist an event associated with a match and project team.
+     * Checks submitted identifiers and event values, stores an event row and creates the associated statistics entry when the event type requires one.
+     * @param array $data Posted match, team, player, event and timing fields.
+     * @return int|false Saved event identifier or false on validation/write failure.
+     */
     public function saveEvent(array $data): int|false
     {
         $matchId = self::positiveId($data['match_id'] ?? null);
@@ -130,6 +144,12 @@ final class MatchMutationService
         }
     }
 
+    /**
+     * Save an incoming/outgoing player substitution for a match.
+     * Validates both player identifiers and relation context before persisting the linked substitution records needed by SportsManagement match statistics.
+     * @param array $data Substitution, match and player identifiers submitted by the editor.
+     * @return bool Whether the substitution was stored successfully.
+     */
     public function saveSubstitution(array $data): bool
     {
         // Preserve the legacy validation contract. Although the historical
@@ -202,6 +222,12 @@ final class MatchMutationService
         }
     }
 
+    /**
+     * Remove a substitution without accidentally deleting unrelated player rows.
+     * Validates the substitution identifier, resolves its actual linked incoming/outgoing records and removes only the relevant match player relations.
+     * @param int $substitutionId Existing substitution record identifier.
+     * @return bool Whether removal succeeded.
+     */
     public function removeSubstitution(int $substitutionId): bool
     {
         if ($substitutionId <= 0) {
@@ -283,6 +309,12 @@ final class MatchMutationService
         }
     }
 
+    /**
+     * Create a validated match timeline or commentary entry.
+     * Requires match, event time and note values, sanitises the remaining submitted fields and writes the resulting commentary record through Joomla's database API.
+     * @param array $data Match ID, time, note and optional commentary metadata.
+     * @return int|false Saved commentary ID or false when rejected or unsuccessful.
+     */
     public function saveComment(array $data): int|false
     {
         $matchId = self::positiveId($data['match_id'] ?? null);
@@ -316,16 +348,34 @@ final class MatchMutationService
         }
     }
 
+    /**
+     * Remove one SportsManagement match event by its explicit identifier.
+     * Uses the shared bounded deletion method against the match-event table rather than building a database query from untrusted table input.
+     * @param int $eventId Existing event identifier.
+     * @return bool Whether the event deletion succeeded.
+     */
     public function deleteEvent(int $eventId): bool
     {
         return $this->deleteById($this->joomlaDatabase, '#__sportsmanagement_match_event', $eventId);
     }
 
+    /**
+     * Remove a single match commentary record by identifier.
+     * Delegates to the shared parameter-bound deletion routine for the match commentary table.
+     * @param int $commentaryId Existing commentary record identifier.
+     * @return bool Whether the commentary deletion succeeded.
+     */
     public function deleteCommentary(int $commentaryId): bool
     {
         return $this->deleteById($this->joomlaDatabase, '#__sportsmanagement_match_commentary', $commentaryId);
     }
 
+    /**
+     * Maintain match statistics when saving an event that carries a statistic.
+     * Looks up the event type's statistic mapping, resolves the affected player and match, and creates the corresponding statistic record only when required.
+     * @param array $data Saved event identifiers and statistic-related values.
+     * @return void
+     */
     private function createEventStatisticIfNeeded(array $data): void
     {
         $db = $this->joomlaDatabase;
@@ -404,6 +454,14 @@ final class MatchMutationService
         $db->insertObject('#__sportsmanagement_match_statistic', $record);
     }
 
+    /**
+     * Delete one validated row using Joomla's parameter-bound query builder.
+     * Rejects nonpositive IDs, quotes the fixed target table, binds the record identifier and logs database errors without disclosing them in responses.
+     * @param DatabaseInterface $db Database connection owning the target record.
+     * @param string $table Internal SportsManagement table name.
+     * @param int $id Positive identifier of the row to remove.
+     * @return bool Whether the deletion was successful.
+     */
     private function deleteById(DatabaseInterface $db, string $table, int $id): bool
     {
         if ($id <= 0) {
@@ -444,6 +502,12 @@ final class MatchMutationService
         return $id === false ? null : $id;
     }
 
+    /**
+     * Record an unexpected match-write failure in the component's error log.
+     * Logs the exception details for server-side diagnostics while allowing mutation callers to return safe public errors.
+     * @param \Throwable $e Exception raised during a database mutation.
+     * @return void
+     */
     private function logFailure(\Throwable $e): void
     {
         Log::add($e->getMessage(), Log::ERROR, 'jsmerror');

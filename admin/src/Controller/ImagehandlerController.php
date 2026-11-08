@@ -34,6 +34,11 @@ final class ImagehandlerController extends SportsManagementAdminController
     private const MAX_REMOTE_REDIRECTS = 3;
     private const REMOTE_REQUEST_TIMEOUT = 15;
 
+    /**
+     * Process a project-team image upload in the administrator.
+     * Checks the CSRF token and edit permission, resolves the destination and supplied file, and reports the stored image back to the project-team selector.
+     * @return void
+     */
     public function uploadprojectteams(): void
     {
         $this->requireToken();
@@ -71,6 +76,11 @@ final class ImagehandlerController extends SportsManagementAdminController
         $this->closeUploadModal($type, $filename, $field, $fieldId, !$imageList);
     }
 
+    /**
+     * Save the selected picture for an existing player.
+     * Reads the player ID and image choice from POST and delegates the authorised change to the shared image-selection persistence handler.
+     * @return void
+     */
     public function saveimageplayer(): void
     {
         $input = $this->app->getInput()->post;
@@ -83,6 +93,11 @@ final class ImagehandlerController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Assign an image to a club record.
+     * Reads the selected club and picture from POST and delegates validation and persistence to the image-selection model operation.
+     * @return void
+     */
     public function saveimageclub(): void
     {
         $input = $this->app->getInput()->post;
@@ -95,6 +110,11 @@ final class ImagehandlerController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Persist an image selection for a team-player relation.
+     * Extracts relation ID and picture from the submitted form and uses the shared authorised image-selection save path.
+     * @return void
+     */
     public function saveimageteamplayer(): void
     {
         $input = $this->app->getInput()->post;
@@ -107,6 +127,11 @@ final class ImagehandlerController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Upload or import a SportsManagement image through the administrator.
+     * Checks POST and create permission, validates the image category and local or remote source, stores an allowed image and returns its basename to the Joomla modal.
+     * @return void
+     */
     public function upload(): void
     {
         $this->requireToken();
@@ -172,6 +197,11 @@ final class ImagehandlerController extends SportsManagementAdminController
         $this->closeUploadModal($type, $filename, $field, $fieldId, !$imageList);
     }
 
+    /**
+     * Delete selected component images through a protected administrator task.
+     * Verifies the POST token and delete permission, normalises submitted paths, removes eligible images and thumbnails and redirects to the image manager.
+     * @return void
+     */
     public function delete(): void
     {
         $this->requireToken();
@@ -218,12 +248,27 @@ final class ImagehandlerController extends SportsManagementAdminController
         );
     }
 
+    /**
+     * Retrieve the native image-handler model without discarding caller settings.
+     * Forwards the requested name, prefix and MVC configuration to the parent factory, adding ignore_request only when the caller did not set it.
+     * @param string $name Requested model name.
+     * @param string $prefix Model namespace prefix.
+     * @param array $config Optional Joomla MVC model configuration.
+     * @return mixed Model instance returned by the Joomla controller factory.
+     */
     public function getModel($name = 'Imagehandler', $prefix = 'Administrator', $config = [])
     {
         // Preserve caller-specific MVC options instead of discarding them.
         return parent::getModel($name, $prefix, $config + ['ignore_request' => true]);
     }
 
+    /**
+     * Validate and persist one of the supported image-selection actions.
+     * Checks the POST CSRF token and component edit permission, requires the image-handler model, invokes the named save operation with posted data and handles its result.
+     * @param string $method Permitted model method for the selected entity type.
+     * @param array $data Entity identifier and chosen picture from POST.
+     * @return void
+     */
     private function saveImageSelection(string $method, array $data): void
     {
         $this->requireToken();
@@ -245,6 +290,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         $this->app->close();
     }
 
+    /**
+     * Reject administrator image mutations without a valid POST CSRF token.
+     * Uses Joomla's session token guard and returns an HTTP 403 error before any file or database action can run.
+     * @return void
+     * @throws \RuntimeException When the submitted token is invalid.
+     */
     private function requireToken(): void
     {
         if (!Session::checkToken('post')) {
@@ -252,16 +303,31 @@ final class ImagehandlerController extends SportsManagementAdminController
         }
     }
 
+    /**
+     * Require an authenticated identity with the specified component permission.
+     * Checks the current Joomla identity and permits the requested SportsManagement action or component administration; rejects guests and unauthorised users.
+     * @param string $action Joomla component ACL action required by the mutation.
+     * @return void
+     * @throws \RuntimeException When the identity lacks access.
+     */
     private function requirePermission(string $action): void
     {
         $identity = $this->app->getIdentity();
 
-        if (!$identity->authorise($action, 'com_sportsmanagement')
-            && !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+        if ($identity === null || (int) ($identity->id ?? 0) <= 0
+            || (!$identity->authorise($action, 'com_sportsmanagement')
+                && !$identity->authorise('core.admin', 'com_sportsmanagement'))) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
     }
 
+    /**
+     * Locate a safe local component image directory for administrator uploads.
+     * Normalises the category folder, rejects traversal and invalid segments, optionally creates a missing directory through Joomla's filesystem API and returns an absolute path.
+     * @param string $folder Component image category beneath the fixed image root.
+     * @param bool $create Create the category directory when missing.
+     * @return string|null Absolute directory ending in a separator, or null.
+     */
     private function imageBaseDirectory(string $folder, bool $create = true): ?string
     {
         $folder = $this->normaliseRelativeFolder($folder);
@@ -288,6 +354,13 @@ final class ImagehandlerController extends SportsManagementAdminController
         return rtrim($directory, '/\\') . '/';
     }
 
+    /**
+     * Move a bounded temporary upload into the validated image directory.
+     * Checks source existence and configured size limits, calls Joomla's filesystem upload method and logs unexpected filesystem failures.
+     * @param string $source Temporary upload file path.
+     * @param string $target Local image destination path.
+     * @return bool True when the uploaded file was stored.
+     */
     private function uploadFile(string $source, string $target): bool
     {
         if (!is_file($source) || filesize($source) > $this->maxImageBytes()) {
@@ -302,6 +375,13 @@ final class ImagehandlerController extends SportsManagementAdminController
         }
     }
 
+    /**
+     * Fetch and save a permitted remote image for the administrator selector.
+     * Validates the initial URL, filename and each redirect destination, restricts network and payload sizes, verifies the image contents and writes only approved data.
+     * @param string $url Remote image URL supplied by the administrator.
+     * @param string $baseDir Already validated local image directory.
+     * @return string|null Stored basename or null on validation or download failure.
+     */
     private function downloadRemoteImage(string $url, string $baseDir): ?string
     {
         $initialParts = $this->validateRemoteImageUrl($url);
@@ -393,6 +473,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $filename;
     }
 
+    /**
+     * Validate an outbound image URL before any server-side HTTP request.
+     * Rejects malformed schemes, credentials, unsafe hosts, ports and control bytes to keep remote image downloads away from internal services.
+     * @param string $url Proposed HTTP or HTTPS image location.
+     * @return array|null Parsed URL components or null when unsafe.
+     */
     private function validateRemoteImageUrl(string $url): ?array
     {
         if ($url === ''
@@ -434,6 +520,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $parts;
     }
 
+    /**
+     * Check a remote image host and its DNS answers for public reachability.
+     * Validates host syntax, rejects internal hostname suffixes, resolves A and AAAA records and requires every resulting address to pass public-IP checks.
+     * @param string $host Normalised URL hostname or IP literal.
+     * @return bool Whether the host resolves exclusively to public addresses.
+     */
     private function isPublicRemoteHost(string $host): bool
     {
         $host = strtolower(rtrim(trim($host), '.'));
@@ -503,6 +595,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         return true;
     }
 
+    /**
+     * Reject unroutable, reserved and internal IP addresses for remote fetches.
+     * Applies PHP's private and reserved range filters and blocks extra IPv4 carrier-grade NAT and benchmarking networks.
+     * @param string $address IPv4 or IPv6 candidate address.
+     * @return bool Whether server-side access to this address is permitted.
+     */
     private function isPublicIpAddress(string $address): bool
     {
         if (filter_var(
@@ -526,6 +624,13 @@ final class ImagehandlerController extends SportsManagementAdminController
         return true;
     }
 
+    /**
+     * Resolve one HTTP redirect against the current remote image URL.
+     * Normalises a Location header while rejecting control characters and invalid targets, allowing the subsequent URL validator to check the next fetch destination.
+     * @param string $baseUrl URL of the response issuing the redirect.
+     * @param string $location Raw HTTP Location header value.
+     * @return string|null Resolved next URL or null for invalid redirect syntax.
+     */
     private function resolveRemoteRedirect(string $baseUrl, string $location): ?string
     {
         $location = trim($location);
@@ -583,6 +688,13 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $origin . $directory . $location;
     }
 
+    /**
+     * Derive a safe supported image basename for local storage.
+     * Strips path components and rejects invalid basenames or extensions before applying the component filename sanitiser.
+     * @param string $baseDir Validated destination directory.
+     * @param string $filename Suggested image filename.
+     * @return string|null Approved basename or null when invalid.
+     */
     private function sanitiseFilename(string $baseDir, string $filename): ?string
     {
         $filename = basename(trim(str_replace('\\', '/', $filename)));
@@ -603,6 +715,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $safe !== '' ? $safe : null;
     }
 
+    /**
+     * Verify a local upload is a supported image of permitted size.
+     * Checks file existence and length, inspects its actual image metadata and accepts only the MIME types permitted by this controller.
+     * @param string $path Temporary local image file path.
+     * @return bool Whether the file is allowed for upload.
+     */
     private function isAllowedImageFile(string $path): bool
     {
         if (!is_file($path) || filesize($path) > $this->maxImageBytes()) {
@@ -614,6 +732,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $info !== false && $this->isAllowedMime((string) ($info['mime'] ?? ''));
     }
 
+    /**
+     * Validate image bytes received from a remote server.
+     * Decodes image metadata from the response body and accepts only content belonging to the supported MIME list.
+     * @param string $body Downloaded binary response body.
+     * @return bool Whether the response contains a supported image.
+     */
     private function isAllowedImageData(string $body): bool
     {
         $info = @getimagesizefromstring($body);
@@ -621,11 +745,22 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $info !== false && $this->isAllowedMime((string) ($info['mime'] ?? ''));
     }
 
+    /**
+     * Check decoded image metadata against the supported MIME allowlist.
+     * Normalises the MIME type and limits writes to GIF, JPEG, PNG and WebP image formats.
+     * @param string $mime MIME value detected from image contents.
+     * @return bool Whether the MIME type is accepted.
+     */
     private function isAllowedMime(string $mime): bool
     {
         return in_array(strtolower($mime), ['image/gif', 'image/jpeg', 'image/png', 'image/webp'], true);
     }
 
+    /**
+     * Read the configured maximum image size as a byte limit.
+     * Clamps the component's kilobyte setting to a positive value and converts it for upload and network payload validation.
+     * @return int Maximum image size in bytes.
+     */
     private function maxImageBytes(): int
     {
         $kilobytes = max(1, (int) ComponentHelper::getParams('com_sportsmanagement')->get('image_max_size', 120));
@@ -633,6 +768,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $kilobytes * 1024;
     }
 
+    /**
+     * Normalise an image category path without allowing directory traversal.
+     * Unifies path separators, rejects null bytes and dot segments and keeps the folder relative to the fixed SportsManagement image directory.
+     * @param string $folder Relative category path from component configuration.
+     * @return string|null Safe relative directory or null.
+     */
     private function normaliseRelativeFolder(string $folder): ?string
     {
         $folder = trim(str_replace('\\', '/', $folder), '/');
@@ -650,6 +791,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $folder;
     }
 
+    /**
+     * Validate a selected image path before filesystem deletion.
+     * Canonicalises separators, compares the value with Joomla's path filter and rejects empty, dot or unsafe path components.
+     * @param string $image Image path submitted by the administrator.
+     * @return string|null Safe relative image path or null.
+     */
     private function normaliseRelativeImagePath(string $image): ?string
     {
         $image = trim(str_replace('\\', '/', $image), '/');
@@ -667,6 +814,16 @@ final class ImagehandlerController extends SportsManagementAdminController
         return $image;
     }
 
+    /**
+     * Return the completed image selection to the parent Joomla modal.
+     * Encodes callback parameters for safe JavaScript embedding, invokes the matching image selector when needed and closes the modal or refreshes the parent page.
+     * @param string $type Image category defining the parent callback.
+     * @param string $filename Uploaded image basename.
+     * @param string $field Target form field identifier.
+     * @param string $fieldId Target entity or field record identifier.
+     * @param bool $select Whether the modal must call the image selection handler.
+     * @return void
+     */
     private function closeUploadModal(
         string $type,
         string $filename,
@@ -674,10 +831,13 @@ final class ImagehandlerController extends SportsManagementAdminController
         string $fieldId,
         bool $select
     ): void {
-        $typeJson     = json_encode($type, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $filenameJson = json_encode($filename, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $fieldJson    = json_encode($field, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $fieldIdJson  = json_encode($fieldId, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        // Never let user-controlled selector values terminate the script element.
+        $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+            | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR;
+        $typeJson     = json_encode($type, $flags);
+        $filenameJson = json_encode($filename, $flags);
+        $fieldJson    = json_encode($field, $flags);
+        $fieldIdJson  = json_encode($fieldId, $flags);
 
         echo '<script>';
 
@@ -693,9 +853,15 @@ final class ImagehandlerController extends SportsManagementAdminController
             . '</script>';
     }
 
+    /**
+     * Show a safe image-upload error without exposing unescaped script content.
+     * JSON-encodes the public error message using HTML-safe flags, displays a browser alert and navigates back to the previous page.
+     * @param string $message Translated error message for the administrator.
+     * @return void
+     */
     private function showUploadError(string $message): void
     {
-        echo '<script>alert(' . json_encode($message, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+        echo '<script>alert(' . json_encode($message, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR)
             . ');window.history.go(-1);</script>';
     }
 }

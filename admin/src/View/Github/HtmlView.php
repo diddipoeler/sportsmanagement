@@ -30,6 +30,13 @@ final class HtmlView extends BaseHtmlView
     public int $milestone = 1;
     public bool $hasConfiguredToken = false;
 
+    /**
+     * Prepare and display the native administrator GitHub integration view.
+     * Confirms the Joomla administrator client, normalises the selected layout, builds issue context and configured-token state, loads the component templates and delegates rendering to Joomla.
+     * @param string|null $tpl Optional Joomla template override.
+     * @return void
+     * @throws \RuntimeException If the view is invoked outside the administrator.
+     */
     public function display($tpl = null): void
     {
         /** @var AdministratorApplication $app */
@@ -85,6 +92,11 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Assemble the GitHub issue creation form's available options.
+     * Builds translated label and milestone choices for component areas so the native administrator layout can render consistent Joomla select inputs.
+     * @return void
+     */
     private function prepareAddIssue(): void
     {
         $labels = [
