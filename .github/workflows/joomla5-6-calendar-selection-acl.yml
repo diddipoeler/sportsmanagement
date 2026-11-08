@@ -10,6 +10,7 @@ on:
       - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
       - '.github/tests/joomla56_calendar_selection_acl.php'
       - '.github/tests/joomla56_gcalendar_options_rows.php'
+      - '.github/tests/joomla56_calendar_event_id_guard.php'
       - '.github/workflows/joomla5-6-calendar-selection-acl.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -20,6 +21,7 @@ on:
       - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
       - '.github/tests/joomla56_calendar_selection_acl.php'
       - '.github/tests/joomla56_gcalendar_options_rows.php'
+      - '.github/tests/joomla56_calendar_event_id_guard.php'
       - '.github/workflows/joomla5-6-calendar-selection-acl.yml'
 
 permissions:
@@ -51,7 +53,7 @@ jobs:
             modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php
           )
           php .github/tests/phpdoc_metadata.php "${files[@]}"
-          for file in "${files[@]}" .github/tests/joomla56_calendar_selection_acl.php .github/tests/joomla56_gcalendar_options_rows.php; do
+          for file in "${files[@]}" .github/tests/joomla56_calendar_selection_acl.php .github/tests/joomla56_gcalendar_options_rows.php .github/tests/joomla56_calendar_event_id_guard.php; do
             php -l "$file"
           done
 
@@ -59,3 +61,7 @@ jobs:
         run: php .github/tests/joomla56_calendar_selection_acl.php
       - name: Validate GCalendar configuration and malformed query rows
         run: php .github/tests/joomla56_gcalendar_options_rows.php
+      - name: Validate native event IDs and confidential SQL failures
+        run: php .github/tests/joomla56_calendar_event_id_guard.php
+      - name: Verify detailed native site calendar function PHPDoc
+        run: php .github/scripts/check-php-function-docs.php site/src/Service/GoogleCalendarReadService.php
