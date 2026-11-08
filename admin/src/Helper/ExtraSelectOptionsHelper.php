@@ -23,9 +23,15 @@ final class ExtraSelectOptionsHelper
      * Build the configured value/text options for a SportsManagement extra field.
      *
      * This replaces the historic sportsmanagementHelper::getExtraSelectOptions()
-     * branch used by administrator forms and lists.
+     * branch used by administrator forms and lists. Uses bound parameters
+     * for exact field names and returns an empty list for missing or invalid
+     * definitions, without exposing database diagnostics in the form.
      *
-     * @return array<int, object>
+     * @param string $view Backend or frontend template identifier.
+     * @param string $field Extra-field name whose choices are requested.
+     * @param bool $template True for backend fields, false for frontend fields.
+     * @param int $fieldType Stored extra-field type used to select the definition.
+     * @return array<int, object> Prepared value/label option objects.
      */
     public function getOptions(
         string $view,
@@ -36,7 +42,8 @@ final class ExtraSelectOptionsHelper
         $view = trim($view);
         $field = trim($field);
 
-        if ($view === '' || $field === '') {
+        if ($view === '' || $field === '' || strlen($view) > 255 || strlen($field) > 255
+            || $fieldType < 0 || preg_match('/[\x00-\x1F\x7F]/', $view . $field)) {
             return [];
         }
 
@@ -74,13 +81,17 @@ final class ExtraSelectOptionsHelper
             return [];
         }
 
-        if (!$result || trim((string) $result->select_columns) === '') {
+        if (!is_object($result)
+            || !isset($result->select_columns)
+            || !is_string($result->select_columns)
+            || trim($result->select_columns) === '') {
             return [];
         }
 
         $values = explode(',', (string) $result->select_columns);
-        $labels = trim((string) $result->select_values) !== ''
-            ? explode(',', (string) $result->select_values)
+        $rawLabels = $result->select_values ?? '';
+        $labels = is_string($rawLabels) && trim($rawLabels) !== ''
+            ? explode(',', $rawLabels)
             : $values;
         $options = [];
 
