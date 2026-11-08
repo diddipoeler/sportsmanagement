@@ -34,8 +34,9 @@ final class IndividualMatchReadService
      * person, match type and HOME/AWAY side. Rejects invalid record IDs and
      * unsupported match-type values and unknown HOME/AWAY selectors before
      * querying the Joomla database; unsupported sides never silently map HOME.
-     * Database failures are logged without exposing SQL details in the frontend
-     * and return an empty result to preserve the read-only roster display.
+     * Database construction and execution failures are logged without
+     * exposing SQL details in the frontend, then return an empty result so
+     * that a broken optional statistics lookup does not abort the roster.
      *
      * @param int $projectId Owning project identifier.
      * @param int $projectTeamId Project-team relation identifier.
@@ -65,7 +66,8 @@ final class IndividualMatchReadService
 
         $side = $homeAway === 'AWAY' ? 2 : 1;
         $db = $this->db;
-        $query = $db->createQuery()
+        try {
+            $query = $db->createQuery()
             ->select($db->quoteName('ms') . '.*')
             ->from($db->quoteName('#__sportsmanagement_match_single', 'ms'))
             ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('ms.round_id'))
@@ -77,7 +79,6 @@ final class IndividualMatchReadService
             ->bind(':projectTeamId', $projectTeamId, ParameterType::INTEGER)
             ->bind(':seasonTeamPersonId', $seasonTeamPersonId, ParameterType::INTEGER)
             ->bind(':matchType', $matchType, ParameterType::STRING);
-        try {
             $db->setQuery($query);
 
             return $db->loadObjectList() ?: [];
