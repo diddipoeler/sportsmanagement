@@ -91,6 +91,7 @@ namespace {
     {
         public int $loads = 0;
         public bool $throwOnLookup = false;
+        public string $recipient = 'referee@example.test';
         public ?NotificationQuery $last = null;
         public function createQuery(): NotificationQuery { return new NotificationQuery(); }
         public function quoteName(string $name, string $alias = ''): string
@@ -110,7 +111,7 @@ namespace {
             }
 
             return (object) [
-                'email' => 'referee@example.test',
+                'email' => $this->recipient,
                 'firstname' => 'Jana',
                 'lastname' => 'Muster',
                 'match_timestamp' => 1781172000,
@@ -182,6 +183,22 @@ namespace {
         $app
     );
 
+    // Do not turn malformed IDs into unrelated valid referee assignments.
+    $normalise = new ReflectionMethod(
+        \Diddipoeler\Component\SportsManagement\Administrator\Service\MatchRefereeNotificationService::class,
+        'positiveRefereeId'
+    );
+    foreach ([
+        [8, 8], ['0008', 8], ['8', 8],
+        [0, 0], ['0', 0], [true, 0], [false, 0],
+        [['8'], 0], ['8invalid', 0], ['8.5', 0],
+        [-8, 0], [PHP_INT_MAX . '0', 0],
+    ] as [$input, $expected]) {
+        if ($normalise->invoke(null, $input) !== $expected) {
+            throw new \RuntimeException('Malformed referee IDs must not become valid assignments.');
+        }
+    }
+
     $service->notifyNewAssignments(71, [
         ['project_referee_id' => 8, 'project_position_id' => 1],
         ['project_referee_id' => 8, 'project_position_id' => 2],
@@ -198,9 +215,27 @@ namespace {
 
     $service->notifyNewAssignments(0, [['project_referee_id' => 20]]);
     $service->notifyNewAssignments(71, [['project_referee_id' => 0]]);
+    // IDs represented by arrays, booleans, strings with suffixes or
+    // overflowing integers must not trigger a referee database lookup.
+    $service->notifyNewAssignments(71, [
+        ['project_referee_id' => true],
+        ['project_referee_id' => ['8']],
+        ['project_referee_id' => '8invalid'],
+        ['project_referee_id' => PHP_INT_MAX . '0'],
+        'unexpected-string',
+        null,
+    ]);
     if ($db->loads !== 2 || $mail->sent !== 2) {
         throw new \RuntimeException('Invalid referee or match IDs caused mail/database access.');
     }
+
+    // A malformed email address must not be handed to Joomla's mailer.
+    $db->recipient = 'not-an-email';
+    $service->notifyNewAssignments(71, [['project_referee_id' => 12]]);
+    if ($db->loads !== 3 || $mail->sent !== 2) {
+        throw new \RuntimeException('Malformed referee email was used as a recipient.');
+    }
+    $db->recipient = 'referee@example.test';
 
     $db->throwOnLookup = true;
     $service->notifyNewAssignments(71, [['project_referee_id' => 12]]);
