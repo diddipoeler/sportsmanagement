@@ -8,6 +8,8 @@ on:
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - '.github/tests/joomla56-livescore-date-boundaries.php'
       - '.github/tests/joomla56-person-age-validation.php'
       - '.github/workflows/joomla56-person-age-validation.yml'
   pull_request:
@@ -16,6 +18,8 @@ on:
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'site/src/Service/IndividualMatchReadService.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php'
+      - '.github/tests/joomla56-livescore-date-boundaries.php'
       - '.github/tests/joomla56-person-age-validation.php'
       - '.github/workflows/joomla56-person-age-validation.yml'
   workflow_dispatch:
@@ -41,8 +45,15 @@ jobs:
           php -l admin/src/Helper/PersonAgeHelper.php
           php -l admin/src/Helper/ExtraSelectOptionsHelper.php
           php -l .github/tests/joomla56-person-age-validation.php
+          php -l .github/tests/joomla56-livescore-date-boundaries.php
           php -l site/src/Service/IndividualMatchReadService.php
           php -l modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
           php -l modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php
       - name: Verify age conversion
         run: php .github/tests/joomla56-person-age-validation.php
+      - name: Verify LiveScore date boundaries
+        run: php .github/tests/joomla56-livescore-date-boundaries.php
+      - name: Verify documentation in changed runtime classes
+        run: |
+          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php
+          php .github/scripts/check-php-file-headers.php
