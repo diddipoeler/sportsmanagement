@@ -65,7 +65,7 @@ final class EditmatchLineupViewDataService
 
     /**
      * List available registered team people for a specific project, season and person type.
-     * Joins person and season-team relations, applies the project scope and excludes selected person IDs to populate the editable lineup choices.
+     * Joins person and season-team relations, applies the project scope and excludes only validated positive person IDs to populate the editable lineup choices.
      *
      * @param int $projectTeamId Owning project-team identifier.
      * @param array<int,int|string> $excludedPersonIds Already nominated season-team-person IDs.
@@ -127,7 +127,35 @@ final class EditmatchLineupViewDataService
             ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order($db->quoteName('pl.lastname') . ' ASC');
 
-        $excludedPersonIds = array_values(array_filter(array_map('intval', $excludedPersonIds)));
+        // External lineup filters must not silently turn "12garbage",
+        // booleans, arrays or overflowing numbers into valid player IDs.
+        $validExcludedIds = [];
+
+        foreach ($excludedPersonIds as $candidate) {
+            if (!is_int($candidate) && !is_string($candidate)) {
+                continue;
+            }
+
+            $rawId = trim((string) $candidate);
+
+            if (preg_match('/^[0-9]+$/D', $rawId) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($rawId, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $validExcludedIds[$id] = $id;
+            }
+        }
+
+        $excludedPersonIds = array_values($validExcludedIds);
 
         if ($excludedPersonIds !== []) {
             $query->whereNotIn($db->quoteName('sp.id'), $excludedPersonIds, ParameterType::INTEGER);
