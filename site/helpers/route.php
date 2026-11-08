@@ -178,13 +178,13 @@ class sportsmanagementHelperRoute
 
 
 	/**
-	 * sportsmanagementHelperRoute::getSportsmanagementRoute()
+	 * Build a SportsManagement URL for a requested frontend view.
+	 * Combines the provided view with legacy route parameters and delegates query-string building and final routing to Joomla.
 	 *
-	 * @param   string  $view
-	 * @param   mixed   $parameter
-	 * @param   string  $task
-	 *
-	 * @return
+	 * @param string $view Destination component view.
+	 * @param array $parameter Route variables and view identifiers.
+	 * @param string $task Legacy task argument retained for template compatibility.
+	 * @return string Joomla-routed component URL.
 	 */
 	public static function getSportsmanagementRoute($view = '', $parameter = array(), $task = '')
 	{
@@ -212,11 +212,11 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::buildQuery()
+	 * Build a query string with a suitable SportsManagement menu item.
+	 * Keeps explicit Itemids, otherwise searches published accessible component menus and falls back to the configured menu ID; it never assigns the component's menu to unrelated extensions.
 	 *
-	 * @param   mixed  $parts
-	 *
-	 * @return string
+	 * @param array|object $parts Initial URL query variables.
+	 * @return string Encoded query string suitable for Joomla Route.
 	 */
 	public static function buildQuery($parts)
 	{
@@ -254,11 +254,11 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::_findItem()
+	 * Find an accessible published menu item matching the requested component view.
+	 * Checks view and project/team/club/person identifiers against Joomla's site menu and current user's authorised view levels before returning a compatible menu record.
 	 *
-	 * @param   mixed  $query
-	 *
-	 * @return
+	 * @param array|object $query Requested component route variables.
+	 * @return object|false Matching Joomla menu item, or false when none qualifies.
 	 */
 	public static function _findItem($query)
 	{
@@ -359,12 +359,12 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getAllProjectsRoute()
+	 * Build the SportsManagement overview link for projects in a country and league.
+	 * Passes the country and league criteria to the allprojects view while preserving Joomla's normal menu routing.
 	 *
-	 * @param   mixed  $country
-	 * @param   mixed  $league_id
-	 *
-	 * @return
+	 * @param string $country Country selector.
+	 * @param int|string $league_id League identifier.
+	 * @return string Routed all-projects overview URL.
 	 */
 	public static function getAllProjectsRoute($country, $league_id)
 	{
@@ -380,11 +380,11 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getKunenaRoute()
+	 * Generate a Joomla Kunena forum topic link for a legacy category identifier.
+	 * Keeps existing SportsManagement forum links compatible while routing through the com_kunena extension instead of the sports component.
 	 *
-	 * @param   mixed  $sb_catid
-	 *
-	 * @return
+	 * @param int|string $sb_catid Legacy Kunena topic or category identifier.
+	 * @return string Routed Kunena topic URL.
 	 */
 	public static function getKunenaRoute($sb_catid)
 	{
@@ -399,13 +399,15 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getClubInfoRoute()
+	 * Build a link to a club's information page for the current project.
+	 * Includes club, project, season and database context and keeps the historical task argument for older template overrides.
 	 *
-	 * @param   mixed  $projectid
-	 * @param   mixed  $clubid
-	 * @param   mixed  $task
-	 *
-	 * @return
+	 * @param int|string $projectid Project identifier.
+	 * @param int|string $clubid Club identifier.
+	 * @param mixed $task Unused historical task argument.
+	 * @param int $cfg_which_database Database selector.
+	 * @param int|string $s Season identifier.
+	 * @return string Routed club information URL.
 	 */
 	public static function getClubInfoRoute($projectid, $clubid, $task = null, $cfg_which_database = 0, $s = 0)
 	{
@@ -443,11 +445,11 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::sportsmanagementBuildRoute()
+	 * Translate old SportsManagement query parameters into route segments.
+	 * Consumes recognised view, project and club variables from the supplied query array and returns ordered segments for legacy callers.
 	 *
-	 * @param   mixed  $query
-	 *
-	 * @return
+	 * @param array $query Query variables consumed by reference.
+	 * @return array<int,string|int> Ordered route path segments.
 	 */
 	public static function sportsmanagementBuildRoute(&$query)
 	{
@@ -475,12 +477,14 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getTournamentRoute()
+	 * Link to the legacy tournament tree for a selected project and round.
+	 * Constructs the jltournamenttree view URL with round, season and database selection before passing it through the Joomla router.
 	 *
-	 * @param   mixed  $projectid
-	 * @param   mixed  $round
-	 *
-	 * @return
+	 * @param int|string $projectid Project identifier.
+	 * @param int|string $round Optional round identifier.
+	 * @param int $cfg_which_database Database selector.
+	 * @param int|string $s Optional season identifier.
+	 * @return string Routed tournament tree URL.
 	 */
 	public static function getTournamentRoute($projectid, $round = 0, $cfg_which_database = 0, $s = 0)
 	{
@@ -527,13 +531,15 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getPlayersRouteAllTime()
+	 * Open the all-time team roster for a specific project and team.
+	 * Maintains the rosteralltime view contract for historical templates, including the optional database selector.
 	 *
-	 * @param   mixed  $projectid
-	 * @param   mixed  $teamid
-	 * @param   mixed  $task
-	 *
-	 * @return
+	 * @param int|string $projectid Project identifier.
+	 * @param int|string $teamid Team identifier.
+	 * @param mixed $task Historical optional task parameter.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed all-time roster URL.
 	 */
 	public static function getPlayersRouteAllTime($projectid, $teamid, $task = null, $cfg_which_database = 0, $s = 0)
 	{
@@ -554,13 +560,15 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getDivisionsRoute()
+	 * Build the division tree URL for the selected project and division.
+	 * Uses the historical treeone view and division ID parameter, then passes the query through Joomla's route builder.
 	 *
-	 * @param   mixed  $projectid
-	 * @param   mixed  $divisionid
-	 * @param   mixed  $task
-	 *
-	 * @return
+	 * @param int|string $projectid Project identifier.
+	 * @param int|string $divisionid Division identifier.
+	 * @param mixed $task Historical task argument.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed division-tree URL.
 	 */
 	public static function getDivisionsRoute($projectid, $divisionid, $task = null, $cfg_which_database = 0, $s = 0)
 	{
@@ -581,11 +589,13 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getFavPlayersRoute()
+	 * Link to the favourite-players listing for the selected project.
+	 * Uses the players view with favplayers task and includes the optional database selector for older SportsManagement layouts.
 	 *
-	 * @param   mixed  $projectid
-	 *
-	 * @return
+	 * @param int|string $projectid Project identifier.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed favourite-players URL.
 	 */
 	public static function getFavPlayersRoute($projectid, $cfg_which_database = 0, $s = 0)
 	{
@@ -606,14 +616,14 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getStatsChartDataRoute()
+	 * Build the raw statistics chart-data route for a project or division.
+	 * Selects the stats view's chartdata layout and includes the division, project and database selector.
 	 *
-	 * @param   mixed    $projectid
-	 * @param   integer  $division
-	 * @param   int      $cfg_which_database
-	 * @param   int      $s
-	 *
-	 * @return string
+	 * @param int|string $projectid Project identifier.
+	 * @param int|string $division Optional division identifier.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed statistics chart-data URL.
 	 */
 	public static function getStatsChartDataRoute($projectid, $division = 0, $cfg_which_database = 0, $s = 0)
 	{
@@ -636,14 +646,14 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getTeamStatsChartDataRoute()
+	 * Build the statistics chart-data URL for a specific team.
+	 * Routes to the teamstats chartdata layout using project, team and optional database parameters.
 	 *
-	 * @param   mixed  $projectid
-	 * @param   mixed  $teamid
-	 * @param   int    $cfg_which_database
-	 * @param   int    $s
-	 *
-	 * @return string
+	 * @param int|string $projectid Project identifier.
+	 * @param int|string $teamid Team identifier.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed team chart-data URL.
 	 */
 	public static function getTeamStatsChartDataRoute($projectid, $teamid, $cfg_which_database = 0, $s = 0)
 	{
@@ -665,13 +675,13 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getBracketsRoute()
+	 * Build a legacy tournament tree-node link for a project.
+	 * Preserves the historical treetonode destination with optional database selection for existing menu layouts.
 	 *
-	 * @param   mixed  $projectid
-	 * @param   int    $cfg_which_database
-	 * @param   int    $s
-	 *
-	 * @return string
+	 * @param int|string $projectid Project identifier.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed tournament bracket-node URL.
 	 */
 	public static function getBracketsRoute($projectid, $cfg_which_database = 0, $s = 0)
 	{
@@ -738,13 +748,13 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getContactRoute()
+	 * Create a Joomla Contacts link for an associated contact record.
+	 * Uses com_contact's contact view, not the sports component, and preserves the optional database selector for compatibility.
 	 *
-	 * @param   mixed  $contactid
-	 * @param   int    $cfg_which_database
-	 * @param   int    $s
-	 *
-	 * @return string
+	 * @param int|string $contactid Joomla contact identifier.
+	 * @param int|null $cfg_which_database Optional legacy database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed Joomla contact URL.
 	 */
 	public static function getContactRoute($contactid, $cfg_which_database = 0, $s = 0)
 	{
@@ -773,15 +783,15 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getUserProfileRouteCBE()
+	 * Open the Community Builder Enhanced profile for a SportsManagement member.
+	 * Passes the user and linked person identifiers to com_cbe while preserving the legacy database selector argument.
 	 *
-	 * @param   mixed  $u_id
-	 * @param   mixed  $p_id
-	 * @param   mixed  $pl_id
-	 * @param   int    $cfg_which_database
-	 * @param   int    $s
-	 *
-	 * @return string
+	 * @param int|string $u_id Member's Joomla user identifier.
+	 * @param int|string $p_id SportsManagement person identifier.
+	 * @param int|string $pl_id Legacy player identifier.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed CBE user-profile URL.
 	 */
 	public static function getUserProfileRouteCBE($u_id, $p_id, $pl_id, $cfg_which_database = 0, $s = 0)
 	{
@@ -804,13 +814,13 @@ class sportsmanagementHelperRoute
 	}
 
 	/**
-	 * sportsmanagementHelperRoute::getUserProfileRoute()
+	 * Create a Community Builder user-profile link for a member.
+	 * Uses com_comprofiler routing with the userProfile task and optional legacy database selector rather than a SportsManagement view.
 	 *
-	 * @param   mixed  $userid
-	 * @param   int    $cfg_which_database
-	 * @param   int    $s
-	 *
-	 * @return string
+	 * @param int|string $userid Joomla user identifier.
+	 * @param int|null $cfg_which_database Optional database selector.
+	 * @param int|string $s Legacy season argument.
+	 * @return string Routed Community Builder profile URL.
 	 */
 	public static function getUserProfileRoute($userid, $cfg_which_database = 0, $s = 0)
 	{
