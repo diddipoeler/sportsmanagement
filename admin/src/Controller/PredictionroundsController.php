@@ -89,8 +89,6 @@ final class PredictionroundsController extends SportsManagementAdminController
      *
      * @return void
      * @throws \RuntimeException If a required Joomla model is unavailable.
-     */    /**
-     * Add missing SportsManagement project rounds to the selected prediction game.
      */
     public function populateFromProjectRounds(): void
     {
@@ -169,7 +167,7 @@ final class PredictionroundsController extends SportsManagementAdminController
      *
      * @param mixed $selected Raw selected round identifiers.
      * @return array<int> Up to 500 unique positive round IDs.
-     */    /** Return at most 500 unique positive IDs without permissive integer casts. */
+     */
     private static function selectedRoundIds(mixed $selected): array
     {
         if (!is_array($selected)) {

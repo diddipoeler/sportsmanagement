@@ -33,6 +33,25 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
                 public object $post;
                 public function __construct() {
                     $this->post = new class {
+                        public array $ids = [];
+
+                        /**
+                         * Return the submitted round selection like Joomla's POST input.
+                         *
+                         * @param string $name Requested POST field.
+                         * @param mixed $fallback Value used when the field is absent.
+                         * @param string $type Joomla input filter name.
+                         * @return mixed Selected round identifiers or the fallback.
+                         */
+                        public function get(string $name, mixed $fallback = null, string $type = 'raw'): mixed {
+                            return $name === 'cid' ? $this->ids : $fallback;
+                        }
+
+                        /**
+                         * Return the remaining POST fields for model writes.
+                         *
+                         * @return array Empty form payload used by this isolated test.
+                         */
                         public function getArray(): array { return []; }
                     };
                 }
@@ -49,7 +68,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
                 }
             };
         }
-        public function setIds(array $ids): void { $this->app->getInput()->ids = $ids; }
+        public function setIds(array $ids): void {
+            $input = $this->app->getInput();
+            $input->ids = $ids;
+            $input->post->ids = $ids;
+        }
         public function setPredictionId(int $id): void { $this->app->predictionId = $id; }
         public function getModel($name = '', $prefix = '', $config = []) {
             ++$this->modelCalls;
