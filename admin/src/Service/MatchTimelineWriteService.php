@@ -22,10 +22,24 @@ final class MatchTimelineWriteService
     private const MATCH_ROSTER_SUBSTITUTE_IN = 1;
     private const MATCH_ROSTER_SUBSTITUTE_OUT = 2;
 
+    /**
+     * Create the Joomla 5/6 match timeline write service.
+     * Stores the database used for substitution records, match events, commentary and their associated statistic rows.
+     *
+     * @param DatabaseInterface $db Joomla database driver.
+     * @return void
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Insert a new match substitution after validating its participant IDs and time.
+     * Rejects invalid or duplicate incoming-substitution records and inserts the incoming player with administrator audit metadata inside a transaction.
+     *
+     * @param array $data Form values including matchid, in, out, position and in_out_time.
+     * @return bool Whether a new substitution was successfully recorded.
+     */
     public function saveSubstitution(array $data): bool
     {
         $positionId = (int) ($data['project_position_id'] ?? 0);
@@ -68,6 +82,13 @@ final class MatchTimelineWriteService
         });
     }
 
+    /**
+     * Remove a recorded substitution and its corresponding outgoing-player row.
+     * Loads the incoming substitution with a bound ID, searches for an outgoing entry that matches the same fixture, player, position and time, and rejects ambiguous outgoing rows.
+     *
+     * @param int $substitutionId Identifier of the incoming match-player substitution.
+     * @return bool Whether the matching substitution records were deleted.
+     */
     public function removeSubstitution(int $substitutionId): bool
     {
         if ($substitutionId <= 0) {
@@ -135,16 +156,37 @@ final class MatchTimelineWriteService
         });
     }
 
+    /**
+     * Delete an individual match event by its record identifier.
+     * Delegates deletion to the shared transactional delete helper using the match-event table.
+     *
+     * @param int $eventId Match-event record identifier.
+     * @return bool Whether a valid event identifier was deleted.
+     */
     public function deleteEvent(int $eventId): bool
     {
         return $this->deleteById('#__sportsmanagement_match_event', $eventId);
     }
 
+    /**
+     * Delete a match commentary entry by its record identifier.
+     * Removes the selected commentary row through the shared transactional delete helper.
+     *
+     * @param int $commentaryId Commentary record identifier.
+     * @return bool Whether a valid commentary identifier was deleted.
+     */
     public function deleteCommentary(int $commentaryId): bool
     {
         return $this->deleteById('#__sportsmanagement_match_commentary', $commentaryId);
     }
 
+    /**
+     * Insert an administrator commentary note into a match timeline.
+     * Requires a valid match, event time and nonempty notes; persists the commentary and modification audit data in a transaction.
+     *
+     * @param array $data Submitted match, time, type and commentary content.
+     * @return int|false New commentary ID, or false for incomplete input.
+     */
     public function saveComment(array $data): int|false
     {
         if (empty($data['event_time']) || empty($data['notes']) || (int) ($data['match_id'] ?? 0) <= 0) {
@@ -172,6 +214,13 @@ final class MatchTimelineWriteService
         });
     }
 
+    /**
+     * Insert a match event and any corresponding basic statistic row.
+     * Checks fixture, team, player and event type IDs, optionally rejects duplicates, then creates the event and first matching statistic record in the same transaction.
+     *
+     * @param array $data Submitted event, player, team, time, sum and note values.
+     * @return int|false Inserted event identifier, or false for invalid or duplicate input.
+     */
     public function saveEvent(array $data): int|false
     {
         $matchId = (int) ($data['match_id'] ?? 0);
@@ -256,7 +305,15 @@ final class MatchTimelineWriteService
         });
     }
 
-    /** @return array{0:int,1:int|float|string} */
+    /**
+     * Find a basic player statistic associated with a match event type.
+     * Reads statistics permitted for the player's nominated match position and matches their JSON event ID to the chosen event type.
+     *
+     * @param int $matchId Fixture containing the player.
+     * @param int $teamPlayerId Season-team-person identifier.
+     * @param int $eventTypeId Event type to map into a statistic.
+     * @return array{0:int,1:int|float|string} Statistic ID and configured event value.
+     */
     private function mappedStatistic(int $matchId, int $teamPlayerId, int $eventTypeId): array
     {
         $query = $this->db->createQuery()
@@ -285,6 +342,14 @@ final class MatchTimelineWriteService
         return [$statisticId, $statisticValue];
     }
 
+    /**
+     * Delete a row from a trusted internal match timeline table.
+     * Checks for a positive identifier, quotes the table and ID column and executes the removal atomically.
+     *
+     * @param string $table Internal match event or commentary table.
+     * @param int $id Row identifier to delete.
+     * @return bool False for invalid IDs or true after successful deletion.
+     */
     private function deleteById(string $table, int $id): bool
     {
         if ($id <= 0) {
@@ -300,17 +365,35 @@ final class MatchTimelineWriteService
         });
     }
 
+    /**
+     * Resolve the active Joomla administrator application for timeline audit metadata.
+     * Uses the native SportsManagement administrator application resolver rather than removed global Joomla application accessors.
+     *
+     * @return CMSApplicationInterface Active Joomla administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
-    /** @return array{0:string,1:int} */
+    /**
+     * Create the SQL modification timestamp and acting administrator identifier.
+     * Reads the Joomla current date and the authenticated administrator identity for newly inserted timeline rows.
+     *
+     * @return array{0:string,1:int} SQL modification timestamp and administrator user ID.
+     */
     private function auditData(): array
     {
         return [Factory::getDate()->toSql(), (int) self::administratorApplication()->getIdentity()->id];
     }
 
+    /**
+     * Execute timeline mutations inside a database transaction.
+     * Commits successful callbacks and attempts rollback on exceptions before propagating the original failure.
+     *
+     * @param callable $callback Database operation executed transactionally.
+     * @return mixed Callback result.
+     */
     private function transaction(callable $callback): mixed
     {
         $this->db->transactionStart();
