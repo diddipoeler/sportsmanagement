@@ -43,8 +43,15 @@ jobs:
             modules/mod_sportsmanagement_rquotes/helper.php \
             modules/mod_sportsmanagement_ranking/helper.php \
             site/helpers/comments.php \
+            site/helpers/ranking.php \
+            site/helpers/route.php \
             site/src/Service/RankingEngine.php \
-            admin/src/Service/IndividualMatchPairingService.php
+            admin/src/Service/IndividualMatchPairingService.php \
+            admin/src/Service/IndividualMatchAdminService.php \
+            admin/src/Service/IndividualMatchViewService.php \
+            admin/src/Service/MatchRefereeNotificationService.php \
+            modules/mod_sportsmanagement_calendar/calendarFunctions.php \
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
 
       - name: Check changed first-party PHP files
         shell: bash
