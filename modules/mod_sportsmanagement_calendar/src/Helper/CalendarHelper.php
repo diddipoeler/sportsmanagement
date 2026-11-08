@@ -51,6 +51,9 @@ final class CalendarHelper
     /**
      * Calendar views and AJAX requests use four-digit dates; avoid producing
      * invalid years when a legacy parameter or query string is out of range.
+     *
+     * @param int $year Requested calendar year from module settings or input.
+     * @return int Year bounded to the supported range from 1970 through 9999.
      */
     public static function normaliseYear(int $year): int
     {
@@ -62,6 +65,8 @@ final class CalendarHelper
      * Bootstraps component dependencies, reads the selected calendar view,
      * normalises date and module settings, registers page assets, and
      * returns events or layout configuration for template rendering.
+     * Translated weekday labels are truncated by Unicode characters even
+     * when the mbstring extension is not installed.
      * @param Registry $params Calendar module options.
      * @param object $module Active Joomla module instance.
      * @param CMSApplicationInterface $app Joomla site application.
@@ -184,9 +189,19 @@ final class CalendarHelper
         $dayNameLength = min(20, max(1, (int) $params->get('cal_length_days', 2)));
 
         // Truncate by characters rather than bytes for translated weekday labels.
-        $shortDayName = static fn (string $name): string => function_exists('mb_substr')
-            ? mb_substr($name, 0, $dayNameLength, 'UTF-8')
-            : substr($name, 0, $dayNameLength);
+        $shortDayName = static function (string $name) use ($dayNameLength): string {
+            if (function_exists('mb_substr')) {
+                return mb_substr($name, 0, $dayNameLength, 'UTF-8');
+            }
+
+            // Without mbstring, split into Unicode code points so weekday
+            // abbreviations do not contain partial UTF-8 byte sequences.
+            if (preg_match_all('/./us', $name, $characters) !== false) {
+                return implode('', array_slice($characters[0], 0, $dayNameLength));
+            }
+
+            return substr($name, 0, $dayNameLength);
+        };
 
         $calendar->dayNames = [
             $shortDayName(Text::_('SUN')),
