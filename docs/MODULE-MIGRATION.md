@@ -134,3 +134,7 @@ Static gates are not a substitute for installing and rendering the modules on re
 ## Safe rendering of database quotations
 
 The native `mod_sportsmanagement_rquotes` layouts now share `QuoteText::render()` for database-backed quotes. The output retains line breaks and encoded text while treating all other stored HTML markup as plain text, preventing imported quote tags and attributes from executing in Joomla 5/6 pages. The `joomla56_rquotes_output_encoding.php` regression test covers entity encoding, newline preservation and script/attribute injection on PHP 8.3/8.4. Existing quote records are not modified.
+
+## Shared native/legacy quote picture validation
+
+Retained template overrides can still call `modRquotesHelper::renderRquote()`. That compatibility path now uses `RquotesHelper::pictureServer()` and `pictureUrl()`, the same validated remote-server and picture-path resolution as the active native module. Existing prepared image URLs are checked again; invalid credentials, schemes, traversal paths or unsafe external media settings are rejected. `joomla56_rquotes_media_urls.php` exercises those rules in PHP 8.3 and 8.4.

@@ -47,7 +47,10 @@ if (!class_exists('modRquotesHelper', false)) {
     {
     /**
      * Render one quote using the selected Joomla module layout.
-     * Normalises module settings, resolves the correct image base URL and provides the quote object to the existing _rquote layout.
+     * Normalises module and remote-server settings, then validates any
+     * previously prepared or stored picture path using the native image URL
+     * resolver. Invalid credentials, schemes and traversal paths never reach
+     * the historical _rquote template.
      *
      * @param object $rquote Quote to render; picture_url may be filled in.
      * @param Registry|array $params Module parameters passed by reference.
@@ -59,25 +62,24 @@ if (!class_exists('modRquotesHelper', false)) {
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
         $module ??= (object) ['module' => 'mod_sportsmanagement_rquotes', 'id' => 0];
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
-        $pictureServer = (int) $registry->get('cfg_which_database', 0)
-            ? rtrim((string) $componentParams->get('cfg_which_database_server', ''), '/') . '/'
-            : Uri::root();
+        $pictureServer = RquotesHelper::pictureServer(
+            $registry->get('cfg_which_database', 0),
+            $componentParams->get('cfg_which_database_server', ''),
+            Uri::root()
+        );
 
-        if (empty($rquote->picture_url)) {
-            $path = trim((string) ($rquote->person_picture ?? ''));
-            if ($path === '') {
-                $path = trim((string) ($rquote->picture ?? ''));
-            }
-            if ($path !== '') {
-                // When no external media server is configured, do not
-                // accidentally turn relative media paths into root URLs.
-                $rquote->picture_url = preg_match('#^https?://#i', $path)
-                    ? $path
-                    : (trim($pictureServer, '/') !== ''
-                        ? rtrim($pictureServer, '/') . '/' . ltrim($path, '/')
-                        : '');
-            }
+        if (!is_object($rquote)) {
+            return;
         }
+
+        // Preserve an explicitly prepared picture_url, but validate it
+        // through exactly the same media rules as native module output.
+        $pictureQuote = clone $rquote;
+        if (is_string($rquote->picture_url ?? null) && trim($rquote->picture_url) !== '') {
+            $pictureQuote->person_picture = $rquote->picture_url;
+        }
+
+        $rquote->picture_url = (new RquotesHelper())->pictureUrl($pictureQuote, $pictureServer);
 
         include ModuleHelper::getLayoutPath($module->module, '_rquote');
     }

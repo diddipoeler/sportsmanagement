@@ -51,21 +51,11 @@ final class RquotesHelper
             'cfg_which_database',
             $componentParams->get('cfg_which_database', 0)
         ));
-        $rawRemotePictureServer = $componentParams->get('cfg_which_database_server', '');
-        $remotePictureServer = is_string($rawRemotePictureServer) ? trim($rawRemotePictureServer) : '';
-        // Do not construct image links from an invalid or unsafe remote base URL.
-        $remotePictureServer = filter_var($remotePictureServer, FILTER_VALIDATE_URL)
-            && in_array(strtolower((string) parse_url($remotePictureServer, PHP_URL_SCHEME)), ['http', 'https'], true)
-            && parse_url($remotePictureServer, PHP_URL_QUERY) === null
-            && parse_url($remotePictureServer, PHP_URL_FRAGMENT) === null
-            // Embedded credentials must not be exposed in generated image URLs.
-            && parse_url($remotePictureServer, PHP_URL_USER) === null
-            && parse_url($remotePictureServer, PHP_URL_PASS) === null
-            ? $remotePictureServer
-            : '';
-        $pictureServer = $databaseSelector
-            ? ($remotePictureServer !== '' ? rtrim($remotePictureServer, '/') . '/' : '')
-            : Uri::root();
+        $pictureServer = self::pictureServer(
+            $databaseSelector,
+            $componentParams->get('cfg_which_database_server', ''),
+            Uri::root()
+        );
 
         if ($source === 'text') {
             return [
@@ -145,6 +135,45 @@ final class RquotesHelper
             'textLine' => '',
             'pictureServer' => $pictureServer,
         ];
+    }
+
+    /**
+     * Resolve the safe media base for local or remote quotation pictures.
+     *
+     * The native dispatcher and retained legacy module helper use the same
+     * policy: only a valid positive database selector opts into a remote
+     * HTTP(S) media server, and that URL cannot contain credentials, query
+     * strings, fragments or control characters. Invalid remote settings
+     * disable relative image links instead of falling back to a wrong host.
+     *
+     * @param mixed $selector Configured SportsManagement database selector.
+     * @param mixed $remoteBase Remote image-server URL from component settings.
+     * @param string $localBase Trusted Joomla site root URL.
+     * @return string Normalised base URL with a slash, or an empty string.
+     */
+    public static function pictureServer(mixed $selector, mixed $remoteBase, string $localBase): string
+    {
+        if (self::normaliseDatabaseSelector($selector) === 0) {
+            return $localBase;
+        }
+
+        if (!is_string($remoteBase)) {
+            return '';
+        }
+
+        $url = trim($remoteBase);
+
+        if (filter_var($url, FILTER_VALIDATE_URL) === false
+            || !in_array(strtolower((string) parse_url($url, PHP_URL_SCHEME)), ['http', 'https'], true)
+            || parse_url($url, PHP_URL_USER) !== null
+            || parse_url($url, PHP_URL_PASS) !== null
+            || parse_url($url, PHP_URL_QUERY) !== null
+            || parse_url($url, PHP_URL_FRAGMENT) !== null
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $url)) {
+            return '';
+        }
+
+        return rtrim($url, '/') . '/';
     }
 
     /**
@@ -637,13 +666,14 @@ final class RquotesHelper
      *
      * Accepts only string-based image fields, validates absolute HTTP(S)
      * URLs and encodes safe relative segments against the media server.
-     * Missing or malformed image values result in an empty URL.
+     * Missing or malformed image values result in an empty URL. This public
+     * method is shared with retained Joomla 5/6 legacy module overrides.
      *
      * @param object $quote Quote record with image fields.
      * @param string $pictureServer Validated image base URL.
      * @return string Safe image URL or an empty string.
      */
-    private function pictureUrl(object $quote, string $pictureServer): string
+    public function pictureUrl(object $quote, string $pictureServer): string
     {
         $personPicture = $quote->person_picture ?? '';
         $path = is_string($personPicture) ? trim($personPicture) : '';

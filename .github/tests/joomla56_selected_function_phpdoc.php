@@ -88,6 +88,8 @@ $paths = [
     'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php',
     'modules/mod_sportsmanagement_liveticker/src/Helper/LivetickerHelper.php',
     'modules/mod_sportsmanagement_rquotes/src/Helper/QuoteText.php',
+    'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php',
+    'modules/mod_sportsmanagement_rquotes/helper.php',
 ];
 
 // Keep the documented Joomla 5/6 router, image, database and admin view
