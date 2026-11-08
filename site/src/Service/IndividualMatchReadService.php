@@ -31,7 +31,8 @@ final class IndividualMatchReadService
      * Fetch the individual games played by a season-team person for a project team.
      * Restricts the query to the owning project's rounds, selected project team,
      * person, match type and HOME/AWAY side. Rejects invalid record IDs and
-     * unsupported match-type values before querying the Joomla database.
+     * unsupported match-type values and unknown HOME/AWAY selectors before
+     * querying the Joomla database; unsupported sides never silently map HOME.
      *
      * @param int $projectId Owning project identifier.
      * @param int $projectTeamId Project-team relation identifier.
@@ -53,7 +54,13 @@ final class IndividualMatchReadService
             return [];
         }
 
-        $side = strtoupper($homeAway) === 'AWAY' ? 2 : 1;
+        $homeAway = strtoupper($homeAway);
+
+        if ($homeAway !== 'HOME' && $homeAway !== 'AWAY') {
+            return [];
+        }
+
+        $side = $homeAway === 'AWAY' ? 2 : 1;
         $db = $this->db;
         $query = $db->createQuery()
             ->select($db->quoteName('ms') . '.*')
