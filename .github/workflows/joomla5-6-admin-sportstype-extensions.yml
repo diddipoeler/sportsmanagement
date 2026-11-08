@@ -1,0 +1,42 @@
+name: Joomla 5/6 administrator sports types and extension lists
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/SportstypeModel.php'
+      - 'admin/src/Model/SpecialextensionsModel.php'
+      - '.github/tests/joomla56_admin_sportstype_validation.php'
+      - '.github/tests/joomla56_admin_specialextensions_files.php'
+      - '.github/workflows/joomla5-6-admin-sportstype-extensions.yml'
+  pull_request:
+    branches: [joomla5-6]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  admin-mvc:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP lint
+        run: |
+          php -l admin/src/Model/SportstypeModel.php
+          php -l admin/src/Model/SpecialextensionsModel.php
+          php -l .github/tests/joomla56_admin_sportstype_validation.php
+          php -l .github/tests/joomla56_admin_specialextensions_files.php
+      - name: Test Joomla native sport-type form and SQL errors
+        run: php .github/tests/joomla56_admin_sportstype_validation.php
+      - name: Test extension folder selection and symlink exclusion
+        run: php .github/tests/joomla56_admin_specialextensions_files.php
+      - name: Verify descriptive method PHPDoc
+        run: php .github/scripts/check-php-function-docs.php admin/src/Model/SportstypeModel.php admin/src/Model/SpecialextensionsModel.php

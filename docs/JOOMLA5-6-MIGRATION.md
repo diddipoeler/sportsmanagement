@@ -80,3 +80,7 @@ The site Google Calendar reader now checks actual ASCII control characters in re
 ## Frontend calendar event request and view guards (8 November 2026)
 
 The native EventModel rejects array/object/numeric, oversized and ASCII-control-character event IDs before creating the Google Calendar read service. Event HtmlView now validates its EventModel before attempting to render the event title. The new `joomla56_event_mvc_request_validation.php` regression test covers malformed requests, missing models, valid event titles and missing-event layout fallback on PHP 8.3/8.4.
+
+## Administrator sports-type and extension-list compatibility (8 November 2026)
+
+The Sportstype administrator form now normalises invalid legacy media-field configuration to Joomla's media field instead of casting arrays or loading malformed field types. Optional database column-size hints remain nonfatal; the single-row sports-type lookup logs SQL exceptions privately with a generic administrator error. The filesystem-backed SpecialextensionsModel now excludes symlinked extension directories and has complete function PHPDoc. Regression tests and a PHP 8.3/8.4 workflow cover form-field validation, SQL error privacy, file enumeration and the empty list query.
