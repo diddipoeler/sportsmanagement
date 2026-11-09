@@ -46,6 +46,18 @@ namespace Joomla\CMS\Language {
          * @return string Unmodified translation result.
          */
         public static function _(string $key): string { return $key; }
+
+        /**
+         * Replace a translated string placeholder with a synthetic URL.
+         *
+         * @param string $key Translated message template.
+         * @param string $value Replacement link value.
+         * @return string Text prepared for HTML escaping.
+         */
+        public static function sprintf(string $key, string $value): string
+        {
+            return sprintf($key, $value);
+        }
     }
 }
 
@@ -104,10 +116,14 @@ namespace {
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmmessageField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/ExtensionmessageField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmtitleField.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmlinkField.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmsubtitleField.php';
 
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmmessageField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensionmessageField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmtitleField;
+    use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmlinkField;
+    use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmsubtitleField;
 
     /**
      * Invoke a protected Joomla field rendering method in isolation.
@@ -159,6 +175,36 @@ namespace {
         || !str_contains($safeHtml, '&lt;script&gt;')
         || str_contains($safeHtml, '<script>')) {
         throw new \RuntimeException('Title image source or heading escaping broke.');
+    }
+
+    foreach (['javascript:alert(1)', '//example.org/', '../secret', 'data:text/html,bad'] as $badLink) {
+        $linkField = new JsmlinkField(['title' => 'Support', 'link' => $badLink]);
+        $linkHtml = smRenderAdminField($linkField, 'getLabel');
+
+        if (str_contains($linkHtml, '<a ')) {
+            throw new \RuntimeException('Unsafe administrator resource link accepted: ' . $badLink);
+        }
+    }
+
+    $linkField = new JsmlinkField([
+        'title' => 'Support',
+        'link' => 'https://example.org/help',
+        'text' => '<script>bad</script> %s',
+    ]);
+    $validLink = smRenderAdminField($linkField, 'getLabel');
+    $linkText = smRenderAdminField($linkField, 'getInput');
+
+    if (!str_contains($validLink, 'href="https://example.org/help"')
+        || str_contains($linkText, '<script>')
+        || !str_contains($linkText, '&lt;script&gt;')) {
+        throw new \RuntimeException('Resource links or translated descriptions are not escaped correctly.');
+    }
+
+    $subtitle = new JsmsubtitleField(['title' => $malicious]);
+    $subtitleHtml = smRenderAdminField($subtitle, 'getLabel');
+
+    if (str_contains($subtitleHtml, '<script>') || !str_contains($subtitleHtml, '&lt;script&gt;')) {
+        throw new \RuntimeException('Administrator subtitle did not escape translated text.');
     }
 
     echo "Joomla 5/6 administrator message output regression checks passed.\n";
