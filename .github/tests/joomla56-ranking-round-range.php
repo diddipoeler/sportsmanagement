@@ -165,14 +165,24 @@ namespace {
     smAssertRankingRoundRange([], $matches, 0, 999);
     smAssertRankingRoundRange([], $matches, 13, 5);
 
-    $corruptMatches = $matches + [
+    // Under PHP 8.2–8.4, unexpected database field types must not emit
+    // warnings or notices that could pollute the frontend response.
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $corruptMatches = $matches + [
         104 => (object) ['roundid' => ['unexpected']],
         105 => (object) ['roundid' => new \stdClass()],
         106 => (object) ['roundid' => 'not-a-round'],
         107 => (object) ['name' => 'missing round'],
         108 => 'unexpected scalar',
     ];
-    smAssertRankingRoundRange([101, 102], $corruptMatches, 0, 8);
+        smAssertRankingRoundRange([101, 102], $corruptMatches, 0, 8);
+    } finally {
+        restore_error_handler();
+    }
 
     $db = new SmRoundDatabase();
     $emptyLoader = new RankingDataLoader($db);
