@@ -103,7 +103,7 @@ final class ExtensionlinkField extends FormField
      * Accept only ordinary HTTP(S) or relative administrator link values.
      *
      * Prevents dangerous schemes, network-path references, control bytes and
-     * path traversal from reaching translated link descriptions.
+     * percent-encoded traversal from reaching translated link descriptions.
      *
      * @param string $url Configured destination from extension field XML.
      * @return string Safe link, or an empty value for invalid destinations.
@@ -114,6 +114,34 @@ final class ExtensionlinkField extends FormField
             || str_starts_with($url, '//')
             || preg_match('/[\\x00-\\x1F\\x7F]/', $url) === 1
             || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $url) === 1) {
+            return '';
+        }
+
+        // Decode layered URL escapes before accepting a local path. Browsers
+        // and proxies can normalize %2e%2e or %2f after HTML rendering.
+        $decoded = $url;
+
+        for ($depth = 0; $depth < 3; ++$depth) {
+            if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded) === 1
+                || str_starts_with($decoded, '//')
+                || str_contains($decoded, chr(92))
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded) === 1) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+
+            if ($next === $decoded) {
+                break;
+            }
+
+            $decoded = $next;
+        }
+
+        if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded) === 1
+            || str_starts_with($decoded, '//')
+            || str_contains($decoded, chr(92))
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded) === 1) {
             return '';
         }
 
