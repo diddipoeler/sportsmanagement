@@ -139,7 +139,9 @@ final class RankingDataLoader
 
     /**
      * Load a saved template's raw registry configuration string.
-     * Uses bound project and template keys to retrieve one persisted template configuration row.
+     * Uses bound project and template keys to retrieve one persisted template
+     * configuration row. Rejects non-scalar settings returned by a database
+     * adapter instead of emitting array/object conversion warnings.
      *
      * @param string $template Target template name.
      * @param int $projectId Project or master-template project identifier.
@@ -157,7 +159,10 @@ final class RankingDataLoader
             ->bind(':projectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
         $value = $db->loadResult();
-        return $value === null ? null : (string) $value;
+
+        // A malformed stored params cell can be an array or object in
+        // custom database adapters. Never stringify nested values in PHP 8.
+        return is_scalar($value) ? (string) $value : null;
     }
 
     /**
