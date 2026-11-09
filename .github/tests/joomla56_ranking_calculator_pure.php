@@ -164,4 +164,66 @@ try {
     restore_error_handler();
 }
 
+// Corrupt or absent scores must not be counted as zero-zero fixtures.
+$scoreCases = [
+    (object) ['projectteam1_id' => 10, 'projectteam2_id' => 20, 'home_score' => ['nested'], 'away_score' => 2],
+    (object) ['projectteam1_id' => 10, 'projectteam2_id' => 20, 'home_score' => 'not-a-score', 'away_score' => 2],
+    (object) ['projectteam1_id' => 10, 'projectteam2_id' => 20, 'home_score' => 2],
+    (object) ['projectteam1_id' => 10, 'projectteam2_id' => 20, 'home_score' => '1e9999', 'away_score' => 2],
+];
+
+set_error_handler(static function (int $severity, string $message): never {
+    throw new \ErrorException($message, 0, $severity);
+});
+
+try {
+    $unscored = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($unscored, $scoreCases, $project, $project->sport_type_name);
+
+    if ($unscored[10]->cnt_matches !== 0 || $unscored[20]->cnt_matches !== 0) {
+        throw new RuntimeException('Malformed scores counted as published matches.');
+    }
+
+    // Keep numeric results while discarding nested or non-finite bonuses.
+    $otherSport = (object) [
+        'points_after_regular_time' => '3,1,0',
+        'allow_add_time' => 0,
+    ];
+    $bonusRows = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($bonusRows, [
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => '2',
+            'away_score' => '1',
+            'home_bonus' => ['broken'],
+            'away_bonus' => '1e9999',
+        ],
+    ], $otherSport, 'COM_SPORTSMANAGEMENT_ST_VOLLEYBALL');
+
+    if ($bonusRows[10]->cnt_matches !== 1
+        || $bonusRows[10]->sum_points !== 3.0
+        || $bonusRows[10]->bonus_points !== 0.0
+        || $bonusRows[20]->bonus_points !== 0.0) {
+        throw new RuntimeException('Malformed bonuses altered ranking points.');
+    }
+
+    $single = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($single, [
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => null,
+            'away_score' => 300,
+            'roundcode' => ['invalid'],
+        ],
+    ], $project, 'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION');
+
+    if ($single[10]->shooterrings !== 0.0 || $single[20]->shooterrings !== 300.0) {
+        throw new RuntimeException('A valid one-sided shooting result was discarded.');
+    }
+} finally {
+    restore_error_handler();
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
