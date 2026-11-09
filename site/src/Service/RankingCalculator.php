@@ -50,7 +50,8 @@ final class RankingCalculator
      * Update ranking totals and match statistics from the selected fixtures.
      * Applies sport-specific results to eligible teams, including small-bore
      * and Faustball scoring. Malformed team identifiers and required scores
-     * are ignored, while optional bonuses default safely to zero.
+     * are ignored; optional bonuses, game statistics and tie-break scores
+     * default to zero when malformed.
      *
      * @param array<int,RankingRow> $rows Ranking rows modified in place.
      * @param array<int,object> $matches Matches whose results contribute to standings.
@@ -100,14 +101,14 @@ final class RankingCalculator
                 if ($homeScore === null || $awayScore === null) {
                     continue;
                 }
-                $leg1 = (float) ($match->l1 ?? 0);
-                $leg2 = (float) ($match->l2 ?? 0);
-                $mp1 = (float) ($match->mp1 ?? 0);
-                $mp2 = (float) ($match->mp2 ?? 0);
-                $se1 = (float) ($match->se1 ?? 0);
-                $se2 = (float) ($match->se2 ?? 0);
-                $ga1 = (float) ($match->ga1 ?? 0);
-                $ga2 = (float) ($match->ga2 ?? 0);
+                $leg1 = self::finiteNumber($match->l1 ?? 0) ?? 0.0;
+                $leg2 = self::finiteNumber($match->l2 ?? 0) ?? 0.0;
+                $mp1 = self::finiteNumber($match->mp1 ?? 0) ?? 0.0;
+                $mp2 = self::finiteNumber($match->mp2 ?? 0) ?? 0.0;
+                $se1 = self::finiteNumber($match->se1 ?? 0) ?? 0.0;
+                $se2 = self::finiteNumber($match->se2 ?? 0) ?? 0.0;
+                $ga1 = self::finiteNumber($match->ga1 ?? 0) ?? 0.0;
+                $ga2 = self::finiteNumber($match->ga2 ?? 0) ?? 0.0;
             } else {
                 $homeScore = self::finiteNumber($match->home_score_decision ?? 0) ?? 0.0;
                 $awayScore = self::finiteNumber($match->away_score_decision ?? 0) ?? 0.0;
@@ -122,7 +123,11 @@ final class RankingCalculator
 
             $home->cnt_matches++;
             $away->cnt_matches++;
-            $resultType = (int) ($project->allow_add_time ?? 0) ? (int) ($match->match_result_type ?? 0) : 0;
+            $allowExtraTime = self::finiteNumber($project->allow_add_time ?? 0) ?? 0.0;
+            $resultTypeValue = self::finiteNumber($match->match_result_type ?? 0) ?? 0.0;
+            $resultType = $allowExtraTime != 0.0 && in_array($resultTypeValue, [1.0, 2.0], true)
+                ? (int) $resultTypeValue
+                : 0;
             [$winPoints, $drawPoints, $lossPoints] = $this->pointsForResultType($project, $resultType);
             $home->winpoints = $winPoints;
             $away->winpoints = $winPoints;
@@ -145,10 +150,10 @@ final class RankingCalculator
                         $home,
                         $away,
                         $resultType,
-                        (float) ($match->home_score_ot ?? 0),
-                        (float) ($match->away_score_ot ?? 0),
-                        (float) ($match->home_score_so ?? 0),
-                        (float) ($match->away_score_so ?? 0)
+                        (self::finiteNumber($match->home_score_ot ?? 0) ?? 0.0),
+                        (self::finiteNumber($match->away_score_ot ?? 0) ?? 0.0),
+                        (self::finiteNumber($match->home_score_so ?? 0) ?? 0.0),
+                        (self::finiteNumber($match->away_score_so ?? 0) ?? 0.0)
                     );
                     $home->sum_points += $drawPoints;
                     $away->sum_points += $drawPoints;
@@ -158,7 +163,7 @@ final class RankingCalculator
             } else {
                 $home->neg_points += $lossPoints;
                 $away->neg_points += $lossPoints;
-                $this->recordDecision((int) ($match->team_won ?? 0), $home, $away, $winPoints);
+                $this->recordDecision((int) (self::finiteNumber($match->team_won ?? 0) ?? 0.0), $home, $away, $winPoints);
             }
 
             $homeBonus = self::finiteNumber($match->home_bonus ?? 0) ?? 0.0;
