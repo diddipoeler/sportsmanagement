@@ -73,5 +73,21 @@ namespace {
         throw new \RuntimeException('Editmatch statistic fallback text must remain escaped.');
     }
 
+    // Invalid class names must not access files outside bundled statistics.
+    foreach (['../base', 'base.php', 'base/extra', '..', 'bad\\\\class'] as $invalidClass) {
+        $definition = new EditmatchStatisticDefinition((object) [
+            'id' => 3,
+            'name' => 'Synthetic',
+            'short' => 'S',
+            'icon' => '',
+            'class' => $invalidClass,
+            'calculated' => 1,
+        ]);
+
+        if ($definition->getCalculated() !== 1) {
+            throw new \\RuntimeException('Invalid statistic class did not use its fallback.');
+        }
+    }
+
     echo "Joomla 5/6 editmatch statistic icon validation passed.\n";
 }
