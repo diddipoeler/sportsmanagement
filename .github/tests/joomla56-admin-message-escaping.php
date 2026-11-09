@@ -205,7 +205,9 @@ namespace {
         throw new \RuntimeException('Title image source or heading escaping broke.');
     }
 
-    foreach (['javascript:alert(1)', '//example.org/', '../secret', 'data:text/html,bad'] as $badLink) {
+    foreach (['javascript:alert(1)', '//example.org/', '../secret', 'data:text/html,bad',
+        '%2e%2e/secret', '%252e%252e/secret', '/images/%2e%2e/secret',
+        '%2f%2fevil.example/test', 'images/%5csecret'] as $badLink) {
         $linkField = new JsmlinkField(['title' => 'Support', 'link' => $badLink]);
         $linkHtml = smRenderAdminField($linkField, 'getLabel');
 
@@ -248,6 +250,20 @@ namespace {
         || str_contains($supportDescription, '<script>')
         || !str_contains($supportDescription, '&lt;script&gt;')) {
         throw new \RuntimeException('Extension links rendered unescaped translation markup.');
+    }
+
+    foreach (['%2e%2e/secret', '%252e%252e/secret', '/files/%2e%2e/secret',
+        '%2f%2fexample.org', 'images/%5csecret'] as $badLink) {
+        $blocked = new ExtensionlinkField([
+            'linktype' => 'forum',
+            'description' => 'Visit %s',
+            'link' => $badLink,
+        ]);
+        $blockedHtml = smRenderAdminField($blocked, 'getInput');
+
+        if (str_contains($blockedHtml, $badLink)) {
+            throw new \RuntimeException('Encoded extension traversal reached the administrator output.');
+        }
     }
 
     $unsupportedLink = new ExtensionlinkField([
