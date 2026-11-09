@@ -45,7 +45,12 @@ namespace Joomla\CMS\Language {
          * @param string $key Test translation value.
          * @return string Unmodified translation result.
          */
-        public static function _(string $key): string { return $key; }
+        public static function _(string $key): string
+        {
+            return $key === 'COM_SPORTSMANAGEMENT_EXTENSIONLINK_FORUM_LABEL'
+                ? '<script>alert("bad")</script>'
+                : $key;
+        }
 
         /**
          * Replace a translated string placeholder with a synthetic URL.
@@ -58,6 +63,19 @@ namespace Joomla\CMS\Language {
         {
             return sprintf($key, $value);
         }
+    }
+}
+
+namespace Joomla\CMS\Uri {
+    /** Joomla URI facade for the extension support icon fixture. */
+    final class Uri
+    {
+        /**
+         * Return a static Joomla root URL for image asset assembly.
+         *
+         * @return string Fake site root address.
+         */
+        public static function root(): string { return 'https://example.org/'; }
     }
 }
 
@@ -102,6 +120,13 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service {
                          * @return bool Success in the test environment.
                          */
                         public function load(mixed ...$arguments): bool { return true; }
+
+                        /**
+                         * Report a fixed Joomla language code for translation loading.
+                         *
+                         * @return string Administrator language tag.
+                         */
+                        public function getTag(): string { return 'en-GB'; }
                     };
                 }
             };
@@ -112,18 +137,21 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Service {
 namespace {
     \defined('_JEXEC') || \define('_JEXEC', 1);
     \defined('JPATH_SITE') || \define('JPATH_SITE', '/test/site');
+    \defined('JPATH_ADMINISTRATOR') || \define('JPATH_ADMINISTRATOR', '/test/admin');
 
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmmessageField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/ExtensionmessageField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmtitleField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmlinkField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmsubtitleField.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/ExtensionlinkField.php';
 
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmmessageField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensionmessageField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmtitleField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmlinkField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmsubtitleField;
+    use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensionlinkField;
 
     /**
      * Invoke a protected Joomla field rendering method in isolation.
@@ -205,6 +233,32 @@ namespace {
 
     if (str_contains($subtitleHtml, '<script>') || !str_contains($subtitleHtml, '&lt;script&gt;')) {
         throw new \RuntimeException('Administrator subtitle did not escape translated text.');
+    }
+
+    $supportLink = new ExtensionlinkField([
+        'linktype' => 'forum',
+        'description' => '<script>alert("bad")</script> %s',
+        'link' => 'https://example.org/help',
+    ]);
+    $supportLabel = smRenderAdminField($supportLink, 'getLabel');
+    $supportDescription = smRenderAdminField($supportLink, 'getInput');
+
+    if (str_contains($supportLabel, '<script>')
+        || !str_contains($supportLabel, '&lt;script&gt;')
+        || str_contains($supportDescription, '<script>')
+        || !str_contains($supportDescription, '&lt;script&gt;')) {
+        throw new \RuntimeException('Extension links rendered unescaped translation markup.');
+    }
+
+    $unsupportedLink = new ExtensionlinkField([
+        'linktype' => 'forum',
+        'description' => 'Visit %s',
+        'link' => 'javascript:alert(1)',
+    ]);
+    $unsafeHtml = smRenderAdminField($unsupportedLink, 'getInput');
+
+    if (str_contains($unsafeHtml, 'javascript:') || !str_contains($unsafeHtml, 'Visit')) {
+        throw new \RuntimeException('Unsafe extension link reached displayed help text.');
     }
 
     echo "Joomla 5/6 administrator message output regression checks passed.\n";
