@@ -538,4 +538,40 @@ if ($shootingSelf[10]->shooterrings !== 0.0
     throw new RuntimeException('A self-match contributed duplicate shooting results.');
 }
 
+// An explicitly empty head-to-head subset must not accidentally include
+// every match. Null alone means no filtering.
+$noTeamsSelected = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$calculator->applyMatches(
+    $noTeamsSelected,
+    [$match],
+    $project,
+    $project->sport_type_name,
+    []
+);
+
+if ($noTeamsSelected[10]->cnt_matches !== 0
+    || $noTeamsSelected[20]->cnt_matches !== 0) {
+    throw new RuntimeException('Empty head-to-head selection counted all matches.');
+}
+
+$emptyShootingSubset = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$calculator->applyMatches(
+    $emptyShootingSubset,
+    [(object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => 20,
+        'home_score' => 390,
+        'away_score' => 385,
+        'roundcode' => 4,
+    ]],
+    $project,
+    'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION',
+    []
+);
+
+if ($emptyShootingSubset[10]->shooterrings !== 0.0
+    || $emptyShootingSubset[20]->shooterrings !== 0.0) {
+    throw new RuntimeException('Empty shooting head-to-head selection counted fixtures.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
