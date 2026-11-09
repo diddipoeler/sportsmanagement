@@ -23,6 +23,17 @@ final class ExtensionmessageField extends FormField
     private string $messageType = 'info';
     private string $message = '';
 
+    /**
+     * Initialize extension status message text and its display style.
+     *
+     * Retains the parent Joomla XML configuration contract and stores the
+     * message translation key and style only when setup succeeds.
+     *
+     * @param SimpleXMLElement $element Joomla field XML definition.
+     * @param mixed $value Current form field value.
+     * @param string|null $group Optional form group.
+     * @return bool Whether field setup succeeded.
+     */
     public function setup(SimpleXMLElement $element, $value, $group = null): bool
     {
         $result = parent::setup($element, $value, $group);
@@ -35,6 +46,14 @@ final class ExtensionmessageField extends FormField
         return $result;
     }
 
+    /**
+     * Render the label corresponding to the selected message style.
+     *
+     * Delegates per-field warning/info labels to the Joomla base class and
+     * renders a visually hidden example caption when appropriate.
+     *
+     * @return string Translated label markup for the status message.
+     */
     protected function getLabel(): string
     {
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
@@ -51,6 +70,14 @@ final class ExtensionmessageField extends FormField
         return '<div style="clear: both;"></div>';
     }
 
+    /**
+     * Render an installer-style notification with translated text.
+     *
+     * Chooses a fixed Bootstrap color class for each supported message style
+     * and displays optional translation placeholders and labels.
+     *
+     * @return string Administrator notification or example badge HTML.
+     */
     protected function getInput(): string
     {
         SportsManagementAdministratorApplicationResolver::resolve()->getLanguage()->load('lib_syw.sys', JPATH_SITE);
