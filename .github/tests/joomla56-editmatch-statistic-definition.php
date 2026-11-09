@@ -85,7 +85,7 @@ namespace {
         ]);
 
         if ($definition->getCalculated() !== 1) {
-            throw new \\RuntimeException('Invalid statistic class did not use its fallback.');
+            throw new \RuntimeException('Invalid statistic class did not use its fallback.');
         }
     }
 
