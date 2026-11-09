@@ -261,8 +261,8 @@ final class RankingCalculator
                 $awayScore = self::finiteNumber($match->away_score ?? 0);
                 if ($homeScore !== null && $awayScore !== null) {
                     $rows[$homeId]->sum_team1_result += $homeScore;
-                $rows[$homeId]->sum_team2_result += $awayScore;
-                $rows[$homeId]->shooterrings += $homeScore;
+                    $rows[$homeId]->sum_team2_result += $awayScore;
+                    $rows[$homeId]->shooterrings += $homeScore;
                     $round = $match->roundcode ?? '';
                     $roundKey = is_scalar($round) ? (string) $round : '';
                     $rows[$homeId]->shooterringsperround[$roundKey] = $homeScore;
@@ -273,7 +273,7 @@ final class RankingCalculator
                 $homeScore = self::finiteNumber($match->home_score ?? 0);
                 if ($awayScore !== null && $homeScore !== null) {
                     $rows[$awayId]->sum_team1_result += $awayScore;
-                $rows[$awayId]->sum_team2_result += $homeScore;
+                    $rows[$awayId]->sum_team2_result += $homeScore;
                     $rows[$awayId]->shooterrings += $awayScore;
                 }
             }
