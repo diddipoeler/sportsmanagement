@@ -146,7 +146,14 @@ namespace {
                 // The third, unscoped query would return a team from a
                 // different division, which must be skipped for division views.
                 return $this->queryCount >= $this->teamFallbackAtQuery
-                    ? [(object) ['projectteamid' => 999, 'id' => 42, 'division_id' => 91, 'name' => 'Other division']]
+                    ? [
+                        (object) ['projectteamid' => 999, 'id' => 42, 'division_id' => 91, 'name' => 'Other division'],
+                        (object) ['projectteamid' => ['malformed']],
+                        (object) ['projectteamid' => 'not-a-number'],
+                        (object) ['projectteamid' => -1],
+                        (object) ['name' => 'Missing project-team ID'],
+                        'unexpected scalar',
+                    ]
                     : [];
             }
 
@@ -297,17 +304,25 @@ namespace {
     $divisionLoader = new RankingDataLoader($divisionDb);
     $loadTeams = new \ReflectionMethod(RankingDataLoader::class, 'loadTeams');
 
-    $divisionTeams = $loadTeams->invoke($divisionLoader, 10, 12);
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
 
-    if ($divisionTeams !== [] || $divisionDb->queryCount !== 2) {
-        throw new \RuntimeException('Division ranking loaded unrelated project-wide final teams.');
+    try {
+        $divisionTeams = $loadTeams->invoke($divisionLoader, 10, 12);
+
+        if ($divisionTeams !== [] || $divisionDb->queryCount !== 2) {
+            throw new \RuntimeException('Division ranking loaded unrelated project-wide final teams.');
+        }
+
+        $projectDb = new SmRoundDatabase();
+        $projectDb->useTeamFallbackFixture = true;
+        $projectDb->teamFallbackAtQuery = 2;
+        $projectLoader = new RankingDataLoader($projectDb);
+        $projectTeams = $loadTeams->invoke($projectLoader, 10, 0);
+    } finally {
+        restore_error_handler();
     }
-
-    $projectDb = new SmRoundDatabase();
-    $projectDb->useTeamFallbackFixture = true;
-    $projectDb->teamFallbackAtQuery = 2;
-    $projectLoader = new RankingDataLoader($projectDb);
-    $projectTeams = $loadTeams->invoke($projectLoader, 10, 0);
 
     if (array_keys($projectTeams) !== [999] || $projectDb->queryCount !== 2) {
         throw new \RuntimeException('Project-wide final standings fallback was lost.');
