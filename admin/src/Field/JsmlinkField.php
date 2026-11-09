@@ -82,7 +82,8 @@ final class JsmlinkField extends FormField
      * Validate a resource link without permitting script or data URL schemes.
      *
      * Allows normal HTTP(S) URLs and site-relative paths without traversal,
-     * control characters or protocol-relative network destinations.
+     * control characters, percent-encoded traversal or protocol-relative
+     * network destinations.
      *
      * @param string $url Configured administrator link or image path.
      * @return string Allowed URL, or empty text if the address is unsafe.
@@ -93,6 +94,34 @@ final class JsmlinkField extends FormField
             || str_starts_with($url, '//')
             || preg_match('/[\\x00-\\x1F\\x7F]/', $url) === 1
             || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $url) === 1) {
+            return '';
+        }
+
+        // Decode layered URL escapes before accepting a local path. Browsers
+        // and proxies can normalize %2e%2e or %2f after HTML rendering.
+        $decoded = $url;
+
+        for ($depth = 0; $depth < 3; ++$depth) {
+            if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded) === 1
+                || str_starts_with($decoded, '//')
+                || str_contains($decoded, chr(92))
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded) === 1) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+
+            if ($next === $decoded) {
+                break;
+            }
+
+            $decoded = $next;
+        }
+
+        if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded) === 1
+            || str_starts_with($decoded, '//')
+            || str_contains($decoded, chr(92))
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded) === 1) {
             return '';
         }
 
