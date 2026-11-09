@@ -32,7 +32,9 @@ final class RankingCalculator
 
     /**
      * Calculate and sort a full project ranking without altering its input rows.
-     * Clones the seeded teams, applies countable fixtures using the project's sport-specific scoring rules and resolves ranking criteria, head-to-head tie-breakers or stored final standings.
+     * Clones seeded teams, applies countable fixtures and resolves ranking
+     * criteria, head-to-head tie-breakers or stored final standings. Saved
+     * final ranks are used only when at least one valid position exists.
      *
      * @param array<int,RankingRow> $seedRows Original team rows indexed by project-team ID.
      * @param array<int,object> $matches Published fixtures with scores and result metadata.
@@ -46,13 +48,24 @@ final class RankingCalculator
         $sportType = (string) ($project->sport_type_name ?? '');
         $this->applyMatches($rows, $matches, $project, $sportType);
 
-        $useFinalTableRank = count($matches) === 0;
+        // Stored final ranks are meaningful only when no fixtures are being
+        // calculated and at least one team has a valid saved position.
+        // An empty set of final ranks must not override starting points.
+        $useFinalTableRank = $matches === [];
+        $hasSavedFinalRank = false;
+
         foreach ($seedRows as $seed) {
             if ($seed->sum_points != 0.0) {
                 $useFinalTableRank = false;
                 break;
             }
+
+            if ($seed->finaltablerank > 0) {
+                $hasSavedFinalRank = true;
+            }
         }
+
+        $useFinalTableRank = $useFinalTableRank && $hasSavedFinalRank;
 
         return $this->sortRanking($rows, $config, $seedRows, $matches, $project, $useFinalTableRank);
     }
