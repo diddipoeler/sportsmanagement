@@ -48,6 +48,8 @@ final class ExtensiontranslatorsField extends FormField
     /**
      * Display a translated label only for configured translator credits.
      *
+     * Escapes the translated caption instead of trusting language overrides.
+     *
      * @return string HTML label, or an empty label wrapper when unused.
      */
     protected function getLabel(): string
@@ -56,7 +58,9 @@ final class ExtensiontranslatorsField extends FormField
         $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $language->getTag(), true);
 
         return '<div style="clear: both;">'
-            . ($this->translators !== '' ? Text::_('COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL') : '')
+            . ($this->translators !== ''
+                ? htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL'), ENT_QUOTES, 'UTF-8')
+                : '')
             . '</div>';
     }
 
