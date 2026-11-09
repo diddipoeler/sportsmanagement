@@ -155,5 +155,20 @@ namespace {
     smAssertRankingRoundRange([], $matches, 0, 999);
     smAssertRankingRoundRange([], $matches, 13, 5);
 
+    $parseColors = new \ReflectionMethod(RankingDataLoader::class, 'parseColors');
+    $rules = $parseColors->invoke($loader, '1,3,#00FF00,Promotion;4,5,#FF0000,Relegation');
+
+    if (count($rules) !== 2
+        || $rules[0]['color'] !== '#00FF00'
+        || $rules[1]['description'] !== 'Relegation') {
+        throw new \RuntimeException('Legacy ranking colour rules were not preserved.');
+    }
+
+    foreach ([null, false, 42, [], ['unexpected' => 'nested'], new \stdClass()] as $invalid) {
+        if ($parseColors->invoke($loader, $invalid) !== []) {
+            throw new \RuntimeException('Malformed ranking colour settings were not rejected.');
+        }
+    }
+
     echo "Joomla 5/6 ranking round-range validation passed.\n";
 }
