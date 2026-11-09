@@ -313,7 +313,8 @@ final class RankingCalculator
      * Accumulate individual small-bore shooting scores and per-round rings.
      * Uses specialist ring totals rather than win/draw points. Preserves
      * valid one-sided results, but discards corrupt self-matches and
-     * ignores team rows excluded from the scoring table.
+     * ignores team rows excluded from the scoring table. Multiple results
+     * in one round contribute to the same per-round ring total.
      *
      * @param array<int,RankingRow> $rows Team rows receiving shooting scores.
      * @param array<int,object> $matches Scored rifle fixtures.
@@ -352,7 +353,10 @@ final class RankingCalculator
                     $rows[$homeId]->shooterrings += $homeScore;
                     $round = $match->roundcode ?? '';
                     $roundKey = is_scalar($round) ? (string) $round : '';
-                    $rows[$homeId]->shooterringsperround[$roundKey] = $homeScore;
+                    // More than one fixture may belong to the same round.
+                    // Keep the per-round total in sync with shooterrings.
+                    $rows[$homeId]->shooterringsperround[$roundKey] =
+                        ($rows[$homeId]->shooterringsperround[$roundKey] ?? 0.0) + $homeScore;
                 }
             }
             if (isset($rows[$awayId]) && $rows[$awayId]->is_in_score) {
