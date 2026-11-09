@@ -50,7 +50,7 @@ final class ExtensionmessageField extends FormField
      * Render the label corresponding to the selected message style.
      *
      * Delegates per-field warning/info labels to the Joomla base class and
-     * renders a visually hidden example caption when appropriate.
+     * renders a visually hidden escaped example caption when appropriate.
      *
      * @return string Translated label markup for the status message.
      */
@@ -60,7 +60,9 @@ final class ExtensionmessageField extends FormField
         $language->load('com_installer', JPATH_ADMINISTRATOR);
 
         if ($this->messageType === 'example') {
-            return '<span class="visually-hidden">' . Text::_('LIB_SYW_MESSAGE_EXAMPLE') . '</span>';
+            return '<span class="visually-hidden">'
+                . htmlspecialchars(Text::_('LIB_SYW_MESSAGE_EXAMPLE'), ENT_QUOTES, 'UTF-8')
+                . '</span>';
         }
 
         if (in_array($this->messageType, ['fieldwarning', 'fielderror', 'fieldinfo'], true)) {
