@@ -117,8 +117,8 @@ final class RankingCalculator
 
             $balls1 = $balls2 = 0.0;
             if ($sportType === 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL') {
-                $balls1 = array_sum(array_map('floatval', explode(';', (string) ($match->ls1 ?? ''))));
-                $balls2 = array_sum(array_map('floatval', explode(';', (string) ($match->ls2 ?? ''))));
+                $balls1 = self::splitResultTotal($match->ls1 ?? '');
+                $balls2 = self::splitResultTotal($match->ls2 ?? '');
             }
 
             $home->cnt_matches++;
@@ -231,6 +231,34 @@ final class RankingCalculator
         $number = (float) $value;
 
         return is_finite($number) ? $number : null;
+    }
+
+    /**
+     * Sum semicolon-separated finite match segments without coercion warnings.
+     *
+     * Legacy Faustball results may contain empty, nonnumeric or nested
+     * values. Such segments do not contribute to the total.
+     *
+     * @param mixed $value Legacy semicolon-separated segment scores.
+     * @return float Sum of valid finite score segments.
+     */
+    private static function splitResultTotal(mixed $value): float
+    {
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            return 0.0;
+        }
+
+        $total = 0.0;
+
+        foreach (explode(';', (string) $value) as $part) {
+            $number = self::finiteNumber(trim($part));
+
+            if ($number !== null) {
+                $total += $number;
+            }
+        }
+
+        return is_finite($total) ? $total : 0.0;
     }
 
     /**
