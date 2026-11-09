@@ -48,7 +48,8 @@ final class RankingCalculator
 
     /**
      * Update ranking totals and match statistics from the selected fixtures.
-     * Applies win, draw, loss, bonus, overtime, shootout and administrative decisions to eligible teams, including special small-bore and Faustball scoring.
+     * Applies sport-specific results to eligible teams, including small-bore
+     * and Faustball scoring. Malformed project-team IDs are skipped safely.
      *
      * @param array<int,RankingRow> $rows Ranking rows modified in place.
      * @param array<int,object> $matches Matches whose results contribute to standings.
@@ -65,8 +66,17 @@ final class RankingCalculator
         }
 
         foreach ($matches as $match) {
-            $homeId = (int) $match->projectteam1_id;
-            $awayId = (int) $match->projectteam2_id;
+            if (!is_object($match)) {
+                continue;
+            }
+
+            $homeId = self::validProjectTeamId($match->projectteam1_id ?? null);
+            $awayId = self::validProjectTeamId($match->projectteam2_id ?? null);
+
+            if ($homeId === null || $awayId === null) {
+                continue;
+            }
+
             if (!isset($rows[$homeId], $rows[$awayId]) || !$rows[$homeId]->is_in_score || !$rows[$awayId]->is_in_score) {
                 continue;
             }
@@ -165,6 +175,26 @@ final class RankingCalculator
     }
 
     /**
+     * Parse a positive project-team identifier without coercing nested values.
+     *
+     * Database rows can be corrupted by legacy imports. A malformed ID must
+     * not emit PHP warnings or silently select an unrelated ranking row.
+     *
+     * @param mixed $value Raw project-team ID from a fixture.
+     * @return int|null Positive numeric identifier, or null if invalid.
+     */
+    private static function validProjectTeamId(mixed $value): ?int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return null;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT);
+
+        return $id !== false && $id > 0 ? $id : null;
+    }
+
+    /**
      * Accumulate individual small-bore shooting scores and per-round rings.
      * Uses the sport's specialist ring totals rather than generic win/draw match points and optionally restricts matches to the selected head-to-head teams.
      *
@@ -176,8 +206,19 @@ final class RankingCalculator
     private function applySmallBoreMatches(array &$rows, array $matches, ?array $allowedProjectTeams): void
     {
         foreach ($matches as $match) {
-            $homeId = (int) $match->projectteam1_id;
-            $awayId = (int) $match->projectteam2_id;
+            if (!is_object($match)) {
+                continue;
+            }
+
+            // Small-bore results may legitimately contain only one team;
+            // ignore malformed IDs without discarding the other valid side.
+            $homeId = self::validProjectTeamId($match->projectteam1_id ?? null) ?? 0;
+            $awayId = self::validProjectTeamId($match->projectteam2_id ?? null) ?? 0;
+
+            if ($homeId === 0 && $awayId === 0) {
+                continue;
+            }
+
             if ($allowedProjectTeams && (!in_array($homeId, $allowedProjectTeams, true) || !in_array($awayId, $allowedProjectTeams, true))) {
                 continue;
             }
