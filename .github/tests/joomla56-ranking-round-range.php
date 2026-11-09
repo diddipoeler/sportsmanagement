@@ -86,6 +86,8 @@ namespace {
 
         public bool $useMatchFixture = false;
 
+        public bool $useTeamFallbackFixture = false;
+
         public mixed $savedTemplateParams = null;
 
         /**
@@ -137,6 +139,15 @@ namespace {
          */
         public function loadObjectList(): array
         {
+            if ($this->useTeamFallbackFixture) {
+                // Ordinary and division-final queries return no teams.
+                // The third, unscoped query would return a team from a
+                // different division, which must be skipped for division views.
+                return $this->queryCount >= 3
+                    ? [(object) ['projectteamid' => 999, 'id' => 42, 'division_id' => 91, 'name' => 'Other division']]
+                    : [];
+            }
+
             if ($this->useMatchFixture) {
                 return [
                     (object) ['id' => 101, 'roundid' => 5],
@@ -163,6 +174,7 @@ namespace {
         }
     }
 
+    require_once dirname(__DIR__, 2) . '/site/src/Service/RankingRow.php';
     require_once dirname(__DIR__, 2) . '/site/src/Service/RankingDataLoader.php';
 
     use Diddipoeler\Component\SportsManagement\Site\Service\RankingDataLoader;
@@ -276,6 +288,26 @@ namespace {
         }
     } finally {
         restore_error_handler();
+    }
+
+    $divisionDb = new SmRoundDatabase();
+    $divisionDb->useTeamFallbackFixture = true;
+    $divisionLoader = new RankingDataLoader($divisionDb);
+    $loadTeams = new \ReflectionMethod(RankingDataLoader::class, 'loadTeams');
+
+    $divisionTeams = $loadTeams->invoke($divisionLoader, 10, 12);
+
+    if ($divisionTeams !== [] || $divisionDb->queryCount !== 2) {
+        throw new \RuntimeException('Division ranking loaded unrelated project-wide final teams.');
+    }
+
+    $projectDb = new SmRoundDatabase();
+    $projectDb->useTeamFallbackFixture = true;
+    $projectLoader = new RankingDataLoader($projectDb);
+    $projectTeams = $loadTeams->invoke($projectLoader, 10, 0);
+
+    if (array_keys($projectTeams) !== [999] || $projectDb->queryCount !== 2) {
+        throw new \RuntimeException('Project-wide final standings fallback was lost.');
     }
 
     $parseColors = new \ReflectionMethod(RankingDataLoader::class, 'parseColors');
