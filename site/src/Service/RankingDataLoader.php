@@ -435,6 +435,7 @@ final class RankingDataLoader
      * Looks up the parent project's round codes and retains fixtures between
      * selected boundaries while preserving match keys. Unknown round IDs and
      * reversed ranges produce an empty selection rather than no restriction.
+     * Unexpected or malformed round rows are ignored.
      *
      * @param array<int,object> $matches Previously loaded ranking matches.
      * @param int $projectId Project whose rounds define the range.
@@ -456,7 +457,19 @@ final class RankingDataLoader
         $db->setQuery($query);
         $codes = [];
         foreach ($db->loadObjectList() ?: [] as $round) {
-            $codes[(int) $round->id] = (int) $round->roundcode;
+            if (!is_object($round) || !isset($round->id, $round->roundcode)
+                || !is_scalar($round->id) || !is_scalar($round->roundcode)) {
+                continue;
+            }
+
+            $roundId = filter_var($round->id, FILTER_VALIDATE_INT);
+            $roundCode = filter_var($round->roundcode, FILTER_VALIDATE_INT);
+
+            if ($roundId === false || $roundId <= 0 || $roundCode === false) {
+                continue;
+            }
+
+            $codes[$roundId] = $roundCode;
         }
         // An explicitly requested round missing from this project must not
         // silently turn into an unbounded range (and include other matches).
