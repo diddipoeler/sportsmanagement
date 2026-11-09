@@ -306,4 +306,40 @@ try {
     restore_error_handler();
 }
 
+// Administrative decisions must remain integer-coded after validation.
+// A corrupted fractional decision must not be treated as a valid decision.
+set_error_handler(static function (int $severity, string $message): never {
+    throw new \ErrorException($message, 0, $severity);
+});
+
+try {
+    $decided = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($decided, [
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'decision' => '1',
+            'team_won' => 1,
+            'home_score_decision' => 3,
+            'away_score_decision' => 0,
+        ],
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'decision' => '1.5',
+            'team_won' => 1,
+        ],
+    ], $project, $project->sport_type_name);
+
+    if ($decided[10]->cnt_matches !== 1
+        || $decided[20]->cnt_matches !== 1
+        || $decided[10]->cnt_won !== 1
+        || $decided[20]->cnt_lost !== 1
+        || $decided[10]->sum_points !== 3.0) {
+        throw new RuntimeException('Administrative ranking decisions lost integer semantics.');
+    }
+} finally {
+    restore_error_handler();
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
