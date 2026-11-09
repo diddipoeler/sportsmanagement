@@ -209,5 +209,12 @@ namespace {
         }
     }
 
+    // Invalid date expressions thrown by Joomla Date must never abort a form.
+    foreach (['SERVER_UTC', 'USER_UTC'] as $filter) {
+        if (smRenderDatetimeChooser('not-a-real-date', ['filter' => $filter]) !== '') {
+            throw new \RuntimeException('Malformed date was not rejected for ' . $filter);
+        }
+    }
+
     echo "Joomla 5/6 datetime chooser timezone regressions passed.\n";
 }
