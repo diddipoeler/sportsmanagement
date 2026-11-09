@@ -75,7 +75,8 @@ final class RankingCalculator
      * Applies sport-specific results to eligible teams, including small-bore
      * and Faustball scoring. Malformed team identifiers and required scores
      * are ignored; optional bonuses, game statistics and tie-break scores
-     * default to zero when malformed. Self-matches are ignored.
+     * default to zero when malformed. Invalid administrative winner codes
+     * and self-matches are ignored.
      *
      * @param array<int,RankingRow> $rows Ranking rows modified in place.
      * @param array<int,object> $matches Matches whose results contribute to standings.
@@ -122,6 +123,18 @@ final class RankingCalculator
             }
 
             $decision = (int) $decisionValue;
+
+            if ($decision === 1) {
+                $winner = $match->team_won ?? null;
+
+                // Administrative winner codes are discrete integers. A
+                // fractional or nested legacy value must not be coerced to a
+                // home/away win or a two-sided loss.
+                if ((!is_int($winner) && !is_string($winner))
+                    || filter_var($winner, FILTER_VALIDATE_INT) === false) {
+                    continue;
+                }
+            }
 
             if ($decision === 0) {
                 // Incomplete or corrupted score cells must never be counted
@@ -193,7 +206,7 @@ final class RankingCalculator
             } else {
                 $home->neg_points += $lossPoints;
                 $away->neg_points += $lossPoints;
-                $this->recordDecision((int) (self::finiteNumber($match->team_won ?? 0) ?? 0.0), $home, $away, $winPoints);
+                $this->recordDecision((int) $winner, $home, $away, $winPoints);
             }
 
             $homeBonus = self::finiteNumber($match->home_bonus ?? 0) ?? 0.0;
