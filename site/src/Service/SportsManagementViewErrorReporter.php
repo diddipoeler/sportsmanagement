@@ -27,7 +27,8 @@ final class SportsManagementViewErrorReporter
      *
      * Logs each detailed error in the component category before throwing
      * Joomla's translated generic server error. Scalars and exceptions are
-     * supported; unexpected array/object values are logged by their type
+     * and Traversable error lists are supported. Unexpected array/object
+     * values are logged by their type
      * instead of triggering an array-to-string or object conversion warning.
      *
      * @param mixed $errors Model error collection or falsy empty result.
@@ -41,7 +42,13 @@ final class SportsManagementViewErrorReporter
             return;
         }
 
-        foreach ((array) $errors as $error) {
+        // A Throwable is one model error, not an array of its private
+        // properties. Iterators should be read as their yielded errors.
+        $items = $errors instanceof \Throwable
+            ? [$errors]
+            : ($errors instanceof \Traversable ? $errors : (array) $errors);
+
+        foreach ($items as $error) {
             if ($error instanceof \Throwable) {
                 $detail = $error->getMessage();
             } elseif (is_scalar($error)) {
