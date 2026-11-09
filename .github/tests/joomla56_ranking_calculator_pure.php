@@ -800,8 +800,53 @@ $calculator->applyMatches(
 
 if ($repeatedRound[10]->shooterrings !== 1165.0
     || $repeatedRound[10]->shooterringsperround !== [4 => 770.0, 5 => 395.0]
-    || $repeatedRound[20]->shooterrings !== 1150.0) {
-    throw new RuntimeException('Small-bore repeated rounds lost earlier shooting results.');
+    || $repeatedRound[20]->shooterrings !== 1150.0
+    || $repeatedRound[20]->shooterringsperround !== [4 => 760.0, 5 => 390.0]) {
+    throw new RuntimeException('Small-bore repeated rounds lost home or away shooting results.');
+}
+
+// Subsequent home/away reversals must add the same team's rings to the
+// correct round, instead of creating a separate or missing away total.
+$calculator->applyMatches(
+    $repeatedRound,
+    [(object) [
+        'projectteam1_id' => 20,
+        'projectteam2_id' => 10,
+        'home_score' => 360,
+        'away_score' => 370,
+        'roundcode' => '4',
+    ]],
+    $project,
+    'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+);
+
+if ($repeatedRound[10]->shooterrings !== 1535.0
+    || $repeatedRound[10]->shooterringsperround !== [4 => 1140.0, 5 => 395.0]
+    || $repeatedRound[20]->shooterrings !== 1510.0
+    || $repeatedRound[20]->shooterringsperround !== [4 => 1120.0, 5 => 390.0]) {
+    throw new RuntimeException('Small-bore home/away reversal lost round-specific rings.');
+}
+
+// A one-sided away result retains its round detail even when the other
+// project-team identifier is malformed and cannot be scored.
+$oneSidedAway = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$calculator->applyMatches(
+    $oneSidedAway,
+    [(object) [
+        'projectteam1_id' => ['invalid'],
+        'projectteam2_id' => 20,
+        'home_score' => 0,
+        'away_score' => 390,
+        'roundcode' => 6,
+    ]],
+    $project,
+    'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+);
+
+if ($oneSidedAway[10]->shooterringsperround !== []
+    || $oneSidedAway[20]->shooterrings !== 390.0
+    || $oneSidedAway[20]->shooterringsperround !== [6 => 390.0]) {
+    throw new RuntimeException('One-sided away shooting score lost its round details.');
 }
 
 echo "Joomla 5/6 pure ranking calculator OK\n";
