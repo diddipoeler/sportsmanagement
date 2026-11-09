@@ -19,6 +19,17 @@ final class RankingCalculator
     private const DEFAULT_RANKING_ORDER = 'POINTS, PLAYEDASC, DIFF, FOR';
     private const DEFAULT_SORT_ORDER = 'DESC, ASC, DESC, DESC';
 
+    /** @var list<string> Criteria the ranking comparator actually supports. */
+    private const SUPPORTED_RANKING_CRITERIA = [
+        'finaltablerank', 'points', 'points_no_start', 'shooterrings',
+        'penaltypoints', 'bonus', 'against', 'scoreavg', 'scorepct',
+        'winpct', 'gb', 'diff', 'for', 'scorefor', 'scoreagainst',
+        'goalsfor', 'goalsagainst', 'awayfor', 'legs_diff',
+        'legs_ratio', 'legs_win', 'wins', 'playedasc', 'played',
+        'points_ratio', 'wot', 'wso', 'h2h', 'h2h_diff', 'h2h_for',
+        'h2h_away',
+    ];
+
     /**
      * Calculate and sort a full project ranking without altering its input rows.
      * Clones the seeded teams, applies countable fixtures using the project's sport-specific scoring rules and resolves ranking criteria, head-to-head tie-breakers or stored final standings.
@@ -563,7 +574,8 @@ final class RankingCalculator
      * Apply ordered ranking criteria while keeping equal teams grouped for tie-breaking.
      * Evaluates each configured criterion in sequence, recalculates head-to-head
      * subtables and assigns ranks. Malformed nested sort settings revert to
-     * the ordinary defaults without PHP array-to-string warnings.
+     * the ordinary defaults without PHP array-to-string warnings. Unsupported
+     * criteria are ignored rather than forcing every team into one tied rank.
      *
      * @param array<int,RankingRow> $rows Newly calculated standings.
      * @param array $config Ranking criteria and sort directions.
@@ -593,6 +605,15 @@ final class RankingCalculator
                 static fn(string $value): string => strtolower(trim($value)),
                 explode(',', $rankingOrder)
             )));
+        // The comparator treats unknown criteria as an equality (0 == 0).
+        // Drop unsupported tokens so malformed-only settings do not make
+        // every team share the same rank. Preserve indexes to keep each
+        // surviving criterion paired with its configured sort direction.
+        $criteria = array_filter(
+            $criteria,
+            static fn(string $value): bool => in_array($value, self::SUPPORTED_RANKING_CRITERIA, true)
+        );
+
         if ($criteria === []) {
             $criteria = ['points'];
         }
