@@ -72,6 +72,8 @@ namespace {
     /** Fake round database containing three distinct project rounds. */
     final class SmRoundDatabase implements \Joomla\Database\DatabaseInterface
     {
+        public int $queryCount = 0;
+
         /**
          * Create an in-memory fluent query for round lookup.
          *
@@ -97,7 +99,10 @@ namespace {
          * @param SmRoundQuery $query Query instance.
          * @return void
          */
-        public function setQuery(SmRoundQuery $query): void {}
+        public function setQuery(SmRoundQuery $query): void
+        {
+            ++$this->queryCount;
+        }
 
         /**
          * Return the three known rounds in ascending roundcode order.
@@ -159,6 +164,23 @@ namespace {
     smAssertRankingRoundRange([], $matches, 999, 0);
     smAssertRankingRoundRange([], $matches, 0, 999);
     smAssertRankingRoundRange([], $matches, 13, 5);
+
+    $corruptMatches = $matches + [
+        104 => (object) ['roundid' => ['unexpected']],
+        105 => (object) ['roundid' => new \stdClass()],
+        106 => (object) ['roundid' => 'not-a-round'],
+        107 => (object) ['name' => 'missing round'],
+        108 => 'unexpected scalar',
+    ];
+    smAssertRankingRoundRange([101, 102], $corruptMatches, 0, 8);
+
+    $db = new SmRoundDatabase();
+    $emptyLoader = new RankingDataLoader($db);
+    $emptySelection = $filter->invoke($emptyLoader, [], 1, 5, 8);
+
+    if ($emptySelection !== [] || $db->queryCount !== 0) {
+        throw new \RuntimeException('Empty ranking match lists must not issue round queries.');
+    }
 
     $parseColors = new \ReflectionMethod(RankingDataLoader::class, 'parseColors');
     $rules = $parseColors->invoke($loader, '1,3,#00FF00,Promotion;4,5,#FF0000,Relegation');
