@@ -75,7 +75,7 @@ final class RankingCalculator
      * Applies sport-specific results to eligible teams, including small-bore
      * and Faustball scoring. Malformed team identifiers and required scores
      * are ignored; optional bonuses, game statistics and tie-break scores
-     * default to zero when malformed.
+     * default to zero when malformed. Self-matches are ignored.
      *
      * @param array<int,RankingRow> $rows Ranking rows modified in place.
      * @param array<int,object> $matches Matches whose results contribute to standings.
@@ -99,7 +99,10 @@ final class RankingCalculator
             $homeId = self::validProjectTeamId($match->projectteam1_id ?? null);
             $awayId = self::validProjectTeamId($match->projectteam2_id ?? null);
 
-            if ($homeId === null || $awayId === null) {
+            // A fixture cannot be played against the same project team.
+            // Otherwise both row references point to one object and wins,
+            // losses, matches and scores get counted twice.
+            if ($homeId === null || $awayId === null || $homeId === $awayId) {
                 continue;
             }
 
@@ -289,7 +292,8 @@ final class RankingCalculator
 
     /**
      * Accumulate individual small-bore shooting scores and per-round rings.
-     * Uses the sport's specialist ring totals rather than generic win/draw match points and optionally restricts matches to the selected head-to-head teams.
+     * Uses specialist ring totals rather than win/draw points. Preserves
+     * valid one-sided results, but discards corrupt self-matches.
      *
      * @param array<int,RankingRow> $rows Team rows receiving shooting scores.
      * @param array<int,object> $matches Scored rifle fixtures.
@@ -308,7 +312,10 @@ final class RankingCalculator
             $homeId = self::validProjectTeamId($match->projectteam1_id ?? null) ?? 0;
             $awayId = self::validProjectTeamId($match->projectteam2_id ?? null) ?? 0;
 
-            if ($homeId === 0 && $awayId === 0) {
+            // Preserve legitimate single-sided shooting results, but never
+            // apply two sides of one fixture to the same ranking row.
+            if (($homeId === 0 && $awayId === 0)
+                || ($homeId > 0 && $homeId === $awayId)) {
                 continue;
             }
 
