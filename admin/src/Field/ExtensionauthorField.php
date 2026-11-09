@@ -22,6 +22,8 @@ final class ExtensionauthorField extends FormField
     /**
      * Render the localized extension-author field label for administrators.
      *
+     * Escapes translated text so language overrides cannot inject markup.
+     *
      * @return string HTML wrapper containing the translated author label.
      */
     protected function getLabel(): string
@@ -29,7 +31,9 @@ final class ExtensionauthorField extends FormField
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
         $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $language->getTag(), true);
 
-        return '<div style="clear: both;">' . Text::_('COM_SPORTSMANAGEMENT_AUTHOR_LABEL') . '</div>';
+        return '<div style="clear: both;">'
+            . htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_AUTHOR_LABEL'), ENT_QUOTES, 'UTF-8')
+            . '</div>';
     }
 
     /**
