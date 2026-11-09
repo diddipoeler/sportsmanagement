@@ -612,12 +612,13 @@ final class RankingCalculator
             $sortOrder = self::DEFAULT_SORT_ORDER;
         }
 
+        // Keep original token indexes for the matching ASC/DESC settings.
         $criteria = $useFinalTableRank
             ? ['finaltablerank']
-            : array_values(array_filter(array_map(
+            : array_filter(array_map(
                 static fn(string $value): string => strtolower(trim($value)),
                 explode(',', $rankingOrder)
-            )));
+            ), static fn(string $value): bool => $value !== '');
         // The comparator treats unknown criteria as an equality (0 == 0).
         // Drop unsupported tokens so malformed-only settings do not make
         // every team share the same rank. Preserve indexes to keep each
