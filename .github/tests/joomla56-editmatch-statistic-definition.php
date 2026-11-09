@@ -89,5 +89,19 @@ namespace {
         }
     }
 
+    // Two rows using an unavailable class may have different stored flags.
+    // Caching the first row's fallback would change the second row's result.
+    $missingClass = 'nonexistentstatisticclass987';
+    $first = new EditmatchStatisticDefinition((object) [
+        'id' => 4, 'class' => $missingClass, 'calculated' => 0,
+    ]);
+    $second = new EditmatchStatisticDefinition((object) [
+        'id' => 5, 'class' => $missingClass, 'calculated' => 1,
+    ]);
+
+    if ($first->getCalculated() !== 0 || $second->getCalculated() !== 1) {
+        throw new \RuntimeException('A row-specific statistic fallback was cached across rows.');
+    }
+
     echo "Joomla 5/6 editmatch statistic icon validation passed.\n";
 }
