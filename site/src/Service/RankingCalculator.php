@@ -88,12 +88,14 @@ final class RankingCalculator
 
             $home = $rows[$homeId];
             $away = $rows[$awayId];
-            $decision = self::finiteNumber($match->decision ?? 0);
-            if ($decision === null) {
+            $decisionValue = self::finiteNumber($match->decision ?? 0);
+            if ($decisionValue === null || !in_array($decisionValue, [0.0, 1.0], true)) {
                 continue;
             }
 
-            if ((int) $decision === 0) {
+            $decision = (int) $decisionValue;
+
+            if ($decision === 0) {
                 // Incomplete or corrupted score cells must never be counted
                 // as a draw or an administrative result.
                 $homeScore = self::finiteNumber($match->home_score ?? null);
