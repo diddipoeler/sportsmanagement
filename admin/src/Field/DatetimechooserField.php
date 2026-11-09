@@ -26,7 +26,8 @@ final class DatetimechooserField extends FormField
      *
      * Supports legacy relative date keywords and the SERVER_UTC / USER_UTC
      * display filters. Rejects unsupported value types and falls back to UTC
-     * when a saved timezone name is invalid, avoiding a fatal form error.
+     * when a saved timezone name is invalid. Malformed stored dates leave the
+     * input empty rather than causing a fatal administrator form error.
      *
      * @return string Rendered calendar input markup.
      */
@@ -75,7 +76,8 @@ final class DatetimechooserField extends FormField
         $config = $app->getConfig();
         $identity = $app->getIdentity();
 
-        switch (strtoupper((string) ($this->element['filter'] ?? ''))) {
+        try {
+            switch (strtoupper((string) ($this->element['filter'] ?? ''))) {
             case 'SERVER_UTC':
                 if ((string) $this->value !== '' && (string) $this->value !== '0') {
                     $date = Factory::getDate($this->value, 'UTC');
@@ -95,6 +97,10 @@ final class DatetimechooserField extends FormField
                     }
                 }
                 break;
+            }
+        } catch (\Throwable) {
+            // Broken persisted dates must not abort the administrator form.
+            $this->value = '';
         }
 
         return HTMLHelper::_('calendar', $this->value, $this->name, $this->id, $format, $attributes);
