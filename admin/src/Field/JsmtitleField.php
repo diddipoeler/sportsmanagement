@@ -44,8 +44,13 @@ final class JsmtitleField extends FormField
         $html = '<div style="' . $style . '">';
 
         // Disallow executable and protocol-relative URLs in the image source.
-        if ($image !== '' && (preg_match('~^(?:https?://|/)~i', $image)
-            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $image) !== 1)) {
+        if ($image !== ''
+            && !str_starts_with($image, '//')
+            && !str_contains($image, chr(92))
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $image) !== 1
+            && preg_match('~(?:^|/)\\.\\.(?:/|$)~', $image) !== 1
+            && (preg_match('~^https?://~i', $image) === 1
+                || preg_match('~^[a-z][a-z0-9+.-]*:~i', $image) !== 1)) {
             $html .= '<img style="margin: -1px 4px 0 0; float: left; padding: 0; width: 16px; height: 16px" src="'
                 . htmlspecialchars($image, ENT_QUOTES, 'UTF-8') . '" alt="">';
         } elseif ($icon !== '') {
