@@ -36,8 +36,8 @@ final class ExtensionlinkField extends FormField
     /**
      * Render the configured extension-support link label and icon.
      *
-     * Resolves only known link types and encodes the static icon URL before
-     * inserting it into the Joomla administrator badge markup.
+     * Resolves only known link types and escapes both the translated label
+     * and the static icon URL before inserting administrator badge markup.
      *
      * @return string Extension link label, optionally with a known icon.
      */
@@ -45,7 +45,9 @@ final class ExtensionlinkField extends FormField
     {
         $this->loadLanguage();
         [$image, $title] = $this->metadata();
-        $content = $title !== '' ? Text::_($title) : '';
+        $content = $title !== ''
+            ? htmlspecialchars(Text::_($title), ENT_QUOTES, 'UTF-8')
+            : '';
 
         if ($image !== '') {
             $src = Uri::root() . 'administrator/components/com_sportsmanagement/assets/images/' . $image;
@@ -60,8 +62,8 @@ final class ExtensionlinkField extends FormField
     /**
      * Render the translated description for a configured extension link.
      *
-     * Selects the link-type default text when no custom description exists
-     * and delegates placeholder substitution to Joomla's language service.
+     * Selects the link-type default text when no custom description exists,
+     * substitutes a validated URL and escapes resulting translated text.
      *
      * @return string Translated link description, or empty text if unset.
      */
@@ -71,7 +73,7 @@ final class ExtensionlinkField extends FormField
         [, , $defaultDescription] = $this->metadata();
         $description = trim((string) ($this->element['description'] ?? ''));
         $description = $description !== '' ? $description : $defaultDescription;
-        $link = trim((string) ($this->element['link'] ?? ''));
+        $link = self::safeLink(trim((string) ($this->element['link'] ?? '')));
 
         if ($description === '') {
             return '';
@@ -79,7 +81,8 @@ final class ExtensionlinkField extends FormField
 
         $text = $link !== '' ? Text::sprintf($description, $link) : Text::_($description);
 
-        return '<div style="padding-top: 5px; overflow: inherit">' . $text . '</div>';
+        return '<div style="padding-top: 5px; overflow: inherit">'
+            . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</div>';
     }
 
     /**
@@ -98,6 +101,39 @@ final class ExtensionlinkField extends FormField
 
     /**
      * Load SportsManagement translations in the Joomla administrator context.
+     *
+     * @return void
+     */
+    /**
+     * Accept only ordinary HTTP(S) or relative administrator link values.
+     *
+     * Prevents dangerous schemes, network-path references, control bytes and
+     * path traversal from reaching translated link descriptions.
+     *
+     * @param string $url Configured destination from extension field XML.
+     * @return string Safe link, or an empty value for invalid destinations.
+     */
+    private static function safeLink(string $url): string
+    {
+        if ($url === '' || strlen($url) > 2048 || str_contains($url, chr(92))
+            || str_starts_with($url, '//')
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $url) === 1
+            || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $url) === 1) {
+            return '';
+        }
+
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $url) === 1) {
+            return preg_match('~^https?://~i', $url) === 1
+                && filter_var($url, FILTER_VALIDATE_URL) !== false
+                ? $url
+                : '';
+        }
+
+        return $url;
+    }
+
+    /**
+     * Load SportsManagement translations from the administrator language service.
      *
      * @return void
      */
