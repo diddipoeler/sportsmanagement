@@ -26,10 +26,10 @@ final class SportsManagementViewErrorReporter
      * Reject a Joomla model error collection with a generic public exception.
      *
      * Logs each detailed error in the component category before throwing
-     * Joomla's translated generic server error. Scalars and exceptions are
-     * and Traversable error lists are supported. Unexpected array/object
-     * values are logged by their type
-     * instead of triggering an array-to-string or object conversion warning.
+     * Joomla's translated generic server error. Scalars, exceptions and
+     * Traversable error lists are supported. Unexpected array/object values
+     * are logged by type rather than being coerced to strings. An empty
+     * iterator does not represent a model error.
      *
      * @param mixed $errors Model error collection or falsy empty result.
      * @param string $view Short view name for server-side log diagnostics.
@@ -48,7 +48,11 @@ final class SportsManagementViewErrorReporter
             ? [$errors]
             : ($errors instanceof \Traversable ? $errors : (array) $errors);
 
+        $hasErrors = false;
+
         foreach ($items as $error) {
+            $hasErrors = true;
+
             if ($error instanceof \Throwable) {
                 $detail = $error->getMessage();
             } elseif (is_scalar($error)) {
@@ -62,6 +66,10 @@ final class SportsManagementViewErrorReporter
                 Log::ERROR,
                 'com_sportsmanagement'
             );
+        }
+
+        if (!$hasErrors) {
+            return;
         }
 
         throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
