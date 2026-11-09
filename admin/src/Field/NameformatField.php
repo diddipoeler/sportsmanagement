@@ -28,7 +28,7 @@ final class NameformatField extends ListField
      * @param string|null $group Optional Joomla field group.
      * @return bool Whether the inherited list field setup succeeded.
      */
-    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    public function setup(\SimpleXMLElement $element, $value, $group = null): bool
     {
         $element['class'] = 'inputbox';
         $element['size'] = '1';
