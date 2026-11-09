@@ -52,6 +52,7 @@ namespace Joomla\CMS\Language {
                 'COM_SPORTSMANAGEMENT_AUTHOR_LABEL',
                 'COM_SPORTSMANAGEMENT_VERSION_LABEL',
                 'COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL',
+                'LIB_SYW_MESSAGE_EXAMPLE',
             ], true) ? '<script>alert("bad")</script>' : $key;
         }
 
@@ -284,6 +285,16 @@ namespace {
 
     if (str_contains($unsafeHtml, 'javascript:') || !str_contains($unsafeHtml, 'Visit')) {
         throw new \RuntimeException('Unsafe extension link reached displayed help text.');
+    }
+
+    $example = new ExtensionmessageField();
+    (new \ReflectionProperty(ExtensionmessageField::class, 'messageType'))
+        ->setValue($example, 'example');
+    $exampleLabel = smRenderAdminField($example, 'getLabel');
+
+    if (str_contains($exampleLabel, '<script>')
+        || !str_contains($exampleLabel, '&lt;script&gt;')) {
+        throw new \RuntimeException('Example field caption was not escaped.');
     }
 
     // Labels are translated through Joomla and must never become raw HTML.
