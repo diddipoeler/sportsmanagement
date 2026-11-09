@@ -678,7 +678,8 @@ final class RankingCalculator
 
     /**
      * Compare two ranking rows according to a configured tie-break criterion.
-     * Resolves head-to-head values where available, selects the criterion's natural sort direction and compares points, score differences, win ratios and other ranking metrics.
+     * Resolves head-to-head values and compares points, scores, ratios or
+     * saved final positions. Missing final ranks (zero) sort after valid ones.
      *
      * @param string $criterion Criterion name from the ranking template.
      * @param RankingRow $a First team standing.
@@ -703,7 +704,13 @@ final class RankingCalculator
         }
 
         [$av, $bv, $defaultDirection] = match ($criterion) {
-            'finaltablerank' => [$a->finaltablerank, $b->finaltablerank, 'ASC'],
+            // Zero means "not ranked" in legacy final-table records.
+            // Unranked teams must appear after all saved positive positions.
+            'finaltablerank' => [
+                $a->finaltablerank > 0 ? $a->finaltablerank : PHP_INT_MAX,
+                $b->finaltablerank > 0 ? $b->finaltablerank : PHP_INT_MAX,
+                'ASC',
+            ],
             'points' => [$a->getPoints(), $b->getPoints(), 'DESC'],
             'points_no_start' => [$a->getPoints(false), $b->getPoints(false), 'DESC'],
             'shooterrings' => [$a->shooterrings, $b->shooterrings, 'DESC'],
