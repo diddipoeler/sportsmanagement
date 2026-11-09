@@ -43,6 +43,8 @@ on:
       - 'admin/src/Controller/ClubnamesController.php'
       - 'site/src/Service/EditmatchStatisticDefinition.php'
       - 'site/src/Service/SportsManagementViewErrorReporter.php'
+      - 'site/src/Service/RankingDataLoader.php'
+      - '.github/tests/joomla56-ranking-round-range.php'
       - '.github/tests/joomla56-view-error-reporter.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
       - '.github/tests/joomla56-editmatch-statistic-definition.php'
@@ -112,6 +114,8 @@ on:
       - 'admin/src/Controller/ClubnamesController.php'
       - 'site/src/Service/EditmatchStatisticDefinition.php'
       - 'site/src/Service/SportsManagementViewErrorReporter.php'
+      - 'site/src/Service/RankingDataLoader.php'
+      - '.github/tests/joomla56-ranking-round-range.php'
       - '.github/tests/joomla56-view-error-reporter.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
       - '.github/tests/joomla56-editmatch-statistic-definition.php'
@@ -199,6 +203,8 @@ jobs:
           php -l admin/src/Controller/ClubnamesController.php
           php -l site/src/Service/EditmatchStatisticDefinition.php
           php -l site/src/Service/SportsManagementViewErrorReporter.php
+          php -l site/src/Service/RankingDataLoader.php
+          php -l .github/tests/joomla56-ranking-round-range.php
           php -l .github/tests/joomla56-view-error-reporter.php
           php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
           php -l .github/tests/joomla56-editmatch-statistic-definition.php
@@ -249,6 +255,8 @@ jobs:
         run: php .github/tests/joomla56-editmatch-statistic-definition.php
       - name: Verify frontend model error reporting
         run: php .github/tests/joomla56-view-error-reporter.php
+      - name: Verify ranking round boundaries
+        run: php .github/tests/joomla56-ranking-round-range.php
       - name: Verify country field database validation
         run: php .github/tests/joomla56-country-field.php
       - name: Verify administrator message escaping and title links
@@ -267,5 +275,5 @@ jobs:
         run: php .github/tests/joomla56-extension-list-validation.php
       - name: Verify documentation in changed runtime classes
         run: |
-          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php admin/src/Helper/RemoteImageDownloadHelper.php admin/src/Helper/CountryOptionsHelper.php admin/src/Helper/SqlImportHelper.php site/src/Service/MatchReadService.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php admin/src/Field/ExtensionversionField.php admin/src/Field/ExtensionauthorField.php admin/src/Field/ExtensiontranslatorsField.php admin/src/Field/LanguagecharacterField.php admin/src/Field/GeocompleteField.php admin/src/Controller/DatabasetoolsController.php admin/src/Controller/ClubnamesController.php site/src/Service/EditmatchStatisticDefinition.php modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php admin/src/Field/CountryField.php admin/src/Field/ExtensionlistField.php admin/src/Field/ExtensionsubtitleField.php admin/src/Field/ExtensionlinkField.php admin/src/Field/ExtensionmessageField.php admin/src/Field/JsmmessageField.php admin/src/Field/JsmtitleField.php admin/src/Field/JsmlinkField.php admin/src/Field/JsmsubtitleField.php admin/src/Field/CustomcalendarField.php admin/src/Field/GoogletimezonesField.php admin/src/Field/NameformatField.php admin/src/Field/PagetitleformatField.php admin/src/Field/GooglecolorchooserField.php admin/src/Field/DatetimechooserField.php site/src/Service/SportsManagementViewErrorReporter.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php admin/src/Helper/RemoteImageDownloadHelper.php admin/src/Helper/CountryOptionsHelper.php admin/src/Helper/SqlImportHelper.php site/src/Service/MatchReadService.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php admin/src/Field/ExtensionversionField.php admin/src/Field/ExtensionauthorField.php admin/src/Field/ExtensiontranslatorsField.php admin/src/Field/LanguagecharacterField.php admin/src/Field/GeocompleteField.php admin/src/Controller/DatabasetoolsController.php admin/src/Controller/ClubnamesController.php site/src/Service/EditmatchStatisticDefinition.php modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php admin/src/Field/CountryField.php admin/src/Field/ExtensionlistField.php admin/src/Field/ExtensionsubtitleField.php admin/src/Field/ExtensionlinkField.php admin/src/Field/ExtensionmessageField.php admin/src/Field/JsmmessageField.php admin/src/Field/JsmtitleField.php admin/src/Field/JsmlinkField.php admin/src/Field/JsmsubtitleField.php admin/src/Field/CustomcalendarField.php admin/src/Field/GoogletimezonesField.php admin/src/Field/NameformatField.php admin/src/Field/PagetitleformatField.php admin/src/Field/GooglecolorchooserField.php admin/src/Field/DatetimechooserField.php site/src/Service/SportsManagementViewErrorReporter.php site/src/Service/RankingDataLoader.php
           php .github/scripts/check-php-file-headers.php
