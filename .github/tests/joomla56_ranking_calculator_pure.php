@@ -477,4 +477,19 @@ if (array_keys($partialFinal) !== [60, 50]
     throw new RuntimeException('Unranked teams appeared ahead of saved final positions.');
 }
 
+// A blank ranking-order token must not shift the ASC/DESC direction
+// assigned to a subsequent valid criterion.
+$emptyLeadingCriterion = $calculator->calculate(
+    $seed,
+    [$match],
+    $project,
+    ['ranking_order' => ' , POINTS', 'ranking_sort_order' => 'ASC,DESC']
+);
+
+if (array_keys($emptyLeadingCriterion) !== [10, 20]
+    || $emptyLeadingCriterion[10]->rank !== 1
+    || $emptyLeadingCriterion[20]->rank !== 2) {
+    throw new RuntimeException('An empty ranking criterion shifted its neighbour\'s sort direction.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
