@@ -19,6 +19,14 @@ final class GoogletimezonesField extends ListField
 {
     protected $type = 'Googletimezones';
 
+    /**
+     * Build translated-friendly timezone choices ordered by current UTC offset.
+     *
+     * Includes backward-compatible PHP timezone identifiers and retains
+     * inherited Joomla options for administrator configuration forms.
+     *
+     * @return array<int,object> Ordered timezone selector options.
+     */
     protected function getOptions(): array
     {
         $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
@@ -61,6 +69,14 @@ final class GoogletimezonesField extends ListField
         return array_merge(parent::getOptions(), $options);
     }
 
+    /**
+     * Convert a signed UTC offset in seconds to the familiar hour/minute label.
+     *
+     * Handles negative, positive and half-hour offsets using integer math.
+     *
+     * @param int $seconds Signed timezone offset in seconds.
+     * @return string Offset label such as (UTC+05:30).
+     */
     private function formatOffset(int $seconds): string
     {
         $sign = $seconds < 0 ? '-' : '+';
