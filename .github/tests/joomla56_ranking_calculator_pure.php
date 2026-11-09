@@ -766,4 +766,42 @@ if ($excludedAway[10]->shooterrings !== 390.0
     throw new RuntimeException('Small-bore away-team exclusion was ignored.');
 }
 
+// Multiple small-bore fixtures may share one round. The detail view
+// must retain the sum rather than overwrite an earlier fixture's rings.
+$repeatedRound = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$calculator->applyMatches(
+    $repeatedRound,
+    [
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => 390,
+            'away_score' => 385,
+            'roundcode' => '4',
+        ],
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => 380,
+            'away_score' => 375,
+            'roundcode' => 4,
+        ],
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => 395,
+            'away_score' => 390,
+            'roundcode' => 5,
+        ],
+    ],
+    $project,
+    'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+);
+
+if ($repeatedRound[10]->shooterrings !== 1165.0
+    || $repeatedRound[10]->shooterringsperround !== [4 => 770.0, 5 => 395.0]
+    || $repeatedRound[20]->shooterrings !== 1150.0) {
+    throw new RuntimeException('Small-bore repeated rounds lost earlier shooting results.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
