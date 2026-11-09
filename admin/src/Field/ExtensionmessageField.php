@@ -73,8 +73,8 @@ final class ExtensionmessageField extends FormField
     /**
      * Render an installer-style notification with translated text.
      *
-     * Chooses a fixed Bootstrap color class for each supported message style
-     * and displays optional translation placeholders and labels.
+     * Chooses a fixed Bootstrap color class for each supported message style,
+     * escapes translated content, and displays optional labels.
      *
      * @return string Administrator notification or example badge HTML.
      */
@@ -88,10 +88,15 @@ final class ExtensionmessageField extends FormField
             $label = Text::_($label);
         }
 
-        $message = $this->message !== '' ? Text::_($this->message) : '';
+        $message = $this->message !== ''
+            ? htmlspecialchars(Text::_($this->message), ENT_QUOTES, 'UTF-8')
+            : '';
+        $label = htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
 
         if ($this->messageType === 'example') {
-            $label = $label !== '' ? $label : Text::_('LIB_SYW_MESSAGE_EXAMPLE');
+            $label = $label !== ''
+                ? $label
+                : htmlspecialchars(Text::_('LIB_SYW_MESSAGE_EXAMPLE'), ENT_QUOTES, 'UTF-8');
 
             return '<span class="badge text-bg-secondary">' . $label . '</span>&nbsp;'
                 . '<span class="text-body-secondary" style="font-size: 0.8em;">' . $message . '</span>';
