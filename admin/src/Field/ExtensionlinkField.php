@@ -100,11 +100,6 @@ final class ExtensionlinkField extends FormField
     }
 
     /**
-     * Load SportsManagement translations in the Joomla administrator context.
-     *
-     * @return void
-     */
-    /**
      * Accept only ordinary HTTP(S) or relative administrator link values.
      *
      * Prevents dangerous schemes, network-path references, control bytes and
