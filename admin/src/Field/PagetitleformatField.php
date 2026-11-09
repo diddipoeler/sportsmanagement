@@ -19,6 +19,14 @@ final class PagetitleformatField extends ListField
 {
     protected $type = 'pagetitleformat';
 
+    /**
+     * Build the available project/league/season page-title format options.
+     *
+     * Resolves administrator language keys and appends the stable numeric
+     * option values to the inherited Joomla form field choices.
+     *
+     * @return array<int,object> Translated page-title format choices.
+     */
     protected function getOptions(): array
     {
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
