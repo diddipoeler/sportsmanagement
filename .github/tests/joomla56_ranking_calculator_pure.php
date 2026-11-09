@@ -574,4 +574,64 @@ if ($emptyShootingSubset[10]->shooterrings !== 0.0
     throw new RuntimeException('Empty shooting head-to-head selection counted fixtures.');
 }
 
+// Discrete administrative winner codes must not be inferred by casting
+// fractional, nested or missing imported values.
+$invalidWinners = [
+    '1.5', ['nested'], new \stdClass(), null, 'not-a-winner',
+];
+
+set_error_handler(static function (int $severity, string $message): never {
+    throw new \ErrorException($message, 0, $severity);
+});
+
+try {
+    $administrativeRows = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+
+    foreach ($invalidWinners as $invalidWinner) {
+        $calculator->applyMatches(
+            $administrativeRows,
+            [(object) [
+                'projectteam1_id' => 10,
+                'projectteam2_id' => 20,
+                'decision' => 1,
+                'team_won' => $invalidWinner,
+                'home_score_decision' => 3,
+                'away_score_decision' => 0,
+            ]],
+            $project,
+            $project->sport_type_name
+        );
+    }
+
+    if ($administrativeRows[10]->cnt_matches !== 0
+        || $administrativeRows[20]->cnt_matches !== 0
+        || $administrativeRows[10]->cnt_won !== 0
+        || $administrativeRows[20]->cnt_lost !== 0) {
+        throw new RuntimeException('Malformed administrative winner codes changed ranking totals.');
+    }
+
+    // Valid numeric strings remain compatible with the stored legacy codes.
+    $calculator->applyMatches(
+        $administrativeRows,
+        [(object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'decision' => 1,
+            'team_won' => '2',
+            'home_score_decision' => 0,
+            'away_score_decision' => 3,
+        ]],
+        $project,
+        $project->sport_type_name
+    );
+
+    if ($administrativeRows[10]->cnt_lost !== 1
+        || $administrativeRows[20]->cnt_won !== 1
+        || $administrativeRows[20]->sum_points !== 3.0) {
+        throw new RuntimeException('Valid administrative winner codes stopped scoring.');
+    }
+} finally {
+    restore_error_handler();
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
