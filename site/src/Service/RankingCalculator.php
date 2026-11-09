@@ -561,7 +561,9 @@ final class RankingCalculator
 
     /**
      * Apply ordered ranking criteria while keeping equal teams grouped for tie-breaking.
-     * Evaluates each configured criterion in sequence, recalculates head-to-head subtables when needed and assigns stable rank values to tied and untied teams.
+     * Evaluates each configured criterion in sequence, recalculates head-to-head
+     * subtables and assigns ranks. Malformed nested sort settings revert to
+     * the ordinary defaults without PHP array-to-string warnings.
      *
      * @param array<int,RankingRow> $rows Newly calculated standings.
      * @param array $config Ranking criteria and sort directions.
@@ -573,13 +575,32 @@ final class RankingCalculator
      */
     private function sortRanking(array $rows, array $config, array $seedRows, array $matches, object $project, bool $useFinalTableRank): array
     {
+        // Malformed registry settings can be arrays or objects after a legacy
+        // import. Avoid implicit string casts and preserve the normal criteria.
+        $rankingOrder = $config['ranking_order'] ?? self::DEFAULT_RANKING_ORDER;
+        if (!is_string($rankingOrder) || trim($rankingOrder) === '') {
+            $rankingOrder = self::DEFAULT_RANKING_ORDER;
+        }
+
+        $sortOrder = $config['ranking_sort_order'] ?? self::DEFAULT_SORT_ORDER;
+        if (!is_string($sortOrder) || trim($sortOrder) === '') {
+            $sortOrder = self::DEFAULT_SORT_ORDER;
+        }
+
         $criteria = $useFinalTableRank
             ? ['finaltablerank']
-            : array_values(array_filter(array_map(static fn($v) => strtolower(trim($v)), explode(',', (string) ($config['ranking_order'] ?? self::DEFAULT_RANKING_ORDER)))));
-        if (!$criteria) {
+            : array_values(array_filter(array_map(
+                static fn(string $value): string => strtolower(trim($value)),
+                explode(',', $rankingOrder)
+            )));
+        if ($criteria === []) {
             $criteria = ['points'];
         }
-        $orders = array_values(array_map(static fn($v) => strtoupper(trim($v)), explode(',', (string) ($config['ranking_sort_order'] ?? self::DEFAULT_SORT_ORDER))));
+
+        $orders = array_values(array_map(
+            static fn(string $value): string => strtoupper(trim($value)),
+            explode(',', $sortOrder)
+        ));
         $groups = [1 => $rows];
 
         foreach ($criteria as $index => $criterion) {
