@@ -718,4 +718,52 @@ if ($bonusCalculated[10]->cnt_won !== 1
     throw new RuntimeException('Soccer ranking lost accumulated bonus points.');
 }
 
+// Small-bore teams excluded from the standings must not accumulate rings.
+// The other eligible team may still retain its independently valid score.
+$excludedShooting = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$excludedShooting[10]->is_in_score = false;
+$calculator->applyMatches(
+    $excludedShooting,
+    [(object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => 20,
+        'home_score' => 390,
+        'away_score' => 385,
+        'roundcode' => 4,
+    ]],
+    $project,
+    'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+);
+
+if ($excludedShooting[10]->shooterrings !== 0.0
+    || $excludedShooting[10]->sum_team1_result !== 0.0
+    || $excludedShooting[10]->sum_team2_result !== 0.0
+    || $excludedShooting[10]->shooterringsperround !== []
+    || $excludedShooting[20]->shooterrings !== 385.0
+    || $excludedShooting[20]->sum_team1_result !== 385.0) {
+    throw new RuntimeException('Small-bore scoring did not respect excluded team rows.');
+}
+
+// The exclusion must work symmetrically for the away side.
+$excludedAway = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$excludedAway[20]->is_in_score = false;
+$calculator->applyMatches(
+    $excludedAway,
+    [(object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => 20,
+        'home_score' => 390,
+        'away_score' => 385,
+        'roundcode' => 4,
+    ]],
+    $project,
+    'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+);
+
+if ($excludedAway[10]->shooterrings !== 390.0
+    || $excludedAway[20]->shooterrings !== 0.0
+    || $excludedAway[20]->sum_team1_result !== 0.0) {
+    throw new RuntimeException('Small-bore away-team exclusion was ignored.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
