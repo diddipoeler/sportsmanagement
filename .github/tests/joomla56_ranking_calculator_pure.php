@@ -76,4 +76,62 @@ if (array_keys($final) !== [20, 10]
     throw new RuntimeException('Stored final standings must use ascending final-table rank.');
 }
 
+// Legacy imports can contain non-scalar and ambiguous project-team IDs.
+// The pure calculator must not cast these into valid team row keys.
+$badFixtures = [
+    (object) ['projectteam1_id' => ['nested'], 'projectteam2_id' => 20, 'home_score' => 8, 'away_score' => 0],
+    (object) ['projectteam1_id' => new \stdClass(), 'projectteam2_id' => 20, 'home_score' => 8, 'away_score' => 0],
+    (object) ['projectteam1_id' => '10notvalid', 'projectteam2_id' => 20, 'home_score' => 8, 'away_score' => 0],
+    (object) ['projectteam1_id' => false, 'projectteam2_id' => 20, 'home_score' => 8, 'away_score' => 0],
+    (object) ['projectteam1_id' => 10, 'projectteam2_id' => -1, 'home_score' => 8, 'away_score' => 0],
+    (object) ['projectteam1_id' => 10, 'home_score' => 8, 'away_score' => 0],
+    'unexpected scalar match',
+];
+
+set_error_handler(static function (int $severity, string $message): never {
+    throw new \ErrorException($message, 0, $severity);
+});
+
+try {
+    $ignored = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($ignored, $badFixtures, $project, $project->sport_type_name);
+
+    if ($ignored[10]->cnt_matches !== 0 || $ignored[20]->cnt_matches !== 0) {
+        throw new RuntimeException('Corrupt team IDs contributed to the normal ranking.');
+    }
+
+    $smallBore = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $oneSided = (object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => ['invalid'],
+        'home_score' => 400,
+        'away_score' => 0,
+        'roundcode' => 1,
+    ];
+    $calculator->applyMatches(
+        $smallBore,
+        [$oneSided],
+        $project,
+        'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+    );
+
+    if ($smallBore[10]->shooterrings !== 400.0 || $smallBore[20]->shooterrings !== 0.0) {
+        throw new RuntimeException('One-sided small-bore match no longer scores its valid team.');
+    }
+
+    $bothInvalid = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches(
+        $bothInvalid,
+        [(object) ['projectteam1_id' => [], 'projectteam2_id' => new \stdClass()]],
+        $project,
+        'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+    );
+
+    if ($bothInvalid[10]->shooterrings !== 0.0 || $bothInvalid[20]->shooterrings !== 0.0) {
+        throw new RuntimeException('Malformed small-bore IDs affected ranking rows.');
+    }
+} finally {
+    restore_error_handler();
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
