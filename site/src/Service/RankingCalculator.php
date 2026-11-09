@@ -75,7 +75,8 @@ final class RankingCalculator
      * Applies sport-specific results to eligible teams, including small-bore
      * and Faustball scoring. Malformed team identifiers and required scores
      * are ignored; optional bonuses, game statistics and tie-break scores
-     * default to zero when malformed. Invalid administrative winner codes
+     * default to zero when malformed. Soccer bonus points remain intact
+     * during result-count recomputation. Invalid administrative winner codes
      * and self-matches are ignored.
      *
      * @param array<int,RankingRow> $rows Ranking rows modified in place.
@@ -220,8 +221,12 @@ final class RankingCalculator
             $this->addResultStats($away, $awayScore, $homeScore, $leg2, $leg1, $mp2, $mp1, $se2, $se1, $ga2, $ga1, $balls2, $balls1, $sportType);
 
             if ($sportType === 'COM_SPORTSMANAGEMENT_ST_SOCCER') {
-                $home->sum_points = ($home->cnt_won * $winPoints) + ($home->cnt_draw * $drawPoints);
-                $away->sum_points = ($away->cnt_won * $winPoints) + ($away->cnt_draw * $drawPoints);
+                // Rebuilding soccer points from wins and draws must retain
+                // bonus points already accumulated from all fixtures.
+                $home->sum_points = ($home->cnt_won * $winPoints) + ($home->cnt_draw * $drawPoints)
+                    + $home->bonus_points;
+                $away->sum_points = ($away->cnt_won * $winPoints) + ($away->cnt_draw * $drawPoints)
+                    + $away->bonus_points;
                 $home->neg_points = ($home->cnt_lost * $winPoints) + ($home->cnt_draw * ($winPoints - $drawPoints));
                 $away->neg_points = ($away->cnt_lost * $winPoints) + ($away->cnt_draw * ($winPoints - $drawPoints));
             }
