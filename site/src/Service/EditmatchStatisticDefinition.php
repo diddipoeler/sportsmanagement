@@ -107,6 +107,7 @@ final class EditmatchStatisticDefinition
      *
      * Resolves the configured class basename beneath the administrator
      * statistics directory and caches the stored calculation metadata.
+     * Rejects path fragments and unexpected class-name characters.
      * Missing or unrecognized classes retain the database fallback flag.
      *
      * @param string $class Legacy statistic class name or filename stem.
@@ -115,9 +116,11 @@ final class EditmatchStatisticDefinition
      */
     private static function resolveCalculated(string $class, int $fallback): int
     {
-        $class = basename(trim($class));
+        // The stored class is a filename stem, not a filesystem path.
+        // Only bundled statistic class identifiers may be inspected.
+        $class = trim($class);
 
-        if ($class === '') {
+        if ($class === '' || preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $class) !== 1) {
             return $fallback;
         }
 
