@@ -678,4 +678,44 @@ if (array_keys($equalSorted) !== [20, 10]
     throw new RuntimeException('Tied ranking teams received different ranks.');
 }
 
+// Soccer rankings must retain bonus points when the win/draw totals are
+// recomputed, including bonuses from earlier fixtures and both teams.
+$bonusSeed = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$bonusFixtures = [
+    (object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => 20,
+        'home_score' => 2,
+        'away_score' => 1,
+        'home_bonus' => 2,
+        'away_bonus' => 1,
+    ],
+    (object) [
+        'projectteam1_id' => 20,
+        'projectteam2_id' => 10,
+        'home_score' => 0,
+        'away_score' => 0,
+        'home_bonus' => 3,
+        'away_bonus' => 4,
+    ],
+];
+$bonusCalculated = $calculator->calculate(
+    $bonusSeed,
+    $bonusFixtures,
+    $project,
+    $config
+);
+
+if ($bonusCalculated[10]->cnt_won !== 1
+    || $bonusCalculated[10]->cnt_draw !== 1
+    || $bonusCalculated[10]->bonus_points !== 6.0
+    || $bonusCalculated[10]->sum_points !== 10.0
+    || $bonusCalculated[20]->cnt_draw !== 1
+    || $bonusCalculated[20]->bonus_points !== 4.0
+    || $bonusCalculated[20]->sum_points !== 5.0
+    || $bonusSeed[10]->sum_points !== 0.0
+    || $bonusSeed[20]->bonus_points !== 0.0) {
+    throw new RuntimeException('Soccer ranking lost accumulated bonus points.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
