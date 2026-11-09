@@ -411,4 +411,50 @@ if (array_keys($unknownThenPoints) !== [20, 10]
     throw new RuntimeException('Unsupported criteria disrupted a valid ascending sort.');
 }
 
+// No fixture results and no stored final positions: rank by ordinary
+// configuration (including starting-point adjustments), not by zero ranks.
+$unrankedHigh = new RankingRow(30);
+$unrankedHigh->name = 'High';
+$unrankedHigh->start_points = 4.0;
+$unrankedLow = new RankingRow(40);
+$unrankedLow->name = 'Low';
+$unrankedLow->start_points = 1.0;
+
+$unranked = $calculator->calculate(
+    [40 => $unrankedLow, 30 => $unrankedHigh],
+    [],
+    $project,
+    $config
+);
+
+if (array_keys($unranked) !== [30, 40]
+    || $unranked[30]->rank !== 1
+    || $unranked[40]->rank !== 2
+    || $unrankedHigh->rank !== 0
+    || $unrankedLow->rank !== 0) {
+    throw new RuntimeException('Missing stored final ranks overrode normal ranking points.');
+}
+
+// Existing saved final positions must still take priority with no matches.
+$storedOne = new RankingRow(30);
+$storedOne->name = 'Stored champion';
+$storedOne->finaltablerank = 1;
+$storedOne->start_points = -10.0;
+$storedTwo = new RankingRow(40);
+$storedTwo->name = 'Stored runner-up';
+$storedTwo->finaltablerank = 2;
+$storedTwo->start_points = 50.0;
+$stored = $calculator->calculate(
+    [40 => $storedTwo, 30 => $storedOne],
+    [],
+    $project,
+    $config
+);
+
+if (array_keys($stored) !== [30, 40]
+    || $stored[30]->rank !== 1
+    || $stored[40]->rank !== 2) {
+    throw new RuntimeException('Valid stored final ranks were not preserved.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
