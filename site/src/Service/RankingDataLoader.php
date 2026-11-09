@@ -377,7 +377,9 @@ final class RankingDataLoader
 
     /**
      * Load published, uncancelled, countable fixtures required for ranking calculation.
-     * Restricts matches to project and optional division, keeps sport-specific small-bore scoring policy and maps each fixture's score, bonus, decision and round details.
+     * Restricts matches to project and optional division, keeps sport-specific
+     * scoring policy and maps each fixture's result metadata. Discards rows
+     * with malformed match identifiers before indexing by match ID.
      *
      * @param int $projectId Ranking project identifier.
      * @param int $divisionId Optional division filter.
@@ -424,9 +426,21 @@ final class RankingDataLoader
         }
         $db->setQuery($query);
         $matches = [];
+
         foreach ($db->loadObjectList() ?: [] as $row) {
-            $matches[(int) $row->id] = $row;
+            if (!is_object($row) || !isset($row->id) || !is_scalar($row->id)) {
+                continue;
+            }
+
+            $matchId = filter_var($row->id, FILTER_VALIDATE_INT);
+
+            if ($matchId === false || $matchId <= 0) {
+                continue;
+            }
+
+            $matches[$matchId] = $row;
         }
+
         return $matches;
     }
 
