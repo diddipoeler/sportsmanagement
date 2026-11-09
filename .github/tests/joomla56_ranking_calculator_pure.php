@@ -342,4 +342,45 @@ try {
     restore_error_handler();
 }
 
+// Legacy template registry rows can contain nested sort settings. Ranking
+// must retain its default criteria and the original seed objects unchanged.
+set_error_handler(static function (int $severity, string $message): never {
+    throw new \ErrorException($message, 0, $severity);
+});
+
+try {
+    $badSortConfig = [
+        'ranking_order' => ['invalid', 'nested'],
+        'ranking_sort_order' => new \stdClass(),
+    ];
+
+    $defaultSort = $calculator->calculate(
+        $seed,
+        [$match],
+        $project,
+        ['ranking_order' => 'POINTS, PLAYEDASC, DIFF, FOR', 'ranking_sort_order' => 'DESC, ASC, DESC, DESC']
+    );
+    $fallbackSort = $calculator->calculate($seed, [$match], $project, $badSortConfig);
+
+    if (array_keys($fallbackSort) !== array_keys($defaultSort)
+        || $fallbackSort[10]->rank !== 1
+        || $fallbackSort[20]->rank !== 2
+        || $seed[10]->cnt_matches !== 0) {
+        throw new RuntimeException('Corrupt ranking sort settings did not use safe defaults.');
+    }
+
+    $emptySort = $calculator->calculate(
+        $seed,
+        [$match],
+        $project,
+        ['ranking_order' => '', 'ranking_sort_order' => '']
+    );
+
+    if (array_keys($emptySort) !== array_keys($defaultSort)) {
+        throw new RuntimeException('Empty ranking sort settings did not use defaults.');
+    }
+} finally {
+    restore_error_handler();
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
