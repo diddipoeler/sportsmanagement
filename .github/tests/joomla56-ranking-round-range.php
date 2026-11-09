@@ -51,6 +51,15 @@ namespace {
         public function from(string $table): static { return $this; }
 
         /**
+         * Accept a SQL join from the ranking match loader.
+         *
+         * @param string $type Join type.
+         * @param string $condition Joined table and condition.
+         * @return static Fluent query object.
+         */
+        public function join(string $type, string $condition): static { return $this; }
+
+        /**
          * Accept a project-scoped filter expression.
          *
          * @param string $clause SQL where clause.
@@ -74,6 +83,8 @@ namespace {
     {
         public int $queryCount = 0;
 
+        public bool $useMatchFixture = false;
+
         /**
          * Create an in-memory fluent query for round lookup.
          *
@@ -91,7 +102,10 @@ namespace {
          * @param string $name Column name.
          * @return string The same field name.
          */
-        public function quoteName(string $name): string { return $name; }
+        public function quoteName(string $name, ?string $alias = null): string
+        {
+            return $alias === null ? $name : $name . ' AS ' . $alias;
+        }
 
         /**
          * Accept the completed round lookup SQL.
@@ -111,6 +125,19 @@ namespace {
          */
         public function loadObjectList(): array
         {
+            if ($this->useMatchFixture) {
+                return [
+                    (object) ['id' => 101, 'roundid' => 5],
+                    (object) ['id' => '102', 'roundid' => 8],
+                    (object) ['id' => ['invalid'], 'roundid' => 13],
+                    (object) ['id' => new \stdClass(), 'roundid' => 13],
+                    (object) ['id' => 'nonnumeric', 'roundid' => 13],
+                    (object) ['id' => -1, 'roundid' => 13],
+                    (object) ['roundid' => 13],
+                    'unexpected scalar',
+                ];
+            }
+
             return [
                 (object) ['id' => 5, 'roundcode' => 1],
                 (object) ['id' => 8, 'roundcode' => 2],
@@ -190,6 +217,25 @@ namespace {
 
     if ($emptySelection !== [] || $db->queryCount !== 0) {
         throw new \RuntimeException('Empty ranking match lists must not issue round queries.');
+    }
+
+    $matchDb = new SmRoundDatabase();
+    $matchDb->useMatchFixture = true;
+    $matchLoader = new RankingDataLoader($matchDb);
+    $loadMatches = new \ReflectionMethod(RankingDataLoader::class, 'loadMatches');
+
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $loaded = $loadMatches->invoke($matchLoader, 1, 0, 'COM_SPORTSMANAGEMENT_ST_SOCCER');
+    } finally {
+        restore_error_handler();
+    }
+
+    if (array_keys($loaded) !== [101, 102] || $matchDb->queryCount !== 1) {
+        throw new \RuntimeException('Ranking loader accepted invalid match identifiers.');
     }
 
     $parseColors = new \ReflectionMethod(RankingDataLoader::class, 'parseColors');
