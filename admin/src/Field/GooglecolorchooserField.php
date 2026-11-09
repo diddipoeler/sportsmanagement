@@ -28,14 +28,15 @@ final class GooglecolorchooserField extends FormField
     /**
      * Render a readonly hex-color input with an accessible swatch palette.
      *
-     * Validates stored values as six-digit colors, escapes HTML identifiers
+     * Rejects nested legacy values, validates six-digit hex colors and escapes HTML identifiers
      * and registers the module-independent click handler once per request.
      *
      * @return string Escaped color input and fixed palette-button HTML.
      */
     public function getInput(): string
     {
-        $value = trim((string) $this->value);
+        // Corrupted or nested legacy settings must not produce PHP 8 warnings.
+        $value = is_string($this->value) ? trim($this->value) : '';
 
         if (!preg_match('/^#[0-9a-fA-F]{6}$/', $value)) {
             $value = '';
