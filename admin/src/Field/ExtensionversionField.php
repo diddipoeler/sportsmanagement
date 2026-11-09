@@ -44,6 +44,8 @@ final class ExtensionversionField extends FormField
     /**
      * Render the localized administrator extension-version field label.
      *
+     * Escapes the localized caption before inserting it in markup.
+     *
      * @return string HTML containing the translated version label.
      */
     protected function getLabel(): string
@@ -51,7 +53,9 @@ final class ExtensionversionField extends FormField
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
         $language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, $language->getTag(), true);
 
-        return '<div style="clear: both;">' . Text::_('COM_SPORTSMANAGEMENT_VERSION_LABEL') . '</div>';
+        return '<div style="clear: both;">'
+            . htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_VERSION_LABEL'), ENT_QUOTES, 'UTF-8')
+            . '</div>';
     }
 
     /**
