@@ -108,7 +108,8 @@ final class EditmatchStatisticDefinition
      * Resolves the configured class basename beneath the administrator
      * statistics directory and caches the stored calculation metadata.
      * Rejects path fragments and unexpected class-name characters.
-     * Missing or unrecognized classes retain the database fallback flag.
+     * Missing or unrecognized classes retain their own database fallback
+     * flag rather than caching another statistic row's fallback.
      *
      * @param string $class Legacy statistic class name or filename stem.
      * @param int $fallback Calculated flag stored in the database record.
@@ -131,7 +132,9 @@ final class EditmatchStatisticDefinition
         $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/statistics/' . $class . '.php';
 
         if (!is_file($file)) {
-            return self::$calculatedByClass[$class] = $fallback;
+            // The fallback belongs to this database row, not to the class
+            // name: different statistics may share an unavailable class.
+            return $fallback;
         }
 
         $source = file_get_contents($file);
@@ -140,6 +143,8 @@ final class EditmatchStatisticDefinition
             return self::$calculatedByClass[$class] = (int) $matches[1];
         }
 
-        return self::$calculatedByClass[$class] = $fallback;
+        // Do not cache the per-row fallback when the file cannot be read or
+        // does not declare the legacy calculated flag.
+        return $fallback;
     }
 }
