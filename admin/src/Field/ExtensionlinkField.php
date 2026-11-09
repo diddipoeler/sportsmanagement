@@ -33,6 +33,14 @@ final class ExtensionlinkField extends FormField
         'translate' => ['translate.png', 'COM_SPORTSMANAGEMENT_EXTENSIONLINK_TRANSLATE_LABEL', 'COM_SPORTSMANAGEMENT_EXTENSIONLINK_TRANSLATE_DESC'],
     ];
 
+    /**
+     * Render the configured extension-support link label and icon.
+     *
+     * Resolves only known link types and encodes the static icon URL before
+     * inserting it into the Joomla administrator badge markup.
+     *
+     * @return string Extension link label, optionally with a known icon.
+     */
     protected function getLabel(): string
     {
         $this->loadLanguage();
@@ -49,6 +57,14 @@ final class ExtensionlinkField extends FormField
         return '<div style="clear: both;"><span class="badge text-bg-info">' . $content . '</span></div>';
     }
 
+    /**
+     * Render the translated description for a configured extension link.
+     *
+     * Selects the link-type default text when no custom description exists
+     * and delegates placeholder substitution to Joomla's language service.
+     *
+     * @return string Translated link description, or empty text if unset.
+     */
     protected function getInput(): string
     {
         $this->loadLanguage();
@@ -66,6 +82,13 @@ final class ExtensionlinkField extends FormField
         return '<div style="padding-top: 5px; overflow: inherit">' . $text . '</div>';
     }
 
+    /**
+     * Read the icon and translation keys for a known extension link type.
+     *
+     * Unknown types return empty descriptors rather than arbitrary file paths.
+     *
+     * @return array{0:string,1:string,2:string} Icon, title key and description key.
+     */
     private function metadata(): array
     {
         $type = trim((string) ($this->element['linktype'] ?? ''));
@@ -73,6 +96,11 @@ final class ExtensionlinkField extends FormField
         return self::TYPES[$type] ?? ['', '', ''];
     }
 
+    /**
+     * Load SportsManagement translations in the Joomla administrator context.
+     *
+     * @return void
+     */
     private function loadLanguage(): void
     {
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
