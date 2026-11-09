@@ -18,6 +18,11 @@ final class JsmsubtitleField extends FormField
 {
     protected $type = 'JSMSubtitle';
 
+    /**
+     * Render a translated and HTML-escaped section subtitle.
+     *
+     * @return string Decorative administrator subtitle markup.
+     */
     protected function getLabel(): string
     {
         $title = trim((string) ($this->element['title'] ?? ''));
@@ -28,6 +33,11 @@ final class JsmsubtitleField extends FormField
             . $text . '</div>';
     }
 
+    /**
+     * Suppress a separate input control for the display-only subtitle.
+     *
+     * @return string Always empty; the subtitle is shown as the field label.
+     */
     protected function getInput(): string
     {
         return '';
