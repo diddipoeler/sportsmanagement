@@ -47,9 +47,12 @@ namespace Joomla\CMS\Language {
          */
         public static function _(string $key): string
         {
-            return $key === 'COM_SPORTSMANAGEMENT_EXTENSIONLINK_FORUM_LABEL'
-                ? '<script>alert("bad")</script>'
-                : $key;
+            return in_array($key, [
+                'COM_SPORTSMANAGEMENT_EXTENSIONLINK_FORUM_LABEL',
+                'COM_SPORTSMANAGEMENT_AUTHOR_LABEL',
+                'COM_SPORTSMANAGEMENT_VERSION_LABEL',
+                'COM_SPORTSMANAGEMENT_TRANSLATORS_LABEL',
+            ], true) ? '<script>alert("bad")</script>' : $key;
         }
 
         /**
@@ -145,6 +148,9 @@ namespace {
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmlinkField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/JsmsubtitleField.php';
     require_once dirname(__DIR__, 2) . '/admin/src/Field/ExtensionlinkField.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/ExtensionauthorField.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/ExtensionversionField.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/ExtensiontranslatorsField.php';
 
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmmessageField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensionmessageField;
@@ -152,6 +158,9 @@ namespace {
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmlinkField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\JsmsubtitleField;
     use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensionlinkField;
+    use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensionauthorField;
+    use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensionversionField;
+    use Diddipoeler\Component\SportsManagement\Administrator\Field\ExtensiontranslatorsField;
 
     /**
      * Invoke a protected Joomla field rendering method in isolation.
@@ -275,6 +284,25 @@ namespace {
 
     if (str_contains($unsafeHtml, 'javascript:') || !str_contains($unsafeHtml, 'Visit')) {
         throw new \RuntimeException('Unsafe extension link reached displayed help text.');
+    }
+
+    // Labels are translated through Joomla and must never become raw HTML.
+    foreach ([new ExtensionauthorField(), new ExtensionversionField()] as $field) {
+        $label = smRenderAdminField($field, 'getLabel');
+
+        if (str_contains($label, '<script>') || !str_contains($label, '&lt;script&gt;')) {
+            throw new \RuntimeException('Extension field caption was not HTML-escaped.');
+        }
+    }
+
+    $translators = new ExtensiontranslatorsField();
+    (new \ReflectionProperty(ExtensiontranslatorsField::class, 'translators'))
+        ->setValue($translators, 'Translation credits');
+    $translatedLabel = smRenderAdminField($translators, 'getLabel');
+
+    if (str_contains($translatedLabel, '<script>')
+        || !str_contains($translatedLabel, '&lt;script&gt;')) {
+        throw new \RuntimeException('Extension translator caption was not escaped.');
     }
 
     echo "Joomla 5/6 administrator message output regression checks passed.\n";
