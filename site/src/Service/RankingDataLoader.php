@@ -204,6 +204,7 @@ final class RankingDataLoader
      * Tries division-scoped project teams and stored final-division rows.
      * Project-wide fallback final standings are used only without a division
      * filter, preventing unrelated teams from appearing in a division table.
+     * Malformed project-team records without a valid ID are ignored.
      *
      * @param int $projectId Owning project ID.
      * @param int $divisionId Optional division ID.
@@ -223,10 +224,17 @@ final class RankingDataLoader
 
         $rows = [];
         foreach ($records as $record) {
-            $ptid = (int) ($record->projectteamid ?? 0);
-            if ($ptid <= 0) {
+            if (!is_object($record) || !isset($record->projectteamid)
+                || !is_scalar($record->projectteamid)) {
                 continue;
             }
+
+            $ptid = filter_var($record->projectteamid, FILTER_VALIDATE_INT);
+
+            if ($ptid === false || $ptid <= 0) {
+                continue;
+            }
+
             $row = new RankingRow($ptid);
             $row->teamid = (int) ($record->id ?? 0);
             $row->divisionid = (int) ($record->division_id ?? 0);
