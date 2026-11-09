@@ -226,4 +226,84 @@ try {
     restore_error_handler();
 }
 
+// Optional match details and shootout metadata from legacy imports must not
+// trigger PHP warnings or corrupt scoring when malformed.
+set_error_handler(static function (int $severity, string $message): never {
+    throw new \ErrorException($message, 0, $severity);
+});
+
+try {
+    $extraProject = (object) [
+        'allow_add_time' => 1,
+        'points_after_regular_time' => '3,1,0',
+    ];
+    $statRows = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($statRows, [
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => 2,
+            'away_score' => 1,
+            'l1' => ['invalid'],
+            'l2' => new \stdClass(),
+            'mp1' => ['invalid'],
+            'mp2' => '1e9999',
+            'se1' => new \stdClass(),
+            'se2' => ['invalid'],
+            'ga1' => 'not-a-number',
+            'ga2' => 2,
+            'match_result_type' => ['invalid'],
+        ],
+    ], $extraProject, 'COM_SPORTSMANAGEMENT_ST_VOLLEYBALL');
+
+    if ($statRows[10]->cnt_matches !== 1
+        || $statRows[10]->sum_team1_legs !== 0.0
+        || $statRows[10]->sum_team1_matchpoint !== 0.0
+        || $statRows[10]->sum_team1_sets !== 0.0
+        || $statRows[10]->sum_team1_games !== 0.0
+        || $statRows[20]->sum_team1_games !== 2.0) {
+        throw new RuntimeException('Malformed supplementary scores affected rankings.');
+    }
+
+    $tieRows = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($tieRows, [
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => 1,
+            'away_score' => 1,
+            'home_score_ot' => ['invalid'],
+            'away_score_ot' => new \stdClass(),
+            'home_score_so' => ['invalid'],
+            'away_score_so' => '1e9999',
+            'match_result_type' => 1,
+        ],
+    ], $extraProject, 'COM_SPORTSMANAGEMENT_ST_VOLLEYBALL');
+
+    if ($tieRows[10]->cnt_matches !== 1
+        || $tieRows[10]->cnt_wot !== 0
+        || $tieRows[20]->cnt_wot !== 0) {
+        throw new RuntimeException('Malformed overtime data affected the ranking.');
+    }
+
+    $faustball = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+    $calculator->applyMatches($faustball, [
+        (object) [
+            'projectteam1_id' => 10,
+            'projectteam2_id' => 20,
+            'home_score' => 2,
+            'away_score' => 1,
+            'ls1' => '3;invalid;4;1e9999',
+            'ls2' => ['invalid'],
+        ],
+    ], $project, 'COM_SPORTSMANAGEMENT_ST_FAUSTBALL');
+
+    if ($faustball[10]->sum_team1_balls !== 7.0
+        || $faustball[20]->sum_team1_balls !== 0.0) {
+        throw new RuntimeException('Invalid Faustball match segments were not ignored.');
+    }
+} finally {
+    restore_error_handler();
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
