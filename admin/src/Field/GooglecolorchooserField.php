@@ -25,6 +25,14 @@ final class GooglecolorchooserField extends FormField
         '865A5A', '705770', '4E5D6C', '5A6986', '4A716C', '6E6E41', '8D6F47',
     ];
 
+    /**
+     * Render a readonly hex-color input with an accessible swatch palette.
+     *
+     * Validates stored values as six-digit colors, escapes HTML identifiers
+     * and registers the module-independent click handler once per request.
+     *
+     * @return string Escaped color input and fixed palette-button HTML.
+     */
     public function getInput(): string
     {
         $value = trim((string) $this->value);
@@ -53,6 +61,14 @@ final class GooglecolorchooserField extends FormField
         return $html;
     }
 
+    /**
+     * Register the color-swatch click handler with Joomla's asset manager.
+     *
+     * Registers JavaScript only for an HTML document and avoids duplicate
+     * inline listeners when multiple color fields share one page.
+     *
+     * @return void
+     */
     private function registerScript(): void
     {
         static $registered = false;
@@ -67,7 +83,6 @@ final class GooglecolorchooserField extends FormField
             return;
         }
 
-        $registered = true;
         $document->getWebAssetManager()->addInlineScript(<<<'JS'
 document.addEventListener('click', (event) => {
     const button = event.target.closest('.jsm-google-color');
@@ -80,5 +95,6 @@ document.addEventListener('click', (event) => {
     input.dispatchEvent(new Event('change', {bubbles: true}));
 });
 JS);
+        $registered = true;
     }
 }
