@@ -19,6 +19,14 @@ final class JsmtitleField extends FormField
 {
     protected $type = 'JSMTitle';
 
+    /**
+     * Render the translated administrator section heading with safe styling.
+     *
+     * Validates the hexadecimal color and icon name and escapes translated
+     * title text and configured image paths before inserting HTML attributes.
+     *
+     * @return string Escaped heading markup with optional image or icon.
+     */
     protected function getLabel(): string
     {
         $title = trim((string) ($this->element['title'] ?? ''));
@@ -35,7 +43,9 @@ final class JsmtitleField extends FormField
             . 'text-transform: uppercase; letter-spacing: 3px; font-weight: bold; padding: 5px 5px 5px 10px;';
         $html = '<div style="' . $style . '">';
 
-        if ($image !== '') {
+        // Disallow executable and protocol-relative URLs in the image source.
+        if ($image !== '' && (preg_match('~^(?:https?://|/)~i', $image)
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $image) !== 1)) {
             $html .= '<img style="margin: -1px 4px 0 0; float: left; padding: 0; width: 16px; height: 16px" src="'
                 . htmlspecialchars($image, ENT_QUOTES, 'UTF-8') . '" alt="">';
         } elseif ($icon !== '') {
@@ -51,6 +61,11 @@ final class JsmtitleField extends FormField
         return $html . '</div>';
     }
 
+    /**
+     * Return no editable input control for this display-only heading field.
+     *
+     * @return string Empty string because the field renders in its label.
+     */
     protected function getInput(): string
     {
         return '';
