@@ -134,4 +134,34 @@ try {
     restore_error_handler();
 }
 
+// Bad legacy point rules must not overwrite 3/1/0 defaults or emit
+// warnings when imported config unexpectedly contains nested structures.
+$pointRules = new \ReflectionMethod(RankingCalculator::class, 'pointsForResultType');
+
+set_error_handler(static function (int $severity, string $message): never {
+    throw new \ErrorException($message, 0, $severity);
+});
+
+try {
+    $invalidPoints = (object) [
+        'points_after_regular_time' => ['nested'],
+        'points_after_add_time' => 'invalid,2,',
+        'points_after_penalty' => '5,invalid,1',
+    ];
+
+    if ($pointRules->invoke($calculator, $invalidPoints, 0) !== [3.0, 1.0, 0.0]
+        || $pointRules->invoke($calculator, $invalidPoints, 1) !== [3.0, 2.0, 0.0]
+        || $pointRules->invoke($calculator, $invalidPoints, 2) !== [5.0, 1.0, 1.0]) {
+        throw new RuntimeException('Invalid imported ranking point settings were not defaulted.');
+    }
+
+    $validPoints = (object) ['points_after_regular_time' => '2.5, 1, -1'];
+
+    if ($pointRules->invoke($calculator, $validPoints, 0) !== [2.5, 1.0, -1.0]) {
+        throw new RuntimeException('Valid custom ranking points changed after validation.');
+    }
+} finally {
+    restore_error_handler();
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
