@@ -20,6 +20,7 @@ namespace Joomla\Database {
     final class ParameterType
     {
         public const INTEGER = 'integer';
+        public const STRING = 'string';
     }
 }
 
@@ -71,11 +72,11 @@ namespace {
          * Accept the project ID bind parameter.
          *
          * @param string $key Named SQL placeholder.
-         * @param int $value Project identifier.
+         * @param mixed $value SQL bind value.
          * @param string $type Parameter type.
          * @return static Fluent query object.
          */
-        public function bind(string $key, int $value, string $type): static { return $this; }
+        public function bind(string $key, mixed $value, string $type): static { return $this; }
     }
 
     /** Fake round database containing three distinct project rounds. */
@@ -84,6 +85,8 @@ namespace {
         public int $queryCount = 0;
 
         public bool $useMatchFixture = false;
+
+        public mixed $savedTemplateParams = null;
 
         /**
          * Create an in-memory fluent query for round lookup.
@@ -111,9 +114,11 @@ namespace {
          * Accept the completed round lookup SQL.
          *
          * @param SmRoundQuery $query Query instance.
+         * @param int $offset Optional query offset.
+         * @param int $limit Optional query row limit.
          * @return void
          */
-        public function setQuery(SmRoundQuery $query): void
+        public function setQuery(SmRoundQuery $query, int $offset = 0, int $limit = 0): void
         {
             ++$this->queryCount;
         }
@@ -123,6 +128,13 @@ namespace {
          *
          * @return array<int,object> Round records.
          */
+        /**
+         * Return synthetic stored template parameters from the database.
+         *
+         * @return mixed Database query result for the params column.
+         */
+        public function loadResult(): mixed { return $this->savedTemplateParams; }
+
         public function loadObjectList(): array
         {
             if ($this->useMatchFixture) {
@@ -236,6 +248,34 @@ namespace {
 
     if (array_keys($loaded) !== [101, 102] || $matchDb->queryCount !== 1) {
         throw new \RuntimeException('Ranking loader accepted invalid match identifiers.');
+    }
+
+    // An unexpected nested result from a custom DB adapter must not
+    // trigger a PHP 8 array-to-string conversion warning.
+    $paramsDb = new SmRoundDatabase();
+    $paramsLoader = new RankingDataLoader($paramsDb);
+    $savedParams = new \ReflectionMethod(RankingDataLoader::class, 'loadSavedTemplateParams');
+
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        foreach ([null, [], ['bad' => 'nested'], new \stdClass()] as $invalid) {
+            $paramsDb->savedTemplateParams = $invalid;
+
+            if ($savedParams->invoke($paramsLoader, 'ranking', 1) !== null) {
+                throw new \RuntimeException('Malformed saved ranking settings were accepted.');
+            }
+        }
+
+        $paramsDb->savedTemplateParams = '{"ranking_order":"POINTS"}';
+
+        if ($savedParams->invoke($paramsLoader, 'ranking', 1) !== '{"ranking_order":"POINTS"}') {
+            throw new \RuntimeException('Valid ranking settings were not retained.');
+        }
+    } finally {
+        restore_error_handler();
     }
 
     $parseColors = new \ReflectionMethod(RankingDataLoader::class, 'parseColors');
