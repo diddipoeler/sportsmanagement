@@ -18,6 +18,11 @@ final class JsmmessageField extends FormField
 {
     protected $type = 'JSMMessage';
 
+    /**
+     * Render the display-only message field label for the selected style.
+     *
+     * @return string Visually hidden example marker or decorative label HTML.
+     */
     protected function getLabel(): string
     {
         $type = trim((string) ($this->element['style'] ?? ''));
@@ -27,13 +32,24 @@ final class JsmmessageField extends FormField
             : '<div style="clear: both;"></div>';
     }
 
+    /**
+     * Render the configured Joomla language message as safe HTML text.
+     *
+     * Translates administrator-provided labels and message keys, escapes
+     * their output, and selects a fixed Bootstrap notification style.
+     *
+     * @return string Encoded example badge or administrator alert markup.
+     */
     protected function getInput(): string
     {
         $message = trim((string) ($this->element['text'] ?? ''));
         $type = trim((string) ($this->element['style'] ?? ''));
         $label = trim((string) ($this->element['label'] ?? ''));
         $translatedLabel = $label !== '' ? Text::_($label) : '';
-        $translatedMessage = $message !== '' ? Text::_($message) : '';
+        // Joomla language overrides are text, not trusted HTML markup.
+        $translatedMessage = $message !== ''
+            ? htmlspecialchars(Text::_($message), ENT_QUOTES, 'UTF-8')
+            : '';
 
         if ($type === 'example') {
             $badge = $translatedLabel !== ''
