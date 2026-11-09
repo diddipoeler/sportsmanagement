@@ -314,7 +314,8 @@ final class RankingCalculator
      * Uses specialist ring totals rather than win/draw points. Preserves
      * valid one-sided results, but discards corrupt self-matches and
      * ignores team rows excluded from the scoring table. Multiple results
-     * in one round contribute to the same per-round ring total.
+     * in one round contribute to each team's per-round ring total, whether
+     * the team appears as the home or away side.
      *
      * @param array<int,RankingRow> $rows Team rows receiving shooting scores.
      * @param array<int,object> $matches Scored rifle fixtures.
@@ -366,6 +367,10 @@ final class RankingCalculator
                     $rows[$awayId]->sum_team1_result += $awayScore;
                     $rows[$awayId]->sum_team2_result += $homeScore;
                     $rows[$awayId]->shooterrings += $awayScore;
+                    $round = $match->roundcode ?? '';
+                    $roundKey = is_scalar($round) ? (string) $round : '';
+                    $rows[$awayId]->shooterringsperround[$roundKey] =
+                        ($rows[$awayId]->shooterringsperround[$roundKey] ?? 0.0) + $awayScore;
                 }
             }
         }
