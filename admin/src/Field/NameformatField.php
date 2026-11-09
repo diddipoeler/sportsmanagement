@@ -20,6 +20,14 @@ final class NameformatField extends ListField
 {
     protected $type = 'nameformat';
 
+    /**
+     * Initialize the name-format chooser with compact Joomla select settings.
+     *
+     * @param \SimpleXMLElement $element Field XML definition to configure.
+     * @param mixed $value Stored name formatting preference.
+     * @param string|null $group Optional Joomla field group.
+     * @return bool Whether the inherited list field setup succeeded.
+     */
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
         $element['class'] = 'inputbox';
@@ -28,6 +36,14 @@ final class NameformatField extends ListField
         return parent::setup($element, $value, $group);
     }
 
+    /**
+     * Load the installed name-format translations and build selector options.
+     *
+     * Preserves the numeric ordering used by existing person-name formatting
+     * settings while keeping the inherited Joomla list options available.
+     *
+     * @return array<int,object> Translated person-name ordering preferences.
+     */
     protected function getOptions(): array
     {
         $language = SportsManagementAdministratorApplicationResolver::resolve()->getLanguage();
