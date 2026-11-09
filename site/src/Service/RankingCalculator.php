@@ -49,7 +49,8 @@ final class RankingCalculator
     /**
      * Update ranking totals and match statistics from the selected fixtures.
      * Applies sport-specific results to eligible teams, including small-bore
-     * and Faustball scoring. Malformed project-team IDs are skipped safely.
+     * and Faustball scoring. Malformed team identifiers and required scores
+     * are ignored, while optional bonuses default safely to zero.
      *
      * @param array<int,RankingRow> $rows Ranking rows modified in place.
      * @param array<int,object> $matches Matches whose results contribute to standings.
@@ -86,10 +87,19 @@ final class RankingCalculator
 
             $home = $rows[$homeId];
             $away = $rows[$awayId];
-            $decision = (int) ($match->decision ?? 0);
-            if ($decision === 0) {
-                $homeScore = (float) ($match->home_score ?? 0);
-                $awayScore = (float) ($match->away_score ?? 0);
+            $decision = self::finiteNumber($match->decision ?? 0);
+            if ($decision === null) {
+                continue;
+            }
+
+            if ((int) $decision === 0) {
+                // Incomplete or corrupted score cells must never be counted
+                // as a draw or an administrative result.
+                $homeScore = self::finiteNumber($match->home_score ?? null);
+                $awayScore = self::finiteNumber($match->away_score ?? null);
+                if ($homeScore === null || $awayScore === null) {
+                    continue;
+                }
                 $leg1 = (float) ($match->l1 ?? 0);
                 $leg2 = (float) ($match->l2 ?? 0);
                 $mp1 = (float) ($match->mp1 ?? 0);
@@ -99,8 +109,8 @@ final class RankingCalculator
                 $ga1 = (float) ($match->ga1 ?? 0);
                 $ga2 = (float) ($match->ga2 ?? 0);
             } else {
-                $homeScore = (float) ($match->home_score_decision ?? 0);
-                $awayScore = (float) ($match->away_score_decision ?? 0);
+                $homeScore = self::finiteNumber($match->home_score_decision ?? 0) ?? 0.0;
+                $awayScore = self::finiteNumber($match->away_score_decision ?? 0) ?? 0.0;
                 $leg1 = $leg2 = $mp1 = $mp2 = $se1 = $se2 = $ga1 = $ga2 = 0.0;
             }
 
@@ -151,8 +161,8 @@ final class RankingCalculator
                 $this->recordDecision((int) ($match->team_won ?? 0), $home, $away, $winPoints);
             }
 
-            $homeBonus = (float) ($match->home_bonus ?? 0);
-            $awayBonus = (float) ($match->away_bonus ?? 0);
+            $homeBonus = self::finiteNumber($match->home_bonus ?? 0) ?? 0.0;
+            $awayBonus = self::finiteNumber($match->away_bonus ?? 0) ?? 0.0;
             $home->sum_points += $homeBonus;
             $home->bonus_points += $homeBonus;
             $away->sum_points += $awayBonus;
@@ -195,6 +205,30 @@ final class RankingCalculator
     }
 
     /**
+     * Convert a stored match value to a finite number without PHP warnings.
+     *
+     * Missing, nested and non-numeric legacy values are invalid. Optional
+     * statistics can then choose a safe default at the call site.
+     *
+     * @param mixed $value Raw result or point field.
+     * @return float|null Finite numeric value, or null if invalid.
+     */
+    private static function finiteNumber(mixed $value): ?float
+    {
+        if (!is_int($value) && !is_float($value) && !is_string($value)) {
+            return null;
+        }
+
+        if (!is_numeric($value)) {
+            return null;
+        }
+
+        $number = (float) $value;
+
+        return is_finite($number) ? $number : null;
+    }
+
+    /**
      * Accumulate individual small-bore shooting scores and per-round rings.
      * Uses the sport's specialist ring totals rather than generic win/draw match points and optionally restricts matches to the selected head-to-head teams.
      *
@@ -223,16 +257,22 @@ final class RankingCalculator
                 continue;
             }
             if (isset($rows[$homeId])) {
-                $homeScore = (float) ($match->home_score ?? 0);
-                $awayScore = (float) ($match->away_score ?? 0);
+                $homeScore = self::finiteNumber($match->home_score ?? null);
+                $awayScore = self::finiteNumber($match->away_score ?? 0);
+                if ($homeScore === null || $awayScore === null) {
+                    continue;
+                }
                 $rows[$homeId]->sum_team1_result += $homeScore;
                 $rows[$homeId]->sum_team2_result += $awayScore;
                 $rows[$homeId]->shooterrings += $homeScore;
                 $rows[$homeId]->shooterringsperround[(string) ($match->roundcode ?? '')] = $homeScore;
             }
             if (isset($rows[$awayId])) {
-                $awayScore = (float) ($match->away_score ?? 0);
-                $homeScore = (float) ($match->home_score ?? 0);
+                $awayScore = self::finiteNumber($match->away_score ?? null);
+                $homeScore = self::finiteNumber($match->home_score ?? 0);
+                if ($awayScore === null || $homeScore === null) {
+                    continue;
+                }
                 $rows[$awayId]->sum_team1_result += $awayScore;
                 $rows[$awayId]->sum_team2_result += $homeScore;
                 $rows[$awayId]->shooterrings += $awayScore;
