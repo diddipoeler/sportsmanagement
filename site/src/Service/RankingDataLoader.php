@@ -201,7 +201,9 @@ final class RankingDataLoader
 
     /**
      * Create ranking rows from a project's eligible team and final-table relations.
-     * Tries division-scoped project teams, stored final-division rows and fallback final standings, preserving precomputed scores and team metadata when final values are enabled.
+     * Tries division-scoped project teams and stored final-division rows.
+     * Project-wide fallback final standings are used only without a division
+     * filter, preventing unrelated teams from appearing in a division table.
      *
      * @param int $projectId Owning project ID.
      * @param int $divisionId Optional division ID.
@@ -213,7 +215,9 @@ final class RankingDataLoader
         if (!$records && $divisionId > 0) {
             $records = $this->queryProjectTeams($projectId, $divisionId, true);
         }
-        if (!$records) {
+        // Project-wide final standings are not division scoped. Using them
+        // as a fallback for a requested division can leak unrelated teams.
+        if (!$records && $divisionId <= 0) {
             $records = $this->queryFinalProjectTeams($projectId);
         }
 
