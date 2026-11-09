@@ -432,7 +432,9 @@ final class RankingDataLoader
 
     /**
      * Limit ranking fixtures to the requested inclusive round-code interval.
-     * Looks up the parent project's round codes and retains fixtures between selected start and end boundaries while preserving match keys.
+     * Looks up the parent project's round codes and retains fixtures between
+     * selected boundaries while preserving match keys. Unknown round IDs and
+     * reversed ranges produce an empty selection rather than no restriction.
      *
      * @param array<int,object> $matches Previously loaded ranking matches.
      * @param int $projectId Project whose rounds define the range.
@@ -456,8 +458,20 @@ final class RankingDataLoader
         foreach ($db->loadObjectList() ?: [] as $round) {
             $codes[(int) $round->id] = (int) $round->roundcode;
         }
-        $from = $fromRoundId > 0 ? ($codes[$fromRoundId] ?? null) : null;
-        $to = $toRoundId > 0 ? ($codes[$toRoundId] ?? null) : null;
+        // An explicitly requested round missing from this project must not
+        // silently turn into an unbounded range (and include other matches).
+        if (($fromRoundId > 0 && !array_key_exists($fromRoundId, $codes))
+            || ($toRoundId > 0 && !array_key_exists($toRoundId, $codes))) {
+            return [];
+        }
+
+        $from = $fromRoundId > 0 ? $codes[$fromRoundId] : null;
+        $to = $toRoundId > 0 ? $codes[$toRoundId] : null;
+
+        if ($from !== null && $to !== null && $from > $to) {
+            return [];
+        }
+
         return array_filter($matches, static function ($match) use ($codes, $from, $to): bool {
             $code = $codes[(int) ($match->roundid ?? 0)] ?? null;
             return $code !== null && ($from === null || $code >= $from) && ($to === null || $code <= $to);
