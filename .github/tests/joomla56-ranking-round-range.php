@@ -88,6 +88,8 @@ namespace {
 
         public bool $useTeamFallbackFixture = false;
 
+        public int $teamFallbackAtQuery = 3;
+
         public mixed $savedTemplateParams = null;
 
         /**
@@ -143,7 +145,7 @@ namespace {
                 // Ordinary and division-final queries return no teams.
                 // The third, unscoped query would return a team from a
                 // different division, which must be skipped for division views.
-                return $this->queryCount >= 3
+                return $this->queryCount >= $this->teamFallbackAtQuery
                     ? [(object) ['projectteamid' => 999, 'id' => 42, 'division_id' => 91, 'name' => 'Other division']]
                     : [];
             }
@@ -303,6 +305,7 @@ namespace {
 
     $projectDb = new SmRoundDatabase();
     $projectDb->useTeamFallbackFixture = true;
+    $projectDb->teamFallbackAtQuery = 2;
     $projectLoader = new RankingDataLoader($projectDb);
     $projectTeams = $loadTeams->invoke($projectLoader, 10, 0);
 
