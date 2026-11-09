@@ -124,17 +124,17 @@ namespace {
         }
 
         /**
-         * Return the three known rounds in ascending roundcode order.
-         *
-         * @return array<int,object> Round records.
-         */
-        /**
          * Return synthetic stored template parameters from the database.
          *
          * @return mixed Database query result for the params column.
          */
         public function loadResult(): mixed { return $this->savedTemplateParams; }
 
+        /**
+         * Return the three known rounds in ascending roundcode order.
+         *
+         * @return array<int,object> Round records.
+         */
         public function loadObjectList(): array
         {
             if ($this->useMatchFixture) {
