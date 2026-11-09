@@ -634,4 +634,48 @@ try {
     restore_error_handler();
 }
 
+// Equal total points can be resolved by the direct match without
+// accidentally including starting points in the head-to-head subtable.
+$h2hHome = new RankingRow(10);
+$h2hHome->name = 'Zulu';
+$h2hAway = new RankingRow(20);
+$h2hAway->name = 'Alpha';
+$h2hAway->start_points = 3.0;
+$h2hSeeds = [20 => $h2hAway, 10 => $h2hHome];
+
+$h2hSorted = $calculator->calculate(
+    $h2hSeeds,
+    [$match],
+    $project,
+    ['ranking_order' => 'POINTS,H2H', 'ranking_sort_order' => 'DESC,DESC']
+);
+
+if (array_keys($h2hSorted) !== [10, 20]
+    || $h2hSorted[10]->rank !== 1
+    || $h2hSorted[20]->rank !== 2
+    || $h2hSeeds[20]->start_points !== 3.0) {
+    throw new RuntimeException('Head-to-head ranking ignored the direct result or modified starting points.');
+}
+
+// With no direct result and equal points, alphabetical display order must
+// not invent different rank values for tied teams.
+$equalRows = [
+    10 => new RankingRow(10),
+    20 => new RankingRow(20),
+];
+$equalRows[10]->name = 'Zulu';
+$equalRows[20]->name = 'Alpha';
+$equalSorted = $calculator->calculate(
+    $equalRows,
+    [],
+    $project,
+    ['ranking_order' => 'POINTS', 'ranking_sort_order' => 'DESC']
+);
+
+if (array_keys($equalSorted) !== [20, 10]
+    || $equalSorted[20]->rank !== 1
+    || $equalSorted[10]->rank !== 1) {
+    throw new RuntimeException('Tied ranking teams received different ranks.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
