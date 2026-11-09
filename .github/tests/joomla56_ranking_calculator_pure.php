@@ -383,4 +383,32 @@ try {
     restore_error_handler();
 }
 
+// Unknown criteria must not collapse all teams into a tied first place.
+// Valid criteria following a bad token must retain their sort direction.
+$unknownOnly = $calculator->calculate(
+    $seed,
+    [$match],
+    $project,
+    ['ranking_order' => 'INVALID_LEGACY_RULE', 'ranking_sort_order' => 'DESC']
+);
+
+if (array_keys($unknownOnly) !== [10, 20]
+    || $unknownOnly[10]->rank !== 1
+    || $unknownOnly[20]->rank !== 2) {
+    throw new RuntimeException('Unknown-only ranking criteria incorrectly tied every team.');
+}
+
+$unknownThenPoints = $calculator->calculate(
+    $seed,
+    [$match],
+    $project,
+    ['ranking_order' => 'obsolete,POINTS', 'ranking_sort_order' => 'DESC,ASC']
+);
+
+if (array_keys($unknownThenPoints) !== [20, 10]
+    || $unknownThenPoints[20]->rank !== 1
+    || $unknownThenPoints[10]->rank !== 2) {
+    throw new RuntimeException('Unsupported criteria disrupted a valid ascending sort.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
