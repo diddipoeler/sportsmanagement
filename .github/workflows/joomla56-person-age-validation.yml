@@ -25,6 +25,7 @@ on:
       - 'admin/src/Field/GoogletimezonesField.php'
       - 'admin/src/Field/DatetimechooserField.php'
       - '.github/tests/joomla56-datetimechooser-field.php'
+      - '.github/tests/joomla56-googlecolorchooser-field.php'
       - 'admin/src/Field/NameformatField.php'
       - 'admin/src/Field/PagetitleformatField.php'
       - 'admin/src/Field/GooglecolorchooserField.php'
@@ -91,6 +92,7 @@ on:
       - 'admin/src/Field/GoogletimezonesField.php'
       - 'admin/src/Field/DatetimechooserField.php'
       - '.github/tests/joomla56-datetimechooser-field.php'
+      - '.github/tests/joomla56-googlecolorchooser-field.php'
       - 'admin/src/Field/NameformatField.php'
       - 'admin/src/Field/PagetitleformatField.php'
       - 'admin/src/Field/GooglecolorchooserField.php'
@@ -175,6 +177,7 @@ jobs:
           php -l admin/src/Field/GoogletimezonesField.php
           php -l admin/src/Field/DatetimechooserField.php
           php -l .github/tests/joomla56-datetimechooser-field.php
+          php -l .github/tests/joomla56-googlecolorchooser-field.php
           php -l admin/src/Field/NameformatField.php
           php -l admin/src/Field/PagetitleformatField.php
           php -l admin/src/Field/GooglecolorchooserField.php
@@ -247,6 +250,8 @@ jobs:
         run: php .github/tests/joomla56-timezone-options.php
       - name: Verify datetime chooser timezone fallback
         run: php .github/tests/joomla56-datetimechooser-field.php
+      - name: Verify Google color field input validation
+        run: php .github/tests/joomla56-googlecolorchooser-field.php
       - name: Verify extension folder filter validation
         run: php .github/tests/joomla56-extension-list-validation.php
       - name: Verify documentation in changed runtime classes
