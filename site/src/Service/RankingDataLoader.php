@@ -61,7 +61,7 @@ final class RankingDataLoader
             'teams' => $teams,
             'matches' => $matches,
             'config' => $config,
-            'colors' => $this->parseColors((string) ($config['colors'] ?? '')),
+            'colors' => $this->parseColors($config['colors'] ?? ''),
         ];
     }
 
@@ -480,13 +480,19 @@ final class RankingDataLoader
 
     /**
      * Parse legacy ranking-colour rules into structured ranges.
-     * Splits semicolon-separated rules into from, to, colour and description fields while ignoring incomplete entries.
+     * Splits semicolon-separated rules into from, to, colour and description
+     * fields while ignoring incomplete entries. Corrupt array/object settings
+     * are treated as empty rather than cast to a string with PHP warnings.
      *
-     * @param string $config Semicolon-separated four-field ranking colour definitions.
+     * @param mixed $config Stored ranking colour definitions, normally a string.
      * @return array<int,array{from:string,to:string,color:string,description:string}> Parsed ranking-colour rules.
      */
-    private function parseColors(string $config): array
+    private function parseColors(mixed $config): array
     {
+        if (!is_string($config) || trim($config) === '') {
+            return [];
+        }
+
         $colors = [];
         foreach (array_filter(array_map('trim', explode(';', $config))) as $item) {
             $parts = array_map('trim', explode(',', $item, 4));
