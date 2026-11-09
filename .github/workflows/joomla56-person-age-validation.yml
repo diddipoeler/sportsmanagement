@@ -18,6 +18,9 @@ on:
       - 'admin/src/Field/ExtensionsubtitleField.php'
       - 'admin/src/Field/ExtensionlinkField.php'
       - 'admin/src/Field/ExtensionmessageField.php'
+      - 'admin/src/Field/JsmmessageField.php'
+      - 'admin/src/Field/JsmtitleField.php'
+      - '.github/tests/joomla56-admin-message-escaping.php'
       - '.github/tests/joomla56-country-field.php'
       - 'admin/src/Field/ExtensiontranslatorsField.php'
       - 'admin/src/Field/LanguagecharacterField.php'
@@ -69,6 +72,9 @@ on:
       - 'admin/src/Field/ExtensionsubtitleField.php'
       - 'admin/src/Field/ExtensionlinkField.php'
       - 'admin/src/Field/ExtensionmessageField.php'
+      - 'admin/src/Field/JsmmessageField.php'
+      - 'admin/src/Field/JsmtitleField.php'
+      - '.github/tests/joomla56-admin-message-escaping.php'
       - '.github/tests/joomla56-country-field.php'
       - 'admin/src/Field/ExtensiontranslatorsField.php'
       - 'admin/src/Field/LanguagecharacterField.php'
@@ -138,6 +144,9 @@ jobs:
           php -l admin/src/Field/ExtensionsubtitleField.php
           php -l admin/src/Field/ExtensionlinkField.php
           php -l admin/src/Field/ExtensionmessageField.php
+          php -l admin/src/Field/JsmmessageField.php
+          php -l admin/src/Field/JsmtitleField.php
+          php -l .github/tests/joomla56-admin-message-escaping.php
           php -l .github/tests/joomla56-country-field.php
           php -l admin/src/Field/ExtensiontranslatorsField.php
           php -l admin/src/Field/LanguagecharacterField.php
@@ -194,7 +203,9 @@ jobs:
         run: php .github/tests/joomla56-editmatch-statistic-definition.php
       - name: Verify country field database validation
         run: php .github/tests/joomla56-country-field.php
+      - name: Verify administrator message escaping and title links
+        run: php .github/tests/joomla56-admin-message-escaping.php
       - name: Verify documentation in changed runtime classes
         run: |
-          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php admin/src/Helper/RemoteImageDownloadHelper.php admin/src/Helper/CountryOptionsHelper.php admin/src/Helper/SqlImportHelper.php site/src/Service/MatchReadService.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php admin/src/Field/ExtensionversionField.php admin/src/Field/ExtensionauthorField.php admin/src/Field/ExtensiontranslatorsField.php admin/src/Field/LanguagecharacterField.php admin/src/Field/GeocompleteField.php admin/src/Controller/DatabasetoolsController.php admin/src/Controller/ClubnamesController.php site/src/Service/EditmatchStatisticDefinition.php modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php admin/src/Field/CountryField.php admin/src/Field/ExtensionlistField.php admin/src/Field/ExtensionsubtitleField.php admin/src/Field/ExtensionlinkField.php admin/src/Field/ExtensionmessageField.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/IndividualMatchReadService.php admin/src/Helper/ExtraSelectOptionsHelper.php admin/src/Helper/LocationHelper.php admin/src/Helper/RemoteImageDownloadHelper.php admin/src/Helper/CountryOptionsHelper.php admin/src/Helper/SqlImportHelper.php site/src/Service/MatchReadService.php modules/mod_sportsmanagement_calendar/connectors/livescore_j5.php modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php admin/src/Field/ExtensionversionField.php admin/src/Field/ExtensionauthorField.php admin/src/Field/ExtensiontranslatorsField.php admin/src/Field/LanguagecharacterField.php admin/src/Field/GeocompleteField.php admin/src/Controller/DatabasetoolsController.php admin/src/Controller/ClubnamesController.php site/src/Service/EditmatchStatisticDefinition.php modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php admin/src/Field/CountryField.php admin/src/Field/ExtensionlistField.php admin/src/Field/ExtensionsubtitleField.php admin/src/Field/ExtensionlinkField.php admin/src/Field/ExtensionmessageField.php admin/src/Field/JsmmessageField.php admin/src/Field/JsmtitleField.php
           php .github/scripts/check-php-file-headers.php
