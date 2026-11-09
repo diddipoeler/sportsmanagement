@@ -492,4 +492,50 @@ if (array_keys($emptyLeadingCriterion) !== [10, 20]
     throw new RuntimeException('An empty ranking criterion shifted its neighbour\'s sort direction.');
 }
 
+// Corrupt self-matches can reference the same RankingRow as both home
+// and away and would otherwise award contradictory results twice.
+$normalSelf = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$calculator->applyMatches(
+    $normalSelf,
+    [(object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => '10',
+        'home_score' => 3,
+        'away_score' => 0,
+        'home_bonus' => 2,
+    ]],
+    $project,
+    $project->sport_type_name
+);
+
+if ($normalSelf[10]->cnt_matches !== 0
+    || $normalSelf[10]->cnt_won !== 0
+    || $normalSelf[10]->cnt_lost !== 0
+    || $normalSelf[10]->sum_points !== 0.0
+    || $normalSelf[10]->bonus_points !== 0.0
+    || $normalSelf[20]->cnt_matches !== 0) {
+    throw new RuntimeException('A self-match changed normal ranking standings.');
+}
+
+$shootingSelf = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$calculator->applyMatches(
+    $shootingSelf,
+    [(object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => 10,
+        'home_score' => 390,
+        'away_score' => 385,
+        'roundcode' => 4,
+    ]],
+    $project,
+    'COM_SPORTSMANAGEMENT_ST_SMALL_BORE_RIFLE_ASSOCIATION'
+);
+
+if ($shootingSelf[10]->shooterrings !== 0.0
+    || $shootingSelf[10]->sum_team1_result !== 0.0
+    || $shootingSelf[10]->shooterringsperround !== []
+    || $shootingSelf[20]->shooterrings !== 0.0) {
+    throw new RuntimeException('A self-match contributed duplicate shooting results.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
