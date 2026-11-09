@@ -93,8 +93,19 @@ namespace {
         throw new \RuntimeException('Expected a generic public model exception.');
     }
 
-    foreach ([null, false, [], ''] as $empty) {
+    foreach ([null, false, [], '', new \ArrayIterator([])] as $empty) {
         SportsManagementViewErrorReporter::assertNoErrors($empty, 'ranking');
+    }
+
+    $emptyGenerator = (static function (): \Generator {
+        if (false) {
+            yield new \RuntimeException('Unreachable error');
+        }
+    })();
+    SportsManagementViewErrorReporter::assertNoErrors($emptyGenerator, 'ranking');
+
+    if (Log::$messages !== []) {
+        throw new \RuntimeException('Empty model error collections must not be logged.');
     }
 
     smAssertViewErrors(new \RuntimeException('Private database failure'), [
