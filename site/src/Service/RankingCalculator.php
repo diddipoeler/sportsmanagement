@@ -81,7 +81,8 @@ final class RankingCalculator
      * @param array<int,object> $matches Matches whose results contribute to standings.
      * @param object $project Project score settings and overtime policy.
      * @param string $sportType SportsManagement sport-type constant.
-     * @param array<int,int>|null $allowedProjectTeams Optional project-team IDs for a head-to-head subset.
+     * @param array<int,int>|null $allowedProjectTeams Optional head-to-head subset;
+     *     an empty list explicitly excludes all matches.
      * @return void
      */
     public function applyMatches(array &$rows, array $matches, object $project, string $sportType, ?array $allowedProjectTeams = null): void
@@ -109,7 +110,7 @@ final class RankingCalculator
             if (!isset($rows[$homeId], $rows[$awayId]) || !$rows[$homeId]->is_in_score || !$rows[$awayId]->is_in_score) {
                 continue;
             }
-            if ($allowedProjectTeams && (!in_array($homeId, $allowedProjectTeams, true) || !in_array($awayId, $allowedProjectTeams, true))) {
+            if ($allowedProjectTeams !== null && (!in_array($homeId, $allowedProjectTeams, true) || !in_array($awayId, $allowedProjectTeams, true))) {
                 continue;
             }
 
@@ -297,7 +298,8 @@ final class RankingCalculator
      *
      * @param array<int,RankingRow> $rows Team rows receiving shooting scores.
      * @param array<int,object> $matches Scored rifle fixtures.
-     * @param array<int,int>|null $allowedProjectTeams Optional subset of eligible project teams.
+     * @param array<int,int>|null $allowedProjectTeams Optional subset;
+     *     an empty list excludes all shooting matches.
      * @return void
      */
     private function applySmallBoreMatches(array &$rows, array $matches, ?array $allowedProjectTeams): void
@@ -319,7 +321,7 @@ final class RankingCalculator
                 continue;
             }
 
-            if ($allowedProjectTeams && (!in_array($homeId, $allowedProjectTeams, true) || !in_array($awayId, $allowedProjectTeams, true))) {
+            if ($allowedProjectTeams !== null && (!in_array($homeId, $allowedProjectTeams, true) || !in_array($awayId, $allowedProjectTeams, true))) {
                 continue;
             }
             if (isset($rows[$homeId])) {
