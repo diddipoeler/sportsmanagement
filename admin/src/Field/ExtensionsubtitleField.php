@@ -18,6 +18,14 @@ final class ExtensionsubtitleField extends FormField
 {
     protected $type = 'extensionsubtitle';
 
+    /**
+     * Render the configured extension subtitle and a safe gradient marker.
+     *
+     * Restricts color settings to six-digit hexadecimal values, uses a known
+     * default for invalid colors and escapes the translated subtitle text.
+     *
+     * @return string Safe administrator subtitle and gradient HTML.
+     */
     protected function getLabel(): string
     {
         $title = trim((string) ($this->element['title'] ?? ''));
@@ -41,6 +49,11 @@ final class ExtensionsubtitleField extends FormField
         return $html . '</div>';
     }
 
+    /**
+     * Return no separate form control for this display-only subtitle field.
+     *
+     * @return string Empty input markup; the field renders only a label.
+     */
     protected function getInput(): string
     {
         return '';
