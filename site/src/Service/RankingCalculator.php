@@ -242,7 +242,9 @@ final class RankingCalculator
 
     /**
      * Choose the win, draw and loss point values for a result category.
-     * Parses the project's regular-time, extra-time or penalty point list, using the standard three, one and zero defaults when no values are supplied.
+     * Parses the project's regular-time, extra-time or penalty point list.
+     * Rejects non-numeric tokens, non-finite numbers and nested legacy
+     * settings, retaining the standard 3/1/0 fallback for invalid entries.
      *
      * @param object $project Project scoring configuration.
      * @param int $resultType Regular, overtime or penalty result type.
@@ -250,17 +252,31 @@ final class RankingCalculator
      */
     private function pointsForResultType(object $project, int $resultType): array
     {
-        $source = match ($resultType) {
-            1 => (string) ($project->points_after_add_time ?? ''),
-            2 => (string) ($project->points_after_penalty ?? ''),
-            default => (string) ($project->points_after_regular_time ?? ''),
+        $setting = match ($resultType) {
+            1 => $project->points_after_add_time ?? '',
+            2 => $project->points_after_penalty ?? '',
+            default => $project->points_after_regular_time ?? '',
         };
+
+        // Legacy configuration may contain nested values after an import.
+        // Keep the normal scoring defaults rather than casting arrays or
+        // objects, or treating a non-numeric token as zero points.
+        $source = is_string($setting) || is_int($setting) || is_float($setting)
+            ? (string) $setting
+            : '';
         $parts = array_map('trim', explode(',', $source));
-        return [
-            isset($parts[0]) && $parts[0] !== '' ? (float) $parts[0] : 3.0,
-            isset($parts[1]) && $parts[1] !== '' ? (float) $parts[1] : 1.0,
-            isset($parts[2]) && $parts[2] !== '' ? (float) $parts[2] : 0.0,
-        ];
+        $defaults = [3.0, 1.0, 0.0];
+
+        foreach ($defaults as $index => $default) {
+            if (isset($parts[$index]) && is_numeric($parts[$index])) {
+                $candidate = (float) $parts[$index];
+                if (is_finite($candidate)) {
+                    $defaults[$index] = $candidate;
+                }
+            }
+        }
+
+        return $defaults;
     }
 
     /**
