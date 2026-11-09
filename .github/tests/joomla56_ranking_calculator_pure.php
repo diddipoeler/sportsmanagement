@@ -457,4 +457,24 @@ if (array_keys($stored) !== [30, 40]
     throw new RuntimeException('Valid stored final ranks were not preserved.');
 }
 
+// A missing individual final rank (zero) must not beat actual placements.
+$unplaced = new RankingRow(50);
+$unplaced->name = 'Awaiting final placement';
+$unplaced->finaltablerank = 0;
+$placed = new RankingRow(60);
+$placed->name = 'Placed';
+$placed->finaltablerank = 2;
+$partialFinal = $calculator->calculate(
+    [50 => $unplaced, 60 => $placed],
+    [],
+    $project,
+    $config
+);
+
+if (array_keys($partialFinal) !== [60, 50]
+    || $partialFinal[60]->rank !== 1
+    || $partialFinal[50]->rank !== 2) {
+    throw new RuntimeException('Unranked teams appeared ahead of saved final positions.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
