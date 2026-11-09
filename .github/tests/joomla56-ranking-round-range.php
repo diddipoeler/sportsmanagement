@@ -110,6 +110,11 @@ namespace {
                 (object) ['id' => 5, 'roundcode' => 1],
                 (object) ['id' => 8, 'roundcode' => 2],
                 (object) ['id' => 13, 'roundcode' => 3],
+                (object) ['id' => ['nested'], 'roundcode' => 4],
+                (object) ['id' => 20, 'roundcode' => new \stdClass()],
+                (object) ['id' => 'bad-id', 'roundcode' => 4],
+                (object) ['roundcode' => 5],
+                'unexpected scalar',
             ];
         }
     }
