@@ -22,7 +22,8 @@ final class ExtensionlistField extends ListField
      * Build the optional extension-folder list for administrator settings.
      *
      * Reads extension directories beneath the component's installed folder,
-     * validates exclusion-pattern syntax, and appends only safe folder names
+     * validates both filter and exclusion-pattern syntax, and appends safe
+     * folder names
      * to the inherited Joomla field options.
      *
      * @return array<int,object> Installed extension directory choices.
@@ -37,6 +38,13 @@ final class ExtensionlistField extends ListField
 
         $filter = (string) ($this->element['filter'] ?? '');
         $exclude = (string) ($this->element['exclude'] ?? '');
+
+        // Joomla's Folder::folders() interprets its filter as a regular
+        // expression. Refuse invalid or excessively long XML configuration.
+        if (strlen($filter) > 256 || strlen($exclude) > 256
+            || ($filter !== '' && @preg_match(chr(1) . $filter . chr(1), '') === false)) {
+            return parent::getOptions();
+        }
         // Invalid XML regular expressions must not trigger preg_match errors
         // or break the administrator settings form.
         $excludePattern = $exclude !== '' ? chr(1) . $exclude . chr(1) : null;
