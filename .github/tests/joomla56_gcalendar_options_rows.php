@@ -97,9 +97,9 @@ namespace {
         }
     }
 
-    $timezone = new \\ReflectionMethod($class, 'safeTimezone');
-    $priorErrorHandler = set_error_handler(static function (int $level, string $message): never {
-        throw new \\ErrorException($message, 0, $level);
+    $timezone = new \ReflectionMethod($class, 'safeTimezone');
+    set_error_handler(static function (int $level, string $message): never {
+        throw new \ErrorException($message, 0, $level);
     });
 
     try {
@@ -108,15 +108,15 @@ namespace {
             ['UTC', 'UTC'],
             ['+02:00', '+02:00'],
             [[], 'UTC'],
-            [new \\stdClass(), 'UTC'],
+            [new \stdClass(), 'UTC'],
             [null, 'UTC'],
             [true, 'UTC'],
             ['Not/A_Timezone', 'UTC'],
-            ["Europe/Berlin\\0evil", 'UTC'],
+            ["Europe/Berlin\0evil", 'UTC'],
             [str_repeat('X', 129), 'UTC'],
         ] as [$value, $expected]) {
             if ($timezone->invoke(null, $value) !== $expected) {
-                throw new \\RuntimeException('GCalendar accepted malformed timezone configuration.');
+                throw new \RuntimeException('GCalendar accepted malformed timezone configuration.');
             }
         }
     } finally {
