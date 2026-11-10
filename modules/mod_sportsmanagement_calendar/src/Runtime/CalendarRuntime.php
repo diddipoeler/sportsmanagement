@@ -83,16 +83,23 @@ class CalendarRuntime extends \PHPCalendar
     }
 
     /**
-     * Convert connector strings to UTF-8 when the calendar conversion setting is enabled.
-     * Preserves the original text if conversion is disabled or unnecessary; otherwise tries iconv and mbstring in sequence before returning the source string.
+     * Convert connector text to UTF-8 without failing on malformed imports.
+     *
+     * Legacy records may contain nested values or unsupported charset names.
+     * Non-stringable inputs become empty text; failed iconv/mbstring
+     * conversions preserve the original string instead of throwing on PHP 8.
      *
      * @param mixed $text Text supplied by a legacy calendar connector.
      * @param string $fromenc Original character encoding.
      * @param string $toenc Desired output encoding.
-     * @return string Converted or original text.
+     * @return string Converted, unchanged or empty connector text.
      */
-    public static function jl_utf8_convert($text, string $fromenc = 'iso-8859-1', string $toenc = 'UTF-8')
+    public static function jl_utf8_convert($text, string $fromenc = 'iso-8859-1', string $toenc = 'UTF-8'): string
     {
+        if (!is_scalar($text) && !$text instanceof \Stringable) {
+            return '';
+        }
+
         $text = (string) $text;
         $convert = class_exists('SportsmanagementConnector', false)
             && isset(\SportsmanagementConnector::$params)
@@ -104,15 +111,23 @@ class CalendarRuntime extends \PHPCalendar
         }
 
         if (function_exists('iconv')) {
-            $converted = @iconv($fromenc, $toenc . '//TRANSLIT', $text);
+            try {
+                $converted = @iconv($fromenc, $toenc . '//TRANSLIT', $text);
 
-            if ($converted !== false) {
-                return $converted;
+                if ($converted !== false) {
+                    return $converted;
+                }
+            } catch (\ValueError) {
+                // Unsupported charset names must not break the calendar.
             }
         }
 
         if (function_exists('mb_convert_encoding')) {
-            return mb_convert_encoding($text, $toenc, $fromenc);
+            try {
+                return mb_convert_encoding($text, $toenc, $fromenc);
+            } catch (\ValueError) {
+                // Preserve the original text when a legacy charset is invalid.
+            }
         }
 
         return $text;
