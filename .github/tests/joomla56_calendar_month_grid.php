@@ -105,11 +105,13 @@ namespace {
 
         // Complete Unicode labels and HTML-sensitive text still work and
         // must be escaped when output into the month grid.
-        $days = ['<So>', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+        $days = ['<So>', 'Mö', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
         $months = array_fill(0, 12, 'Monat');
         $months[0] = '<Januar>';
         $renderer->setDayNames($days);
         $renderer->setMonthNames($months);
+        $renderer->setDayNames(['broken']);
+        $renderer->setMonthNames([null]);
 
         if ($renderer->getDayNames() !== $days || $renderer->getMonthNames() !== $months) {
             throw new \RuntimeException('Valid translated calendar labels were discarded.');
@@ -124,6 +126,7 @@ namespace {
 
             if ($month === 1 && (!str_contains($html, '&lt;Januar&gt;')
                 || !str_contains($html, '&lt;So&gt;')
+                || !str_contains($html, 'Mö')
                 || str_contains($html, '<Januar>') || str_contains($html, '<So>'))) {
                 throw new \RuntimeException('Calendar label output is missing or unescaped.');
             }
