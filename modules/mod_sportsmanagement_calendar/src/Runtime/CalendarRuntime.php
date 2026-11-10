@@ -171,18 +171,16 @@ class CalendarRuntime extends \PHPCalendar
      */
     public static function getMatches($month, $year): array
     {
-        $month = max(1, min(12, (int) $month));
-        // Joomla calendar rendering supports four-digit years; clamp legacy
-        // query inputs consistently with CalendarHelper::normaliseYear().
-        $year = min(9999, max(1970, (int) $year));
+        // A corrupted legacy selection must not be cast into a different
+        // month/year or emit PHP 8 array-to-integer warnings.
+        $month = self::calendarNumber($month, 1, 12, (int) date('n'));
+        $year = self::calendarNumber($year, 1970, 9999, (int) date('Y'));
         $app = self::siteApplication();
-        $timezoneName = trim((string) self::$params->get('time_zone', $app->get('offset', 'UTC')));
-
-        try {
-            $timezone = new \DateTimeZone($timezoneName !== '' ? $timezoneName : 'UTC');
-        } catch (\Throwable) {
-            $timezone = new \DateTimeZone('UTC');
-        }
+        $siteOffset = $app->get('offset', 'UTC');
+        $timezone = self::calendarTimezone(
+            self::$params->get('time_zone', $siteOffset),
+            $siteOffset
+        );
 
         $firstDay = new \DateTimeImmutable(sprintf('%04d-%02d-01 00:00:00', $year, $month), $timezone);
         $lastDay = $firstDay->modify('last day of this month')->setTime(23, 59, 59);
@@ -220,6 +218,73 @@ class CalendarRuntime extends \PHPCalendar
         self::$matches = self::sortArray(self::$matches, 'asc', 'date');
 
         return self::$matches;
+    }
+
+    /**
+     * Parse a calendar month or year without coercing malformed input.
+     *
+     * Retains the historic boundary clamping for genuine integers and
+     * leading-zero decimal strings. Unsupported values and overflowing
+     * integers use the supplied valid default.
+     *
+     * @param mixed $value Module or connector calendar component.
+     * @param int $minimum Lowest supported value.
+     * @param int $maximum Highest supported value.
+     * @param int $fallback Value used for invalid or overflowing inputs.
+     * @return int Valid month or four-digit year.
+     */
+    private static function calendarNumber(mixed $value, int $minimum, int $maximum, int $fallback): int
+    {
+        if (is_string($value)) {
+            $value = trim($value);
+
+            if ($value === '' || strlen($value) > 64 || preg_match('/^-?[0-9]+$/D', $value) !== 1) {
+                return $fallback;
+            }
+
+            $negative = str_starts_with($value, '-');
+            $digits = ltrim($negative ? substr($value, 1) : $value, '0');
+            $value = ($negative && $digits !== '' ? '-' : '') . ($digits === '' ? '0' : $digits);
+        } elseif (!is_int($value)) {
+            return $fallback;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT);
+
+        return $number === false ? $fallback : max($minimum, min($maximum, $number));
+    }
+
+    /**
+     * Resolve a configured calendar timezone without casting nested values.
+     *
+     * Attempts the configured zone, then Joomla's site zone, then UTC.
+     * Invalid, excessively long or non-string legacy settings are skipped.
+     *
+     * @param mixed $configured Raw module timezone setting.
+     * @param mixed $siteOffset Joomla application timezone fallback.
+     * @return \DateTimeZone A valid timezone for calendar month boundaries.
+     */
+    private static function calendarTimezone(mixed $configured, mixed $siteOffset): \DateTimeZone
+    {
+        foreach ([$configured, $siteOffset, 'UTC'] as $candidate) {
+            if (!is_string($candidate) || $candidate === '' || strlen($candidate) > 100) {
+                continue;
+            }
+
+            $candidate = trim($candidate);
+
+            if ($candidate === '') {
+                continue;
+            }
+
+            try {
+                return new \DateTimeZone($candidate);
+            } catch (\Throwable) {
+                // An invalid legacy timezone must not prevent rendering.
+            }
+        }
+
+        return new \DateTimeZone('UTC');
     }
 
     /**
