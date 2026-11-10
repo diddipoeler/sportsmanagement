@@ -86,7 +86,7 @@ namespace {
         ] as $invalidDays) {
             $renderer->setDayNames($invalidDays);
             if ($renderer->getDayNames() !== $defaultDays) {
-                throw new \\RuntimeException('Invalid calendar weekday names replaced the default labels.');
+                throw new \RuntimeException('Invalid calendar weekday names replaced the default labels.');
             }
         }
 
@@ -99,7 +99,7 @@ namespace {
         ] as $invalidMonths) {
             $renderer->setMonthNames($invalidMonths);
             if ($renderer->getMonthNames() !== $defaultMonths) {
-                throw new \\RuntimeException('Invalid calendar month names replaced the default labels.');
+                throw new \RuntimeException('Invalid calendar month names replaced the default labels.');
             }
         }
 
@@ -112,7 +112,7 @@ namespace {
         $renderer->setMonthNames($months);
 
         if ($renderer->getDayNames() !== $days || $renderer->getMonthNames() !== $months) {
-            throw new \\RuntimeException('Valid translated calendar labels were discarded.');
+            throw new \RuntimeException('Valid translated calendar labels were discarded.');
         }
 
         foreach ([
@@ -125,7 +125,7 @@ namespace {
             if ($month === 1 && (!str_contains($html, '&lt;Januar&gt;')
                 || !str_contains($html, '&lt;So&gt;')
                 || str_contains($html, '<Januar>') || str_contains($html, '<So>'))) {
-                throw new \\RuntimeException('Calendar label output is missing or unescaped.');
+                throw new \RuntimeException('Calendar label output is missing or unescaped.');
             }
 
             preg_match_all(
