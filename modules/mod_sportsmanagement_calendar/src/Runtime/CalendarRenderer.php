@@ -181,12 +181,13 @@ class CalendarRenderer
 
         $daysInMonth = $this->getDaysInMonth($month, $year);
         $date = getdate(mktime(12, 0, 0, $month, 1, $year));
-        $daysInLastMonth = $this->getDaysInMonth($month - 1, $year);
-        $first = $date['wday'];
-        $monthName = $this->monthNames[$month - 1];
-
         $prev = $this->adjustDate($month - 1, $year);
         $next = $this->adjustDate($month + 1, $year);
+        // January's previous month is December of the preceding year:
+        // querying month zero would give zero days and invalid grid dates.
+        $daysInLastMonth = $this->getDaysInMonth($prev[0], $prev[1]);
+        $first = $date['wday'];
+        $monthName = $this->monthNames[$month - 1];
 
         if ((int) $showYear === 1) {
             $prevMonth = $this->getCalendarLink($prev[0], $prev[1]);
