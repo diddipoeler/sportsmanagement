@@ -1,0 +1,73 @@
+name: Joomla 5/6 JSON feed and random quotes compatibility
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/JsonfeedModel.php'
+      - 'admin/src/Model/SmquotestxtModel.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php'
+      - '.github/tests/joomla56_jsonfeed_selector_precedence.php'
+      - '.github/tests/joomla56_admin_rquotes_module_compat.php'
+      - '.github/tests/joomla56_selected_function_phpdoc.php'
+      - '.github/workflows/joomla5-6-jsonfeed-rquotes-compat.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  feed-and-quotes:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Syntax and required file metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Model/JsonfeedModel.php \
+            admin/src/Model/SmquotestxtModel.php \
+            modules/mod_sportsmanagement_rquotes/src/Helper/RquotesHelper.php \
+            .github/tests/joomla56_jsonfeed_selector_precedence.php \
+            .github/tests/joomla56_admin_rquotes_module_compat.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "Missing $tag in $file" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Frontend JSON feed selector precedence
+        run: php -d error_reporting=-1 .github/tests/joomla56_jsonfeed_selector_precedence.php
+
+      - name: Administrator quote file picker and module timezone
+        run: php -d error_reporting=-1 .github/tests/joomla56_admin_rquotes_module_compat.php
+
+      - name: Existing calendar selector regression
+        run: php .github/tests/joomla56_jsonfeed_selected_calendar_ids.php
+
+      - name: Existing random quote configuration and text file regressions
+        shell: bash
+        run: |
+          php .github/tests/joomla56_rquotes_config_validation.php
+          php .github/tests/joomla56_rquotes_text_file_paths.php
+
+      - name: Function-level PHPDoc coverage for migrated files
+        run: php .github/tests/joomla56_selected_function_phpdoc.php
