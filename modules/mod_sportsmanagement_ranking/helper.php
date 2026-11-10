@@ -78,15 +78,30 @@ class modJSMRankingHelper extends stdClass
     }
 
     /**
-     * Keep the historic shrink helper callable by old template overrides.
+     * Select a compact ranking window around a specified favourite team.
+     *
+     * Preserve the historical ranking order and return the complete ranking
+     * when the favourite is absent. Clamp the requested row count to at least
+     * one so malformed module settings cannot request a negative slice; skip
+     * incomplete team rows safely on PHP 8/Joomla 5 and 6.
+     *
+     * @param array $completeRankingList Ranking rows in their existing order.
+     * @param int|string $alwaysVisibleTeamId Identifier of the team to keep in view.
+     * @param int|string $paramRowLimit Maximum number of rows around that team.
+     * @return array Ranking window, or the unchanged ranking when no team matches.
      */
     public static function getShrinkedDataAroundOneTeam($completeRankingList, $alwaysVisibleTeamId, $paramRowLimit)
     {
-        $rank = $completeRankingList;
+        $rank = is_array($completeRankingList) ? $completeRankingList : [];
+        $paramRowLimit = max(1, (int) $paramRowLimit);
         $i = 0;
 
         foreach ($rank as $item) {
-            $isFav = $item->team->id == $alwaysVisibleTeamId;
+            $isFav = is_object($item)
+                && isset($item->team)
+                && is_object($item->team)
+                && isset($item->team->id)
+                && (string) $item->team->id === (string) $alwaysVisibleTeamId;
 
             if ($isFav) {
                 $limit = $paramRowLimit - 1;
