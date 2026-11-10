@@ -128,6 +128,7 @@ foreach (glob($root . '/modules/mod_sportsmanagement_*/services/provider.php') ?
     $paths[] = substr($provider, strlen($root) + 1);
 }
 $paths = array_merge($paths, [
+    'site/src/Model/JsonfeedModel.php',
     'site/src/Model/ResultsEditModel.php',
     'admin/src/Controller/GithubinstallController.php',
     'admin/src/Model/GithubinstallModel.php',
