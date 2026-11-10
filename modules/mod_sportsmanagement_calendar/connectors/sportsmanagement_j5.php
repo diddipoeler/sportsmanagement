@@ -246,8 +246,10 @@ final class SportsmanagementConnector extends JSMCalendar
 
             $newRows[$key] = $formatted;
             $matches[] = $formatted;
-            parent::addTeam((int) $row->projectteam1_id, parent::jl_utf8_convert($home->name), $formatted['homepic']);
-            parent::addTeam((int) $row->projectteam2_id, parent::jl_utf8_convert($away->name), $formatted['awaypic']);
+            // Preserve the original IDs so addTeam can reject malformed
+            // connector data instead of accepting a lossy integer cast.
+            parent::addTeam($row->projectteam1_id, parent::jl_utf8_convert($home->name), $formatted['homepic']);
+            parent::addTeam($row->projectteam2_id, parent::jl_utf8_convert($away->name), $formatted['awaypic']);
         }
         return $newRows;
     }
