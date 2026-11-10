@@ -187,6 +187,23 @@ namespace Joomla\CMS\Component {
     }
 }
 
+namespace Joomla\CMS\Router {
+    final class Route
+    {
+        /**
+         * Preserve the Joomla administrator URL in the isolated fixture.
+         *
+         * @param string $url Component installer route.
+         * @param bool $xhtml Whether Joomla would escape URL ampersands.
+         * @return string Unchanged route for controller redirect assertions.
+         */
+        public static function _(string $url, bool $xhtml = true): string
+        {
+            return $url;
+        }
+    }
+}
+
 namespace Joomla\CMS\Language {
     final class Text
     {
