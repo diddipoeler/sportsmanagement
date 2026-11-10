@@ -59,6 +59,11 @@ smAssertSame(SportsManagementDateHelper::toSqlDate('0000-00-00'), null, 'zero da
 smAssertSame(SportsManagementDateHelper::toSqlDate(''), null, 'empty date');
 smAssertSame(SportsManagementDateHelper::convertDate('2025-11-08'), '08-11-2025', 'legacy date conversion');
 smAssertSame(SportsManagementDateHelper::convertDate('2026-11-10 15:30:00'), '10-11-2026', 'datetime to display date');
+smAssertSame(SportsManagementDateHelper::convertDate('2026-11-10 25:30:00'), '', 'admin invalid SQL time');
+smAssertSame(SportsManagementDateHelper::convertDate('2025-02-29'), '', 'admin invalid SQL calendar date');
+smAssertSame(SportsManagementDateHelper::convertDate('29-02-2025', 0), '', 'admin invalid display calendar date');
+smAssertSame(SportsManagementDateHelper::convertDate('29-02-2024', 0), '2024-02-29', 'admin valid display leap date');
+smAssertSame(SportsManagementDateHelper::convertDate('2026-11-10garbage'), '', 'admin reject SQL suffix');
 smAssertSame(SportsManagementDateHelper::convertDate('29022024'), '2024-02-29', 'compact leap day');
 smAssertSame(SportsManagementDateHelper::convertDate('29022025'), '', 'invalid compact leap day');
 smAssertSame(SportsManagementDateHelper::convertDate('abcdefgh'), '', 'non-digit compact date');
