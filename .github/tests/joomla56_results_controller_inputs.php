@@ -225,6 +225,25 @@ namespace {
         throw new \RuntimeException('Invalid POST redirect parameters were forwarded.');
     }
 
+    // Template names used in Joomla links are not arbitrary POST paths.
+    // Keep ordinary custom layout identifiers but reject path traversal,
+    // control characters and oversized input before it reaches routing.
+    foreach (['../admin', 'edit/../../form', "bad\nlayout", 'bad?layout',
+              str_repeat('x', 65), ''] as $unsafeLayout) {
+        $input->post->data = array_merge($goodRefereePost, ['layout' => $unsafeLayout]);
+        $controller->saveReferees();
+
+        if (SiteRouteHelper::$lastParameters['layout'] !== 'form') {
+            throw new \\RuntimeException('Unsafe results layout reached the redirect router.');
+        }
+    }
+
+    $input->post->data = array_merge($goodRefereePost, ['layout' => 'scores_custom-1']);
+    $controller->saveReferees();
+    if (SiteRouteHelper::$lastParameters['layout'] !== 'scores_custom-1') {
+        throw new \\RuntimeException('Valid Joomla custom layout names were rejected.');
+    }
+
     \Joomla\CMS\Session\Session::$valid = false;
     try {
         $controller->saveshort();
