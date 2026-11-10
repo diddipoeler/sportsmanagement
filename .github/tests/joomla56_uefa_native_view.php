@@ -35,7 +35,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model {
          */
         public function getcoefficientyears(): array
         {
-            ++$this->calls['years'];
+            $this->calls['years'] = ($this->calls['years'] ?? 0) + 1;
             return [
                 (object) ['id' => '2025', 'name' => '2025 <svg onload=alert(1)>'],
                 (object) ['id' => '2024', 'name' => '2024'],
