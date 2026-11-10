@@ -358,7 +358,32 @@ class modJSMRankingHelper extends stdClass
      */
     public static function getTeamLink($item, $params, $project)
     {
+        // Old ranking overrides may call this helper before a project or team
+        // record has been resolved. Do not emit PHP 8 property warnings or
+        // generate malformed links in that case.
+        if (!is_object($item) || !isset($item->team) || !is_object($item->team)
+            || !is_object($project) || empty($project->slug)) {
+            return null;
+        }
+
         $registry = $params instanceof Registry ? $params : new Registry((array) $params);
+        $target = (string) $registry->get('teamlink', '');
+        $requiredProperties = match ($target) {
+            'teaminfo', 'roster' => ['team_slug', 'projectteamid'],
+            'teamplan' => ['team_slug', 'division_slug', 'projectteamid'],
+            'clubinfo' => ['club_slug'],
+            default => [],
+        };
+
+        if ($requiredProperties === []) {
+            return null;
+        }
+
+        foreach ($requiredProperties as $property) {
+            if (!isset($item->team->{$property})) {
+                return null;
+            }
+        }
 
         if (!class_exists(SiteRouteHelper::class)) {
             $routeHelperFile = JPATH_SITE . '/components/com_sportsmanagement/src/Helper/SiteRouteHelper.php';
