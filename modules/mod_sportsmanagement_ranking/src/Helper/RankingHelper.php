@@ -474,8 +474,16 @@ final class RankingHelper
     }
 
     /**
-     * Allow HTTP(S) images without credentials; resolve local media paths
-     * beneath the Joomla root without traversal or URL interpretation.
+     * Convert a ranking image reference into a safe frontend media URL.
+     *
+     * Accept valid HTTP or HTTPS URLs without embedded credentials and reject
+     * control characters, unsupported schemes and network-path references.
+     * For Joomla-local paths, reject traversal segments and URL metacharacters,
+     * encode each path segment, and resolve the result relative to the site
+     * root. Invalid paths return an empty string instead of unsafe markup.
+     *
+     * @param string $path Remote image URL or Joomla-relative media path.
+     * @return string Sanitised image URL, or an empty string when invalid.
      */
     private function mediaUrl(string $path): string
     {
