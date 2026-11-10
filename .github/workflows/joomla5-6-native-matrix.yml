@@ -8,6 +8,11 @@ on:
       - 'site/src/Model/MatrixModel.php'
       - 'site/src/View/Matrix/HtmlView.php'
       - 'site/tmpl/matrix/default.php'
+      - 'site/src/Model/ResultsmatrixModel.php'
+      - 'site/src/View/Resultsmatrix/HtmlView.php'
+      - 'site/tmpl/resultsmatrix/**'
+      - '.github/tests/joomla56_resultsmatrix_combined_data.php'
+      - '.github/tests/joomla56_resultsmatrix_native_view.php'
       - '.github/tests/joomla56_matrix_native_template.php'
       - '.github/tests/joomla56_matrix_project_scope.php'
       - '.github/tests/joomla56_selected_function_phpdoc.php'
@@ -42,6 +47,12 @@ jobs:
             site/src/Model/MatrixModel.php \
             site/src/View/Matrix/HtmlView.php \
             site/tmpl/matrix/default.php \
+            site/src/Model/ResultsmatrixModel.php \
+            site/src/View/Resultsmatrix/HtmlView.php \
+            site/tmpl/resultsmatrix/default.php \
+            site/tmpl/resultsmatrix/default_results.php \
+            .github/tests/joomla56_resultsmatrix_combined_data.php \
+            .github/tests/joomla56_resultsmatrix_native_view.php \
             .github/tests/joomla56_matrix_native_template.php \
             .github/tests/joomla56_matrix_project_scope.php; do
             php -l "$file"
@@ -58,6 +69,12 @@ jobs:
 
       - name: Validate bounded round, project and division SQL
         run: php -d error_reporting=-1 .github/tests/joomla56_matrix_project_scope.php
+
+      - name: Validate native combined results and matrix project scope
+        run: php -d error_reporting=-1 .github/tests/joomla56_resultsmatrix_combined_data.php
+
+      - name: Validate native combined results and matrix HTML
+        run: php -d error_reporting=-1 .github/tests/joomla56_resultsmatrix_native_view.php
 
       - name: Validate migrated named-function PHPDocs
         run: php .github/tests/joomla56_selected_function_phpdoc.php
