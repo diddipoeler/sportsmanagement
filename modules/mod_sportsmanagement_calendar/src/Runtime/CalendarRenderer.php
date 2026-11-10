@@ -57,14 +57,25 @@ class CalendarRenderer
     }
 
     /**
-     * Replace the weekday names used by the calendar renderer.
-     * Accepts the translated weekday label array from the module settings without changing the configured calendar start day.
+     * Replace the weekday labels only when all seven names are valid.
+     * Sparse, incomplete or nested legacy settings must not cause missing
+     * weekday indexes or PHP array-to-string warnings during rendering.
      *
-     * @param array<int,string> $names Weekday labels indexed in Sunday-to-Saturday order.
+     * @param array<int,string> $names Seven nonempty labels in Sunday-to-Saturday order.
      * @return void
      */
     public function setDayNames(array $names): void
     {
+        if (!array_is_list($names) || count($names) !== 7) {
+            return;
+        }
+
+        foreach ($names as $name) {
+            if (!is_string($name) || trim($name) === '') {
+                return;
+            }
+        }
+
         $this->dayNames = $names;
     }
 
@@ -80,14 +91,25 @@ class CalendarRenderer
     }
 
     /**
-     * Replace the month labels used in month and match headings.
-     * Stores the translated January-to-December list supplied by Joomla's module configuration.
+     * Replace the month labels only when all twelve names are valid.
+     * Rejects sparse, incomplete or nested imported values instead of
+     * leaving the calendar heading with missing indexes or warnings.
      *
-     * @param array<int,string> $names Localised month names ordered from January.
+     * @param array<int,string> $names Twelve nonempty names from January to December.
      * @return void
      */
     public function setMonthNames(array $names): void
     {
+        if (!array_is_list($names) || count($names) !== 12) {
+            return;
+        }
+
+        foreach ($names as $name) {
+            if (!is_string($name) || trim($name) === '') {
+                return;
+            }
+        }
+
         $this->monthNames = $names;
     }
 
