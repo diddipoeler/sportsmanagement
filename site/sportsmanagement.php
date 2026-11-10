@@ -73,6 +73,12 @@ if (!is_string($filteredView)) {
 
 $view = strtolower($filteredView);
 
+// Reject oversized selectors before loading view-dependent legacy code.
+// Keep this limit aligned with the namespaced site DisplayController.
+if (strlen($view) > 100) {
+    throw new \InvalidArgumentException('SportsManagement site view name is too long.', 400);
+}
+
 if ($rawView !== '' && ($view !== strtolower($rawView) || trim($rawView) !== $rawView)) {
     throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
 }
@@ -170,6 +176,12 @@ if (!is_string($command) && !is_numeric($command)) {
 
 $rawCommand = (string) $command;
 $command = $filter->clean($rawCommand, 'cmd');
+
+// Prevent arbitrarily long controller and task names from reaching MVC class
+// resolution; this applies to both dotted and ordinary legacy task requests.
+if (strlen($rawCommand) > 150) {
+    throw new \InvalidArgumentException('SportsManagement site controller task is too long.', 400);
+}
 
 // Joomla controller names are case-insensitive; use a canonical task prefix.
 // Preserve the action method's spelling for legacy task compatibility.
