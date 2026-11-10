@@ -1,0 +1,60 @@
+name: Joomla 5/6 native navigation routing
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/SiteRouteHelper.php'
+      - 'admin/src/Field/JsmmenuitemsField.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
+      - '.github/tests/joomla56_native_navigation_route_contract.php'
+      - '.github/tests/joomla56_navigation_unknown_view_contract.php'
+      - '.github/tests/joomla56_selected_function_phpdoc.php'
+      - '.github/workflows/joomla5-6-native-navigation-routes.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  route-contract:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Lint PHP and enforce four required header tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Helper/SiteRouteHelper.php \
+            admin/src/Field/JsmmenuitemsField.php \
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php \
+            .github/tests/joomla56_native_navigation_route_contract.php \
+            .github/tests/joomla56_navigation_unknown_view_contract.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "Missing $tag in $file" >&2
+                exit 1
+              }
+            done
+
+      - name: Validate live native navigation options and safe route boundaries
+        run: php -d error_reporting=-1 .github/tests/joomla56_native_navigation_route_contract.php
+
+      - name: Retain unknown-view rejection in the old module contract
+        run: php -d error_reporting=-1 .github/tests/joomla56_navigation_unknown_view_contract.php
+
+      - name: Enforce function-level PHPDocs on the migrated code
+        run: php .github/tests/joomla56_selected_function_phpdoc.php
