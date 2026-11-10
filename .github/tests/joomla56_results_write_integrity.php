@@ -157,6 +157,18 @@ namespace {
         public array $messages = [];
         public function __construct() { $this->post = new PostInputStub(); }
         public function getInput(): self { return $this; }
+
+        /**
+         * Supply predictable project and database selectors for access checks.
+         *
+         * @param string $key Requested Joomla integer input field.
+         * @param int $default Default value for unrecognized fields.
+         * @return int Safe test project ID or requested default.
+         */
+        public function getInt(string $key, int $default = 0): int
+        {
+            return $key === 'p' ? 5 : $default;
+        }
         public function enqueueMessage(string $key, string $type = 'message'): void {
             $this->messages[] = ['key' => $key, 'type' => $type];
         }
