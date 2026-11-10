@@ -18,10 +18,14 @@ declare(strict_types=1);
 defined('_JEXEC') || define('_JEXEC', 1);
 
 require_once dirname(__DIR__, 2) . '/site/src/Helper/PersonNameFormatter.php';
+require_once dirname(__DIR__, 2) . '/site/src/Helper/NamePresentationHelper.php';
+require_once dirname(__DIR__, 2) . '/site/src/Helper/SportsManagementDateHelper.php';
 require_once dirname(__DIR__, 2) . '/admin/src/Helper/NameFormatter.php';
 require_once dirname(__DIR__, 2) . '/admin/src/Helper/SportsManagementDateHelper.php';
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\PersonNameFormatter;
+use Diddipoeler\Component\SportsManagement\Site\Helper\NamePresentationHelper;
+use Diddipoeler\Component\SportsManagement\Site\Helper\SportsManagementDateHelper as SiteDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\NameFormatter;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 
@@ -54,5 +58,13 @@ smAssertSame(SportsManagementDateHelper::toSqlDate('29.02.2025'), '29.02.2025', 
 smAssertSame(SportsManagementDateHelper::toSqlDate('0000-00-00'), null, 'zero date');
 smAssertSame(SportsManagementDateHelper::toSqlDate(''), null, 'empty date');
 smAssertSame(SportsManagementDateHelper::convertDate('2025-11-08'), '08-11-2025', 'legacy date conversion');
+smAssertSame(SportsManagementDateHelper::convertDate('2026-11-10 15:30:00'), '10-11-2026', 'datetime to display date');
+smAssertSame(SportsManagementDateHelper::convertDate('29022024'), '2024-02-29', 'compact leap day');
+smAssertSame(SportsManagementDateHelper::convertDate('29022025'), '', 'invalid compact leap day');
+smAssertSame(SportsManagementDateHelper::convertDate('abcdefgh'), '', 'non-digit compact date');
+smAssertSame(SportsManagementDateHelper::convertDate('310299'), '', 'invalid compact short date');
+smAssertSame(SiteDateHelper::convertDate('2026-11-10 15:30:00'), '10-11-2026', 'site datetime conversion');
+smAssertSame(SiteDateHelper::convertDate('2026-11-10 25:30:00'), '', 'site invalid datetime');
+smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Ömer', 'lastname' => 'Müller'], 8), 'Ö. Müller', 'site Unicode initials without mbstring');
 
 echo "Joomla 5/6 formatting regressions passed.\n";
