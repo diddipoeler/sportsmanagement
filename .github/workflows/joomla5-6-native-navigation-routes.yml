@@ -8,6 +8,7 @@ on:
       - 'admin/src/Field/JsmmenuitemsField.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - '.github/tests/joomla56_native_navigation_route_contract.php'
+      - '.github/tests/joomla56_admin_navigation_options.php'
       - '.github/tests/joomla56_navigation_unknown_view_contract.php'
       - '.github/tests/joomla56_selected_function_phpdoc.php'
       - '.github/workflows/joomla5-6-native-navigation-routes.yml'
@@ -41,6 +42,7 @@ jobs:
             admin/src/Field/JsmmenuitemsField.php \
             modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php \
             .github/tests/joomla56_native_navigation_route_contract.php \
+            .github/tests/joomla56_admin_navigation_options.php \
             .github/tests/joomla56_navigation_unknown_view_contract.php; do
             php -l "$file"
             for tag in '@version' '@author' '@copyright' '@license'; do
@@ -53,6 +55,9 @@ jobs:
 
       - name: Validate live native navigation options and safe route boundaries
         run: php -d error_reporting=-1 .github/tests/joomla56_native_navigation_route_contract.php
+
+      - name: Validate Joomla admin XML menu option priority
+        run: php -d error_reporting=-1 .github/tests/joomla56_admin_navigation_options.php
 
       - name: Retain unknown-view rejection in the old module contract
         run: php -d error_reporting=-1 .github/tests/joomla56_navigation_unknown_view_contract.php
