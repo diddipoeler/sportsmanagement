@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_SPORTSMANAGEMENT_XML_UEFAWERTUNG_LAYOUT_TITLE">
+        <message><![CDATA[COM_SPORTSMANAGEMENT_XML_UEFAWERTUNG_LAYOUT_DESCR]]></message>
+    </layout>
+    <fields name="request">
+        <fieldset name="request" label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL">
+            <field name="coefficientyear"
+                   type="coefficientyears"
+                   default=""
+                   label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+                   description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR" />
+        </fieldset>
+    </fields>
+</metadata>
