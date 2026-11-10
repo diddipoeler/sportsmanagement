@@ -106,6 +106,11 @@ final class HtmlView extends SportsManagementProjectHtmlView
             'components/com_sportsmanagement/assets/css/jquery.bracket.min.css',
             ['version' => 'auto']
         );
+        $assets->registerAndUseStyle(
+            'com_sportsmanagement.native-tournament-tree',
+            'components/com_sportsmanagement/assets/css/sportsmanagement-tournament-tree.css',
+            ['version' => 'auto']
+        );
         $assets->registerAndUseScript(
             'com_sportsmanagement.native-tournament-tree',
             'components/com_sportsmanagement/assets/js/sportsmanagement-tournament-tree.js',
