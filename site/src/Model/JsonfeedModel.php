@@ -1,5 +1,7 @@
 <?php
 /**
+ * Native Joomla 5/6 model for the authenticated Google Calendar JSON feed.
+ *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
@@ -19,10 +21,12 @@ final class JsonfeedModel extends SportsManagementModel
     /**
      * Read selected Google Calendar events for the frontend JSON feed.
      *
-     * Accepts the gcids list or the legacy gcid selector, limits the
-     * requested identifiers, rejects an empty selection rather than
-     * returning all calendars, and passes optional start/end timestamps
-     * to the native GoogleCalendarReadService.
+     * Prefers an explicitly supplied gcids list and accepts the legacy gcid
+     * selector only when gcids is absent from Joomla input. Invalid explicit
+     * selections fail closed rather than broadening the calendar query or
+     * unexpectedly falling back to a second query parameter. Validated IDs
+     * are bounded and deduplicated before being passed to the native
+     * GoogleCalendarReadService with optional start/end timestamps.
      *
      * @return array<int, array<string, mixed>> Events for selected calendars.
      */
@@ -30,11 +34,16 @@ final class JsonfeedModel extends SportsManagementModel
     {
         $app = $this->siteApplication();
         $input = $app->getInput();
-        $calendarIds = $this->normalizeCalendarIds($input->get('gcids', null, 'raw'));
+        $requestedIds = $input->get('gcids', null, 'raw');
 
-        if (!$calendarIds) {
-            $calendarIds = $this->normalizeCalendarIds($input->get('gcid', null, 'raw'));
-        }
+        // A supplied gcids parameter is authoritative. An invalid explicit
+        // selection must not silently fall back to the unrelated legacy gcid
+        // parameter; use gcid only when gcids was genuinely absent.
+        $calendarIds = $this->normalizeCalendarIds(
+            $requestedIds === null
+                ? $input->get('gcid', null, 'raw')
+                : $requestedIds
+        );
 
         // An empty request must never expose every configured calendar.
         if (!$calendarIds) {
