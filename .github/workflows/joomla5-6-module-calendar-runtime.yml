@@ -16,7 +16,7 @@ on:
       - 'modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php'
       - '.github/workflows/joomla5-6-module-calendar-runtime.yml'
   pull_request:
-    branches: [master]
+    branches: [joomla5-6, master]
     paths:
       - 'modules/mod_sportsmanagement_calendar/services/provider.php'
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
@@ -33,9 +33,19 @@ on:
 jobs:
   native-calendar-runtime:
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
 
       - name: Validate native Calendar runtime
         shell: bash
@@ -62,8 +72,8 @@ jobs:
 
           # Legacy compatibility API must retain required attribution and
           # describe each named function before a PHP upgrade.
-          php .github/scripts/check-php-headers.php "$legacy" "$legacy_runtime"
-          php .github/scripts/check-php-function-docs.php "$legacy" "$legacy_runtime"
+          php .github/scripts/check-php-headers.php "$renderer" "$legacy" "$legacy_runtime"
+          php .github/scripts/check-php-function-docs.php "$renderer" "$legacy" "$legacy_runtime"
           php .github/tests/joomla56_calendar_legacy_functions.php
 
           grep -Fq 'ModuleDispatcherFactory' "$provider"
