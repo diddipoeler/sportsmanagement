@@ -308,6 +308,7 @@ namespace {
             'allprojectrounds' => 'allprojectrounds',
             'jltournamenttree' => 'jltournamenttree',
             'resultsmatrix' => 'resultsmatrix',
+            'resultsranking' => 'resultsranking',
 
             'jlxmlexports' => 'jlxmlexports',
             'leaguechampionoverview' => 'leaguechampionoverview',

@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $paths = [
+    'site/src/Helper/CombinedRankingPresentationHelper.php',
+    'site/src/Model/ResultsrankingModel.php',
+    'site/src/View/Resultsranking/HtmlView.php',
     'site/src/Helper/MatrixPresentationHelper.php',
     'site/src/Model/ResultsmatrixModel.php',
     'site/src/View/Resultsmatrix/HtmlView.php',
