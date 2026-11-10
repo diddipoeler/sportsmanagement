@@ -97,6 +97,32 @@ namespace {
         }
     }
 
+    $timezone = new \\ReflectionMethod($class, 'safeTimezone');
+    $priorErrorHandler = set_error_handler(static function (int $level, string $message): never {
+        throw new \\ErrorException($message, 0, $level);
+    });
+
+    try {
+        foreach ([
+            ['Europe/Berlin', 'Europe/Berlin'],
+            ['UTC', 'UTC'],
+            ['+02:00', '+02:00'],
+            [[], 'UTC'],
+            [new \\stdClass(), 'UTC'],
+            [null, 'UTC'],
+            [true, 'UTC'],
+            ['Not/A_Timezone', 'UTC'],
+            ["Europe/Berlin\\0evil", 'UTC'],
+            [str_repeat('X', 129), 'UTC'],
+        ] as [$value, $expected]) {
+            if ($timezone->invoke(null, $value) !== $expected) {
+                throw new \\RuntimeException('GCalendar accepted malformed timezone configuration.');
+            }
+        }
+    } finally {
+        restore_error_handler();
+    }
+
     if ($ids->invoke($helper, ['0002', 2, '003', true, '4junk', '000', 5]) !== [2, 3, 5]
         || $ids->invoke($helper, range(1, 200)) !== range(1, 50)
         || $ids->invoke($helper, [PHP_INT_MAX . '0']) !== []) {
