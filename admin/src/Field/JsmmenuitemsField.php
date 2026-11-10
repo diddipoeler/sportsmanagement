@@ -29,8 +29,10 @@ final class JsmmenuitemsField extends ListField
      * team before rendering its link. Newly supported native views include
      * the all-rounds, all-time roster, team tree and statistics
      * destinations that were previously missing from module routing.
-     * Historical options without a native view remain selectable but are
-     * not turned into misleading links by the frontend module.
+     * The historical jltournamenttree option now resolves through its own
+     * namespaced Joomla 5/6 view and safe JSON presentation, without
+     * rewriting existing saved navigation settings. Other historical options
+     * remain selectable even when no native frontend view exists.
      *
      * @return array<int,object> Joomla list entries with translated text and stored view values.
      */
