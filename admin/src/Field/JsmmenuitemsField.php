@@ -27,8 +27,10 @@ final class JsmmenuitemsField extends ListField
      * Combines the predefined targets with parent XML field options; the site
      * navigation helper decides whether a target needs a selected project or
      * team before rendering its link. Newly supported native views include
-     * the all-rounds, all-time roster, team tree, statistics and tournament
+     * the all-rounds, all-time roster, team tree and statistics
      * destinations that were previously missing from module routing.
+     * Historical options without a native view remain selectable but are
+     * not turned into misleading links by the frontend module.
      *
      * @return array<int,object> Joomla list entries with translated text and stored view values.
      */
