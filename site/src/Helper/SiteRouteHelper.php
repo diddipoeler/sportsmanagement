@@ -33,8 +33,7 @@ final class SiteRouteHelper
     {
         // Joomla view names are identifiers, never paths or query fragments.
         // Refuse malformed caller input rather than generating an unsafe route.
-        if ($view === '' || strlen($view) > 100
-            || preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $view) !== 1) {
+        if (!self::isViewName($view)) {
             throw new \InvalidArgumentException('Invalid SportsManagement frontend view name.');
         }
 
@@ -48,10 +47,16 @@ final class SiteRouteHelper
 
     /**
      * Build a Joomla router URL from validated component parameters.
-     * Normalises the component option and validates an explicit menu Itemid
-     * before delegating query encoding to Joomla Uri and Route services.
+     *
+     * Normalises the component option and validates an explicit SportsManagement
+     * view and menu Itemid before delegating query encoding to Joomla's Uri
+     * and Route services. An invalid view in a generic component query raises
+     * an exception rather than producing nested view[] query parameters or
+     * an unintended route. Other component route parameters remain unchanged.
+     *
      * @param array<string,mixed> $parameters Route query components.
      * @return string Joomla frontend URL.
+     * @throws \InvalidArgumentException When an explicit SportsManagement view is malformed.
      */
     public static function query(array $parameters): string
     {
@@ -67,6 +72,13 @@ final class SiteRouteHelper
         $parameters['option'] = $option;
 
         if ($option === 'com_sportsmanagement') {
+            // The generic URL builder is also used for navigation links.
+            // Apply the same view boundary as view() to untrusted options.
+            if (array_key_exists('view', $parameters)
+                && !self::isViewName($parameters['view'])) {
+                throw new \InvalidArgumentException('Invalid SportsManagement frontend view name.');
+            }
+
             $requestedItemId = $parameters['Itemid'] ?? null;
             $itemId = 0;
 
@@ -98,5 +110,24 @@ final class SiteRouteHelper
         }
 
         return Route::_('index.php?' . Uri::buildQuery($parameters), false);
+    }
+
+    /**
+     * Recognize a Joomla component view identifier without coercing its type.
+     *
+     * Joomla view names are bounded single identifiers, never paths, query
+     * fragments or nested values. Reuse this check for both direct
+     * SiteRouteHelper::view() calls and generic component query construction
+     * so malformed user/module settings cannot create alternate view routes.
+     *
+     * @param mixed $name Candidate view name or untrusted query value.
+     * @return bool True only for a nonempty, short ASCII identifier.
+     */
+    private static function isViewName(mixed $name): bool
+    {
+        return is_string($name)
+            && $name !== ''
+            && strlen($name) <= 100
+            && preg_match('/^[A-Za-z][A-Za-z0-9_]*$/D', $name) === 1;
     }
 }
