@@ -591,6 +591,12 @@ final class SportsmanagementConnector extends JSMCalendar
 
         $rawDate = (string) $matchDate;
 
+        // Do not expose embedded NUL bytes from corrupted imported dates
+        // even when strtotime merely returns false instead of throwing.
+        if (str_contains($rawDate, "\0")) {
+            return '';
+        }
+
         try {
             $timestamp = strtotime($rawDate);
         } catch (\Throwable) {
