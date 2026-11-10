@@ -51,6 +51,11 @@ if (!is_string($command) && !is_numeric($command)) {
 $rawCommand = (string) $command;
 $command = $filter->clean($rawCommand, 'cmd');
 
+// Limit legacy task selectors before controller class and method dispatch.
+if (strlen($rawCommand) > 150) {
+    throw new \InvalidArgumentException('SportsManagement administrator controller task is too long.', 400);
+}
+
 // Never silently transform an invalid task into another executable action.
 // The Joomla command filter removes unsafe characters; reject such input
 // instead of dispatching the altered controller name or method.
@@ -84,6 +89,12 @@ if (!is_string($filteredView)) {
 }
 
 $activeView = strtolower($filteredView);
+
+// Apply the same input bound as the native administrator DisplayController
+// before loading optional language extensions or resolving MVC classes.
+if (strlen($activeView) > 100) {
+    throw new \InvalidArgumentException('SportsManagement administrator view name is too long.', 400);
+}
 
 if ($rawView !== '' && ($activeView !== strtolower($rawView) || trim($rawView) !== $rawView)) {
     throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
