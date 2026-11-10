@@ -203,10 +203,23 @@ class modJSMRankingHelper extends stdClass
     }
 
     /**
-     * Return the value corresponding to a ranking column.
+     * Resolve a legacy ranking-column identifier to the corresponding value.
+     *
+     * Normalise known column names while retaining the historical switch
+     * mapping used by older layouts. Reject invalid column selectors and
+     * missing ranking rows before invoking methods or accessing properties,
+     * avoiding PHP 8 type errors from malformed module overrides.
+     *
+     * @param mixed $column Column name supplied by a ranking layout.
+     * @param mixed $item Ranking row containing statistics and getters.
+     * @return mixed Statistic value, or a question mark if unavailable.
      */
     public static function getColValue($column, $item)
     {
+        if (!is_string($column) || !is_object($item)) {
+            return '?';
+        }
+
         $column = strtolower(ucfirst(str_replace('jl_', '', strtolower(trim($column)))));
 
         switch ($column) {
@@ -275,10 +288,22 @@ class modJSMRankingHelper extends stdClass
     }
 
     /**
-     * Build the historic team-logo markup with Joomla's namespaced media helper.
+     * Build the legacy team-logo or country-flag markup for ranking rows.
+     *
+     * Choose the configured image slot, clean its media path using Joomla's
+     * MediaHelper and render it through HTMLHelper. Missing team information
+     * is treated as an empty image instead of causing PHP 8 property warnings.
+     *
+     * @param mixed $item Ranking row containing a team record.
+     * @param int $type Requested logo size, shirt image or country flag.
+     * @return string Sanitised HTML image markup, or an empty string.
      */
     public static function getLogo($item, $type = 1): string
     {
+        if (!is_object($item) || !isset($item->team) || !is_object($item->team)) {
+            return '';
+        }
+
         $logo = '';
 
         if ($type == 1 && !empty($item->team->logo_small)) {
@@ -298,7 +323,7 @@ class modJSMRankingHelper extends stdClass
         $logo = MediaHelper::getCleanMediaFieldValue((string) $logo);
 
         if ($logo !== '') {
-            return HTMLHelper::image($logo, (string) $item->team->short_name, 'class="teamlogo" width="20"');
+            return HTMLHelper::image($logo, (string) ($item->team->short_name ?? ''), 'class="teamlogo" width="20"');
         }
 
         return '';
