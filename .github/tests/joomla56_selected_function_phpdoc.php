@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $paths = [
+    'site/src/Helper/SiteRouteHelper.php',
+    'admin/src/Field/JsmmenuitemsField.php',
+    'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php',
     'site/src/Model/UefawertungModel.php',
     'site/src/Model/RefereesModel.php',
     'site/src/View/Treetonode/HtmlView.php',
