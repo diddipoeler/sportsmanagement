@@ -75,8 +75,9 @@ final class RankingCalculator
      * Applies sport-specific results to eligible teams, including small-bore
      * and Faustball scoring. Malformed team identifiers and required scores
      * are ignored; optional bonuses, game statistics and tie-break scores
-     * default to zero when malformed. Soccer bonus points remain intact
-     * during result-count recomputation. Invalid administrative winner codes
+     * default to zero when malformed. Result points are accumulated
+     * per fixture, retaining sport-specific overtime or shootout values,
+     * loss-point settings and bonuses. Invalid administrative winner codes
      * and self-matches are ignored.
      *
      * @param array<int,RankingRow> $rows Ranking rows modified in place.
@@ -220,16 +221,10 @@ final class RankingCalculator
             $this->addResultStats($home, $homeScore, $awayScore, $leg1, $leg2, $mp1, $mp2, $se1, $se2, $ga1, $ga2, $balls1, $balls2, $sportType);
             $this->addResultStats($away, $awayScore, $homeScore, $leg2, $leg1, $mp2, $mp1, $se2, $se1, $ga2, $ga1, $balls2, $balls1, $sportType);
 
-            if ($sportType === 'COM_SPORTSMANAGEMENT_ST_SOCCER') {
-                // Rebuilding soccer points from wins and draws must retain
-                // bonus points already accumulated from all fixtures.
-                $home->sum_points = ($home->cnt_won * $winPoints) + ($home->cnt_draw * $drawPoints)
-                    + $home->bonus_points;
-                $away->sum_points = ($away->cnt_won * $winPoints) + ($away->cnt_draw * $drawPoints)
-                    + $away->bonus_points;
-                $home->neg_points = ($home->cnt_lost * $winPoints) + ($home->cnt_draw * ($winPoints - $drawPoints));
-                $away->neg_points = ($away->cnt_lost * $winPoints) + ($away->cnt_draw * ($winPoints - $drawPoints));
-            }
+            // Each fixture has already credited its configured points and
+            // bonuses above. Reconstructing soccer points from cumulative
+            // win/draw counters here loses overtime and shootout victories,
+            // match-specific point rules and negative points for losses.
 
             $home->points = $home->sum_points;
             $away->points = $away->sum_points;
