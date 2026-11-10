@@ -13,7 +13,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Uefawertung;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\UefawertungModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** Native Joomla 5/6 view for the UEFA coefficient table. */
@@ -22,6 +21,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $lists = [];
     public array $uefapoints = [];
     public array $seasonnames = [];
+    public array $availableYears = [];
+    public string $selectedYear = '';
 
     /**
      * Disable global legacy rendering dependencies for UEFA coefficients.
@@ -36,6 +37,8 @@ final class HtmlView extends SportsManagementProjectHtmlView
      * Prepare UEFA five-year coefficients and season selection controls.
      * Requires UefawertungModel, loads coefficient years and points, sorts
      * season labels and sets the Joomla page title from the active menu.
+     * Accepts only a year advertised by the active database and stores
+     * the options as plain strings for safe native template escaping.
      * @return void
      * @throws \RuntimeException If the native UEFA model is unavailable.
      */
@@ -47,23 +50,41 @@ final class HtmlView extends SportsManagementProjectHtmlView
             throw new \RuntimeException('Uefawertung view requires UefawertungModel.', 500);
         }
 
-        $selectedYear = trim($model->coefficientyear);
-        $coefficientYears = [
-            HTMLHelper::_('select.option', '0', Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SEASON')),
-            ...$model->getcoefficientyears(),
-        ];
+        // Populate the native <select> with plain data, not prebuilt markup.
+        // Only an available season can reach a bound coefficient query;
+        // malformed or unrelated POST/GET values render a blank selection.
+        $years = [];
 
-        $this->lists['coefficientyears'] = HTMLHelper::_(
-            'select.genericList',
-            $coefficientYears,
-            'coefficientyear',
-            'class="form-select" onchange="this.form.submit();" style="width:120px"',
-            'id',
-            'name',
-            $selectedYear
-        );
-        $this->uefapoints = $model->getcoefficientyearspoints($selectedYear);
-        $this->seasonnames = $model->getSeasonNames($selectedYear);
+        foreach ($model->getcoefficientyears() as $year) {
+            if (!is_object($year)) {
+                continue;
+            }
+
+            $id = $year->id ?? null;
+            $name = $year->name ?? null;
+
+            if ((!is_string($id) && !is_int($id))
+                || !is_string($name)
+                || !preg_match('/^[0-9]{4}(?:[-\/][0-9]{2,4})?$/D', (string) $id)) {
+                continue;
+            }
+
+            $years[(string) $id] = $name;
+
+            if (count($years) >= 150) {
+                break;
+            }
+        }
+
+        $this->availableYears = $years;
+        $candidate = trim($model->coefficientyear);
+        $this->selectedYear = array_key_exists($candidate, $years) ? $candidate : '';
+        $this->uefapoints = $this->selectedYear !== ''
+            ? $model->getcoefficientyearspoints($this->selectedYear)
+            : [];
+        $this->seasonnames = $this->selectedYear !== ''
+            ? $model->getSeasonNames($this->selectedYear)
+            : [];
         asort($this->seasonnames, SORT_NATURAL);
 
         $activeMenu = $this->app->getMenu()->getActive();
