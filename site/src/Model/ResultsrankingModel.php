@@ -16,7 +16,7 @@ use Diddipoeler\Component\SportsManagement\Site\Helper\MatrixPresentationHelper;
 use Diddipoeler\Component\SportsManagement\Site\Legacy\RankingCalculationAdapter;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 
-final class ResultsrankingModel extends SportsManagementProjectModel
+class ResultsrankingModel extends SportsManagementProjectModel
 {
     public static int $divisionid = 0;
     public static int $roundid = 0;
@@ -60,13 +60,17 @@ final class ResultsrankingModel extends SportsManagementProjectModel
      * validated round, division and database selection apply to both the
      * matrix result query and RankingCalculationAdapter, ensuring the
      * displayed standings are calculated using existing sport rules.
+     * Validates selected division membership against published divisions of
+     * this project before ranking calculations. Returns the same scoped raw
+     * team/match objects as the normalized fixture data so the three-panel
+     * results/ranking/matrix view does not repeat its database reads.
      * Names and numeric statistics are normalized to plain display data.
      *
      * @param object $project Active Joomla SportsManagement project record.
      * @param array<string,mixed> $config Current Joomla display configuration.
      * @param RankingModel|null $rankingModel Optional native ranking test double.
      * @param MatrixModel|null $matrixModel Optional native matrix test double.
-     * @return array{roundid:int,divisionid:int,fixtures:array,standings:array} Read-only frontend data.
+     * @return array{roundid:int,divisionid:int,fixtures:array,standings:array,teams:array,results:array} Read-only frontend data and the validated matrix source rows.
      */
     public function getCombinedData(
         object $project,
@@ -74,7 +78,14 @@ final class ResultsrankingModel extends SportsManagementProjectModel
         ?RankingModel $rankingModel = null,
         ?MatrixModel $matrixModel = null
     ): array {
-        $empty = ['roundid' => 0, 'divisionid' => 0, 'fixtures' => [], 'standings' => []];
+        $empty = [
+            'roundid' => 0,
+            'divisionid' => 0,
+            'fixtures' => [],
+            'standings' => [],
+            'teams' => [],
+            'results' => [],
+        ];
         $projectId = $this->getProjectId();
 
         if ($projectId <= 0 || (int) ($project->id ?? 0) !== $projectId) {
@@ -102,7 +113,28 @@ final class ResultsrankingModel extends SportsManagementProjectModel
                 ? $current : (int) array_key_last($allowedRounds);
         }
 
+        $matrixModel ??= new MatrixModel();
+        $matrixModel->setProjectId($projectId);
         $divisionId = max(0, $this->getDivisionId());
+
+        // The ranking adapter accepts arbitrary positive division IDs as
+        // calculator inputs. Reject IDs outside this selected project's
+        // published divisions before any ranking arithmetic or match reads.
+        if ($divisionId > 0) {
+            $owned = false;
+
+            foreach ($matrixModel->getDivisions() as $division) {
+                if (is_object($division) && (int) ($division->id ?? 0) === $divisionId) {
+                    $owned = true;
+                    break;
+                }
+            }
+
+            if (!$owned) {
+                return $empty;
+            }
+        }
+
         $rankingConfig = array_merge($config, $rankingModel->getTemplateConfig('ranking'));
         $rankings = RankingCalculationAdapter::calculate(
             $rankingModel,
@@ -117,21 +149,19 @@ final class ResultsrankingModel extends SportsManagementProjectModel
             $divisionId
         );
 
-        $matrixModel ??= new MatrixModel();
-        $matrixModel->setProjectId($projectId);
         MatrixModel::$roundid = $roundId;
         MatrixModel::$divisionid = $divisionId;
-
-        $teams = MatrixPresentationHelper::teams(
-            $matrixModel->getProjectTeamsIndexed($divisionId)
-        );
+        $matrixTeams = $matrixModel->getProjectTeamsIndexed($divisionId);
+        $matrixResults = $matrixModel->getMatrixResults($projectId);
 
         return [
             'roundid' => $roundId,
             'divisionid' => $divisionId,
+            'teams' => $matrixTeams,
+            'results' => $matrixResults,
             'fixtures' => MatrixPresentationHelper::fixtures(
-                $matrixModel->getMatrixResults($projectId),
-                $teams
+                $matrixResults,
+                MatrixPresentationHelper::teams($matrixTeams)
             ),
             'standings' => CombinedRankingPresentationHelper::standings(
                 (array) ($rankings['currentRanking'] ?? []),

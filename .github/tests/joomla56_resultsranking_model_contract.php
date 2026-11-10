@@ -124,13 +124,24 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model {
         }
 
         /**
+         * Return published division IDs owned by the selected project.
+         *
+         * @return array<int,object> Native project-specific division records.
+         */
+        public function getDivisions(): array {
+            $this->calls[] = ['divisions'];
+            return [(object) ['id'=>4, 'name'=>'Division <script>alert(1)</script>']];
+        }
+
+        /**
          * Verify the native fixture query uses the selected project/round.
          *
          * @param int $project Requested project ID.
          * @return array<int,object> Isolated project-owned fixtures.
          */
         public function getMatrixResults(int $project): array {
-            if ($project !== $this->projectId || self::$roundid !== 5 || self::$divisionid !== 4) {
+            if ($project !== $this->projectId || self::$roundid !== 5
+                || !in_array(self::$divisionid, [0, 4], true)) {
                 throw new \RuntimeException('Unscoped resultsranking matrix query.');
             }
             $this->calls[] = ['results', $project, self::$roundid, self::$divisionid];
@@ -218,7 +229,7 @@ namespace {
             || $data['standings'][0]['rows'][0]['name'] !== 'FC <script>alert(1)</script>'
             || $data['standings'][0]['rows'][0]['points'] !== '10'
             || $data['standings'][0]['rows'][1]['points'] !== '–'
-            || $matrix->calls !== [['teams',4],['results',42,5,4]]
+            || $matrix->calls !== [['divisions'],['teams',4],['results',42,5,4]]
             || $adapter::$calls[0]['round'] !== 5
             || $adapter::$calls[0]['to'] !== 5
             || $adapter::$calls[0]['database'] !== 1
@@ -226,6 +237,22 @@ namespace {
             || $adapter::$calls[0]['config']['point_value'] !== 3) {
             throw new \RuntimeException('Resultsranking lost sport ranking or project round context.');
         }
+        // The existing combined results/ranking display must reject a
+        // division belonging to a different project before calculating any
+        // standings or requesting its teams/match results.
+        $beforeCalculation = count($adapter::$calls);
+        $beforeQueries = count($matrix->calls);
+        $model->choose(42, 999);
+        $unrelated = $model->getCombinedData((object) ['id'=>42], [], $ranking, $matrix);
+
+        if ($unrelated['fixtures'] !== [] || $unrelated['standings'] !== []
+            || $unrelated['results'] !== [] || $unrelated['teams'] !== []
+            || count($adapter::$calls) !== $beforeCalculation
+            || array_slice($matrix->calls, $beforeQueries) !== [['divisions']]) {
+            throw new \RuntimeException('Ranking calculation accepted an unrelated project division.');
+        }
+
+        $model->choose(42, 4);
     } finally {
         restore_error_handler();
     }

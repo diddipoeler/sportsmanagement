@@ -309,6 +309,7 @@ namespace {
             'jltournamenttree' => 'jltournamenttree',
             'resultsmatrix' => 'resultsmatrix',
             'resultsranking' => 'resultsranking',
+            'resultsrankingmatrix' => 'resultsrankingmatrix',
 
             'jlxmlexports' => 'jlxmlexports',
             'leaguechampionoverview' => 'leaguechampionoverview',
