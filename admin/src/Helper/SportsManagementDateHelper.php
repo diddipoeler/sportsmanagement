@@ -18,7 +18,8 @@ final class SportsManagementDateHelper
     /**
      * Preserve the historical SportsManagement date conversion contract.
      *
-     * Direction 1 converts YYYY-MM-DD to DD-MM-YYYY.
+     * Direction 1 converts YYYY-MM-DD to DD-MM-YYYY and ignores a trailing
+     * time portion in SQL DATETIME values so legacy forms display dates only.
      * Any other direction converts DD-MM-YYYY to YYYY-MM-DD.
      * Compact DDMMYYYY and DDMMYY inputs are always converted to YYYY-MM-DD.
      * The function retains legacy substring conversion behavior; callers
@@ -48,7 +49,7 @@ final class SportsManagementDateHelper
         }
 
         if ($direction === 1) {
-            return substr($date, 8)
+            return substr($date, 8, 2)
                 . '-' . substr($date, 5, 2)
                 . '-' . substr($date, 0, 4);
         }
