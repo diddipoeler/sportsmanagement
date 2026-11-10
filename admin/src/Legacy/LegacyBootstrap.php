@@ -24,6 +24,15 @@ final class LegacyBootstrap
 {
     private static bool $booted = false;
 
+    /**
+     * Initialise administrator compatibility imports and constants once.
+     *
+     * Bridge legacy Joomla filesystem and database class names, load older
+     * management helpers and libraries, register supported MVC include paths,
+     * then publish component options for unmigrated administrator screens.
+     *
+     * @return void
+     */
     public static function boot(): void
     {
         if (self::$booted) {
@@ -110,6 +119,16 @@ final class LegacyBootstrap
         );
     }
 
+    /**
+     * Provide the legacy administrator view bootstrap entry point.
+     *
+     * Administrator views currently share one set of imports, so callers
+     * can pass a view identifier while the common boot routine performs
+     * the one-time initialisation. The argument is retained for compatibility.
+     *
+     * @param string $view Administrator view requesting legacy dependencies.
+     * @return void
+     */
     public static function bootForView(string $view): void
     {
         self::boot();
@@ -151,6 +170,16 @@ final class LegacyBootstrap
         }
     }
 
+    /**
+     * Import an administrator or site compatibility library by dotted path.
+     *
+     * Prefix component-relative paths, convert dotted package segments to
+     * filesystem separators and delegate optional file loading to requireFile.
+     *
+     * @param string $path Dotted SportsManagement component library path.
+     * @param string $base Site or administrator filesystem root.
+     * @return void
+     */
     private static function import(string $path, string $base): void
     {
         if (!str_starts_with($path, 'components.com_sportsmanagement.')) {
@@ -160,6 +189,15 @@ final class LegacyBootstrap
         self::requireFile(rtrim($base, '/\\') . '/' . str_replace('.', '/', $path) . '.php');
     }
 
+    /**
+     * Include an existing legacy PHP dependency once per request.
+     *
+     * Suppress missing optional library imports while using require_once
+     * to avoid redeclaring classes loaded by another Joomla entry point.
+     *
+     * @param string $file Absolute path of an optional legacy PHP library.
+     * @return void
+     */
     private static function requireFile(string $file): void
     {
         if (is_file($file)) {
@@ -167,6 +205,16 @@ final class LegacyBootstrap
         }
     }
 
+    /**
+     * Publish an administrator compatibility constant without redefining it.
+     *
+     * Preserve values established by other bootstrap paths and prevent PHP
+     * constant-redefinition notices when older views initialise the component.
+     *
+     * @param string $name Public constant required by historical code.
+     * @param mixed $value Value derived from component configuration.
+     * @return void
+     */
     private static function setConstant(string $name, mixed $value): void
     {
         if (!\defined($name)) {
