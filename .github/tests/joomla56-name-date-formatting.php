@@ -71,5 +71,6 @@ smAssertSame(SportsManagementDateHelper::convertDate('310299'), '', 'invalid com
 smAssertSame(SiteDateHelper::convertDate('2026-11-10 15:30:00'), '10-11-2026', 'site datetime conversion');
 smAssertSame(SiteDateHelper::convertDate('2026-11-10 25:30:00'), '', 'site invalid datetime');
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Ömer', 'lastname' => 'Müller'], 8), 'Ö. Müller', 'site Unicode initials without mbstring');
+smAssertSame(NamePresentationHelper::team((object) ['short_name' => ['invalid'], 'name' => 'Real Club'], 0), 'Real Club', 'site team fallback for invalid name fields');
 
 echo "Joomla 5/6 formatting regressions passed.\n";
