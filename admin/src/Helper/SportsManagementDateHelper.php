@@ -23,8 +23,8 @@ final class SportsManagementDateHelper
      * Any other direction converts DD-MM-YYYY to YYYY-MM-DD.
      * Compact DDMMYYYY and DDMMYY inputs are converted to YYYY-MM-DD only
      * when they contain digits and form a valid calendar date. The function
-     * otherwise retains legacy substring conversion behavior; callers
-     * should use toSqlDate() when strict calendar validation is required.
+     * also validates SQL and display dates, including optional SQL time
+     * components, and returns an empty string for malformed values.
      *
      * @param string $date Legacy date text supplied by a component form.
      * @param int $direction Conversion direction; 1 means ISO to display format.
@@ -62,14 +62,27 @@ final class SportsManagementDateHelper
         }
 
         if ($direction === 1) {
-            return substr($date, 8, 2)
-                . '-' . substr($date, 5, 2)
-                . '-' . substr($date, 0, 4);
+            // Reject malformed SQL dates and time components rather than
+            // silently producing a plausible-looking display date.
+            if (preg_match('/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}):(\d{2}))?$/D', $date, $parts) !== 1
+                || !checkdate((int) ($parts[2] ?? 0), (int) ($parts[3] ?? 0), (int) ($parts[1] ?? 0))) {
+                return '';
+            }
+
+            if (isset($parts[4]) && ((int) $parts[4] > 23
+                || (int) $parts[5] > 59 || (int) $parts[6] > 59)) {
+                return '';
+            }
+
+            return $parts[3] . '-' . $parts[2] . '-' . $parts[1];
         }
 
-        return substr($date, 6, 4)
-            . '-' . substr($date, 3, 2)
-            . '-' . substr($date, 0, 2);
+        if (preg_match('/^(\d{2})-(\d{2})-(\d{4})$/D', $date, $parts) !== 1
+            || !checkdate((int) ($parts[2] ?? 0), (int) ($parts[1] ?? 0), (int) ($parts[3] ?? 0))) {
+            return '';
+        }
+
+        return $parts[3] . '-' . $parts[2] . '-' . $parts[1];
     }
 
     /**
