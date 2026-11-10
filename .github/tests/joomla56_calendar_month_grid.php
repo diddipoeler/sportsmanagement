@@ -72,12 +72,61 @@ namespace {
     try {
         $renderer = new CalendarGridFixture();
 
+        // Legacy overrides may supply missing indexes, nested values or
+        // empty labels. None may replace a complete translated label set.
+        $defaultDays = $renderer->getDayNames();
+        $defaultMonths = $renderer->getMonthNames();
+
+        foreach ([
+            [],
+            ['Sun', 'Mon'],
+            [0 => 'Sun', 2 => 'Tue'],
+            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', []],
+            ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', '  '],
+        ] as $invalidDays) {
+            $renderer->setDayNames($invalidDays);
+            if ($renderer->getDayNames() !== $defaultDays) {
+                throw new \\RuntimeException('Invalid calendar weekday names replaced the default labels.');
+            }
+        }
+
+        foreach ([
+            [],
+            array_fill(0, 11, 'Month'),
+            [1 => 'January', 2 => 'February'],
+            array_replace(array_fill(0, 12, 'Month'), [5 => ['nested']]),
+            array_replace(array_fill(0, 12, 'Month'), [5 => '']),
+        ] as $invalidMonths) {
+            $renderer->setMonthNames($invalidMonths);
+            if ($renderer->getMonthNames() !== $defaultMonths) {
+                throw new \\RuntimeException('Invalid calendar month names replaced the default labels.');
+            }
+        }
+
+        // Complete Unicode labels and HTML-sensitive text still work and
+        // must be escaped when output into the month grid.
+        $days = ['<So>', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+        $months = array_fill(0, 12, 'Monat');
+        $months[0] = '<Januar>';
+        $renderer->setDayNames($days);
+        $renderer->setMonthNames($months);
+
+        if ($renderer->getDayNames() !== $days || $renderer->getMonthNames() !== $months) {
+            throw new \\RuntimeException('Valid translated calendar labels were discarded.');
+        }
+
         foreach ([
             [1, 2026, ['28', '29', '30', '31']],
             [3, 2024, ['25', '26', '27', '28', '29']],
         ] as [$month, $year, $expected]) {
             $grid = $renderer->getMonthHTML($month, $year, 0);
             $html = $grid['calendar'];
+
+            if ($month === 1 && (!str_contains($html, '&lt;Januar&gt;')
+                || !str_contains($html, '&lt;So&gt;')
+                || str_contains($html, '<Januar>') || str_contains($html, '<So>'))) {
+                throw new \\RuntimeException('Calendar label output is missing or unescaped.');
+            }
 
             preg_match_all(
                 '/<td class="jlcCalendarDay jlcCalendarDayEmpty ">([^<]+)<\/td>/',
