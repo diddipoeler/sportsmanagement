@@ -201,7 +201,7 @@ namespace {
 
     // Every migrated link is a selectable administrator module field value.
     foreach ([
-        'allprojectrounds', 'jltournamenttree', 'jlxmlexports',
+        'allprojectrounds', 'jlxmlexports',
         'leaguechampionoverview', 'rosteralltime', 'statsrankingteams',
         'teams', 'teamstree',
     ] as $target) {
@@ -288,7 +288,7 @@ namespace {
     try {
         foreach ([
             'allprojectrounds' => 'allprojectrounds',
-            'jltournamenttree' => 'jltournamenttree',
+
             'jlxmlexports' => 'jlxmlexports',
             'leaguechampionoverview' => 'leaguechampionoverview',
             'rosteralltime' => 'rosteralltime',
@@ -344,6 +344,7 @@ namespace {
         $helper->databaseSelector = 0;
 
         if ($helper->getLink('../admin') !== false
+            || $helper->getLink('jltournamenttree') !== false
             || $helper->getLink('typo') !== false
             || $helper->getLink(' separator') !== false) {
             throw new \RuntimeException('Unsafe or unknown navigation view was accepted.');
