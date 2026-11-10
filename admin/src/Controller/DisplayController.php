@@ -60,6 +60,12 @@ final class DisplayController extends BaseController
             throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
         }
 
+        // Keep MVC view selectors within the same length limit as the
+        // administrator extension-language resolver before class lookup.
+        if (strlen($view) > 100) {
+            throw new \InvalidArgumentException('SportsManagement administrator view name is too long.', 400);
+        }
+
         if ($view === '') {
             $view = $this->default_view;
         }
