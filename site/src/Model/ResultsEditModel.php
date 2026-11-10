@@ -35,6 +35,9 @@ final class ResultsEditModel extends SportsManagementModel
 
     /**
      * Save compact match results only when selected IDs pass access checks.
+     * Rejects oversized direct-model selections and preflights all edited
+     * scalar/split fields before any match is written, preventing corrupted
+     * PHP 8 form inputs from causing partial match updates or type warnings.
      * @param array $post Submitted result form data.
      * @param array $matchIds Selected match IDs.
      * @return bool Whether all selected match changes succeeded.
@@ -50,6 +53,12 @@ final class ResultsEditModel extends SportsManagementModel
 
         if (!$matchIds) {
             $matchIds = (array) $input->post->get('cid', [], 'array');
+        }
+
+        // The model can be invoked without the controller's 500-match guard.
+        // Bound the direct write API as well, before creating any queries.
+        if (count($matchIds) > 500) {
+            return false;
         }
 
         $validIds = [];
@@ -80,6 +89,17 @@ final class ResultsEditModel extends SportsManagementModel
 
         if (!$access->canEditMatches($matchIds)) {
             return false;
+        }
+
+        // Validate every selected match before the first database write.
+        // An invalid nested POST value must never partially update earlier
+        // matches, cast an array to a string or reach Joomla's updateObject().
+        foreach ($matchIds as $matchId) {
+            if (!self::hasValidMatchFields($post, $matchId)) {
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+
+                return false;
+            }
         }
 
         if (!class_exists(SportsManagementDateHelper::class)) {
@@ -212,6 +232,70 @@ final class ResultsEditModel extends SportsManagementModel
     }
 
     /**
+     * Reject malformed submitted match fields before any write begins.
+     *
+     * Inspects the exact per-match keys used by the compact results editor,
+     * distinguishing ordinary scalar fields from the two split-score arrays.
+     * This prevents arrays, objects and booleans from becoming database
+     * values or triggering PHP 8 conversion warnings. An explicitly supplied
+     * split list must contain at most 100 scalar scores; absent lists remain
+     * valid for partial updates. Fields not owned by this editor are ignored
+     * here and are never copied into the match update object.
+     *
+     * @param array<string,mixed> $post Complete submitted results form.
+     * @param int $matchId Validated positive match ID.
+     * @return bool Whether all supported fields for this match have safe types.
+     */
+    private static function hasValidMatchFields(array $post, int $matchId): bool
+    {
+        $scalarFields = [
+            'match_date', 'match_time', 'match_number', 'result_type',
+            'match_result_type', 'crowd', 'team1_single_matchpoint',
+            'team2_single_matchpoint', 'team1_single_sets',
+            'team2_single_sets', 'team1_single_games', 'team2_single_games',
+            'team1_result', 'team2_result', 'team1_result_ot',
+            'team2_result_ot', 'team1_result_so', 'team2_result_so',
+            'team1_legs', 'team2_legs',
+        ];
+
+        foreach ($scalarFields as $field) {
+            $key = $field . $matchId;
+
+            if (!array_key_exists($key, $post)) {
+                continue;
+            }
+
+            $value = $post[$key];
+
+            if ($value !== null && !is_string($value) && !is_int($value) && !is_float($value)) {
+                return false;
+            }
+        }
+
+        foreach (['team1_result_split', 'team2_result_split'] as $field) {
+            $key = $field . $matchId;
+
+            if (!array_key_exists($key, $post)) {
+                continue;
+            }
+
+            $values = $post[$key];
+
+            if (!is_array($values) || count($values) > 100) {
+                return false;
+            }
+
+            foreach ($values as $value) {
+                if ($value !== null && !is_string($value) && !is_int($value) && !is_float($value)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Read the current match date for partial result updates.
      * @param int $matchId Match identifier.
      * @return string Stored date or empty string.
@@ -289,6 +373,8 @@ final class ResultsEditModel extends SportsManagementModel
 
     /**
      * Normalise submitted split scores as trimmed strings.
+     * Values are already prevalidated by hasValidMatchFields() on writes;
+     * the secondary scalar guard also makes direct helper calls warning-free.
      * @param mixed $values Submitted split score array.
      * @return array<int,string> Normalised split values.
      */
@@ -299,7 +385,7 @@ final class ResultsEditModel extends SportsManagementModel
         }
 
         return array_map(
-            static fn ($value): string => trim((string) $value),
+            static fn ($value): string => is_scalar($value) ? trim((string) $value) : '',
             array_values($values)
         );
     }
