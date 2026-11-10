@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 use stdClass;
@@ -56,22 +57,32 @@ final class MatrixModel extends SportsManagementProjectModel
     }
 
     /**
-     * Read the currently selected matrix round.
-     * @return object|null Round record or null.
+     * Read the selected round only when it belongs to the active project.
+     *
+     * The old query filtered by the globally unique round ID alone, so a
+     * crafted matrix URL could display another project's round metadata.
+     * Require both a positive selected project and a matching project ID
+     * in the parameter-bound Joomla query. Missing or unrelated rounds
+     * return null without exposing information from another project.
+     *
+     * @return object|null Project-owned round record, or null.
      */
     public function getRound(): ?object
     {
-        if (self::$roundid <= 0) {
+        if (self::$roundid <= 0 || $this->projectId <= 0) {
             return null;
         }
 
         $roundId = self::$roundid;
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_round'))
             ->where($db->quoteName('id') . ' = :roundId')
-            ->bind(':roundId', $roundId, ParameterType::INTEGER);
+            ->where($db->quoteName('project_id') . ' = :matrixRoundProjectId')
+            ->bind(':roundId', $roundId, ParameterType::INTEGER)
+            ->bind(':matrixRoundProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
@@ -238,14 +249,27 @@ final class MatrixModel extends SportsManagementProjectModel
     }
 
     /**
-     * Load match results for the selected project, round and division.
-     * @param int $projectId Project identifier.
-     * @param int|bool $unpublished Whether to include unpublished results.
-     * @return mixed Matching matrix result rows.
+     * Load match results for the active project, optional round and division.
+     *
+     * Requires the caller's project ID to match the project currently
+     * resolved by Joomla's database selector. The optional division filter
+     * selects only matches in that division or its direct descendants; the
+     * earlier LEFT JOIN without a matching WHERE clause was not a filter.
+     * All dynamic identifiers are bound, and database exceptions stay in
+     * Joomla's private log rather than leaking SQL details to visitors.
+     *
+     * @param int $projectId Project requested by the frontend matrix view.
+     * @param int|bool $unpublished Whether unpublished match rows are included.
+     * @return array<int,object> Matching matrix rows, or empty on invalid input.
      */
     public function getMatrixResults($projectId, $unpublished = 0)
     {
         $projectId = (int) $projectId;
+
+        if ($projectId <= 0 || $projectId !== $this->projectId) {
+            return [];
+        }
+
         $roundId = self::$roundid;
         $divisionId = self::$divisionid;
         $db = $this->getDatabase();
@@ -272,7 +296,8 @@ final class MatrixModel extends SportsManagementProjectModel
                 . ' AND (d1.id = :matrixDivisionId OR d1.parent_id = :matrixParentDivisionId)'
             )
                 ->bind(':matrixDivisionId', $divisionId, ParameterType::INTEGER)
-                ->bind(':matrixParentDivisionId', $divisionId, ParameterType::INTEGER);
+                ->bind(':matrixParentDivisionId', $divisionId, ParameterType::INTEGER)
+                ->where('d1.id IS NOT NULL');
         }
 
         $query->where('r.project_id = :matrixProjectId')
@@ -288,20 +313,33 @@ final class MatrixModel extends SportsManagementProjectModel
         }
 
         $query->order('roundcode');
-        $db->setQuery($query);
 
-        return $db->loadObjectList() ?: [];
+        try {
+            $db->setQuery($query);
+
+            return $db->loadObjectList() ?: [];
+        } catch (Throwable $exception) {
+            $this->reportDatabaseError($exception);
+
+            return [];
+        }
     }
 
     /**
-     * Display a failed matrix database operation via Joomla messages.
-     * @param Throwable $e Caught database exception.
+     * Log a matrix database exception privately and show generic feedback.
+     *
+     * Database driver error text may contain table names, paths, raw SQL or
+     * credentials. Keep that detail in Joomla's private error log and show
+     * only a translated generic failure to public matrix visitors.
+     *
+     * @param Throwable $e Database operation failure.
      * @return void
      */
     private function reportDatabaseError(Throwable $e): void
     {
+        Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
