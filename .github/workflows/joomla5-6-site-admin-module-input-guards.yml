@@ -1,0 +1,77 @@
+name: Joomla 5/6 site, admin and GCalendar input guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/ResultsController.php'
+      - 'admin/src/Controller/GithubController.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
+      - '.github/tests/joomla56_results_controller_inputs.php'
+      - '.github/tests/joomla56_admin_github_issue_identity.php'
+      - '.github/tests/joomla56_gcalendar_options_rows.php'
+      - '.github/tests/joomla56_selected_function_phpdoc.php'
+      - '.github/workflows/joomla5-6-site-admin-module-input-guards.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Controller/ResultsController.php'
+      - 'admin/src/Controller/GithubController.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php'
+      - '.github/tests/joomla56_results_controller_inputs.php'
+      - '.github/tests/joomla56_admin_github_issue_identity.php'
+      - '.github/tests/joomla56_gcalendar_options_rows.php'
+      - '.github/tests/joomla56_selected_function_phpdoc.php'
+      - '.github/workflows/joomla5-6-site-admin-module-input-guards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  input-guards:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - name: Checkout migration branch
+        uses: actions/checkout@v4
+
+      - name: Configure PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Lint migrated site, admin and module PHP
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Controller/ResultsController.php \
+            admin/src/Controller/GithubController.php \
+            modules/mod_sportsmanagement_gcalendar/src/Helper/GcalendarHelper.php \
+            .github/tests/joomla56_results_controller_inputs.php \
+            .github/tests/joomla56_admin_github_issue_identity.php \
+            .github/tests/joomla56_gcalendar_options_rows.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "Missing $tag in $file" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Exercise safe Joomla request boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -d error_reporting=-1 .github/tests/joomla56_results_controller_inputs.php
+          php -d error_reporting=-1 .github/tests/joomla56_admin_github_issue_identity.php
+          php -d error_reporting=-1 .github/tests/joomla56_gcalendar_options_rows.php
+
+      - name: Verify documented public and private methods
+        run: php .github/tests/joomla56_selected_function_phpdoc.php
