@@ -103,6 +103,58 @@ final class MatrixPresentationHelper
     }
 
     /**
+     * Prepare a bounded chronological match list for a combined results view.
+     *
+     * The native combined results/matrix page reuses the same project-scoped
+     * matrix records rather than querying fixtures from another database
+     * context. Home/away identifiers must both be members of the selected
+     * matrix team list. Invalid result types and scores are normalized to
+     * text, and cancelled games are displayed as a dash. All names are
+     * plain data and are escaped by the Joomla template.
+     *
+     * @param iterable<mixed> $matches Selected project round match records.
+     * @param array<int,array{id:int,name:string,teamSlug:string}> $teams Validated project teams.
+     * @return array<int,array{home:string,away:string,score:string,round:string}> Public fixture rows.
+     */
+    public static function fixtures(iterable $matches, array $teams): array
+    {
+        $fixtures = [];
+
+        foreach ($matches as $match) {
+            if (!is_object($match)) {
+                continue;
+            }
+
+            $homeId = self::id($match->projectteam1_id ?? null);
+            $awayId = self::id($match->projectteam2_id ?? null);
+            if ($homeId === 0 || $awayId === 0 || $homeId === $awayId
+                || !isset($teams[$homeId], $teams[$awayId])) {
+                continue;
+            }
+
+            $decision = self::id($match->decision ?? 0) > 0;
+            $home = self::score($decision ? ($match->v1 ?? null) : ($match->e1 ?? null));
+            $away = self::score($decision ? ($match->v2 ?? null) : ($match->e2 ?? null));
+            $round = $match->roundname ?? '';
+
+            $fixtures[] = [
+                'home' => $teams[$homeId]['name'],
+                'away' => $teams[$awayId]['name'],
+                'score' => !empty($match->cancel) || ($home === null && $away === null)
+                    ? '–'
+                    : ($home ?? '–') . ':' . ($away ?? '–'),
+                'round' => is_string($round) && strlen($round) <= 512 ? $round : '',
+            ];
+
+            if (count($fixtures) >= 1000) {
+                break;
+            }
+        }
+
+        return $fixtures;
+    }
+
+    /**
      * Accept only positive decimal database IDs without PHP type conversion.
      *
      * @param mixed $value Raw numeric team identifier.
