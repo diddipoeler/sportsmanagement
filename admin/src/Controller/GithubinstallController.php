@@ -21,9 +21,12 @@ final class GithubinstallController extends BaseController
 {
     /**
      * Download and install an update package using the administrator model.
-     * Requires a Joomla form token and component core.admin rights, reads
-     * the configured update URL, delegates download to the native model
-     * and displays returned status messages before starting installation.
+     * Requires a valid Joomla form token, a logged-in administrator with
+     * component core.admin rights and a bounded string update URL. Delegates
+     * the validated setting to the native model and displays its messages
+     * before continuing into the established Joomla installer workflow.
+     * Missing identities, guests and malformed URL configuration never
+     * trigger an archive download or package installation.
      * @return void
      * @throws \RuntimeException If the current identity lacks admin rights.
      */
@@ -35,12 +38,16 @@ final class GithubinstallController extends BaseController
         // A valid form token alone does not grant extension installation rights.
         $identity = $this->app->getIdentity();
 
-        if (!$identity || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+        if ($identity === null || (int) ($identity->id ?? 0) < 1
+            || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         $model = $this->getModel('Githubinstall', 'Administrator', ['ignore_request' => true]);
-        $url = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_update_server_file', ''));
+        $configuredUrl = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_update_server_file', '');
+        $url = is_string($configuredUrl) && strlen($configuredUrl) <= 2048
+            ? trim($configuredUrl)
+            : '';
         $messages = $model !== false ? $model->CopyGithubLink($url) : false;
 
         if ($messages === false) {
