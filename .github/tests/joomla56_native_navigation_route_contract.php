@@ -307,6 +307,7 @@ namespace {
         foreach ([
             'allprojectrounds' => 'allprojectrounds',
             'jltournamenttree' => 'jltournamenttree',
+            'resultsmatrix' => 'resultsmatrix',
 
             'jlxmlexports' => 'jlxmlexports',
             'leaguechampionoverview' => 'leaguechampionoverview',
