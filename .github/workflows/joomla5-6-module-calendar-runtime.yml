@@ -10,6 +10,7 @@ on:
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
       - 'modules/mod_sportsmanagement_calendar/calendarFunctions.php'
       - '.github/tests/joomla56_calendar_legacy_functions.php'
+      - '.github/tests/joomla56_calendar_month_grid.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js'
@@ -24,6 +25,7 @@ on:
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
       - 'modules/mod_sportsmanagement_calendar/calendarFunctions.php'
       - '.github/tests/joomla56_calendar_legacy_functions.php'
+      - '.github/tests/joomla56_calendar_month_grid.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
       - 'modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js'
@@ -62,7 +64,7 @@ jobs:
           script=modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js
           template=modules/mod_sportsmanagement_calendar/tmpl/default_jsm.php
 
-          for file in "$provider" "$dispatcher" "$renderer" "$runtime" "$helper" "$template" "$legacy" "$legacy_runtime" .github/tests/joomla56_calendar_legacy_functions.php; do
+          for file in "$provider" "$dispatcher" "$renderer" "$runtime" "$helper" "$template" "$legacy" "$legacy_runtime" .github/tests/joomla56_calendar_legacy_functions.php .github/tests/joomla56_calendar_month_grid.php; do
             test -f "$file"
             php -l "$file"
           done
@@ -75,6 +77,7 @@ jobs:
           php .github/scripts/check-php-headers.php "$renderer" "$legacy" "$legacy_runtime"
           php .github/scripts/check-php-function-docs.php "$renderer" "$legacy" "$legacy_runtime"
           php .github/tests/joomla56_calendar_legacy_functions.php
+          php .github/tests/joomla56_calendar_month_grid.php
 
           grep -Fq 'ModuleDispatcherFactory' "$provider"
           grep -Fq 'HelperFactory' "$provider"
