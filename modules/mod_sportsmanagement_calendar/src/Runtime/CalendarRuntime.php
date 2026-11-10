@@ -39,19 +39,38 @@ class CalendarRuntime extends \PHPCalendar
     public static array $teamslist = [];
 
     /**
-     * Register one team for the calendar's team-filter dropdown.
-     * Ignores nonpositive or already registered team IDs and stores each distinct team's name and optional image for later select-option rendering.
+     * Register a strictly validated project team for the calendar filter.
      *
-     * @param int|string $id Team identifier.
+     * Accepts positive IDs and legacy decimal strings with leading zeros,
+     * while rejecting partial numbers, nested values and integer overflow.
+     * Duplicate numeric representations select the same stored team.
+     *
+     * @param mixed $id Raw project-team identifier from a connector.
      * @param string $name Display name of the team.
      * @param string $pic Optional team image URL.
      * @return void
      */
     public static function addTeam($id, string $name = '', string $pic = ''): void
     {
-        $id = (int) $id;
+        if (is_string($id)) {
+            $id = trim($id);
 
-        if ($id <= 0 || isset(self::$teams[$id])) {
+            if ($id === '' || strlen($id) > 64 || !ctype_digit($id)) {
+                return;
+            }
+
+            $id = ltrim($id, '0');
+
+            if ($id === '') {
+                return;
+            }
+        } elseif (!is_int($id)) {
+            return;
+        }
+
+        $id = filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        if ($id === false || isset(self::$teams[$id])) {
             return;
         }
 
