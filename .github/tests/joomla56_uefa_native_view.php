@@ -213,6 +213,20 @@ namespace {
             throw new \RuntimeException('Invalid UEFA year reached database lookup or markup.');
         }
 
+        // The Joomla menu metadata must also be installed under the native
+        // site/tmpl path rather than only in the historical views folder.
+        if (class_exists(\DOMDocument::class)) {
+            $menu = new \DOMDocument();
+            if (!$menu->load(dirname(__DIR__, 2) . '/site/tmpl/uefawertung/default.xml')) {
+                throw new \RuntimeException('Native UEFA menu XML cannot be parsed.');
+            }
+
+            $xpath = new \DOMXPath($menu);
+            if ($xpath->query("//field[@name='coefficientyear']")?->length !== 1) {
+                throw new \RuntimeException('Native UEFA menu lost its year selector.');
+            }
+        }
+
         $wrong = new $klass();
         $wrong->model = new \stdClass();
         try {
