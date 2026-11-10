@@ -21,8 +21,9 @@ final class SportsManagementDateHelper
      * Direction 1 converts YYYY-MM-DD to DD-MM-YYYY and ignores a trailing
      * time portion in SQL DATETIME values so legacy forms display dates only.
      * Any other direction converts DD-MM-YYYY to YYYY-MM-DD.
-     * Compact DDMMYYYY and DDMMYY inputs are always converted to YYYY-MM-DD.
-     * The function retains legacy substring conversion behavior; callers
+     * Compact DDMMYYYY and DDMMYY inputs are converted to YYYY-MM-DD only
+     * when they consist entirely of digits. The function otherwise retains
+     * legacy substring conversion behavior; callers
      * should use toSqlDate() when strict calendar validation is required.
      *
      * @param string $date Legacy date text supplied by a component form.
@@ -32,13 +33,15 @@ final class SportsManagementDateHelper
     public static function convertDate(string $date, int $direction = 1): string
     {
         if (!str_contains($date, '-')) {
-            if (strlen($date) === 8) {
+            // Historical compact dates must contain digits only. Refuse
+            // arbitrary eight-character strings before splitting them.
+            if (preg_match('/^\d{8}$/D', $date) === 1) {
                 return substr($date, 4, 4)
                     . '-' . substr($date, 2, 2)
                     . '-' . substr($date, 0, 2);
             }
 
-            if (strlen($date) === 6) {
+            if (preg_match('/^\d{6}$/D', $date) === 1) {
                 return substr(date('Y'), 0, 2)
                     . substr($date, 4, 2)
                     . '-' . substr($date, 2, 2)
