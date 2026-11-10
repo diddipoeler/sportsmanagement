@@ -21,6 +21,16 @@ final class LegacyBootstrap
 {
     private static bool $booted = false;
 
+    /**
+     * Initialise shared legacy frontend dependencies once per request.
+     *
+     * Register the historical component path, import compatibility models,
+     * controllers and helpers, then configure Joomla 5/6 include-path bridges
+     * and component constants. Repeated calls are inexpensive and do not
+     * reload already initialised legacy classes.
+     *
+     * @return void
+     */
     public static function boot(): void
     {
         if (self::$booted) {
@@ -59,6 +69,16 @@ final class LegacyBootstrap
         self::initialiseConstants();
     }
 
+    /**
+     * Load additional legacy dependencies required by a specific site view.
+     *
+     * Initialise the common bootstrap, select only predefined model and
+     * helper imports for the requested view, and set the legacy view constant
+     * for callers still using the old template infrastructure.
+     *
+     * @param string $view Requested SportsManagement frontend view.
+     * @return void
+     */
     public static function bootForView(string $view): void
     {
         self::boot();
@@ -248,13 +268,30 @@ final class LegacyBootstrap
         self::setConstant('COM_SPORTSMANAGEMENT_SHOW_VIEW', ucfirst($view));
     }
 
-    /** Load the heavy legacy HtmlView base only when a legacy view is actually requested. */
+    /**
+     * Prepare the legacy HTML view base on demand for older frontend views.
+     *
+     * Run view-specific imports first, then load the historical view library.
+     * Native namespaced Joomla views do not need this additional dependency.
+     *
+     * @param string $view Frontend view requiring the old HTML view class.
+     * @return void
+     */
     public static function bootViewForView(string $view): void
     {
         self::bootForView($view);
         self::import('libraries.sportsmanagement.view', JPATH_SITE);
     }
 
+    /**
+     * Register legacy model and table directories on supported Joomla versions.
+     *
+     * Joomla 6 removes these static include-path APIs; check their presence
+     * before using them so namespaced MVC resolution remains available on
+     * both supported Joomla generations without calling removed methods.
+     *
+     * @return void
+     */
     private static function registerLegacyIncludePaths(): void
     {
         // Joomla 6 removes the legacy include-path loaders. Keep them only on
@@ -276,6 +313,15 @@ final class LegacyBootstrap
         }
     }
 
+    /**
+     * Expose component configuration through constants expected by old views.
+     *
+     * Read the installed component parameters and initialise the historical
+     * database, debugging, image-server and help URL constants without
+     * overriding values already set elsewhere in the request.
+     *
+     * @return void
+     */
     private static function initialiseConstants(): void
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -294,6 +340,17 @@ final class LegacyBootstrap
         self::setConstant('COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER', $params->get('cfg_bugtracker_server', ''));
     }
 
+    /**
+     * Resolve a dotted legacy component import to a local PHP file.
+     *
+     * Expand relative component paths using the selected Joomla root and
+     * load existing files once. Missing optional compatibility files are
+     * ignored to preserve historical view boot behaviour.
+     *
+     * @param string $path Dotted component-relative legacy import name.
+     * @param string $base Joomla site or administrator filesystem root.
+     * @return void
+     */
     private static function import(string $path, string $base): void
     {
         if (!str_starts_with($path, 'components.com_sportsmanagement.')) {
@@ -307,6 +364,16 @@ final class LegacyBootstrap
         }
     }
 
+    /**
+     * Define a legacy configuration constant only when it is not yet set.
+     *
+     * Prevent duplicate-definition notices when the frontend bootstrap is
+     * invoked by multiple view and template compatibility entry points.
+     *
+     * @param string $name Public legacy constant identifier.
+     * @param mixed $value Configuration value to expose.
+     * @return void
+     */
     private static function setConstant(string $name, mixed $value): void
     {
         if (!\defined($name)) {
