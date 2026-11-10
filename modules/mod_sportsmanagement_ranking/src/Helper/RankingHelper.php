@@ -58,7 +58,9 @@ final class RankingHelper
      * Prepare league ranking data for display in the Joomla 5/6 module.
      * Resolves a selected project, collects ranking rows and permitted
      * presentation options, and creates team links and emblem/flag URLs
-     * for the frontend template.
+     * for the frontend template. Incomplete legacy team records are skipped
+     * during formatting and missing preferred-name fields fall back to the
+     * ordinary team name without raising PHP 8 property warnings.
      * @param Registry $params Ranking module configuration.
      * @param object $module Current Joomla module record.
      * @param CMSApplicationInterface $app Active site application.
@@ -112,11 +114,14 @@ final class RankingHelper
         $logoType = (int) $params->get('show_logo', 0);
 
         foreach ($list as $row) {
-            if (!$row->team) {
+            // Legacy ranking engines may return incomplete records. Avoid
+            // attempting dynamic property access on missing team objects.
+            if (!is_object($row) || !isset($row->team) || !is_object($row->team)) {
                 continue;
             }
 
-            $row->display_team_name = (string) ($row->team->{$nameType} ?: $row->team->name);
+            $preferredName = $row->team->{$nameType} ?? null;
+            $row->display_team_name = (string) ($preferredName ?: ($row->team->name ?? ''));
             $row->logo_url = $this->logoUrl($row->team, $logoType, $flagMap);
             $row->team_url = $this->teamUrl($params, $project, $row->team);
             $row->column_values = [];
