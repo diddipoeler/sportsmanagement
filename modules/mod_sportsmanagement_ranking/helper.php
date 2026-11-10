@@ -133,8 +133,10 @@ class modJSMRankingHelper extends stdClass
      *
      * Create a parameter-bound Joomla database query joining matches, rounds
      * and projects. Only matches without a first-team result and with a
-     * timestamp earlier than the update threshold are counted. Report query
-     * failures through Joomla's message queue and return zero on failure.
+     * timestamp earlier than the update threshold are counted. Require a
+     * positive project identifier and clamp the interval to the same 1–168
+     * hour range used by the native AJAX refresh. Report query failures
+     * through Joomla's message queue and return zero on failure.
      *
      * @param int|string $projectid Project identifier used to filter matches.
      * @param int|string $ishd_update_hour Age threshold expressed in hours.
@@ -151,7 +153,15 @@ class modJSMRankingHelper extends stdClass
         $query = $db->createQuery();
         $matchestoupdate = 0;
         $projectId = (int) $projectid;
-        $matchTimestamp = time() - ((int) $ishd_update_hour * 60 * 60);
+
+        // Match the native AJAX helper's supported 1–168 hour window and
+        // never query another project because an invalid ID cast to zero.
+        if ($projectId <= 0) {
+            return 0;
+        }
+
+        $hours = max(1, min(168, (int) $ishd_update_hour));
+        $matchTimestamp = time() - ($hours * 3600);
 
         $query->select('COUNT(*) AS ' . $db->quoteName('count'))
             ->from($db->quoteName('#__sportsmanagement_match', 'm'))
