@@ -24,7 +24,7 @@ final class RandomPlayerHelper
     /**
      * Select a random eligible player for the Joomla module.
      *
-     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images.
+     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings.
      *
      * @param Registry $params Module filters and display options.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -84,17 +84,20 @@ final class RandomPlayerHelper
         $row = $players[random_int(0, count($players) - 1)];
         $nameFormat = (int) $params->get('name_format', 0);
         $row->display_name = $this->formatName(
-            (string) $row->firstname,
-            (string) $row->nickname,
-            (string) $row->lastname,
+            (string) ($row->firstname ?? ''),
+            (string) ($row->nickname ?? ''),
+            (string) ($row->lastname ?? ''),
             $nameFormat
         );
         $row->project_slug = $row->project_id . ':' . $row->project_alias;
         $row->person_slug = $row->person_id . ':' . $row->person_alias;
         $row->team_slug = $row->team_id . ':' . $row->team_alias;
-        $row->picture_url = $this->picture((string) ($row->teamplayer_picture ?: $row->person_picture));
-        $row->team_picture_url = $this->mediaUrl((string) $row->team_picture);
-        $row->flag_url = $this->mediaUrl((string) $row->country_picture);
+        // LEFT JOINs and older databases may omit optional images. A null
+        // team-player picture falls back to the person's own portrait rather
+        // than triggering undefined-property notices under PHP 8.
+        $row->picture_url = $this->picture((string) (($row->teamplayer_picture ?? '') ?: ($row->person_picture ?? '')));
+        $row->team_picture_url = $this->mediaUrl((string) ($row->team_picture ?? ''));
+        $row->flag_url = $this->mediaUrl((string) ($row->country_picture ?? ''));
 
         $base = [
             'cfg_which_database' => $databaseSelector,
