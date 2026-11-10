@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $paths = [
+    'site/src/Helper/TournamentTreePayload.php',
+    'site/src/Model/JltournamenttreeModel.php',
+    'site/src/View/Jltournamenttree/HtmlView.php',
     'site/src/Helper/SiteRouteHelper.php',
     'admin/src/Field/JsmmenuitemsField.php',
     'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php',
