@@ -100,3 +100,12 @@ Root and JSON HTML views now use `SportsManagementViewErrorReporter`: private mo
 ## Native XML/PHP extended file editor listing (8 November 2026)
 
 `SmextxmleditorsModel` now lists only readable regular XML/PHP files with safe basenames from its expected administrator extended assets folder. Symlinks, traversal-style names and missing folders are excluded. The associated native view requires `SmextxmleditorsModel` and privately logs any model errors instead of exposing SQL messages in public/admin error pages. `joomla56_admin_extended_editor_files.php` tests file enumeration, view dispatch, log privacy and toolbar behaviour on PHP 8.3/8.4.
+
+## Site, administrator and GCalendar input boundary follow-up (10 November 2026)
+
+- The native frontend `ResultsController` only forwards safe, bounded Joomla layout identifiers in result-edit redirects. Invalid names, path separators, control characters and oversized values fall back to the results form layout; valid custom names remain supported.
+- The administrator `GithubController` now refuses GitHub issue creation for absent or guest identities even if an unexpected ACL implementation grants `core.manage`. POST CSRF validation and existing administrator redirects remain intact.
+- The GCalendar module's native helper validates the legacy site timezone/offset before creating Joomla date labels. Non-string values, malformed timezone names, NUL/control characters and excessively long settings fall back to UTC without PHP 8 warnings.
+- Regression coverage was extended for frontend redirects and module timezone options, with a new isolated GitHub issue identity/CSRF test. `.github/workflows/joomla5-6-site-admin-module-input-guards.yml` lints the changed PHP, checks all four file-header tags, runs the tests on PHP 8.2/8.3/8.4 and enforces selected-method PHPDoc. The administrator GitHub issue controller is now included in that PHPDoc gate.
+
+This is a verified, incremental compatibility batch, not a claim that all legacy site, administrator and module files have been converted. The full function-documentation inventory remains report-only until its remaining gaps are addressed, and installation/functional testing on real Joomla 5.4 and Joomla 6 sites is still required.
