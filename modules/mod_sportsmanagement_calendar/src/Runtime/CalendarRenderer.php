@@ -363,29 +363,30 @@ class CalendarRenderer
     }
 
     /**
-     * Normalise out-of-range month numbers across their corresponding years.
-     * Carries month underflow or overflow into the preceding or following year, preserving valid month values from one through twelve.
+     * Normalise an out-of-range calendar month in constant time.
      *
-     * @param int $month Month number that may be outside the normal range.
+     * Historical navigation can pass months below one or above twelve.
+     * Integer division and remainder preserve those offsets without a loop
+     * that can run millions of times for a corrupted legacy month value.
+     *
+     * @param int $month Month number, including values outside 1–12.
      * @param int $year Year to adjust when the month crosses a boundary.
-     * @return array{0:int,1:int} Corrected month and year.
+     * @return array{0:int,1:int} Corrected month (1–12) and year.
      */
     public function adjustDate($month, $year): array
     {
         $month = (int) $month;
         $year = (int) $year;
 
-        while ($month > 12) {
-            $month -= 12;
-            $year++;
-        }
+        $yearOffset = intdiv($month, 12);
+        $month = $month % 12;
 
-        while ($month <= 0) {
+        if ($month <= 0) {
             $month += 12;
-            $year--;
+            $yearOffset--;
         }
 
-        return [$month, $year];
+        return [$month, $year + $yearOffset];
     }
 
     /**
