@@ -12,6 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\ParameterType;
@@ -38,6 +40,14 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
     public string $jl_tree_jquery_version = '1.7.1';
     public string $jsmoption = 'com_sportsmanagement';
 
+    /**
+     * Initialise the tournament-tree model with Joomla MVC services and the
+     * selected project. Stores the native project ID and component option so the
+     * database queries stay in the selected frontend context.
+     *
+     * @param array $config Native Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -45,48 +55,105 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         $this->jsmoption = $this->siteApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
     }
 
+    /**
+     * Expose the historical bracket-library version for old template
+     * overrides. Native Joomla views use the bundled Web Asset Manager library
+     * instead of adding scripts dynamically.
+     *
+     * @return string Legacy library version identifier.
+     */
     public function getWhichJQuery(): string
     {
         return $this->jl_tree_jquery_version;
     }
 
+    /**
+     * Return the legacy first-round scrolling expression.
+     * The native read-only renderer does not execute this saved JavaScript value,
+     * but older template overrides can continue reading the setting.
+     *
+     * @return string Historical bracket scrolling option.
+     */
     public function getWhichShowFirstRound(): string
     {
         return $this->which_first_round;
     }
 
+    /**
+     * Read the width configured for tournament bracket rounds.
+     * The native view clamps this value before rendering it as a CSS variable.
+     *
+     * @return int Configured bracket round width in pixels.
+     */
     public function getTreeBracketRoundWidth(): int
     {
         return $this->jl_tree_bracket_round_width;
     }
 
+    /**
+     * Calculate the historical team label width as seventy percent
+     * of a bracket round. The native view uses a bounded CSS style instead.
+     *
+     * @return int Calculated team label width in pixels.
+     */
     public function getTreeBracketTeambWidth(): int
     {
         $this->jl_tree_bracket_teamb_width = (int) round(70 * $this->jl_tree_bracket_round_width / 100);
         return $this->jl_tree_bracket_teamb_width;
     }
 
+    /**
+     * Calculate the legacy total bracket column width including
+     * the margin used by the older jQuery Bracket layout.
+     *
+     * @return int Calculated bracket column width in pixels.
+     */
     public function getTreeBracketWidth(): int
     {
         $this->jl_tree_bracket_width = $this->jl_tree_bracket_round_width + 40;
         return $this->jl_tree_bracket_width;
     }
 
+    /**
+     * Read the configured team-name font size for the tree display.
+     * The native view clamps this value before adding it to HTML.
+     *
+     * @return int Configured font size in pixels.
+     */
     public function getFontSize(): int
     {
         return $this->font_size;
     }
 
+    /**
+     * Return the legacy first background gradient color.
+     * The native view validates its CSS hexadecimal representation.
+     *
+     * @return string Configured starting gradient color.
+     */
     public function getColorFrom(): string
     {
         return $this->color_from;
     }
 
+    /**
+     * Return the legacy final background gradient color.
+     * The native view validates its CSS hexadecimal representation.
+     *
+     * @return string Configured ending gradient color.
+     */
     public function getColorTo(): string
     {
         return $this->color_to;
     }
 
+    /**
+     * Load the selected project's tournament rounds through parameterized
+     * Joomla database queries. Only rounds with tournament matches are returned;
+     * query failures are logged privately and reported to visitors generically.
+     *
+     * @return array<int,object> Ordered tournament round records or an empty array.
+     */
     public function getTournamentRounds(): array
     {
         if ($this->projectid <= 0) {
@@ -121,6 +188,14 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Build the historical JavaScript round-heading fragment for older
+     * overrides. Sorts round codes numerically and escapes text values; the new
+     * native view derives round titles as JSON-ready arrays instead.
+     *
+     * @param mixed $rounds Tournament round records returned by getTournamentRounds().
+     * @return string Legacy JavaScript round-heading array text.
+     */
     public function getTournamentBracketRounds($rounds): string
     {
         $tempRounds = [];
@@ -136,6 +211,16 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         return '[' . implode(',', $tempRounds) . ']';
     }
 
+    /**
+     * Build bracket match positions from the current tournament's tree nodes.
+     * Loads scoped match and team records, calculates opening-round team names
+     * and scores, and stores match objects in the bracket property. Retains a
+     * legacy JavaScript fragment return for historical overrides; the native
+     * Joomla view deliberately ignores that fragment and serializes the objects.
+     *
+     * @param mixed $rounds Selected tournament rounds or null.
+     * @return string Historical JavaScript team pair fragment.
+     */
     public function getTournamentMatches($rounds = null): string
     {
         $rounds = is_array($rounds) ? $rounds : [];
@@ -255,15 +340,21 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
 
         if ($this->isFrontendDebugEnabled()) {
-            $this->siteApplication()->enqueueMessage(
-                __METHOD__ . ' ' . __LINE__ . ' varteams <pre>' . print_r($varTeams, true) . '</pre>',
-                ''
-            );
+            Log::add(__METHOD__ . ': prepared ' . count($varTeams) . ' tournament teams.', Log::INFO, 'com_sportsmanagement');
         }
 
         return implode(',', $varTeams);
     }
 
+    /**
+     * Convert existing bracket results to the historical JavaScript score
+     * fragment required by legacy overrides. Sanitizes every score as an integer
+     * literal or null to avoid arbitrary database content becoming executable JS.
+     * The native view reads typed bracket objects and never uses the fragment.
+     *
+     * @param mixed $rounds Ordered tournament rounds.
+     * @return string Safe legacy numeric score-array fragments.
+     */
     public function getTournamentResults($rounds = null): string
     {
         $varResults = [];
@@ -274,18 +365,11 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
             $tempResults = [];
 
             foreach ($roundBracket as $item) {
-                $home = $item->team1_result ?? '';
-                $away = $item->team2_result ?? '';
-
-                if ($home !== '' && $home !== null && $away !== '' && $away !== null) {
-                    $tempResults[] = '[' . $home . ',' . $away . ']';
-                } elseif (($home === '' || $home === null) && $away !== '' && $away !== null) {
-                    $tempResults[] = '[null,' . $away . ']';
-                } elseif ($home !== '' && $home !== null && ($away === '' || $away === null)) {
-                    $tempResults[] = '[' . $home . ',null]';
-                } else {
-                    $tempResults[] = '[null,null]';
-                }
+                // Historical database values must never become executable
+                // JavaScript through a raw result-fragment concatenation.
+                $home = self::safeScoreLiteral($item->team1_result ?? null);
+                $away = self::safeScoreLiteral($item->team2_result ?? null);
+                $tempResults[] = '[' . $home . ',' . $away . ']';
             }
 
             $varResults[$roundCode] = '[' . implode(',', $tempResults) . ']';
@@ -298,20 +382,32 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         ksort($varResults, SORT_NUMERIC);
 
         if ($this->isFrontendDebugEnabled()) {
-            $this->siteApplication()->enqueueMessage(
-                __METHOD__ . ' ' . __LINE__ . ' varresults <pre>' . print_r($varResults, true) . '</pre>',
-                ''
-            );
+            Log::add(__METHOD__ . ': prepared ' . count($varResults) . ' tournament result rounds.', Log::INFO, 'com_sportsmanagement');
         }
 
         return implode(',', $varResults);
     }
 
+    /**
+     * Preserve the former extension-start hook for older tournament callers.
+     * Accesses the native site application, validating that the Joomla frontend
+     * runtime is available without performing global bootstrap work.
+     *
+     * @return void
+     */
     public function checkStartExtension(): void
     {
         $this->siteApplication();
     }
 
+    /**
+     * Fetch tournament matches corresponding to validated positive match IDs.
+     * Uses Joomla's bound IN clause, project-scoped joins and a private error
+     * reporter, so unrelated projects cannot contribute bracket match data.
+     *
+     * @param array<int,mixed> $matchIds Requested tree match identifiers.
+     * @return array<int,object> Match records indexed by their database primary key.
+     */
     private function loadTournamentMatches(array $matchIds): array
     {
         $matchIds = array_values(array_unique(array_filter(array_map('intval', $matchIds), static fn (int $id): bool => $id > 0)));
@@ -349,6 +445,12 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Find the earliest tournament round in the selected project with matches.
+     * Uses a bound project ID and returns zero when the query cannot complete.
+     *
+     * @return int Positive minimum round code, or zero when unavailable.
+     */
     private function getMinimumTournamentRoundCode(): int
     {
         if ($this->projectid <= 0) {
@@ -378,6 +480,14 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load team names, countries and club logos only for current-project
+     * team identifiers. Deduplicates requested IDs, binds their values and
+     * returns an empty map after database errors.
+     *
+     * @param array<int,mixed> $projectTeamIds Selected SportsManagement project-team IDs.
+     * @return array<int,object> Team metadata indexed by project-team ID.
+     */
     private function loadProjectTeamInfo(array $projectTeamIds): array
     {
         $projectTeamIds = array_values(array_unique(array_filter(array_map('intval', $projectTeamIds), static fn (int $id): bool => $id > 0)));
@@ -423,6 +533,15 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Prepare legacy tournament team label fragments in the three historical
+     * logo presentation modes. Escapes strings and supports null team slots;
+     * the native read-only view now uses plain team-name data instead.
+     *
+     * @param object $item Bracket match containing team names and logo metadata.
+     * @param int $treeLogo Historical label/logo presentation mode.
+     * @return string Legacy JavaScript team pair fragment.
+     */
     private function formatBracketTeams(object $item, int $treeLogo): string
     {
         if ($treeLogo === 1) {
@@ -462,6 +581,14 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         return '[' . $first . ', ' . $second . ']';
     }
 
+    /**
+     * Escape backslashes, quotes and newlines for legacy JavaScript string
+     * fragments still consumed by older tournament overrides. Native views no
+     * longer need this because they use JSON encoding and text-only rendering.
+     *
+     * @param string $value Raw team label or resource URL.
+     * @return string Escaped legacy JavaScript string contents.
+     */
     private function escapeJavascriptString(string $value): string
     {
         return strtr(
@@ -475,26 +602,77 @@ final class JltournamenttreeModel extends SportsManagementProjectModel
         );
     }
 
+    /**
+     * Inspect the administrator-selected frontend diagnostic setting.
+     * Diagnostics now go only to Joomla's private log and never print match
+     * records, database errors or internal configuration to public visitors.
+     *
+     * @return bool Whether frontend logging was requested.
+     */
     private function isFrontendDebugEnabled(): bool
     {
         return (bool) ComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend');
     }
 
+    /**
+     * Log a count of bracket nodes in the first tournament round for
+     * diagnostic purposes without displaying private match data on the page.
+     *
+     * @param int $minimumRoundCode First tournament round code.
+     * @return void
+     */
     private function debugBracket(int $minimumRoundCode): void
     {
         if (!$this->isFrontendDebugEnabled()) {
             return;
         }
 
-        $this->siteApplication()->enqueueMessage(
-            __METHOD__ . ' ' . __LINE__ . ' bracket erste runde <pre>'
-                . print_r($this->bracket[$minimumRoundCode] ?? [], true) . '</pre>',
-            ''
+        Log::add(
+            __METHOD__ . ': first round contains '
+                . count($this->bracket[$minimumRoundCode] ?? []) . ' bracket nodes.',
+            Log::INFO,
+            'com_sportsmanagement'
         );
     }
 
+    /**
+     * Log the original Joomla database exception for administrators and
+     * notify the frontend with a generic translated error message. Internal
+     * SQL text, credentials, table names and paths stay out of visitor output.
+     *
+     * @param Throwable $e Native Joomla database or driver failure.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
-        $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
+        Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+        $this->siteApplication()->enqueueMessage(
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+            'error'
+        );
+    }
+
+    /**
+     * Convert a legacy match score to a safe JavaScript numeric literal.
+     *
+     * The historical team/result view still consumes JavaScript fragments.
+     * Only nonnegative whole numbers up to four digits may appear in those
+     * fragments; invalid values, markup, arrays and overflow become null.
+     * The native view instead builds its own typed JSON payload.
+     *
+     * @param mixed $score Legacy tournament match result.
+     * @return string Decimal integer literal or the null keyword.
+     */
+    private static function safeScoreLiteral(mixed $score): string
+    {
+        if (is_int($score)) {
+            return $score >= 0 && $score <= 9999 ? (string) $score : 'null';
+        }
+
+        if (!is_string($score) || preg_match('/^[0-9]{1,4}$/D', $score) !== 1) {
+            return 'null';
+        }
+
+        return (string) (int) $score;
     }
 }
