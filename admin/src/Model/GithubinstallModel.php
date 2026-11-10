@@ -16,6 +16,7 @@ use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -50,13 +51,18 @@ final class GithubinstallModel extends BaseDatabaseModel
      *
      * The archive is intentionally extracted into the temp root because the existing
      * jsm_update_github.php workflow installs from the GitHub-generated top-level folder.
+     * Rejects malformed/non-string archive settings, resets stale success state
+     * on each attempt and keeps extraction exceptions in Joomla's private log
+     * rather than exposing server paths or credentials to administrators.
      *
-     * @return array<string,string>|false
+     * @param mixed $link Configured GitHub archive URL.
+     * @return array<string,string>|false Update status or false on failure.
      */
     public function CopyGithubLink($link)
     {
-        $url = trim((string) $link);
+        $url = is_string($link) && strlen($link) <= 2048 ? trim($link) : '';
         $app = $this->administratorApplication();
+        $this->successText = [];
 
         // A failed download must not reuse an extracted directory from a
         // previous request when the follow-up installer starts.
@@ -96,7 +102,9 @@ final class GithubinstallModel extends BaseDatabaseModel
             $archive = new Archive(['tmp_path' => $tmpPath]);
             $result = $archive->extract($archivePath, $tmpPath);
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            // Archive paths, stack details and credentials must stay private.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT'), 'error');
 
             return false;
         }
@@ -122,7 +130,9 @@ final class GithubinstallModel extends BaseDatabaseModel
 
     /**
      * Find the expected extracted GitHub archive folder.
-     * Does not reuse an unrelated or stale sportsmanagement directory.
+     * Only considers names associated with the current downloaded archive,
+     * and rejects symbolic links or unrelated/stale folder candidates so
+     * a previous extraction cannot be installed by another request.
      * @param string $tmpPath Joomla temporary directory.
      * @param string $downloadedFile Downloaded archive filename.
      * @param string $url Original archive URL.
@@ -139,7 +149,9 @@ final class GithubinstallModel extends BaseDatabaseModel
             foreach ([$stem, 'sportsmanagement-' . $stem] as $candidateName) {
                 $candidate = $tmpPath . DIRECTORY_SEPARATOR . basename($candidateName);
 
-                if (Folder::exists($candidate)) {
+                // A symlinked old extraction directory must not be accepted
+                // as the source of an administrator component installation.
+                if (Folder::exists($candidate) && !is_link($candidate)) {
                     return $candidate;
                 }
             }
