@@ -30,16 +30,18 @@ final class HtmlView extends SportsManagementProjectHtmlView
     public array $favteams = [];
 
     /**
-     * Initialise the matrix view and register historic layout paths.
+     * Initialise the native Joomla 5/6 matrix view without prioritising old layouts.
+     *
+     * Joomla MVC resolves site/tmpl/matrix/default.php automatically. Removing
+     * the old addTemplatePath() override ensures that it does not shadow the
+     * safe native template with a legacy script relying on the removed static
+     * Factory::getApplication() API. Joomla template overrides still work.
+     *
      * @param array $config Joomla view configuration.
      */
     public function __construct($config = [])
     {
         parent::__construct($config);
-
-        // Keep the historical matrix layouts available while their PHP view
-        // controller is migrated to Joomla's namespaced MVC layer.
-        $this->addTemplatePath(JPATH_SITE . '/components/com_sportsmanagement/views/matrix/tmpl');
     }
 
     /**
@@ -47,6 +49,9 @@ final class HtmlView extends SportsManagementProjectHtmlView
      * Validates the native MatrixModel, loads the current round, teams and
      * results, optionally builds the Russian matrix and division notes,
      * and registers the component stylesheet and translated document title.
+     * Restricts legacy team-name settings to known display columns so an
+     * array or sensitive object property cannot reach the native matrix
+     * renderer. Uses Joomla's own template lookup for safe default HTML.
      * @return void
      * @throws \RuntimeException If MatrixModel is unavailable.
      */
@@ -64,15 +69,23 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->round = $model->getRound();
 
         $this->teams = $model->getProjectTeamsIndexed($this->divisionid);
-        $teamNameField = (string) ($this->config['teamnames'] ?? 'name');
-        if ($teamNameField === '') {
-            $teamNameField = 'name';
-        }
+        // Legacy template settings can be malformed or point at arbitrary
+        // object properties; accept only public team-name fields.
+        $configuredTeamName = $this->config['teamnames'] ?? 'name';
+        $teamNameField = is_string($configuredTeamName)
+            && in_array($configuredTeamName, ['name', 'short_name', 'middle_name'], true)
+                ? $configuredTeamName
+                : 'name';
         $this->config['teamnames'] = $teamNameField;
 
         foreach ($this->teams as $team) {
-            if (isset($team->{$teamNameField}) && trim((string) $team->{$teamNameField}) !== '') {
-                $team->name = (string) $team->{$teamNameField};
+            if (!is_object($team)) {
+                continue;
+            }
+
+            $displayName = $team->{$teamNameField} ?? null;
+            if (is_string($displayName) && trim($displayName) !== '') {
+                $team->name = $displayName;
             }
         }
 
