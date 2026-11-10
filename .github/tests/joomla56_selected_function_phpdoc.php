@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__, 2);
 $paths = [
+    'site/src/Helper/MatrixPresentationHelper.php',
+    'site/src/Model/MatrixModel.php',
+    'site/src/View/Matrix/HtmlView.php',
     'site/src/Helper/TournamentTreePayload.php',
     'site/src/Model/JltournamenttreeModel.php',
     'site/src/View/Jltournamenttree/HtmlView.php',
