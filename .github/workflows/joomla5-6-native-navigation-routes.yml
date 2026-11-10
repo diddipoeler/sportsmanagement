@@ -49,6 +49,7 @@ jobs:
                 exit 1
               }
             done
+          done
 
       - name: Validate live native navigation options and safe route boundaries
         run: php -d error_reporting=-1 .github/tests/joomla56_native_navigation_route_contract.php
