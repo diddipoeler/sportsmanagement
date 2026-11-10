@@ -101,7 +101,7 @@ class modJSMRankingHelper extends stdClass
                 && isset($item->team)
                 && is_object($item->team)
                 && isset($item->team->id)
-                && (string) $item->team->id === (string) $alwaysVisibleTeamId;
+                && $item->team->id == $alwaysVisibleTeamId;
 
             if ($isFav) {
                 $limit = $paramRowLimit - 1;
