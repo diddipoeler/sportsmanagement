@@ -58,10 +58,14 @@ if (!class_exists('modJSMRankingHelper', false)) {
 class modJSMRankingHelper extends stdClass
 {
     /**
-     * Preserve the historical return shape while using the native Joomla 5/6 helper.
+     * Fetch ranking data through the Joomla 5/6 namespaced module helper.
      *
-     * @param mixed $params
-     * @return array{project:?object,ranking:array,colors:array}
+     * Accept an existing Registry or legacy parameter array, resolve the
+     * frontend application and keep the three-key array contract expected
+     * by older ranking templates and third-party module overrides.
+     *
+     * @param mixed $params Legacy module parameters supplied by reference.
+     * @return array{project:?object,ranking:array,colors:array} Prepared ranking data.
      */
     public static function getData(&$params): array
     {
@@ -125,7 +129,17 @@ class modJSMRankingHelper extends stdClass
     }
 
     /**
-     * Count unfinished games old enough to qualify for the inline-hockey update.
+     * Count unplayed project matches older than the configured update interval.
+     *
+     * Create a parameter-bound Joomla database query joining matches, rounds
+     * and projects. Only matches without a first-team result and with a
+     * timestamp earlier than the update threshold are counted. Report query
+     * failures through Joomla's message queue and return zero on failure.
+     *
+     * @param int|string $projectid Project identifier used to filter matches.
+     * @param int|string $ishd_update_hour Age threshold expressed in hours.
+     * @param DatabaseInterface|null $database Optional injected database.
+     * @return int Number of matches eligible for the update.
      */
     public static function getCountGames($projectid, $ishd_update_hour, ?DatabaseInterface $database = null)
     {
@@ -330,7 +344,17 @@ class modJSMRankingHelper extends stdClass
     }
 
     /**
-     * Preserve the legacy public method while routing through the native helper.
+     * Generate a Joomla route for the configured ranking-team link target.
+     *
+     * Convert legacy module parameters to Registry, ensure that the native
+     * site routing helper is available, and preserve the legacy link types
+     * teaminfo, roster, teamplan and clubinfo with their project, season
+     * and database selectors. Unknown link types return null.
+     *
+     * @param object $item Ranking row containing team slugs and identifiers.
+     * @param Registry|array $params Legacy module link settings.
+     * @param object $project Current project with its route slug.
+     * @return string|null Resolved Joomla link, or null if disabled.
      */
     public static function getTeamLink($item, $params, $project)
     {
