@@ -18,6 +18,20 @@ final class JsmmenuitemsField extends ListField
 {
     protected $type = 'JSMMenuItems';
 
+    /**
+     * Build the Joomla 5/6 form options for SportsManagement navigation links.
+     *
+     * Preserves the historical stored view identifiers and translates their
+     * labels through Joomla's language service, so an existing administrator
+     * module configuration remains selectable after the native MVC migration.
+     * Combines the predefined targets with parent XML field options; the site
+     * navigation helper decides whether a target needs a selected project or
+     * team before rendering its link. Newly supported native views include
+     * the all-rounds, all-time roster, team tree, statistics and tournament
+     * destinations that were previously missing from module routing.
+     *
+     * @return array<int,object> Joomla list entries with translated text and stored view values.
+     */
     protected function getOptions(): array
     {
         $items = [
