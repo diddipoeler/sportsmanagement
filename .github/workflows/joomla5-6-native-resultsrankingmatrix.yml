@@ -1,0 +1,81 @@
+name: Joomla 5/6 native results ranking matrix
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/ResultsrankingModel.php'
+      - 'site/src/Model/ResultsrankingmatrixModel.php'
+      - 'site/src/View/Resultsrankingmatrix/HtmlView.php'
+      - 'site/tmpl/resultsrankingmatrix/**'
+      - '.github/tests/joomla56_resultsranking_model_contract.php'
+      - '.github/tests/joomla56_resultsrankingmatrix_model_contract.php'
+      - '.github/tests/joomla56_resultsrankingmatrix_native_view.php'
+      - '.github/tests/joomla56_native_navigation_route_contract.php'
+      - '.github/tests/joomla56_selected_function_phpdoc.php'
+      - '.github/workflows/joomla5-6-native-resultsrankingmatrix.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  triple-results-ranking-matrix:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: PHP syntax and required migration header metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Model/ResultsrankingModel.php \
+            site/src/Model/ResultsrankingmatrixModel.php \
+            site/src/View/Resultsrankingmatrix/HtmlView.php \
+            site/tmpl/resultsrankingmatrix/default.php \
+            site/tmpl/resultsrankingmatrix/default_ranking.php \
+            site/tmpl/resultsrankingmatrix/default_results.php \
+            site/tmpl/resultsrankingmatrix/default_matrix.php \
+            .github/tests/joomla56_resultsranking_model_contract.php \
+            .github/tests/joomla56_resultsrankingmatrix_model_contract.php \
+            .github/tests/joomla56_resultsrankingmatrix_native_view.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "Missing $tag in $file" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Validate existing ranking model and foreign division isolation
+        run: php -d error_reporting=-1 .github/tests/joomla56_resultsranking_model_contract.php
+
+      - name: Check project-owned round, division and single match fetch in three-panel model
+        run: php -d error_reporting=-1 .github/tests/joomla56_resultsrankingmatrix_model_contract.php
+
+      - name: Render and escape all three native Joomla panels
+        run: php -d error_reporting=-1 .github/tests/joomla56_resultsrankingmatrix_native_view.php
+
+      - name: Keep earlier two-panel Joomla view output stable
+        shell: bash
+        run: |
+          php -d error_reporting=-1 .github/tests/joomla56_resultsranking_native_view.php
+          php -d error_reporting=-1 .github/tests/joomla56_matrix_native_template.php
+
+      - name: Confirm native Joomla menu links for restored triple view
+        run: php -d error_reporting=-1 .github/tests/joomla56_native_navigation_route_contract.php
+
+      - name: Require detailed function-level PHPDocs
+        run: php -d error_reporting=-1 .github/tests/joomla56_selected_function_phpdoc.php
