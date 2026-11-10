@@ -1,0 +1,67 @@
+name: Joomla 5/6 site admin calendar legacy-input hardening
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/ResultsEditModel.php'
+      - 'admin/src/Controller/GithubinstallController.php'
+      - 'admin/src/Model/GithubinstallModel.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php'
+      - '.github/tests/joomla56_results_write_integrity.php'
+      - '.github/tests/joomla56_admin_githubinstaller_guards.php'
+      - '.github/tests/joomla56_calendar_module_input_guards.php'
+      - '.github/workflows/joomla5-6-site-admin-calendar-legacy-inputs.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  legacy-inputs:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+
+      - name: Lint changed Joomla 5/6 code and regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Model/ResultsEditModel.php \
+            admin/src/Controller/GithubinstallController.php \
+            admin/src/Model/GithubinstallModel.php \
+            modules/mod_sportsmanagement_calendar/src/Helper/CalendarHelper.php \
+            .github/tests/joomla56_results_write_integrity.php \
+            .github/tests/joomla56_admin_githubinstaller_guards.php \
+            .github/tests/joomla56_calendar_module_input_guards.php; do
+            php -l "$file"
+            for tag in '@version' '@author' '@copyright' '@license'; do
+              grep -Fq -- "$tag" "$file" || {
+                echo "Missing required PHP header $tag in $file" >&2
+                exit 1
+              }
+            done
+          done
+
+      - name: Test frontend result preflight and bounded match IDs
+        run: php -d error_reporting=-1 .github/tests/joomla56_results_write_integrity.php
+
+      - name: Test admin GitHub installer authorization and private errors
+        run: php -d error_reporting=-1 .github/tests/joomla56_admin_githubinstaller_guards.php
+
+      - name: Test calendar module legacy setting validation
+        run: php -d error_reporting=-1 .github/tests/joomla56_calendar_module_input_guards.php
+
+      - name: Check selected native method PHPDocs
+        run: php .github/tests/joomla56_selected_function_phpdoc.php
