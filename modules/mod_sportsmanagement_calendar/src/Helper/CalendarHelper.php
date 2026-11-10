@@ -49,6 +49,34 @@ final class CalendarHelper
     }
 
     /**
+     * Validate the Joomla site timezone before creating calendar dates.
+     *
+     * Migrated Joomla installations can retain corrupt offset settings,
+     * including arrays, objects, invalid timezone names and NUL characters.
+     * Rejecting them before PHP date construction prevents conversion warnings
+     * and ensures the monthly grid and JavaScript events use the same safe
+     * timezone. Numeric PHP timezone offsets remain supported.
+     *
+     * @param mixed $value Untrusted legacy application offset setting.
+     * @return string Valid PHP timezone name or UTC if invalid.
+     */
+    private static function safeTimezone(mixed $value): string
+    {
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/[[:cntrl:]]/', $value) === 1) {
+            return 'UTC';
+        }
+
+        try {
+            new \DateTimeZone($value);
+        } catch (\Throwable) {
+            return 'UTC';
+        }
+
+        return $value;
+    }
+
+    /**
      * Calendar views and AJAX requests use four-digit dates; avoid producing
      * invalid years when a legacy parameter or query string is out of range.
      *
@@ -66,7 +94,9 @@ final class CalendarHelper
      * normalises date and module settings, registers page assets, and
      * returns events or layout configuration for template rendering.
      * Translated weekday labels are truncated by Unicode characters even
-     * when the mbstring extension is not installed.
+     * when the mbstring extension is not installed. Non-string legacy layouts
+     * and malformed site timezone settings fall back to safe values before
+     * they are used by native Joomla 5/6 calendar rendering.
      * @param Registry $params Calendar module options.
      * @param object $module Active Joomla module instance.
      * @param CMSApplicationInterface $app Joomla site application.
@@ -76,10 +106,8 @@ final class CalendarHelper
     {
         $this->bootstrapRuntime();
 
-        $layout = self::normaliseLayout((string) $params->get(
-            'which_layout',
-            $params->get('layout', 'default_jsm')
-        ));
+        $rawLayout = $params->get('which_layout', $params->get('layout', 'default_jsm'));
+        $layout = self::normaliseLayout(is_string($rawLayout) ? $rawLayout : 'default_jsm');
         $params->set('which_layout', $layout);
         $params->set('layout', $layout);
 
@@ -142,7 +170,7 @@ final class CalendarHelper
                 : '';
         $calendarData = $this->showCal($params, $year, $month, max(0, (int) ($module->id ?? 0)), $ajax, $app);
         $matches = \JSMCalendar::$matches;
-        $offset = (string) $app->get('offset', 'UTC');
+        $offset = self::safeTimezone($app->get('offset', 'UTC'));
 
         return [
             'ajax' => $ajax,
@@ -238,12 +266,15 @@ final class CalendarHelper
         $calendar->modid = max(0, $moduleId);
         $calendar->ajax = $ajax === 1 ? 1 : 0;
 
-        \JSMCalendar::$prefix = (string) $params->get('custom_prefix', '');
+        $rawPrefix = $params->get('custom_prefix', '');
+        \JSMCalendar::$prefix = is_string($rawPrefix) && strlen($rawPrefix) <= 200
+            ? $rawPrefix
+            : '';
         \JSMCalendar::$params = $params;
         \JSMCalendar::getMatches($month, $year);
 
         $counter = [];
-        $offset = (string) $app->get('offset', 'UTC');
+        $offset = self::safeTimezone($app->get('offset', 'UTC'));
 
         foreach (\JSMCalendar::$matches as $row) {
             if (!isset($row['date'])) {
@@ -418,7 +449,7 @@ final class CalendarHelper
         $rows = \SportsmanagementConnector::loadMatches($caldates);
         $formatted = [];
         $rows = \SportsmanagementConnector::formatMatches($rows, $formatted);
-        $offset = (string) $app->get('offset', 'UTC');
+        $offset = self::safeTimezone($app->get('offset', 'UTC'));
         $events = $viewName === 'arrobefr'
             ? self::buildArrobeEvents($rows, $offset)
             : self::buildTuiEvents($rows, $offset);
@@ -747,14 +778,19 @@ final class CalendarHelper
 
     /**
      * Construct a Joomla Date from a timestamp or date-like value.
-     * Applies the site timezone, handles numeric UNIX timestamps
-     * and reports invalid date input as null.
+     * Applies the validated site timezone, handles numeric UNIX timestamps
+     * and reports invalid or non-scalar date input as null without PHP 8
+     * array-to-string warnings.
      * @param mixed $value Timestamp or supported date string.
      * @param string $offset Joomla site timezone.
      * @return Date|null Calendar date if parsing succeeds.
      */
     private static function dateFromValue(mixed $value, string $offset): ?Date
     {
+        if (!is_int($value) && !is_string($value)) {
+            return null;
+        }
+
         try {
             if (is_int($value) || (is_string($value) && ctype_digit($value))) {
                 $date = new Date('@' . (int) $value);
