@@ -228,7 +228,6 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
                 ]);
 
             case 'allprojectrounds':
-            case 'jltournamenttree':
             case 'jlxmlexports':
             case 'leaguechampionoverview':
                 return SiteRouteHelper::view((string) $view, $base);
