@@ -849,4 +849,75 @@ if ($oneSidedAway[10]->shooterringsperround !== []
     throw new RuntimeException('One-sided away shooting score lost its round details.');
 }
 
+// Soccer has distinct point settings for regular, overtime and shootout
+// matches. The totals must reflect every result, not the final match's
+// point table multiplied by the cumulative win/draw counters.
+$mixedRules = (object) [
+    'sport_type_name' => 'COM_SPORTSMANAGEMENT_ST_SOCCER',
+    'allow_add_time' => 1,
+    'points_after_regular_time' => '3,1,-1',
+    'points_after_add_time' => '2,1,-1',
+    'points_after_penalty' => '1,0,-2',
+];
+$mixedSeed = [10 => new RankingRow(10), 20 => new RankingRow(20)];
+$mixedFixtures = [
+    (object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => 20,
+        'home_score' => 2,
+        'away_score' => 1,
+        'match_result_type' => 0,
+        'home_bonus' => 1,
+    ],
+    (object) [
+        'projectteam1_id' => 20,
+        'projectteam2_id' => 10,
+        'home_score' => 2,
+        'away_score' => 1,
+        'match_result_type' => 1,
+        'home_bonus' => 2,
+    ],
+    (object) [
+        'projectteam1_id' => 10,
+        'projectteam2_id' => 20,
+        'home_score' => 1,
+        'away_score' => 1,
+        'match_result_type' => 0,
+        'home_bonus' => 3,
+        'away_bonus' => 4,
+    ],
+    (object) [
+        'projectteam1_id' => 20,
+        'projectteam2_id' => 10,
+        'home_score' => 1,
+        'away_score' => 2,
+        'match_result_type' => 2,
+    ],
+];
+$mixedCalculated = $calculator->calculate(
+    $mixedSeed,
+    $mixedFixtures,
+    $mixedRules,
+    $config
+);
+
+if ($mixedCalculated[10]->cnt_matches !== 4
+    || $mixedCalculated[20]->cnt_matches !== 4
+    || $mixedCalculated[10]->cnt_won !== 1
+    || $mixedCalculated[10]->cnt_lot !== 1
+    || $mixedCalculated[10]->cnt_wso !== 1
+    || $mixedCalculated[10]->cnt_draw !== 1
+    || $mixedCalculated[20]->cnt_wot !== 1
+    || $mixedCalculated[10]->bonus_points !== 4.0
+    || $mixedCalculated[20]->bonus_points !== 6.0
+    || $mixedCalculated[10]->sum_points !== 8.0
+    || $mixedCalculated[20]->sum_points !== 6.0
+    || $mixedCalculated[10]->neg_points !== 1.0
+    || $mixedCalculated[20]->neg_points !== 5.0
+    || $mixedCalculated[10]->points !== 8.0
+    || $mixedCalculated[20]->points !== 6.0
+    || $mixedSeed[10]->cnt_matches !== 0) {
+    throw new RuntimeException('Mixed soccer result types overwrote per-fixture points.');
+}
+
 echo "Joomla 5/6 pure ranking calculator OK\n";
