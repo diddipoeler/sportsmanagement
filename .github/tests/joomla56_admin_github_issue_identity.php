@@ -55,7 +55,7 @@ namespace Joomla\CMS\MVC\Controller {
          * @param array $config Controller model options.
          * @return object|false The configured test issue model.
          */
-        public function getModel($name = '', $prefix = '', $config = []): object|false
+        public function getModel($name = '', $prefix = '', $config = [])
         {
             ++$this->modelLookups;
 
