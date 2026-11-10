@@ -1,0 +1,33 @@
+/*
+ * Native Joomla 5/6 SportsManagement tournament bracket presentation.
+ *
+ * @version    5.6.0
+ * @author     SportsManagement contributors
+ * @copyright  Copyright (C) 2026 SportsManagement contributors
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+.jsm-tournament-tree {
+    overflow-x: auto;
+    max-width: 100%;
+    padding-block: 1rem;
+}
+
+.jsm-tournament-tree .jQBracket {
+    font-size: var(--jsm-tree-font-size, 14px);
+    background: linear-gradient(var(--jsm-tree-from, #fff), var(--jsm-tree-to, #00f));
+}
+
+.jsm-tournament-tree .jQBracket .round,
+.jsm-tournament-tree .jQBracket .team {
+    width: var(--jsm-tree-round-width, 300px);
+}
+
+.jsm-tournament-tree .jQBracket .team b {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.jsm-tournament-tree__bracket {
+    min-height: 2rem;
+}
