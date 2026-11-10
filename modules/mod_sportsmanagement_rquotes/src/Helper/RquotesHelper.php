@@ -874,17 +874,31 @@ final class RquotesHelper
     }
 
     /**
-     * Return the current time in the Joomla site's configured timezone.
+     * Return the current date and time in the Joomla site's timezone.
      *
-     * Falls back to UTC if the configured timezone cannot be instantiated.
+     * Uses the configured timezone for daily, weekly, monthly and yearly
+     * random-quote rotation. Invalid legacy values (including arrays,
+     * objects, control characters or unrecognised timezone names) are
+     * rejected before DateTimeZone construction so PHP 8.2+ never emits
+     * array-to-string warnings. Empty and invalid settings fall back to UTC,
+     * while valid numeric offsets and IANA region identifiers are preserved.
      *
-     * @param CMSApplicationInterface $app Application providing timezone settings.
-     * @return \DateTimeImmutable Current local date and time.
+     * @param CMSApplicationInterface $app Joomla site application supplying the legacy offset setting.
+     * @return \DateTimeImmutable Current time with a validated timezone.
      */
     private function now(CMSApplicationInterface $app): \DateTimeImmutable
     {
+        $configured = $app->get('offset', 'UTC');
+        $name = is_string($configured) && strlen($configured) <= 128
+            ? trim($configured)
+            : 'UTC';
+
+        if ($name === '' || preg_match('/[[:cntrl:]]/', $name) === 1) {
+            $name = 'UTC';
+        }
+
         try {
-            $timezone = new \DateTimeZone((string) $app->get('offset', 'UTC'));
+            $timezone = new \DateTimeZone($name);
         } catch (\Throwable) {
             $timezone = new \DateTimeZone('UTC');
         }
