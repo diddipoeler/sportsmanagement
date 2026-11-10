@@ -26,6 +26,9 @@ final class SmquotestxtModel extends BaseDatabaseModel
      * XML filelist field, excluding symlinks, scripts and unsafe basenames.
      * The native frontend reader additionally supports old root-level TXT
      * files for existing configuration values without exposing them here.
+     * A missing, symlinked or concurrently removed module directory returns
+     * an empty list so Joomla 5/6 can continue rendering the administrator
+     * file selection form. Results remain naturally sorted.
      *
      * @return array<int, string> Readable and validated TXT file names.
      */
@@ -42,19 +45,28 @@ final class SmquotestxtModel extends BaseDatabaseModel
 
         $files = [];
 
-        foreach (new DirectoryIterator($path) as $fileInfo) {
-            if (!$fileInfo->isFile() || $fileInfo->isLink() || !$fileInfo->isReadable()) {
-                continue;
+        try {
+            // Joomla upgrades can replace the module directory between
+            // is_dir() and iterator construction. Keep the administrator
+            // file picker usable instead of throwing an SPL exception.
+            foreach (new DirectoryIterator($path) as $fileInfo) {
+                if (!$fileInfo->isFile() || $fileInfo->isLink() || !$fileInfo->isReadable()) {
+                    continue;
+                }
+    
+                $name = $fileInfo->getFilename();
+    
+                if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*\.txt$/iD', $name)
+                    || str_contains($name, '..')) {
+                    continue;
+                }
+    
+                $files[] = $name;
             }
-
-            $name = $fileInfo->getFilename();
-
-            if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*\.txt$/iD', $name)
-                || str_contains($name, '..')) {
-                continue;
-            }
-
-            $files[] = $name;
+        } catch (\UnexpectedValueException) {
+            // The module files are optional. Missing or inaccessible folders
+            // should produce an empty file list without a PHP fatal error.
+            return [];
         }
 
         natcasesort($files);
