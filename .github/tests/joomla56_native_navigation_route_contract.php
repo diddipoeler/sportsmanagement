@@ -234,6 +234,24 @@ namespace {
         {
             return $this->values[$key] ?? $default;
         }
+
+        /**
+         * Supply unfiltered Joomla input for database selector validation.
+         *
+         * Preserves malformed arrays, booleans and strings rather than
+         * allowing getInt() to silently select another database connection.
+         *
+         * @param string $key Raw request parameter.
+         * @param mixed $default Fallback when the parameter is absent.
+         * @param string $filter Joomla raw-value filter mode.
+         * @return mixed Exact saved test request value or fallback.
+         */
+        public function get(string $key, mixed $default = null, string $filter = 'raw'): mixed
+        {
+            return array_key_exists($key, $this->values)
+                ? $this->values[$key]
+                : $default;
+        }
     };
 
     $app = new class($input) implements \Joomla\CMS\Application\CMSApplicationInterface {
@@ -342,6 +360,28 @@ namespace {
             }
         }
 
+        // Invalid raw URL parameters must not be coerced by Joomla's
+        // getInt() into a different configured database connection.
+        $helper->databaseSelector = 1;
+        foreach ([[], ['1'], new \stdClass(), false, true, -1, 2, 1.5,
+            '1junk', ' 1', '1 ', '01suffix', '2',
+        ] as $invalidRequest) {
+            $input->values['cfg_which_database'] = $invalidRequest;
+
+            if ($helper->getLink('matrix') !== false) {
+                throw new \RuntimeException('Malformed raw URL selector changed navigation database.');
+            }
+        }
+
+        unset($input->values['cfg_which_database']);
+        $defaulted = $helper->getLink('matrix');
+
+        if (!is_string($defaulted)
+            || (parseNavigationUrl($defaulted)['cfg_which_database'] ?? null) !== '1') {
+            throw new \RuntimeException('Absent raw URL selector did not use stored module database.');
+        }
+
+        $input->values['cfg_which_database'] = 1;
         $helper->databaseSelector = 0;
 
         if ($helper->getLink('../admin') !== false
