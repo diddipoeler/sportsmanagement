@@ -53,8 +53,9 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
      * native Joomla 5/6 project, roster, team, statistic, tournament and
      * export views (including the restored jltournamenttree route) use
      * SiteRouteHelper rather than the legacy
-     * URL builder. Malformed database settings and negative round/season
-     * selectors cannot produce misleading or cross-database navigation.
+     * URL builder. Both saved and raw URL database selectors must be valid;
+     * invalid values are never silently mapped to another connection by
+     * Joomla's integer filter. Negative round/season selectors are bounded.
      *
      * @param mixed $view Configured navigation view name.
      * @return string|false Routed Joomla link or false when unavailable.
@@ -95,9 +96,15 @@ final class NativeNavigationMenuHelper extends NavigationMenuHelper
             return false;
         }
 
-        $requestedSelector = $input->getInt('cfg_which_database', $storedSelector);
+        // Joomla's getInt() would silently map invalid URL values such as
+        // "1garbage" or nested arrays onto another database selector.
+        // Inspect raw input and fail closed before project navigation.
+        $rawSelector = $input->get('cfg_which_database', null, 'raw');
+        $requestedSelector = $rawSelector === null
+            ? $storedSelector
+            : self::navigationDatabaseSelector($rawSelector);
 
-        if ($requestedSelector !== 0 && $requestedSelector !== 1) {
+        if ($requestedSelector === null) {
             return false;
         }
 
