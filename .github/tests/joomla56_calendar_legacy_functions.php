@@ -58,4 +58,27 @@ if (!str_contains($html, 'calendar-contain')
     throw new RuntimeException('Legacy calendar leap-year markup regression.');
 }
 
+// The native month renderer must normalize both normal navigation offsets
+// and extreme imported months without iterating millions of years.
+require_once $root . '/modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php';
+$renderer = new \Diddipoeler\Module\SportsManagementCalendar\Site\Runtime\CalendarRenderer();
+
+$monthCases = [
+    [[1, 2026], [1, 2026]],
+    [[12, 2026], [12, 2026]],
+    [[0, 2026], [12, 2025]],
+    [[13, 2026], [1, 2027]],
+    [[25, 2026], [1, 2028]],
+    [[-1, 2026], [11, 2025]],
+    [[-12, 2026], [12, 2024]],
+    [[1200000000, 2026], [12, 100002025]],
+    [[-1200000000, 2026], [12, -99997975]],
+];
+
+foreach ($monthCases as [$input, $expected]) {
+    if ($renderer->adjustDate($input[0], $input[1]) !== $expected) {
+        throw new RuntimeException('Calendar month offset normalisation changed for ' . $input[0]);
+    }
+}
+
 echo "Joomla 5/6 legacy calendar functions OK\n";
