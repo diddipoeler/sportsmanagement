@@ -32,6 +32,7 @@ $paths = [
     'site/src/Helper/SiteRouteHelper.php',
     'admin/src/Field/JsmmenuitemsField.php',
     'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php',
+    'site/src/View/Uefawertung/HtmlView.php',
     'site/src/Model/UefawertungModel.php',
     'site/src/Model/RefereesModel.php',
     'site/src/View/Treetonode/HtmlView.php',
