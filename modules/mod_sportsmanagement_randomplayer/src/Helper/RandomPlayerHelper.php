@@ -452,7 +452,7 @@ final class RandomPlayerHelper
     /**
      * Collect unique positive project or team IDs from module settings.
      *
-     * Accepts scalar or multiselect inputs, splits comma/semicolon/whitespace-separated lists, and ignores invalid or overflowing IDs.
+     * Accepts scalar or multiselect inputs, splits comma/semicolon/whitespace-separated lists, and ignores invalid or overflowing IDs. Each candidate uses the same validated positive-ID parser as season selection, including Unicode aliases.
      *
      * @param mixed $value Raw Joomla module selector.
      * @return array<int, int> Unique validated positive identifiers.
@@ -474,20 +474,13 @@ final class RandomPlayerHelper
         }
 
         foreach ($candidates as $candidate) {
-            if (is_scalar($candidate) && preg_match('/^\s*(\d+)(?::[A-Za-z0-9_-]+)?\s*$/D', (string) $candidate, $match)) {
-                // Casting an overflowing ID can silently clamp it to PHP_INT_MAX.
-                $digits = ltrim($match[1], '0');
-                if ($digits === '') {
-                    continue;
-                }
+            // Project/team selectors use the same ID:alias syntax as seasons.
+            // Reuse the validated parser so Unicode aliases, zero padding and
+            // overflow handling are consistent across all module filters.
+            $id = self::positiveId($candidate);
 
-                $id = filter_var($digits, FILTER_VALIDATE_INT, [
-                    'options' => ['min_range' => 1],
-                ]);
-
-                if ($id !== false) {
-                    $ids[$id] = $id;
-                }
+            if ($id > 0) {
+                $ids[$id] = $id;
             }
         }
 
