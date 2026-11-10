@@ -117,16 +117,16 @@ class CalendarRuntime extends \PHPCalendar
                 if ($converted !== false) {
                     return $converted;
                 }
-            } catch (\ValueError) {
-                // Unsupported charset names must not break the calendar.
+            } catch (\Throwable) {
+                // Invalid charsets and extension errors must not break the calendar.
             }
         }
 
         if (function_exists('mb_convert_encoding')) {
             try {
                 return mb_convert_encoding($text, $toenc, $fromenc);
-            } catch (\ValueError) {
-                // Preserve the original text when a legacy charset is invalid.
+            } catch (\Throwable) {
+                // Preserve the original text when legacy conversion fails.
             }
         }
 
