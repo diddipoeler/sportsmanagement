@@ -138,6 +138,15 @@ namespace {
         }
     }
 
+    // Project and team multi-selects must accept the same Unicode aliases
+    // and zero-padded IDs as the season selector without losing uniqueness.
+    $selection = new \ReflectionMethod($module, 'normaliseIds');
+    if ($selection->invoke($module, ['0012:fußball', '12', '0007:équipe', '0', '999999999999999999999']) !== [12, 7]
+        || $selection->invoke($module, '0005:crème,5;0010:team') !== [5, 10]
+        || $selection->invoke($module, ['abc', '5:bad:alias', true, 1.5]) !== []) {
+        throw new \RuntimeException('RandomPlayer project/team selector normalization mismatch.');
+    }
+
     $db = new class implements \Joomla\Database\DatabaseInterface {
         public int $queries = 0;
         public ?object $last = null;
