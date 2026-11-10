@@ -40,6 +40,51 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper {
     }
 }
 namespace Diddipoeler\Component\SportsManagement\Site\Model {
+    /**
+     * Isolated access-model stand-in for direct compact-results model tests.
+     *
+     * The actual controller performs its own access checks; the write model
+     * must also call its native access model before updating matches.
+     */
+    class ResultsAccessModel
+    {
+        /** @var array<int,array<int,int>> Match lists inspected by the model. */
+        public static array $checks = [];
+
+        /**
+         * Accept the database selector used by the tested write operation.
+         *
+         * @param int $databaseSelector Source database selection.
+         * @return void
+         */
+        public function setDatabaseSelector(int $databaseSelector): void
+        {
+        }
+
+        /**
+         * Accept the current project scope for the access check.
+         *
+         * @param int $projectId Authorized project ID.
+         * @return void
+         */
+        public function setProjectId(int $projectId): void
+        {
+        }
+
+        /**
+         * Permit isolated fixture writes while recording all access checks.
+         *
+         * @param array<int,int> $ids Selected match IDs.
+         * @return bool True for the stub's authorized test identity.
+         */
+        public function canEditMatches(array $ids): bool
+        {
+            self::$checks[] = $ids;
+
+            return true;
+        }
+    }
+
     class SportsManagementModel {
         public static ?object $db = null;
         public static ?object $app = null;
@@ -223,5 +268,48 @@ namespace {
             throw new \RuntimeException('Sensitive driver errors leaked into frontend messages.');
         }
     }
+    // Invalid nested form values must be rejected before any writes, even
+    // when the user selected one valid match followed by a malformed one.
+    $db->writeFailure = false;
+    $db->saved = [];
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        foreach ([
+            ['match_date101' => ['2026-10-10']],
+            ['match_time101' => ['12:00']],
+            ['match_number101' => new \stdClass()],
+            ['crowd101' => true],
+            ['team1_result101' => ['5']],
+            ['team1_result_split101' => [['2']]],
+            ['team2_result_split101' => '1;2'],
+            ['team1_result_split101' => array_fill(0, 101, '1')],
+        ] as $invalid) {
+            $beforeQueries = count($db->queries);
+
+            if ($model->saveShort($invalid, [101, 102]) !== false
+                || $db->saved !== [] || count($db->queries) !== $beforeQueries) {
+                throw new \RuntimeException('Malformed compact result payload reached a database query or write.');
+            }
+        }
+
+        $beforeQueries = count($db->queries);
+
+        if ($model->saveShort([], range(1, 501)) !== false
+            || count($db->queries) !== $beforeQueries || $db->saved !== []) {
+            throw new \RuntimeException('Unbounded direct-model match selection was accepted.');
+        }
+    } finally {
+        restore_error_handler();
+    }
+
+    if (!$model->saveShort(['match_number102' => 'VALID'], [102])
+        || count($db->saved) !== 1
+        || ($db->saved[0]->match_number ?? null) !== 'VALID') {
+        throw new \RuntimeException('Preflight validation broke legitimate compact result updates.');
+    }
+
     echo "Joomla 5/6 compact results integrity and error handling OK\n";
 }
