@@ -20,8 +20,10 @@ final class GithubController extends BaseController
     /**
      * Create a GitHub issue through the component's administrator model.
      *
-     * Requires a valid Joomla form token and the core.manage permission for
-     * com_sportsmanagement before invoking the model. Redirects to the result
+     * Requires a valid Joomla form token, a real authenticated identity and
+     * the core.manage permission for com_sportsmanagement before invoking
+     * the external GitHub issue model. Rejects guests and unavailable identities
+     * before any issue data is read or sent. Redirects to the result
      * layout with either a success or an error message after the attempt.
      *
      * @return void
@@ -32,7 +34,10 @@ final class GithubController extends BaseController
         $this->checkToken();
         $identity = $this->app->getIdentity();
 
-        if (!$identity->authorise('core.manage', 'com_sportsmanagement')) {
+        // Guest identities or a missing Joomla user must never reach the
+        // external GitHub issue writer, even if an ACL stub permits manage.
+        if ($identity === null || (int) ($identity->id ?? 0) < 1
+            || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
