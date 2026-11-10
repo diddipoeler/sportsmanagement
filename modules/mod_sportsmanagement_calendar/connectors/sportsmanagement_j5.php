@@ -353,7 +353,8 @@ final class SportsmanagementConnector extends JSMCalendar
 
     /**
      * Load calendar birthdays for published players within the selected date range.
-     * Joins players to their season teams and projects, applies project/team/club filters and projects each person's birth date into the requested years without duplicate events.
+     * Joins players to season teams and projects, applies project/team/club filters,
+     * and projects valid birth dates into requested years without duplicate events.
      *
      * @param array $caldates Requested calendar start and end dates.
      * @param string $ordering Order of stored birth dates, ASC or DESC.
@@ -361,8 +362,10 @@ final class SportsmanagementConnector extends JSMCalendar
      */
     public static function getBirthdays(array $caldates, string $ordering = 'ASC'): array
     {
-        $start = self::parseDate((string) ($caldates['start'] ?? ''));
-        $end = self::parseDate((string) ($caldates['end'] ?? ''));
+        $startValue = $caldates['start'] ?? null;
+        $endValue = $caldates['end'] ?? null;
+        $start = self::parseDate(is_string($startValue) ? $startValue : '');
+        $end = self::parseDate(is_string($endValue) ? $endValue : '');
         if (!$start || !$end) {
             return [];
         }
@@ -411,8 +414,9 @@ final class SportsmanagementConnector extends JSMCalendar
         $seen = [];
 
         foreach ($rows as $row) {
-            $birth = \DateTimeImmutable::createFromFormat('!Y-m-d', (string) $row->birthday);
-            if (!$birth) {
+            $birthdayValue = $row->birthday ?? null;
+            $birth = self::parseDate(is_string($birthdayValue) ? $birthdayValue : '');
+            if ($birth === null) {
                 continue;
             }
 
@@ -500,27 +504,59 @@ final class SportsmanagementConnector extends JSMCalendar
 
     /**
      * Convert a stored match date to the frontend user's calendar timezone.
-     * Sets a comparable timestamp, replaces missing legacy dates with null and converts valid fixture dates to Joomla Date while tolerating unavailable timezone data.
+     * Sets a comparable timestamp, replaces missing or malformed dates with
+     * null, and converts valid fixture dates to Joomla Date while tolerating
+     * malformed timezone settings.
      *
      * @param object $match Match record modified with timestamp and converted date.
      * @return void
      */
     private static function normaliseMatchDate(object $match): void
     {
-        $rawDate = (string) ($match->match_date ?? '');
-        $timestamp = strtotime($rawDate);
-        $match->timestamp = $timestamp === false ? 0 : $timestamp;
+        $rawValue = $match->match_date ?? null;
+
+        if ($rawValue instanceof \DateTimeInterface) {
+            $match->timestamp = $rawValue->getTimestamp();
+            return;
+        }
+
+        if (!is_string($rawValue) && !is_int($rawValue)) {
+            $match->timestamp = 0;
+            $match->match_date = null;
+            return;
+        }
+
+        $rawDate = (string) $rawValue;
 
         if ($rawDate === '' || $rawDate === '0000-00-00 00:00:00') {
+            $match->timestamp = 0;
+            $match->match_date = null;
+            return;
+        }
+
+        try {
+            $timestamp = strtotime($rawDate);
+        } catch (\Throwable) {
+            $timestamp = false;
+        }
+
+        $match->timestamp = $timestamp === false ? 0 : $timestamp;
+
+        if ($timestamp === false) {
             $match->match_date = null;
             return;
         }
 
         $app = self::siteApplication();
-        $projectTimezone = trim((string) ($match->timezone ?? ''));
-        $timezone = trim((string) $app->getIdentity()->getParam('timezone', $projectTimezone));
+        $projectOffset = $match->timezone ?? '';
+        $projectTimezone = is_string($projectOffset) ? trim($projectOffset) : '';
+        $userOffset = $app->getIdentity()->getParam('timezone', $projectTimezone);
+        $timezone = is_string($userOffset) ? trim($userOffset) : '';
+
         if ($timezone === '') {
-            $timezone = trim((string) $app->get('offset', 'UTC')) ?: 'UTC';
+            $siteOffset = $app->get('offset', 'UTC');
+            $timezone = is_string($siteOffset) && trim($siteOffset) !== ''
+                ? trim($siteOffset) : 'UTC';
         }
 
         try {
@@ -535,7 +571,8 @@ final class SportsmanagementConnector extends JSMCalendar
 
     /**
      * Format the start time of a fixture for the calendar's match list.
-     * Accepts Joomla Date and other DateTimeInterface values or parses the stored database date string, keeping the original value when parsing fails.
+     * Accepts DateTimeInterface or scalar database dates; invalid nested
+     * values and malformed date strings are handled without PHP 8 warnings.
      *
      * @param object $match Fixture with its normalised or legacy match_date property.
      * @return string Match start formatted as YYYY-MM-DD HH:MM when available.
@@ -548,9 +585,19 @@ final class SportsmanagementConnector extends JSMCalendar
             return $matchDate->format('Y-m-d H:i');
         }
 
-        $timestamp = strtotime((string) $matchDate);
+        if (!is_string($matchDate) && !is_int($matchDate)) {
+            return '';
+        }
 
-        return $timestamp === false ? (string) $matchDate : date('Y-m-d H:i', $timestamp);
+        $rawDate = (string) $matchDate;
+
+        try {
+            $timestamp = strtotime($rawDate);
+        } catch (\Throwable) {
+            return '';
+        }
+
+        return $timestamp === false ? $rawDate : date('Y-m-d H:i', $timestamp);
     }
 
     /**
@@ -671,7 +718,8 @@ final class SportsmanagementConnector extends JSMCalendar
 
     /**
      * Parse a calendar date boundary without accepting PHP's rollover of invalid days.
-     * Extracts the YYYY-MM-DD portion of the boundary and rejects impossible calendar dates instead of silently normalising them into another month.
+     * Extracts a strict YYYY-MM-DD boundary and rejects malformed or
+     * impossible days instead of silently normalising them into another month.
      *
      * @param string $value Calendar date or date-time boundary string.
      * @return \DateTimeImmutable|null Valid requested day, or null.
@@ -679,7 +727,16 @@ final class SportsmanagementConnector extends JSMCalendar
     private static function parseDate(string $value): ?\DateTimeImmutable
     {
         $value = substr(trim($value), 0, 10);
-        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+
+        if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/D', $value) !== 1) {
+            return null;
+        }
+
+        try {
+            $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+        } catch (\Throwable) {
+            return null;
+        }
 
         return $date instanceof \DateTimeImmutable && $date->format('Y-m-d') === $value ? $date : null;
     }
