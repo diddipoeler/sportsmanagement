@@ -30,7 +30,8 @@ final class GcalendarHelper
      *
      * Loads authorised calendars, creates the native JSON feed URL and
      * prepares translated day/month names and bounded presentation options.
-     * Invalid legacy scalar settings are replaced with safe defaults.
+     * Invalid legacy scalar settings and malformed site timezones are
+     * replaced with safe defaults before Joomla date labels are created.
      *
      * @param Registry $params Joomla calendar module configuration.
      * @param object $module Current Joomla module record.
@@ -50,7 +51,7 @@ final class GcalendarHelper
             $calendars
         ), static fn (int $id): bool => $id > 0)));
 
-        $date = Date::getInstance('now', (string) $app->get('offset', 'UTC'));
+        $date = Date::getInstance('now', self::safeTimezone($app->get('offset', 'UTC')));
         $dayNamesMin = [];
         $monthNames = [];
         $monthNamesShort = [];
@@ -101,6 +102,35 @@ final class GcalendarHelper
                 'todayLabel' => Text::_('JTODAY'),
             ],
         ];
+    }
+
+    /**
+     * Resolve a safe PHP timezone name from Joomla's legacy site offset.
+     *
+     * Site configurations carried across Joomla versions can contain arrays,
+     * invalid timezone names or control characters. Date::getInstance() must
+     * not receive those values because PHP 8 throws for invalid timezones and
+     * converting an array to a string raises a warning. Allow valid named and
+     * numeric-offset PHP timezones, otherwise use UTC for the calendar labels.
+     *
+     * @param mixed $configured Raw application timezone or legacy offset.
+     * @return string Valid PHP timezone identifier, defaulting to UTC.
+     */
+    private static function safeTimezone(mixed $configured): string
+    {
+        if (!is_string($configured) || $configured === ''
+            || strlen($configured) > 128
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $configured) === 1) {
+            return 'UTC';
+        }
+
+        try {
+            new \\DateTimeZone($configured);
+        } catch (\\Throwable) {
+            return 'UTC';
+        }
+
+        return $configured;
     }
 
     /**
