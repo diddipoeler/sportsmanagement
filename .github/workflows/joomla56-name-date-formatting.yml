@@ -6,6 +6,8 @@ on:
       - joomla5-6
     paths:
       - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/NamePresentationHelper.php'
+      - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Helper/NameFormatter.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - '.github/tests/joomla56-name-date-formatting.php'
@@ -13,6 +15,8 @@ on:
   pull_request:
     paths:
       - 'site/src/Helper/PersonNameFormatter.php'
+      - 'site/src/Helper/NamePresentationHelper.php'
+      - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Helper/NameFormatter.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - '.github/tests/joomla56-name-date-formatting.php'
@@ -40,6 +44,8 @@ jobs:
       - name: Check PHP syntax
         run: |
           php -l site/src/Helper/PersonNameFormatter.php
+          php -l site/src/Helper/NamePresentationHelper.php
+          php -l site/src/Helper/SportsManagementDateHelper.php
           php -l admin/src/Helper/NameFormatter.php
           php -l admin/src/Helper/SportsManagementDateHelper.php
           php -l .github/tests/joomla56-name-date-formatting.php
