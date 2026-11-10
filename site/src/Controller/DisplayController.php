@@ -64,6 +64,12 @@ final class DisplayController extends BaseController
             throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
         }
 
+        // Bound input before MVC class resolution; malformed or excessively long
+        // selectors must never reach the Joomla 5/6 view factory.
+        if (strlen($view) > 100) {
+            throw new \InvalidArgumentException('SportsManagement site view name is too long.', 400);
+        }
+
         if ($view === '') {
             $view = $this->default_view;
         }
