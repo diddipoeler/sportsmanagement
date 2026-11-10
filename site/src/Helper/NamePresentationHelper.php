@@ -94,15 +94,28 @@ final class NamePresentationHelper
     /**
      * Read the first character of a name for initial-based formats.
      *
-     * Uses multibyte substring handling when PHP mbstring is available,
-     * falling back to the standard substring function otherwise.
+     * Uses mbstring when available; otherwise a Unicode-aware PCRE match
+     * retains the entire first character (including non-ASCII initials).
+     * The byte fallback is only used for invalid UTF-8 input.
      *
      * @param string $value Name text from which to take an initial.
      * @return string First available character, or an empty string.
      */
     private static function firstCharacter(string $value): string
     {
-        return function_exists('mb_substr') ? mb_substr($value, 0, 1) : substr($value, 0, 1);
+        if ($value === '') {
+            return '';
+        }
+
+        if (function_exists('mb_substr')) {
+            return mb_substr($value, 0, 1, 'UTF-8');
+        }
+
+        if (preg_match('/^./us', $value, $matches) === 1) {
+            return $matches[0];
+        }
+
+        return substr($value, 0, 1);
     }
 
     /**
