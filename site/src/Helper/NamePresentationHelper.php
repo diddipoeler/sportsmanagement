@@ -121,8 +121,9 @@ final class NamePresentationHelper
     /**
      * Select the first usable text value from a list of name candidates.
      *
-     * Trims each candidate and returns its text as soon as it is
-     * nonempty, preserving the configured fallback order.
+     * Trims scalar or stringable candidates and returns the first nonempty
+     * text, preserving the configured fallback order. Ignores malformed
+     * arrays and objects rather than producing PHP 8 conversion warnings.
      *
      * @param mixed ...$values Name candidates ordered by preference.
      * @return string First nonempty name, or an empty string.
@@ -130,6 +131,13 @@ final class NamePresentationHelper
     private static function firstNonEmpty(mixed ...$values): string
     {
         foreach ($values as $value) {
+            // Legacy database results and template overrides can supply
+            // malformed name fields. Ignore arrays and non-stringable
+            // objects instead of emitting PHP 8 conversion warnings.
+            if (!is_scalar($value) && !$value instanceof \Stringable) {
+                continue;
+            }
+
             $value = trim((string) $value);
             if ($value !== '') {
                 return $value;
