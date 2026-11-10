@@ -125,8 +125,8 @@ final class GcalendarHelper
         }
 
         try {
-            new \\DateTimeZone($configured);
-        } catch (\\Throwable) {
+            new \DateTimeZone($configured);
+        } catch (\Throwable) {
             return 'UTC';
         }
 
