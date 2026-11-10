@@ -238,13 +238,23 @@ final class ResultsController extends BaseController
     /**
      * Generate a safe route back to the frontend results view.
      * Only forwards scalar filter and selection values from the request and
-     * preserves the requested layout without interpolating untrusted arrays.
+     * accepts only bounded alphanumeric Joomla layout identifiers (plus
+     * underscores and hyphens), falling back to the form layout when a value
+     * could be interpreted as a path or contains control characters.
      * @param array $post Submitted request fields used as route options.
      * @param string $layout Results layout to display after the action.
      * @return string Joomla-routed results URL.
      */
     private function buildResultsRedirect(array $post, string $layout): string
     {
+        // A layout is a template identifier, not a URL or filesystem path.
+        // Keep legitimate Joomla custom layout names, but reject traversal,
+        // control characters and unexpectedly large client-supplied values.
+        if ($layout === '' || strlen($layout) > 64
+            || preg_match('/^[A-Za-z0-9_-]+$/D', $layout) !== 1) {
+            $layout = 'form';
+        }
+
         // Only forward scalar route values, never raw POST arrays/objects.
         foreach (['cfg_which_database', 's', 'p', 'r', 'division', 'mode', 'order'] as $key) {
             if (!is_string($post[$key] ?? null) && !is_int($post[$key] ?? null)) {
