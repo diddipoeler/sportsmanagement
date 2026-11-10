@@ -46,7 +46,15 @@ $labels = [
         <section id="resultsmatrix-<?= $panel ?>" class="mb-4"
                  aria-label="<?= $escapeCombined($labels[$panel]) ?>">
             <h2 class="h4"><?= $escapeCombined($labels[$panel]) ?></h2>
-            <?= $this->loadTemplate($panel) ?>
+            <?php
+            if ($panel === 'matrix') {
+                // Reuse the fully namespaced Joomla matrix renderer. The
+                // path is constant and cannot be changed via URL parameters.
+                require JPATH_SITE . '/components/com_sportsmanagement/tmpl/matrix/default.php';
+            } else {
+                echo $this->loadTemplate('results');
+            }
+            ?>
         </section>
     <?php endforeach; ?>
 </div>
