@@ -234,14 +234,14 @@ namespace {
         $controller->saveReferees();
 
         if (SiteRouteHelper::$lastParameters['layout'] !== 'form') {
-            throw new \\RuntimeException('Unsafe results layout reached the redirect router.');
+            throw new \RuntimeException('Unsafe results layout reached the redirect router.');
         }
     }
 
     $input->post->data = array_merge($goodRefereePost, ['layout' => 'scores_custom-1']);
     $controller->saveReferees();
     if (SiteRouteHelper::$lastParameters['layout'] !== 'scores_custom-1') {
-        throw new \\RuntimeException('Valid Joomla custom layout names were rejected.');
+        throw new \RuntimeException('Valid Joomla custom layout names were rejected.');
     }
 
     \Joomla\CMS\Session\Session::$valid = false;
