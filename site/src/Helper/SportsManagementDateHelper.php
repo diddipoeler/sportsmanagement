@@ -17,7 +17,9 @@ final class SportsManagementDateHelper
     /**
      * Convert between SQL, historical compact and display date formats.
      * Validates day/month/year and optional SQL time components before
-     * converting; returns an empty string for invalid input.
+     * converting; returns an empty string for invalid input. Compact DDMMYY
+     * dates retain the historical current-century convention, while SQL
+     * DATETIME values discard valid time components in display mode.
      * @param string $date Date value in a supported format.
      * @param int $direction One for SQL-to-display, otherwise display-to-SQL.
      * @return string Normalised date or an empty string on invalid input.
