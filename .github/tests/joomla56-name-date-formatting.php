@@ -76,6 +76,21 @@ smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'ni
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => '', 'lastname' => '<Meier>'], 3), 'Anna &lt;Meier&gt;', 'escape person name HTML');
 smAssertSame(NamePresentationHelper::team((object) ['short_name' => ['invalid'], 'name' => 'Real Club'], 0), 'Real Club', 'site team fallback for invalid name fields');
 
+// The standalone site formatter also accepts legacy string selectors.
+// Reject partial strings while preserving real numeric-string selections.
+foreach (['8junk', '18junk', '-1', '999999999999999999999999'] as $invalidFormat) {
+    smAssertSame(
+        PersonNameFormatter::format(null, 'Anna', '', 'Meier', $invalidFormat),
+        'Anna Meier',
+        'reject malformed standalone person format ' . $invalidFormat
+    );
+}
+smAssertSame(
+    PersonNameFormatter::format(null, 'Anna', '', 'Meier', '0008'),
+    'A. Meier',
+    'standalone person formatter supports leading-zero legacy formats'
+);
+
 // Imported format selectors must not cast "8junk" to style 8, or allow
 // overflowing numeric strings to choose an unintended layout.
 $personRecord = (object) ['firstname' => 'Anna', 'lastname' => 'Meier'];
