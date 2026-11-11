@@ -23,6 +23,7 @@ final class NamePresentationHelper
      *
      * Prefers short, middle or full names according to the requested
      * format and falls back to the next available name when necessary.
+     * Rejects partial numeric selectors and overflowing legacy settings.
      * Escapes the displayed text and optionally wraps it in a Joomla link.
      *
      * @param object $team Team record containing full and abbreviated names.
@@ -32,10 +33,10 @@ final class NamePresentationHelper
      */
     public static function team(object $team, int|string $format = 2, string $link = ''): string
     {
-        $format = (int) $format;
+        $format = self::validatedFormat($format, 2, 2);
         $name = match ($format) {
-            0 => self::firstNonEmpty($team->short_name ?? null, $team->name ?? null),
-            1 => self::firstNonEmpty($team->middle_name ?? null, $team->name ?? null),
+            0 => self::firstNonEmpty($team->short_name ?? null, $team->name ?? null, $team->middle_name ?? null),
+            1 => self::firstNonEmpty($team->middle_name ?? null, $team->name ?? null, $team->short_name ?? null),
             default => self::firstNonEmpty($team->name ?? null, $team->middle_name ?? null, $team->short_name ?? null),
         };
 
@@ -51,6 +52,7 @@ final class NamePresentationHelper
      * variants, omits empty name parts and escapes the final text for
      * safe display in native Joomla 5/6 views. Invalid array/object fields
      * are ignored instead of producing PHP 8 conversion warnings.
+     * Malformed format selectors fall back to the default name layout.
      *
      * @param object $person Person record with firstname, nickname and lastname.
      * @param int|string $format Legacy person-name layout identifier.
@@ -68,7 +70,7 @@ final class NamePresentationHelper
         $firstInitial = $first !== '' ? self::firstCharacter($first) . '.' : '';
         $lastInitial = $last !== '' ? self::firstCharacter($last) . '.' : '';
 
-        $parts = match ((int) $format) {
+        $parts = match (self::validatedFormat($format, 18, 0)) {
             1 => [$last, $quotedNick, $first],
             2 => [$last, $first, $quotedNick],
             3 => [$first, $last],
@@ -93,6 +95,38 @@ final class NamePresentationHelper
         $value = implode(' ', array_filter($parts, static fn ($part): bool => trim((string) $part) !== ''));
 
         return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * Validate legacy name-format selectors without partial integer casts.
+     *
+     * A malformed numeric string such as "8junk" must not select format 8.
+     * Accept only integers or digit-only strings within the supported
+     * formatting range, retaining the caller's standard fallback otherwise.
+     *
+     * @param int|string $value Requested team or person name format.
+     * @param int $maximum Highest supported format selector.
+     * @param int $fallback Default for malformed or unsupported input.
+     * @return int Validated name format index.
+     */
+    private static function validatedFormat(int|string $value, int $maximum, int $fallback): int
+    {
+        if (is_string($value)) {
+            if (preg_match('/^[0-9]+$/D', $value) !== 1) {
+                return $fallback;
+            }
+
+            $digits = ltrim($value, '0');
+            $value = filter_var($digits === '' ? '0' : $digits, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 0],
+            ]);
+
+            if ($value === false) {
+                return $fallback;
+            }
+        }
+
+        return $value >= 0 && $value <= $maximum ? $value : $fallback;
     }
 
     /**
