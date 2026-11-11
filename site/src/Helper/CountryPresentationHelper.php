@@ -196,7 +196,8 @@ final class CountryPresentationHelper
 
     /**
      * Load and sort translated country selector options for site views.
-     * Validate three-letter codes and disregard malformed database rows.
+     * Validate three-letter codes and disregard malformed database rows
+     * or non-iterable query results.
      * @param DatabaseInterface $db Selected Joomla database.
      * @return array<int,object> Sorted country option objects.
      */
@@ -210,7 +211,13 @@ final class CountryPresentationHelper
                 ])
                 ->from($db->quoteName('#__sportsmanagement_countries'));
             $db->setQuery($query);
-            $rows = $db->loadObjectList() ?: [];
+            $rows = $db->loadObjectList();
+
+            // A corrupted driver response can be a scalar or a single
+            // object rather than the iterable result expected by Joomla.
+            if (!is_iterable($rows)) {
+                return [];
+            }
         } catch (\Throwable $e) {
             Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
             return [];
@@ -291,7 +298,8 @@ final class CountryPresentationHelper
     /**
      * Load and cache a country record for the active frontend database.
      * Log database failures privately and cache missing country records.
-     * Reject malformed country codes before invoking Joomla database services.
+     * Reject malformed country codes and non-object database results before
+     * using or caching them in Joomla's country presentation layer.
      * @param string $countryCode Country or FIFA lookup identifier.
      * @return object|null Saved country or null when unavailable.
      */
@@ -333,7 +341,8 @@ final class CountryPresentationHelper
                 );
 
             $db->setQuery($query, 0, 1);
-            self::$countries[$cacheKey] = $db->loadObject() ?: null;
+            $record = $db->loadObject();
+            self::$countries[$cacheKey] = is_object($record) ? $record : null;
         } catch (\Throwable $e) {
             // Country labels and flags are optional presentation data. Do not
             // break the whole player/club page or expose SQL errors in HTML.
