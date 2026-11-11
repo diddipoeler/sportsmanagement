@@ -316,6 +316,21 @@ namespace {
         restore_error_handler();
     }
 
+    // The validation must also work when PHP warnings are not promoted to
+    // exceptions, as on many Joomla production installations.
+    \Joomla\CMS\HTML\HTMLHelper::$malformedOptionText = true;
+    \Joomla\CMS\Log\Log::$messages = [];
+    try {
+        if ($class::options(new FrontendCountryOptionDatabase()) !== []) {
+            throw new \RuntimeException('Malformed frontend country option label was rendered.');
+        }
+    } finally {
+        \Joomla\CMS\HTML\HTMLHelper::$malformedOptionText = false;
+    }
+    if (count(\Joomla\CMS\Log\Log::$messages) !== 1) {
+        throw new \RuntimeException('Malformed frontend option label was not logged.');
+    }
+
     // Not every translated address format includes %ADDRESS%. Do not
     // append a stray closing div when only a city or name is shown.
     $cityOnly = $class::address('Arena', '', '', '', 'Berlin', '', '%NAME% / %LOCATION%');
