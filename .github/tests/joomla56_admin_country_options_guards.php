@@ -383,7 +383,7 @@ namespace {
         throw new \RuntimeException('Administrator country queries did not recover from failures.');
     }
 
-    foreach (\Joomla\CMS\Log\Log::$errors as $entry) {
+    foreach (array_slice(\Joomla\CMS\Log\Log::$errors, $before) as $entry) {
         if (!str_contains($entry[0], 'password=secret') || $entry[2] !== 'com_sportsmanagement') {
             throw new \RuntimeException('Failed country queries were not logged privately.');
         }
