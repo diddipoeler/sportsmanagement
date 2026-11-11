@@ -60,6 +60,10 @@ namespace {
             '//evil.example/payload', 'https://user:password@host.example/team',
             'https://bad host.example/team', 'https://host.example\\bad',
             "index.php\nondanger=1", ' https://sports.example', '#unexpected', '?unsafe',
+            '%6aavascript%3aalert(1)', '%256aavascript%253aalert(1)',
+            '%2f%2fevil.example/team', '%252f%252fevil.example/team',
+            '%5c%5cevil.example/team', '%0aevil.example/team',
+            'javascript%253Aalert(1)',
         ] as $destination) {
             if ($helper::team($team, 2, $destination) !== 'North &amp; &lt;South&gt;') {
                 throw new \RuntimeException('Unsafe team destination generated a link: ' . json_encode($destination));
