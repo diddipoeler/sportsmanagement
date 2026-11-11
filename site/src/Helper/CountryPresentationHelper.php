@@ -290,7 +290,20 @@ final class CountryPresentationHelper
                 $seenCountryCodes[$code] = true;
                 $rawName = $country->name ?? null;
                 $label = is_string($rawName) && trim($rawName) !== '' ? $rawName : $code;
-                $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
+                $option = HTMLHelper::_('select.option', $code, Text::_($label));
+
+                // Joomla options normally carry scalar strings. An invalid
+                // template override must not trigger array-to-string warnings
+                // or silently turn a country into an "Array" option label.
+                if (!is_object($option)
+                    || !isset($option->text, $option->value)
+                    || !is_string($option->text)
+                    || !is_string($option->value)
+                    || $option->value !== $code) {
+                    throw new \UnexpectedValueException('Malformed country selection option');
+                }
+
+                $options[] = $option;
             }
 
             usort(
