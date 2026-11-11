@@ -46,7 +46,7 @@ final class TeamPresentationHelper
         $container = $resultsBelow ? 'span' : 'div';
         $hiddenStyle = $resultsBelow ? 'visibility:hidden' : 'display:none';
 
-        $showInfoLink = (int) ($config['show_info_link'] ?? 0);
+        $showInfoLink = self::selectedOption($config['show_info_link'] ?? 0, [0, 1, 2], 0);
         $hasStandardAction = self::hasStandardAction($config);
         $showActions = ($showInfoLink === 2 && $isFavourite)
             || ($showInfoLink === 1 && $hasStandardAction);
@@ -214,7 +214,7 @@ final class TeamPresentationHelper
         bool $isFavourite,
         ?object $project
     ): string {
-        $format = (int) ($config['team_name_format'] ?? 2);
+        $format = self::selectedOption($config['team_name_format'] ?? 2, [0, 1, 2], 2);
         $fullName = self::safeText($team->name ?? null);
         $shortName = self::safeText($team->short_name ?? null);
         $middleName = self::safeText($team->middle_name ?? null);
@@ -321,6 +321,30 @@ final class TeamPresentationHelper
     private static function safeId(string $value): string
     {
         return preg_replace('/[^A-Za-z0-9_-]/', '-', $value) ?: 'team-actions';
+    }
+
+    /**
+     * Select a supported display setting without coercing malformed values.
+     *
+     * Legacy Joomla Registry settings may hold arrays, booleans or unexpected
+     * numeric strings. Only known integer choices or their canonical decimal
+     * strings can control the team format and optional action visibility.
+     *
+     * @param mixed $value Raw configuration option.
+     * @param array<int,int> $allowed Explicitly supported choices.
+     * @param int $fallback Default choice for malformed values.
+     * @return int Supported option or its safe fallback.
+     */
+    private static function selectedOption(mixed $value, array $allowed, int $fallback): int
+    {
+        if (is_string($value) && preg_match('/^[0-9]+$/D', $value) === 1) {
+            $number = filter_var($value, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 0],
+            ]);
+            $value = $number === false ? null : $number;
+        }
+
+        return is_int($value) && in_array($value, $allowed, true) ? $value : $fallback;
     }
 
     /**
