@@ -241,6 +241,7 @@ final class CountryPresentationHelper
      * Load and sort translated country selector options for site views.
      * Validate three-letter codes and disregard malformed database rows
      * or non-iterable query results, and deduplicate ISO country codes.
+     * Catch iterator and sorting failures to keep optional selectors safe.
      * @param DatabaseInterface $db Selected Joomla database.
      * @return array<int,object> Sorted country option objects.
      */
@@ -261,11 +262,8 @@ final class CountryPresentationHelper
             if (!is_iterable($rows)) {
                 return [];
             }
-        } catch (\Throwable $e) {
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
-            return [];
-        }
-
+        // Iterating or sorting a malformed driver response may itself throw.
+        // Keep the entire selector construction inside the guarded block.
         $options = [];
         $seenCountryCodes = [];
         foreach ($rows as $country) {
@@ -298,7 +296,14 @@ final class CountryPresentationHelper
             )
         );
 
-        return $options;
+            return $options;
+        } catch (\Throwable $e) {
+            // Invalid iterators and malformed option objects should not
+            // prevent the rest of the frontend view from rendering.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+
+            return [];
+        }
     }
 
     /**
