@@ -225,6 +225,8 @@ trait NativeFormatTrait
      * Load and group the referees assigned to displayed matches.
      * Fetch published people and referee positions in a single database query,
      * then format each official and group entries by their match identifier.
+     * Use Joomla DatabaseInterface::createQuery() to avoid the deprecated
+     * getQuery(true) mode removed in newer framework database releases.
      * @param DatabaseInterface $db Current SportsManagement connection.
      * @param array<int,int> $matchIds Positive identifiers of displayed matches.
      * @param int $format Requested legacy person name format.
@@ -237,7 +239,7 @@ trait NativeFormatTrait
             return [];
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('mr.match_id'),
                 $db->quoteName('p.firstname'),
