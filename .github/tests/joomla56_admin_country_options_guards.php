@@ -175,6 +175,44 @@ namespace {
         throw new \RuntimeException('Administrator flag CSS accepted an invalid country code.');
     }
 
+    // Broken imported country records and nested component parameters must
+    // never emit PHP 8 array-to-string warnings in administrator selectors.
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $db->result = ['broken-alpha3'];
+        if ($helper::iso2To3($db, 'FR') !== 'DEU') {
+            throw new \RuntimeException('Malformed ISO-3 country result was accepted.');
+        }
+
+        \Joomla\CMS\Component\ComponentHelper::$css = false;
+        $db->country = (object) [
+            'alpha2' => ['broken'],
+            'name' => ['broken'],
+            'picture' => ['broken'],
+        ];
+
+        if ($helper::getFlag($db, 'FRA') !== '') {
+            throw new \RuntimeException('Malformed country flag row produced invalid markup.');
+        }
+
+        $db->country = (object) [
+            'alpha2' => 'de',
+            'name' => ['broken'],
+            'picture' => null,
+        ];
+
+        $flag = $helper::getFlag($db, 'DEU');
+        if (!str_contains($flag, 'alt="DEU"')
+            || !str_contains($flag, 'src="https://sports.example/joomla/images/com_sportsmanagement/database/flags/de.png"')) {
+            throw new \RuntimeException('Malformed flag label did not use country-code fallback.');
+        }
+    } finally {
+        restore_error_handler();
+    }
+
     $db->throw = true;
     $before = count(\Joomla\CMS\Log\Log::$errors);
 
