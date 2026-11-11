@@ -45,6 +45,8 @@ namespace Joomla\CMS\Component {
 namespace Joomla\CMS\HTML {
     final class HTMLHelper
     {
+        public static bool $brokenOptionText = false;
+
         /**
          * Return a predictable HTML option or untranslated locale key.
          * @return mixed Test option record or original translation key.
@@ -54,7 +56,7 @@ namespace Joomla\CMS\HTML {
          */
         public static function _(string $task, string $value, string $label): object
         {
-            return (object) ['value' => $value, 'text' => $label];
+            return (object) ['value' => $value, 'text' => self::$brokenOptionText ? ['invalid'] : $label];
         }
     }
 }
@@ -246,6 +248,21 @@ namespace {
 
     if (array_map(static fn (object $o): string => $o->value, $options) !== ['FRA', 'DEU']) {
         throw new \RuntimeException('Administrator country options include malformed ISO codes or sort incorrectly.');
+    }
+
+    // A legacy HTML override may return an option whose text is an array.
+    // Reject it before strnatcasecmp can coerce the array to "Array".
+    \Joomla\CMS\HTML\HTMLHelper::$brokenOptionText = true;
+    $errorsBefore = count(\Joomla\CMS\Log\Log::$errors);
+    try {
+        if ($helper::getOptions($db) !== []) {
+            throw new \RuntimeException('Malformed administrator option text was accepted.');
+        }
+    } finally {
+        \Joomla\CMS\HTML\HTMLHelper::$brokenOptionText = false;
+    }
+    if (count(\Joomla\CMS\Log\Log::$errors) !== $errorsBefore + 1) {
+        throw new \RuntimeException('Malformed administrator option text was not logged.');
     }
 
     // Corrupt driver return values and country row iterators must not crash
