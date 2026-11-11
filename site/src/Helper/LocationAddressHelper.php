@@ -99,6 +99,7 @@ final class LocationAddressHelper
      * yield an empty value, leaving the original code as a safe fallback.
      * Rejects non-ISO alpha-3 codes before executing a database query and
      * ignores non-string database results without PHP 8 conversion warnings.
+     * Normalise control bytes in translated country labels as well.
      *
      * @param DatabaseInterface $db Database used by the current component.
      * @param string $countryCode Uppercase three-letter country code.
@@ -119,7 +120,10 @@ final class LocationAddressHelper
             $rawName = $db->loadResult();
             $name = is_string($rawName) ? trim($rawName) : '';
 
-            return $name !== '' ? Text::_($name) : '';
+            // Country names and translated labels can also originate from
+            // imported legacy data. Reuse the same printable-text rules as
+            // street and city fields before adding them to the address.
+            return $name !== '' ? self::scalarText(Text::_($name)) : '';
         } catch (\Throwable) {
             return '';
         }
