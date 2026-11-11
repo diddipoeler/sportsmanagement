@@ -113,6 +113,21 @@ namespace {
             }
         }
 
+        // Nested URL encoding must not bypass the optional link guard,
+        // even when decoding requires more than eight passes.
+        foreach (['javascript:alert(1)', '//evil.example/team'] as $unsafeTarget) {
+            $encoded = $unsafeTarget;
+
+            for ($depth = 1; $depth <= 10; ++$depth) {
+                $encoded = rawurlencode($encoded);
+                $unlinked = $helper::formatName($team, 'team', [], false, null, 0, 0, $encoded);
+
+                if ($unlinked !== '<span style="padding:2px;">North &amp; South</span>') {
+                    throw new \RuntimeException('Encoded unsafe team action link accepted at depth ' . $depth);
+                }
+            }
+        }
+
         $encodedSpaceLink = $helper::formatName(
             $team, 'team', [], false, null, 0, 0, '/teams/north%20city'
         );
