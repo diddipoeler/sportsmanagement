@@ -13,10 +13,23 @@ declare(strict_types=1);
 namespace Joomla\Registry {
     final class Registry
     {
+        /**
+         * Store the module parameters used by logo and link test cases.
+         *
+         * @param array<string,mixed> $values Registry options for this fixture.
+         * @return void
+         */
         public function __construct(private array $values = [])
         {
         }
 
+        /**
+         * Return a simulated module option or its configured default.
+         *
+         * @param string $key Parameter name.
+         * @param mixed $default Value when the setting is absent.
+         * @return mixed Fixture setting or default value.
+         */
         public function get(string $key, mixed $default = null): mixed
         {
             return $this->values[$key] ?? $default;
@@ -27,6 +40,11 @@ namespace Joomla\Registry {
 namespace Joomla\CMS\Uri {
     final class Uri
     {
+        /**
+         * Return the stable subdirectory installation URL used in media tests.
+         *
+         * @return string Example Joomla site root including a subdirectory.
+         */
         public static function root(): string
         {
             return 'https://site.example.test/subdir/';
