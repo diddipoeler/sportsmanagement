@@ -38,6 +38,7 @@ jobs:
       - name: Validate named function PHPDoc
         run: |
           php .github/scripts/check-php-function-docs.php site/src/Helper/CountryPresentationHelper.php
+          php .github/scripts/check-php-function-docs.php .github/tests/joomla56_country_flag_safe_rendering.php
       - name: Run country flag decoding and HTML safety regressions
         run: |
           php .github/tests/joomla56_country_flag_safe_rendering.php
