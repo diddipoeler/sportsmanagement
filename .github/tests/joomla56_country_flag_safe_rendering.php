@@ -284,6 +284,17 @@ namespace {
         throw new \RuntimeException('Valid URL-encoded country flag filename disappeared.');
     }
 
+    // HTML escaping does not sanitize CSS. Allow safe layout attributes
+    // but never render arbitrary style, event handlers or token fragments.
+    $safeAttrs = new \ReflectionMethod($class, 'safeImageAttributes');
+    $filtered = $safeAttrs->invoke(null,
+        'width="20" height=\'30\' aria-label="A & B" style="background:url(javascript:alert(1))" onerror="alert(1)" xclass="fake"'
+    );
+
+    if ($filtered !== 'width="20" height="30" aria-label="A &amp; B"') {
+        throw new \RuntimeException('Country flag attribute allowlist accepted CSS or malformed tokens: ' . $filtered);
+    }
+
     $cache = new \ReflectionProperty($class, 'countries');
     $cache->setValue(null, [
         '0:DEU' => (object) ['name' => 'Germany', 'alpha2' => 'de', 'picture' => ''],
@@ -329,6 +340,11 @@ namespace {
         restore_error_handler();
     }
 
+    // Rehydrate the TST entry after the malformed-data fixture reset, so
+    // CSS mode checks a real country record rather than a missing cache key.
+    $cache->setValue(null, [
+        '0:TST' => (object) ['name' => 'Test', 'alpha2' => 'invalid-code', 'picture' => 'images/test.png'],
+    ]);
     \Joomla\CMS\Component\ComponentHelper::$css = 1;
     $image = $class::flag('TST');
 
