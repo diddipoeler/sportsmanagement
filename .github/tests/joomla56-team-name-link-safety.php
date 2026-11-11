@@ -71,6 +71,27 @@ namespace {
             }
         }
 
+        // All levels of nested encoding must be refused, including the
+        // final decoding boundary of the helper's eight-pass limit.
+        foreach (['javascript:alert(1)', '//evil.example/team'] as $unsafeTarget) {
+            $encoded = $unsafeTarget;
+
+            for ($depth = 1; $depth <= 10; ++$depth) {
+                $encoded = rawurlencode($encoded);
+
+                if ($helper::team($team, 2, $encoded) !== 'North &amp; &lt;South&gt;') {
+                    throw new \RuntimeException('Nested unsafe team URL accepted at level ' . $depth);
+                }
+            }
+        }
+
+        // Percent-encoded spaces inside a local path must not be confused
+        // with leading whitespace or URL-scheme separators.
+        if ($helper::team($team, 2, '/teams/north%2520city')
+            !== '<a href="/teams/north%2520city">North &amp; &lt;South&gt;</a>') {
+            throw new \RuntimeException('Safe nested URL-encoded path was rejected.');
+        }
+
         if ($helper::team($team, 0, 'index.php?view=teaminfo')
             !== '<a href="index.php?view=teaminfo">N&amp;S</a>') {
             throw new \RuntimeException('Valid team short name or link escaped incorrectly.');
