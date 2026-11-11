@@ -6,6 +6,7 @@
  *        php .github/scripts/check-php-function-docs.php path/to/file.php [...]
  *
  * Bundled third-party vendor code retains its upstream documentation.
+ * Explicit .github/tests and .github/scripts PHP files are also checked.
  *
  * @version    5.6.0
  * @author     SportsManagement contributors
@@ -167,7 +168,13 @@ foreach ($inputs as $input) {
         $file = (string) $candidate;
         $relative = str_replace(DIRECTORY_SEPARATOR, '/', substr($file, strlen($root) + 1));
 
-        if (preg_match('~^(?:site|admin|modules)/.*\.php$~i', $relative)
+        // GitHub regression fixtures supplied explicitly to this script
+        // must be audited as well as source files: do not silently report
+        // success for zero-function test inputs.
+        $isFirstParty = preg_match('~^(?:site|admin|modules)/.*\\.php$~i', $relative) === 1;
+        $isFixture = preg_match('~^\\.github/(?:tests|scripts)/[^/]+\\.php$~i', $relative) === 1;
+
+        if (($isFirstParty || $isFixture)
             && !str_starts_with($relative, 'site/libraries/dompdf/vendor/')
             && is_file($file)) {
             $files[$file] = true;
