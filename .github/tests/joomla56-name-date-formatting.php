@@ -71,6 +71,10 @@ smAssertSame(SportsManagementDateHelper::convertDate('310299'), '', 'invalid com
 smAssertSame(SiteDateHelper::convertDate('2026-11-10 15:30:00'), '10-11-2026', 'site datetime conversion');
 smAssertSame(SiteDateHelper::convertDate('2026-11-10 25:30:00'), '', 'site invalid datetime');
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Ömer', 'lastname' => 'Müller'], 8), 'Ö. Müller', 'site Unicode initials without mbstring');
+smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Ömer', 'lastname' => 'Müller'], 18), 'M. Ö.', 'site format 18 uses surname and first-name initials');
+smAssertSame(NamePresentationHelper::person((object) ['firstname' => '', 'lastname' => 'Müller'], 18), 'M.', 'site format 18 without given name');
+smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Ömer', 'lastname' => ''], 18), 'Ö.', 'site format 18 without surname');
+
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => ['broken'], 'nickname' => new stdClass(), 'lastname' => 'Müller'], 8), 'Müller', 'ignore malformed person name fields');
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => ['broken'], 'lastname' => 'Meier'], 0), 'Anna Meier', 'ignore invalid nickname');
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => '', 'lastname' => '<Meier>'], 3), 'Anna &lt;Meier&gt;', 'escape person name HTML');
