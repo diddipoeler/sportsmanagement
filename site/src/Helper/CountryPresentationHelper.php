@@ -90,9 +90,15 @@ final class CountryPresentationHelper
 
         $extra = self::safeImageAttributes($attributes);
 
+        // An explicit, sanitized title from a legacy layout replaces the
+        // generated default; never render duplicate title attributes.
+        $defaultTitle = str_contains(' ' . $extra, ' title="')
+            ? ''
+            : ' title="' . self::escape($countryName) . '"';
+
         return '<img src="' . self::escape($source)
-            . '" alt="' . self::escape($countryName)
-            . '" title="' . self::escape($countryName) . '"'
+            . '" alt="' . self::escape($countryName) . '"'
+            . $defaultTitle
             . ($extra !== '' ? ' ' . $extra : '') . ' />';
     }
 
@@ -168,12 +174,14 @@ final class CountryPresentationHelper
      * Drop event handlers, reject arbitrary CSS style values and require
      * whole whitespace-delimited tokens before escaping permitted values.
      * Validate image dimensions and browser loading/decoding enumerations.
+     * Keep only the first valid instance of each HTML attribute.
      * @param string $attributes Raw optional HTML attributes.
      * @return string Escaped allowlisted attributes.
      */
     private static function safeImageAttributes(string $attributes): string
     {
         $clean = [];
+        $seen = [];
 
         // Match complete attribute tokens and reject arbitrary CSS, since
         // HTML escaping alone cannot make CSS URLs or expressions safe.
@@ -184,6 +192,12 @@ final class CountryPresentationHelper
 
             if (!in_array($name, ['class', 'width', 'height', 'loading', 'decoding', 'id', 'role', 'title'], true)
                 && !preg_match('/^aria-[a-z0-9_-]+$/D', $name)) {
+                continue;
+            }
+
+            // HTML attributes are case-insensitive. Keep the first valid
+            // occurrence to prevent conflicting browser interpretation.
+            if (isset($seen[$name])) {
                 continue;
             }
 
@@ -216,6 +230,7 @@ final class CountryPresentationHelper
                 $value = strtolower($value);
             }
 
+            $seen[$name] = true;
             $clean[] = $name . '="' . self::escape($value) . '"';
         }
 
