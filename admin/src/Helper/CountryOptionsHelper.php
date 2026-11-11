@@ -55,34 +55,34 @@ final class CountryOptionsHelper
             $seenCodes = [];
 
             foreach ($rows as $country) {
-            // Older imports can leave malformed or nested country values.
-            // Avoid PHP 8 array-to-string warnings during option rendering.
-            if (!is_array($country)) {
-                continue;
+                // Older imports can leave malformed or nested country values.
+                // Avoid PHP 8 array-to-string warnings during option rendering.
+                if (!is_array($country)) {
+                    continue;
+                }
+
+                $rawCode = $country['alpha3'] ?? null;
+
+                if (!is_string($rawCode)) {
+                    continue;
+                }
+
+                $code = strtoupper(trim($rawCode));
+
+                if (!preg_match('/^[A-Z]{3}$/D', $code) || isset($seenCodes[$code])) {
+                    continue;
+                }
+
+                $seenCodes[$code] = true;
+                $name = $country['name'] ?? $code;
+                $label = is_string($name) && $name !== '' ? $name : $code;
+                $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
             }
 
-            $rawCode = $country['alpha3'] ?? null;
-
-            if (!is_string($rawCode)) {
-                continue;
-            }
-
-            $code = strtoupper(trim($rawCode));
-
-            if (!preg_match('/^[A-Z]{3}$/D', $code) || isset($seenCodes[$code])) {
-                continue;
-            }
-
-            $seenCodes[$code] = true;
-            $name = $country['name'] ?? $code;
-            $label = is_string($name) && $name !== '' ? $name : $code;
-            $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
-        }
-
-        usort(
-            $options,
-            static fn ($left, $right): int => strnatcasecmp((string) $left->text, (string) $right->text)
-        );
+            usort(
+                $options,
+                static fn ($left, $right): int => strnatcasecmp((string) $left->text, (string) $right->text)
+            );
 
             return $options;
         } catch (\Throwable $e) {
