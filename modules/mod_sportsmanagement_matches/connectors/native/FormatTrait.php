@@ -18,6 +18,13 @@ use Joomla\Registry\Registry;
 
 trait NativeFormatTrait
 {
+    /**
+     * Calculate whether a fixture is live, upcoming or already finished.
+     * Use its Unix start time and configured period and break durations to
+     * populate the legacy status flags consumed by match module templates.
+     * @param object $match Mutable match row with timing metadata.
+     * @return void
+     */
     private function applyStatus(object $match): void
     {
         $now = time();
@@ -30,6 +37,14 @@ trait NativeFormatTrait
         $match->alreadyplayed = $now > $end;
     }
 
+    /**
+     * Determine the template status key for a match.
+     * Respect the status-notice module option before selecting live,
+     * upcoming or played states from the computed match flags.
+     * @param object $match Match row after applying status flags.
+     * @param Registry $params Display and status notice configuration.
+     * @return string Known status name or undefined when disabled.
+     */
     private function statusType(object $match, Registry $params): string
     {
         if ((int) $params->get('show_status_notice', 0) !== 1) {
@@ -38,12 +53,28 @@ trait NativeFormatTrait
         return $match->live ? 'live' : ($match->actplaying ? 'actplaying' : ($match->upcoming ? 'upcoming' : 'alreadyplayed'));
     }
 
+    /**
+     * Select the configured human-readable heading for a match status.
+     * Derive the current match state and read its optional notice text,
+     * returning an empty heading when status messages are disabled.
+     * @param object $match Match row with current status flags.
+     * @param Registry $params Status heading configuration.
+     * @return string Configured status description or empty text.
+     */
     private function statusHeading(object $match, Registry $params): string
     {
         $type = $this->statusType($match, $params);
         return $type === 'undefined' ? '' : (string) $params->get($type . '_notice', '');
     }
 
+    /**
+     * Build HTML-safe project and round headings for the fixture row.
+     * Escape database titles and routed links before constructing optional
+     * anchor markup according to the module's project and round settings.
+     * @param object $match Match containing project and round labels.
+     * @param Registry $params Title visibility and link configuration.
+     * @return string Escaped HTML heading segments.
+     */
     private function heading(object $match, Registry $params): string
     {
         $parts = [];
@@ -62,7 +93,15 @@ trait NativeFormatTrait
         return implode(' · ', $parts);
     }
 
-    /** @return array{name:string,logo:?array{src:string,alt:string,width:int,height:int},links:array<int,array{label:string,url:string,external:bool}>} */
+    /**
+     * Prepare a team's name, image and navigation links for a fixture.
+     * Choose configured name and picture variants, validate media URLs and
+     * return the existing structured template data contract.
+     * @param object $match Match row containing both teams.
+     * @param bool $home True for the first team, false for the second.
+     * @param Registry $params Team name, image and link settings.
+     * @return array{name:string,logo:?array{src:string,alt:string,width:int,height:int},links:array<int,array{label:string,url:string,external:bool}>} Prepared team display data.
+     */
     private function team(object $match, bool $home, Registry $params): array
     {
         $n = $home ? '1' : '2';
@@ -102,6 +141,13 @@ trait NativeFormatTrait
     /**
      * Resolve existing club and team image paths without accepting foreign URL
      * schemes, protocol-relative URLs or traversal outside the Joomla root.
+     */
+    /**
+     * Convert a stored team or club image path into a safe site URL.
+     * Allow HTTP(S) images without embedded credentials, reject traversal,
+     * protocol-relative and unsupported schemes, and encode local path parts.
+     * @param string $source Database image URL or Joomla-relative path.
+     * @return string Safe URL, or empty text for an invalid image.
      */
     private function imageSource(string $source): string
     {
@@ -146,7 +192,14 @@ trait NativeFormatTrait
         return rtrim((string) Uri::root(), '/') . '/' . $encoded;
     }
 
-    /** @return null|array{name:string,url:string} */
+    /**
+     * Prepare optional venue text and its Joomla playground route.
+     * Use the configured full or abbreviated playground name and only build
+     * a link when the module enables playground navigation.
+     * @param object $match Fixture row with playground metadata.
+     * @param Registry $params Venue display and linking settings.
+     * @return null|array{name:string,url:string} Venue details, or null if hidden.
+     */
     private function venue(object $match, Registry $params): ?array
     {
         if ((int) $params->get('show_venue', 0) !== 1 || (int) $match->playground_id <= 0) {
@@ -167,6 +220,15 @@ trait NativeFormatTrait
      *
      * @param array<int,int> $matchIds
      * @return array<int,array<int,array{name:string,position:string}>>
+     */
+    /**
+     * Load and group the referees assigned to displayed matches.
+     * Fetch published people and referee positions in a single database query,
+     * then format each official and group entries by their match identifier.
+     * @param DatabaseInterface $db Current SportsManagement connection.
+     * @param array<int,int> $matchIds Positive identifiers of displayed matches.
+     * @param int $format Requested legacy person name format.
+     * @return array<int,array<int,array{name:string,position:string}>> Officials grouped by match.
      */
     private function refereesByMatch(DatabaseInterface $db, array $matchIds, int $format): array
     {
@@ -234,6 +296,15 @@ trait NativeFormatTrait
         return $out;
     }
 
+    /**
+     * Write the fixture result and optional set scores into a template row.
+     * Handle cancelled fixtures, ordinary scores, overtime and penalty
+     * notations, plus configured per-period results without changing markup.
+     * @param array<string,mixed> $row Mutable prepared fixture template row.
+     * @param object $match Match row with scores and cancellation flags.
+     * @param Registry $params Result and separator display options.
+     * @return void
+     */
     private function result(array &$row, object $match, Registry $params): void
     {
         if ($row['cancel']) {
@@ -264,6 +335,14 @@ trait NativeFormatTrait
         }
     }
 
+    /**
+     * Format a referee's name using the configured legacy name variant.
+     * Combine optional given name, surname and nickname without creating
+     * extra separators for absent fields.
+     * @param object $person Referee record with optional name parts.
+     * @param int $format Legacy display variant.
+     * @return string Referee display name.
+     */
     private function formatName(object $person, int $format): string
     {
         $first = trim((string) ($person->firstname ?? ''));
@@ -277,7 +356,13 @@ trait NativeFormatTrait
         };
     }
 
-    /** @return array<int,string> */
+    /**
+     * Split stored per-period results into printable score components.
+     * Treat blank positions as dashes and remove trailing empty periods
+     * so home and away period pairs can be aligned.
+     * @param string $value Semicolon-separated score values.
+     * @return array<int,string> Normalised period scores.
+     */
     private function split(string $value): array
     {
         $parts = array_map(static fn ($v): string => trim((string) $v), explode(';', $value));
