@@ -94,6 +94,29 @@ try {
         throw new RuntimeException('Safe project highlight colors were lost.');
     }
 
+    // CSS hexadecimal notation permits only 3, 4, 6 or 8 digits.
+    // Keep alpha-channel colors while rejecting accidentally permitted
+    // five- and seven-digit values and declarations injected into CSS.
+    $validateColor = new ReflectionMethod(TeamPresentationHelper::class, 'safeColor');
+
+    foreach ([
+        ['#abc', '#abc'],
+        ['#abcd', '#abcd'],
+        ['#abcdef', '#abcdef'],
+        ['#abcdef01', '#abcdef01'],
+        ['rebeccapurple', 'rebeccapurple'],
+        ['#ab', ''],
+        ['#abcde', ''],
+        ['#abcdef0', ''],
+        ['#abcdef012', ''],
+        ['red;background:url(javascript:alert(1))', ''],
+        [['not-a-color'], ''],
+    ] as [$rawColor, $expectedColor]) {
+        if ($validateColor->invoke(null, $rawColor) !== $expectedColor) {
+            throw new RuntimeException('Incorrect team highlight CSS color validation: ' . json_encode($rawColor));
+        }
+    }
+
     $team->id = 5;
     $team->project_id = 8;
     $team->name = ['invalid'];
