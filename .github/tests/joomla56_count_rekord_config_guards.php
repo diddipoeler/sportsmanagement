@@ -17,7 +17,18 @@ namespace Joomla\Database {
 namespace Joomla\Registry {
     final class Registry
     {
+        /**
+         * Initialise the fake module Registry with the supplied defaults.
+         * @param array<string,mixed> $data Raw module options.
+         * @return void
+         */
         public function __construct(private array $data = []) {}
+        /**
+         * Read a simulated module setting without loading Joomla.
+         * @param string $key Requested option name.
+         * @param mixed $default Fallback when the key is missing.
+         * @return mixed Stored value or supplied fallback.
+         */
         public function get(string $key, mixed $default = null): mixed
         {
             return $this->data[$key] ?? $default;
@@ -28,6 +39,12 @@ namespace Joomla\Registry {
 namespace Joomla\CMS\Language {
     final class Text
     {
+        /**
+         * Format the translation key and supplied values for assertions.
+         * @param string $key Language key for the record counter.
+         * @param mixed ...$args Substituted translated values.
+         * @return string Readable simulated translated text.
+         */
         public static function sprintf(string $key, mixed ...$args): string
         {
             return $key . ': ' . implode(', ', $args);
@@ -41,6 +58,13 @@ namespace Joomla\CMS\Log {
         public const ERROR = 1;
         public static array $errors = [];
 
+        /**
+         * Record a Joomla log event without writing to disk.
+         * @param string $message Logged diagnostic text.
+         * @param int $level Severity of the event.
+         * @param string $category Joomla component logging category.
+         * @return void
+         */
         public static function add(string $message, int $level, string $category): void
         {
             self::$errors[] = [$message, $level, $category];
@@ -54,6 +78,13 @@ namespace Diddipoeler\Component\SportsManagement\Site\Service {
         public static int $selector = -1;
         public static bool $fail = false;
 
+        /**
+         * Select the fake component database and record the selector.
+         * @param \\Joomla\\Database\\DatabaseInterface $fallback Primary database.
+         * @param int $selector Module database selector.
+         * @return \\Joomla\\Database\\DatabaseInterface Same fixture database.
+         * @throws \\RuntimeException When the test requests a failure.
+         */
         public static function resolve(
             \Joomla\Database\DatabaseInterface $fallback,
             int $selector
@@ -80,6 +111,11 @@ namespace {
         public mixed $result = 40;
         public bool $fail = false;
 
+        /**
+         * Return a fluent fake SQL query and count its execution.
+         * @return object Query builder fixture.
+         * @throws \\RuntimeException When failure simulation is enabled.
+         */
         public function createQuery(): object
         {
             ++$this->queries;
@@ -89,13 +125,37 @@ namespace {
             }
 
             return new class {
+                /**
+                 * Accept a SQL select expression in the lightweight query fixture.
+                 * @param string $s Selected query expression.
+                 * @return self Fluent query fixture.
+                 */
                 public function select(string $s): self { return $this; }
+                /**
+                 * Accept a source table name in the lightweight query fixture.
+                 * @param string $s Table identifier.
+                 * @return self Fluent query fixture.
+                 */
                 public function from(string $s): self { return $this; }
             };
         }
 
+        /**
+         * Return a table name for the simulated Joomla SQL query.
+         * @param string $name Table identifier.
+         * @return string Unmodified identifier.
+         */
         public function quoteName(string $name): string { return $name; }
+        /**
+         * Accept the prepared record-counter query without database I/O.
+         * @param object $query Created query fixture.
+         * @return void
+         */
         public function setQuery(object $query): void {}
+        /**
+         * Return the configured match count used by the regression.
+         * @return mixed Simulated record count, including invalid values.
+         */
         public function loadResult(): mixed { return $this->result; }
     }
 
