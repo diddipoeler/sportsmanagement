@@ -337,8 +337,8 @@ final class TeamPresentationHelper
     /**
      * Validate a project-configured highlight color before using inline CSS.
      *
-     * Only hexadecimal CSS colors or simple alphabetic named colors are
-     * permitted. Reject declaration separators and CSS functions so imported
+     * Only 3-, 4-, 6- or 8-digit hexadecimal CSS colors or simple
+     * alphabetic named colors are permitted. Reject declaration separators and CSS functions so imported
      * project settings cannot inject additional style declarations.
      *
      * @param mixed $value Raw project foreground or background color.
@@ -348,7 +348,7 @@ final class TeamPresentationHelper
     {
         $color = self::safeText($value);
 
-        return preg_match('/^(?:\\#[0-9a-fA-F]{3,4}(?:[0-9a-fA-F]{3,4})?|[a-zA-Z]{1,20})$/D', $color) === 1
+        return preg_match('/^(?:\\#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})|[a-zA-Z]{1,20})$/D', $color) === 1
             ? $color
             : '';
     }
