@@ -240,7 +240,7 @@ final class CountryPresentationHelper
     /**
      * Load and sort translated country selector options for site views.
      * Validate three-letter codes and disregard malformed database rows
-     * or non-iterable query results.
+     * or non-iterable query results, and deduplicate ISO country codes.
      * @param DatabaseInterface $db Selected Joomla database.
      * @return array<int,object> Sorted country option objects.
      */
@@ -267,6 +267,7 @@ final class CountryPresentationHelper
         }
 
         $options = [];
+        $seenCountryCodes = [];
         foreach ($rows as $country) {
             // Imported option tables may contain arrays or other malformed
             // rows. Do not inspect properties on non-object records.
@@ -276,10 +277,14 @@ final class CountryPresentationHelper
 
             $rawCode = $country->alpha3 ?? null;
             $code = is_string($rawCode) ? strtoupper(trim($rawCode)) : '';
-            if (preg_match('/^[A-Z]{3}$/D', $code) !== 1) {
+            if (preg_match('/^[A-Z]{3}$/D', $code) !== 1
+                || isset($seenCountryCodes[$code])) {
                 continue;
             }
 
+            // A corrupt import may contain repeated alpha-3 values.
+            // A selector should expose each canonical country code once.
+            $seenCountryCodes[$code] = true;
             $rawName = $country->name ?? null;
             $label = is_string($rawName) && trim($rawName) !== '' ? $rawName : $code;
             $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
