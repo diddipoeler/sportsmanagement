@@ -163,7 +163,8 @@ final class NamePresentationHelper
      *
      * Trims scalar or stringable candidates and returns the first nonempty
      * text, preserving the configured fallback order. Ignores malformed
-     * arrays and objects rather than producing PHP 8 conversion warnings.
+     * arrays, booleans and non-stringable objects instead of rendering
+     * a misleading literal "1" or producing PHP 8 conversion warnings.
      *
      * @param mixed ...$values Name candidates ordered by preference.
      * @return string First nonempty name, or an empty string.
@@ -174,7 +175,8 @@ final class NamePresentationHelper
             // Legacy database results and template overrides can supply
             // malformed name fields. Ignore arrays and non-stringable
             // objects instead of emitting PHP 8 conversion warnings.
-            if (!is_scalar($value) && !$value instanceof \Stringable) {
+            if ((!is_string($value) && !is_int($value) && !is_float($value))
+                && !$value instanceof \Stringable) {
                 continue;
             }
 
