@@ -19,9 +19,20 @@ namespace Joomla\CMS\Component {
     {
         public static bool $css = false;
 
+        /**
+         * Return the Joomla component country display configuration.
+         * @param string $component Requested component identifier.
+         * @return object Test Registry supporting the get() method.
+         */
         public static function getParams(string $component): object
         {
             return new class {
+                /**
+                 * Resolve CSS flag options without loading the CMS configuration.
+                 * @param string $key Component parameter name.
+                 * @param mixed $default Fallback for unconfigured keys.
+                 * @return mixed Configured CSS flag toggle or default.
+                 */
                 public function get(string $key, mixed $default = null): mixed
                 {
                     return $key === 'cfg_flags_css' ? (int) ComponentHelper::$css : $default;
@@ -34,6 +45,13 @@ namespace Joomla\CMS\Component {
 namespace Joomla\CMS\HTML {
     final class HTMLHelper
     {
+        /**
+         * Return a predictable HTML option or untranslated locale key.
+         * @return mixed Test option record or original translation key.
+         * @param string $task HTML select task.
+         * @param string $value Option value.
+         * @param string $label Option label.
+         */
         public static function _(string $task, string $value, string $label): object
         {
             return (object) ['value' => $value, 'text' => $label];
@@ -44,6 +62,11 @@ namespace Joomla\CMS\HTML {
 namespace Joomla\CMS\Language {
     final class Text
     {
+        /**
+         * Return a predictable HTML option or untranslated locale key.
+         * @return mixed Test option record or original translation key.
+         * @param string $key Translation identifier.
+         */
         public static function _(string $key): string { return $key; }
     }
 }
@@ -51,6 +74,10 @@ namespace Joomla\CMS\Language {
 namespace Joomla\CMS\Uri {
     final class Uri
     {
+        /**
+         * Provide an HTTPS installation root for country flag URL tests.
+         * @return string Site root including its installation subdirectory.
+         */
         public static function root(): string
         {
             return 'https://sports.example/joomla/';
@@ -64,6 +91,13 @@ namespace Joomla\CMS\Log {
         public const ERROR = 1;
         public static array $errors = [];
 
+        /**
+         * Collect country database errors without writing to the Joomla log.
+         * @param string $message Log diagnostic supplied by the helper.
+         * @param int $level Joomla log severity.
+         * @param string $category Joomla component log category.
+         * @return void
+         */
         public static function add(string $message, int $level, string $category): void
         {
             self::$errors[] = [$message, $level, $category];
@@ -77,8 +111,23 @@ namespace {
 
     final class CountryQuery
     {
+        /**
+         * Accept requested database columns for the simulated country query.
+         * @param mixed $v Requested SQL columns.
+         * @return self Fluent test query object.
+         */
         public function select(mixed $v): self { return $this; }
+        /**
+         * Accept the source country table for the simulated database query.
+         * @param mixed $v SQL source table expression.
+         * @return self Fluent test query object.
+         */
         public function from(mixed $v): self { return $this; }
+        /**
+         * Accept a filter expression for the simulated country query.
+         * @param mixed $v SQL condition expression.
+         * @return self Fluent test query object.
+         */
         public function where(mixed $v): self { return $this; }
     }
 
@@ -94,6 +143,11 @@ namespace {
         ];
         public ?object $country = null;
 
+        /**
+         * Create a fluent country query and simulate configured failures.
+         * @return CountryQuery New query fixture, unless failure is enabled.
+         * @throws \\RuntimeException When the fixture simulates SQL failure.
+         */
         public function createQuery(): CountryQuery
         {
             ++$this->queries;
@@ -105,11 +159,40 @@ namespace {
             return new CountryQuery();
         }
 
+        /**
+         * Return a field identifier without database-specific quoting.
+         * @param string $name Country table or field name.
+         * @return string Unmodified field identifier.
+         */
         public function quoteName(string $name): string { return $name; }
+        /**
+         * Wrap fixture string values in SQL quote characters.
+         * @param string $s Country code to quote.
+         * @return string Quoted fixture value.
+         */
         public function quote(string $s): string { return "'" . $s . "'"; }
+        /**
+         * Accept a simulated query without executing a real database statement.
+         * @param object $query Country query fixture.
+         * @param int $offset First requested result row.
+         * @param int $limit Maximum number of rows.
+         * @return void
+         */
         public function setQuery(object $query, int $offset = 0, int $limit = 0): void {}
+        /**
+         * Return stored country fixture rows for option sorting checks.
+         * @return array Country rows with valid and invalid ISO codes.
+         */
         public function loadAssocList(): array { return $this->countries; }
+        /**
+         * Return the configured ISO-3 lookup result for conversion checks.
+         * @return mixed Scalar or malformed result fixture.
+         */
         public function loadResult(): mixed { return $this->result; }
+        /**
+         * Return the configured country flag record, if present.
+         * @return object|null Flag data fixture, or null.
+         */
         public function loadObject(): ?object { return $this->country; }
     }
 
