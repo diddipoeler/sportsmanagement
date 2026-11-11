@@ -102,6 +102,18 @@ namespace {
         {
             return $this->ids($raw);
         }
+
+        /**
+         * Exercise time-window conversion without querying the database.
+         *
+         * @param int $amount User-configured duration.
+         * @param string $unit Time period unit from the module.
+         * @return int Duration capped to safe Unix timestamp arithmetic.
+         */
+        public function interval(int $amount, string $unit): int
+        {
+            return $this->seconds($amount, $unit);
+        }
     }
 
     $harness = new MatchesSelectorHarness();
@@ -144,6 +156,27 @@ namespace {
 
     if ($harness->parseIds(['0012', 12, '8;009', false, true, 3.5, ['7'], '0', PHP_INT_MAX . '0']) !== [12, 8, 9]) {
         throw new \RuntimeException('Matches project/team ID filtering accepted invalid values.');
+    }
+
+    foreach ([
+        [-10, 'DAY', 0],
+        [0, 'SECOND', 0],
+        [2, 'MINUTE', 120],
+        [3, 'HOUR', 10800],
+        [2, 'DAY', 172800],
+        [1, 'UNKNOWN', 86400],
+    ] as [$amount, $unit, $expected]) {
+        if ($harness->interval($amount, $unit) !== $expected) {
+            throw new \RuntimeException('Matches time unit conversion changed: ' . $unit);
+        }
+    }
+
+    foreach (['SECOND', 'MINUTE', 'HOUR', 'DAY'] as $unit) {
+        $interval = $harness->interval(PHP_INT_MAX, $unit);
+
+        if (!is_int($interval) || $interval < 0 || $interval > PHP_INT_MAX - time()) {
+            throw new \RuntimeException('Matches duration overflowed for ' . $unit);
+        }
     }
 
     echo "Joomla 5/6 Matches database selector and IDs regressions passed.\n";
