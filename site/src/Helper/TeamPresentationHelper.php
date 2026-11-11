@@ -248,7 +248,9 @@ final class TeamPresentationHelper
             }
         }
 
-        if ($format === 0 && $shortName !== '') {
+        // Only mark up an abbreviation when its expanded team name exists.
+        // An empty title offers no accessible explanation for short-only data.
+        if ($format === 0 && $shortName !== '' && $fullName !== '') {
             $name = '<abbr title="' . self::escape($fullName) . '">' . self::escape($shortName) . '</abbr>';
         } else {
             $name = self::escape($formattedName);
