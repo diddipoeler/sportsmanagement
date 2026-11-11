@@ -78,7 +78,7 @@ final class TeamPresentationHelper
      * @param array $config Link visibility options.
      * @param int $databaseSelector Component database selector.
      * @param int $seasonId Selected season.
-     * @return string Team action HTML.
+     * @return string Team action HTML, with malformed project-team slugs ignored.
      */
     public static function renderActions(
         object $team,
@@ -93,7 +93,11 @@ final class TeamPresentationHelper
             return '';
         }
 
-        $projectTeam = (string) ($team->projectteam_slug ?? $team->projectteamid ?? '');
+        $projectTeam = self::safeText($team->projectteam_slug ?? null);
+
+        if ($projectTeam === '') {
+            $projectTeam = self::safeText($team->projectteamid ?? null);
+        }
         $clubId = (int) ($team->club_id ?? 0);
         $divisionId = (int) ($team->division_id ?? 0);
         $teamName = self::safeText($team->name ?? null);
