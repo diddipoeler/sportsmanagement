@@ -93,10 +93,6 @@ final class CountryPresentationHelper
     }
 
     /**
-     * Resolve only safe flag images; never embed traversal paths, URI schemes
-     * or credentials from legacy country pictures or component placeholders.
-     */
-    /**
      * Resolve a stored flag path without allowing traversal or unsafe schemes.
      * Validate all URL decoding layers and reject encoded traversal segments.
      * @param string $source Stored country flag image URL or path.
@@ -164,10 +160,6 @@ final class CountryPresentationHelper
     }
 
     /**
-     * Preserve supported image layout attributes without allowing an
-     * arbitrary caller-provided HTML fragment or JavaScript event handler.
-     */
-    /**
      * Allowlist safe HTML image attributes supplied by legacy templates.
      * Drop event handlers and escape permitted attribute values.
      * @param string $attributes Raw optional HTML attributes.
@@ -223,6 +215,12 @@ final class CountryPresentationHelper
 
         $options = [];
         foreach ($rows as $country) {
+            // Imported option tables may contain arrays or other malformed
+            // rows. Do not inspect properties on non-object records.
+            if (!is_object($country)) {
+                continue;
+            }
+
             $rawCode = $country->alpha3 ?? null;
             $code = is_string($rawCode) ? strtoupper(trim($rawCode)) : '';
             if (preg_match('/^[A-Z]{3}$/D', $code) !== 1) {
@@ -290,6 +288,7 @@ final class CountryPresentationHelper
     /**
      * Load and cache a country record for the active frontend database.
      * Log database failures privately and cache missing country records.
+     * Reject malformed country codes before invoking Joomla database services.
      * @param string $countryCode Country or FIFA lookup identifier.
      * @return object|null Saved country or null when unavailable.
      */
@@ -297,7 +296,9 @@ final class CountryPresentationHelper
     {
         $countryCode = strtoupper(trim($countryCode));
 
-        if ($countryCode === '') {
+        // ISO alpha-3 and FIFA country identifiers are three letters.
+        // Avoid unnecessary database lookups for malformed site input.
+        if (preg_match('/^[A-Z]{3}$/D', $countryCode) !== 1) {
             return null;
         }
 
