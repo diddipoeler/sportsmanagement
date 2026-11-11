@@ -113,6 +113,13 @@ namespace {
             }
         }
 
+        $encodedSpaceLink = $helper::formatName(
+            $team, 'team', [], false, null, 0, 0, '/teams/north%20city'
+        );
+        if (!str_contains($encodedSpaceLink, 'href="/teams/north%20city"')) {
+            throw new \RuntimeException('Valid encoded-space team URL was rejected.');
+        }
+
         $validLink = $helper::formatName(
             $team, 'team', [], false, null, 0, 0, 'index.php?view=teaminfo'
         );
