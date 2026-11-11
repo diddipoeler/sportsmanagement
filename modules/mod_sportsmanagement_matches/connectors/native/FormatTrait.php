@@ -22,15 +22,32 @@ trait NativeFormatTrait
      * Calculate whether a fixture is live, upcoming or already finished.
      * Use its Unix start time and configured period and break durations to
      * populate the legacy status flags consumed by match module templates.
+     * Tolerate missing timing columns and cap invalid oversized durations.
      * @param object $match Mutable match row with timing metadata.
      * @return void
      */
     private function applyStatus(object $match): void
     {
         $now = time();
-        $start = (int) $match->match_timestamp;
-        $duration = max(0, (int) $match->game_regular_time + ((int) $match->game_parts * (int) $match->halftime) - (int) $match->halftime) * 60;
-        $end = $start + $duration;
+        $start = max(0, (int) ($match->match_timestamp ?? 0));
+        $regularMinutes = max(0, (int) ($match->game_regular_time ?? 0));
+        $parts = max(1, (int) ($match->game_parts ?? 1));
+        $breakMinutes = max(0, (int) ($match->halftime ?? 0));
+
+        // Imported fixtures may have incomplete timing columns or extreme
+        // values. Cap intermediate arithmetic so PHP 8 never promotes
+        // the duration to float or reports missing properties.
+        $maximumMinutes = intdiv(PHP_INT_MAX - $start, 60);
+        $breakCount = $parts - 1;
+
+        if ($breakMinutes > 0 && $breakCount > intdiv($maximumMinutes, $breakMinutes)) {
+            $minutes = $maximumMinutes;
+        } else {
+            $breakTotal = $breakCount * $breakMinutes;
+            $minutes = min($maximumMinutes, $breakTotal + min($regularMinutes, $maximumMinutes - $breakTotal));
+        }
+
+        $end = $start + ($minutes * 60);
         $match->live = $now >= $start && $now <= $end;
         $match->actplaying = $match->live;
         $match->upcoming = $now < $start;
