@@ -96,6 +96,28 @@ namespace {
     });
 
     try {
+        // A non-empty array must not activate the team action dropdown
+        // through PHP's historical boolean/integer coercion rules.
+        $plain = $helper::formatName(
+            $team,
+            'team',
+            ['show_info_link' => ['1'], 'show_team_link' => 1]
+        );
+
+        if ($plain !== '<span style="padding:2px;">North &amp; South</span>') {
+            throw new \RuntimeException('Malformed action display setting unexpectedly enabled links.');
+        }
+
+        $validSetting = $helper::formatName(
+            $team,
+            'team',
+            ['show_info_link' => '1', 'show_team_link' => 1]
+        );
+
+        if (!str_contains($validSetting, 'view=roster')) {
+            throw new \RuntimeException('Valid Joomla action setting failed to display team links.');
+        }
+
         $links = $helper::renderActions($team, ['show_team_link' => 1]);
 
         if (!str_contains($links, 'view=roster')
