@@ -17,7 +17,15 @@ use Joomla\Registry\Registry;
 
 trait NativeLinkTrait
 {
-    /** @return array<int,array{label:string,url:string,external:bool}> */
+    /**
+     * Build the configured internal and external links for one team.
+     * Select teamplan, ranking curve, team information, roster and club URLs
+     * from Joomla's routing helper; include validated club websites when enabled.
+     * @param object $match Fixture row containing project, team and club IDs.
+     * @param string $n Team position, 1 for home or 2 for away.
+     * @param Registry $params Module link visibility and label settings.
+     * @return array<int,array{label:string,url:string,external:bool}> Team links.
+     */
     private function teamLinks(object $match, string $n, Registry $params): array
     {
         $mode = (int) $params->get('link_teams', 0);
@@ -57,6 +65,13 @@ trait NativeLinkTrait
      * Only render safe HTTP(S) hyperlinks from legacy club website fields.
      * Sites stored without a scheme are treated as HTTPS addresses.
      */
+    /**
+     * Validate a club's stored website before placing it in public HTML.
+     * Accept only HTTP(S) links, supply HTTPS for hostnames without a
+     * scheme and reject credentials, control characters or unsafe protocols.
+     * @param string $value Website address stored on the club record.
+     * @return string Valid website URL, or an empty string when rejected.
+     */
     private function externalWebsiteUrl(string $value): string
     {
         $value = trim($value);
@@ -90,7 +105,14 @@ trait NativeLinkTrait
             : '';
     }
 
-    /** @return array<int,array{label:string,url:string}> */
+    /**
+     * Create report, statistics and next-match links for a fixture.
+     * Respect each configured feature flag and keep the project and database
+     * selectors in the resulting Joomla component routes.
+     * @param object $match Match row with route identifiers.
+     * @param Registry $params Link visibility and label settings.
+     * @return array<int,array{label:string,url:string}> Fixture navigation links.
+     */
     private function matchLinks(object $match, Registry $params): array
     {
         $links = [];
@@ -107,7 +129,16 @@ trait NativeLinkTrait
         return $links;
     }
 
-    /** @param array<int,int> $projectIds @return array{previous:?array{label:string,url:string},next:?array{label:string,url:string}} */
+    /**
+     * Find the previous and next fixture relative to the current match.
+     * Issue bounded queries in chronological order, optionally restricted
+     * to the same project, then build match-report links with route slugs.
+     * @param DatabaseInterface $db Resolved database connection.
+     * @param object $match Current match and timestamp metadata.
+     * @param Registry $params Neighbour navigation configuration.
+     * @param array<int,int> $projectIds Validated selected project identifiers.
+     * @return array{previous:?array{label:string,url:string},next:?array{label:string,url:string}} Neighbour links.
+     */
     private function neighborLinks(DatabaseInterface $db, object $match, Registry $params, array $projectIds): array
     {
         $out = ['previous' => null, 'next' => null];
@@ -137,11 +168,28 @@ trait NativeLinkTrait
         return $out;
     }
 
+    /**
+     * Build a project-scoped route for a configurable header link.
+     * Pass the selected view and any extra route parameters through the
+     * common Joomla route helper with current project and database settings.
+     * @param string $view Target SportsManagement site view.
+     * @param object $match Match providing the project route slug.
+     * @param array<string,mixed> $extra Additional route arguments.
+     * @param Registry $params Component database selection.
+     * @return string Routed component URL.
+     */
     private function componentRoute(string $view, object $match, array $extra, Registry $params): string
     {
         return $this->route($view, ['p' => (string) $match->project_slug, 'cfg_which_database' => (int) $params->get('cfg_which_database', 0)] + $extra);
     }
 
+    /**
+     * Delegate a frontend link to the native component routing service.
+     * Keep all match-module links consistent with the Joomla 5/6 SEF router.
+     * @param string $view Destination frontend view name.
+     * @param array<string,mixed> $query Values added to the view route.
+     * @return string Joomla-routed frontend URL.
+     */
     private function route(string $view, array $query): string
     {
         return SiteRouteHelper::view($view, $query);
