@@ -301,12 +301,14 @@ namespace {
         '0:TST' => (object) ['name' => 'Test', 'alpha2' => 'invalid-code', 'picture' => 'images/test.png'],
     ]);
 
-    $image = $class::flag('DEU', 'class="country-flag" width="20" onerror="alert(1)" title="A & B"');
+    $image = $class::flag('DEU', 'class="country-flag" width="20" style="background:url(javascript:alert(1))" onerror="alert(1)" title="A & B"');
 
     if (!str_contains($image, 'src="https://sports.example/joomla/images/com_sportsmanagement/database/flags/de.png"')
         || !str_contains($image, 'class="country-flag"')
         || !str_contains($image, 'title="A &amp; B"')
         || str_contains($image, 'onerror')
+        || str_contains($image, 'style=')
+        || str_contains($image, 'javascript:')
         || !str_contains($image, 'alt="Germany"')) {
         throw new \RuntimeException('Country flag HTML attributes or image source are unsafe: ' . $image);
     }
