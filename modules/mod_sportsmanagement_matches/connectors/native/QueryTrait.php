@@ -188,19 +188,28 @@ trait NativeQueryTrait
     /**
      * Convert a configured time period into a nonnegative number of seconds.
      * Recognise SECOND, MINUTE and HOUR units; all other units mean days,
-     * matching the historical module configuration.
+     * matching the historical module configuration. Cap huge intervals so
+     * multiplication and subsequent Unix timestamp arithmetic stay integers.
      * @param int $amount Requested interval, clamped to zero or greater.
      * @param string $unit Time unit identifier.
      * @return int Interval length in seconds.
      */
     private function seconds(int $amount, string $unit): int
     {
-        return max(0, $amount) * match (strtoupper($unit)) {
+        $multiplier = match (strtoupper($unit)) {
             'SECOND' => 1,
             'MINUTE' => 60,
             'HOUR' => 3600,
             default => 86400,
         };
+
+        // An oversized module setting would convert int multiplication
+        // into a float on PHP 8, contradict the int return type and cause
+        // a TypeError. Keep the interval and the later time() + interval
+        // query boundary inside the supported integer range.
+        $maximum = max(0, PHP_INT_MAX - time());
+
+        return min(max(0, $amount), intdiv($maximum, $multiplier)) * $multiplier;
     }
 
     /**
