@@ -138,6 +138,7 @@ final class CountryOptionsHelper
      * Invalid country identifiers or missing records return no markup.
      * Malformed optional country or fallback picture fields are ignored
      * rather than being converted from arrays under PHP 8.
+     * Reject malformed country row types and configuration toggles.
      *
      * @param DatabaseInterface $db Current Joomla database connection.
      * @param string $countryCode ISO alpha-3 country identifier.
@@ -167,7 +168,7 @@ final class CountryOptionsHelper
             return '';
         }
 
-        if (!$country) {
+        if (!is_object($country)) {
             return '';
         }
 
@@ -178,7 +179,9 @@ final class CountryOptionsHelper
         $rawName = $country->name ?? null;
         $label = Text::_(is_string($rawName) && trim($rawName) !== '' ? $rawName : $countryCode);
 
-        if ((int) $params->get('cfg_flags_css', 0) === 1) {
+        $cssFlagMode = $params->get('cfg_flags_css', 0);
+
+        if ($cssFlagMode === 1 || $cssFlagMode === '1' || $cssFlagMode === true) {
             $cssCode = match ($countryCode) {
                 'WAL' => 'gb-wls',
                 'SCO' => 'gb-sct',
