@@ -24,7 +24,8 @@ final class NamePresentationHelper
      * Prefers short, middle or full names according to the requested
      * format and falls back to the next available name when necessary.
      * Rejects partial numeric selectors and overflowing legacy settings.
-     * Escapes the displayed text and optionally wraps it in a Joomla link.
+     * Escapes the displayed text and optionally wraps it in a validated
+     * local or HTTP(S) Joomla link, rejecting executable URL schemes.
      *
      * @param object $team Team record containing full and abbreviated names.
      * @param int|string $format Legacy team-name format selector.
@@ -42,7 +43,9 @@ final class NamePresentationHelper
 
         $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
 
-        return $link !== '' ? HTMLHelper::link($link, $name) : $name;
+        // Caller-provided links may originate in old modules or imported
+        // records; never hand an executable URL scheme to Joomla's HTML link.
+        return self::safeLink($link) ? HTMLHelper::link($link, $name) : $name;
     }
 
     /**
@@ -97,6 +100,42 @@ final class NamePresentationHelper
         $value = implode(' ', array_filter($parts, static fn ($part): bool => trim((string) $part) !== ''));
 
         return htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * Decide whether a caller-provided team link is safe for HTML output.
+     *
+     * Accept local Joomla routes and valid HTTP(S) destinations only; refuse
+     * executable URL schemes, protocol-relative hosts, embedded credentials,
+     * backslashes and control characters from legacy database values.
+     *
+     * @param string $url Optional team URL supplied by a frontend template.
+     * @return bool Whether the destination may be rendered as a link.
+     */
+    private static function safeLink(string $url): bool
+    {
+        if ($url === '' || trim($url) !== $url
+            || preg_match('/[\\x00-\\x20\\x7f]/', $url)
+            || str_contains($url, chr(92))
+            || str_starts_with($url, '//')) {
+            return false;
+        }
+
+        if (preg_match('~^https?://~i', $url)) {
+            $parts = parse_url($url);
+
+            return filter_var($url, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass']);
+        }
+
+        // A colon before any slash/question/fragment is an external URI
+        // scheme or malformed relative path, not a Joomla frontend route.
+        return preg_match('~^[a-z][a-z0-9+.-]*:~i', $url) !== 1
+            && !str_starts_with($url, '#')
+            && !str_starts_with($url, '?');
     }
 
     /**
