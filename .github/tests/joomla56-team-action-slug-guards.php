@@ -96,6 +96,27 @@ namespace {
     });
 
     try {
+        // Optional external team links must not emit executable schemes even
+        // when the formatted team label itself is properly HTML-escaped.
+        foreach ([
+            'javascript:alert(1)', 'data:text/html,payload',
+            '//evil.example/team', 'https://user:password@host.example/team',
+            "index.php\nunsafe=1", 'https://bad host.example/team',
+        ] as $unsafeLink) {
+            $unlinked = $helper::formatName($team, 'team', [], false, null, 0, 0, $unsafeLink);
+
+            if ($unlinked !== '<span style="padding:2px;">North &amp; South</span>') {
+                throw new \RuntimeException('Unsafe optional team destination created a link.');
+            }
+        }
+
+        $validLink = $helper::formatName(
+            $team, 'team', [], false, null, 0, 0, 'index.php?view=teaminfo'
+        );
+        if (!str_contains($validLink, 'href="index.php?view=teaminfo"')) {
+            throw new \RuntimeException('Valid Joomla team destination was not linked.');
+        }
+
         // A non-empty array must not activate the team action dropdown
         // through PHP's historical boolean/integer coercion rules.
         $plain = $helper::formatName(
