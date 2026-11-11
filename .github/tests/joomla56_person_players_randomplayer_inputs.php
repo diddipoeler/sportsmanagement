@@ -63,9 +63,9 @@ namespace Joomla\Registry {
     class Registry
     {
         /**
-         * Initialise the lightweight fixture without Joomla dependencies.
-         * @return void
+         * Initialise the lightweight Registry fixture without Joomla services.
          * @param array $items Registry defaults held in memory.
+         * @return void
          */
         public function __construct(private array $items = []) {}
         /**
@@ -86,9 +86,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table {
         public static array $bound = [];
         public static int $writes = 0;
         /**
-         * Initialise the lightweight fixture without Joomla dependencies.
-         * @return void
+         * Initialise the simulated person table without a database connection.
          * @param mixed $db Database service ignored by the fake table.
+         * @return void
          */
         public function __construct(mixed $db) {}
         /**
