@@ -88,7 +88,8 @@ final class CountryOptionsHelper
      * Resolve a two-letter ISO country code to the configured alpha-3 code.
      *
      * Validates the input before querying and verifies the stored result.
-     * Unsupported codes and database errors return the configured fallback.
+     * Unsupported codes, invalid result types and database errors return
+     * the configured fallback without PHP 8 conversion warnings.
      *
      * @param DatabaseInterface $db Current Joomla database connection.
      * @param string $iso2 ISO alpha-2 country identifier.
@@ -109,7 +110,8 @@ final class CountryOptionsHelper
                 ->from($db->quoteName('#__sportsmanagement_countries'))
                 ->where($db->quoteName('alpha2') . ' = ' . $db->quote($iso2));
             $db->setQuery($query, 0, 1);
-            $alpha3 = strtoupper(trim((string) $db->loadResult()));
+            $rawAlpha3 = $db->loadResult();
+            $alpha3 = is_string($rawAlpha3) ? strtoupper(trim($rawAlpha3)) : '';
         } catch (\Throwable $e) {
             self::reportDatabaseError($e);
             return $fallback;
@@ -124,6 +126,8 @@ final class CountryOptionsHelper
      * Retrieves the saved country, honours the component CSS flag setting,
      * and otherwise builds a validated image URL for the flag graphic.
      * Invalid country identifiers or missing records return no markup.
+     * Malformed optional country or fallback picture fields are ignored
+     * rather than being converted from arrays under PHP 8.
      *
      * @param DatabaseInterface $db Current Joomla database connection.
      * @param string $countryCode ISO alpha-3 country identifier.
@@ -158,9 +162,11 @@ final class CountryOptionsHelper
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $alpha2 = strtolower(trim((string) ($country->alpha2 ?? '')));
+        $rawAlpha2 = $country->alpha2 ?? '';
+        $alpha2 = is_string($rawAlpha2) ? strtolower(trim($rawAlpha2)) : '';
         $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
-        $label = Text::_((string) ($country->name ?? $countryCode));
+        $rawName = $country->name ?? null;
+        $label = Text::_(is_string($rawName) && trim($rawName) !== '' ? $rawName : $countryCode);
 
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
             $cssCode = match ($countryCode) {
@@ -175,9 +181,13 @@ final class CountryOptionsHelper
                 : '';
         }
 
+        $rawPicture = $country->picture ?? null;
+        $fallbackPicture = $params->get('ph_flags', '');
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : (string) ($country->picture ?? $params->get('ph_flags', ''));
+            : (is_string($rawPicture) && trim($rawPicture) !== ''
+                ? $rawPicture
+                : (is_string($fallbackPicture) ? $fallbackPicture : ''));
         $url = self::imageUrl($path);
 
         return $url !== ''
