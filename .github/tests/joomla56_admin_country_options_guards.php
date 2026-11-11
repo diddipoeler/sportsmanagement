@@ -220,6 +220,23 @@ namespace {
         }
     }
 
+    // Repeated encoding can conceal ../ until after the old three-pass
+    // guard finished. Verify every decoded layer and benign percent spaces.
+    $encodedTraversal = '../secret.png';
+
+    for ($depth = 1; $depth <= 10; ++$depth) {
+        $encodedTraversal = rawurlencode($encodedTraversal);
+
+        if ($safeUrl->invoke(null, 'images/' . $encodedTraversal) !== '') {
+            throw new \RuntimeException('Encoded country flag traversal accepted at depth ' . $depth);
+        }
+    }
+
+    if ($safeUrl->invoke(null, 'images/country%20flag.png')
+        !== 'https://sports.example/joomla/images/country%20flag.png') {
+        throw new \RuntimeException('Valid URL-encoded country flag name was rejected.');
+    }
+
     $options = $helper::getOptions($db);
 
     if (array_map(static fn (object $o): string => $o->value, $options) !== ['FRA', 'DEU']) {
