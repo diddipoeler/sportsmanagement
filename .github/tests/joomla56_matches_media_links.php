@@ -186,5 +186,31 @@ namespace {
         throw new \RuntimeException('Missing team ID generated an invalid internal route.');
     }
 
+    // Older match imports may omit optional result columns entirely. Promote
+    // PHP warnings to failures to ensure the native formatter stays safe.
+    $resultMethod = new \ReflectionMethod($helper, 'result');
+    $resultParams = new \Joomla\Registry\Registry(['part_result' => 1]);
+    $incompleteRow = ['cancel' => false];
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $resultMethod->invokeArgs($helper, [&$incompleteRow, (object) [], $resultParams]);
+
+        if ($incompleteRow['result'] !== '-:-' || $incompleteRow['partresults'] !== '') {
+            throw new \RuntimeException('Missing match scores changed the placeholder result contract.');
+        }
+
+        $cancelledRow = ['cancel' => true];
+        $resultMethod->invokeArgs($helper, [&$cancelledRow, (object) [], $resultParams]);
+
+        if ($cancelledRow['result'] !== '' || $cancelledRow['partresults'] !== '') {
+            throw new \RuntimeException('Missing cancellation reason broke match display.');
+        }
+    } finally {
+        restore_error_handler();
+    }
+
     echo "Matches team image and external website URL regressions OK\n";
 }
