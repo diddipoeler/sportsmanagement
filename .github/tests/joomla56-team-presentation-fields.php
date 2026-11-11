@@ -64,6 +64,36 @@ try {
         throw new RuntimeException('Invalid project highlight fields altered markup.');
     }
 
+    // Escaping quotes does not prevent an injected CSS declaration. Reject
+    // semicolons, CSS functions and malformed values from legacy projects.
+    $project->fav_team_text_color = 'red;position:fixed';
+    $project->fav_team_color = 'url(javascript:alert(1))';
+    $unsafeColors = TeamPresentationHelper::formatName(
+        $team,
+        'team',
+        ['team_name_format' => 2, 'highlight_fav' => 1],
+        true,
+        $project
+    );
+
+    if ($unsafeColors !== '<span style="padding:2px;">North &amp; &lt;South&gt;</span>') {
+        throw new RuntimeException('Unsafe project CSS colors leaked into team display.');
+    }
+
+    $project->fav_team_text_color = '#A1b2C3';
+    $project->fav_team_color = 'navy';
+    $safeColors = TeamPresentationHelper::formatName(
+        $team,
+        'team',
+        ['team_name_format' => 2, 'highlight_fav' => 1],
+        true,
+        $project
+    );
+
+    if ($safeColors !== '<span style="padding:2px;color:#A1b2C3;background-color:navy;">North &amp; &lt;South&gt;</span>') {
+        throw new RuntimeException('Safe project highlight colors were lost.');
+    }
+
     $team->id = 5;
     $team->project_id = 8;
     $team->name = ['invalid'];
