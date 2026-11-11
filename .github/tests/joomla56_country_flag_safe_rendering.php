@@ -209,10 +209,12 @@ namespace {
          */
         public function loadObjectList(): mixed
         {
+            // Repeated ISO codes from old imports must yield one option.
             return $this->overrideRows ?? [
                 (object) ['alpha3' => 'DEU', 'name' => 'Germany'],
                 ['alpha3' => 'USA', 'name' => 'invalid array row'],
                 (object) ['alpha3' => 'fra', 'name' => 'France'],
+                (object) ['alpha3' => 'deu', 'name' => 'Duplicate Germany'],
                 (object) ['alpha3' => 'NLD', 'name' => ['invalid']],
                 (object) ['alpha3' => 'INVALID', 'name' => 'Bad ISO'],
                 (object) ['alpha3' => ['invalid'], 'name' => 'Bad value'],
