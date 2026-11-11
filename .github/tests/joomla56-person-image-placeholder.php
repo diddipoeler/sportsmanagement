@@ -85,6 +85,22 @@ namespace {
             }
         }
 
+        // Nested URL encoding can conceal traversal until the third or
+        // a later decoding pass. The final decoded layer must be checked.
+        $encodedTraversal = '../private.png';
+
+        for ($depth = 1; $depth <= 10; ++$depth) {
+            $encodedTraversal = rawurlencode($encodedTraversal);
+
+            if ($helper::url('images/' . $encodedTraversal) !== '') {
+                throw new \RuntimeException('Encoded player image traversal accepted at depth ' . $depth);
+            }
+        }
+
+        if ($helper::url('images/my%20player.png') !== 'https://sports.example.test/subdir/images/my%20player.png') {
+            throw new \RuntimeException('Safe URL-encoded picture filename was rejected.');
+        }
+
         $component::$placeholder = ' images/player-default.png ';
 
         if ($helper::placeholder() !== 'images/player-default.png'
