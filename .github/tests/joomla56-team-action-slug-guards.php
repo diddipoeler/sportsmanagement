@@ -121,6 +121,40 @@ namespace {
             }
         }
 
+        // Both layout flags must be explicitly enabled. Nested values
+        // must not change the action container into a compact span.
+        foreach ([['1'], new \stdClass(), 'enabled'] as $invalidLayout) {
+            $markup = $helper::formatName(
+                $team,
+                'team',
+                [
+                    'show_info_link' => 1,
+                    'show_team_link' => 1,
+                    'results_below' => $invalidLayout,
+                    'show_logo_small' => 1,
+                ]
+            );
+
+            if (!str_contains($markup, '<div id=') || str_contains($markup, '<span id=')) {
+                throw new \RuntimeException('Malformed layout flag changed team action container.');
+            }
+        }
+
+        $compactMarkup = $helper::formatName(
+            $team,
+            'team',
+            [
+                'show_info_link' => 1,
+                'show_team_link' => 1,
+                'results_below' => '1',
+                'show_logo_small' => true,
+            ]
+        );
+
+        if (!str_contains($compactMarkup, '<span id=')) {
+            throw new \RuntimeException('Valid compact team action layout was lost.');
+        }
+
         $validSetting = $helper::formatName(
             $team,
             'team',
