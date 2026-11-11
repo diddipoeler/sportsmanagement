@@ -323,7 +323,7 @@ final class TeamPresentationHelper
      * Validate an optional team destination before passing it to Joomla HTML.
      *
      * Block executable schemes, protocol-relative targets, URL credentials,
-     * unescaped whitespace and backslashes while allowing routed Joomla
+     * whitespace, encoded schemes and backslashes while allowing routed Joomla
      * relative links or valid absolute HTTP(S) destinations.
      *
      * @param string $url Legacy optional team link.
@@ -348,9 +348,37 @@ final class TeamPresentationHelper
                 && !isset($parts['pass']);
         }
 
-        return preg_match('~^[a-z][a-z0-9+.-]*:~i', $url) !== 1
-            && !str_starts_with($url, '#')
-            && !str_starts_with($url, '?');
+        if (str_starts_with($url, '#') || str_starts_with($url, '?')) {
+            return false;
+        }
+
+        // Inspect the URL path before any legitimate query or fragment.
+        // Encoded URL schemes and protocol-relative hosts can be hidden by
+        // several rounds of percent encoding in imported template links.
+        $path = explode('#', explode('?', $url, 2)[0], 2)[0];
+
+        for ($depth = 0; $depth < 8; ++$depth) {
+            if (str_starts_with($path, '//')
+                || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+                || preg_match('/[\\x00-\\x20\\x7f]/', $path)
+                || str_contains($path, chr(92))) {
+                return false;
+            }
+
+            $decoded = rawurldecode($path);
+
+            if ($decoded === $path) {
+                break;
+            }
+
+            $path = $decoded;
+        }
+
+        return !str_starts_with($path, '//')
+            && preg_match('~^[a-z][a-z0-9+.-]*:~i', $path) !== 1
+            && preg_match('/[\\x00-\\x20\\x7f]/', $path) !== 1
+            && !str_contains($path, chr(92))
+            && preg_match('/%[0-9a-f]{2}/i', $path) !== 1;
     }
 
     /**
