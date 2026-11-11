@@ -66,6 +66,30 @@ try {
         throw new RuntimeException('Missing middle name hid an available short name.');
     }
 
+    // Damaged module settings must not select unintended name formats or
+    // trigger PHP 8 array-to-integer conversion warnings.
+    foreach ([['invalid'], true, new stdClass(), '2junk', '999999999999999999999999'] as $invalid) {
+        $safeFormat = TeamPresentationHelper::formatName(
+            (object) ['name' => 'Full Club', 'short_name' => 'FC', 'middle_name' => 'Mid Club'],
+            'team',
+            ['team_name_format' => $invalid]
+        );
+
+        if ($safeFormat !== '<span style="padding:2px;">Full Club</span>') {
+            throw new RuntimeException('Malformed name format chose an unintended display style.');
+        }
+    }
+
+    $choice = new ReflectionMethod(TeamPresentationHelper::class, 'selectedOption');
+    foreach ([
+        [0, 0], ['0', 0], [1, 1], ['1', 1], [2, 2], ['2', 2],
+        [['2'], 0], [true, 0], ['2suffix', 0], ['999999999999999999999999', 0],
+    ] as [$value, $expected]) {
+        if ($choice->invoke(null, $value, [0, 1, 2], 0) !== $expected) {
+            throw new RuntimeException('Malformed team display option was accepted.');
+        }
+    }
+
     $project = (object) [
         'fav_team_text_bold' => ['invalid'],
         'fav_team_text_color' => new stdClass(),
