@@ -21,7 +21,8 @@ final class PersonNameFormatter
      * @param string $firstName Person's first name.
      * @param string $nickName Optional nickname.
      * @param string $lastName Person's last name.
-     * @param int|string $format Legacy name formatting variant.
+     * @param int|string $format Legacy name formatting variant; malformed
+     *     selectors fall back to the default format instead of partial casts.
      * @return string Formatted display name.
      */
     public static function format(
@@ -41,7 +42,21 @@ final class PersonNameFormatter
             $parts[] = $prefix;
         }
 
-        switch ((int) $format) {
+        // Do not accept partial numeric strings from legacy configuration.
+        // Invalid variants must use the original default name order.
+        if (is_string($format)) {
+            if (preg_match('/^[0-9]+$/D', $format) !== 1) {
+                $format = 0;
+            } else {
+                $digits = ltrim($format, '0');
+                $value = filter_var($digits === '' ? '0' : $digits, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 0],
+                ]);
+                $format = $value === false ? 0 : $value;
+            }
+        }
+
+        switch ($format) {
             case 1:
                 self::append($parts, $lastName !== '' ? $lastName . ',' : '');
                 self::append($parts, $nickName !== '' ? "'" . $nickName . "'" : '');
