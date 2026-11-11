@@ -321,6 +321,29 @@ namespace {
         throw new \RuntimeException('Country flag attribute allowlist accepted CSS or malformed tokens: ' . $filtered);
     }
 
+    // Attribute escaping is not enough for invalid size values and browser
+    // loading hints. Only bounded pixel dimensions and known enums survive.
+    $restrictedAttrs = $safeAttrs->invoke(null,
+        'width="120" height="64" loading="LAZY" decoding="ASYNC"'
+        . ' class="country-flag" aria-label="Flag & country"'
+        . ' width="-10" height="999999" loading="javascript:alert(1)"'
+        . ' decoding="invalid"'
+    );
+
+    if ($restrictedAttrs !== 'width="120" height="64" loading="lazy" decoding="async"'
+        . ' class="country-flag" aria-label="Flag &amp; country"') {
+        throw new \RuntimeException('Invalid image dimensions or browser hints escaped validation: ' . $restrictedAttrs);
+    }
+
+    foreach ([
+        'width="0"', 'height="-1"', 'width="4097"', 'height="100%"',
+        'width="999999999999999999999"', 'loading="defer"', 'decoding="eager"',
+    ] as $invalidAttribute) {
+        if ($safeAttrs->invoke(null, $invalidAttribute) !== '') {
+            throw new \RuntimeException('Malformed country image attribute accepted: ' . $invalidAttribute);
+        }
+    }
+
     $cache = new \ReflectionProperty($class, 'countries');
     $cache->setValue(null, [
         '0:DEU' => (object) ['name' => 'Germany', 'alpha2' => 'de', 'picture' => ''],
