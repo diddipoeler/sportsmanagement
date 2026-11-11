@@ -81,9 +81,6 @@ final class CountRekordHelper
      *
      * @param mixed $raw Raw Joomla module parameter.
      * @return int Parsed nonnegative integer, or zero for invalid input.
-     */    /**
-     * Validate nonnegative decimal settings without coercing malformed
-     * arrays, booleans, partial numeric strings or overflowing identifiers.
      */
     private static function nonNegativeInt(mixed $raw): int
     {
