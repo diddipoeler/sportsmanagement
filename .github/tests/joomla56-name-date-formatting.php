@@ -79,6 +79,10 @@ smAssertSame(NamePresentationHelper::person((object) ['firstname' => ['broken'],
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => ['broken'], 'lastname' => 'Meier'], 0), 'Anna Meier', 'ignore invalid nickname');
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => '', 'lastname' => '<Meier>'], 3), 'Anna &lt;Meier&gt;', 'escape person name HTML');
 smAssertSame(NamePresentationHelper::team((object) ['short_name' => ['invalid'], 'name' => 'Real Club'], 0), 'Real Club', 'site team fallback for invalid name fields');
+smAssertSame(NamePresentationHelper::team((object) ['short_name' => true, 'name' => 'Real Club'], 0), 'Real Club', 'ignore boolean short-name data');
+smAssertSame(NamePresentationHelper::person((object) ['firstname' => true, 'lastname' => 'Meier'], 3), 'Meier', 'ignore boolean person first name');
+smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => false, 'lastname' => 'Meier'], 0), 'Anna Meier', 'ignore boolean nickname data');
+
 
 // The standalone site formatter also accepts legacy string selectors.
 // Reject partial strings while preserving real numeric-string selections.
