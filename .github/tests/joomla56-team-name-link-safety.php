@@ -47,6 +47,7 @@ namespace {
             'index.php?option=com_sportsmanagement&view=teaminfo' =>
                 '<a href="index.php?option=com_sportsmanagement&amp;view=teaminfo">North &amp; &lt;South&gt;</a>',
             '/teams/north' => '<a href="/teams/north">North &amp; &lt;South&gt;</a>',
+            '/teams/north%20city' => '<a href="/teams/north%20city">North &amp; &lt;South&gt;</a>',
             'https://sports.example/team?id=1&active=1' =>
                 '<a href="https://sports.example/team?id=1&amp;active=1">North &amp; &lt;South&gt;</a>',
         ] as $destination => $expected) {
