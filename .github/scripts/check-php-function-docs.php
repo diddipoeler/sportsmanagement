@@ -183,7 +183,7 @@ foreach ($inputs as $input) {
 }
 
 if ($files === []) {
-    fwrite(STDERR, "No eligible PHP files were found for the requested paths.\\n");
+    fwrite(STDERR, "No eligible PHP files were found for the requested paths.\n");
     exit(2);
 }
 
