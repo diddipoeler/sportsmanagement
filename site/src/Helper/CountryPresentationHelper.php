@@ -29,15 +29,19 @@ final class CountryPresentationHelper
     {
         $country = self::country($countryCode);
 
-        return $country ? Text::_((string) $country->name) : '';
+        $rawName = $country->name ?? null;
+
+        return is_string($rawName) && trim($rawName) !== '' ? Text::_($rawName) : '';
     }
 
     public static function flag(string $countryCode, string $attributes = ''): string
     {
         $country = self::country($countryCode);
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $countryName = $country ? Text::_((string) $country->name) : '';
-        $iso2 = strtolower((string) ($country->alpha2 ?? ''));
+        $rawName = $country->name ?? null;
+        $countryName = is_string($rawName) && trim($rawName) !== '' ? Text::_($rawName) : '';
+        $rawIso2 = $country->alpha2 ?? '';
+        $iso2 = is_string($rawIso2) ? strtolower(trim($rawIso2)) : '';
         $iso2 = preg_match('/^[a-z]{2}$/D', $iso2) ? $iso2 : '';
 
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
@@ -51,12 +55,14 @@ final class CountryPresentationHelper
             return $cssCode !== '' ? '<span class="fi fi-' . self::escape($cssCode) . '"></span>' : '';
         }
 
+        $rawPicture = $country->picture ?? null;
         $src = $iso2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $iso2 . '.png'
-            : (string) ($country->picture ?? '');
+            : (is_string($rawPicture) ? $rawPicture : '');
 
         if ($src === '') {
-            $src = (string) $params->get('ph_flags', '');
+            $fallback = $params->get('ph_flags', '');
+            $src = is_string($fallback) ? $fallback : '';
         }
 
         $source = self::safeFlagSource($src);
@@ -107,7 +113,9 @@ final class CountryPresentationHelper
         $path = ltrim($source, '/');
         $decoded = $path;
 
-        for ($depth = 0; $depth < 3; $depth++) {
+        // A nested encoded ../ can emerge only after the final decoding
+        // pass; validate that final layer as well and reject leftover escapes.
+        for ($depth = 0; $depth < 8; $depth++) {
             if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
                 || preg_match('/[\x00-\x1F\x7F]/', $decoded)
                 || str_contains($decoded, chr(92))
@@ -123,6 +131,14 @@ final class CountryPresentationHelper
             }
 
             $decoded = $next;
+        }
+
+        if (preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
+            || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
+            || str_contains($decoded, chr(92))
+            || str_contains($decoded, '?') || str_contains($decoded, '#')) {
+            return '';
         }
 
         return rtrim(Uri::root(), '/') . '/' . $path;
@@ -176,16 +192,15 @@ final class CountryPresentationHelper
 
         $options = [];
         foreach ($rows as $country) {
-            $code = strtoupper(trim((string) ($country->alpha3 ?? '')));
-            if ($code === '') {
+            $rawCode = $country->alpha3 ?? null;
+            $code = is_string($rawCode) ? strtoupper(trim($rawCode)) : '';
+            if (preg_match('/^[A-Z]{3}$/D', $code) !== 1) {
                 continue;
             }
 
-            $options[] = HTMLHelper::_(
-                'select.option',
-                $code,
-                Text::_((string) ($country->name ?? $code))
-            );
+            $rawName = $country->name ?? null;
+            $label = is_string($rawName) && trim($rawName) !== '' ? $rawName : $code;
+            $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
         }
 
         usort(
