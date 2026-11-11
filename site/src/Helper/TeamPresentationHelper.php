@@ -201,7 +201,8 @@ final class TeamPresentationHelper
      * @param array $config Name format settings.
      * @param bool $isFavourite Whether this is a favourite team.
      * @param object|null $project Optional project metadata.
-     * @return string Formatted team name HTML, ignoring malformed legacy name fields.
+     * @return string Formatted team name HTML, ignoring malformed legacy name fields
+     *     and rejecting unsafe inline CSS colors from project settings.
      */
     private static function nameMarkup(
         object $team,
@@ -228,11 +229,11 @@ final class TeamPresentationHelper
             if (self::safeText($project->fav_team_text_bold ?? null) !== '') {
                 $style .= 'font-weight:bold;';
             }
-            $textColor = self::safeText($project->fav_team_text_color ?? null);
+            $textColor = self::safeColor($project->fav_team_text_color ?? null);
             if ($textColor !== '') {
                 $style .= 'color:' . $textColor . ';';
             }
-            $background = self::safeText($project->fav_team_color ?? null);
+            $background = self::safeColor($project->fav_team_color ?? null);
             if ($background !== '') {
                 $style .= 'background-color:' . $background . ';';
             }
@@ -331,6 +332,25 @@ final class TeamPresentationHelper
         }
 
         return trim((string) $value);
+    }
+
+    /**
+     * Validate a project-configured highlight color before using inline CSS.
+     *
+     * Only hexadecimal CSS colors or simple alphabetic named colors are
+     * permitted. Reject declaration separators and CSS functions so imported
+     * project settings cannot inject additional style declarations.
+     *
+     * @param mixed $value Raw project foreground or background color.
+     * @return string Safe color token, or an empty string for invalid input.
+     */
+    private static function safeColor(mixed $value): string
+    {
+        $color = self::safeText($value);
+
+        return preg_match('/^(?:\\#[0-9a-fA-F]{3,4}(?:[0-9a-fA-F]{3,4})?|[a-zA-Z]{1,20})$/D', $color) === 1
+            ? $color
+            : '';
     }
 
     /**
