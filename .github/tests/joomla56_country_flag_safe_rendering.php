@@ -46,6 +46,8 @@ namespace Joomla\CMS\Component {
 namespace Joomla\CMS\HTML {
     final class HTMLHelper
     {
+        public static bool $malformedOptionText = false;
+
         /**
          * Create the Joomla select option object used by country selectors.
          *
@@ -60,7 +62,7 @@ namespace Joomla\CMS\HTML {
                 throw new \RuntimeException('Unexpected Joomla HTML helper task.');
             }
 
-            return (object) ['value' => $value, 'text' => $label];
+            return (object) ['value' => $value, 'text' => self::$malformedOptionText ? ['invalid'] : $label];
         }
     }
 }
@@ -285,6 +287,23 @@ namespace {
             || !str_contains(\Joomla\CMS\Log\Log::$messages[0][0], 'broken country row iterator')
             || \Joomla\CMS\Log\Log::$messages[0][2] !== 'com_sportsmanagement') {
             throw new \RuntimeException('Broken country iterator was not logged privately.');
+        }
+
+        // Sorting must not crash when a broken selection helper returns
+        // malformed option text values from a legacy override.
+        \Joomla\CMS\HTML\HTMLHelper::$malformedOptionText = true;
+        \Joomla\CMS\Log\Log::$messages = [];
+
+        try {
+            if ($class::options(new FrontendCountryOptionDatabase()) !== []) {
+                throw new \RuntimeException('Malformed country sort labels produced a selector.');
+            }
+        } finally {
+            \Joomla\CMS\HTML\HTMLHelper::$malformedOptionText = false;
+        }
+
+        if (count(\Joomla\CMS\Log\Log::$messages) !== 1) {
+            throw new \RuntimeException('Malformed country option sorting failure was not logged.');
         }
 
         $codes = array_map(static fn (object $item): string => $item->value, $options);
