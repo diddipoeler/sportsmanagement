@@ -169,6 +169,8 @@ namespace {
      */
     final class FrontendCountryOptionDatabase implements \Joomla\Database\DatabaseInterface
     {
+        public mixed $overrideRows = null;
+
         /**
          * Provide the query factory required by native Joomla database helpers.
          *
@@ -203,11 +205,11 @@ namespace {
         /**
          * Return country options with deliberately corrupted imported fields.
          *
-         * @return array<int,mixed> Valid and invalid country result rows.
+         * @return mixed Valid rows or an overridden malformed database return.
          */
-        public function loadObjectList(): array
+        public function loadObjectList(): mixed
         {
-            return [
+            return $this->overrideRows ?? [
                 (object) ['alpha3' => 'DEU', 'name' => 'Germany'],
                 ['alpha3' => 'USA', 'name' => 'invalid array row'],
                 (object) ['alpha3' => 'fra', 'name' => 'France'],
@@ -231,6 +233,17 @@ namespace {
 
     try {
         $options = $class::options(new FrontendCountryOptionDatabase());
+        // Database adapters and corrupted imports may unexpectedly return
+        // a scalar or a single object instead of a country row collection.
+        foreach ([false, 7, 'unexpected', new \stdClass()] as $invalidResult) {
+            $database = new FrontendCountryOptionDatabase();
+            $database->overrideRows = $invalidResult;
+
+            if ($class::options($database) !== []) {
+                throw new \RuntimeException('Non-iterable country result was accepted.');
+            }
+        }
+
         $codes = array_map(static fn (object $item): string => $item->value, $options);
         $labels = array_map(static fn (object $item): string => $item->text, $options);
 
