@@ -11,6 +11,7 @@ on:
       - 'admin/src/Helper/NameFormatter.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - '.github/tests/joomla56-name-date-formatting.php'
+      - '.github/tests/joomla56-admin-zero-timestamp.php'
       - '.github/workflows/joomla56-name-date-formatting.yml'
   pull_request:
     paths:
@@ -20,6 +21,7 @@ on:
       - 'admin/src/Helper/NameFormatter.php'
       - 'admin/src/Helper/SportsManagementDateHelper.php'
       - '.github/tests/joomla56-name-date-formatting.php'
+      - '.github/tests/joomla56-admin-zero-timestamp.php'
       - '.github/workflows/joomla56-name-date-formatting.yml'
   workflow_dispatch:
 
@@ -49,7 +51,12 @@ jobs:
           php -l admin/src/Helper/NameFormatter.php
           php -l admin/src/Helper/SportsManagementDateHelper.php
           php -l .github/tests/joomla56-name-date-formatting.php
+          php -l .github/tests/joomla56-admin-zero-timestamp.php
       - name: Run formatting regressions with mbstring
-        run: php .github/tests/joomla56-name-date-formatting.php
+        run: |
+          php .github/tests/joomla56-name-date-formatting.php
+          php .github/tests/joomla56-admin-zero-timestamp.php
       - name: Run formatting regressions without loaded extensions
-        run: php -n .github/tests/joomla56-name-date-formatting.php
+        run: |
+          php -n .github/tests/joomla56-name-date-formatting.php
+          php -n .github/tests/joomla56-admin-zero-timestamp.php
