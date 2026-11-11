@@ -102,7 +102,11 @@ final class PersonImageHelper
         $decoded = $path;
 
         // A proxy or web server may decode more than one layer of escaping.
-        for ($depth = 0; $depth < 3; $depth++) {
+        // Examine every decoded layer, including the final one. A nested
+        // %25252e%25252e path must not become ../ only after the last pass.
+        // Reject still-encoded input after the bounded loop to avoid relying
+        // on the web server's number of URL-decoding passes.
+        for ($depth = 0; $depth < 8; $depth++) {
             if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
                 || preg_match('/[\x00-\x1F\x7F]/', $decoded)
                 || str_contains($decoded, chr(92))
@@ -118,6 +122,12 @@ final class PersonImageHelper
             }
 
             $decoded = $next;
+        }
+
+        // Nested percent escapes remaining after eight rounds could be
+        // interpreted by a proxy or server in a subsequent decoding pass.
+        if (preg_match('/%[0-9a-f]{2}/i', $decoded) === 1) {
+            return '';
         }
 
         $base = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
