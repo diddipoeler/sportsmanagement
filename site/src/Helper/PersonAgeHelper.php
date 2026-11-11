@@ -21,7 +21,8 @@ final class PersonAgeHelper
      *
      * Preserves the historic zero-date sentinel, which uses today's date
      * when no reference date is provided. Returns '-' for malformed or
-     * missing dates and subtracts one year before the birthday occurs.
+     * missing dates or future birthdays and subtracts one year before the
+     * birthday occurs, avoiding negative ages for imported future records.
      *
      * @param string $date Birth date in YYYY-MM-DD format.
      * @param string $secondDate Reference date, or zero-date for today.
@@ -47,6 +48,15 @@ final class PersonAgeHelper
             if ($target === null) {
                 return '-';
             }
+        }
+
+        // Future birthdays cannot yield a meaningful age. Administrator
+        // views already reject these records; mirror that behaviour while
+        // keeping the site's legacy '-' return contract.
+        if ($birth[0] > $target[0]
+            || ($birth[0] === $target[0] && $birth[1] > $target[1])
+            || ($birth[0] === $target[0] && $birth[1] === $target[1] && $birth[2] > $target[2])) {
+            return '-';
         }
 
         $age = $target[0] - $birth[0];
