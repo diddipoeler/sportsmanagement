@@ -66,6 +66,25 @@ try {
         throw new RuntimeException('Missing middle name hid an available short name.');
     }
 
+    // A short-only team must not render an empty abbreviation tooltip.
+    $shortOnly = (object) ['name' => '', 'short_name' => 'FC'];
+    $shortMarkup = TeamPresentationHelper::formatName(
+        $shortOnly, 'team', ['team_name_format' => 0]
+    );
+
+    if ($shortMarkup !== '<span style="padding:2px;">FC</span>') {
+        throw new RuntimeException('Short-only imported team generated an empty abbreviation title.');
+    }
+
+    $completeTeam = (object) ['name' => 'Football Club', 'short_name' => 'FC'];
+    $abbr = TeamPresentationHelper::formatName(
+        $completeTeam, 'team', ['team_name_format' => 0]
+    );
+
+    if ($abbr !== '<span style="padding:2px;"><abbr title="Football Club">FC</abbr></span>') {
+        throw new RuntimeException('Complete team abbreviation tooltip was lost.');
+    }
+
     // Damaged module settings must not select unintended name formats or
     // trigger PHP 8 array-to-integer conversion warnings.
     foreach ([['invalid'], true, new stdClass(), '2junk', '999999999999999999999999'] as $invalid) {
