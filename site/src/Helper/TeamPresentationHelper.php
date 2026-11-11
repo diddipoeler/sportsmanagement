@@ -205,7 +205,7 @@ final class TeamPresentationHelper
      * @param array $config Name format settings.
      * @param bool $isFavourite Whether this is a favourite team.
      * @param object|null $project Optional project metadata.
-     * @return string Formatted team name HTML, ignoring malformed legacy name fields
+     * @return string Formatted team name HTML, falling back to available names
      *     and rejecting unsafe inline CSS colors from project settings.
      */
     private static function nameMarkup(
@@ -225,7 +225,11 @@ final class TeamPresentationHelper
         };
 
         if ($formattedName === '') {
-            $formattedName = $fullName;
+            // Older imports may have only one of the three name fields.
+            // Keep an available team name visible instead of a blank label.
+            $formattedName = $fullName !== ''
+                ? $fullName
+                : ($middleName !== '' ? $middleName : $shortName);
         }
 
         $style = 'padding:2px;';
