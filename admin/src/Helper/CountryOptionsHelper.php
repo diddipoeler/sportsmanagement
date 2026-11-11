@@ -224,7 +224,7 @@ final class CountryOptionsHelper
      * Construct an allowed flag URL from a stored flag image path.
      *
      * Rejects URL credentials, unsupported schemes, path traversal, control
-     * characters and backslash-based paths before resolving a site-relative
+     * characters, encoded schemes and backslash-based paths before resolving a site-relative
      * URL against the Joomla root.
      *
      * @param string $value Stored flag path or HTTP(S) URL.
@@ -263,6 +263,8 @@ final class CountryOptionsHelper
         // escapes if the bounded loop is exhausted.
         for ($depth = 0; $depth < 8; $depth++) {
             if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
+            || str_starts_with($decoded, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
                 || preg_match('/[\x00-\x1F\x7F]/', $decoded)
                 || str_contains($decoded, chr(92))
                 || str_contains($decoded, '?') || str_contains($decoded, '#')) {
@@ -280,6 +282,8 @@ final class CountryOptionsHelper
         // interpreted by a proxy or server in a subsequent decoding pass.
         if (preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
             || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
+            || str_starts_with($decoded, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
             || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
             || str_contains($decoded, chr(92))
             || str_contains($decoded, '?') || str_contains($decoded, '#')) {
