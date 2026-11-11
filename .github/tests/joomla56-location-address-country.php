@@ -144,16 +144,12 @@ namespace {
         // Imported addresses must not inject new lines or control bytes,
         // and non-finite numeric fields must never become "INF" or "NAN".
         $dirty = (object) [
-            'address' => "Main\\x00 Street\\n5",
-            'state' => "\\tNRW\\r",
-            'location' => "Essen\\x7f",
+            'address' => "Main\x00 Street\n5",
+            'state' => "\tNRW\r",
+            'location' => "Essen\x7f",
             'zipcode' => INF,
             'country' => '',
         ];
-        // Use actual control characters, not backslash escape text.
-        $dirty->address = "Main\x00 Street\n5";
-        $dirty->state = "\tNRW\r";
-        $dirty->location = "Essen\x7f";
 
         if ($helper::build($db, $dirty) !== 'Main  Street 5, NRW, Essen') {
             throw new \RuntimeException('Corrupted location fields contained control bytes or INF.');
