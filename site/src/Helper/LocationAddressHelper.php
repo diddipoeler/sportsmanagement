@@ -118,7 +118,7 @@ final class LocationAddressHelper
                 ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
             $db->setQuery($query, 0, 1);
             $rawName = $db->loadResult();
-            $name = is_string($rawName) ? trim($rawName) : '';
+            $name = is_string($rawName) ? self::scalarText($rawName) : '';
 
             // Country names and translated labels can also originate from
             // imported legacy data. Reuse the same printable-text rules as
