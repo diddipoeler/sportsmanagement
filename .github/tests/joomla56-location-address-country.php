@@ -186,6 +186,21 @@ namespace {
         if ($helper::build($db, $location) !== 'Bochum' || $db->queries !== 2) {
             throw new \RuntimeException('Malformed address fields were not discarded.');
         }
+        // Country labels pass through the same printable-text guard as
+        // street and city fields, before and after Joomla translation.
+        $countryDb = new LocationDatabaseFixture();
+        $countryLocation = (object) ['city' => 'Essen', 'country' => 'DEU'];
+        $countryDb->result = "Ger\nmany\x7f";
+
+        if ($helper::build($countryDb, $countryLocation) !== 'Essen, Translated: Ger many') {
+            throw new \RuntimeException('Country result control bytes leaked into address.');
+        }
+
+        $countryDb->result = "\x00\n";
+        if ($helper::build($countryDb, $countryLocation) !== 'Essen, DEU'
+            || $countryDb->queries !== 2) {
+            throw new \RuntimeException('Control-only country names failed to use ISO fallback.');
+        }
     } finally {
         restore_error_handler();
     }
