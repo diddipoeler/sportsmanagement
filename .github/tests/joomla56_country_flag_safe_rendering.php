@@ -254,6 +254,19 @@ namespace {
         restore_error_handler();
     }
 
+    // Not every translated address format includes %ADDRESS%. Do not
+    // append a stray closing div when only a city or name is shown.
+    $cityOnly = $class::address('Arena', '', '', '', 'Berlin', '', '%NAME% / %LOCATION%');
+    if ($cityOnly !== '<span itemprop="name">Arena</span> / <span itemprop="addressLocality">Berlin</span>&nbsp;') {
+        throw new \RuntimeException('Country address layout without street generated unmatched markup.');
+    }
+
+    $withStreet = $class::address('Arena', 'Main Street', '', '', 'Berlin', '', '%ADDRESS% %LOCATION%');
+    if (!str_contains($withStreet, 'itemtype="https://schema.org/PostalAddress"')
+        || !str_ends_with($withStreet, '</div>&nbsp;')) {
+        throw new \RuntimeException('Country address layout lost its opened address container.');
+    }
+
     $safeSource = new \ReflectionMethod($class, 'safeFlagSource');
 
     foreach ([
