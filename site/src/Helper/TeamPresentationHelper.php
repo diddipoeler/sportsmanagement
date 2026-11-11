@@ -51,8 +51,8 @@ final class TeamPresentationHelper
         $showActions = ($showInfoLink === 2 && $isFavourite)
             || ($showInfoLink === 1 && $hasStandardAction);
 
-        $teamId = (int) ($team->team_id ?? $team->id ?? 0);
-        $projectId = (int) ($team->project_id ?? 0);
+        $teamId = self::positiveId($team->team_id ?? $team->id ?? null);
+        $projectId = self::positiveId($team->project_id ?? null);
         $containerId = self::safeId($containerPrefix . 't' . $teamId . 'p' . $projectId);
         $description = self::nameMarkup($team, $config, $isFavourite, $project);
 
@@ -86,8 +86,8 @@ final class TeamPresentationHelper
         int $databaseSelector = 0,
         int $seasonId = 0
     ): string {
-        $teamId = (int) ($team->team_id ?? $team->id ?? 0);
-        $projectId = (int) ($team->project_id ?? 0);
+        $teamId = self::positiveId($team->team_id ?? $team->id ?? null);
+        $projectId = self::positiveId($team->project_id ?? null);
 
         if ($teamId <= 0 || $projectId <= 0) {
             return '';
@@ -98,8 +98,8 @@ final class TeamPresentationHelper
         if ($projectTeam === '') {
             $projectTeam = self::safeText($team->projectteamid ?? null);
         }
-        $clubId = (int) ($team->club_id ?? 0);
-        $divisionId = (int) ($team->division_id ?? 0);
+        $clubId = self::positiveId($team->club_id ?? null);
+        $divisionId = self::positiveId($team->division_id ?? null);
         $teamName = self::safeText($team->name ?? null);
         $common = [
             'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
@@ -317,6 +317,39 @@ final class TeamPresentationHelper
     private static function safeId(string $value): string
     {
         return preg_replace('/[^A-Za-z0-9_-]/', '-', $value) ?: 'team-actions';
+    }
+
+    /**
+     * Parse a positive legacy entity ID without coercing arrays or booleans.
+     *
+     * Team, project, club and division identifiers must be positive integers.
+     * Reject malformed numeric fragments and values larger than PHP_INT_MAX
+     * rather than generating routes for accidentally coerced ID 1.
+     *
+     * @param mixed $value Raw database identifier.
+     * @return int Valid positive identifier or zero for malformed input.
+     */
+    private static function positiveId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return max(0, $value);
+        }
+
+        if (!is_string($value) || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
