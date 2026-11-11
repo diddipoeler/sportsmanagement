@@ -107,7 +107,7 @@ final class NamePresentationHelper
      *
      * Accept local Joomla routes and valid HTTP(S) destinations only; refuse
      * executable URL schemes, protocol-relative hosts, embedded credentials,
-     * backslashes and control characters from legacy database values.
+     * backslashes, control characters and nested URL-encoded schemes.
      *
      * @param string $url Optional team URL supplied by a frontend template.
      * @return bool Whether the destination may be rendered as a link.
@@ -131,11 +131,37 @@ final class NamePresentationHelper
                 && !isset($parts['pass']);
         }
 
-        // A colon before any slash/question/fragment is an external URI
-        // scheme or malformed relative path, not a Joomla frontend route.
-        return preg_match('~^[a-z][a-z0-9+.-]*:~i', $url) !== 1
-            && !str_starts_with($url, '#')
-            && !str_starts_with($url, '?');
+        if (str_starts_with($url, '#') || str_starts_with($url, '?')) {
+            return false;
+        }
+
+        // Inspect the URL path before any legitimate query or fragment.
+        // Encoded URL schemes and protocol-relative hosts can be hidden by
+        // several rounds of percent encoding in imported template links.
+        $path = explode('#', explode('?', $url, 2)[0], 2)[0];
+
+        for ($depth = 0; $depth < 8; ++$depth) {
+            if (str_starts_with($path, '//')
+                || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
+                || preg_match('/[\\x00-\\x20\\x7f]/', $path)
+                || str_contains($path, chr(92))) {
+                return false;
+            }
+
+            $decoded = rawurldecode($path);
+
+            if ($decoded === $path) {
+                break;
+            }
+
+            $path = $decoded;
+        }
+
+        return !str_starts_with($path, '//')
+            && preg_match('~^[a-z][a-z0-9+.-]*:~i', $path) !== 1
+            && preg_match('/[\\x00-\\x20\\x7f]/', $path) !== 1
+            && !str_contains($path, chr(92))
+            && preg_match('/%[0-9a-f]{2}/i', $path) !== 1;
     }
 
     /**
