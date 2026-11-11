@@ -108,6 +108,19 @@ namespace {
             throw new \RuntimeException('Malformed action display setting unexpectedly enabled links.');
         }
 
+        foreach ([['1'], new \stdClass(), 'true', 2] as $invalidToggle) {
+            $disabled = $helper::formatName(
+                $team,
+                'team',
+                ['show_info_link' => '1', 'show_team_link' => $invalidToggle]
+            );
+
+            if ($disabled !== '<span style="padding:2px;">North &amp; South</span>'
+                || $helper::renderActions($team, ['show_team_link' => $invalidToggle]) !== '') {
+                throw new \RuntimeException('Malformed navigation toggle enabled team actions.');
+            }
+        }
+
         $validSetting = $helper::formatName(
             $team,
             'team',
