@@ -88,7 +88,9 @@ final class NamePresentationHelper
             15 => [$last, $first],
             16 => [$first, $last],
             17 => [$last, $first, $nick],
-            18 => [$last, $firstInitial],
+            // The legacy N. V. variant is two initials, matching both
+            // native person formatters instead of the full surname.
+            18 => [$lastInitial, $firstInitial],
             default => [$first, $quotedNick, $last],
         };
 
