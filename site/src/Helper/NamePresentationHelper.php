@@ -143,7 +143,7 @@ final class NamePresentationHelper
         for ($depth = 0; $depth < 8; ++$depth) {
             if (str_starts_with($path, '//')
                 || preg_match('~^[a-z][a-z0-9+.-]*:~i', $path)
-                || preg_match('/[\\x00-\\x20\\x7f]/', $path)
+                || (preg_match('/[\\x00-\\x1f\\x7f]/', $path) || str_starts_with($path, ' '))
                 || str_contains($path, chr(92))) {
                 return false;
             }
@@ -159,7 +159,7 @@ final class NamePresentationHelper
 
         return !str_starts_with($path, '//')
             && preg_match('~^[a-z][a-z0-9+.-]*:~i', $path) !== 1
-            && preg_match('/[\\x00-\\x20\\x7f]/', $path) !== 1
+            && (preg_match('/[\\x00-\\x1f\\x7f]/', $path) || str_starts_with($path, ' ')) !== 1
             && !str_contains($path, chr(92))
             && preg_match('/%[0-9a-f]{2}/i', $path) !== 1;
     }
