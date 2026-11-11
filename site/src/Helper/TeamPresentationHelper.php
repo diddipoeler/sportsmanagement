@@ -96,7 +96,7 @@ final class TeamPresentationHelper
         $projectTeam = (string) ($team->projectteam_slug ?? $team->projectteamid ?? '');
         $clubId = (int) ($team->club_id ?? 0);
         $divisionId = (int) ($team->division_id ?? 0);
-        $teamName = (string) ($team->name ?? '');
+        $teamName = self::safeText($team->name ?? null);
         $common = [
             'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
             's' => max(0, $seasonId),
@@ -201,7 +201,7 @@ final class TeamPresentationHelper
      * @param array $config Name format settings.
      * @param bool $isFavourite Whether this is a favourite team.
      * @param object|null $project Optional project metadata.
-     * @return string Formatted team name HTML.
+     * @return string Formatted team name HTML, ignoring malformed legacy name fields.
      */
     private static function nameMarkup(
         object $team,
@@ -210,9 +210,9 @@ final class TeamPresentationHelper
         ?object $project
     ): string {
         $format = (int) ($config['team_name_format'] ?? 2);
-        $fullName = trim((string) ($team->name ?? ''));
-        $shortName = trim((string) ($team->short_name ?? ''));
-        $middleName = trim((string) ($team->middle_name ?? ''));
+        $fullName = self::safeText($team->name ?? null);
+        $shortName = self::safeText($team->short_name ?? null);
+        $middleName = self::safeText($team->middle_name ?? null);
         $formattedName = match ($format) {
             0 => $shortName,
             1 => $middleName,
@@ -225,14 +225,14 @@ final class TeamPresentationHelper
 
         $style = 'padding:2px;';
         if (!empty($config['highlight_fav']) && $isFavourite && $project) {
-            if (trim((string) ($project->fav_team_text_bold ?? '')) !== '') {
+            if (self::safeText($project->fav_team_text_bold ?? null) !== '') {
                 $style .= 'font-weight:bold;';
             }
-            $textColor = trim((string) ($project->fav_team_text_color ?? ''));
+            $textColor = self::safeText($project->fav_team_text_color ?? null);
             if ($textColor !== '') {
                 $style .= 'color:' . $textColor . ';';
             }
-            $background = trim((string) ($project->fav_team_color ?? ''));
+            $background = self::safeText($project->fav_team_color ?? null);
             if ($background !== '') {
                 $style .= 'background-color:' . $background . ';';
             }
@@ -312,6 +312,25 @@ final class TeamPresentationHelper
     private static function safeId(string $value): string
     {
         return preg_replace('/[^A-Za-z0-9_-]/', '-', $value) ?: 'team-actions';
+    }
+
+    /**
+     * Convert optional text columns to usable display text.
+     *
+     * Legacy imports and overrides can contain arrays or arbitrary objects
+     * instead of the scalar values expected by Joomla templates. Discard
+     * non-stringable values rather than triggering PHP 8 conversion warnings.
+     *
+     * @param mixed $value Raw team or project display value.
+     * @return string Trimmed scalar or stringable text, or an empty string.
+     */
+    private static function safeText(mixed $value): string
+    {
+        if (!is_scalar($value) && !$value instanceof \Stringable) {
+            return '';
+        }
+
+        return trim((string) $value);
     }
 
     /**
