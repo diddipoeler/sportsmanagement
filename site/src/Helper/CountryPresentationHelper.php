@@ -161,7 +161,8 @@ final class CountryPresentationHelper
 
     /**
      * Allowlist safe HTML image attributes supplied by legacy templates.
-     * Drop event handlers and escape permitted attribute values.
+     * Drop event handlers, reject arbitrary CSS style values and require
+     * whole whitespace-delimited tokens before escaping permitted values.
      * @param string $attributes Raw optional HTML attributes.
      * @return string Escaped allowlisted attributes.
      */
@@ -169,12 +170,14 @@ final class CountryPresentationHelper
     {
         $clean = [];
 
-        preg_match_all('/([A-Za-z][A-Za-z0-9_-]*)\s*=\s*(["\x27])(.*?)\2/s', $attributes, $matches, PREG_SET_ORDER);
+        // Match complete attribute tokens and reject arbitrary CSS, since
+        // HTML escaping alone cannot make CSS URLs or expressions safe.
+        preg_match_all('/(?:^|\\s)([A-Za-z][A-Za-z0-9_-]*)\\s*=\\s*(["\\x27])(.*?)\\2(?=\\s|$)/s', $attributes, $matches, PREG_SET_ORDER);
 
         foreach ($matches as $match) {
             $name = strtolower($match[1]);
 
-            if (!in_array($name, ['class', 'style', 'width', 'height', 'loading', 'decoding', 'id', 'role', 'title'], true)
+            if (!in_array($name, ['class', 'width', 'height', 'loading', 'decoding', 'id', 'role', 'title'], true)
                 && !preg_match('/^aria-[a-z0-9_-]+$/D', $name)) {
                 continue;
             }
