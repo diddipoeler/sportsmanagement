@@ -133,6 +133,8 @@ trait NativeLinkTrait
      * Find the previous and next fixture relative to the current match.
      * Issue bounded queries in chronological order, optionally restricted
      * to the same project, then build match-report links with route slugs.
+     * Use the Joomla 5/6 createQuery() factory instead of deprecated
+     * getQuery(true) parameter semantics.
      * @param DatabaseInterface $db Resolved database connection.
      * @param object $match Current match and timestamp metadata.
      * @param Registry $params Neighbour navigation configuration.
@@ -143,7 +145,7 @@ trait NativeLinkTrait
     {
         $out = ['previous' => null, 'next' => null];
         foreach (['previous' => ['<', 'DESC', (string) $params->get('last_text', '<<')], 'next' => ['>', 'ASC', (string) $params->get('next_text', '>>')]] as $key => [$operator, $direction, $label]) {
-            $q = $db->getQuery(true)
+            $q = $db->createQuery()
                 ->select(['m.id', 'p.id AS project_id', 'p.alias AS project_alias', 't1.alias AS team1_alias', 't2.alias AS team2_alias'])
                 ->from('#__sportsmanagement_match AS m')
                 ->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id')
