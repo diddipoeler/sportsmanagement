@@ -49,7 +49,8 @@ final class NamePresentationHelper
      *
      * Supports first/last name ordering, quoted nicknames and initial
      * variants, omits empty name parts and escapes the final text for
-     * safe display in native Joomla 5/6 views.
+     * safe display in native Joomla 5/6 views. Invalid array/object fields
+     * are ignored instead of producing PHP 8 conversion warnings.
      *
      * @param object $person Person record with firstname, nickname and lastname.
      * @param int|string $format Legacy person-name layout identifier.
@@ -57,9 +58,12 @@ final class NamePresentationHelper
      */
     public static function person(object $person, int|string $format = 0): string
     {
-        $first = trim((string) ($person->firstname ?? ''));
-        $nick = trim((string) ($person->nickname ?? ''));
-        $last = trim((string) ($person->lastname ?? ''));
+        // Imported person rows may contain unexpected arrays or objects.
+        // Reuse the team's safe name-value normaliser rather than invoking
+        // PHP 8 array-to-string conversion warnings in native templates.
+        $first = self::firstNonEmpty($person->firstname ?? null);
+        $nick = self::firstNonEmpty($person->nickname ?? null);
+        $last = self::firstNonEmpty($person->lastname ?? null);
         $quotedNick = $nick !== '' ? '“' . $nick . '”' : '';
         $firstInitial = $first !== '' ? self::firstCharacter($first) . '.' : '';
         $lastInitial = $last !== '' ? self::firstCharacter($last) . '.' : '';
