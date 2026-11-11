@@ -21,6 +21,8 @@ namespace Joomla\Database {
 namespace Joomla\CMS\Language {
     final class Text
     {
+        public static bool $injectControl = false;
+
         /**
          * Mark country names as translated in the standalone site fixture.
          *
@@ -29,7 +31,7 @@ namespace Joomla\CMS\Language {
          */
         public static function _(string $key): string
         {
-            return 'Translated: ' . $key;
+            return 'Translated: ' . $key . (self::$injectControl ? "\n" : '');
         }
     }
 }
@@ -196,9 +198,20 @@ namespace {
             throw new \RuntimeException('Country result control bytes leaked into address.');
         }
 
+        // A translation plugin may itself introduce a trailing control byte.
+        $countryDb->result = 'Germany';
+        \Joomla\CMS\Language\Text::$injectControl = true;
+        try {
+            if ($helper::build($countryDb, $countryLocation) !== 'Essen, Translated: Germany') {
+                throw new \RuntimeException('Translated country label was not sanitised.');
+            }
+        } finally {
+            \Joomla\CMS\Language\Text::$injectControl = false;
+        }
+
         $countryDb->result = "\x00\n";
         if ($helper::build($countryDb, $countryLocation) !== 'Essen, DEU'
-            || $countryDb->queries !== 2) {
+            || $countryDb->queries !== 3) {
             throw new \RuntimeException('Control-only country names failed to use ISO fallback.');
         }
     } finally {
