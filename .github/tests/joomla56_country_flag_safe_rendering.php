@@ -14,7 +14,7 @@ namespace Joomla\CMS\Component {
     final class ComponentHelper
     {
         public static string $placeholder = '';
-        public static int $css = 0;
+        public static mixed $css = 0;
 
         /**
          * Supply simulated country display parameters for Joomla site tests.
@@ -360,6 +360,31 @@ namespace {
     $cache->setValue(null, [
         '0:TST' => (object) ['name' => 'Test', 'alpha2' => 'invalid-code', 'picture' => 'images/test.png'],
     ]);
+    // Incorrectly typed configuration must not switch into CSS mode.
+    // Keep the valid image fallback for country data without an alpha2 code.
+    foreach ([['bad'], new \stdClass(), '1junk', 2] as $invalidCssMode) {
+        \Joomla\CMS\Component\ComponentHelper::$css = $invalidCssMode;
+
+        $image = $class::flag('TST');
+        if (!str_contains($image, 'src="https://sports.example/joomla/images/test.png"')
+            || str_contains($image, 'class="fi ')) {
+            throw new \RuntimeException('Invalid flag configuration activated CSS mode.');
+        }
+    }
+
+    // Both a Joomla integer setting and a numeric-string setting enable CSS.
+    $cache->setValue(null, [
+        '0:DEU' => (object) ['name' => 'Germany', 'alpha2' => 'de', 'picture' => ''],
+        '0:TST' => (object) ['name' => 'Test', 'alpha2' => 'invalid-code', 'picture' => 'images/test.png'],
+    ]);
+    foreach ([1, '1', true] as $validCssMode) {
+        \Joomla\CMS\Component\ComponentHelper::$css = $validCssMode;
+
+        if ($class::flag('DEU') !== '<span class="fi fi-de"></span>') {
+            throw new \RuntimeException('Valid flag CSS mode failed for an ISO country.');
+        }
+    }
+
     \Joomla\CMS\Component\ComponentHelper::$css = 1;
     $image = $class::flag('TST');
 
