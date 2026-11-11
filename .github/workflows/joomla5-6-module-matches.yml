@@ -3,10 +3,10 @@ name: Joomla 5/6 Matches module migration gate
 on:
   push:
     branches: [joomla5-6]
-    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php', '.github/tests/joomla56_matches_media_links.php', '.github/tests/joomla56_matches_create_query.php']
+    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php', '.github/tests/joomla56_matches_media_links.php', '.github/tests/joomla56_matches_create_query.php', '.github/tests/joomla56_matches_database_selector.php']
   pull_request:
     branches: [master]
-    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php', '.github/tests/joomla56_matches_media_links.php', '.github/tests/joomla56_matches_create_query.php']
+    paths: ['modules/mod_sportsmanagement_matches/**', 'site/src/Helper/SiteRouteHelper.php', '.github/workflows/joomla5-6-module-matches.yml', '.github/tests/joomla56_matches_favorites_slugs.php', '.github/tests/joomla56_matches_media_links.php', '.github/tests/joomla56_matches_create_query.php', '.github/tests/joomla56_matches_database_selector.php']
 
 jobs:
   native-matches:
@@ -69,6 +69,12 @@ jobs:
           php -l .github/tests/joomla56_matches_create_query.php
           php .github/tests/joomla56_matches_create_query.php
           php -n .github/tests/joomla56_matches_create_query.php
+
+      - name: Test database selector validation and safe team identifiers
+        run: |
+          php -l .github/tests/joomla56_matches_database_selector.php
+          php .github/tests/joomla56_matches_database_selector.php
+          php -n .github/tests/joomla56_matches_database_selector.php
 
       - name: Validate manifest and runtime contracts
         shell: bash
