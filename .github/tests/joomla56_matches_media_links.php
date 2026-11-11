@@ -202,6 +202,26 @@ namespace {
             throw new \RuntimeException('Missing match scores changed the placeholder result contract.');
         }
 
+        $statusMethod = new \ReflectionMethod($helper, 'applyStatus');
+        $untimed = (object) [];
+        $statusMethod->invoke($helper, $untimed);
+
+        if ($untimed->live || $untimed->upcoming || !$untimed->alreadyplayed) {
+            throw new \RuntimeException('Missing fixture timing should be treated as historic.');
+        }
+
+        $extreme = (object) [
+            'match_timestamp' => time() - 100,
+            'game_regular_time' => PHP_INT_MAX,
+            'game_parts' => PHP_INT_MAX,
+            'halftime' => PHP_INT_MAX,
+        ];
+        $statusMethod->invoke($helper, $extreme);
+
+        if (!$extreme->live || $extreme->alreadyplayed || $extreme->upcoming) {
+            throw new \RuntimeException('Extreme fixture duration overflowed status detection.');
+        }
+
         $cancelledRow = ['cancel' => true];
         $resultMethod->invokeArgs($helper, [&$cancelledRow, (object) [], $resultParams]);
 
