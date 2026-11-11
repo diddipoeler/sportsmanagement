@@ -115,7 +115,25 @@ namespace {
             throw new \RuntimeException('Missing club ID generated a club action link.');
         }
 
-        $team->club_id = 9;
+        // A non-empty PHP array becomes integer 1 if cast directly. No
+        // malformed team/project/club ID may generate a frontend route.
+        $team->club_id = ['invalid'];
+        if ($helper::renderActions($team, ['show_club_link' => 1]) !== '') {
+            throw new \RuntimeException('Malformed club array generated an invalid club route.');
+        }
+
+        $team->team_id = ['invalid'];
+        if ($helper::renderActions($team, ['show_team_link' => 1]) !== '') {
+            throw new \RuntimeException('Malformed team array generated an invalid team route.');
+        }
+        $team->team_id = 4;
+        $team->project_id = ['invalid'];
+        if ($helper::renderActions($team, ['show_team_link' => 1]) !== '') {
+            throw new \RuntimeException('Malformed project ID generated an invalid team route.');
+        }
+        $team->project_id = 5;
+
+        $team->club_id = '0009';
         $club = $helper::renderActions($team, ['show_club_link' => 1]);
 
         if (!str_contains($club, 'view=clubinfo') || !str_contains($club, 'cid=9')) {
