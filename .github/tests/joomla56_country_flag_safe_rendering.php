@@ -337,6 +337,12 @@ namespace {
         'https://cdn.example/flag.png' => 'https://cdn.example/flag.png',
         '' => '',
         '//evil.example/image.png' => '',
+        '%2f%2fevil.example/image.png' => '',
+        '%252f%252fevil.example/image.png' => '',
+        'https%3a%2f%2fevil.example/image.png' => '',
+        'javascript%3aalert(1)' => '',
+        'data%253atext/html,evil' => '',
+        'images/%2f%2fevil.example/image.png' => 'https://sports.example/joomla/images/%2f%2fevil.example/image.png',
         'javascript:alert(1)' => '',
         'data:text/html,evil' => '',
         'images/../secret.png' => '',
@@ -352,6 +358,20 @@ namespace {
 
         if ($value !== $expected) {
             throw new \RuntimeException('Country flag URI invalid for ' . var_export($input, true));
+        }
+    }
+
+    // Fully encoded scheme or protocol-relative prefixes cannot be
+    // interpreted as local flag filenames, even after nested decoding.
+    foreach (['//evil.example/flag.png', 'javascript:alert(1)'] as $unsafePath) {
+        $nested = $unsafePath;
+
+        for ($depth = 1; $depth <= 10; ++$depth) {
+            $nested = rawurlencode($nested);
+
+            if ($safeSource->invoke(null, $nested) !== '') {
+                throw new \RuntimeException('Encoded flag URL scheme accepted at depth ' . $depth);
+            }
         }
     }
 
