@@ -21,6 +21,7 @@ trait NativeLinkTrait
      * Build the configured internal and external links for one team.
      * Select teamplan, ranking curve, team information, roster and club URLs
      * from Joomla's routing helper; include validated club websites when enabled.
+     * Never generate internal team or club links with missing positive IDs.
      * @param object $match Fixture row containing project, team and club IDs.
      * @param string $n Team position, 1 for home or 2 for away.
      * @param Registry $params Module link visibility and label settings.
@@ -32,8 +33,8 @@ trait NativeLinkTrait
         if ($mode <= 0) {
             return [];
         }
-        $teamId = (int) $match->{'team' . $n . '_id'};
-        $clubId = (int) $match->{'club' . $n . '_id'};
+        $teamId = (int) ($match->{'team' . $n . '_id'} ?? 0);
+        $clubId = (int) ($match->{'club' . $n . '_id'} ?? 0);
         $base = ['p' => (string) $match->project_slug, 'tid' => $teamId, 'cfg_which_database' => (int) $params->get('cfg_which_database', 0)];
         $links = [];
         foreach ([
@@ -48,8 +49,13 @@ trait NativeLinkTrait
             }
             $query = $base;
             if ($key === 'club') {
+                if ($clubId <= 0) {
+                    continue;
+                }
                 unset($query['tid']);
                 $query['cid'] = $clubId;
+            } elseif ($teamId <= 0) {
+                continue;
             }
             $links[] = ['label' => (string) $params->get($textKey, $fallback), 'url' => $this->route($view, $query), 'external' => false];
         }
@@ -61,10 +67,6 @@ trait NativeLinkTrait
     }
 
 
-    /**
-     * Only render safe HTTP(S) hyperlinks from legacy club website fields.
-     * Sites stored without a scheme are treated as HTTPS addresses.
-     */
     /**
      * Validate a club's stored website before placing it in public HTML.
      * Accept only HTTP(S) links, supply HTTPS for hostnames without a
