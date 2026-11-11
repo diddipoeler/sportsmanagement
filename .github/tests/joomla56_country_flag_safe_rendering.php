@@ -80,6 +80,27 @@ namespace Joomla\CMS\Language {
     }
 }
 
+namespace Joomla\CMS\Log {
+    final class Log
+    {
+        public const ERROR = 400;
+        public static array $messages = [];
+
+        /**
+         * Capture country selector errors without a Joomla logging service.
+         *
+         * @param string $message Logged country query or iterator error.
+         * @param int $level Joomla severity level.
+         * @param string $category Component logging category.
+         * @return void
+         */
+        public static function add(string $message, int $level, string $category): void
+        {
+            self::$messages[] = [$message, $level, $category];
+        }
+    }
+}
+
 namespace Joomla\CMS\Uri {
     final class Uri
     {
@@ -244,6 +265,26 @@ namespace {
             if ($class::options($database) !== []) {
                 throw new \RuntimeException('Non-iterable country result was accepted.');
             }
+        }
+
+        // A generator is iterable, but its iterator may fail after the
+        // first valid row. The frontend selector must fail closed and log.
+        $brokenRows = static function (): \Generator {
+            yield (object) ['alpha3' => 'DEU', 'name' => 'Germany'];
+            throw new \RuntimeException('broken country row iterator');
+        };
+        $database = new FrontendCountryOptionDatabase();
+        $database->overrideRows = $brokenRows();
+        \Joomla\CMS\Log\Log::$messages = [];
+
+        if ($class::options($database) !== []) {
+            throw new \RuntimeException('Broken country iterator exposed partial select options.');
+        }
+
+        if (count(\Joomla\CMS\Log\Log::$messages) !== 1
+            || !str_contains(\Joomla\CMS\Log\Log::$messages[0][0], 'broken country row iterator')
+            || \Joomla\CMS\Log\Log::$messages[0][2] !== 'com_sportsmanagement') {
+            throw new \RuntimeException('Broken country iterator was not logged privately.');
         }
 
         $codes = array_map(static fn (object $item): string => $item->value, $options);
