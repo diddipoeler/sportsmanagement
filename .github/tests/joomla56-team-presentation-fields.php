@@ -90,6 +90,35 @@ try {
         }
     }
 
+    // Legacy arrays must not accidentally activate favourite highlighting.
+    // Explicit Joomla booleans and numeric string toggles remain supported.
+    $favourite = (object) [
+        'fav_team_text_bold' => '1',
+        'fav_team_text_color' => '#123',
+        'fav_team_color' => 'navy',
+    ];
+    $fullTeam = (object) ['name' => 'Town FC'];
+    foreach ([['1'], new stdClass(), 'yes', 2] as $badToggle) {
+        $plain = TeamPresentationHelper::formatName(
+            $fullTeam,
+            'team',
+            ['highlight_fav' => $badToggle],
+            true,
+            $favourite
+        );
+
+        if ($plain !== '<span style="padding:2px;">Town FC</span>') {
+            throw new RuntimeException('Malformed highlight toggle activated CSS unexpectedly.');
+        }
+    }
+
+    $validHighlight = TeamPresentationHelper::formatName(
+        $fullTeam, 'team', ['highlight_fav' => '1'], true, $favourite
+    );
+    if ($validHighlight !== '<span style="padding:2px;font-weight:bold;color:#123;background-color:navy;">Town FC</span>') {
+        throw new RuntimeException('Valid favourite highlight toggle was ignored.');
+    }
+
     $project = (object) [
         'fav_team_text_bold' => ['invalid'],
         'fav_team_text_color' => new stdClass(),
