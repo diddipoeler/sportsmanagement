@@ -76,6 +76,8 @@ final class MatchesHelper
      * results, venues, optional referees and navigation links, and sorts
      * rows by configured live/upcoming priority. Logs unexpected database
      * errors rather than exposing connection details to site visitors.
+     * Rejects non-site applications before entering the recoverable query
+     * error handler so administrator execution is never silently accepted.
      *
      * @param Registry $params Joomla Matches module configuration.
      * @param CMSApplicationInterface $app Current Joomla application.
@@ -89,16 +91,18 @@ final class MatchesHelper
         object $module,
         ?DatabaseInterface $joomlaDatabase = null
     ): array {
+        // Reject administrator execution before accessing project selectors
+        // or returning an empty module result; the module is site-only.
+        if (!$app->isClient('site')) {
+            throw new \RuntimeException('SportsManagement Matches requires the Joomla site application.', 500);
+        }
+
         $projects = $this->ids($params->get('p', []));
         if (!$projects) {
             return ['matches' => [], 'legacy_update_requested' => (bool) $params->get('ishd_update', 0)];
         }
 
         try {
-            if (!$app->isClient('site')) {
-                throw new \RuntimeException('SportsManagement Matches requires the Joomla site application.', 500);
-            }
-
             $joomlaDatabase = self::joomlaDatabase($joomlaDatabase);
             $db = $this->database($params, $joomlaDatabase);
             $matches = $this->loadMatches($db, $params, $projects);
