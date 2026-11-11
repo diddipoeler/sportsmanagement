@@ -57,7 +57,11 @@ final class CountryPresentationHelper
         $iso2 = is_string($rawIso2) ? strtolower(trim($rawIso2)) : '';
         $iso2 = preg_match('/^[a-z]{2}$/D', $iso2) ? $iso2 : '';
 
-        if ((int) $params->get('cfg_flags_css', 0) === 1) {
+        // Registry values from legacy imports may be arrays or objects.
+        // Avoid coercing malformed flags to integer 1 and selecting CSS mode.
+        $cssFlagMode = $params->get('cfg_flags_css', 0);
+
+        if ($cssFlagMode === 1 || $cssFlagMode === '1' || $cssFlagMode === true) {
             $cssCode = match (strtoupper($countryCode)) {
                 'WAL' => 'gb-wls',
                 'SCO' => 'gb-sct',
