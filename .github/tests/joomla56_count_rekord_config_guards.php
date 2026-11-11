@@ -199,6 +199,32 @@ namespace {
         throw new \RuntimeException('Valid module configuration or fixed icon path regressed.');
     }
 
+    // Legacy database adapters may return malformed count values. Avoid
+    // array-to-integer conversion warnings and keep the target difference
+    // predictable instead of exposing query details to frontend visitors.
+    $db->result = ['invalid-count'];
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $badCount = $helper->getData(new \Joomla\Registry\Registry([
+            'jsm_stat_spielpaarungen' => 1,
+            'jsm_stat_paarungen' => 5,
+        ]), $module, $db);
+
+        if (count($badCount) !== 1
+            || $badCount[0]->anzahl !== 0
+            || $badCount[0]->anzahlbis !== 5
+            || $badCount[0]->anzahldiff !== 5) {
+            throw new \RuntimeException('Malformed record count changed frontend target display.');
+        }
+    } finally {
+        restore_error_handler();
+    }
+
+    $db->result = 40;
+
     $db->fail = true;
 
     if ($helper->getData(new \Joomla\Registry\Registry([
