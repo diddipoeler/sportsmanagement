@@ -327,7 +327,7 @@ final class CountryPresentationHelper
     /**
      * Render an escaped postal address from legacy location fields.
      * Insert translated country labels and safely generated flag markup.
-     * Close the address container only when its template has opened one.
+     * Close each address container opened by the translated template.
      * @param string $name Location display name.
      * @param string $address Street address.
      * @param string $state Region or state.
@@ -351,9 +351,9 @@ final class CountryPresentationHelper
         }
 
         $output = Text::_($format);
-        // The language format may omit the street-address placeholder.
-        // Append a closing tag only when this helper opens that container.
-        $hasAddressContainer = str_contains($output, '%ADDRESS%');
+        // Translated formats may omit or repeat the street placeholder.
+        // Close exactly as many address containers as this helper opens.
+        $addressContainerCount = substr_count($output, '%ADDRESS%');
         $output = str_replace('%NAME%', '<span itemprop="name">' . self::escape($name) . '</span>', $output);
         $output = str_replace(
             '%ADDRESS%',
@@ -367,7 +367,7 @@ final class CountryPresentationHelper
         $output = str_replace('%FLAG%', self::flag($country), $output);
         $output = str_replace('%COUNTRY%', self::escape(self::name($country)), $output);
 
-        return $output . ($hasAddressContainer ? '</div>' : '') . '&nbsp;';
+        return $output . str_repeat('</div>', $addressContainerCount) . '&nbsp;';
     }
 
     /**
