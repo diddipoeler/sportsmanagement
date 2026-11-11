@@ -141,6 +141,33 @@ namespace {
             throw new \RuntimeException('Valid location country or fallback city was lost.');
         }
 
+        // Imported addresses must not inject new lines or control bytes,
+        // and non-finite numeric fields must never become "INF" or "NAN".
+        $dirty = (object) [
+            'address' => "Main\\x00 Street\\n5",
+            'state' => "\\tNRW\\r",
+            'location' => "Essen\\x7f",
+            'zipcode' => INF,
+            'country' => '',
+        ];
+        // Use actual control characters, not backslash escape text.
+        $dirty->address = "Main\x00 Street\n5";
+        $dirty->state = "\tNRW\r";
+        $dirty->location = "Essen\x7f";
+
+        if ($helper::build($db, $dirty) !== 'Main  Street 5, NRW, Essen') {
+            throw new \RuntimeException('Corrupted location fields contained control bytes or INF.');
+        }
+
+        $dirty->zipcode = NAN;
+        $dirty->address = "\x00\n";
+        $dirty->state = '';
+        $dirty->location = '';
+        $dirty->city = 'Bochum';
+        if ($helper::build($db, $dirty) !== 'Bochum') {
+            throw new \RuntimeException('Non-finite address number or blank control text survived.');
+        }
+
         $db->result = ['broken-country-name'];
 
         if ($helper::build($db, $location) !== 'Main Street 5, NRW, 45127 Essen, DEU'
