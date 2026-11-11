@@ -17,7 +17,7 @@ namespace Joomla\Database {
 namespace Joomla\CMS\Component {
     final class ComponentHelper
     {
-        public static bool $css = false;
+        public static mixed $css = false;
 
         /**
          * Return the Joomla component country display configuration.
@@ -35,7 +35,7 @@ namespace Joomla\CMS\Component {
                  */
                 public function get(string $key, mixed $default = null): mixed
                 {
-                    return $key === 'cfg_flags_css' ? (int) ComponentHelper::$css : $default;
+                    return $key === 'cfg_flags_css' ? ComponentHelper::$css : $default;
                 }
             };
         }
@@ -136,12 +136,13 @@ namespace {
         public int $queries = 0;
         public bool $throw = false;
         public mixed $result = 'DEU';
+        public mixed $overrideCountryRows = null;
         public array $countries = [
             ['alpha3' => 'DEU', 'name' => 'Germany'],
             ['alpha3' => 'BAD<script>', 'name' => 'Invalid'],
             ['alpha3' => 'FRA', 'name' => 'France'],
         ];
-        public ?object $country = null;
+        public mixed $country = null;
 
         /**
          * Create a fluent country query and simulate configured failures.
@@ -181,9 +182,9 @@ namespace {
         public function setQuery(object $query, int $offset = 0, int $limit = 0): void {}
         /**
          * Return stored country fixture rows for option sorting checks.
-         * @return array Country rows with valid and invalid ISO codes.
+         * @return mixed Country fixture rows or invalid simulated driver response.
          */
-        public function loadAssocList(): array { return $this->countries; }
+        public function loadAssocList(): mixed { return $this->overrideCountryRows ?? $this->countries; }
         /**
          * Return the configured ISO-3 lookup result for conversion checks.
          * @return mixed Scalar or malformed result fixture.
@@ -191,9 +192,9 @@ namespace {
         public function loadResult(): mixed { return $this->result; }
         /**
          * Return the configured country flag record, if present.
-         * @return object|null Flag data fixture, or null.
+         * @return mixed Flag data fixture, null or a corrupted row type.
          */
-        public function loadObject(): ?object { return $this->country; }
+        public function loadObject(): mixed { return $this->country; }
     }
 
     $db = new CountryDatabase();
@@ -205,6 +206,10 @@ namespace {
         '/images/flags/de.png' => 'https://sports.example/joomla/images/flags/de.png',
         'https://cdn.example/de.png' => 'https://cdn.example/de.png',
         '//evil.example/de.png' => '',
+        '%2f%2fevil.example/de.png' => '',
+        '%252f%252fevil.example/de.png' => '',
+        'javascript%3aalert(1)' => '',
+        'https%3a%2f%2fevil.example/de.png' => '',
         'javascript:alert(1)' => '',
         'data:image/svg+xml,evil' => '',
         'images/../secret.png' => '',
@@ -243,6 +248,36 @@ namespace {
         throw new \RuntimeException('Administrator country options include malformed ISO codes or sort incorrectly.');
     }
 
+    // Corrupt driver return values and country row iterators must not crash
+    // the admin selector; duplicate ISO codes must be displayed only once.
+    $db->overrideCountryRows = [
+        ['alpha3' => 'DEU', 'name' => 'Germany'],
+        ['alpha3' => 'deu', 'name' => 'Duplicate Germany'],
+        ['alpha3' => 'FRA', 'name' => 'France'],
+    ];
+    if (array_map(static fn (object $o): string => $o->value, $helper::getOptions($db))
+        !== ['FRA', 'DEU']) {
+        throw new \RuntimeException('Duplicate administrator ISO codes were rendered.');
+    }
+
+    foreach ([false, 'broken list', 42, new \stdClass()] as $invalidRows) {
+        $db->overrideCountryRows = $invalidRows;
+        if ($helper::getOptions($db) !== []) {
+            throw new \RuntimeException('Malformed admin country result list was accepted.');
+        }
+    }
+
+    $db->overrideCountryRows = (static function (): \Generator {
+        yield ['alpha3' => 'DEU', 'name' => 'Germany'];
+        throw new \RuntimeException('broken admin country iterator');
+    })();
+    $errorsBefore = count(\Joomla\CMS\Log\Log::$errors);
+    if ($helper::getOptions($db) !== []
+        || count(\Joomla\CMS\Log\Log::$errors) !== $errorsBefore + 1) {
+        throw new \RuntimeException('Broken administrator country iterator was not handled and logged.');
+    }
+    $db->overrideCountryRows = null;
+
     if ($helper::iso2To3($db, 'de') !== 'DEU') {
         throw new \RuntimeException('Valid alpha-2 to alpha-3 conversion failed.');
     }
@@ -270,6 +305,32 @@ namespace {
         throw new \RuntimeException('Administrator country flag accepted an executable URI.');
     }
 
+    // Non-boolean legacy Registry values must not switch the display
+    // into CSS mode or produce PHP 8 array conversion warnings.
+    $db->country = (object) ['alpha2' => 'de', 'name' => 'Germany', 'picture' => ''];
+    foreach ([['1'], new \stdClass(), '1junk', 2] as $invalidCss) {
+        \Joomla\CMS\Component\ComponentHelper::$css = $invalidCss;
+        if (!str_contains($helper::getFlag($db, 'DEU'), '<img src=')) {
+            throw new \RuntimeException('Malformed administrator flag CSS toggle activated.');
+        }
+    }
+    foreach ([1, '1', true] as $validCss) {
+        \Joomla\CMS\Component\ComponentHelper::$css = $validCss;
+        if ($helper::getFlag($db, 'DEU') !== '<span class="fi fi-de" title="Germany"></span>') {
+            throw new \RuntimeException('Valid administrator flag CSS toggle was rejected.');
+        }
+    }
+
+    $db->country = ['malformed row'];
+    if ($helper::getFlag($db, 'DEU') !== '') {
+        throw new \RuntimeException('Malformed administrator flag row produced markup.');
+    }
+
+    $db->country = (object) [
+        'alpha2' => 'invalid-code',
+        'name' => 'Example <country>',
+        'picture' => 'javascript:alert(1)',
+    ];
     \Joomla\CMS\Component\ComponentHelper::$css = true;
     if ($helper::getFlag($db, 'TST') !== '') {
         throw new \RuntimeException('Administrator flag CSS accepted an invalid country code.');
