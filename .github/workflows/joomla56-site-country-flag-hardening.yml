@@ -1,0 +1,44 @@
+name: Joomla 5/6 frontend country flag safety
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/workflows/joomla56-site-country-flag-hardening.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Helper/CountryPresentationHelper.php'
+      - '.github/tests/joomla56_country_flag_safe_rendering.php'
+      - '.github/workflows/joomla56-site-country-flag-hardening.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  country-flag:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Verify PHP syntax
+        run: |
+          php -l site/src/Helper/CountryPresentationHelper.php
+          php -l .github/tests/joomla56_country_flag_safe_rendering.php
+      - name: Validate named function PHPDoc
+        run: |
+          php .github/scripts/check-php-function-docs.php site/src/Helper/CountryPresentationHelper.php
+      - name: Run country flag decoding and HTML safety regressions
+        run: |
+          php .github/tests/joomla56_country_flag_safe_rendering.php
+          php -n .github/tests/joomla56_country_flag_safe_rendering.php
