@@ -41,7 +41,8 @@ final class TeamPresentationHelper
         int $seasonId = 0,
         ?string $link = null
     ): string {
-        $resultsBelow = !empty($config['results_below']) && !empty($config['show_logo_small']);
+        $resultsBelow = self::enabledSetting($config['results_below'] ?? null)
+            && self::enabledSetting($config['show_logo_small'] ?? null);
         $javascriptFunction = $resultsBelow ? 'visibleMenu' : 'switchMenu';
         $container = $resultsBelow ? 'span' : 'div';
         $hiddenStyle = $resultsBelow ? 'visibility:hidden' : 'display:none';
@@ -233,7 +234,7 @@ final class TeamPresentationHelper
         }
 
         $style = 'padding:2px;';
-        if (!empty($config['highlight_fav']) && $isFavourite && $project) {
+        if (self::enabledSetting($config['highlight_fav'] ?? null) && $isFavourite && $project) {
             if (self::safeText($project->fav_team_text_bold ?? null) !== '') {
                 $style .= 'font-weight:bold;';
             }
