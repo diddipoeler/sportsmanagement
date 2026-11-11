@@ -69,15 +69,26 @@ final class LocationAddressHelper
      *
      * Accepts strings, integers and floats, discarding arrays and objects
      * so that PHP 8+ does not emit conversion warnings in frontend views.
+     * Discard non-finite floats and normalise control bytes in imported text.
      *
      * @param mixed $value Raw address property.
      * @return string Trimmed text, or an empty string for invalid values.
      */
     private static function scalarText(mixed $value): string
     {
-        return is_string($value) || is_int($value) || is_float($value)
-            ? trim((string) $value)
-            : '';
+        if (is_float($value) && !is_finite($value)) {
+            return '';
+        }
+
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            return '';
+        }
+
+        // Imports can contain NUL, line breaks or other control bytes.
+        // Preserve readable address text without injecting new display lines.
+        $text = preg_replace('/[\\x00-\\x1F\\x7F]+/', ' ', (string) $value);
+
+        return trim($text ?? '');
     }
 
     /**
