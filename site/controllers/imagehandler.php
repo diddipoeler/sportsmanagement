@@ -21,6 +21,48 @@ use Joomla\CMS\Log\Log;
 
 require_once JPATH_COMPONENT_SITE . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'imageselect.php';
 
+function validateRemoteImageUrl($url)
+{
+	if (!is_string($url) || $url === '')
+	{
+		return false;
+	}
+
+	if (filter_var($url, FILTER_VALIDATE_URL) === false)
+	{
+		return false;
+	}
+
+	$parts = parse_url($url);
+
+	if ($parts === false || empty($parts['scheme']) || empty($parts['host']))
+	{
+		return false;
+	}
+
+	$scheme = strtolower($parts['scheme']);
+	if (!in_array($scheme, array('http', 'https'), true))
+	{
+		return false;
+	}
+
+	$host = strtolower($parts['host']);
+	if ($host === 'localhost' || $host === '127.0.0.1' || $host === '::1')
+	{
+		return false;
+	}
+
+	if (filter_var($host, FILTER_VALIDATE_IP))
+	{
+		if (in_array($host, array('127.0.0.1', '::1'), true) || preg_match('/^(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|169\.254\.)/', $host))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 /**
  * sportsmanagementControllerImagehandler
  *
@@ -79,6 +121,12 @@ class sportsmanagementControllerImagehandler extends BaseController
 		/**  Do we have an imagelink? */
 		if (!empty($linkaddress))
 		{
+			if (!validateRemoteImageUrl($linkaddress))
+			{
+				echo "<script> alert('" . Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED') . "'); window.history.go(-1); </script>\n";
+				return;
+			}
+
 			$file['name'] = basename($linkaddress);
 
 			if (preg_match("/dfs_/i", $linkaddress))

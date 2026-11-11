@@ -20,9 +20,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Session\Session;
 
 
 $params = ComponentHelper::getParams('com_sportsmanagement');
+$canPublishWiki = Factory::getUser()->authorise('core.manage', 'com_sportsmanagement');
 $apiUrl = $params->get('mediawikilink');
 $username = $params->get('mediawikiusername');
 $password = $params->get('mediawikipassword');
@@ -339,19 +341,26 @@ $this->document->addScriptDeclaration($js);
 
 
 
-if(isset($_POST['insertwikipage'])) {
-            //echo "This is Button1 that is selected";
-//Factory::getApplication()->enqueueMessage('mediawikilink: '.$apiUrl, 'message');
-
-if ( $apiUrl && $username && $password )
+if (Factory::getApplication()->input->getBool('insertwikipage', false) && $canPublishWiki)
 {
-// 1. Variablen definieren
-$pageTitle = $this->project->name;
-//$pageText = implode('<br>',$mediawikitable);
-$pageText = '';
-foreach ( $mediawikitable as $key => $value ) {
-    $pageText .= "$value\n";
-}
+    if (!Session::checkToken('post'))
+    {
+        Factory::getApplication()->enqueueMessage(Text::_('JINVALID_TOKEN'), 'error');
+    }
+    else
+    {
+        //echo "This is Button1 that is selected";
+        //Factory::getApplication()->enqueueMessage('mediawikilink: '.$apiUrl, 'message');
+
+        if ( $apiUrl && $username && $password )
+        {
+            // 1. Variablen definieren
+            $pageTitle = $this->project->name;
+            //$pageText = implode('<br>',$mediawikitable);
+            $pageText = '';
+            foreach ( $mediawikitable as $key => $value ) {
+                $pageText .= "$value\n";
+            }
 
 //$apiUrl = $wikiUrl;
 //$username = 'BotBenutzer';
@@ -441,9 +450,9 @@ curl_close($ch);
 }
 
 }
+}
 ?>
-<form action="" method="post">
-<?php
+<form action="" method="post"><?php
 /** pdf download */
 if ( $this->config['show_button_download_pdf'] )
 {
@@ -452,7 +461,7 @@ if ( $this->config['show_button_download_pdf'] )
 <?php
 }
 /** mediawiki download */
-if ( $this->config['show_button_download_mediawiki'] )
+if ( $this->config['show_button_download_mediawiki'] && $canPublishWiki )
 {
 ?>
 <button name="insertwikipage" onclick="javascript:downmediwiki()"><?php echo HTMLHelper::_('image', 'media/com_sportsmanagement/jl_images/mediawiki.png', Text::_('COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_BUTTON_DOWNLOAD_MEDIAWIKI'), array('width' => 40) );?>  Mediawiki</button>
@@ -461,6 +470,7 @@ if ( $this->config['show_button_download_mediawiki'] )
 
 
 ?>
+<?php echo HTMLHelper::_('form.token'); ?>
 </form>
 
 <div class="<?php echo $this->divclasscontainer; ?>" id="rankingmatrix">
