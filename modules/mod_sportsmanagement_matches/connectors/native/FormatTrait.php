@@ -300,6 +300,8 @@ trait NativeFormatTrait
      * Write the fixture result and optional set scores into a template row.
      * Handle cancelled fixtures, ordinary scores, overtime and penalty
      * notations, plus configured per-period results without changing markup.
+     * Missing optional score, overtime, penalty and cancellation columns are
+     * handled without undefined-property warnings on legacy match records.
      * @param array<string,mixed> $row Mutable prepared fixture template row.
      * @param object $match Match row with scores and cancellation flags.
      * @param Registry $params Result and separator display options.
@@ -308,23 +310,23 @@ trait NativeFormatTrait
     private function result(array &$row, object $match, Registry $params): void
     {
         if ($row['cancel']) {
-            $row['result'] = (string) $match->cancel_reason;
+            $row['result'] = (string) ($match->cancel_reason ?? '');
             $row['partresults'] = '';
             return;
         }
-        $home = $match->team1_result === null ? '-' : (string) $match->team1_result;
-        $away = $match->team2_result === null ? '-' : (string) $match->team2_result;
+        $home = ($match->team1_result ?? null) === null ? '-' : (string) $match->team1_result;
+        $away = ($match->team2_result ?? null) === null ? '-' : (string) $match->team2_result;
         $separator = (string) $params->get('team_separator', ':');
         $row['result'] = $home . $separator . $away;
-        if ((int) $params->get('show_text_penalty', 1) === 1 && $match->team1_result_so !== null) {
-            $row['result'] = Text::_('INP') . ' ' . $match->team1_result_so . $separator . $match->team2_result_so;
-        } elseif ((int) $params->get('show_text_overtime', 1) === 1 && $match->team1_result_ot !== null) {
-            $row['result'] = Text::_('IET') . ' ' . $match->team1_result_ot . $separator . $match->team2_result_ot;
+        if ((int) $params->get('show_text_penalty', 1) === 1 && ($match->team1_result_so ?? null) !== null) {
+            $row['result'] = Text::_('INP') . ' ' . $match->team1_result_so . $separator . ($match->team2_result_so ?? '-');
+        } elseif ((int) $params->get('show_text_overtime', 1) === 1 && ($match->team1_result_ot ?? null) !== null) {
+            $row['result'] = Text::_('IET') . ' ' . $match->team1_result_ot . $separator . ($match->team2_result_ot ?? '-');
         }
         $row['partresults'] = '';
         if ((int) $params->get('part_result', 0) === 1) {
-            $h = $this->split((string) $match->team1_result_split);
-            $a = $this->split((string) $match->team2_result_split);
+            $h = $this->split((string) ($match->team1_result_split ?? ''));
+            $a = $this->split((string) ($match->team2_result_split ?? ''));
             $pairs = [];
             foreach (array_keys($h) as $i) {
                 if (isset($a[$i]) && $h[$i] !== '-' && $a[$i] !== '-') {
