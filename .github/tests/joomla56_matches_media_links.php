@@ -131,5 +131,42 @@ namespace {
         throw new \RuntimeException('Valid match team logo or club website link disappeared');
     }
 
+    // A partially imported team can omit optional image and name columns.
+    // Render the fixture without PHP 8 undefined-property warnings and
+    // never create internal routes containing team/club ID zero.
+    $missing = (object) ['project_slug' => '11:league'];
+    $minimalParams = new \Joomla\Registry\Registry([
+        'show_picture' => 1,
+        'picture_type' => 'team_picture',
+        'link_teams' => 1,
+        'link_team_plan' => 1,
+        'link_team_club' => 1,
+    ]);
+    $missingTeam = $team->invoke($helper, $missing, true, $minimalParams);
+
+    if ($missingTeam !== ['name' => '', 'logo' => null, 'links' => []]) {
+        throw new \RuntimeException('Missing team columns unexpectedly produced links or images.');
+    }
+
+    $minimalClub = (object) [
+        'project_slug' => '11:league',
+        'team1_name' => 'Club only',
+        'club1_id' => 6,
+    ];
+    $clubParams = new \Joomla\Registry\Registry([
+        'show_picture' => 1,
+        'picture_type' => 'club_big',
+        'link_teams' => 1,
+        'link_team_plan' => 1,
+        'link_team_club' => 0,
+    ]);
+    $noTeamLinks = $team->invoke($helper, $minimalClub, true, $clubParams);
+
+    if ($noTeamLinks['name'] !== 'Club only'
+        || $noTeamLinks['logo'] !== null
+        || $noTeamLinks['links'] !== []) {
+        throw new \RuntimeException('Missing team ID generated an invalid internal route.');
+    }
+
     echo "Matches team image and external website URL regressions OK\n";
 }
