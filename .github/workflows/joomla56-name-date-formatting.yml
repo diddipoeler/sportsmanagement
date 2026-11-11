@@ -54,7 +54,7 @@ jobs:
           php -l .github/tests/joomla56-admin-zero-timestamp.php
       - name: Verify documented formatting helpers and test fixture
         run: |
-          php .github/scripts/check-php-function-docs.php site/src/Helper/NamePresentationHelper.php .github/tests/joomla56-name-date-formatting.php
+          php .github/scripts/check-php-function-docs.php site/src/Helper/PersonNameFormatter.php site/src/Helper/NamePresentationHelper.php .github/tests/joomla56-name-date-formatting.php
       - name: Run formatting regressions with mbstring
         run: |
           php .github/tests/joomla56-name-date-formatting.php
