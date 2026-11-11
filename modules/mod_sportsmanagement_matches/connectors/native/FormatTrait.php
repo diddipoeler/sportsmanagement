@@ -96,7 +96,8 @@ trait NativeFormatTrait
     /**
      * Prepare a team's name, image and navigation links for a fixture.
      * Choose configured name and picture variants, validate media URLs and
-     * return the existing structured template data contract.
+     * return the existing structured template data contract. Missing optional
+     * names or logo fields become empty strings for partially imported teams.
      * @param object $match Match row containing both teams.
      * @param bool $home True for the first team, false for the second.
      * @param Registry $params Team name, image and link settings.
@@ -110,7 +111,8 @@ trait NativeFormatTrait
             'name' => 'team' . $n . '_name',
             default => 'team' . $n . '_short_name',
         };
-        $name = trim((string) ($match->{$nameField} ?? '')) ?: (string) $match->{'team' . $n . '_name'};
+        $name = trim((string) ($match->{$nameField} ?? ''))
+            ?: (string) ($match->{'team' . $n . '_name'} ?? '');
         $logo = null;
         if ((int) $params->get('show_picture', 1) === 1) {
             $pictureType = (string) $params->get('picture_type', 'club_big');
@@ -120,9 +122,9 @@ trait NativeFormatTrait
                     ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
                     : '';
             } elseif ($pictureType === 'team_picture') {
-                $src = (string) $match->{'team' . $n . '_picture'};
+                $src = (string) ($match->{'team' . $n . '_picture'} ?? '');
             } else {
-                $src = (string) $match->{'club' . $n . '_big'};
+                $src = (string) ($match->{'club' . $n . '_big'} ?? '');
             }
             $src = $this->imageSource($src);
 
@@ -138,10 +140,6 @@ trait NativeFormatTrait
         return ['name' => $name, 'logo' => $logo, 'links' => $this->teamLinks($match, $n, $params)];
     }
 
-    /**
-     * Resolve existing club and team image paths without accepting foreign URL
-     * schemes, protocol-relative URLs or traversal outside the Joomla root.
-     */
     /**
      * Convert a stored team or club image path into a safe site URL.
      * Allow HTTP(S) images without embedded credentials, reject traversal,
