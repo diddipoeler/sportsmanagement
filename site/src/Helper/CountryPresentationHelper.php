@@ -167,6 +167,7 @@ final class CountryPresentationHelper
      * Allowlist safe HTML image attributes supplied by legacy templates.
      * Drop event handlers, reject arbitrary CSS style values and require
      * whole whitespace-delimited tokens before escaping permitted values.
+     * Validate image dimensions and browser loading/decoding enumerations.
      * @param string $attributes Raw optional HTML attributes.
      * @return string Escaped allowlisted attributes.
      */
@@ -190,6 +191,29 @@ final class CountryPresentationHelper
 
             if (preg_match('/[\x00-\x1F\x7F]/', $value)) {
                 continue;
+            }
+
+            // Width and height are pixel counts in img attributes, not CSS
+            // declarations. Avoid large/negative values and HTML quirks.
+            if ($name === 'width' || $name === 'height') {
+                if (preg_match('/^[0-9]{1,5}$/D', $value) !== 1
+                    || (int) $value < 1 || (int) $value > 4096) {
+                    continue;
+                }
+
+                $value = (string) (int) $value;
+            }
+
+            if ($name === 'loading' && !in_array(strtolower($value), ['lazy', 'eager'], true)) {
+                continue;
+            }
+
+            if ($name === 'decoding' && !in_array(strtolower($value), ['sync', 'async', 'auto'], true)) {
+                continue;
+            }
+
+            if ($name === 'loading' || $name === 'decoding') {
+                $value = strtolower($value);
             }
 
             $clean[] = $name . '="' . self::escape($value) . '"';
