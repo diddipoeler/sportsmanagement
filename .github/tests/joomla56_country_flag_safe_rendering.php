@@ -344,6 +344,18 @@ namespace {
         throw new \RuntimeException('Country address layout lost its opened address container.');
     }
 
+    // Some translated layouts repeat %ADDRESS% (for example on a
+    // printable card). Every opened PostalAddress container must close.
+    $repeatedStreet = $class::address(
+        'Arena', 'Main Street', '', '', 'Berlin', '', '%ADDRESS% / %ADDRESS% %LOCATION%'
+    );
+    if (substr_count($repeatedStreet, 'itemtype="https://schema.org/PostalAddress"') !== 2
+        || substr_count($repeatedStreet, '<div itemprop="address"') !== 2
+        || substr_count($repeatedStreet, '</div>') !== 2
+        || !str_ends_with($repeatedStreet, '</div></div>&nbsp;')) {
+        throw new \RuntimeException('Repeated country address placeholders left unbalanced HTML.');
+    }
+
     $safeSource = new \ReflectionMethod($class, 'safeFlagSource');
 
     foreach ([
