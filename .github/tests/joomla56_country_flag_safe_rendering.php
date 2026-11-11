@@ -16,9 +16,20 @@ namespace Joomla\CMS\Component {
         public static string $placeholder = '';
         public static int $css = 0;
 
+        /**
+         * Supply simulated country display parameters for Joomla site tests.
+         * @param string $component Component option requested by the helper.
+         * @return object In-memory registry fixture.
+         */
         public static function getParams(string $component): object
         {
             return new class {
+                /**
+                 * Read the simulated country flag mode or placeholder option.
+                 * @param string $key Requested component setting.
+                 * @param mixed $default Fallback for absent settings.
+                 * @return mixed Simulated registry setting or default.
+                 */
                 public function get(string $key, mixed $default = null): mixed
                 {
                     return match ($key) {
@@ -35,6 +46,11 @@ namespace Joomla\CMS\Component {
 namespace Joomla\CMS\Language {
     final class Text
     {
+        /**
+         * Return translation fixture text without loading language files.
+         * @param string $text Translation key or display label.
+         * @return string Unchanged test text.
+         */
         public static function _(string $text): string
         {
             return $text;
@@ -45,6 +61,10 @@ namespace Joomla\CMS\Language {
 namespace Joomla\CMS\Uri {
     final class Uri
     {
+        /**
+         * Return a stable Joomla installation root for image path checks.
+         * @return string HTTPS root of the test site.
+         */
         public static function root(): string
         {
             return 'https://sports.example/joomla/';
@@ -59,12 +79,26 @@ namespace Joomla\Database {
 namespace Diddipoeler\Component\SportsManagement\Site\Service {
     final class SportsManagementSiteApplicationResolver
     {
+        /**
+         * Build an isolated frontend application with predictable input.
+         * @return object Site application test fixture.
+         */
         public static function resolve(): object
         {
             return new class {
+                /**
+                 * Expose a lightweight Joomla input fixture for database selection.
+                 * @return object Input object with an integer getter.
+                 */
                 public function getInput(): object
                 {
                     return new class {
+                        /**
+                         * Supply the configured default for a Joomla request integer.
+                         * @param string $key Requested input field.
+                         * @param int $default Default input value.
+                         * @return int The supplied default.
+                         */
                         public function getInt(string $key, int $default = 0): int
                         {
                             return $default;
