@@ -43,6 +43,28 @@ namespace Joomla\CMS\Component {
     }
 }
 
+namespace Joomla\CMS\HTML {
+    final class HTMLHelper
+    {
+        /**
+         * Create the Joomla select option object used by country selectors.
+         *
+         * @param string $task Joomla HTML helper task identifier.
+         * @param string $value Selected ISO country code.
+         * @param string $label Visible translated option label.
+         * @return object Simulated select option.
+         */
+        public static function _(string $task, string $value, string $label): object
+        {
+            if ($task !== 'select.option') {
+                throw new \RuntimeException('Unexpected Joomla HTML helper task.');
+            }
+
+            return (object) ['value' => $value, 'text' => $label];
+        }
+    }
+}
+
 namespace Joomla\CMS\Language {
     final class Text
     {
@@ -114,7 +136,111 @@ namespace {
     define('_JEXEC', 1);
     require_once dirname(__DIR__, 2) . '/site/src/Helper/CountryPresentationHelper.php';
 
+    /**
+     * Fluent database query fixture for country selector data.
+     */
+    final class FrontendCountryOptionQuery
+    {
+        /**
+         * Accept the requested country code and name fields.
+         *
+         * @param array $columns Country query columns.
+         * @return self The query fixture for chaining.
+         */
+        public function select(array $columns): self
+        {
+            return $this;
+        }
+
+        /**
+         * Accept the country table source without SQL execution.
+         *
+         * @param string $table Country table name.
+         * @return self Query fixture for chaining.
+         */
+        public function from(string $table): self
+        {
+            return $this;
+        }
+    }
+
+    /**
+     * Simulate a Joomla database containing malformed legacy country rows.
+     */
+    final class FrontendCountryOptionDatabase implements \Joomla\Database\DatabaseInterface
+    {
+        /**
+         * Provide the query factory required by native Joomla database helpers.
+         *
+         * @return FrontendCountryOptionQuery New fluent query object.
+         */
+        public function createQuery(): FrontendCountryOptionQuery
+        {
+            return new FrontendCountryOptionQuery();
+        }
+
+        /**
+         * Return column names unchanged in the in-memory query fixture.
+         *
+         * @param string $name Country table or column name.
+         * @return string The requested identifier.
+         */
+        public function quoteName(string $name): string
+        {
+            return $name;
+        }
+
+        /**
+         * Accept the prepared query without executing a SQL statement.
+         *
+         * @param object $query Query fixture.
+         * @return void
+         */
+        public function setQuery(object $query): void
+        {
+        }
+
+        /**
+         * Return country options with deliberately corrupted imported fields.
+         *
+         * @return array<int,mixed> Valid and invalid country result rows.
+         */
+        public function loadObjectList(): array
+        {
+            return [
+                (object) ['alpha3' => 'DEU', 'name' => 'Germany'],
+                ['alpha3' => 'USA', 'name' => 'invalid array row'],
+                (object) ['alpha3' => 'fra', 'name' => 'France'],
+                (object) ['alpha3' => 'NLD', 'name' => ['invalid']],
+                (object) ['alpha3' => 'INVALID', 'name' => 'Bad ISO'],
+                (object) ['alpha3' => ['invalid'], 'name' => 'Bad value'],
+            ];
+        }
+    }
+
     $class = \Diddipoeler\Component\SportsManagement\Site\Helper\CountryPresentationHelper::class;
+    // Do not bootstrap Joomla's database for invalid country input, and
+    // discard malformed rows before building a frontend country selector.
+    if ($class::name('BAD!') !== '') {
+        throw new \RuntimeException('Invalid country code triggered a lookup.');
+    }
+
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $options = $class::options(new FrontendCountryOptionDatabase());
+        $codes = array_map(static fn (object $item): string => $item->value, $options);
+        $labels = array_map(static fn (object $item): string => $item->text, $options);
+
+        if ($codes !== ['FRA', 'DEU', 'NLD'] || $labels !== ['France', 'Germany', 'NLD']) {
+            throw new \RuntimeException('Malformed frontend country rows bypassed ISO validation or sorting.');
+        }
+    } finally {
+        restore_error_handler();
+    }
+
     $safeSource = new \ReflectionMethod($class, 'safeFlagSource');
 
     foreach ([
