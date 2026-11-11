@@ -63,6 +63,17 @@ namespace {
         }
     }
 
+    foreach (['2026-11-12', '2027-01-01'] as $futureBirthday) {
+        if ($age::calculate($futureBirthday, '2026-11-11') !== '-') {
+            throw new \RuntimeException('Future frontend birthday was accepted: ' . $futureBirthday);
+        }
+    }
+
+    if ($age::calculate('2026-11-11', '2026-11-11') !== 0
+        || $age::calculate('2026-11-10', '2026-11-11') !== 0) {
+        throw new \RuntimeException('Current-year birthday boundary changed.');
+    }
+
     if ($age::calculate('2024-02-29', '2025-02-28') !== 0
         || $age::calculate('2024-02-29', '2025-03-01') !== 1) {
         throw new \RuntimeException('Leap-day age calculation changed.');
