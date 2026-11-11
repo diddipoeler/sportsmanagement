@@ -21,12 +21,19 @@ final class PersonImageHelper
      *
      * Reads the component's ph_player option using Joomla parameters
      * and returns the trimmed placeholder path for site templates.
+     * Malformed registry values are ignored instead of being string-cast.
      *
      * @return string Placeholder picture path, possibly empty.
      */
     public static function placeholder(): string
     {
-        return trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', ''));
+        $picture = ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', '');
+
+        // Misconfigured Joomla registry data can contain arrays or objects.
+        // Never render those values as "Array" or trigger a PHP 8 warning.
+        return is_string($picture) || is_int($picture)
+            ? trim((string) $picture)
+            : '';
     }
 
     /**
