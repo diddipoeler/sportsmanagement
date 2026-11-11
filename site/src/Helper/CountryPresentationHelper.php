@@ -262,39 +262,39 @@ final class CountryPresentationHelper
             if (!is_iterable($rows)) {
                 return [];
             }
-        // Iterating or sorting a malformed driver response may itself throw.
-        // Keep the entire selector construction inside the guarded block.
-        $options = [];
-        $seenCountryCodes = [];
-        foreach ($rows as $country) {
-            // Imported option tables may contain arrays or other malformed
-            // rows. Do not inspect properties on non-object records.
-            if (!is_object($country)) {
-                continue;
+            // Iterating or sorting a malformed driver response may itself throw.
+            // Keep the entire selector construction inside the guarded block.
+            $options = [];
+            $seenCountryCodes = [];
+            foreach ($rows as $country) {
+                // Imported option tables may contain arrays or other malformed
+                // rows. Do not inspect properties on non-object records.
+                if (!is_object($country)) {
+                    continue;
+                }
+
+                $rawCode = $country->alpha3 ?? null;
+                $code = is_string($rawCode) ? strtoupper(trim($rawCode)) : '';
+                if (preg_match('/^[A-Z]{3}$/D', $code) !== 1
+                    || isset($seenCountryCodes[$code])) {
+                    continue;
+                }
+
+                // A corrupt import may contain repeated alpha-3 values.
+                // A selector should expose each canonical country code once.
+                $seenCountryCodes[$code] = true;
+                $rawName = $country->name ?? null;
+                $label = is_string($rawName) && trim($rawName) !== '' ? $rawName : $code;
+                $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
             }
 
-            $rawCode = $country->alpha3 ?? null;
-            $code = is_string($rawCode) ? strtoupper(trim($rawCode)) : '';
-            if (preg_match('/^[A-Z]{3}$/D', $code) !== 1
-                || isset($seenCountryCodes[$code])) {
-                continue;
-            }
-
-            // A corrupt import may contain repeated alpha-3 values.
-            // A selector should expose each canonical country code once.
-            $seenCountryCodes[$code] = true;
-            $rawName = $country->name ?? null;
-            $label = is_string($rawName) && trim($rawName) !== '' ? $rawName : $code;
-            $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
-        }
-
-        usort(
-            $options,
-            static fn (object $a, object $b): int => strnatcasecmp(
-                (string) ($a->text ?? ''),
-                (string) ($b->text ?? '')
-            )
-        );
+            usort(
+                $options,
+                static fn (object $a, object $b): int => strnatcasecmp(
+                    (string) ($a->text ?? ''),
+                    (string) ($b->text ?? '')
+                )
+            );
 
             return $options;
         } catch (\Throwable $e) {
