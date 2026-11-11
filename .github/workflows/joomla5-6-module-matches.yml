@@ -44,6 +44,16 @@ jobs:
             done
           done
 
+      - name: Require descriptive PHPDoc for all native match trait methods
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -l .github/scripts/check-php-function-docs.php
+          php .github/scripts/check-php-function-docs.php \
+            modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php \
+            modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php \
+            modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
+
       - name: Test favorite matches filtering and database-independent route slugs
         run: |
           php -l .github/tests/joomla56_matches_favorites_slugs.php
