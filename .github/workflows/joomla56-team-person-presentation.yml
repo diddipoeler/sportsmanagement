@@ -7,6 +7,7 @@ on:
       - 'site/src/Helper/TeamPresentationHelper.php'
       - 'site/src/Helper/NamePresentationHelper.php'
       - '.github/tests/joomla56-team-presentation-fields.php'
+      - '.github/tests/joomla56-team-action-slug-guards.php'
       - '.github/workflows/joomla56-team-person-presentation.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -14,6 +15,7 @@ on:
       - 'site/src/Helper/TeamPresentationHelper.php'
       - 'site/src/Helper/NamePresentationHelper.php'
       - '.github/tests/joomla56-team-presentation-fields.php'
+      - '.github/tests/joomla56-team-action-slug-guards.php'
       - '.github/workflows/joomla56-team-person-presentation.yml'
   workflow_dispatch:
 
@@ -38,10 +40,13 @@ jobs:
           php -l site/src/Helper/TeamPresentationHelper.php
           php -l site/src/Helper/NamePresentationHelper.php
           php -l .github/tests/joomla56-team-presentation-fields.php
+          php -l .github/tests/joomla56-team-action-slug-guards.php
       - name: Enforce PHPDoc in team, person and regression fixtures
         run: |
-          php .github/scripts/check-php-function-docs.php site/src/Helper/TeamPresentationHelper.php site/src/Helper/NamePresentationHelper.php .github/tests/joomla56-team-presentation-fields.php
+          php .github/scripts/check-php-function-docs.php site/src/Helper/TeamPresentationHelper.php site/src/Helper/NamePresentationHelper.php .github/tests/joomla56-team-presentation-fields.php .github/tests/joomla56-team-action-slug-guards.php
       - name: Run presentation regressions with and without PHP extensions
         run: |
           php .github/tests/joomla56-team-presentation-fields.php
           php -n .github/tests/joomla56-team-presentation-fields.php
+          php .github/tests/joomla56-team-action-slug-guards.php
+          php -n .github/tests/joomla56-team-action-slug-guards.php
