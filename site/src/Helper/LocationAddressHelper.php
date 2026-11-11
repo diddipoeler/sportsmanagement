@@ -23,6 +23,7 @@ final class LocationAddressHelper
      * Reads address, state, postal code and city from legacy location
      * records, ignores nested or invalid scalar values and resolves the
      * three-letter country code to its translated country name when known.
+     * Uses the alternate city field when the primary legacy field is invalid.
      *
      * @param DatabaseInterface $db Active SportsManagement database.
      * @param object $location Location record from the component.
@@ -39,7 +40,13 @@ final class LocationAddressHelper
             }
         }
 
-        $city = self::scalarText($location->location ?? $location->city ?? '');
+        $city = self::scalarText($location->location ?? null);
+
+        // A corrupt legacy location value must not conceal a valid city
+        // stored in the alternate database column.
+        if ($city === '') {
+            $city = self::scalarText($location->city ?? null);
+        }
         $zipCode = self::scalarText($location->zipcode ?? '');
 
         if ($city !== '') {
@@ -79,6 +86,8 @@ final class LocationAddressHelper
      * Queries the selected SportsManagement countries table and translates
      * the returned name through Joomla. Missing tables or database errors
      * yield an empty value, leaving the original code as a safe fallback.
+     * Rejects non-ISO alpha-3 codes before executing a database query and
+     * ignores non-string database results without PHP 8 conversion warnings.
      *
      * @param DatabaseInterface $db Database used by the current component.
      * @param string $countryCode Uppercase three-letter country code.
@@ -86,13 +95,18 @@ final class LocationAddressHelper
      */
     private static function countryName(DatabaseInterface $db, string $countryCode): string
     {
+        if (preg_match('/^[A-Z]{3}$/D', $countryCode) !== 1) {
+            return '';
+        }
+
         try {
             $query = $db->createQuery()
                 ->select($db->quoteName('name'))
                 ->from($db->quoteName('#__sportsmanagement_countries'))
                 ->where($db->quoteName('alpha3') . ' = ' . $db->quote($countryCode));
             $db->setQuery($query, 0, 1);
-            $name = trim((string) $db->loadResult());
+            $rawName = $db->loadResult();
+            $name = is_string($rawName) ? trim($rawName) : '';
 
             return $name !== '' ? Text::_($name) : '';
         } catch (\Throwable) {
