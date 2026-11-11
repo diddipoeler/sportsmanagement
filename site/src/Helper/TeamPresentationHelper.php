@@ -108,7 +108,7 @@ final class TeamPresentationHelper
         ];
         $actions = [];
 
-        if (!empty($config['show_team_link'])) {
+        if (self::enabledSetting($config['show_team_link'] ?? null)) {
             $actions[] = self::action(
                 'roster',
                 $common + ['tid' => $teamId, 'ptid' => $projectTeam],
@@ -117,7 +117,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_alltime_team_link'])) {
+        if (self::enabledSetting($config['show_alltime_team_link'] ?? null)) {
             $actions[] = self::action(
                 'rosteralltime',
                 $common + ['tid' => $teamId],
@@ -126,7 +126,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_plan_link'])) {
+        if (self::enabledSetting($config['show_plan_link'] ?? null)) {
             $actions[] = self::action(
                 'teamplan',
                 $common + [
@@ -140,7 +140,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_curve_link'])) {
+        if (self::enabledSetting($config['show_curve_link'] ?? null)) {
             $actions[] = self::action(
                 'curve',
                 $common + ['tid1' => $teamId, 'tid2' => 0, 'division' => $divisionId],
@@ -149,7 +149,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_teaminfo_link'])) {
+        if (self::enabledSetting($config['show_teaminfo_link'] ?? null)) {
             $actions[] = self::action(
                 'teaminfo',
                 $common + ['tid' => $teamId, 'ptid' => $projectTeam],
@@ -158,7 +158,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_club_link']) && $clubId > 0) {
+        if (self::enabledSetting($config['show_club_link'] ?? null) && $clubId > 0) {
             $actions[] = self::action(
                 'clubinfo',
                 $common + ['cid' => $clubId],
@@ -167,7 +167,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_teamstats_link'])) {
+        if (self::enabledSetting($config['show_teamstats_link'] ?? null)) {
             $actions[] = self::action(
                 'teamstats',
                 $common + ['tid' => $teamId],
@@ -176,7 +176,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_clubplan_link']) && $clubId > 0) {
+        if (self::enabledSetting($config['show_clubplan_link'] ?? null) && $clubId > 0) {
             $actions[] = self::action(
                 'clubplan',
                 $common + ['cid' => $clubId],
@@ -185,7 +185,7 @@ final class TeamPresentationHelper
             );
         }
 
-        if (!empty($config['show_rivals_link'])) {
+        if (self::enabledSetting($config['show_rivals_link'] ?? null)) {
             $actions[] = self::action(
                 'rivals',
                 $common + ['tid' => $teamId],
@@ -274,7 +274,7 @@ final class TeamPresentationHelper
             'show_clubplan_link',
             'show_rivals_link',
         ] as $key) {
-            if (!empty($config[$key])) {
+            if (self::enabledSetting($config[$key] ?? null)) {
                 return true;
             }
         }
@@ -321,6 +321,20 @@ final class TeamPresentationHelper
     private static function safeId(string $value): string
     {
         return preg_replace('/[^A-Za-z0-9_-]/', '-', $value) ?: 'team-actions';
+    }
+
+    /**
+     * Interpret a legacy Joomla toggle without accepting arbitrary arrays.
+     *
+     * Enabled fields use the explicit boolean true, integer one or string
+     * "1". Other values must not unexpectedly activate navigation actions.
+     *
+     * @param mixed $value Raw module or view configuration toggle.
+     * @return bool Whether the feature is explicitly enabled.
+     */
+    private static function enabledSetting(mixed $value): bool
+    {
+        return $value === true || $value === 1 || $value === '1';
     }
 
     /**
