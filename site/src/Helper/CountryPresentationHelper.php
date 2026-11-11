@@ -25,6 +25,12 @@ final class CountryPresentationHelper
 {
     private static array $countries = [];
 
+    /**
+     * Translate a validated country record into its displayed name.
+     * Ignore malformed legacy name columns rather than casting arrays to text.
+     * @param string $countryCode Three-letter country lookup identifier.
+     * @return string Translated label or empty text.
+     */
     public static function name(string $countryCode): string
     {
         $country = self::country($countryCode);
@@ -34,6 +40,13 @@ final class CountryPresentationHelper
         return is_string($rawName) && trim($rawName) !== '' ? Text::_($rawName) : '';
     }
 
+    /**
+     * Render a safe country flag and optional image layout attributes.
+     * Handle CSS flags, image URLs and malformed optional country fields.
+     * @param string $countryCode Country or FIFA lookup code.
+     * @param string $attributes Allowed legacy image attributes.
+     * @return string Escaped flag HTML or empty text.
+     */
     public static function flag(string $countryCode, string $attributes = ''): string
     {
         $country = self::country($countryCode);
@@ -82,6 +95,12 @@ final class CountryPresentationHelper
     /**
      * Resolve only safe flag images; never embed traversal paths, URI schemes
      * or credentials from legacy country pictures or component placeholders.
+     */
+    /**
+     * Resolve a stored flag path without allowing traversal or unsafe schemes.
+     * Validate all URL decoding layers and reject encoded traversal segments.
+     * @param string $source Stored country flag image URL or path.
+     * @return string Validated URL or empty string.
      */
     private static function safeFlagSource(string $source): string
     {
@@ -148,6 +167,12 @@ final class CountryPresentationHelper
      * Preserve supported image layout attributes without allowing an
      * arbitrary caller-provided HTML fragment or JavaScript event handler.
      */
+    /**
+     * Allowlist safe HTML image attributes supplied by legacy templates.
+     * Drop event handlers and escape permitted attribute values.
+     * @param string $attributes Raw optional HTML attributes.
+     * @return string Escaped allowlisted attributes.
+     */
     private static function safeImageAttributes(string $attributes): string
     {
         $clean = [];
@@ -174,6 +199,12 @@ final class CountryPresentationHelper
         return implode(' ', $clean);
     }
 
+    /**
+     * Load and sort translated country selector options for site views.
+     * Validate three-letter codes and disregard malformed database rows.
+     * @param DatabaseInterface $db Selected Joomla database.
+     * @return array<int,object> Sorted country option objects.
+     */
     public static function options(DatabaseInterface $db): array
     {
         try {
@@ -214,6 +245,18 @@ final class CountryPresentationHelper
         return $options;
     }
 
+    /**
+     * Render an escaped postal address from legacy location fields.
+     * Insert translated country labels and safely generated flag markup.
+     * @param string $name Location display name.
+     * @param string $address Street address.
+     * @param string $state Region or state.
+     * @param string $zipcode Postal code.
+     * @param string $location City name.
+     * @param string $country Country lookup identifier.
+     * @param string $format Translated address layout key.
+     * @return string HTML-safe postal address, or empty text.
+     */
     public static function address(
         string $name = '',
         string $address = '',
@@ -244,6 +287,12 @@ final class CountryPresentationHelper
         return $output . '</div>&nbsp;';
     }
 
+    /**
+     * Load and cache a country record for the active frontend database.
+     * Log database failures privately and cache missing country records.
+     * @param string $countryCode Country or FIFA lookup identifier.
+     * @return object|null Saved country or null when unavailable.
+     */
     private static function country(string $countryCode): ?object
     {
         $countryCode = strtoupper(trim($countryCode));
@@ -296,6 +345,11 @@ final class CountryPresentationHelper
         return self::$countries[$cacheKey];
     }
 
+    /**
+     * Escape arbitrary country names and URLs for HTML attributes.
+     * @param string $value Raw HTML attribute or text value.
+     * @return string HTML-escaped UTF-8 text.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
