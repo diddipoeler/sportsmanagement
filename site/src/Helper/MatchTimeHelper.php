@@ -23,7 +23,9 @@ final class MatchTimeHelper
      * Format a match start time and optionally display live-match status.
      * Uses Joomla date formatting and component locale strings, then
      * calculates a live game label when the match falls into its configured
-     * regular or additional time window.
+     * regular or additional time window. Escape the final live-status title
+     * and translated label only once so user-configured text cannot create
+     * markup or display HTML entities literally in tooltip attributes.
      * @param object $game Match record with a match_date field.
      * @param array<string,mixed> $config Match time presentation settings.
      * @param array<string,mixed> $overallConfig Global component date options.
@@ -79,7 +81,7 @@ final class MatchTimeHelper
         $title = str_replace(
             '%STARTTIME%',
             $startText,
-            trim(htmlspecialchars((string) ($config['mark_now_playing_alt_text'] ?? ''), ENT_QUOTES, 'UTF-8'))
+            trim((string) ($config['mark_now_playing_alt_text'] ?? ''))
         );
         $title = str_replace(
             '%ACTUALTIME%',
@@ -89,7 +91,11 @@ final class MatchTimeHelper
         $style = !empty($config['mark_now_playing_blink'])
             ? ' style="text-decoration:blink"'
             : '';
-        $text = Text::_((string) ($config['mark_now_playing_text'] ?? ''));
+        $text = htmlspecialchars(
+            Text::_((string) ($config['mark_now_playing_text'] ?? '')),
+            ENT_QUOTES,
+            'UTF-8'
+        );
 
         return '<b><i><acronym title="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '"'
             . $style . '>' . $text . '</acronym></i></b>';
@@ -98,7 +104,8 @@ final class MatchTimeHelper
     /**
      * Build the translated current match period or half-time label.
      * Calculates elapsed play minutes from the configured period length
-     * and break duration for a currently active fixture.
+     * and break duration for a currently active fixture. Return plain text
+     * for replacement into the tooltip, which is HTML-escaped by format().
      * @param int $now Current Unix timestamp.
      * @param int $matchStamp Match start timestamp.
      * @param array<string,mixed> $config Live presentation settings.
@@ -123,11 +130,7 @@ final class MatchTimeHelper
                 $text = str_replace(
                     ['%PART%', '%MINUTE%'],
                     [(string) $part, (string) ($goneSinceBegin + 1 - (($part - 1) * $halfTime))],
-                    trim(htmlspecialchars(
-                        (string) ($config['mark_now_playing_alt_actual_time'] ?? ''),
-                        ENT_QUOTES,
-                        'UTF-8'
-                    ))
+                    trim((string) ($config['mark_now_playing_alt_actual_time'] ?? ''))
                 );
                 break;
             }
@@ -136,11 +139,7 @@ final class MatchTimeHelper
                 $text = str_replace(
                     '%PART%',
                     (string) $part,
-                    trim(htmlspecialchars(
-                        (string) ($config['mark_now_playing_alt_actual_break'] ?? ''),
-                        ENT_QUOTES,
-                        'UTF-8'
-                    ))
+                    trim((string) ($config['mark_now_playing_alt_actual_break'] ?? ''))
                 );
                 break;
             }
