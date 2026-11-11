@@ -107,6 +107,23 @@ namespace {
         }
     }
 
+    // Reject deeply nested percent encoding that becomes ../ only after
+    // several URL-decoding passes; allow ordinary encoded image names.
+    $encodedTraversal = '../private.png';
+
+    for ($depth = 1; $depth <= 10; ++$depth) {
+        $encodedTraversal = rawurlencode($encodedTraversal);
+
+        if ($safeSource->invoke(null, 'images/' . $encodedTraversal) !== '') {
+            throw new \RuntimeException('Encoded frontend country flag traversal accepted at depth ' . $depth);
+        }
+    }
+
+    if ($safeSource->invoke(null, 'images/country%20flag.png')
+        !== 'https://sports.example/joomla/images/country%20flag.png') {
+        throw new \RuntimeException('Valid URL-encoded country flag filename disappeared.');
+    }
+
     $cache = new \ReflectionProperty($class, 'countries');
     $cache->setValue(null, [
         '0:DEU' => (object) ['name' => 'Germany', 'alpha2' => 'de', 'picture' => ''],
@@ -128,6 +145,28 @@ namespace {
     if (!str_contains($image, 'src="https://sports.example/joomla/images/test.png"')
         || str_contains($image, 'invalid-code')) {
         throw new \RuntimeException('Invalid ISO alpha2 code was used as a CSS or image path.');
+    }
+
+    // Old country rows can carry nested alpha2/name/picture fields.
+    // Treat warnings as failures, and never render invalid stored paths.
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $cache->setValue(null, [
+            '0:BAD' => (object) [
+                'name' => ['invalid'],
+                'alpha2' => ['invalid'],
+                'picture' => ['invalid'],
+            ],
+        ]);
+
+        if ($class::flag('BAD') !== '' || $class::name('BAD') !== '') {
+            throw new \RuntimeException('Malformed frontend country row rendered invalid output.');
+        }
+    } finally {
+        restore_error_handler();
     }
 
     \Joomla\CMS\Component\ComponentHelper::$css = 1;
