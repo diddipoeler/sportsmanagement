@@ -47,6 +47,25 @@ try {
         throw new RuntimeException('Invalid team short name broke escaped fallback.');
     }
 
+    // Incomplete team imports may contain only the middle or short name.
+    // Every configured style should display an available alternative.
+    $partialNames = (object) [
+        'name' => '',
+        'middle_name' => 'Middle Club',
+        'short_name' => 'MC',
+    ];
+
+    if (TeamPresentationHelper::formatName($partialNames, 'team', ['team_name_format' => 2])
+        !== '<span style="padding:2px;">Middle Club</span>') {
+        throw new RuntimeException('Missing full name hid an available middle name.');
+    }
+
+    $partialNames->middle_name = '';
+    if (TeamPresentationHelper::formatName($partialNames, 'team', ['team_name_format' => 1])
+        !== '<span style="padding:2px;">MC</span>') {
+        throw new RuntimeException('Missing middle name hid an available short name.');
+    }
+
     $project = (object) [
         'fav_team_text_bold' => ['invalid'],
         'fav_team_text_color' => new stdClass(),
