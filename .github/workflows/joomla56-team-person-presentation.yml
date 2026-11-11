@@ -38,6 +38,9 @@ jobs:
           php -l site/src/Helper/TeamPresentationHelper.php
           php -l site/src/Helper/NamePresentationHelper.php
           php -l .github/tests/joomla56-team-presentation-fields.php
+      - name: Enforce PHPDoc in team, person and regression fixtures
+        run: |
+          php .github/scripts/check-php-function-docs.php site/src/Helper/TeamPresentationHelper.php site/src/Helper/NamePresentationHelper.php .github/tests/joomla56-team-presentation-fields.php
       - name: Run presentation regressions with and without PHP extensions
         run: |
           php .github/tests/joomla56-team-presentation-fields.php
