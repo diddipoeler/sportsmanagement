@@ -29,7 +29,8 @@ final class CountryOptionsHelper
      * Selects registered ISO-3166 alpha-3 country codes, discards malformed
      * database records, including nested/invalid code or name values,
      * and returns translated Joomla option objects.
-     * Database errors are logged privately and produce an empty selector.
+     * Database and iterator errors are logged privately and produce an
+     * empty selector. Repeated ISO codes appear only once.
      *
      * @param DatabaseInterface $db Current Joomla database connection.
      * @return array<int,object> Sorted country selection options.
@@ -44,15 +45,16 @@ final class CountryOptionsHelper
                 ])
                 ->from($db->quoteName('#__sportsmanagement_countries'));
             $db->setQuery($query);
-            $rows = $db->loadAssocList() ?: [];
-        } catch (\Throwable $e) {
-            self::reportDatabaseError($e);
-            return [];
-        }
+            $rows = $db->loadAssocList();
 
-        $options = [];
+            if (!is_iterable($rows)) {
+                return [];
+            }
 
-        foreach ($rows as $country) {
+            $options = [];
+            $seenCodes = [];
+
+            foreach ($rows as $country) {
             // Older imports can leave malformed or nested country values.
             // Avoid PHP 8 array-to-string warnings during option rendering.
             if (!is_array($country)) {
@@ -67,10 +69,11 @@ final class CountryOptionsHelper
 
             $code = strtoupper(trim($rawCode));
 
-            if (!preg_match('/^[A-Z]{3}$/D', $code)) {
+            if (!preg_match('/^[A-Z]{3}$/D', $code) || isset($seenCodes[$code])) {
                 continue;
             }
 
+            $seenCodes[$code] = true;
             $name = $country['name'] ?? $code;
             $label = is_string($name) && $name !== '' ? $name : $code;
             $options[] = HTMLHelper::_('select.option', $code, Text::_($label));
@@ -81,7 +84,14 @@ final class CountryOptionsHelper
             static fn ($left, $right): int => strnatcasecmp((string) $left->text, (string) $right->text)
         );
 
-        return $options;
+            return $options;
+        } catch (\Throwable $e) {
+            // Iterators and malformed sorting keys can fail after loading.
+            // Never expose a partial selector or break the administrator page.
+            self::reportDatabaseError($e);
+
+            return [];
+        }
     }
 
     /**
