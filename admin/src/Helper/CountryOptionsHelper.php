@@ -245,7 +245,10 @@ final class CountryOptionsHelper
         $path = ltrim($value, '/');
         $decoded = $path;
 
-        for ($depth = 0; $depth < 3; $depth++) {
+        // Decode and validate each layer, including paths that reveal ../
+        // only after several rounds of URL decoding. Reject undecoded
+        // escapes if the bounded loop is exhausted.
+        for ($depth = 0; $depth < 8; $depth++) {
             if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
                 || preg_match('/[\x00-\x1F\x7F]/', $decoded)
                 || str_contains($decoded, chr(92))
@@ -258,6 +261,12 @@ final class CountryOptionsHelper
                 break;
             }
             $decoded = $next;
+        }
+
+        // Nested percent escapes remaining after eight rounds could be
+        // interpreted by a proxy or server in a subsequent decoding pass.
+        if (preg_match('/%[0-9a-f]{2}/i', $decoded) === 1) {
+            return '';
         }
 
         return rtrim(Uri::root(), '/') . '/' . $path;
