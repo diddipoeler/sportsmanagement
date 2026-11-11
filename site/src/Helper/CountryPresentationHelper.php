@@ -163,8 +163,8 @@ final class CountryPresentationHelper
 
         if (preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
             || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
-                || str_starts_with($decoded, '//')
-                || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
+            || str_starts_with($decoded, '//')
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
             || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
             || str_contains($decoded, chr(92))
             || str_contains($decoded, '?') || str_contains($decoded, '#')) {
