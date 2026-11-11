@@ -205,8 +205,9 @@ trait NativeQueryTrait
 
     /**
      * Extract unique positive integers from module selector settings.
-     * Accept scalar and multi-select values, split whitespace/comma/semicolon
-     * lists, and reject invalid or overflowing values before database queries.
+     * Accept integer/string scalar and multi-select values, split whitespace,
+     * comma or semicolon lists, and reject booleans, nested arrays, zero and
+     * overflowing values before database queries.
      * @param mixed $value Raw project, team or club selector.
      * @return array<int,int> Unique validated positive integers.
      */
@@ -218,7 +219,7 @@ trait NativeQueryTrait
         foreach ($values as $candidate) {
             // Joomla multi-select parameters may contain comma- or semicolon-
             // separated values. Nested arrays and malformed IDs are ignored.
-            if (!is_scalar($candidate)) {
+            if (!is_int($candidate) && !is_string($candidate)) {
                 continue;
             }
 
@@ -241,16 +242,37 @@ trait NativeQueryTrait
     /**
      * Select the SportsManagement database used for match data.
      * Resolve the configured database using the injected Joomla connection
-     * as a fallback for ordinary site installs.
+     * as a fallback for ordinary site installs. Reject malformed selectors
+     * before the resolver sees them, preventing boolean/array coercion into
+     * an unintended external-database request.
      * @param Registry $params Module database selector configuration.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
      * @return DatabaseInterface Connection for match and lookup queries.
+     * @throws \InvalidArgumentException If a database selector is malformed.
      */
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        return SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
+        $rawSelector = $params->get('cfg_which_database', 0);
+
+        if (!is_int($rawSelector) && !is_string($rawSelector)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement Matches database selector.', 400);
+        }
+
+        $selector = trim((string) $rawSelector);
+
+        if (preg_match('/^[0-9]+$/D', $selector) !== 1) {
+            throw new \InvalidArgumentException('Invalid SportsManagement Matches database selector.', 400);
+        }
+
+        $digits = ltrim($selector, '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $max = (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement Matches database selector.', 400);
+        }
+
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, (int) $digits);
     }
 }
