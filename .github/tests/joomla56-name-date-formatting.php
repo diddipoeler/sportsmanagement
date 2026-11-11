@@ -76,4 +76,44 @@ smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'ni
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => '', 'lastname' => '<Meier>'], 3), 'Anna &lt;Meier&gt;', 'escape person name HTML');
 smAssertSame(NamePresentationHelper::team((object) ['short_name' => ['invalid'], 'name' => 'Real Club'], 0), 'Real Club', 'site team fallback for invalid name fields');
 
+// Imported format selectors must not cast "8junk" to style 8, or allow
+// overflowing numeric strings to choose an unintended layout.
+$personRecord = (object) ['firstname' => 'Anna', 'lastname' => 'Meier'];
+foreach (['8junk', '-1', '999999999999999999999999', '19'] as $badFormat) {
+    smAssertSame(
+        NamePresentationHelper::person($personRecord, $badFormat),
+        'Anna Meier',
+        'reject malformed person style ' . $badFormat
+    );
+}
+smAssertSame(
+    NamePresentationHelper::person($personRecord, '0008'),
+    'A. Meier',
+    'allow leading-zero person format selector'
+);
+
+$teamRecord = (object) ['name' => 'Full Team', 'short_name' => 'FT', 'middle_name' => 'Middle Team'];
+foreach (['0junk', '-1', '999999999999999999999999', '3'] as $badFormat) {
+    smAssertSame(
+        NamePresentationHelper::team($teamRecord, $badFormat),
+        'Full Team',
+        'reject malformed team style ' . $badFormat
+    );
+}
+smAssertSame(
+    NamePresentationHelper::team($teamRecord, '0000'),
+    'FT',
+    'allow leading-zero team format selector'
+);
+smAssertSame(
+    NamePresentationHelper::team((object) ['name' => '', 'short_name' => '', 'middle_name' => 'Middle Team'], 0),
+    'Middle Team',
+    'fallback to available middle name in short-name style'
+);
+smAssertSame(
+    NamePresentationHelper::team((object) ['name' => '', 'short_name' => 'FT', 'middle_name' => ''], 1),
+    'FT',
+    'fallback to available short name in middle-name style'
+);
+
 echo "Joomla 5/6 formatting regressions passed.\n";
