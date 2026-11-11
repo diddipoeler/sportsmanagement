@@ -102,6 +102,9 @@ namespace {
             'javascript:alert(1)', 'data:text/html,payload',
             '//evil.example/team', 'https://user:password@host.example/team',
             "index.php\nunsafe=1", 'https://bad host.example/team',
+            '%6aavascript%3aalert(1)', '%256aavascript%253aalert(1)',
+            '%2f%2fevil.example/team', '%252f%252fevil.example/team',
+            '%5c%5cevil.example/team', '%0aevil.example/team',
         ] as $unsafeLink) {
             $unlinked = $helper::formatName($team, 'team', [], false, null, 0, 0, $unsafeLink);
 
