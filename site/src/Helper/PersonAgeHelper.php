@@ -62,8 +62,8 @@ final class PersonAgeHelper
      * Parse a SportsManagement date into numeric year, month and day.
      *
      * Rejects the historical zero-date sentinel and strings not matching
-     * YYYY-MM-DD. The method only validates the expected text layout;
-     * the numeric parts are returned for the legacy age calculation.
+     * YYYY-MM-DD. Validate the actual calendar day (including leap years)
+     * before returning numeric parts for the historical age calculation.
      *
      * @param string $date Date text to parse.
      * @return array{0:int,1:int,2:int}|null Date parts or null.
@@ -76,6 +76,16 @@ final class PersonAgeHelper
             return null;
         }
 
-        return [(int) $matches[1], (int) $matches[2], (int) $matches[3]];
+        $year = (int) $matches[1];
+        $month = (int) $matches[2];
+        $day = (int) $matches[3];
+
+        // PHP 8 would otherwise accept impossible calendar dates here and
+        // calculate plausible but incorrect ages for imported person records.
+        if (!checkdate($month, $day, $year)) {
+            return null;
+        }
+
+        return [$year, $month, $day];
     }
 }
