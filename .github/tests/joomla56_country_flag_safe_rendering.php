@@ -344,6 +344,17 @@ namespace {
         }
     }
 
+    // Duplicate HTML attributes may be interpreted inconsistently. Preserve
+    // the first valid option and allow a later valid value after an invalid one.
+    $unique = $safeAttrs->invoke(null,
+        'width="invalid" width="48" WIDTH="99"'
+        . ' loading="wrong" loading="lazy" LOADING="eager"'
+        . ' title="First" TITLE="Second" aria-label="Country" ARIA-LABEL="Other"'
+    );
+    if ($unique !== 'width="48" loading="lazy" title="First" aria-label="Country"') {
+        throw new \RuntimeException('Flag attribute duplicates were not normalised: ' . $unique);
+    }
+
     $cache = new \ReflectionProperty($class, 'countries');
     $cache->setValue(null, [
         '0:DEU' => (object) ['name' => 'Germany', 'alpha2' => 'de', 'picture' => ''],
@@ -355,6 +366,7 @@ namespace {
     if (!str_contains($image, 'src="https://sports.example/joomla/images/com_sportsmanagement/database/flags/de.png"')
         || !str_contains($image, 'class="country-flag"')
         || !str_contains($image, 'title="A &amp; B"')
+        || substr_count($image, ' title="') !== 1
         || str_contains($image, 'onerror')
         || str_contains($image, 'style=')
         || str_contains($image, 'javascript:')
