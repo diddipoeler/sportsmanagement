@@ -309,11 +309,48 @@ final class TeamPresentationHelper
      * Wrap a display string in an optional HTML link.
      * @param string $output Inner HTML.
      * @param string|null $link Optional destination URL.
-     * @return string Linked or unlinked HTML.
+     * @return string Linked HTML for safe destinations or unlinked content
+     *     for unsafe or empty optional destinations.
      */
     private static function wrapLink(string $output, ?string $link): string
     {
-        return $link !== null && $link !== '' ? HTMLHelper::link($link, $output) : $output;
+        return $link !== null && self::safeLink($link)
+            ? HTMLHelper::link($link, $output)
+            : $output;
+    }
+
+    /**
+     * Validate an optional team destination before passing it to Joomla HTML.
+     *
+     * Block executable schemes, protocol-relative targets, URL credentials,
+     * unescaped whitespace and backslashes while allowing routed Joomla
+     * relative links or valid absolute HTTP(S) destinations.
+     *
+     * @param string $url Legacy optional team link.
+     * @return bool Whether the destination is safe for anchor rendering.
+     */
+    private static function safeLink(string $url): bool
+    {
+        if ($url === '' || trim($url) !== $url
+            || preg_match('/[\\x00-\\x20\\x7f]/', $url)
+            || str_contains($url, chr(92))
+            || str_starts_with($url, '//')) {
+            return false;
+        }
+
+        if (preg_match('~^https?://~i', $url)) {
+            $parts = parse_url($url);
+
+            return filter_var($url, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'])
+                && !isset($parts['pass']);
+        }
+
+        return preg_match('~^[a-z][a-z0-9+.-]*:~i', $url) !== 1
+            && !str_starts_with($url, '#')
+            && !str_starts_with($url, '?');
     }
 
     /**
