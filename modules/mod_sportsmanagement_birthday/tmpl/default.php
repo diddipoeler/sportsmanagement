@@ -11,12 +11,29 @@
 
 use Joomla\CMS\Language\Text;
 
-$moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8');
-$tableClass = htmlspecialchars((string) $params->get('table_class', 'table'), ENT_QUOTES, 'UTF-8');
-$maxDays = trim((string) $params->get('maxdays', ''));
+$moduleClassRaw = $params->get('moduleclass_sfx', '');
+$tableClassRaw = $params->get('table_class', 'table');
+$maxDaysRaw = $params->get('maxdays', '');
+$moduleClass = htmlspecialchars(is_string($moduleClassRaw) ? $moduleClassRaw : '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$tableClass = htmlspecialchars(is_string($tableClassRaw) ? $tableClassRaw : 'table', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$maxDays = is_scalar($maxDaysRaw) ? trim((string) $maxDaysRaw) : '';
+// Only bounded integer pixel lengths can enter inline CSS declarations.
+$pixelLength = static function (mixed $raw, int $default): int {
+    if (!is_int($raw) && !is_string($raw)) {
+        return $default;
+    }
+
+    $value = (string) $raw;
+    if (strlen($value) > 5 || preg_match('/^[0-9]{1,5}$/D', $value) !== 1) {
+        return $default;
+    }
+
+    return min(1000, max(1, (int) $value));
+};
 
 if (!$persons) {
-    $notFound = Text::_((string) $params->get('not_found_text', ''));
+    $notFoundRaw = $params->get('not_found_text', '');
+    $notFound = Text::_(is_string($notFoundRaw) ? $notFoundRaw : '');
     if ($maxDays !== '') {
         $notFound = str_replace('%DAYS%', $maxDays, $notFound);
     }
@@ -61,7 +78,7 @@ $moduleId = 'jsm-birthday-' . (int) $module->id;
                         <img class="d-block mx-auto" src="<?php echo htmlspecialchars($person['picture_url'], ENT_QUOTES, 'UTF-8'); ?>"
                              alt="<?php echo htmlspecialchars($person['display_name'], ENT_QUOTES, 'UTF-8'); ?>"
                              loading="lazy"
-                             style="max-width:<?php echo max(1, (int) $params->get('picture_width', 250)); ?>px;height:auto">
+                             style="max-width:<?php echo $pixelLength($params->get('picture_width', 250), 250); ?>px;height:auto">
                     <?php endif; ?>
                     <div class="carousel-caption position-static text-body">
                         <h5><a href="<?php echo htmlspecialchars($person['person_link'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo $person['flag_html']; ?> <?php echo htmlspecialchars($person['display_name'], ENT_QUOTES, 'UTF-8'); ?></a></h5>
@@ -93,7 +110,7 @@ $moduleId = 'jsm-birthday-' . (int) $module->id;
                             <div class="mt-2"><img src="<?php echo htmlspecialchars($person['picture_url'], ENT_QUOTES, 'UTF-8'); ?>"
                                  alt="<?php echo htmlspecialchars($person['display_name'], ENT_QUOTES, 'UTF-8'); ?>"
                                  loading="lazy"
-                                 style="max-height:<?php echo max(1, (int) $params->get('picture_height', 50)); ?>px;width:auto"></div>
+                                 style="max-height:<?php echo $pixelLength($params->get('picture_height', 50), 50); ?>px;width:auto"></div>
                         <?php endif; ?>
                     </td>
                     <td><?php echo $person['birthday_text']; ?></td>
