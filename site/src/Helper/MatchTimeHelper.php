@@ -26,6 +26,7 @@ final class MatchTimeHelper
      * regular or additional time window. Escape the final live-status title
      * and translated label only once so user-configured text cannot create
      * markup or display HTML entities literally in tooltip attributes.
+     * Rejects zero database timestamps and malformed optional text settings.
      * Non-scalar legacy values and invalid dates fall back to an unavailable
      * time instead of causing PHP 8 conversion errors.
      * @param object $game Match record with a match_date field.
@@ -51,7 +52,8 @@ final class MatchTimeHelper
 
         $rawMatchDate = $game->match_date ?? null;
         $matchDate = is_string($rawMatchDate) ? trim($rawMatchDate) : '';
-        $timestamp = $matchDate !== '' ? strtotime($matchDate) : false;
+        $timestamp = $matchDate !== '' && !str_starts_with($matchDate, '0000-00-00')
+            ? strtotime($matchDate) : false;
         if ($timestamp === false) {
             $matchTime = '--&nbsp;:&nbsp;--';
 
@@ -84,10 +86,12 @@ final class MatchTimeHelper
         }
 
         $startText = $output . ' ';
+        $rawTitle = $config['mark_now_playing_alt_text'] ?? '';
+        $titleTemplate = is_string($rawTitle) ? $rawTitle : '';
         $title = str_replace(
             '%STARTTIME%',
             $startText,
-            trim((string) ($config['mark_now_playing_alt_text'] ?? ''))
+            trim($titleTemplate)
         );
         $title = str_replace(
             '%ACTUALTIME%',
@@ -97,8 +101,9 @@ final class MatchTimeHelper
         $style = !empty($config['mark_now_playing_blink'])
             ? ' style="text-decoration:blink"'
             : '';
+        $rawText = $config['mark_now_playing_text'] ?? '';
         $text = htmlspecialchars(
-            Text::_((string) ($config['mark_now_playing_text'] ?? '')),
+            Text::_(is_string($rawText) ? $rawText : ''),
             ENT_QUOTES,
             'UTF-8'
         );
