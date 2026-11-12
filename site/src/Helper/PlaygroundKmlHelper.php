@@ -24,6 +24,8 @@ final class PlaygroundKmlHelper
      * outside the expected range, escapes the playground name and address
      * for XML output and writes the KML file in Joomla's site tmp folder.
      * Returns false when directory creation or file writing fails.
+     * Rejects XML 1.0 forbidden control bytes and existing output symlinks
+     * before writing a placemark file into the site's temporary directory.
      *
      * @param int $playgroundId Positive playground record ID.
      * @param string $address Location address for KML metadata.
@@ -49,6 +51,7 @@ final class PlaygroundKmlHelper
             || $latitude > 90.0
             || $longitude < -180.0
             || $longitude > 180.0
+            || preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $name . $address) === 1
         ) {
             return false;
         }
@@ -81,8 +84,15 @@ final class PlaygroundKmlHelper
             return false;
         }
 
+        $filename = $directory . '/' . $playgroundId . '-playground.kml';
+
+        // Refuse pre-existing symlink targets even when the link is dangling.
+        if (is_link($filename)) {
+            return false;
+        }
+
         try {
-            return File::write($directory . '/' . $playgroundId . '-playground.kml', $kml);
+            return File::write($filename, $kml);
         } catch (\Throwable) {
             return false;
         }
