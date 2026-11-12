@@ -49,6 +49,8 @@ final class LocationHelper
      * Rejects control characters and excessively long addresses, validates
      * coordinate ranges, and ignores malformed response values. Bounds the
      * downloaded JSON payload before decoding to avoid excessive allocations.
+     * Remote address keys and values are restricted to bounded printable text
+     * to avoid propagating malformed geocoder data into administrator forms.
      *
      * @param string $address Address to resolve through the Nominatim API.
      * @return array{latitude:string,longitude:string,address:array<string,string>}|array{}
@@ -110,11 +112,23 @@ final class LocationHelper
 
             if (isset($result['address']) && is_array($result['address'])) {
                 foreach ($result['address'] as $key => $value) {
-                    if (!is_scalar($value)) {
+                    if (!is_string($key) || preg_match('/^[A-Za-z0-9_]{1,64}$/D', $key) !== 1
+                        || (!is_string($value) && !is_int($value) && !is_float($value))) {
                         continue;
                     }
 
-                    $addressDetails[(string) $key] = trim((string) $value);
+                    if (is_float($value) && !is_finite($value)) {
+                        continue;
+                    }
+
+                    $text = trim((string) $value);
+
+                    if ($text === '' || strlen($text) > 255
+                        || preg_match('/[\x00-\x1F\x7F]/', $text) === 1) {
+                        continue;
+                    }
+
+                    $addressDetails[$key] = $text;
                 }
             }
 
