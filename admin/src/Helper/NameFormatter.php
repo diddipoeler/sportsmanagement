@@ -129,7 +129,7 @@ final class NameFormatter
 
             case 15:
                 self::append($name, $lastName);
-                self::append($name, $lastName !== '' ? '<br \\>' : '');
+                self::append($name, $lastName !== '' ? '<br />' : '');
                 self::append($name, $firstName);
                 break;
 
@@ -137,7 +137,7 @@ final class NameFormatter
                 // Preserve the historical implementation, which produced the
                 // same order as format 15 despite the field label saying the reverse.
                 self::append($name, $lastName);
-                self::append($name, $lastName !== '' ? '<br \\>' : '');
+                self::append($name, $lastName !== '' ? '<br />' : '');
                 self::append($name, $firstName);
                 break;
 
