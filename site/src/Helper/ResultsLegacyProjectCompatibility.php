@@ -31,6 +31,15 @@ final class ResultsLegacyProjectCompatibility
     /** @var array<int, array<int, object>> */
     private static array $substitutionsByMatch = [];
 
+    /**
+     * Register the historical project model alias for legacy results layouts.
+     *
+     * Uses a non-autoloading class lookup so an already-registered legacy
+     * model is preserved and Joomla can continue resolving results overrides
+     * that depend on the old class name.
+     *
+     * @return void
+     */
     public static function register(): void
     {
         if (!class_exists('sportsmanagementModelProject', false)) {
@@ -39,9 +48,19 @@ final class ResultsLegacyProjectCompatibility
     }
 
     /**
-     * @param array<int, array<int, object>> $eventsByMatch
-     * @param array<int, array<int, object>> $substitutionsByMatch
-     * @param array<int, int> $favteams
+     * Synchronise the legacy project facade with the native results view.
+     *
+     * Copies project identity, routing slugs, favourite teams, match events
+     * and substitutions so existing template overrides can read the same
+     * data as the native Joomla 5/6 results view without database requests.
+     *
+     * @param object $project Project row containing ID, season and slugs.
+     * @param int $roundId Selected match round identifier.
+     * @param int $databaseSelector Selected SportsManagement database.
+     * @param array<int, array<int, object>> $eventsByMatch Events indexed by match ID.
+     * @param array<int, array<int, object>> $substitutionsByMatch Substitutions indexed by match ID.
+     * @param array<int, int> $favteams Favourite team identifiers.
+     * @return void
      */
     public static function sync(
         object $project,
@@ -62,6 +81,19 @@ final class ResultsLegacyProjectCompatibility
         self::$substitutionsByMatch = $substitutionsByMatch;
     }
 
+    /**
+     * Return prepared match events for a legacy results template.
+     *
+     * Reads the in-memory events supplied by sync(), preserving historical
+     * arguments for template compatibility. Reverses event order when the
+     * legacy descending-order flag is set, without executing a query.
+     *
+     * @param mixed $matchId Match identifier requested by the template.
+     * @param mixed $showName Legacy display flag, retained for compatibility.
+     * @param mixed $sortDesc Reverse event order when equal to one.
+     * @param mixed $databaseSelector Legacy database selector argument.
+     * @return array<int, object> Events for the match, or an empty list.
+     */
     public static function getMatchEvents($matchId = 0, $showName = 0, $sortDesc = 0, $databaseSelector = 0): array
     {
         $events = self::$eventsByMatch[(int) $matchId] ?? [];
@@ -73,6 +105,16 @@ final class ResultsLegacyProjectCompatibility
         return $events;
     }
 
+    /**
+     * Return previously prepared substitutions for a specific match.
+     *
+     * Uses the match-indexed data received from the native results view;
+     * the optional database selector remains part of the old API signature.
+     *
+     * @param mixed $matchId Match identifier requested by the layout.
+     * @param mixed $databaseSelector Historical selector, not used for queries.
+     * @return array<int, object> Substitutions for the match, or an empty list.
+     */
     public static function getMatchSubstitutions($matchId = 0, $databaseSelector = 0): array
     {
         return self::$substitutionsByMatch[(int) $matchId] ?? [];
