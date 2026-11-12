@@ -231,6 +231,7 @@ final class NamePresentationHelper
      * text, preserving the configured fallback order. Ignores malformed
      * arrays, booleans and non-stringable objects instead of rendering
      * a misleading literal "1" or producing PHP 8 conversion warnings.
+     * Skip non-finite numbers and Stringable values whose conversion throws.
      *
      * @param mixed ...$values Name candidates ordered by preference.
      * @return string First nonempty name, or an empty string.
@@ -246,7 +247,19 @@ final class NamePresentationHelper
                 continue;
             }
 
-            $value = trim((string) $value);
+            // Invalid numeric imports are not printable person/team names.
+            // Third-party Stringable objects may throw during conversion;
+            // skip them so the next configured fallback remains available.
+            if (is_float($value) && !is_finite($value)) {
+                continue;
+            }
+
+            try {
+                $value = trim((string) $value);
+            } catch (\Throwable) {
+                continue;
+            }
+
             if ($value !== '') {
                 return $value;
             }
