@@ -469,17 +469,26 @@ final class TeamPresentationHelper
      * Legacy imports and overrides can contain arrays or arbitrary objects
      * instead of the scalar values expected by Joomla templates. Discard
      * non-stringable values rather than triggering PHP 8 conversion warnings.
+     * Ignore booleans, non-finite floats and failed Stringable conversions.
      *
      * @param mixed $value Raw team or project display value.
      * @return string Trimmed scalar or stringable text, or an empty string.
      */
     private static function safeText(mixed $value): string
     {
-        if (!is_scalar($value) && !$value instanceof \Stringable) {
+        if ((!is_scalar($value) && !$value instanceof \Stringable)
+            || is_bool($value)
+            || (is_float($value) && !is_finite($value))) {
             return '';
         }
 
-        return trim((string) $value);
+        // Imported Stringable fields may throw on conversion. Treat them as
+        // missing so the next available name or slug can be used safely.
+        try {
+            return trim((string) $value);
+        } catch (\Throwable) {
+            return '';
+        }
     }
 
     /**
