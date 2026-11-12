@@ -24,8 +24,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Build the Top Tipper template context for the site application.
      *
      * Load translations, register the stylesheet, and merge prediction
-     * ranking data with the Joomla module context. Protect framework-owned
-     * module, params and layout values from being replaced by the helper.
+     * ranking data with the Joomla module context. Only the documented
+     * template variables are copied from helper output, keeping all Joomla
+     * framework-owned layout variables intact.
      *
      * @return array|false Layout data, or false if rendering is skipped.
      * @throws \RuntimeException Outside Joomla's site client.
@@ -68,9 +69,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         // Some legacy helpers return no data; only arrays may be merged.
         $payload = is_array($payload) ? $payload : [];
 
-        // Do not allow helper output to overwrite the Joomla module context.
-        unset($payload['module'], $payload['params'], $payload['layout']);
+        // Expose only the keys supplied by TopTipperHelper::getData().
+        // Prevent helper output from overriding Joomla framework context.
+        foreach ([
+            'predictionGame', 'predictionProjects', 'predictionProject',
+            'projectId', 'roundId', 'fromRound', 'toRound', 'roundOptions',
+            'rankingType', 'rankingRows', 'currentMemberId', 'topTipperConfig',
+            'databaseSelector', 'rankingUrl', 'resultsUrl', 'typeOptions',
+        ] as $key) {
+            if (array_key_exists($key, $payload)) {
+                $data[$key] = $payload[$key];
+            }
+        }
 
-        return array_merge($data, $payload);
+        return $data;
     }
 }
