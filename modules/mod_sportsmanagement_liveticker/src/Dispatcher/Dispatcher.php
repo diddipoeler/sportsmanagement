@@ -26,7 +26,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Prepare the live match ticker and its AJAX refresh endpoint.
      *
-     * Loads match events, preserves framework-owned layout variables, registers frontend assets and supplies the com_ajax refresh URL for subsequent updates.
+     * Loads match events, copies only the expected template variables from
+     * its helper, registers frontend assets and supplies the com_ajax refresh
+     * URL. Framework-owned Joomla layout data cannot be overwritten.
      *
      * @return array|false Layout variables, or false if Joomla skips rendering.
      * @throws \RuntimeException When called outside the site or without a database.
@@ -52,8 +54,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $result = is_array($result) ? $result : [];
 
-        // Preserve Joomla's module context regardless of helper output.
-        unset($result['module'], $result['params'], $result['layout']);
+        // Only these values belong to the public Liveticker layout contract.
+        // Unexpected helper keys must never replace framework-owned context.
+        $payload = [];
+
+        foreach (['listHtml', 'updateTimeout', 'cssFile', 'moduleId'] as $key) {
+            if (array_key_exists($key, $result)) {
+                $payload[$key] = $result[$key];
+            }
+        }
 
         $document = $app->getDocument();
 
@@ -66,8 +75,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ['defer' => true]
             );
 
-            $rawCssFile = $result['cssFile'] ?? '';
-            $cssFile = is_string($rawCssFile) && preg_match('/^[A-Za-z0-9_.-]+\.css$/D', $rawCssFile)
+            $rawCssFile = $payload['cssFile'] ?? '';
+            $cssFile = is_string($rawCssFile) && strlen($rawCssFile) <= 100
+                && preg_match('/^[A-Za-z0-9_-][A-Za-z0-9_.-]*\.css$/D', $rawCssFile)
                 ? $rawCssFile
                 : '';
             if ($cssFile !== '') {
@@ -79,10 +89,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             }
         }
 
-        $result['refreshUrl'] = rtrim((string) Uri::base(), '/')
+        $payload['refreshUrl'] = rtrim((string) Uri::base(), '/')
             . '/index.php?option=com_ajax&module=sportsmanagement_liveticker&method=refresh&format=raw';
 
-        return array_merge($data, $result);
+        return array_merge($data, $payload);
     }
 
     /**
