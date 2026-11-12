@@ -41,6 +41,8 @@ final class ActionLogHelper
      * ActionlogModel. Nonpositive IDs are ignored because they cannot refer
      * to a persisted entity or accountable Joomla user. Rejects malformed
      * view identifiers instead of transforming them into different tasks.
+     * Ignores malformed non-scalar labels from imported legacy records rather
+     * than producing PHP 8 array-to-string conversion warnings.
      *
      * @param object $user Acting Joomla user with id and username properties.
      * @param array<string,mixed> $transaction Saved entity row and identifier.
@@ -73,13 +75,16 @@ final class ActionLogHelper
         $type = Text::_($isNew ? 'JTOOLBAR_NEW' : 'JLIB_INSTALLER_UPDATE');
 
         if ($view === 'player') {
+            $first = $transaction['firstname'] ?? '';
+            $last = $transaction['lastname'] ?? '';
             $label = trim(
-                (string) ($transaction['firstname'] ?? '')
+                (is_scalar($first) ? (string) $first : '')
                 . ' '
-                . (string) ($transaction['lastname'] ?? '')
+                . (is_scalar($last) ? (string) $last : '')
             );
         } else {
-            $label = trim((string) ($transaction['name'] ?? ''));
+            $name = $transaction['name'] ?? '';
+            $label = is_scalar($name) ? trim((string) $name) : '';
         }
 
         $message = [
