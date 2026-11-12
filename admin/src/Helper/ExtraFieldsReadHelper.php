@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Read administrator extra-field definitions and current item values.
@@ -36,6 +37,8 @@ final class ExtraFieldsReadHelper
      * Selects only the supported backend/frontend template column and uses
      * exact template names rather than SQL LIKE wildcard matching. Invalid
      * IDs or template settings return no records without querying the DB.
+     * Parameter binding prevents accidental type coercion in join predicates
+     * and ensures consistent query preparation on Joomla database drivers.
      *
      * @param int $itemId Entity identifier whose extra fields are requested.
      * @param string $view Exact extra-field template/view identifier.
@@ -49,8 +52,9 @@ final class ExtraFieldsReadHelper
         string $template = 'backend',
         ?DatabaseInterface $database = null
     ): array {
-        $view = trim($view);
-        if ($itemId <= 0 || $view === '' || strlen($view) > 255
+        if ($itemId <= 0 || $view === '' || trim($view) !== $view
+            || strlen($view) > 100
+            || preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $view) !== 1
             || !in_array($template, ['backend', 'frontend'], true)) {
             return [];
         }
@@ -69,9 +73,11 @@ final class ExtraFieldsReadHelper
                     'LEFT',
                     $db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev')
                     . ' ON ' . $db->quoteName('ef.id') . ' = ' . $db->quoteName('ev.field_id')
-                    . ' AND ' . $db->quoteName('ev.jl_id') . ' = ' . $itemId
+                    . ' AND ' . $db->quoteName('ev.jl_id') . ' = :extraFieldItemId'
                 )
-                ->where($db->quoteName('ef.' . $templateColumn) . ' = ' . $db->quote($view))
+                ->where($db->quoteName('ef.' . $templateColumn) . ' = :extraFieldTemplate')
+                ->bind(':extraFieldItemId', $itemId, ParameterType::INTEGER)
+                ->bind(':extraFieldTemplate', $view, ParameterType::STRING)
                 ->order($db->quoteName('ef.ordering') . ' ASC');
 
             $db->setQuery($query);
