@@ -29,6 +29,8 @@ final class ExtendedFormHelper
      * data, and creates the form using Joomla's injected FormFactoryInterface.
      * Missing definitions or invalid stored settings return null; internal
      * exceptions are logged without exposing raw exception text in the UI.
+     * Rejects surrounding whitespace rather than silently selecting another
+     * form and refuses symlinks escaping the component's XML directory.
      *
      * @param string $group Extended form group, or extendeduser for user forms.
      * @param string $view Administrator entity name whose form XML is loaded.
@@ -38,17 +40,17 @@ final class ExtendedFormHelper
     public function load(string $group, string $view, string $stored = ''): ?Form
     {
         $group = $group === 'extendeduser' ? 'extendeduser' : 'extended';
-        $view = trim($view);
-
-        if ($view === '' || strlen($view) > 100
+        if ($view === '' || trim($view) !== $view || strlen($view) > 100
             || preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $view) !== 1) {
             return null;
         }
 
-        $path = JPATH_ADMINISTRATOR
-            . '/components/com_sportsmanagement/assets/' . $group . '/' . $view . '.xml';
+        $root = realpath(JPATH_ADMINISTRATOR
+            . '/components/com_sportsmanagement/assets/' . $group);
+        $path = $root === false ? false : realpath($root . DIRECTORY_SEPARATOR . $view . '.xml');
 
-        if (!is_file($path)) {
+        if ($path === false || !is_file($path)
+            || !str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
             return null;
         }
 
