@@ -1,0 +1,96 @@
+name: Joomla 5/6 recent site admin module regression suite
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Helper/ExtendedFormHelper.php'
+      - 'site/src/Helper/MatchResultHelper.php'
+      - 'site/src/Helper/MatchTimeHelper.php'
+      - 'admin/src/Helper/ActionLogHelper.php'
+      - 'admin/src/Helper/ExtendedFormHelper.php'
+      - 'admin/src/Helper/ExtraFieldsReadHelper.php'
+      - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
+      - 'admin/src/Helper/LocationHelper.php'
+      - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_extended_form_extra_select_ranking_guards.php'
+      - '.github/tests/joomla56_match_outcome_actionlog_toptipper.php'
+      - '.github/tests/joomla56_project_navigation_extended_forms_playground_db.php'
+      - '.github/tests/joomla56_matchtime_extra_fields_clubicons.php'
+      - '.github/tests/joomla56_matchtime_geocoder_liveticker_guards.php'
+      - '.github/scripts/check-php-function-docs.php'
+      - '.github/workflows/joomla56-recent-helper-module-regressions.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/**'
+      - 'admin/src/Helper/**'
+      - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/**'
+      - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/**'
+      - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/**'
+      - '.github/tests/joomla56_*'
+      - '.github/scripts/check-php-function-docs.php'
+      - '.github/workflows/joomla56-recent-helper-module-regressions.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - name: Check out migration branch
+        uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: Lint changed helpers, dispatchers and standalone regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Helper/ExtendedFormHelper.php
+            site/src/Helper/MatchResultHelper.php
+            site/src/Helper/MatchTimeHelper.php
+            site/src/Helper/ProjectNavigationHelper.php
+            admin/src/Helper/ActionLogHelper.php
+            admin/src/Helper/ExtendedFormHelper.php
+            admin/src/Helper/ExtraFieldsReadHelper.php
+            admin/src/Helper/ExtraSelectOptionsHelper.php
+            admin/src/Helper/LocationHelper.php
+            modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
+            .github/tests/joomla56_extended_form_extra_select_ranking_guards.php
+            .github/tests/joomla56_match_outcome_actionlog_toptipper.php
+            .github/tests/joomla56_project_navigation_extended_forms_playground_db.php
+            .github/tests/joomla56_matchtime_extra_fields_clubicons.php
+            .github/tests/joomla56_matchtime_geocoder_liveticker_guards.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-function-docs.php "${files[@]}"
+      - name: Run isolated recent site/admin/module regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test in \
+            .github/tests/joomla56_extended_form_extra_select_ranking_guards.php \
+            .github/tests/joomla56_match_outcome_actionlog_toptipper.php \
+            .github/tests/joomla56_project_navigation_extended_forms_playground_db.php \
+            .github/tests/joomla56_matchtime_extra_fields_clubicons.php \
+            .github/tests/joomla56_matchtime_geocoder_liveticker_guards.php; do
+            php "$test"
+          done
