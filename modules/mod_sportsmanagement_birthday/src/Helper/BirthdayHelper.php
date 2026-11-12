@@ -35,6 +35,7 @@ final class BirthdayHelper
      * display-ready names, pictures, flags and links used by the template.
      * Driver errors are logged by exception type, avoiding accidental SQL
      * statement or credential exposure from third-party exception messages.
+     * Malformed database choices cannot silently select the Joomla database.
      * @param Registry $params Birthday module configuration.
      * @param Registry $componentParams SportsManagement component defaults.
      * @param CMSApplicationInterface $app Active Joomla site application.
@@ -51,6 +52,10 @@ final class BirthdayHelper
             'cfg_which_database',
             $componentParams->get('cfg_which_database', 0)
         ));
+        if ($databaseSelector === null) {
+            return $this->emptyData($params);
+        }
+
         $selectedProjects = $params->get('p', []);
         $projectIds = $this->normaliseIds($selectedProjects);
         $selectedTeams = $params->get('teams', []);
@@ -204,16 +209,24 @@ final class BirthdayHelper
     /**
      * Reject arrays, booleans, signed values and invalid numbers instead of
      * letting PHP cast them into an unintended external database selector.
+     * Only supported zero/one choices are accepted, including zero-padded
+     * legacy parameter strings. Invalid choices return null.
+     *
+     * @param mixed $value Raw module or component database setting.
+     * @return int|null Valid database selector, or null on invalid input.
      */
-    private function normaliseDatabaseSelector(mixed $value): int
+    private function normaliseDatabaseSelector(mixed $value): ?int
     {
-        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
-            return 0;
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
         }
 
-        $selector = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
 
-        return $selector === false ? 0 : $selector;
+        return (int) $matches[1];
     }
 
     /**
@@ -225,9 +238,11 @@ final class BirthdayHelper
      */
     private function emptyData(Registry $params): array
     {
+        $configuredMode = $params->get('mode', 'L');
+
         return [
             'persons' => [],
-            'mode' => strtoupper((string) $params->get('mode', 'L')),
+            'mode' => is_string($configuredMode) ? strtoupper($configuredMode) : 'L',
             'pictureServer' => Uri::root(),
         ];
     }
