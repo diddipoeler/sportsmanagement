@@ -26,6 +26,8 @@ final class CountRekordHelper
      * SportsManagement database, counts existing fixtures and compares
      * the result with the configured target. Database failures are logged
      * and represented as an empty collection to keep the site responsive.
+     * Malformed database selectors fail closed instead of silently falling
+     * back to an unrelated primary connection.
      *
      * @param Registry $params Validated Joomla module parameters.
      * @param object $module Current Joomla module record, retained for compatibility.
@@ -40,8 +42,14 @@ final class CountRekordHelper
             return [];
         }
 
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($selector === null) {
+            return [];
+        }
+
         try {
-            $db = $this->database($params, $fallbackDatabase);
+            $db = $this->database($selector, $fallbackDatabase);
             $query = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_match'));
@@ -50,7 +58,7 @@ final class CountRekordHelper
         } catch (\Throwable $e) {
             // A missing match table or unavailable external database must not
             // take down the site; details belong in the Joomla error log.
-            Log::add('SportsManagement Count Record query failed: ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add('SportsManagement Count Record query failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
             return [];
         }
@@ -99,20 +107,44 @@ final class CountRekordHelper
     }
 
     /**
+     * Validate the configured database choice before opening a connection.
+     *
+     * Accepts only database selectors zero and one, including zero-padded
+     * legacy strings. Rejects booleans, arrays, out-of-range integers and
+     * malformed strings so an invalid selector never resolves database zero.
+     *
+     * @param mixed $value Raw module database setting.
+     * @return int|null Database selector zero or one, or null if invalid.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
+    }
+
+    /**
      * Select the database connection used for match record counting.
      *
      * Uses the central SportsManagement resolver with a validated database
      * selector and the provided Joomla connection as the fallback.
      *
-     * @param Registry $params Joomla module configuration.
+     * @param int $selector Validated module database selection.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
      * @return DatabaseInterface Selected SportsManagement connection.
      */
-    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
+    private function database(int $selector, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
-            self::nonNegativeInt($params->get('cfg_which_database', 0))
+            $selector
         );
     }
 }
