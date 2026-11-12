@@ -6,6 +6,7 @@ on:
     paths:
       - 'site/src/Helper/ExtendedFormHelper.php'
       - 'site/src/Helper/ExtendedDataHelper.php'
+      - 'site/src/Helper/ProjectTitleHelper.php'
       - 'site/src/Helper/MatchResultHelper.php'
       - 'site/src/Helper/ResultsLegacyProjectCompatibility.php'
       - 'site/src/Helper/MatchTimeHelper.php'
@@ -16,6 +17,7 @@ on:
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
       - 'admin/src/Helper/LocationHelper.php'
       - 'modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php'
       - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_randomplayer/tmpl/native.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
@@ -26,6 +28,7 @@ on:
       - '.github/tests/joomla56_matchtime_geocoder_liveticker_guards.php'
       - '.github/tests/joomla56_results_actionlog_randomplayer_safety.php'
       - '.github/tests/joomla56_extended_data_sql_import_randomplayer.php'
+      - '.github/tests/joomla56_project_titles_sql_preflight_count_rekord.php'
       - '.github/scripts/check-php-function-docs.php'
       - '.github/workflows/joomla56-recent-helper-module-regressions.yml'
   pull_request:
@@ -36,6 +39,7 @@ on:
       - 'modules/mod_sportsmanagement_liveticker/src/Dispatcher/**'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/**'
       - 'modules/mod_sportsmanagement_randomplayer/tmpl/**'
+      - 'modules/mod_sportsmanagement_count_rekord/src/Helper/**'
       - '.github/tests/joomla56_*'
       - '.github/scripts/check-php-function-docs.php'
       - '.github/workflows/joomla56-recent-helper-module-regressions.yml'
@@ -68,6 +72,7 @@ jobs:
           files=(
             site/src/Helper/ExtendedFormHelper.php
             site/src/Helper/ExtendedDataHelper.php
+            site/src/Helper/ProjectTitleHelper.php
             site/src/Helper/MatchResultHelper.php
             site/src/Helper/ResultsLegacyProjectCompatibility.php
             site/src/Helper/MatchTimeHelper.php
@@ -79,6 +84,7 @@ jobs:
             admin/src/Helper/ExtraSelectOptionsHelper.php
             admin/src/Helper/LocationHelper.php
             modules/mod_sportsmanagement_clubicons/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
             modules/mod_sportsmanagement_liveticker/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_randomplayer/tmpl/native.php
             modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
@@ -90,6 +96,7 @@ jobs:
             .github/tests/joomla56_matchtime_geocoder_liveticker_guards.php
             .github/tests/joomla56_results_actionlog_randomplayer_safety.php
             .github/tests/joomla56_extended_data_sql_import_randomplayer.php
+            .github/tests/joomla56_project_titles_sql_preflight_count_rekord.php
           )
           for file in "${files[@]}"; do
             php -l "$file"
@@ -106,6 +113,7 @@ jobs:
             .github/tests/joomla56_matchtime_extra_fields_clubicons.php \
             .github/tests/joomla56_matchtime_geocoder_liveticker_guards.php \
             .github/tests/joomla56_results_actionlog_randomplayer_safety.php \
-            .github/tests/joomla56_extended_data_sql_import_randomplayer.php; do
+            .github/tests/joomla56_extended_data_sql_import_randomplayer.php \
+            .github/tests/joomla56_project_titles_sql_preflight_count_rekord.php; do
             php "$test"
           done
