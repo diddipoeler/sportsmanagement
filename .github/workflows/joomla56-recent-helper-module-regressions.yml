@@ -5,10 +5,12 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Helper/ExtendedFormHelper.php'
+      - 'site/src/Helper/ExtendedDataHelper.php'
       - 'site/src/Helper/MatchResultHelper.php'
       - 'site/src/Helper/ResultsLegacyProjectCompatibility.php'
       - 'site/src/Helper/MatchTimeHelper.php'
       - 'admin/src/Helper/ActionLogHelper.php'
+      - 'admin/src/Helper/SqlImportHelper.php'
       - 'admin/src/Helper/ExtendedFormHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
@@ -23,6 +25,7 @@ on:
       - '.github/tests/joomla56_matchtime_extra_fields_clubicons.php'
       - '.github/tests/joomla56_matchtime_geocoder_liveticker_guards.php'
       - '.github/tests/joomla56_results_actionlog_randomplayer_safety.php'
+      - '.github/tests/joomla56_extended_data_sql_import_randomplayer.php'
       - '.github/scripts/check-php-function-docs.php'
       - '.github/workflows/joomla56-recent-helper-module-regressions.yml'
   pull_request:
@@ -64,11 +67,13 @@ jobs:
           set -euo pipefail
           files=(
             site/src/Helper/ExtendedFormHelper.php
+            site/src/Helper/ExtendedDataHelper.php
             site/src/Helper/MatchResultHelper.php
             site/src/Helper/ResultsLegacyProjectCompatibility.php
             site/src/Helper/MatchTimeHelper.php
             site/src/Helper/ProjectNavigationHelper.php
             admin/src/Helper/ActionLogHelper.php
+            admin/src/Helper/SqlImportHelper.php
             admin/src/Helper/ExtendedFormHelper.php
             admin/src/Helper/ExtraFieldsReadHelper.php
             admin/src/Helper/ExtraSelectOptionsHelper.php
@@ -84,6 +89,7 @@ jobs:
             .github/tests/joomla56_matchtime_extra_fields_clubicons.php
             .github/tests/joomla56_matchtime_geocoder_liveticker_guards.php
             .github/tests/joomla56_results_actionlog_randomplayer_safety.php
+            .github/tests/joomla56_extended_data_sql_import_randomplayer.php
           )
           for file in "${files[@]}"; do
             php -l "$file"
@@ -99,6 +105,7 @@ jobs:
             .github/tests/joomla56_project_navigation_extended_forms_playground_db.php \
             .github/tests/joomla56_matchtime_extra_fields_clubicons.php \
             .github/tests/joomla56_matchtime_geocoder_liveticker_guards.php \
-            .github/tests/joomla56_results_actionlog_randomplayer_safety.php; do
+            .github/tests/joomla56_results_actionlog_randomplayer_safety.php \
+            .github/tests/joomla56_extended_data_sql_import_randomplayer.php; do
             php "$test"
           done
