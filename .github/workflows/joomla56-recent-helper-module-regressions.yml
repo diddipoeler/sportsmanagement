@@ -10,6 +10,7 @@ on:
       - 'site/src/Helper/ClubLogoHelper.php'
       - 'site/src/Helper/PlaygroundKmlHelper.php'
       - 'site/src/Helper/ClubKmlHelper.php'
+      - 'site/src/Helper/PersonProfileRouteHelper.php'
       - 'site/src/Helper/MatchResultHelper.php'
       - 'site/src/Helper/ResultsLegacyProjectCompatibility.php'
       - 'site/src/Helper/MatchTimeHelper.php'
@@ -28,6 +29,7 @@ on:
       - 'modules/mod_sportsmanagement_randomplayer/tmpl/native.php'
       - 'modules/mod_sportsmanagement_birthday/tmpl/default.php'
       - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_extended_form_extra_select_ranking_guards.php'
       - '.github/tests/joomla56_match_outcome_actionlog_toptipper.php'
@@ -90,6 +92,7 @@ jobs:
             site/src/Helper/ClubLogoHelper.php
             site/src/Helper/PlaygroundKmlHelper.php
             site/src/Helper/ClubKmlHelper.php
+            site/src/Helper/PersonProfileRouteHelper.php
             site/src/Helper/MatchResultHelper.php
             site/src/Helper/ResultsLegacyProjectCompatibility.php
             site/src/Helper/MatchTimeHelper.php
@@ -109,6 +112,7 @@ jobs:
             modules/mod_sportsmanagement_randomplayer/tmpl/native.php
             modules/mod_sportsmanagement_birthday/tmpl/default.php
             modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+            .github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php
             modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             .github/tests/joomla56_extended_form_extra_select_ranking_guards.php
@@ -142,6 +146,7 @@ jobs:
             .github/tests/joomla56_project_titles_sql_preflight_count_rekord.php \
             .github/tests/joomla56_club_logo_extra_select_rquotes.php \
             .github/tests/joomla56_playground_kml_extension_birthday_layout.php \
-            .github/tests/joomla56_club_kml_admin_age_birthday_privacy.php; do
+            .github/tests/joomla56_club_kml_admin_age_birthday_privacy.php \
+            .github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php; do
             php "$test"
           done
