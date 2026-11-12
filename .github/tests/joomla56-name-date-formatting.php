@@ -99,6 +99,50 @@ smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'ni
 smAssertSame(NamePresentationHelper::team((object) ['short_name' => ['invalid'], 'name' => 'Real Club'], 0), 'Real Club', 'site team fallback for invalid name fields');
 smAssertSame(NamePresentationHelper::team((object) ['short_name' => true, 'name' => 'Real Club'], 0), 'Real Club', 'ignore boolean short-name data');
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => true, 'lastname' => 'Meier'], 3), 'Meier', 'ignore boolean person first name');
+
+// Stringable objects imported by third-party plugins can throw on cast.
+// A bad preferred value must not prevent usable fallback names rendering.
+$throwingName = new class implements Stringable {
+    /**
+     * Simulate an invalid legacy display object.
+     *
+     * @return string Never returns a name.
+     * @throws RuntimeException The simulated import cannot be converted.
+     */
+    public function __toString(): string
+    {
+        throw new RuntimeException('Broken imported person name object');
+    }
+};
+smAssertSame(
+    NamePresentationHelper::team(
+        (object) ['short_name' => $throwingName, 'name' => 'Real Club'], 0
+    ),
+    'Real Club',
+    'throwing Stringable short name uses full-name fallback'
+);
+smAssertSame(
+    NamePresentationHelper::person(
+        (object) ['firstname' => $throwingName, 'lastname' => 'Meier'], 3
+    ),
+    'Meier',
+    'throwing Stringable person name uses surviving surname'
+);
+smAssertSame(
+    NamePresentationHelper::team(
+        (object) ['short_name' => INF, 'name' => 'Real Club'], 0
+    ),
+    'Real Club',
+    'non-finite short name uses full-name fallback'
+);
+smAssertSame(
+    NamePresentationHelper::person(
+        (object) ['firstname' => NAN, 'lastname' => 'Meier'], 3
+    ),
+    'Meier',
+    'non-finite person name is discarded'
+);
+
 smAssertSame(NamePresentationHelper::person((object) ['firstname' => 'Anna', 'nickname' => false, 'lastname' => 'Meier'], 0), 'Anna Meier', 'ignore boolean nickname data');
 
 
