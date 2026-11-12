@@ -130,6 +130,7 @@ namespace {
                     'maxdays' => ['bad'],
                     'picture_width' => '999999',
                     'picture_height' => '-500',
+                    'show_player_card' => 0,
                     default => $default,
                 };
             }
