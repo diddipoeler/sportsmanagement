@@ -219,6 +219,24 @@ namespace {
             throw new \RuntimeException('Malformed project-team slug did not use the valid fallback.');
         }
 
+        // A malformed Stringable slug must not break the roster link.
+        // The valid numeric legacy projectteamid remains the fallback.
+        $team->projectteam_slug = new class implements \Stringable {
+            /**
+             * Simulate a legacy slug object that fails string conversion.
+             * @return string Never returned by the broken fixture.
+             * @throws \RuntimeException Always fails conversion.
+             */
+            public function __toString(): string
+            {
+                throw new \RuntimeException('Broken project-team slug object');
+            }
+        };
+        $links = $helper::renderActions($team, ['show_team_link' => 1]);
+        if (!str_contains($links, 'ptid=88%3Avalid')) {
+            throw new \RuntimeException('Throwing project-team slug lost its valid fallback.');
+        }
+
         $team->projectteamid = ['also broken'];
         $links = $helper::renderActions($team, ['show_team_link' => 1]);
 
