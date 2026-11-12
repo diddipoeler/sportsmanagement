@@ -29,6 +29,8 @@ final class ExtraSelectOptionsHelper
      * The legacy comma-delimited option collection is capped to avoid
      * excessive rendering work, and blank values are omitted. Excessively
      * long label strings are rejected before parsing to bound memory use.
+     * Invalid field identifiers and label control bytes are rejected before
+     * creating Joomla HTML option objects.
      *
      * @param string $view Backend or frontend template identifier.
      * @param string $field Extra-field name whose choices are requested.
@@ -42,11 +44,11 @@ final class ExtraSelectOptionsHelper
         bool $template = true,
         int $fieldType = 0
     ): array {
-        $view = trim($view);
-        $field = trim($field);
-
-        if ($view === '' || $field === '' || strlen($view) > 255 || strlen($field) > 255
-            || $fieldType < 0 || preg_match('/[\x00-\x1F\x7F]/', $view . $field)) {
+        if ($view === '' || $field === '' || trim($view) !== $view || trim($field) !== $field
+            || strlen($view) > 100 || strlen($field) > 100
+            || preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $view) !== 1
+            || preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $field) !== 1
+            || $fieldType < 0) {
             return [];
         }
 
@@ -111,13 +113,18 @@ final class ExtraSelectOptionsHelper
         $labels = is_string($rawLabels) && trim($rawLabels) !== ''
             ? explode(',', $rawLabels)
             : $values;
+        if (count($labels) > 256) {
+            return [];
+        }
+
         $options = [];
 
         foreach ($values as $key => $value) {
             $value = trim($value);
             $label = trim($labels[$key] ?? $value);
 
-            if ($value === '') {
+            if ($value === '' || strlen($value) > 255 || strlen($label) > 255
+                || preg_match('/[\x00-\x1F\x7F]/', $value . $label) === 1) {
                 continue;
             }
 
