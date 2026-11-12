@@ -51,6 +51,19 @@ foreach ([PersonNameFormatter::class, NameFormatter::class] as $formatter) {
     smAssertSame($formatter::format(null, 'Ömer', '', 'Müller', 18), 'M. Ö.', $formatter . ' both initials');
     smAssertSame($formatter::format('Dr.', 'Anna', '', 'Meier', 3), 'Dr. Anna Meier', $formatter . ' prefix');
     smAssertSame($formatter::format(null, 'Anna', '', 'Meier', 2), 'Meier, Anna', $formatter . ' surname first');
+    // Legacy multiline name formats must use valid HTML line-break markup.
+    foreach ([15, 16] as $multiLineFormat) {
+        smAssertSame(
+            $formatter::format(null, 'Anna', '', 'Meier', $multiLineFormat),
+            'Meier <br /> Anna',
+            $formatter . ' valid HTML break for format ' . $multiLineFormat
+        );
+        smAssertSame(
+            $formatter::format(null, 'Anna', '', '', $multiLineFormat),
+            'Anna',
+            $formatter . ' does not emit orphan break without surname'
+        );
+    }
 }
 
 smAssertSame(SportsManagementDateHelper::toSqlDate('29.02.2024'), '2024-02-29', 'valid leap day');
