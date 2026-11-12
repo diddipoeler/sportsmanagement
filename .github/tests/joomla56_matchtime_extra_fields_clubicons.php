@@ -75,10 +75,10 @@ namespace {
     $admin = \file_get_contents($root . '/admin/src/Helper/ExtraFieldsReadHelper.php');
 
     if (!\is_string($admin)
-        || !\str_contains($admin, "->bind(':extraFieldItemId', $itemId, ParameterType::INTEGER)")
-        || !\str_contains($admin, "->bind(':extraFieldTemplate', $view, ParameterType::STRING)")
-        || !\str_contains($admin, "preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $view)")
-        || \str_contains($admin, "' = ' . $itemId")) {
+        || !\str_contains($admin, '->bind(\':extraFieldItemId\', $itemId, ParameterType::INTEGER)')
+        || !\str_contains($admin, '->bind(\':extraFieldTemplate\', $view, ParameterType::STRING)')
+        || !\str_contains($admin, 'preg_match(\'/^[A-Za-z][A-Za-z0-9_-]*$/D\', $view)')
+        || \str_contains($admin, '\' = \' . $itemId')) {
         throw new \RuntimeException('Administrator extra-field query validation has regressed.');
     }
 
