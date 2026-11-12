@@ -17,8 +17,30 @@ if (!$row) {
     return;
 }
 
-$e = static fn(mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
-$mode = strtoupper((string) $params->get('mode', 'S'));
+$e = static fn(mixed $value): string => htmlspecialchars(
+    is_scalar($value) ? (string) $value : '',
+    ENT_QUOTES | ENT_SUBSTITUTE,
+    'UTF-8'
+);
+// These parameters are inserted into CSS declarations, not just HTML text.
+// Restrict them to hex and named CSS colours to prevent declaration injection.
+$safeColor = static function (mixed $value, string $default): string {
+    return is_string($value)
+        && strlen($value) <= 40
+        && preg_match('/^(?:#[0-9a-fA-F]{3,4}|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}|[a-zA-Z]{3,30})$/D', $value) === 1
+        ? $value : $default;
+};
+// CSS lengths must remain finite and within a practical display range.
+$safeWidth = static function (mixed $value): int {
+    if (!is_int($value) && !is_string($value)) {
+        return 50;
+    }
+    $text = (string) $value;
+    return strlen($text) <= 5 && preg_match('/^[0-9]{1,5}$/D', $text) === 1
+        ? min(1000, max(1, (int) $text)) : 50;
+};
+$rawMode = $params->get('mode', 'S');
+$mode = is_string($rawMode) ? strtoupper($rawMode) : 'S';
 $name = $e($row->display_name);
 $playerUrl = $e($row->player_url);
 $teamUrl = $e($row->team_url);
@@ -30,9 +52,9 @@ $teamName = $e($row->team_name);
 $positionName = $e($row->position_name);
 
 if ($mode === 'S') {
-    $border = $e($params->get('border_color', 'rebeccapurple'));
-    $inside = $e($params->get('background_color', $params->get('inside_color', '#cccccc')));
-    $textColor = $e($params->get('text_color', '#ffffff'));
+    $border = $safeColor($params->get('border_color', 'rebeccapurple'), 'rebeccapurple');
+    $inside = $safeColor($params->get('background_color', $params->get('inside_color', '#cccccc')), '#cccccc');
+    $textColor = $safeColor($params->get('text_color', '#ffffff'), '#ffffff');
     ?>
     <div class="mod-sm-randomplayer-card" style="border:2px solid <?php echo $border; ?>;background:<?php echo $inside; ?>;border-radius:20px;padding:1rem;max-width:250px;box-shadow:10px 10px 6px 3px #474747;color:<?php echo $textColor; ?>;">
         <?php if ($picture !== '') : ?>
@@ -51,7 +73,7 @@ if ($mode === 'S') {
 <div class="container-fluid mod-sm-randomplayer">
     <?php if ($params->get('show_project_name', 1)) : ?><h4><?php echo $projectName; ?></h4><?php endif; ?>
     <?php if ($picture !== '') : ?>
-        <p><a href="<?php echo $playerUrl; ?>"><img src="<?php echo $picture; ?>" alt="<?php echo $name; ?>" style="max-width:<?php echo (int) $params->get('picture_width', 50); ?>px;height:auto;"></a></p>
+        <p><a href="<?php echo $playerUrl; ?>"><img src="<?php echo $picture; ?>" alt="<?php echo $name; ?>" style="max-width:<?php echo $safeWidth($params->get('picture_width', 50)); ?>px;height:auto;"></a></p>
     <?php endif; ?>
     <p>
         <?php if ($params->get('show_player_flag', 1) && $flag !== '') : ?><img src="<?php echo $flag; ?>" alt="<?php echo $e($row->country); ?>" style="max-width:24px;height:auto;"> <?php endif; ?>
@@ -59,9 +81,9 @@ if ($mode === 'S') {
     </p>
     <?php if ($params->get('show_team_name', 1)) : ?>
         <p>
-            <?php if ($teamPicture !== '') : ?><img src="<?php echo $teamPicture; ?>" alt="<?php echo $teamName; ?>" style="max-width:<?php echo (int) $params->get('team_picture_width', 50); ?>px;height:auto;"> <?php endif; ?>
+            <?php if ($teamPicture !== '') : ?><img src="<?php echo $teamPicture; ?>" alt="<?php echo $teamName; ?>" style="max-width:<?php echo $safeWidth($params->get('team_picture_width', 50)); ?>px;height:auto;"> <?php endif; ?>
             <?php if ($params->get('show_team_link', 1)) : ?><a href="<?php echo $teamUrl; ?>"><?php echo $teamName; ?></a><?php else : ?><?php echo $teamName; ?><?php endif; ?>
         </p>
     <?php endif; ?>
-    <?php if ($params->get('show_position_name', 1) && $positionName !== '') : ?><p><?php echo Text::_((string) $row->position_name); ?></p><?php endif; ?>
+    <?php if ($params->get('show_position_name', 1) && $positionName !== '') : ?><p><?php echo $e(Text::_(is_string($row->position_name ?? null) ? $row->position_name : '')); ?></p><?php endif; ?>
 </div>
