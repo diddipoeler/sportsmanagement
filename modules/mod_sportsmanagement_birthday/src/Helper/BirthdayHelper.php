@@ -33,6 +33,8 @@ final class BirthdayHelper
      * Resolves project/team and database selections, loads eligible persons,
      * computes upcoming birthdays in the site timezone and returns the
      * display-ready names, pictures, flags and links used by the template.
+     * Driver errors are logged by exception type, avoiding accidental SQL
+     * statement or credential exposure from third-party exception messages.
      * @param Registry $params Birthday module configuration.
      * @param Registry $componentParams SportsManagement component defaults.
      * @param CMSApplicationInterface $app Active Joomla site application.
@@ -143,7 +145,7 @@ final class BirthdayHelper
         } catch (\Throwable $e) {
             // Database and SQL details belong in the administrator log, not in
             // messages rendered to public site visitors.
-            Log::add('SportsManagement Birthday query failed: ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add('SportsManagement Birthday query failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
             $rows = [];
         }
 
