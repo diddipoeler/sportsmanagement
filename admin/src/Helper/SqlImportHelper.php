@@ -26,7 +26,9 @@ final class SqlImportHelper
      * Rejects unexpected parser records instead of silently dropping SQL
      * statements from an import and reporting partial success. Validates
      * the entire parsed batch before executing any statements so malformed
-     * later entries cannot cause avoidable partial migrations.
+     * later entries cannot cause avoidable partial migrations. Treats an
+     * explicit false execution result as a failed import, even when a
+     * database driver does not throw an exception.
      *
      * @param DatabaseInterface $db Joomla database connection for import.
      * @param string $sqlFile Absolute path to the trusted SQL script.
@@ -86,7 +88,9 @@ final class SqlImportHelper
         }
 
         foreach ($validated as $statement) {
-            $db->setQuery($statement)->execute();
+            if ($db->setQuery($statement)->execute() === false) {
+                throw new \RuntimeException('SQL import statement execution failed.');
+            }
         }
     }
 }
