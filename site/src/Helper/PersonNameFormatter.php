@@ -134,7 +134,7 @@ final class PersonNameFormatter
             case 15:
             case 16:
                 self::append($parts, $lastName);
-                self::append($parts, $lastName !== '' ? '<br \\>' : '');
+                self::append($parts, $lastName !== '' ? '<br />' : '');
                 self::append($parts, $firstName);
                 break;
 
