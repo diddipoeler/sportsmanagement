@@ -24,7 +24,8 @@ final class ExtensionLanguageHelper
      * the component's language extension folder. Only installed, safe view
      * names are returned, so callers never load arbitrary filesystem paths.
      * Canonical directory checks also reject symlinks pointing outside the
-     * installed component's extension directory.
+     * installed component's extension directory. Rejects non-directories
+     * and invalid root folders before resolving individual extension names.
      *
      * @param string $view Joomla administrator view identifier.
      * @return list<string> Available extension view name, or an empty list.
@@ -40,7 +41,7 @@ final class ExtensionLanguageHelper
 
         $root = realpath(JPATH_SITE . '/components/com_sportsmanagement/extensions');
 
-        if ($root === false) {
+        if ($root === false || !is_dir($root)) {
             return [];
         }
 
@@ -48,6 +49,7 @@ final class ExtensionLanguageHelper
 
         // An installed symlink must not escape the component extension root.
         if ($path === false || !is_dir($path)
+            || $path === $root
             || !str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
             return [];
         }
