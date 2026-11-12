@@ -28,8 +28,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Loads component translations, queries native navigation data and
      * registers CSS and deferred scripts. Only the expected navigation
      * template variables are copied into the Joomla module context, so
-     * unexpected helper keys cannot overwrite framework-owned values. Invalid module database
-     * selections return false before any navigation links are rendered.
+     * unexpected helper keys cannot overwrite framework-owned values.
+     * Invalid module database selections stop navigation link rendering.
      *
      * @return array|false Layout variables, or false if Joomla skips rendering.
      * @throws \RuntimeException When called outside the site or without a database.
