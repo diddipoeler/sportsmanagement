@@ -54,7 +54,9 @@ final class ProjectNavigationHelper
      *
      * Rejects empty project names and invalid league IDs, binds league
      * and name parameters using Joomla DatabaseInterface, and limits
-     * the result to one neighbouring project in the same league.
+     * the result to one neighbouring project in the same league. Where the
+     * current project has an ID, equal-name neighbours are ordered by that
+     * ID to avoid skipping projects with identical display names.
      *
      * @param DatabaseInterface $db Joomla database connection.
      * @param object $project Current project providing league and name.
@@ -64,7 +66,10 @@ final class ProjectNavigationHelper
     private static function find(DatabaseInterface $db, object $project, bool $next): ?object
     {
         $leagueId = (int) ($project->league_id ?? 0);
-        $name = trim((string) ($project->name ?? ''));
+        $name = is_string($project->name ?? null) ? trim($project->name) : '';
+        $projectId = filter_var($project->id ?? null, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
 
         if ($leagueId <= 0 || $name === '') {
             return null;
@@ -79,10 +84,22 @@ final class ProjectNavigationHelper
             ])
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.league_id') . ' = :navigationLeagueId')
-            ->where($db->quoteName('p.name') . ' ' . $operator . ' :navigationProjectName')
-            ->order($db->quoteName('p.name') . ' ' . $direction)
             ->bind(':navigationLeagueId', $leagueId, ParameterType::INTEGER)
             ->bind(':navigationProjectName', $name, ParameterType::STRING);
+
+        if ($projectId !== false && $projectId !== null) {
+            $query->where('(' . $db->quoteName('p.name') . ' ' . $operator . ' :navigationProjectName'
+                . ' OR (' . $db->quoteName('p.name') . ' = :navigationEqualName'
+                . ' AND ' . $db->quoteName('p.id') . ' ' . $operator . ' :navigationProjectId))')
+                ->bind(':navigationEqualName', $name, ParameterType::STRING)
+                ->bind(':navigationProjectId', $projectId, ParameterType::INTEGER);
+        } else {
+            // Legacy callers without a project ID retain name-only navigation.
+            $query->where($db->quoteName('p.name') . ' ' . $operator . ' :navigationProjectName');
+        }
+
+        $query->order($db->quoteName('p.name') . ' ' . $direction)
+            ->order($db->quoteName('p.id') . ' ' . $direction);
 
         $db->setQuery($query, 0, 1);
 
