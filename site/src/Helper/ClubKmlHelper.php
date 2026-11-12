@@ -24,6 +24,8 @@ final class ClubKmlHelper
      * Validates the club identifier and geographic coordinate range,
      * safely escapes XML content and creates the KML file within Joomla's
      * temporary folder, optionally including a validated picture URL.
+     * Rejects invalid XML controls and refuses pre-existing symlink output
+     * files to avoid overwriting an unrelated target through the tmp folder.
      *
      * @param int $clubId Club identifier used in the output filename.
      * @param string $address Club location and description.
@@ -51,6 +53,7 @@ final class ClubKmlHelper
             || $latitude > 90.0
             || $longitude < -180.0
             || $longitude > 180.0
+            || preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $name . $address) === 1
         ) {
             return false;
         }
@@ -90,8 +93,15 @@ final class ClubKmlHelper
             return false;
         }
 
+        $filename = $directory . '/' . $clubId . '-club.kml';
+
+        // Reject symlinks even if their target does not currently exist.
+        if (is_link($filename)) {
+            return false;
+        }
+
         try {
-            return File::write($directory . '/' . $clubId . '-club.kml', $kml);
+            return File::write($filename, $kml);
         } catch (\Throwable) {
             return false;
         }
