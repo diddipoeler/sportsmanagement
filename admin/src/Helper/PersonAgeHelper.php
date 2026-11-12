@@ -54,15 +54,15 @@ final class PersonAgeHelper
      *
      * Rejects zero dates, empty values, invalid leap days, malformed time
      * suffixes and dates which PHP would otherwise normalize by rollover.
+     * The database ISO contract is strict: leading or trailing whitespace
+     * must not silently turn malformed stored values into valid birthdays.
      *
      * @param string $value Date in YYYY-MM-DD or YYYY-MM-DD HH:MM:SS format.
      * @return \DateTimeImmutable|null Calendar day at midnight, or null on failure.
      */
     private function parseDate(string $value): ?\DateTimeImmutable
     {
-        $value = trim($value);
-
-        if ($value === '' || str_starts_with($value, '0000-00-00')) {
+        if ($value === '' || trim($value) !== $value || str_starts_with($value, '0000-00-00')) {
             return null;
         }
 
