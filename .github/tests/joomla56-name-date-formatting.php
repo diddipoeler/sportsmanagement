@@ -63,6 +63,11 @@ foreach ([PersonNameFormatter::class, NameFormatter::class] as $formatter) {
             'Anna',
             $formatter . ' does not emit orphan break without surname'
         );
+        smAssertSame(
+            $formatter::format(null, '', '', 'Meier', $multiLineFormat),
+            'Meier',
+            $formatter . ' does not emit orphan break without first name'
+        );
     }
 }
 
