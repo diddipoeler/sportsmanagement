@@ -225,12 +225,15 @@ final class CountryOptionsHelper
     /**
      * Log country lookup failures without exposing database details in HTML.
      *
+     * The exception class is sufficient for categorising failures without
+     * leaking SQL queries, credentials or private connection endpoints.
+     *
      * @param \Throwable $e Country database failure to log.
      * @return void
      */
     private static function reportDatabaseError(\Throwable $e): void
     {
-        Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+        Log::add(__METHOD__ . ': country query failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
     }
 
     /**
