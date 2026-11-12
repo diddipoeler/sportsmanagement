@@ -47,6 +47,47 @@ try {
         throw new RuntimeException('Invalid team short name broke escaped fallback.');
     }
 
+    // Legacy model adapters can expose objects that implement Stringable
+    // but throw during conversion. Keep the visible team-name fallback.
+    $brokenText = new class implements Stringable {
+        /**
+         * Simulate a broken imported team/project text value.
+         * @return string This fixture always throws instead.
+         * @throws RuntimeException Expected conversion failure.
+         */
+        public function __toString(): string
+        {
+            throw new RuntimeException('Broken imported team text');
+        }
+    };
+
+    foreach ([$brokenText, INF, NAN, true] as $invalidName) {
+        $fallbackTeam = (object) [
+            'name' => 'North FC',
+            'short_name' => $invalidName,
+            'middle_name' => '',
+        ];
+        if (TeamPresentationHelper::formatName($fallbackTeam, 'team', ['team_name_format' => 0])
+            !== '<span style="padding:2px;">North FC</span>') {
+            throw new RuntimeException('Invalid team display field prevented fallback.');
+        }
+    }
+
+    $brokenProject = (object) [
+        'fav_team_text_bold' => $brokenText,
+        'fav_team_text_color' => $brokenText,
+        'fav_team_color' => NAN,
+    ];
+    if (TeamPresentationHelper::formatName(
+        (object) ['name' => 'North FC'],
+        'team',
+        ['highlight_fav' => 1],
+        true,
+        $brokenProject
+    ) !== '<span style="padding:2px;">North FC</span>') {
+        throw new RuntimeException('Broken project Stringable corrupted highlight markup.');
+    }
+
     // Incomplete team imports may contain only the middle or short name.
     // Every configured style should display an available alternative.
     $partialNames = (object) [
