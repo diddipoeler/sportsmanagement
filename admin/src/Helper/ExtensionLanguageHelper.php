@@ -23,6 +23,8 @@ final class ExtensionLanguageHelper
      * Rejects path separators and unsupported characters before examining
      * the component's language extension folder. Only installed, safe view
      * names are returned, so callers never load arbitrary filesystem paths.
+     * Canonical directory checks also reject symlinks pointing outside the
+     * installed component's extension directory.
      *
      * @param string $view Joomla administrator view identifier.
      * @return list<string> Available extension view name, or an empty list.
@@ -36,8 +38,20 @@ final class ExtensionLanguageHelper
             return [];
         }
 
-        $path = JPATH_SITE . '/components/com_sportsmanagement/extensions/' . $view;
+        $root = realpath(JPATH_SITE . '/components/com_sportsmanagement/extensions');
 
-        return is_dir($path) ? [$view] : [];
+        if ($root === false) {
+            return [];
+        }
+
+        $path = realpath($root . DIRECTORY_SEPARATOR . $view);
+
+        // An installed symlink must not escape the component extension root.
+        if ($path === false || !is_dir($path)
+            || !str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
+            return [];
+        }
+
+        return [$view];
     }
 }
