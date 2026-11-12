@@ -29,7 +29,10 @@ final class RquotesHelper
     /**
      * Create the random-quote layout context for the Joomla site module.
      *
-     * Chooses text or database content, validates media-server configuration, rotates quotes according to the module settings and falls back to empty results on database errors.
+     * Chooses text or database content, validates media-server configuration,
+     * rotates quotes according to module settings and falls back to empty
+     * results on database errors. Logs the exception class without disclosing
+     * SQL statements or connection details from third-party drivers.
      *
      * @param Registry $params Module display and selection settings.
      * @param Registry $componentParams SportsManagement component configuration.
@@ -121,7 +124,7 @@ final class RquotesHelper
             // SQL, credentials and filesystem details belong in the server log,
             // never in a message displayed to anonymous site visitors.
             Log::add(
-                'SportsManagement Rquotes query failed: ' . $e->getMessage(),
+                'SportsManagement Rquotes query failed (' . get_class($e) . ').',
                 Log::ERROR,
                 'com_sportsmanagement'
             );
