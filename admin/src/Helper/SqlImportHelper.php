@@ -24,7 +24,9 @@ final class SqlImportHelper
      * Joomla's installer parser, and skips empty statements. Database errors
      * propagate to the caller so failed migrations cannot appear successful.
      * Rejects unexpected parser records instead of silently dropping SQL
-     * statements from an import and reporting partial success.
+     * statements from an import and reporting partial success. Validates
+     * the entire parsed batch before executing any statements so malformed
+     * later entries cannot cause avoidable partial migrations.
      *
      * @param DatabaseInterface $db Joomla database connection for import.
      * @param string $sqlFile Absolute path to the trusted SQL script.
@@ -61,6 +63,8 @@ final class SqlImportHelper
             throw new \RuntimeException('SQL import parser returned an invalid result.');
         }
 
+        $validated = [];
+
         foreach ($statements as $statement) {
             if (is_array($statement)) {
                 $statement = $statement['query'] ?? null;
@@ -78,6 +82,10 @@ final class SqlImportHelper
                 continue;
             }
 
+            $validated[] = $statement;
+        }
+
+        foreach ($validated as $statement) {
             $db->setQuery($statement)->execute();
         }
     }
