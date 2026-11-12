@@ -23,7 +23,8 @@ final class MatchResultHelper
      *
      * Rejects cancelled matches and missing scores, handles alternate
      * decision scores where present and compares the home/away values
-     * against the selected team's home or away position.
+     * against the selected team's home or away position. Unrelated teams,
+     * nonnumeric results and nonfinite scores have no known outcome.
      *
      * @param object $game Match row with results and project team IDs.
      * @param int $projectTeamId Project team whose result is requested.
@@ -39,26 +40,34 @@ final class MatchResultHelper
         $homeProperty = $useDecision ? 'team1_result_decision' : 'team1_result';
         $awayProperty = $useDecision ? 'team2_result_decision' : 'team2_result';
 
-        if (!isset($game->{$homeProperty}, $game->{$awayProperty})) {
+        $isHomeTeam = (int) ($game->projectteam1_id ?? 0) === $projectTeamId;
+        $isAwayTeam = (int) ($game->projectteam2_id ?? 0) === $projectTeamId;
+
+        // A third-party team must not receive a draw for an unrelated match.
+        if (!$isHomeTeam && !$isAwayTeam) {
+            return false;
+        }
+
+        if (!isset($game->{$homeProperty}, $game->{$awayProperty})
+            || !is_numeric($game->{$homeProperty}) || !is_numeric($game->{$awayProperty})) {
             return false;
         }
 
         $home = (float) $game->{$homeProperty};
         $away = (float) $game->{$awayProperty};
 
+        // Infinity and NaN are not valid scores and cannot be compared reliably.
+        if (!is_finite($home) || !is_finite($away)) {
+            return false;
+        }
+
         if ($home === $away) {
             return 0;
         }
 
-        if ((int) ($game->projectteam1_id ?? 0) === $projectTeamId) {
-            return $home > $away ? 1 : -1;
-        }
-
-        if ((int) ($game->projectteam2_id ?? 0) === $projectTeamId) {
-            return $away > $home ? 1 : -1;
-        }
-
-        return false;
+        return $isHomeTeam
+            ? ($home > $away ? 1 : -1)
+            : ($away > $home ? 1 : -1);
     }
 
     /**
