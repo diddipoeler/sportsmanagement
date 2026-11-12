@@ -26,8 +26,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Build the navigation menu context for Joomla's site module renderer.
      *
      * Loads component translations, queries native navigation data and
-     * registers CSS and deferred scripts without allowing helper results
-     * to overwrite Joomla's module context. Invalid module database
+     * registers CSS and deferred scripts. Only the expected navigation
+     * template variables are copied into the Joomla module context, so
+     * unexpected helper keys cannot overwrite framework-owned values. Invalid module database
      * selections return false before any navigation links are rendered.
      *
      * @return array|false Layout variables, or false if Joomla skips rendering.
@@ -69,11 +70,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
-        // Keep the Joomla-provided module, params and layout immutable.
-        unset($payload['module'], $payload['params'], $payload['layout']);
-
-        foreach ($payload as $key => $value) {
-            $data[$key] = $value;
+        // Copy only the template contract, keeping all framework-owned
+        // context variables immutable even if the helper changes later.
+        foreach ([
+            'helper', 'seasonselect', 'leagueselect', 'projectselect',
+            'divisionselect', 'teamselect', 'defaultview', 'defaultitemid',
+        ] as $key) {
+            if (array_key_exists($key, $payload)) {
+                $data[$key] = $payload[$key];
+            }
         }
 
         $document = $app->getDocument();
