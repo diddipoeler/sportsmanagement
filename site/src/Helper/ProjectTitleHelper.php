@@ -52,6 +52,8 @@ final class ProjectTitleHelper
      * Collects available person, venue, team, club and round labels,
      * combines the project and division, and appends league and season
      * details according to the existing page_title_format option.
+     * Invalid nested legacy values are ignored rather than being cast to
+     * strings, avoiding warnings on PHP 8 and malformed page titles.
      *
      * @param object $titleInfo Title components created by createInfo().
      * @param int|string $format Legacy numeric page title format selector.
@@ -62,14 +64,15 @@ final class ProjectTitleHelper
         $parts = [];
 
         foreach (['personName', 'playgroundName'] as $property) {
-            $value = trim((string) ($titleInfo->{$property} ?? ''));
+            $raw = $titleInfo->{$property} ?? '';
+            $value = is_string($raw) || is_int($raw) ? trim((string) $raw) : '';
             if ($value !== '') {
                 $parts[] = $value;
             }
         }
 
-        $team1 = trim((string) ($titleInfo->team1Name ?? ''));
-        $team2 = trim((string) ($titleInfo->team2Name ?? ''));
+        $team1 = self::titleText($titleInfo->team1Name ?? null);
+        $team2 = self::titleText($titleInfo->team2Name ?? null);
         if ($team1 !== '') {
             $parts[] = $team2 !== '' ? $team1 . ' - ' . $team2 : $team1;
         }
@@ -81,14 +84,14 @@ final class ProjectTitleHelper
             }
         }
 
-        $projectDivision = trim((string) ($titleInfo->projectName ?? ''));
-        $division = trim((string) ($titleInfo->divisionName ?? ''));
+        $projectDivision = self::titleText($titleInfo->projectName ?? null);
+        $division = self::titleText($titleInfo->divisionName ?? null);
         if ($division !== '') {
-            $projectDivision .= ($projectDivision !== '' ? ' - ' : ' - ') . $division;
+            $projectDivision .= ($projectDivision !== '' ? ' - ' : '') . $division;
         }
 
-        $league = trim((string) ($titleInfo->leagueName ?? ''));
-        $season = trim((string) ($titleInfo->seasonName ?? ''));
+        $league = self::titleText($titleInfo->leagueName ?? null);
+        $season = self::titleText($titleInfo->seasonName ?? null);
 
         switch ((int) $format) {
             case 0:
@@ -128,7 +131,30 @@ final class ProjectTitleHelper
                 break;
         }
 
-        return (string) ($titleInfo->prefix ?? '') . ': ' . implode(' | ', $parts);
+        return self::titleText($titleInfo->prefix ?? null) . ': ' . implode(' | ', $parts);
+    }
+
+    /**
+     * Coerce only safe printable scalar page-title fragments.
+     *
+     * Import data may provide unexpected nested values for optional title
+     * fields. Ignoring arrays, objects and non-finite floats avoids PHP 8
+     * conversion diagnostics and invalid frontend metadata.
+     *
+     * @param mixed $value Raw project, club, team or title fragment.
+     * @return string Trimmed fragment, or empty text for invalid input.
+     */
+    private static function titleText(mixed $value): string
+    {
+        if (is_float($value) && !is_finite($value)) {
+            return '';
+        }
+
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            return '';
+        }
+
+        return trim((string) $value);
     }
 
     /**
