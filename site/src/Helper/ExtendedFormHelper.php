@@ -15,6 +15,8 @@ use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Registry\Registry;
 
 /**
@@ -28,7 +30,8 @@ final class ExtendedFormHelper
      * Restricts the form definition to the component's extended assets,
      * resolves Joomla's form factory and binds the supplied Registry
      * values after loading its XML. Returns false when the definition
-     * cannot be located or loaded, while reporting parsing errors.
+     * cannot be located or loaded. Rejects unsafe form identifiers and logs
+     * failures privately rather than exposing parser details in site HTML.
      *
      * @param string $data Optional serialised form values.
      * @param string $file Extended form definition name, without .xml.
@@ -36,9 +39,10 @@ final class ExtendedFormHelper
      */
     public static function load(string $data = '', string $file = ''): Form|false
     {
-        $file = basename($file);
-
-        if ($file === '') {
+        // Never convert an unsafe path into a different valid form name.
+        // Form identifiers are simple filenames, not user-controlled paths.
+        if ($file === '' || strlen($file) > 100
+            || preg_match('/^[A-Za-z0-9_-]+$/D', $file) !== 1) {
             return false;
         }
 
@@ -73,7 +77,12 @@ final class ExtendedFormHelper
 
             return $form;
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            Log::add(
+                __METHOD__ . ': extended form loading failed (' . get_class($e) . ').',
+                Log::WARNING,
+                'com_sportsmanagement'
+            );
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return false;
         }
