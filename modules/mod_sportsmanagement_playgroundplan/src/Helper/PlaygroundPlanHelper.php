@@ -33,7 +33,9 @@ final class PlaygroundPlanHelper
      *
      * Selects projects and grounds, queries published upcoming matches,
      * discards malformed result rows, and validates project IDs, aliases and
-     * logo fields before preparing venue links. Errors return an empty list.
+     * logo fields before preparing venue links. Invalid database selectors
+     * fail closed instead of querying the default database. Errors return an
+     * empty list without exposing internal SQL or connection details.
      *
      * @param Registry $params Module filters and display settings.
      * @param CMSApplicationInterface $app Current Joomla application.
@@ -45,6 +47,12 @@ final class PlaygroundPlanHelper
         try {
             if (!$app->isClient('site')) {
                 throw new \RuntimeException('SportsManagement PlaygroundPlan requires the Joomla site application.', 500);
+            }
+
+            // Reject a malformed external database selection before querying.
+            // Casting invalid settings to zero would select an unrelated DB.
+            if (self::databaseSelector($params->get('cfg_which_database', 0)) === null) {
+                return [];
             }
 
             $projectSelection = $params->get('projects', []);
@@ -137,7 +145,7 @@ final class PlaygroundPlanHelper
             $db->setQuery($query, 0, $limit);
             $loadedRows = $db->loadObjectList();
             $rows = self::validFixtureRows($loadedRows);
-            $cfg = self::nonNegativeInteger($params->get('cfg_which_database', 0));
+            $cfg = self::databaseSelector($params->get('cfg_which_database', 0));
             $season = self::nonNegativeInteger($params->get('s', 0));
             $showLink = self::nonNegativeInteger($params->get('show_playground_link', 1)) === 1;
             $showLogos = self::nonNegativeInteger($params->get('show_club_logo', 1)) === 1;
@@ -174,7 +182,7 @@ final class PlaygroundPlanHelper
             return $rows;
         } catch (\Throwable $exception) {
             // Keep SQL and service exception details out of public pages.
-            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ': playground fixture query failed (' . get_class($exception) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage('SportsManagement playground fixtures could not be loaded.', 'error');
 
             return [];
@@ -250,8 +258,33 @@ final class PlaygroundPlanHelper
     {
         return SportsManagementDatabaseResolver::resolve(
             $fallbackDatabase,
-            self::nonNegativeInteger($params->get('cfg_which_database', 0))
+            self::databaseSelector($params->get('cfg_which_database', 0))
         );
+    }
+
+    /**
+     * Validate the SportsManagement database selector before querying fixtures.
+     *
+     * Supports the primary Joomla database (0) and configured external
+     * SportsManagement database (1). Rejects booleans, arrays, floating-point
+     * values, arbitrary numeric strings and overflowing selectors so malformed
+     * module configuration cannot silently fall back to the primary database.
+     *
+     * @param mixed $value Raw module database configuration value.
+     * @return int|null Exactly 0 or 1 when valid, otherwise null.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 
     /**
