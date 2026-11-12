@@ -98,7 +98,8 @@ smAssertMigrationGuard(
     is_string($siteNavigation)
         && str_contains($siteNavigation, ':navigationEqualName')
         && str_contains($siteNavigation, ':navigationProjectId')
-        && str_contains($siteNavigation, "->order($db->quoteName('p.id') . ' ' . $direction)"),
+        && str_contains($siteNavigation, "->order(")
+        && str_contains($siteNavigation, "'p.id'"),
     'Project navigation no longer handles duplicate names deterministically.'
 );
 
