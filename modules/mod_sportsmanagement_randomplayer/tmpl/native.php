@@ -12,7 +12,7 @@
 use Joomla\CMS\Language\Text;
 
 $row = $list['player'] ?? null;
-if (!$row) {
+if (!is_object($row)) {
     echo '<p class="modjlgrandomplayer">' . Text::_('NO ITEMS') . '</p>';
     return;
 }
@@ -41,15 +41,15 @@ $safeWidth = static function (mixed $value): int {
 };
 $rawMode = $params->get('mode', 'S');
 $mode = is_string($rawMode) ? strtoupper($rawMode) : 'S';
-$name = $e($row->display_name);
-$playerUrl = $e($row->player_url);
-$teamUrl = $e($row->team_url);
-$picture = $e($row->picture_url);
-$teamPicture = $e($row->team_picture_url);
-$flag = $e($row->flag_url);
-$projectName = $e($row->project_name);
-$teamName = $e($row->team_name);
-$positionName = $e($row->position_name);
+$name = $e($row->display_name ?? '');
+$playerUrl = $e($row->player_url ?? '');
+$teamUrl = $e($row->team_url ?? '');
+$picture = $e($row->picture_url ?? '');
+$teamPicture = $e($row->team_picture_url ?? '');
+$flag = $e($row->flag_url ?? '');
+$projectName = $e($row->project_name ?? '');
+$teamName = $e($row->team_name ?? '');
+$positionName = $e($row->position_name ?? '');
 
 if ($mode === 'S') {
     $border = $safeColor($params->get('border_color', 'rebeccapurple'), 'rebeccapurple');
@@ -64,7 +64,7 @@ if ($mode === 'S') {
         <?php if ($positionName !== '') : ?><p><?php echo $positionName; ?></p><?php endif; ?>
         <p><?php echo $projectName; ?></p>
         <p><a href="<?php echo $teamUrl; ?>"><?php echo $teamName; ?></a></p>
-        <?php if ($flag !== '') : ?><img src="<?php echo $flag; ?>" alt="<?php echo $e($row->country); ?>" style="max-width:30px;height:auto;"><?php endif; ?>
+        <?php if ($flag !== '') : ?><img src="<?php echo $flag; ?>" alt="<?php echo $e($row->country ?? ''); ?>" style="max-width:30px;height:auto;"><?php endif; ?>
     </div>
     <?php
     return;
