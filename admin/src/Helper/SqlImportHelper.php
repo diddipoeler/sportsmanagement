@@ -23,6 +23,8 @@ final class SqlImportHelper
      * Verifies that the selected file is readable, splits its contents using
      * Joomla's installer parser, and skips empty statements. Database errors
      * propagate to the caller so failed migrations cannot appear successful.
+     * Rejects unexpected parser records instead of silently dropping SQL
+     * statements from an import and reporting partial success.
      *
      * @param DatabaseInterface $db Joomla database connection for import.
      * @param string $sqlFile Absolute path to the trusted SQL script.
@@ -53,15 +55,21 @@ final class SqlImportHelper
             return;
         }
 
-        foreach (Installer::splitSql($sql) as $statement) {
+        $statements = Installer::splitSql($sql);
+
+        if (!is_array($statements)) {
+            throw new \RuntimeException('SQL import parser returned an invalid result.');
+        }
+
+        foreach ($statements as $statement) {
             if (is_array($statement)) {
-                $statement = $statement['query'] ?? '';
+                $statement = $statement['query'] ?? null;
             }
 
-            // Joomla's SQL splitter may return structured rows; ignore any
-            // malformed value rather than casting an array or object to text.
+            // Silently skipping malformed parser records can leave an import
+            // only partially installed while incorrectly reporting success.
             if (!is_string($statement)) {
-                continue;
+                throw new \RuntimeException('SQL import parser returned an invalid statement.');
             }
 
             $statement = trim($statement);
