@@ -26,6 +26,8 @@ final class MatchTimeHelper
      * regular or additional time window. Escape the final live-status title
      * and translated label only once so user-configured text cannot create
      * markup or display HTML entities literally in tooltip attributes.
+     * Non-scalar legacy values and invalid dates fall back to an unavailable
+     * time instead of causing PHP 8 conversion errors.
      * @param object $game Match record with a match_date field.
      * @param array<string,mixed> $config Match time presentation settings.
      * @param array<string,mixed> $overallConfig Global component date options.
@@ -38,14 +40,18 @@ final class MatchTimeHelper
         array $overallConfig,
         ?object $project = null
     ): string {
-        $timeFormat = (string) ($overallConfig['time_format'] ?? 'H:i');
+        $rawTimeFormat = $overallConfig['time_format'] ?? 'H:i';
+        $timeFormat = is_string($rawTimeFormat) && $rawTimeFormat !== ''
+            && strlen($rawTimeFormat) <= 100 ? $rawTimeFormat : 'H:i';
         $timeSuffix = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOCK');
 
         if ($timeSuffix === 'COM_SPORTSMANAGEMENT_GLOBAL_CLOCK') {
             $timeSuffix = '%1$s&nbsp;h';
         }
 
-        $timestamp = strtotime((string) ($game->match_date ?? ''));
+        $rawMatchDate = $game->match_date ?? null;
+        $matchDate = is_string($rawMatchDate) ? trim($rawMatchDate) : '';
+        $timestamp = $matchDate !== '' ? strtotime($matchDate) : false;
         if ($timestamp === false) {
             $matchTime = '--&nbsp;:&nbsp;--';
 
@@ -54,7 +60,7 @@ final class MatchTimeHelper
                 : $matchTime;
         }
 
-        $matchTime = HTMLHelper::date((string) $game->match_date, $timeFormat, 'UTC');
+        $matchTime = HTMLHelper::date($matchDate, $timeFormat, 'UTC');
         $output = !empty($config['show_time_suffix'])
             ? sprintf($timeSuffix, $matchTime)
             : $matchTime;
@@ -72,7 +78,7 @@ final class MatchTimeHelper
             $elapsedMinutes += (int) ($project->add_time ?? 0);
         }
 
-        $matchStamp = strtotime((string) $game->match_date);
+        $matchStamp = $timestamp;
         if ($matchStamp === false || $now < $matchStamp || $now > $matchStamp + ($elapsedMinutes * 60)) {
             return $output;
         }
