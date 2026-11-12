@@ -48,7 +48,7 @@ final class SiteRouteHelper
     /**
      * Build a Joomla router URL from validated component parameters.
      *
-     * Normalises the component option and validates an explicit SportsManagement
+     * Validates the component option and an explicit SportsManagement
      * view and menu Itemid before delegating query encoding to Joomla's Uri
      * and Route services. An invalid view in a generic component query raises
      * an exception rather than producing nested view[] query parameters or
@@ -56,7 +56,7 @@ final class SiteRouteHelper
      *
      * @param array<string,mixed> $parameters Route query components.
      * @return string Joomla frontend URL.
-     * @throws \InvalidArgumentException When an explicit SportsManagement view is malformed.
+     * @throws \InvalidArgumentException When an explicit option or SportsManagement view is malformed.
      */
     public static function query(array $parameters): string
     {
@@ -64,8 +64,11 @@ final class SiteRouteHelper
         // malformed nested input become an option[] query parameter.
         $option = $parameters['option'] ?? 'com_sportsmanagement';
 
-        if (!is_string($option) || !preg_match('/^com_[a-z0-9_]+$/iD', $option)) {
-            $option = 'com_sportsmanagement';
+        // Invalid explicit component names must not silently route visitors to
+        // SportsManagement instead of the component requested by the caller.
+        if (!is_string($option) || strlen($option) > 100
+            || preg_match('/^com_[a-z0-9_]+$/iD', $option) !== 1) {
+            throw new \InvalidArgumentException('Invalid Joomla component route option.');
         }
 
         $option = strtolower($option);
