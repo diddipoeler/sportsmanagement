@@ -27,7 +27,8 @@ final class ExtraSelectOptionsHelper
      * for exact field names and returns an empty list for missing or invalid
      * definitions, without exposing database diagnostics in the form.
      * The legacy comma-delimited option collection is capped to avoid
-     * excessive rendering work, and blank values are omitted.
+     * excessive rendering work, and blank values are omitted. Excessively
+     * long label strings are rejected before parsing to bound memory use.
      *
      * @param string $view Backend or frontend template identifier.
      * @param string $field Extra-field name whose choices are requested.
@@ -75,7 +76,7 @@ final class ExtraSelectOptionsHelper
             // Optional extra fields must not break an administrator form or
             // expose SQL statements and credentials in public error output.
             \Joomla\CMS\Log\Log::add(
-                __METHOD__ . ': ' . $e->getMessage(),
+                __METHOD__ . ': extra-field options query failed (' . get_class($e) . ').',
                 \Joomla\CMS\Log\Log::ERROR,
                 'com_sportsmanagement'
             );
@@ -102,6 +103,11 @@ final class ExtraSelectOptionsHelper
             return [];
         }
         $rawLabels = $result->select_values ?? '';
+
+        if (is_string($rawLabels) && strlen($rawLabels) > 16384) {
+            return [];
+        }
+
         $labels = is_string($rawLabels) && trim($rawLabels) !== ''
             ? explode(',', $rawLabels)
             : $values;
