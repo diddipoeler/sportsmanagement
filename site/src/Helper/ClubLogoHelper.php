@@ -66,7 +66,7 @@ final class ClubLogoHelper
         ];
 
         if ($withSpace) {
-            $attributes['style'] .= 'padding:1px;'
+            $attributes['style'] .= 'padding:1px;';
         }
 
         return HTMLHelper::image($logo, '', $attributes);
