@@ -25,7 +25,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Selects the native template, loads component translations, registers
      * the optional stylesheet when present, and fetches ranking data from
-     * the helper. Missing results become an empty iterable list so the
+     * the helper. Validates the site client before changing the layout
+     * settings. Missing results become an empty iterable list so the
      * frontend template can render without PHP type errors.
      *
      * @return array|false Ranking template variables, or false if skipped.
@@ -39,12 +40,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
-        $data['params']->set('layout', 'native');
         $app = $this->getApplication();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement Ranking requires the Joomla site application.', 500);
         }
+
+        $data['params']->set('layout', 'native');
 
         $language = $app->getLanguage();
         $tag = $language->getTag();
