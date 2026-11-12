@@ -39,7 +39,8 @@ final class ActionLogHelper
      * Derives an administrator view name and a concise entity label, then
      * sends the associated user, action and edit link to Joomla's native
      * ActionlogModel. Nonpositive IDs are ignored because they cannot refer
-     * to a persisted entity or accountable Joomla user.
+     * to a persisted entity or accountable Joomla user. Rejects malformed
+     * view identifiers instead of transforming them into different tasks.
      *
      * @param object $user Acting Joomla user with id and username properties.
      * @param array<string,mixed> $transaction Saved entity row and identifier.
@@ -62,7 +63,13 @@ final class ActionLogHelper
             $view = $app->getInput()->getCmd('view', 'cpanel');
         }
 
-        $view = preg_replace('/[^A-Za-z0-9_-]/', '', strtolower($view)) ?: 'cpanel';
+        // A log target must never silently change to another controller.
+        if (!is_string($view) || $view === '' || strlen($view) > 100
+            || preg_match('/^[A-Za-z][A-Za-z0-9_-]*$/D', $view) !== 1) {
+            return;
+        }
+
+        $view = strtolower($view);
         $type = Text::_($isNew ? 'JTOOLBAR_NEW' : 'JLIB_INSTALLER_UPDATE');
 
         if ($view === 'player') {
@@ -83,7 +90,7 @@ final class ActionLogHelper
             'extension_name' => 'com_sportsmanagement',
             'itemlink' => 'index.php?option=com_sportsmanagement&task=' . $view . '.edit&id=' . $id,
             'userid' => $userId,
-            'username' => (string) $user->username,
+            'username' => is_scalar($user->username ?? null) ? (string) $user->username : '',
             'accountlink' => 'index.php?option=com_users&task=user.edit&id=' . $userId,
         ];
 
