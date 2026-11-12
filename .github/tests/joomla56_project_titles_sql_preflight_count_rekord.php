@@ -72,7 +72,7 @@ namespace Joomla\Registry {
          */
         public function get(string $key, mixed $default = null): mixed
         {
-            return $this->values[$key] ?? $default;
+            return array_key_exists($key, $this->values) ? $this->values[$key] : $default;
         }
     }
 }
