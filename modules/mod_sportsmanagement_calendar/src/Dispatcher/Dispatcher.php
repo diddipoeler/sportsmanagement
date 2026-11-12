@@ -22,7 +22,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Build the frontend calendar template context.
      *
-     * Converts historic layout selections to their supported Joomla 5/6 equivalent and merges helper data without replacing framework-owned context.
+     * Converts historic layout selections to their supported Joomla 5/6
+     * equivalent and merges helper data without replacing framework-owned
+     * context. Unknown layout names are rejected before Joomla resolves a
+     * non-existent template file.
      *
      * @return array|false Module layout variables, or false when skipped.
      * @throws \RuntimeException On invalid application or helper services.
@@ -53,9 +56,14 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             'which_layout',
             $data['params']->get('layout', 'default_jsm')
         );
-        $requestedLayout = is_string($rawLayout) && preg_match('/^[A-Za-z0-9_-]+$/D', $rawLayout)
-            ? $rawLayout
-            : 'default_jsm';
+        $requestedLayout = is_string($rawLayout) && in_array($rawLayout, [
+            'default',
+            'default_jsm',
+            'default_bootstrap',
+            'default_zabuto',
+            'default_arrobefr',
+            'default_tuicalendar',
+        ], true) ? $rawLayout : 'default_jsm';
 
         // The historical Arrobe and TOAST UI layouts depended on legacy jQuery/
         // Bootstrap 4/TUI runtimes. Keep their stored parameter values working,
