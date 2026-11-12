@@ -89,7 +89,7 @@ namespace {
     $user = (object) ['id' => 5];
     $transaction = ['id' => 77, 'name' => 'Test team'];
 
-    foreach (['team.edit', '../team', 'team?task=delete', '', \str_repeat('a', 101)] as $invalid) {
+    foreach (['team.edit', '../team', 'team?task=delete', ' team', \str_repeat('a', 101)] as $invalid) {
         $action::record($user, $transaction, false, $invalid);
     }
 
