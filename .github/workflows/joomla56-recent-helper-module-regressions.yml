@@ -13,6 +13,7 @@ on:
       - 'site/src/Helper/PersonProfileRouteHelper.php'
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/src/Helper/LocationAddressHelper.php'
+      - 'site/src/Helper/ExtraFieldsReadHelper.php'
       - 'site/src/Helper/MatchResultHelper.php'
       - 'site/src/Helper/ResultsLegacyProjectCompatibility.php'
       - 'site/src/Helper/MatchTimeHelper.php'
@@ -37,10 +38,12 @@ on:
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php'
       - '.github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php'
       - '.github/tests/joomla56_site_date_admin_country_calendar_layout.php'
       - '.github/tests/joomla56_club_kml_remote_image_projectmap.php'
       - '.github/tests/joomla56_location_extra_save_teamplayers.php'
+      - '.github/tests/joomla56_site_extra_fields_admin_log_google_calendar.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_extended_form_extra_select_ranking_guards.php'
       - '.github/tests/joomla56_match_outcome_actionlog_toptipper.php'
@@ -68,6 +71,7 @@ on:
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/**'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/**'
       - 'modules/mod_sportsmanagement_teamplayers/src/Dispatcher/**'
+      - 'modules/mod_sportsmanagement_google_calendar/src/Helper/**'
       - 'modules/mod_sportsmanagement_count_rekord/src/Helper/**'
       - 'modules/mod_sportsmanagement_rquotes/src/Helper/**'
       - '.github/tests/joomla56_*'
@@ -109,6 +113,7 @@ jobs:
             site/src/Helper/PersonProfileRouteHelper.php
             site/src/Helper/SportsManagementDateHelper.php
             site/src/Helper/LocationAddressHelper.php
+            site/src/Helper/ExtraFieldsReadHelper.php
             site/src/Helper/MatchResultHelper.php
             site/src/Helper/ResultsLegacyProjectCompatibility.php
             site/src/Helper/MatchTimeHelper.php
@@ -134,10 +139,12 @@ jobs:
             modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_teamplayers/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_google_calendar/src/Helper/GoogleCalendarHelper.php
             .github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php
             .github/tests/joomla56_site_date_admin_country_calendar_layout.php
             .github/tests/joomla56_club_kml_remote_image_projectmap.php
             .github/tests/joomla56_location_extra_save_teamplayers.php
+            .github/tests/joomla56_site_extra_fields_admin_log_google_calendar.php
             modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             .github/tests/joomla56_extended_form_extra_select_ranking_guards.php
@@ -175,6 +182,7 @@ jobs:
             .github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php \
             .github/tests/joomla56_site_date_admin_country_calendar_layout.php \
             .github/tests/joomla56_club_kml_remote_image_projectmap.php \
-            .github/tests/joomla56_location_extra_save_teamplayers.php; do
+            .github/tests/joomla56_location_extra_save_teamplayers.php \
+            .github/tests/joomla56_site_extra_fields_admin_log_google_calendar.php; do
             php "$test"
           done
