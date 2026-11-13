@@ -27,28 +27,55 @@ use Joomla\Registry\Registry;
 /** Joomla 5/6 frontend controller for match editing actions. */
 final class EditmatchController extends FormController
 {
+    /**
+     * Save short-form individual match edits through the shared write handler.
+     *
+     * Delegates to saveIndividualShort(), which checks Joomla's POST token and project-scoped match editing permission.
+     *
+     * @return void
+     */
     public function applyshortsinglematch(): void
     {
         $this->saveIndividualShort();
     }
 
+    /**
+     * Persist short-form individual match changes from a legacy toolbar task.
+     *
+     * Uses the same secured individual-match write path as the Apply task.
+     *
+     * @return void
+     */
     public function saveshortsinglematch(): void
     {
         $this->saveIndividualShort();
     }
 
-    /** Preserve the historical no-op task until individual-sport deletion gets an explicit product decision. */
+    /**
+     * Preserve the historical individual-match delete task without deleting data.
+     *
+     * The compatibility action redirects to the previous editing page; it does not remove a match record.
+     *
+     * @return void
+     */
     public function deletesinglematch(): void
     {
         $this->setRedirect($this->returnUrl(), Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED'));
     }
 
+    /**
+     * Save the submitted match statistics for an authorised fixture.
+     *
+     * Checks the POST token and match-specific permissions before calling the native edit-match model.
+     *
+     * @return void
+     */
     public function savestats(): void
     {
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, (int) ($post['match_id'] ?? $post['id'] ?? 0));
+        $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? $post['id'] ?? 0));
         $saved = $this->editMatchModel()->savestats($post);
         $message = Text::_($saved
             ? 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS'
@@ -57,18 +84,33 @@ final class EditmatchController extends FormController
         $this->setRedirect($this->returnUrl(), $message, $saved ? 'message' : 'error');
     }
 
+    /**
+     * Close the frontend match editor without storing any changes.
+     *
+     * Redirects the legacy modal to Joomla's close view.
+     *
+     * @param mixed $key Unused legacy record identifier.
+     * @return mixed
+     */
     public function cancel($key = null)
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', 'cancel');
         return true;
     }
 
+    /**
+     * Save referee assignments on an authorised match.
+     *
+     * Checks the Joomla POST token and fixture permissions before calling the match model.
+     *
+     * @return void
+     */
     public function saveReferees(): void
     {
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, (int) ($post['id'] ?? 0));
+        $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
         $saved = $this->editMatchModel()->updateReferees($post);
         $message = Text::_($saved
             ? 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES'
@@ -77,12 +119,19 @@ final class EditmatchController extends FormController
         $this->setRedirect($this->returnUrl(), $message, $saved ? 'message' : 'error');
     }
 
+    /**
+     * Persist billiards match roster assignments.
+     *
+     * Requires a valid POST token and project-scoped match edit permission; reports the model's result.
+     *
+     * @return void
+     */
     public function saverosterbillard(): void
     {
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, (int) ($post['id'] ?? 0));
+        $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
         $saved = $this->editMatchModel()->updateRosterBillard($post);
         $message = $saved
             ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED')
@@ -91,12 +140,19 @@ final class EditmatchController extends FormController
         $this->setRedirect($this->returnUrl(), $message, $saved ? 'message' : 'error');
     }
 
+    /**
+     * Save player and staff rosters for the selected match.
+     *
+     * Checks the session token and permissions, invokes both roster operations and reports whether both succeeded.
+     *
+     * @return void
+     */
     public function saveroster(): void
     {
         $this->checkToken();
 
         $post = $this->input->post->getArray();
-        $this->assertMatchWriteAccess($post, (int) ($post['id'] ?? 0));
+        $this->assertMatchWriteAccess($post, self::positiveInputId($post['id'] ?? 0));
         $model = $this->editMatchModel();
         $playersSaved = $model->updateRoster($post);
         $staffSaved = $model->updateStaff($post);
@@ -109,13 +165,20 @@ final class EditmatchController extends FormController
         );
     }
 
+    /**
+     * Save abbreviated match fields from the frontend form.
+     *
+     * Validates the match target and editor rights, prepares modification metadata and delegates persistence to EditmatchModel.
+     *
+     * @return void
+     */
     public function saveshort(): void
     {
         $this->checkToken();
 
         $app = $this->app;
         $post = $this->input->post->getArray();
-        $matchId = (int) ($post['matchid'] ?? 0);
+        $matchId = self::positiveInputId($post['matchid'] ?? 0);
 
         $this->assertMatchWriteAccess($post, $matchId);
 
@@ -159,6 +222,13 @@ final class EditmatchController extends FormController
         $this->setRedirect($this->returnUrl(), $message, $saved ? 'message' : 'error');
     }
 
+    /**
+     * Resolve the expected Joomla frontend match-editing model.
+     *
+     * Checks the MVC factory result before any edit operation is invoked.
+     *
+     * @return EditmatchModel
+     */
     private function editMatchModel(): EditmatchModel
     {
         $model = $this->getModel('Editmatch');
@@ -169,6 +239,13 @@ final class EditmatchController extends FormController
         return $model;
     }
 
+    /**
+     * Write short individual-sport match data through the dedicated service.
+     *
+     * Checks the Joomla form token and fixture permissions, delegates the write and provides a generic failure response.
+     *
+     * @return void
+     */
     private function saveIndividualShort(): void
     {
         $this->checkToken();
@@ -177,7 +254,7 @@ final class EditmatchController extends FormController
         $input = $this->input;
         $post = $input->post->getArray();
         $ids = (array) $input->post->get('cid', [], 'array');
-        $this->assertMatchWriteAccess($post, (int) ($post['match_id'] ?? 0));
+        $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? 0));
 
         try {
             $saved = $this->individualMatchWriteService()->saveShort(
@@ -188,7 +265,7 @@ final class EditmatchController extends FormController
             );
         } catch (\Throwable $e) {
             $saved = false;
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
         }
 
         $this->setRedirect(
@@ -204,17 +281,17 @@ final class EditmatchController extends FormController
      */
     private function assertMatchWriteAccess(array $post, int $matchId): void
     {
-        $projectId = (int) ($post['project_id'] ?? $post['p'] ?? $this->input->getInt('p', 0));
+        $projectId = self::positiveInputId($post['project_id'] ?? $post['p'] ?? $this->input->getInt('p', 0));
 
         if ($matchId <= 0 || $projectId <= 0) {
             throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 400);
         }
 
         $app = $this->app;
-        $selector = (int) ($post['cfg_which_database']
+        $selector = self::nonNegativeInputId($post['cfg_which_database']
             ?? $this->input->getInt(
                 'cfg_which_database',
-                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+                0
             ));
 
         $accessModel = new ResultsAccessModel();
@@ -226,11 +303,25 @@ final class EditmatchController extends FormController
         }
     }
 
+    /**
+     * Create the individual-sport match persistence service.
+     *
+     * Uses the selected SportsManagement database connection for authorised writes.
+     *
+     * @return IndividualMatchWriteService
+     */
     private function individualMatchWriteService(): IndividualMatchWriteService
     {
         return new IndividualMatchWriteService($this->database());
     }
 
+    /**
+     * Resolve the SportsManagement database used by match editing.
+     *
+     * Reads the Joomla database selector and delegates connection selection to the native resolver.
+     *
+     * @return DatabaseInterface
+     */
     private function database(): DatabaseInterface
     {
         $app = $this->app;
@@ -244,6 +335,13 @@ final class EditmatchController extends FormController
         );
     }
 
+    /**
+     * Obtain Joomla's registered DatabaseInterface instance.
+     *
+     * Uses the Joomla service container instead of deprecated global database access.
+     *
+     * @return DatabaseInterface
+     */
     private function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -252,16 +350,79 @@ final class EditmatchController extends FormController
         return $database;
     }
 
+    /**
+     * Create the current UTC modification timestamp for database updates.
+     *
+     * Uses Joomla's native date API with an explicit UTC timezone.
+     *
+     * @return string
+     */
     private function nowSql(): string
     {
         return (new Date('now', new \DateTimeZone('UTC')))->toSql();
     }
 
+    /**
+     * Convert an explicitly empty form field to a null database value.
+     *
+     * Preserves other scalar or structured values for subsequent model validation.
+     *
+     * @param mixed $value Submitted form field value.
+     * @return mixed
+     */
     private function nullIfEmpty(mixed $value): mixed
     {
         return $value === '' ? null : $value;
     }
 
+    /**
+     * Validate a positive decimal identifier from a submitted match form.
+     *
+     * Rejects arrays, booleans, negative values and integer overflows instead
+     * of coercing malformed input to an unrelated match or project record.
+     *
+     * @param mixed $value Raw submitted identifier.
+     * @return int Positive identifier, or zero when malformed.
+     */
+    private static function positiveInputId(mixed $value): int
+    {
+        $id = self::nonNegativeInputId($value);
+
+        return $id > 0 ? $id : 0;
+    }
+
+    /**
+     * Parse a nonnegative database selector without PHP 8 implicit casts.
+     *
+     * Supports nonnegative integer values and zero-padded decimal strings;
+     * malformed or overflowing selectors return zero.
+     *
+     * @param mixed $value Raw form selector.
+     * @return int Valid selector or zero when invalid.
+     */
+    private static function nonNegativeInputId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? 0 : $number;
+    }
+
+    /**
+     * Build a safe return destination after a frontend match edit.
+     *
+     * Rejects protocol-relative, malformed or cross-origin referrers, falling back to the edit-match component view.
+     *
+     * @return string
+     */
     private function returnUrl(): string
     {
         $referer = trim((string) ($_SERVER['HTTP_REFERER'] ?? ''));
