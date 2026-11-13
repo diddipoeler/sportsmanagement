@@ -93,7 +93,7 @@ trait NativeQueryTrait
             );
         }
 
-        if ((int) $params->get('use_fav', 0) === 1) {
+        if (self::boundedMatchesOption($params->get('use_fav', 0), 0, 1) === 1) {
             $favorites = $this->favoriteTeams($db, $projectIds);
             if (!$favorites) {
                 // Without favorite teams the requested filter must match no
@@ -110,15 +110,15 @@ trait NativeQueryTrait
         }
 
         $now = time();
-        $showPlayed = (int) $params->get('show_played', 0) === 1;
-        $showNext = (int) $params->get('show_nextmatches', 0) === 1;
+        $showPlayed = self::boundedMatchesOption($params->get('show_played', 0), 0, 1) === 1;
+        $showNext = self::boundedMatchesOption($params->get('show_nextmatches', 0), 0, 1) === 1;
 
         if ($showPlayed) {
-            $from = $now - $this->seconds((int) $params->get('result_add_time', 0), (string) $params->get('result_add_unit', 'DAY'));
+            $from = $now - $this->seconds(self::boundedMatchesOption($params->get('result_add_time', 0), 0, 36500), self::matchesTimeUnit($params->get('result_add_unit', 'DAY')));
         }
 
         if ($showNext) {
-            $to = $now + $this->seconds((int) $params->get('period_int', 0), (string) $params->get('period_string', 'DAY'));
+            $to = $now + $this->seconds(self::boundedMatchesOption($params->get('period_int', 0), 0, 36500), self::matchesTimeUnit($params->get('period_string', 'DAY')));
         }
 
         if ($showPlayed && !$showNext) {
@@ -147,20 +147,43 @@ trait NativeQueryTrait
         $limit = self::boundedMatchesOption($params->get('limit', 1), 1, 500);
         $db->setQuery($q, 0, max(1, $limit));
 
-        $matches = $db->loadObjectList() ?: [];
-
-        foreach ($matches as $match) {
-            // Build Joomla ID:alias routes in PHP to avoid MySQL CONCAT_WS,
-            // which is unavailable on other supported database drivers.
-            $match->project_slug = (int) ($match->project_id ?? 0) . ':' . (string) ($match->project_alias ?? '');
-            $match->round_slug = (int) ($match->round_id ?? 0) . ':' . (string) ($match->round_alias ?? '');
-            $match->match_slug = (int) ($match->match_id ?? 0) . ':' . trim(
-                (string) ($match->team1_alias ?? '') . '_' . (string) ($match->team2_alias ?? ''),
-                '_'
-            );
+        $matches = $db->loadObjectList();
+        if (!is_array($matches)) {
+            return [];
         }
 
-        return $matches;
+        $validMatches = [];
+        foreach ($matches as $match) {
+            if (!is_object($match)) {
+                continue;
+            }
+
+            $projectId = self::boundedMatchesId($match->project_id ?? null);
+            $roundId = self::boundedMatchesId($match->round_id ?? null);
+            $matchId = self::boundedMatchesId($match->match_id ?? null);
+
+            if ($projectId <= 0 || $roundId <= 0 || $matchId <= 0) {
+                continue;
+            }
+
+            // Build Joomla ID:alias routes in PHP instead of using the
+            // database-specific CONCAT_WS expression.
+            $projectAlias = $match->project_alias ?? '';
+            $roundAlias = $match->round_alias ?? '';
+            $team1Alias = $match->team1_alias ?? '';
+            $team2Alias = $match->team2_alias ?? '';
+            $match->project_slug = $projectId . ':' . (is_string($projectAlias) ? $projectAlias : '');
+            $match->round_slug = $roundId . ':' . (is_string($roundAlias) ? $roundAlias : '');
+            $match->match_slug = $matchId . ':' . trim(
+                (is_string($team1Alias) ? $team1Alias : '')
+                . '_' . (is_string($team2Alias) ? $team2Alias : ''),
+                '_'
+            );
+
+            $validMatches[] = $match;
+        }
+
+        return $validMatches;
     }
 
     /**
@@ -251,6 +274,54 @@ trait NativeQueryTrait
         }
 
         return array_values($ids);
+    }
+
+    /**
+     * Validate a match, project or round ID returned from the database.
+     *
+     * Rejects non-decimal, non-scalar and overflowing values before
+     * constructing Joomla route slugs for module fixtures.
+     *
+     * @param mixed $value Raw database identifier.
+     * @return int Positive identifier, or zero if invalid.
+     */
+    private static function boundedMatchesId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 256
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Normalise a time-window unit without converting structured settings.
+     *
+     * Retains the legacy DAY fallback while restricting unit values to
+     * the SECOND, MINUTE, HOUR and DAY interval names.
+     *
+     * @param mixed $value Configured time-window unit.
+     * @return string Supported interval unit.
+     */
+    private static function matchesTimeUnit(mixed $value): string
+    {
+        if (!is_string($value)) {
+            return 'DAY';
+        }
+
+        $unit = strtoupper(trim($value));
+
+        return in_array($unit, ['SECOND', 'MINUTE', 'HOUR', 'DAY'], true)
+            ? $unit
+            : 'DAY';
     }
 
     /**
