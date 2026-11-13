@@ -18,6 +18,20 @@ use Joomla\Database\ParameterType;
 
 final class PredictiontipModel extends PredictionentryModel
 {
+    /**
+     * Validate and persist the selected member's editable prediction tips.
+     *
+     * Verifies game, member, project and round identifiers and membership
+     * permissions. Processes only editable matches, validates score or toto
+     * inputs and joker limits, updates result rows and optional round extras,
+     * and records the member's last submission. Receipt email failures do
+     * not invalidate already stored predictions.
+     *
+     * @param array<string,mixed> $post Submitted prediction form fields.
+     * @return bool Whether prediction changes were stored successfully.
+     * @throws \RuntimeException If the member is not allowed to submit tips.
+     * @throws \UnexpectedValueException For invalid targets or predictions.
+     */
     public function saveTips(array $post): bool
     {
         $member = $this->getEntryMember();
@@ -201,6 +215,22 @@ final class PredictiontipModel extends PredictionentryModel
         return true;
     }
 
+    /**
+     * Store configured extra predictions for the selected project round.
+     *
+     * Reads existing round-result data and inserts or updates allowed goals,
+     * penalty and card counts. Each count is clamped to its supported range
+     * and disabled options are stored as null.
+     *
+     * @param array<string,mixed> $post Submitted extra prediction fields.
+     * @param object $project Project flags controlling editable extra fields.
+     * @param int $memberUserId Joomla user ID of the prediction member.
+     * @param int $projectId Selected prediction project ID.
+     * @param int $roundId Selected round ID.
+     * @param int $actorId Joomla user ID performing the write.
+     * @param string $modified UTC modification timestamp.
+     * @return void
+     */
     private function saveRoundExtras(
         array $post,
         object $project,
@@ -247,6 +277,19 @@ final class PredictiontipModel extends PredictionentryModel
         }
     }
 
+    /**
+     * Email a best-effort receipt of the current member's predictions.
+     *
+     * Resolves the active unblocked Joomla user, prepares an HTML summary of
+     * match tips with escaped names, and sends it through Joomla's mailer.
+     * Includes the administrator recipient only when explicitly configured.
+     * Mail failures return false and never roll back saved tips.
+     *
+     * @param object $member Prediction member with its Joomla user ID.
+     * @param object $project Project name and prediction display mode.
+     * @param array<int,object> $matches Submitted match tip records.
+     * @return bool True when the receipt was successfully sent.
+     */
     private function sendTipReceipt(object $member, object $project, array $matches): bool
     {
         $userId = (int) ($member->user_id ?? 0);
@@ -303,6 +346,15 @@ final class PredictiontipModel extends PredictionentryModel
         }
     }
 
+    /**
+     * Parse a complete nonnegative decimal form target identifier.
+     *
+     * Rejects signed values, partial numbers, non-scalar input and values
+     * beyond the PHP integer range to avoid coercing the write target.
+     *
+     * @param mixed $value Raw submitted identifier.
+     * @return int Nonnegative integer, or zero when invalid.
+     */
     private function scalarInt(mixed $value): int
     {
         // Form target IDs must be complete decimal numbers. PHP casts values
@@ -324,6 +376,16 @@ final class PredictiontipModel extends PredictionentryModel
         return $validated === false ? 0 : $validated;
     }
 
+    /**
+     * Validate a prediction score in the range zero through 99.
+     *
+     * Treats a blank field as unset and rejects invalid or structured values
+     * instead of silently converting them to a numeric result.
+     *
+     * @param mixed $value Raw submitted home or away score.
+     * @return int|null Score, or null when the field is empty.
+     * @throws \UnexpectedValueException If the score is malformed.
+     */
     private function nullableScore(mixed $value): ?int
     {
         if ($value === null || $value === '') {
@@ -335,6 +397,16 @@ final class PredictiontipModel extends PredictionentryModel
         return min(99, max(0, (int) $value));
     }
 
+    /**
+     * Validate a win/draw/loss prediction with the allowed codes 0, 1 and 2.
+     *
+     * Blank values clear the prediction; any other code or structured value
+     * is rejected before the database is updated.
+     *
+     * @param mixed $value Submitted toto prediction code.
+     * @return int|null Valid code, or null for a blank selection.
+     * @throws \UnexpectedValueException If the code is invalid.
+     */
     private function nullableToto(mixed $value): ?int
     {
         if ($value === null || $value === '') {
@@ -346,11 +418,30 @@ final class PredictiontipModel extends PredictionentryModel
         return (int) $value;
     }
 
+    /**
+     * Recognise enabled checkbox values from Joomla prediction forms.
+     *
+     * Only the supported scalar values 1, on and true enable the option;
+     * missing or structured values are treated as unchecked.
+     *
+     * @param mixed $value Submitted checkbox value.
+     * @return bool Whether the checkbox is enabled.
+     */
     private function checkboxValue(mixed $value): bool
     {
         return is_scalar($value) && in_array((string) $value, ['1', 'on', 'true'], true);
     }
 
+    /**
+     * Parse a bounded nonnegative numeric prediction extra.
+     *
+     * Rejects non-decimal or structured values and caps accepted numbers
+     * to the configured maximum before persisting round statistics.
+     *
+     * @param mixed $value Submitted count or total.
+     * @param int $max Maximum allowed value.
+     * @return int Validated count, or zero for malformed values.
+     */
     private function nonNegativeInt(mixed $value, int $max): int
     {
         if (!is_scalar($value) || !preg_match('/^\d+$/', trim((string) $value))) {
