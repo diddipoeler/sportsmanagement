@@ -187,7 +187,9 @@ final class PredictiontipModel extends PredictionentryModel
         }
 
         if ($this->isRoundExtrasEditable($matches)) {
-            $this->saveRoundExtras($post, $project, $memberUserId, $projectId, $roundId, $actorId, $modified);
+            if (!$this->saveRoundExtras($post, $project, $memberUserId, $projectId, $roundId, $actorId, $modified)) {
+                return false;
+            }
             $changed = true;
         }
 
@@ -229,7 +231,7 @@ final class PredictiontipModel extends PredictionentryModel
      * @param int $roundId Selected round ID.
      * @param int $actorId Joomla user ID performing the write.
      * @param string $modified UTC modification timestamp.
-     * @return void
+     * @return bool True when the round extras were persisted successfully.
      */
     private function saveRoundExtras(
         array $post,
@@ -239,7 +241,7 @@ final class PredictiontipModel extends PredictionentryModel
         int $roundId,
         int $actorId,
         string $modified
-    ): void {
+    ): bool {
         $predictionId = $this->predictionGameId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
@@ -271,10 +273,10 @@ final class PredictiontipModel extends PredictionentryModel
 
         if ($existingId > 0) {
             $object->id = $existingId;
-            $db->updateObject('#__sportsmanagement_prediction_result_round', $object, 'id', true);
-        } else {
-            $db->insertObject('#__sportsmanagement_prediction_result_round', $object);
+            return (bool) $db->updateObject('#__sportsmanagement_prediction_result_round', $object, 'id', true);
         }
+
+        return (bool) $db->insertObject('#__sportsmanagement_prediction_result_round', $object);
     }
 
     /**
