@@ -452,7 +452,7 @@ final class RandomPlayerHelper
     /**
      * Collect unique positive project or team IDs from module settings.
      *
-     * Accepts scalar or multiselect inputs, splits comma/semicolon/whitespace-separated lists, and ignores invalid or overflowing IDs. Each candidate uses the same validated positive-ID parser as season selection, including Unicode aliases.
+     * Accepts scalar or multiselect inputs, splits comma/semicolon/whitespace-separated lists, and ignores invalid or overflowing IDs. Each candidate uses the same validated positive-ID parser as season selection, including Unicode aliases. Limits the number of values and IDs passed to SQL queries.
      *
      * @param mixed $value Raw Joomla module selector.
      * @return array<int, int> Unique validated positive identifiers.
@@ -464,12 +464,16 @@ final class RandomPlayerHelper
 
         // Both scalar and multiselect parameters may contain delimited IDs.
         $candidates = [];
-        foreach ($values as $entry) {
-            if (!is_string($entry) && !is_int($entry)) {
+        foreach (array_slice($values, 0, 200) as $entry) {
+            if ((!is_string($entry) && !is_int($entry))
+                || (is_string($entry) && strlen($entry) > 4096)) {
                 continue;
             }
             foreach (preg_split('/[\s,;]+/', (string) $entry, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $candidate) {
                 $candidates[] = $candidate;
+                if (count($candidates) >= 500) {
+                    break 2;
+                }
             }
         }
 
@@ -481,6 +485,9 @@ final class RandomPlayerHelper
 
             if ($id > 0) {
                 $ids[$id] = $id;
+                if (count($ids) >= 100) {
+                    break;
+                }
             }
         }
 
