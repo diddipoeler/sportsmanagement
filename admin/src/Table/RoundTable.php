@@ -17,11 +17,27 @@ use Joomla\Database\DatabaseInterface;
 
 final class RoundTable extends SportsManagementTable
 {
+    /**
+     * Initialise the round table for the selected Joomla database driver.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_round', 'id', $db);
     }
 
+    /**
+     * Bind edited round fields, including nullable notes and SQL dates.
+     *
+     * Converts form date values to SQL dates and timestamps. Empty notes
+     * are stored as NULL, while malformed structured editor values are
+     * rejected before Joomla attempts a database write.
+     *
+     * @param array|object $src Submitted round record values.
+     * @param array|string $ignore Fields excluded from binding.
+     * @return bool Whether the record values were bound successfully.
+     */
     public function bind($src, $ignore = [])
     {
         if (is_object($src)) {
@@ -30,6 +46,18 @@ final class RoundTable extends SportsManagementTable
 
         if (!is_array($src)) {
             return parent::bind($src, $ignore);
+        }
+
+        if (array_key_exists('notes', $src)) {
+            if ($src['notes'] !== null && !is_string($src['notes'])) {
+                $this->setError('Invalid round notes.');
+
+                return false;
+            }
+
+            if ($src['notes'] === '') {
+                $src['notes'] = null;
+            }
         }
 
         $dateFields = [
@@ -51,6 +79,11 @@ final class RoundTable extends SportsManagementTable
         return parent::bind($src, $ignore);
     }
 
+    /**
+     * Derive a safe URL alias from the round's name when none is present.
+     *
+     * @return bool Whether the round record passes the table check.
+     */
     public function check()
     {
         $this->alias = OutputFilter::stringURLSafe(
