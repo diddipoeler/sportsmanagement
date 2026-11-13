@@ -213,32 +213,39 @@ trait NativeFormatTrait
     /**
      * Prepare optional venue text and its Joomla playground route.
      * Use the configured full or abbreviated playground name and only build
-     * a link when the module enables playground navigation.
+     * a link when the module enables playground navigation. Validates
+     * playground IDs, names and database selection before route generation.
      * @param object $match Fixture row with playground metadata.
      * @param Registry $params Venue display and linking settings.
      * @return null|array{name:string,url:string} Venue details, or null if hidden.
      */
     private function venue(object $match, Registry $params): ?array
     {
-        if ((int) $params->get('show_venue', 0) !== 1 || (int) $match->playground_id <= 0) {
+        $playgroundId = self::boundedMatchesId($match->playground_id ?? null);
+        if (self::boundedMatchesOption($params->get('show_venue', 0), 0, 1) !== 1
+            || $playgroundId <= 0) {
             return null;
         }
-        $name = (string) ((string) $params->get('venue_name', 'short_name') === 'name' ? $match->playground_name : $match->playground_short_name);
-        $name = trim($name) ?: (string) $match->playground_name;
-        $url = (int) $params->get('link_venue', 0) === 1 ? $this->route('playground', [
-            'p' => (string) $match->project_slug,
-            'pgid' => (int) $match->playground_id,
-            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
-        ]) : '';
+
+        $rawVenueMode = $params->get('venue_name', 'short_name');
+        $fullName = $match->playground_name ?? '';
+        $shortName = $match->playground_short_name ?? '';
+        $fullName = is_string($fullName) ? $fullName : '';
+        $shortName = is_string($shortName) ? $shortName : '';
+        $name = $rawVenueMode === 'name' ? $fullName : $shortName;
+        $name = trim($name) !== '' ? trim($name) : $fullName;
+
+        $url = self::boundedMatchesOption($params->get('link_venue', 0), 0, 1) === 1
+            ? $this->route('playground', [
+                'p' => (string) ($match->project_slug ?? ''),
+                'pgid' => $playgroundId,
+                'cfg_which_database' => $this->validatedMatchesDatabase($params),
+            ])
+            : '';
+
         return ['name' => $name, 'url' => $url];
     }
 
-    /**
-     * Load referees for all displayed matches with one query.
-     *
-     * @param array<int,int> $matchIds
-     * @return array<int,array<int,array{name:string,position:string}>>
-     */
     /**
      * Load and group the referees assigned to displayed matches.
      * Fetch published people and referee positions in a single database query,
