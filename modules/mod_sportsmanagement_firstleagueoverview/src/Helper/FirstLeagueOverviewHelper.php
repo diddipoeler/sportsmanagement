@@ -29,7 +29,8 @@ final class FirstLeagueOverviewHelper
      * Selects the configured SportsManagement database, retrieves one
      * current project per league, prepares ranking links and country flags
      * and limits federation tabs to those associated with visible projects.
-     * Database failures are logged without exposing SQL details in HTML.
+     * Malformed database selectors return empty results instead of selecting
+     * a different connection. Exception logs contain no SQL error text.
      *
      * @param Registry $params Joomla first-league module settings.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -37,10 +38,16 @@ final class FirstLeagueOverviewHelper
      */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
+        $databaseSelector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($databaseSelector === null) {
+            return ['projects' => [], 'federations' => []];
+        }
+
         try {
             $db = SportsManagementDatabaseResolver::resolve(
                 $fallbackDatabase,
-                self::databaseSelector($params->get('cfg_which_database', 0))
+                $databaseSelector
             );
             $componentParams = ComponentHelper::getParams('com_sportsmanagement');
             $projects = $this->latestProjects($db);
@@ -58,7 +65,7 @@ final class FirstLeagueOverviewHelper
         } catch (\Throwable $e) {
             // Missing tables and optional external database failures must
             // not disclose SQL details or break the whole frontend page.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
             return ['projects' => [], 'federations' => []];
         }
@@ -120,15 +127,21 @@ final class FirstLeagueOverviewHelper
         $seenLeagues = [];
 
         foreach ($rows as $row) {
-            $leagueId = (int) ($row->league_id ?? 0);
-            if ($leagueId <= 0 || isset($seenLeagues[$leagueId])) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $leagueId = self::nonNegativeId($row->league_id ?? null);
+            $projectId = self::nonNegativeId($row->id ?? null);
+            if ($leagueId <= 0 || $projectId <= 0 || isset($seenLeagues[$leagueId])) {
                 continue;
             }
 
             $seenLeagues[$leagueId] = true;
             // Build the Joomla ID:alias slug in PHP instead of relying on
             // a database-specific CONCAT_WS expression.
-            $row->project_slug = (int) $row->id . ':' . (string) ($row->alias ?? '');
+            $alias = $row->alias ?? '';
+            $row->project_slug = $projectId . ':' . (is_string($alias) ? $alias : '');
             $projects[] = $row;
         }
 
@@ -158,10 +171,20 @@ final class FirstLeagueOverviewHelper
         $db->setQuery($query);
 
         $result = [];
-        foreach ($db->loadObjectList() ?: [] as $row) {
+        $rows = $db->loadObjectList();
+        foreach (is_array($rows) ? $rows : [] as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $federationId = self::nonNegativeId($row->id ?? null);
+            if ($federationId <= 0) {
+                continue;
+            }
+
             $picture = $row->picture ?? '';
             $row->picture_url = self::mediaUrl(is_string($picture) ? $picture : '');
-            $result[(int) $row->id] = $row;
+            $result[$federationId] = $row;
         }
 
         return $result;
@@ -287,16 +310,17 @@ final class FirstLeagueOverviewHelper
     /**
      * Parse the database selector without coercing malformed legacy settings.
      *
-     * Accepts positive integer or decimal configuration values including
-     * leading zeros, returning the default connection for invalid input.
+     * Accepts nonnegative integers or decimal strings including leading
+     * zeros; rejects malformed configuration without falling back to
+     * Joomla's unrelated primary database.
      *
      * @param mixed $value Raw Joomla module database selection.
-     * @return int Normalised nonnegative database selector.
+     * @return int|null Valid database selector or null for invalid input.
      */
-    private static function databaseSelector(mixed $value): int
+    private static function databaseSelector(mixed $value): ?int
     {
         if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
-            return 0;
+            return null;
         }
 
         if (is_string($value)) {
@@ -306,7 +330,21 @@ final class FirstLeagueOverviewHelper
 
         $selector = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
-        return $selector === false ? 0 : $selector;
+        return $selector === false ? null : $selector;
+    }
+
+    /**
+     * Validate a nonnegative identifier returned by the database.
+     *
+     * Accepts integers and zero-padded decimal strings while rejecting
+     * malformed values and integer overflow before use in route segments.
+     *
+     * @param mixed $value Raw federation, league or project identifier.
+     * @return int Valid nonnegative ID, or zero if invalid.
+     */
+    private static function nonNegativeId(mixed $value): int
+    {
+        return self::databaseSelector($value) ?? 0;
     }
 
     /**
