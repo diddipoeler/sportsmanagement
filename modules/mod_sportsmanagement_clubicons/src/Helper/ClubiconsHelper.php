@@ -57,6 +57,8 @@ final class ClubiconsHelper
      * Selects the configured project and division, calculates the ranking,
      * validates optional ranking rows and team identifiers, then resolves
      * team links and image URLs. Missing projects yield empty collections.
+     * A malformed database selector also yields no results rather than
+     * silently loading club details from the default Joomla connection.
      *
      * @param Registry $params Module configuration.
      * @param object $module Joomla module record.
@@ -74,7 +76,13 @@ final class ClubiconsHelper
             return ['project' => null, 'ranking' => [], 'teams' => []];
         }
 
-        $db = $this->database($params, self::joomlaDatabase());
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($selector === null) {
+            return ['project' => null, 'ranking' => [], 'teams' => []];
+        }
+
+        $db = SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
         $divisionId = $this->firstId($params->get('division_id', 0));
         $result = (new RankingEngine($db))->calculate($projectId, $divisionId);
         $result = is_array($result) ? $result : [];
@@ -202,6 +210,32 @@ final class ClubiconsHelper
         $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
         return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Validate the selected local or external SportsManagement database.
+     *
+     * Unlike optional display parameters, a malformed database selector must
+     * not silently fall back to connection zero. Accepts only nonnegative
+     * integers and decimal strings (including zero-padded legacy values).
+     *
+     * @param mixed $value Raw module database selector.
+     * @return int|null Valid selector, or null if malformed or overflowing.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $result = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $result === false ? null : $result;
     }
 
     /**
@@ -581,20 +615,5 @@ final class ClubiconsHelper
         return array_values($ids);
     }
 
-    /**
-     * Resolve the configured local or external SportsManagement database.
-     *
-     * Delegates selection to the database resolver, retaining the Joomla connection as the fallback for supported configurations.
-     *
-     * @param Registry $params Database selection setting.
-     * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
-     * @return DatabaseInterface Selected database connection.
-     */
-    private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
-    {
-        return SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            self::nonNegativeInteger($params->get('cfg_which_database', 0))
-        );
-    }
+
 }
