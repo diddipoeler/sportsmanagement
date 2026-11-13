@@ -41,6 +41,7 @@ final class HtmlView extends BaseHtmlView
 
     public string $version = '';
     public int $countryCount = 0;
+    public bool $canGithubUpdate = false;
     public array $dashboardLinks = [];
     public $params;
 
@@ -64,6 +65,10 @@ final class HtmlView extends BaseHtmlView
         $this->version = $model->getVersion();
         $this->countryCount = $model->checkcountry();
         $this->params = ComponentHelper::getParams('com_sportsmanagement');
+        $identity = self::administratorApplication()->getIdentity();
+        $this->canGithubUpdate = $identity !== null
+            && (int) ($identity->id ?? 0) > 0
+            && $identity->authorise('core.admin', 'com_sportsmanagement');
         $this->dashboardLinks = $this->buildDashboardLinks();
 
         $this->addToolbar();
