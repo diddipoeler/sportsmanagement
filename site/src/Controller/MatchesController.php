@@ -252,6 +252,10 @@ final class MatchesController extends BaseController
     /**
      * Authorize the actual match, not just a component-wide editing action.
      * A supplied AJAX match ID must match the persisted parent for deletions.
+     *
+     * @param int $matchId Persisted match identifier for the write operation.
+     * @return void
+     * @throws \RuntimeException If the match is invalid or outside the editable project.
      */
     private function assertMatchScope(int $matchId): void
     {
@@ -272,7 +276,16 @@ final class MatchesController extends BaseController
         }
     }
 
-    /** Read one non-negative POST database selector for ACL, lookup and write. */
+    /**
+     * Read one nonnegative POST database selector for ACL, lookup and write.
+     *
+     * Accepts decimal strings with optional leading zeros, rejecting arrays,
+     * signed numbers and integer overflow. The same validated selector is
+     * used for match authorisation, child lookups and the mutation service.
+     *
+     * @return int Valid nonnegative database selector.
+     * @throws \InvalidArgumentException When the submitted selector is invalid.
+     */
     private function postDatabaseSelector(): int
     {
         $raw = $this->input->post->get('cfg_which_database', 0, 'raw');
@@ -280,6 +293,11 @@ final class MatchesController extends BaseController
         // Do not silently turn malformed selectors into a different database.
         if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
             throw new \InvalidArgumentException('Invalid SportsManagement database selector.', 400);
+        }
+
+        if (is_string($raw)) {
+            $digits = ltrim($raw, '0');
+            $raw = $digits === '' ? '0' : $digits;
         }
 
         $selector = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
