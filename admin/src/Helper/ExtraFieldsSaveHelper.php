@@ -36,6 +36,7 @@ final class ExtraFieldsSaveHelper
      * Ignores invalid field IDs and nested values, handles save-as-copy path
      * compatibility, and avoids inserting replacements when deletes fail,
      * including drivers returning false without throwing an exception.
+     * Reports silent insert failures instead of treating them as saved rows.
      *
      * @param array<string,mixed> $post Submitted extra-field form input.
      * @param int $itemId Identifier of the saved entity.
@@ -107,7 +108,9 @@ final class ExtraFieldsSaveHelper
                         $itemId,
                         $db->quote($value),
                     ]));
-                $db->setQuery($query)->execute();
+                if ($db->setQuery($query)->execute() === false) {
+                    throw new \RuntimeException('Extra-field replacement insert failed.');
+                }
             } catch (\Throwable $e) {
                 $this->reportDatabaseError($e);
             }
