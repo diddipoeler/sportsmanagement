@@ -91,6 +91,7 @@ trait NativeFormatTrait
      * Build HTML-safe project and round headings for the fixture row.
      * Escape database titles and routed links before constructing optional
      * anchor markup according to the module's project and round settings.
+     * Malformed names and route settings cannot trigger PHP 8 conversions.
      * @param object $match Match containing project and round labels.
      * @param Registry $params Title visibility and link configuration.
      * @return string Escaped HTML heading segments.
@@ -99,18 +100,36 @@ trait NativeFormatTrait
     {
         $parts = [];
         if (self::boundedMatchesOption($params->get('show_project_title', 0), 0, 1) === 1) {
-            $label = htmlspecialchars((string) $match->project_name, ENT_QUOTES, 'UTF-8');
+            $projectName = $match->project_name ?? '';
+            $label = htmlspecialchars(is_string($projectName) ? $projectName : '', ENT_QUOTES, 'UTF-8');
             $parts[] = self::boundedMatchesOption($params->get('link_project_title', 0), 0, 1) === 1
-                ? '<a href="' . htmlspecialchars($this->componentRoute((string) $params->get('p_link_func', 'results'), $match, [], $params), ENT_QUOTES, 'UTF-8') . '">' . $label . '</a>'
+                ? '<a href="' . htmlspecialchars($this->componentRoute($this->safeMatchesView($params->get('p_link_func', 'results')), $match, [], $params), ENT_QUOTES, 'UTF-8') . '">' . $label . '</a>'
                 : $label;
         }
         if (self::boundedMatchesOption($params->get('show_matchday_title', 0), 0, 1) === 1) {
-            $label = htmlspecialchars((string) $match->round_name, ENT_QUOTES, 'UTF-8');
+            $roundName = $match->round_name ?? '';
+            $label = htmlspecialchars(is_string($roundName) ? $roundName : '', ENT_QUOTES, 'UTF-8');
             $parts[] = self::boundedMatchesOption($params->get('link_matchday_title', 0), 0, 1) === 1
-                ? '<a href="' . htmlspecialchars($this->componentRoute((string) $params->get('r_link_func', 'results'), $match, ['r' => (string) $match->round_slug], $params), ENT_QUOTES, 'UTF-8') . '">' . $label . '</a>'
+                ? '<a href="' . htmlspecialchars($this->componentRoute($this->safeMatchesView($params->get('r_link_func', 'results')), $match, ['r' => (string) ($match->round_slug ?? '')], $params), ENT_QUOTES, 'UTF-8') . '">' . $label . '</a>'
                 : $label;
         }
         return implode(' · ', $parts);
+    }
+
+    /**
+     * Restrict user-configured heading links to supported component views.
+     *
+     * Invalid or structured values fall back to the results view, preventing
+     * unexpected routes from malformed Joomla module configuration.
+     *
+     * @param mixed $value Requested results or ranking view.
+     * @return string Allowed component view identifier.
+     */
+    private function safeMatchesView(mixed $value): string
+    {
+        return is_string($value) && in_array($value, ['results', 'ranking', 'resultsranking'], true)
+            ? $value
+            : 'results';
     }
 
     /**
@@ -132,21 +151,26 @@ trait NativeFormatTrait
             'name' => 'team' . $n . '_name',
             default => 'team' . $n . '_short_name',
         };
-        $name = trim((string) ($match->{$nameField} ?? ''))
-            ?: (string) ($match->{'team' . $n . '_name'} ?? '');
+        $rawName = $match->{$nameField} ?? '';
+        $fallbackName = $match->{'team' . $n . '_name'} ?? '';
+        $name = is_string($rawName) ? trim($rawName) : '';
+        $name = $name !== '' ? $name : (is_string($fallbackName) ? $fallbackName : '');
         $logo = null;
         if (self::boundedMatchesOption($params->get('show_picture', 1), 1, 1) === 1) {
             $rawPictureType = $params->get('picture_type', 'club_big');
             $pictureType = is_string($rawPictureType) ? $rawPictureType : 'club_big';
             if ($pictureType === 'country') {
-                $alpha2 = strtolower((string) ($match->{'club' . $n . '_alpha2'} ?? ''));
+                $rawCode = $match->{'club' . $n . '_alpha2'} ?? '';
+                $alpha2 = is_string($rawCode) ? strtolower($rawCode) : '';
                 $src = preg_match('/^[a-z]{2}$/', $alpha2)
                     ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
                     : '';
             } elseif ($pictureType === 'team_picture') {
-                $src = (string) ($match->{'team' . $n . '_picture'} ?? '');
+                $rawPicture = $match->{'team' . $n . '_picture'} ?? '';
+                $src = is_string($rawPicture) ? $rawPicture : '';
             } else {
-                $src = (string) ($match->{'club' . $n . '_big'} ?? '');
+                $rawPicture = $match->{'club' . $n . '_big'} ?? '';
+                $src = is_string($rawPicture) ? $rawPicture : '';
             }
             $src = $this->imageSource($src);
 
