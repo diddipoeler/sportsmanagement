@@ -22,7 +22,8 @@ trait NativeQueryTrait
      * Load published fixtures for configured SportsManagement projects.
      * Build a match query with team, club and favourite-team filters, optional
      * played/upcoming time windows, and bound integer selectors. Add stable
-     * ID:alias slugs for the legacy Joomla routing contract.
+     * ID:alias slugs for the legacy Joomla routing contract. Limit the
+     * fixture query to at most 500 rows to avoid unbounded module loads.
      * @param DatabaseInterface $db Resolved component database.
      * @param Registry $params Match selection and sorting configuration.
      * @param array<int,int> $projectIds Valid positive project identifiers.
@@ -136,11 +137,15 @@ trait NativeQueryTrait
                 ->bind(':windowTo', $to, ParameterType::INTEGER);
         }
 
-        $order = (int) $params->get('order_by_project', 0) === 1
+        $orderByProject = self::boundedMatchesOption($params->get('order_by_project', 0), 0, 1);
+        $rawSortOrder = $params->get('lastsortorder', 'asc');
+        $sortOrder = is_string($rawSortOrder) && strtolower($rawSortOrder) === 'desc' ? 'DESC' : 'ASC';
+        $order = $orderByProject === 1
             ? 'm.match_date ASC, p.ordering ASC'
-            : 'm.match_date ' . (strtolower((string) $params->get('lastsortorder', 'asc')) === 'desc' ? 'DESC' : 'ASC');
+            : 'm.match_date ' . $sortOrder;
         $q->order($order);
-        $db->setQuery($q, 0, max(1, (int) $params->get('limit', 1)));
+        $limit = self::boundedMatchesOption($params->get('limit', 1), 1, 500);
+        $db->setQuery($q, 0, max(1, $limit));
 
         $matches = $db->loadObjectList() ?: [];
 
@@ -246,6 +251,43 @@ trait NativeQueryTrait
         }
 
         return array_values($ids);
+    }
+
+    /**
+     * Read a bounded integer option from legacy Joomla Matches settings.
+     *
+     * Supports integer and decimal-string settings including leading zeros,
+     * rejects malformed structured data and clamps valid oversized values
+     * before any potentially overflowing integer conversion.
+     *
+     * @param mixed $value Raw module option.
+     * @param int $default Fallback for invalid input.
+     * @param int $maximum Highest accepted option value.
+     * @return int Validated option between zero and the maximum.
+     */
+    private static function boundedMatchesOption(mixed $value, int $default, int $maximum): int
+    {
+        if (is_int($value)) {
+            return max(0, min($maximum, $value));
+        }
+
+        if (!is_string($value) || strlen($value) > 4096
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return $default;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        if (strlen($digits) > strlen((string) $maximum)
+            || (strlen($digits) === strlen((string) $maximum) && strcmp($digits, (string) $maximum) > 0)) {
+            return $maximum;
+        }
+
+        return (int) $digits;
     }
 
     /**
