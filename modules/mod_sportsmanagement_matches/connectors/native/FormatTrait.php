@@ -64,7 +64,7 @@ trait NativeFormatTrait
      */
     private function statusType(object $match, Registry $params): string
     {
-        if ((int) $params->get('show_status_notice', 0) !== 1) {
+        if (self::boundedMatchesOption($params->get('show_status_notice', 0), 0, 1) !== 1) {
             return 'undefined';
         }
         return $match->live ? 'live' : ($match->actplaying ? 'actplaying' : ($match->upcoming ? 'upcoming' : 'alreadyplayed'));
@@ -81,7 +81,8 @@ trait NativeFormatTrait
     private function statusHeading(object $match, Registry $params): string
     {
         $type = $this->statusType($match, $params);
-        return $type === 'undefined' ? '' : (string) $params->get($type . '_notice', '');
+        $rawNotice = $type === 'undefined' ? '' : $params->get($type . '_notice', '');
+        return is_string($rawNotice) && strlen($rawNotice) <= 1000 ? $rawNotice : '';
     }
 
     /**
@@ -95,15 +96,15 @@ trait NativeFormatTrait
     private function heading(object $match, Registry $params): string
     {
         $parts = [];
-        if ((int) $params->get('show_project_title', 0) === 1) {
+        if (self::boundedMatchesOption($params->get('show_project_title', 0), 0, 1) === 1) {
             $label = htmlspecialchars((string) $match->project_name, ENT_QUOTES, 'UTF-8');
-            $parts[] = (int) $params->get('link_project_title', 0) === 1
+            $parts[] = self::boundedMatchesOption($params->get('link_project_title', 0), 0, 1) === 1
                 ? '<a href="' . htmlspecialchars($this->componentRoute((string) $params->get('p_link_func', 'results'), $match, [], $params), ENT_QUOTES, 'UTF-8') . '">' . $label . '</a>'
                 : $label;
         }
-        if ((int) $params->get('show_matchday_title', 0) === 1) {
+        if (self::boundedMatchesOption($params->get('show_matchday_title', 0), 0, 1) === 1) {
             $label = htmlspecialchars((string) $match->round_name, ENT_QUOTES, 'UTF-8');
-            $parts[] = (int) $params->get('link_matchday_title', 0) === 1
+            $parts[] = self::boundedMatchesOption($params->get('link_matchday_title', 0), 0, 1) === 1
                 ? '<a href="' . htmlspecialchars($this->componentRoute((string) $params->get('r_link_func', 'results'), $match, ['r' => (string) $match->round_slug], $params), ENT_QUOTES, 'UTF-8') . '">' . $label . '</a>'
                 : $label;
         }
@@ -123,7 +124,8 @@ trait NativeFormatTrait
     private function team(object $match, bool $home, Registry $params): array
     {
         $n = $home ? '1' : '2';
-        $nameField = match ((string) $params->get('team_names', 'short_name')) {
+        $rawTeamNames = $params->get('team_names', 'short_name');
+        $nameField = match (is_string($rawTeamNames) ? $rawTeamNames : 'short_name') {
             'middle_name' => 'team' . $n . '_middle_name',
             'name' => 'team' . $n . '_name',
             default => 'team' . $n . '_short_name',
@@ -131,8 +133,9 @@ trait NativeFormatTrait
         $name = trim((string) ($match->{$nameField} ?? ''))
             ?: (string) ($match->{'team' . $n . '_name'} ?? '');
         $logo = null;
-        if ((int) $params->get('show_picture', 1) === 1) {
-            $pictureType = (string) $params->get('picture_type', 'club_big');
+        if (self::boundedMatchesOption($params->get('show_picture', 1), 1, 1) === 1) {
+            $rawPictureType = $params->get('picture_type', 'club_big');
+            $pictureType = is_string($rawPictureType) ? $rawPictureType : 'club_big';
             if ($pictureType === 'country') {
                 $alpha2 = strtolower((string) ($match->{'club' . $n . '_alpha2'} ?? ''));
                 $src = preg_match('/^[a-z]{2}$/', $alpha2)
@@ -149,8 +152,8 @@ trait NativeFormatTrait
                 $logo = [
                     'src' => $src,
                     'alt' => $name,
-                    'width' => max(0, (int) $params->get('xsize', 0)),
-                    'height' => max(0, (int) $params->get('ysize', 30)),
+                    'width' => self::boundedMatchesOption($params->get('xsize', 0), 0, 500),
+                    'height' => self::boundedMatchesOption($params->get('ysize', 30), 30, 500),
                 ];
             }
         }
@@ -333,15 +336,16 @@ trait NativeFormatTrait
         }
         $home = ($match->team1_result ?? null) === null ? '-' : (string) $match->team1_result;
         $away = ($match->team2_result ?? null) === null ? '-' : (string) $match->team2_result;
-        $separator = (string) $params->get('team_separator', ':');
+        $rawSeparator = $params->get('team_separator', ':');
+        $separator = is_string($rawSeparator) && strlen($rawSeparator) <= 20 ? $rawSeparator : ':';
         $row['result'] = $home . $separator . $away;
-        if ((int) $params->get('show_text_penalty', 1) === 1 && ($match->team1_result_so ?? null) !== null) {
+        if (self::boundedMatchesOption($params->get('show_text_penalty', 1), 1, 1) === 1 && ($match->team1_result_so ?? null) !== null) {
             $row['result'] = Text::_('INP') . ' ' . $match->team1_result_so . $separator . ($match->team2_result_so ?? '-');
-        } elseif ((int) $params->get('show_text_overtime', 1) === 1 && ($match->team1_result_ot ?? null) !== null) {
+        } elseif (self::boundedMatchesOption($params->get('show_text_overtime', 1), 1, 1) === 1 && ($match->team1_result_ot ?? null) !== null) {
             $row['result'] = Text::_('IET') . ' ' . $match->team1_result_ot . $separator . ($match->team2_result_ot ?? '-');
         }
         $row['partresults'] = '';
-        if ((int) $params->get('part_result', 0) === 1) {
+        if (self::boundedMatchesOption($params->get('part_result', 0), 0, 1) === 1) {
             $h = $this->split((string) ($match->team1_result_split ?? ''));
             $a = $this->split((string) ($match->team2_result_split ?? ''));
             $pairs = [];
@@ -350,7 +354,9 @@ trait NativeFormatTrait
                     $pairs[] = $h[$i] . ':' . $a[$i];
                 }
             }
-            $row['partresults'] = $pairs ? '(' . implode((string) $params->get('part_results_separator', '-'), $pairs) . ')' : '';
+            $rawPartSeparator = $params->get('part_results_separator', '-');
+            $partSeparator = is_string($rawPartSeparator) && strlen($rawPartSeparator) <= 20 ? $rawPartSeparator : '-';
+            $row['partresults'] = $pairs ? '(' . implode($partSeparator, $pairs) . ')' : '';
         }
     }
 
