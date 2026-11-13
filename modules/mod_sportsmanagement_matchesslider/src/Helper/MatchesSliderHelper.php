@@ -52,7 +52,19 @@ final class MatchesSliderHelper
         return $database;
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load a bounded list of published fixtures for the matches slider.
+     *
+     * Validates database, season and project selectors before constructing
+     * queries, applies project-specific favorite-team filters and prepares
+     * Joomla routes and safely normalised team-logo URLs.
+     *
+     * @param Registry $params Joomla module options.
+     * @param object $module Current Joomla module record.
+     * @param CMSApplicationInterface $app Active Joomla site application.
+     * @param DatabaseInterface|null $joomlaDatabase Optional default connection.
+     * @return array<int,object> Up to 500 prepared fixtures, or an empty list.
+     */
     public function getData(
         Registry $params,
         object $module,
@@ -64,8 +76,18 @@ final class MatchesSliderHelper
         }
 
         $input = $app->getInput();
-        $databaseMode = $input->getInt('cfg_which_database', (int) $params->get('cfg_which_database', 0));
-        $seasonId = $input->getInt('s', (int) $params->get('s', 0));
+        $databaseValue = $input->get('cfg_which_database', null, 'raw');
+        $seasonValue = $input->get('s', null, 'raw');
+        $databaseMode = self::nonNegativeOption(
+            $databaseValue ?? $params->get('cfg_which_database', 0)
+        );
+        $seasonId = self::nonNegativeOption($seasonValue ?? $params->get('s', 0));
+
+        // Invalid request or module settings must not silently switch to
+        // database zero or a different season.
+        if ($databaseMode === null || $seasonId === null) {
+            return [];
+        }
         $requestProject = $input->get('p', null, 'raw');
         $projectIds = $this->ids($params->get('p', []));
 
@@ -91,13 +113,15 @@ final class MatchesSliderHelper
 
         $joomlaDatabase = self::joomlaDatabase($joomlaDatabase);
         $db = $this->database($databaseMode, $joomlaDatabase);
-        $nameColumn = (string) $params->get('team_names', 'short_name');
+        $rawNameColumn = $params->get('team_names', 'short_name');
+        $nameColumn = is_string($rawNameColumn) ? $rawNameColumn : 'short_name';
 
         if (!in_array($nameColumn, ['name', 'short_name', 'middle_name'], true)) {
             $nameColumn = 'short_name';
         }
 
-        $pictureType = (string) $params->get('picture_type', 'logo_big');
+        $rawPictureType = $params->get('picture_type', 'logo_big');
+        $pictureType = is_string($rawPictureType) ? $rawPictureType : 'logo_big';
         $logoSelect = match ($pictureType) {
             'logo_small' => [
                 $db->quoteName('c1.logo_small', 'logohome'),
@@ -206,7 +230,7 @@ final class MatchesSliderHelper
             ->where($db->quoteName('p.published') . ' = 1')
             ->whereIn($db->quoteName('p.id'), $projectIds, ParameterType::INTEGER);
 
-        if (!(int) $params->get('project_season', 1)) {
+        if (self::nonNegativeOption($params->get('project_season', 1)) === 0) {
             $query->where($db->quoteName('r.id') . ' = ' . $db->quoteName('p.current_round'));
         }
 
@@ -234,7 +258,7 @@ final class MatchesSliderHelper
             );
         }
 
-        if ((int) $params->get('use_fav', 0) === 1
+        if (self::nonNegativeOption($params->get('use_fav', 0)) === 1
             && !$this->applyFavoriteTeamFilter($db, $query, $projectIds)
         ) {
             return [];
@@ -250,7 +274,16 @@ final class MatchesSliderHelper
         $rows = $db->loadObjectList() ?: [];
         $pictureServer = $this->pictureServer($databaseMode);
 
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $validRows = [];
         foreach ($rows as $match) {
+            if (!is_object($match)) {
+                continue;
+            }
+
             // Joomla ID:alias slugs are portable when assembled in PHP rather
             // than via the MySQL-specific CONCAT_WS expression.
             $match->project_slug = (int) ($match->project_id ?? 0)
@@ -258,11 +291,14 @@ final class MatchesSliderHelper
             $match->round_slug = (int) ($match->round_id ?? 0)
                 . ':' . (string) ($match->round_alias ?? '');
             $match->link = $this->matchLink($match, $params, $databaseMode, $seasonId);
-            $match->home_logo_url = $this->mediaUrl((string) ($match->logohome ?? ''), $pictureServer);
-            $match->away_logo_url = $this->mediaUrl((string) ($match->logoaway ?? ''), $pictureServer);
+            $homeLogo = $match->logohome ?? '';
+            $awayLogo = $match->logoaway ?? '';
+            $match->home_logo_url = $this->mediaUrl(is_string($homeLogo) ? $homeLogo : '', $pictureServer);
+            $match->away_logo_url = $this->mediaUrl(is_string($awayLogo) ? $awayLogo : '', $pictureServer);
+            $validRows[] = $match;
         }
 
-        return $rows;
+        return $validRows;
     }
 
     /**
@@ -439,7 +475,16 @@ final class MatchesSliderHelper
         return rtrim($pictureServer, '/') . '/' . $encoded;
     }
 
-    /** @return array<int,int> */
+    /**
+     * Normalise configured project or team IDs into a bounded filter list.
+     *
+     * Accepts positive decimal IDs and legacy Joomla ID:alias slugs,
+     * rejecting invalid tokens and integer overflows. Caps the number
+     * of inspected values, token lengths and returned unique identifiers.
+     *
+     * @param mixed $value Raw scalar or list of module identifiers.
+     * @return array<int,int> Up to 100 validated distinct positive IDs.
+     */
     private function ids(mixed $value): array
     {
         $values = is_array($value) ? $value : [$value];
@@ -473,6 +518,32 @@ final class MatchesSliderHelper
         }
 
         return array_values($ids);
+    }
+
+    /**
+     * Parse a nonnegative Joomla request or module option without coercion.
+     *
+     * Accepts nonnegative integers and zero-padded decimal strings, but
+     * rejects booleans, arrays, fractional numbers and integer overflow.
+     *
+     * @param mixed $value Requested or configured numeric option.
+     * @return int|null Valid nonnegative integer or null for malformed input.
+     */
+    private static function nonNegativeOption(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 256
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? null : $number;
     }
 
     /**
