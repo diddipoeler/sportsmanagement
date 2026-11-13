@@ -23,13 +23,15 @@ final class RemoteImageDownloadHelper
 {
     private const MAX_REDIRECTS = 3;
     private const REQUEST_TIMEOUT = 15;
+    private const MAX_IMAGE_BYTES = 10485760;
 
     /**
      * Download a bounded public image into the permitted component image tree.
      *
      * Rejects disallowed URLs and destination paths before requesting remote
      * content, validates the response as an image, and writes only within the
-     * SportsManagement database image directory.
+     * SportsManagement database image directory. Caps the request budget
+     * at ten MiB and logs only exception types, not remote connection data.
      *
      * @param string $url Remote HTTP(S) image URL.
      * @param string $absolutePath Destination within the component image folder.
@@ -38,7 +40,7 @@ final class RemoteImageDownloadHelper
      */
     public function download(string $url, string $absolutePath, int $maxBytes): bool
     {
-        $maxBytes = max(1, $maxBytes);
+        $maxBytes = min(self::MAX_IMAGE_BYTES, max(1, $maxBytes));
 
         if (!$this->isAllowedTargetPath($absolutePath) || $this->validateRemoteUrl($url) === null) {
             return false;
@@ -59,7 +61,7 @@ final class RemoteImageDownloadHelper
 
             return (bool) File::write($absolutePath, $body);
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ': image operation failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
 
             return false;
         }
@@ -69,7 +71,8 @@ final class RemoteImageDownloadHelper
      * Fetch a remote image with bounded redirects and response size.
      *
      * Validates every redirected URL and checks both advertised content length
-     * and actual response size. Transport failures are logged internally.
+     * and actual response size. Transport failures are logged internally
+     * without exposing response, proxy or connection details.
      *
      * @param string $url Validated initial image URL.
      * @param int $maxBytes Maximum number of bytes accepted.
