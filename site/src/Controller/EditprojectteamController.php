@@ -52,7 +52,8 @@ final class EditprojectteamController extends FormController
      * Validates Joomla's form token and the user's component edit rights
      * before delegating persistence to EditprojectteamModel::updItem().
      * Keeps the selected IDs in the editor redirect after Apply or errors;
-     * closes the editor popup after an ordinary successful Save.
+     * closes the editor popup after an ordinary successful Save. Validates
+     * route identifiers separately to avoid PHP 8 implicit array casts.
      *
      * @param string|null $key Optional legacy record key.
      * @param string|null $urlVar Optional legacy URL identifier.
@@ -72,9 +73,9 @@ final class EditprojectteamController extends FormController
         if (!$saved) {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=editprojectteam&tmpl=component&id=' . $id
-                . '&ptid=' . (int) ($data['ptid'] ?? 0)
-                . '&p=' . (int) ($data['p'] ?? 0)
-                . '&tid=' . (int) ($data['tid'] ?? 0),
+                . '&ptid=' . self::redirectId($data['ptid'] ?? 0)
+                . '&p=' . self::redirectId($data['p'] ?? 0)
+                . '&tid=' . self::redirectId($data['tid'] ?? 0),
                 Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
                 'error'
             );
@@ -85,9 +86,9 @@ final class EditprojectteamController extends FormController
         if ($this->getTask() === 'apply') {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=editprojectteam&tmpl=component&id=' . $id
-                . '&ptid=' . (int) ($data['ptid'] ?? 0)
-                . '&p=' . (int) ($data['p'] ?? 0)
-                . '&tid=' . (int) ($data['tid'] ?? 0),
+                . '&ptid=' . self::redirectId($data['ptid'] ?? 0)
+                . '&p=' . self::redirectId($data['p'] ?? 0)
+                . '&tid=' . self::redirectId($data['tid'] ?? 0),
                 Text::_('COM_SPORTSMANAGEMENT_EDIT_PROJECTTEAM_SAVED')
             );
 
@@ -113,6 +114,31 @@ final class EditprojectteamController extends FormController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', 'cancel');
 
         return true;
+    }
+
+    /**
+     * Parse a positive project-team navigation ID without implicit casts.
+     *
+     * Accepts validated decimal strings with legacy leading zeros; rejects
+     * malformed arrays, signs, fractional numbers and integer overflow.
+     *
+     * @param mixed $value Submitted team or project redirect identifier.
+     * @return int Positive record ID or zero for invalid input.
+     */
+    private static function redirectId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
