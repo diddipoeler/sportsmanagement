@@ -58,6 +58,8 @@ final class ProjectNavigationHelper
      * current project has an ID, equal-name neighbours are ordered by that
      * ID to avoid skipping projects with identical display names.
      * Malformed league selectors cannot be silently truncated by PHP casts.
+     * Builds ID:alias slugs in PHP rather than MySQL-only CONCAT_WS, keeping
+     * the query portable to PostgreSQL database drivers.
      *
      * @param DatabaseInterface $db Joomla database connection.
      * @param object $project Current project providing league and name.
@@ -78,10 +80,7 @@ final class ProjectNavigationHelper
         $operator = $next ? '>' : '<';
         $direction = $next ? 'ASC' : 'DESC';
         $query = $db->createQuery()
-            ->select([
-                $db->quoteName('p') . '.*',
-                "CONCAT_WS(':', p.id, p.alias) AS slug",
-            ])
+            ->select($db->quoteName('p') . '.*')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.league_id') . ' = :navigationLeagueId')
             ->bind(':navigationLeagueId', $leagueId, ParameterType::INTEGER)
@@ -103,7 +102,21 @@ final class ProjectNavigationHelper
 
         $db->setQuery($query, 0, 1);
 
-        return $db->loadObject() ?: null;
+        $neighbour = $db->loadObject();
+
+        if (!is_object($neighbour)) {
+            return null;
+        }
+
+        $neighbourId = self::positiveId($neighbour->id ?? null);
+        if ($neighbourId <= 0) {
+            return null;
+        }
+
+        $alias = is_string($neighbour->alias ?? null) ? $neighbour->alias : '';
+        $neighbour->slug = $neighbourId . ':' . $alias;
+
+        return $neighbour;
     }
     /**
      * Parse a positive project or league ID without accepting partial numbers.
