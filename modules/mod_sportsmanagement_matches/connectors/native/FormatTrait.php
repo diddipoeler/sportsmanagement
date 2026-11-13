@@ -14,6 +14,7 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 trait NativeFormatTrait
@@ -23,16 +24,17 @@ trait NativeFormatTrait
      * Use its Unix start time and configured period and break durations to
      * populate the legacy status flags consumed by match module templates.
      * Tolerate missing timing columns and cap invalid oversized durations.
+     * Validate timestamps and duration values without PHP's partial casts.
      * @param object $match Mutable match row with timing metadata.
      * @return void
      */
     private function applyStatus(object $match): void
     {
         $now = time();
-        $start = max(0, (int) ($match->match_timestamp ?? 0));
-        $regularMinutes = max(0, (int) ($match->game_regular_time ?? 0));
-        $parts = max(1, (int) ($match->game_parts ?? 1));
-        $breakMinutes = max(0, (int) ($match->halftime ?? 0));
+        $start = self::validatedMatchesTimestamp($match->match_timestamp ?? null) ?? 0;
+        $regularMinutes = self::boundedMatchesOption($match->game_regular_time ?? 0, 0, 1440);
+        $parts = self::boundedMatchesOption($match->game_parts ?? 1, 1, 20);
+        $breakMinutes = self::boundedMatchesOption($match->halftime ?? 0, 0, 1440);
 
         // Imported fixtures may have incomplete timing columns or extreme
         // values. Cap intermediate arithmetic so PHP 8 never promotes
@@ -252,6 +254,7 @@ trait NativeFormatTrait
      * then format each official and group entries by their match identifier.
      * Use Joomla DatabaseInterface::createQuery() to avoid the deprecated
      * getQuery(true) mode removed in newer framework database releases.
+     * Limits match ID filters and binds them with typed database parameters.
      * @param DatabaseInterface $db Current SportsManagement connection.
      * @param array<int,int> $matchIds Positive identifiers of displayed matches.
      * @param int $format Requested legacy person name format.
@@ -259,7 +262,15 @@ trait NativeFormatTrait
      */
     private function refereesByMatch(DatabaseInterface $db, array $matchIds, int $format): array
     {
-        $matchIds = array_values(array_unique(array_filter(array_map('intval', $matchIds))));
+        $validMatchIds = [];
+        foreach (array_slice($matchIds, 0, 500) as $candidate) {
+            $id = self::boundedMatchesId($candidate);
+            if ($id > 0) {
+                $validMatchIds[$id] = $id;
+            }
+        }
+
+        $matchIds = array_values($validMatchIds);
         if ($matchIds === []) {
             return [];
         }
@@ -298,7 +309,7 @@ trait NativeFormatTrait
                 $db->quoteName('#__sportsmanagement_position', 'pos')
                 . ' ON ' . $db->quoteName('pos.id') . ' = ' . $db->quoteName('ppos.position_id')
             )
-            ->where($db->quoteName('mr.match_id') . ' IN (' . implode(',', $matchIds) . ')')
+            ->whereIn($db->quoteName('mr.match_id'), $matchIds, ParameterType::INTEGER)
             ->where($db->quoteName('p.published') . ' = 1')
             ->order([
                 $db->quoteName('mr.match_id') . ' ASC',
@@ -308,15 +319,21 @@ trait NativeFormatTrait
         $db->setQuery($query);
 
         $out = [];
-        foreach ($db->loadObjectList() ?: [] as $referee) {
-            $matchId = (int) ($referee->match_id ?? 0);
-            if ($matchId <= 0) {
+        $refereeRows = $db->loadObjectList();
+        foreach (is_array($refereeRows) ? $refereeRows : [] as $referee) {
+            if (!is_object($referee)) {
                 continue;
             }
 
+            $matchId = self::boundedMatchesId($referee->match_id ?? null);
+            if ($matchId <= 0 || !isset($validMatchIds[$matchId])) {
+                continue;
+            }
+
+            $position = $referee->position_name ?? '';
             $out[$matchId][] = [
                 'name' => $this->formatName($referee, $format),
-                'position' => (string) ($referee->position_name ?? ''),
+                'position' => is_string($position) ? $position : '',
             ];
         }
 
