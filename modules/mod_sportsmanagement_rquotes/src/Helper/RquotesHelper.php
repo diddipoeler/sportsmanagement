@@ -33,6 +33,8 @@ final class RquotesHelper
      * rotates quotes according to module settings and falls back to empty
      * results on database errors. Logs the exception class without disclosing
      * SQL statements or connection details from third-party drivers.
+     * Rejects malformed database settings rather than reading quotes from
+     * the unrelated default Joomla connection.
      *
      * @param Registry $params Module display and selection settings.
      * @param Registry $componentParams SportsManagement component configuration.
@@ -77,6 +79,16 @@ final class RquotesHelper
                 'list' => [],
                 'textLine' => '',
                 'pictureServer' => $pictureServer,
+            ];
+        }
+
+        if ($databaseSelector === null) {
+            return [
+                'source' => 'db',
+                'style' => $style,
+                'list' => [],
+                'textLine' => '',
+                'pictureServer' => '',
             ];
         }
 
@@ -185,12 +197,12 @@ final class RquotesHelper
      * Only nonnegative integer values and decimal strings within the PHP integer range are accepted.
      *
      * @param mixed $value Raw database selector.
-     * @return int Nonnegative selector, defaulting to zero.
+     * @return int|null Nonnegative database selector, or null if invalid.
      */
-    private static function normaliseDatabaseSelector(mixed $value): int
+    private static function normaliseDatabaseSelector(mixed $value): ?int
     {
         if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
-            return 0;
+            return null;
         }
 
         if (is_string($value)) {
@@ -200,7 +212,7 @@ final class RquotesHelper
 
         $selector = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
-        return $selector === false ? 0 : $selector;
+        return $selector === false ? null : $selector;
     }
 
     /**
