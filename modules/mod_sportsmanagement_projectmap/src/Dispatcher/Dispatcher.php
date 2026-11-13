@@ -27,7 +27,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Assemble project location data and initialise the interactive map.
      *
-     * Loads current-season projects, supplies JavaScript options, registers dependent map assets and logs helper errors while keeping the module renderable.
+     * Loads current-season projects, supplies JavaScript options, registers
+     * dependent map assets and logs helper errors while keeping the module
+     * renderable. Ensures stable empty template values on helper failures
+     * and avoids exposing database connection details in error logs.
      *
      * @return array|false Layout data or false if rendering is skipped.
      * @throws \RuntimeException If the site client or database is unavailable.
@@ -93,7 +96,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             }
         } catch (\Throwable $exception) {
             $data['projects'] = [];
-            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ': project map unavailable (' . get_class($exception) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage('SportsManagement Project Map data is currently unavailable.', 'warning');
         }
 
