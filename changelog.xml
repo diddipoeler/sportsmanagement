@@ -2,6 +2,21 @@
     <changelog>
         <element>com_sportsmanagement</element>
         <type>component</type>
+        <version>4.24.03</version>
+        <security>
+            <item><![CDATA[<p>No security issues.</p>]]></item>
+        </security>
+        <addition>
+            <item>Add nullable round notes and season picture/picture_blob columns.</item>
+            <item>Provide dedicated backend tabs to edit round notes and season pictures.</item>
+        </addition>
+        <change>
+            <item>Install and upgrade database schemas updated for 4.24.03.</item>
+        </change>
+    </changelog>
+    <changelog>
+        <element>com_sportsmanagement</element>
+        <type>component</type>
         <version>4.24.02</version>
         <security>
             <item><![CDATA[<p>No security issues.</p>]]></item>
