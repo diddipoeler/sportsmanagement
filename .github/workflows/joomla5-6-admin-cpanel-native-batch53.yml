@@ -7,6 +7,12 @@ on:
     paths:
       - 'admin/src/View/Cpanel/HtmlView.php'
       - 'admin/tmpl/cpanel/native.php'
+      - 'admin/src/View/Githubinstall/HtmlView.php'
+      - 'admin/tmpl/githubinstall/default.php'
+      - 'admin/config.xml'
+      - 'admin/language/de-DE/de-DE.com_sportsmanagement.ini'
+      - 'admin/language/en-GB/en-GB.com_sportsmanagement.ini'
+      - '.github/tests/joomla56_admin_github_update_button.php'
       - 'admin/views/cpanel/view.html.php'
       - 'admin/views/cpanel/tmpl/native.php'
       - '.github/workflows/joomla5-6-admin-cpanel-native-batch53.yml'
@@ -16,6 +22,12 @@ on:
     paths:
       - 'admin/src/View/Cpanel/HtmlView.php'
       - 'admin/tmpl/cpanel/native.php'
+      - 'admin/src/View/Githubinstall/HtmlView.php'
+      - 'admin/tmpl/githubinstall/default.php'
+      - 'admin/config.xml'
+      - 'admin/language/de-DE/de-DE.com_sportsmanagement.ini'
+      - 'admin/language/en-GB/en-GB.com_sportsmanagement.ini'
+      - '.github/tests/joomla56_admin_github_update_button.php'
       - 'admin/views/cpanel/view.html.php'
       - 'admin/views/cpanel/tmpl/native.php'
       - '.github/workflows/joomla5-6-admin-cpanel-native-batch53.yml'
@@ -33,6 +45,13 @@ jobs:
           php -l admin/tmpl/cpanel/native.php
           php -l admin/views/cpanel/view.html.php
           php -l admin/views/cpanel/tmpl/native.php
+
+      - name: Verify administrator GitHub updater button and confirmation
+        run: |
+          php -l admin/src/View/Githubinstall/HtmlView.php
+          php -l admin/tmpl/githubinstall/default.php
+          php -l .github/tests/joomla56_admin_github_update_button.php
+          php .github/tests/joomla56_admin_github_update_button.php
 
       - name: Verify required PHP metadata
         run: |
