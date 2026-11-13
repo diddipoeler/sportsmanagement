@@ -76,7 +76,9 @@ final class EditclubController extends FormController
      * Checks Joomla's form token and component or club-specific editing
      * rights, normalises submitted team merge IDs and delegates the update
      * to EditclubModel. Redirects to the editor on failure or Apply, and
-     * closes the popup following a successful ordinary Save.
+     * closes the popup following a successful ordinary Save. Redirect IDs
+     * are validated separately to avoid PHP 8 array-to-integer conversion
+     * warnings from malformed legacy form submissions.
      * @param string|null $key Optional record key for legacy callers.
      * @param string|null $urlVar Optional URL record identifier.
      * @return bool True when the model update succeeded.
@@ -94,8 +96,8 @@ final class EditclubController extends FormController
         $saved = $this->editClubModel()->updItem($post);
 
         if (!$saved) {
-            $clubId = (int) ($post['id'] ?? 0);
-            $projectId = (int) ($post['p'] ?? 0);
+            $clubId = self::redirectId($post['id'] ?? 0);
+            $projectId = self::redirectId($post['p'] ?? 0);
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&tmpl=component&view=editclub'
                 . '&cid=' . $clubId
@@ -114,8 +116,8 @@ final class EditclubController extends FormController
             return true;
         }
 
-        $clubId = (int) ($post['id'] ?? 0);
-        $projectId = (int) ($post['p'] ?? 0);
+        $clubId = self::redirectId($post['id'] ?? 0);
+        $projectId = self::redirectId($post['p'] ?? 0);
 
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&tmpl=component&view=editclub'
@@ -125,6 +127,32 @@ final class EditclubController extends FormController
         );
 
         return true;
+    }
+
+    /**
+     * Validate a positive club or project ID used in editor redirect URLs.
+     *
+     * Accepts nonnegative decimal integers and zero-padded legacy strings;
+     * rejects arrays, signs and integer overflow rather than coercing an
+     * unintended record identifier.
+     *
+     * @param mixed $value Raw posted redirect identifier.
+     * @return int Valid positive identifier, or zero for malformed input.
+     */
+    private static function redirectId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
