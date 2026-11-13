@@ -92,6 +92,8 @@ final class ExtraFieldsReadHelper
 
     /**
      * Log database failures privately and display a generic Joomla warning.
+     * Exception classes are logged without SQL statements or credentials
+     * that some database drivers include in exception messages.
      *
      * @param \Throwable $e Error thrown while building or executing the query.
      * @return void
@@ -101,7 +103,7 @@ final class ExtraFieldsReadHelper
         // Keep SQL statements, connection details and filesystem paths in
         // the server log instead of exposing exception text in administrator HTML.
         \Joomla\CMS\Log\Log::add(
-            __METHOD__ . ': ' . $e->getMessage(),
+            __METHOD__ . ': extra-field lookup failed (' . get_class($e) . ').',
             \Joomla\CMS\Log\Log::ERROR,
             'com_sportsmanagement'
         );
