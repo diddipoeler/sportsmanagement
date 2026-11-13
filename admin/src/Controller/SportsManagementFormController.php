@@ -160,10 +160,9 @@ class SportsManagementFormController extends FormController
         $createTeam = $this->jsmjinput->getBool('createTeam');
         $playerPersistence = null;
 
-        if ($this->view_item === 'round' && $this->getTask() === 'save' && !$data) {
-            $data['round_date_first'] = '0000-00-00';
-            $data['round_date_last'] = '0000-00-00';
-        }
+        // Round dates are nullable since schema 4.24.02. Do not synthesize
+        // legacy zero dates for an empty form submission: let Joomla's
+        // validation reject incomplete data and preserve existing records.
 
         // Joomla's FormController::save() normally applies allowSave() before
         // calling the model. This compatibility override must keep that ACL
