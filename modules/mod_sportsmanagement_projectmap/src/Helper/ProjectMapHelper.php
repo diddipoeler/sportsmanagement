@@ -53,6 +53,8 @@ final class ProjectMapHelper
      * Normalises season selectors, joins project, league, country and federation
      * records, and retains the latest project per country using a bounded
      * query that is compatible with MySQL ONLY_FULL_GROUP_BY.
+     * Discards malformed result records before building country slugs or
+     * accessing project properties in PHP 8.
      * @param mixed $seasonIds Season IDs or delimited legacy values.
      * @param DatabaseInterface $db Connection used for the project query.
      * @return array<int,object> Most recent matching project for each country.
@@ -101,18 +103,26 @@ final class ProjectMapHelper
         $projectsByCountry = [];
 
         foreach ($db->loadObjectList() ?: [] as $project) {
-            $country = trim((string) ($project->country ?? ''));
-
-            if ($country === '') {
+            if (!is_object($project)) {
                 continue;
             }
 
-            // Build the Joomla ID:alias route segment without MySQL-only SQL.
-            $project->project_slug = (int) ($project->id ?? 0)
-                . ':' . (string) ($project->project_alias ?? '');
+            $country = $project->country ?? null;
+            $rawId = $project->id ?? null;
+            $projectId = filter_var($rawId, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+
+            if (!is_string($country) || trim($country) === '' || $projectId === false) {
+                continue;
+            }
+
+            $country = trim($country);
+            $alias = $project->project_alias ?? '';
+            $project->project_slug = $projectId . ':' . (is_string($alias) ? $alias : '');
 
             if (!isset($projectsByCountry[$country])
-                || (int) ($project->id ?? 0) > (int) ($projectsByCountry[$country]->id ?? 0)) {
+                || $projectId > (int) ($projectsByCountry[$country]->id ?? 0)) {
                 $projectsByCountry[$country] = $project;
             }
         }
