@@ -286,12 +286,15 @@ final class TeamPlayersHelper
     /**
      * Read a legacy text value without converting arrays or objects to text.
      *
+     * Refuses oversized legacy payloads before they reach roster templates,
+     * links or sorting callbacks.
+     *
      * @param mixed $value Raw database string field.
-     * @return string String value or an empty string for invalid types.
+     * @return string Bounded value or empty text for invalid data.
      */
     private static function textValue(mixed $value): string
     {
-        return is_string($value) ? $value : '';
+        return is_string($value) && strlen($value) <= 4096 ? $value : '';
     }
 
     /**
