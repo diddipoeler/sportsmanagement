@@ -25,6 +25,8 @@ final class GithubController extends BaseController
      * the external GitHub issue model. Rejects guests and unavailable identities
      * before any issue data is read or sent. Redirects to the result
      * layout with either a success or an error message after the attempt.
+     * The resolved model must expose the issue-creation operation before it
+     * is called, avoiding fatal errors from an unexpected MVC factory result.
      *
      * @return void
      * @throws \RuntimeException When the current user lacks manage permission.
@@ -42,7 +44,9 @@ final class GithubController extends BaseController
         }
 
         $model = $this->getModel('Github', 'Administrator', ['ignore_request' => true]);
-        $success = $model !== false && $model->addissue();
+        $success = is_object($model)
+            && is_callable([$model, 'addissue'])
+            && (bool) $model->addissue();
 
         $this->setRedirect(
             'index.php?option=com_sportsmanagement&view=github&tmpl=component&layout=github_result',
