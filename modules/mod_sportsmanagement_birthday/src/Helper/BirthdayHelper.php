@@ -36,6 +36,8 @@ final class BirthdayHelper
      * Driver errors are logged by exception type, avoiding accidental SQL
      * statement or credential exposure from third-party exception messages.
      * Malformed database choices cannot silently select the Joomla database.
+     * Unexpected types for name format, sorting or display mode use safe
+     * defaults rather than causing PHP 8 array-to-string conversion warnings.
      * @param Registry $params Birthday module configuration.
      * @param Registry $componentParams SportsManagement component defaults.
      * @param CMSApplicationInterface $app Active Joomla site application.
@@ -182,7 +184,9 @@ final class BirthdayHelper
             $row->year = $birthday->format('Y');
             $row->days_to_birthday = $days;
             $row->age = (int) $birthday->format('Y') - (int) $birth->format('Y');
-            $row->display_name = $this->displayName($row, (int) $params->get('name_format', 0));
+            $rawNameFormat = $params->get('name_format', 0);
+            $nameFormat = filter_var($rawNameFormat, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+            $row->display_name = $this->displayName($row, $nameFormat === false ? 0 : $nameFormat);
             $row->person_link = $this->personLink($row, $databaseSelector);
             $row->picture_url = $this->pictureUrl($row, (bool) $params->get('show_picture', 1));
             $row->flag_html = (bool) $params->get('show_player_flag', 0) ? $this->flagHtml($row, $componentParams) : '';
@@ -190,7 +194,9 @@ final class BirthdayHelper
             $people[$key] = (array) $row;
         }
 
-        $people = self::sortPersons(array_values($people), $params->get('sort_order', '-'), false);
+        $rawSortOrder = $params->get('sort_order', '-');
+        $sortOrder = is_string($rawSortOrder) ? $rawSortOrder : '-';
+        $people = self::sortPersons(array_values($people), $sortOrder, false);
         // Do not cast non-numeric or overflowing module configuration into a limit.
         $rawLimit = $params->get('limit', 0);
         $limit = filter_var($rawLimit, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
@@ -199,9 +205,11 @@ final class BirthdayHelper
             $people = array_slice($people, 0, $limit);
         }
 
+        $configuredMode = $params->get('mode', 'L');
+
         return [
             'persons' => $people,
-            'mode' => strtoupper((string) $params->get('mode', 'L')),
+            'mode' => is_string($configuredMode) ? strtoupper($configuredMode) : 'L',
             'pictureServer' => Uri::root(),
         ];
     }
@@ -300,6 +308,10 @@ final class BirthdayHelper
      * Parse the optional days filter without silently turning invalid input into zero.
      *
      * Empty or malformed limits mean no filter. Zero explicitly means today only.
+     * Rejects non-scalar input and values beyond the platform integer range.
+     *
+     * @param mixed $value Raw configured days-ahead limit.
+     * @return int|null Nonnegative days limit, or null when unspecified or invalid.
      */
     private static function normaliseDaysLimit(mixed $value): ?int
     {
