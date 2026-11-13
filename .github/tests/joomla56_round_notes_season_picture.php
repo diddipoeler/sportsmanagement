@@ -53,7 +53,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table {
         }
 
         /** @return bool Record values given to the inherited binder. */
-        public function bind($src, $ignore = []): bool
+        public function bind($src, $ignore = [])
         {
             $this->bound = is_array($src) ? $src : get_object_vars($src);
 
@@ -67,7 +67,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Table {
         }
 
         /** @return bool Simulate the successful Joomla base-table check. */
-        public function check(): bool
+        public function check()
         {
             return true;
         }
