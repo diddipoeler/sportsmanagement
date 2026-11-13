@@ -36,8 +36,9 @@ final class SmquotesController extends SportsManagementAdminController
     /**
      * Resolve the administrator quote model through Joomla's MVC factory.
      *
-     * Defaults to request-independent loading but passes additional
-     * options from the caller through to the parent controller.
+     * Preserves caller-provided model configuration but always sets
+     * ignore_request to prevent request parameters from silently changing
+     * the administrator quote model state.
      *
      * @param string $name Requested quote model name.
      * @param string $prefix Administrator model namespace.
@@ -46,6 +47,8 @@ final class SmquotesController extends SportsManagementAdminController
      */
     public function getModel($name = 'Smquote', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, array_replace(['ignore_request' => true], $config));
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }
