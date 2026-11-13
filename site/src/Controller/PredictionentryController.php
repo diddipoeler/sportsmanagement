@@ -53,6 +53,8 @@ final class PredictionentryController extends BaseController
      * Register the current Joomla user for the prediction game.
      * Calls the membership model, reports translated success or failure messages,
      * and redirects to the entry view without exposing registration exceptions.
+     * Logs only the failure exception type, not potentially sensitive SQL,
+     * member details or database configuration in exception messages.
      * @return void
      */
     public function register(): void
@@ -69,7 +71,7 @@ final class PredictionentryController extends BaseController
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_2'), 'message');
             $this->setRedirect($this->entryRoute($model, $memberId, ['s' => 1]));
         } catch (\Throwable $e) {
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_5'), 'error');
             $this->setRedirect($this->entryRoute($model, 0));
         }
@@ -78,7 +80,8 @@ final class PredictionentryController extends BaseController
     /**
      * Save the submitted prediction tips for the selected game and member.
      * Delegates validation and persistence to the tip model after CSRF checking,
-     * logs failures and redirects with the corresponding translated status.
+     * logs failures by exception type and redirects with the corresponding
+     * translated status without recording potentially sensitive tip data.
      * @return void
      */
     public function addtipp(): void
@@ -95,7 +98,7 @@ final class PredictionentryController extends BaseController
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_MSG_1'), 'message');
             $this->setRedirect($this->entryRoute($model, $model->getSelectedMemberNumericId(), ['eok' => 1]));
         } catch (\Throwable $e) {
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_CONTROLLER_ERROR_3'), 'error');
             $this->setRedirect($this->entryRoute($model, $model->getSelectedMemberNumericId()));
         }
