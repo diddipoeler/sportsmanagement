@@ -69,7 +69,8 @@ final class LocationAddressHelper
      *
      * Accepts strings, integers and floats, discarding arrays and objects
      * so that PHP 8+ does not emit conversion warnings in frontend views.
-     * Discard non-finite floats and normalise control bytes in imported text.
+     * Discard non-finite floats, reject unreasonably large imported values and
+     * normalise control bytes before rendering an address or country label.
      *
      * @param mixed $value Raw address property.
      * @return string Trimmed text, or an empty string for invalid values.
@@ -81,6 +82,10 @@ final class LocationAddressHelper
         }
 
         if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            return '';
+        }
+
+        if (strlen((string) $value) > 4096) {
             return '';
         }
 
