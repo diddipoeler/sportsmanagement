@@ -12,6 +12,7 @@
     <field name="picture" type="media"
            label="COM_SPORTSMANAGEMENT_ADMIN_SEASON_PICTURE"
            description="COM_SPORTSMANAGEMENT_ADMIN_SEASON_PICTURE_DESC"
+           maxlength="250"
            preview="show" />
   </fieldset>
 </form>
