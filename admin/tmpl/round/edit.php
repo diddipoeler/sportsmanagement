@@ -38,7 +38,7 @@ $roundId = (int) ($this->item->id ?? 0);
     action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=round&layout=edit&id=' . $roundId . '&pid=' . $this->project_id); ?>"
     method="post"
     name="adminForm"
-    id="round-form"
+    id="adminForm"
     class="form-validate"
 >
     <?php echo HTMLHelper::_('uitab.startTabSet', 'round-edit-tabs', ['active' => 'details']); ?>
