@@ -500,7 +500,8 @@ final class ClubBirthdayHelper
     /**
      * Parse season identifiers from legacy module selector values.
      * Accepts numeric scalars and delimited lists, deduplicates valid
-     * positive IDs and ignores malformed or overflowing inputs.
+     * positive IDs and ignores malformed or overflowing inputs. Bounds the
+     * number and length of incoming values to avoid huge database filters.
      * @param mixed $values Raw Joomla season selection.
      * @return array<int> Normalised positive season identifiers.
      */
@@ -509,8 +510,9 @@ final class ClubBirthdayHelper
         $values = is_array($values) ? $values : [$values];
         $ids = [];
 
-        foreach ($values as $value) {
-            if (!is_string($value) && !is_int($value)) {
+        foreach (array_slice($values, 0, 200) as $value) {
+            if ((!is_string($value) && !is_int($value))
+                || (is_string($value) && strlen($value) > 4096)) {
                 continue;
             }
 
@@ -529,6 +531,10 @@ final class ClubBirthdayHelper
 
                 if ($id !== false) {
                     $ids[$id] = $id;
+
+                    if (count($ids) >= 100) {
+                        return array_values($ids);
+                    }
                 }
             }
         }
