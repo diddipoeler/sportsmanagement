@@ -25,6 +25,8 @@ final class NameFormatter
      * Combines optional prefixes, first names, nicknames and surnames in the
      * ordering selected by SportsManagement formats 0–18. Preserves the
      * historical line-break and punctuation output for existing templates.
+     * Removes surrounding whitespace from individual name fields to prevent
+     * doubled separators and whitespace-only prefixes in legacy records.
      *
      * @param string|null $prefix Optional title or name prefix.
      * @param string $firstName Given name of the person.
@@ -41,8 +43,12 @@ final class NameFormatter
         int $format
     ): string {
         $name = [];
+        $prefix = trim((string) $prefix);
+        $firstName = trim($firstName);
+        $nickName = trim($nickName);
+        $lastName = trim($lastName);
 
-        if ($prefix) {
+        if ($prefix !== '') {
             $name[] = $prefix;
         }
 
