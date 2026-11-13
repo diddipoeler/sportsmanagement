@@ -283,9 +283,10 @@ final class TeamplayersController extends SportsManagementAdminController
     /**
      * Redirect to the team-players list with the active selection context.
      *
-     * Keeps only scalar, nonnegative, validated integer filter values from
-     * the model context. Rejects malformed arrays and objects instead of
-     * implicitly casting them under PHP 8 or encoding them into the URL.
+     * Keeps only explicitly allowed project/team selector keys with scalar,
+     * validated positive integer values from the model context. Rejects
+     * malformed arrays and objects without allowing context data to override
+     * the fixed Joomla component and view routing parameters.
      *
      * @param TeamplayersModel $model Model supplying the view filter values.
      * @return void
@@ -295,7 +296,7 @@ final class TeamplayersController extends SportsManagementAdminController
         $params = [];
 
         foreach ($model->getContextParams() as $key => $value) {
-            if (!is_string($key) || !preg_match('/^[a-z][a-z0-9_]*$/D', $key)) {
+            if (!in_array($key, ['pid', 'project_team_id', 'team_id', 'season_team_id', 'persontype'], true)) {
                 continue;
             }
 
