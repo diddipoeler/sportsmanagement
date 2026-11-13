@@ -31,7 +31,6 @@ final class AjaxController extends BaseController
         $this->respondPredictionId();
     }
 
-    /** Backward-compatible task name used by legacy administrator JavaScript. */
     /**
      * Provide the historical AJAX alias for retrieving prediction-game identifiers.
      *
@@ -549,7 +548,6 @@ final class AjaxController extends BaseController
         $this->respondProjectOption('getProjectStatsOptions');
     }
 
-    /** Backward-compatible singular task used by existing module XML files. */
     /**
      * Keep the legacy singular AJAX task for project statistics.
      *
