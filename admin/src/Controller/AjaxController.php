@@ -18,17 +18,41 @@ use Joomla\CMS\MVC\Controller\BaseController;
 /** Native read-only JSON controller for administrator option endpoints. */
 final class AjaxController extends BaseController
 {
+    /**
+     * Return a JSON list of configured prediction games for the selected SportsManagement database.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function predictionid(): void
     {
         $this->respondPredictionId();
     }
 
     /** Backward-compatible task name used by legacy administrator JavaScript. */
+    /**
+     * Provide the historical AJAX alias for retrieving prediction-game identifiers.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function getpredictionid(): void
     {
         $this->respondPredictionId();
     }
 
+    /**
+     * Return available groups belonging to the requested prediction game.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function predictiongroups(): void
     {
         $input = $this->input;
@@ -40,6 +64,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return project choices associated with the selected prediction game.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function predictionpj(): void
     {
         $input = $this->input;
@@ -51,6 +83,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Load location choices matching the submitted postcode and country.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function locationzipcodeoptions(): void
     {
         $input = $this->input;
@@ -63,6 +103,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Resolve the display name of a selected country code.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function getCcountryName(): void
     {
         $this->respondModel('getCcountryName', [
@@ -70,6 +118,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Resolve the two-letter country code used by country selectors.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function getCcountryAlpha2(): void
     {
         $this->respondModel('getCcountryAlpha2', [
@@ -77,6 +133,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return league options filtered by the selected nation.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function countryleagueoptions(): void
     {
         $input = $this->input;
@@ -88,6 +152,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return postcode choices for the selected country and optional project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function countryzipcodeoptions(): void
     {
         $input = $this->input;
@@ -100,6 +172,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return a club's permitted age-group options.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function countryclubagegroupoptions(): void
     {
         $input = $this->input;
@@ -111,6 +191,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return association options for the selected country.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function associationsoptions(): void
     {
         $input = $this->input;
@@ -122,6 +210,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Resolve person-contact options for the selected Joomla user profile.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function personcontactid(): void
     {
         $input = $this->input;
@@ -131,6 +227,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * List sports projects associated with the selected season.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projects(): void
     {
         $input = $this->input;
@@ -142,6 +246,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * List season choices for the configured SportsManagement database.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function seasons(): void
     {
         $input = $this->input;
@@ -152,6 +264,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return available people filtered by the selected person type.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function personlistoptions(): void
     {
         $input = $this->input;
@@ -163,6 +283,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return people available for assignment to a project team.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function personlistoptionsprojectteam(): void
     {
         $input = $this->input;
@@ -174,6 +302,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return player or staff positions for the chosen sport type.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function personpositionoptions(): void
     {
         $input = $this->input;
@@ -185,6 +321,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return person age groups for sport, project and country selections.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function personagegroupoptions(): void
     {
         $input = $this->input;
@@ -198,6 +342,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * List available members of the selected prediction game.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function predictionmembersoptions(): void
     {
         $input = $this->input;
@@ -209,16 +361,40 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return division choices for the currently selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectdivisionsoptions(): void
     {
         $this->respondProjectOption('getProjectDivisionsOptions');
     }
 
+    /**
+     * Return event choices belonging to the selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projecteventsoptions(): void
     {
         $this->respondProjectOption('getProjectEventsOptions');
     }
 
+    /**
+     * Return project-team choices restricted to a division.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectteamsbydivisionoptions(): void
     {
         $input = $this->input;
@@ -231,6 +407,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return project choices filtered by a sport type.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectsbysportstypesoptions(): void
     {
         $input = $this->input;
@@ -242,6 +426,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return age-group choices filtered by sport type.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function agegroupsbysportstypesoptions(): void
     {
         $input = $this->input;
@@ -253,6 +445,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return project choices associated with a selected club.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectsbycluboptions(): void
     {
         $input = $this->input;
@@ -264,6 +464,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * List season-team entries for the selected project and optional club.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectteamoptions(): void
     {
         $input = $this->input;
@@ -276,47 +484,119 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return project-team options containing their relation identifiers.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectteamsptidoptions(): void
     {
         $this->respondProjectOption('getProjectTeamPtidOptions');
     }
 
+    /**
+     * List players belonging to the selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectplayeroptions(): void
     {
         $this->respondProjectOption('getProjectPlayerOptions');
     }
 
+    /**
+     * List staff members belonging to the selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectstaffoptions(): void
     {
         $this->respondProjectOption('getProjectStaffOptions');
     }
 
+    /**
+     * Return available clubs for the current project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectcluboptions(): void
     {
         $this->respondProjectOption('getProjectClubOptions');
     }
 
+    /**
+     * Return statistic choices for the selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectstatsoptions(): void
     {
         $this->respondProjectOption('getProjectStatsOptions');
     }
 
     /** Backward-compatible singular task used by existing module XML files. */
+    /**
+     * Keep the legacy singular AJAX task for project statistics.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectstatoptions(): void
     {
         $this->respondProjectOption('getProjectStatsOptions');
     }
 
+    /**
+     * Return match choices belonging to the currently selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function matchesoptions(): void
     {
         $this->respondProjectOption('getMatchesOptions');
     }
 
+    /**
+     * Return referee choices associated with the selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function refereesoptions(): void
     {
         $this->respondProjectOption('getRefereesOptions');
     }
 
+    /**
+     * Return the available rounds for the selected project in ascending order.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projectroundoptions(): void
     {
         $input = $this->input;
@@ -330,11 +610,27 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Return bracket-tree nodes belonging to the selected project.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function projecttreenodeoptions(): void
     {
         $this->respondProjectOption('getProjectTreenodeOptions');
     }
 
+    /**
+     * List configured sport types for the selected SportsManagement database.
+     *
+     * Reads the relevant Joomla request filters, delegates the lookup to
+     * the native administrator AJAX model and emits a JSON response.
+     *
+     * @return void
+     */
     public function sportstypesoptions(): void
     {
         $input = $this->input;
@@ -345,6 +641,14 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Build a prediction-game query from database and option flags and send its JSON response.
+     *
+     * Reads nonnegative project or prediction identifiers and standard
+     * required, slug and database flags from Joomla request input.
+     *
+     * @return void
+     */
     private function respondPredictionId(): void
     {
         $input = $this->input;
@@ -355,6 +659,15 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Build a common project-scoped option query and delegate it to the administrator AJAX model.
+     *
+     * Reads nonnegative project or prediction identifiers and standard
+     * required, slug and database flags from Joomla request input.
+     *
+     * @param string $method Trusted model method used for this project selector.
+     * @return void
+     */
     private function respondProjectOption(string $method): void
     {
         $input = $this->input;
@@ -366,6 +679,18 @@ final class AjaxController extends BaseController
         ]);
     }
 
+    /**
+     * Call an approved method of the administrator AJAX model and send a JSON response.
+     *
+     * Verifies the native model supports the requested method, substitutes
+     * invalid UTF-8 during JSON encoding and closes the Joomla application.
+     * Failed database calls return a generic JSON error without revealing
+     * private exception messages to site visitors.
+     *
+     * @param string $method Requested administrator AJAX model method.
+     * @param array<int,mixed> $arguments Validated selection and formatting arguments.
+     * @return void
+     */
     private function respondModel(string $method, array $arguments): void
     {
         $app = $this->app;
@@ -388,7 +713,7 @@ final class AjaxController extends BaseController
                 | JSON_THROW_ON_ERROR
             );
         } catch (\Throwable $error) {
-            Log::add(__METHOD__ . ' (' . $method . '): ' . $error->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ' (' . $method . ') failed (' . get_class($error) . ').', Log::ERROR, 'jsmerror');
 
             // Keep the AJAX response machine-readable without leaking database details.
             $json = json_encode(
