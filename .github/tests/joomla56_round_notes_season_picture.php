@@ -138,5 +138,18 @@ namespace {
             'The season picture media field must exist in ' . $formFolder);
     }
 
+    $roundLayout = file_get_contents($root . '/admin/tmpl/round/edit.php');
+    $seasonLayout = file_get_contents($root . '/admin/tmpl/season/edit.php');
+    $expect(is_string($roundLayout)
+        && str_contains($roundLayout, 'id="adminForm"')
+        && str_contains($roundLayout, "getFieldset('notes')")
+        && str_contains($roundLayout, "'uitab.startTabSet'"),
+        'Round form must submit through Joomla adminForm with a separate notes tab.');
+    $expect(is_string($seasonLayout)
+        && str_contains($seasonLayout, 'name="adminForm"')
+        && str_contains($seasonLayout, '&view=season&layout=edit')
+        && str_contains($seasonLayout, "'uitab.startTabSet'"),
+        'Season form must target the correct edit view with separate tabs.');
+
     echo "Round notes and season picture schema/binding checks OK\n";
 }
