@@ -26,6 +26,8 @@ final class TeamStatsRankingHelper
      * database, calculates a bounded ranking and resolves its team records.
      * Missing projects, statistics or database errors produce empty data.
      * Invalid icon and ranking-order fields fall back to safe defaults.
+     * Rejects malformed external database selections instead of silently
+     * using the Joomla default database for unrelated statistics.
      *
      * @param Registry $params Joomla module configuration.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -35,9 +37,9 @@ final class TeamStatsRankingHelper
     {
         $projectId = $this->extractId($params->get('p', 0));
         $statId = $this->extractId($params->get('sid', 0));
-        $selector = self::numericSetting($params->get('cfg_which_database', 0), 0, PHP_INT_MAX);
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
 
-        if ($projectId <= 0 || $statId <= 0) {
+        if ($projectId <= 0 || $statId <= 0 || $selector === null) {
             return $this->emptyData();
         }
 
@@ -70,6 +72,33 @@ final class TeamStatsRankingHelper
         } catch (\Throwable) {
             return $this->emptyData();
         }
+    }
+
+    /**
+     * Parse the optional SportsManagement database choice without coercion.
+     *
+     * Accepts a nonnegative integer or a zero-padded decimal string while
+     * rejecting booleans, arrays, partially numeric values and overflow.
+     * An invalid selection returns null so it cannot select the default
+     * database and display statistics from an unintended connection.
+     *
+     * @param mixed $value Raw database selection from Joomla module settings.
+     * @return int|null Valid selector or null for invalid input.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? null : $number;
     }
 
     /**
