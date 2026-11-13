@@ -52,7 +52,8 @@ final class EditteamController extends FormController
      * Requires a Joomla form token and component-level edit permission,
      * passes the posted fields to EditteamModel::updItem() and redirects
      * either back to the editor with an error, back after Apply, or to the
-     * popup close view after a successful Save.
+     * popup close view after a successful Save. Posted redirect selectors
+     * are validated independently to prevent PHP 8 numeric-cast warnings.
      *
      * @param string|null $key Optional legacy record key.
      * @param string|null $urlVar Optional legacy URL identifier.
@@ -72,9 +73,9 @@ final class EditteamController extends FormController
         if (!$saved) {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=editteam&tmpl=component&id=' . $id
-                . '&ptid=' . (int) ($data['ptid'] ?? 0)
-                . '&p=' . (int) ($data['p'] ?? 0)
-                . '&tid=' . (int) ($data['tid'] ?? 0),
+                . '&ptid=' . self::redirectId($data['ptid'] ?? 0)
+                . '&p=' . self::redirectId($data['p'] ?? 0)
+                . '&tid=' . self::redirectId($data['tid'] ?? 0),
                 Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
                 'error'
             );
@@ -85,9 +86,9 @@ final class EditteamController extends FormController
         if ($this->getTask() === 'apply') {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=editteam&tmpl=component&id=' . $id
-                . '&ptid=' . (int) ($data['ptid'] ?? 0)
-                . '&p=' . (int) ($data['p'] ?? 0)
-                . '&tid=' . (int) ($data['tid'] ?? 0),
+                . '&ptid=' . self::redirectId($data['ptid'] ?? 0)
+                . '&p=' . self::redirectId($data['p'] ?? 0)
+                . '&tid=' . self::redirectId($data['tid'] ?? 0),
                 Text::_('COM_SPORTSMANAGEMENT_EDIT_TEAM_SAVED')
             );
 
@@ -112,6 +113,31 @@ final class EditteamController extends FormController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', 'cancel');
 
         return true;
+    }
+
+    /**
+     * Parse a positive team or project redirect ID from legacy form fields.
+     *
+     * Rejects arrays, non-decimal text and values exceeding the PHP integer
+     * range before including a record identifier in an editing URL.
+     *
+     * @param mixed $value Raw submitted navigation identifier.
+     * @return int Valid positive ID or zero for invalid input.
+     */
+    private static function redirectId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
