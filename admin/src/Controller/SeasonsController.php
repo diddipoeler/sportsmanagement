@@ -36,7 +36,8 @@ final class SeasonsController extends SportsManagementAdminController
      * Apply selected person assignments to the current season.
      * Checks edit permission, verifies the required Joomla model exists,
      * normalises request selection values and delegates assignment writes
-     * to the season form model.
+     * to the season form model. Invalid structured identifiers and view
+     * selectors are replaced with safe redirect defaults.
      * @return void
      * @throws \RuntimeException When the native model cannot be loaded.
      */
@@ -58,10 +59,10 @@ final class SeasonsController extends SportsManagementAdminController
             . '&tmpl=component'
             . '&view=players'
             . '&layout=assignpersons'
-            . '&season_id=' . (int) ($post['season_id'] ?? 0)
-            . '&team_id=' . (int) $this->scalarInput($post['team_id'] ?? 0)
-            . '&persontype=' . (int) ($post['persontype'] ?? 0)
-            . '&whichview=' . rawurlencode((string) ($post['whichview'] ?? ''));
+            . '&season_id=' . $this->positiveInputId($post['season_id'] ?? 0)
+            . '&team_id=' . $this->positiveInputId($this->scalarInput($post['team_id'] ?? 0))
+            . '&persontype=' . $this->positiveInputId($post['persontype'] ?? 0)
+            . '&whichview=' . rawurlencode(is_string($post['whichview'] ?? null) ? $post['whichview'] : '');
 
         $this->setRedirect(Route::_($url, false), $message);
     }
@@ -91,9 +92,29 @@ final class SeasonsController extends SportsManagementAdminController
             . '&tmpl=component'
             . '&view=teams'
             . '&layout=assignteams'
-            . '&season_id=' . (int) ($post['season_id'] ?? 0);
+            . '&season_id=' . $this->positiveInputId($post['season_id'] ?? 0);
 
         $this->setRedirect(Route::_($url, false));
+    }
+
+    /**
+     * Return a positive numeric Joomla form identifier or zero when invalid.
+     *
+     * Rejects arrays, signed values, partial numerics and integer overflows
+     * rather than silently coercing malformed POST data into a redirect ID.
+     *
+     * @param mixed $value Raw form identifier.
+     * @return int Positive record identifier, or zero if invalid.
+     */
+    private function positiveInputId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
