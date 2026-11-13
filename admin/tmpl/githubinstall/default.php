@@ -27,13 +27,13 @@ use Joomla\CMS\Router\Route;
                     <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE_LEGACY_SOURCE'); ?>
                 </div>
             <?php endif; ?>
-            <?php if ($this->github_link !== '') : ?>
+            <?php if ($this->github_link !== '' && !$this->isLegacyUpdateSource) : ?>
                 <p class="card-text text-break"><?php echo $this->escape($this->github_link); ?></p>
                 <button type="submit" class="btn btn-primary">
                     <span class="icon-download" aria-hidden="true"></span>
                     <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'); ?>
                 </button>
-            <?php else : ?>
+            <?php elseif (!$this->isLegacyUpdateSource) : ?>
                 <div class="alert alert-warning mb-0">
                     <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUBINSTALL'); ?>
                 </div>
