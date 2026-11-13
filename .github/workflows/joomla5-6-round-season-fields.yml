@@ -1,0 +1,80 @@
+name: Joomla 5/6 round notes and season picture gate
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Table/RoundTable.php'
+      - 'admin/src/Table/SeasonTable.php'
+      - 'admin/forms/round.xml'
+      - 'admin/forms/season.xml'
+      - 'admin/models/forms/round.xml'
+      - 'admin/models/forms/season.xml'
+      - 'admin/tmpl/round/edit.php'
+      - 'admin/tmpl/season/edit.php'
+      - 'admin/sql/install.mysql.utf8.sql'
+      - 'admin/sql/updates/mysql/4.24.03.sql'
+      - 'sportsmanagement.xml'
+      - '.github/tests/joomla56_round_notes_season_picture.php'
+      - '.github/workflows/joomla5-6-round-season-fields.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Table/RoundTable.php'
+      - 'admin/src/Table/SeasonTable.php'
+      - 'admin/forms/round.xml'
+      - 'admin/forms/season.xml'
+      - 'admin/models/forms/round.xml'
+      - 'admin/models/forms/season.xml'
+      - 'admin/tmpl/round/edit.php'
+      - 'admin/tmpl/season/edit.php'
+      - 'admin/sql/install.mysql.utf8.sql'
+      - 'admin/sql/updates/mysql/4.24.03.sql'
+      - 'sportsmanagement.xml'
+      - '.github/tests/joomla56_round_notes_season_picture.php'
+      - '.github/workflows/joomla5-6-round-season-fields.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  schema-and-binding:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint editable table classes and layouts
+        shell: bash
+        run: |
+          set -euo pipefail
+          for source in \
+            admin/src/Table/RoundTable.php \
+            admin/src/Table/SeasonTable.php \
+            admin/tmpl/round/edit.php \
+            admin/tmpl/season/edit.php \
+            .github/tests/joomla56_round_notes_season_picture.php; do
+            php -l "$source"
+          done
+      - name: Test table binding, form contracts and schema additions
+        run: php .github/tests/joomla56_round_notes_season_picture.php
+      - name: Parse Joomla XML forms and manifests
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          for path in [
+              'admin/forms/round.xml',
+              'admin/forms/season.xml',
+              'admin/models/forms/round.xml',
+              'admin/models/forms/season.xml',
+              'sportsmanagement.xml',
+          ]:
+              ET.parse(path)
+          print('Round and season forms and Joomla manifest are well-formed')
+          PY
