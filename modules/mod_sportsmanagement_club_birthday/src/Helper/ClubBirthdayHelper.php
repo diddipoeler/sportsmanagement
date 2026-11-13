@@ -34,6 +34,8 @@ final class ClubBirthdayHelper
      * Validates mode and season settings, resolves the chosen database,
      * loads eligible clubs and formats anniversary information for the
      * frontend layout without expanding malformed season selections.
+     * Invalid database selectors are rejected before opening a connection;
+     * malformed numeric display limits use conservative defaults.
      * @param Registry $params Club birthday module options.
      * @param CMSApplicationInterface $app Current Joomla site application.
      * @param DatabaseInterface $fallbackDatabase Default Joomla database.
@@ -55,19 +57,25 @@ final class ClubBirthdayHelper
             return ['clubs' => [], 'mode' => $mode];
         }
 
+        $databaseSelector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($databaseSelector === null) {
+            return ['clubs' => [], 'mode' => $mode];
+        }
+
         try {
             $timezone = self::timezone($app);
             $database = SportsManagementDatabaseResolver::resolve(
                 $fallbackDatabase,
-                self::databaseSelector($params->get('cfg_which_database', 0))
+                $databaseSelector
             );
             $clubs = $this->getClubs(
-                (int) $params->get('limit', 0),
-                max(0, (int) $params->get('maxdays', 0)),
+                self::nonNegativeOption($params->get('limit', 0)),
+                self::nonNegativeOption($params->get('maxdays', 0)),
                 $seasonSelection,
                 $database,
                 $timezone,
-                (int) $params->get('sort_order', -1)
+                self::sortOrder($params->get('sort_order', -1))
             );
 
             foreach ($clubs as $club) {
@@ -76,7 +84,7 @@ final class ClubBirthdayHelper
         } catch (Throwable $e) {
             // Optional external databases and missing Joomla tables must not
             // interrupt site rendering or reveal credentials to visitors.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
             $clubs = [];
         }
 
@@ -87,13 +95,19 @@ final class ClubBirthdayHelper
     }
 
     /**
-     * Reject malformed external database selectors while preserving
-     * zero-padded decimal values from legacy module configurations.
+     * Validate the configured external database selector without coercion.
+     *
+     * Accepts nonnegative integer and zero-padded decimal string values.
+     * Invalid or overflowing selections return null instead of silently
+     * selecting the default database and exposing unrelated club records.
+     *
+     * @param mixed $raw Raw Joomla module database parameter.
+     * @return int|null Valid selector, or null for invalid configuration.
      */
-    private static function databaseSelector(mixed $raw): int
+    private static function databaseSelector(mixed $raw): ?int
     {
         if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
-            return 0;
+            return null;
         }
 
         if (is_string($raw)) {
@@ -103,7 +117,43 @@ final class ClubBirthdayHelper
 
         $selector = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
-        return $selector === false ? 0 : $selector;
+        return $selector === false ? null : $selector;
+    }
+
+    /**
+     * Validate a nonnegative module count or days-limit setting.
+     *
+     * Rejects arrays, signs, non-decimal text and integer overflows; an
+     * invalid parameter falls back to zero without PHP 8 conversion warnings.
+     *
+     * @param mixed $raw Raw Joomla limit or day-count setting.
+     * @return int Nonnegative validated value, or zero by default.
+     */
+    private static function nonNegativeOption(mixed $raw): int
+    {
+        if (!is_int($raw) && (!is_string($raw) || !preg_match('/^[0-9]+$/D', $raw))) {
+            return 0;
+        }
+
+        $value = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $value === false ? 0 : $value;
+    }
+
+    /**
+     * Validate the signed age sorting direction configured for club entries.
+     *
+     * Preserves legacy negative or nonnegative integer values while
+     * replacing malformed array or text settings with descending age order.
+     *
+     * @param mixed $raw Raw configured age-sort direction.
+     * @return int Valid sorting option, or minus one by default.
+     */
+    private static function sortOrder(mixed $raw): int
+    {
+        $value = filter_var($raw, FILTER_VALIDATE_INT);
+
+        return $value === false ? -1 : $value;
     }
 
     /**
@@ -426,6 +476,9 @@ final class ClubBirthdayHelper
     /**
      * Distinguish a genuinely empty legacy filter from a malformed, nonempty
      * selection. This prevents invalid input from widening a query.
+     *
+     * @param mixed $value Raw season-filter configuration.
+     * @return bool Whether a nonempty filter has been explicitly configured.
      */
     private static function hasSeasonSelection(mixed $value): bool
     {
