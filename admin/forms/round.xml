@@ -93,4 +93,10 @@
             description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_PICTURE_CR_DESC"
             class="inputbox"/>
     </fieldset>
+    <fieldset name="notes" label="COM_SPORTSMANAGEMENT_TABS_NOTES">
+        <field name="notes" type="editor"
+               label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_NOTES"
+               description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_NOTES_DESC"
+               filter="safehtml" buttons="true" />
+    </fieldset>
 </form>
