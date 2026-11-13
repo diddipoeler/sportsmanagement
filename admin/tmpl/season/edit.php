@@ -16,7 +16,7 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('behavior.formvalidator');
 $this->getDocument()->getWebAssetManager()->useScript('keepalive');
 ?>
-<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&layout=edit&id=' . (int) ($this->item->id ?? 0)); ?>"
+<form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=season&layout=edit&id=' . (int) ($this->item->id ?? 0)); ?>"
       method="post"
       name="adminForm"
       id="adminForm"
