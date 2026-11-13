@@ -41,21 +41,27 @@ $roundId = (int) ($this->item->id ?? 0);
     id="round-form"
     class="form-validate"
 >
-    <div class="row g-4">
-        <div class="col-12 col-xl-7">
-            <fieldset class="options-form mb-4">
-                <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
-                <?php $renderFields($this->form->getFieldset('details')); ?>
-            </fieldset>
-        </div>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'round-edit-tabs', ['active' => 'details']); ?>
 
-        <div class="col-12 col-xl-5">
-            <fieldset class="options-form mb-4">
-                <legend><?php echo Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'); ?></legend>
-                <?php $renderFields($this->form->getFieldset('picture')); ?>
-            </fieldset>
-        </div>
-    </div>
+    <?php echo HTMLHelper::_('uitab.addTab', 'round-edit-tabs', 'details', Text::_('COM_SPORTSMANAGEMENT_TABS_DETAILS')); ?>
+    <fieldset class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('details')); ?>
+    </fieldset>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.addTab', 'round-edit-tabs', 'picture', Text::_('COM_SPORTSMANAGEMENT_TABS_PICTURE')); ?>
+    <fieldset class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('picture')); ?>
+    </fieldset>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.addTab', 'round-edit-tabs', 'notes', Text::_('COM_SPORTSMANAGEMENT_TABS_NOTES')); ?>
+    <fieldset class="options-form mb-4">
+        <?php $renderFields($this->form->getFieldset('notes')); ?>
+    </fieldset>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
 
     <input type="hidden" name="task" value="">
     <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>">
