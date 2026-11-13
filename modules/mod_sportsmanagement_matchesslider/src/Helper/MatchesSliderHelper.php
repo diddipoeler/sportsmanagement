@@ -286,10 +286,18 @@ final class MatchesSliderHelper
 
             // Joomla ID:alias slugs are portable when assembled in PHP rather
             // than via the MySQL-specific CONCAT_WS expression.
-            $match->project_slug = (int) ($match->project_id ?? 0)
-                . ':' . (string) ($match->project_alias ?? '');
-            $match->round_slug = (int) ($match->round_id ?? 0)
-                . ':' . (string) ($match->round_alias ?? '');
+            $projectId = self::nonNegativeOption($match->project_id ?? null);
+            $roundId = self::nonNegativeOption($match->round_id ?? null);
+            if ($projectId === null || $projectId <= 0 || $roundId === null || $roundId <= 0) {
+                continue;
+            }
+
+            $projectAlias = $match->project_alias ?? '';
+            $roundAlias = $match->round_alias ?? '';
+            $match->project_slug = $projectId . ':'
+                . (is_string($projectAlias) ? $projectAlias : '');
+            $match->round_slug = $roundId . ':'
+                . (is_string($roundAlias) ? $roundAlias : '');
             $match->link = $this->matchLink($match, $params, $databaseMode, $seasonId);
             $homeLogo = $match->logohome ?? '';
             $awayLogo = $match->logoaway ?? '';
@@ -303,9 +311,13 @@ final class MatchesSliderHelper
 
     /**
      * Apply project-specific favorite teams without MySQL FIND_IN_SET.
-     * Each project must match only its own favorite team IDs.
+     * Each project must match only its own favorite team IDs. Filters
+     * malformed database rows before constructing the bound SQL conditions.
      *
-     * @param array<int,int> $projectIds
+     * @param DatabaseInterface $db Selected SportsManagement connection.
+     * @param object $query Current Joomla match-list query.
+     * @param array<int,int> $projectIds Validated project IDs.
+     * @return bool Whether at least one scoped favorite-team condition exists.
      */
     private function applyFavoriteTeamFilter(DatabaseInterface $db, object $query, array $projectIds): bool
     {
@@ -326,8 +338,17 @@ final class MatchesSliderHelper
         $conditions = [];
         $number = 0;
 
-        foreach ($db->loadObjectList() ?: [] as $project) {
-            $projectId = (int) ($project->id ?? 0);
+        $projectRows = $db->loadObjectList();
+        if (!is_array($projectRows)) {
+            return false;
+        }
+
+        foreach ($projectRows as $project) {
+            if (!is_object($project)) {
+                continue;
+            }
+
+            $projectId = self::nonNegativeOption($project->id ?? null) ?? 0;
             $teams = $this->ids($project->fav_team ?? '');
 
             if ($projectId <= 0 || !in_array($projectId, $projectIds, true) || $teams === []) {
@@ -365,7 +386,8 @@ final class MatchesSliderHelper
      */
     private function matchLink(object $match, Registry $params, int $databaseMode, int $seasonId): string
     {
-        $view = match ((string) $params->get('p_link_func', 'results')) {
+        $rawLinkMode = $params->get('p_link_func', 'results');
+        $view = match (is_string($rawLinkMode) ? $rawLinkMode : 'results') {
             'ranking' => 'ranking',
             'resultsrank' => 'resultsranking',
             default => 'results',
@@ -373,7 +395,7 @@ final class MatchesSliderHelper
 
         $query = [
             'cfg_which_database' => $databaseMode,
-            's' => $seasonId > 0 ? $seasonId : (int) ($match->season_id ?? 0),
+            's' => $seasonId > 0 ? $seasonId : (self::nonNegativeOption($match->season_id ?? 0) ?? 0),
             'p' => (string) ($match->project_slug ?? $match->project_id),
             'r' => (string) ($match->round_slug ?? $match->round_id),
             'division' => 0,
