@@ -117,11 +117,11 @@ final class PredictionRouteHelper
         int $database = 0
     ): string {
         return SiteRouteHelper::view('predictionranking', [
-            'cfg_which_database' => $database,
-            'prediction_id' => $predictionId,
-            'pggroup' => $groupId,
-            'pj' => $projectId,
-            'r' => $roundId,
+            'cfg_which_database' => max(0, $database),
+            'prediction_id' => max(0, $predictionId),
+            'pggroup' => max(0, $groupId),
+            'pj' => max(0, $projectId),
+            'r' => max(0, $roundId),
             'pggrouprank' => max(0, $groupRank),
             'type' => max(0, $type),
             'from' => max(0, $from),
@@ -151,11 +151,11 @@ final class PredictionRouteHelper
         int $database = 0
     ): string {
         return SiteRouteHelper::view('predictionresults', [
-            'cfg_which_database' => $database,
-            'prediction_id' => $predictionId,
-            'pggroup' => $groupId,
-            'pj' => $projectId,
-            'r' => $roundId,
+            'cfg_which_database' => max(0, $database),
+            'prediction_id' => max(0, $predictionId),
+            'pggroup' => max(0, $groupId),
+            'pj' => max(0, $projectId),
+            'r' => max(0, $roundId),
             'uid' => max(0, $userId),
         ]);
     }
