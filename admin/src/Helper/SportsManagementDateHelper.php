@@ -122,8 +122,9 @@ final class SportsManagementDateHelper
      * Preserve getTimestamp() for the no-offset calls used by native code.
      *
      * Treats missing values and legacy database zero-date placeholders,
-     * including any HH:MM:SS time suffix, as the current moment. Parses
-     * other values through PHP before producing a Joomla date timestamp;
+     * including valid HH:MM:SS suffixes, as the current moment. Rejects
+     * corrupt clock components instead of turning them into the current time.
+     * Parses other values through PHP before producing a Joomla timestamp;
      * invalid input returns zero.
      *
      * @param string|null $date Date/time value, or null to use the current time.
@@ -136,7 +137,14 @@ final class SportsManagementDateHelper
         // Historical database imports can contain zero dates with different
         // time suffixes. Treat all zero-date placeholders consistently rather
         // than accepting only two hard-coded time values.
-        if ($date === '' || preg_match('/^0000-00-00(?: \d{2}:\d{2}:\d{2})?$/D', $date) === 1) {
+        if ($date === '' || $date === '0000-00-00') {
+            $date = 'now';
+        } elseif (str_starts_with($date, '0000-00-00')) {
+            if (preg_match('/^0000-00-00 (\d{2}):(\d{2}):(\d{2})$/D', $date, $clock) !== 1
+                || (int) $clock[1] > 23 || (int) $clock[2] > 59 || (int) $clock[3] > 59) {
+                return 0;
+            }
+
             $date = 'now';
         }
 
