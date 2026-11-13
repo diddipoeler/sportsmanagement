@@ -5,6 +5,9 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'admin/src/Model/RoundModel.php'
+      - 'admin/src/View/Round/HtmlView.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Table/RoundTable.php'
       - 'admin/src/Table/SeasonTable.php'
       - 'admin/forms/round.xml'
@@ -17,12 +20,16 @@ on:
       - 'admin/sql/updates/mysql/4.24.03.sql'
       - 'sportsmanagement.xml'
       - '.github/tests/joomla56_admin_form_save_acl.php'
+      - '.github/tests/joomla56_round_short_dates.php'
       - '.github/tests/joomla56_round_notes_season_picture.php'
       - '.github/workflows/joomla5-6-round-season-fields.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'admin/src/Model/RoundModel.php'
+      - 'admin/src/View/Round/HtmlView.php'
+      - 'admin/src/Helper/SportsManagementDateHelper.php'
       - 'admin/src/Table/RoundTable.php'
       - 'admin/src/Table/SeasonTable.php'
       - 'admin/forms/round.xml'
@@ -35,6 +42,7 @@ on:
       - 'admin/sql/updates/mysql/4.24.03.sql'
       - 'sportsmanagement.xml'
       - '.github/tests/joomla56_admin_form_save_acl.php'
+      - '.github/tests/joomla56_round_short_dates.php'
       - '.github/tests/joomla56_round_notes_season_picture.php'
       - '.github/workflows/joomla5-6-round-season-fields.yml'
 
@@ -60,16 +68,22 @@ jobs:
           set -euo pipefail
           for source in \
             admin/src/Controller/SportsManagementFormController.php \
+            admin/src/Helper/SportsManagementDateHelper.php \
+            admin/src/Model/RoundModel.php \
+            admin/src/View/Round/HtmlView.php \
             admin/src/Table/RoundTable.php \
             admin/src/Table/SeasonTable.php \
             admin/tmpl/round/edit.php \
             admin/tmpl/season/edit.php \
             .github/tests/joomla56_admin_form_save_acl.php \
+            .github/tests/joomla56_round_short_dates.php \
             .github/tests/joomla56_round_notes_season_picture.php; do
             php -l "$source"
           done
       - name: Test form controller ACL and round zero-date guard
         run: php .github/tests/joomla56_admin_form_save_acl.php
+      - name: Test round quick-save nullable dates
+        run: php .github/tests/joomla56_round_short_dates.php
       - name: Test table binding, form contracts and schema additions
         run: php .github/tests/joomla56_round_notes_season_picture.php
       - name: Parse Joomla XML forms and manifests
