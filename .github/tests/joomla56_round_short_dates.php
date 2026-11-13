@@ -54,8 +54,8 @@ namespace {
     if (!is_string($modelSource) || !is_string($viewSource)
         || !str_contains($modelSource, '$record->round_date_first = $firstDate;')
         || !str_contains($modelSource, '$record->round_date_last = $firstDate === null ? null : ($lastDate ?? $firstDate);')
-        || str_contains($modelSource, "$record->round_date_first = '0000-00-00'")
-        || str_contains($viewSource, "$this->item->round_date_first = '0000-00-00'")) {
+        || str_contains($modelSource, "\$record->round_date_first = '0000-00-00'")
+        || str_contains($viewSource, "\$this->item->round_date_first = '0000-00-00'")) {
         throw new \RuntimeException('Round list/editor still contains a legacy zero-date write.');
     }
 
