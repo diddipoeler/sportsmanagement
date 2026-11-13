@@ -16,6 +16,20 @@ use DateTimeZone;
 
 final class PredictionmemberModel extends PredictionuserModel
 {
+    /**
+     * Save editable prediction-member profile and competition selections.
+     *
+     * Verifies the posted member and prediction-game identifiers against the
+     * active selection, checks member-specific edit rights and respects the
+     * configured permissions for profile, favourite team, champion and final
+     * four changes. Validates selected team and group identifiers before
+     * updating the member record through Joomla's database API.
+     *
+     * @param array<string,mixed> $post Submitted member form fields.
+     * @return bool True when Joomla successfully updates the member row.
+     * @throws \UnexpectedValueException If the submitted member target differs.
+     * @throws \RuntimeException If the current user cannot edit the member.
+     */
     public function saveMember(array $post): bool
     {
         $member = $this->getEditableMember();
@@ -140,6 +154,17 @@ final class PredictionmemberModel extends PredictionuserModel
         );
     }
 
+    /**
+     * Normalise a posted boolean option to the integer values zero or one.
+     *
+     * Keeps the existing value when the field is absent or has a non-scalar
+     * value, preventing malformed form data from changing stored flags.
+     *
+     * @param array<string,mixed> $post Submitted form fields.
+     * @param string $key Name of the boolean field.
+     * @param int $fallback Current stored value.
+     * @return int One for enabled and zero for disabled.
+     */
     private function boolValue(array $post, string $key, int $fallback): int
     {
         if (!array_key_exists($key, $post)) {
@@ -151,6 +176,16 @@ final class PredictionmemberModel extends PredictionuserModel
         return ((int) $post[$key]) === 1 ? 1 : 0;
     }
 
+    /**
+     * Prepare a limited-length plain-text profile field for persistence.
+     *
+     * Rejects structured values, removes HTML tags and surrounding whitespace
+     * and truncates the result to the allowed storage length.
+     *
+     * @param mixed $value Submitted text value.
+     * @param int $maxLength Maximum stored text length in bytes.
+     * @return string Sanitised profile text.
+     */
     private function cleanText(mixed $value, int $maxLength): string
     {
         if (!is_scalar($value) && $value !== null) {
@@ -160,6 +195,15 @@ final class PredictionmemberModel extends PredictionuserModel
         return substr($value, 0, $maxLength);
     }
 
+    /**
+     * Clean a user-configurable profile image reference.
+     *
+     * Rejects non-scalar data, removes markup, null bytes and surrounding
+     * whitespace, and caps the stored string to 255 bytes.
+     *
+     * @param mixed $value Submitted picture path or reference.
+     * @return string Cleaned picture reference.
+     */
     private function cleanPath(mixed $value): string
     {
         if (!is_scalar($value) && $value !== null) {
@@ -169,6 +213,17 @@ final class PredictionmemberModel extends PredictionuserModel
         return substr($value, 0, 255);
     }
 
+    /**
+     * Parse an administrator-supplied prediction registration date and time.
+     *
+     * Combines separate date and clock fields, accepts a missing clock as
+     * midnight and verifies the exact calendar date and time without allowing
+     * PHP's automatic normalisation of impossible values.
+     *
+     * @param array<string,mixed> $post Submitted registration date/time fields.
+     * @param string $fallback Existing registration timestamp.
+     * @return string Valid canonical timestamp or the original timestamp.
+     */
     private function normaliseRegisterDate(array $post, string $fallback): string
     {
         $dateValue = $post['registerDate'] ?? '';
@@ -203,6 +258,15 @@ final class PredictionmemberModel extends PredictionuserModel
             : $fallback;
     }
 
+    /**
+     * Encode one selected team per prediction project for legacy storage.
+     *
+     * Skips invalid or empty identifiers and joins project/team pairs using
+     * the comma and semicolon format expected by existing database records.
+     *
+     * @param array<int,int> $selections Team identifier indexed by project ID.
+     * @return string Semicolon-separated project/team selections.
+     */
     private function serialiseSingleSelections(array $selections): string
     {
         $parts = [];
@@ -216,6 +280,15 @@ final class PredictionmemberModel extends PredictionuserModel
         return implode(';', $parts);
     }
 
+    /**
+     * Encode up to four distinct selected teams per prediction project.
+     *
+     * Normalises IDs, discards nonpositive team identifiers and limits each
+     * project's selection to four entries in the historical storage format.
+     *
+     * @param array<int,array<int,int>> $selections Team IDs indexed by project.
+     * @return string Semicolon-separated project/team pairs.
+     */
     private function serialiseMultipleSelections(array $selections): string
     {
         $parts = [];
