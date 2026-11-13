@@ -34,7 +34,8 @@ final class ExtraFieldsSaveHelper
      * Persist validated user extra-field values for an administrator entity.
      *
      * Ignores invalid field IDs and nested values, handles save-as-copy path
-     * compatibility, and avoids inserting replacements when deletes fail.
+     * compatibility, and avoids inserting replacements when deletes fail,
+     * including drivers returning false without throwing an exception.
      *
      * @param array<string,mixed> $post Submitted extra-field form input.
      * @param int $itemId Identifier of the saved entity.
@@ -76,7 +77,9 @@ final class ExtraFieldsSaveHelper
                         $db->quoteName('field_id') . ' = ' . $fieldId,
                         $db->quoteName('jl_id') . ' = ' . $itemId,
                     ]);
-                $db->setQuery($query)->execute();
+                if ($db->setQuery($query)->execute() === false) {
+                    throw new \RuntimeException('Extra-field replacement delete failed.');
+                }
             } catch (\Throwable $e) {
                 $this->reportDatabaseError($e);
 
@@ -159,7 +162,8 @@ final class ExtraFieldsSaveHelper
     /**
      * Report a failed extra-field operation using Joomla's generic message.
      *
-     * Full diagnostic details remain in the internal component server log.
+     * Logs the error class without leaking SQL statements or credentials
+     * through third-party driver exception messages.
      *
      * @param \Throwable $e Database failure to log.
      * @return void
@@ -169,7 +173,7 @@ final class ExtraFieldsSaveHelper
         // Keep connection strings, SQL and filesystem locations in the
         // Joomla server log, not in administrator messages.
         \Joomla\CMS\Log\Log::add(
-            __METHOD__ . ': ' . $e->getMessage(),
+            __METHOD__ . ': extra-field operation failed (' . get_class($e) . ').',
             \Joomla\CMS\Log\Log::ERROR,
             'com_sportsmanagement'
         );
