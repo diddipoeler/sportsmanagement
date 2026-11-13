@@ -136,7 +136,7 @@ final class RemoteImageDownloadHelper
                 return $body;
             }
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ': image request failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
         }
 
         return null;
