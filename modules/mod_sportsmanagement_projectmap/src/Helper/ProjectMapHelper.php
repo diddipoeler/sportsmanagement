@@ -323,7 +323,6 @@ final class ProjectMapHelper
             return filter_var($url, FILTER_VALIDATE_URL) !== false
                 && is_array($parts)
                 && !empty($parts['host'])
-                && !isset($parts['user'], $parts['pass'])
                 && !isset($parts['user']) && !isset($parts['pass'])
                     ? $url
                     : '';
