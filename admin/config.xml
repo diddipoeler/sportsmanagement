@@ -128,7 +128,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_JED_LINK_DESC">
 	
   <field name="cfg_update_server_file" 
   type="text" 
-  default="https://github.com/diddipoeler/sportsmanagement/archive/master.zip"
+  default="https://github.com/diddipoeler/sportsmanagement/archive/refs/heads/joomla5-6.zip"
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_UPDATESERVER_FILE_DESC">
