@@ -32,7 +32,8 @@ final class RoundTable extends SportsManagementTable
      *
      * Converts form date values to SQL dates and timestamps. Empty notes
      * are stored as NULL, while malformed structured editor values are
-     * rejected before Joomla attempts a database write.
+     * rejected before Joomla attempts a database write. Notes exceeding
+     * the SQL TEXT byte limit and non-string date values are also rejected.
      *
      * @param array|object $src Submitted round record values.
      * @param array|string $ignore Fields excluded from binding.
@@ -55,6 +56,12 @@ final class RoundTable extends SportsManagementTable
                 return false;
             }
 
+            if (is_string($src['notes']) && strlen($src['notes']) > 65535) {
+                $this->setError('Round notes exceed the SQL TEXT column capacity.');
+
+                return false;
+            }
+
             if ($src['notes'] === '') {
                 $src['notes'] = null;
             }
@@ -70,7 +77,13 @@ final class RoundTable extends SportsManagementTable
                 continue;
             }
 
-            $src[$field] = SportsManagementDateHelper::toSqlDate((string) $src[$field]);
+            if ($src[$field] !== null && !is_string($src[$field])) {
+                $this->setError('Invalid round date value.');
+
+                return false;
+            }
+
+            $src[$field] = SportsManagementDateHelper::toSqlDate($src[$field] ?? '');
             $src[$timestampField] = $src[$field] === null
                 ? 0
                 : SportsManagementDateHelper::getTimestamp($src[$field]);
