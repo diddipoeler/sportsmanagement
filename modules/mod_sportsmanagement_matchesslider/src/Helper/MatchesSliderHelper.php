@@ -392,15 +392,17 @@ final class MatchesSliderHelper
      * Find and validate the configured base URL for fixture images.
      * Uses the external database picture server when selected, checks
      * the URL for unsafe credentials and invalid components, and falls
-     * back to Joomla's site root where appropriate.
+     * back to Joomla's site root for local images. An invalid external
+     * image server returns an empty base to avoid misleading image URLs.
      * @param int $databaseMode Primary or external database selection.
-     * @return string Sanitised image base URL.
+     * @return string Sanitised image base URL or an empty invalid external base.
      */
     private function pictureServer(int $databaseMode): string
     {
         $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+        $configuredServer = $componentParams->get('cfg_which_database_server', '');
         $server = $databaseMode > 0
-            ? trim((string) $componentParams->get('cfg_which_database_server', ''))
+            ? (is_string($configuredServer) && strlen($configuredServer) <= 2048 ? trim($configuredServer) : '')
             : (string) Uri::root();
 
         // External image bases must not expose credentials or place images
@@ -418,7 +420,9 @@ final class MatchesSliderHelper
             || isset($parts['query'])
             || isset($parts['fragment'])
         ) {
-            $server = (string) Uri::root();
+            // A broken external image host must not silently become local;
+            // the corresponding images may not exist on this Joomla site.
+            return $databaseMode > 0 ? '' : rtrim((string) Uri::root(), '/') . '/';
         }
 
         return rtrim($server, '/') . '/';
@@ -428,12 +432,17 @@ final class MatchesSliderHelper
      * Produce a safe browser URL for the selected fixture image.
      * Rejects control characters, backslashes, malformed external URLs
      * and unsafe paths before combining the image with the base server.
+     * Missing or invalid external server settings suppress relative image URLs.
      * @param string $path Stored image path or absolute external image URL.
      * @param string $pictureServer Validated module image server.
      * @return string Safe image URL or an empty string.
      */
     private function mediaUrl(string $path, string $pictureServer): string
     {
+        if ($pictureServer === '') {
+            return '';
+        }
+
         $path = trim($path);
 
         if ($path === ''
