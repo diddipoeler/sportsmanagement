@@ -29,6 +29,8 @@ final class MatchTimeHelper
      * Rejects zero database timestamps and malformed optional text settings.
      * Non-scalar legacy values and invalid dates fall back to an unavailable
      * time instead of causing PHP 8 conversion errors.
+     * Invalid break and live-status text settings also use empty labels
+     * rather than attempting to cast arrays to strings.
      * @param object $game Match record with a match_date field.
      * @param array<string,mixed> $config Match time presentation settings.
      * @param array<string,mixed> $overallConfig Global component date options.
@@ -113,6 +115,21 @@ final class MatchTimeHelper
     }
 
     /**
+     * Extract a plain-text live-match label from optional configuration.
+     *
+     * Accepts strings only and returns a trimmed label with a maximum length
+     * of 500 bytes. Unexpected array or object values from legacy settings
+     * do not trigger PHP 8 conversion warnings.
+     *
+     * @param mixed $value Raw configured live match text.
+     * @return string Safe label text or an empty string.
+     */
+    private static function safeLabel(mixed $value): string
+    {
+        return is_string($value) && strlen($value) <= 500 ? trim($value) : '';
+    }
+
+    /**
      * Build the translated current match period or half-time label.
      * Calculates elapsed play minutes from the configured period length
      * and break duration for a currently active fixture. Return plain text
@@ -141,7 +158,7 @@ final class MatchTimeHelper
                 $text = str_replace(
                     ['%PART%', '%MINUTE%'],
                     [(string) $part, (string) ($goneSinceBegin + 1 - (($part - 1) * $halfTime))],
-                    trim((string) ($config['mark_now_playing_alt_actual_time'] ?? ''))
+                    self::safeLabel($config['mark_now_playing_alt_actual_time'] ?? '')
                 );
                 break;
             }
@@ -150,7 +167,7 @@ final class MatchTimeHelper
                 $text = str_replace(
                     '%PART%',
                     (string) $part,
-                    trim((string) ($config['mark_now_playing_alt_actual_break'] ?? ''))
+                    self::safeLabel($config['mark_now_playing_alt_actual_break'] ?? '')
                 );
                 break;
             }
