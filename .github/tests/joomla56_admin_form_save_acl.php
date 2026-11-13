@@ -119,5 +119,22 @@ namespace {
         throw new \RuntimeException('Administrator form save bypassed the Joomla ACL check.');
     }
 
+    // Empty round submissions must not generate legacy SQL zero dates.
+    // They remain subject to the same permission gate as other forms.
+    (new \ReflectionProperty($controller, 'view_item'))->setValue($controller, 'round');
+    $post->data = ['jform' => []];
+    \Joomla\CMS\MVC\Controller\FormController::$checkedData = [];
+    \Joomla\CMS\MVC\Controller\FormController::$modelSaved = false;
+
+    try {
+        $controller->save();
+    } catch (\RuntimeException $exception) {
+        if ($exception->getCode() !== 403
+            || \Joomla\CMS\MVC\Controller\FormController::$checkedData !== []
+            || \Joomla\CMS\MVC\Controller\FormController::$modelSaved) {
+            throw new \RuntimeException('Empty round form bypassed ACL or synthesized zero dates.', 0, $exception);
+        }
+    }
+
     echo "Administrator form save ACL regression passed.\n";
 }
