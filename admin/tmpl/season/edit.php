@@ -21,18 +21,22 @@ $this->getDocument()->getWebAssetManager()->useScript('keepalive');
       name="adminForm"
       id="adminForm"
       class="form-validate">
-    <div class="row">
-        <div class="col-12 col-lg-10">
-            <?php foreach ($this->form->getFieldsets() as $fieldset) : ?>
-                <fieldset class="options-form mb-4">
-                    <legend><?php echo Text::_($fieldset->label ?: $fieldset->name); ?></legend>
-                    <?php foreach ($this->form->getFieldset($fieldset->name) as $field) : ?>
-                        <?php echo $field->renderField(); ?>
-                    <?php endforeach; ?>
-                </fieldset>
+    <?php echo HTMLHelper::_('uitab.startTabSet', 'season-edit-tabs', ['active' => 'details']); ?>
+    <?php foreach ($this->form->getFieldsets() as $fieldset) : ?>
+        <?php echo HTMLHelper::_(
+            'uitab.addTab',
+            'season-edit-tabs',
+            $fieldset->name,
+            Text::_($fieldset->label ?: $fieldset->name)
+        ); ?>
+        <fieldset class="options-form mb-4">
+            <?php foreach ($this->form->getFieldset($fieldset->name) as $field) : ?>
+                <?php echo $field->renderField(); ?>
             <?php endforeach; ?>
-        </div>
-    </div>
+        </fieldset>
+        <?php echo HTMLHelper::_('uitab.endTab'); ?>
+    <?php endforeach; ?>
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
     <input type="hidden" name="task" value="">
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>
