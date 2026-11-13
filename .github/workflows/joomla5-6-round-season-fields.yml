@@ -78,3 +78,71 @@ jobs:
               ET.parse(path)
           print('Round and season forms and Joomla manifest are well-formed')
           PY
+
+  mariadb-schema:
+    runs-on: ubuntu-24.04
+    services:
+      database:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: integration-test
+          MARIADB_DATABASE: sportsmanagement_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install MariaDB SQL client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq mariadb-client
+      - name: Apply 4.24.03 migration to existing tables
+        shell: bash
+        env:
+          MYSQL_PWD: integration-test
+        run: |
+          set -euo pipefail
+          db() { mariadb --host=127.0.0.1 --port=3306 --user=root --database=sportsmanagement_test --batch --skip-column-names "$@"; }
+          db -e "CREATE TABLE jsm_sportsmanagement_round (id INT PRIMARY KEY, name VARCHAR(75)); CREATE TABLE jsm_sportsmanagement_season (id INT PRIMARY KEY, name VARCHAR(75));"
+          sed 's/#__/jsm_/g' admin/sql/updates/mysql/4.24.03.sql | db
+          for entry in \
+            "jsm_sportsmanagement_round notes text" \
+            "jsm_sportsmanagement_season picture_blob mediumblob" \
+            "jsm_sportsmanagement_season picture varchar(250)"; do
+            read -r table field expected <<< "$entry"
+            actual=$(db -e "SELECT CONCAT(COLUMN_TYPE, '|', IS_NULLABLE, '|', COALESCE(COLUMN_DEFAULT, 'NULL')) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='$table' AND COLUMN_NAME='$field'")
+            [[ "$actual" == "$expected|YES|NULL" ]] || { echo "Incorrect $table.$field: $actual"; exit 1; }
+          done
+          db -e "INSERT INTO jsm_sportsmanagement_round (id, notes) VALUES (1, NULL), (2, 'Round note'); INSERT INTO jsm_sportsmanagement_season (id, picture_blob, picture) VALUES (1, NULL, NULL), (2, X'89504E47', 'images/season.png');"
+          [[ "$(db -e "SELECT COUNT(*) FROM jsm_sportsmanagement_round WHERE notes='Round note'")" == 1 ]]
+          [[ "$(db -e "SELECT COUNT(*) FROM jsm_sportsmanagement_season WHERE picture='images/season.png' AND HEX(picture_blob)='89504E47'")" == 1 ]]
+      - name: Verify fresh-install round and season table definitions
+        shell: bash
+        env:
+          MYSQL_PWD: integration-test
+        run: |
+          set -euo pipefail
+          db() { mariadb --host=127.0.0.1 --port=3306 --user=root --database=sportsmanagement_test --batch --skip-column-names "$@"; }
+          db -e "DROP TABLE jsm_sportsmanagement_round, jsm_sportsmanagement_season"
+          python3 - <<'PY' | db
+          import re
+          from pathlib import Path
+          source = Path("admin/sql/install.mysql.utf8.sql").read_text(encoding="utf-8", errors="replace")
+          print("SET SESSION sql_mode = '';")
+          for name in ("round", "season"):
+              pattern = r"CREATE\s+TABLE\s+IF\s+NOT\s+EXISTS\s+\x60#__sportsmanagement_" + name + r"\x60"
+              match = re.search(pattern, source, flags=re.IGNORECASE)
+              if not match:
+                  raise SystemExit(f"Missing {name} CREATE TABLE")
+              end = source.find(";", match.start())
+              if end < 0:
+                  raise SystemExit(f"Unterminated {name} CREATE TABLE")
+              print(source[match.start():end + 1].replace("#__", "jsm_"))
+          PY
+          [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='jsm_sportsmanagement_round' AND COLUMN_NAME='notes' AND COLUMN_TYPE='text' AND IS_NULLABLE='YES'")" == 1 ]]
+          [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='jsm_sportsmanagement_season' AND COLUMN_NAME='picture_blob' AND COLUMN_TYPE='mediumblob' AND IS_NULLABLE='YES'")" == 1 ]]
+          [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='jsm_sportsmanagement_season' AND COLUMN_NAME='picture' AND COLUMN_TYPE='varchar(250)' AND IS_NULLABLE='YES'")" == 1 ]]
