@@ -238,14 +238,27 @@ final class ProjectteamsController extends SportsManagementAdminController
 
     /**
      * Copy selected project-team rows to the requested destination.
+     *
+     * Requires Joomla's POST token and component create permission,
+     * verifies a positive destination project and nonempty source selection,
+     * then copies relations and refreshes affected Finder entries.
+     * Invalid targets are rejected without invoking a write operation.
+     *
      * @return void
      */
     public function storecopy(): void
     {
         $this->assertPostAndPermission('core.create');
         $input = $this->app->getInput();
-        $destination = $input->post->getInt('dest');
+        $destination = $this->positiveSubmittedId($input->post->get('dest', 0, 'raw'));
         $ids = $this->normaliseIds($input->post->get('ptids', [], 'array'));
+
+        if ($destination <= 0 || !$ids) {
+            $this->app->enqueueMessage(Text::_('JGLOBAL_NO_MATCHING_RESULTS'), 'warning');
+            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
+            return;
+        }
+
         $model = $this->model();
         $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForProject($destination);
