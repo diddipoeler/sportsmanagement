@@ -74,6 +74,7 @@ final class PersonAgeHelper
      * Rejects the historical zero-date sentinel and strings not matching
      * YYYY-MM-DD. Validate the actual calendar day (including leap years)
      * before returning numeric parts for the historical age calculation.
+     * Strict end-of-string matching rejects trailing newlines and controls.
      *
      * @param string $date Date text to parse.
      * @return array{0:int,1:int,2:int}|null Date parts or null.
@@ -81,7 +82,7 @@ final class PersonAgeHelper
     private static function parseDate(string $date): ?array
     {
         if ($date === '0000-00-00'
-            || preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/', $date, $matches) !== 1
+            || preg_match('/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/D', $date, $matches) !== 1
         ) {
             return null;
         }
