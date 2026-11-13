@@ -99,7 +99,7 @@ final class ProjectteamsController extends SportsManagementAdminController
         $input = $this->app->getInput();
         $post = $input->post->getArray();
         $model = $this->model();
-        $projectId = (int) ($post['project_id'] ?? $post['pid'] ?? 0);
+        $projectId = $this->positiveSubmittedId($post['project_id'] ?? $post['pid'] ?? 0);
         $selected = $this->normaliseIds($post['project_teamslist'] ?? []);
         $notifier = $this->finderNotifier();
         $before = $notifier->projectTeamEntitiesForProject($projectId);
@@ -186,6 +186,12 @@ final class ProjectteamsController extends SportsManagementAdminController
 
     /**
      * Prepare the project-team copy dialog and available destinations.
+     *
+     * Requires create permission, validates selected row IDs and loads
+     * eligible destination projects with a bound source-project ID.
+     * A failed query produces a generic warning instead of exposing SQL
+     * or database credentials through an exception message.
+     *
      * @return void
      */
     public function copy(): void
@@ -216,7 +222,7 @@ final class ProjectteamsController extends SportsManagementAdminController
             $db->setQuery($query);
             $projects = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->redirectProjectTeams(false, $e->getMessage());
+            $this->redirectProjectTeams(false, Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return;
         }
 
@@ -474,6 +480,26 @@ final class ProjectteamsController extends SportsManagementAdminController
             $url .= '&division=' . $division;
         }
         $this->setRedirect(Route::_($url, false));
+    }
+
+    /**
+     * Validate a single submitted positive project identifier.
+     *
+     * Rejects array input, malformed decimal strings and integer overflow
+     * before passing the project context to database update operations.
+     *
+     * @param mixed $value Submitted project identifier.
+     * @return int Valid positive ID, or zero for invalid input.
+     */
+    private function positiveSubmittedId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
