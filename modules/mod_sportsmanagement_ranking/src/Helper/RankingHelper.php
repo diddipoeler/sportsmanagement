@@ -78,9 +78,16 @@ final class RankingHelper
             return [];
         }
 
-        $cfg = (int) $params->get('cfg_which_database', 0);
-        $divisionId = max(0, (int) $params->get('division_id', 0));
-        $engine = new RankingEngine($this->database($params, $app));
+        $cfg = self::nonNegativeOption($params->get('cfg_which_database', 0));
+        $divisionId = self::nonNegativeOption($params->get('division_id', 0));
+
+        // Invalid selectors must not silently query the default database or
+        // remove the configured division constraint.
+        if ($cfg === null || $divisionId === null) {
+            return [];
+        }
+
+        $engine = new RankingEngine($this->database($cfg));
         $rankingResult = $engine->calculate($projectId, $divisionId);
         $project = $rankingResult['project'];
 
@@ -90,14 +97,16 @@ final class RankingHelper
 
         $list = array_values($rankingResult['ranking']);
         $visibleTeamId = $this->firstId($params->get('visible_team'));
-        $limit = max(1, min(100, (int) $params->get('limit', 5)));
+        $limit = self::boundedOption($params->get('limit', 5), 5, 1, 100);
 
         if ($visibleTeamId > 0) {
             $list = $this->shrinkAroundTeam($list, $visibleTeamId, $limit);
         }
 
-        $columns = array_values(array_filter(array_map('trim', explode(',', (string) $params->get('columns', 'PLAYED, POINTS')))));
-        $columnNames = array_values(array_map('trim', explode(',', (string) $params->get('column_names', 'MP, PTS'))));
+        $rawColumns = $params->get('columns', 'PLAYED, POINTS');
+        $rawColumnNames = $params->get('column_names', 'MP, PTS');
+        $columns = self::columnTokens($rawColumns);
+        $columnNames = self::columnTokens($rawColumnNames);
 
         if (count($columns) !== count($columnNames)) {
             $columns = [];
@@ -105,13 +114,14 @@ final class RankingHelper
         }
 
         $flagMap = $this->countryFlags($params, $list, $app);
-        $nameType = (string) $params->get('nametype', 'short_name');
+        $rawNameType = $params->get('nametype', 'short_name');
+        $nameType = is_string($rawNameType) ? $rawNameType : 'short_name';
 
         if (!in_array($nameType, ['name', 'short_name', 'middle_name'], true)) {
             $nameType = 'short_name';
         }
 
-        $logoType = (int) $params->get('show_logo', 0);
+        $logoType = self::boundedOption($params->get('show_logo', 0), 0, 0, 6);
 
         foreach ($list as $row) {
             // Legacy ranking engines may return incomplete records. Avoid
@@ -131,10 +141,11 @@ final class RankingHelper
             }
         }
 
-        $colors = (int) $params->get('show_rank_colors', 0) ? $rankingResult['colors'] : [];
+        $colors = self::boundedOption($params->get('show_rank_colors', 0), 0, 0, 1) === 1
+            ? ($rankingResult['colors'] ?? []) : [];
         $fullTableUrl = $this->route('ranking', [
             'cfg_which_database' => $cfg,
-            's' => (int) $params->get('s', 0),
+            's' => self::nonNegativeOption($params->get('s', 0)) ?? 0,
             'p' => (string) ($project->slug ?? $projectId),
             'type' => 0,
             'r' => (string) ($project->round_slug ?? ''),
@@ -144,7 +155,7 @@ final class RankingHelper
         ]);
 
         $identity = $app->getIdentity();
-        $canRefresh = (bool) $params->get('ishd_update', 0)
+        $canRefresh = self::boundedOption($params->get('ishd_update', 0), 0, 0, 1) === 1
             && $identity !== null
             && $identity->authorise('core.manage', 'com_sportsmanagement');
 
@@ -209,13 +220,17 @@ final class RankingHelper
             throw new \RuntimeException('Ranking module is not published.', 404);
         }
 
-        $params = new Registry((string) $module->params);
+        if (!is_string($module->params ?? null) || strlen($module->params) > 65536) {
+            throw new \RuntimeException('Invalid ranking module configuration.', 400);
+        }
 
-        if (!(int) $params->get('ishd_update', 0)) {
+        $params = new Registry($module->params);
+
+        if (self::boundedOption($params->get('ishd_update', 0), 0, 0, 1) !== 1) {
             throw new \RuntimeException('Inline-hockey refresh is disabled for this module.', 403);
         }
 
-        if ((int) $params->get('cfg_which_database', 0) !== 0) {
+        if (self::nonNegativeOption($params->get('cfg_which_database', 0)) !== 0) {
             throw new \RuntimeException('Inline-hockey refresh is restricted to the Joomla database.', 409);
         }
 
@@ -225,7 +240,7 @@ final class RankingHelper
             throw new \RuntimeException('Ranking module has no valid project.', 400);
         }
 
-        $hours = max(1, min(168, (int) $params->get('ishd_update_hour', 4)));
+        $hours = self::boundedOption($params->get('ishd_update_hour', 4), 4, 1, 168);
         $cutoff = time() - ($hours * 3600);
         $query = $joomlaDb->createQuery()
             ->select('COUNT(*)')
@@ -290,7 +305,12 @@ final class RankingHelper
             return [];
         }
 
-        $db = $this->database($params, $app);
+        $selector = self::nonNegativeOption($params->get('cfg_which_database', 0));
+        if ($selector === null) {
+            return [];
+        }
+
+        $db = $this->database($selector);
         $query = $db->createQuery()
             ->select([$db->quoteName('alpha3'), $db->quoteName('picture')])
             ->from($db->quoteName('#__sportsmanagement_countries'))
@@ -317,12 +337,13 @@ final class RankingHelper
     private function teamUrl(Registry $params, object $project, object $team): string
     {
         $base = [
-            'cfg_which_database' => (int) $params->get('cfg_which_database', 0),
-            's' => (int) $params->get('s', 0),
+            'cfg_which_database' => self::nonNegativeOption($params->get('cfg_which_database', 0)) ?? 0,
+            's' => self::nonNegativeOption($params->get('s', 0)) ?? 0,
             'p' => (string) ($project->slug ?? $project->id),
         ];
 
-        return match ((string) $params->get('teamlink', 'none')) {
+        $rawLink = $params->get('teamlink', 'none');
+        return match (is_string($rawLink) ? $rawLink : 'none') {
             'teaminfo' => $this->route('teaminfo', $base + ['tid' => $team->team_slug, 'ptid' => (int) $team->projectteamid]),
             'roster' => $this->route('roster', $base + ['tid' => $team->team_slug, 'ptid' => (int) $team->projectteamid]),
             'teamplan' => $this->route('teamplan', $base + ['tid' => $team->team_slug, 'ptid' => (int) $team->projectteamid, 'division' => (string) ($team->division_slug ?? 0), 'mode' => 0]),
@@ -529,18 +550,104 @@ final class RankingHelper
     }
 
     /**
+     * Validate a nonnegative integer selector without implicit PHP casts.
+     *
+     * Accepts decimal strings with leading zeros but rejects structured
+     * values, signs, whitespace and integer overflow.
+     *
+     * @param mixed $value Raw Joomla module numeric configuration.
+     * @return int|null Nonnegative integer, or null when invalid.
+     */
+    private static function nonNegativeOption(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 256
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? null : $number;
+    }
+
+    /**
+     * Clamp a nonnegative module setting between the supplied bounds.
+     *
+     * Rejects malformed settings, caps large valid numbers and never
+     * converts arrays or overflowing decimal strings to PHP integers.
+     *
+     * @param mixed $value Raw module setting.
+     * @param int $default Value used for invalid settings.
+     * @param int $minimum Lowest supported value.
+     * @param int $maximum Highest supported value.
+     * @return int Safe bounded option value.
+     */
+    private static function boundedOption(mixed $value, int $default, int $minimum, int $maximum): int
+    {
+        if (is_int($value)) {
+            return max($minimum, min($maximum, $value));
+        }
+
+        if (!is_string($value) || strlen($value) > 4096
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return $default;
+        }
+
+        $digits = ltrim($value, '0');
+        if ($digits === '') {
+            return $minimum;
+        }
+
+        if (strlen($digits) > strlen((string) $maximum)
+            || (strlen($digits) === strlen((string) $maximum)
+                && strcmp($digits, (string) $maximum) > 0)) {
+            return $maximum;
+        }
+
+        return max($minimum, (int) $digits);
+    }
+
+    /**
+     * Read a short list of ranking column labels from module settings.
+     *
+     * Validates input type and length before splitting the comma-separated
+     * setting and bounds the number of rendered columns.
+     *
+     * @param mixed $value Configured column identifiers or headings.
+     * @return array<int,string> At most 20 nonempty trimmed labels.
+     */
+    private static function columnTokens(mixed $value): array
+    {
+        if (!is_string($value) || strlen($value) > 2048) {
+            return [];
+        }
+
+        $tokens = [];
+        foreach (array_slice(explode(',', $value), 0, 20) as $token) {
+            $token = trim($token);
+            if ($token !== '') {
+                $tokens[] = $token;
+            }
+        }
+
+        return $tokens;
+    }
+
+    /**
      * Resolve the chosen SportsManagement database for ranking queries.
      * Uses the injected Joomla database as a fallback and delegates the
-     * database selection to the component's native resolver.
-     * @param Registry $params Module options containing the database selector.
-     * @param CMSApplicationInterface $app Joomla site application context.
+     * database selection to the component's native resolver. The caller
+     * has already verified the selector before this method is invoked.
+     * @param int $selector Validated database selection.
      * @return DatabaseInterface Connection used to load ranking data.
      */
-    private function database(Registry $params, CMSApplicationInterface $app): DatabaseInterface
+    private function database(int $selector): DatabaseInterface
     {
-        return SportsManagementDatabaseResolver::resolve(
-            self::joomlaDatabase(),
-            (int) $params->get('cfg_which_database', 0)
-        );
+        return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase(), $selector);
     }
 }
