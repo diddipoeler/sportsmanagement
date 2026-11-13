@@ -149,6 +149,8 @@ namespace Joomla\CMS {
 }
 namespace {
     define('_JEXEC', 1);
+    define('JPATH_SITE', '/fixture/site');
+    define('JPATH_ADMINISTRATOR', '/fixture/administrator');
 
     /** Shared fixtures for administrator and module tests. */
     final class TestSafetyRuntime {
