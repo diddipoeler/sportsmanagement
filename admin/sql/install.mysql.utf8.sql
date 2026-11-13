@@ -1139,6 +1139,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `extendeduser` TEXT NULL ,
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `tournement` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `notes` TEXT NULL DEFAULT NULL,
   `cr_picture` varchar(255) DEFAULT NULL,
   `rdatefirst_timestamp` BIGINT( 20 ) NOT NULL DEFAULT  '0',  
   `rdatelast_timestamp` BIGINT( 20 ) NOT NULL DEFAULT  '0',
@@ -1166,6 +1167,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season` (
   `modified_by` INT NULL ,
   `extendeduser` TEXT NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `picture_blob` MEDIUMBLOB NULL DEFAULT NULL,
+  `picture` VARCHAR(250) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `name` (`name` ASC) )
 ENGINE = MyISAM
