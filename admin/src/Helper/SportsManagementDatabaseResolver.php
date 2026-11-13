@@ -28,6 +28,17 @@ use Joomla\Database\ParameterType;
  */
 final class SportsManagementDatabaseResolver
 {
+    /**
+     * Resolve an authorised Joomla or external SportsManagement connection.
+     *
+     * Only explicit database selection, an enabled profile, a matching
+     * nonempty serial and a valid active access interval can authorise
+     * external storage. Invalid settings fall back to Joomla.
+     *
+     * @param mixed $whichDatabase Legacy database selection.
+     * @param DatabaseInterface|null $fallback Existing Joomla driver.
+     * @return DatabaseInterface Approved connection or Joomla fallback.
+     */
     public function resolve(mixed $whichDatabase = null, ?DatabaseInterface $fallback = null): DatabaseInterface
     {
         if ($fallback === null) {
@@ -36,10 +47,7 @@ final class SportsManagementDatabaseResolver
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $forceExternal = $whichDatabase !== null
-            && $whichDatabase !== ''
-            && $whichDatabase !== false
-            && (int) $whichDatabase === 1;
+        $forceExternal = $whichDatabase === 1 || $whichDatabase === '1';
 
         if (!(bool) $params->get('cfg_which_database', 0) && !$forceExternal) {
             return $fallback;
@@ -81,7 +89,8 @@ final class SportsManagementDatabaseResolver
         $configuredSerial = (string) $params->get('jsm_user_serialnumber', '');
         $profileSerial = (string) ($profiles['jsmprofile.serialnumber']['profile_value'] ?? '');
 
-        if ($profileSerial != $configuredSerial) {
+        if ($configuredSerial === '' || $profileSerial === ''
+            || !hash_equals($configuredSerial, $profileSerial)) {
             Log::add('SportsManagement external database serial number does not match.', Log::ERROR, 'jsmerror');
 
             return $fallback;
@@ -102,7 +111,7 @@ final class SportsManagementDatabaseResolver
         $to = $this->timestamp($accessTo);
         $now = time();
 
-        if ($from === null || $to === null || $now < $from || $now > $to) {
+        if ($from === null || $to === null || $from > $to || $now < $from || $now > $to) {
             Log::add('SportsManagement external database access range is not active.', Log::ERROR, 'jsmerror');
 
             return $fallback;
@@ -113,11 +122,19 @@ final class SportsManagementDatabaseResolver
         return $external;
     }
 
+    /**
+     * Resolve Joomla's administrator client for the default connection.
+     * @return CMSApplicationInterface Active administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Retrieve the native Joomla database service from the container.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -126,7 +143,12 @@ final class SportsManagementDatabaseResolver
         return $database;
     }
 
-    /** @return array<string, array<string, mixed>> */
+    /**
+     * Query the external profile values for the configured server user.
+     * @param DatabaseInterface $database External driver.
+     * @param int $userId Server user identifier.
+     * @return array<string, array<string, mixed>> User profile values.
+     */
     private function loadAccessProfile(DatabaseInterface $database, int $userId): array
     {
         $profilePattern = 'jsmprofile.%';
@@ -146,25 +168,51 @@ final class SportsManagementDatabaseResolver
         return $database->loadAssocList('profile_key') ?: [];
     }
 
-    /** @param array<string, array<string, mixed>> $profiles */
+    /**
+     * Read the explicit external database entitlement from a Joomla profile.
+     * @param array<string, array<string, mixed>> $profiles Saved profile rows.
+     * @return bool True only for an explicit enabled setting.
+     */
     private function hasDatabaseAccess(array $profiles): bool
     {
-        return (bool) ($profiles['jsmprofile.databaseaccess']['profile_value'] ?? false);
+        $raw = $profiles['jsmprofile.databaseaccess']['profile_value'] ?? null;
+        if (!is_string($raw) && !is_int($raw) && !is_bool($raw)) {
+            return false;
+        }
+
+        $decoded = is_string($raw) ? json_decode($raw, true) : $raw;
+        $value = $decoded === null ? $raw : $decoded;
+        return $value === true || $value === 1 || $value === '1'
+            || (is_string($value) && strtolower(trim($value)) === 'true');
     }
 
+    /**
+     * Parse a strict UTC external database entitlement boundary.
+     * @param string $value ISO date or database datetime.
+     * @return int|null Timestamp or null for malformed and zero dates.
+     */
     private function timestamp(string $value): ?int
     {
         $value = trim($value);
 
-        if ($value === '' || $value === '0000-00-00 00:00:00' || $value === '0000-00-00 15:30:00') {
-            return time();
+        if ($value === '' || str_starts_with($value, '0000-00-00')
+            || preg_match('/^\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2}:\d{2})?$/D', $value) !== 1) {
+            return null;
         }
 
-        $timestamp = strtotime($value);
-
-        return $timestamp === false ? null : $timestamp;
+        $format = strlen($value) === 10 ? '!Y-m-d' : '!Y-m-d H:i:s';
+        $date = \DateTimeImmutable::createFromFormat($format, $value, new \DateTimeZone('UTC'));
+        return $date instanceof \DateTimeImmutable
+            && $date->format(strlen($value) === 10 ? 'Y-m-d' : 'Y-m-d H:i:s') === $value
+                ? $date->getTimestamp()
+                : null;
     }
 
+    /**
+     * Map legacy external database driver aliases to Joomla identifiers.
+     * @param string $driver Legacy driver name.
+     * @return string Joomla database driver identifier.
+     */
     private function normaliseDriver(string $driver): string
     {
         $driver = strtolower(trim($driver));
@@ -176,9 +224,13 @@ final class SportsManagementDatabaseResolver
         };
     }
 
+    /**
+     * Log external connection failures without passwords or SQL messages.
+     * @param \Throwable $e Driver or entitlement failure.
+     * @return void
+     */
     private function logFailure(\Throwable $e): void
     {
-        Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
-        Log::add((string) $e->getCode(), Log::ERROR, 'jsmerror');
+        Log::add('SportsManagement external database failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
     }
 }
