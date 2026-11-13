@@ -22,6 +22,7 @@ trait NativeLinkTrait
      * Select teamplan, ranking curve, team information, roster and club URLs
      * from Joomla's routing helper; include validated club websites when enabled.
      * Never generate internal team or club links with missing positive IDs.
+     * Validate module flags and labels before constructing URLs.
      * @param object $match Fixture row containing project, team and club IDs.
      * @param string $n Team position, 1 for home or 2 for away.
      * @param Registry $params Module link visibility and label settings.
@@ -29,13 +30,13 @@ trait NativeLinkTrait
      */
     private function teamLinks(object $match, string $n, Registry $params): array
     {
-        $mode = (int) $params->get('link_teams', 0);
+        $mode = self::boundedMatchesOption($params->get('link_teams', 0), 0, 10);
         if ($mode <= 0) {
             return [];
         }
-        $teamId = (int) ($match->{'team' . $n . '_id'} ?? 0);
-        $clubId = (int) ($match->{'club' . $n . '_id'} ?? 0);
-        $base = ['p' => (string) $match->project_slug, 'tid' => $teamId, 'cfg_which_database' => (int) $params->get('cfg_which_database', 0)];
+        $teamId = self::boundedMatchesId($match->{'team' . $n . '_id'} ?? null);
+        $clubId = self::boundedMatchesId($match->{'club' . $n . '_id'} ?? null);
+        $base = ['p' => (string) $match->project_slug, 'tid' => $teamId, 'cfg_which_database' => $this->validatedMatchesDatabase($params)];
         $links = [];
         foreach ([
             'plan' => ['teamplan', 'link_team_plan_text', 'Schedule'],
@@ -44,7 +45,7 @@ trait NativeLinkTrait
             'roster' => ['roster', 'link_team_roster_text', 'Roster'],
             'club' => ['clubinfo', 'link_team_club_text', 'Club'],
         ] as $key => [$view, $textKey, $fallback]) {
-            if ((int) $params->get('link_team_' . $key, 0) !== 1) {
+            if (self::boundedMatchesOption($params->get('link_team_' . $key, 0), 0, 1) !== 1) {
                 continue;
             }
             $query = $base;
@@ -57,11 +58,11 @@ trait NativeLinkTrait
             } elseif ($teamId <= 0) {
                 continue;
             }
-            $links[] = ['label' => (string) $params->get($textKey, $fallback), 'url' => $this->route($view, $query), 'external' => false];
+            $links[] = ['label' => self::matchesLinkLabel($params->get($textKey, $fallback), $fallback), 'url' => $this->route($view, $query), 'external' => false];
         }
-        $website = $this->externalWebsiteUrl((string) ($match->{'club' . $n . '_website'} ?? ''));
-        if ((int) $params->get('link_team_www', 0) === 1 && $website !== '') {
-            $links[] = ['label' => (string) $params->get('link_team_www_text', 'WWW'), 'url' => $website, 'external' => true];
+        $website = $this->externalWebsiteUrl((is_string($match->{'club' . $n . '_website'} ?? null) ? $match->{'club' . $n . '_website'} : ''));
+        if (self::boundedMatchesOption($params->get('link_team_www', 0), 0, 1) === 1 && $website !== '') {
+            $links[] = ['label' => self::matchesLinkLabel($params->get('link_team_www_text', 'WWW'), 'WWW'), 'url' => $website, 'external' => true];
         }
         return $links;
     }
@@ -118,15 +119,15 @@ trait NativeLinkTrait
     private function matchLinks(object $match, Registry $params): array
     {
         $links = [];
-        $common = ['p' => (string) $match->project_slug, 'cfg_which_database' => (int) $params->get('cfg_which_database', 0)];
-        if ((int) $params->get('show_act_report_link', 0) === 1 && (int) $match->show_report === 1) {
-            $links[] = ['label' => (string) $params->get('show_act_report_text', 'Show Report'), 'url' => $this->route('matchreport', $common + ['mid' => (string) $match->match_slug])];
+        $common = ['p' => (string) $match->project_slug, 'cfg_which_database' => $this->validatedMatchesDatabase($params)];
+        if (self::boundedMatchesOption($params->get('show_act_report_link', 0), 0, 1) === 1 && (int) $match->show_report === 1) {
+            $links[] = ['label' => self::matchesLinkLabel($params->get('show_act_report_text', 'Show Report'), 'Show Report'), 'url' => $this->route('matchreport', $common + ['mid' => (string) $match->match_slug])];
         }
-        if ((int) $params->get('show_statistic_link', 0) === 1) {
-            $links[] = ['label' => (string) $params->get('statistic_link_text', 'Season statistics'), 'url' => $this->route('stats', $common)];
+        if (self::boundedMatchesOption($params->get('show_statistic_link', 0), 0, 1) === 1) {
+            $links[] = ['label' => self::matchesLinkLabel($params->get('statistic_link_text', 'Season statistics'), 'Season statistics'), 'url' => $this->route('stats', $common)];
         }
-        if ((int) $params->get('show_nextmatch_link', 0) === 1) {
-            $links[] = ['label' => (string) $params->get('nextmatch_link_text', 'Nextmatch'), 'url' => $this->route('nextmatch', $common + ['mid' => (string) $match->match_slug])];
+        if (self::boundedMatchesOption($params->get('show_nextmatch_link', 0), 0, 1) === 1) {
+            $links[] = ['label' => self::matchesLinkLabel($params->get('nextmatch_link_text', 'Nextmatch'), 'Nextmatch'), 'url' => $this->route('nextmatch', $common + ['mid' => (string) $match->match_slug])];
         }
         return $links;
     }
@@ -146,7 +147,7 @@ trait NativeLinkTrait
     private function neighborLinks(DatabaseInterface $db, object $match, Registry $params, array $projectIds): array
     {
         $out = ['previous' => null, 'next' => null];
-        foreach (['previous' => ['<', 'DESC', (string) $params->get('last_text', '<<')], 'next' => ['>', 'ASC', (string) $params->get('next_text', '>>')]] as $key => [$operator, $direction, $label]) {
+        foreach (['previous' => ['<', 'DESC', self::matchesLinkLabel($params->get('last_text', '<<'), '<<')], 'next' => ['>', 'ASC', self::matchesLinkLabel($params->get('next_text', '>>'), '>>')]] as $key => [$operator, $direction, $label]) {
             $q = $db->createQuery()
                 ->select(['m.id', 'p.id AS project_id', 'p.alias AS project_alias', 't1.alias AS team1_alias', 't2.alias AS team2_alias'])
                 ->from('#__sportsmanagement_match AS m')
@@ -158,7 +159,7 @@ trait NativeLinkTrait
                 ->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id')
                 ->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id')
                 ->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id')
-                ->where(((int) $params->get('nextlast_from_same_project', 1) === 1 ? 'r.project_id = ' . (int) $match->project_id : 'r.project_id IN (' . implode(',', $projectIds) . ')'))
+                ->where((self::boundedMatchesOption($params->get('nextlast_from_same_project', 1), 1, 1) === 1 ? 'r.project_id = ' . (int) $match->project_id : 'r.project_id IN (' . implode(',', $projectIds) . ')'))
                 ->where('m.published = 1')->where('m.match_timestamp ' . $operator . ' ' . (int) $match->match_timestamp)
                 ->order('m.match_timestamp ' . $direction);
             $db->setQuery($q, 0, 1);
@@ -166,7 +167,7 @@ trait NativeLinkTrait
             if ($neighbor) {
                 $p = $neighbor->project_id . ':' . $neighbor->project_alias;
                 $mid = $neighbor->id . ':' . trim($neighbor->team1_alias . '_' . $neighbor->team2_alias, '_');
-                $out[$key] = ['label' => $label, 'url' => $this->route('matchreport', ['p' => $p, 'mid' => $mid, 'cfg_which_database' => (int) $params->get('cfg_which_database', 0)])];
+                $out[$key] = ['label' => $label, 'url' => $this->route('matchreport', ['p' => $p, 'mid' => $mid, 'cfg_which_database' => $this->validatedMatchesDatabase($params)])];
             }
         }
         return $out;
@@ -184,7 +185,57 @@ trait NativeLinkTrait
      */
     private function componentRoute(string $view, object $match, array $extra, Registry $params): string
     {
-        return $this->route($view, ['p' => (string) $match->project_slug, 'cfg_which_database' => (int) $params->get('cfg_which_database', 0)] + $extra);
+        return $this->route($view, ['p' => (string) $match->project_slug, 'cfg_which_database' => $this->validatedMatchesDatabase($params)] + $extra);
+    }
+
+    /**
+     * Read the database selector used for match navigation links.
+     *
+     * Rejects malformed module values instead of generating routes that
+     * silently point to a different SportsManagement database.
+     *
+     * @param Registry $params Configured match module database.
+     * @return int Validated nonnegative database selector.
+     * @throws \InvalidArgumentException When the selector is malformed.
+     */
+    private function validatedMatchesDatabase(Registry $params): int
+    {
+        $raw = $params->get('cfg_which_database', 0);
+
+        if (!is_int($raw) && (!is_string($raw) || strlen($raw) > 256
+            || preg_match('/^[0-9]+$/D', $raw) !== 1)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement Matches database selector.', 400);
+        }
+
+        if (is_string($raw)) {
+            $digits = ltrim($raw, '0');
+            $raw = $digits === '' ? '0' : $digits;
+        }
+
+        $selector = filter_var($raw, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        if ($selector === false) {
+            throw new \InvalidArgumentException('Invalid SportsManagement Matches database selector.', 400);
+        }
+
+        return $selector;
+    }
+
+    /**
+     * Normalise a configured link label before template rendering.
+     *
+     * Discards structured values, unusually long labels and control
+     * characters without coercing arrays to strings on PHP 8.
+     *
+     * @param mixed $value Submitted or configured label.
+     * @param string $fallback Safe built-in label.
+     * @return string Display label without invalid control characters.
+     */
+    private static function matchesLinkLabel(mixed $value, string $fallback): string
+    {
+        return is_string($value) && strlen($value) <= 200
+            && !preg_match('/[\x00-\x1F\x7F]/', $value)
+            ? $value : $fallback;
     }
 
     /**
