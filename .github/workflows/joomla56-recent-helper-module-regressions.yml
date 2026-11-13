@@ -11,6 +11,7 @@ on:
       - 'site/src/Helper/PlaygroundKmlHelper.php'
       - 'site/src/Helper/ClubKmlHelper.php'
       - 'site/src/Helper/PersonProfileRouteHelper.php'
+      - 'site/src/Helper/ProjectNavigationHelper.php'
       - 'site/src/Helper/SportsManagementDateHelper.php'
       - 'site/src/Helper/LocationAddressHelper.php'
       - 'site/src/Helper/ExtraFieldsReadHelper.php'
