@@ -112,7 +112,8 @@ final class ClubKmlHelper
      *
      * Rejects executable URI schemes, control characters, encoded path
      * traversal and credential-bearing remote URLs, preserving valid
-     * HTTP(S) and site-relative images.
+     * HTTP(S) and site-relative images. Repeatedly decodes local paths
+     * to reject multi-encoded traversal and URL scheme bypass attempts.
      *
      * @param string $picture Candidate image URL or site path.
      * @return string Valid KML image URL or an empty string.
@@ -144,10 +145,34 @@ final class ClubKmlHelper
         }
 
         $path = ltrim($picture, '/');
-        $decodedPath = rawurldecode($path);
+        $decodedPath = $path;
 
-        if (preg_match('/[\\x00-\\x1F\\x7F]/', $decodedPath)
-            || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decodedPath)
+        for ($depth = 0; $depth < 8; $depth++) {
+            if (preg_match('/[\x00-\x1F\x7F]/', $decodedPath)
+                || preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decodedPath)
+                || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decodedPath)
+                || str_starts_with($decodedPath, '//')
+                || str_contains($decodedPath, chr(92))
+                || str_contains($decodedPath, '?')
+                || str_contains($decodedPath, '#')) {
+                return '';
+            }
+
+            $next = rawurldecode($decodedPath);
+
+            if ($next === $decodedPath) {
+                break;
+            }
+
+            $decodedPath = $next;
+        }
+
+        // Remaining percent-escapes may hide another decoding layer.
+        if (preg_match('/%[0-9a-f]{2}/i', $decodedPath)
+            || preg_match('/[\x00-\x1F\x7F]/', $decodedPath)
+            || preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decodedPath)
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decodedPath)
+            || str_starts_with($decodedPath, '//')
             || str_contains($decodedPath, chr(92))
             || str_contains($decodedPath, '?')
             || str_contains($decodedPath, '#')) {
