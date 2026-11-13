@@ -199,7 +199,10 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     /**
      * Delete selected component images through a protected administrator task.
-     * Verifies the POST token and delete permission, normalises submitted paths, removes eligible images and thumbnails and redirects to the image manager.
+     * Verifies the POST token and delete permission, rejects non-string
+     * submissions before normalising paths, removes eligible images and
+     * thumbnails and redirects to the image manager. File operation logs
+     * include the exception type, not potentially sensitive disk paths.
      * @return void
      */
     public function delete(): void
@@ -215,7 +218,9 @@ final class ImagehandlerController extends SportsManagementAdminController
 
         if ($baseDir !== null) {
             foreach ($images as $image) {
-                $relativeImage = $this->normaliseRelativeImagePath((string) $image);
+                $relativeImage = is_string($image)
+                    ? $this->normaliseRelativeImagePath($image)
+                    : null;
 
                 if ($relativeImage === null) {
                     Log::add(
@@ -238,7 +243,7 @@ final class ImagehandlerController extends SportsManagementAdminController
                         File::delete($thumbPath);
                     }
                 } catch (Throwable $e) {
-                    Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+                    Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
                 }
             }
         }
@@ -342,7 +347,7 @@ final class ImagehandlerController extends SportsManagementAdminController
             try {
                 Folder::create($directory);
             } catch (Throwable $e) {
-                Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+                Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
                 return null;
             }
         }
@@ -370,7 +375,7 @@ final class ImagehandlerController extends SportsManagementAdminController
         try {
             return (bool) File::upload($source, $target);
         } catch (Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return false;
         }
     }
@@ -450,7 +455,7 @@ final class ImagehandlerController extends SportsManagementAdminController
                 break;
             }
         } catch (Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return null;
         }
 
@@ -466,7 +471,7 @@ final class ImagehandlerController extends SportsManagementAdminController
                 return null;
             }
         } catch (Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return null;
         }
 
