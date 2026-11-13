@@ -194,6 +194,7 @@ final class ProjectMapHelper
      * Group project countries into their international federations.
      * Creates region metadata, escapes federation image URLs for HTML output
      * and deduplicates country codes within each federation region.
+     * Invalid icon paths are omitted rather than embedded in map popups.
      * @param array<int,object> $projects Country-specific map projects.
      * @return array<string,array> Region descriptions and country lists.
      */
@@ -213,7 +214,9 @@ final class ProjectMapHelper
             if (!isset($regions[$federationId])) {
                 $regions[$federationId] = [
                     'name' => (string) ($project->federation_name ?? ''),
-                    'description' => '<img src="' . htmlspecialchars((string) ($project->federation_picture ?? ''), ENT_QUOTES, 'UTF-8') . '" style="width: 75px" alt="">',
+                    'description' => ($federationImage = self::safeImageUrl($project->federation_picture ?? null)) !== ''
+                        ? '<img src="' . htmlspecialchars($federationImage, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" style="width: 75px" alt="">'
+                        : '',
                     'states' => [],
                 ];
             }
@@ -234,7 +237,8 @@ final class ProjectMapHelper
      * Build country-specific map labels, popups and ranking destinations.
      * Constructs Joomla ranking routes for each selected project, translates
      * country and competition labels, and escapes database text before
-     * insertion into JavaScript-driven map HTML.
+     * insertion into JavaScript-driven map HTML. Only permitted HTTP(S)
+     * or safe local image references reach popup markup.
      * @param array<int,object> $projects Selected country projects.
      * @return array<string,array> Country settings indexed by code.
      */
@@ -261,8 +265,10 @@ final class ProjectMapHelper
                 'Itemid' => -1,
             ];
             $link = SiteRouteHelper::view('ranking', $routeParameters);
-            $countryPicture = htmlspecialchars((string) ($project->country_picture ?? ''), ENT_QUOTES, 'UTF-8');
-            $leaguePicture = htmlspecialchars((string) ($project->league_picture ?? ''), ENT_QUOTES, 'UTF-8');
+            $countryImage = self::safeImageUrl($project->country_picture ?? null);
+            $leagueImage = self::safeImageUrl($project->league_picture ?? null);
+            $countryPicture = htmlspecialchars($countryImage, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $leaguePicture = htmlspecialchars($leagueImage, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
             // Translation lookups may fall back to database-supplied names.
             // Always escape names inserted into the map's HTML popups.
             $countryName = htmlspecialchars(Text::_((string) ($project->country_name ?? '')), ENT_QUOTES, 'UTF-8');
@@ -270,15 +276,16 @@ final class ProjectMapHelper
             $projectName = htmlspecialchars(Text::_((string) ($project->name ?? '')), ENT_QUOTES, 'UTF-8');
 
             $stateSpecific[$country] = [
-                'name' => '<img src="' . $countryPicture . '" alt="">' . $countryName,
-                'image_url' => (string) ($project->league_picture ?? ''),
+                'name' => ($countryImage !== '' ? '<img src="' . $countryPicture . '" alt="">' : '') . $countryName,
+                'image_url' => $leagueImage,
                 'image_position' => 'manual',
                 'image_size' => 0.2,
                 'image_x' => 0.55,
                 'image_y' => 0.4,
                 'border_hover_color' => '#d13c12',
                 'image_color' => '#e1ba7d',
-                'description' => '<img src="' . $leaguePicture . '" style="width: 50px" alt="">' . $leagueName . ' :<br>' . $projectName,
+                'description' => ($leagueImage !== '' ? '<img src="' . $leaguePicture . '" style="width: 50px" alt="">' : '')
+                    . $leagueName . ' :<br>' . $projectName,
                 'color' => 'default',
                 'hover_color' => 'default',
                 'url' => $link,
@@ -288,6 +295,47 @@ final class ProjectMapHelper
         ksort($stateSpecific);
 
         return $stateSpecific;
+    }
+
+    /**
+     * Validate a country, federation or league picture URL before map output.
+     *
+     * Allows HTTP(S) URLs without credentials and local image paths without
+     * traversal, query fragments, encoded separators or control characters.
+     *
+     * @param mixed $raw Imported legacy image reference.
+     * @return string Allowed image reference or an empty string.
+     */
+    private static function safeImageUrl(mixed $raw): string
+    {
+        if (!is_string($raw) || strlen($raw) > 2048) {
+            return '';
+        }
+
+        $url = trim($raw);
+        if ($url === '' || preg_match('/[\x00-\x20\x7F\\\\]/', $url)
+            || str_starts_with($url, '//')) {
+            return '';
+        }
+
+        if (preg_match('~^https?://~i', $url)) {
+            $parts = parse_url($url);
+            return filter_var($url, FILTER_VALIDATE_URL) !== false
+                && is_array($parts)
+                && !empty($parts['host'])
+                && !isset($parts['user'], $parts['pass'])
+                && !isset($parts['user']) && !isset($parts['pass'])
+                    ? $url
+                    : '';
+        }
+
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $url)
+            || strpbrk($url, '%?#') !== false
+            || preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $url)) {
+            return '';
+        }
+
+        return ltrim($url, '/');
     }
 
     /**
