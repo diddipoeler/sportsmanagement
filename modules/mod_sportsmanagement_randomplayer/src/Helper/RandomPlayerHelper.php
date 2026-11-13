@@ -24,7 +24,7 @@ final class RandomPlayerHelper
     /**
      * Select a random eligible player for the Joomla module.
      *
-     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings.
+     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings. Invalid display-format settings fall back to the standard name order.
      *
      * @param Registry $params Module filters and display options.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -82,7 +82,7 @@ final class RandomPlayerHelper
         }
 
         $row = $players[random_int(0, count($players) - 1)];
-        $nameFormat = (int) $params->get('name_format', 0);
+        $nameFormat = self::nonNegativeSelector($params->get('name_format', 0)) ?? 0;
         $row->display_name = $this->formatName(
             (string) ($row->firstname ?? ''),
             (string) ($row->nickname ?? ''),
