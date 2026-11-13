@@ -24,8 +24,11 @@ class AgegroupsController extends SportsManagementAdminController
      * Save the short values of the selected age groups.
      *
      * Checks the administrator's write permission, requires a valid MVC
-     * form token and a model with the inline-save operation, then redirects with a status
-     * message rather than dereferencing a missing legacy model.
+     * form token and a model with the inline-save operation, then redirects
+     * with a status message instead of dereferencing a missing legacy model.
+     *
+     * @return void
+     * @throws \\RuntimeException When the required inline-save model is absent.
      */
     public function saveshort(): void
     {
@@ -52,6 +55,9 @@ class AgegroupsController extends SportsManagementAdminController
      *
      * Requires a valid Joomla form token, creation permission and a native import
      * model before delegating the import and redirecting to the list view.
+     *
+     * @return void
+     * @throws \\RuntimeException When the import model is unavailable.
      */
     public function import(): void
     {
