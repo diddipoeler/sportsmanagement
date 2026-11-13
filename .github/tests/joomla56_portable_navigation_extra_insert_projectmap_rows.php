@@ -130,7 +130,7 @@ namespace {
          */
         public function bind(string $name, mixed $value, mixed $type): self { return $this; }
         /**
-         * Set query ordering.
+         * Preserve the requested navigation ordering in the SQL builder fixture.
          * @param string $order SQL ordering.
          * @return self SQL fixture.
          */
@@ -217,13 +217,13 @@ namespace {
          */
         public function insert(string $table): self { $this->operation = 'insert'; return $this; }
         /**
-         * Accept SQL columns.
+         * Record the destination field list for a simulated extra-field insert.
          * @param mixed $columns Field name list.
          * @return self Fluent query.
          */
         public function columns(mixed $columns): self { return $this; }
         /**
-         * Accept SQL values.
+         * Record the submitted SQL values for a simulated extra-field insert.
          * @param string $values SQL value placeholders.
          * @return self Fluent query.
          */
