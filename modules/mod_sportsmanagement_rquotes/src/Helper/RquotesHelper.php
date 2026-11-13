@@ -160,6 +160,7 @@ final class RquotesHelper
      * HTTP(S) media server, and that URL cannot contain credentials, query
      * strings, fragments or control characters. Invalid remote settings
      * disable relative image links instead of falling back to a wrong host.
+     * Invalid database selectors must not enable a remote picture server.
      *
      * @param mixed $selector Configured SportsManagement database selector.
      * @param mixed $remoteBase Remote image-server URL from component settings.
@@ -168,7 +169,13 @@ final class RquotesHelper
      */
     public static function pictureServer(mixed $selector, mixed $remoteBase, string $localBase): string
     {
-        if (self::normaliseDatabaseSelector($selector) === 0) {
+        $databaseSelector = self::normaliseDatabaseSelector($selector);
+
+        if ($databaseSelector === null) {
+            return '';
+        }
+
+        if ($databaseSelector === 0) {
             return $localBase;
         }
 
