@@ -28,7 +28,7 @@ class AgegroupsController extends SportsManagementAdminController
      * with a status message instead of dereferencing a missing legacy model.
      *
      * @return void
-     * @throws \\RuntimeException When the required inline-save model is absent.
+     * @throws \RuntimeException When the required inline-save model is absent.
      */
     public function saveshort(): void
     {
@@ -57,7 +57,7 @@ class AgegroupsController extends SportsManagementAdminController
      * model before delegating the import and redirecting to the list view.
      *
      * @return void
-     * @throws \\RuntimeException When the import model is unavailable.
+     * @throws \RuntimeException When the import model is unavailable.
      */
     public function import(): void
     {
