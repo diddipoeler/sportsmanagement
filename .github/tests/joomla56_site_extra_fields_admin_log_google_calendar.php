@@ -108,7 +108,7 @@ namespace {
          */
         public function select(mixed $data): self { return $this; }
         /**
-         * Select a table.
+         * Set the queried extra-field definition table without opening a database connection.
          * @param string $data SQL table identifier.
          * @return self Query builder.
          */
