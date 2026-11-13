@@ -48,8 +48,9 @@ final class EventsRankingHelper
         $divisionId = self::optionalId($params->get('division_id', 0));
         $matchId = self::optionalId($params->get('mid', 0));
         $teamId = self::optionalId($params->get('tid', 0));
-        $limit = max(1, min(100, (int) $params->get('limit', 5)));
-        $primaryDirection = $this->direction((string) $params->get('ranking_order', 'DESC'));
+        $limit = max(1, self::boundedLimit($params->get('limit', 5)));
+        $rawDirection = $params->get('ranking_order', 'DESC');
+        $primaryDirection = $this->direction(is_string($rawDirection) ? $rawDirection : 'DESC');
 
         // Reject malformed explicit constraints instead of broadening the
         // query to all divisions, matches or teams.
@@ -96,7 +97,7 @@ final class EventsRankingHelper
         } catch (\Throwable $e) {
             // Joomla pages must survive missing tables and offline optional
             // databases without disclosing SQL or server paths to visitors.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
             return $empty;
         }
@@ -354,9 +355,10 @@ final class EventsRankingHelper
         $rows = $db->loadObjectList() ?: [];
         $previousValue = null;
         $previousRank = 0;
-        $cfg = (int) $params->get('cfg_which_database', 0);
-        $nameFormat = (int) $params->get('name_format', 0);
-        $teamNameType = (string) $params->get('teamnametype', 'short_name');
+        $cfg = self::databaseSelector($params->get('cfg_which_database', 0)) ?? 0;
+        $nameFormat = self::boundedLimit($params->get('name_format', 0), 0, 50);
+        $rawTeamNameType = $params->get('teamnametype', 'short_name');
+        $teamNameType = is_string($rawTeamNameType) ? $rawTeamNameType : 'short_name';
         if (!in_array($teamNameType, ['name', 'short_name', 'middle_name'], true)) {
             $teamNameType = 'short_name';
         }
@@ -380,7 +382,8 @@ final class EventsRankingHelper
             $projectSlug = $row->project_id . ':' . $row->project_alias;
             $base = ['cfg_which_database' => $cfg, 's' => (int) $row->season_id, 'p' => $projectSlug];
             $row->player_url = $this->route('player', $base + ['tid' => $row->team_slug, 'pid' => $row->person_slug]);
-            $row->team_url = $this->teamRoute((string) $params->get('teamlink', ''), $base, $row);
+            $rawTeamLink = $params->get('teamlink', '');
+            $row->team_url = $this->teamRoute(is_string($rawTeamLink) ? $rawTeamLink : '', $base, $row);
         }
 
         return $rows;
@@ -602,6 +605,68 @@ final class EventsRankingHelper
     }
 
     /**
+     * Validate a nonnegative SportsManagement database selector.
+     *
+     * Rejects structured, signed, fractional and overflowing values instead
+     * of silently switching the ranking to an unrelated database connection.
+     *
+     * @param mixed $value Raw module database configuration.
+     * @return int|null Valid nonnegative selector, or null if invalid.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 256
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $number === false ? null : $number;
+    }
+
+    /**
+     * Clamp a numeric module limit without PHP 8 array-to-integer conversion.
+     *
+     * Accepts decimal strings and clamps oversized valid values to the limit,
+     * while malformed values fall back to the configured default.
+     *
+     * @param mixed $value Raw Joomla module numeric option.
+     * @param int $default Fallback when malformed.
+     * @param int $maximum Maximum accepted value.
+     * @return int Nonnegative bounded numeric option.
+     */
+    private static function boundedLimit(mixed $value, int $default = 5, int $maximum = 100): int
+    {
+        if (is_int($value)) {
+            return max(0, min($maximum, $value));
+        }
+
+        if (!is_string($value) || strlen($value) > 4096
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return $default;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        if (strlen($digits) > strlen((string) $maximum)
+            || (strlen($digits) === strlen((string) $maximum) && strcmp($digits, (string) $maximum) > 0)) {
+            return $maximum;
+        }
+
+        return (int) $digits;
+    }
+
+    /**
      * Resolve the SportsManagement connection selected for event ranking.
      * Delegates to the native database resolver with a fallback Joomla driver and configured database selector.
      *
@@ -611,9 +676,12 @@ final class EventsRankingHelper
      */
     private function database(Registry $params, DatabaseInterface $fallbackDatabase): DatabaseInterface
     {
-        return SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            (int) $params->get('cfg_which_database', 0)
-        );
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($selector === null) {
+            throw new \InvalidArgumentException('Invalid events ranking database selector.');
+        }
+
+        return SportsManagementDatabaseResolver::resolve($fallbackDatabase, $selector);
     }
 }
