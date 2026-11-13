@@ -26,7 +26,9 @@ final class GithubinstallController extends BaseController
      * the validated setting to the native model and displays its messages
      * before continuing into the established Joomla installer workflow.
      * Missing identities, guests and malformed URL configuration never
-     * trigger an archive download or package installation.
+     * trigger an archive download or package installation. The Joomla MVC
+     * model must expose both installation actions and return a list of
+     * scalar messages before the installation is attempted.
      * @return void
      * @throws \RuntimeException If the current identity lacks admin rights.
      */
@@ -48,9 +50,15 @@ final class GithubinstallController extends BaseController
         $url = is_string($configuredUrl) && strlen($configuredUrl) <= 2048
             ? trim($configuredUrl)
             : '';
-        $messages = $model !== false ? $model->CopyGithubLink($url) : false;
+        if (!is_object($model)
+            || !is_callable([$model, 'CopyGithubLink'])
+            || !is_callable([$model, 'installfolder'])) {
+            throw new \RuntimeException('SportsManagement GitHub installation model is unavailable.', 500);
+        }
 
-        if ($messages === false) {
+        $messages = $model->CopyGithubLink($url);
+
+        if (!is_array($messages)) {
             $this->setRedirect(
                 Route::_('index.php?option=com_sportsmanagement&view=githubinstall', false),
                 '',
@@ -61,7 +69,7 @@ final class GithubinstallController extends BaseController
         }
 
         foreach ($messages as $message) {
-            if ((string) $message !== '') {
+            if (is_scalar($message) && (string) $message !== '') {
                 $this->app->enqueueMessage((string) $message, 'notice');
             }
         }
@@ -84,7 +92,7 @@ final class GithubinstallController extends BaseController
     /**
      * Resolve the GitHub installation model through Joomla MVC.
      * Uses the administrator namespace and forwards the caller's
-     * configuration, including the request-independent loading default.
+     * configuration while always enabling request-independent model loading.
      * @param string $name Requested model name.
      * @param string $prefix Administrator MVC model namespace.
      * @param array $config Model factory options.
@@ -92,6 +100,8 @@ final class GithubinstallController extends BaseController
      */
     public function getModel($name = 'Githubinstall', $prefix = 'Administrator', $config = ['ignore_request' => true])
     {
+        $config['ignore_request'] = true;
+
         return parent::getModel($name, $prefix, $config);
     }
 }
