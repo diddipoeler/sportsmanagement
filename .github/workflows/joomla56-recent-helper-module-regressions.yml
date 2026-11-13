@@ -56,6 +56,7 @@ on:
       - '.github/tests/joomla56_admin_db_entitlements_person_name_calendar_template.php'
       - '.github/tests/joomla56_person_age_admin_names_teamplayers_roster.php'
       - '.github/tests/joomla56_project_navigation_admin_dates_map_icons.php'
+      - '.github/tests/joomla56_portable_navigation_extra_insert_projectmap_rows.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_extended_form_extra_select_ranking_guards.php'
       - '.github/tests/joomla56_match_outcome_actionlog_toptipper.php'
@@ -171,6 +172,7 @@ jobs:
             .github/tests/joomla56_admin_db_entitlements_person_name_calendar_template.php
             .github/tests/joomla56_person_age_admin_names_teamplayers_roster.php
             .github/tests/joomla56_project_navigation_admin_dates_map_icons.php
+            .github/tests/joomla56_portable_navigation_extra_insert_projectmap_rows.php
             modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             .github/tests/joomla56_extended_form_extra_select_ranking_guards.php
@@ -212,6 +214,7 @@ jobs:
             .github/tests/joomla56_site_extra_fields_admin_log_google_calendar.php \
             .github/tests/joomla56_admin_db_entitlements_person_name_calendar_template.php \
             .github/tests/joomla56_person_age_admin_names_teamplayers_roster.php \
-            .github/tests/joomla56_project_navigation_admin_dates_map_icons.php; do
+            .github/tests/joomla56_project_navigation_admin_dates_map_icons.php \
+            .github/tests/joomla56_portable_navigation_extra_insert_projectmap_rows.php; do
             php "$test"
           done
