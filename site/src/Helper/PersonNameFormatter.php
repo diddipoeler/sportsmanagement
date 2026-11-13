@@ -16,7 +16,8 @@ final class PersonNameFormatter
     /**
      * Format a person's full name using legacy SportsManagement format IDs.
      * Supports prefixes, first names, nicknames, last names and initials
-     * in the order expected by existing component templates.
+     * in the order expected by existing component templates. Rejects oversized
+     * numeric selectors before parsing to avoid costly string conversions.
      * @param string|null $prefix Optional title or name prefix.
      * @param string $firstName Person's first name.
      * @param string $nickName Optional nickname.
@@ -45,7 +46,7 @@ final class PersonNameFormatter
         // Do not accept partial numeric strings from legacy configuration.
         // Invalid variants must use the original default name order.
         if (is_string($format)) {
-            if (preg_match('/^[0-9]+$/D', $format) !== 1) {
+            if (strlen($format) > 64 || preg_match('/^[0-9]+$/D', $format) !== 1) {
                 $format = 0;
             } else {
                 $digits = ltrim($format, '0');
