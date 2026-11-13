@@ -120,7 +120,7 @@ trait NativeLinkTrait
     {
         $links = [];
         $common = ['p' => (string) $match->project_slug, 'cfg_which_database' => $this->validatedMatchesDatabase($params)];
-        if (self::boundedMatchesOption($params->get('show_act_report_link', 0), 0, 1) === 1 && (int) $match->show_report === 1) {
+        if (self::boundedMatchesOption($params->get('show_act_report_link', 0), 0, 1) === 1 && self::boundedMatchesOption($match->show_report ?? 0, 0, 1) === 1) {
             $links[] = ['label' => self::matchesLinkLabel($params->get('show_act_report_text', 'Show Report'), 'Show Report'), 'url' => $this->route('matchreport', $common + ['mid' => (string) $match->match_slug])];
         }
         if (self::boundedMatchesOption($params->get('show_statistic_link', 0), 0, 1) === 1) {
@@ -137,7 +137,8 @@ trait NativeLinkTrait
      * Issue bounded queries in chronological order, optionally restricted
      * to the same project, then build match-report links with route slugs.
      * Use the Joomla 5/6 createQuery() factory instead of deprecated
-     * getQuery(true) parameter semantics.
+     * getQuery(true) parameter semantics. Invalid parent and neighbour IDs
+     * are discarded before generating public Joomla routes.
      * @param DatabaseInterface $db Resolved database connection.
      * @param object $match Current match and timestamp metadata.
      * @param Registry $params Neighbour navigation configuration.
@@ -147,6 +148,13 @@ trait NativeLinkTrait
     private function neighborLinks(DatabaseInterface $db, object $match, Registry $params, array $projectIds): array
     {
         $out = ['previous' => null, 'next' => null];
+        $projectId = self::boundedMatchesId($match->project_id ?? null);
+        $timestamp = $match->match_timestamp ?? null;
+        if ($projectId <= 0 || !is_numeric($timestamp) || is_bool($timestamp)
+            || (int) $timestamp < 0 || !$projectIds) {
+            return $out;
+        }
+
         foreach (['previous' => ['<', 'DESC', self::matchesLinkLabel($params->get('last_text', '<<'), '<<')], 'next' => ['>', 'ASC', self::matchesLinkLabel($params->get('next_text', '>>'), '>>')]] as $key => [$operator, $direction, $label]) {
             $q = $db->createQuery()
                 ->select(['m.id', 'p.id AS project_id', 'p.alias AS project_alias', 't1.alias AS team1_alias', 't2.alias AS team2_alias'])
@@ -159,14 +167,28 @@ trait NativeLinkTrait
                 ->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id')
                 ->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id')
                 ->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id')
-                ->where((self::boundedMatchesOption($params->get('nextlast_from_same_project', 1), 1, 1) === 1 ? 'r.project_id = ' . (int) $match->project_id : 'r.project_id IN (' . implode(',', $projectIds) . ')'))
-                ->where('m.published = 1')->where('m.match_timestamp ' . $operator . ' ' . (int) $match->match_timestamp)
+                ->where((self::boundedMatchesOption($params->get('nextlast_from_same_project', 1), 1, 1) === 1 ? 'r.project_id = ' . $projectId : 'r.project_id IN (' . implode(',', $projectIds) . ')'))
+                ->where('m.published = 1')->where('m.match_timestamp ' . $operator . ' ' . (int) $timestamp)
                 ->order('m.match_timestamp ' . $direction);
             $db->setQuery($q, 0, 1);
             $neighbor = $db->loadObject();
-            if ($neighbor) {
-                $p = $neighbor->project_id . ':' . $neighbor->project_alias;
-                $mid = $neighbor->id . ':' . trim($neighbor->team1_alias . '_' . $neighbor->team2_alias, '_');
+            if (is_object($neighbor)) {
+                $neighborProjectId = self::boundedMatchesId($neighbor->project_id ?? null);
+                $neighborMatchId = self::boundedMatchesId($neighbor->id ?? null);
+
+                if ($neighborProjectId <= 0 || $neighborMatchId <= 0) {
+                    continue;
+                }
+
+                $projectAlias = $neighbor->project_alias ?? '';
+                $homeAlias = $neighbor->team1_alias ?? '';
+                $awayAlias = $neighbor->team2_alias ?? '';
+                $p = $neighborProjectId . ':' . (is_string($projectAlias) ? $projectAlias : '');
+                $mid = $neighborMatchId . ':' . trim(
+                    (is_string($homeAlias) ? $homeAlias : '')
+                    . '_' . (is_string($awayAlias) ? $awayAlias : ''),
+                    '_'
+                );
                 $out[$key] = ['label' => $label, 'url' => $this->route('matchreport', ['p' => $p, 'mid' => $mid, 'cfg_which_database' => $this->validatedMatchesDatabase($params)])];
             }
         }
