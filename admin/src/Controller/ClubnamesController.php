@@ -25,13 +25,24 @@ class ClubnamesController extends SportsManagementAdminController
     /**
      * Import alternative club names through the existing model implementation.
      *
-     * Returns to the administrator club-name list after the import action.
+     * Requires a valid POST CSRF token and component edit permission before
+     * importing aliases. Verifies the native model method is available and
+     * returns to the administrator club-name list after processing.
      *
      * @return void
+     * @throws \RuntimeException When the model is missing or the caller lacks access.
      */
     public function import(): void
     {
-        $this->getModel()->import();
+        $this->assertWritePermission();
+
+        $model = $this->getModel();
+
+        if (!is_object($model) || !is_callable([$model, 'import'])) {
+            throw new \RuntimeException('SportsManagement club-name import model is unavailable.', 500);
+        }
+
+        $model->import();
 
         $this->setRedirect(
             Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false)
@@ -41,8 +52,8 @@ class ClubnamesController extends SportsManagementAdminController
     /**
      * Resolve the namespaced Clubname model through Joomla's MVC factory.
      *
-     * Always ignores arbitrary request parameters when building the action
-     * model, retaining the existing default model and namespace settings.
+     * Ignores request-derived filtering while preserving explicitly supplied
+     * MVC factory configuration, so callers can still inject model services.
      *
      * @param string $name Entity model name, Clubname by default.
      * @param string $prefix Administrator namespace prefix for model discovery.
@@ -51,6 +62,8 @@ class ClubnamesController extends SportsManagementAdminController
      */
     public function getModel($name = 'Clubname', $prefix = 'Administrator', $config = [])
     {
-        return parent::getModel($name, $prefix, ['ignore_request' => true]);
+        $config['ignore_request'] = true;
+
+        return parent::getModel($name, $prefix, $config);
     }
 }
