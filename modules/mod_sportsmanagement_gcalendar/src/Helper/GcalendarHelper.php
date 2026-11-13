@@ -196,6 +196,8 @@ final class GcalendarHelper
      * database rows are removed before they reach module rendering.
      * Query or connection failures are logged privately and yield an
      * empty module list rather than crashing the Joomla site page.
+     * Only exception types are logged so SQL details or credentials from
+     * database drivers cannot enter the shared Joomla error log.
      *
      * @param Registry $params Calendar selection module settings.
      * @param CMSApplicationInterface $app Joomla application providing identity.
@@ -213,7 +215,7 @@ final class GcalendarHelper
                 ->from($db->quoteName('#__sportsmanagement_gcalendar'));
         } catch (\Throwable $exception) {
             Log::add(
-                'SportsManagement GCalendar query setup failed: ' . $exception->getMessage(),
+                'SportsManagement GCalendar query setup failed (' . get_class($exception) . ').',
                 Log::ERROR,
                 'com_sportsmanagement'
             );
@@ -270,7 +272,7 @@ final class GcalendarHelper
             $rows = $db->loadObjectList();
         } catch (\Throwable $exception) {
             Log::add(
-                'SportsManagement GCalendar query execution failed: ' . $exception->getMessage(),
+                'SportsManagement GCalendar query execution failed (' . get_class($exception) . ').',
                 Log::ERROR,
                 'com_sportsmanagement'
             );
