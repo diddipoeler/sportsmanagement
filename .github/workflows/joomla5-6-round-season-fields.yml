@@ -132,7 +132,7 @@ jobs:
           import re
           from pathlib import Path
           source = Path("admin/sql/install.mysql.utf8.sql").read_text(encoding="utf-8", errors="replace")
-          print("SET SESSION sql_mode = '';")
+          print("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE';")
           for name in ("round", "season"):
               pattern = r"CREATE\s+TABLE\s+IF\s+NOT\s+EXISTS\s+\x60#__sportsmanagement_" + name + r"\x60"
               match = re.search(pattern, source, flags=re.IGNORECASE)
@@ -144,5 +144,10 @@ jobs:
               print(source[match.start():end + 1].replace("#__", "jsm_"))
           PY
           [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='jsm_sportsmanagement_round' AND COLUMN_NAME='notes' AND COLUMN_TYPE='text' AND IS_NULLABLE='YES'")" == 1 ]]
+          [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='jsm_sportsmanagement_round' AND COLUMN_NAME IN ('round_date_first', 'round_date_last') AND DATA_TYPE='date' AND IS_NULLABLE='YES' AND COLUMN_DEFAULT IS NULL")" == 2 ]]
+          [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME IN ('jsm_sportsmanagement_round', 'jsm_sportsmanagement_season') AND COLUMN_NAME='checked_out_time' AND DATA_TYPE='datetime' AND IS_NULLABLE='YES' AND COLUMN_DEFAULT IS NULL")" == 2 ]]
+          db -e "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE'; INSERT INTO jsm_sportsmanagement_round (id, name, notes) VALUES (1, 'Round', 'Note'); INSERT INTO jsm_sportsmanagement_season (id, name, picture) VALUES (1, 'Season', 'images/season.png');"
+          [[ "$(db -e "SELECT COUNT(*) FROM jsm_sportsmanagement_round WHERE id=1 AND round_date_first IS NULL AND round_date_last IS NULL AND checked_out_time IS NULL")" == 1 ]]
+          [[ "$(db -e "SELECT COUNT(*) FROM jsm_sportsmanagement_season WHERE id=1 AND picture='images/season.png' AND checked_out_time IS NULL")" == 1 ]]
           [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='jsm_sportsmanagement_season' AND COLUMN_NAME='picture_blob' AND COLUMN_TYPE='mediumblob' AND IS_NULLABLE='YES'")" == 1 ]]
           [[ "$(db -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='jsm_sportsmanagement_season' AND COLUMN_NAME='picture' AND COLUMN_TYPE='varchar(250)' AND IS_NULLABLE='YES'")" == 1 ]]
