@@ -43,6 +43,24 @@ $escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QU
         </div>
 
         <aside class="col-12 col-xl-3">
+            <?php if ($this->canGithubUpdate) : ?>
+                <div class="card border-primary mb-3">
+                    <div class="card-header">
+                        <h2 class="h5 mb-0"><?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'); ?></h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE_DASHBOARD_DESC'); ?>
+                        </p>
+                        <a class="btn btn-primary w-100"
+                           href="<?php echo $escape(Route::_('index.php?option=com_sportsmanagement&view=githubinstall', false)); ?>">
+                            <span class="icon-download" aria-hidden="true"></span>
+                            <?php echo Text::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'); ?>
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+
             <div class="card mb-3">
                 <div class="card-header">
                     <h2 class="h5 mb-0"><?php echo Text::_('COM_SPORTSMANAGEMENT_INFORMATION'); ?></h2>
