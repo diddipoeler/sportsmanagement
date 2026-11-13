@@ -177,6 +177,13 @@ final class RoundModel extends SportsManagementAdminModel
 
     /**
      * Update the compact round fields edited directly in the rounds list.
+     *
+     * Dates are validated and normalised for the nullable SQL DATE columns
+     * introduced in 4.24.02; malformed entries cannot write zero dates.
+     *
+     * @param array<int,mixed> $pks Selected round identifiers.
+     * @param array<string,mixed> $post Submitted list fields.
+     * @return string|false Localised result or false when saving fails.
      */
     public function saveshort(array $pks = [], array $post = [])
     {
@@ -216,22 +223,21 @@ final class RoundModel extends SportsManagementAdminModel
                     'modified_by' => (int) $user->id,
                 ];
 
-                if ($first === '') {
-                    $record->round_date_first = '0000-00-00';
-                    $record->round_date_last = '0000-00-00';
-                    $record->rdatefirst_timestamp = 0;
-                    $record->rdatelast_timestamp = 0;
-                } elseif ($last === '') {
-                    $record->round_date_first = SportsManagementDateHelper::convertDate($first, 0);
-                    $record->round_date_last = $record->round_date_first;
-                    $record->rdatefirst_timestamp = SportsManagementDateHelper::getTimestamp($record->round_date_first);
-                    $record->rdatelast_timestamp = $record->rdatefirst_timestamp;
-                } else {
-                    $record->round_date_first = SportsManagementDateHelper::convertDate($first, 0);
-                    $record->round_date_last = SportsManagementDateHelper::convertDate($last, 0);
-                    $record->rdatefirst_timestamp = SportsManagementDateHelper::getTimestamp($record->round_date_first);
-                    $record->rdatelast_timestamp = SportsManagementDateHelper::getTimestamp($record->round_date_last);
+                $firstDate = self::normaliseShortRoundDate($first);
+                $lastDate = self::normaliseShortRoundDate($last);
+
+                if ($firstDate === false || $lastDate === false) {
+                    throw new \InvalidArgumentException('Invalid round date supplied in list editing.', 400);
                 }
+
+                // Retain the historical list-edit convention: an omitted end
+                // date inherits the start, while a missing start clears both.
+                $record->round_date_first = $firstDate;
+                $record->round_date_last = $firstDate === null ? null : ($lastDate ?? $firstDate);
+                $record->rdatefirst_timestamp = $record->round_date_first === null
+                    ? 0 : SportsManagementDateHelper::getTimestamp($record->round_date_first);
+                $record->rdatelast_timestamp = $record->round_date_last === null
+                    ? 0 : SportsManagementDateHelper::getTimestamp($record->round_date_last);
 
                 $db->updateObject('#__sportsmanagement_round', $record, 'id', true);
             }
@@ -242,6 +248,32 @@ final class RoundModel extends SportsManagementAdminModel
         }
 
         return Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
+    }
+
+    /**
+     * Validate a compact round-list date before writing a SQL DATE column.
+     *
+     * Accepts Joomla calendar display dates and canonical ISO dates.
+     * Blank or legacy zero-date values become null; malformed dates are
+     * rejected rather than silently passing through to strict SQL mode.
+     *
+     * @param string $date Date submitted by the rounds list editor.
+     * @return string|false|null Canonical SQL date, null, or false if invalid.
+     */
+    private static function normaliseShortRoundDate(string $date): string|false|null
+    {
+        $normalised = SportsManagementDateHelper::toSqlDate($date);
+
+        if ($normalised === null) {
+            return null;
+        }
+
+        if (preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})$/D', $normalised, $parts) !== 1
+            || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1])) {
+            return false;
+        }
+
+        return $normalised;
     }
 
     /**
