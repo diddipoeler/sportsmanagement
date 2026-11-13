@@ -25,7 +25,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Load the team roster and player records for the native Joomla layout.
      *
-     * Normalises incomplete helper data, registers the module stylesheet and loads the optional native script for carousel display.
+     * Normalises incomplete helper data, registers the module stylesheet and
+     * loads the optional native script for carousel display. The Joomla site
+     * client is verified before changing module layout parameters and only
+     * valid scalar carousel settings can enable optional JavaScript.
      *
      * @return array|false Module layout variables, or false when skipped.
      * @throws \RuntimeException On invalid application or helper services.
@@ -38,13 +41,13 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return false;
         }
 
-        $data['params']->set('layout', 'native');
-
         $app = $this->getApplication();
 
         if (!$app->isClient('site')) {
             throw new \RuntimeException('SportsManagement TeamPlayers requires the Joomla site application.', 500);
         }
+
+        $data['params']->set('layout', 'native');
 
         $language = $app->getLanguage();
         $language->load('com_sportsmanagement', JPATH_SITE, null, true);
@@ -72,7 +75,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ['version' => 'auto']
             );
 
-            if ((string) $data['params']->get('template', 'L') === 'C') {
+            if ($data['params']->get('template', 'L') === 'C') {
                 $assets->registerAndUseScript(
                     'mod_sportsmanagement_teamplayers.native',
                     'modules/mod_sportsmanagement_teamplayers/js/native.js',
