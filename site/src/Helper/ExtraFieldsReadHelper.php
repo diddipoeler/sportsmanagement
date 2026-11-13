@@ -102,13 +102,16 @@ final class ExtraFieldsReadHelper
      * Trims whitespace and allows only ASCII letters, digits, underscores
      * and hyphens, with a maximum length of 128 characters. Rejecting
      * malformed input avoids selecting unrelated template fields.
+     * Whitespace-padded identifiers are rejected rather than rewritten.
      *
      * @param string $templateName Raw template name to validate.
      * @return string Validated identifier or an empty string.
      */
     private static function templateName(string $templateName): string
     {
-        $templateName = trim($templateName);
+        if (trim($templateName) !== $templateName) {
+            return '';
+        }
 
         // Reject malformed names instead of silently rewriting one requested
         // template into a different, potentially unrelated one.
