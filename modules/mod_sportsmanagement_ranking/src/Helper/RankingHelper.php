@@ -60,7 +60,8 @@ final class RankingHelper
      * presentation options, and creates team links and emblem/flag URLs
      * for the frontend template. Incomplete legacy team records are skipped
      * during formatting and missing preferred-name fields fall back to the
-     * ordinary team name without raising PHP 8 property warnings.
+     * ordinary team name without raising PHP 8 property warnings. Discards
+     * malformed ranking rows before generating the final module output.
      * @param Registry $params Ranking module configuration.
      * @param object $module Current Joomla module record.
      * @param CMSApplicationInterface $app Active site application.
@@ -89,13 +90,23 @@ final class RankingHelper
 
         $engine = new RankingEngine($this->database($cfg));
         $rankingResult = $engine->calculate($projectId, $divisionId);
-        $project = $rankingResult['project'];
 
-        if (empty($project->id)) {
+        if (!is_array($rankingResult)) {
             return [];
         }
 
-        $list = array_values($rankingResult['ranking']);
+        $project = $rankingResult['project'] ?? null;
+        if (!is_object($project) || (self::nonNegativeOption($project->id ?? null) ?? 0) <= 0) {
+            return [];
+        }
+
+        $rawRanking = $rankingResult['ranking'] ?? [];
+        $list = [];
+        foreach (is_array($rawRanking) ? $rawRanking : [] as $rankingRow) {
+            if (is_object($rankingRow) && is_object($rankingRow->team ?? null)) {
+                $list[] = $rankingRow;
+            }
+        }
         $visibleTeamId = $this->firstId($params->get('visible_team'));
         $limit = self::boundedOption($params->get('limit', 5), 5, 1, 100);
 
@@ -124,14 +135,11 @@ final class RankingHelper
         $logoType = self::boundedOption($params->get('show_logo', 0), 0, 0, 6);
 
         foreach ($list as $row) {
-            // Legacy ranking engines may return incomplete records. Avoid
-            // attempting dynamic property access on missing team objects.
-            if (!is_object($row) || !isset($row->team) || !is_object($row->team)) {
-                continue;
-            }
-
             $preferredName = $row->team->{$nameType} ?? null;
-            $row->display_team_name = (string) ($preferredName ?: ($row->team->name ?? ''));
+            $fallbackName = $row->team->name ?? '';
+            $row->display_team_name = is_string($preferredName) && $preferredName !== ''
+                ? $preferredName
+                : (is_string($fallbackName) ? $fallbackName : '');
             $row->logo_url = $this->logoUrl($row->team, $logoType, $flagMap);
             $row->team_url = $this->teamUrl($params, $project, $row->team);
             $row->column_values = [];
@@ -283,7 +291,8 @@ final class RankingHelper
     /**
      * Resolve country flag resources for the teams in a ranking.
      * Uses the row countries and Joomla module preferences to collect
-     * the flag URLs needed by the ranking display.
+     * the flag URLs needed by the ranking display. Invalid database records
+     * and country codes are ignored instead of being converted implicitly.
      * @param Registry $params Module presentation settings.
      * @param array $rows Ranking rows containing teams.
      * @param CMSApplicationInterface $app Active Joomla application.
@@ -294,9 +303,14 @@ final class RankingHelper
         $countries = [];
 
         foreach ($rows as $row) {
-            $country = strtoupper(trim((string) ($row->team->country ?? '')));
+            if (!is_object($row) || !is_object($row->team ?? null)) {
+                continue;
+            }
 
-            if ($country !== '') {
+            $rawCountry = $row->team->country ?? null;
+            $country = is_string($rawCountry) ? strtoupper(trim($rawCountry)) : '';
+
+            if ($country !== '' && preg_match('/^[A-Z]{3}$/D', $country) === 1) {
                 $countries[$country] = $country;
             }
         }
@@ -318,8 +332,19 @@ final class RankingHelper
         $db->setQuery($query);
         $map = [];
 
-        foreach ($db->loadObjectList() ?: [] as $country) {
-            $map[strtoupper((string) $country->alpha3)] = $this->mediaUrl((string) $country->picture);
+        $countryRows = $db->loadObjectList();
+        foreach (is_array($countryRows) ? $countryRows : [] as $country) {
+            if (!is_object($country)) {
+                continue;
+            }
+
+            $code = $country->alpha3 ?? null;
+            $picture = $country->picture ?? null;
+            if (!is_string($code) || preg_match('/^[A-Za-z]{3}$/D', $code) !== 1) {
+                continue;
+            }
+
+            $map[strtoupper($code)] = $this->mediaUrl(is_string($picture) ? $picture : '');
         }
 
         return $map;
