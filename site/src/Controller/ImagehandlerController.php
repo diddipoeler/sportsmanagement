@@ -88,7 +88,11 @@ final class ImagehandlerController extends BaseController
 
     /**
      * Delete selected SportsManagement images from an authorised frontend request.
-     * Verifies the CSRF token and delete permission, validates each basename before touching disk, removes existing original and thumbnail files, and redirects back to the image manager.
+     * Verifies the CSRF token and delete permission, rejects non-string file
+     * selections without PHP 8 coercion warnings, validates each basename
+     * before touching disk, removes existing originals and thumbnails and
+     * redirects back to the image manager. Filesystem exception details are
+     * not written to the shared Joomla log.
      * @return void
      * @throws \RuntimeException When the request fails CSRF or authorisation.
      */
@@ -108,7 +112,9 @@ final class ImagehandlerController extends BaseController
 
         if ($baseDir !== null) {
             foreach ((array) $images as $image) {
-                $image = $this->normaliseImageName((string) $image);
+                $image = is_string($image)
+                    ? $this->normaliseImageName($image)
+                    : null;
 
                 if ($image === null) {
                     Log::add(
@@ -131,7 +137,7 @@ final class ImagehandlerController extends BaseController
                         File::delete($thumbPath);
                     }
                 } catch (\Throwable $e) {
-                    Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+                    Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
                 }
             }
         }
@@ -194,7 +200,7 @@ final class ImagehandlerController extends BaseController
                 Folder::create($directory);
             }
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return null;
         }
 
@@ -217,7 +223,7 @@ final class ImagehandlerController extends BaseController
         try {
             return (bool) File::upload($source, $target);
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return false;
         }
     }
@@ -258,7 +264,7 @@ final class ImagehandlerController extends BaseController
             $status = $response->getStatusCode();
             $body = (string) $response->getBody();
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return null;
         }
 
@@ -276,7 +282,7 @@ final class ImagehandlerController extends BaseController
         try {
             return File::write($baseDir . $filename, $body) ? $filename : null;
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::WARNING, 'jsmerror');
             return null;
         }
     }
