@@ -20,6 +20,7 @@ on:
       - 'admin/src/Helper/ExtensionLanguageHelper.php'
       - 'admin/src/Helper/PersonAgeHelper.php'
       - 'admin/src/Helper/CountryOptionsHelper.php'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
       - 'admin/src/Helper/ExtendedFormHelper.php'
       - 'admin/src/Helper/ExtraFieldsReadHelper.php'
       - 'admin/src/Helper/ExtraSelectOptionsHelper.php'
@@ -32,8 +33,10 @@ on:
       - 'modules/mod_sportsmanagement_birthday/tmpl/default.php'
       - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php'
       - '.github/tests/joomla56_site_date_admin_country_calendar_layout.php'
+      - '.github/tests/joomla56_club_kml_remote_image_projectmap.php'
       - 'modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_extended_form_extra_select_ranking_guards.php'
       - '.github/tests/joomla56_match_outcome_actionlog_toptipper.php'
@@ -59,6 +62,7 @@ on:
       - 'modules/mod_sportsmanagement_birthday/tmpl/**'
       - 'modules/mod_sportsmanagement_birthday/src/Helper/**'
       - 'modules/mod_sportsmanagement_calendar/src/Dispatcher/**'
+      - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/**'
       - 'modules/mod_sportsmanagement_count_rekord/src/Helper/**'
       - 'modules/mod_sportsmanagement_rquotes/src/Helper/**'
       - '.github/tests/joomla56_*'
@@ -108,6 +112,7 @@ jobs:
             admin/src/Helper/ExtensionLanguageHelper.php
             admin/src/Helper/PersonAgeHelper.php
             admin/src/Helper/CountryOptionsHelper.php
+            admin/src/Helper/RemoteImageDownloadHelper.php
             admin/src/Helper/ExtendedFormHelper.php
             admin/src/Helper/ExtraFieldsReadHelper.php
             admin/src/Helper/ExtraSelectOptionsHelper.php
@@ -120,8 +125,10 @@ jobs:
             modules/mod_sportsmanagement_birthday/tmpl/default.php
             modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
             modules/mod_sportsmanagement_calendar/src/Dispatcher/Dispatcher.php
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
             .github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php
             .github/tests/joomla56_site_date_admin_country_calendar_layout.php
+            .github/tests/joomla56_club_kml_remote_image_projectmap.php
             modules/mod_sportsmanagement_top_tipper/src/Dispatcher/Dispatcher.php
             modules/mod_sportsmanagement_playgroundplan/src/Helper/PlaygroundPlanHelper.php
             .github/tests/joomla56_extended_form_extra_select_ranking_guards.php
@@ -157,6 +164,7 @@ jobs:
             .github/tests/joomla56_playground_kml_extension_birthday_layout.php \
             .github/tests/joomla56_club_kml_admin_age_birthday_privacy.php \
             .github/tests/joomla56_profile_routes_sql_execution_birthday_selector.php \
-            .github/tests/joomla56_site_date_admin_country_calendar_layout.php; do
+            .github/tests/joomla56_site_date_admin_country_calendar_layout.php \
+            .github/tests/joomla56_club_kml_remote_image_projectmap.php; do
             php "$test"
           done
