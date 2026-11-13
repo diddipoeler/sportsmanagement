@@ -90,7 +90,7 @@ final class EditmatchController extends FormController
      * Redirects the legacy modal to Joomla's close view.
      *
      * @param mixed $key Unused legacy record identifier.
-     * @return mixed
+     * @return bool True after configuring the close-view redirect.
      */
     public function cancel($key = null)
     {
@@ -276,8 +276,16 @@ final class EditmatchController extends FormController
     }
 
     /**
-     * The POST token alone is not authorization. Validate each direct site
-     * editing task against the same project-scoped match ACL used by results.
+     * Check the project-scoped match edit permission for a submitted fixture.
+     *
+     * A valid POST token alone is insufficient: both match and project IDs
+     * must be positive, and ResultsAccessModel must authorise the selected
+     * database, project and match combination before any update is started.
+     *
+     * @param array<string,mixed> $post Submitted match-editing context.
+     * @param int $matchId Positive identifier of the requested match.
+     * @return void
+     * @throws \RuntimeException If the target is invalid or access is denied.
      */
     private function assertMatchWriteAccess(array $post, int $matchId): void
     {
