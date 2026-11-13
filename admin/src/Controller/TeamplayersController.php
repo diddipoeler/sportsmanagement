@@ -282,15 +282,33 @@ final class TeamplayersController extends SportsManagementAdminController
 
     /**
      * Redirect to the team-players list with the active selection context.
+     *
+     * Keeps only scalar, nonnegative, validated integer filter values from
+     * the model context. Rejects malformed arrays and objects instead of
+     * implicitly casting them under PHP 8 or encoding them into the URL.
+     *
      * @param TeamplayersModel $model Model supplying the view filter values.
      * @return void
      */
     private function redirectToList(TeamplayersModel $model): void
     {
-        $params = array_filter(
-            $model->getContextParams(),
-            static fn ($value): bool => (int) $value !== 0
-        );
+        $params = [];
+
+        foreach ($model->getContextParams() as $key => $value) {
+            if (!is_string($key) || !preg_match('/^[a-z][a-z0-9_]*$/D', $key)) {
+                continue;
+            }
+
+            if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+                continue;
+            }
+
+            $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($number !== false) {
+                $params[$key] = $number;
+            }
+        }
         $query = http_build_query(array_merge(
             ['option' => 'com_sportsmanagement', 'view' => 'teamplayers'],
             $params
