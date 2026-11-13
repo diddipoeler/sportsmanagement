@@ -66,8 +66,10 @@ final class HtmlView extends BaseHtmlView
             $this->form->setValue('round_date_last', null, $today);
             $this->form->setValue('name', null, 'Spieltag');
             $this->form->setValue('roundcode', null, '1');
-            $this->item->round_date_first = '0000-00-00';
-            $this->item->round_date_last = '0000-00-00';
+            // The schema uses nullable DATE columns; do not initialise
+            // newly created round objects with legacy zero-date sentinels.
+            $this->item->round_date_first = null;
+            $this->item->round_date_last = null;
         } else {
             if ((string) ($this->item->round_date_first ?? '') === '0000-00-00') {
                 $this->form->setValue('round_date_first', null, $today);
