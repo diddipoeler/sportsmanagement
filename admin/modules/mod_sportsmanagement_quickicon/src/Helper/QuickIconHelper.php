@@ -21,6 +21,15 @@ abstract class QuickIconHelper
 {
     protected static array $buttons = [];
 
+    /**
+     * Find the module position of the first published administrator quickicon.
+     *
+     * Queries Joomla's modules table with the administrator client and
+     * published state filters to avoid selecting a frontend or inactive
+     * legacy module instance.
+     *
+     * @return string Module position name, or an empty string when unavailable.
+     */
     public static function getModPosition(): string
     {
         /** @var DatabaseInterface $database */
@@ -39,6 +48,16 @@ abstract class QuickIconHelper
         return (string) $database->loadResult();
     }
 
+    /**
+     * Return the cached quickicon buttons for a module configuration.
+     *
+     * Uses the configured context to select default SportsManagement buttons
+     * and returns the cached array by reference for legacy layout consumers.
+     * Unrecognised contexts intentionally produce an empty button collection.
+     *
+     * @param \Joomla\Registry\Registry $params Administrator module parameters.
+     * @return array<int,array<string,mixed>> Quickicon button definitions.
+     */
     public static function &getButtons($params): array
     {
         $key = (string) $params;
@@ -54,6 +73,15 @@ abstract class QuickIconHelper
         return self::$buttons[$key];
     }
 
+    /**
+     * Organise quickicon button definitions by their display group.
+     *
+     * Preserves each button's original fields and uses the module's default
+     * translated group key when no explicit group is configured.
+     *
+     * @param array<int,array<string,mixed>> $buttons Quickicon definitions.
+     * @return array<string,array<int,array<string,mixed>>> Buttons keyed by group.
+     */
     public static function groupButtons(array $buttons): array
     {
         $grouped = [];
@@ -66,6 +94,16 @@ abstract class QuickIconHelper
         return $grouped;
     }
 
+    /**
+     * Resolve the quickicon heading from Joomla's current administrator language.
+     *
+     * Uses the configured context's translation key when available, otherwise
+     * falls back to the title of the active administrator module.
+     *
+     * @param \Joomla\Registry\Registry $params Module display configuration.
+     * @param object $module Joomla administrator module record.
+     * @return string Localised heading or fallback module title.
+     */
     public static function getTitle($params, $module): string
     {
         $key = (string) $params->get('context', 'mod_sportsmanagement_quickicon') . '_title';
@@ -77,6 +115,14 @@ abstract class QuickIconHelper
             : (string) ($module->title ?? '');
     }
 
+    /**
+     * Build the default SportsManagement administrator quickicon collection.
+     *
+     * Provides Joomla-routed links with language keys, icons, access rules
+     * and grouping metadata for the component management views.
+     *
+     * @return array<int,array<string,mixed>> Standard administrator buttons.
+     */
     private static function defaultButtons(): array
     {
         $group = 'MOD_SPORTSMANAGEMENT_QUICKICON_LABEL';
