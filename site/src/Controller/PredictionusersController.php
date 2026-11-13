@@ -84,8 +84,9 @@ final class PredictionusersController extends BaseController
     /**
      * Cancel prediction member editing without modifying stored data.
      *
-     * Validates the form token and returns to the selected member's
-     * editor route using its current game and project context.
+     * Validates the form token and confirms member-specific edit access
+     * before returning to the member editor route. The cancel task cannot
+     * be used to navigate directly into an unauthorised member editor.
      *
      * @param string|null $key Unused legacy record key.
      * @return void
@@ -94,6 +95,12 @@ final class PredictionusersController extends BaseController
     {
         $this->checkPostToken();
         $model = $this->getPredictionMemberModel();
+        $member = $model->getEditableMember();
+
+        if (!$model->canEditMember($member)) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $this->setRedirect($this->buildEditorRoute($model));
     }
 
