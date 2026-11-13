@@ -74,9 +74,9 @@ namespace Joomla\CMS\Dispatcher {
 
         /**
          * Return Joomla-owned module variables.
-         * @return array Module rendering data.
+         * @return array|false Module rendering data or a disabled result.
          */
-        protected function getLayoutData(): array {
+        protected function getLayoutData(): array|false {
             return self::$data;
         }
 
