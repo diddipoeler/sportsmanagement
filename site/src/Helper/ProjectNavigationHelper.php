@@ -57,6 +57,7 @@ final class ProjectNavigationHelper
      * the result to one neighbouring project in the same league. Where the
      * current project has an ID, equal-name neighbours are ordered by that
      * ID to avoid skipping projects with identical display names.
+     * Malformed league selectors cannot be silently truncated by PHP casts.
      *
      * @param DatabaseInterface $db Joomla database connection.
      * @param object $project Current project providing league and name.
@@ -65,11 +66,10 @@ final class ProjectNavigationHelper
      */
     private static function find(DatabaseInterface $db, object $project, bool $next): ?object
     {
-        $leagueId = (int) ($project->league_id ?? 0);
+        $rawLeagueId = $project->league_id ?? null;
+        $leagueId = self::positiveId($rawLeagueId);
         $name = is_string($project->name ?? null) ? trim($project->name) : '';
-        $projectId = filter_var($project->id ?? null, FILTER_VALIDATE_INT, [
-            'options' => ['min_range' => 1],
-        ]);
+        $projectId = self::positiveId($project->id ?? null);
 
         if ($leagueId <= 0 || $name === '') {
             return null;
@@ -87,7 +87,7 @@ final class ProjectNavigationHelper
             ->bind(':navigationLeagueId', $leagueId, ParameterType::INTEGER)
             ->bind(':navigationProjectName', $name, ParameterType::STRING);
 
-        if ($projectId !== false && $projectId !== null) {
+        if ($projectId > 0) {
             $query->where('(' . $db->quoteName('p.name') . ' ' . $operator . ' :navigationProjectName'
                 . ' OR (' . $db->quoteName('p.name') . ' = :navigationEqualName'
                 . ' AND ' . $db->quoteName('p.id') . ' ' . $operator . ' :navigationProjectId))')
@@ -104,5 +104,26 @@ final class ProjectNavigationHelper
         $db->setQuery($query, 0, 1);
 
         return $db->loadObject() ?: null;
+    }
+    /**
+     * Parse a positive project or league ID without accepting partial numbers.
+     *
+     * @param mixed $value Legacy database identifier.
+     * @return int Positive integer or zero when malformed.
+     */
+    private static function positiveId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value)
+            || strlen($value) > 64 || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return 0;
+        }
+
+        $digits = is_string($value) ? ltrim($value, '0') : $value;
+        if ($digits === '') {
+            return 0;
+        }
+
+        $parsed = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        return $parsed === false ? 0 : $parsed;
     }
 }
