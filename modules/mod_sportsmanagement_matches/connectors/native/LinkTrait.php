@@ -13,6 +13,7 @@ namespace Diddipoeler\Module\SportsManagementMatches\Site\Helper;
 
 use Diddipoeler\Component\SportsManagement\Site\Helper\SiteRouteHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 trait NativeLinkTrait
@@ -138,7 +139,8 @@ trait NativeLinkTrait
      * to the same project, then build match-report links with route slugs.
      * Use the Joomla 5/6 createQuery() factory instead of deprecated
      * getQuery(true) parameter semantics. Invalid parent and neighbour IDs
-     * are discarded before generating public Joomla routes.
+     * are discarded before generating public Joomla routes. Validates and
+     * binds the match timestamp and project filter as SQL parameters.
      * @param DatabaseInterface $db Resolved database connection.
      * @param object $match Current match and timestamp metadata.
      * @param Registry $params Neighbour navigation configuration.
@@ -149,9 +151,8 @@ trait NativeLinkTrait
     {
         $out = ['previous' => null, 'next' => null];
         $projectId = self::boundedMatchesId($match->project_id ?? null);
-        $timestamp = $match->match_timestamp ?? null;
-        if ($projectId <= 0 || !is_numeric($timestamp) || is_bool($timestamp)
-            || (int) $timestamp < 0 || !$projectIds) {
+        $timestamp = self::validatedMatchesTimestamp($match->match_timestamp ?? null);
+        if ($projectId <= 0 || $timestamp === null || !$projectIds) {
             return $out;
         }
 
@@ -167,9 +168,17 @@ trait NativeLinkTrait
                 ->join('LEFT', '#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id')
                 ->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id')
                 ->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id')
-                ->where((self::boundedMatchesOption($params->get('nextlast_from_same_project', 1), 1, 1) === 1 ? 'r.project_id = ' . $projectId : 'r.project_id IN (' . implode(',', $projectIds) . ')'))
-                ->where('m.published = 1')->where('m.match_timestamp ' . $operator . ' ' . (int) $timestamp)
+                ->where('m.published = 1')
+                ->where($db->quoteName('m.match_timestamp') . ' ' . $operator . ' :neighborTimestamp')
+                ->bind(':neighborTimestamp', $timestamp, ParameterType::INTEGER)
                 ->order('m.match_timestamp ' . $direction);
+
+            if (self::boundedMatchesOption($params->get('nextlast_from_same_project', 1), 1, 1) === 1) {
+                $q->where($db->quoteName('r.project_id') . ' = :neighborProjectId')
+                    ->bind(':neighborProjectId', $projectId, ParameterType::INTEGER);
+            } else {
+                $q->whereIn($db->quoteName('r.project_id'), $projectIds, ParameterType::INTEGER);
+            }
             $db->setQuery($q, 0, 1);
             $neighbor = $db->loadObject();
             if (is_object($neighbor)) {
@@ -208,6 +217,32 @@ trait NativeLinkTrait
     private function componentRoute(string $view, object $match, array $extra, Registry $params): string
     {
         return $this->route($view, ['p' => (string) $match->project_slug, 'cfg_which_database' => $this->validatedMatchesDatabase($params)] + $extra);
+    }
+
+    /**
+     * Validate the match timestamp before binding a neighbour query.
+     *
+     * Only nonnegative integer timestamps and complete decimal strings are
+     * accepted. Rejects floats, scientific notation, arrays and overflow.
+     *
+     * @param mixed $value Stored fixture timestamp.
+     * @return int|null Safe Unix timestamp or null for invalid input.
+     */
+    private static function validatedMatchesTimestamp(mixed $value): ?int
+    {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 256
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return null;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $timestamp = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $timestamp === false ? null : $timestamp;
     }
 
     /**
