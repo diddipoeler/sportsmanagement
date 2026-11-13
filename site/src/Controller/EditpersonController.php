@@ -46,7 +46,8 @@ final class EditpersonController extends FormController
      * Validate and persist a person edited in the frontend modal.
      * Requires a valid Joomla form token and edit permission, delegates
      * the update to EditpersonModel and redirects to edit or close
-     * depending on whether this is the apply or save task.
+     * depending on whether this is the apply or save task. Redirect IDs are
+     * validated separately to avoid PHP 8 array-conversion warnings.
      * @param mixed $key Joomla form record-key argument.
      * @param mixed $urlVar Joomla form route-key argument.
      * @return bool Whether the update succeeded.
@@ -65,8 +66,8 @@ final class EditpersonController extends FormController
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=editperson&tmpl=component&id=' . $id
                 . '&pid=' . $id
-                . '&p=' . (int) ($data['p'] ?? 0)
-                . '&tid=' . (int) ($data['tid'] ?? 0),
+                . '&p=' . self::redirectId($data['p'] ?? 0)
+                . '&tid=' . self::redirectId($data['tid'] ?? 0),
                 Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
                 'error'
             );
@@ -77,8 +78,8 @@ final class EditpersonController extends FormController
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=editperson&tmpl=component&id=' . $id
                 . '&pid=' . $id
-                . '&p=' . (int) ($data['p'] ?? 0)
-                . '&tid=' . (int) ($data['tid'] ?? 0),
+                . '&p=' . self::redirectId($data['p'] ?? 0)
+                . '&tid=' . self::redirectId($data['tid'] ?? 0),
                 Text::_('COM_SPORTSMANAGEMENT_EDIT_PERSON_SAVED')
             );
             return true;
@@ -99,6 +100,31 @@ final class EditpersonController extends FormController
     {
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component', 'cancel');
         return true;
+    }
+
+    /**
+     * Validate a positive identifier used in the person editor redirect.
+     *
+     * Accepts positive integers and zero-padded decimal strings, rejecting
+     * arrays, signs and overflowing numbers before URL construction.
+     *
+     * @param mixed $value Submitted project or team identifier.
+     * @return int Valid positive ID or zero for malformed input.
+     */
+    private static function redirectId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
