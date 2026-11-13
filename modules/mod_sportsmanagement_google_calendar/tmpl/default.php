@@ -9,11 +9,18 @@
  */
 \defined('_JEXEC') or die;
 
-$escape = static fn ($value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+$escape = static fn ($value): string => htmlspecialchars(
+    is_string($value) || is_numeric($value) ? (string) $value : '',
+    ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'
+);
 ?>
 <ul class="next-events">
-    <?php foreach ($events ?? [] as $event) :
-        $eventLink = trim((string) ($event->htmlLink ?? ''));
+    <?php foreach (is_array($events ?? null) ? $events : [] as $event) :
+        if (!is_object($event)) {
+            continue;
+        }
+        $rawEventLink = $event->htmlLink ?? '';
+        $eventLink = is_string($rawEventLink) ? trim($rawEventLink) : '';
         $eventScheme = strtolower((string) parse_url($eventLink, PHP_URL_SCHEME));
         // Escaping href attributes alone cannot block javascript: or data: links.
         $hasEventLink = $params->get('show_link', true)
