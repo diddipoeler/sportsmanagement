@@ -23,7 +23,9 @@ final class PredictionmemberModel extends PredictionuserModel
      * active selection, checks member-specific edit rights and respects the
      * configured permissions for profile, favourite team, champion and final
      * four changes. Validates selected team and group identifiers before
-     * updating the member record through Joomla's database API.
+     * updating the member record through Joomla's database API. Posted
+     * member, game, group and team IDs must be complete decimal values,
+     * avoiding PHP 8 warnings and implicit casts of structured input.
      *
      * @param array<string,mixed> $post Submitted member form fields.
      * @return bool True when Joomla successfully updates the member row.
@@ -34,8 +36,8 @@ final class PredictionmemberModel extends PredictionuserModel
     {
         $member = $this->getEditableMember();
         $memberId = $this->getSelectedMemberNumericId();
-        $postedMemberId = max(0, (int) ($post['member_id'] ?? $post['uid'] ?? 0));
-        $postedPredictionId = max(0, (int) ($post['prediction_id'] ?? 0));
+        $postedMemberId = self::positiveSubmittedId($post['member_id'] ?? $post['uid'] ?? 0);
+        $postedPredictionId = self::positiveSubmittedId($post['prediction_id'] ?? 0);
 
         if ($memberId <= 0 || $postedMemberId !== $memberId || $postedPredictionId !== $this->predictionGameId) {
             throw new \UnexpectedValueException('Invalid prediction member target.');
@@ -73,7 +75,7 @@ final class PredictionmemberModel extends PredictionuserModel
 
         $groupId = (int) ($member->group_id ?? 0);
         if ($this->canChangeGroup()) {
-            $candidate = max(0, (int) ($post['group_id'] ?? $groupId));
+            $candidate = self::positiveSubmittedId($post['group_id'] ?? $groupId);
             if ($this->isValidGroupId($candidate)) {
                 $groupId = $candidate;
             }
@@ -99,7 +101,7 @@ final class PredictionmemberModel extends PredictionuserModel
                 if ($projectId <= 0) {
                     continue;
                 }
-                $candidate = max(0, (int) (($favPost[$projectId] ?? 0)));
+                $candidate = self::positiveSubmittedId($favPost[$projectId] ?? 0);
                 if ($this->isValidProjectTeamId($projectId, $candidate)) {
                     $fav[$projectId] = $candidate;
                 } else {
@@ -124,7 +126,7 @@ final class PredictionmemberModel extends PredictionuserModel
             $oldFinal4 = array_values(array_filter(array_map('intval', (array) ($existingFinal4[$projectId] ?? []))));
 
             if ($competitiveOpen && !empty($project->champ)) {
-                $candidate = max(0, (int) (($champPost[$projectId] ?? $oldChamp)));
+                $candidate = self::positiveSubmittedId($champPost[$projectId] ?? $oldChamp);
                 $champ[$projectId] = $this->isValidProjectTeamId($projectId, $candidate) ? $candidate : $oldChamp;
             } else {
                 $champ[$projectId] = $oldChamp;
@@ -133,7 +135,7 @@ final class PredictionmemberModel extends PredictionuserModel
             if ($competitiveOpen && !empty($config['show_final4_tip'])) {
                 $selected = [];
                 for ($index = 1; $index <= 4; $index++) {
-                    $candidate = max(0, (int) (($final4Post[$index][$projectId] ?? 0)));
+                    $candidate = self::positiveSubmittedId($final4Post[$index][$projectId] ?? 0);
                     if ($candidate > 0 && $this->isValidProjectTeamId($projectId, $candidate)) {
                         $selected[] = $candidate;
                     }
@@ -152,6 +154,32 @@ final class PredictionmemberModel extends PredictionuserModel
             $object,
             'id'
         );
+    }
+
+    /**
+     * Read a positive Joomla identifier from a submitted prediction form.
+     *
+     * Accepts only integer values or complete nonnegative decimal strings,
+     * rejects arrays, floats, signs and integer overflow, and returns zero
+     * for an invalid or empty identifier before any database write occurs.
+     *
+     * @param mixed $value Untrusted submitted ID or Joomla default.
+     * @return int Positive identifier, or zero when invalid.
+     */
+    private static function positiveSubmittedId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
