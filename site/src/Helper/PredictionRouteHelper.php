@@ -15,6 +15,10 @@ final class PredictionRouteHelper
 {
     /**
      * Build the prediction member display or profile edit URL.
+     *
+     * Uses nonnegative identifiers for the selected member, game, project,
+     * group, round and database. A missing or invalid negative selector is
+     * treated as zero before constructing the canonical Joomla route.
      * @param int $predictionId Prediction game identifier.
      * @param int $userId Selected prediction member identifier.
      * @param string|null $task Optional edit task.
@@ -35,12 +39,12 @@ final class PredictionRouteHelper
     ): string {
         $view = $task === 'edit' ? 'predictionuser' : 'predictionusers';
         $parameters = [
-            'cfg_which_database' => $database,
-            'prediction_id' => $predictionId,
-            'pggroup' => $groupId,
-            'pj' => $projectId,
-            'r' => $roundId,
-            'uid' => $userId,
+            'cfg_which_database' => max(0, $database),
+            'prediction_id' => max(0, $predictionId),
+            'pggroup' => max(0, $groupId),
+            'pj' => max(0, $projectId),
+            'r' => max(0, $roundId),
+            'uid' => max(0, $userId),
         ];
 
         if ($task === 'edit') {
@@ -52,6 +56,9 @@ final class PredictionRouteHelper
 
     /**
      * Build the prediction entry page URL with optional extra filters.
+     *
+     * Normalises mandatory routing identifiers to nonnegative integers and
+     * appends optional filters without replacing the validated base context.
      * @param int $predictionId Prediction game identifier.
      * @param int $userId Selected prediction member ID.
      * @param int $projectId Selected project ID.
@@ -71,11 +78,11 @@ final class PredictionRouteHelper
         array $extra = []
     ): string {
         $parameters = [
-            'cfg_which_database' => $database,
-            'prediction_id' => $predictionId,
-            'pggroup' => $groupId,
-            'pj' => $projectId,
-            'r' => $roundId,
+            'cfg_which_database' => max(0, $database),
+            'prediction_id' => max(0, $predictionId),
+            'pggroup' => max(0, $groupId),
+            'pj' => max(0, $projectId),
+            'r' => max(0, $roundId),
             'uid' => max(0, $userId),
         ] + $extra;
 
@@ -84,6 +91,9 @@ final class PredictionRouteHelper
 
     /**
      * Build the prediction ranking URL for selected game and filters.
+     *
+     * Clamps negative identifiers and ranking filters to zero so malformed
+     * request values do not propagate through generated frontend URLs.
      * @param int $predictionId Prediction game ID.
      * @param int $projectId Project ID.
      * @param int $roundId Round ID.
@@ -112,15 +122,18 @@ final class PredictionRouteHelper
             'pggroup' => $groupId,
             'pj' => $projectId,
             'r' => $roundId,
-            'pggrouprank' => $groupRank,
-            'type' => $type,
-            'from' => $from,
-            'to' => $to,
+            'pggrouprank' => max(0, $groupRank),
+            'type' => max(0, $type),
+            'from' => max(0, $from),
+            'to' => max(0, $to),
         ]);
     }
 
     /**
      * Build the prediction results page URL for selected filters.
+     *
+     * Preserves the selected game and result filters while preventing
+     * negative identifiers and database selectors in the generated route.
      * @param int $predictionId Prediction game ID.
      * @param int $roundId Selected round ID.
      * @param int $projectId Project ID.
