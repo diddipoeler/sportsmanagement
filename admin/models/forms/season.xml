@@ -41,4 +41,11 @@ filter="unset"
 
 
   		
+  <fieldset name="picture" label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+            description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+    <field name="picture" type="media"
+           label="COM_SPORTSMANAGEMENT_ADMIN_SEASON_PICTURE"
+           description="COM_SPORTSMANAGEMENT_ADMIN_SEASON_PICTURE_DESC"
+           preview="show" />
+  </fieldset>
 </form>
