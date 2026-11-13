@@ -242,7 +242,8 @@ final class EditmatchController extends FormController
     /**
      * Write short individual-sport match data through the dedicated service.
      *
-     * Checks the Joomla form token and fixture permissions, delegates the write and provides a generic failure response.
+     * Checks the Joomla form token and fixture permissions, reuses the same
+     * database selector for persistence and provides a generic failure response.
      *
      * @return void
      */
@@ -254,10 +255,10 @@ final class EditmatchController extends FormController
         $input = $this->input;
         $post = $input->post->getArray();
         $ids = (array) $input->post->get('cid', [], 'array');
-        $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? 0));
+        $selector = $this->assertMatchWriteAccess($post, self::positiveInputId($post['match_id'] ?? 0));
 
         try {
-            $saved = $this->individualMatchWriteService()->saveShort(
+            $saved = $this->individualMatchWriteService($selector)->saveShort(
                 $post,
                 $ids,
                 (int) $app->getIdentity()->id,
@@ -284,10 +285,10 @@ final class EditmatchController extends FormController
      *
      * @param array<string,mixed> $post Submitted match-editing context.
      * @param int $matchId Positive identifier of the requested match.
-     * @return void
+     * @return int Validated database selector used by the access decision.
      * @throws \RuntimeException If the target is invalid or access is denied.
      */
-    private function assertMatchWriteAccess(array $post, int $matchId): void
+    private function assertMatchWriteAccess(array $post, int $matchId): int
     {
         $projectId = self::positiveInputId($post['project_id'] ?? $post['p'] ?? $this->input->getInt('p', 0));
 
@@ -309,34 +310,34 @@ final class EditmatchController extends FormController
         if (!$accessModel->canEditMatches([$matchId])) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
+
+        return $selector;
     }
 
     /**
      * Create the individual-sport match persistence service.
      *
-     * Uses the selected SportsManagement database connection for authorised writes.
+     * Reuses the exact database selector that passed the match ACL check.
      *
+     * @param int $selector Database selector authorised for the requested match.
      * @return IndividualMatchWriteService
      */
-    private function individualMatchWriteService(): IndividualMatchWriteService
+    private function individualMatchWriteService(int $selector): IndividualMatchWriteService
     {
-        return new IndividualMatchWriteService($this->database());
+        return new IndividualMatchWriteService($this->database($selector));
     }
 
     /**
      * Resolve the SportsManagement database used by match editing.
      *
-     * Reads the Joomla database selector and delegates connection selection to the native resolver.
+     * Resolves only the selector authorised by the match ACL check,
+     * rather than rereading a potentially conflicting GET or user-state value.
      *
+     * @param int $selector Validated and authorised database selection.
      * @return DatabaseInterface
      */
-    private function database(): DatabaseInterface
+    private function database(int $selector): DatabaseInterface
     {
-        $app = $this->app;
-        $selector = $this->input->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-        );
         return SportsManagementDatabaseResolver::resolve(
             $this->joomlaDatabase(),
             $selector
