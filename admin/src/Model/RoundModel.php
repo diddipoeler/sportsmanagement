@@ -180,6 +180,7 @@ final class RoundModel extends SportsManagementAdminModel
      *
      * Dates are validated and normalised for the nullable SQL DATE columns
      * introduced in 4.24.02; malformed entries cannot write zero dates.
+     * Validates every selected row before updating MyISAM records.
      *
      * @param array<int,mixed> $pks Selected round identifiers.
      * @param array<string,mixed> $post Submitted list fields.
@@ -209,19 +210,22 @@ final class RoundModel extends SportsManagementAdminModel
         $user = $app->getIdentity();
 
         try {
+            // Validate all submitted rows before the first write: legacy
+            // MyISAM tables cannot roll back earlier updates on bad input.
+            $records = [];
+
             foreach ($pks as $roundId) {
-                $name = (string) ($post['name' . $roundId] ?? '');
-                $first = (string) ($post['round_date_first' . $roundId] ?? '');
-                $last = (string) ($post['round_date_last' . $roundId] ?? '');
-                $record = (object) [
-                    'id' => $roundId,
-                    'roundcode' => (int) ($post['roundcode' . $roundId] ?? 0),
-                    'tournement' => (int) ($post['tournementround' . $roundId] ?? 0),
-                    'name' => $name,
-                    'alias' => OutputFilter::stringURLSafe($name),
-                    'modified' => $date->toSql(),
-                    'modified_by' => (int) $user->id,
-                ];
+                $name = $post['name' . $roundId] ?? '';
+                $first = $post['round_date_first' . $roundId] ?? '';
+                $last = $post['round_date_last' . $roundId] ?? '';
+                $roundcode = self::normaliseShortRoundNumber($post['roundcode' . $roundId] ?? 0, 2147483647);
+                $tournement = self::normaliseShortRoundNumber($post['tournementround' . $roundId] ?? 0, 1);
+
+                if (!is_string($name) || trim($name) === ''
+                    || !is_string($first) || !is_string($last)
+                    || $roundcode === false || $tournement === false) {
+                    throw new \InvalidArgumentException('Invalid round list-edit fields.', 400);
+                }
 
                 $firstDate = self::normaliseShortRoundDate($first);
                 $lastDate = self::normaliseShortRoundDate($last);
@@ -229,6 +233,17 @@ final class RoundModel extends SportsManagementAdminModel
                 if ($firstDate === false || $lastDate === false) {
                     throw new \InvalidArgumentException('Invalid round date supplied in list editing.', 400);
                 }
+
+                $name = trim($name);
+                $record = (object) [
+                    'id' => $roundId,
+                    'roundcode' => $roundcode,
+                    'tournement' => $tournement,
+                    'name' => $name,
+                    'alias' => OutputFilter::stringURLSafe($name),
+                    'modified' => $date->toSql(),
+                    'modified_by' => (int) $user->id,
+                ];
 
                 // Retain the historical list-edit convention: an omitted end
                 // date inherits the start, while a missing start clears both.
@@ -238,7 +253,10 @@ final class RoundModel extends SportsManagementAdminModel
                     ? 0 : SportsManagementDateHelper::getTimestamp($record->round_date_first);
                 $record->rdatelast_timestamp = $record->round_date_last === null
                     ? 0 : SportsManagementDateHelper::getTimestamp($record->round_date_last);
+                $records[] = $record;
+            }
 
+            foreach ($records as $record) {
                 $db->updateObject('#__sportsmanagement_round', $record, 'id', true);
             }
         } catch (\Throwable $e) {
@@ -248,6 +266,27 @@ final class RoundModel extends SportsManagementAdminModel
         }
 
         return Text::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE');
+    }
+
+    /**
+     * Parse a bounded, nonnegative round list-edit integer without PHP casts.
+     *
+     * @param mixed $value Submitted round code or tournament checkbox.
+     * @param int $maximum Highest supported value.
+     * @return int|false Parsed value or false for malformed input.
+     */
+    private static function normaliseShortRoundNumber(mixed $value, int $maximum): int|false
+    {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 32
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return false;
+        }
+
+        $number = filter_var($value, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 0, 'max_range' => $maximum],
+        ]);
+
+        return $number === false ? false : $number;
     }
 
     /**
