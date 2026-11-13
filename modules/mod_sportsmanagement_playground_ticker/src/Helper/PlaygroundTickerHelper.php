@@ -25,6 +25,8 @@ final class PlaygroundTickerHelper
      * Validate project, database and result-limit parameters, query the
      * selected database, discard malformed records and return a bounded random
      * selection. Invalid project settings never broaden the database query.
+     * Caps the database result set at 1000 records and limits the final
+     * random sample to at most 100 playgrounds.
      *
      * @param Registry $params Module settings and filters.
      * @param CMSApplicationInterface $app Active application.
@@ -48,9 +50,7 @@ final class PlaygroundTickerHelper
         $rawLimit = $params->get('limit', 1);
         // Prevent malformed module settings (including arrays) from becoming
         // PHP warnings or unexpectedly huge random selections.
-        $limit = (is_int($rawLimit) || (is_string($rawLimit) && ctype_digit($rawLimit)))
-            ? min(100, max(1, (int) $rawLimit))
-            : 1;
+        $limit = self::boundedLimit($rawLimit);
         $whichDatabase = $this->databaseSelector($params, $app);
 
         // Reject malformed configuration rather than silently using DB zero.
@@ -98,7 +98,10 @@ final class PlaygroundTickerHelper
                 ->bind(':projectId', $projectId, ParameterType::INTEGER);
         }
 
-        $db->setQuery($query);
+        // Bound the rows fetched as well as the final random sample.
+        // A project with thousands of playgrounds must not allocate an
+        // unlimited result set for a small front-end ticker.
+        $db->setQuery($query, 0, 1000);
         $rows = $db->loadObjectList() ?: [];
         $rows = is_array($rows) ? $rows : [];
         $unique = [];
@@ -127,6 +130,39 @@ final class PlaygroundTickerHelper
         $keys = is_array($keys) ? $keys : [$keys];
 
         return array_values(array_map(static fn (int $key): object => $playgrounds[$key], $keys));
+    }
+
+    /**
+     * Parse the configured maximum number of playgrounds to display.
+     *
+     * Accepts integers and zero-padded decimal strings, rejecting structured
+     * input and overflows before clamping the result between 1 and 100.
+     * Oversized valid decimal values are capped without an integer cast.
+     *
+     * @param mixed $raw Raw Joomla module limit option.
+     * @return int Number of playgrounds to show, between 1 and 100.
+     */
+    private static function boundedLimit(mixed $raw): int
+    {
+        if (is_int($raw)) {
+            return max(1, min(100, $raw));
+        }
+
+        if (!is_string($raw) || strlen($raw) > 4096 || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return 1;
+        }
+
+        $digits = ltrim($raw, '0');
+
+        if ($digits === '') {
+            return 1;
+        }
+
+        if (strlen($digits) > 3 || (strlen($digits) === 3 && strcmp($digits, '100') > 0)) {
+            return 100;
+        }
+
+        return max(1, (int) $digits);
     }
 
     /**
@@ -191,15 +227,21 @@ final class PlaygroundTickerHelper
      *
      * @param Registry $params Module settings controlling database selection.
      * @param CMSApplicationInterface $app Active Joomla application.
-     * @return string Image base URL ending in a slash.
+     * @return string Valid image base URL, or an empty string for an invalid selector.
      */
     public function getPictureServer(Registry $params, CMSApplicationInterface $app): string
     {
-        $componentParams = ComponentHelper::getParams('com_sportsmanagement');
-        $useExternal = (bool) $componentParams->get('cfg_which_database', false)
-            || $this->databaseSelector($params, $app) === 1;
+        $selector = $this->databaseSelector($params, $app);
 
-        if ($useExternal) {
+        if ($selector === null) {
+            return '';
+        }
+
+        $componentParams = ComponentHelper::getParams('com_sportsmanagement');
+
+        // Use the same validated selector as getData(): a component-wide
+        // setting must not change this module's image host independently.
+        if ($selector === 1) {
             $configuredServer = $componentParams->get('cfg_which_database_server', '');
             $server = is_string($configuredServer) ? trim($configuredServer) : '';
 
