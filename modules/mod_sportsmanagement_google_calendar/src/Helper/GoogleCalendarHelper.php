@@ -23,7 +23,10 @@ final class GoogleCalendarHelper
     /**
      * Load Google Calendar events for the frontend module.
      *
-     * Validates the API key and calendar identifier, bounds event count and cache lifetime, and uses Joomla's callback cache. A failed HTTP or cache request produces an empty event list without exposing the API key.
+     * Validates the API key and calendar identifier, bounds event count and
+     * cache lifetime, and uses Joomla's callback cache. Excessive identifier
+     * sizes are rejected before forming a URL or cache entry. A failed HTTP
+     * or cache request produces no events without exposing the API key.
      *
      * @param Registry $params Google Calendar API and display configuration.
      * @param object $module Current Joomla module instance.
@@ -55,7 +58,8 @@ final class GoogleCalendarHelper
             return ['events' => []];
         }
 
-        if ($apiKey === '' || $calendarId === '') {
+        if ($apiKey === '' || $calendarId === ''
+            || strlen($apiKey) > 256 || strlen($calendarId) > 1024) {
             return ['events' => []];
         }
 
@@ -94,6 +98,8 @@ final class GoogleCalendarHelper
      * The callback cache can contain old or malformed entries. Only object
      * records are rendered, and all fields used as text or URLs must be
      * strings so PHP 8 does not convert arrays to "Array" in the template.
+     * Overlong cached strings are replaced by empty values to bound output
+     * work even if the callback cache contains corrupted records.
      * The result is bounded to the configured maximum event count.
      *
      * @param mixed $events Data supplied by the Joomla callback cache.
@@ -117,7 +123,9 @@ final class GoogleCalendarHelper
 
             foreach (['htmlLink', 'summary', 'location', 'jsmStartIso', 'jsmEndIso', 'jsmDuration'] as $field) {
                 $value = $safeEvent->{$field} ?? '';
-                $safeEvent->{$field} = is_string($value) ? $value : '';
+                $safeEvent->{$field} = is_string($value) && strlen($value) <= 8192
+                    ? $value
+                    : '';
             }
 
             $result[] = $safeEvent;
