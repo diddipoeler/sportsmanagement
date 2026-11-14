@@ -63,6 +63,7 @@ jobs:
             admin/src/Field/ImageSelectField.php \
             admin/src/Field/ImageselectField.php
           php .github/tests/joomla56_image_select_backend_document.php
+          php .github/tests/joomla56_image_select_backend_document.php --compat-field
 
       - name: Lint changed Joomla 5/6 PHP files
         run: |
