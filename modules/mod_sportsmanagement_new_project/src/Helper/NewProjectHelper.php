@@ -178,7 +178,7 @@ final class NewProjectHelper
      *
      * Validates the POST CSRF token, strict positive module identifier, published
      * module, configured category, valid author ID and current permissions.
-     * Malformed project records are skipped rather than written as articles. Reuses Joomla's content model to save bounded project articles and avoids leaking internal errors.
+     * Malformed project records are skipped rather than written as articles. Reuses Joomla's content model to save bounded project articles and returns generic errors. Logs only the exception class and validated project ID to avoid exposing SQL statements, paths or credentials.
      *
      * @param DatabaseInterface|null $joomlaDatabase Optional injected database service.
      * @return array<string, mixed> Created/skipped counts, errors and module ID.
@@ -296,7 +296,7 @@ final class NewProjectHelper
                 $created++;
             } catch (\Throwable $e) {
                 // Do not leak SQL errors or server paths in public AJAX output.
-                Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+                self::logArticleSaveFailure($e, $projectId);
                 $errors[] = [
                     'project_id' => $projectId,
                     'message' => 'Content article could not be saved.',
@@ -310,6 +310,28 @@ final class NewProjectHelper
             'errors' => $errors,
             'module_id' => $moduleId,
         ];
+    }
+
+    /**
+     * Log a failed article save without exposing database or server secrets.
+     *
+     * JDBC/PDO and content-model exceptions can include SQL, connection
+     * passwords and filesystem paths in their messages. Record only the
+     * exception's class and an already-validated positive project ID while
+     * the public AJAX response keeps its generic failure notification.
+     *
+     * @param \Throwable $error Caught Joomla content model/database failure.
+     * @param int $projectId Validated SportsManagement project identifier.
+     * @return void
+     */
+    private static function logArticleSaveFailure(\Throwable $error, int $projectId): void
+    {
+        Log::add(
+            __METHOD__ . ': article save failed for project ' . $projectId
+            . ' (' . get_class($error) . ').',
+            Log::ERROR,
+            'jsmerror'
+        );
     }
 
     /**

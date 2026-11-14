@@ -118,22 +118,37 @@ final class ExtraFieldsSaveHelper
     }
 
     /**
-     * Preserve the historic save2copy path mutation for extra fields 34 and 69.
+     * Increment an existing numeric path segment during save-as-copy.
      *
-     * @param string $value Slash-separated path-like stored value.
-     * @param int $segment Path element containing the numeric copy counter.
-     * @return string Value with the legacy counter incremented.
+     * SportsManagement extra fields 34 and 69 store slash-separated paths
+     * whose fifth or third zero-based segment is a copy counter. Changes only
+     * a complete nonnegative decimal segment within PHP's integer range;
+     * absent, malformed or overflowing counters remain unchanged. Preserves
+     * empty path elements, literal "0" directories and trailing slashes
+     * rather than removing them with an unqualified array_filter() call.
+     *
+     * @param string $value Slash-separated extra-field value from the editor.
+     * @param int $segment Zero-based position of the stored copy counter.
+     * @return string Path with its validated counter incremented, or original.
      */
     private function incrementPathSegment(string $value, int $segment): string
     {
         $parts = explode('/', $value);
-        $parts[$segment] = ((int) ($parts[$segment] ?? 0)) + 1;
 
-        if (isset($parts[0])) {
-            $parts[0] .= '/';
+        if ($segment < 0 || !isset($parts[$segment])
+            || strlen($parts[$segment]) > 32
+            || preg_match('/^[0-9]+$/D', $parts[$segment]) !== 1) {
+            return $value;
         }
 
-        $parts = array_values(array_filter($parts));
+        $digits = ltrim($parts[$segment], '0');
+        $number = filter_var($digits === '' ? '0' : $digits, FILTER_VALIDATE_INT);
+
+        if ($number === false || $number >= PHP_INT_MAX) {
+            return $value;
+        }
+
+        $parts[$segment] = (string) ($number + 1);
 
         return implode('/', $parts);
     }

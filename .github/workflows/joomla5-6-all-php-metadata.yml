@@ -144,6 +144,19 @@ jobs:
             .github/tests/joomla56_club_history_log_navigation_regression.php
           php .github/tests/joomla56_club_history_log_navigation_regression.php
 
+      - name: Verify native match events, administrator copy paths and New Project log privacy
+        run: |
+          php -l site/src/Helper/MatchEventPresentationHelper.php
+          php -l admin/src/Helper/ExtraFieldsSaveHelper.php
+          php -l modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          php -l .github/tests/joomla56_site_admin_module_event_paths_logs.php
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Helper/MatchEventPresentationHelper.php \
+            admin/src/Helper/ExtraFieldsSaveHelper.php \
+            modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php \
+            .github/tests/joomla56_site_admin_module_event_paths_logs.php
+          php .github/tests/joomla56_site_admin_module_event_paths_logs.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
