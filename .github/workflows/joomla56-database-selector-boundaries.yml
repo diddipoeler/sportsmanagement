@@ -1,0 +1,57 @@
+name: Joomla 5/6 database selector and statistics module boundaries
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - 'admin/src/Helper/LegacyModelDatabaseHelper.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Helper/TeamStatisticsCounterHelper.php'
+      - '.github/tests/joomla56_database_selector_boundaries.php'
+      - '.github/workflows/joomla56-database-selector-boundaries.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Service/SportsManagementDatabaseResolver.php'
+      - 'admin/src/Helper/SportsManagementDatabaseResolver.php'
+      - 'admin/src/Helper/LegacyModelDatabaseHelper.php'
+      - 'modules/mod_sportsmanagement_teamstatistics_counter/src/Helper/TeamStatisticsCounterHelper.php'
+      - '.github/tests/joomla56_database_selector_boundaries.php'
+      - '.github/workflows/joomla56-database-selector-boundaries.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  database-selector-guards:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Validate PHP syntax, file metadata and descriptive function PHPDoc
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/src/Service/SportsManagementDatabaseResolver.php
+            admin/src/Helper/SportsManagementDatabaseResolver.php
+            admin/src/Helper/LegacyModelDatabaseHelper.php
+            modules/mod_sportsmanagement_teamstatistics_counter/src/Helper/TeamStatisticsCounterHelper.php
+            .github/tests/joomla56_database_selector_boundaries.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-function-docs.php "${files[@]}"
+          php .github/tests/phpdoc_metadata.php "${files[@]}"
+
+      - name: Run selector and privacy regression checks
+        run: |
+          php .github/tests/joomla56_database_selector_boundaries.php
+          php .github/tests/joomla56_teamstatistics_counter_slugs.php
