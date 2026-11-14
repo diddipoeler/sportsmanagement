@@ -87,8 +87,11 @@ jobs:
           grep -Fq 'SiteRouteHelper::query' site/src/Helper/PersonProfileRouteHelper.php
           grep -Fq 'DatabaseInterface' site/src/Helper/ProjectNavigationHelper.php
 
-          grep -Fq 'use Joomla\CMS\Application\AdministratorApplication;' admin/src/Helper/ExtendedFormHelper.php
-          grep -Fq 'Factory::getContainer()->get(AdministratorApplication::class)' admin/src/Helper/ExtendedFormHelper.php
+          # Extended forms now resolve Joomla's typed form factory instead of
+          # requesting the administrator application from the container.
+          grep -Fq 'use Joomla\CMS\Form\FormFactoryInterface;' admin/src/Helper/ExtendedFormHelper.php
+          grep -Fq '$container = Factory::getContainer();' admin/src/Helper/ExtendedFormHelper.php
+          grep -Fq '$factory = $container->get(FormFactoryInterface::class);' admin/src/Helper/ExtendedFormHelper.php
           ! grep -Fq 'Factory::getApplication()' admin/src/Helper/ExtendedFormHelper.php
 
           dispatcher='modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
