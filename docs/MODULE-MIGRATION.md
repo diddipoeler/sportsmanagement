@@ -176,3 +176,7 @@ The Ranking dispatcher now activates the same WebAssetManager stylesheet across 
 ### Matches modules: historical regression fixtures (14 November 2026)
 
 The existing Matches media regression now composes NativeQueryTrait, NativeFormatTrait and NativeLinkTrait together like the production helper, so the static bounding methods used by team/status formatting exist during isolated PHP tests. The Matches Slider media regression now expects invalid configured external image hosts (embedded credentials, query strings, fragments, malformed schemes) to produce an empty picture base, consistent with the production privacy guard; such images must not silently fall back to local Joomla image paths. No asset behavior or production media restrictions were relaxed. The modified test stubs include descriptive PHPDoc.
+
+### Matches query fixture now matches the production trait composition
+
+The isolated `joomla56_matches_create_query.php` regression now loads `NativeQueryTrait` alongside `NativeFormatTrait` and `NativeLinkTrait`, exactly as the native MatchesHelper does. Referee and neighboring-match lookups can therefore invoke the shared, bounded ID validators without PHP undefined-method errors. This is a test harness correction; production query or formatting APIs are unchanged.

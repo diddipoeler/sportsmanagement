@@ -48,6 +48,9 @@ namespace Joomla\Registry {
 
 namespace {
     \define('_JEXEC', 1);
+    // The production MatchesHelper combines the query, format and link traits.
+    // The formatter's referee input guards depend on NativeQueryTrait.
+    require_once dirname(__DIR__, 2) . '/modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php';
     require_once dirname(__DIR__, 2) . '/modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php';
     require_once dirname(__DIR__, 2) . '/modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php';
 
@@ -158,6 +161,7 @@ namespace {
 
     final class MatchesQueryCompatibilityHarness
     {
+        use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeQueryTrait;
         use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeFormatTrait;
         use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeLinkTrait;
     }
