@@ -12,6 +12,7 @@
  */
 \defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstaffstatisticTable;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstatisticTable;
@@ -357,7 +358,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 					$match->timezone = 'Europe/Berlin';
 				}
 
-				sportsmanagementHelper::convertMatchDateToTimezone($match);
+				SportsManagementDateHelper::convertMatchDateToTimezone($match);
 			}
 		}
 
@@ -1486,9 +1487,9 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 			$this->_match_time_new = $post['match_time' . $pks[$x]] . ':00';
 			$this->_match_date_new = $post['match_date' . $pks[$x]];
 			$this->_match_time_old = $time;
-			$this->_match_date_old = sportsmanagementHelper::convertDate($date);
+			$this->_match_date_old = SportsManagementDateHelper::convertDate($date);
 
-			$post['match_date' . $pks[$x]] = sportsmanagementHelper::convertDate($post['match_date' . $pks[$x]], 0);
+			$post['match_date' . $pks[$x]] = SportsManagementDateHelper::convertDate($post['match_date' . $pks[$x]], 0);
 			$post['match_date' . $pks[$x]] = $post['match_date' . $pks[$x]] . ' ' . $post['match_time' . $pks[$x]] . ':00';
 
 			if ($post['match_date' . $pks[$x]] != $tblMatch->match_date)
@@ -1565,7 +1566,7 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 			$object->team1_single_games      = $post['team1_single_games' . $pks[$x]];
 			$object->team2_single_games      = $post['team2_single_games' . $pks[$x]];
 			$object->content_id              = $post['content_id' . $pks[$x]];
-			$object->match_timestamp         = sportsmanagementHelper::getTimestamp($object->match_date);
+			$object->match_timestamp         = SportsManagementDateHelper::getTimestamp($object->match_date);
 
 			$object->playground_id           = $post['playground_id' . $pks[$x]] ? $post['playground_id' . $pks[$x]] : NULL ;
 
@@ -2152,7 +2153,7 @@ break;
 
 		if ($data['id'] && !empty($data['match_date']))
 		{
-			$data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
+			$data['match_timestamp'] = SportsManagementDateHelper::getTimestamp($data['match_date']);
 		}
 
 		/** zuerst sichern, damit wir bei einer neuanlage die id haben */

@@ -86,6 +86,46 @@ final class SportsManagementDateHelper
     }
 
     /**
+     * Convert a legacy match row into its configured project timezone.
+     *
+     * The old match relation dropdown expects the match_date property to
+     * contain a Joomla Date object. Only complete SQL DATE/DATETIME values
+     * are accepted, and the project's timezone is applied for backend edits.
+     * Invalid date/time or timezone input becomes null instead of causing
+     * PHP 8 exceptions during administration.
+     *
+     * @param object $match Match row containing match_date and timezone.
+     * @return void Updates match_date and timezone properties in place.
+     */
+    public static function convertMatchDateToTimezone(object $match): void
+    {
+        $raw = $match->match_date ?? null;
+        $date = is_string($raw) ? trim($raw)
+            : ($raw instanceof \DateTimeInterface ? $raw->format('Y-m-d H:i:s') : '');
+
+        if ($date === '' || str_starts_with($date, '0000-00-00')
+            || preg_match('/^\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2}:\d{2})?$/D', $date) !== 1) {
+            $match->match_date = null;
+            return;
+        }
+
+        $timezone = is_string($match->timezone ?? null) ? trim($match->timezone) : '';
+        if ($timezone === '') {
+            $timezone = 'UTC';
+        }
+
+        try {
+            $zone = new \DateTimeZone($timezone);
+            $dateObject = new \Joomla\CMS\Date\Date($date);
+            $dateObject->setTimezone($zone);
+            $match->match_date = $dateObject;
+            $match->timezone = $timezone;
+        } catch (\Throwable) {
+            $match->match_date = null;
+        }
+    }
+
+    /**
      * Normalise a date value for a SQL DATE column.
      *
      * Joomla calendar fields can submit the configured display format while

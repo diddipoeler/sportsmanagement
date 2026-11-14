@@ -26,6 +26,10 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Helper\MediaHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatabaseHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDateHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ActionLogHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsSaveHelper;
 
 /**
  * JSMModelAdmin
@@ -108,18 +112,22 @@ class JSMModelAdmin extends AdminModel
 		self::$_notes[] = $note;
 	}
     
-	/**
-	 * JSMModelAdmin::__construct()
-	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
-	 */
+    /**
+     * Initialise a legacy administrator form model with native Joomla 5/6 services.
+     *
+     * Resolves the selected SportsManagement database through the Joomla
+     * service container and its validated external-connection selector,
+     * prepares the historical query builders, and restores administrator
+     * input, project, document and user state for legacy save operations.
+     *
+     * @param array<string,mixed> $config Joomla MVC model options.
+     * @return void
+     */
 	public function __construct($config = array())
 	{
 
 		parent::__construct($config);
-		$this->jsmdb = sportsmanagementHelper::getDBConnection();
+		$this->jsmdb = LegacyModelDatabaseHelper::resolve();
 		$this->setDatabase($this->jsmdb);
 		$this->jsmquery       = $this->jsmdb->createQuery();
 		$this->jsmsubquery1   = $this->jsmdb->createQuery();
@@ -287,12 +295,12 @@ if ( $config->get('debug') )
 			case 'round':
 			if ($data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '')
 			{
-			$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0);
+			$data['round_date_first'] = SportsManagementDateHelper::convertDate($data['round_date_first'], 0);
 			}
 
 			if ($data['round_date_last'] != '00-00-0000' && $data['round_date_last'] != '')
 			{
-			$data['round_date_last'] = sportsmanagementHelper::convertDate($data['round_date_last'], 0);
+			$data['round_date_last'] = SportsManagementDateHelper::convertDate($data['round_date_last'], 0);
 			}
 			if ( !$data['name'] )
 			{
@@ -302,8 +310,8 @@ if ( $config->get('debug') )
 			break;
 			/** runden */
 			case 'rounds':
-				$data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'], 0) ? sportsmanagementHelper::convertDate($data['round_date_first'], 0) : '0000-00-00';
-				$data['round_date_last']  = sportsmanagementHelper::convertDate($data['round_date_last'], 0) ? sportsmanagementHelper::convertDate($data['round_date_last'], 0) : $data['round_date_first'] ;
+				$data['round_date_first'] = SportsManagementDateHelper::convertDate($data['round_date_first'], 0) ? SportsManagementDateHelper::convertDate($data['round_date_first'], 0) : '0000-00-00';
+				$data['round_date_last']  = SportsManagementDateHelper::convertDate($data['round_date_last'], 0) ? SportsManagementDateHelper::convertDate($data['round_date_last'], 0) : $data['round_date_first'] ;
 
 				if (!isset($data['id']))
 				{
@@ -464,11 +472,11 @@ $result = $this->jsmdb->execute();
 				$data['agegroup_id']    = $data['request']['agegroup_id'];
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
-					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
+					$data['founded'] = SportsManagementDateHelper::convertDate($data['founded'], 0);
 				}
 				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
 				{
-					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+					$data['dissolved'] = SportsManagementDateHelper::convertDate($data['dissolved'], 0);
 				}
                 
 /** historische logos */
@@ -515,12 +523,12 @@ catch (Exception $e)
                 
                 if ($data['contract_from'] != '0000-00-00' && $data['contract_from'] != '')
 				{
-					$data['contract_from'] = sportsmanagementHelper::convertDate($data['contract_from'], 0);
+					$data['contract_from'] = SportsManagementDateHelper::convertDate($data['contract_from'], 0);
 				}
                 
                 if ($data['contract_to'] != '0000-00-00' && $data['contract_to'] != '')
 				{
-					$data['contract_to'] = sportsmanagementHelper::convertDate($data['contract_to'], 0);
+					$data['contract_to'] = SportsManagementDateHelper::convertDate($data['contract_to'], 0);
 				}
                 
                 break;
@@ -691,42 +699,42 @@ switch ( $row_sports_type )
 
 				if ($data['birthday'] != '0000-00-00' && $data['birthday'] != '')
 				{
-					$data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'], 0);
+					$data['birthday'] = SportsManagementDateHelper::convertDate($data['birthday'], 0);
 				}
 
 				if ($data['deathday'] != '0000-00-00' && $data['deathday'] != '')
 				{
-					$data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'], 0);
+					$data['deathday'] = SportsManagementDateHelper::convertDate($data['deathday'], 0);
 				}
 
 				if ($data['injury_date_start'] != '0000-00-00' && $data['injury_date_start'] != '')
 				{
-					$data['injury_date_start'] = sportsmanagementHelper::convertDate($data['injury_date_start'], 0);
+					$data['injury_date_start'] = SportsManagementDateHelper::convertDate($data['injury_date_start'], 0);
 				}
 
 				if ($data['injury_date_end'] != '0000-00-00' && $data['injury_date_end'] != '')
 				{
-					$data['injury_date_end'] = sportsmanagementHelper::convertDate($data['injury_date_end'], 0);
+					$data['injury_date_end'] = SportsManagementDateHelper::convertDate($data['injury_date_end'], 0);
 				}
 
 				if ($data['susp_date_start'] != '0000-00-00' && $data['susp_date_start'] != '')
 				{
-					$data['susp_date_start'] = sportsmanagementHelper::convertDate($data['susp_date_start'], 0);
+					$data['susp_date_start'] = SportsManagementDateHelper::convertDate($data['susp_date_start'], 0);
 				}
 
 				if ($data['susp_date_end'] != '0000-00-00' && $data['susp_date_end'] != '')
 				{
-					$data['susp_date_end'] = sportsmanagementHelper::convertDate($data['susp_date_end'], 0);
+					$data['susp_date_end'] = SportsManagementDateHelper::convertDate($data['susp_date_end'], 0);
 				}
 
 				if ($data['away_date_start'] != '0000-00-00' && $data['away_date_start'] != '')
 				{
-					$data['away_date_start'] = sportsmanagementHelper::convertDate($data['away_date_start'], 0);
+					$data['away_date_start'] = SportsManagementDateHelper::convertDate($data['away_date_start'], 0);
 				}
 
 				if ($data['away_date_end'] != '0000-00-00' && $data['away_date_end'] != '')
 				{
-					$data['away_date_end'] = sportsmanagementHelper::convertDate($data['away_date_end'], 0);
+					$data['away_date_end'] = SportsManagementDateHelper::convertDate($data['away_date_end'], 0);
 				}
 				break;
 			/** template */
@@ -883,12 +891,12 @@ $post['copy_jform']['logo_big']  = $filepath;
 				/** wurden jahre mitgegeben ? */
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
-					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
+					$data['founded'] = SportsManagementDateHelper::convertDate($data['founded'], 0);
 				}
 
 				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
 				{
-					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+					$data['dissolved'] = SportsManagementDateHelper::convertDate($data['dissolved'], 0);
 				}
 
 				if ($data['founded'] == '0000-00-00' || $data['founded'] == '')
@@ -899,7 +907,7 @@ $post['copy_jform']['logo_big']  = $filepath;
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
 					$data['founded_year']      = date('Y', strtotime($data['founded']));
-					$data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
+					$data['founded_timestamp'] = SportsManagementDateHelper::getTimestamp($data['founded']);
 				}
 				else
 				{
@@ -914,7 +922,7 @@ $post['copy_jform']['logo_big']  = $filepath;
 				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
 				{
 					$data['dissolved_year']      = date('Y', strtotime($data['dissolved']));
-					$data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
+					$data['dissolved_timestamp'] = SportsManagementDateHelper::getTimestamp($data['dissolved']);
 				}
 				else
 				{
@@ -953,12 +961,12 @@ catch (Exception $e)
                 /** wurden jahre mitgegeben ? */
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
-					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
+					$data['founded'] = SportsManagementDateHelper::convertDate($data['founded'], 0);
 				}
 
 				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
 				{
-					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+					$data['dissolved'] = SportsManagementDateHelper::convertDate($data['dissolved'], 0);
 				}
 
 				if ($data['founded'] == '0000-00-00' || $data['founded'] == '')
@@ -969,7 +977,7 @@ catch (Exception $e)
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
 					$data['founded_year']      = date('Y', strtotime($data['founded']));
-					$data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
+					$data['founded_timestamp'] = SportsManagementDateHelper::getTimestamp($data['founded']);
 				}
 				else
 				{
@@ -984,7 +992,7 @@ catch (Exception $e)
 				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
 				{
 					$data['dissolved_year']      = date('Y', strtotime($data['dissolved']));
-					$data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
+					$data['dissolved_timestamp'] = SportsManagementDateHelper::getTimestamp($data['dissolved']);
 				}
 				else
 				{
@@ -1002,12 +1010,12 @@ catch (Exception $e)
                 /** wurden jahre mitgegeben ? */
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
-					$data['founded'] = sportsmanagementHelper::convertDate($data['founded'], 0);
+					$data['founded'] = SportsManagementDateHelper::convertDate($data['founded'], 0);
 				}
 
 				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
 				{
-					$data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'], 0);
+					$data['dissolved'] = SportsManagementDateHelper::convertDate($data['dissolved'], 0);
 				}
 
 				if ($data['founded'] == '0000-00-00' || $data['founded'] == '')
@@ -1018,7 +1026,7 @@ catch (Exception $e)
 				if ($data['founded'] != '0000-00-00' && $data['founded'] != '')
 				{
 					$data['founded_year']      = date('Y', strtotime($data['founded']));
-					$data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
+					$data['founded_timestamp'] = SportsManagementDateHelper::getTimestamp($data['founded']);
 				}
 				else
 				{
@@ -1033,7 +1041,7 @@ catch (Exception $e)
 				if ($data['dissolved'] != '0000-00-00' && $data['dissolved'] != '')
 				{
 					$data['dissolved_year']      = date('Y', strtotime($data['dissolved']));
-					$data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
+					$data['dissolved_timestamp'] = SportsManagementDateHelper::getTimestamp($data['dissolved']);
 				}
 				else
 				{
@@ -1096,14 +1104,14 @@ catch (Exception $e)
                 {
                 $profile             = new stdClass;
 				$profile->playground_id = $data['id'];
-				$profile->date_von       = sportsmanagementHelper::convertDate($post['date_von'][$key], 0) ;
-				$profile->date_bis      = sportsmanagementHelper::convertDate($post['date_bis'][$key], 0) ;
+				$profile->date_von       = SportsManagementDateHelper::convertDate($post['date_von'][$key], 0) ;
+				$profile->date_bis      = SportsManagementDateHelper::convertDate($post['date_bis'][$key], 0) ;
 				$profile->name_visitors  = $post['name_visitors'][$key];
 				$profile->notes  = $post['notes'][$key];
 				$profile->max_visitors   = $post['max_visitors'][$key];
                 $profile->max_visitors_int   = $post['max_visitors_int'][$key];
-                $profile->timestamp_von = sportsmanagementHelper::getTimestamp($profile->date_von);
-                $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
+                $profile->timestamp_von = SportsManagementDateHelper::getTimestamp($profile->date_von);
+                $profile->timestamp_bis = SportsManagementDateHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
 		        $profile->modified_by      = $this->jsmuser->get('id');
 				$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_playground_details', $profile);    
@@ -1115,14 +1123,14 @@ catch (Exception $e)
               $profile             = new stdClass;
               $profile->id = $post['change_id'][$value];
 				$profile->playground_id = $post['change_playground_id'][$value];;
-				$profile->date_von       = sportsmanagementHelper::convertDate($post['change_date_von'][$value], 0) ;
-				$profile->date_bis      = sportsmanagementHelper::convertDate($post['change_date_bis'][$value], 0) ;
+				$profile->date_von       = SportsManagementDateHelper::convertDate($post['change_date_von'][$value], 0) ;
+				$profile->date_bis      = SportsManagementDateHelper::convertDate($post['change_date_bis'][$value], 0) ;
 				$profile->name_visitors  = $post['change_name_visitors'][$value];
 				$profile->notes  = $post['change_notes'][$value];
 				$profile->max_visitors   = $post['change_max_visitors'][$value] ? $post['change_max_visitors'][$value] : 0;
                 $profile->max_visitors_int   = $post['change_max_visitors_int'][$value] ? $post['change_max_visitors_int'][$value] : 0;
-                $profile->timestamp_von = sportsmanagementHelper::getTimestamp($profile->date_von);
-                $profile->timestamp_bis = sportsmanagementHelper::getTimestamp($profile->date_bis);
+                $profile->timestamp_von = SportsManagementDateHelper::getTimestamp($profile->date_von);
+                $profile->timestamp_bis = SportsManagementDateHelper::getTimestamp($profile->date_bis);
                 $profile->modified         = $this->jsmdate->toSql();
 		        $profile->modified_by      = $this->jsmuser->get('id');
 $result = $this->jsmdb->updateObject('#__sportsmanagement_playground_details', $profile, 'id');
@@ -1182,14 +1190,14 @@ catch (Exception $e)
 
 				if ($data['start_date'] != '00-00-0000' && $data['start_date'] != '')
 			{
-			$data['start_date'] = sportsmanagementHelper::convertDate($data['start_date'], 0);
+			$data['start_date'] = SportsManagementDateHelper::convertDate($data['start_date'], 0);
 			}
 
 $data['start_date'] = !$data['start_date'] ? '0000-00-00' : $data['start_date'];				
 				
 				$data['sports_type_id']     = $data['request']['sports_type_id'];
 				$data['agegroup_id']        = $data['request']['agegroup_id'];
-				$data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
+				$data['modified_timestamp'] = SportsManagementDateHelper::getTimestamp($data['modified']);
 
 				if (!$post['jform']['fav_team'])
 				{
@@ -1305,14 +1313,24 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 			$this->jsmjinput->set('person_id', $id);
 			$this->jsmjinput->set('insert_project_id', $id);
 
-			if ($isNew)
-			{
-			sportsmanagementHelper::recordActionLog($this->jsmuser, $data, 0);	
-			}
-			else
-			{
-			sportsmanagementHelper::recordActionLog($this->jsmuser, $data, $data['id'] );	
-			}
+            // Action logging must not prevent an otherwise successful
+            // administrator match/club save when the extension is unavailable.
+            if (is_object($this->jsmuser)) {
+                try {
+                    ActionLogHelper::record(
+                        $this->jsmuser,
+                        $data,
+                        (bool) $isNew,
+                        (string) $this->jsmview
+                    );
+                } catch (\Throwable $error) {
+                    Log::add(
+                        __METHOD__ . ': action log unavailable (' . get_class($error) . ').',
+                        Log::WARNING,
+                        'com_sportsmanagement'
+                    );
+                }
+            }
 			
 			if ($isNew)
 			{
@@ -1451,7 +1469,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					}
 
 					/** -------extra fields----------- */
-					sportsmanagementHelper::saveExtraFields($post, $data['id']);
+					(new ExtraFieldsSaveHelper())->save($post, (int) $data['id'], $this->jsmdb);
 
 					break;
 				/** position */
@@ -1478,16 +1496,16 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 					break;
 				/** verein */
 				case 'club':
-					sportsmanagementHelper::saveExtraFields($post, $data['id']);
+					(new ExtraFieldsSaveHelper())->save($post, (int) $data['id'], $this->jsmdb);
 					$this->jsmapp->setUserState("$this->jsmoption.club_id", $data['id']);
 					break;
                     /** liga */
 				case 'league':
-					sportsmanagementHelper::saveExtraFields($post, $data['id']);
+					(new ExtraFieldsSaveHelper())->save($post, (int) $data['id'], $this->jsmdb);
 					break;
 				/** projekt */
 				case 'project':
-					sportsmanagementHelper::saveExtraFields($post, $data['id']);
+					(new ExtraFieldsSaveHelper())->save($post, (int) $data['id'], $this->jsmdb);
 					break;
 				/** mannschaft */
 				case 'team':
@@ -1545,7 +1563,7 @@ $this->jsmapp->enqueueMessage(Text::_(__METHOD__.' '.__LINE__.' jsmjinput id '.$
 						$result = $this->jsmdb->execute();
 					}
 
-					sportsmanagementHelper::saveExtraFields($post, $data['id']);
+					(new ExtraFieldsSaveHelper())->save($post, (int) $data['id'], $this->jsmdb);
 					$this->jsmapp->setUserState("$this->jsmoption.team_id", $data['id']);
 					break;
 				default:
@@ -2193,19 +2211,22 @@ class JSMModelList extends ListModel
     
    
 
-	/**
-	 * JSMModelList::__construct()
-	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
-	 */
+    /**
+     * Initialise a legacy administrator list model using the native DB bridge.
+     *
+     * Resolves the authorised SportsManagement connection, prepares query
+     * builders, retains the administrator's project filters and document
+     * context and registers the historic list error logging category.
+     *
+     * @param array<string,mixed> $config Joomla list model configuration.
+     * @return void
+     */
 	public function __construct($config = array())
 	{
 		$this->jsmapp = Factory::getContainer()->get(AdministratorApplication::class);
 		$this->jsmjinput = $this->jsmapp->getInput();
 		parent::__construct($config);
-		$this->jsmdb = sportsmanagementHelper::getDBConnection();
+		$this->jsmdb = LegacyModelDatabaseHelper::resolve();
 		$this->setDatabase($this->jsmdb);
 		$this->jsmquery     = $this->jsmdb->createQuery();
 		$this->jsmsubquery1 = $this->jsmdb->createQuery();
@@ -2277,18 +2298,21 @@ class JSMModelLegacy extends BaseDatabaseModel
     
     
 
-	/**
-	 * JSMModelLegacy::__construct()
-	 *
-	 * @param   mixed  $config
-	 *
-	 * @return void
-	 */
+    /**
+     * Initialise a generic legacy administrator model with Joomla DI services.
+     *
+     * Restores query builders and administrator request state using the
+     * validated native database connection instead of the unavailable
+     * sportsmanagementHelper global class.
+     *
+     * @param array<string,mixed> $config Joomla legacy model settings.
+     * @return void
+     */
 	public function __construct($config = array())
 	{
 
 		parent::__construct($config);
-		$this->jsmdb = sportsmanagementHelper::getDBConnection();
+		$this->jsmdb = LegacyModelDatabaseHelper::resolve();
 		$this->setDatabase($this->jsmdb);
 		$this->jsmquery     = $this->jsmdb->createQuery();
 		$this->jsmsubquery1 = $this->jsmdb->createQuery();

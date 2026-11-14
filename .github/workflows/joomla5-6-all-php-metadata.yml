@@ -183,6 +183,19 @@ jobs:
             .github/tests/joomla56_admin_image_import_runtime.php
           php .github/tests/joomla56_admin_image_import_runtime.php
 
+      - name: Test legacy backend match date saves without global sportsmanagementHelper
+        run: |
+          php -l admin/libraries/sportsmanagement/model.php
+          php -l admin/models/match.php
+          php -l admin/src/Helper/LegacyModelDatabaseHelper.php
+          php -l admin/src/Helper/SportsManagementDateHelper.php
+          php -l .github/tests/joomla56_legacy_match_save_without_global_helper.php
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Helper/LegacyModelDatabaseHelper.php \
+            admin/src/Helper/SportsManagementDateHelper.php \
+            .github/tests/joomla56_legacy_match_save_without_global_helper.php
+          php .github/tests/joomla56_legacy_match_save_without_global_helper.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
