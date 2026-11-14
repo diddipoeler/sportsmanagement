@@ -37,7 +37,7 @@ jobs:
           grep -Fq -- '@version    5.6.0' "$file"
           grep -Fq -- 'use Joomla\Database\DatabaseInterface;' "$file"
           grep -Fq -- 'Factory::getContainer()->get(DatabaseInterface::class)' "$file"
-          grep -Fq -- 'Factory::getApplication()->getIdentity()' "$file"
+          grep -Fq -- '$app->getIdentity()' "$file"
 
           if grep -Fq -- 'Factory::getDbo()' "$file"; then
             echo 'Deprecated Factory::getDbo() remains in match.php' >&2

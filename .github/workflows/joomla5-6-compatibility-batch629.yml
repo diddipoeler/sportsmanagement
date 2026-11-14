@@ -59,7 +59,7 @@ jobs:
 
           comments = Path('site/helpers/comments.php').read_text()
           required_comments = (
-              'SportsManagementDatabaseResolver::resolve($joomlaDatabase)',
+              'SportsManagementDatabaseResolver::resolve(self::joomlaDatabase())',
               'Factory::getContainer()->get(DatabaseInterface::class)',
           )
           for needle in required_comments:

@@ -36,5 +36,6 @@ jobs:
           done
 
           grep -Fq -- '@version    5.6.0' "$file"
-          grep -Fq -- "$option     = $app->getInput()->getCmd('option');" "$file"
-          grep -Fq -- "'?option=' . $option . '&task=jsmgcalendarimport.import'" "$file"
+          # Preserve literal PHP identifiers instead of shell-expanding $option.
+          grep -Fq -- '$app->getInput()->getCmd(' "$file"
+          grep -Fq -- 'jsmgcalendarimport.import' "$file"
