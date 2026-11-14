@@ -13,10 +13,22 @@ declare(strict_types=1);
 namespace Joomla\Registry {
     final class Registry
     {
+        /**
+         * Store fake component configuration values for slider media checks.
+         *
+         * @param array<string,mixed> $values Raw Joomla module settings.
+         */
         public function __construct(private array $values = [])
         {
         }
 
+        /**
+         * Return configured slider values or Joomla's requested default.
+         *
+         * @param string $key Registry option name.
+         * @param mixed $default Value for a missing option.
+         * @return mixed Configured value or supplied default.
+         */
         public function get(string $key, mixed $default = null): mixed
         {
             return $this->values[$key] ?? $default;
@@ -29,6 +41,12 @@ namespace Joomla\CMS\Component {
     {
         public static \Joomla\Registry\Registry $params;
 
+        /**
+         * Supply the component's active configuration to Matches Slider.
+         *
+         * @param string $component Joomla component identifier.
+         * @return \Joomla\Registry\Registry Current test configuration.
+         */
         public static function getParams(string $component): \Joomla\Registry\Registry
         {
             return self::$params;
@@ -39,6 +57,11 @@ namespace Joomla\CMS\Component {
 namespace Joomla\CMS\Uri {
     final class Uri
     {
+        /**
+         * Return the example Joomla installation root with a subdirectory.
+         *
+         * @return string Local site base used for internal database images.
+         */
         public static function root(): string
         {
             return 'https://site.example.test/subdir/';
@@ -60,16 +83,16 @@ namespace {
     foreach ([
         ['https://cdn.example.test/assets/', 'https://cdn.example.test/assets/'],
         ['http://cdn.example.test/assets', 'http://cdn.example.test/assets/'],
-        ['https://user:secret@cdn.example.test/images/', $base],
-        ['https://user@cdn.example.test/images/', $base],
-        ['https://cdn.example.test/images?token=1', $base],
-        ['https://cdn.example.test/images#fragment', $base],
-        ['javascript:alert(1)', $base],
-        ['file:///etc/passwd', $base],
-        ['//cdn.example.test/images', $base],
-        ["https://cdn.example.test/\nassets", $base],
-        ['https://cdn.example.test/images\evil', $base],
-        ['', $base],
+        ['https://user:secret@cdn.example.test/images/', ''],
+        ['https://user@cdn.example.test/images/', ''],
+        ['https://cdn.example.test/images?token=1', ''],
+        ['https://cdn.example.test/images#fragment', ''],
+        ['javascript:alert(1)', ''],
+        ['file:///etc/passwd', ''],
+        ['//cdn.example.test/images', ''],
+        ["https://cdn.example.test/\nassets", ''],
+        ['https://cdn.example.test/images\evil', ''],
+        ['', ''],
     ] as [$configured, $expected]) {
         \Joomla\CMS\Component\ComponentHelper::$params = new \Joomla\Registry\Registry([
             'cfg_which_database_server' => $configured,
@@ -81,6 +104,12 @@ namespace {
                 'Unexpected remote slider image server for ' . json_encode($configured)
             );
         }
+    }
+
+    // Invalid external database image servers must not redirect relative
+    // picture paths to local files in a different Joomla database.
+    if ($media->invoke($helper, 'images/example.png', '') !== '') {
+        throw new \RuntimeException('Invalid external slider server exposed a local image URL.');
     }
 
     // Internal database mode must not use a configured external server.

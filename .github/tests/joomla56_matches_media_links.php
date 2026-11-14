@@ -55,6 +55,10 @@ namespace Joomla\CMS\Uri {
 namespace {
     \defined('_JEXEC') || define('_JEXEC', 1);
 
+    // The native formatter delegates input bounds checks to NativeQueryTrait.
+    // Load the same trait composition used by the production MatchesHelper.
+    require_once dirname(__DIR__, 2)
+        . '/modules/mod_sportsmanagement_matches/connectors/native/QueryTrait.php';
     require_once dirname(__DIR__, 2)
         . '/modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php';
     require_once dirname(__DIR__, 2)
@@ -62,6 +66,7 @@ namespace {
 
     final class MatchesMediaHarness
     {
+        use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeQueryTrait;
         use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeFormatTrait;
         use \Diddipoeler\Module\SportsManagementMatches\Site\Helper\NativeLinkTrait;
     }
