@@ -1,0 +1,39 @@
+name: Joomla 5/6 administrator form database input boundary
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - '.github/tests/joomla56_admin_form_database_selector.php'
+      - '.github/workflows/joomla56-admin-form-database-selector.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - '.github/tests/joomla56_admin_form_database_selector.php'
+      - '.github/workflows/joomla56-admin-form-database-selector.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  form-database-selector:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Syntax and PHPDoc checks
+        run: |
+          php -l admin/src/Controller/SportsManagementFormController.php
+          php -l .github/tests/joomla56_admin_form_database_selector.php
+          php .github/scripts/check-php-function-docs.php admin/src/Controller/SportsManagementFormController.php .github/tests/joomla56_admin_form_database_selector.php
+          php .github/tests/phpdoc_metadata.php admin/src/Controller/SportsManagementFormController.php
+      - name: Validate native administrator form database choices
+        run: |
+          php .github/tests/joomla56_admin_form_database_selector.php
+          php .github/tests/joomla56_admin_form_save_acl.php

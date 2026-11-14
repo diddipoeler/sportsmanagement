@@ -56,6 +56,8 @@ class SportsManagementFormController extends FormController
      * Preserves injected MVC factory, application, input and form factory,
      * then resolves the selected SportsManagement database connection and
      * exposes the legacy properties required by existing edit controllers.
+     * Rejects malformed database selectors before an external connection can
+     * be chosen and preserves zero-padded legacy radio-button values.
      *
      * @param array $config Joomla controller configuration.
      * @param MVCFactoryInterface|null $factory Optional injected MVC factory.
@@ -63,6 +65,7 @@ class SportsManagementFormController extends FormController
      * @param Input|null $input Optional injected request input.
      * @param FormFactoryInterface|null $formFactory Optional form factory.
      * @throws \RuntimeException If Joomla's database service is invalid.
+     * @throws \InvalidArgumentException For a malformed database selector.
      */
     public function __construct(
         $config = [],
@@ -82,16 +85,52 @@ class SportsManagementFormController extends FormController
         if (!$joomlaDatabase instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement form database service is unavailable.', 500);
         }
-        $databaseSelector = $this->jsmjinput->getInt(
-            'cfg_which_database',
-            (int) $this->jsmapp->getUserState($this->jsmoption . '.cfg_which_database', 0)
+        // Joomla's getInt() coerces malformed request values (such as "1junk")
+        // into a valid database choice. Validate the raw request or stored
+        // preference before resolving an external component connection.
+        $requestedSelector = $this->jsmjinput->get('cfg_which_database', null, 'raw');
+        $rawSelector = $requestedSelector ?? $this->jsmapp->getUserState(
+            $this->jsmoption . '.cfg_which_database',
+            0
         );
+        $databaseSelector = self::databaseSelector($rawSelector);
+
+        if ($databaseSelector === null) {
+            throw new \InvalidArgumentException('Invalid SportsManagement form database selector.', 400);
+        }
+
         $this->jsmdb = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
 
         $this->team_club_id = (int) $this->jsmapp->getUserState($this->jsmoption . '.club_id', 0);
         $this->jsmdocument = $this->jsmapp->getDocument();
         $this->jsmuser = $this->jsmapp->getIdentity();
         $this->jsmdate = Factory::getDate();
+    }
+
+    /**
+     * Validate the database selection supplied to a Joomla administrator form.
+     *
+     * Accepts the two supported component database choices, including
+     * zero-padded legacy strings stored by older Joomla radio fields.
+     * Rejects booleans, arrays, whitespace, negative values and strings
+     * with junk suffixes so invalid input cannot silently select an
+     * unrelated database when the club, team or project form is opened.
+     *
+     * @param mixed $value Unfiltered request value or saved administrator state.
+     * @return int|null Database selector zero/one, or null if malformed.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 
     /**
