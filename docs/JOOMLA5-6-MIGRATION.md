@@ -330,3 +330,7 @@ The club edit form could throw `Invalid SportsManagement image folder type` from
 ## Administrator player and league image folder selection (14 November 2026)
 
 The player edit model switched picture fields to the configured imageselect field without setting targetfolder; absent media configuration also produced a field type of "0". PlayerModel and its XML now use targetfolder="persons" while preserving the native Joomla Media directory and placeholder, and unknown/blank tool settings safely fall back to Joomla's "media" field. The league picture form now explicitly declares targetfolder="leagues" for custom selectors. A self-contained PHP 8 regression checks both configured media modes, absent/malformed settings, form-load failure, and both XML files; it runs in the all-PHP-metadata workflow.
+
+## Team, playground and club image field configuration fallbacks (14 November 2026)
+
+The team, playground and club editor models now whitelist only the two supported Joomla component image field types ("media" and "imageselect") and fall back to native Media when a saved setting is empty, "0" or unrecognised. The forms retain the existing validated image-handler target folders (teams, playgrounds and the club-specific folders). A new isolated PHP regression tests the team and playground form settings across both valid and multiple invalid modes, checks their XML folder aliases and exercises form-load failure; the existing club form test also now covers invalid settings. The all-PHP-metadata gate lints and runs these tests.

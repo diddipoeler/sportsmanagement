@@ -27,11 +27,19 @@ final class TeamModel extends SportsManagementAdminModel
     public static $change_training_date = false;
 
     /**
-     * Load the team edit form with configured media and seasonal fields.
+     * Load the team form with a validated Joomla image field type.
      *
-     * @param array $data data value.
-     * @param bool $loadData loadData value.
-     * @return mixed
+     * Applies component settings for optional club merging and switches
+     * picture to either the native Joomla Media control or the supported
+     * SportsManagement imageselect control. Rejects stale or unexpected
+     * configuration values by falling back to Media; the XML field retains
+     * its validated targetfolder="teams" for the component image handler.
+     * Loads optional input sizes from the team schema without failing the
+     * whole editor on unavailable column metadata.
+     *
+     * @param array<string,mixed> $data Existing team values.
+     * @param bool $loadData Whether to populate saved team details.
+     * @return mixed Team form or false when Joomla cannot load it.
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -42,7 +50,11 @@ final class TeamModel extends SportsManagementAdminModel
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media')) ?: 'media';
+        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
+
+        if (!in_array($mediaTool, ['media', 'imageselect'], true)) {
+            $mediaTool = 'media';
+        }
 
         if (!(bool) $params->get('show_team_community', 0)) {
             $form->setFieldAttribute('merge_clubs', 'type', 'hidden');

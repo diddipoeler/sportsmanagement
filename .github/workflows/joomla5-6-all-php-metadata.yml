@@ -79,6 +79,18 @@ jobs:
           php .github/tests/joomla56_image_select_backend_document.php --compat-field
           php .github/tests/joomla56_admin_club_image_folder_config.php
 
+      - name: Verify team, playground and club image tool configuration fallbacks
+        run: |
+          php -l admin/src/Model/TeamModel.php
+          php -l admin/src/Model/PlaygroundModel.php
+          php -l .github/tests/joomla56_admin_team_playground_media_type.php
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Model/TeamModel.php \
+            admin/src/Model/PlaygroundModel.php \
+            .github/tests/joomla56_admin_team_playground_media_type.php
+          php .github/tests/joomla56_admin_team_playground_media_type.php
+          php .github/tests/joomla56_admin_club_image_folder_config.php
+
       - name: Verify player and league image folder types and fallback media fields
         run: |
           php -l admin/src/Model/PlayerModel.php

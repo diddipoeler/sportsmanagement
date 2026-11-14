@@ -70,23 +70,30 @@ final class PlaygroundModel extends SportsManagementAdminModel
     }
 
     /**
-     * Load playground edit fields and configured media selector.
+     * Load the playground edit form with an approved picture field type.
      *
-     * @param mixed $data data value.
-     * @param mixed $loadData loadData value.
-     * @return mixed
+     * Retains the Joomla Media form for empty or unsupported configured
+     * types instead of allowing obsolete values to instantiate unavailable
+     * field classes. The playground XML definition already provides the
+     * image handler's safe targetfolder="playgrounds" for imageselect mode.
+     *
+     * @param array<string,mixed> $data Existing playground values.
+     * @param bool $loadData Whether to populate persisted edit values.
+     * @return mixed Joomla playground form or false if loading failed.
      */
     public function getForm($data = [], $loadData = true)
     {
         $form = parent::getForm($data, $loadData);
 
         if ($form) {
-            $mediaTool = (string) ComponentHelper::getParams('com_sportsmanagement')
-                ->get('cfg_which_media_tool', 'media');
+            $mediaTool = trim((string) ComponentHelper::getParams('com_sportsmanagement')
+                ->get('cfg_which_media_tool', 'media'));
 
-            if ($mediaTool !== '') {
-                $form->setFieldAttribute('picture', 'type', $mediaTool);
+            if (!in_array($mediaTool, ['media', 'imageselect'], true)) {
+                $mediaTool = 'media';
             }
+
+            $form->setFieldAttribute('picture', 'type', $mediaTool);
         }
 
         return $form;

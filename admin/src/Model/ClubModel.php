@@ -47,7 +47,11 @@ final class ClubModel extends SportsManagementAdminModel
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media')) ?: 'media';
+        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
+
+        if (!in_array($mediaTool, ['media', 'imageselect'], true)) {
+            $mediaTool = 'media';
+        }
 
         if (!(bool) $params->get('show_team_community', 0)) {
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
