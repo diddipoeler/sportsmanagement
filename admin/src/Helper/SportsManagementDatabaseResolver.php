@@ -49,7 +49,7 @@ final class SportsManagementDatabaseResolver
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $forceExternal = $whichDatabase === 1 || $whichDatabase === '1';
 
-        if (!(bool) $params->get('cfg_which_database', 0) && !$forceExternal) {
+        if (!self::externalSettingEnabled($params->get('cfg_which_database', 0)) && !$forceExternal) {
             return $fallback;
         }
 
@@ -120,6 +120,21 @@ final class SportsManagementDatabaseResolver
         Log::add('SportsManagement external database access granted.', Log::INFO, 'jsmerror');
 
         return $external;
+    }
+
+    /**
+     * Interpret the external database switch without PHP truthiness.
+     *
+     * Joomla radio fields store zero/one, while old configurations may hold
+     * booleans or the literal string "true". A nonempty string like "false",
+     * arrays or whitespace must not accidentally activate external storage.
+     *
+     * @param mixed $value Raw Joomla component configuration value.
+     * @return bool Whether external database access is explicitly enabled.
+     */
+    private static function externalSettingEnabled(mixed $value): bool
+    {
+        return $value === true || $value === 1 || $value === '1' || $value === 'true';
     }
 
     /**

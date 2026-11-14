@@ -21,10 +21,16 @@ use Joomla\Registry\Registry;
 final class TeamStatisticsCounterHelper
 {
     /**
-     * Build team statistics and match counters for the frontend module.
-     * @param Registry $params Module configuration.
+     * Load the configured team and its statistics for a frontend module.
+     *
+     * Validates project/team IDs and the database selector before querying.
+     * Unrelated project/team records never reach the static statistics model.
+     * Database failures are kept private and return a stable empty payload
+     * instead of leaking SQL details into Joomla logs or site output.
+     *
+     * @param Registry $params Current module configuration.
      * @param DatabaseInterface $fallbackDatabase Joomla database fallback.
-     * @return array{project:object|null,team:object|null,stats:array} Module data.
+     * @return array{project:object|null,team:object|null,stats:array} Sanitised data.
      */
     public function getData(Registry $params, DatabaseInterface $fallbackDatabase): array
     {
@@ -35,68 +41,88 @@ final class TeamStatisticsCounterHelper
             return self::emptyData();
         }
 
-        $databaseSelector = (int) $params->get('cfg_which_database', 0) === 1 ? 1 : 0;
+        $databaseSelector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($databaseSelector === null) {
+            return self::emptyData();
+        }
 
         try {
             $db = $this->database($databaseSelector, $fallbackDatabase);
 
-        $projectTeamId = $this->getProjectTeamId($db, $projectId, $teamId);
+            $projectTeamId = $this->getProjectTeamId($db, $projectId, $teamId);
 
-        // Never load unrelated project/team information when this pair has no
-        // season-team association; this also avoids unnecessary SQL queries.
-        if ($projectTeamId <= 0) {
-            return self::emptyData();
-        }
+            // Never load unrelated project/team information when this pair has no
+            // season-team association; this also avoids unnecessary SQL queries.
+            if ($projectTeamId <= 0) {
+                return self::emptyData();
+            }
 
-        $team = $this->getTeam($db, $teamId);
-        $project = $this->getProject($db, $projectId);
+            $team = $this->getTeam($db, $teamId);
+            $project = $this->getProject($db, $projectId);
 
-        if ($team === null || $project === null) {
-            return self::emptyData();
-        }
+            if ($team === null || $project === null) {
+                return self::emptyData();
+            }
 
-        $this->prepareModelContext($projectId, $teamId, $projectTeamId, $databaseSelector, $team);
+            $this->prepareModelContext($projectId, $teamId, $projectTeamId, $databaseSelector, $team);
 
-        return [
-            'project' => $project,
-            'team' => $team,
-            'stats' => [
-                'highest_home' => TeamstatsModel::getHighest('HOME', 'WIN'),
-                'highest_away' => TeamstatsModel::getHighest('AWAY', 'WIN'),
-                'highestdef_home' => TeamstatsModel::getHighest('HOME', 'DEF'),
-                'highestdef_away' => TeamstatsModel::getHighest('AWAY', 'DEF'),
-                'highestdraw_home' => TeamstatsModel::getHighest('HOME', 'DRAW'),
-                'highestdraw_away' => TeamstatsModel::getHighest('AWAY', 'DRAW'),
-                'totalshome' => TeamstatsModel::getSeasonTotals('HOME'),
-                'totalsaway' => TeamstatsModel::getSeasonTotals('AWAY'),
-                'matchdaytotals' => TeamstatsModel::getMatchDayTotals(),
-                'totalrounds' => TeamstatsModel::getTotalRounds(),
-                'totalattendance' => TeamstatsModel::getTotalAttendance(),
-                'bestattendance' => TeamstatsModel::getBestAttendance(),
-                'worstattendance' => TeamstatsModel::getWorstAttendance(),
-                'averageattendance' => TeamstatsModel::getAverageAttendance(),
-                'chart_url' => TeamstatsModel::getChartURL(),
-                'nogoals_against' => TeamstatsModel::getNoGoalsAgainst(),
-                'logo' => TeamstatsModel::getLogo(),
-                'results' => TeamstatsModel::getResults(),
-            ],
-        ];
+            return [
+                'project' => $project,
+                'team' => $team,
+                'stats' => [
+                    'highest_home' => TeamstatsModel::getHighest('HOME', 'WIN'),
+                    'highest_away' => TeamstatsModel::getHighest('AWAY', 'WIN'),
+                    'highestdef_home' => TeamstatsModel::getHighest('HOME', 'DEF'),
+                    'highestdef_away' => TeamstatsModel::getHighest('AWAY', 'DEF'),
+                    'highestdraw_home' => TeamstatsModel::getHighest('HOME', 'DRAW'),
+                    'highestdraw_away' => TeamstatsModel::getHighest('AWAY', 'DRAW'),
+                    'totalshome' => TeamstatsModel::getSeasonTotals('HOME'),
+                    'totalsaway' => TeamstatsModel::getSeasonTotals('AWAY'),
+                    'matchdaytotals' => TeamstatsModel::getMatchDayTotals(),
+                    'totalrounds' => TeamstatsModel::getTotalRounds(),
+                    'totalattendance' => TeamstatsModel::getTotalAttendance(),
+                    'bestattendance' => TeamstatsModel::getBestAttendance(),
+                    'worstattendance' => TeamstatsModel::getWorstAttendance(),
+                    'averageattendance' => TeamstatsModel::getAverageAttendance(),
+                    'chart_url' => TeamstatsModel::getChartURL(),
+                    'nogoals_against' => TeamstatsModel::getNoGoalsAgainst(),
+                    'logo' => TeamstatsModel::getLogo(),
+                    'results' => TeamstatsModel::getResults(),
+                ],
+            ];
         } catch (\Throwable $e) {
             // Keep missing optional/external databases and statistics failures
             // private. An unavailable data source must not crash a site page.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add(__METHOD__ . ': statistics query failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
 
             return self::emptyData();
         }
     }
 
-    /** Return the same empty shape for missing, invalid or unavailable data. */
+    /**
+     * Return the safe template payload when statistics are unavailable.
+     *
+     * Null project/team records and an empty statistics map ensure that
+     * another module instance's cached results are never rendered by mistake.
+     *
+     * @return array{project:null,team:null,stats:array{}} Empty module data.
+     */
     private static function emptyData(): array
     {
         return ['project' => null, 'team' => null, 'stats' => []];
     }
 
-    /** Accept only positive Joomla ID or ID:alias selectors, never casts. */
+    /**
+     * Parse positive Joomla IDs and optional ID:alias route selectors.
+     *
+     * Rejects non-scalar, negative, fractional and overflowing identifiers.
+     * Supports Unicode alias characters used by legacy team URLs, without
+     * trusting PHP's permissive integer conversions.
+     *
+     * @param mixed $value Module parameter or route slug.
+     * @return int Positive ID, or zero for malformed input.
+     */
     private static function positiveId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
@@ -123,7 +149,34 @@ final class TeamStatisticsCounterHelper
     }
 
     /**
+     * Validate the module's database selector before any database query.
+     *
+     * Accepts only zero/one and zero-padded decimal strings from historical
+     * Joomla radio fields. Invalid choices must never fall back silently
+     * to an unrelated database connection.
+     *
+     * @param mixed $value Raw module configuration value.
+     * @return int|null Allowed database choice, or null if invalid.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $match) !== 1) {
+            return null;
+        }
+
+        return (int) $match[1];
+    }
+
+    /**
      * Resolve the configured component database for module queries.
+     *
+     * Delegates to the namespaced Joomla 5/6 resolver, preserving the
+     * component's external database entitlement and fallback checks.
      * @param int $selector Database selector.
      * @param DatabaseInterface $fallbackDatabase Default database.
      * @return DatabaseInterface Selected connection.
@@ -135,6 +188,11 @@ final class TeamStatisticsCounterHelper
 
     /**
      * Resolve project-team membership for a project and team.
+     *
+     * Joins project-team assignments to season-team IDs with bound SQL
+     * parameters. Malformed database result IDs must not be cast into an
+     * unrelated project-team association.
+     *
      * @param DatabaseInterface $db Component database.
      * @param int $projectId Project identifier.
      * @param int $teamId Team identifier.
@@ -160,11 +218,22 @@ final class TeamStatisticsCounterHelper
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
-        return (int) ($db->loadResult() ?: 0);
+        $result = $db->loadResult();
+
+        if (!is_int($result) && (!is_string($result)
+            || preg_match('/^[0-9]+$/D', $result) !== 1)) {
+            return 0;
+        }
+
+        return self::positiveId($result);
     }
 
     /**
-     * Read team metadata and build its Joomla route slug.
+     * Load one team and build its portable Joomla ID:alias slug.
+     *
+     * Uses a parameterised query and assembles the slug in PHP rather than
+     * relying on database-specific string concatenation.
+     *
      * @param DatabaseInterface $db Component database.
      * @param int $teamId Team identifier.
      * @return object|null Team or null.
@@ -193,7 +262,11 @@ final class TeamStatisticsCounterHelper
     }
 
     /**
-     * Read project metadata and build its Joomla route slug.
+     * Load one project and construct its portable Joomla ID:alias slug.
+     *
+     * Queries the selected record with a bound integer and returns null
+     * for missing projects without relying on MySQL-only functions.
+     *
      * @param DatabaseInterface $db Component database.
      * @param int $projectId Project identifier.
      * @return object|null Project or null.
@@ -222,6 +295,10 @@ final class TeamStatisticsCounterHelper
 
     /**
      * Prepare legacy TeamstatsModel static context and reset cached statistics.
+     *
+     * Stores the current project and team, then clears cached aggregates
+     * so multiple module instances cannot display another team's results.
+     *
      * @param int $projectId Project identifier.
      * @param int $teamId Team identifier.
      * @param int $projectTeamId Project-team identifier.

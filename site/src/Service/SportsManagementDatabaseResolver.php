@@ -34,7 +34,7 @@ final class SportsManagementDatabaseResolver
         // Preserve sportsmanagementHelper::getDBConnection(): the external
         // database is selected when either the component-wide setting is on
         // or the caller explicitly requests it.
-        if (!(bool) $params->get('cfg_which_database', 0) && !$forceExternal) {
+        if (!self::externalSettingEnabled($params->get('cfg_which_database', 0)) && !$forceExternal) {
             return $joomlaDatabase;
         }
 
@@ -47,6 +47,21 @@ final class SportsManagementDatabaseResolver
         } catch (\Throwable) {
             return $joomlaDatabase;
         }
+    }
+
+    /**
+     * Interpret the external database switch without PHP truthiness.
+     *
+     * Joomla radio fields store zero/one, while old configurations may hold
+     * booleans or the literal string "true". A nonempty string like "false",
+     * arrays or whitespace must not accidentally activate external storage.
+     *
+     * @param mixed $value Raw Joomla component configuration value.
+     * @return bool Whether external database access is explicitly enabled.
+     */
+    private static function externalSettingEnabled(mixed $value): bool
+    {
+        return $value === true || $value === 1 || $value === '1' || $value === 'true';
     }
 
     /**
@@ -71,8 +86,15 @@ final class SportsManagementDatabaseResolver
     }
 
     /**
-     * Preserve the legacy external-database entitlement check without relying
-     * on removed Joomla Factory/JDatabase APIs.
+     * Verify the selected external database user's entitlement.
+     *
+     * Uses parameterised Joomla database queries to read the user's profile,
+     * checks the access flag and serial number, and validates the UTC interval.
+     * Incomplete or malformed records never authorise an external connection.
+     *
+     * @param DatabaseInterface $db External Joomla database connection.
+     * @param Registry $params Component configuration and entitlement settings.
+     * @return bool True only when every entitlement requirement is satisfied.
      */
     private static function hasExternalAccess(DatabaseInterface $db, Registry $params): bool
     {
