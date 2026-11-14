@@ -299,6 +299,32 @@ namespace {
 
     require dirname(__DIR__, 2) . '/site/src/Helper/ImageSelectHelper.php';
 
+    // Explicitly mapped folders retain their historical storage locations.
+    foreach ([
+        'leagues' => 'leagues',
+        'clubs/small' => 'clubs/small',
+        'projectteams_trikot_home' => 'projectteams/trikot_home',
+        'additional_event' => 'events/additional_event',
+        'custom/subtype' => 'events/custom/subtype',
+    ] as $type => $expected) {
+        assertImageSelector(ImageSelectHelper::getFolder($type) === $expected, 'Image folder mapping changed: ' . $type);
+    }
+
+    // Untrusted type fields must not yield filesystem traversal or trigger
+    // PHP 8 array-to-string warnings in image upload/delete controllers.
+    foreach ([
+        '', '..', '../secret', '../../administrator', 'a/../../b',
+        'a//b', 'a/./b', 'a\\b', "invalid\nname",
+        str_repeat('a', 129), 'a/b/c/d/e', [], new \stdClass(), false,
+    ] as $invalidType) {
+        try {
+            ImageSelectHelper::getFolder($invalidType);
+            throw new \RuntimeException('Unsafe image folder was accepted.');
+        } catch (\InvalidArgumentException $exception) {
+            assertImageSelector($exception->getCode() === 400, 'Unsafe folder was not rejected as invalid input.');
+        }
+    }
+
     // Reproduces a backend form before a document is attached: previously
     // method_exists(null, 'getWebAssetManager') threw a PHP 8 TypeError.
     Factory::$application = new FakeApplication('administrator', null);
@@ -327,8 +353,8 @@ namespace {
         'League callback is missing from the backend document.'
     );
 
-    // PHP class names are case-insensitive, so the historical ImageselectField
-    // alias and native ImageSelectField must be verified in separate processes.
+    // Also verify which entry point is loaded first. PHP's class names are
+    // case-insensitive, so the bridge must forward to the canonical class.
     $compatibilityField = in_array('--compat-field', $argv, true);
     $fieldClass = $compatibilityField
         ? \Diddipoeler\Component\SportsManagement\Administrator\Field\ImageselectField::class
@@ -336,10 +362,22 @@ namespace {
     require dirname(__DIR__, 2) . '/admin/src/Field/'
         . ($compatibilityField ? 'ImageselectField.php' : 'ImageSelectField.php');
 
+    // Loading both spellings in the same PHP process must never redeclare
+    // the case-insensitive ImageSelectField class.
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/ImageSelectField.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/Field/ImageselectField.php';
+    assertImageSelector(
+        class_exists(\Diddipoeler\Component\SportsManagement\Administrator\Field\ImageSelectField::class, false)
+        && class_exists(\Diddipoeler\Component\SportsManagement\Administrator\Field\ImageselectField::class, false),
+        'Legacy and canonical image select class names must resolve together.'
+    );
+
     $field = new $fieldClass();
     $html = (new \ReflectionMethod($field, 'getInput'))->invoke($field);
     assertImageSelector(str_contains($html, 'jform_picture_preview'), 'Administrator field preview is missing.');
     assertImageSelector(str_contains($html, 'name="jform[picture]"'), 'Administrator image field is not submittable.');
+    assertImageSelector(str_contains($html, 'name="original_jform[picture]"'), 'Original image state must be submitted.');
+    assertImageSelector(str_contains($html, 'name="copy_jform[picture]"'), 'Copied image state must be submitted.');
 
     Uri::$base = 'https://example.test/';
     Factory::$application = new FakeApplication('site', new HtmlDocument());

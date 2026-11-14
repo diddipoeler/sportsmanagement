@@ -65,6 +65,21 @@ jobs:
           php .github/tests/joomla56_image_select_backend_document.php
           php .github/tests/joomla56_image_select_backend_document.php --compat-field
 
+      - name: Verify canonical image field and safe image folders
+        run: |
+          php -l site/src/Helper/ImageSelectHelper.php
+          php -l admin/src/Field/ImageselectField.php
+          php .github/scripts/check-php-function-docs.php site/src/Helper/ImageSelectHelper.php
+          php .github/tests/joomla56_image_select_backend_document.php
+          php .github/tests/joomla56_image_select_backend_document.php --compat-field
+
+      - name: Verify multi-instance Ranking module stylesheets
+        run: |
+          php -l modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_ranking_asset_reuse.php
+          php .github/scripts/check-php-function-docs.php modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
+          php .github/tests/joomla56_ranking_asset_reuse.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php

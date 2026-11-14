@@ -246,3 +246,10 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 
 - Reattached descriptive PHPDoc immediately before the JavaScript builder method and kept a distinct PHPDoc on the shared current-application resolver. The old helper migration gate now permits the Joomla 5/6-supported `Factory::getApplication()` specifically for this cross-client image selector, while keeping its original guard for client-specific helpers.
 - The Clubicons website-link security test now recognises the typed `is_string($website)` validation call already used by the native module. No Clubicons production logic was changed.
+
+## Shared image selector and multi-instance Ranking stylesheet (14 November 2026)
+
+- The administrator's historical `ImageselectField.php` now loads the canonical `ImageSelectField.php` instead of declaring a second PHP class that differs only by case. Both legacy entry points can be loaded together without class redeclaration errors, and copied/original image fields retain their submit names.
+- The shared site image folder helper now rejects non-string, non-integer, empty, traversal, malformed and oversized legacy event folder names before building upload/delete directory paths. Explicitly mapped league, team and club folders retain their original paths; safe unknown event folders continue to resolve below `events/`.
+- The native Ranking module activates its stylesheet on every render but registers it only once per Joomla WebAssetManager document, preventing duplicate asset declarations when two Ranking modules appear on the same page. A dedicated PHP regression covers two registrations, and the existing image selector regression now tests both case variants in one process plus malformed folder types.
+- New CI assertions lint the changed PHP files and verify descriptive PHPDoc; Joomla 5/6 installation and browser integration testing remain pending.

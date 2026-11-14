@@ -194,15 +194,25 @@ final class ImageSelectHelper
      * Convert historical image selector types to component image directories.
      *
      * Supports the established league, club, person, team and placeholder
-     * categories and preserves the legacy events subdirectory fallback for
-     * types that are not explicitly mapped.
+     * categories and preserves a validated legacy events subdirectory
+     * fallback for types that are not explicitly mapped. Rejects malformed
+     * request values before they reach image upload/delete path handling.
      *
      * @param mixed $type Legacy image folder type.
      * @return string Component-relative image directory.
+     * @throws \InvalidArgumentException For invalid or unsafe folder values.
      */
     public static function getFolder($type): string
     {
-        return match ((string) $type) {
+        // Reject arrays, objects and booleans before casting to a folder name.
+        // PHP 8 raises warnings for arrays and rejects many object conversions.
+        if (!is_string($type) && !is_int($type)) {
+            throw new \InvalidArgumentException('Invalid SportsManagement image folder type.', 400);
+        }
+
+        $type = (string) $type;
+
+        return match ($type) {
             'clubs_small', 'clubssmall', 'clubs/small' => 'clubs/small',
             'clubs_medium', 'clubsmedium', 'clubs/medium' => 'clubs/medium',
             'clubs_large', 'clubslarge', 'clubs/large' => 'clubs/large',
@@ -234,8 +244,33 @@ final class ImageSelectHelper
             'agegroups' => 'agegroups',
             'projectimages' => 'projectimages',
             'matchreport' => 'matchreport',
-            default => 'events/' . trim((string) $type, '/'),
+            default => self::legacyEventFolder($type),
         };
+    }
+
+    /**
+     * Resolve a historical, non-standard event image subdirectory safely.
+     *
+     * Legacy image selectors sometimes use event-specific subfolders that are
+     * absent from the fixed folder mapping. Preserve these names only when
+     * every segment is an ASCII filename component, with no dot segments,
+     * backslashes, control bytes, empty segments or excessive nesting.
+     * Invalid input must fail closed before upload/delete controllers use it.
+     *
+     * @param string $type Legacy event image folder name.
+     * @return string Component-relative path below the events directory.
+     * @throws \InvalidArgumentException When the folder is unsafe or empty.
+     */
+    private static function legacyEventFolder(string $type): string
+    {
+        $type = trim($type, '/');
+
+        if (strlen($type) > 128
+            || preg_match('~\A[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+){0,3}\z~D', $type) !== 1) {
+            throw new \InvalidArgumentException('Invalid SportsManagement image folder type.', 400);
+        }
+
+        return 'events/' . $type;
     }
 
     /**

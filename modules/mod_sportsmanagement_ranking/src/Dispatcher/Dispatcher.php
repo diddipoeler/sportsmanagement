@@ -62,11 +62,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument && is_file(JPATH_ROOT . '/' . $style)) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                $moduleName,
-                $style,
-                ['version' => 'auto']
-            );
+            $this->useRankingStylesheet($document, $moduleName, $style);
         }
 
         $ranking = $this->getHelperFactory()->getHelper('RankingHelper')->getData(
@@ -80,4 +76,30 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         return $data;
     }
+    /**
+     * Activate the optional Ranking stylesheet without duplicate registration.
+     *
+     * Several Ranking module instances can share a Joomla HTML document.
+     * Register the fixed stylesheet only if the asset name is absent from
+     * the WebAssetManager registry, but mark the asset as used on every
+     * render. This preserves native Joomla 5/6 asset ordering and cache tags
+     * without duplicate-asset exceptions.
+     *
+     * @param HtmlDocument $document Current Joomla HTML document.
+     * @param string $assetName Shared module asset identifier.
+     * @param string $style Site-relative CSS asset path already checked on disk.
+     * @return void
+     */
+    private function useRankingStylesheet(HtmlDocument $document, string $assetName, string $style): void
+    {
+        $assets = $document->getWebAssetManager();
+
+        if (!$assets->assetExists('style', $assetName)) {
+            $assets->registerStyle($assetName, $style, ['version' => 'auto']);
+        }
+
+        $assets->useStyle($assetName);
+    }
+
+
 }
