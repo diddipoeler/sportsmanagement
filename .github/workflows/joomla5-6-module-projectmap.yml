@@ -23,6 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Test repeated Events Ranking and Project Map web assets
+        run: php .github/tests/joomla56_eventsranking_projectmap_asset_reuse.php
+
       - name: Validate Project Map migration
         shell: bash
         run: |
@@ -62,6 +65,10 @@ jobs:
           grep -Fq 'getLayoutData(): array|false' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
           grep -Fq 'getWebAssetManager()' "$dispatcher"
+          grep -Fq "assetExists('script', \$initAsset)" "$dispatcher"
+          grep -Fq 'registerScript(' "$dispatcher"
+          grep -Fq 'useScript($worldMapAsset)' "$dispatcher"
+          ! grep -Fq 'registerAndUseScript(' "$dispatcher"
           grep -Fq 'addScriptOptions(' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$bridge"
           grep -Fq 'SiteRouteHelper::view(' "$helper"

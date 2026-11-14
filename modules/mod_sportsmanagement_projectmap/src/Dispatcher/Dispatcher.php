@@ -29,7 +29,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Loads current-season projects, supplies JavaScript options, registers
      * dependent map assets and logs helper errors while keeping the module
-     * renderable. Ensures stable empty template values on helper failures
+     * renderable. Reuses init/worldmap scripts when multiple maps share one
+     * HTML document, maintaining their explicit core/init dependencies.
+     * Ensures stable empty template values on helper failures
      * and avoids exposing database connection details in error logs.
      *
      * @return array|false Layout data or false if rendering is skipped.
@@ -75,24 +77,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                     is_array($mapData['options'] ?? null) ? $mapData['options'] : []
                 );
 
-                $assets = $document->getWebAssetManager();
-                $initAsset = 'mod_sportsmanagement_projectmap.init';
-                $worldMapAsset = 'mod_sportsmanagement_projectmap.worldmap';
-
-                $assets->registerAndUseScript(
-                    $initAsset,
-                    'modules/mod_sportsmanagement_projectmap/htmlworldmap/projectmap-init.js',
-                    [],
-                    [],
-                    ['core']
-                );
-                $assets->registerAndUseScript(
-                    $worldMapAsset,
-                    'modules/mod_sportsmanagement_projectmap/htmlworldmap/worldmap.js',
-                    [],
-                    [],
-                    [$initAsset]
-                );
+                $this->useProjectMapScripts($document);
             }
         } catch (\Throwable $exception) {
             $data['projects'] = [];
@@ -101,6 +86,49 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         }
 
         return $data;
+    }
+
+    /**
+     * Register and activate Project Map scripts with preserved dependencies.
+     *
+     * Multiple map modules may render into the same Joomla document. The
+     * map initializer depends on Joomla core and worldmap.js depends on
+     * the initializer. Register both only when absent from WebAssetManager,
+     * but activate them on each render in dependency order. This leaves
+     * script options supplied by the caller's addScriptOptions() untouched.
+     *
+     * @param HtmlDocument $document The shared HTML document for map modules.
+     * @return void
+     */
+    private function useProjectMapScripts(HtmlDocument $document): void
+    {
+        $assets = $document->getWebAssetManager();
+        $initAsset = 'mod_sportsmanagement_projectmap.init';
+        $worldMapAsset = 'mod_sportsmanagement_projectmap.worldmap';
+
+        if (!$assets->assetExists('script', $initAsset)) {
+            $assets->registerScript(
+                $initAsset,
+                'modules/mod_sportsmanagement_projectmap/htmlworldmap/projectmap-init.js',
+                [],
+                [],
+                ['core']
+            );
+        }
+
+        $assets->useScript($initAsset);
+
+        if (!$assets->assetExists('script', $worldMapAsset)) {
+            $assets->registerScript(
+                $worldMapAsset,
+                'modules/mod_sportsmanagement_projectmap/htmlworldmap/worldmap.js',
+                [],
+                [],
+                [$initAsset]
+            );
+        }
+
+        $assets->useScript($worldMapAsset);
     }
 
     /**

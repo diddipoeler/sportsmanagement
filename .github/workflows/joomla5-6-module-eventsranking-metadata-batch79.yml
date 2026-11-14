@@ -39,7 +39,9 @@ jobs:
       - name: Preserve native module markers
         run: |
           grep -F "getHelper('EventsRankingHelper')" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
-          grep -F "registerAndUseStyle" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -F "assetExists('style', \$name)" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -F "registerStyle(" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          grep -F "useStyle(\$name)" modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
           grep -F "new EventsRankingHelper()" modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
           grep -F "ModuleHelper::getLayoutPath" modules/mod_sportsmanagement_eventsranking/mod_sportsmanagement_eventsranking.php
       - name: Reject stale metadata spacing

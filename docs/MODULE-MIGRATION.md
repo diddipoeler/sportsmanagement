@@ -186,3 +186,7 @@ The Joomla-native query-factory fixture was also extended with fluent `whereIn()
 ### Matches selector decimal validation without ext-ctype
 
 `NativeQueryTrait::ids()` uses an ASCII decimal regular expression with a 256-byte token limit rather than `ctype_digit()`, retaining its positive-ID, deduplication and overflow checks while avoiding a dependency on PHP's optional ctype extension. This resolves the module's `php -n` database-selector regression without modifying SQL selector semantics.
+
+### Events Ranking and Project Map: repeatable Joomla HTML web assets (14 November 2026)
+
+The Events Ranking dispatcher now registers its versioned CSS only when the shared Joomla HTML WebAssetManager does not already own that stylesheet, while enabling it on every module render. The Project Map dispatcher now registers the initializer and world map script only once, activates them every render, and preserves the explicit dependency chain from Joomla `core` to `projectmap-init.js` to `worldmap.js`. Existing map script options and the HTML-only document guard remain unchanged. Both new dispatcher methods include detailed PHPDoc, and all four required file header tags are retained. A shared standalone PHP test asserts repeat rendering, distinct document registries, asset registration paths and dependency order. It is wired into the event ranking, project map and all-PHP-metadata workflows; the older Events Ranking workflow contract was updated to require native assetExists/register/use semantics.

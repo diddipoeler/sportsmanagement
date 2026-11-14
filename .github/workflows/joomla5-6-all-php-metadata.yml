@@ -111,6 +111,16 @@ jobs:
             modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
           php .github/tests/joomla56_match_modules_asset_reuse.php
 
+      - name: Verify repeatable Events Ranking and Project Map HTML assets
+        run: |
+          php -l modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_eventsranking_projectmap_asset_reuse.php
+          php .github/scripts/check-php-function-docs.php \
+            modules/mod_sportsmanagement_eventsranking/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
+          php .github/tests/joomla56_eventsranking_projectmap_asset_reuse.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php

@@ -25,7 +25,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Load event ranking statistics for the module layout.
      *
-     * Loads component translations, queries the ranking helper, normalises empty results and registers stylesheet assets for HTML output.
+     * Loads component translations, queries the ranking helper, normalises
+     * missing statistics, and enables the shared module stylesheet on HTML
+     * responses. Several instances can reuse the same registered asset
+     * without a duplicate-name registration error.
      *
      * @return array|false Layout data or false if rendering is skipped.
      * @throws \RuntimeException If the site client or database is unavailable.
@@ -62,14 +65,37 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_eventsranking',
+            $this->useEventsRankingStylesheet($document);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Enable Events Ranking CSS through Joomla's shared HTML asset registry.
+     *
+     * Each module instance receives the active site document. Only the
+     * first instance registers the versioned stylesheet; every instance
+     * activates the same asset name so its rendered layout is styled.
+     * The caller restricts this operation to HtmlDocument responses.
+     *
+     * @param HtmlDocument $document Active Joomla site HTML response.
+     * @return void
+     */
+    private function useEventsRankingStylesheet(HtmlDocument $document): void
+    {
+        $assets = $document->getWebAssetManager();
+        $name = 'mod_sportsmanagement_eventsranking';
+
+        if (!$assets->assetExists('style', $name)) {
+            $assets->registerStyle(
+                $name,
                 'modules/mod_sportsmanagement_eventsranking/css/mod_sportsmanagement_eventsranking.css',
                 ['version' => 'auto']
             );
         }
 
-        return $data;
+        $assets->useStyle($name);
     }
 
     /**
