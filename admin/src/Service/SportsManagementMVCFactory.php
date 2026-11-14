@@ -23,6 +23,20 @@ use Joomla\Input\Input;
 
 final class SportsManagementMVCFactory extends MVCFactory
 {
+    /**
+     * Create a Joomla controller, falling back to the packaged legacy bridge.
+     *
+     * Normalises the client namespace and tries the native controller first.
+     * If unavailable, it boots the corresponding legacy controller, registers
+     * the namespaced class alias and retries Joomla's regular MVC creation.
+     *
+     * @param string $name Requested controller name.
+     * @param string $prefix Site or administrator MVC prefix.
+     * @param array $config Controller configuration passed through to Joomla.
+     * @param CMSApplicationInterface $app Active Joomla application.
+     * @param Input $input Joomla request input.
+     * @return mixed Native or compatibility controller; null if unavailable.
+     */
     public function createController(
         $name,
         $prefix,
@@ -44,6 +58,18 @@ final class SportsManagementMVCFactory extends MVCFactory
         return parent::createController($name, $prefix, $config, $app, $input);
     }
 
+    /**
+     * Resolve a native or bridged SportsManagement model for Joomla 5/6.
+     *
+     * Removes obsolete constructor-level dbo configuration, loads compatible
+     * legacy models only when necessary, then restores the selected component
+     * database via DatabaseAwareInterface when supported.
+     *
+     * @param string $name Requested model identifier.
+     * @param string $prefix Client-specific model namespace prefix.
+     * @param array $config Model creation options.
+     * @return mixed Joomla model object or null when no implementation exists.
+     */
     public function createModel($name, $prefix = '', array $config = [])
     {
         $prefix = $this->normalisePrefix((string) $prefix);
@@ -63,6 +89,20 @@ final class SportsManagementMVCFactory extends MVCFactory
         return $model;
     }
 
+    /**
+     * Instantiate a native view while supporting legacy administrator layouts.
+     *
+     * Chooses a validated default HTML type, configures a legacy template
+     * directory if the new template has not been ported, then tries Joomla's
+     * native view factory. Missing views may be loaded through their legacy
+     * compatibility aliases and retried with the historical template path.
+     *
+     * @param string $name Requested MVC view.
+     * @param string $prefix Site or administrator prefix.
+     * @param string $type Output format, defaulting to HTML.
+     * @param array $config Joomla view configuration.
+     * @return mixed Native or bridged view; null if unavailable.
+     */
     public function createView($name, $prefix = '', $type = '', array $config = [])
     {
         $prefix = $this->normalisePrefix((string) $prefix);
@@ -86,6 +126,19 @@ final class SportsManagementMVCFactory extends MVCFactory
         return parent::createView($name, $prefix, $type, $config);
     }
 
+    /**
+     * Preserve installed administrator layouts missing from the native tmpl tree.
+     *
+     * Checks the requested client, HTML format and safe view identifier before
+     * assigning the legacy template folder to the by-reference MVC config.
+     * Explicit template paths always take precedence.
+     *
+     * @param string $name Requested administrator view.
+     * @param string $prefix Normalised MVC client prefix.
+     * @param string $type Requested document format.
+     * @param array $config Mutable factory options receiving template_path.
+     * @return void
+     */
     private function bridgeAdministratorTemplatePath(string $name, string $prefix, string $type, array &$config): void
     {
         if ($prefix !== 'Administrator' || strtolower($type) !== 'html' || isset($config['template_path']) || !$this->validLegacyName($name)) {
@@ -101,12 +154,33 @@ final class SportsManagementMVCFactory extends MVCFactory
         }
     }
 
+    /**
+     * Validate a legacy MVC class or filesystem path segment.
+     *
+     * Allows only a leading ASCII letter followed by letters, digits or
+     * underscores; rejects empty names, traversal and suffix injection before
+     * legacy PHP files can be resolved.
+     *
+     * @param string $name Untrusted controller, view, model or type name.
+     * @return bool Whether the value is safe as a legacy MVC path segment.
+     */
     private function validLegacyName(string $name): bool
     {
         // Names become filesystem path segments when resolving legacy MVC files.
         return $name !== '' && preg_match('/^[a-zA-Z][a-zA-Z0-9_]*$/D', $name) === 1;
     }
 
+    /**
+     * Load a legacy controller and expose it through the namespaced MVC factory.
+     *
+     * Rejects invalid controller names, boots the matching client, searches
+     * approved component and installed extension paths, and aliases supported
+     * historical class names to Joomla's controller namespace.
+     *
+     * @param string $name Requested legacy controller name.
+     * @param string $prefix Client namespace, Site or Administrator.
+     * @return bool True if a native-compatible controller class was resolved.
+     */
     private function loadLegacyController(string $name, string $prefix): bool
     {
         if (!$this->validLegacyName($name)) {
@@ -153,6 +227,17 @@ final class SportsManagementMVCFactory extends MVCFactory
         return false;
     }
 
+    /**
+     * Resolve an older model implementation through the Joomla 5/6 class alias.
+     *
+     * Validates the model identifier and client path, initialises the legacy
+     * bootstrap, then searches component and extension model files until the
+     * expected namespaced or historic model class becomes available.
+     *
+     * @param string $name Requested legacy model.
+     * @param string $prefix Model client prefix.
+     * @return bool True if a class usable by the MVC factory was resolved.
+     */
     private function loadLegacyModel(string $name, string $prefix): bool
     {
         if (!$this->validLegacyName($name)) {
@@ -194,6 +279,18 @@ final class SportsManagementMVCFactory extends MVCFactory
         return false;
     }
 
+    /**
+     * Prepare a legacy view class when no native implementation was found.
+     *
+     * Validates the view name and output type, boots the relevant site or
+     * administrator view dependencies, includes eligible legacy view files,
+     * and registers their namespace alias for Joomla's view factory.
+     *
+     * @param string $name Legacy view identifier.
+     * @param string $prefix Site or administrator namespace.
+     * @param string $type Requested view format, such as html.
+     * @return string|null Base directory of the matching view, if found.
+     */
     private function loadLegacyView(string $name, string $prefix, string $type): ?string
     {
         if (!$this->validLegacyName($name) || !$this->validLegacyName($type)) {
@@ -236,6 +333,17 @@ final class SportsManagementMVCFactory extends MVCFactory
         return null;
     }
 
+    /**
+     * Enumerate approved component and extension roots for legacy MVC loading.
+     *
+     * Always includes the fixed client component root. For the administrator,
+     * it loads the legacy extension registry and adds existing extension admin
+     * folders only when their names are actual strings matching the directory
+     * whitelist; malformed records cannot trigger PHP 8 conversion warnings.
+     *
+     * @param string $prefix Normalised Site or Administrator prefix.
+     * @return array<string> Unique directories eligible for legacy MVC lookup.
+     */
     private function legacySearchPaths(string $prefix): array
     {
         $basePath = $this->legacyBasePath($prefix);
@@ -269,10 +377,10 @@ final class SportsManagementMVCFactory extends MVCFactory
         }
 
         foreach ((array) $extensions as $extensionName) {
-            $extensionName = (string) $extensionName;
-
-            // Reject invalid extension directory names instead of silently rewriting them.
-            if (!preg_match('/^[A-Za-z0-9_-]+$/D', $extensionName)) {
+            // Invalid extension registry values must not trigger PHP 8's
+            // array-to-string warnings or object conversion failures.
+            if (!is_string($extensionName)
+                || preg_match('/^[A-Za-z0-9_-]+$/D', $extensionName) !== 1) {
                 continue;
             }
 
@@ -289,6 +397,17 @@ final class SportsManagementMVCFactory extends MVCFactory
         return array_values(array_unique($paths));
     }
 
+    /**
+     * Initialise the appropriate compatibility bootstrap for a legacy view.
+     *
+     * Administrator requests load administrator controller/view dependencies;
+     * frontend requests load the site bootstrap, without changing the native
+     * Joomla MVC factory's default selection strategy.
+     *
+     * @param string $prefix Normalised client namespace.
+     * @param string $view View or controller whose dependencies are needed.
+     * @return void
+     */
     private function bootLegacy(string $prefix, string $view): void
     {
         if ($prefix === 'Administrator') {
@@ -300,11 +419,27 @@ final class SportsManagementMVCFactory extends MVCFactory
         SiteLegacyBootstrap::bootForView($view);
     }
 
+    /**
+     * Retrieve the active Joomla application for automatic MVC client selection.
+     *
+     * The current client's identity determines whether legacy unprefixed
+     * requests resolve to administrator or site namespaces.
+     *
+     * @return CMSApplicationInterface Current Joomla CMS application.
+     */
     private static function joomlaApplication(): CMSApplicationInterface
     {
         return Factory::getApplication();
     }
 
+    /**
+     * Resolve Joomla's typed database service for model restoration.
+     *
+     * Uses the central dependency injection container rather than an obsolete
+     * model dbo constructor option.
+     *
+     * @return DatabaseInterface Database service provided by Joomla.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -313,6 +448,16 @@ final class SportsManagementMVCFactory extends MVCFactory
         return $database;
     }
 
+    /**
+     * Convert historical SportsManagement MVC prefixes to Joomla client names.
+     *
+     * Trims separators and whitespace, maps known admin and site aliases and
+     * infers the active application client when an old unqualified
+     * sportsmanagement prefix is used.
+     *
+     * @param string $prefix Incoming legacy or native namespace prefix.
+     * @return string Canonical Administrator or Site prefix when recognised.
+     */
     private function normalisePrefix(string $prefix): string
     {
         $normalised = trim(strtolower(trim($prefix)), '\\');
@@ -330,6 +475,15 @@ final class SportsManagementMVCFactory extends MVCFactory
         };
     }
 
+    /**
+     * Resolve the fixed Joomla component root for a supported MVC client.
+     *
+     * Returns only the installed site or administrator SportsManagement
+     * directory; arbitrary prefixes cannot turn into filesystem paths.
+     *
+     * @param string $prefix Normalised Site or Administrator value.
+     * @return string|null Installed component base path or null if unsupported.
+     */
     private function legacyBasePath(string $prefix): ?string
     {
         return match ($prefix) {
@@ -339,6 +493,16 @@ final class SportsManagementMVCFactory extends MVCFactory
         };
     }
 
+    /**
+     * Supply a model with its SportsManagement database after MVC creation.
+     *
+     * Only models implementing Joomla's DatabaseAwareInterface are updated.
+     * If component database selection fails, Joomla's previously injected
+     * database remains in place so the legacy bridge can still render safely.
+     *
+     * @param mixed $model Model returned by Joomla's factory, if any.
+     * @return void
+     */
     private function restoreSportsManagementDatabase($model): void
     {
         if (!$model instanceof DatabaseAwareInterface) {

@@ -224,3 +224,9 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 - The site and administrator component dispatchers now document each named routing method with its task, input constraints, return value and migration fallback behaviour. Their file headers retain `@version`, `@author`, `@copyright` and `@license`.
 - The native GCalendar module dispatcher registers CSS/JavaScript assets only if absent from the Joomla WebAssetManager registry, then activates them for every rendered calendar instance. The module-specific script options remain keyed to the Joomla module ID.
 - The all-PHP-metadata workflow now runs the named-function PHPDoc gate and PHP syntax lint on the two component dispatchers and GCalendar dispatcher, plus a standalone multi-instance asset reuse regression. Full Joomla 5.4 and Joomla 6 installation/browser tests are still pending.
+
+## Administrator MVC factory PHPDoc and extension-name type safety (14 November 2026)
+
+- All fifteen methods of the native-first administrator `SportsManagementMVCFactory` now describe their purpose, routing constraints, parameters and return values, including its retained site/admin legacy controller, model, view and template lookup paths.
+- The legacy extension directory list rejects non-string values before regular-expression validation. Invalid array/object records no longer trigger PHP 8 warnings or conversion errors when resolving administrator MVC fallbacks.
+- A framework-independent regression exercises the extension list with valid and malformed registry values. The all-PHP-metadata workflow also performs syntax lint and the descriptive PHPDoc audit on the MVC factory; installed Joomla integration checks remain outstanding.

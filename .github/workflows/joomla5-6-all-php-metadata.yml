@@ -40,6 +40,13 @@ jobs:
       - name: Verify repeatable native GCalendar web asset registration
         run: php .github/tests/joomla56_gcalendar_asset_reuse.php
 
+      - name: Validate native-first MVC factory method documentation and extension names
+        run: |
+          php .github/scripts/check-php-function-docs.php admin/src/Service/SportsManagementMVCFactory.php
+          php -l admin/src/Service/SportsManagementMVCFactory.php
+          php -l .github/tests/joomla56_mvc_extension_name_types.php
+          php .github/tests/joomla56_mvc_extension_name_types.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
