@@ -25,6 +25,7 @@ final class ImagehandlerModel extends BaseDatabaseModel
 {
     private ?Pagination $pagination = null;
     private ?array $imageList = null;
+    private bool $invalidFolder = false;
 
     /**
      * Resolve Joomla's active frontend application through the native resolver.
@@ -87,15 +88,18 @@ final class ImagehandlerModel extends BaseDatabaseModel
     /**
      * Set and validate the image folder, invalidating cached results.
      *
-     * Rejects traversal segments and unsupported folder characters, resetting
-     * cached image and pagination results whenever a different folder is selected.
+     * Rejects traversal segments and unsupported folder characters without
+     * ever reverting invalid input to the root folder. Resets cached image
+     * and pagination results whenever a different folder is selected.
      *
      * @param string $folder Relative folder beneath the component image directory.
      * @return void
      */
     public function setFolder(string $folder): void
     {
-        $this->setState('folder', $this->normaliseFolder($folder) ?? '');
+        $normalised = $this->normaliseFolder($folder);
+        $this->invalidFolder = $normalised === null;
+        $this->setState('folder', $normalised ?? '');
         $this->imageList = null;
         $this->pagination = null;
     }
@@ -175,6 +179,12 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         if ($this->imageList !== null) {
             return $this->imageList;
+        }
+
+        // Never turn a rejected folder selector into the media-root listing.
+        if ($this->invalidFolder) {
+            $this->setState('total', 0);
+            return $this->imageList = [];
         }
 
         $folder = $this->normaliseFolder((string) $this->getState('folder', ''));
