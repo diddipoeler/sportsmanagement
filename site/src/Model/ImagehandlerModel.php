@@ -26,11 +26,30 @@ final class ImagehandlerModel extends BaseDatabaseModel
     private ?Pagination $pagination = null;
     private ?array $imageList = null;
 
+    /**
+     * Resolve Joomla's active frontend application through the native resolver.
+     *
+     * Keeps the image selection model independent from legacy global Joomla
+     * factories and enforces use of the site application.
+     *
+     * @return CMSApplicationInterface Valid Joomla application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
+    /**
+     * Initialise the image selector from filtered Joomla request state.
+     *
+     * Reads the requested folder, search term and page limits, uses Joomla's
+     * user-state compatibility behaviour, and normalises the requested folder
+     * before any filesystem access.
+     *
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional native MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -65,6 +84,15 @@ final class ImagehandlerModel extends BaseDatabaseModel
         $this->setFolder($input->getString('folder', ''));
     }
 
+    /**
+     * Set and validate the image folder, invalidating cached results.
+     *
+     * Rejects traversal segments and unsupported folder characters, resetting
+     * cached image and pagination results whenever a different folder is selected.
+     *
+     * @param string $folder Relative folder beneath the component image directory.
+     * @return void
+     */
     public function setFolder(string $folder): void
     {
         $this->setState('folder', $this->normaliseFolder($folder) ?? '');
@@ -72,6 +100,15 @@ final class ImagehandlerModel extends BaseDatabaseModel
         $this->pagination = null;
     }
 
+    /**
+     * Prepare the current page of images for the Joomla selector view.
+     *
+     * Slices the validated file listing according to request pagination and reads
+     * image dimensions and file sizes. Uses a safe preview box for SVG or other
+     * supported formats without readily available dimensions.
+     *
+     * @return array<int,object> Image objects with file sizes and thumbnail dimensions.
+     */
     public function getImages(): array
     {
         $list = $this->getList();
@@ -124,6 +161,16 @@ final class ImagehandlerModel extends BaseDatabaseModel
         return $page;
     }
 
+    /**
+     * List only image files within the component's real filesystem root.
+     *
+     * Verifies both lexical and canonical directory boundaries so symlinked
+     * folders cannot escape the component's image directory. Filters unsupported
+     * file extensions and resolves each filename before reading metadata, while
+     * maintaining the existing Joomla search and pagination state.
+     *
+     * @return array<int,object> Safe image filename and path records.
+     */
     public function getList(): array
     {
         if ($this->imageList !== null) {
@@ -151,6 +198,19 @@ final class ImagehandlerModel extends BaseDatabaseModel
             return $this->imageList = [];
         }
 
+        // Lexical path checks alone cannot detect symlinked directories.
+        // Resolve the real folder and root to forbid escapes outside the
+        // image selector's intended Joomla media directory.
+        $realRoot = realpath($baseRoot);
+        $realFolder = realpath($basePath);
+
+        if ($realRoot === false || $realFolder === false
+            || ($realFolder !== $realRoot
+                && !str_starts_with($realFolder, rtrim($realRoot, '/\\') . DIRECTORY_SEPARATOR))) {
+            $this->setState('total', 0);
+            return $this->imageList = [];
+        }
+
         $files = Folder::files($basePath);
         $search = (string) $this->getState('search', '');
         $images = [];
@@ -161,14 +221,21 @@ final class ImagehandlerModel extends BaseDatabaseModel
 
             if ($file === ''
                 || str_starts_with($file, '.')
+                || strpbrk($file, '/\\') !== false
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $file) === 1
                 || in_array($lower, ['index.html', 'thumbs.db', 'readme.txt'], true)
+                || preg_match('/\\.(?:jpe?g|jfif|png|gif|webp|svg|avif|bmp|ico)$/iD', $file) !== 1
                 || ($search !== '' && !str_contains($lower, $search))) {
                 continue;
             }
 
             $path = Path::clean($basePath . DIRECTORY_SEPARATOR . $file);
+            $realFile = realpath($path);
 
-            if (!is_file($path)) {
+            // Do not follow symlinked image names to private files outside
+            // the configured component media directory.
+            if ($realFile === false || !is_file($realFile)
+                || !str_starts_with($realFile, rtrim($realRoot, '/\\') . DIRECTORY_SEPARATOR)) {
                 continue;
             }
 
@@ -187,6 +254,14 @@ final class ImagehandlerModel extends BaseDatabaseModel
         return $this->imageList = $images;
     }
 
+    /**
+     * Return the cached Joomla pagination descriptor for the image list.
+     *
+     * Constructs it from the total validated image count, current page offset and
+     * nonzero page size, caching the result until the folder changes.
+     *
+     * @return Pagination Current Joomla pagination object.
+     */
     public function getPagination(): Pagination
     {
         if ($this->pagination === null) {
@@ -200,6 +275,15 @@ final class ImagehandlerModel extends BaseDatabaseModel
         return $this->pagination;
     }
 
+    /**
+     * Format image byte counts into legacy selector size labels.
+     *
+     * Normalises negative and non-integer inputs to nonnegative byte counts and
+     * formats larger values in KiB and MiB with two decimal places.
+     *
+     * @param mixed $size File size in bytes.
+     * @return string Human-readable size using bytes, Kb or Mb.
+     */
     public function _parseSize($size): string
     {
         $size = max(0, (int) $size);
@@ -215,6 +299,17 @@ final class ImagehandlerModel extends BaseDatabaseModel
         return sprintf('%01.2f', $size / (1024.0 * 1024)) . ' Mb';
     }
 
+    /**
+     * Calculate dimensions that fit a fixed thumbnail bounding box.
+     *
+     * Converts incoming dimensions to positive integers, scales the longest axis
+     * to at most the requested maximum and preserves the aspect ratio.
+     *
+     * @param mixed $width Source image width.
+     * @param mixed $height Source image height.
+     * @param mixed $target Maximum thumbnail dimension.
+     * @return array{0:int,1:int} Rescaled width and height.
+     */
     public function _imageResize($width, $height, $target): array
     {
         $width = max(1, (int) $width);
@@ -228,6 +323,16 @@ final class ImagehandlerModel extends BaseDatabaseModel
         ];
     }
 
+    /**
+     * Validate a relative image subdirectory without filesystem access.
+     *
+     * Converts backslash separators for compatibility, rejects NUL bytes, empty
+     * path segments, dot traversal and unsupported filename characters, then
+     * returns a normalised relative folder or null for invalid input.
+     *
+     * @param string $folder Untrusted folder selection.
+     * @return string|null Normalised folder path, or null if invalid.
+     */
     private function normaliseFolder(string $folder): ?string
     {
         $folder = trim(str_replace('\\', '/', $folder), '/');
