@@ -59,6 +59,18 @@ final class Dispatcher extends ComponentDispatcher
     ];
     private const LEGACY_DEFAULT_VIEWS = ['club', 'league', 'playground', 'position', 'rosterposition', 'team'];
 
+    /**
+     * Dispatch an administrator request through Joomla 5/6 or the legacy bridge.
+     *
+     * Enforces the administrator client and component management permission,
+     * validates route selectors, then delegates migrated CRUD tasks and views
+     * to the native MVC stack. Adds the control-panel back link on native list
+     * pages; unported operations remain available through the legacy entry.
+     *
+     * @return void
+     * @throws \RuntimeException If the client, permission or legacy entry is unavailable.
+     * @throws \InvalidArgumentException If a route identifier is malformed.
+     */
     public function dispatch()
     {
         if (!$this->app instanceof AdministratorApplication || !$this->app->isClient('administrator')) {
@@ -101,6 +113,11 @@ final class Dispatcher extends ComponentDispatcher
      *
      * Joomla's getCmd() silently removes invalid characters; accepting the
      * transformed value could select a different controller, view or layout.
+     *
+     * @param string $key Joomla input key to inspect.
+     * @param string $default Default command identifier.
+     * @return string Lowercase, validated command identifier.
+     * @throws \InvalidArgumentException If the selector is not a valid string.
      */
     private function validatedIdentifier(string $key, string $default): string
     {
@@ -119,6 +136,17 @@ final class Dispatcher extends ComponentDispatcher
         return strtolower($filtered);
     }
 
+    /**
+     * Classify administrator write actions eligible for native controller routing.
+     *
+     * Accepts migrated specialist operations, dedicated CRUD controllers, or
+     * explicitly permitted actions on standard and list controllers. Other
+     * requests and non-HTML formats are left to the compatibility dispatcher.
+     *
+     * @param string $task Normalised controller.action identifier.
+     * @param string $format Requested response format.
+     * @return bool True only for supported native administrator actions.
+     */
     private function isModernCrudTask(string $task, string $format): bool
     {
         if ($format !== 'html' || $task === 'display') return false;
@@ -131,6 +159,19 @@ final class Dispatcher extends ComponentDispatcher
         return false;
     }
 
+    /**
+     * Detect migrated administrator edit-form display requests.
+     *
+     * Restricts native edit rendering to the expected display controller,
+     * the HTML format, the edit layout and a named allowlist of forms.
+     *
+     * @param string $task Normalised Joomla task.
+     * @param string $view Requested edit view.
+     * @param string $controller Explicit controller name, when present.
+     * @param string $layout Requested layout identifier.
+     * @param string $format Output format.
+     * @return bool True when the request targets a migrated edit form.
+     */
     private function isModernEditDisplay(string $task, string $view, string $controller, string $layout, string $format): bool
     {
         if ($task !== 'display' || $layout !== 'edit' || $format !== 'html') return false;
@@ -138,6 +179,21 @@ final class Dispatcher extends ComponentDispatcher
         return in_array($view, self::NATIVE_EDIT_VIEWS, true);
     }
 
+    /**
+     * Decide whether Joomla's native dispatcher can render an administrator view.
+     *
+     * Applies view-specific layout allowlists for match, round, project and
+     * player screens, excludes views deliberately handled by legacy controllers,
+     * and requires either the installed compatibility view or a native view
+     * class before enabling the MVC factory's migration bridge.
+     *
+     * @param string $task Normalised Joomla task.
+     * @param string $view Requested administrator view.
+     * @param string $controller Explicit controller selector.
+     * @param string $layout Requested layout name.
+     * @param string $format Output format.
+     * @return bool True if the native/compatibility MVC stack can serve the view.
+     */
     private function isModernDisplayRequest(string $task, string $view, string $controller, string $layout, string $format): bool
     {
         if ($task !== 'display' || $format !== 'html') return false;
@@ -173,6 +229,16 @@ final class Dispatcher extends ComponentDispatcher
         return is_file($legacyView) || class_exists($nativeView);
     }
 
+    /**
+     * Invoke the retained administrator component entry point for legacy tasks.
+     *
+     * Uses Joomla's fixed administrator component directory and refuses to
+     * include a missing file, keeping older management screens reachable while
+     * individual controllers are migrated.
+     *
+     * @return void
+     * @throws \RuntimeException If the legacy entry point is not installed.
+     */
     private function dispatchLegacy(): void
     {
         $legacyEntryPoint = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/sportsmanagement.php';

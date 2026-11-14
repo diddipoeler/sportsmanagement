@@ -93,6 +93,18 @@ final class Dispatcher extends ComponentDispatcher
         ],
     ];
 
+    /**
+     * Route the current frontend request to native Joomla MVC or the legacy bridge.
+     *
+     * Checks that a site application is active, validates request identifiers,
+     * maps the historical predictionuser view alias and selects the migrated
+     * controller/view only for supported tasks, layouts and output formats.
+     * All other valid requests continue through the legacy entry point.
+     *
+     * @return void
+     * @throws \RuntimeException If called outside the site or the legacy entry point is missing.
+     * @throws \InvalidArgumentException If a request identifier is malformed.
+     */
     public function dispatch()
     {
         if (!$this->app instanceof SiteApplication || !$this->app->isClient('site')) {
@@ -133,6 +145,11 @@ final class Dispatcher extends ComponentDispatcher
      *
      * Joomla's getCmd() silently removes invalid characters; accepting the
      * transformed value could select a different controller, view or layout.
+     *
+     * @param string $key Joomla input key to validate.
+     * @param string $default Default identifier when the key is absent.
+     * @return string Lowercase, unmodified command identifier.
+     * @throws \InvalidArgumentException If the value is not a string or fails filtering.
      */
     private function validatedIdentifier(string $key, string $default): string
     {
@@ -151,6 +168,17 @@ final class Dispatcher extends ComponentDispatcher
         return strtolower($filtered);
     }
 
+    /**
+     * Determine whether the request names an explicitly migrated controller action.
+     *
+     * JSON AJAX actions and HTML form actions have separate allowlists so
+     * unported tasks and unsupported output formats cannot reach a native
+     * controller accidentally.
+     *
+     * @param string $task Normalised Joomla task identifier.
+     * @param string $format Normalised requested response format.
+     * @return bool True when the task and format are supported by native MVC.
+     */
     private function isModernTask(string $task, string $format): bool
     {
         if ($format === 'json' && in_array($task, self::NATIVE_JSON_TASKS, true)) {
@@ -160,6 +188,20 @@ final class Dispatcher extends ComponentDispatcher
         return $format === 'html' && in_array($task, self::NATIVE_SPECIAL_TASKS, true);
     }
 
+    /**
+     * Select native rendering only for available Joomla 5/6 frontend view classes.
+     *
+     * Requires the default display task and controller, a supported HTML/raw/PDF
+     * format, and either the default layout or an explicitly migrated HTML
+     * layout for that view. A missing native view retains the legacy path.
+     *
+     * @param string $task Requested Joomla task.
+     * @param string $view Selected frontend view name.
+     * @param string $controller Explicit controller selector, if supplied.
+     * @param string $layout Requested template layout.
+     * @param string $format Output document format.
+     * @return bool True when the corresponding native view can handle the request.
+     */
     private function isModernDisplayRequest(string $task, string $view, string $controller, string $layout, string $format): bool
     {
         if ($view === '' || $task !== 'display' || !in_array($format, self::MODERN_FORMATS, true)) {
@@ -183,6 +225,17 @@ final class Dispatcher extends ComponentDispatcher
         return class_exists($nativeView);
     }
 
+    /**
+     * Execute the retained frontend compatibility entry point.
+     *
+     * Resolves the component path from Joomla's fixed site directory rather
+     * than request data and fails with a controlled exception if the file is
+     * missing. This keeps unported frontend operations accessible during
+     * incremental migration.
+     *
+     * @return void
+     * @throws \RuntimeException If the legacy component entry point is absent.
+     */
     private function dispatchLegacy(): void
     {
         $legacyEntryPoint = JPATH_SITE . '/components/com_sportsmanagement/sportsmanagement.php';

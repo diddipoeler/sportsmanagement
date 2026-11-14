@@ -26,7 +26,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Build calendar event data and frontend script options.
      *
-     * Queries the helper through Joomla's database service, preserves framework layout variables, and registers calendar CSS, JavaScript and instance-specific configuration.
+     * Queries the helper through Joomla's database service, preserves framework layout variables, and registers calendar CSS, JavaScript and instance-specific configuration. Assets are reused across repeated module instances on the same document.
      *
      * @return array|false Render variables, or false when skipped.
      * @throws \RuntimeException When the application is not the site client.
@@ -57,20 +57,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $moduleId = max(0, (int) ($data['module']->id ?? 0));
         $document = $app->getDocument();
         if ($document instanceof HtmlDocument) {
-            $assets = $document->getWebAssetManager();
-    
-            $assets->registerAndUseStyle(
-                'mod_sportsmanagement_gcalendar.calendar',
-                'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css',
-                ['version' => 'auto']
-            );
-            $assets->registerAndUseScript(
-                'mod_sportsmanagement_gcalendar.calendar',
-                'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js',
-                ['version' => 'auto'],
-                ['defer' => true]
-            );
-    
+            // Shared assets are registered once even when multiple calendar modules render.
+            $this->registerCalendarAssets($document);
+
             $document->addScriptOptions(
                 'mod_sportsmanagement_gcalendar.' . $moduleId,
                 is_array($data['calendarConfig'] ?? null) ? $data['calendarConfig'] : []
@@ -80,6 +69,45 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $data['calendarOptionsKey'] = 'mod_sportsmanagement_gcalendar.' . $moduleId;
 
         return $data;
+    }
+
+
+    /**
+     * Register the GCalendar stylesheet and script once per Joomla document.
+     *
+     * Joomla may render several calendar module instances on the same page.
+     * Reuses assets already present in the WebAssetManager registry and marks
+     * them as used for every instance, retaining deferred JavaScript loading
+     * and cache-aware URLs without overriding an existing registration.
+     *
+     * @param HtmlDocument $document Current HTML document with its asset manager.
+     * @return void
+     */
+    private function registerCalendarAssets(HtmlDocument $document): void
+    {
+        $assets = $document->getWebAssetManager();
+        $name = 'mod_sportsmanagement_gcalendar.calendar';
+
+        if (!$assets->assetExists('style', $name)) {
+            $assets->registerStyle(
+                $name,
+                'modules/mod_sportsmanagement_gcalendar/tmpl/gcalendar.css',
+                ['version' => 'auto']
+            );
+        }
+
+        $assets->useStyle($name);
+
+        if (!$assets->assetExists('script', $name)) {
+            $assets->registerScript(
+                $name,
+                'modules/mod_sportsmanagement_gcalendar/js/gcalendar.js',
+                ['version' => 'auto'],
+                ['defer' => true]
+            );
+        }
+
+        $assets->useScript($name);
     }
 
     /**

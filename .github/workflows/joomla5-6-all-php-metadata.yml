@@ -27,6 +27,19 @@ jobs:
       - name: Audit file-level PHPDoc metadata in site, admin, modules and installer
         run: php .github/tests/phpdoc_metadata.php --all
 
+      - name: Validate native dispatchers and GCalendar function documentation
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Dispatcher/Dispatcher.php \
+            admin/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+          php -l site/src/Dispatcher/Dispatcher.php
+          php -l admin/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+
+      - name: Verify repeatable native GCalendar web asset registration
+        run: php .github/tests/joomla56_gcalendar_asset_reuse.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
