@@ -182,3 +182,7 @@ The existing Matches media regression now composes NativeQueryTrait, NativeForma
 The isolated `joomla56_matches_create_query.php` regression now loads `NativeQueryTrait` alongside `NativeFormatTrait` and `NativeLinkTrait`, exactly as the native MatchesHelper does. Referee and neighboring-match lookups can therefore invoke the shared, bounded ID validators without PHP undefined-method errors. This is a test harness correction; production query or formatting APIs are unchanged.
 
 The Joomla-native query-factory fixture was also extended with fluent `whereIn()` and typed `bind()` methods and `ParameterType::INTEGER`, because referee and adjacent-match queries use those supported methods on Joomla 5/6. Previously these missing test doubles caused false failures before the actual `createQuery()` assertions could execute.
+
+### Matches selector decimal validation without ext-ctype
+
+`NativeQueryTrait::ids()` uses an ASCII decimal regular expression with a 256-byte token limit rather than `ctype_digit()`, retaining its positive-ID, deduplication and overflow checks while avoiding a dependency on PHP's optional ctype extension. This resolves the module's `php -n` database-selector regression without modifying SQL selector semantics.

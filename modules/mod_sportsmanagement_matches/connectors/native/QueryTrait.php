@@ -244,7 +244,9 @@ trait NativeQueryTrait
      * Extract unique positive integers from module selector settings.
      * Accept integer/string scalar and multi-select values, split whitespace,
      * comma or semicolon lists, and reject booleans, nested arrays, zero and
-     * overflowing values before database queries.
+     * overflowing values before database queries. Restricts each token to
+     * 256 ASCII decimal digits and does not require the optional ctype PHP
+     * extension, allowing the CLI regression to run under php -n.
      * @param mixed $value Raw project, team or club selector.
      * @return array<int,int> Unique validated positive integers.
      */
@@ -261,7 +263,9 @@ trait NativeQueryTrait
             }
 
             foreach (preg_split('/[\s,;]+/', (string) $candidate, -1, PREG_SPLIT_NO_EMPTY) ?: [] as $part) {
-                if (!ctype_digit($part)) {
+                // Match ASCII decimal IDs without depending on ext-ctype,
+                // which is not loaded during PHP -n portability checks.
+                if (strlen($part) > 256 || preg_match('/^[0-9]+$/D', $part) !== 1) {
                     continue;
                 }
 
