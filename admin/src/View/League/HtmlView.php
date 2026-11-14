@@ -18,6 +18,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
@@ -34,6 +35,20 @@ final class HtmlView extends BaseHtmlView
     public ?Form $extendeduser = null;
     public ?Form $logoHistoryForm = null;
 
+    /**
+     * Prepare and render the Joomla 5/6 administrator league editor.
+     *
+     * Loads the active league form and record, resets legacy placeholder
+     * dates, populates request-scoped sports and age-group selectors, and
+     * attaches logo history and optional extended forms. Registers editor
+     * assets and toolbar actions before delegating to Joomla's HTML view.
+     * Internal model errors are logged by count rather than exposed as SQL
+     * statements or filesystem details in an administrator error page.
+     *
+     * @param mixed $tpl Optional Joomla layout template override.
+     * @return void
+     * @throws \RuntimeException When the league form or model fails to load.
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -44,7 +59,13 @@ final class HtmlView extends BaseHtmlView
         $this->state = $this->get('State');
 
         if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
+            // Model errors may include SQL or driver details: keep them private.
+            Log::add(
+                __METHOD__ . ': league model reported ' . count((array) $errors) . ' errors.',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
         }
 
         if (!$this->form) {
@@ -119,6 +140,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Enable native validation and the league editor's JavaScript asset.
+     *
+     * Only HTML documents receive assets. Multiple editor instances may
+     * share a document, so the script is registered once with its Joomla core
+     * and form validation dependencies, then activated for each render.
+     *
+     * @return void
+     */
     private function registerLeagueScript(): void
     {
         $document = $this->getDocument();
@@ -129,15 +159,35 @@ final class HtmlView extends BaseHtmlView
 
         $assets = $document->getWebAssetManager();
         $assets->useScript('form.validate');
-        $assets->registerAndUseScript(
-            'com_sportsmanagement.admin.league',
-            'administrator/components/com_sportsmanagement/assets/js/league.js',
-            ['version' => 'auto'],
-            ['defer' => true],
-            ['core', 'form.validate']
-        );
+
+        $assetName = 'com_sportsmanagement.admin.league';
+
+        if (!$assets->assetExists('script', $assetName)) {
+            $assets->registerScript(
+                $assetName,
+                'administrator/components/com_sportsmanagement/assets/js/league.js',
+                ['version' => 'auto'],
+                ['defer' => true],
+                ['core', 'form.validate']
+            );
+        }
+
+        $assets->useScript($assetName);
     }
 
+    /**
+     * Load one optional league-specific extended configuration form.
+     *
+     * Checks the XML definition, parses previously saved Registry values and
+     * binds them through Joomla's FormFactoryInterface. When malformed XML
+     * or stored data triggers an exception, logs only the exception class,
+     * displays a generic warning and keeps the main league editor usable.
+     *
+     * @param string $group Extended configuration group identifier.
+     * @param string $path Installed XML form definition path.
+     * @param string $stored Saved JSON or Registry configuration.
+     * @return Form|null Bound extended form or null when unavailable.
+     */
     private function loadExtendedForm(string $group, string $path, string $stored): ?Form
     {
         if (!is_file($path)) {
@@ -164,12 +214,29 @@ final class HtmlView extends BaseHtmlView
 
             return $form;
         } catch (\Throwable $e) {
-            self::administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
+            Log::add(
+                __METHOD__ . ': optional league form unavailable (' . get_class($e) . ').',
+                Log::WARNING,
+                'com_sportsmanagement'
+            );
+            self::administratorApplication()->enqueueMessage(
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'warning'
+            );
 
             return null;
         }
     }
 
+    /**
+     * Load the optional league logo-history form from the administrator.
+     *
+     * Creates a Joomla form only when the packaged XML exists, and returns
+     * null after an isolated error instead of exposing internal exception
+     * messages to administrators.
+     *
+     * @return Form|null Logo-history form, if safely constructed.
+     */
     private function loadLogoHistoryForm(): ?Form
     {
         $path = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms/leaguelogohistory.xml';
@@ -186,12 +253,29 @@ final class HtmlView extends BaseHtmlView
 
             return $form->loadFile($path, false) ? $form : null;
         } catch (\Throwable $e) {
-            self::administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
+            Log::add(
+                __METHOD__ . ': optional league form unavailable (' . get_class($e) . ').',
+                Log::WARNING,
+                'com_sportsmanagement'
+            );
+            self::administratorApplication()->enqueueMessage(
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'warning'
+            );
 
             return null;
         }
     }
 
+    /**
+     * Resolve and validate Joomla's active administrator application.
+     *
+     * Retrieves the typed AdministratorApplication from the service
+     * container and prevents league editing under other Joomla clients.
+     *
+     * @return AdministratorApplication Active Joomla administrator client.
+     * @throws \RuntimeException When called outside the backend.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -204,6 +288,16 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Create a new league-related form using Joomla's injected form factory.
+     *
+     * The shared form factory preserves core Joomla 5/6 form events and
+     * service configuration for extended league and logo-history forms.
+     *
+     * @param string $name Unique Joomla form identifier.
+     * @param array $options Creation options including the control group.
+     * @return Form Form instance ready to load its XML definition.
+     */
     private function createForm(string $name, array $options): Form
     {
         return Factory::getContainer()

@@ -253,3 +253,9 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 - The shared site image folder helper now rejects non-string, non-integer, empty, traversal, malformed and oversized legacy event folder names before building upload/delete directory paths. Explicitly mapped league, team and club folders retain their original paths; safe unknown event folders continue to resolve below `events/`.
 - The native Ranking module activates its stylesheet on every render but registers it only once per Joomla WebAssetManager document, preventing duplicate asset declarations when two Ranking modules appear on the same page. A dedicated PHP regression covers two registrations, and the existing image selector regression now tests both case variants in one process plus malformed folder types.
 - New CI assertions lint the changed PHP files and verify descriptive PHPDoc; Joomla 5/6 installation and browser integration testing remain pending.
+
+## Native administrator League editor privacy and script reuse (14 November 2026)
+
+- The native administrator league edit view now documents all six named methods, including load/bind behavior, optional forms, asset registration and application resolution. Joomla form factory failures and model error strings can include SQL statements; these are no longer exposed in backend alerts or unhandled model exceptions. Logs retain exception classes or model error counts only, while the UI displays a generic translated warning.
+- League editor JavaScript is registered only once per HTML document, retaining its `core` and `form.validate` dependencies for repeated editor renders.
+- A PHP 8.3 CI regression covers optional forms that throw SQL-bearing exceptions, model error redaction, and two script activations on the same Joomla document. Full installed Joomla UI testing is still pending.

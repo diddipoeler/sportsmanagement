@@ -80,6 +80,13 @@ jobs:
           php .github/scripts/check-php-function-docs.php modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php
           php .github/tests/joomla56_ranking_asset_reuse.php
 
+      - name: Verify administrator league editor error privacy and repeatable assets
+        run: |
+          php -l admin/src/View/League/HtmlView.php
+          php -l .github/tests/joomla56_admin_league_view_runtime.php
+          php .github/scripts/check-php-function-docs.php admin/src/View/League/HtmlView.php
+          php .github/tests/joomla56_admin_league_view_runtime.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
