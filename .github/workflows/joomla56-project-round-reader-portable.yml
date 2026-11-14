@@ -1,0 +1,37 @@
+name: Joomla 5/6 project round reader portability
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/ProjectRoundReader.php'
+      - '.github/tests/joomla56_project_round_reader_portable.php'
+      - '.github/workflows/joomla56-project-round-reader-portable.yml'
+  pull_request:
+    paths:
+      - 'site/src/Model/ProjectRoundReader.php'
+      - '.github/tests/joomla56_project_round_reader_portable.php'
+      - '.github/workflows/joomla56-project-round-reader-portable.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: none
+      - name: Check PHPDoc, source syntax and file metadata
+        run: |
+          php .github/scripts/check-php-function-docs.php site/src/Model/ProjectRoundReader.php .github/tests/joomla56_project_round_reader_portable.php
+          php .github/tests/phpdoc_metadata.php site/src/Model/ProjectRoundReader.php
+          php -l site/src/Model/ProjectRoundReader.php
+          php -l .github/tests/joomla56_project_round_reader_portable.php
+      - name: Verify round selection portability and read-only behavior
+        run: php .github/tests/joomla56_project_round_reader_portable.php
