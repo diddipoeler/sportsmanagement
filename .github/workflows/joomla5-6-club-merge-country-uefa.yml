@@ -8,6 +8,8 @@ name: Joomla 5/6 club merge roster country UEFA guards
       - 'admin/src/Model/TeamplayerModel.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php'
       - '.github/tests/joomla56_club_merge_roster_country_uefa.php'
+      - '.github/tests/joomla56_club_roster_firstleague_guard.php'
+      - '.github/tests/joomla56_match_roster_birthday_scope.php'
       - '.github/workflows/joomla5-6-club-merge-country-uefa.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -16,6 +18,8 @@ name: Joomla 5/6 club merge roster country UEFA guards
       - 'admin/src/Model/TeamplayerModel.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php'
       - '.github/tests/joomla56_club_merge_roster_country_uefa.php'
+      - '.github/tests/joomla56_club_roster_firstleague_guard.php'
+      - '.github/tests/joomla56_match_roster_birthday_scope.php'
       - '.github/workflows/joomla5-6-club-merge-country-uefa.yml'
 
 permissions:
@@ -43,6 +47,8 @@ jobs:
             admin/src/Model/TeamplayerModel.php
             modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php
             .github/tests/joomla56_club_merge_roster_country_uefa.php
+            .github/tests/joomla56_club_roster_firstleague_guard.php
+            .github/tests/joomla56_match_roster_birthday_scope.php
           )
           for file in "${files[@]}"; do php -l "$file"; done
           php .github/tests/phpdoc_metadata.php "${files[@]}"
