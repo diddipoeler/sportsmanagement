@@ -109,7 +109,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
          * @param bool $loadData Whether to load existing database data.
          * @return ClubTestForm Mutable club edit form.
          */
-        public function getForm($data = [], $loadData = true): ClubTestForm
+        public function getForm($data = [], $loadData = true)
         {
             return $this->clubForm;
         }
