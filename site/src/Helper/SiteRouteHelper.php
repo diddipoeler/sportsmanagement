@@ -52,7 +52,9 @@ final class SiteRouteHelper
      * view and menu Itemid before delegating query encoding to Joomla's Uri
      * and Route services. An invalid view in a generic component query raises
      * an exception rather than producing nested view[] query parameters or
-     * an unintended route. Other component route parameters remain unchanged.
+     * an unintended route. Explicit null or malformed component options
+     * also fail closed rather than silently switching the destination.
+     * Other component route parameters remain unchanged.
      *
      * @param array<string,mixed> $parameters Route query components.
      * @return string Joomla frontend URL.
@@ -62,7 +64,7 @@ final class SiteRouteHelper
     {
         // A component route needs an explicit, scalar option. Do not let
         // malformed nested input become an option[] query parameter.
-        $option = $parameters['option'] ?? 'com_sportsmanagement';
+        $option = array_key_exists('option', $parameters) ? $parameters['option'] : 'com_sportsmanagement';
 
         // Invalid explicit component names must not silently route visitors to
         // SportsManagement instead of the component requested by the caller.
