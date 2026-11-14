@@ -73,9 +73,9 @@ namespace {
 
     foreach ([
         [0, 0], [1, 1], ['0007', 7], ['000', 0],
-        [-1, 0], ['-1', 0], [true, 0], [false, 0],
-        [['7'], 0], [[], 0], ['7garbage', 0], ['1.4', 0],
-        ['99999999999999999999999999', 0],
+        [-1, null], ['-1', null], [true, null], [false, null],
+        [['7'], null], [[], null], ['7garbage', null], ['1.4', null],
+        ['99999999999999999999999999', null],
     ] as [$value, $expected]) {
         if ($selector->invoke(null, $value) !== $expected) {
             throw new \RuntimeException('Invalid club birthday database selector: ' . var_export($value, true));
@@ -143,6 +143,8 @@ namespace {
     }
 
     \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$failResolve = false;
+
+    // Invalid selectors do not open the primary database as a fallback.
     $result = $helper->getData(
         new \Joomla\Registry\Registry(['cfg_which_database' => ['invalid'], 'mode' => 'bad']),
         $app,
@@ -150,12 +152,33 @@ namespace {
     );
 
     if ($result !== ['clubs' => [], 'mode' => 'L']
+        || $db->queries !== 0
+        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 7
+        || count(\Joomla\CMS\Log\Log::$errors) !== 1) {
+        throw new \RuntimeException('Invalid club birthday database selector must fail closed.');
+    }
+
+    // A valid database selector can still encounter a failed query.
+    $result = $helper->getData(
+        new \Joomla\Registry\Registry(['cfg_which_database' => 0, 'mode' => 'bad']),
+        $app,
+        $db
+    );
+
+    if ($result !== ['clubs' => [], 'mode' => 'L']
         || $db->queries !== 1
         || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 0
-        || count(\Joomla\CMS\Log\Log::$errors) !== 2
-        || !str_contains(\Joomla\CMS\Log\Log::$errors[0][0], 'password=secret')
-        || !str_contains(\Joomla\CMS\Log\Log::$errors[1][0], 'password=hidden')) {
-        throw new \RuntimeException('Club birthday SQL errors were not isolated in server logs.');
+        || count(\Joomla\CMS\Log\Log::$errors) !== 2) {
+        throw new \RuntimeException('Club birthday query failure reached public rendering.');
+    }
+
+    foreach (\Joomla\CMS\Log\Log::$errors as [$message, $level, $category]) {
+        if (!str_contains($message, 'RuntimeException')
+            || str_contains($message, 'password=secret')
+            || str_contains($message, 'password=hidden')
+            || str_contains($message, 'SQLSTATE')) {
+            throw new \RuntimeException('Club birthday logs must not contain database credentials.');
+        }
     }
 
     echo "Club birthday database resolution and query failure paths passed.\n";
