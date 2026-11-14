@@ -30,8 +30,10 @@ final class ExtendedFormHelper
      * Restricts the form definition to the component's extended assets,
      * resolves Joomla's form factory and binds the supplied Registry
      * values after loading its XML. Returns false when the definition
-     * cannot be located or loaded. Rejects unsafe form identifiers and logs
-     * failures privately rather than exposing parser details in site HTML.
+     * cannot be located or loaded. Rejects unsafe form identifiers, limits
+     * resolution to the real extended XML directory and refuses symlinks
+     * escaping that directory. Logs parser failures privately rather than
+     * exposing exception messages in site HTML.
      *
      * @param string $data Optional serialised form values.
      * @param string $file Extended form definition name, without .xml.
@@ -46,10 +48,15 @@ final class ExtendedFormHelper
             return false;
         }
 
-        $xmlFile = JPATH_ADMINISTRATOR
-            . '/components/com_sportsmanagement/assets/extended/' . $file . '.xml';
+        $root = realpath(JPATH_ADMINISTRATOR
+            . '/components/com_sportsmanagement/assets/extended');
+        $xmlFile = $root === false ? false : realpath($root . DIRECTORY_SEPARATOR . $file . '.xml');
 
-        if (!is_file($xmlFile)) {
+        // A valid filename can still name a symlink to another directory.
+        // Only load definitions whose canonical paths stay inside the
+        // component's extended form asset directory.
+        if ($xmlFile === false || !is_file($xmlFile)
+            || !str_starts_with($xmlFile, $root . DIRECTORY_SEPARATOR)) {
             return false;
         }
 

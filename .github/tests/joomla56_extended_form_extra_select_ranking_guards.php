@@ -132,6 +132,7 @@ namespace {
     $formDir = $tmp . '/components/com_sportsmanagement/assets/extended';
     \mkdir($formDir, 0777, true);
     \file_put_contents($formDir . '/valid.xml', '<form/>');
+    \file_put_contents($tmp . '/outside.xml', '<form/>');
     \define('JPATH_ADMINISTRATOR', $tmp);
 
     $GLOBALS['smFixtureApp'] = new \Joomla\CMS\Application\SiteApplication();
@@ -144,6 +145,14 @@ namespace {
             if ($helper::load('', $invalid) !== false) {
                 throw new \RuntimeException('Unsafe extended form filename was accepted.');
             }
+        }
+
+        // A syntactically valid filename must not follow an XML symlink
+        // outside the SportsManagement form definition directory.
+        if (function_exists('symlink')
+            && @symlink($tmp . '/outside.xml', $formDir . '/escaped.xml')
+            && $helper::load('', 'escaped') !== false) {
+            throw new \RuntimeException('Site extended forms accepted an external XML symlink.');
         }
 
         if ($helper::load('bad serialized data', 'valid') !== false) {
@@ -182,6 +191,10 @@ namespace {
 
         echo "Site extended-form, admin extra-field and ranking module guards: OK\n";
     } finally {
+        if (is_link($formDir . '/escaped.xml')) {
+            \unlink($formDir . '/escaped.xml');
+        }
+        \unlink($tmp . '/outside.xml');
         \unlink($formDir . '/valid.xml');
         \rmdir($formDir);
         \rmdir(\dirname($formDir));

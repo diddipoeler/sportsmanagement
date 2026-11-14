@@ -179,6 +179,7 @@ namespace {
         public int $queries = 0;
         public bool $fail = false;
         public ?object $query = null;
+        public mixed $rows = null;
         public function createQuery(): object {
             return new class {
                 public array $binds = [];
@@ -193,9 +194,9 @@ namespace {
         }
         public function quoteName(string $name): string { return $name; }
         public function setQuery(object $query): void { $this->query = $query; ++$this->queries; }
-        public function loadObjectList(): array {
+        public function loadObjectList(): mixed {
             if ($this->fail) { throw new \RuntimeException('private SQL credentials'); }
-            return [(object) ['place' => 'Gym']];
+            return $this->rows ?? [(object) ['place' => 'Gym']];
         }
     };
 
@@ -225,6 +226,36 @@ namespace {
         || $trainingDb->query->binds[':teamId'] !== 12) {
         throw new \RuntimeException('Valid module ID alias not bound as integer.');
     }
+    // Legacy driver rows can include invalid types or nested stored fields.
+    $trainingDb->rows = [
+        null,
+        ['place' => 'not an object'],
+        (object) [
+            'place' => ['nested'],
+            'notes' => ['nested'],
+            'dayofweek' => ['invalid'],
+            'time_start' => 'invalid',
+            'time_end' => '9999999999999999999999999',
+        ],
+        (object) ['place' => 'Gym', 'notes' => 'Run', 'dayofweek' => 1],
+    ];
+    $sanitised = $module->getData(new \Joomla\Registry\Registry(['teams' => '12']), $trainingDb);
+
+    if (count($sanitised) !== 2
+        || $sanitised[0]->place !== ''
+        || $sanitised[0]->notes !== ''
+        || $sanitised[0]->dayofweek !== 0
+        || $sanitised[0]->time_start !== 0
+        || $sanitised[0]->time_end !== 0
+        || $sanitised[1]->place !== 'Gym') {
+        throw new \RuntimeException('Malformed training rows reached frontend templates.');
+    }
+
+    $trainingDb->rows = false;
+    if ($module->getData(new \Joomla\Registry\Registry(['teams' => '12']), $trainingDb) !== []) {
+        throw new \RuntimeException('Invalid training driver result was treated as a row list.');
+    }
+
     $trainingDb->fail = true;
     if ($module->getData(new \Joomla\Registry\Registry(['teams' => '12']), $trainingDb) !== []
         || count(\Joomla\CMS\Log\Log::$messages) !== 1

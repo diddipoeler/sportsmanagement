@@ -19,24 +19,15 @@ use Joomla\CMS\Session\Session;
 final class SmimageimportsController extends SportsManagementAdminController
 {
     /**
-     * Import an administrator-selected image package.
+     * Import an image archive only for an authorised Joomla administrator.
      *
-     * Requires a valid Joomla POST token and component core.create access,
-     * resolves the native image import model and delegates the import.
-     * Reports model errors and returns to the image-import overview.
-     *
-     * @return void
-     * @throws \RuntimeException On invalid token, insufficient permission or missing model.
-     */
-    /**
-     * Import an image package through the native administrator model.
-     *
-     * Validates Joomla's POST CSRF token and component create permission
-     * before resolving SmimageimportModel and starting the import.
-     * Reports errors returned by the model and redirects to the list view.
+     * Verifies the POST CSRF token and an existing identity with component
+     * create permission before resolving the native model. Delegates the
+     * import, replaces potentially sensitive model error text with a
+     * translated generic warning and redirects to the import overview.
      *
      * @return void
-     * @throws \RuntimeException For invalid token, insufficient access or missing model.
+     * @throws \RuntimeException For CSRF failure, absent permissions or missing model.
      */
     public function import(): void
     {
@@ -44,7 +35,10 @@ final class SmimageimportsController extends SportsManagementAdminController
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
 
-        if (!$this->app->getIdentity()->authorise('core.create', 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !is_callable([$identity, 'authorise'])
+            || !$identity->authorise('core.create', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
@@ -57,33 +51,25 @@ final class SmimageimportsController extends SportsManagementAdminController
         $ok = (bool) $model->import();
 
         if (!$ok && $model->getError()) {
-            $this->app->enqueueMessage($model->getError(), 'warning');
+            // Custom model/database drivers may supply SQL or credentials in
+            // getError(); never render their diagnostic text in Joomla HTML.
+            $this->app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
         }
 
         $this->setRedirect('index.php?option=com_sportsmanagement&view=smimageimports');
     }
 
     /**
-     * Retrieve the native Joomla administrator image-import model.
+     * Obtain the native administrator image-import model through Joomla MVC.
      *
-     * Defaults to request-independent loading while retaining additional
-     * MVC configuration passed by Joomla or a caller.
+     * Applies request-independent loading by default while retaining
+     * explicitly provided Joomla model factory options and the caller's
+     * requested model name and namespace.
      *
-     * @param string $name Model name, defaulting to Smimageimport.
-     * @param string $prefix Administrator model namespace.
-     * @param array $config Additional model factory configuration.
-     * @return mixed MVC factory model instance or the parent's failure result.
-     */
-    /**
-     * Obtain the administrator image import model through Joomla's MVC factory.
-     *
-     * Uses request-independent loading by default and retains model factory
-     * options explicitly supplied by Joomla or another caller.
-     *
-     * @param string $name Model name, defaulting to Smimageimport.
-     * @param string $prefix Administrator MVC namespace.
-     * @param array $config Additional MVC factory configuration.
-     * @return mixed Joomla model instance or the parent's failure result.
+     * @param string $name Requested image import model.
+     * @param string $prefix Administrator MVC model namespace.
+     * @param array<string,mixed> $config Additional factory configuration.
+     * @return mixed Joomla MVC model or the parent's unavailable result.
      */
     public function getModel($name = 'Smimageimport', $prefix = 'Administrator', $config = [])
     {

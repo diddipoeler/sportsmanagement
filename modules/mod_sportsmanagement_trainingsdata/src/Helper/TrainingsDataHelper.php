@@ -25,6 +25,8 @@ final class TrainingsDataHelper
      * uses bound SQL parameters, orders sessions by weekday/start time
      * and logs database failures by exception class only, never by
      * writing sensitive SQL or driver credentials to a shared log.
+     * Filters non-object driver rows and normalises nested legacy values
+     * before templates read training locations, notes and numeric fields.
      * @param Registry $params TrainingsData module settings.
      * @param DatabaseInterface $fallbackDatabase Joomla fallback database.
      * @return array<int,object> Training sessions or an empty list on failure.
@@ -62,7 +64,7 @@ final class TrainingsDataHelper
                 ]);
             $db->setQuery($query);
 
-            return $db->loadObjectList() ?: [];
+            return self::normaliseTrainingRows($db->loadObjectList());
         } catch (\Throwable $e) {
             // Log remote/database failures server-side without exposing SQL
             // or connection information to frontend site visitors.
@@ -74,6 +76,62 @@ final class TrainingsDataHelper
 
             return [];
         }
+    }
+
+    /**
+     * Convert training query results into safe, object-only template rows.
+     *
+     * Some older drivers can return false or mixed arrays instead of a list
+     * of training objects. Discard non-object entries and replace nested
+     * place/notes fields and malformed weekday/second counts with safe
+     * defaults to prevent PHP 8 array-to-string conversion warnings in the
+     * Joomla module layout. Preserve scalar values for valid legacy rows.
+     *
+     * @param mixed $raw Database result returned by loadObjectList().
+     * @return array<int,object> Validated object rows for the module template.
+     */
+    private static function normaliseTrainingRows(mixed $raw): array
+    {
+        if (!is_array($raw)) {
+            return [];
+        }
+
+        $rows = [];
+
+        foreach ($raw as $record) {
+            if (!is_object($record)) {
+                continue;
+            }
+
+            foreach (['place', 'notes'] as $name) {
+                $value = $record->{$name} ?? '';
+
+                if (!is_scalar($value)) {
+                    $record->{$name} = '';
+                }
+            }
+
+            foreach (['dayofweek', 'time_start', 'time_end'] as $name) {
+                $value = $record->{$name} ?? null;
+
+                if (!is_int($value) && (!is_string($value)
+                    || strlen($value) > 16 || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+                    $record->{$name} = 0;
+                    continue;
+                }
+
+                $digits = is_string($value) ? ltrim($value, '0') : $value;
+                $digits = $digits === '' ? '0' : $digits;
+
+                if (filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) === false) {
+                    $record->{$name} = 0;
+                }
+            }
+
+            $rows[] = $record;
+        }
+
+        return $rows;
     }
 
     /**

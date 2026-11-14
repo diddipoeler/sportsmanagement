@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use Diddipoeler\Component\SportsManagement\Administrator\Table\PicturesTable;
 use Joomla\Archive\Archive;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
@@ -43,8 +44,10 @@ final class SmimageimportModel extends SportsManagementAdminModel
     /**
      * Download and install selected image archives in the component folders.
      *
-     * Uses configured image destinations and validates relative paths
-     * before writing files into the Joomla installation.
+     * Strictly validates and deduplicates selected image IDs and checks
+     * configured archive destinations before writing to Joomla paths.
+     * Failed downloads/extractions produce generic administrator feedback;
+     * exception classes are logged privately without credentials or SQL.
      *
      * @return bool Whether the selected image import succeeded.
      */
@@ -52,10 +55,7 @@ final class SmimageimportModel extends SportsManagementAdminModel
     {
         $app = $this->administratorApplication();
         $post = $app->getInput()->post->getArray();
-        $ids = array_values(array_unique(array_filter(
-            array_map('intval', (array) ($post['cid'] ?? [])),
-            static fn (int $id): bool => $id > 0
-        )));
+        $ids = self::selectedIds($post['cid'] ?? null);
 
         if (!$ids) {
             return false;
@@ -136,14 +136,72 @@ final class SmimageimportModel extends SportsManagementAdminModel
                     File::delete($archivePath);
                 }
 
-                $this->setError($e->getMessage());
-                $app->enqueueMessage($e->getMessage(), 'error');
+                // Http, archive and database exceptions may contain private
+                // authentication, SQL or filesystem details.
+                Log::add(
+                    __METHOD__ . ': image import failed (' . get_class($e) . ').',
+                    Log::ERROR,
+                    'com_sportsmanagement'
+                );
+                $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Validate user-selected picture record IDs before any import operation.
+     *
+     * Accepts positive integers or complete decimal strings, including
+     * zero-padded Joomla form values, and removes duplicates. Rejects
+     * nested values, booleans, partially numeric strings and values outside
+     * PHP's integer range so malformed `cid` records cannot target picture 1.
+     * Limits a single request to one hundred valid selected records.
+     *
+     * @param mixed $raw Raw submitted `cid` multi-selection.
+     * @return array<int,int> Unique positive picture IDs in request order.
+     */
+    private static function selectedIds(mixed $raw): array
+    {
+        if (!is_array($raw)) {
+            return [];
+        }
+
+        $selected = [];
+        $max = (string) PHP_INT_MAX;
+
+        foreach ($raw as $value) {
+            if (is_int($value)) {
+                if ($value <= 0) {
+                    continue;
+                }
+
+                $id = $value;
+            } elseif (is_string($value) && $value !== ''
+                && strlen($value) <= 64 && preg_match('/^[0-9]+$/D', $value) === 1) {
+                $digits = ltrim($value, '0');
+
+                if ($digits === '' || strlen($digits) > strlen($max)
+                    || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+                    continue;
+                }
+
+                $id = (int) $digits;
+            } else {
+                continue;
+            }
+
+            $selected[$id] = $id;
+
+            if (count($selected) >= 100) {
+                break;
+            }
+        }
+
+        return array_values($selected);
     }
 
     /**
