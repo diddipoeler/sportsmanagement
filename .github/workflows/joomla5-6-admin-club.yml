@@ -94,7 +94,8 @@ jobs:
           grep -q "'latitude'" "$locationhelper"
           grep -q "'longitude'" "$locationhelper"
 
-          grep -q 'final class ClubTable extends SportsManagementTable' "$table"
+          # The Club table remains extensible for legacy Joomla integrations.
+          grep -q 'class ClubTable extends SportsManagementTable' "$table"
           grep -q 'OutputFilter::stringURLSafe' "$table"
           grep -q "class_alias(ClubTable::class, 'sportsmanagementTableClub')" "$bridge"
 
