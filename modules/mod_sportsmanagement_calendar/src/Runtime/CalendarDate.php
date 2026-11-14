@@ -17,7 +17,8 @@ final class CalendarDate
 {
     /**
      * Convert a timestamp or date input into Joomla's calendar date object.
-     * Interprets integer timestamps in the requested timezone and delegates
+     * Interprets signed integer timestamps and matching numeric strings in the
+     * requested timezone, including dates before 1970. Delegates ordinary
      * date strings to Joomla Date. Rejects nested values, booleans and
      * oversized date strings or integer-overflowing timestamps instead of
      * casting them to unexpected values.
@@ -34,12 +35,16 @@ final class CalendarDate
             return null;
         }
 
-        // Numeric strings exceeding the PHP integer range would silently
-        // saturate when cast and produce an unrelated calendar date.
-        if (is_string($value) && ctype_digit($value)) {
-            $digits = ltrim($value, '0');
+        // Signed Unix timestamp strings must behave exactly like integer
+        // timestamps. Check both limits before casting: oversized negative
+        // strings can otherwise be parsed as dates or saturate to PHP_INT_MIN.
+        $timestampString = is_string($value) && preg_match('/^-?[0-9]+$/D', $value) === 1;
+
+        if ($timestampString) {
+            $negative = str_starts_with($value, '-');
+            $digits = ltrim($negative ? substr($value, 1) : $value, '0');
             $digits = $digits === '' ? '0' : $digits;
-            $limit = (string) PHP_INT_MAX;
+            $limit = $negative ? substr((string) PHP_INT_MIN, 1) : (string) PHP_INT_MAX;
 
             if (strlen($digits) > strlen($limit)
                 || (strlen($digits) === strlen($limit) && strcmp($digits, $limit) > 0)) {
@@ -48,7 +53,7 @@ final class CalendarDate
         }
 
         try {
-            if (is_int($value) || (is_string($value) && ctype_digit($value))) {
+            if (is_int($value) || $timestampString) {
                 $date = new Date('@' . (int) $value);
                 $date->setTimezone(new \DateTimeZone($offset ?: 'UTC'));
 

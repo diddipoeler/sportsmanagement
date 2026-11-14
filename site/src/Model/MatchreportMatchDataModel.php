@@ -10,6 +10,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 use Throwable;
@@ -120,14 +121,26 @@ final class MatchreportMatchDataModel extends SportsManagementProjectModel
     }
 
     /**
-     * Display a database query error through the Joomla frontend.
-     * @param Throwable $e Caught database exception.
+     * Report a failed match-report query without disclosing private SQL details.
+     *
+     * Writes the caught exception to Joomla's server-side component log for
+     * diagnosis. Frontend visitors receive only a translated generic error:
+     * connection strings, SQL statements and exception messages are never
+     * inserted into the public site's notification queue.
+     *
+     * @param Throwable $e Underlying database failure to log privately.
      * @return void
      */
     private function reportDatabaseError(Throwable $e): void
     {
+        Log::add(
+            'SportsManagement match report data query failed: ' . $e->getMessage(),
+            Log::ERROR,
+            'com_sportsmanagement'
+        );
+
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }

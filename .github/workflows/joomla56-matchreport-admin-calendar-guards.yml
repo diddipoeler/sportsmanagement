@@ -1,0 +1,48 @@
+name: Joomla 5/6 match-report, administrator SQL and calendar regression
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/MatchreportMatchDataModel.php'
+      - 'admin/models/match.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - '.github/tests/joomla56_matchreport_admin_calendar_guards.php'
+      - '.github/workflows/joomla56-matchreport-admin-calendar-guards.yml'
+  pull_request:
+    paths:
+      - 'site/src/Model/MatchreportMatchDataModel.php'
+      - 'admin/models/match.php'
+      - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php'
+      - '.github/tests/joomla56_matchreport_admin_calendar_guards.php'
+      - '.github/workflows/joomla56-matchreport-admin-calendar-guards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: none
+      - name: Lint changed component and test files
+        run: |
+          php -l site/src/Model/MatchreportMatchDataModel.php
+          php -l site/src/Model/SportsManagementProjectModel.php
+          php -l site/models/matchreport.php
+          php -l admin/models/match.php
+          php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
+          php -l .github/tests/joomla56_matchreport_admin_calendar_guards.php
+      - name: Verify PHP file metadata
+        run: php .github/tests/phpdoc_metadata.php --all
+      - name: Run focused Joomla 5/6 regressions
+        run: php .github/tests/joomla56_matchreport_admin_calendar_guards.php
