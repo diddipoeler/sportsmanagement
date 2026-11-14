@@ -156,14 +156,19 @@ namespace {
         'trikot_away' => ['clubkits_away', 'clubs/trikot_away'],
     ];
 
-    foreach (['imageselect' => 'imageselect', 'media' => 'media', '0' => 'media', 'unknown' => 'media'] as $mediaTool => $expected) {
+    foreach ([
+        ['imageselect', 'imageselect'],
+        ['media', 'media'],
+        ['0', 'media'],
+        ['unknown', 'media'],
+    ] as [$mediaTool, $expectedType]) {
         \Joomla\CMS\Component\ComponentHelper::$mediaTool = $mediaTool;
         $model->clubForm = new \Diddipoeler\Component\SportsManagement\Administrator\Model\ClubTestForm();
         $form = $model->getForm();
 
         foreach ($expected as $name => [$target, $folder]) {
             $attributes = $form->fields[$name] ?? [];
-            if (($attributes['type'] ?? null) !== $expected
+            if (($attributes['type'] ?? null) !== $expectedType
                 || ($attributes['targetfolder'] ?? null) !== $target
                 || ($attributes['directory'] ?? null)
                     !== 'images/com_sportsmanagement/database/' . $folder) {
