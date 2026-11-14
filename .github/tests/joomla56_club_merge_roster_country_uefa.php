@@ -200,17 +200,41 @@ namespace {
             throw new \RuntimeException('Invalid UEFA season reached database.');
         }
     }
+    foreach (['1junk', '2', '-1', [], true, 1.5, '1e0',
+        '999999999999999999999999999999'] as $badSelector) {
+        $before = $resolver::$calls;
+        if ($uefa->getData(new \Joomla\Registry\Registry([
+            's' => 12, 'cfg_which_database' => $badSelector,
+        ]), $app, $database) !== $empty || $resolver::$calls !== $before) {
+            throw new \RuntimeException('Invalid UEFA database selector reached the resolver.');
+        }
+    }
+
+    $selectorParser = new \ReflectionMethod($uefa, 'databaseSelector');
+
+    foreach ([
+        [0, 0], [1, 1], ['0000', 0], ['001', 1],
+        ['2', null], [true, null], [false, null], [['1'], null],
+        ['1junk', null], [1.5, null], ['1e0', null],
+    ] as [$raw, $expected]) {
+        if ($selectorParser->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('UEFA database selector accepted malformed input.');
+        }
+    }
+
     $resolver::$fail = true;
     if ($uefa->getData(new \Joomla\Registry\Registry(['s' => '012:season']), $app, $database) !== $empty
         || end($app->messages) !== 'SportsManagement UEFA rankings could not be loaded.'
-        || !str_contains(end(\Joomla\CMS\Log\Log::$entries), 'PRIVATE EXTERNAL DB')) {
+        || !str_contains(end(\Joomla\CMS\Log\Log::$entries), 'RuntimeException')
+        || str_contains(end(\Joomla\CMS\Log\Log::$entries), 'PRIVATE EXTERNAL DB')) {
         throw new \RuntimeException('UEFA resolver failure leaked private configuration.');
     }
     $resolver::$fail = false;
     $database->failQuery = true;
     if ($uefa->getData(new \Joomla\Registry\Registry(['s' => 12]), $app, $database) !== $empty
         || end($app->messages) !== 'SportsManagement UEFA rankings could not be loaded.'
-        || !str_contains(end(\Joomla\CMS\Log\Log::$entries), 'PRIVATE DB PASSWORD')) {
+        || !str_contains(end(\Joomla\CMS\Log\Log::$entries), 'RuntimeException')
+        || str_contains(end(\Joomla\CMS\Log\Log::$entries), 'PRIVATE DB PASSWORD')) {
         throw new \RuntimeException('UEFA SQL error exposed database details.');
     }
 

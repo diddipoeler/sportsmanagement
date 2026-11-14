@@ -23,7 +23,8 @@ final class TrainingsDataHelper
      * Load the configured team's training schedule for a Joomla module.
      * Validates the team ID or ID:alias slug and the database selector,
      * uses bound SQL parameters, orders sessions by weekday/start time
-     * and logs database failures without exposing connection details.
+     * and logs database failures by exception class only, never by
+     * writing sensitive SQL or driver credentials to a shared log.
      * @param Registry $params TrainingsData module settings.
      * @param DatabaseInterface $fallbackDatabase Joomla fallback database.
      * @return array<int,object> Training sessions or an empty list on failure.
@@ -65,7 +66,11 @@ final class TrainingsDataHelper
         } catch (\Throwable $e) {
             // Log remote/database failures server-side without exposing SQL
             // or connection information to frontend site visitors.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(
+                __METHOD__ . ': training data query failed (' . get_class($e) . ').',
+                Log::ERROR,
+                'jsmerror'
+            );
 
             return [];
         }
@@ -117,7 +122,8 @@ final class TrainingsDataHelper
             return $raw === 0 || $raw === 1 ? $raw : null;
         }
 
-        if (!is_string($raw) || !preg_match('/^0*([01])$/D', $raw, $matches)) {
+        if (!is_string($raw) || strlen($raw) > 64
+            || !preg_match('/^0*([01])$/D', $raw, $matches)) {
             return null;
         }
 

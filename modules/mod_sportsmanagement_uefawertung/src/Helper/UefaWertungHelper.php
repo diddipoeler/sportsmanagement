@@ -22,7 +22,10 @@ final class UefaWertungHelper
 {
     /**
      * Build UEFA coefficient rankings over the latest available five seasons.
-     * Validates the requested season, resolves the configured SportsManagement database, collects distinct seasons and country coefficients, and returns an empty payload with safe logging on failure.
+     * Validates season and database selectors, resolves the configured
+     * SportsManagement connection, and aggregates coefficient seasons.
+     * Invalid selectors are rejected before any service lookup, and
+     * exception messages containing SQL or credentials are not logged.
      *
      * @param Registry $params UEFA ranking module settings.
      * @param CMSApplicationInterface $app Frontend application for user-visible errors.
@@ -40,12 +43,18 @@ final class UefaWertungHelper
             return ['seasons' => [], 'rankings' => []];
         }
 
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
+
+        if ($selector === null) {
+            return ['seasons' => [], 'rankings' => []];
+        }
+
         try {
             // Resolver failures (including unavailable external databases)
             // need the same guarded path as the following queries.
             $db = SportsManagementDatabaseResolver::resolve(
                 $fallbackDatabase,
-                (int) $params->get('cfg_which_database', 0)
+                $selector
             );
 
             $seasonName = $this->seasonName($db, $seasonId);
@@ -68,7 +77,11 @@ final class UefaWertungHelper
             ];
         } catch (\Throwable $error) {
             // Do not expose SQL, table names or connection credentials.
-            Log::add(__METHOD__ . ': ' . $error->getMessage(), Log::ERROR, 'com_sportsmanagement');
+            Log::add(
+                __METHOD__ . ': UEFA ranking lookup failed (' . get_class($error) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
             $app->enqueueMessage('SportsManagement UEFA rankings could not be loaded.', 'error');
 
             return ['seasons' => [], 'rankings' => []];
@@ -105,6 +118,30 @@ final class UefaWertungHelper
         }
 
         return (int) $digits;
+    }
+
+    /**
+     * Select only the primary or configured external SportsManagement database.
+     *
+     * Legacy zero-padded decimal selectors are accepted, but booleans,
+     * nested form values, invalid numeric text and out-of-range settings
+     * must not fall back to an unrelated database connection.
+     *
+     * @param mixed $value Raw Joomla module database selector.
+     * @return int|null Database choice zero/one, or null when malformed.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $parts) !== 1) {
+            return null;
+        }
+
+        return (int) $parts[1];
     }
 
     /**

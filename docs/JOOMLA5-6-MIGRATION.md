@@ -211,3 +211,10 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 - The native site ImagehandlerModel now documents all named methods and restricts the selected files to supported images located within the canonical component media root. File and directory symlinks cannot escape this root. Invalid folder selections fail closed instead of showing the media-root listing.
 - The administrator Projects list model now turns failed season/league lookups into a generic Joomla model error and a sanitized class-only log message, preserving private database diagnostics.
 - Isolated regressions cover these changes under PHP 8.3 and PHP 8.4. They do **not** replace installation, web server, upgrade or actual Joomla UI integration tests, which are still outstanding.
+
+## Round reader, backend image model and module privacy (14 November 2026)
+
+- The native `ProjectRoundReader` now computes selected rounds without persisting administrator-managed project state during frontend reads. The legacy `persist` argument remains accepted but does not enable writes. MySQL-only `INTERVAL`/`CONCAT_WS` expressions were replaced with bound UTC cutoff parameters and PHP slug generation.
+- Administrator image-field assignments now validate component edit permission, record IDs and local image filenames. Image browsing resolves real directory and file paths, preventing symlink escapes, and model exceptions are not reflected in user responses or logs.
+- The UEFA coefficient and TrainingsData module helpers now log only database exception classes. UEFA database selectors are validated before a resolver call, eliminating malformed-selector fallbacks to unintended data sources.
+- Regression checks cover these changes on PHP 8.3 and 8.4; installed Joomla integration checks and release migration work remain outstanding.

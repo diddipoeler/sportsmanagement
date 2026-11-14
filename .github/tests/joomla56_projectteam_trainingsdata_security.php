@@ -227,8 +227,10 @@ namespace {
     }
     $trainingDb->fail = true;
     if ($module->getData(new \Joomla\Registry\Registry(['teams' => '12']), $trainingDb) !== []
-        || count(\Joomla\CMS\Log\Log::$messages) !== 1) {
-        throw new \RuntimeException('Private module DB error was not handled.');
+        || count(\Joomla\CMS\Log\Log::$messages) !== 1
+        || !str_contains(\Joomla\CMS\Log\Log::$messages[0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$messages[0], 'private SQL credentials')) {
+        throw new \RuntimeException('Private module DB error was not handled safely.');
     }
 
     echo "Joomla 5/6 project-team ACL, admin IDs and training module checks passed.\n";
