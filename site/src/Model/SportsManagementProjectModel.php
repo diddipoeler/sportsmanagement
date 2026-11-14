@@ -20,6 +20,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     protected int $projectId = 0;
     protected int $divisionId = 0;
 
+    /**
+     * Initialize the project-scoped native frontend model from Joomla request state.
+     * Calls the base Joomla model constructor and reads the selected project and division as filtered integers, so later lookups share the same scope.
+     *
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -28,21 +35,46 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $this->divisionId = $input->getInt('division', 0);
     }
 
+    /**
+     * Return the project identifier currently assigned to this model.
+     * Other project-bound queries use this identifier to constrain database reads.
+     *
+     * @return int Selected project ID; zero means no project.
+     */
     public function getProjectId(): int
     {
         return $this->projectId;
     }
 
+    /**
+     * Update the current project context for subsequent model reads.
+     * Normalises negative identifiers to zero to prevent invalid project scopes.
+     *
+     * @param int $projectId Requested project ID.
+     * @return void
+     */
     public function setProjectId(int $projectId): void
     {
         $this->projectId = max(0, $projectId);
     }
 
+    /**
+     * Return the division selected in the current frontend request.
+     * The division is used as the default filter for team and division queries.
+     *
+     * @return int Selected division ID, or zero when not filtered.
+     */
     public function getDivisionId(): int
     {
         return $this->divisionId;
     }
 
+    /**
+     * Load the selected project with its sports type, league, season and round.
+     * Joins the project metadata, creates stable route slugs, resolves the season-specific league logo and returns null when the requested project is absent.
+     *
+     * @return object|null Enriched project record or null for an invalid or missing project.
+     */
     public function getProject(): ?object
     {
         if ($this->projectId <= 0) {
@@ -117,18 +149,38 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $project;
     }
 
+    /**
+     * Resolve the identifier of the effective round for this project.
+     * Uses the project's manual or automatic round selection and returns zero when no eligible round exists.
+     *
+     * @return int Current round ID, or zero if none can be resolved.
+     */
     public function getCurrentRound(): int
     {
         $round = $this->resolveCurrentRound();
         return $round ? (int) $round->id : 0;
     }
 
+    /**
+     * Resolve the competition round number for the effective round.
+     * Shares the manual/automatic round selection policy used by getCurrentRound, returning zero when no round exists.
+     *
+     * @return int Current round code, or zero if unavailable.
+     */
     public function getCurrentRoundNumber(): int
     {
         $round = $this->resolveCurrentRound();
         return $round ? (int) $round->roundcode : 0;
     }
 
+    /**
+     * List all rounds belonging to the selected project in round-code order.
+     * The requested sort direction is restricted to ASC/DESC; when enabled, IDs are converted to Joomla ID:alias slugs for frontend links.
+     *
+     * @param string $ordering Sort direction, ASC by default or DESC.
+     * @param bool $slug Whether to convert round IDs into ID:alias values.
+     * @return array List of project rounds, or an empty list without a project.
+     */
     public function getRounds(string $ordering = 'ASC', bool $slug = true): array
     {
         if ($this->projectId <= 0) {
@@ -163,6 +215,12 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $rows;
     }
 
+    /**
+     * Determine the project's effective round using its configured selection mode.
+     * Applies manual selection or date-based thresholds to project-owned round and match records; if no automatic candidate exists, tries the configured fallback round.
+     *
+     * @return object|null Resolved round record, or null when none exists.
+     */
     private function resolveCurrentRound(): ?object
     {
         $project = $this->getProject();
@@ -275,11 +333,24 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $round ?: null;
     }
 
+    /**
+     * Load the merged configuration for the overall frontend template.
+     * Delegates to the project-aware template reader so overrides and XML defaults follow the same precedence as other view templates.
+     *
+     * @return array<string,mixed> Effective overall-template settings.
+     */
     public function getOverallConfig(): array
     {
         return $this->getTemplateConfig('overall');
     }
 
+    /**
+     * Resolve effective template parameters for a project-bound view.
+     * Reads XML defaults, then the selected project's stored settings or its master-template project, and merges the parsed Registry values with the defaults.
+     *
+     * @param string $template Logical SportsManagement template name.
+     * @return array<string,mixed> Effective settings, falling back to defaults if a stored configuration is unavailable or invalid.
+     */
     public function getTemplateConfig(string $template): array
     {
         $defaults = $this->loadDefaultTemplateConfig($template);
@@ -310,6 +381,14 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         }
     }
 
+    /**
+     * Load the statistics configured for the selected project and optional position.
+     * Filters requested statistics, joins project position and statistic configuration, then prepares the statistic instances used by legacy and native views.
+     *
+     * @param mixed $statId Optional statistic ID or collection of IDs to select.
+     * @param int $positionId Optional project position identifier.
+     * @return array Project statistic definitions available for this selection.
+     */
     public function getProjectStats($statId = 0, int $positionId = 0): array
     {
         if ($this->projectId <= 0) {
@@ -399,6 +478,14 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $stats;
     }
 
+    /**
+     * Load team assignments and display metadata for the selected project.
+     * Combines project-team records with team, club and playing-ground data and supports optional division and venue filters for ranking and roster views.
+     *
+     * @param int|null $divisionId Division filter; null uses the current model division.
+     * @param int $playgroundId Optional playing-ground filter.
+     * @return array Project team records with related display fields.
+     */
     public function getProjectTeams(?int $divisionId = null, int $playgroundId = 0): array
     {
         if ($this->projectId <= 0) {
@@ -527,6 +614,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $rows;
     }
 
+    /**
+     * Create a team-ID lookup from the project-team results.
+     * Reuses the division-aware project team loader and skips rows with invalid IDs before indexing by the underlying team identifier.
+     *
+     * @param int|null $divisionId Optional division filter.
+     * @return array<int,object> Team rows indexed by positive team ID.
+     */
     public function getTeamsIndexedById(?int $divisionId = null): array
     {
         $teams = [];
@@ -539,6 +633,12 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $teams;
     }
 
+    /**
+     * Read the project's configured favourite team identifiers.
+     * Parses the stored comma-separated team list and drops empty, nonpositive and duplicate identifiers.
+     *
+     * @return array<int,int> Unique positive favourite team IDs.
+     */
     public function getFavTeams(): array
     {
         $project = $this->getProject();
@@ -556,6 +656,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return array_values($favorites);
     }
 
+    /**
+     * Load one division record for the current selection.
+     * Uses a bound division identifier for the SportsManagement division table and returns null for an unset or missing division.
+     *
+     * @param int|null $divisionId Division to load; null uses the request selection.
+     * @return object|null Division database record or null if unavailable.
+     */
     public function getDivision(?int $divisionId = null): ?object
     {
         $divisionId ??= $this->divisionId;
@@ -573,6 +680,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Collect a selected division and all of its descendant divisions.
+     * Loads only divisions belonging to the selected project, walks parent-child relationships and guards against duplicates while expanding the subtree.
+     *
+     * @param int|null $divisionId Root division; null uses the current selection.
+     * @return array<int,int> IDs of the root and its descendants.
+     */
     protected function getDivisionTreeIds(?int $divisionId = null): array
     {
         $divisionId ??= $this->divisionId;
@@ -607,6 +721,14 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $ids;
     }
 
+    /**
+     * Read a project's saved configuration text for a particular template.
+     * Looks up template_config using bound template and project parameters, preserving null when no override record exists.
+     *
+     * @param string $template Name of the requested template.
+     * @param int $projectId Project whose settings should be read.
+     * @return string|null Serialized template parameters, or null when absent.
+     */
     private function loadSavedTemplateParams(string $template, int $projectId): ?string
     {
         $db = $this->getDatabase();
@@ -622,6 +744,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         return $value === null ? null : (string) $value;
     }
 
+    /**
+     * Load default view settings from the installed XML template definition.
+     * Restricts the filename to its basename, parses field defaults from the XML settings file and returns an empty set if the file cannot be loaded.
+     *
+     * @param string $template Name of the template definition.
+     * @return array<string,string> Default setting values keyed by field name.
+     */
     private function loadDefaultTemplateConfig(string $template): array
     {
         $file = JPATH_SITE . '/components/com_sportsmanagement/settings/default/' . basename($template) . '.xml';

@@ -32,6 +32,7 @@ use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 $googleAutoload = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/libraries/google-php/vendor/autoload.php';
 
@@ -3808,18 +3809,37 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 
 	}
 
+	/**
+	 * Look up a season-person relationship for an administrator match editor.
+	 * Validates the person, season and person-type identifiers before querying the season-person mapping table with typed bound parameters; invalid input cannot change the query scope.
+	 *
+	 * @param mixed $person_id Person identifier; must be positive.
+	 * @param mixed $season_id Season identifier; must be positive.
+	 * @param mixed $person_type Person category; must be nonnegative.
+	 * @return object|null Existing assignment or null if absent or invalid.
+	 */
 	function getSeasonPersonAssignment($person_id = 0, $season_id = 0, $person_type = 0)
 	{
+		$personId = filter_var($person_id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+		$seasonId = filter_var($season_id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+		$personType = filter_var($person_type, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+		if ($personId === false || $seasonId === false || $personType === false) {
+			return null;
+		}
+
 		$db = $this->jsmdb;
+		$query = $db->getQuery(true)
+			->select('*')
+			->from($db->quoteName('#__sportsmanagement_season_person_id'))
+			->where($db->quoteName('person_id') . ' = :assignmentPersonId')
+			->where($db->quoteName('season_id') . ' = :assignmentSeasonId')
+			->where($db->quoteName('persontype') . ' = :assignmentPersonType')
+			->bind(':assignmentPersonId', $personId, ParameterType::INTEGER)
+			->bind(':assignmentSeasonId', $seasonId, ParameterType::INTEGER)
+			->bind(':assignmentPersonType', $personType, ParameterType::INTEGER);
 
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from('#__sportsmanagement_season_person_id');
-		$query->where('person_id = ' . $person_id);
-		$query->where('season_id = ' . $season_id);
-		$query->where('persontype = ' . $person_type);
-
-		$db->setQuery($query);
+		$db->setQuery($query, 0, 1);
 
 		return $db->loadObject();
 	}
@@ -4798,11 +4818,24 @@ $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAI
 		return $data;
 	}
 
+	/**
+	 * Resolve the SportsManagement database selected by the administrator.
+	 * Delegates to the namespaced database resolver, supplying Joomla's active database service as the local connection for migrated callers.
+	 *
+	 * @param mixed $selector Optional local or external database selector.
+	 * @return DatabaseInterface Resolved SportsManagement database connection.
+	 */
 	private static function sportsManagementDatabase(mixed $selector = null): DatabaseInterface
 	{
 		return (new SportsManagementDatabaseResolver())->resolve($selector, self::joomlaDatabase());
 	}
 
+	/**
+	 * Obtain Joomla's default database connection from its service container.
+	 * Keeps administrator database access independent from the removed legacy static database factories.
+	 *
+	 * @return DatabaseInterface Active Joomla database service.
+	 */
 	private static function joomlaDatabase(): DatabaseInterface
 	{
 		/** @var DatabaseInterface $database */
