@@ -94,6 +94,13 @@ jobs:
           php .github/scripts/check-php-function-docs.php admin/src/Model/ProjectModel.php
           php .github/tests/joomla56_admin_project_public_container.php
 
+      - name: Verify native Matches view asset reuse and error privacy
+        run: |
+          php -l admin/src/View/Matches/HtmlView.php
+          php -l .github/tests/joomla56_admin_matches_assets_errors.php
+          php .github/scripts/check-php-function-docs.php admin/src/View/Matches/HtmlView.php
+          php .github/tests/joomla56_admin_matches_assets_errors.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php

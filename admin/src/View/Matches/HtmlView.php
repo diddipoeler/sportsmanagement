@@ -17,8 +17,10 @@ use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -28,8 +30,13 @@ use Joomla\CMS\Uri\Uri;
 final class HtmlView extends BaseHtmlView
 {
     /**
-     * Resolve the current administrator application for match management.
-     * @return CMSApplicationInterface
+     * Resolve the active backend Joomla application for match administration.
+     *
+     * Uses the component application resolver so request parameters, current
+     * identity and stored project/round selections are read from the live
+     * administrator client, never from an independent site application.
+     *
+     * @return CMSApplicationInterface Active administrator request context.
      */
     private static function administratorApplication(): CMSApplicationInterface
     {
@@ -69,10 +76,16 @@ final class HtmlView extends BaseHtmlView
     public int $prefill = 0;
 
     /**
-     * Prepare and render the filtered administrator match listing.
+     * Render backend fixtures for the selected project, division and round.
      *
-     * @param mixed $tpl tpl value.
-     * @return mixed
+     * Loads the native match model, validates errors, prepares season,
+     * project-team, round and mass-add controls, and passes row and template
+     * data to Joomla's layout. Keeps the empty-project state usable and
+     * activates shared CSS/JS assets only for HTML documents.
+     *
+     * @param mixed $tpl Optional Joomla layout override.
+     * @return void Delegates the response to the Joomla parent view.
+     * @throws \RuntimeException For unavailable models or failed data reads.
      */
     public function display($tpl = null)
     {
@@ -109,9 +122,7 @@ final class HtmlView extends BaseHtmlView
         $this->request_url = Uri::getInstance()->toString();
         $this->user = $this->app->getIdentity();
 
-        if ($errors = $this->get('Errors')) {
-            throw new \RuntimeException(implode("\n", $errors), 500);
-        }
+        $this->assertNoModelErrors();
 
         $params = ComponentHelper::getParams($this->option);
         $this->modalheight = (int) $params->get('modal_popup_height', 600);
@@ -231,26 +242,90 @@ final class HtmlView extends BaseHtmlView
         $this->setLayout('default');
         $this->addToolbar($massadd);
 
-        $wa = $this->document->getWebAssetManager();
-        $wa->registerAndUseStyle(
-            'com_sportsmanagement.matches.form',
-            'administrator/components/com_sportsmanagement/assets/css/form_control.css'
-        );
-        $wa->registerAndUseScript(
-            'com_sportsmanagement.matches.admin',
-            'administrator/components/com_sportsmanagement/assets/js/matches.js',
-            [],
-            [],
-            ['core']
-        );
+        $this->registerMatchesAssets();
 
         parent::display($tpl);
     }
 
     /**
-     * Register match actions and mass-add toolbar controls.
+     * Stop match-list rendering without exposing underlying SQL/model errors.
      *
-     * @param bool $massadd massadd value.
+     * Joomla model diagnostics can include queries, table names and driver
+     * details. Log only their number and show the translated generic error.
+     * With no model errors, preserve the normal match-rendering path.
+     *
+     * @return void
+     * @throws \RuntimeException If the match model reports errors.
+     */
+    private function assertNoModelErrors(): void
+    {
+        $errors = $this->get('Errors');
+
+        if (!$errors) {
+            return;
+        }
+
+        Log::add(
+            __METHOD__ . ': matches model reported ' . count((array) $errors) . ' errors.',
+            Log::ERROR,
+            'com_sportsmanagement'
+        );
+
+        throw new \RuntimeException(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 500);
+    }
+
+    /**
+     * Enable Joomla match-list CSS and JavaScript on an HTML document.
+     *
+     * Multiple instances or layout renders may share a WebAssetManager.
+     * Register each fixed asset name only once, yet mark both as used for
+     * every render. Retain the core dependency for matches.js and skip
+     * non-HTML response documents without attempting asset registration.
+     *
+     * @return void
+     */
+    private function registerMatchesAssets(): void
+    {
+        $document = $this->getDocument();
+
+        if (!$document instanceof HtmlDocument) {
+            return;
+        }
+
+        $assets = $document->getWebAssetManager();
+        $style = 'com_sportsmanagement.matches.form';
+
+        if (!$assets->assetExists('style', $style)) {
+            $assets->registerStyle(
+                $style,
+                'administrator/components/com_sportsmanagement/assets/css/form_control.css'
+            );
+        }
+
+        $assets->useStyle($style);
+        $script = 'com_sportsmanagement.matches.admin';
+
+        if (!$assets->assetExists('script', $script)) {
+            $assets->registerScript(
+                $script,
+                'administrator/components/com_sportsmanagement/assets/js/matches.js',
+                [],
+                [],
+                ['core']
+            );
+        }
+
+        $assets->useScript($script);
+    }
+
+    /**
+     * Configure match administration and bulk-fixture toolbar actions.
+     *
+     * Bulk creation shows a return link to the selected project and round.
+     * Normal editing offers publish, unpublish, result counting, short-save
+     * and add-match actions through Joomla's native toolbar helpers.
+     *
+     * @param bool $massadd True when the mass-add editor is selected.
      * @return void
      */
     private function addToolbar(bool $massadd): void
@@ -284,10 +359,13 @@ final class HtmlView extends BaseHtmlView
     }
 
     /**
-     * Prepare formatted selection lists for available project rounds.
+     * Format round names and dates for both Joomla round-selector controls.
      *
-     * @param array $rounds rounds value.
-     * @return array
+     * Keeps the selected round and the data-jsm-round-select attribute used
+     * by native JavaScript, while retaining historical second-list markup.
+     *
+     * @param array $rounds Project round objects with names, IDs and dates.
+     * @return array<string,string> Rendered normal and alternate round lists.
      */
     private function buildRoundLists(array $rounds): array
     {
@@ -326,10 +404,13 @@ final class HtmlView extends BaseHtmlView
     }
 
     /**
-     * Prepend the appropriate team or person selection placeholder.
+     * Add the translated team or person placeholder to match selection options.
      *
-     * @param array $teams teams value.
-     * @return array
+     * Person-based sports use the person label and all other project types
+     * use the team label, preserving the supplied option order and values.
+     *
+     * @param array $teams Joomla option objects for the current project.
+     * @return array Placeholder followed by original selection options.
      */
     private function withTeamPlaceholder(array $teams): array
     {
@@ -341,7 +422,11 @@ final class HtmlView extends BaseHtmlView
     }
 
     /**
-     * Prepare form options for generating multiple matches.
+     * Build mass-add type, add-to-round and auto-publish form selectors.
+     *
+     * Preserves the legacy POST field names and Joomla-native radio/select
+     * controls required by the administrator bulk match-creation workflow.
+     *
      * @return void
      */
     private function buildMassAddLists(): void
@@ -387,8 +472,13 @@ final class HtmlView extends BaseHtmlView
     }
 
     /**
-     * Return the default empty selection lists for match management.
-     * @return array
+     * Supply safe empty template selectors when no project is selected.
+     *
+     * Retains all round, team, result, article, division and mass-add keys
+     * consumed by native and legacy match templates, preventing warnings
+     * when the matches view has no valid project context.
+     *
+     * @return array<string,mixed> Empty form-control values.
      */
     private function emptyLists(): array
     {

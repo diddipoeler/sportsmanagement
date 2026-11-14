@@ -274,3 +274,7 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 ### Updated legacy CI contracts for ProjectModel database resolution
 
 Three older Joomla 5/6 workflow gates (project/playground models batch 32; compatibility batches 680 and 665) still required the now-removed protected `backendApplication()->getContainer()` call or banned every `Factory::` use. Their checks have been updated to require exactly one public `Factory::getContainer()->get(DatabaseInterface::class)` access, continue rejecting deprecated `Factory::getApplication()`, and explicitly forbid the protected application container call. Unrelated project, Ical, module and playground checks remain intact.
+
+## Native backend Matches: repeatable assets and safe diagnostics (14 November 2026)
+
+The administrator Matches view now registers its fixed form CSS and matches.js only when absent from the shared HTML WebAssetManager; it activates both on every render and skips non-HTML documents. The original core JavaScript dependency is preserved. The Matches view no longer exposes raw model errors, which may contain internal SQL or database details: it logs only their count and displays Joomla's generic translated message. All nine named view methods now have descriptive PHPDoc. A PHP regression tests two renders, missing/non-HTML documents and SQL-bearing error records, and the all-PHP-metadata workflow runs that test and PHP lint/PHPDoc checks.
