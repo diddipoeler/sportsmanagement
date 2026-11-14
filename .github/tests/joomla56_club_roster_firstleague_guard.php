@@ -159,8 +159,9 @@ namespace {
     $db->failQueries = true;
     if ($helper->getData($params, $db) !== $empty
         || count(\Joomla\CMS\Log\Log::$messages) !== 1
-        || !str_contains(\Joomla\CMS\Log\Log::$messages[0], 'Table missing')) {
-        throw new \RuntimeException('League module SQL exception leaked.');
+        || !str_contains(\Joomla\CMS\Log\Log::$messages[0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$messages[0], 'Table missing')) {
+        throw new \RuntimeException('League module did not keep SQL exception details private.');
     }
     $db->failQueries = false;
     $resolver::$throws = true;
