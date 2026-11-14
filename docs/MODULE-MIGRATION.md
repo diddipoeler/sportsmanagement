@@ -158,3 +158,7 @@ The native Navigation Menu module now validates `cfg_which_database` before sele
 ## Regression CI maintenance after native navigation selector migration
 
 The general site/admin/modules batch-264 contract now permits Joomla 5/6's supported `Factory::getContainer()->get(DatabaseInterface::class)` lookup in existing module dispatchers, while still rejecting removed `Factory::getDbo()` APIs and protected application container access. The New Project article-reference test also had a double namespace separator before `ReflectionMethod`, which is now valid PHP syntax. Both corrections address failures revealed by the broader branch CI run; no production business logic was changed in those two files.
+
+## Project Map HTML output (14 November 2026)
+
+Federation names from the database are now translated and escaped before being placed into map region labels, matching the existing country and league popup encoding. The project-map regression verifies the escaped HTML and safely encoded JavaScript configuration. Bundled module file headers and descriptive method PHPDoc remain mandatory.

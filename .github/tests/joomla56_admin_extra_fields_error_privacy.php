@@ -88,14 +88,16 @@ namespace {
         throw new \RuntimeException('Extra fields were loaded for an invalid record.');
     }
 
-    // Database service initialization can also throw: it must be caught.
+    // Database service initialization can also throw: keep exception details
+    // out of both public notices and logs, retaining only the exception class.
     if ($helper->getFields(7, 'club') !== []) {
         throw new \RuntimeException('Failed database resolution returned extra fields.');
     }
 
     if ($app->messages !== [['JERROR_AN_ERROR_HAS_OCCURRED', 'error']]
         || count(\Joomla\CMS\Log\Log::$entries) !== 1
-        || !str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'password=secret')
+        || !str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'password=secret')
         || str_contains($app->messages[0][0], 'secret')) {
         throw new \RuntimeException('Administrator error reporting leaked database credentials.');
     }
@@ -110,7 +112,8 @@ namespace {
 
     if ($helper->getFields(7, 'club', 'backend', $db) !== []
         || count(\Joomla\CMS\Log\Log::$entries) !== 2
-        || !str_contains(\Joomla\CMS\Log\Log::$entries[1][0], 'secret table name')
+        || !str_contains(\Joomla\CMS\Log\Log::$entries[1][0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$entries[1][0], 'secret table name')
         || $app->messages[1] !== ['JERROR_AN_ERROR_HAS_OCCURRED', 'error']) {
         throw new \RuntimeException('Administrator query setup failure was not handled safely.');
     }

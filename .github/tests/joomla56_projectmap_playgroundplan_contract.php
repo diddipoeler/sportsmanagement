@@ -278,8 +278,12 @@ namespace {
     assertMatch('error', $app->messages[0][1] ?? null, 'Database service failure must be signaled');
     assertMatch('SportsManagement playground fixtures could not be loaded.',
         $app->messages[0][0] ?? null, 'Site users should receive a generic error, not internal details.');
-    assertMatch(true, str_contains(\Joomla\CMS\Log\Log::$entries[0][0] ?? '', 'database service is unavailable'),
-        'Internal database service failures should be logged for administrators.');
+    assertMatch(true, str_contains(\Joomla\CMS\Log\Log::$entries[0][0] ?? '', 'RuntimeException'),
+        'A safe failure type should be logged for administrator diagnostics.');
+    assertMatch(false, str_contains(\Joomla\CMS\Log\Log::$entries[0][0] ?? '', 'database service is unavailable'),
+        'Database exception details must not be recorded in the public component log.');
+    assertMatch('jsmerror', \Joomla\CMS\Log\Log::$entries[0][2] ?? null,
+        'Playground Plan errors should use the SportsManagement log category.');
 
 
     // A match must only join opponents from its own project and teams

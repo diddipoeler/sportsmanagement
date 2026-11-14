@@ -197,3 +197,10 @@ End-to-end Joomla 5.4/6 installation, browser rendering and data-migration tests
 - **Tests:** `.github/tests/joomla56_uefa_native_view.php` exercises the real native template with malicious country/year/menu strings, valid and invalid season choices and an incompatible MVC model. `.github/tests/joomla56_site_uefa_error_privacy.php` continues verifying that database SQL details remain private. The new `.github/workflows/joomla5-6-native-uefa-table.yml` runs file lint and four header tags, both regression scripts and selected function PHPDoc checks across PHP 8.2, 8.3 and 8.4.
 
 Actual installation/browser compatibility with Joomla 5.4 and 6, migration of remaining ranking-all-time/tournament-bracket layouts and historical presentation overrides remain pending.
+
+## Read-only frontend project selection and administrator write guards (14 November 2026)
+
+- The native frontend project model now checks the selected project when resolving divisions and descendants. Invalid or foreign-project division roots cannot influence the team list. Favourite-team IDs are parsed strictly rather than partially cast from malformed database values.
+- Resolving the effective frontend round no longer updates `current_round` during an anonymous page view. Automatic round selection remains available as display data; persistent updates belong to an explicit, authorised administrator operation and should be tested separately before final release.
+- The administrator Project model now checks component permissions for direct calls to quick save, league-champion toggles, project copying, deletion and dependent-record cleanup. Bulk project IDs are validated without partially converting untrusted strings or arrays.
+- Independent PHP 8.3/8.4 regressions cover project ownership, read-only round reads and direct administrator write denial. Additional integration tests on real Joomla 5 and Joomla 6 installations are still required.
