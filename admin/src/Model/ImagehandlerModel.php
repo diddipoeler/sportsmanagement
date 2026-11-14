@@ -17,6 +17,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 use DirectoryIterator;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\Database\DatabaseInterface;
@@ -68,7 +70,14 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * Use the SportsManagement database connection, including configured external DBs.
+     * Bind the image model to the active SportsManagement database.
+     *
+     * Reuses the legacy external database resolver when it returns an
+     * implementation of Joomla DatabaseInterface; otherwise keeps the
+     * explicitly injected Joomla connection as a safe fallback.
+     *
+     * @param DatabaseInterface $db Joomla database service.
+     * @return void
      */
     public function setDatabase(DatabaseInterface $db): void
     {
@@ -96,7 +105,10 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * Assign a selected large logo to a club record.
+     * Assign an approved club image after validating its record ID.
+     *
+     * A direct model invocation still requires an authenticated editor.
+     *
      * @param array $data Club ID and selected image file.
      * @return bool|string True on success or a failure message.
      */
@@ -104,7 +116,7 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         return $this->updateImageField(
             '#__sportsmanagement_club',
-            (int) ($data['club_id'] ?? 0),
+            self::positiveRecordId($data['club_id'] ?? null),
             'logo_big',
             'images/com_sportsmanagement/database/clubs/large/',
             (string) ($data['picture'] ?? '')
@@ -112,7 +124,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * Assign a selected image to a season team-player relation.
+     * Assign an approved image to a season team-player relation.
+     *
+     * Rejects malformed IDs and delegates component ACL checks to the
+     * shared image-field writer before updating a database record.
+     *
      * @param array $data Team player ID and selected picture.
      * @return bool|string True on success or a failure message.
      */
@@ -120,7 +136,7 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         return $this->updateImageField(
             '#__sportsmanagement_season_team_person_id',
-            (int) ($data['teamplayer_id'] ?? 0),
+            self::positiveRecordId($data['teamplayer_id'] ?? null),
             'picture',
             'images/com_sportsmanagement/database/teamplayers/',
             (string) ($data['picture'] ?? '')
@@ -128,7 +144,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * Assign a selected image to a person record.
+     * Assign a previously selected image to an existing person.
+     *
+     * Parses the record ID without lossy integer casts and validates the
+     * filename and editor permission through the shared update method.
+     *
      * @param array $data Player ID and selected picture.
      * @return bool|string True on success or a failure message.
      */
@@ -136,7 +156,7 @@ final class ImagehandlerModel extends BaseDatabaseModel
     {
         return $this->updateImageField(
             '#__sportsmanagement_person',
-            (int) ($data['player_id'] ?? 0),
+            self::positiveRecordId($data['player_id'] ?? null),
             'picture',
             'images/com_sportsmanagement/database/persons/',
             (string) ($data['picture'] ?? '')
@@ -195,9 +215,13 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * Return all selectable image files from the requested SportsManagement folder.
+     * Read image files only from the actual component media root.
      *
-     * @return array<int, object>
+     * Resolves both the selected directory and each file to a canonical
+     * path so symlinks cannot expose private data outside the image tree.
+     * Retains the legacy search and pagination listing contract.
+     *
+     * @return array<int, object> Filenames and safe local paths.
      */
     public function getList(): array
     {
@@ -224,6 +248,17 @@ final class ImagehandlerModel extends BaseDatabaseModel
             return [];
         }
 
+        $realRoot = realpath(JPATH_SITE . '/images/com_sportsmanagement/database');
+        $realFolder = realpath($basePath);
+
+        if ($realRoot === false || $realFolder === false
+            || ($realFolder !== $realRoot
+                && !str_starts_with($realFolder, rtrim($realRoot, '/\\') . DIRECTORY_SEPARATOR))) {
+            $this->setState('total', 0);
+            return [];
+        }
+
+        $realRootPrefix = rtrim($realRoot, '/\\') . DIRECTORY_SEPARATOR;
         $allowedExtensions = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
         $images = [];
 
@@ -235,8 +270,11 @@ final class ImagehandlerModel extends BaseDatabaseModel
 
                 $file = $entry->getFilename();
                 $extension = strtolower($entry->getExtension());
+                $realFile = $entry->getRealPath();
 
-                if (!in_array($extension, $allowedExtensions, true)) {
+                if ($file === '' || str_starts_with($file, '.')
+                    || $realFile === false || !str_starts_with($realFile, $realRootPrefix)
+                    || !in_array($extension, $allowedExtensions, true)) {
                     continue;
                 }
 
@@ -327,8 +365,12 @@ final class ImagehandlerModel extends BaseDatabaseModel
     }
 
     /**
-     * Persist a selected image filename in the allowed target record.
-     * Uses a component-controlled table and column, not user-supplied SQL.
+     * Save a selected image only for an authenticated component editor.
+     *
+     * Uses trusted, component-defined tables, columns and media prefixes,
+     * validates a safe image basename and suppresses sensitive database
+     * exception messages from both the JSON response and server log.
+     *
      * @param string $table Database table to update.
      * @param int $id Target row identifier.
      * @param string $column Image column name.
@@ -343,10 +385,14 @@ final class ImagehandlerModel extends BaseDatabaseModel
         string $prefix,
         string $picture
     ): bool|string {
+        if (!self::canEditImages()) {
+            return Text::_('JERROR_ALERTNOAUTHOR');
+        }
+
         $picture = $this->normaliseImageName($picture);
 
         if ($id <= 0 || $picture === null) {
-            return 'Invalid image selection';
+            return Text::_('COM_SPORTSMANAGEMENT_ADMIN_SAVE_IMAGE_FALSE');
         }
 
         $row = new stdClass();
@@ -357,21 +403,33 @@ final class ImagehandlerModel extends BaseDatabaseModel
             $this->getDatabase()->updateObject($table, $row, 'id');
             return true;
         } catch (Throwable $e) {
-            return $e->getMessage();
+            Log::add(
+                __METHOD__ . ': image selection update failed (' . get_class($e) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+
+            return Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
         }
     }
 
     /**
-     * Extract a usable basename from a chosen image filename.
-     * @param string $picture User-selected picture name or path.
-     * @return string|null Selected basename or null if invalid.
+     * Validate a selected image basename for use in a local media URL.
+     *
+     * Accepts historical component-relative filenames, but never stores
+     * file extensions other than the supported raster-image formats or
+     * URL-control characters that could corrupt image markup.
+     *
+     * @param string $picture User-selected filename or component image path.
+     * @return string|null Safe basename, or null for malformed input.
      */
     private function normaliseImageName(string $picture): ?string
     {
         $picture = trim(str_replace('\\', '/', $picture));
         $name = basename($picture);
 
-        if ($name === '' || $name === '.' || $name === '..' || str_contains($name, "\0")) {
+        if (strlen($name) > 255
+            || preg_match('/^[\\pL\\pN][\\pL\\pN _().+-]{0,240}\\.(?:gif|jpe?g|png|webp)$/iuD', $name) !== 1) {
             return null;
         }
 
@@ -401,6 +459,56 @@ final class ImagehandlerModel extends BaseDatabaseModel
 
         return implode('/', $parts);
     }
+    /**
+     * Convert a posted record selector into a positive database ID.
+     *
+     * Only positive integers and decimal strings are accepted, including
+     * legacy zero-padded values. Booleans, nested values, floats, malformed
+     * strings and integer overflows can never select another record.
+     *
+     * @param mixed $value Raw identifier from the image modal form.
+     * @return int Positive database ID, or zero when invalid.
+     */
+    private static function positiveRecordId(mixed $value): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return 0;
+        }
+
+        if (is_string($value)) {
+            if (strlen($value) > 64 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                return 0;
+            }
+
+            $digits = ltrim($value, '0');
+            $value = $digits === '' ? '0' : $digits;
+        }
+
+        $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Require a logged-in Joomla administrator with component edit rights.
+     *
+     * This model-level permission guard supplements the image controller's
+     * POST-token validation when a caller invokes saveimage* directly.
+     * Joomla component administrators retain their normal override.
+     *
+     * @return bool Whether the current identity may edit component records.
+     */
+    private static function canEditImages(): bool
+    {
+        $identity = self::resolveAdministratorApplication()->getIdentity();
+
+        return is_object($identity)
+            && (int) ($identity->id ?? 0) > 0
+            && method_exists($identity, 'authorise')
+            && ($identity->authorise('core.edit', 'com_sportsmanagement')
+                || $identity->authorise('core.admin', 'com_sportsmanagement'));
+    }
+
     /**
      * Resolve and verify the Joomla administrator application service.
      * @return AdministratorApplication Valid administrator application.
