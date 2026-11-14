@@ -82,15 +82,16 @@ jobs:
           grep -Fq 'final class RankingHelper' "$helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$helper"
           grep -Fq 'SiteRouteHelper::view(' "$helper"
-          grep -Fq '$container = Factory::getContainer();' "$helper"
-          grep -Fq '$app = $container->get(SiteApplication::class);' "$helper"
-          grep -Fq '$joomlaDb = $container->get(DatabaseInterface::class);' "$helper"
+          # The native helper uses the typed site resolver and database service.
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$helper"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
+          grep -Fq 'if (!$database instanceof DatabaseInterface)' "$helper"
           grep -Fq "Session::checkToken('post')" "$helper"
           grep -Fq '$app->getInput()->post->getInt(' "$helper"
 
-          grep -Fq '$container = Factory::getContainer();' "$facade"
-          grep -Fq '$app = $container->get(SiteApplication::class);' "$facade"
-          grep -Fq '$db = $container->get(DatabaseInterface::class);' "$facade"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$facade"
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$facade"
+          grep -Fq 'if (!$database instanceof DatabaseInterface)' "$facade"
           grep -Fq 'SiteRouteHelper::view(' "$facade"
 
           grep -Fq "require __DIR__ . '/native.php';" "$default_layout"
@@ -119,4 +120,6 @@ jobs:
             done
           done
 
+          php -l .github/tests/joomla56_ranking_asset_reuse.php
+          php .github/tests/joomla56_ranking_asset_reuse.php
           echo 'Native Ranking module contracts OK'

@@ -104,7 +104,9 @@ jobs:
           grep -Fq '<version>5.6.0</version>' "$update"
           grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update"
           grep -Fq '<php_minimum>8.1.0</php_minimum>' "$update"
-          grep -Fq 'use Joomla\\CMS\\Application\\SiteApplication;' "$dispatcher"
-          grep -Fq "!\$app instanceof SiteApplication || !\$app->isClient('site')" "$dispatcher"
+          # The current dispatcher checks the site client directly.
+          grep -Fq '$app = $this->getApplication();' "$dispatcher"
+          grep -Fq "if (!\$app->isClient('site'))" "$dispatcher"
+          grep -Fq 'useRankingStylesheet(' "$dispatcher"
 
           echo 'Joomla 5/6 batch 129 contracts OK.'

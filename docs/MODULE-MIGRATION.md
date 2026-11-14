@@ -162,3 +162,7 @@ The general site/admin/modules batch-264 contract now permits Joomla 5/6's suppo
 ## Project Map HTML output (14 November 2026)
 
 Federation names from the database are now translated and escaped before being placed into map region labels, matching the existing country and league popup encoding. The project-map regression verifies the escaped HTML and safely encoded JavaScript configuration. Bundled module file headers and descriptive method PHPDoc remain mandatory.
+
+## Ranking multi-instance CSS registration and updated CI contracts (14 November 2026)
+
+The Ranking dispatcher now activates the same WebAssetManager stylesheet across multiple module instances without registering the asset twice. Two older Ranking CI workflows still expected pre-migration local Joomla application/container variables and a removed SiteApplication type check; their contracts now verify the current typed service resolver, site-client check and repeatable CSS regression. No ranking calculation or query behavior was changed in those CI-only corrections.
