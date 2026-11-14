@@ -366,24 +366,7 @@ final class ImageSelectHelper
         return $candidate;
     }
 
-    /**
-     * Build instance-specific JavaScript for image selection and previews.
-     *
-     * JSON-encodes all PHP-controlled values before generating callbacks for
-     * modal image selection, resetting and clearing, and preview refreshes.
-     * Each selector uses its own field identifier for independent operation.
-     *
-     * @param string $selectFunction Historical modal callback name.
-     * @param string $functionSuffix Unique selector callback suffix.
-     * @param string $fieldName Submitted Joomla form field name.
-     * @param string $fieldId Visible HTML input identifier.
-     * @param string $root Absolute site base URL.
-     * @param string $imageBase Component image directory relative to the site.
-     * @param string $defaultPlaceholder Default image when cleared.
-     * @param string $malePlaceholder Placeholder for male person records.
-     * @param string $femalePlaceholder Placeholder for female person records.
-     * @return string Inline script handling this selector instance.
-     */
+
     /**
      * Resolve the running Joomla frontend or administrator application.
      *
@@ -406,6 +389,24 @@ final class ImageSelectHelper
         return $app;
     }
 
+    /**
+     * Build instance-specific JavaScript for image selection and previews.
+     *
+     * JSON-encodes all PHP-controlled values before generating callbacks for
+     * modal image selection, resetting and clearing, and preview refreshes.
+     * Each selector uses its own field identifier for independent operation.
+     *
+     * @param string $selectFunction Historical modal callback name.
+     * @param string $functionSuffix Unique selector callback suffix.
+     * @param string $fieldName Submitted Joomla form field name.
+     * @param string $fieldId Visible HTML input identifier.
+     * @param string $root Absolute site base URL.
+     * @param string $imageBase Component image directory relative to the site.
+     * @param string $defaultPlaceholder Default image when cleared.
+     * @param string $malePlaceholder Placeholder for male person records.
+     * @param string $femalePlaceholder Placeholder for female person records.
+     * @return string Inline script handling this selector instance.
+     */
     private static function buildJavascript(
         string $selectFunction,
         string $functionSuffix,

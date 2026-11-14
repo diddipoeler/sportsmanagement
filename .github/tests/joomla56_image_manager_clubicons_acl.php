@@ -197,7 +197,7 @@ namespace {
     }
 
     $code = file_get_contents($root . '/modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php');
-    if (!str_contains($code, 'externalWebsiteUrl((string)')) {
+    if (!str_contains($code, 'is_string($website) ? self::externalWebsiteUrl($website)')) {
         throw new \RuntimeException('Clubicons does not validate website links before displaying them.');
     }
 
