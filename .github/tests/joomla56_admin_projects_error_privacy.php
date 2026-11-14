@@ -99,11 +99,23 @@ namespace {
                 public array $where = [];
                 public array $bindings = [];
 
-                /** @return self Prepared selected ID query. */
+                /**
+                 * Select the requested field without executing the query.
+                 *
+                 * @return self Fluent Joomla query fixture.
+                 */
                 public function select(string $value): self { return $this; }
-                /** @return self Prepared project source table. */
+                /**
+                 * Choose the source table for the simulated project lookup.
+                 *
+                 * @return self Fluent Joomla query fixture.
+                 */
                 public function from(string $table): self { return $this; }
-                /** @return self Query with a named condition. */
+                /**
+                 * Append a named filter to the in-memory project query.
+                 *
+                 * @return self Fluent Joomla query fixture.
+                 */
                 public function where(string $condition): self {
                     $this->where[] = $condition;
                     return $this;
