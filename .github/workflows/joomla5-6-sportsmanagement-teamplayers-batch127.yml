@@ -75,7 +75,11 @@ jobs:
           grep -Fq '@version    5.6.0' "$site_view"
           grep -Fq "\\defined('_JEXEC') or die;" "$site_view"
           grep -Fq 'throw new \RuntimeException' "$site_view"
-          grep -Fq 'public $item;' "$site_view"
+          # The site bridge aliases the native frontend view; its public
+          # form item belongs to the native administrator edit view, not the
+          # legacy frontend compatibility bridge.
+          grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewsportsmanagement')" "$site_view"
+          grep -Fq 'public $item;' "$admin_native"
 
           if grep -Fq 'jimport(' "$site_view"; then
             echo 'Frontend SportsManagement view regressed to jimport.' >&2

@@ -96,7 +96,13 @@ jobs:
           grep -Fq '<version>5.6.0</version>' "$update"
           grep -Fq '<targetplatform name="joomla" version="[56].*" />' "$update"
 
-          grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"
+          # Native site dispatchers use the application's public client check
+          # instead of depending on a concrete SiteApplication class import.
+          grep -Fq "if (!\$app->isClient('site'))" "$dispatcher"
           grep -Fq 'SportsManagement PlaygroundPlan requires the Joomla site application.' "$dispatcher"
+          if grep -Fq 'use Joomla\CMS\Application\SiteApplication;' "$dispatcher"; then
+            echo 'Playground Plan unexpectedly depends on a concrete Joomla site application.' >&2
+            exit 1
+          fi
 
           echo 'Joomla 5/6 batch 136 contracts OK.'

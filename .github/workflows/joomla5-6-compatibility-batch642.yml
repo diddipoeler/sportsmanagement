@@ -66,7 +66,9 @@ jobs:
               text = Path(path).read_text()
               if 'private function joomlaDatabase(): DatabaseInterface' not in text:
                   raise SystemExit(f'Missing centralized Joomla database helper in {path}')
-              if 'return $data;\n    }\n\n    private function joomlaDatabase()' not in text:
+              # PHPDoc and additional well-documented helpers can appear
+              # between getLayoutData() and the class-level DB method.
+              if not re.search(r'(?m)^    private function joomlaDatabase\(\): DatabaseInterface\s*$', text):
                   raise SystemExit(f'joomlaDatabase() is not a class-level method in {path}')
               if text.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
                   raise SystemExit(f'Expected exactly one Joomla DB container access in {path}')
