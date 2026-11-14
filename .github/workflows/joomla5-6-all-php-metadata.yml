@@ -157,6 +157,21 @@ jobs:
             .github/tests/joomla56_site_admin_module_event_paths_logs.php
           php .github/tests/joomla56_site_admin_module_event_paths_logs.php
 
+      - name: Check published project navigation, Count Record and GitHub installer privacy
+        run: |
+          php -l site/src/Helper/ProjectNavigationHelper.php
+          php -l admin/src/Model/GithubinstallModel.php
+          php -l modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php
+          php -l .github/tests/joomla56_project_navigation_visible_count.php
+          php -l .github/tests/joomla56_admin_githubinstaller_guards.php
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Helper/ProjectNavigationHelper.php \
+            admin/src/Model/GithubinstallModel.php \
+            modules/mod_sportsmanagement_count_rekord/src/Helper/CountRekordHelper.php \
+            .github/tests/joomla56_project_navigation_visible_count.php
+          php .github/tests/joomla56_project_navigation_visible_count.php
+          php .github/tests/joomla56_admin_githubinstaller_guards.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
