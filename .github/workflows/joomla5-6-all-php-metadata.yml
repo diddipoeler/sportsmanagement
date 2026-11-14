@@ -79,6 +79,15 @@ jobs:
           php .github/tests/joomla56_image_select_backend_document.php --compat-field
           php .github/tests/joomla56_admin_club_image_folder_config.php
 
+      - name: Verify player and league image folder types and fallback media fields
+        run: |
+          php -l admin/src/Model/PlayerModel.php
+          php -l .github/tests/joomla56_admin_player_image_folder_config.php
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Model/PlayerModel.php \
+            .github/tests/joomla56_admin_player_image_folder_config.php
+          php .github/tests/joomla56_admin_player_image_folder_config.php
+
       - name: Verify multi-instance Ranking module stylesheets
         run: |
           php -l modules/mod_sportsmanagement_ranking/src/Dispatcher/Dispatcher.php

@@ -24,11 +24,19 @@ use Joomla\Database\ParameterType;
 final class PlayerModel extends SportsManagementAdminModel
 {
     /**
-     * Load the player edit form from the administrator form paths.
+     * Load the administrator player edit form with supported image fields.
      *
-     * @param array $data data value.
-     * @param bool $loadData loadData value.
-     * @return mixed
+     * Resolves the Joomla player form, configures its stored person picture
+     * placeholder and retains the native Media relative directory. Both
+     * Joomla's Media field and the SportsManagement imageselect field need a
+     * valid mode, while the latter additionally needs a non-empty "persons"
+     * targetfolder for its image-browser and upload dialogs. Malformed media
+     * settings fall back to the native Media field instead of the old "0"
+     * field type, without weakening the shared image path validation.
+     *
+     * @param array<string,mixed> $data Player form data passed by Joomla.
+     * @param bool $loadData Whether to populate persisted values.
+     * @return mixed Joomla player form or false on load failure.
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -46,11 +54,19 @@ final class PlayerModel extends SportsManagementAdminModel
         }
 
         $params = ComponentHelper::getParams('com_sportsmanagement');
+        $mediaTool = trim((string) $params->get('cfg_which_media_tool', 'media'));
+
+        if (!in_array($mediaTool, ['media', 'imageselect'], true)) {
+            $mediaTool = 'media';
+        }
 
         if ($form->getField('picture')) {
             $form->setFieldAttribute('picture', 'default', (string) $params->get('ph_player', ''));
+            // ImageSelectHelper::getFolder() expects the validated folder
+            // type, while the Joomla Media field expects a directory.
+            $form->setFieldAttribute('picture', 'targetfolder', 'persons');
             $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
-            $form->setFieldAttribute('picture', 'type', (string) $params->get('cfg_which_media_tool', 0));
+            $form->setFieldAttribute('picture', 'type', $mediaTool);
         }
 
         return $form;
