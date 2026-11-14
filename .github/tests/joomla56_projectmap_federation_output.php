@@ -85,7 +85,7 @@ namespace {
 
     $encoded = $helper->toJavascriptObjectBody($regions);
 
-    if (str_contains($encoded, '<img') || !str_contains($encoded, '\\u003C')) {
+    if (str_contains($encoded, '<img') || !str_contains($encoded, '\\u0026lt;img')) {
         throw new \RuntimeException('Project-map JavaScript options expose unescaped HTML.');
     }
 
