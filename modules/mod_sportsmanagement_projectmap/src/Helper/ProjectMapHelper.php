@@ -202,9 +202,10 @@ final class ProjectMapHelper
 
     /**
      * Group project countries into their international federations.
-     * Creates region metadata, escapes federation image URLs for HTML output
-     * and deduplicates country codes within each federation region.
-     * Invalid icon paths are omitted rather than embedded in map popups.
+     * Creates federation region metadata and deduplicates country codes.
+     * Treats translated federation names as untrusted HTML text and escapes
+     * their labels, just as country and league names are escaped elsewhere
+     * in the module. Invalid image URLs are omitted from map popups.
      * @param array<int,object> $projects Country-specific map projects.
      * @return array<string,array> Region descriptions and country lists.
      */
@@ -223,7 +224,11 @@ final class ProjectMapHelper
 
             if (!isset($regions[$federationId])) {
                 $regions[$federationId] = [
-                    'name' => (string) ($project->federation_name ?? ''),
+                    'name' => htmlspecialchars(
+                        Text::_((string) ($project->federation_name ?? '')),
+                        ENT_QUOTES | ENT_SUBSTITUTE,
+                        'UTF-8'
+                    ),
                     'description' => ($federationImage = self::safeImageUrl($project->federation_picture ?? null)) !== ''
                         ? '<img src="' . htmlspecialchars($federationImage, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '" style="width: 75px" alt="">'
                         : '',
