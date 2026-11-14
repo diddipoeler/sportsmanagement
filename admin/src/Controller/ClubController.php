@@ -29,7 +29,8 @@ class ClubController extends SportsManagementFormController
      * code, optionally resolves coordinates and administrative address
      * fields, then delegates storage and token validation to the shared
      * SportsManagement form controller. Uses the supported Joomla 5/6
-     * application input accessor rather than the legacy input property.
+     * request input cached by the shared Joomla 5/6 form controller, rather
+     * than calling an unavailable getApplication() method.
      *
      * @param string|null $key Optional club record primary key.
      * @param string|null $urlVar Record identifier query parameter.
@@ -37,7 +38,7 @@ class ClubController extends SportsManagementFormController
      */
     public function save($key = null, $urlVar = null)
     {
-        $input = $this->getApplication()->getInput();
+        $input = $this->jsmjinput;
         $data = $input->post->get('jform', [], 'array');
         $extended = $input->post->get('extended', [], 'array');
 

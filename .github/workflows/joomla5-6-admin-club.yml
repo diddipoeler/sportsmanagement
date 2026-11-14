@@ -15,6 +15,7 @@ on:
       - 'admin/src/Table/ClubTable.php'
       - 'admin/tables/club.php'
       - 'admin/views/clubs/view.html.php'
+      - '.github/tests/joomla56_admin_club_controller_save.php'
       - '.github/workflows/joomla5-6-admin-club.yml'
   pull_request:
     branches:
@@ -30,6 +31,7 @@ on:
       - 'admin/src/Table/ClubTable.php'
       - 'admin/tables/club.php'
       - 'admin/views/clubs/view.html.php'
+      - '.github/tests/joomla56_admin_club_controller_save.php'
       - '.github/workflows/joomla5-6-admin-club.yml'
 
 jobs:
@@ -63,9 +65,18 @@ jobs:
           done
 
           grep -q 'class ClubController extends SportsManagementFormController' "$controller"
-          grep -Fq '$this->getApplication()->getInput()' "$controller"
+          grep -Fq '$input = $this->jsmjinput;' "$controller"
+          if grep -Fq '$this->getApplication()' "$controller"; then
+            echo 'Club controller must not call unavailable getApplication()' >&2
+            exit 1
+          fi
           grep -Fq '$input->post->get' "$controller"
           grep -Fq '$input->post->set' "$controller"
+
+          # Exercise the controller with Joomla-compatible injected input and
+          # an address resolver double; no Joomla installation is required.
+          php -l .github/tests/joomla56_admin_club_controller_save.php
+          php .github/tests/joomla56_admin_club_controller_save.php
 
           grep -q 'final class ClubModel extends SportsManagementAdminModel' "$model"
           # Joomla 5.4 and Joomla 6 recommend createQuery(), not getQuery(true).
