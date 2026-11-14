@@ -52,6 +52,18 @@ jobs:
           php .github/scripts/check-php-function-docs.php site/src/Service/Router.php
           php -l site/src/Service/Router.php
 
+      - name: Verify backend league image selector and null document handling
+        run: |
+          php -l site/src/Helper/ImageSelectHelper.php
+          php -l admin/src/Field/ImageSelectField.php
+          php -l admin/src/Field/ImageselectField.php
+          php -l .github/tests/joomla56_image_select_backend_document.php
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Helper/ImageSelectHelper.php \
+            admin/src/Field/ImageSelectField.php \
+            admin/src/Field/ImageselectField.php
+          php .github/tests/joomla56_image_select_backend_document.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php

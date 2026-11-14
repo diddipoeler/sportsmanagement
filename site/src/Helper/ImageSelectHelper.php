@@ -11,7 +11,9 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
+use Joomla\CMS\Application\CMSApplicationInterface;
+use Joomla\CMS\Document\HtmlDocument;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -29,13 +31,43 @@ final class ImageSelectHelper
     public static string $_foldertype = '';
     public static string $_view = '';
 
+    /**
+     * Initialise the legacy image selector state from the active Joomla request.
+     *
+     * Reads the requested image folder type and view from the actual frontend
+     * or administrator application. This prevents backend fields from
+     * accidentally selecting a separate frontend application with no document.
+     *
+     * @return void
+     * @throws \RuntimeException If the current Joomla client is unsupported.
+     */
     public function __construct()
     {
-        $input = SportsManagementSiteApplicationResolver::resolve()->getInput();
+        $input = self::currentApplication()->getInput();
         self::$_foldertype = $input->getCmd('type', '');
         self::$_view = $input->getCmd('view', '');
     }
 
+    /**
+     * Render the complete image-select field and its upload/select modal actions.
+     *
+     * Resolves component dialog dimensions and placeholders, builds safe field
+     * and image URLs, and registers inline JavaScript on the current HTML
+     * document. Both backend league forms and frontend forms use the actual
+     * running application rather than an unrelated site application. When no
+     * HTML document is available, it returns the field without causing a
+     * method_exists(null) TypeError.
+     *
+     * @param mixed $fieldname Submitted image field name.
+     * @param mixed $fieldpreviewName Historical preview field identifier.
+     * @param mixed $type Image folder selection (such as leagues).
+     * @param mixed $value Currently stored image path.
+     * @param mixed $default Initial placeholder or default image.
+     * @param mixed $controlName Historical Joomla form control name.
+     * @param mixed $fieldid HTML input element identifier.
+     * @return string Escaped field markup and modal actions.
+     * @throws \RuntimeException If no supported Joomla application is active.
+     */
     public static function getSelector(
         $fieldname = '',
         $fieldpreviewName = '',
@@ -45,7 +77,7 @@ final class ImageSelectHelper
         $controlName = '',
         $fieldid = ''
     ): string {
-        $app = SportsManagementSiteApplicationResolver::resolve();
+        $app = self::currentApplication();
         $params = ComponentHelper::getParams('com_sportsmanagement');
         $modalHeight = (int) $params->get('modal_popup_height', 600);
         $modalWidth = (int) $params->get('modal_popup_width', 900);
@@ -82,11 +114,12 @@ final class ImageSelectHelper
             $femalePlaceholder
         );
 
+        // The form may be initialised before a document exists. Never inspect
+        // a null document or use the obsolete global frontend document here.
         $document = $app->getDocument();
-        if (method_exists($document, 'getWebAssetManager')) {
+
+        if ($document instanceof HtmlDocument) {
             $document->getWebAssetManager()->addInlineScript($js);
-        } else {
-            $document->addScriptDeclaration($js);
         }
 
         $layout = (int) $params->get('cfg_draganddrop', 0) ? 'uploaddraganddrop' : 'upload';
@@ -157,6 +190,16 @@ final class ImageSelectHelper
             . '</div>';
     }
 
+    /**
+     * Convert historical image selector types to component image directories.
+     *
+     * Supports the established league, club, person, team and placeholder
+     * categories and preserves the legacy events subdirectory fallback for
+     * types that are not explicitly mapped.
+     *
+     * @param mixed $type Legacy image folder type.
+     * @return string Component-relative image directory.
+     */
     public static function getFolder($type): string
     {
         return match ((string) $type) {
@@ -195,6 +238,16 @@ final class ImageSelectHelper
         };
     }
 
+    /**
+     * Check an uploaded image against component size, type and content rules.
+     *
+     * Rejects missing files, oversized uploads, unsupported extensions,
+     * mismatching image MIME types and embedded active HTML. Reports a
+     * translated warning to Joomla's image-handler log on failure.
+     *
+     * @param mixed $file Uploaded file metadata with name, size and tmp_name.
+     * @return bool True only when the uploaded raster image passes validation.
+     */
     public static function check($file): bool
     {
         $file = (array) $file;
@@ -272,6 +325,17 @@ final class ImageSelectHelper
         return true;
     }
 
+    /**
+     * Create a safe image filename for uploads into the selected folder.
+     *
+     * Normalises the basename to safe characters, retains the extension, and
+     * appends an incrementing timestamp when required to avoid collisions.
+     * National flags keep their historical stable filenames.
+     *
+     * @param mixed $baseDir Destination directory for collision checks.
+     * @param mixed $filename Uploaded filename to normalise.
+     * @return string Safe destination basename.
+     */
     public static function sanitize($baseDir, $filename): string
     {
         $baseDir = rtrim((string) $baseDir, '/\\') . DIRECTORY_SEPARATOR;
@@ -300,6 +364,46 @@ final class ImageSelectHelper
         } while (File::exists($baseDir . $candidate));
 
         return $candidate;
+    }
+
+    /**
+     * Build instance-specific JavaScript for image selection and previews.
+     *
+     * JSON-encodes all PHP-controlled values before generating callbacks for
+     * modal image selection, resetting and clearing, and preview refreshes.
+     * Each selector uses its own field identifier for independent operation.
+     *
+     * @param string $selectFunction Historical modal callback name.
+     * @param string $functionSuffix Unique selector callback suffix.
+     * @param string $fieldName Submitted Joomla form field name.
+     * @param string $fieldId Visible HTML input identifier.
+     * @param string $root Absolute site base URL.
+     * @param string $imageBase Component image directory relative to the site.
+     * @param string $defaultPlaceholder Default image when cleared.
+     * @param string $malePlaceholder Placeholder for male person records.
+     * @param string $femalePlaceholder Placeholder for female person records.
+     * @return string Inline script handling this selector instance.
+     */
+    /**
+     * Resolve the running Joomla frontend or administrator application.
+     *
+     * Joomla's application factory returns the actual request context in
+     * versions 5 and 6. Unlike the site-only resolver it provides the active
+     * backend document for league and other image-select form fields. Other
+     * application clients are rejected instead of rendering unsafe dialogs.
+     *
+     * @return CMSApplicationInterface Active site or administrator application.
+     * @throws \RuntimeException When the current client is unsupported.
+     */
+    private static function currentApplication(): CMSApplicationInterface
+    {
+        $app = Factory::getApplication();
+
+        if (!$app->isClient('site') && !$app->isClient('administrator')) {
+            throw new \RuntimeException('SportsManagement image selector requires a Joomla site or administrator application.', 500);
+        }
+
+        return $app;
     }
 
     private static function buildJavascript(
@@ -395,6 +499,20 @@ final class ImageSelectHelper
 JS;
     }
 
+    /**
+     * Render an upload or image-browser action as a Bootstrap modal link.
+     *
+     * Delegates URL validation, markup escaping and dialog dimensions to the
+     * shared Joomla 5/6 modal helper for consistent administrator rendering.
+     *
+     * @param string $id HTML modal identifier.
+     * @param string $icon Button image path.
+     * @param string $title Translated accessible title.
+     * @param string $url Image-handling destination.
+     * @param int $width Requested dialog width.
+     * @param int $height Requested dialog height.
+     * @return string Escaped clickable modal markup.
+     */
     private static function modalButton(
         string $id,
         string $icon,
@@ -417,6 +535,16 @@ JS;
         );
     }
 
+    /**
+     * Resolve the configured placeholder image for a component image type.
+     *
+     * Maps leagues, players, clubs, projects, stadiums and other historical
+     * category aliases to their corresponding SportsManagement configuration
+     * keys, returning an empty string for unspecified categories.
+     *
+     * @param string $type Selected image or placeholder category.
+     * @return string Configured placeholder image path.
+     */
     private static function defaultPlaceholder(string $type): string
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -449,11 +577,29 @@ JS;
         };
     }
 
+    /**
+     * Escape untrusted image field values for HTML text and attributes.
+     *
+     * Uses UTF-8 and both quote styles so names, paths and translated labels
+     * cannot inject additional markup into image-select controls.
+     *
+     * @param string $value Unescaped text or attribute value.
+     * @return string HTML-escaped value.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
     }
 
+    /**
+     * Encode a PHP string safely as a literal JavaScript string value.
+     *
+     * Encodes angle brackets, ampersands and both quote types to prevent
+     * executable markup from appearing in image selector inline scripts.
+     *
+     * @param string $value Input value for the generated JavaScript.
+     * @return string JSON-formatted JavaScript string literal.
+     */
     private static function js(string $value): string
     {
         return (string) json_encode(

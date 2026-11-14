@@ -18,10 +18,26 @@ use Joomla\CMS\Uri\Uri;
 /**
  * Native Joomla 5/6 administrator field backed by the shared site image selector helper.
  */
+/**
+ * Administrator form field implementing the Joomla 5/6 image-select control.
+ *
+ * Delegates rendering to the shared helper, which selects the currently active
+ * administrator application so image dialogs and scripts use the backend document.
+ */
 final class ImageSelectField extends FormField
 {
     protected $type = 'imageselect';
 
+    /**
+     * Render the backend image selector with preview and reset state fields.
+     *
+     * Loads the namespaced helper when the legacy bridge has not loaded it
+     * yet, builds upload and image-browser controls for this field's target
+     * folder, and appends the preview and original-value inputs used by Joomla
+     * league and other administrator forms.
+     *
+     * @return string Rendered input, preview and modal markup.
+     */
     protected function getInput(): string
     {
         if (!class_exists(ImageSelectHelper::class)) {

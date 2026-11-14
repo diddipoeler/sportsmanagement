@@ -235,3 +235,9 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 
 - The modern site router now documents its constructor and all named helper methods, including menu candidate selection, allowed route views, positional parameters and scalar input handling. Its existing Joomla 5/6 URL-building behavior remains unchanged.
 - The migration metadata workflow checks the router's descriptive function PHPDoc and PHP syntax. Existing SEF route regression workflows remain in place; installed Joomla/browser testing is still outstanding.
+
+## Administrator League image selector: missing document (14 November 2026)
+
+- The shared `ImageSelectHelper` previously resolved a separate `SiteApplication` even when an administrator field was rendered. The backend application could therefore receive a null document from that unrelated frontend instance, leading to `method_exists(): Argument #1 must be object|string, null given` when a league form used the image selector.
+- The helper now uses the actual Joomla 5/6 running application (`Factory::getApplication()`), restricted to site and administrator clients. Inline image-select JavaScript is registered only when an HTML document exists; missing or non-HTML documents no longer cause a fatal exception. Frontend modal paths still point into the administrator image handler, while backend modal paths use the active backend base URL.
+- The helper and both native/compatibility administrator fields now have descriptive method PHPDoc and retain the required four file header tags. A standalone test covers null documents, active administrator documents, both field classes, frontend upload URLs and unsupported clients. The all-PHP-metadata workflow runs it with lint and PHPDoc checks. Installation tests on Joomla 5 and Joomla 6 remain required.
