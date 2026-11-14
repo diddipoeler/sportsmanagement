@@ -131,6 +131,19 @@ jobs:
             modules/mod_sportsmanagement_playgroundplan/src/Dispatcher/Dispatcher.php
           php .github/tests/joomla56_navigation_roster_plan_asset_reuse.php
 
+      - name: Check club history, action log and navigation module migration regressions
+        run: |
+          php -l site/src/Helper/ClubHistoryPresentationHelper.php
+          php -l admin/src/Helper/ActionLogHelper.php
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php
+          php -l .github/tests/joomla56_club_history_log_navigation_regression.php
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Helper/ClubHistoryPresentationHelper.php \
+            admin/src/Helper/ActionLogHelper.php \
+            modules/mod_sportsmanagement_navigation_menu/src/Helper/NavigationMenuHelper.php \
+            .github/tests/joomla56_club_history_log_navigation_regression.php
+          php .github/tests/joomla56_club_history_log_navigation_regression.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php

@@ -19,6 +19,19 @@ use Joomla\CMS\Language\Text;
  */
 final class ClubHistoryPresentationHelper
 {
+    /**
+     * Render the known predecessor clubs as a nested, route-aware HTML tree.
+     *
+     * Groups historical club relations by successor, then walks backward from
+     * the selected club. The recursion tracks visited IDs to avoid cycles;
+     * names and years are escaped before they enter the frontend markup.
+     *
+     * @param array<int,mixed> $relations Club records with id and new_club_id.
+     * @param int $clubId Current club whose predecessors should be shown.
+     * @param int $treeMode Legacy switch controlling collapsible tree buttons.
+     * @param int $databaseSelector Selected SportsManagement database.
+     * @return string Nested HTML list or an empty string for no predecessors.
+     */
     public static function renderPredecessorTree(
         array $relations,
         int $clubId,
@@ -30,6 +43,19 @@ final class ClubHistoryPresentationHelper
         return self::renderChildren($children, $clubId, $treeMode, $databaseSelector, []);
     }
 
+    /**
+     * Show a club's successor together with its historical predecessor chain.
+     *
+     * Returns no markup when the club has no successor; otherwise creates the
+     * translated successor link and a nested predecessor list. Club names are
+     * escaped and the URL is built by the native SportsManagement route helper.
+     *
+     * @param array<int,mixed> $relations Historical predecessor relations.
+     * @param int $clubId Club at the start of the displayed history.
+     * @param object|null $successor Successor club record, when available.
+     * @param int $databaseSelector Database used to build club links.
+     * @return string Accessible successor/history list or an empty string.
+     */
     public static function renderSuccessorHistory(
         array $relations,
         int $clubId,
@@ -60,7 +86,15 @@ final class ClubHistoryPresentationHelper
             . '</li></ul>';
     }
 
-    /** @return array<int, array<int, object>> */
+    /**
+     * Index each valid predecessor beneath the club that succeeded it.
+     *
+     * Ignores malformed records, nonpositive IDs and self-referential links,
+     * then sorts each sibling group naturally by the club's display name.
+     *
+     * @param array<int,mixed> $relations Club records from the history reader.
+     * @return array<int,array<int,object>> Predecessors keyed by successor ID.
+     */
     private static function childrenBySuccessor(array $relations): array
     {
         $children = [];
@@ -89,6 +123,21 @@ final class ClubHistoryPresentationHelper
         return $children;
     }
 
+    /**
+     * Recursively render one level of the collapsible predecessor club tree.
+     *
+     * Stops at invalid, missing or previously visited club IDs so corrupted
+     * relation cycles cannot recurse forever. Displays optional founding years,
+     * club logos and a native club link; descendants stay inside their parent
+     * list item so generated markup remains correctly nested.
+     *
+     * @param array<int,array<int,object>> $children Predecessors grouped by successor.
+     * @param int $parentId Club whose immediate predecessors are displayed.
+     * @param int $treeMode Whether expand/collapse controls are enabled.
+     * @param int $databaseSelector Database used by the generated club URLs.
+     * @param array<int,bool> $seen Club IDs already visited in this branch.
+     * @return string HTML unordered list, or an empty string without children.
+     */
     private static function renderChildren(
         array $children,
         int $parentId,
@@ -135,6 +184,19 @@ final class ClubHistoryPresentationHelper
         return $output . '</ul>';
     }
 
+    /**
+     * Build the successor panel's recursive list of predecessor links.
+     *
+     * Each descendant list is kept inside its corresponding parent list item,
+     * producing valid nested HTML. Tracks visited clubs independently along
+     * each recursion branch and uses the native route helper for every link.
+     *
+     * @param array<int,array<int,object>> $children Indexed history relations.
+     * @param int $parentId Successor ID from which to trace the predecessors.
+     * @param int $databaseSelector SportsManagement database selector.
+     * @param array<int,bool> $seen IDs visited on the current traversal path.
+     * @return string HTML list items (without a surrounding outer list).
+     */
     private static function renderHistoryList(
         array $children,
         int $parentId,
@@ -164,16 +226,27 @@ final class ClubHistoryPresentationHelper
                     self::clubLink($club, $databaseSelector),
                     self::escape((string) ($club->name ?? ''))
                 )
-                . '</li>';
+                ;
             $nested = self::renderHistoryList($children, $id, $databaseSelector, $seen);
             if ($nested !== '') {
                 $output .= '<ul>' . $nested . '</ul>';
             }
+            $output .= '</li>';
         }
 
         return $output;
     }
 
+    /**
+     * Generate a native frontend club-info link for a history relation.
+     *
+     * Retains the historical project and club slug fields and adds the
+     * requested database selector without depending on legacy URL globals.
+     *
+     * @param object $club Historical club record with optional slugs.
+     * @param int $databaseSelector Selected component database.
+     * @return string Joomla-routed club information URL.
+     */
     private static function clubLink(object $club, int $databaseSelector): string
     {
         return SiteRouteHelper::view('clubinfo', [
@@ -183,6 +256,15 @@ final class ClubHistoryPresentationHelper
         ]);
     }
 
+    /**
+     * Encode club-provided text before inserting it into HTML markup.
+     *
+     * Encodes quotes as well as angle brackets using UTF-8, preventing names,
+     * years and generated link attributes from becoming executable HTML.
+     *
+     * @param string $value Untrusted text or route attribute.
+     * @return string HTML-escaped value.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');

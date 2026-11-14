@@ -66,6 +66,8 @@ class NavigationMenuHelper
      * the Joomla module layout. Malformed external database selectors
      * produce an empty payload so the native dispatcher can safely skip
      * rendering instead of silently changing the database connection.
+     * It also validates the configured start view and optional Joomla menu
+     * item identifier without lossy PHP casts or array conversion warnings.
      * @param Registry $params Navigation module configuration.
      * @param CMSApplicationInterface $app Site application context.
      * @param DatabaseInterface $joomlaDatabase Base database connection.
@@ -92,6 +94,9 @@ class NavigationMenuHelper
         );
         $this->initialiseState();
 
+        $defaultView = self::normaliseDefaultView($params->get('project_start', 'ranking'));
+        $defaultItemId = self::normaliseMenuItemId($params->get('custom_item_id', 0));
+
         return [
             'helper' => $this,
             'seasonselect' => $this->getSeasonSelect(),
@@ -99,9 +104,59 @@ class NavigationMenuHelper
             'projectselect' => $this->getProjectSelect(),
             'divisionselect' => $this->getDivisionSelect(),
             'teamselect' => $this->getTeamSelect(),
-            'defaultview' => (string) $params->get('project_start', 'ranking'),
-            'defaultitemid' => (int) $params->get('custom_item_id', 0),
+            'defaultview' => $defaultView,
+            'defaultitemid' => $defaultItemId,
         ];
+    }
+
+    /**
+     * Validate the configured default SportsManagement navigation view.
+     *
+     * Preserves simple lowercase native route names while rejecting arrays,
+     * objects, path separators, padded values and oversized identifiers.
+     * Malformed configuration falls back to the existing ranking start page.
+     *
+     * @param mixed $raw Saved project_start module setting.
+     * @return string Safe route view identifier, or ranking as a fallback.
+     */
+    private static function normaliseDefaultView(mixed $raw): string
+    {
+        return is_string($raw) && strlen($raw) <= 64
+            && preg_match('/^[a-z][a-z0-9_]*$/D', $raw) === 1
+            ? $raw
+            : 'ranking';
+    }
+
+    /**
+     * Resolve a Joomla menu item ID without partially converting bad input.
+     *
+     * Zero disables the custom menu item; positive integers and fully decimal
+     * zero-padded strings retain their expected value. Rejects bools, floats,
+     * arrays, objects, negative IDs, text suffixes and integer overflow.
+     *
+     * @param mixed $raw Untrusted custom_item_id module parameter.
+     * @return int Valid Joomla Itemid, or zero when the setting is invalid.
+     */
+    private static function normaliseMenuItemId(mixed $raw): int
+    {
+        if (is_int($raw)) {
+            return max(0, $raw);
+        }
+
+        if (!is_string($raw) || $raw === '' || strlen($raw) > 24
+            || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT);
+
+        return $id !== false && $id >= 0 ? $id : 0;
     }
 
     /**

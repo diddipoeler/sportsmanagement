@@ -42,7 +42,9 @@ final class ActionLogHelper
      * to a persisted entity or accountable Joomla user. Rejects malformed
      * view identifiers instead of transforming them into different tasks.
      * Ignores malformed non-scalar labels from imported legacy records rather
-     * than producing PHP 8 array-to-string conversion warnings.
+     * than producing PHP 8 array-to-string conversion warnings. Validates
+     * entity and actor IDs as complete positive decimals: malformed imported
+     * strings and arrays must not be partially cast to another user's ID.
      *
      * @param object $user Acting Joomla user with id and username properties.
      * @param array<string,mixed> $transaction Saved entity row and identifier.
@@ -52,10 +54,10 @@ final class ActionLogHelper
      */
     public static function record(object $user, array $transaction, bool $isNew, ?string $view = null): void
     {
-        $id = (int) ($transaction['id'] ?? 0);
-        $userId = (int) ($user->id ?? 0);
+        $id = self::positiveLogId($transaction['id'] ?? null);
+        $userId = self::positiveLogId($user->id ?? null);
 
-        if ($id <= 0 || $userId <= 0) {
+        if ($id === null || $userId === null) {
             return;
         }
 
@@ -105,5 +107,38 @@ final class ActionLogHelper
             'com_sportsmanagement.' . $view,
             $userId
         );
+    }
+
+    /**
+     * Validate a persisted entity or actor identifier before action logging.
+     *
+     * Accepts positive PHP integers and complete decimal strings (including
+     * zero-padded stored identifiers). Rejects floats, booleans, arrays,
+     * partially numeric strings and values exceeding the PHP integer range,
+     * preventing log entries from being attributed to unrelated records.
+     *
+     * @param mixed $raw Untrusted identifier from an imported row or user.
+     * @return int|null Positive identifier or null when the value is invalid.
+     */
+    private static function positiveLogId(mixed $raw): ?int
+    {
+        if (is_int($raw)) {
+            return $raw > 0 ? $raw : null;
+        }
+
+        if (!is_string($raw) || $raw === '' || strlen($raw) > 24
+            || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return null;
+        }
+
+        $digits = ltrim($raw, '0');
+
+        if ($digits === '') {
+            return null;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT);
+
+        return $id !== false && $id > 0 ? $id : null;
     }
 }
