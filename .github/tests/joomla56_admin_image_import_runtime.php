@@ -211,7 +211,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
          * @param array<string,mixed> $config Joomla model creation settings.
          * @return object Test image import model.
          */
-        public function getModel($name = '', $prefix = '', $config = []): object
+        public function getModel($name = '', $prefix = '', $config = [])
         {
             ++$this->modelCalls;
             return $GLOBALS['smImageImportModel'];
