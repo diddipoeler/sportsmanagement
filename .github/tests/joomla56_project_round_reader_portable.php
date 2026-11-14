@@ -56,7 +56,12 @@ namespace {
                     return $this;
                 }
 
-                /** @return self Current query source. */
+                /**
+                 * Choose the source table for this isolated project round query.
+                 *
+                 * @param string $table SQL source table.
+                 * @return self Updated query.
+                 */
                 public function from(string $table): self { return $this; }
 
                 /**
@@ -129,10 +134,18 @@ namespace {
             ++$this->reads;
         }
 
-        /** @return object|null The configured round fixture. */
+        /**
+         * Return an independent current-round record for presentation tests.
+         *
+         * @return object|null Cloned round fixture, or null.
+         */
         public function loadObject(): ?object { return $this->record === null ? null : clone $this->record; }
 
-        /** @return array Round list fixture copied for presentation. */
+        /**
+         * Return cloned database rows for project round presentation tests.
+         *
+         * @return array<int,object> Round list fixture.
+         */
         public function loadObjectList(): array {
             return array_map(static fn (object $item): object => clone $item, $this->rows);
         }

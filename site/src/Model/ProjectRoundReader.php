@@ -284,11 +284,6 @@ final class ProjectRoundReader
     }
 
     /**
-     * Read project scheduling metadata by a bound project identifier.
-     *
-     * @return object|null Project round selection configuration, or null.
-     */
-    /**
      * Format an effective round as a Joomla ID:alias record.
      *
      * Retains the old round_slug presentation property without depending on
@@ -306,6 +301,14 @@ final class ProjectRoundReader
         return $round;
     }
 
+    /**
+     * Read project scheduling metadata by a bound project identifier.
+     *
+     * Loads the persisted current round and scheduling settings for the
+     * selected project without changing any stored project field.
+     *
+     * @return object|null Project configuration or null if not found.
+     */
     private function loadProject(): ?object
     {
         $db = $this->database;
