@@ -24,11 +24,19 @@ use Joomla\Database\ParameterType;
 final class ClubModel extends SportsManagementAdminModel
 {
     /**
-     * Load the Joomla club form with configurable logo fields.
+     * Load the club edit form and configure permitted image directories.
      *
-     * @param array $data data value.
-     * @param bool $loadData loadData value.
-     * @return mixed
+     * Both Joomla media and SportsManagement's custom image selector can
+     * render the club logo and trikot fields. Assign a fixed, nonempty
+     * targetfolder to every configurable field before switching its type.
+     * Without the mapping a custom selector receives an empty type and
+     * ImageSelectHelper rejects the club edit form. Keep directory paths
+     * consistent with the existing stored media paths and preserve the
+     * original hidden/media field switching behaviour.
+     *
+     * @param array<string,mixed> $data Submitted or existing club fields.
+     * @param bool $loadData Whether Joomla should load the saved club values.
+     * @return mixed Joomla form instance or false when not available.
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -45,8 +53,25 @@ final class ClubModel extends SportsManagementAdminModel
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
         }
 
-        foreach (['logo_small', 'logo_middle', 'logo_big', 'trikot_home', 'trikot_away'] as $fieldName) {
+        // The image-select field expects a safe *type*, not an empty Joomla
+        // media directory. Use ASCII command-safe aliases for upload dialogs:
+        // getCmd('type') would strip "/" from a raw folder path.
+        $clubImageFolders = [
+            'logo_small' => ['clubs_small', 'clubs/small'],
+            'logo_middle' => ['clubs_medium', 'clubs/medium'],
+            'logo_big' => ['clubs_large', 'clubs/large'],
+            'trikot_home' => ['clubkits_home', 'clubs/trikot_home'],
+            'trikot_away' => ['clubkits_away', 'clubs/trikot_away'],
+        ];
+
+        foreach ($clubImageFolders as $fieldName => [$folderType, $folderPath]) {
             if ($form->getField($fieldName)) {
+                $form->setFieldAttribute($fieldName, 'targetfolder', $folderType);
+                $form->setFieldAttribute(
+                    $fieldName,
+                    'directory',
+                    'images/com_sportsmanagement/database/' . $folderPath
+                );
                 $form->setFieldAttribute($fieldName, 'type', $mediaTool);
             }
         }

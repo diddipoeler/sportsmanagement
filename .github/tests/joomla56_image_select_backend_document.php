@@ -303,6 +303,13 @@ namespace {
     foreach ([
         'leagues' => 'leagues',
         'clubs/small' => 'clubs/small',
+        'clubs_small' => 'clubs/small',
+        'clubs_medium' => 'clubs/medium',
+        'clubs_large' => 'clubs/large',
+        'clubkits_home' => 'clubs/trikot_home',
+        'clubkits_away' => 'clubs/trikot_away',
+        'clubs_trikot_home' => 'clubs/trikot',
+        'clubs_trikot_away' => 'clubs/trikot',
         'projectteams_trikot_home' => 'projectteams/trikot_home',
         'additional_event' => 'events/additional_event',
         'custom/subtype' => 'events/custom/subtype',
@@ -351,6 +358,37 @@ namespace {
     assertImageSelector(
         str_contains($document->scripts[0], 'selectImage_leagues'),
         'League callback is missing from the backend document.'
+    );
+
+    // The club editor uses command-safe upload types, not raw paths. Ensure
+    // the three visible image selectors target the actual media directories
+    // and register one callback per distinct team shirt/logo category.
+    ModalImageHelper::$links = [];
+    $document->scripts = [];
+    foreach ([
+        'clubs_large' => 'clubs/large',
+        'clubkits_home' => 'clubs/trikot_home',
+        'clubkits_away' => 'clubs/trikot_away',
+    ] as $type => $folder) {
+        $result = ImageSelectHelper::getSelector(
+            'jform[logo_big]', '', $type, '', '', '', 'jform_logo_big'
+        );
+        assertImageSelector(str_contains($result, 'jsm-image-select'), 'Club image selector is missing.');
+        assertImageSelector(
+            str_contains(ModalImageHelper::$links[count(ModalImageHelper::$links) - 2], 'type=' . $type),
+            'Club upload link used a malformed image type.'
+        );
+        assertImageSelector(
+            str_contains(ModalImageHelper::$links[count(ModalImageHelper::$links) - 1], 'folder=' . rawurlencode($folder)),
+            'Club image-browser folder does not match its media directory.'
+        );
+    }
+    assertImageSelector(
+        count($document->scripts) === 3
+            && str_contains($document->scripts[0], 'selectImage_clubs_large')
+            && str_contains($document->scripts[1], 'selectImage_clubkits_home')
+            && str_contains($document->scripts[2], 'selectImage_clubkits_away'),
+        'Club logo and trikot callbacks were not registered on the backend HTML document.'
     );
 
     // Also verify which entry point is loaded first. PHP's class names are

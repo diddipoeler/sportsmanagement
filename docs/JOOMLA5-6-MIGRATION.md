@@ -322,3 +322,7 @@ across divisions, shared divisions, missing list keys and malformed options.
 The central PHP metadata workflow lints the legacy template and runs the
 regression alongside the Matches asset/privacy tests. A real installed Joomla
 administrator round-list smoke test remains outstanding.
+
+## Club editing: invalid SportsManagement image folder type (14 November 2026)
+
+The club edit form could throw `Invalid SportsManagement image folder type` from `ImageSelectHelper::legacyEventFolder()` because `ClubModel::getForm()` dynamically changed Joomla media inputs to the SportsManagement `imageselect` field without setting `targetfolder`. The field then passed an empty type into the strictly validated folder mapper. Each club logo and home/away kit field now receives an explicit command-safe folder alias plus its existing media directory, in both `admin/forms/club.xml` and the native `ClubModel`. The dedicated `clubkits_home`/`clubkits_away` aliases map to the actual `clubs/trikot_home` and `clubs/trikot_away` directories; older `clubs_trikot_home`/`clubs_trikot_away` mappings are retained for legacy callers. Existing folder traversal and malformed input rejection stays in place. CI tests both the administrator form under `imageselect` and `media` options and actual backend upload/browse links.

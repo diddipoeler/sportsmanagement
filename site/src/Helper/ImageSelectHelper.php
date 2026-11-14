@@ -194,9 +194,10 @@ final class ImageSelectHelper
      * Convert historical image selector types to component image directories.
      *
      * Supports the established league, club, person, team and placeholder
-     * categories and preserves a validated legacy events subdirectory
-     * fallback for types that are not explicitly mapped. Rejects malformed
-     * request values before they reach image upload/delete path handling.
+     * categories, plus explicit home/away club-kit editor directories.
+     * Preserves the historical shared clubs/trikot aliases and a validated
+     * legacy events subdirectory fallback for unmapped safe names. Rejects
+     * malformed request values before image upload/delete path handling.
      *
      * @param mixed $type Legacy image folder type.
      * @return string Component-relative image directory.
@@ -217,6 +218,10 @@ final class ImageSelectHelper
             'clubs_medium', 'clubsmedium', 'clubs/medium' => 'clubs/medium',
             'clubs_large', 'clubslarge', 'clubs/large' => 'clubs/large',
             'clubs_trikot_home', 'clubs_trikot_away' => 'clubs/trikot',
+            // Distinct club editor image directories. New aliases preserve
+            // the existing legacy clubs/trikot mapping for older selectors.
+            'clubkits_home' => 'clubs/trikot_home',
+            'clubkits_away' => 'clubs/trikot_away',
             'flags' => 'flags',
             'flags_associations' => 'flags_associations',
             'flag_maps' => 'flag_maps',
@@ -586,7 +591,8 @@ JS;
         $params = ComponentHelper::getParams('com_sportsmanagement');
 
         return (string) match ($type) {
-            'trikot_home', 'trikot_away', 'clubs_trikot_home', 'clubs_trikot_away'
+            'trikot_home', 'trikot_away', 'clubs_trikot_home', 'clubs_trikot_away',
+            'clubkits_home', 'clubkits_away'
                 => $params->get('ph_trikot', ''),
             'projects' => $params->get('ph_project', ''),
             'projectteams/trikot_home', 'projectteams/trikot_away'
