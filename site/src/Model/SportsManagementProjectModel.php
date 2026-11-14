@@ -216,8 +216,13 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     }
 
     /**
-     * Determine the project's effective round using its configured selection mode.
-     * Applies manual selection or date-based thresholds to project-owned round and match records; if no automatic candidate exists, tries the configured fallback round.
+     * Determine the project's effective round without modifying project state.
+     *
+     * Applies manual selection or date-based thresholds to project-owned rounds
+     * and fixtures. Missing automatic candidates fall back to the configured
+     * project round or another project-owned round. The resolved value is
+     * returned solely for display: anonymous page views must never write
+     * current_round or any other administrator-managed project field.
      *
      * @return object|null Resolved round record, or null when none exists.
      */
@@ -322,14 +327,8 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
             $round->round_slug = (int) ($round->id ?? 0) . ':' . (string) ($round->alias ?? '');
         }
 
-        if ($round && (int) ($project->current_round ?? 0) !== (int) $round->id) {
-            $update = (object) [
-                'id' => $this->projectId,
-                'current_round' => (int) $round->id,
-            ];
-            $db->updateObject('#__sportsmanagement_project', $update, 'id');
-        }
-
+        // A site GET must not persist the derived round. An authenticated
+        // administrator action is responsible for updating current_round.
         return $round ?: null;
     }
 
@@ -635,7 +634,10 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
 
     /**
      * Read the project's configured favourite team identifiers.
-     * Parses the stored comma-separated team list and drops empty, nonpositive and duplicate identifiers.
+     *
+     * Parses the comma-separated legacy list without PHP's partial integer
+     * casts. Skips malformed values, overflows and duplicates, while
+     * retaining valid positive decimal IDs with leading zeros.
      *
      * @return array<int,int> Unique positive favourite team IDs.
      */
@@ -648,8 +650,21 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
 
         $favorites = [];
         foreach (explode(',', (string) ($project->fav_team ?? '')) as $value) {
-            $teamId = (int) trim($value);
-            if ($teamId > 0) {
+            $value = trim($value);
+
+            if (strlen($value) > 32 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($value, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $teamId = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($teamId !== false) {
                 $favorites[$teamId] = $teamId;
             }
         }
@@ -657,8 +672,11 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     }
 
     /**
-     * Load one division record for the current selection.
-     * Uses a bound division identifier for the SportsManagement division table and returns null for an unset or missing division.
+     * Load a division only if it belongs to the selected project.
+     *
+     * Validates both project and division IDs before creating a database
+     * query. Binds both identifiers so a visitor cannot inspect a different
+     * project's division simply by changing the division request parameter.
      *
      * @param int|null $divisionId Division to load; null uses the request selection.
      * @return object|null Division database record or null if unavailable.
@@ -666,23 +684,32 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     public function getDivision(?int $divisionId = null): ?object
     {
         $divisionId ??= $this->divisionId;
-        if ($divisionId <= 0) {
+
+        if ($this->projectId <= 0 || $divisionId <= 0) {
             return null;
         }
 
+        $projectId = $this->projectId;
         $db = $this->getDatabase();
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__sportsmanagement_division'))
             ->where($db->quoteName('id') . ' = :divisionId')
-            ->bind(':divisionId', $divisionId, ParameterType::INTEGER);
+            ->where($db->quoteName('project_id') . ' = :divisionProjectId')
+            ->bind(':divisionId', $divisionId, ParameterType::INTEGER)
+            ->bind(':divisionProjectId', $projectId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
+
         return $db->loadObject() ?: null;
     }
 
     /**
-     * Collect a selected division and all of its descendant divisions.
-     * Loads only divisions belonging to the selected project, walks parent-child relationships and guards against duplicates while expanding the subtree.
+     * Collect a project-owned division and all of its descendants.
+     *
+     * Reads divisions scoped to the selected project and verifies that the
+     * requested root exists within that result before walking its children.
+     * Invalid, foreign-project and orphan root IDs return an empty set, never
+     * a fabricated root ID that could influence later team filters.
      *
      * @param int|null $divisionId Root division; null uses the current selection.
      * @return array<int,int> IDs of the root and its descendants.
@@ -690,7 +717,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     protected function getDivisionTreeIds(?int $divisionId = null): array
     {
         $divisionId ??= $this->divisionId;
-        if ($divisionId <= 0) {
+        if ($this->projectId <= 0 || $divisionId <= 0) {
             return [];
         }
 
@@ -704,14 +731,29 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
         $db->setQuery($query);
         $divisions = $db->loadObjectList() ?: [];
 
+        $ownedIds = [];
+        foreach ($divisions as $division) {
+            if (is_object($division) && (int) ($division->id ?? 0) > 0) {
+                $ownedIds[(int) $division->id] = true;
+            }
+        }
+
+        if (!isset($ownedIds[$divisionId])) {
+            return [];
+        }
+
         $ids = [$divisionId];
         $changed = true;
         while ($changed) {
             $changed = false;
             foreach ($divisions as $division) {
-                $id = (int) $division->id;
-                $parentId = (int) $division->parent_id;
-                if (in_array($parentId, $ids, true) && !in_array($id, $ids, true)) {
+                if (!is_object($division)) {
+                    continue;
+                }
+
+                $id = (int) ($division->id ?? 0);
+                $parentId = (int) ($division->parent_id ?? 0);
+                if ($id > 0 && in_array($parentId, $ids, true) && !in_array($id, $ids, true)) {
                     $ids[] = $id;
                     $changed = true;
                 }

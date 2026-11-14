@@ -1,0 +1,40 @@
+name: Joomla 5/6 project division scope and read-only rounds
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - '.github/tests/joomla56_project_division_round_readonly.php'
+      - '.github/workflows/joomla56-project-division-round-readonly.yml'
+  pull_request:
+    paths:
+      - 'site/src/Model/SportsManagementProjectModel.php'
+      - '.github/tests/joomla56_project_division_round_readonly.php'
+      - '.github/workflows/joomla56-project-division-round-readonly.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: none
+      - name: Check documentation and PHP syntax
+        run: |
+          php .github/scripts/check-php-function-docs.php site/src/Model/SportsManagementProjectModel.php
+          php .github/tests/phpdoc_metadata.php site/src/Model/SportsManagementProjectModel.php
+          php -l site/src/Model/SportsManagementProjectModel.php
+          php -l .github/tests/joomla56_project_division_round_readonly.php
+      - name: Verify division and round read contracts
+        run: php .github/tests/joomla56_project_division_round_readonly.php
