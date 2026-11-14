@@ -10,6 +10,13 @@
 namespace Joomla\CMS\Router {
     class Route
     {
+        /**
+         * Return an unchanged URL for standalone Joomla route assertions.
+         *
+         * @param string $url Query-based Joomla route.
+         * @param bool $xhtml Whether Joomla would XHTML-encode the URL.
+         * @return string Unmodified URL for parameter inspection.
+         */
         public static function _(string $url, bool $xhtml = true): string
         {
             return $url;
@@ -19,6 +26,12 @@ namespace Joomla\CMS\Router {
 namespace Joomla\CMS\Uri {
     class Uri
     {
+        /**
+         * Encode Joomla route parameters with the built-in URL encoder.
+         *
+         * @param array<string,mixed> $parameters URL query variables.
+         * @return string Encoded component query string.
+         */
         public static function buildQuery(array $parameters): string
         {
             return http_build_query($parameters);
@@ -73,23 +86,30 @@ namespace {
     }
 
 
-    // Malformed options must never become nested option[] parameters or
-    // redirect this component helper to an unexpected component.
+    // An absent option uses the SportsManagement default.
+    $url = SiteRouteHelper::query(['view' => 'ranking']);
+    parse_str((string) parse_url($url, PHP_URL_QUERY), $params);
+    if (($params['option'] ?? null) !== 'com_sportsmanagement'
+        || ($params['view'] ?? null) !== 'ranking') {
+        throw new \RuntimeException('Missing component option lost its default.');
+    }
+
+    // Explicit invalid options must be rejected, not silently redirected.
     foreach ([
-        [],
         ['option' => ['com_content']],
         ['option' => (object) ['name' => 'com_content']],
+        ['option' => null],
         ['option' => false],
         ['option' => "com_content\n"],
         ['option' => ''],
+        ['option' => 'com_content?task=edit'],
     ] as $input) {
-        $url = SiteRouteHelper::query($input + ['view' => 'ranking']);
-        parse_str((string) parse_url($url, PHP_URL_QUERY), $params);
-
-        if (($params['option'] ?? null) !== 'com_sportsmanagement'
-            || ($params['view'] ?? null) !== 'ranking') {
-            throw new \RuntimeException('Malformed component option was accepted in a site route.');
+        try {
+            SiteRouteHelper::query($input + ['view' => 'ranking']);
+        } catch (\InvalidArgumentException $exception) {
+            continue;
         }
+        throw new \RuntimeException('Invalid component option was not rejected.');
     }
 
     // Intentionally requested routes to another Joomla component remain valid.
