@@ -172,6 +172,17 @@ jobs:
           php .github/tests/joomla56_project_navigation_visible_count.php
           php .github/tests/joomla56_admin_githubinstaller_guards.php
 
+      - name: Verify administrator image import form and error privacy regressions
+        run: |
+          php -l admin/src/Controller/SmimageimportsController.php
+          php -l admin/src/Model/SmimageimportModel.php
+          php -l .github/tests/joomla56_admin_image_import_runtime.php
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Controller/SmimageimportsController.php \
+            admin/src/Model/SmimageimportModel.php \
+            .github/tests/joomla56_admin_image_import_runtime.php
+          php .github/tests/joomla56_admin_image_import_runtime.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php

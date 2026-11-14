@@ -292,3 +292,7 @@ The administrator Matches view now registers its fixed form CSS and matches.js o
 - **Administrator:** The SmimageimportsController now rejects absent Joomla identities before ACL checks and never echoes raw model error text to administrators. SmimageimportModel validates and deduplicates at most 100 positive selected picture IDs without nested-value integer coercion; runtime failures are reported using a generic translated error and sanitized exception-class server logging. Repeated PHPDoc blocks have been consolidated into detailed descriptions.
 - **Modules:** TrainingsDataHelper now filters non-object query rows, replaces nested place/note values with empty text, and defaults malformed numeric training times/weekdays to zero before rendering. The existing PHP 8.3/8.4 regression test exercises these cases.
 - **Follow-up:** Native Joomla 5.4/6 installation/browser validation and a wider migration audit remain outstanding.
+
+### Administrator image-import input/runtime regression (14 November 2026)
+
+The image-import model now rejects nested, non-scalar and oversized picture names, folder names, destination directories and archive filename parameters without PHP 8 array-to-string warnings. A framework-free regression fixture covers administrator CSRF and permission checks, strict selection IDs, malformed POST fields, sanitized network exceptions and safe controller messages. The all-PHP-metadata GitHub Actions gate runs the fixture, PHP lint and named-function documentation checks.

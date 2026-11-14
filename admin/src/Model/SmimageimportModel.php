@@ -77,10 +77,10 @@ final class SmimageimportModel extends SportsManagementAdminModel
         $db = $this->getDatabase();
 
         foreach ($ids as $id) {
-            $name = trim((string) ($post['picture'][$id] ?? ''));
-            $folder = trim((string) ($post['folder'][$id] ?? ''), "/\\");
-            $directory = trim((string) ($post['directory'][$id] ?? ''), "/\\");
-            $submittedFile = (string) ($post['file'][$id] ?? '');
+            $name = trim(self::postedField($post, 'picture', $id));
+            $folder = trim(self::postedField($post, 'folder', $id), "/\\");
+            $directory = trim(self::postedField($post, 'directory', $id), "/\\");
+            $submittedFile = self::postedField($post, 'file', $id);
             $file = basename($submittedFile);
 
             if (!$this->isSafeRelativePath($folder) || !$this->isSafeRelativePath($directory)
@@ -202,6 +202,37 @@ final class SmimageimportModel extends SportsManagementAdminModel
         }
 
         return array_values($selected);
+    }
+
+    /**
+     * Read a bounded scalar field value from a submitted image selection.
+     *
+     * Administrator forms submit picture, folder, directory and archive names
+     * as arrays indexed by the selected record ID. Rejects nested arrays,
+     * objects and oversized values rather than converting them to the text
+     * "Array" or emitting PHP 8 warnings during path construction.
+     *
+     * @param array<string,mixed> $post Submitted Joomla administrator form.
+     * @param string $field Name of the posted picture/archive field.
+     * @param int $id Validated positive picture record identifier.
+     * @return string Valid text value or an empty string for invalid input.
+     */
+    private static function postedField(array $post, string $field, int $id): string
+    {
+        $values = $post[$field] ?? null;
+
+        if (!is_array($values)) {
+            return '';
+        }
+
+        $value = $values[$id] ?? null;
+
+        if ((!is_string($value) && !is_int($value))
+            || (is_string($value) && strlen($value) > 1024)) {
+            return '';
+        }
+
+        return (string) $value;
     }
 
     /**
