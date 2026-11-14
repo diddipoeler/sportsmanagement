@@ -74,7 +74,9 @@ jobs:
 
           grep -Fq "HTMLHelper::_('uitab.startTabSet'" "$admin_layout"
           grep -Fq 'class="form-label"' "$admin_layout"
-          grep -Fq "registerAndUseScript(" "$admin_view"
+          grep -Fq "assetExists('script', \$assetName)" "$admin_view"
+          grep -Fq 'registerScript(' "$admin_view"
+          grep -Fq 'useScript($assetName)' "$admin_view"
           grep -Fq "'com_sportsmanagement.admin.league'" "$admin_view"
           grep -Fq "document.getElementById('league-form')" "$admin_js"
           grep -Fq 'validator.isValid(form)' "$admin_js"

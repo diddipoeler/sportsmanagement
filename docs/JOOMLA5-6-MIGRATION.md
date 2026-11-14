@@ -259,3 +259,8 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 - The native administrator league edit view now documents all six named methods, including load/bind behavior, optional forms, asset registration and application resolution. Joomla form factory failures and model error strings can include SQL statements; these are no longer exposed in backend alerts or unhandled model exceptions. Logs retain exception classes or model error counts only, while the UI displays a generic translated warning.
 - League editor JavaScript is registered only once per HTML document, retaining its `core` and `form.validate` dependencies for repeated editor renders.
 - A PHP 8.3 CI regression covers optional forms that throw SQL-bearing exceptions, model error redaction, and two script activations on the same Joomla document. Full installed Joomla UI testing is still pending.
+
+### CI follow-up: League and Ranking view contracts (14 November 2026)
+
+- The isolated League view test now uses the untyped return signature of the Joomla-compatible base view stub, avoiding a PHP method-declaration mismatch unrelated to the production code. The older League workflow now checks WebAssetManager `assetExists`, `registerScript` and `useScript` instead of the removed `registerAndUseScript` call.
+- A historical Ranking workflow had an incorrectly escaped PHP namespace grep that could never match the actual single-backslash `use` statement. It now verifies the real namespace spelling.

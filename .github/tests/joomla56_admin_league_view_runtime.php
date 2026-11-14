@@ -132,7 +132,7 @@ namespace Joomla\CMS\MVC\View {
          * @param mixed $tpl Optional layout.
          * @return void
          */
-        public function display($tpl = null): void {}
+        public function display($tpl = null) {}
     }
 }
 
