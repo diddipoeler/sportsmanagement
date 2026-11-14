@@ -44,6 +44,8 @@ jobs:
           grep -Fq -- 'SportsManagementDatabaseResolver::class =>' modules/mod_sportsmanagement_new_project/helper.php
           grep -Fq -- 'NewProjectHelper::class,' modules/mod_sportsmanagement_new_project/helper.php
           grep -Fq -- 'SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector)' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
-          grep -Fq -- "'cfg_which_database' => \$databaseSelector === 1 ? 1 : 0" modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
+          # Preserve the validated database selector instead of forcing every
+          # non-1 value back to the main database.
+          grep -Fq -- "'cfg_which_database' => \$databaseSelector >= 0 ? \$databaseSelector : 0," modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
           grep -Fq -- 'loadPublishedModule($joomlaDatabase, $moduleId)' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php
           grep -Fq -- 'existingProjectReferences($joomlaDatabase, $categoryId, $projects)' modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php

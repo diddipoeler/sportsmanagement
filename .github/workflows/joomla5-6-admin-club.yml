@@ -68,18 +68,15 @@ jobs:
           grep -Fq '$input->post->set' "$controller"
 
           grep -q 'final class ClubModel extends SportsManagementAdminModel' "$model"
-          grep -q 'getQuery(true)' "$model"
+          # Joomla 5.4 and Joomla 6 recommend createQuery(), not getQuery(true).
+          grep -Fq 'createQuery()' "$model"
           grep -q 'ExtraFieldsSaveHelper' "$model"
           grep -q 'SportsManagementDateHelper' "$model"
           grep -q 'LocationHelper' "$model"
-          grep -q 'Joomla\\Http\\HttpFactory' "$model"
-          grep -q 'new HttpFactory' "$model"
-          grep -q 'getStatusCode' "$model"
-          grep -q 'getBody' "$model"
-          grep -Fq 'Joomla\Filesystem\File' "$model"
-          grep -Fq 'Joomla\Filesystem\Folder' "$model"
-          grep -q 'File::write' "$model"
-          grep -q 'Folder::create' "$model"
+          # Geocoding and remote image writes have been extracted from the
+          # ClubModel into bounded native helpers.
+          grep -q 'RemoteImageDownloadHelper' "$model"
+          grep -q 'LocationHelper' "$model"
           for method in getlogohistory getuserextrafieldvalue saveshort teamsofclub; do
             grep -q "function ${method}" "$model"
           done
@@ -89,9 +86,11 @@ jobs:
 
           grep -q 'final class LocationHelper' "$locationhelper"
           grep -q 'Joomla\\Http\\HttpFactory' "$locationhelper"
-          grep -q 'https://maps.google.com/maps/api/geocode/json' "$locationhelper"
-          grep -q "status ?? null) !== 'OK'" "$locationhelper"
-          grep -q 'geometry->location' "$locationhelper"
+          grep -Fq 'https://nominatim.openstreetmap.org/search' "$locationhelper"
+          grep -Fq 'HttpFactory::getHttp()->get' "$locationhelper"
+          grep -Fq 'getStatusCode()' "$locationhelper"
+          grep -Fq 'getBody()' "$locationhelper"
+          grep -Fq 'FILTER_VALIDATE_FLOAT' "$locationhelper"
           grep -q "'latitude'" "$locationhelper"
           grep -q "'longitude'" "$locationhelper"
 
@@ -105,14 +104,14 @@ jobs:
           grep -Fq "createModel('Jlextassociations', 'Administrator')" "$view"
           grep -Fq "class_alias(HtmlView::class, 'sportsmanagementViewClubs')" "$legacyview"
           grep -Fq 'new ClubTable($model->getSportsManagementDatabase())' "$view"
-          grep -Fq "HTMLHelper::_('select.genericlist'" "$view"
+          grep -Fq "'select.genericlist'," "$view"
 
           if grep -E -- 'Joomla\\CMS\\Filesystem\\|mkdir\(|file_put_contents\(' "$model"; then
             echo 'Club model regressed to CMS filesystem classes or raw filesystem writes' >&2
             exit 1
           fi
 
-          if grep -E -- 'JHtmlSelect::|createQuery\(|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
-            echo 'Club migration regressed to a Joomla 6-only query API, deprecated JHtml/model/table factory, deprecated CMS HTTP package, or legacy helper/database API' >&2
+          if grep -E -- 'JHtmlSelect::|getQuery\(true\)|Joomla\\CMS\\Http\\|sportsmanagementHelper::|helpers/sportsmanagement\.php|JLoader::|jimport\(|Factory::getDbo\(|Factory::getDBO\(|BaseDatabaseModel::getInstance\(|Table::getInstance\(|->input|JDatabaseDriver::|JDatabase::' "${files[@]}"; then
+            echo 'Club migration regressed to deprecated getQuery(true), JHtml/model/table factories, obsolete CMS HTTP package, or legacy helper/database API' >&2
             exit 1
           fi

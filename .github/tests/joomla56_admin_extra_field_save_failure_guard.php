@@ -180,8 +180,14 @@ namespace {
         }
     }
 
-    if (!str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'password=secret')) {
-        throw new \RuntimeException('Database failure details were not retained in server logs.');
+    // Server logs should identify the failure class without retaining
+    // credentials from PDO/database exception messages.
+    foreach (\Joomla\CMS\Log\Log::$entries as [$message, $level, $category]) {
+        if (!str_contains($message, 'RuntimeException')
+            || str_contains($message, 'password=secret')
+            || str_contains($message, 'SQLSTATE')) {
+            throw new \RuntimeException('Extra-field failure logs exposed sensitive database details.');
+        }
     }
 
     echo "Administrator extra-field safe save and database error regression passed.\n";
