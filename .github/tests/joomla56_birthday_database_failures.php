@@ -18,23 +18,29 @@ require_once $path;
 $helper = new \Diddipoeler\Module\SportsManagementBirthday\Site\Helper\BirthdayHelper();
 $method = new ReflectionMethod($helper, 'normaliseDatabaseSelector');
 
+// Only the two supported database modes are valid; bad values fail closed
+// instead of being coerced to zero or silently selecting external storage.
+
 foreach ([
     [0, 0],
     [1, 1],
-    [7, 7],
     ['0', 0],
-    ['7', 7],
-    [false, 0],
-    [true, 0],
-    [-1, 0],
-    ['-1', 0],
-    ['1xyz', 0],
-    ['2.5', 0],
-    [2.5, 0],
-    [[], 0],
-    [[7], 0],
-    [(object) ['id' => 7], 0],
-    ['9999999999999999999999999999999', 0],
+    ['1', 1],
+    ['0000', 0],
+    ['0001', 1],
+    [7, null],
+    ['7', null],
+    [false, null],
+    [true, null],
+    [-1, null],
+    ['-1', null],
+    ['1xyz', null],
+    ['2.5', null],
+    [2.5, null],
+    [[], null],
+    [[7], null],
+    [(object) ['id' => 7], null],
+    ['9999999999999999999999999999999', null],
 ] as [$value, $expected]) {
     $actual = $method->invoke($helper, $value);
 
