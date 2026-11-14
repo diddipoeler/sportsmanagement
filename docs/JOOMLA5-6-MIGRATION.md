@@ -204,3 +204,10 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 - Resolving the effective frontend round no longer updates `current_round` during an anonymous page view. Automatic round selection remains available as display data; persistent updates belong to an explicit, authorised administrator operation and should be tested separately before final release.
 - The administrator Project model now checks component permissions for direct calls to quick save, league-champion toggles, project copying, deletion and dependent-record cleanup. Bulk project IDs are validated without partially converting untrusted strings or arrays.
 - Independent PHP 8.3/8.4 regressions cover project ownership, read-only round reads and direct administrator write denial. Additional integration tests on real Joomla 5 and Joomla 6 installations are still required.
+
+## Further native frontend and backend hardening (14 November 2026)
+
+- The native iCalendar model now binds project, team, division and playground selectors. It constrains season-team joins to the requested project and season, and constructs route slugs and display times in PHP without MySQL-specific CONCAT_WS or DATE_FORMAT calls. Its exception logs contain only the exception class, not private SQL or database credentials.
+- The native site ImagehandlerModel now documents all named methods and restricts the selected files to supported images located within the canonical component media root. File and directory symlinks cannot escape this root. Invalid folder selections fail closed instead of showing the media-root listing.
+- The administrator Projects list model now turns failed season/league lookups into a generic Joomla model error and a sanitized class-only log message, preserving private database diagnostics.
+- Isolated regressions cover these changes under PHP 8.3 and PHP 8.4. They do **not** replace installation, web server, upgrade or actual Joomla UI integration tests, which are still outstanding.

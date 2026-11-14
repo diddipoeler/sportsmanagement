@@ -12,6 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 
@@ -70,10 +72,13 @@ final class ProjectsModel extends SportsManagementListModel
      * Find a project for one league within selected seasons.
      * Rejects invalid season and league identifiers, performs a
      * bound project lookup, and returns null when no matching project
-     * exists or the database reports a failure.
+     * exists or the database reports a failure. Exception messages are not
+     * forwarded to the model error or log because database drivers may
+     * embed connection credentials or private SQL in their diagnostics.
+     *
      * @param mixed $season_ids Season IDs from Joomla administrator filters.
      * @param mixed $league_id League identifier to match.
-     * @return int|null Matching project ID or null.
+     * @return int|null Matching project ID or null when unavailable.
      */
     public function existcurrentseason($season_ids = [], $league_id = 0): ?int
     {
@@ -98,7 +103,12 @@ final class ProjectsModel extends SportsManagementListModel
 
             return $id > 0 ? $id : null;
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            Log::add(
+                __METHOD__ . ': project season lookup failed (' . get_class($e) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return null;
         }
