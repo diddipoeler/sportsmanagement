@@ -1,0 +1,42 @@
+name: Joomla 5/6 iCalendar scoped and portable feed
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/IcalModel.php'
+      - '.github/tests/joomla56_ical_error_privacy.php'
+      - '.github/tests/joomla56_ical_query_contract.php'
+      - '.github/workflows/joomla56-ical-scoped-portable.yml'
+  pull_request:
+    paths:
+      - 'site/src/Model/IcalModel.php'
+      - '.github/tests/joomla56_ical_error_privacy.php'
+      - '.github/tests/joomla56_ical_query_contract.php'
+      - '.github/workflows/joomla56-ical-scoped-portable.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: none
+      - name: Validate PHPDoc metadata and PHP syntax
+        run: |
+          php .github/tests/phpdoc_metadata.php site/src/Model/IcalModel.php
+          php .github/scripts/check-php-function-docs.php site/src/Model/IcalModel.php
+          php -l site/src/Model/IcalModel.php
+          php -l .github/tests/joomla56_ical_error_privacy.php
+          php -l .github/tests/joomla56_ical_query_contract.php
+      - name: Verify calendar privacy and portable query scopes
+        run: |
+          php .github/tests/joomla56_ical_error_privacy.php
+          php .github/tests/joomla56_ical_query_contract.php

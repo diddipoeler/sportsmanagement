@@ -32,14 +32,19 @@ final class IcalModel extends SportsManagementProjectModel
 
     /**
      * Retrieve Joomla's primary database connection from its container.
-     * The calendar feed uses this service when no alternative database
-     * selector is configured for the requested SportsManagement project.
+     * The calendar feed uses this service when a caller explicitly requests
+     * a database other than the one already bound to the current model.
+     *
      * @return DatabaseInterface Active Joomla database service.
+     * @throws \RuntimeException When Joomla's service is unavailable.
      */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement iCalendar database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -60,7 +65,7 @@ final class IcalModel extends SportsManagementProjectModel
         $input = $this->siteApplication()->getInput();
         self::$projectid = $this->projectId;
         self::$divisionid = $this->divisionId;
-        self::$cfg_which_database = $input->getInt('cfg_which_database', 0);
+        self::$cfg_which_database = $input->getInt('cfg_which_database', 0) === 1 ? 1 : 0;
         self::$teamid = $input->getInt('tid', 0);
         self::$projectteamid = $input->getInt('ptid', 0);
 
@@ -69,14 +74,24 @@ final class IcalModel extends SportsManagementProjectModel
         }
     }
 
-    /** Accept decimal IDs and legacy ID:alias slugs, rejecting partial casts. */
+    /**
+     * Parse a bounded nonnegative calendar selector without partial casts.
+     *
+     * Accepts decimal identifiers and optional Joomla ID:alias slugs,
+     * including historical leading-zero IDs. Rejects nested input, floats,
+     * invalid aliases, oversized values and integers beyond PHP_INT_MAX.
+     *
+     * @param mixed $value ID supplied by the caller or Joomla input.
+     * @param bool $allowAlias Whether ID:alias syntax is allowed.
+     * @return int|null Nonnegative ID, or null for malformed input.
+     */
     private static function nonNegativeSelector(mixed $value, bool $allowAlias = false): ?int
     {
         if (is_int($value)) {
             return $value >= 0 ? $value : null;
         }
 
-        if (!is_string($value)) {
+        if (!is_string($value) || strlen($value) > 128) {
             return null;
         }
 
@@ -105,28 +120,37 @@ final class IcalModel extends SportsManagementProjectModel
     }
 
     /**
-     * Load published fixtures used by the iCalendar exporter.
-     * Validates the project, team and database selectors, chooses the
-     * SportsManagement connection, joins fixture and venue details and
-     * returns match rows keyed by ID; failures are logged without leaking SQL.
-     * @param mixed $projectid Project ID or Joomla ID:alias slug.
-     * @param mixed $teamid Optional team ID or slug.
-     * @param mixed $divisionid Legacy division argument.
-     * @param mixed $playgroundid Legacy playground argument.
-     * @param mixed $ordering ASC or DESC match ordering.
-     * @param mixed $cfg_which_database Selected SportsManagement database.
-     * @return array|false Published fixtures or false on a query error.
+     * Load project-owned published fixtures for the iCalendar exporter.
+     *
+     * Validates each selected project, team, division, venue and database
+     * identifier before creating a query. Constrains joined project teams to
+     * the requested project and season, and binds all optional filters.
+     * Creates Joomla route slugs and display times in PHP instead of using
+     * MySQL-specific SQL formatting functions. Database exceptions are
+     * reduced to their class name in logs and generic frontend notices.
+     *
+     * @param mixed $projectid Positive project ID or Joomla ID:alias slug.
+     * @param mixed $teamid Optional team ID or slug (zero means all teams).
+     * @param mixed $divisionid Optional division ID or slug (zero means all divisions).
+     * @param mixed $playgroundid Optional playground ID or slug (zero means all venues).
+     * @param mixed $ordering ASC or DESC match order; other inputs default to ASC.
+     * @param mixed $cfg_which_database Database selector, only 0 or 1.
+     * @return array|false Published matches keyed by ID, [] for invalid selectors, or false on database failure.
      */
     public function getResultsPlan($projectid = 0, $teamid = 0, $divisionid = 0, $playgroundid = 0, $ordering = 'ASC', $cfg_which_database = 0)
     {
         $projectId = self::nonNegativeSelector($projectid, true);
         $teamId = self::nonNegativeSelector($teamid, true);
+        $divisionId = self::nonNegativeSelector($divisionid, true);
+        $playgroundId = self::nonNegativeSelector($playgroundid, true);
         $databaseSelector = self::nonNegativeSelector($cfg_which_database);
         $direction = is_string($ordering) && strtoupper($ordering) === 'DESC' ? 'DESC' : 'ASC';
 
         // Malformed selectors must not silently expose a different project.
         if ($projectId === null || $projectId <= 0
-            || $teamId === null || $databaseSelector === null) {
+            || $teamId === null || $divisionId === null
+            || $playgroundId === null
+            || $databaseSelector === null || $databaseSelector > 1) {
             return [];
         }
 
@@ -148,7 +172,7 @@ final class IcalModel extends SportsManagementProjectModel
                     $db->quoteName('m.projectteam1_id'),
                     $db->quoteName('m.projectteam2_id'),
                     $db->quoteName('m.match_date'),
-                    'DATE_FORMAT(' . $db->quoteName('m.time_present') . ', "%H:%i") AS ' . $db->quoteName('time_present'),
+                    $db->quoteName('m.time_present'),
                     $db->quoteName('playground.id', 'playground_id'),
                     $db->quoteName('playground.name', 'playground_name'),
                     $db->quoteName('playground.short_name', 'playground_short_name'),
@@ -158,10 +182,12 @@ final class IcalModel extends SportsManagementProjectModel
                     $db->quoteName('pt1.project_id'),
                     $db->quoteName('d1.name', 'divhome'),
                     $db->quoteName('d2.name', 'divaway'),
-                    'CASE WHEN CHAR_LENGTH(' . $db->quoteName('t1.alias') . ') AND CHAR_LENGTH(' . $db->quoteName('t2.alias') . ") THEN CONCAT_WS(':', " . $db->quoteName('m.id') . ", CONCAT_WS('_', " . $db->quoteName('t1.alias') . ', ' . $db->quoteName('t2.alias') . ')) ELSE ' . $db->quoteName('m.id') . ' END AS ' . $db->quoteName('slug'),
-                    "CONCAT_WS(':', " . $db->quoteName('p.id') . ', ' . $db->quoteName('p.alias') . ') AS ' . $db->quoteName('project_slug'),
-                    "CONCAT_WS(':', " . $db->quoteName('r.id') . ', ' . $db->quoteName('r.alias') . ') AS ' . $db->quoteName('round_slug'),
-                    "CONCAT_WS(':', " . $db->quoteName('playground.id') . ', ' . $db->quoteName('playground.alias') . ') AS ' . $db->quoteName('playground_slug'),
+                    $db->quoteName('p.alias', 'project_alias'),
+                    $db->quoteName('r.id', 'round_id'),
+                    $db->quoteName('r.alias', 'round_alias'),
+                    $db->quoteName('playground.alias', 'playground_alias'),
+                    $db->quoteName('t1.alias', 'home_team_alias'),
+                    $db->quoteName('t2.alias', 'away_team_alias'),
                     $db->quoteName('t1.id', 'team1'),
                     $db->quoteName('t2.id', 'team2'),
                     $db->quoteName('p.name', 'project_name'),
@@ -169,10 +195,10 @@ final class IcalModel extends SportsManagementProjectModel
                 ->from($db->quoteName('#__sportsmanagement_match', 'm'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('m.round_id') . ' = ' . $db->quoteName('r.id'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('r.project_id'))
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt1.id'))
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id'))
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st1') . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id'))
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt1') . ' ON ' . $db->quoteName('m.projectteam1_id') . ' = ' . $db->quoteName('pt1.id') . ' AND ' . $db->quoteName('pt1.project_id') . ' = ' . $db->quoteName('p.id'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_project_team', 'pt2') . ' ON ' . $db->quoteName('m.projectteam2_id') . ' = ' . $db->quoteName('pt2.id') . ' AND ' . $db->quoteName('pt2.project_id') . ' = ' . $db->quoteName('p.id'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st1') . ' ON ' . $db->quoteName('st1.id') . ' = ' . $db->quoteName('pt1.team_id') . ' AND ' . $db->quoteName('st1.season_id') . ' = ' . $db->quoteName('p.season_id'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_season_team_id', 'st2') . ' ON ' . $db->quoteName('st2.id') . ' = ' . $db->quoteName('pt2.team_id') . ' AND ' . $db->quoteName('st2.season_id') . ' = ' . $db->quoteName('p.season_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't1') . ' ON ' . $db->quoteName('t1.id') . ' = ' . $db->quoteName('st1.team_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_team', 't2') . ' ON ' . $db->quoteName('t2.id') . ' = ' . $db->quoteName('st2.team_id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_division', 'd1') . ' ON ' . $db->quoteName('m.division_id') . ' = ' . $db->quoteName('d1.id'))
@@ -190,13 +216,49 @@ final class IcalModel extends SportsManagementProjectModel
                     ->bind([':homeTeamId', ':awayTeamId'], $teamId, ParameterType::INTEGER);
             }
 
-            $db->setQuery($query);
+            if ($divisionId > 0) {
+                $query->where($db->quoteName('m.division_id') . ' = :calendarDivisionId')
+                    ->bind(':calendarDivisionId', $divisionId, ParameterType::INTEGER);
+            }
 
-            return $db->loadObjectList('id') ?: [];
+            if ($playgroundId > 0) {
+                $query->where($db->quoteName('m.playground_id') . ' = :calendarPlaygroundId')
+                    ->bind(':calendarPlaygroundId', $playgroundId, ParameterType::INTEGER);
+            }
+
+            $db->setQuery($query);
+            $matches = $db->loadObjectList('id') ?: [];
+
+            foreach ($matches as $match) {
+                if (!is_object($match)) {
+                    continue;
+                }
+
+                $matchId = (int) ($match->id ?? 0);
+                $homeAlias = (string) ($match->home_team_alias ?? '');
+                $awayAlias = (string) ($match->away_team_alias ?? '');
+                $match->slug = (string) $matchId . ($homeAlias !== '' && $awayAlias !== ''
+                    ? ':' . $homeAlias . '_' . $awayAlias
+                    : '');
+                $match->project_slug = (int) ($match->project_id ?? $projectId)
+                    . ':' . (string) ($match->project_alias ?? '');
+                $match->round_slug = (int) ($match->round_id ?? 0)
+                    . ':' . (string) ($match->round_alias ?? '');
+                $match->playground_slug = (int) ($match->playground_id ?? 0) > 0
+                    ? (int) $match->playground_id . ':' . (string) ($match->playground_alias ?? '')
+                    : '';
+
+                $rawTime = (string) ($match->time_present ?? '');
+                $match->time_present = preg_match('/(?:^|\\s)(\\d{2}:\\d{2})(?::\\d{2})?$/D', $rawTime, $time)
+                    ? $time[1]
+                    : $rawTime;
+            }
+
+            return $matches;
         } catch (\Throwable $exception) {
-            // SQL details and database credentials belong in server logs, not
-            // in publicly accessible calendar feeds or error messages.
-            Log::add(__METHOD__ . ': ' . $exception->getMessage(), Log::ERROR, 'jsmerror');
+            // Do not record driver exception messages: they may contain
+            // passwords, private table names or raw SQL query values.
+            Log::add(__METHOD__ . ': iCalendar query failed (' . get_class($exception) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return false;

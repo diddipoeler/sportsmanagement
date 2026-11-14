@@ -90,6 +90,7 @@ namespace {
         [true, 0, 0],
         [['5'], 0, 0],
         ['999999999999999999999999999', 0, 0],
+        ['5', 0, 2],
     ] as [$project, $team, $selector]) {
         if ($model->getResultsPlan($project, $team, 0, 0, 'ASC', $selector) !== []) {
             throw new \RuntimeException('Malformed iCalendar selector reached a database.');
@@ -115,6 +116,17 @@ namespace {
         }
     }
 
+    foreach ([
+        ['5', 0, '2bad', 0],
+        ['5', 0, '999999999999999999999999', 0],
+        ['5', 0, 0, '3junk'],
+        ['5', 0, 0, -1],
+    ] as [$project, $team, $division, $playground]) {
+        if ($model->getResultsPlan($project, $team, $division, $playground) !== []) {
+            throw new \RuntimeException('Malformed iCalendar division or venue selector reached the database.');
+        }
+    }
+
     if ($model->testApp->messages !== [] || \Joomla\CMS\Log\Log::$entries !== []) {
         throw new \RuntimeException('Invalid iCalendar selector generated SQL or an error message.');
     }
@@ -128,10 +140,11 @@ namespace {
 
     if ($messages !== [['JERROR_AN_ERROR_HAS_OCCURRED', 'error']]
         || count($logs) !== 1
-        || !str_contains($logs[0][0], 'password=private-file')
+        || !str_contains($logs[0][0], 'RuntimeException')
+        || str_contains($logs[0][0], 'password=private-file')
         || $logs[0][1] !== \Joomla\CMS\Log\Log::ERROR
         || $logs[0][2] !== 'jsmerror') {
-        throw new \RuntimeException('Calendar SQL details were lost from logs or exposed in the UI.');
+        throw new \RuntimeException('Calendar SQL or credential details were exposed in the UI or logs.');
     }
 
     echo "iCalendar public error privacy regressions OK\n";
