@@ -17,6 +17,14 @@ declare(strict_types=1);
 
 namespace Joomla\Database {
     interface DatabaseInterface {}
+
+    /**
+     * Provide Joomla's integer parameter type used by fixture ID bindings.
+     */
+    final class ParameterType
+    {
+        public const INTEGER = 'integer';
+    }
 }
 
 namespace Joomla\Registry {
@@ -87,6 +95,26 @@ namespace {
          * @return self The query fixture.
          */
         public function where(mixed ...$arguments): self { return $this; }
+
+        /**
+         * Accept a bounded Joomla whereIn() clause for match/project IDs.
+         *
+         * The native formatter and navigation queries use typed parameter
+         * arrays rather than concatenating selected IDs into SQL. Keep the
+         * fluent method available without executing database operations.
+         *
+         * @param mixed ...$arguments Field, IDs and Joomla parameter type.
+         * @return self Same query fixture for continued SQL construction.
+         */
+        public function whereIn(mixed ...$arguments): self { return $this; }
+
+        /**
+         * Accept Joomla's typed bind() call for neighboring-match queries.
+         *
+         * @param mixed ...$arguments Placeholder, value and parameter type.
+         * @return self Same fixture after recording a virtual parameter.
+         */
+        public function bind(mixed ...$arguments): self { return $this; }
 
         /**
          * Accept chronological or name ordering for fixture rows.
