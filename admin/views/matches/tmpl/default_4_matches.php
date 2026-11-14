@@ -1,7 +1,7 @@
 <?php
 /** 
  * SportsManagement ein Programm zur Verwaltung für alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage matches
  * @file       defaul_matches.php
@@ -203,6 +203,10 @@ if ($this->templateConfig['show_number'] == 0) $colspan--;
 			for ($i = 0, $n = count($this->matches); $i < $n; $i++)
 			{
 				$row        =& $this->matches[$i];
+                // Match lists may have NULL or different home/away divisions.
+                // Resolve one shared set of Joomla value/text team options for
+                // both participants and team-based referees.
+                $matchTeamOptions = $this->teamOptionsForMatch($row);
 				$canEdit    = $this->user->authorise('core.edit', 'com_sportsmanagement');
 				$canCheckin = $this->user->authorise('core.manage', 'com_checkin') || $row->checked_out == $this->user->get('id') || $row->checked_out == 0;
 				$checked    = HTMLHelper::_('jgrid.checkedout', $i, $this->user->get('id'), $row->checked_out_time, 'matches.', $canCheckin);
@@ -510,7 +514,7 @@ data-toggle="datetimepicker"
 						}
 
 						$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-						echo HTMLHelper::_('select.genericlist', $this->lists['teams_' . $row->divhomeid], 'projectteam1_id' . $row->id,
+						echo HTMLHelper::_('select.genericlist', $matchTeamOptions, 'projectteam1_id' . $row->id,
 							'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->projectteam1_id
 						);
 						?>
@@ -539,7 +543,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 						}
 
 						$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-						echo HTMLHelper::_('select.genericlist', $this->lists['teams_' . $row->divhomeid], 'projectteam2_id' . $row->id,
+						echo HTMLHelper::_('select.genericlist', $matchTeamOptions, 'projectteam2_id' . $row->id,
 							'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->projectteam2_id
 						);
 						?>
@@ -851,7 +855,7 @@ echo HTMLHelper::_('image','administrator/components/com_sportsmanagement/assets
 							}
 	
 							$append .= ' onchange="document.getElementById(\'cb' . $i . '\').checked=true" ';
-							echo HTMLHelper::_('select.genericlist', $this->lists['teams_' . $row->divhomeid], 'referee_id' . $row->id,
+							echo HTMLHelper::_('select.genericlist', $matchTeamOptions, 'referee_id' . $row->id,
 								'class="form-control form-control-inline" size="1"' . $append, 'value', 'text', $row->referee_id
 							);	
 						}

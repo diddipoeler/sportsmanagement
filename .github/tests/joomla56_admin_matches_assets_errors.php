@@ -250,5 +250,64 @@ namespace {
         throw new \RuntimeException('Matches model log leaked SQL details or missed diagnostic count.');
     }
 
-    echo "Administrator Matches: shared HTML assets and redacted model errors OK.\n";
+    // The previous legacy layout tried "teams_" for a NULL division, even
+    // though display() populated "teams_0". Real project teams must be shown.
+    $placeholder = (object) ['value' => 0, 'text' => 'Choose team'];
+    $allTeams = [
+        $placeholder,
+        (object) ['value' => 11, 'text' => 'Home FC'],
+        (object) ['value' => 22, 'text' => 'Away FC'],
+    ];
+    $divisionTeams = [
+        $placeholder,
+        (object) ['value' => 11, 'text' => 'Home FC'],
+    ];
+    $view->lists = [
+        'projectteams' => $allTeams,
+        'teams_0' => $allTeams,
+        'teams_4' => $divisionTeams,
+    ];
+
+    $cases = [
+        [(object) ['divhomeid' => null, 'divawayid' => null], $allTeams],
+        [(object) ['divhomeid' => null, 'divawayid' => 4], $allTeams],
+        [(object) ['divhomeid' => 4, 'divawayid' => 5], $allTeams],
+        [(object) ['divhomeid' => 4, 'divawayid' => 4], $divisionTeams],
+        [(object) ['divhomeid' => 4, 'divawayid' => 0], $allTeams],
+        [(object) ['divhomeid' => 'bad', 'divawayid' => null], $allTeams],
+    ];
+
+    foreach ($cases as [$row, $expected]) {
+        if ($view->teamOptionsForMatch($row) !== $expected) {
+            throw new \RuntimeException('Match team selector lost names on missing/mixed divisions.');
+        }
+    }
+
+    // An incomplete division filter must not hide the selected team.
+    $view->lists['teams_4'] = [$placeholder];
+    if ($view->teamOptionsForMatch((object) ['divhomeid' => 4, 'divawayid' => 4]) !== $allTeams) {
+        throw new \RuntimeException('A division without team options hid the match participants.');
+    }
+
+    unset($view->lists['teams_0'], $view->lists['teams_4']);
+    if ($view->teamOptionsForMatch((object) ['divhomeid' => null]) !== $allTeams) {
+        throw new \RuntimeException('Missing division keys did not fall back to project teams.');
+    }
+
+    $view->lists['projectteams'] = false;
+    if ($view->teamOptionsForMatch((object) ['divhomeid' => null]) !== []) {
+        throw new \RuntimeException('Malformed team options were not rejected safely.');
+    }
+
+    // Prevent regressions where the transitional template bypasses the
+    // shared row resolver and directly reads a nullable array key.
+    $layout = file_get_contents(
+        dirname(__DIR__, 2) . '/admin/views/matches/tmpl/default_4_matches.php'
+    );
+    if (substr_count($layout, '$matchTeamOptions') !== 4
+        || str_contains($layout, "\$this->lists['teams_' . \$row->divhomeid]")) {
+        throw new \RuntimeException('Legacy match layout still looks up undefined teams_ keys.');
+    }
+
+    echo "Administrator Matches: team selectors, shared assets and error privacy OK.\n";
 }

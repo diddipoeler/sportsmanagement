@@ -94,9 +94,10 @@ jobs:
           php .github/scripts/check-php-function-docs.php admin/src/Model/ProjectModel.php
           php .github/tests/joomla56_admin_project_public_container.php
 
-      - name: Verify native Matches view asset reuse and error privacy
+      - name: Verify Matches team lists, asset reuse and error privacy
         run: |
           php -l admin/src/View/Matches/HtmlView.php
+          php -l admin/views/matches/tmpl/default_4_matches.php
           php -l .github/tests/joomla56_admin_matches_assets_errors.php
           php .github/scripts/check-php-function-docs.php admin/src/View/Matches/HtmlView.php
           php .github/tests/joomla56_admin_matches_assets_errors.php

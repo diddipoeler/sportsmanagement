@@ -173,11 +173,16 @@ final class HtmlView extends BaseHtmlView
 
         $allProjectTeams = $this->model->getProjectTeamOptions($this->project_id);
         $this->lists['projectteams'] = $this->withTeamPlaceholder($allProjectTeams);
+        // Zero/missing divisions and mixed-division fixtures must still show
+        // every available team instead of looking up the undefined "teams_" key.
+        $this->lists['teams_0'] = $this->lists['projectteams'];
 
         foreach ($this->items as $row) {
-            $homeDivision = (int) ($row->divhomeid ?? 0);
-            $awayDivision = (int) ($row->divawayid ?? 0);
-            $divisionId = $homeDivision > 0 && $homeDivision === $awayDivision ? $homeDivision : 0;
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $divisionId = self::matchTeamDivisionId($row);
             $key = 'teams_' . $divisionId;
 
             if (!isset($this->lists[$key])) {
@@ -419,6 +424,56 @@ final class HtmlView extends BaseHtmlView
             : Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM');
 
         return array_merge([HTMLHelper::_('select.option', 0, $label)], $teams);
+    }
+
+    /**
+     * Determine the shared division for one administrator match row.
+     *
+     * Only restrict selectable teams to a division when both participants
+     * belong to the same positive division. SQL LEFT JOINs return null for
+     * teams without divisions, and cross-division fixtures must have access
+     * to the full project's teams rather than an incomplete division list.
+     *
+     * @param object $match Match row with optional home/away division IDs.
+     * @return int Shared positive division ID or zero for all project teams.
+     */
+    private static function matchTeamDivisionId(object $match): int
+    {
+        $homeDivision = (int) ($match->divhomeid ?? 0);
+        $awayDivision = (int) ($match->divawayid ?? 0);
+
+        return $homeDivision > 0 && $homeDivision === $awayDivision
+            ? $homeDivision
+            : 0;
+    }
+
+    /**
+     * Return the correct Mannschaft (team) selector for an existing match.
+     *
+     * Uses the same division calculation as display() for home, away and
+     * team-referee selectors in default_4_matches.php. Prefers a populated
+     * division-specific list but falls back to all project teams when the
+     * division key is absent, malformed or contains only a placeholder.
+     * This preserves actual team names and selected IDs for legacy fixtures
+     * with NULL division joins and for games between different divisions.
+     *
+     * @param object $match Match row with optional division IDs.
+     * @return array<int,object> Joomla value/text options for all three selects.
+     */
+    public function teamOptionsForMatch(object $match): array
+    {
+        $key = 'teams_' . self::matchTeamDivisionId($match);
+        $options = $this->lists[$key] ?? null;
+
+        if (!is_array($options) || count($options) < 2) {
+            $options = $this->lists['teams_0'] ?? null;
+        }
+
+        if (!is_array($options) || count($options) < 2) {
+            $options = $this->lists['projectteams'] ?? [];
+        }
+
+        return is_array($options) ? $options : [];
     }
 
     /**

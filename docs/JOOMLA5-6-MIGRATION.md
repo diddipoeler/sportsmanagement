@@ -304,3 +304,21 @@ A real administrator save attempted to instantiate the legacy `JSMModelAdmin` an
 ### Legacy match PHP file-header and compatibility gate correction (14 November 2026)
 
 The canonical PHP opening tag in `admin/libraries/sportsmanagement/model.php` was corrected from uppercase `<?PHP` to `<?php` for the strict file-level PHPDoc validator. Older compatibility workflows are being updated to reflect the already-migrated Joomla administrator identity, component database resolver and current PHP date-save paths, including robust shell quoting. The isolated legacy model/date runtime test remains in GitHub Actions.
+
+## Backend round matches: missing Mannschaft selector options (14 November 2026)
+
+When games have missing division assignments or are played across divisions,
+`default_4_matches.php` previously requested an absent `teams_` array key,
+while the native Matches view had built `teams_0` (or another division key).
+All three selectors (home team, away team and team referee) now use the
+same `HtmlView::teamOptionsForMatch()` resolver as the view's list builder.
+The view always provides `teams_0` with the complete set of project teams;
+division-specific lists are used only when both sides share a valid division.
+Missing, incomplete or malformed division lists fall back to full project
+teams, preserving team labels and previously selected project-team IDs.
+
+The existing Matches view regression now exercises NULL division IDs, matches
+across divisions, shared divisions, missing list keys and malformed options.
+The central PHP metadata workflow lints the legacy template and runs the
+regression alongside the Matches asset/privacy tests. A real installed Joomla
+administrator round-list smoke test remains outstanding.
