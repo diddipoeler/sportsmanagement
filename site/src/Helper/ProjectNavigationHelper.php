@@ -23,7 +23,7 @@ final class ProjectNavigationHelper
      * Find the preceding project in the current project's league.
      *
      * Uses the supplied Joomla database connection and the shared
-     * navigation query to search for the nearest lower project name.
+     * navigation query to find the nearest lower published project name.
      *
      * @param DatabaseInterface $db Selected SportsManagement database.
      * @param object $project Current project containing league_id and name.
@@ -38,7 +38,7 @@ final class ProjectNavigationHelper
      * Find the following project within the current project's league.
      *
      * Uses the same parameterised query as previous(), ordered by
-     * ascending name to select the nearest following project.
+     * ascending name to select the nearest following published project.
      *
      * @param DatabaseInterface $db Selected SportsManagement database.
      * @param object $project Current project containing league_id and name.
@@ -54,7 +54,8 @@ final class ProjectNavigationHelper
      *
      * Rejects empty project names and invalid league IDs, binds league
      * and name parameters using Joomla DatabaseInterface, and limits
-     * the result to one neighbouring project in the same league. Where the
+     * the result to one published neighbouring project in the same league.
+     * Draft projects must not appear in public navigation links. Where the
      * current project has an ID, equal-name neighbours are ordered by that
      * ID to avoid skipping projects with identical display names.
      * Malformed league selectors cannot be silently truncated by PHP casts.
@@ -73,7 +74,7 @@ final class ProjectNavigationHelper
         $name = is_string($project->name ?? null) ? trim($project->name) : '';
         $projectId = self::positiveId($project->id ?? null);
 
-        if ($leagueId <= 0 || $name === '') {
+        if ($leagueId <= 0 || $name === '' || strlen($name) > 255) {
             return null;
         }
 
@@ -83,6 +84,7 @@ final class ProjectNavigationHelper
             ->select($db->quoteName('p') . '.*')
             ->from($db->quoteName('#__sportsmanagement_project', 'p'))
             ->where($db->quoteName('p.league_id') . ' = :navigationLeagueId')
+            ->where($db->quoteName('p.published') . ' = 1')
             ->bind(':navigationLeagueId', $leagueId, ParameterType::INTEGER)
             ->bind(':navigationProjectName', $name, ParameterType::STRING);
 

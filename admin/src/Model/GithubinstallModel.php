@@ -52,8 +52,9 @@ final class GithubinstallModel extends BaseDatabaseModel
      * The archive is intentionally extracted into the temp root because the existing
      * jsm_update_github.php workflow installs from the GitHub-generated top-level folder.
      * Rejects malformed/non-string archive settings, resets stale success state
-     * on each attempt and keeps extraction exceptions in Joomla's private log
-     * rather than exposing server paths or credentials to administrators.
+     * on each attempt and catches download and extraction exceptions.
+     * Records only exception classes in Joomla's server log so archive URLs,
+     * tokens and filesystem paths are never reflected in diagnostics.
      *
      * @param mixed $link Configured GitHub archive URL.
      * @return array<string,string>|false Update status or false on failure.
@@ -74,7 +75,15 @@ final class GithubinstallModel extends BaseDatabaseModel
             return false;
         }
 
-        $downloadedFile = InstallerHelper::downloadPackage($url);
+        try {
+            $downloadedFile = InstallerHelper::downloadPackage($url);
+        } catch (\Throwable $e) {
+            // Downloader exceptions can contain credentials and internal paths.
+            Log::add(__METHOD__ . ': download failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
+
+            return false;
+        }
 
         if (!$downloadedFile) {
             $app->enqueueMessage(Text::_('COM_INSTALLER_MSG_INSTALL_INVALID_URL'), 'error');
@@ -103,7 +112,7 @@ final class GithubinstallModel extends BaseDatabaseModel
             $result = $archive->extract($archivePath, $tmpPath);
         } catch (\Throwable $e) {
             // Archive paths, stack details and credentials must stay private.
-            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            Log::add(__METHOD__ . ': extraction failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('JLIB_INSTALLER_ERROR_DOWNLOAD_SERVER_CONNECT'), 'error');
 
             return false;

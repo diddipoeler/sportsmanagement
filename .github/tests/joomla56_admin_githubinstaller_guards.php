@@ -251,16 +251,22 @@ namespace Joomla\CMS\Installer {
     final class InstallerHelper
     {
         public static int $downloads = 0;
+        public static bool $failDownload = false;
 
         /**
-         * Simulate a package download without a network request.
+         * Simulate a package download and optional confidential failure.
          *
          * @param string $url Validated archive location.
-         * @return string Simulated ZIP basename.
+         * @return string Simulated ZIP basename on success.
+         * @throws \RuntimeException If the fixture requests a failed download.
          */
         public static function downloadPackage(string $url): string
         {
             ++self::$downloads;
+
+            if (self::$failDownload) {
+                throw new \RuntimeException('download failed: token=internal-secret');
+            }
 
             return 'sportsmanagement-test.zip';
         }
@@ -401,7 +407,8 @@ namespace {
 
     if (\Joomla\CMS\Installer\InstallerHelper::$downloads !== 1
         || count(\Joomla\CMS\Log\Log::$entries) !== 1
-        || !str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'password=internal-secret')
+        || !str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$entries[0][0], 'internal-secret')
         || $controller->redirect['type'] !== 'error') {
         throw new \RuntimeException('Archive extraction error was not safely logged or handled.');
     }
@@ -410,6 +417,20 @@ namespace {
         if (str_contains($message, 'internal-secret')) {
             throw new \RuntimeException('Archive extraction error exposed sensitive details to the administrator.');
         }
+    }
+
+    \Joomla\CMS\Installer\InstallerHelper::$failDownload = true;
+    $app->state['com_sportsmanagement.github_update_dir'] = 'stale';
+    $downloadResult = $model->CopyGithubLink('https://github.com/example/repo/archive.zip');
+    \Joomla\CMS\Installer\InstallerHelper::$failDownload = false;
+
+    if ($downloadResult !== false
+        || \Joomla\CMS\Installer\InstallerHelper::$downloads !== 2
+        || $app->state['com_sportsmanagement.github_update_dir'] !== null
+        || count(\Joomla\CMS\Log\Log::$entries) !== 2
+        || !str_contains(\Joomla\CMS\Log\Log::$entries[1][0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$entries[1][0], 'internal-secret')) {
+        throw new \RuntimeException('Download failure did not clear stale state and redact sensitive diagnostics.');
     }
 
     $tmp = sys_get_temp_dir() . '/jsm-link-guard-' . getmypid();

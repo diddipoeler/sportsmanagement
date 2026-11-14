@@ -26,7 +26,8 @@ final class CountRekordHelper
      * SportsManagement database, counts existing fixtures and compares
      * the result with the configured target. Database failures are logged
      * and represented as an empty collection to keep the site responsive.
-     * Malformed database selectors fail closed instead of silently falling
+     * False, null and malformed COUNT(*) results must not be mistaken for
+     * zero fixtures. Malformed database selectors fail closed instead of silently falling
      * back to an unrelated primary connection.
      *
      * @param Registry $params Validated Joomla module parameters.
@@ -54,7 +55,13 @@ final class CountRekordHelper
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__sportsmanagement_match'));
             $db->setQuery($query);
-            $count = self::nonNegativeInt($db->loadResult());
+            $count = self::recordCount($db->loadResult());
+
+            if ($count === null) {
+                Log::add('SportsManagement Count Record returned an invalid match count.', Log::ERROR, 'com_sportsmanagement');
+
+                return [];
+            }
         } catch (\Throwable $e) {
             // A missing match table or unavailable external database must not
             // take down the site; details belong in the Joomla error log.
@@ -78,6 +85,39 @@ final class CountRekordHelper
                 '<strong>' . number_format($target, 0, ',', '.') . '</strong>'
             ),
         ]];
+    }
+
+    /**
+     * Interpret the database COUNT(*) result without hiding query failures.
+     *
+     * Accepts nonnegative PHP integers and complete decimal strings, including
+     * the genuine count zero. Rejects null/false, negative and fractional
+     * numbers, partial strings, arrays, objects and integer overflow. This
+     * prevents failed queries from appearing as a successful zero-match count.
+     *
+     * @param mixed $raw Database driver's raw aggregate result.
+     * @return int|null Verified count or null for an invalid driver result.
+     */
+    private static function recordCount(mixed $raw): ?int
+    {
+        if (is_int($raw)) {
+            return $raw >= 0 ? $raw : null;
+        }
+
+        if (!is_string($raw) || $raw === '' || strlen($raw) > 64
+            || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return null;
+        }
+
+        $digits = ltrim($raw, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $parsed = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+
+        return $parsed === false ? null : $parsed;
     }
 
     /**
