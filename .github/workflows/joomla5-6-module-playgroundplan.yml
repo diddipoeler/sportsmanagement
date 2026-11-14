@@ -25,6 +25,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify shared navigation, roster and playground assets
+        run: php .github/tests/joomla56_navigation_roster_plan_asset_reuse.php
+
       - name: Validate Playground Plan migration
         shell: bash
         run: |
@@ -65,7 +68,10 @@ jobs:
           grep -Fq 'getLayoutData(): array|false' "$dispatcher"
           grep -Fq 'if ($data === false)' "$dispatcher"
           grep -Fq 'getWebAssetManager()' "$dispatcher"
-          grep -Fq 'registerAndUseScript(' "$dispatcher"
+          grep -Fq 'registerScript(' "$dispatcher"
+          grep -Fq "assetExists('script', \$name)" "$dispatcher"
+          grep -Fq 'useScript($name)' "$dispatcher"
+          ! grep -Fq 'registerAndUseScript(' "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve(' "$helper"
           grep -Fq 'SiteRouteHelper::view(' "$helper"

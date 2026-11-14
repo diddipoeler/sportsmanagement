@@ -23,7 +23,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Prepare the navigation module's data and JavaScript configuration.
      *
-     * Validates the stored layout, loads navigation helper data without overwriting Joomla context, selects the native layout, and registers Bootstrap tab assets and safe client options.
+     * Validates the stored layout and merges helper data without replacing
+     * Joomla context. Reuses Bootstrap tab and native CSS/JS registrations,
+     * while retaining independently keyed client options for each module.
      *
      * @return array|false Module layout variables, or false if skipped.
      * @throws \RuntimeException When called outside the Joomla site application.
@@ -75,26 +77,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
         // Joomla's web assets and script options are only available in HTML documents.
         if ($document instanceof HtmlDocument) {
-            $assets = $document->getWebAssetManager();
-            $assets->useScript('bootstrap.tab');
-            $assets->registerAndUseStyle(
-                'mod_sportsmanagement_ajax_top_navigation_menu',
-                'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_menu.css',
-                ['version' => 'auto']
-            );
-            $assets->registerAndUseStyle(
-                'mod_sportsmanagement_ajax_top_navigation_menu.tabs',
-                'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css',
-                ['version' => 'auto']
-            );
-            $assets->registerAndUseScript(
-                'mod_sportsmanagement_ajax_top_navigation_menu.native',
-                'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js',
-                ['version' => 'auto'],
-                ['defer' => true],
-                ['core']
-            );
-    
+            $this->useNavigationAssets($document);
+
             // Joomla's script options expect an array; do not forward malformed helper data.
             $clientConfig = $data['clientConfig'] ?? [];
             $document->addScriptOptions(
@@ -105,4 +89,42 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         return $data;
     }
+    /**
+     * Enable AJAX navigation Bootstrap tabs, two styles and native script.
+     *
+     * Reuse Joomla's shared HTML WebAssetManager across module instances
+     * without repeating registrations. Preserve the original asset sources,
+     * cache options, deferred attributes and required dependencies.
+     *
+     * @param HtmlDocument $document Current Joomla site HTML response.
+     * @return void
+     */
+    private function useNavigationAssets(HtmlDocument $document): void
+    {
+        $assets = $document->getWebAssetManager();
+        $assets->useScript('bootstrap.tab');
+        $style = 'mod_sportsmanagement_ajax_top_navigation_menu';
+        if (!$assets->assetExists('style', $style)) {
+            $assets->registerStyle($style,
+                'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_menu.css', ['version' => 'auto']
+            );
+        }
+        $assets->useStyle($style);
+        $tabs = 'mod_sportsmanagement_ajax_top_navigation_menu.tabs';
+        if (!$assets->assetExists('style', $tabs)) {
+            $assets->registerStyle($tabs,
+                'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css', ['version' => 'auto']
+            );
+        }
+        $assets->useStyle($tabs);
+        $native = 'mod_sportsmanagement_ajax_top_navigation_menu.native';
+        if (!$assets->assetExists('script', $native)) {
+            $assets->registerScript($native,
+                'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/native.js', ['version' => 'auto'], ['defer' => true], ['core']
+            );
+        }
+        $assets->useScript($native);
+    }
+
+
 }

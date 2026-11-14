@@ -23,7 +23,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Prepare the playground schedule layout for the site module.
      *
-     * Loads the component language, normalises helper data, registers the stylesheet and enables the ticker script only in the configured mode.
+     * Loads the component language, normalises helper data, and reuses
+     * CSS on HTML pages while enabling ticker JavaScript only in ticker mode.
      *
      * @return array|false Render variables, or false when skipped.
      * @throws \RuntimeException When the application is not the site client.
@@ -51,22 +52,50 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $wam = $document->getWebAssetManager();
-            $wam->registerAndUseStyle(
-                'mod_sportsmanagement_playgroundplan',
-                'modules/mod_sportsmanagement_playgroundplan/css/mod_sportsmanagement_playgroundplan.css'
-            );
-
             $rawMode = $data['params']->get('mode', 0);
-            if ((is_int($rawMode) && $rawMode === 0)
-                || (is_string($rawMode) && preg_match('/^0+$/D', $rawMode))) {
-                $wam->registerAndUseScript(
-                    'mod_sportsmanagement_playgroundplan.ticker',
-                    'modules/mod_sportsmanagement_playgroundplan/js/ticker.js'
-                );
-            }
+            $tickerMode = (is_int($rawMode) && $rawMode === 0)
+                || (is_string($rawMode) && preg_match('/^0+$/D', $rawMode));
+
+            $this->usePlanAssets($document, $tickerMode);
         }
 
         return $data;
     }
+    /**
+     * Activate Playground Plan CSS and optional ticker JavaScript.
+     *
+     * Reuse Joomla's shared HTML WebAssetManager across module instances
+     * without repeating registrations. Preserve the original asset sources,
+     * cache options, deferred attributes and required dependencies.
+     *
+     * @param HtmlDocument $document Current Joomla site HTML response.
+     * The ticker is registered only when the module's validated zero or
+     * zero-padded mode requires it; other plan instances use styles alone.
+     *
+     * @param bool $tickerMode Whether to enable scrolling ticker output.
+     * @return void
+     */
+    private function usePlanAssets(HtmlDocument $document, bool $tickerMode): void
+    {
+        $assets = $document->getWebAssetManager();
+        $style = 'mod_sportsmanagement_playgroundplan';
+        if (!$assets->assetExists('style', $style)) {
+            $assets->registerStyle($style,
+                'modules/mod_sportsmanagement_playgroundplan/css/mod_sportsmanagement_playgroundplan.css', []
+            );
+        }
+        $assets->useStyle($style);
+        if (!$tickerMode) {
+            return;
+        }
+        $name = 'mod_sportsmanagement_playgroundplan.ticker';
+        if (!$assets->assetExists('script', $name)) {
+            $assets->registerScript($name,
+                'modules/mod_sportsmanagement_playgroundplan/js/ticker.js', [], [], []
+            );
+        }
+        $assets->useScript($name);
+    }
+
+
 }

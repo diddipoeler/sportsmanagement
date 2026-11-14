@@ -26,7 +26,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Build the navigation menu context for Joomla's site module renderer.
      *
      * Loads component translations, queries native navigation data and
-     * registers CSS and deferred scripts. Only the expected navigation
+     * reuses CSS and deferred scripts. Only the expected navigation
      * template variables are copied into the Joomla module context, so
      * unexpected helper keys cannot overwrite framework-owned values.
      * Invalid module database selections stop navigation link rendering.
@@ -84,18 +84,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $assets = $document->getWebAssetManager();
-            $assets->registerAndUseStyle(
-                'mod_sportsmanagement_navigation_menu',
-                'modules/mod_sportsmanagement_navigation_menu/css/mod_sportsmanagement_navigation_menu.css',
-                ['version' => 'auto']
-            );
-            $assets->registerAndUseScript(
-                'mod_sportsmanagement_navigation_menu',
-                'modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js',
-                ['version' => 'auto'],
-                ['defer' => true]
-            );
+            $this->useMenuAssets($document);
         }
 
         return $data;
@@ -120,4 +109,33 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         return $database;
     }
+    /**
+     * Activate Navigation Menu CSS and its deferred native script.
+     *
+     * Reuse Joomla's shared HTML WebAssetManager across module instances
+     * without repeating registrations. Preserve the original asset sources,
+     * cache options, deferred attributes and required dependencies.
+     *
+     * @param HtmlDocument $document Current Joomla site HTML response.
+     * @return void
+     */
+    private function useMenuAssets(HtmlDocument $document): void
+    {
+        $assets = $document->getWebAssetManager();
+        $name = 'mod_sportsmanagement_navigation_menu';
+        if (!$assets->assetExists('style', $name)) {
+            $assets->registerStyle($name,
+                'modules/mod_sportsmanagement_navigation_menu/css/mod_sportsmanagement_navigation_menu.css', ['version' => 'auto']
+            );
+        }
+        $assets->useStyle($name);
+        if (!$assets->assetExists('script', $name)) {
+            $assets->registerScript($name,
+                'modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js', ['version' => 'auto'], ['defer' => true], []
+            );
+        }
+        $assets->useScript($name);
+    }
+
+
 }

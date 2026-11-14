@@ -32,6 +32,9 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
 
+      - name: Verify shared navigation, roster and playground assets
+        run: php .github/tests/joomla56_navigation_roster_plan_asset_reuse.php
+
       - name: Lint native module stack
         shell: bash
         run: |

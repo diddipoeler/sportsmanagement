@@ -51,6 +51,9 @@ jobs:
 
           node --check modules/mod_sportsmanagement_teamplayers/js/native.js
 
+      - name: Verify shared navigation, roster and playground assets
+        run: php .github/tests/joomla56_navigation_roster_plan_asset_reuse.php
+
       - name: Test published season rosters and safe player markup
         run: |
           php -l .github/tests/joomla56_teamplayers_roster_visibility.php

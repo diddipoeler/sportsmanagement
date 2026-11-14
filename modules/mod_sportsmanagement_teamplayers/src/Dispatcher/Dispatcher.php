@@ -25,8 +25,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Load the team roster and player records for the native Joomla layout.
      *
-     * Normalises incomplete helper data, registers the module stylesheet and
-     * loads the optional native script for carousel display. The Joomla site
+     * Normalises incomplete helper data and reuses CSS across instances,
+     * activating optional carousel JavaScript only for template C. The Joomla site
      * client is verified before changing module layout parameters and only
      * valid scalar carousel settings can enable optional JavaScript.
      *
@@ -68,21 +68,7 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $assets = $document->getWebAssetManager();
-            $assets->registerAndUseStyle(
-                'mod_sportsmanagement_teamplayers.native',
-                'modules/mod_sportsmanagement_teamplayers/css/native.css',
-                ['version' => 'auto']
-            );
-
-            if ($data['params']->get('template', 'L') === 'C') {
-                $assets->registerAndUseScript(
-                    'mod_sportsmanagement_teamplayers.native',
-                    'modules/mod_sportsmanagement_teamplayers/js/native.js',
-                    ['version' => 'auto'],
-                    ['defer' => true]
-                );
-            }
+            $this->useRosterAssets($document, $data['params']->get('template', 'L') === 'C');
         }
 
         return $data;
@@ -107,4 +93,40 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         return $database;
     }
+    /**
+     * Activate roster CSS with carousel JavaScript only for template C.
+     *
+     * Reuse Joomla's shared HTML WebAssetManager across module instances
+     * without repeating registrations. Preserve the original asset sources,
+     * cache options, deferred attributes and required dependencies.
+     *
+     * @param HtmlDocument $document Current Joomla site HTML response.
+     * List-only module instances never register carousel.js. Mixed list and
+     * carousel rosters therefore reuse CSS but retain separate script modes.
+     *
+     * @param bool $carousel Whether the carousel template is selected.
+     * @return void
+     */
+    private function useRosterAssets(HtmlDocument $document, bool $carousel): void
+    {
+        $assets = $document->getWebAssetManager();
+        $name = 'mod_sportsmanagement_teamplayers.native';
+        if (!$assets->assetExists('style', $name)) {
+            $assets->registerStyle($name,
+                'modules/mod_sportsmanagement_teamplayers/css/native.css', ['version' => 'auto']
+            );
+        }
+        $assets->useStyle($name);
+        if (!$carousel) {
+            return;
+        }
+        if (!$assets->assetExists('script', $name)) {
+            $assets->registerScript($name,
+                'modules/mod_sportsmanagement_teamplayers/js/native.js', ['version' => 'auto'], ['defer' => true], []
+            );
+        }
+        $assets->useScript($name);
+    }
+
+
 }
