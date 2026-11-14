@@ -41,7 +41,7 @@ jobs:
           grep -Fq -- "COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_IN'), 'error'" "$file"
           grep -Fq -- "COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_OUT'), 'error'" "$file"
 
-          if grep -Fq -- "$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_" "$file"; then
+          if grep -Fq -- "\$this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_NO_SUBST_" "$file"; then
             echo 'Static savesubstitution() still uses $this->setError()' >&2
             exit 1
           fi

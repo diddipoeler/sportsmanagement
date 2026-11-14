@@ -36,7 +36,8 @@ jobs:
           done
 
           grep -Fq -- '@version    5.6.0' "$file"
-          grep -Fq -- 'return new MatchTable(sportsmanagementHelper::getDBConnection());' "$file"
+          # Do not depend on the removed global sportsmanagementHelper class.
+          grep -Fq -- 'return new MatchTable(self::sportsManagementDatabase());' "$file"
 
           if grep -Fq -- 'Table::getInstance' "$file"; then
             echo 'Legacy Table::getInstance() remains in match.php' >&2

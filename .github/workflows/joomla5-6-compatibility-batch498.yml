@@ -41,7 +41,8 @@ jobs:
           grep -Fq -- 'use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstaffstatisticTable;' "$file"
           grep -Fq -- 'new MatchstatisticTable($db)' "$file"
           grep -Fq -- 'new MatchstaffstatisticTable($db)' "$file"
-          grep -Fq -- 'new MatchTable(Factory::getContainer()->get(DatabaseInterface::class))' "$file"
+          # The match table must use the authorised component connection.
+          grep -Fq -- 'return new MatchTable(self::sportsManagementDatabase());' "$file"
 
           if grep -Fq -- "Table::getInstance('Matchstatistic'" "$file"; then
             echo 'Legacy Matchstatistic table factory remains in match.php' >&2

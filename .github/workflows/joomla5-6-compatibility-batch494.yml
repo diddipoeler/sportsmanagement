@@ -36,7 +36,7 @@ jobs:
           done
 
           grep -Fq -- '@version    5.6.0' "$file"
-          grep -Fq -- 'Factory::getApplication()->getConfig()' "$file"
+          grep -Fq -- '$this->jsmapp->getConfig()' "$file"
 
           if grep -Fq -- 'Factory::getConfig()' "$file"; then
             echo 'Deprecated Factory::getConfig() remains in admin model library' >&2
