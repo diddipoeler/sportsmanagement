@@ -83,12 +83,22 @@ final class ProjectModel extends SportsManagementAdminModel
     }
 
     /**
-     * Update league champion flags for selected projects.
-     * @return mixed
+     * Toggle league-champion settings for the selected projects.
+     *
+     * Requires component edit permission at the model boundary so direct model
+     * calls cannot bypass the token- and ACL-protected list controller.
+     * Persists the selected flags with modification metadata using validated IDs.
+     *
+     * @return string|false Translated result or false on denial or failure.
      */
     public function setleaguechampion()
     {
         $app = $this->administratorApplication();
+
+        if (!$this->canWriteProjects('core.edit')) {
+            return false;
+        }
+
         $ids = $this->normaliseIds($app->getInput()->post->get('cid', [], 'array'));
 
         if (!$ids) {
@@ -404,13 +414,21 @@ final class ProjectModel extends SportsManagementAdminModel
     }
 
     /**
-     * Delete selected projects and their dependent records.
+     * Delete selected projects after checking the user's component ACL.
      *
-     * @param mixed $pks pks value.
-     * @return mixed
+     * Rejects missing or unauthorised identities before removing dependent rows.
+     * Passes strictly validated project keys to the dependent-data cleanup and
+     * then to Joomla's inherited project deletion.
+     *
+     * @param mixed $pks Project primary keys, passed by reference.
+     * @return bool Whether the deletion was permitted and completed.
      */
     public function delete(&$pks)
     {
+        if (!$this->canWriteProjects('core.delete')) {
+            return false;
+        }
+
         $ids = $this->normaliseIds($pks);
 
         if (!$ids) {
@@ -428,13 +446,21 @@ final class ProjectModel extends SportsManagementAdminModel
     }
 
     /**
-     * Remove related project records before deleting projects.
+     * Delete dependent round, match and project records before parent deletion.
      *
-     * @param array $pk pk value.
-     * @return bool
+     * Checks component delete permission even for direct helper calls, resolves
+     * dependent records and removes the related records transactionally.
+     * A failed database operation rolls back the dependent-record cleanup.
+     *
+     * @param mixed $pk Project identifiers to clean up.
+     * @return bool Whether the dependent-data cleanup completed.
      */
     public function deleteProjectsData($pk = []): bool
     {
+        if (!$this->canWriteProjects('core.delete')) {
+            return false;
+        }
+
         $projectIds = $this->normaliseIds($pk);
 
         if (!$projectIds) {
@@ -494,12 +520,22 @@ final class ProjectModel extends SportsManagementAdminModel
     }
 
     /**
-     * Duplicate selected projects with their configured data.
-     * @return mixed
+     * Duplicate selected projects for a requested target season.
+     *
+     * Requires component create permission before reading form data and opening
+     * a transaction. Copies project records and extra field values while resetting
+     * the new records' publication and checkout state.
+     *
+     * @return string|false Result message or false when denied or unsuccessful.
      */
     public function copy()
     {
         $app = $this->administratorApplication();
+
+        if (!$this->canWriteProjects('core.create')) {
+            return false;
+        }
+
         $input = $app->getInput();
         $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
 
@@ -566,12 +602,22 @@ final class ProjectModel extends SportsManagementAdminModel
     }
 
     /**
-     * Persist selected projects using the administrator quick-edit fields.
-     * @return mixed
+     * Persist selected project quick-edit fields from the administrator list.
+     *
+     * Requires an authenticated component editor even for direct model calls.
+     * Normalises submitted project identifiers, updates project fields and
+     * their extra values, and rolls back the transaction if a write fails.
+     *
+     * @return string|false Translated result or false on denial or failure.
      */
     public function saveshort()
     {
         $app = $this->administratorApplication();
+
+        if (!$this->canWriteProjects('core.edit')) {
+            return false;
+        }
+
         $input = $app->getInput();
         $ids = $this->normaliseIds($input->post->get('cid', [], 'array'));
 
@@ -868,20 +914,73 @@ final class ProjectModel extends SportsManagementAdminModel
     }
 
     /**
-     * Normalise selected project identifiers to distinct positive IDs.
+     * Convert bulk project selectors to distinct, positive integer IDs.
      *
-     * @param mixed $ids ids value.
-     * @return array<int>
+     * Accepts integers and whitespace-trimmed decimal strings, including
+     * historical zero-padded values. Rejects floats, nested arrays,
+     * booleans, partial decimal strings and overflowing identifiers, so
+     * malformed selections never write to a different project.
+     *
+     * @param mixed $ids Array of IDs or legacy delimited ID string.
+     * @return array<int,int> Unique positive IDs in input order.
      */
     private function normaliseIds($ids): array
     {
         if (is_string($ids)) {
             $ids = preg_split('/[\s,;]+/', $ids, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+        } elseif (is_int($ids)) {
+            $ids = [$ids];
         }
 
-        return array_values(array_unique(array_filter(
-            array_map('intval', (array) $ids),
-            static fn (int $id): bool => $id > 0
-        )));
+        if (!is_array($ids)) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach (array_slice($ids, 0, 5000) as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            if (is_string($value)) {
+                $value = trim($value);
+
+                if (strlen($value) > 64 || preg_match('/^[0-9]+$/D', $value) !== 1) {
+                    continue;
+                }
+
+                $digits = ltrim($value, '0');
+                $value = $digits === '' ? '0' : $digits;
+            }
+
+            $id = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+            if ($id !== false) {
+                $result[$id] = $id;
+            }
+        }
+
+        return array_values($result);
+    }
+
+    /**
+     * Validate permissions for direct administrator project mutations.
+     *
+     * The controller still handles POST CSRF validation; this additional
+     * guard requires a real authenticated Joomla identity with the requested
+     * component permission before a public model method performs writes.
+     *
+     * @param string $permission Required Joomla component permission.
+     * @return bool True only when an authenticated user is authorised.
+     */
+    private function canWriteProjects(string $permission): bool
+    {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return is_object($identity)
+            && (int) ($identity->id ?? 0) > 0
+            && method_exists($identity, 'authorise')
+            && $identity->authorise($permission, 'com_sportsmanagement');
     }
 }
