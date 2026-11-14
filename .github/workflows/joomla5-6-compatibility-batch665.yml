@@ -51,8 +51,12 @@ jobs:
           from pathlib import Path
 
           project = Path('admin/src/Model/ProjectModel.php').read_text()
-          if 'Factory::' in project:
-              raise SystemExit('Direct Joomla Factory usage remains in administrator ProjectModel')
+          if 'Factory::getApplication()' in project:
+              raise SystemExit('Deprecated static Joomla application access remains in administrator ProjectModel')
+          if project.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('ProjectModel must retrieve the Joomla DB through the public Factory container')
+          if 'backendApplication()->getContainer()' in project:
+              raise SystemExit('ProjectModel still calls the protected application DI container')
           if 'SportsManagementAdministratorApplicationResolver::resolve()' not in project:
               raise SystemExit('ProjectModel does not use the shared administrator application resolver')
 

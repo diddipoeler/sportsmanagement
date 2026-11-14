@@ -61,7 +61,10 @@ jobs:
           grep -Fq 'final class ProjectsModel extends SportsManagementListModel' admin/src/Model/ProjectsModel.php
           grep -Fq 'AdministratorApplication' admin/src/Model/ProjectModel.php
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/Model/ProjectModel.php
-          grep -Fq 'self::backendApplication()->getContainer()->get(DatabaseInterface::class)' admin/src/Model/ProjectModel.php
+          # Joomla 5/6 does not expose CMSApplication::getContainer().
+          # Native project lookups use the public Factory DI container instead.
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/ProjectModel.php
+          ! grep -Fq -- 'backendApplication()->getContainer()' admin/src/Model/ProjectModel.php
           grep -Fq '$this->administratorApplication()' admin/src/Model/ProjectModel.php
           grep -Fq 'self::backendApplication()' admin/src/Model/ProjectModel.php
 
