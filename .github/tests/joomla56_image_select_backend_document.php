@@ -327,17 +327,19 @@ namespace {
         'League callback is missing from the backend document.'
     );
 
-    require dirname(__DIR__, 2) . '/admin/src/Field/ImageSelectField.php';
-    require dirname(__DIR__, 2) . '/admin/src/Field/ImageselectField.php';
+    // PHP class names are case-insensitive, so the historical ImageselectField
+    // alias and native ImageSelectField must be verified in separate processes.
+    $compatibilityField = in_array('--compat-field', $argv, true);
+    $fieldClass = $compatibilityField
+        ? \Diddipoeler\Component\SportsManagement\Administrator\Field\ImageselectField::class
+        : \Diddipoeler\Component\SportsManagement\Administrator\Field\ImageSelectField::class;
+    require dirname(__DIR__, 2) . '/admin/src/Field/'
+        . ($compatibilityField ? 'ImageselectField.php' : 'ImageSelectField.php');
 
-    foreach ([
-        new \Diddipoeler\Component\SportsManagement\Administrator\Field\ImageSelectField(),
-        new \Diddipoeler\Component\SportsManagement\Administrator\Field\ImageselectField(),
-    ] as $field) {
-        $html = (new \ReflectionMethod($field, 'getInput'))->invoke($field);
-        assertImageSelector(str_contains($html, 'jform_picture_preview'), 'Administrator field preview is missing.');
-        assertImageSelector(str_contains($html, 'name="jform[picture]"'), 'Administrator image field is not submittable.');
-    }
+    $field = new $fieldClass();
+    $html = (new \ReflectionMethod($field, 'getInput'))->invoke($field);
+    assertImageSelector(str_contains($html, 'jform_picture_preview'), 'Administrator field preview is missing.');
+    assertImageSelector(str_contains($html, 'name="jform[picture]"'), 'Administrator image field is not submittable.');
 
     Uri::$base = 'https://example.test/';
     Factory::$application = new FakeApplication('site', new HtmlDocument());
