@@ -36,9 +36,11 @@ jobs:
           done
 
           grep -Fq -- '@version    5.6.0' "$file"
-          grep -Fq -- "(string) \$row->getError()" "$file"
-          grep -Fq -- "Text::_('JLIB_DATABASE_ERROR_FUNCTION_FAILED')" "$file"
-          grep -Fq -- '\$e->getMessage()' "$file"
+          # Match date saves now use the namespaced helper and the
+          # historical model retains private Joomla error diagnostics.
+          grep -Fq -- 'SportsManagementDateHelper::getTimestamp(' "$file"
+          grep -Fq -- 'Log::add(' "$file"
+          grep -Fq -- '$app->getIdentity()' "$file"
 
           if grep -Fq -- 'getErrorMsg()' "$file"; then
             echo 'Deprecated getErrorMsg() remains in match.php' >&2

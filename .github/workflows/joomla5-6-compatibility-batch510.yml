@@ -39,7 +39,7 @@ jobs:
           grep -Fq -- "COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT" "$file"
           grep -Fq -- "Log::ERROR, 'jsmerror'" "$file"
 
-          if grep -Fq -- "$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT')" "$file"; then
+          if grep -Fq -- "\$this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_EVENT')" "$file"; then
             echo 'Static deleteevent() still uses $this->setError()' >&2
             exit 1
           fi
