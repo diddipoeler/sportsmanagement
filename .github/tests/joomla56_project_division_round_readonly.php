@@ -43,6 +43,10 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model {
         }
     }
 
+    // Load the base model only after its Joomla framework stub exists.
+    \define('_JEXEC', 1);
+    require_once \dirname(__DIR__, 2) . '/site/src/Model/SportsManagementProjectModel.php';
+
     class ProjectScopeTestModel extends SportsManagementProjectModel
     {
         public object $project;
@@ -73,9 +77,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model {
 }
 
 namespace {
-    \define('_JEXEC', 1);
-    require_once \dirname(__DIR__, 2) . '/site/src/Model/SportsManagementProjectModel.php';
-
     $assert = static function (bool $ok, string $reason): void {
         if (!$ok) {
             throw new \RuntimeException($reason);
