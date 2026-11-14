@@ -1,6 +1,6 @@
 <?php
 /**
- * Regression checks for Random Quotes legacy numeric parameters.
+ * Regression checks for Random Quotes numeric parameters and fail-closed selectors.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -16,7 +16,7 @@ $class = \Diddipoeler\Module\SportsManagementRquotes\Site\Helper\RquotesHelper::
 $selector = new ReflectionMethod($class, 'normaliseDatabaseSelector');
 $limit = new ReflectionMethod($class, 'normalisePositiveLimit');
 
-foreach ([['0002', 2], [0, 0], [true, 0], [['2'], 0], ['2junk', 0], [PHP_INT_MAX . '0', 0]] as [$value, $expected]) {
+foreach ([['0002', 2], [0, 0], [true, null], [['2'], null], ['2junk', null], [PHP_INT_MAX . '0', null]] as [$value, $expected]) {
     if ($selector->invoke(null, $value) !== $expected) {
         fwrite(STDERR, 'Random Quotes database selector regression.' . PHP_EOL);
         exit(1);

@@ -2,8 +2,8 @@
 /**
  * Standalone Joomla 5/6 SQL import regression checks.
  *
- * Exercises the administrator import helper with an isolated installer parser
- * and database stub, without modifying a Joomla installation.
+ * Exercises fail-closed parser validation, all-or-nothing preflight and valid
+ * query execution with isolated Joomla/database stubs, without modifying a Joomla installation.
  *
  * Usage: php .github/tests/joomla56-sql-import-validation.php
  *
@@ -29,14 +29,21 @@ namespace Joomla\CMS\Installer {
     final class Installer
     {
         /**
-         * Return valid and malformed statement shapes for the import helper.
+         * Return valid or malformed statement shapes for the import helper.
          *
          * @param string $sql Non-empty SQL file content.
          * @return array<int,mixed> Statements using supported and unsupported types.
          */
+        public static bool $malformed = true;
+
         public static function splitSql(string $sql): array
         {
-            return [' SELECT 1 ', ['query' => ' SELECT 2 '], ['query' => []], new \stdClass(), '', ['query' => null]];
+            if (self::$malformed) {
+                // Invalid parser records must abort before any SQL is executed.
+                return [' SELECT 1 ', ['query' => ' SELECT 2 '], ['query' => []], new \stdClass(), '', ['query' => null]];
+            }
+
+            return [' SELECT 1 ', ['query' => ' SELECT 2 '], '', ['query' => '']];
         }
     }
 }
@@ -84,10 +91,29 @@ namespace {
 
     try {
         file_put_contents($file, 'SELECT 1; SELECT 2;');
+
+        // Reject a malformed installer parser result without executing even
+        // the valid statements that precede the broken record.
+        try {
+            SqlImportHelper::importFile($db, $file);
+            throw new \RuntimeException('The SQL importer accepted a malformed parser record.');
+        } catch (\RuntimeException $exception) {
+            if ($exception->getMessage() !== 'SQL import parser returned an invalid statement.') {
+                throw $exception;
+            }
+        }
+
+        if ($db->statements !== []) {
+            throw new \RuntimeException('Malformed SQL parser output caused a partial import.');
+        }
+
+        // The supported Joomla string and query-array shapes must still
+        // execute in their original order, ignoring only blank statements.
+        \Joomla\CMS\Installer\Installer::$malformed = false;
         SqlImportHelper::importFile($db, $file);
 
         if ($db->statements !== ['SELECT 1', 'SELECT 2']) {
-            throw new \RuntimeException('SQL importer did not skip malformed statements.');
+            throw new \RuntimeException('The SQL importer did not execute the valid statements.');
         }
     } finally {
         unlink($file);
