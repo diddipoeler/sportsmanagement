@@ -47,6 +47,11 @@ jobs:
           php -l .github/tests/joomla56_mvc_extension_name_types.php
           php .github/tests/joomla56_mvc_extension_name_types.php
 
+      - name: Validate site SEF router function PHPDoc and syntax
+        run: |
+          php .github/scripts/check-php-function-docs.php site/src/Service/Router.php
+          php -l site/src/Service/Router.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php

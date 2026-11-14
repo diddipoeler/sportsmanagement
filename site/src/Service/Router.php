@@ -26,6 +26,18 @@ class Router extends RouterBase
 {
     private const COMPONENT = 'com_sportsmanagement';
 
+    /**
+     * Initialise the Joomla 5/6 frontend router with its active menu.
+     *
+     * Uses Joomla's application and menu to resolve canonical component links.
+     * Optional category-factory and database parameters retain the framework's
+     * compatible constructor signature; routing itself uses the menu service.
+     *
+     * @param CMSApplicationInterface $app Current Joomla frontend application.
+     * @param AbstractMenu $menu Active menu repository for SEF URL selection.
+     * @param CategoryFactoryInterface|null $categoryFactory Optional category factory.
+     * @param DatabaseInterface|null $db Optional database connection.
+     */
     public function __construct(
         CMSApplicationInterface $app,
         AbstractMenu $menu,
@@ -271,16 +283,44 @@ class Router extends RouterBase
         return $vars;
     }
 
+    /**
+     * Look up positional route parameters for a SportsManagement view.
+     *
+     * Delegates to the shared schema used by the modern URL builder and parser
+     * so legacy segment ordering remains stable during Joomla 5/6 migration.
+     *
+     * @param string $view Normalised frontend view.
+     * @return array<string, mixed> Ordered route argument defaults.
+     */
     private function getViewDefaults(string $view): array
     {
         return SiteRouteSchema::defaults($view);
     }
 
+    /**
+     * Check whether a view has a positional route specification.
+     *
+     * Empty names are rejected and other names are checked against the
+     * explicit SportsManagement site route schema.
+     *
+     * @param string $view Normalised view identifier.
+     * @return bool Whether the router has a definition for this view.
+     */
     private function hasRouteDefinition(string $view): bool
     {
         return $view !== '' && SiteRouteSchema::has($view);
     }
 
+    /**
+     * Recognise views supported by the route schema, legacy tree or native MVC.
+     *
+     * Accepts a defined route, an installed historical view directory, or
+     * a loadable namespaced HTML, RAW or PDF view class. Unknown URLs do not
+     * acquire arbitrary component view routes.
+     *
+     * @param string $view Normalised frontend view name.
+     * @return bool True if an installed site view can handle the route.
+     */
     private function isKnownSiteView(string $view): bool
     {
         if ($this->hasRouteDefinition($view)) {
@@ -306,11 +346,29 @@ class Router extends RouterBase
         return false;
     }
 
+    /**
+     * Convert optional empty route parameters into a stable positional segment.
+     *
+     * The historical URL schema expects a zero placeholder instead of an
+     * absent value when a later positional parameter is supplied.
+     *
+     * @param mixed $defaultValue Route schema value or optional placeholder.
+     * @return mixed Original value, or string zero for an empty value.
+     */
     private function getRouteDefaultValue($defaultValue)
     {
         return $this->isEmptyRouteValue($defaultValue) ? '0' : $defaultValue;
     }
 
+    /**
+     * Resolve the selected Joomla menu item from a validated Itemid.
+     *
+     * Rejects arrays, partial numeric strings and non-positive identifiers,
+     * then returns only menu entries belonging to com_sportsmanagement.
+     *
+     * @param array $query URL query variables including an optional Itemid.
+     * @return object|null Matching component menu item, if valid.
+     */
     private function getMenuItemFromQuery(array $query): ?object
     {
         $rawItemId = $query['Itemid'] ?? 0;
@@ -333,6 +391,18 @@ class Router extends RouterBase
         return $this->isSportsManagementMenuItem($item) ? $item : null;
     }
 
+    /**
+     * Score eligible component menu items for a requested SportsManagement URL.
+     *
+     * Reads the available menu entries, honours published and access-level
+     * metadata and favours routes matching the requested view and parameters.
+     * Unusable menu IDs and malformed metadata are ignored without unsafe
+     * numeric or string casts.
+     *
+     * @param array $query Route query values used to assess candidates.
+     * @param string $view Normalised target view.
+     * @return object|null Highest matching accessible menu item, if any.
+     */
     private function findBestMenuItem(array $query, string $view): ?object
     {
         $items = $this->getSportsManagementMenuItems();
@@ -445,6 +515,15 @@ class Router extends RouterBase
         return $best;
     }
 
+    /**
+     * Obtain menu entries owned by this component from Joomla's active menu.
+     *
+     * Uses component-name lookup first and falls back to the numeric component
+     * ID when required by the menu implementation. Invalid extension metadata
+     * yields an empty list, never an unrestricted menu search.
+     *
+     * @return array Menu entries linked to com_sportsmanagement.
+     */
     private function getSportsManagementMenuItems(): array
     {
         $items = $this->menu->getItems('component', self::COMPONENT);
@@ -470,6 +549,19 @@ class Router extends RouterBase
         return is_array($items) ? $items : [];
     }
 
+    /**
+     * Determine whether a menu route fully expresses the requested URL.
+     *
+     * Compares the menu view and supported positional parameters with the
+     * query, disregarding only optional empty legacy defaults. Child records
+     * with meaningful extra arguments still need route segments.
+     *
+     * @param object $item Candidate Joomla component menu entry.
+     * @param array $query Requested URL parameters.
+     * @param string $view Normalised view name.
+     * @param array $defaults View-specific optional parameter defaults.
+     * @return bool True when the menu alias can replace positional segments.
+     */
     private function menuItemRepresentsQuery(object $item, array $query, string $view, array $defaults): bool
     {
         $menuQuery = isset($item->query) ? (array) $item->query : [];
@@ -513,6 +605,15 @@ class Router extends RouterBase
         return true;
     }
 
+    /**
+     * Verify that a Joomla menu record belongs to SportsManagement.
+     *
+     * Accepts either an exact component property or a matching query option;
+     * refuses non-object entries and avoids converting malformed metadata.
+     *
+     * @param mixed $item Candidate menu row.
+     * @return bool Whether the row belongs to this component.
+     */
     private function isSportsManagementMenuItem($item): bool
     {
         if (!is_object($item)) {
@@ -531,16 +632,45 @@ class Router extends RouterBase
         return ($query['option'] ?? null) === self::COMPONENT;
     }
 
+    /**
+     * Identify optional route values equivalent to the legacy zero placeholder.
+     *
+     * Distinguishes truly empty values from valid nonzero and boolean values
+     * when choosing whether to omit positional query arguments.
+     *
+     * @param mixed $value Value to classify.
+     * @return bool True for null, empty string, zero or string zero.
+     */
     private function isEmptyRouteValue($value): bool
     {
         return $value === null || $value === '' || $value === 0 || $value === '0';
     }
 
+    /**
+     * Normalise the frontend view selector for Joomla route lookup.
+     *
+     * Lowercases view names and retains only ASCII letters, digits and
+     * underscores so a request cannot inject filesystem path separators.
+     *
+     * @param string $view Requested view identifier.
+     * @return string Canonical safe route view name.
+     */
     private function normaliseView(string $view): string
     {
         return (string) preg_replace('/[^a-z0-9_]/i', '', strtolower($view));
     }
 
+    /**
+     * Compare scalar route values without PHP 8 array conversion warnings.
+     *
+     * Refuses arrays and objects, including cases that would otherwise compare
+     * as the string Array, and compares legitimate scalar or null values
+     * through the component's historical string-valued URL semantics.
+     *
+     * @param mixed $left First query or menu value.
+     * @param mixed $right Second query or menu value.
+     * @return bool Whether both safe values encode identically.
+     */
     private function sameValue($left, $right): bool
     {
         // Do not treat arrays as the identical string "Array" in PHP 8.

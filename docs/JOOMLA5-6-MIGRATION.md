@@ -230,3 +230,8 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 - All fifteen methods of the native-first administrator `SportsManagementMVCFactory` now describe their purpose, routing constraints, parameters and return values, including its retained site/admin legacy controller, model, view and template lookup paths.
 - The legacy extension directory list rejects non-string values before regular-expression validation. Invalid array/object records no longer trigger PHP 8 warnings or conversion errors when resolving administrator MVC fallbacks.
 - A framework-independent regression exercises the extension list with valid and malformed registry values. The all-PHP-metadata workflow also performs syntax lint and the descriptive PHPDoc audit on the MVC factory; installed Joomla integration checks remain outstanding.
+
+## Site SEF router method documentation (14 November 2026)
+
+- The modern site router now documents its constructor and all named helper methods, including menu candidate selection, allowed route views, positional parameters and scalar input handling. Its existing Joomla 5/6 URL-building behavior remains unchanged.
+- The migration metadata workflow checks the router's descriptive function PHPDoc and PHP syntax. Existing SEF route regression workflows remain in place; installed Joomla/browser testing is still outstanding.
