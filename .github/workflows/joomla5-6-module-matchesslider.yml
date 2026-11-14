@@ -65,6 +65,9 @@ jobs:
             done
           done
 
+      - name: Test repeated Matches and Matches Slider assets
+        run: php .github/tests/joomla56_match_modules_asset_reuse.php
+
       - name: Test portable project-scoped favorite-team filters
         run: |
           php -l .github/tests/joomla56_matchesslider_favorites.php
@@ -108,8 +111,11 @@ jobs:
               'false render signature': (dispatcher, 'getLayoutData(): array|false'),
               'false render guard': (dispatcher, 'if ($data === false)'),
               'helper factory': (dispatcher, "getHelper('MatchesSliderHelper')"),
-              'script web asset': (dispatcher, 'registerAndUseScript('),
-              'style web asset': (dispatcher, 'registerAndUseStyle('),
+              'script web asset': (dispatcher, 'registerScript('),
+              'style web asset': (dispatcher, 'registerStyle('),
+              'repeated instance registration guard': (dispatcher, 'assetExists('),
+              'repeated instance script activation': (dispatcher, 'useScript('),
+              'repeated instance style activation': (dispatcher, 'useStyle('),
               'native helper application': (helper, 'CMSApplicationInterface $app'),
               'factory import': (helper, 'use Joomla\\CMS\\Factory;'),
               'public database container': (helper, 'Factory::getContainer()->get(DatabaseInterface::class)'),

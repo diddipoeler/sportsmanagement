@@ -166,3 +166,9 @@ Federation names from the database are now translated and escaped before being p
 ## Ranking multi-instance CSS registration and updated CI contracts (14 November 2026)
 
 The Ranking dispatcher now activates the same WebAssetManager stylesheet across multiple module instances without registering the asset twice. Two older Ranking CI workflows still expected pre-migration local Joomla application/container variables and a removed SiteApplication type check; their contracts now verify the current typed service resolver, site-client check and repeatable CSS regression. No ranking calculation or query behavior was changed in those CI-only corrections.
+
+## Reusable Joomla WebAssets in Matches and Matches Slider modules (14 November 2026)
+
+- The native Matches dispatcher now registers the module-wide native CSS only once per shared HTML document. Optional template CSS is still activated only when the validated selected template has a packaged file and is registered under a distinct name for each template. Repeated renders do not redeclare either asset.
+- The native Matches Slider dispatcher now registers its slider CSS and deferred JavaScript once per document and activates both on every render, preserving the original `version=auto` and `defer` attributes. Both dispatchers skip non-HTML documents as before.
+- An isolated PHP regression uses one Joomla-like WebAssetManager for both modules and verifies two repeat renders, separate layout CSS files, missing optional CSS and duplicate-asset rejection. It is wired into both module-specific workflows and the all-PHP-metadata audit; updated slider CI assertions check native register/use semantics rather than the removed `registerAndUse` calls. New helper methods have descriptive PHPDoc and file headers retain all four required metadata tags.

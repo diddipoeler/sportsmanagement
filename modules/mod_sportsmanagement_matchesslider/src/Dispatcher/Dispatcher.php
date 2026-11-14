@@ -26,7 +26,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Prepare the matches slider data and associated frontend assets.
      *
-     * Retrieves match data from the helper, normalises missing results and registers the slider stylesheet and deferred JavaScript for HTML documents.
+     * Retrieves match data from the helper, normalises missing results and
+     * enables registered slider CSS and deferred JavaScript on HTML documents.
+     * Reuses the same registry entries for repeated module instances.
      * The method rejects administrator execution and preserves Joomla's
      * original layout context when rendering is skipped.
      *
@@ -58,21 +60,48 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $wam = $document->getWebAssetManager();
-            $wam->registerAndUseScript(
-                'mod_sportsmanagement_matchesslider',
+            $this->useSliderAssets($document);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Enable Matches Slider CSS and deferred JavaScript without duplicates.
+     *
+     * When several Matches Slider modules share a page, their HTML documents
+     * use one WebAssetManager. Register both fixed assets only if not already
+     * present and activate each on every render; preserve Joomla's automatic
+     * cache version and deferred script attributes.
+     *
+     * @param HtmlDocument $document Current Joomla frontend HTML document.
+     * @return void
+     */
+    private function useSliderAssets(HtmlDocument $document): void
+    {
+        $assets = $document->getWebAssetManager();
+        $name = 'mod_sportsmanagement_matchesslider';
+
+        if (!$assets->assetExists('script', $name)) {
+            $assets->registerScript(
+                $name,
                 'modules/mod_sportsmanagement_matchesslider/assets/js/matchesslider.js',
                 ['version' => 'auto'],
                 ['defer' => true]
             );
-            $wam->registerAndUseStyle(
-                'mod_sportsmanagement_matchesslider',
+        }
+
+        $assets->useScript($name);
+
+        if (!$assets->assetExists('style', $name)) {
+            $assets->registerStyle(
+                $name,
                 'modules/mod_sportsmanagement_matchesslider/assets/css/mod_sportsmanagement_matchesslider.css',
                 ['version' => 'auto']
             );
         }
 
-        return $data;
+        $assets->useStyle($name);
     }
 
     /**

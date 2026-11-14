@@ -54,6 +54,9 @@ jobs:
             modules/mod_sportsmanagement_matches/connectors/native/FormatTrait.php \
             modules/mod_sportsmanagement_matches/connectors/native/LinkTrait.php
 
+      - name: Test repeated Matches and Matches Slider assets
+        run: php .github/tests/joomla56_match_modules_asset_reuse.php
+
       - name: Test favorite matches filtering and database-independent route slugs
         run: |
           php -l .github/tests/joomla56_matches_favorites_slugs.php

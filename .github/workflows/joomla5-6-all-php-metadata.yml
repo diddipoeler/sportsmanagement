@@ -101,6 +101,16 @@ jobs:
           php .github/scripts/check-php-function-docs.php admin/src/View/Matches/HtmlView.php
           php .github/tests/joomla56_admin_matches_assets_errors.php
 
+      - name: Verify repeatable Matches and Matches Slider module web assets
+        run: |
+          php -l modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_match_modules_asset_reuse.php
+          php .github/scripts/check-php-function-docs.php \
+            modules/mod_sportsmanagement_matches/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          php .github/tests/joomla56_match_modules_asset_reuse.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
