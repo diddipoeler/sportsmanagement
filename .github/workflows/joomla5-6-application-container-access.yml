@@ -30,7 +30,10 @@ jobs:
           # CMSApplication::getContainer() is protected in Joomla. Runtime code must
           # validate the application separately and obtain Joomla services from the
           # public Factory DI container.
-          protected_container_hits="$(grep -R -n -E --include='*.php' -- '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->getContainer\(|->getApplication\(\)->getContainer\(|->siteApplication\(\)->getContainer\(|->administratorApplication\(\)->getContainer\(' "${native_roots[@]}" || true)"
+          # Match both instance and static application resolver methods. The
+          # old check missed self::backendApplication()->getContainer(), which
+          # crashed the administrator Matches view via ProjectModel::getProject().
+          protected_container_hits="$(grep -R -n -E --include='*.php' -- '\$[A-Za-z_][A-Za-z0-9_]*app[A-Za-z0-9_]*->getContainer\(|->getApplication\(\)->getContainer\(|->(siteApplication|administratorApplication|backendApplication)\(\)->getContainer\(|::(siteApplication|administratorApplication|backendApplication)\(\)->getContainer\(' "${native_roots[@]}" || true)"
           if [[ -n "$protected_container_hits" ]]; then
             printf '%s\n' "$protected_container_hits" >&2
             echo 'Protected CMSApplication::getContainer() access detected in native runtime.' >&2
@@ -49,6 +52,8 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementModel.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' site/src/Model/SportsManagementListModel.php
           grep -Fq 'SportsManagementAdministratorApplicationResolver::resolve()' admin/src/Field/UserlistField.php
+          grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Model/ProjectModel.php
+          ! grep -Fq -- 'backendApplication()->getContainer()' admin/src/Model/ProjectModel.php
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' admin/src/Field/UserlistField.php
 
           echo 'Public Joomla DI container access contracts OK.'

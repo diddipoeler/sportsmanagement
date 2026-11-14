@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagemen
 use Diddipoeler\Component\SportsManagement\Administrator\Table\ProjectTable;
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
@@ -899,12 +900,21 @@ final class ProjectModel extends SportsManagementAdminModel
     }
 
     /**
-     * Resolve and validate the primary Joomla database service.
-     * @return DatabaseInterface
+     * Resolve Joomla's default database service via the public DI container.
+     *
+     * AdministratorApplication inherits CMSApplication::getContainer(), which
+     * is protected in Joomla 5 and 6. Static project lookups used by the
+     * Matches editor must obtain the database from Factory::getContainer()
+     * instead of calling getContainer() on an application instance. Rejects
+     * unexpected services before the configured SportsManagement database
+     * selector is evaluated.
+     *
+     * @return DatabaseInterface Public Joomla database service.
+     * @throws \RuntimeException When Joomla returns an invalid database service.
      */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        $database = self::backendApplication()->getContainer()->get(DatabaseInterface::class);
+        $database = Factory::getContainer()->get(DatabaseInterface::class);
 
         if (!$database instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement project database service is unavailable.', 500);

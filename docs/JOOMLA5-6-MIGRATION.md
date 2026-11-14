@@ -264,3 +264,9 @@ Actual installation/browser compatibility with Joomla 5.4 and 6, migration of re
 
 - The isolated League view test now uses the untyped return signature of the Joomla-compatible base view stub, avoiding a PHP method-declaration mismatch unrelated to the production code. The older League workflow now checks WebAssetManager `assetExists`, `registerScript` and `useScript` instead of the removed `registerAndUseScript` call.
 - A historical Ranking workflow had an incorrectly escaped PHP namespace grep that could never match the actual single-backslash `use` statement. It now verifies the real namespace spelling.
+
+## Backend Matches: ProjectModel protected container fix (14 November 2026)
+
+- The Matches administrator view uses the project model to read the selected project's metadata and `backend_matches` template settings. In `admin/src/Model/ProjectModel.php`, the static database resolver previously called `self::backendApplication()->getContainer()` (line 907), which invokes Joomla's protected `CMSApplication::getContainer()` and causes a fatal error. The model now obtains `DatabaseInterface` from the public Joomla `Factory::getContainer()`, validates its type and preserves the SportsManagement database-selector behavior.
+- The application-container CI scan now also rejects calls via `self::backendApplication()` and similar static resolver patterns. A standalone PHP test exercises the public database lookup, a Matches-style `getProject()` call, the league/season selector and invalid container services; it is integrated into the all-PHP-metadata workflow with PHP lint and function PHPDoc validation.
+- No database migrations are required for this correction. Validation on an installed Joomla 5 or Joomla 6 administrator remains necessary.

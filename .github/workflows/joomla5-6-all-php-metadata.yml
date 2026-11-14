@@ -87,6 +87,13 @@ jobs:
           php .github/scripts/check-php-function-docs.php admin/src/View/League/HtmlView.php
           php .github/tests/joomla56_admin_league_view_runtime.php
 
+      - name: Verify administrator Matches project database container regression
+        run: |
+          php -l admin/src/Model/ProjectModel.php
+          php -l .github/tests/joomla56_admin_project_public_container.php
+          php .github/scripts/check-php-function-docs.php admin/src/Model/ProjectModel.php
+          php .github/tests/joomla56_admin_project_public_container.php
+
       - name: Lint changed Joomla 5/6 PHP files
         run: |
           php -l site/src/Controller/EditmatchController.php
