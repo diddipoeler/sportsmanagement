@@ -31,8 +31,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * dependent map assets and logs helper errors while keeping the module
      * renderable. Reuses init/worldmap scripts when multiple maps share one
      * HTML document, maintaining their explicit core/init dependencies.
-     * Ensures stable empty template values on helper failures
-     * and avoids exposing database connection details in error logs.
+     * Ensures stable empty template values on helper failures without
+     * exposing database connection details in logs or adding a warning to
+     * every public page during an optional map integration outage.
      *
      * @return array|false Layout data or false if rendering is skipped.
      * @throws \RuntimeException If the site client or database is unavailable.
@@ -59,6 +60,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
+        // Always initialise the layout contract, including when optional
+        // database or mapping services are temporarily unavailable.
+        $data['projects'] = [];
+
         try {
             $db = $this->joomlaDatabase();
             $seasonIds = ComponentHelper::getParams('com_sportsmanagement')->get('current_season', []);
@@ -82,7 +87,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         } catch (\Throwable $exception) {
             $data['projects'] = [];
             Log::add(__METHOD__ . ': project map unavailable (' . get_class($exception) . ').', Log::ERROR, 'jsmerror');
-            $app->enqueueMessage('SportsManagement Project Map data is currently unavailable.', 'warning');
+
+            // The map is optional site content. Keep third-party outages out
+            // of the public Joomla message queue, as for Google Calendar.
         }
 
         return $data;
