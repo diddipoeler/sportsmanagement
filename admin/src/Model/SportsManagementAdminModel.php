@@ -57,25 +57,70 @@ abstract class SportsManagementAdminModel extends AdminModel
 
     /**
      * Bind the administrator form model to its selected component database.
-     * Falls back to Joomla's default connection when external resolution
-     * fails during model construction.
+     *
+     * Uses exactly the same two supported database modes as the administrator
+     * form controller. Invalid submitted or stored choices fail closed before
+     * opening an external connection. A missing application during Joomla's
+     * early model construction and a failed connection resolution continue
+     * to fall back to the injected Joomla database.
+     *
      * @param DatabaseInterface $db Joomla's default database connection.
      * @return void
+     * @throws \InvalidArgumentException For malformed database preferences.
      */
     public function setDatabase(DatabaseInterface $db): void
     {
         try {
             $app = $this->administratorApplication();
             $input = $app->getInput();
-            $selector = $input->getInt(
-                'cfg_which_database',
-                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
+            $requested = $input->get('cfg_which_database', null, 'raw');
+            $value = $requested ?? $app->getUserState(
+                'com_sportsmanagement.cfg_which_database',
+                0
             );
+        } catch (\Throwable) {
+            // Joomla may create the model before the administrator application
+            // is available. Keep the injected database in that case.
+            parent::setDatabase($db);
+            return;
+        }
+
+        $selector = self::databaseSelector($value);
+
+        if ($selector === null) {
+            throw new \InvalidArgumentException('Invalid SportsManagement model database selector.', 400);
+        }
+
+        try {
             parent::setDatabase((new SportsManagementDatabaseResolver())->resolve($selector, $db));
         } catch (\Throwable) {
-            // Model construction must remain usable even if external DB resolution fails.
+            // Recoverable external connection problems still use Joomla's DB.
             parent::setDatabase($db);
         }
+    }
+
+    /**
+     * Validate the database preference without Joomla's lossy getInt().
+     *
+     * Accept zero and one, as well as zero-padded legacy radio-field values.
+     * Reject structured data, booleans, unsupported modes, whitespace and
+     * overflowing input before any component database resolver is called.
+     *
+     * @param mixed $value Raw request or administrator user-state selection.
+     * @return int|null Supported 0/1 database mode, or null for invalid input.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 
     /**
