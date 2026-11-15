@@ -1,0 +1,73 @@
+name: Joomla 5/6 club image and AJAX module guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Controller/EditclubController.php'
+      - 'admin/src/Controller/ImagehandlerController.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_editclub_missing_identity.php'
+      - '.github/tests/joomla56_image_upload_post_values.php'
+      - '.github/tests/joomla56_ajax_navigation_layout_ownership.php'
+      - '.github/workflows/joomla56-club-image-ajax-guards.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Controller/EditclubController.php'
+      - 'admin/src/Controller/ImagehandlerController.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_editclub_missing_identity.php'
+      - '.github/tests/joomla56_image_upload_post_values.php'
+      - '.github/tests/joomla56_ajax_navigation_layout_ownership.php'
+      - '.github/workflows/joomla56-club-image-ajax-guards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guards:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Check PHP syntax
+        run: |
+          php -l site/src/Controller/EditclubController.php
+          php -l admin/src/Controller/ImagehandlerController.php
+          php -l modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_editclub_missing_identity.php
+          php -l .github/tests/joomla56_image_upload_post_values.php
+          php -l .github/tests/joomla56_ajax_navigation_layout_ownership.php
+      - name: Validate required PHP metadata
+        run: |
+          php .github/tests/phpdoc_metadata.php \
+            site/src/Controller/EditclubController.php \
+            admin/src/Controller/ImagehandlerController.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_editclub_missing_identity.php \
+            .github/tests/joomla56_image_upload_post_values.php \
+            .github/tests/joomla56_ajax_navigation_layout_ownership.php
+      - name: Validate descriptive method PHPDoc
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Controller/EditclubController.php \
+            admin/src/Controller/ImagehandlerController.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_editclub_missing_identity.php \
+            .github/tests/joomla56_image_upload_post_values.php \
+            .github/tests/joomla56_ajax_navigation_layout_ownership.php
+      - name: Verify frontend club editor identity guards
+        run: php .github/tests/joomla56_editclub_missing_identity.php
+      - name: Verify administrator image POST parameter types
+        run: php .github/tests/joomla56_image_upload_post_values.php
+      - name: Verify AJAX navigation framework layout ownership
+        run: php .github/tests/joomla56_ajax_navigation_layout_ownership.php
