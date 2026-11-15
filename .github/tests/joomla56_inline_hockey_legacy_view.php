@@ -88,8 +88,12 @@ namespace Joomla\CMS\MVC\Controller {
          * @param array $urlparams Cacheable Joomla URL parameters.
          * @return array{cachable:bool,params:array} Received values.
          */
-        public function display($cachable = false, array $urlparams = []): array
+        public function display($cachable = false, $urlparams = [])
         {
+            if (!is_array($urlparams)) {
+                throw new \InvalidArgumentException('Joomla MVC requires an array of URL parameters.');
+            }
+
             return ['cachable' => (bool) $cachable, 'params' => $urlparams];
         }
     }
