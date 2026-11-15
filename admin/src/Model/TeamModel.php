@@ -442,6 +442,89 @@ final class TeamModel extends SportsManagementAdminModel
     }
 
     /**
+     * Reject malformed season lists before Joomla saves the team record.
+     *
+     * A corrupted multiselect value must not cause an unrelated season link
+     * to be created or accidentally remove all existing assignments during
+     * the post-save cleanup. A deliberately empty selection still represents
+     * a request to clear the team's season assignments.
+     *
+     * @param mixed $data Submitted Joomla team form values.
+     * @return bool Whether the parent Joomla model saved the team.
+     */
+    public function save($data)
+    {
+        if (is_array($data) && isset($data['season_ids'])) {
+            $seasonIds = self::normaliseSeasonIds($data['season_ids']);
+
+            if ($seasonIds === null) {
+                $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+
+                return false;
+            }
+
+            $data['season_ids'] = $seasonIds;
+        }
+
+        return parent::save($data);
+    }
+
+    /**
+     * Validate selected team-season IDs without coercing partial numbers.
+     *
+     * Accepts positive decimal IDs, including zero-padded legacy checkbox
+     * values, and de-duplicates the selection. Empty or zero placeholders
+     * are ignored. Rejects arrays nested inside a choice, booleans, negative
+     * values, overflow and oversized lists before any team data is written.
+     *
+     * @param mixed $values Raw jform[season_ids] checkbox selection.
+     * @return array<int,int>|null Valid unique season IDs, or null if malformed.
+     */
+    private static function normaliseSeasonIds(mixed $values): ?array
+    {
+        if (!is_array($values) || count($values) > 500) {
+            return null;
+        }
+
+        $ids = [];
+
+        foreach ($values as $raw) {
+            if ($raw === null || $raw === '' || $raw === 0 || $raw === '0') {
+                continue;
+            }
+
+            if (is_int($raw)) {
+                if ($raw <= 0) {
+                    return null;
+                }
+
+                $id = $raw;
+            } elseif (is_string($raw) && strlen($raw) <= 64
+                && preg_match('/^[0-9]+$/D', $raw) === 1) {
+                $digits = ltrim($raw, '0');
+
+                if ($digits === '') {
+                    continue;
+                }
+
+                $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1],
+                ]);
+
+                if ($id === false) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+
+            $ids[$id] = $id;
+        }
+
+        return array_values($ids);
+    }
+
+    /**
      * Synchronise seasons and training data after a team save.
      *
      * @param array $data data value.
@@ -478,11 +561,15 @@ final class TeamModel extends SportsManagementAdminModel
     }
 
     /**
-     * Synchronise the selected season associations for a team.
+     * Synchronise validated season assignments for a saved team.
      *
-     * @param array $data data value.
-     * @param int $teamId teamId value.
+     * Normalises the checkbox values before issuing SQL. Invalid selections
+     * never enter the insert/update loop or the relationship cleanup query.
+     *
+     * @param array $data Saved team data including season_ids.
+     * @param int $teamId Persisted positive team identifier.
      * @return void
+     * @throws \InvalidArgumentException When the season list is malformed.
      */
     private function syncSeasons(array $data, int $teamId): void
     {
@@ -490,7 +577,14 @@ final class TeamModel extends SportsManagementAdminModel
             return;
         }
 
-        $seasonIds = array_values(array_unique(array_filter(array_map('intval', $data['season_ids']))));
+        $seasonIds = self::normaliseSeasonIds($data['season_ids']);
+
+        if ($seasonIds === null) {
+            // This also protects direct callers of the post-save hook.
+            // Never delete season links because a request was malformed.
+            throw new \InvalidArgumentException('Invalid team season selection.', 400);
+        }
+
         $db = $this->getDatabase();
         $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $modifiedBy = (int) $this->administratorApplication()->getIdentity()->id;
