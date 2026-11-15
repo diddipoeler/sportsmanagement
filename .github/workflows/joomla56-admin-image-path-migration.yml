@@ -1,0 +1,41 @@
+name: Joomla 5/6 administrator image path migration
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_picture_path.php'
+      - 'admin/src/Helper/ImagePathMigrationHelper.php'
+      - '.github/tests/joomla56_admin_image_path_migration.php'
+      - '.github/workflows/joomla56-admin-image-path-migration.yml'
+  pull_request:
+    branches: [master, joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_picture_path.php'
+      - 'admin/src/Helper/ImagePathMigrationHelper.php'
+      - '.github/tests/joomla56_admin_image_path_migration.php'
+      - '.github/workflows/joomla56-admin-image-path-migration.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  image-path-migration:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint migration helper, screen and test
+        run: |
+          php -l admin/src/Helper/ImagePathMigrationHelper.php
+          php -l admin/assets/updates/jsm_update_picture_path.php
+          php -l .github/tests/joomla56_admin_image_path_migration.php
+      - name: Run isolated migration regressions
+        run: php .github/tests/joomla56_admin_image_path_migration.php
+      - name: Verify documentation and metadata
+        run: |
+          php .github/scripts/check-php-headers.php admin/src/Helper/ImagePathMigrationHelper.php admin/assets/updates/jsm_update_picture_path.php
+          php .github/scripts/check-php-function-docs.php admin/src/Helper/ImagePathMigrationHelper.php .github/tests/joomla56_admin_image_path_migration.php
