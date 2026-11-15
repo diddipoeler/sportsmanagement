@@ -15,6 +15,7 @@ use Joomla\CMS\Factory;
 
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\Database\DatabaseInterface;
@@ -26,7 +27,12 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Build calendar event data and frontend script options.
      *
-     * Queries the helper through Joomla's database service, preserves framework layout variables, and registers calendar CSS, JavaScript and instance-specific configuration. Assets are reused across repeated module instances on the same document.
+     * Queries the helper through Joomla's database service, preserving all
+     * framework-owned layout variables and per-instance client options.
+     * Failures in optional event loading are logged by exception class, not
+     * by message, to avoid leaking private API/database details to visitors.
+     * On failure the module renders an empty event list rather than breaking
+     * the site page. CSS and JavaScript assets are reused between instances.
      *
      * @return array|false Render variables, or false when skipped.
      * @throws \RuntimeException When the application is not the site client.
@@ -45,13 +51,25 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement GCalendar requires the Joomla site application.', 500);
         }
 
-        $db = $this->joomlaDatabase();
-        $payload = $this->getHelperFactory()
-            ->getHelper('GcalendarHelper')
-            ->getData($data['params'], $data['module'], $app, $db);
-        $payload = is_array($payload) ? $payload : [];
-        unset($payload['module'], $payload['params'], $payload['layout']);
-        $data = array_merge($data, $payload);
+        try {
+            $db = $this->joomlaDatabase();
+            $payload = $this->getHelperFactory()
+                ->getHelper('GcalendarHelper')
+                ->getData($data['params'], $data['module'], $app, $db);
+            $payload = is_array($payload) ? $payload : [];
+            unset($payload['module'], $payload['params'], $payload['layout']);
+            $data = array_merge($data, $payload);
+        } catch (\Throwable $exception) {
+            // Calendar integrations are optional page content. Keep an API or
+            // database outage from replacing the complete frontend response.
+            Log::add(
+                'SportsManagement GCalendar data load failed (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $data['events'] = [];
+            $data['calendarConfig'] = [];
+        }
 
         // The script-options key must be stable and tied to the module instance.
         $moduleId = max(0, (int) ($data['module']->id ?? 0));
