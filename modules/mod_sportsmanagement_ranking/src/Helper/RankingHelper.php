@@ -79,7 +79,7 @@ final class RankingHelper
             return [];
         }
 
-        $cfg = self::nonNegativeOption($params->get('cfg_which_database', 0));
+        $cfg = self::databaseSelector($params->get('cfg_which_database', 0));
         $divisionId = self::nonNegativeOption($params->get('division_id', 0));
 
         // Invalid selectors must not silently query the default database or
@@ -238,7 +238,7 @@ final class RankingHelper
             throw new \RuntimeException('Inline-hockey refresh is disabled for this module.', 403);
         }
 
-        if (self::nonNegativeOption($params->get('cfg_which_database', 0)) !== 0) {
+        if (self::databaseSelector($params->get('cfg_which_database', 0)) !== 0) {
             throw new \RuntimeException('Inline-hockey refresh is restricted to the Joomla database.', 409);
         }
 
@@ -319,7 +319,7 @@ final class RankingHelper
             return [];
         }
 
-        $selector = self::nonNegativeOption($params->get('cfg_which_database', 0));
+        $selector = self::databaseSelector($params->get('cfg_which_database', 0));
         if ($selector === null) {
             return [];
         }
@@ -362,7 +362,7 @@ final class RankingHelper
     private function teamUrl(Registry $params, object $project, object $team): string
     {
         $base = [
-            'cfg_which_database' => self::nonNegativeOption($params->get('cfg_which_database', 0)) ?? 0,
+            'cfg_which_database' => self::databaseSelector($params->get('cfg_which_database', 0)) ?? 0,
             's' => self::nonNegativeOption($params->get('s', 0)) ?? 0,
             'p' => (string) ($project->slug ?? $project->id),
         ];
@@ -598,6 +598,30 @@ final class RankingHelper
         $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
 
         return $number === false ? null : $number;
+    }
+
+    /**
+     * Validate ranking module database choices against Joomla 5/6 modes.
+     *
+     * Unlike other nonnegative ranking options, only zero and one select
+     * supported database connections. Preserve zero-padded legacy radio
+     * values but reject larger or malformed selectors before queries.
+     *
+     * @param mixed $value Raw ranking module database selection.
+     * @return int|null Supported database choice or null if invalid.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
     }
 
     /**
