@@ -137,7 +137,7 @@ if ($mode === 'S') {
         <p><?php if ($playerUrl !== '') : ?><a href="<?php echo $playerUrl; ?>"><?php endif; ?><img src="<?php echo $picture; ?>" alt="<?php echo $name; ?>" style="max-width:<?php echo $safeWidth($params->get('picture_width', 50)); ?>px;height:auto;"><?php if ($playerUrl !== '') : ?></a><?php endif; ?></p>
     <?php endif; ?>
     <p>
-        <?php if ($params->get('show_player_flag', 1) && $flag !== '') : ?><img src="<?php echo $flag; ?>" alt="<?php echo $e($row->country); ?>" style="max-width:24px;height:auto;"> <?php endif; ?>
+        <?php if ($params->get('show_player_flag', 1) && $flag !== '') : ?><img src="<?php echo $flag; ?>" alt="<?php echo $e($row->country ?? ''); ?>" style="max-width:24px;height:auto;"> <?php endif; ?>
         <?php if ($params->get('show_player_link', 1) && $playerUrl !== '') : ?><a href="<?php echo $playerUrl; ?>"><?php echo $name; ?></a><?php else : ?><?php echo $name; ?><?php endif; ?>
     </p>
     <?php if ($params->get('show_team_name', 1)) : ?>
