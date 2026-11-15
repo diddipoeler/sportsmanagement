@@ -34,15 +34,21 @@ final class EditteamController extends FormController
     }
 
     /**
-     * Indicate that the legacy frontend submit task can complete.
+     * Acknowledge the historical frontend team submission securely.
      *
-     * This compatibility task performs no database writes; team changes
-     * must go through save(), which checks token and edit permission.
+     * This legacy task does not persist a team itself, but it is still a
+     * form-submission entry point. Check Joomla's POST CSRF token and the
+     * current identity's component edit permission before responding; actual
+     * team updates continue to be handled by save().
      *
-     * @return bool Always true.
+     * @return bool True after the submission passes both security checks.
+     * @throws \RuntimeException If component edit permission is missing.
      */
-    public function submit()
+    public function submit(): bool
     {
+        $this->checkToken('post');
+        $this->assertEditorPermission();
+
         return true;
     }
 
@@ -163,8 +169,9 @@ final class EditteamController extends FormController
      * Enforce component edit permission for frontend team updates.
      *
      * The presence of a valid session token does not itself grant write
-     * access: the authenticated identity must also be authorised for
-     * core.edit on com_sportsmanagement.
+     * access: an existing Joomla identity must also be authorised for
+     * core.edit on com_sportsmanagement. Missing identities are denied
+     * without dereferencing null on PHP 8.
      *
      * @return void
      * @throws \RuntimeException If the identity is not allowed to edit.
@@ -172,7 +179,7 @@ final class EditteamController extends FormController
     private function assertEditorPermission(): void
     {
         $identity = $this->app->getIdentity();
-        $allowed = $identity->authorise('core.edit', 'com_sportsmanagement');
+        $allowed = $identity !== null && $identity->authorise('core.edit', 'com_sportsmanagement');
 
         if (!$allowed) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
