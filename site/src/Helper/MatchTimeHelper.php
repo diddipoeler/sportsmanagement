@@ -58,7 +58,9 @@ final class MatchTimeHelper
         }
 
         $rawMatchDate = $game->match_date ?? null;
-        $matchDate = is_string($rawMatchDate) ? trim($rawMatchDate) : '';
+        // Preserve the original SQL value: trimming first would allow
+        // trailing control bytes and whitespace past strict validation.
+        $matchDate = is_string($rawMatchDate) ? $rawMatchDate : '';
         $timestamp = self::sqlTimestamp($matchDate);
         if ($timestamp === false) {
             $matchTime = '--&nbsp;:&nbsp;--';
