@@ -992,6 +992,12 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
+	 * Initialise the data structure for a SportsManagement administrator title.
+	 *
+	 * Creates an object containing the supplied prefix and optional club,
+	 * team, fixture, project and season placeholders. Subsequent callers can
+	 * fill these fields before passing the object to formatTitle().
+	 *
 	 * returns titleInfo
 	 *
 	 * @param   prefix Text that must be placed at the start of the title.
@@ -1014,6 +1020,12 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
+	 * Assemble a readable title from the selected sporting entities.
+	 *
+	 * Combines optional person, venue, team, club and round names with the
+	 * project/division pair. The requested format controls whether league and
+	 * season labels are appended; missing fields are omitted from the title.
+	 *
 	 * returns formatName
 	 *
 	 * @param   titleInfo (info on prefix, teams (optional), project, division (optional), league and season)
@@ -1198,7 +1210,14 @@ var <?php echo $placeholder; ?> = new Array;
 
 
 	/**
-	 * Get the actions
+	 * Determine the current administrator user's component permissions.
+	 *
+	 * Chooses the component asset or the selected message-specific asset and
+	 * checks admin, manage, create, edit and delete capabilities. Returns a
+	 * CMSObject holding the authorisation result for each Joomla ACL action.
+	 *
+	 * @param int $messageId Optional message record for item-specific ACL.
+	 * @return CMSObject Named Joomla permission flags for the current identity.
 	 */
 	public static function getActions($messageId = 0)
 	{
@@ -2427,6 +2446,12 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
+	 * Format a person's display name using the configured legacy name order.
+	 *
+	 * Applies the historical first-name, nickname and family-name sequences,
+	 * including separators and the optional prefix. Empty name fragments are
+	 * skipped so administrator lists retain the requested formatting style.
+	 *
 	 * returns formatName
 	 *
 	 * @param   prefix
@@ -3564,7 +3589,13 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
-	 * JSMInfo
+	 * Render the SportsManagement version and contributor information panel.
+	 *
+	 * Compares the installed component version with the available update,
+	 * selects translated status text and outputs the administrator's logo,
+	 * version information and developer acknowledgements.
+	 *
+	 * @return void Outputs the administrative information markup.
 	 */
 	public static function jsminfo()
 	{
@@ -3879,6 +3910,13 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
+	 * Serialise SportsManagement export records as legacy XML fragments.
+	 *
+	 * Iterates record fields, leaves out internal keys and null values, and
+	 * passes text through stripInvalidXml() before surrounding nonempty
+	 * records with their historical XML element and CDATA structure.
+	 * An empty input produces false instead of an XML fragment.
+	 *
 	 * Add data to the xml
 	 *
 	 * @param   array  $data  data what we want to add in the xml
@@ -3917,6 +3955,12 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
+	 * Replace unsupported control bytes before exporting legacy XML text.
+	 *
+	 * Scans the supplied value byte by byte, preserves historically accepted
+	 * XML whitespace and printable bytes, and substitutes spaces for invalid
+	 * controls so generated export records remain readable.
+	 *
 	 * Removes invalid XML
 	 *
 	 * @access public
@@ -4189,6 +4233,13 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
+	 * Fetch a location's geographic coordinates and administrative address.
+	 *
+	 * Builds an OpenStreetMap Nominatim lookup for the supplied address and
+	 * maps the first result's latitude, longitude, state, city, district and
+	 * county into the legacy SportsManagement location field names.
+	 * Returns an empty array when the service provides no result.
+	 *
 	 * @function     getOSMGeoCoords
 	 *
 	 * @param        $address  : string

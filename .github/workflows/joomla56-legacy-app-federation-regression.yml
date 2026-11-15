@@ -36,7 +36,11 @@ jobs:
           php -l modules/mod_sportsmanagement_act_season/helper.php
           php -l .github/tests/joomla56-legacy-app-federation-regression.php
           php .github/scripts/check-php-headers.php site/models/sportsmanagement.php admin/helpers/sportsmanagement.php modules/mod_sportsmanagement_act_season/helper.php
-      - name: Confirm full function descriptions in migrated frontend and module
-        run: php .github/scripts/check-php-function-docs.php site/models/sportsmanagement.php modules/mod_sportsmanagement_act_season/helper.php
+      - name: Confirm full function descriptions in site, admin and module
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            site/models/sportsmanagement.php \
+            admin/helpers/sportsmanagement.php \
+            modules/mod_sportsmanagement_act_season/helper.php
       - name: Verify legacy resolvers and bounded federation IDs
         run: php .github/tests/joomla56-legacy-app-federation-regression.php
