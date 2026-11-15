@@ -124,7 +124,7 @@ if (!class_exists('ModJSMGoogleCalendarHelper', false)) {
         private static function normaliseEventLimit(mixed $value): int
         {
             if (is_int($value)) {
-                return min(2500, max(1, $value > 0 ? $value : 5));
+                return min(2500, max(1, $value));
             }
 
             if (!is_string($value) || $value === '' || strlen($value) > 128
