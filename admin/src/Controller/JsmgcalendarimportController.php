@@ -48,7 +48,15 @@ final class JsmgcalendarimportController extends BaseController
         }
 
         $model = $this->getModel('Jsmgcalendarimport', 'Administrator', ['ignore_request' => false]);
-        $result = $model !== false && $model->import();
+
+        // Joomla's MVC factory may return false or an unexpected model when
+        // the legacy Google integration has not been installed correctly.
+        // Never invoke an import operation on an incompatible model instance.
+        if (!is_object($model) || !is_callable([$model, 'import'])) {
+            throw new \RuntimeException('SportsManagement Google calendar import model is unavailable.', 500);
+        }
+
+        $result = (bool) $model->import();
         $message = Text::_($result
             ? 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_IMPORT_YES'
             : 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_IMPORT_NO'
