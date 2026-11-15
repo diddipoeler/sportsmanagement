@@ -1,0 +1,50 @@
+name: Joomla 5/6 administrator team season checkbox clear all
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Field/SeasoncheckboxField.php'
+      - 'admin/src/Model/TeamModel.php'
+      - '.github/tests/joomla56_admin_seasoncheckbox_clear_all.php'
+      - '.github/tests/joomla56_admin_team_season_write_boundaries.php'
+      - '.github/workflows/joomla56-admin-seasoncheckbox-clear-all.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Field/SeasoncheckboxField.php'
+      - 'admin/src/Model/TeamModel.php'
+      - '.github/tests/joomla56_admin_seasoncheckbox_clear_all.php'
+      - '.github/tests/joomla56_admin_team_season_write_boundaries.php'
+      - '.github/workflows/joomla56-admin-seasoncheckbox-clear-all.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checkbox-clear-all:
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax and metadata
+        run: |
+          for file in admin/src/Field/SeasoncheckboxField.php admin/src/Model/TeamModel.php .github/tests/joomla56_admin_seasoncheckbox_clear_all.php .github/tests/joomla56_admin_team_season_write_boundaries.php; do
+            php -l "$file"
+            for tag in @version @author @copyright @license; do
+              grep -Fq "$tag" "$file"
+            done
+          done
+          php .github/scripts/check-php-function-docs.php admin/src/Field/SeasoncheckboxField.php admin/src/Model/TeamModel.php .github/tests/joomla56_admin_seasoncheckbox_clear_all.php .github/tests/joomla56_admin_team_season_write_boundaries.php
+      - name: Team season checkbox display and persistence regressions
+        run: |
+          php .github/tests/joomla56_admin_seasoncheckbox_clear_all.php
+          php .github/tests/joomla56_admin_team_season_write_boundaries.php
