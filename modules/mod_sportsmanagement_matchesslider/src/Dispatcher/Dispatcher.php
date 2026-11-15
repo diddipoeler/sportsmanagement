@@ -17,6 +17,7 @@ use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -30,7 +31,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * enables registered slider CSS and deferred JavaScript on HTML documents.
      * Reuses the same registry entries for repeated module instances.
      * The method rejects administrator execution and preserves Joomla's
-     * original layout context when rendering is skipped.
+     * original layout context when rendering is skipped. Optional database
+     * and helper failures are logged without private exception messages,
+     * while an empty slider remains renderable on the public page.
      *
      * @return array|false Template variables, or false when skipped.
      * @throws \RuntimeException When the site context or database is unavailable.
@@ -51,11 +54,25 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
-        $database = $this->joomlaDatabase();
-        $matches = $this->getHelperFactory()
-            ->getHelper('MatchesSliderHelper')
-            ->getData($data['params'], $data['module'], $app, $database);
-        $data['slidermatches'] = is_array($matches) ? $matches : [];
+        // The slider is optional page content. Initialise its layout value
+        // even if the database or helper fails, then continue to the assets.
+        $data['slidermatches'] = [];
+
+        try {
+            $database = $this->joomlaDatabase();
+            $matches = $this->getHelperFactory()
+                ->getHelper('MatchesSliderHelper')
+                ->getData($data['params'], $data['module'], $app, $database);
+            $data['slidermatches'] = is_array($matches) ? $matches : [];
+        } catch (\Throwable $exception) {
+            // Do not expose connection strings or SQL queries on the public
+            // page. The server log only receives the exception class.
+            Log::add(
+                'SportsManagement Matches Slider data unavailable (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+        }
 
         $document = $app->getDocument();
 
