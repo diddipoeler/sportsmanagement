@@ -60,7 +60,9 @@ assertDatabaseUpdateSafety(
 // The schema must exist before SQL parsing and the unused legacy splitSql
 // method must never be called on Joomla 5/6 database drivers.
 assertDatabaseUpdateSafety(
-    str_contains($source, "if (!is_string(\$imports) || trim(\$imports) === '')")
+    str_contains($source, "if (!is_string(\$source) || trim(\$source) === '')")
+        && str_contains($source, 'InstallSchemaStatementParser::split($source)')
+        && str_contains($source, 'SchemaAdditiveMigrationHelper::migrate($database, $statements)')
         && !str_contains($source, '$db->splitSql('),
     'Database update no longer validates its bundled schema or calls a removed API.'
 );

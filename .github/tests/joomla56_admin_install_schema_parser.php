@@ -100,7 +100,8 @@ expectSchemaParserRejection(str_repeat($one . ' (id INT);', 251), 'an excessive 
 $updater = file_get_contents($root . '/admin/assets/updates/jsm_update_db_tables.php');
 
 if (!is_string($updater)
-    || !str_contains($updater, 'InstallSchemaStatementParser::split($imports)')
+    || !str_contains($updater, 'InstallSchemaStatementParser::split($source)')
+    || !str_contains($updater, 'SchemaAdditiveMigrationHelper::migrate($database, $statements)')
     || !str_contains($updater, '(new SportsManagementDatabaseResolver())->resolve(null, $defaultDatabase)')
     || !str_contains($updater, "authorise('core.admin', 'com_sportsmanagement')")
     || !str_contains($updater, "->checkToken('post')")
