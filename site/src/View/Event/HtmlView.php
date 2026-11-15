@@ -23,8 +23,10 @@ final class HtmlView extends SportsManagementHtmlView
      * Render one accessible Google Calendar event with Joomla's native view.
      *
      * Requires EventModel from the site MVC factory instead of assuming
-     * that any legacy model exposes getGCalendar(). A nonempty event title
-     * becomes the browser document title; absent events remain renderable
+     * that any legacy model exposes getGCalendar(). A bounded, printable
+     * event title becomes the browser document title; malformed imported
+     * titles cannot trigger PHP 8 array-to-string conversion warnings.
+     * Absent events remain renderable
      * so Joomla can show the configured empty-state layout.
      *
      * @param string|null $tpl Optional view template suffix.
@@ -41,8 +43,12 @@ final class HtmlView extends SportsManagementHtmlView
 
         $this->event = $model->getGCalendar();
 
-        if ($this->event && trim((string) ($this->event['title'] ?? '')) !== '') {
-            $this->getDocument()->setTitle((string) $this->event['title']);
+        $title = $this->event['title'] ?? null;
+
+        if (is_string($title) && trim($title) !== ''
+            && strlen($title) <= 512
+            && preg_match('/[\x00-\x1F\x7F]/', $title) !== 1) {
+            $this->getDocument()->setTitle(trim($title));
         }
 
         parent::display($tpl);
