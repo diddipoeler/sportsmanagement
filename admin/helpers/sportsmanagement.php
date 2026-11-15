@@ -15,6 +15,7 @@
 \defined('_JEXEC') or die;
 use Joomla\Data\DataObject;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Version;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -80,15 +81,49 @@ use Joomla\Database\ParameterType;
  */
 abstract class sportsmanagementHelper
 {
+    /**
+     * Resolve the authenticated Joomla administrator application.
+     *
+     * Delegates to the shared Joomla 5/6 administrator resolver instead of
+     * the removed Factory::getApplication() API. Also supports older direct
+     * helper includes by loading the resolver file when not autoloaded.
+     * The resolver rejects frontend clients before administrative work begins.
+     *
+     * @return CMSApplicationInterface Valid Joomla administrator application.
+     * @throws \RuntimeException If the resolver or administrator service is missing.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
-        return Factory::getApplication();
+        if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+            $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+            if (!is_file($file)) {
+                throw new \RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+            }
+
+            require_once $file;
+        }
+
+        return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Obtain the current Joomla database from its public service container.
+     *
+     * The legacy administrator utility exposes this typed connection to its
+     * existing database helpers without using removed static factory methods.
+     * Rejects invalid container registrations to avoid downstream type errors.
+     *
+     * @return DatabaseInterface Valid Joomla database connection.
+     * @throws \RuntimeException When the database service cannot be resolved.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement administrator database service is unavailable.', 500);
+        }
 
         return $database;
     }
@@ -276,7 +311,7 @@ public static function getMatchReferees($match_id = 0, $cfg_which_database = 0)
 	$extension = 'com_sportsmanagement';
 	// get the transaction details for use in the log for easy reference
         //$tran = MycomponentHelper::getTransaction($tran_id);
-        $con_type = self::administratorApplication()->input->getCmd('view', 'cpanel');
+        $con_type = self::administratorApplication()->getInput()->getCmd('view', 'cpanel');
         if ($id === 0) { $type = Text::_('JTOOLBAR_NEW'); } else { $type = Text::_('JLIB_INSTALLER_UPDATE'); }
 
 		$message = array();
@@ -408,7 +443,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function getBootstrapModalImage($target = '', $picture = '', $text = '', $picturewidth = '20', $url = '', $width = '100', $height = '200', $extrabutton = '',$modalWidth = '80', $body = '')
 	{
 		$app = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		
 		
 		
@@ -943,7 +978,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function isJoomlaVersion($version = '2.5')
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 
 		$j = new Version;
@@ -1625,7 +1660,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function addTemplatePaths($templatesToLoad, &$view)
 	{
-		$jinput     = self::administratorApplication()->input;
+		$jinput     = self::administratorApplication()->getInput();
 		$extensions = self::getExtensions($jinput->getInt('p'));
 
 		foreach ($templatesToLoad as $template)
@@ -1657,7 +1692,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function getExtensions()
 	{
 		$app              = self::administratorApplication();
-		$jinput           = $app->input;
+		$jinput           = $app->getInput();
 		$option           = 'com_sportsmanagement';
 		$view             = $jinput->get('view');
 		$arrExtensions    = array();
@@ -1865,7 +1900,7 @@ var <?php echo $placeholder; ?> = new Array;
 			return false;
 		}
 
-		$databaseSelector = self::administratorApplication()->input->getInt('cfg_which_database', 0);
+		$databaseSelector = self::administratorApplication()->getInput()->getInt('cfg_which_database', 0);
 		$db = self::getDBConnection(true, $databaseSelector);
 		$query = $db->createQuery()
 			->select(array(
@@ -1899,7 +1934,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function showTeamIcons(&$team, &$config, $cfg_which_database = 0, $s = 0)
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
         $default_width = 20;
 
@@ -2331,7 +2366,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function showColorsLegend($colors, $divisions = null)
 	{
-		$jinput  = self::administratorApplication()->input;
+		$jinput  = self::administratorApplication()->getInput();
 		$favshow = $jinput->getString('func', '');
 
 		if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team))
@@ -2656,7 +2691,7 @@ var <?php echo $placeholder; ?> = new Array;
 	 */
 	public static function printbutton($print_link, &$config)
 	{
-		$jinput = self::administratorApplication()->input;
+		$jinput = self::administratorApplication()->getInput();
 		$app    = self::administratorApplication();
 
 		if ($config['show_print_button'] == 1)
@@ -2723,7 +2758,7 @@ var <?php echo $placeholder; ?> = new Array;
 	static function ToolbarButton($layout = null, $icon_image = 'upload', $alt_text = 'My Label', $view = '', $type = 0, $issueview = null, $issuelayout = null)
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 
 		$zusatz     = '';
@@ -2773,7 +2808,7 @@ var <?php echo $placeholder; ?> = new Array;
 	static function ToolbarButtonOnlineHelp()
 	{
 		$app      = self::administratorApplication();
-		$jinput   = $app->input;
+		$jinput   = $app->getInput();
 		$option   = $jinput->getCmd('option');
 		$document = Factory::getDocument();
 		$view     = $jinput->get('view');
@@ -2933,7 +2968,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function getExtraSelectOptions($view = '', $field = '', $template = false, $fieldtyp = 0)
 	{
 		$app            = self::administratorApplication();
-		$jinput         = $app->input;
+		$jinput         = $app->getInput();
 		$option         = $jinput->getCmd('option');
 		$select_columns = array();
 		$select_values  = array();
@@ -3008,7 +3043,7 @@ var <?php echo $placeholder; ?> = new Array;
 	static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0, $template_name = 'clubinfo')
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 		$db     = self::getDBConnection();
 		$query  = $db->getQuery(true);
@@ -3051,7 +3086,7 @@ var <?php echo $placeholder; ?> = new Array;
 	static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0,$template_name = 'clubinfo')
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$db     = self::getDBConnection();
 		$query  = $db->getQuery(true);
         $result = array();
@@ -3123,7 +3158,7 @@ var <?php echo $placeholder; ?> = new Array;
 			$app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', __FILE__, __LINE__), 'error');
 				}
 
-                if ( $post['extra_id'][$p] == 34 && $app->input->get('task') == 'save2copy' && $post['extraf'][$p]  )
+                if ( $post['extra_id'][$p] == 34 && $app->getInput()->get('task') == 'save2copy' && $post['extraf'][$p]  )
               {
               //$app->enqueueMessage('extra field '.$post['extraf'][$p], 'error');
                 $teile = explode("/", $post['extraf'][$p] );
@@ -3136,7 +3171,7 @@ var <?php echo $placeholder; ?> = new Array;
                 $post['extraf'][$p] = $neuextrafield;
 
               }
-              elseif ( $post['extra_id'][$p] == 69 && $app->input->get('task') == 'save2copy' && $post['extraf'][$p]  )
+              elseif ( $post['extra_id'][$p] == 69 && $app->getInput()->get('task') == 'save2copy' && $post['extraf'][$p]  )
               {
               $teile = explode("/", $post['extraf'][$p] );
               $teile[3] = $teile[3] + 1;
@@ -3344,7 +3379,7 @@ var <?php echo $placeholder; ?> = new Array;
 	static function getPictureClub($id)
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 		$db     = self::getDBConnection();
 
@@ -3378,7 +3413,7 @@ var <?php echo $placeholder; ?> = new Array;
 	static function getPicturePlayground($id)
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 		$db     = self::getDBConnection();
 
@@ -3412,7 +3447,7 @@ var <?php echo $placeholder; ?> = new Array;
 	public static function getArticleList($project_category_id)
 	{
 		$app    = self::administratorApplication();
-		$jinput = $app->input;
+		$jinput = $app->getInput();
 		$option = $jinput->getCmd('option');
 		$result = array();
 

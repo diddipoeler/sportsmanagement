@@ -81,18 +81,59 @@ if (!class_exists('modJSMActSeasonHelper', false)) {
                 continue;
             }
 
-            $id = (int) ($row->federation ?? 0);
-            if ($id <= 0 || isset($federations[$id])) {
+            $id = self::positiveFederationId($row->federation ?? null);
+
+            if ($id === 0 || isset($federations[$id])) {
                 continue;
             }
 
+            // Old project rows can contain null, arrays or objects rather
+            // than a string name. Do not trigger PHP 8 conversion warnings.
+            $rawName = $row->federation_name ?? null;
+            $name = is_string($rawName) && trim($rawName) !== ''
+                ? $rawName
+                : (string) $id;
+
             $federations[$id] = (object) [
                 'id' => $id,
-                'name' => (string) ($row->federation_name ?? $id),
+                'name' => $name,
             ];
         }
 
         return $federations;
+    }
+
+    /**
+     * Normalise a federation identifier from historical project data.
+     *
+     * Accepts positive integer values or strictly decimal strings, including
+     * old zero-padded keys, while rejecting booleans, arrays, negative values,
+     * nondecimal suffixes and numbers outside PHP's integer range. Invalid
+     * associations are excluded rather than accidentally mapped to ID 1.
+     *
+     * @param mixed $value Federation ID from a database or module payload.
+     * @return int Valid positive federation ID or zero for invalid input.
+     */
+    private static function positiveFederationId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value > 0 ? $value : 0;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
