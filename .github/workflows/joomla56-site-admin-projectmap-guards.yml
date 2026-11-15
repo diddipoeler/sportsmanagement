@@ -6,6 +6,8 @@ on:
     paths:
       - 'site/src/Controller/UpdsportsmanagementController.php'
       - 'admin/src/Controller/DatabasetoolController.php'
+      - 'admin/src/Model/DatabasetoolModel.php'
+      - '.github/tests/joomla56_database_maintenance_input_types.php'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_site_updater_mvc_factory.php'
       - 'site/src/Model/UpdsportsmanagementModel.php'
@@ -18,6 +20,8 @@ on:
     paths:
       - 'site/src/Controller/UpdsportsmanagementController.php'
       - 'admin/src/Controller/DatabasetoolController.php'
+      - 'admin/src/Model/DatabasetoolModel.php'
+      - '.github/tests/joomla56_database_maintenance_input_types.php'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_site_updater_mvc_factory.php'
       - 'site/src/Model/UpdsportsmanagementModel.php'
@@ -49,6 +53,8 @@ jobs:
           php -l site/src/Model/UpdsportsmanagementModel.php
           php -l .github/tests/joomla56_updater_safe_errors.php
           php -l admin/src/Controller/DatabasetoolController.php
+          php -l admin/src/Model/DatabasetoolModel.php
+          php -l .github/tests/joomla56_database_maintenance_input_types.php
           php -l modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
           php -l .github/tests/joomla56_site_updater_mvc_factory.php
           php -l .github/tests/joomla56_admin_database_action_contract.php
@@ -60,6 +66,8 @@ jobs:
             site/src/Model/UpdsportsmanagementModel.php \
             .github/tests/joomla56_updater_safe_errors.php \
             admin/src/Controller/DatabasetoolController.php \
+            admin/src/Model/DatabasetoolModel.php \
+            .github/tests/joomla56_database_maintenance_input_types.php \
             modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php \
             .github/tests/joomla56_site_updater_mvc_factory.php \
             .github/tests/joomla56_admin_database_action_contract.php \
@@ -70,5 +78,7 @@ jobs:
         run: php .github/tests/joomla56_updater_safe_errors.php
       - name: Test administrator database tool model contracts
         run: php .github/tests/joomla56_admin_database_action_contract.php
+      - name: Reject malformed database maintenance input
+        run: php .github/tests/joomla56_database_maintenance_input_types.php
       - name: Test project map fallback without public errors
         run: php .github/tests/joomla56_projectmap_optional_failure.php
