@@ -18,6 +18,8 @@ use Joomla\Http\HttpFactory;
 /** Read-only OpenLigaDB preview service for the legacy extension UI. */
 final class OpenLigaDbPreviewService
 {
+    private const MAX_RESPONSE_BYTES = 5242880;
+    private const MAX_PREVIEW_MATCHES = 2000;
     /**
      * Create the read-only OpenLigaDB preview service for a Joomla project.
      * Uses an injected database driver to locate the configured OpenLigaDB link without changing any match records.
@@ -45,7 +47,7 @@ final class OpenLigaDbPreviewService
         $fieldName = 'jsmopenligadb';
         $backend = 'project';
         $fieldType = 'link';
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('ev.fieldvalue'))
             ->from($this->db->quoteName('#__sportsmanagement_user_extra_fields_values', 'ev'))
             ->join(
@@ -64,12 +66,16 @@ final class OpenLigaDbPreviewService
 
         $this->db->setQuery($query, 0, 1);
 
-        return trim((string) $this->db->loadResult());
+        $link = $this->db->loadResult();
+
+        return is_string($link) ? trim($link) : '';
     }
 
     /**
      * Fetch the current OpenLigaDB match preview as a JSON list.
      * Restricts requests to approved HTTPS OpenLigaDB hosts, disables HTTP redirects, enforces a response status check and parses JSON without running arbitrary external endpoint URLs.
+     * Limits the HTTP body to 5 MiB and the preview list to 2000 fixtures so
+     * corrupt or unexpectedly large API payloads cannot exhaust PHP memory.
      *
      * @param string $url OpenLigaDB endpoint from the project's custom field.
      * @return list<array<string,mixed>> Match records returned by the service.
@@ -86,7 +92,13 @@ final class OpenLigaDbPreviewService
         $http = (new HttpFactory())->getHttp(['follow_location' => false], ['Curl', 'Stream']);
         $response = $http->get($url, ['Accept' => 'application/json'], 30);
         $status = $response->getStatusCode();
-        $body = trim((string) $response->getBody());
+        $body = (string) $response->getBody();
+
+        if (strlen($body) > self::MAX_RESPONSE_BYTES) {
+            throw new \RuntimeException('OpenLigaDB preview response exceeds the 5 MiB limit.');
+        }
+
+        $body = trim($body);
 
         if ($status < 200 || $status >= 300 || $body === '') {
             throw new \RuntimeException('OpenLigaDB request failed with HTTP status ' . $status . '.');
@@ -98,8 +110,12 @@ final class OpenLigaDbPreviewService
             throw new \RuntimeException('OpenLigaDB response is invalid JSON.', 0, $exception);
         }
 
-        if (!is_array($matches)) {
+        if (!is_array($matches) || !array_is_list($matches)) {
             throw new \RuntimeException('OpenLigaDB response has an invalid structure.');
+        }
+
+        if (count($matches) > self::MAX_PREVIEW_MATCHES) {
+            throw new \RuntimeException('OpenLigaDB preview contains too many fixtures.');
         }
 
         return array_values(array_filter($matches, 'is_array'));
