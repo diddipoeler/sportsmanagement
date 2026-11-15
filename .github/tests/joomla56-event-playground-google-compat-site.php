@@ -141,7 +141,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View {
          * @param string|null $tpl Optional Joomla template selector.
          * @return void
          */
-        public function display($tpl = null): void { $this->rendered = true; }
+        public function display($tpl = null) { $this->rendered = true; }
     }
 }
 
