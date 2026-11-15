@@ -1,0 +1,49 @@
+name: Joomla 5/6 administrator team season write boundaries
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/TeamModel.php'
+      - 'admin/forms/team.xml'
+      - '.github/tests/joomla56_admin_team_season_write_boundaries.php'
+      - '.github/workflows/joomla56-admin-team-season-write-boundaries.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/TeamModel.php'
+      - 'admin/forms/team.xml'
+      - '.github/tests/joomla56_admin_team_season_write_boundaries.php'
+      - '.github/workflows/joomla56-admin-team-season-write-boundaries.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  team-seasons:
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Syntax and file/method metadata
+        run: |
+          php -l admin/src/Model/TeamModel.php
+          php -l .github/tests/joomla56_admin_team_season_write_boundaries.php
+          for file in admin/src/Model/TeamModel.php .github/tests/joomla56_admin_team_season_write_boundaries.php; do
+            for tag in @version @author @copyright @license; do
+              grep -Fq "$tag" "$file"
+            done
+          done
+          php .github/scripts/check-php-function-docs.php admin/src/Model/TeamModel.php .github/tests/joomla56_admin_team_season_write_boundaries.php
+      - name: Validate season association write boundary
+        run: |
+          php .github/tests/joomla56_admin_team_season_write_boundaries.php
+          php .github/tests/joomla56_admin_team_playground_media_type.php
