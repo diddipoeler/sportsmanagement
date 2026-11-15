@@ -14,11 +14,37 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Date\Date;
+use Joomla\CMS\HTML\HTMLHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
 
-$app = Factory::getApplication();
-$table = $app->getInput()->getCmd('table');
+// The standalone update entry point can run before component autoloading.
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    $applicationResolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+    if (!is_file($applicationResolverFile)) {
+        throw new \RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+    }
+
+    require_once $applicationResolverFile;
+}
+
+$app = SportsManagementAdministratorApplicationResolver::resolve();
+
+// Updating stored Unix timestamps is a database-writing operation. Read the
+// selected operation from POST only and require both CSRF and administrator ACL.
+$table = $app->getInput()->post->getCmd('table', '');
+
+if ($table !== '') {
+    if (!$app->checkToken('post')) {
+        throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+    }
+
+    if (!$app->getIdentity()->authorise('core.manage', 'com_sportsmanagement')) {
+        throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+    }
+}
 
 
 $version           = '1.0.53';
@@ -75,6 +101,16 @@ if (!class_exists(SportsManagementDatabaseResolver::class)) {
 $joomlaDatabase = Factory::getContainer()->get(DatabaseInterface::class);
 $db = (new SportsManagementDatabaseResolver())->resolve(null, $joomlaDatabase);
 
+/**
+ * Convert a legacy modification date into a Unix timestamp in UTC.
+ *
+ * Treats known null-date placeholders as the current date and catches invalid
+ * date strings without interrupting the entire conversion. Failures return
+ * false and are reported through the Joomla administrator message queue.
+ *
+ * @param mixed $value Legacy SQL date or null-date placeholder.
+ * @return int|false UTC Unix timestamp, or false when parsing failed.
+ */
 $toTimestamp = static function (mixed $value) use ($app): int|false {
     if ($value === null || $value === '0000-00-00 00:00:00' || $value === '0000-00-00 15:30:00') {
         $value = 'now';
@@ -111,6 +147,10 @@ if ($table)
 				{
 					$projekt->modified_timestamp = $toTimestamp($projekt->modified);
 
+                    if ($projekt->modified_timestamp === false) {
+                        continue;
+                    }
+
 					// Create an object for the record we are going to update.
 					$object = new stdClass;
 
@@ -141,6 +181,10 @@ if ($table)
 				{
 					$match->match_timestamp = $toTimestamp($match->match_date);
 
+                    if ($match->match_timestamp === false) {
+                        continue;
+                    }
+
 					// Create an object for the record we are going to update.
 					$object = new stdClass;
 
@@ -158,9 +202,10 @@ if ($table)
 }
 
 
-echo '<form method="get" id="adminForm" action="">';
+echo '<form method="post" id="adminForm" action="">';
 echo '<br><button type="submit" name="table" value="project">Projekte</button>';
 echo '<button type="submit" name="table" value="match">Match</button>';
+echo HTMLHelper::_('form.token');
 echo '</form>';
 
 

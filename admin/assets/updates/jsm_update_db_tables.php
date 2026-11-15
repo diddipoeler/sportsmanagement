@@ -12,9 +12,28 @@
 defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+
+// The standalone update entry point can run before component autoloading.
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    $applicationResolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+    if (!is_file($applicationResolverFile)) {
+        throw new \RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+    }
+
+    require_once $applicationResolverFile;
+}
+
+$app = SportsManagementAdministratorApplicationResolver::resolve();
+
+// This legacy screen can update database schema objects; only component
+// administrators may access the migration action.
+if (!$app->getIdentity()->authorise('core.manage', 'com_sportsmanagement')) {
+    throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+}
 
 HTMLHelper::_('bootstrap.framework');
 
@@ -30,7 +49,7 @@ $updateFileDate    = '2024-03-11';
 $updateFileTime    = '00:05';
 $updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_DB_TABLES').'</span>';
 $excludeFile       = 'false';
-$option            = Factory::getApplication()->input->getCmd('option');
+$option            = 'com_sportsmanagement';
 
 $maxImportTime = ComponentHelper::getParams($option)->get('max_import_time', 0);
 
@@ -59,30 +78,35 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
 }
 
 /**
- * getUpdatePart()
+ * Read the current database-upgrade stage from Joomla user state.
  *
- * @return
+ * Uses the fixed SportsManagement component state key so a request cannot
+ * choose a different extension's state namespace.
+ *
+ * @return mixed Current stage value, or null when no stage was stored.
  */
 function getUpdatePart()
 {
-	$option      = Factory::getApplication()->input->getCmd('option');
-	$app         = Factory::getApplication();
+	$option      = 'com_sportsmanagement';
+	$app         = SportsManagementAdministratorApplicationResolver::resolve();
 	$update_part = $app->getUserState($option . 'update_part');
 
 	return $update_part;
 }
 
 /**
- * setUpdatePart()
+ * Advance or reset the database-upgrade stage in the Joomla user session.
  *
- * @param   integer  $val
+ * Increments the persisted stage for positive values or resets it to zero
+ * after the last migration step has finished.
  *
+ * @param int $val Positive to advance the stage, zero to reset it.
  * @return void
  */
 function setUpdatePart($val = 1)
 {
-	$option      = Factory::getApplication()->input->getCmd('option');
-	$app         = Factory::getApplication();
+	$option      = 'com_sportsmanagement';
+	$app         = SportsManagementAdministratorApplicationResolver::resolve();
 	$update_part = $app->getUserState($option . 'update_part');
 
 	if ($val != 0)
@@ -105,14 +129,18 @@ function setUpdatePart($val = 1)
 }
 
 /**
- * ImportTables()
+ * Compare and update the SportsManagement SQL table definitions.
  *
- * @return
+ * Reads the bundled installation SQL file, checks existing table columns and
+ * indexes, executes the required migration statements and renders a Joomla
+ * Bootstrap accordion showing the outcome of each database operation.
+ *
+ * @return string Empty string after rendering the migration report.
  */
 function ImportTables()
 {
 	$db     = sportsmanagementHelper::getDBConnection();
-	$option = Factory::getApplication()->input->getCmd('option');
+	$option = 'com_sportsmanagement';
 
 	$imports = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $option . '/sql/install.mysql.utf8.sql');
 
