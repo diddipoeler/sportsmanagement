@@ -137,6 +137,43 @@ namespace {
         }
     }
 
+    // A server may return valid but unreasonably large JSON. Do not try to
+    // construct huge preview collections from a corrupted or hostile payload.
+    $http::$body = str_repeat(' ', 5242881);
+    try {
+        $service->fetchMatches($validUrl);
+        throw new \RuntimeException('Oversized OpenLigaDB preview response was accepted.');
+    } catch (\RuntimeException $error) {
+        if ($error->getMessage() !== 'OpenLigaDB preview response exceeds the 5 MiB limit.') {
+            throw $error;
+        }
+    }
+
+    $http::$body = json_encode(array_fill(0, 2001, []), JSON_THROW_ON_ERROR);
+    try {
+        $service->fetchMatches($validUrl);
+        throw new \RuntimeException('Unbounded OpenLigaDB preview list was accepted.');
+    } catch (\RuntimeException $error) {
+        if ($error->getMessage() !== 'OpenLigaDB preview contains too many fixtures.') {
+            throw $error;
+        }
+    }
+
+    $http::$body = '{"unexpected":[]}';
+    try {
+        $service->fetchMatches($validUrl);
+        throw new \RuntimeException('OpenLigaDB object payload was accepted as a match list.');
+    } catch (\RuntimeException $error) {
+        if ($error->getMessage() !== 'OpenLigaDB response has an invalid structure.') {
+            throw $error;
+        }
+    }
+
+    $http::$body = json_encode(array_fill(0, 2000, []), JSON_THROW_ON_ERROR);
+    if (count($service->fetchMatches($validUrl)) !== 2000) {
+        throw new \RuntimeException('A valid OpenLigaDB preview at the match limit was rejected.');
+    }
+
     foreach (['api.openligadb.de', 'www.openligadb.de', 'openligadb.de'] as $host) {
         $http::$body = '[]';
         if ($service->fetchMatches('https://' . $host . '/getmatchdata/bl1/2026') !== []) {
