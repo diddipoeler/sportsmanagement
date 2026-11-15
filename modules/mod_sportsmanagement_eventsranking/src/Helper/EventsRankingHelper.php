@@ -605,29 +605,27 @@ final class EventsRankingHelper
     }
 
     /**
-     * Validate a nonnegative SportsManagement database selector.
+     * Validate the two SportsManagement database modes for events rankings.
      *
-     * Rejects structured, signed, fractional and overflowing values instead
-     * of silently switching the ranking to an unrelated database connection.
+     * Joomla 5/6 supports choice zero for the Joomla connection and one for
+     * the external database. Reject other positive values, malformed strings,
+     * structured data and overlong settings; preserve zero-padded choices.
      *
-     * @param mixed $value Raw module database configuration.
-     * @return int|null Valid nonnegative selector, or null if invalid.
+     * @param mixed $value Raw Events Ranking database configuration.
+     * @return int|null Supported mode 0 or 1, or null when invalid.
      */
     private static function databaseSelector(mixed $value): ?int
     {
-        if (!is_int($value) && (!is_string($value) || strlen($value) > 256
-            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
             return null;
         }
 
-        if (is_string($value)) {
-            $digits = ltrim($value, '0');
-            $value = $digits === '' ? '0' : $digits;
-        }
-
-        $number = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
-
-        return $number === false ? null : $number;
+        return (int) $matches[1];
     }
 
     /**
