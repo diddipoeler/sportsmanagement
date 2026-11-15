@@ -1,0 +1,242 @@
+<?php
+/**
+ * Joomla 5/6 backend round deletion and cascading match ID safety regression.
+ *
+ * The native RoundModel must never cast malformed selectors into unrelated
+ * round/match IDs or forward unvalidated request values to Joomla deletion.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler
+ * @copyright  Copyright (C) diddipoeler
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+declare(strict_types=1);
+
+namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
+    abstract class SportsManagementAdminModel
+    {
+        public \RoundDeleteTestDatabase $database;
+        public int $parentDeletes = 0;
+        public array $parentSelection = [];
+        public string $error = '';
+
+        /**
+         * Return the test database to detect unintended SQL access.
+         *
+         * @return \RoundDeleteTestDatabase Capturing query connection.
+         */
+        protected function getDatabase(): \RoundDeleteTestDatabase
+        {
+            return $this->database;
+        }
+
+        /**
+         * Provide a minimal Joomla administrator message queue.
+         *
+         * @return object Test administrator app.
+         */
+        protected function administratorApplication(): object
+        {
+            return new class {
+                /**
+                 * Record no-op Joomla deletion result messages.
+                 *
+                 * @param string $message Localised description.
+                 * @param string $type Message type.
+                 * @return void
+                 */
+                public function enqueueMessage(string $message, string $type = 'message'): void {}
+            };
+        }
+
+        /**
+         * Record exactly the PKs passed to Joomla after deleting dependants.
+         *
+         * @param mixed $pks Selected round record IDs.
+         * @return bool Parent deletion succeeds for the isolated fixture.
+         */
+        public function delete(&$pks)
+        {
+            ++$this->parentDeletes;
+            $this->parentSelection = $pks;
+            return true;
+        }
+
+        /**
+         * Capture validation errors instead of emitting application messages.
+         *
+         * @param string $message Round model write error.
+         * @return void
+         */
+        public function setError(string $message): void { $this->error = $message; }
+    }
+}
+
+namespace {
+    use Diddipoeler\Component\SportsManagement\Administrator\Model\RoundModel;
+
+    define('_JEXEC', 1);
+
+    final class RoundDeleteTestQuery
+    {
+        public static array $whereSelections = [];
+
+        /**
+         * Accept a SELECT/DELETE and associated bind-safe Joomla query fields.
+         *
+         * @param string $method Query-builder operation.
+         * @param array<mixed> $args Call arguments.
+         * @return static Fluent native SQL query builder.
+         */
+        public function __call(string $method, array $args): static
+        {
+            if ($method === 'whereIn') {
+                self::$whereSelections[] = $args[1] ?? [];
+            }
+
+            return $this;
+        }
+    }
+
+    final class RoundDeleteTestDatabase
+    {
+        public int $queries = 0;
+        public int $writes = 0;
+        public array $relatedMatches = [];
+
+        /**
+         * Return a query mock and count native Joomla queries.
+         *
+         * @return RoundDeleteTestQuery Fluent SQL query fixture.
+         */
+        public function createQuery(): RoundDeleteTestQuery
+        {
+            ++$this->queries;
+            return new RoundDeleteTestQuery();
+        }
+
+        /**
+         * Quote trusted Joomla table and column names.
+         *
+         * @param string $name SQL identifier.
+         * @param string|null $alias Optional alias.
+         * @return string Quoted identifier.
+         */
+        public function quoteName(string $name, ?string $alias = null): string
+        {
+            return '"' . $name . '"' . ($alias === null ? '' : ' AS "' . $alias . '"');
+        }
+
+        /**
+         * Accept the constructed match relationship query.
+         *
+         * @param object $query Native SQL query.
+         * @return static Same test database.
+         */
+        public function setQuery(object $query): static { return $this; }
+
+        /**
+         * Supply selected match IDs for the dependent record cleanup.
+         *
+         * @return array<int,mixed> Test match record identifiers.
+         */
+        public function loadColumn(): array { return $this->relatedMatches; }
+
+        /**
+         * Track dependent DELETE queries issued by the round model.
+         *
+         * @return bool SQL mutation accepted.
+         */
+        public function execute(): bool
+        {
+            ++$this->writes;
+            return true;
+        }
+
+        /**
+         * Return no real changed rows for the simulated database.
+         *
+         * @return int No affected rows.
+         */
+        public function getAffectedRows(): int { return 0; }
+    }
+
+    /**
+     * Compare assertions independent of PHP runtime settings.
+     *
+     * @param mixed $expected Required normalised IDs or call count.
+     * @param mixed $actual Observed model result.
+     * @param string $context Failure description.
+     * @return void
+     */
+    function roundDeleteAssert(mixed $expected, mixed $actual, string $context): void
+    {
+        if ($expected !== $actual) {
+            throw new \RuntimeException(
+                $context . ': expected ' . var_export($expected, true)
+                . ', observed ' . var_export($actual, true)
+            );
+        }
+    }
+
+    require_once dirname(__DIR__, 2) . '/admin/src/Model/RoundModel.php';
+    $model = new RoundModel();
+    $model->database = new RoundDeleteTestDatabase();
+    $parse = new \ReflectionMethod($model, 'normaliseIds');
+
+    roundDeleteAssert([7, 8, PHP_INT_MAX], $parse->invoke($model, [
+        7, '0007', ' 0008 ', PHP_INT_MAX, PHP_INT_MAX . '',
+        '7junk', '7.5', '7e1', '-7', '+7', '0', 0, null,
+        false, true, 7.5, [['7']], [], new \stdClass(),
+        PHP_INT_MAX . '0', str_repeat('0', 65) . '7',
+    ]), 'Malformed round IDs were coerced into deletable records');
+
+    roundDeleteAssert([], $parse->invoke($model, array_fill(0, 501, 7)),
+        'Overlarge deletion batch was not bounded');
+
+    // Malformed-only selections must fail before database use and must not
+    // reach parent Joomla AdminModel::delete (which may coerce IDs).
+    foreach ([['7junk'], ['7.5'], [true], [['7']], [PHP_INT_MAX . '0'],
+        ['0000'], [str_repeat('7', 512)], [new \stdClass()]] as $invalid) {
+        $keys = $invalid;
+        roundDeleteAssert(false, $model->delete($keys),
+            'Malformed round selection triggered delete');
+        roundDeleteAssert(0, $model->parentDeletes,
+            'Malformed round selection reached Joomla parent deletion');
+        roundDeleteAssert(0, $model->database->queries,
+            'Malformed round selection touched SQL');
+    }
+
+    // Raw malformed mixed values may accompany legitimate IDs. Only
+    // canonical positive identifiers are forwarded to the actual delete.
+    $keys = ['0007', 8, '7junk', true, ' 8 ', '99999999999999999999999'];
+    roundDeleteAssert(true, $model->delete($keys), 'Valid round deletion failed');
+    roundDeleteAssert([7, 8], $keys, 'Selection was not canonicalised by reference');
+    roundDeleteAssert([7, 8], $model->parentSelection,
+        'Joomla parent received raw or malformed round keys');
+    roundDeleteAssert(1, $model->parentDeletes,
+        'Joomla parent should be called once for valid selection');
+    roundDeleteAssert(1, $model->database->writes,
+        'Valid round deletion did not clean dependent matches');
+    roundDeleteAssert([[7, 8], [7, 8]], RoundDeleteTestQuery::$whereSelections,
+        'Round delete SQL did not use validated IDs for matches and cleanup');
+
+    // The explicit dependent-match cleanup endpoint must reject invalid IDs
+    // and must use strict validation for IDs returned by its match lookup.
+    $queries = $model->database->queries;
+    roundDeleteAssert(true, $model->deleteRoundMatches(['7junk', false, []]),
+        'Invalid dependent match cleanup was not a safe no-op');
+    roundDeleteAssert($queries, $model->database->queries,
+        'Invalid round cleanup accessed the database');
+
+    $model->database->relatedMatches = ['00021', '21junk', 22, -1, [23]];
+    RoundDeleteTestQuery::$whereSelections = [];
+    roundDeleteAssert(true, $model->deleteRoundMatches([7]),
+        'Valid dependent-match cleanup failed');
+    roundDeleteAssert([[7], [21, 22], [21, 22], [21, 22], [21, 22],
+        [21, 22], [21, 22], [21, 22], [7]],
+        RoundDeleteTestQuery::$whereSelections,
+        'Dependent match deletion accepted unvalidated match IDs');
+
+    echo "Joomla 5/6 administrator round deletion ID boundaries: OK\n";
+}
