@@ -12,6 +12,40 @@
  */
 declare(strict_types=1);
 
+namespace Joomla\Database {
+    final class ParameterType
+    {
+        public const INTEGER = 'integer';
+    }
+}
+
+namespace Diddipoeler\Component\SportsManagement\Administrator\Table {
+    class RoundTable
+    {
+        public int $id = 0;
+        public static array $missingIds = [];
+
+        /**
+         * Construct an isolated Joomla round table with fake database.
+         *
+         * @param object $database Selected administrator connection.
+         */
+        public function __construct(object $database) {}
+
+        /**
+         * Simulate fetching a round record for Joomla's delete ACL check.
+         *
+         * @param int $id Requested round identifier.
+         * @return bool Whether the selected round exists.
+         */
+        public function load(int $id): bool
+        {
+            $this->id = $id;
+            return !in_array($id, self::$missingIds, true);
+        }
+    }
+}
+
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
     abstract class SportsManagementAdminModel
     {
@@ -19,6 +53,9 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
         public int $parentDeletes = 0;
         public array $parentSelection = [];
         public string $error = '';
+        public bool $authenticated = true;
+        public bool $componentDeleteAllowed = true;
+        public array $deniedRoundIds = [];
 
         /**
          * Return the test database to detect unintended SQL access.
@@ -37,7 +74,51 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
          */
         protected function administratorApplication(): object
         {
-            return new class {
+            return new class($this) {
+                /**
+                 * Link the fake application to model ACL configuration.
+                 *
+                 * @param object $model Shared round model.
+                 */
+                public function __construct(private object $model) {}
+
+                /**
+                 * Return authenticated Joomla identity or simulate absence.
+                 *
+                 * @return object|null Identity allowed for round deletion.
+                 */
+                public function getIdentity(): ?object
+                {
+                    if (!$this->model->authenticated) {
+                        return null;
+                    }
+
+                    return new class($this->model->componentDeleteAllowed) {
+                        public int $id = 42;
+
+                        /**
+                         * Simulate Joomla core.delete permission.
+                         *
+                         * @param string $action Joomla permission.
+                         * @param string $asset Component asset.
+                         * @return bool Whether component deletion is authorised.
+                         */
+                        public function authorise(string $action, string $asset): bool
+                        {
+                            return $this->allowed
+                                && $action === 'core.delete'
+                                && $asset === 'com_sportsmanagement';
+                        }
+
+                        /**
+                         * Preserve the simulated permission at construction.
+                         *
+                         * @param bool $allowed Whether delete is allowed.
+                         */
+                        public function __construct(private bool $allowed) {}
+                    };
+                }
+
                 /**
                  * Record no-op Joomla deletion result messages.
                  *
@@ -47,6 +128,17 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
                  */
                 public function enqueueMessage(string $message, string $type = 'message'): void {}
             };
+        }
+
+        /**
+         * Simulate Joomla's per-record AdminModel::canDelete check.
+         *
+         * @param object $record Loaded Joomla round table.
+         * @return bool Whether the current record can be deleted.
+         */
+        protected function canDelete($record): bool
+        {
+            return !in_array((int) $record->id, $this->deniedRoundIds, true);
         }
 
         /**
