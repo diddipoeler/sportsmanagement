@@ -14,6 +14,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementSiteApplicationResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\Database\ParameterType;
 use Throwable;
@@ -51,8 +52,9 @@ final class UpdsportsmanagementModel extends FormModel
     /**
      * Load the Joomla XML form used to edit a sample SportsManagement record.
      * Uses the native FormModel loader and the component form name,
-     * reporting a failure through the application instead of returning
-     * an incomplete form when Joomla cannot load the definition.
+     * reporting a generic, translated failure through the application
+     * instead of returning an incomplete form. The exception type is logged
+     * server-side without exposing file paths or database details to visitors.
      * @param array $data Existing record fields for the form.
      * @param bool $loadData Whether Joomla should load stored form data.
      * @return Form|false Loaded Joomla form, or false on failure.
@@ -69,7 +71,9 @@ final class UpdsportsmanagementModel extends FormModel
                 ]
             );
         } catch (Throwable $e) {
-            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
+            Log::add('SportsManagement update form unavailable (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+            $this->siteApplication()->enqueueMessage(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+
             return false;
         }
     }
@@ -78,6 +82,8 @@ final class UpdsportsmanagementModel extends FormModel
      * Load the sample record selected by the current frontend request.
      * Applies active menu parameters when present, resolves the item ID
      * from model state or input, and uses a bound ID for the database lookup.
+     * Database failures are logged by exception type while the frontend
+     * receives a generic message to avoid leaking query or connection data.
      * @return object|null Selected sample record or null if unavailable.
      */
     public function getItem(): ?object
@@ -116,7 +122,9 @@ final class UpdsportsmanagementModel extends FormModel
             $db->setQuery($query, 0, 1);
             return $db->loadObject() ?: null;
         } catch (Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            Log::add('SportsManagement update item unavailable (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+            $app->enqueueMessage(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+
             return null;
         }
     }
@@ -125,7 +133,8 @@ final class UpdsportsmanagementModel extends FormModel
      * Update a sample record only for a Joomla user with edit permission.
      * Rejects malformed IDs and greetings, trims the accepted text and
      * delegates the update to Joomla's database API; failed database writes
-     * return false and may report an error through the site application.
+     * return false and report a generic error through the site application.
+     * Exception classes are logged without exposing database diagnostics.
      * @param array $data Submitted record fields including id and greeting.
      * @return bool True after a successful authorised update.
      */
@@ -170,7 +179,9 @@ final class UpdsportsmanagementModel extends FormModel
                 'id'
             );
         } catch (Throwable $e) {
-            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
+            Log::add('SportsManagement sample update failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+            $this->siteApplication()->enqueueMessage(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+
             return false;
         }
     }
