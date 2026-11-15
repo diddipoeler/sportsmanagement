@@ -434,17 +434,39 @@ final class ImagehandlerController extends BaseController
 
     /**
      * Compute the component's maximum permitted image payload size.
-     * Reads the configured size in kibibytes, enforces a positive minimum and converts it to bytes for both uploaded and downloaded image checks.
+     * Validates decimal legacy settings without implicit PHP 8 casts,
+     * uses the default for malformed or overflowing values, and enforces
+     * a one-kibibyte minimum and 64-MiB ceiling. The resulting byte limit
+     * applies consistently to local uploads and remote image downloads.
      * @return int Maximum accepted image payload size in bytes.
      */
     private function maxImageBytes(): int
     {
-        return max(
-            1,
-            (int) ComponentHelper::getParams('com_sportsmanagement')->get('image_max_size', 120)
-        ) * 1024;
-    }
+        $configured = ComponentHelper::getParams('com_sportsmanagement')->get('image_max_size', 120);
 
+        // Legacy component settings can contain unexpected arrays, booleans
+        // or overflowing decimal values after upgrades. Never coerce those
+        // into PHP integers or accidentally disable the upload size limit.
+        if (is_int($configured)) {
+            $kilobytes = $configured;
+        } elseif (is_string($configured) && $configured !== '' && strlen($configured) <= 16
+            && preg_match('/^[0-9]+$/D', $configured) === 1) {
+            $digits = ltrim($configured, '0');
+            $kilobytes = $digits === '' ? 0 : filter_var(
+                $digits,
+                FILTER_VALIDATE_INT,
+                ['options' => ['min_range' => 0]]
+            );
+        } else {
+            $kilobytes = false;
+        }
+
+        // Cap image payloads at 64 MiB to avoid integer multiplication
+        // overflow and unbounded downloads on corrupted configurations.
+        $kilobytes = $kilobytes === false ? 120 : max(1, min($kilobytes, 65536));
+
+        return $kilobytes * 1024;
+    }
     /**
      * Normalise a selected image filename before deletion.
      * Rejects null bytes, path separators, dot traversal and filenames changed by Joomla's path filter so deletion remains confined to the selected image directory.
