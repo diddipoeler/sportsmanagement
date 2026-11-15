@@ -128,5 +128,50 @@ namespace {
         throw new \RuntimeException('Federation tab name was not escaped or league is hidden');
     }
 
+    // Even correctly escaped HTML attributes can contain executable URI
+    // schemes. Guard both federation pictures and ranking routes as URLs.
+    \Joomla\CMS\HTML\HTMLHelper::$tabLabels = [];
+    set_error_handler(static function (int $level, string $message): never {
+        throw new \ErrorException($message, 0, $level);
+    });
+
+    try {
+        $html = $render(
+            [
+                2 => (object) ['name' => ['bad name'], 'picture_url' => 'data:image/svg+xml,unsafe'],
+                3 => (object) ['name' => 'Valid federation', 'picture_url' => 'https://example.org/flag.png'],
+            ],
+            [
+                null,
+                ['bad project row'],
+                (object) [
+                    'federation' => 2,
+                    'name' => '<script>alert(1)</script>',
+                    'ranking_link' => 'javascript:alert(1)',
+                    'flag_html' => '',
+                ],
+                (object) [
+                    'federation' => 3,
+                    'name' => 'Valid project',
+                    'ranking_link' => 'index.php?option=com_sportsmanagement&view=ranking',
+                    'flag_html' => '',
+                ],
+            ]
+        );
+    } finally {
+        restore_error_handler();
+    }
+
+    $labels = \Joomla\CMS\HTML\HTMLHelper::$tabLabels;
+
+    if (str_contains($html, 'javascript:alert')
+        || str_contains($html, '<script>alert(1)</script>')
+        || !str_contains($html, '&lt;script&gt;alert(1)&lt;/script&gt;')
+        || !str_contains($html, 'index.php?option=com_sportsmanagement&amp;view=ranking')
+        || str_contains(implode(' ', $labels), 'data:image/svg+xml')
+        || !str_contains(implode(' ', $labels), 'https://example.org/flag.png')) {
+        throw new \RuntimeException('First League Overview emitted an unsafe link or mishandled malformed rows.');
+    }
+
     echo "First league overview tab regressions OK\n";
 }
