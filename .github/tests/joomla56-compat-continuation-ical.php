@@ -42,7 +42,7 @@ namespace Joomla\CMS\MVC\View {
         }
 
         /** Record the template render request without any Joomla bootstrap. */
-        public function display($tpl = null): void
+        public function display($tpl = null)
         {
             $this->rendered = true;
         }
