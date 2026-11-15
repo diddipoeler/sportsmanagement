@@ -28,7 +28,10 @@ final class AjaxTopNavigationHelper
      * Validates the database selector before the legacy navigation helper
      * resolves a connection, discards malformed federation records and
      * prepares the initial project, league and team dropdowns plus client
-     * configuration. Rejects non-site application contexts.
+     * configuration. Rejects non-site application contexts and verifies the
+     * injected Joomla database service before instantiating the legacy helper.
+     * An incompatible service produces a controlled error rather than a
+     * PHP 8 constructor type error.
      *
      * @param Registry $params Joomla module navigation configuration.
      * @param object $module Current Joomla module record.
@@ -61,8 +64,12 @@ final class AjaxTopNavigationHelper
         // Set the already validated selector before constructing it.
         $input->set('cfg_which_database', $databaseSelector);
 
-        /** @var DatabaseInterface $database */
         $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+        if (!$database instanceof DatabaseInterface) {
+            throw new \RuntimeException('SportsManagement AJAX navigation database service is unavailable.', 500);
+        }
+
         $legacyHelper = new NavigationDataHelper($params, $app, $database);
         $points = self::federationRows($legacyHelper->getFederations());
         $tabPoints = [];
