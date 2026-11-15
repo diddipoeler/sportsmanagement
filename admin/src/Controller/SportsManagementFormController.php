@@ -177,10 +177,33 @@ class SportsManagementFormController extends FormController
     }
 
     /**
+     * Enforce Joomla's CSRF token and edit/create permission before saving.
+     *
+     * Child controllers call this guard before performing optional network
+     * requests such as club address geocoding. The shared save() path repeats
+     * the same check to protect direct calls to other form controllers.
+     * Both checks use the unmodified record identity from the POST form.
+     *
+     * @param array<string,mixed> $data Submitted Joomla jform record values.
+     * @param string|null $key Optional record key used by the form controller.
+     * @return void
+     * @throws \RuntimeException When Joomla denies the requested write.
+     */
+    protected function assertFormSaveAccess(array $data, $key = null): void
+    {
+        $this->checkToken();
+
+        if (!$this->allowSave($data, $key ?: 'id')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+    }
+
+    /**
      * Save an administrator form using the legacy SportsManagement workflow.
      *
-     * Checks the Joomla CSRF token, handles round and player-specific
-     * persistence and preserves the historical save/apply/close redirects.
+     * Enforces Joomla CSRF and edit permissions before model loading,
+     * reports a missing model as a controlled error, then handles round and
+     * player-specific persistence while preserving save/apply redirects.
      *
      * @param string|null $key Optional primary record key name.
      * @param string|null $urlVar Optional record identifier URL variable.
@@ -188,27 +211,30 @@ class SportsManagementFormController extends FormController
      */
     public function save($key = null, $urlVar = null)
     {
-        $this->checkToken();
+        $data = $this->jsmjinput->post->get('jform', [], 'array');
+
+        // Reject CSRF and ACL failures before loading a model or attempting
+        // any write. Club and playground controllers also call this guard
+        // ahead of their optional external address lookup.
+        $this->assertFormSaveAccess($data, $key);
         $urlVar = $urlVar ?: 'id';
 
         $post = $this->jsmjinput->post->getArray();
         $tmpl = $this->jsmjinput->getCmd('tmpl');
-        $model = $this->getModel($this->view_item, 'Administrator');
-        $data = $this->jsmjinput->post->get('jform', [], 'array');
         $setRedirect = '';
         $createTeam = $this->jsmjinput->getBool('createTeam');
         $playerPersistence = null;
+        $model = $this->getModel($this->view_item, 'Administrator');
+
+        // Missing legacy/namespaced models must not cause a PHP fatal error
+        // when the administrator attempts to save a valid form.
+        if (!is_object($model) || !is_callable([$model, 'save']) || !is_callable([$model, 'getError'])) {
+            throw new \RuntimeException('SportsManagement form model is unavailable.', 500);
+        }
 
         // Round dates are nullable since schema 4.24.02. Do not synthesize
         // legacy zero dates for an empty form submission: let Joomla's
         // validation reject incomplete data and preserve existing records.
-
-        // Joomla's FormController::save() normally applies allowSave() before
-        // calling the model. This compatibility override must keep that ACL
-        // gate for both new records and edits, including custom form tasks.
-        if (!$this->allowSave($data, $key ?: 'id')) {
-            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
-        }
 
         if ($this->view_item === 'player') {
             try {
