@@ -21,8 +21,9 @@ final class PlaygroundController extends SportsManagementFormController
      *
      * Reads the submitted Joomla form and asks the location geocoder for
      * state and coordinates when possible. Merges only populated values
-     * into the form before delegating permissions, validation and persistence
-     * to the native parent controller. A geocoder failure never blocks save.
+     * into the form before delegating persistence to the shared controller.
+     * Joomla's CSRF and edit/create checks run before any geocoding request,
+     * and a geocoder failure never blocks a permitted save.
      *
      * @param string|null $key Optional legacy record key.
      * @param string|null $urlVar Optional URL record identifier.
@@ -31,6 +32,10 @@ final class PlaygroundController extends SportsManagementFormController
     public function save($key = null, $urlVar = null)
     {
         $data = $this->input->post->get('jform', [], 'array');
+
+        // A remote geocoder must not run for an invalid CSRF token or a
+        // user who cannot create/edit the requested playground record.
+        $this->assertFormSaveAccess($data, $key);
 
         if ($data) {
             try {
