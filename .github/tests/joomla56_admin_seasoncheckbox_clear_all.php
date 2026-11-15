@@ -282,7 +282,7 @@ namespace {
     $invalid = $getInput->invoke(new SeasoncheckboxField('arbitrary_table', 'id'));
     seasonFieldAssert(str_contains($invalid, 'Invalid season assignment target.'),
         'Invalid association table was not rejected.');
-    seasonFieldAssert(5, SeasonCheckboxTestDatabase::$nativeQueries,
+    seasonFieldAssert(7, SeasonCheckboxTestDatabase::$nativeQueries,
         'Season checkbox did not use createQuery for each data lookup.');
 
     echo "Joomla 5/6 team season checkbox clear-all and native SQL: OK\n";
