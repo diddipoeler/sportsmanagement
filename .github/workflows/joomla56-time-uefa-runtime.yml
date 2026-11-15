@@ -1,0 +1,64 @@
+name: Joomla 5/6 legacy time live-match and UEFA runtime gate
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/helpers/sportsmanagement.php'
+      - 'site/src/Helper/MatchTimeHelper.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php'
+      - '.github/tests/joomla56-time-uefa-runtime.php'
+      - '.github/workflows/joomla56-time-uefa-runtime.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Syntax and original PHP file header attribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/helpers/sportsmanagement.php \
+            site/src/Helper/MatchTimeHelper.php \
+            modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php \
+            .github/tests/joomla56-time-uefa-runtime.php; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-headers.php \
+            admin/helpers/sportsmanagement.php \
+            site/src/Helper/MatchTimeHelper.php \
+            modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php \
+            .github/tests/joomla56-time-uefa-runtime.php
+      - name: Enforce descriptive method documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          php .github/scripts/check-php-function-docs.php \
+            admin/helpers/sportsmanagement.php \
+            site/src/Helper/MatchTimeHelper.php \
+            modules/mod_sportsmanagement_uefawertung/src/Helper/UefaWertungHelper.php \
+            .github/tests/joomla56-time-uefa-runtime.php
+      - name: Run isolated time and UEFA module tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          php .github/tests/joomla56-time-uefa-runtime.php
+          php .github/tests/joomla56-site-age-match-time.php
+          php .github/tests/joomla56_matchtime_extra_fields_clubicons.php
+          php .github/tests/joomla56_club_merge_roster_country_uefa.php
