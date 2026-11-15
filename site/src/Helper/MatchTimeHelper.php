@@ -33,7 +33,9 @@ final class MatchTimeHelper
      * rather than attempting to cast arrays to strings. Match period counts,
      * duration and halftime configuration are bounded before arithmetic:
      * malformed historical values cannot generate PHP 8 warnings or force
-     * excessive iterations while building live labels.
+     * excessive iterations while building live labels. Validates SQL match
+     * dates before calling strtotime(), rejecting relative or impossible
+     * dates that PHP would otherwise silently normalize.
      * @param object $game Match record with a match_date field.
      * @param array<string,mixed> $config Match time presentation settings.
      * @param array<string,mixed> $overallConfig Global component date options.
@@ -57,8 +59,7 @@ final class MatchTimeHelper
 
         $rawMatchDate = $game->match_date ?? null;
         $matchDate = is_string($rawMatchDate) ? trim($rawMatchDate) : '';
-        $timestamp = $matchDate !== '' && !str_starts_with($matchDate, '0000-00-00')
-            ? strtotime($matchDate) : false;
+        $timestamp = self::sqlTimestamp($matchDate);
         if ($timestamp === false) {
             $matchTime = '--&nbsp;:&nbsp;--';
 
@@ -121,6 +122,37 @@ final class MatchTimeHelper
 
         return '<b><i><acronym title="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '"'
             . $style . '>' . $text . '</acronym></i></b>';
+    }
+
+    /**
+     * Validate and parse a stored SQL match date without calendar rollover.
+     *
+     * Accepts YYYY-MM-DD, YYYY-MM-DD HH:MM, YYYY-MM-DD HH:MM:SS and
+     * their T-separated equivalents. Verifies the actual calendar date and
+     * time fields before strtotime() to reject relative date expressions,
+     * malformed zero dates and impossible imported fixtures.
+     *
+     * @param string $value Stored match_date field.
+     * @return int|false Valid Unix timestamp, or false for invalid dates.
+     */
+    private static function sqlTimestamp(string $value): int|false
+    {
+        if ($value === '' || strlen($value) > 19 || trim($value) !== $value
+            || preg_match(
+                '/^([0-9]{4})-([0-9]{2})-([0-9]{2})(?:[ T]([0-9]{2}):([0-9]{2})(?::([0-9]{2}))?)?$/D',
+                $value,
+                $parts
+            ) !== 1
+            || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1])) {
+            return false;
+        }
+
+        if (isset($parts[4]) && ((int) $parts[4] > 23 || (int) $parts[5] > 59
+            || (isset($parts[6]) && (int) $parts[6] > 59))) {
+            return false;
+        }
+
+        return strtotime($value);
     }
 
     /**
