@@ -1,362 +1,84 @@
 <?php
 /**
- * SportsManagement ein Programm zur Verwaltung für Sportarten
- * @version    1.0.05
- * @package    Sportsmanagement
- * @subpackage updates
- * @file       jsm_update_picture_path.php
- * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
- * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * CSRF-protected Joomla 5/6 administrator form for the legacy image-path update.
+ *
+ * @version    5.6.0
+ * @author     diddipoeler, SportsManagement contributors
+ * @copyright  Copyright (C) 2013-2026 SportsManagement contributors
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Component\ComponentHelper;
+
+\defined('_JEXEC') or die;
+
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\ImagePathMigrationHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\DatabaseInterface;
 
-$version           = '1.0.68';
-
+// These metadata values remain available to existing administrator update views.
+$version = '1.0.68';
 $minor = 0;
 $major = 0;
 $build = 0;
 $revision = '';
+$updateFileDate = '2018-09-03';
+$updateFileTime = '00:05';
+$updateDescription = Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_PICTURE_PATH');
+$excludeFile = 'false';
 
-$updateFileDate    = '2018-09-3';
-$updateFileTime    = '00:05';
-$updateDescription = '<span style="color:orange">'.Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_PICTURE_PATH').'</span>';
-$excludeFile       = 'false';
+// Legacy update templates may be included before the component PSR-4 namespace
+// has been registered. Load required first-party classes from fixed paths.
+$dependencies = [
+    SportsManagementAdministratorApplicationResolver::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php',
+    SportsManagementDatabaseResolver::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+    ImagePathMigrationHelper::class => JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/ImagePathMigrationHelper.php',
+];
 
-$maxImportTime = ComponentHelper::getParams('com_sportsmanagement')->get('max_import_time', 0);
+foreach ($dependencies as $class => $file) {
+    if (class_exists($class, false)) {
+        continue;
+    }
 
-if (empty($maxImportTime))
-{
-	$maxImportTime = 880;
+    if (!is_file($file)) {
+        throw new \RuntimeException('SportsManagement image-path migration dependency is missing: ' . basename($file), 500);
+    }
+
+    require_once $file;
 }
 
+$app = SportsManagementAdministratorApplicationResolver::resolve();
 
-if ((int) ini_get('max_execution_time') < $maxImportTime)
-{
-	@set_time_limit($maxImportTime);
+// The legacy view contains a destructive database migration: requiring
+// core.admin is intentional rather than treating core.manage as sufficient.
+if (!$app->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+    throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
-$maxImportMemory = ComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory', 0);
+$runMigration = $app->getInput()->post->getInt('run_image_path_migration', 0) === 1;
 
-if (empty($maxImportMemory))
-{
-	$maxImportMemory = '150M';
+if ($runMigration) {
+    if (!$app->checkToken('post')) {
+        throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+    }
+
+    /** @var DatabaseInterface $defaultDatabase */
+    $defaultDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+    $database = (new SportsManagementDatabaseResolver())->resolve(null, $defaultDatabase);
+    $summary = ImagePathMigrationHelper::migrate($database);
+
+    $app->enqueueMessage(
+        $updateDescription . ': ' . $summary['updatedRows'],
+        'message'
+    );
 }
-
-
-if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
-{
-	ini_set('memory_limit', $maxImportMemory);
-}
-
-$this->jsmdb    = sportsmanagementHelper::getDBConnection();
-$this->jsmquery = $this->jsmdb->getQuery(true);
-$this->jsmapp   = Factory::getApplication();
-
-$this->jsmquery = $this->jsmdb->getQuery(true);
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('picture') . " = replace(picture, 'placeholders', 'persons') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('picture') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in person.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('picture') . " = replace(picture, 'media', 'images') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('picture') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in person.'), 'Notice');
-
-/**
- * ##########################################################################################
- */
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_big') . " = replace(logo_big, 'placeholders', 'clubs/large') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_big') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club big.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_middle') . " = replace(logo_middle, 'placeholders', 'clubs/medium') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_middle') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club middle.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_small') . " = replace(logo_small, 'placeholders', 'clubs/small') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_small') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club small.'), 'Notice');
-
-/**
- * ##########################################################################################
- */
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_big') . " = replace(logo_big, 'media', 'images') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_big') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club big.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_middle') . " = replace(logo_middle, 'media', 'images') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_middle') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club middle.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_small') . " = replace(logo_small, 'media', 'images') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_small') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club small.'), 'Notice');
-
-
-/**
- * ##########################################################################################
- */
-
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_big') . " = replace(logo_big, 'com_sportsmanagement/clubs/large', 'com_sportsmanagement/database/clubs/large') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_big') . ' LIKE ' . $this->jsmdb->Quote('%' . 'com_sportsmanagement/clubs/large' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club big.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_middle') . " = replace(logo_middle, 'com_sportsmanagement/clubs/medium', 'com_sportsmanagement/database/clubs/medium') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_middle') . ' LIKE ' . $this->jsmdb->Quote('%' . 'com_sportsmanagement/clubs/medium' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club middle.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('logo_small') . " = replace(logo_small, 'com_sportsmanagement/clubs/small', 'com_sportsmanagement/database/clubs/small') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('logo_small') . ' LIKE ' . $this->jsmdb->Quote('%' . 'com_sportsmanagement/clubs/small' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club small.'), 'Notice');
-
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('trikot_home') . " = replace(trikot_home, 'placeholders', 'clubs/trikot') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('trikot_home') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot home.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('trikot_away') . " = replace(trikot_away, 'placeholders', 'clubs/trikot') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('trikot_away') . ' LIKE ' . $this->jsmdb->Quote('%' . 'placeholders' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot away.'), 'Notice');
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('trikot_home') . " = replace(trikot_home, 'media', 'images') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('trikot_home') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot home.'), 'Notice');
-
-
-$this->jsmquery->clear();
-/**
- * Fields to update.
- */
-$fields = array(
-	$this->jsmdb->quoteName('trikot_away') . " = replace(trikot_away, 'media', 'images') "
-);
-/**
- * Conditions for which records should be updated.
- */
-$conditions = array(
-	$this->jsmdb->quoteName('trikot_away') . ' LIKE ' . $this->jsmdb->Quote('%' . 'media' . '%')
-);
-$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->jsmquery);
-$this->jsmdb->execute();
-$this->jsmapp->enqueueMessage(Text::_('Wir haben ' . $this->jsmdb->getAffectedRows() . ' Datensätze aktualisiert in club trikot away.'), 'Notice');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+?>
+<form action="" method="post" id="jsm-image-path-migration">
+    <p><?php echo htmlspecialchars($updateDescription, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?></p>
+    <button type="submit" class="btn btn-warning" name="run_image_path_migration" value="1">
+        <?php echo htmlspecialchars(Text::_('JAPPLY'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>
+    </button>
+    <?php echo HTMLHelper::_('form.token'); ?>
+</form>
