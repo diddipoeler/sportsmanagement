@@ -31,7 +31,7 @@ $app = SportsManagementAdministratorApplicationResolver::resolve();
 
 // This legacy screen can update database schema objects; only component
 // administrators may access the migration action.
-if (!$app->getIdentity()->authorise('core.manage', 'com_sportsmanagement')) {
+if (!$app->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
     throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
@@ -83,15 +83,18 @@ if ((int) ini_get('memory_limit') < (int) $maxImportMemory)
  * Uses the fixed SportsManagement component state key so a request cannot
  * choose a different extension's state namespace.
  *
- * @return mixed Current stage value, or null when no stage was stored.
+ * @return int Valid stage in the range zero through two.
  */
-function getUpdatePart()
+function getUpdatePart(): int
 {
-	$option      = 'com_sportsmanagement';
-	$app         = SportsManagementAdministratorApplicationResolver::resolve();
-	$update_part = $app->getUserState($option . 'update_part');
+    $app = SportsManagementAdministratorApplicationResolver::resolve();
+    $stage = $app->getUserState('com_sportsmanagementupdate_part', 0);
 
-	return $update_part;
+    // Legacy sessions may contain empty or malformed stage values. Avoid
+    // incrementing unbounded or nonnumeric user state to execute SQL.
+    return in_array($stage, [0, 1, 2, '0', '1', '2'], true)
+        ? (int) $stage
+        : 0;
 }
 
 /**
@@ -100,32 +103,14 @@ function getUpdatePart()
  * Increments the persisted stage for positive values or resets it to zero
  * after the last migration step has finished.
  *
- * @param int $val Positive to advance the stage, zero to reset it.
+ * @param int $val Positive to advance by one stage, zero to reset.
  * @return void
  */
-function setUpdatePart($val = 1)
+function setUpdatePart(int $val = 1): void
 {
-	$option      = 'com_sportsmanagement';
-	$app         = SportsManagementAdministratorApplicationResolver::resolve();
-	$update_part = $app->getUserState($option . 'update_part');
-
-	if ($val != 0)
-	{
-		if ($update_part == '')
-		{
-			$update_part = 1;
-		}
-		else
-		{
-			$update_part++;
-		}
-	}
-	else
-	{
-		$update_part = 0;
-	}
-
-	$app->setUserState($option . 'update_part', $update_part);
+    $app = SportsManagementAdministratorApplicationResolver::resolve();
+    $stage = $val === 0 ? 0 : min(2, getUpdatePart() + 1);
+    $app->setUserState('com_sportsmanagementupdate_part', $stage);
 }
 
 /**
@@ -144,9 +129,12 @@ function ImportTables()
 
 	$imports = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $option . '/sql/install.mysql.utf8.sql');
 
-  $queries1      = $db->splitSql($imports);
-  //echo "<span style='color:orange; '>" . 'queries1<pre>'.print_r($queries1,true).'</pre>' . '</span>';
-  //echo "<span style='color:orange; '>" . 'imports<pre>'.print_r($imports,true).'</pre>' . '</span>';
+    if (!is_string($imports) || trim($imports) === '') {
+        throw new \RuntimeException('SportsManagement SQL installation schema is missing.', 500);
+    }
+
+    // The legacy installer below still parses its SQL template manually.
+    // Do not call the unused, potentially unavailable DatabaseDriver::splitSql().
   
   
   
@@ -638,7 +626,22 @@ if (getUpdatePart() == $totalUpdateParts)
 }
 else
 {
-	echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';location.reload(true)" value="';
-	echo Text::sprintf('Click here to do step %1$s of %2$s steps to finish the update.', getUpdatePart() + 1, $totalUpdateParts);
-	echo '" />';
+    // The previous reload(true) button converted the second stage to a GET.
+    // Requiring a new explicit POST with its own CSRF token keeps the second
+    // schema migration stage reachable without relaxing the write guards.
+    echo '<form method="post" id="adminForm" action="">';
+    echo '<input type="hidden" name="run_update" value="1">';
+    echo '<button class="btn btn-warning" type="submit">';
+    echo htmlspecialchars(
+        Text::sprintf(
+            'Click here to do step %1$s of %2$s steps to finish the update.',
+            getUpdatePart() + 1,
+            $totalUpdateParts
+        ),
+        ENT_QUOTES | ENT_SUBSTITUTE,
+        'UTF-8'
+    );
+    echo '</button>';
+    echo HTMLHelper::_('form.token');
+    echo '</form>';
 }
