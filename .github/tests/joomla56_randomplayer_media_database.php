@@ -64,6 +64,7 @@ namespace {
     $class = \Diddipoeler\Module\SportsManagementRandomPlayer\Site\Helper\RandomPlayerHelper::class;
     $helper = new $class();
     $selector = new \ReflectionMethod($class, 'nonNegativeSelector');
+    $databaseChoice = new \ReflectionMethod($class, 'databaseSelector');
     $media = new \ReflectionMethod($class, 'mediaUrl');
     $picture = new \ReflectionMethod($class, 'picture');
 
@@ -74,6 +75,19 @@ namespace {
     ] as [$raw, $expected]) {
         if ($selector->invoke(null, $raw) !== $expected) {
             throw new \RuntimeException('Random Player malformed database selector accepted.');
+        }
+    }
+
+    // Generic nonnegative settings can exceed one; a database mode cannot.
+    foreach ([
+        [0, 0], [1, 1], ['0', 0], ['1', 1], ['0000', 0], ['0001', 1],
+        [2, null], ['2', null], [7, null], ['0007', null],
+        [-1, null], [true, null], [false, null], [['1'], null],
+        ['1junk', null], ['1.0', null], [' 1', null],
+        [PHP_INT_MAX . '0', null],
+    ] as [$raw, $expected]) {
+        if ($databaseChoice->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Random Player unsupported database mode accepted.');
         }
     }
 
