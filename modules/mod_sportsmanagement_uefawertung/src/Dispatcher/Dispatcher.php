@@ -25,7 +25,10 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Prepare seasonal UEFA coefficient rankings for the frontend module.
      *
-     * Retrieves ranking data from the helper through Joomla's database service, normalises empty season and ranking collections, and registers HTML styles.
+     * Retrieves ranking data through Joomla's database service and normalises
+     * absent season and ranking collections for the frontend template.
+     * For HTML output it checks the shared WebAssetManager before registering
+     * the module stylesheet, so multiple module instances reuse one asset.
      *
      * @return array|false Layout data or false if rendering is skipped.
      * @throws \RuntimeException If the site application or database is unavailable.
