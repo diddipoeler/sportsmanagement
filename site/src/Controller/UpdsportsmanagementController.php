@@ -24,8 +24,10 @@ final class UpdsportsmanagementController extends BaseController
      * Handle a CSRF-protected frontend update for the sample component record.
      *
      * Verifies the POST token and Joomla component edit permission, requires
-     * the native update model, then displays the historical success or
-     * failure message after attempting the authorised database mutation.
+     * the native update model through Joomla's MVC factory, then displays
+     * the historical success or failure message after the authorised write.
+     * An unavailable or incorrect factory result produces a controlled
+     * error rather than constructing a form model without Joomla's services.
      *
      * @return bool Whether the sample record was updated.
      * @throws RuntimeException When the token, identity or model is invalid.
@@ -61,7 +63,15 @@ final class UpdsportsmanagementController extends BaseController
             throw new RuntimeException('SportsManagement native Updsportsmanagement model could not be loaded.', 500);
         }
 
-        $updated = (new UpdsportsmanagementModel())->updItem((array) $data);
+        // Models must be created by Joomla's MVC factory so the configured
+        // database, form and application services are injected consistently.
+        $model = $this->getModel('Updsportsmanagement');
+
+        if (!$model instanceof UpdsportsmanagementModel) {
+            throw new RuntimeException('SportsManagement native updater model is unavailable.', 500);
+        }
+
+        $updated = $model->updItem((array) $data);
 
         echo $updated
             ? '<h2>Updated Greeting has been saved</h2>'
