@@ -156,8 +156,11 @@ final class PredictionusersController extends BaseController
     /**
      * Build a member page URL from the selected prediction context.
      *
-     * Reads game, project, group and round from the model and uses
-     * Joomla's integer-filtered selected member and database inputs.
+     * Reads game, project, group and round from the model. The posted
+     * member selector is validated as a complete positive decimal identifier
+     * before routing, instead of accepting PHP/Joomla partial integer casts.
+     * Invalid or overflowing member selections retain the model's selected
+     * member. The database selector continues to use Joomla input filtering.
      *
      * @param PredictionusersModel $model Source of selection data.
      * @return string Canonical member URL.
@@ -168,13 +171,50 @@ final class PredictionusersController extends BaseController
 
         return PredictionRouteHelper::member(
             $model->getPredictionGameId(),
-            $input->post->getInt('uid', $model->getSelectedMemberNumericId()),
+            self::memberSelectionId($input->post->get('uid', null, 'raw'), $model->getSelectedMemberNumericId()),
             null,
             $model->getProjectId(),
             $model->getGroupId(),
             $model->getRoundId(),
             $input->getInt('cfg_which_database', 0)
         );
+    }
+
+    /**
+     * Parse a selected prediction-member ID from a legacy frontend form.
+     *
+     * Accepts positive integer IDs and complete decimal strings, including
+     * zero-padded values used in old selection lists. Nested request values,
+     * booleans, negative numbers, floating-point values, suffixes and numbers
+     * above PHP_INT_MAX are rejected. Invalid input retains the model's
+     * existing member selection instead of switching to an unintended ID.
+     *
+     * @param mixed $value Unfiltered POST value for the member selector.
+     * @param int $fallback Previously selected member identifier.
+     * @return int Valid positive member ID, or the nonnegative fallback.
+     */
+    private static function memberSelectionId(mixed $value, int $fallback): int
+    {
+        $fallback = max(0, $fallback);
+
+        if (is_int($value)) {
+            return $value > 0 ? $value : $fallback;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return $fallback;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return $fallback;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? $fallback : $id;
     }
 
     /**
