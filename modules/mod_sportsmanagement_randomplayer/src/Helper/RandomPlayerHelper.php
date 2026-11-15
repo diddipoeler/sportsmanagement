@@ -41,7 +41,7 @@ final class RandomPlayerHelper
             return [];
         }
 
-        $databaseSelector = self::nonNegativeSelector($params->get('cfg_which_database', 0));
+        $databaseSelector = self::databaseSelector($params->get('cfg_which_database', 0));
 
         // Invalid external database selectors must not silently select a
         // different connection or coerce arrays to integers under PHP 8.
@@ -392,13 +392,37 @@ final class RandomPlayerHelper
     }
 
     /**
-     * Validate the nonnegative Joomla database selector without integer casts.
+     * Validate the two database modes supported by the Joomla 5/6 resolver.
+     *
+     * Accepts only zero (Joomla) and one (external), including zero-padded
+     * legacy choices. Rejects other values rather than routing them to an
+     * unintended connection or coercing malformed module configuration.
+     *
+     * @param mixed $value Raw Random Player database configuration.
+     * @return int|null Supported mode, or null for an invalid selection.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value === 0 || $value === 1 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^0*([01])$/D', $value, $matches) !== 1) {
+            return null;
+        }
+
+        return (int) $matches[1];
+    }
+
+    /**
+     * Validate nonnegative module options without lossy integer casts.
      *
      * Rejects booleans, arrays, partial numbers and overflows while supporting
      * zero-padded legacy decimal settings and the default database zero.
      *
-     * @param mixed $value Raw module database selection.
-     * @return int|null Valid nonnegative selector or null for invalid input.
+     * @param mixed $value Name format or other nonnegative option.
+     * @return int|null Nonnegative option, or null if malformed.
      */
     private static function nonNegativeSelector(mixed $value): ?int
     {
