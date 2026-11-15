@@ -15,6 +15,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\InstallSchemaStatementParser;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 
 // The standalone update entry point can run before component autoloading.
 if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
@@ -25,6 +29,23 @@ if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
     }
 
     require_once $applicationResolverFile;
+}
+
+// Older migration pages can be included before the administrator PSR-4 map
+// is registered. Resolve these classes from fixed component paths.
+foreach ([
+    SportsManagementDatabaseResolver::class =>
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
+    InstallSchemaStatementParser::class =>
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/InstallSchemaStatementParser.php',
+] as $helperClass => $helperFile) {
+    if (!class_exists($helperClass)) {
+        if (!is_file($helperFile)) {
+            throw new \RuntimeException('SportsManagement database upgrade dependency is missing.', 500);
+        }
+
+        require_once $helperFile;
+    }
 }
 
 $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -124,8 +145,15 @@ function setUpdatePart(int $val = 1): void
  */
 function ImportTables()
 {
-	$db     = sportsmanagementHelper::getDBConnection();
-	$option = 'com_sportsmanagement';
+    /** @var DatabaseInterface $defaultDatabase */
+    $defaultDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+
+    if (!$defaultDatabase instanceof DatabaseInterface) {
+        throw new \RuntimeException('Joomla database service is unavailable.', 500);
+    }
+
+    $db = (new SportsManagementDatabaseResolver())->resolve(null, $defaultDatabase);
+    $option = 'com_sportsmanagement';
 
 	$imports = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $option . '/sql/install.mysql.utf8.sql');
 
@@ -133,16 +161,10 @@ function ImportTables()
         throw new \RuntimeException('SportsManagement SQL installation schema is missing.', 500);
     }
 
-    // The legacy installer below still parses its SQL template manually.
-    // Do not call the unused, potentially unavailable DatabaseDriver::splitSql().
-  
-  
-  
-	$imports = preg_replace("%/\*(.*)\*/%Us", '', $imports);
-	$imports = preg_replace("%^--(.*)\n%mU", '', $imports);
-	$imports = preg_replace("%^$\n%mU", '', $imports);
+    // Keep quoted SQL defaults and comment contents intact: a semicolon
+    // inside a string must never be interpreted as a second SQL command.
+    $imports = InstallSchemaStatementParser::split($imports);
 
-	$imports  = explode(';', $imports);
 	$cntPanel = 0;
 
 	// $slidesOptions = '';
