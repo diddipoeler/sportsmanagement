@@ -26,6 +26,11 @@ use Joomla\Filesystem\Folder;
 
 class sportsmanagementControllerjsminlinehockey extends AdminController
 {
+    /**
+     * Import an Inline Hockey project's match records and synchronise club logos.
+     * Checks the CSRF token, reads request and component settings, calls the native match and logo services, and redirects with a translated result.
+     * @return void Redirects to the project list.
+     */
     public function getmatches(): void
     {
         $this->checkToken();
@@ -69,6 +74,11 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=projects', $message);
     }
 
+    /**
+     * Import clubs from the Inline Hockey API.
+     * Checks the CSRF token, loads configured credentials, delegates to the club importer and redirects to the Joomla club list.
+     * @return void Redirects after the import.
+     */
     public function getclubs(): void
     {
         $this->checkToken();
@@ -88,6 +98,11 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=clubs', $message);
     }
 
+    /**
+     * Import or update Inline Hockey team records.
+     * Validates the request token, uses configured credentials and delegates synchronization to the namespaced import service.
+     * @return void Redirects to the team list.
+     */
     public function getteams(): void
     {
         $this->checkToken();
@@ -107,6 +122,11 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=teams', $message);
     }
 
+    /**
+     * Import or update Inline Hockey player records.
+     * Checks the request token, invokes the native player importer and logs any service failure before redirecting.
+     * @return void Redirects to the player list.
+     */
     public function getplayers(): void
     {
         $this->checkToken();
@@ -126,6 +146,11 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         $this->setRedirect('index.php?option=com_sportsmanagement&view=players', $message);
     }
 
+    /**
+     * Stage an uploaded XLS, ICS or ZIP import source for processing.
+     * Checks the request token and upload metadata, prepares the Joomla temporary directory and stages a supported import file; errors are logged.
+     * @return void
+     */
     public function save(): void
     {
         $this->checkToken();
@@ -212,11 +237,21 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         }
     }
 
+    /**
+     * Create the namespaced club and team import service.
+     * Resolves the Joomla database connection and constructs the API-backed importer for clubs, teams and players.
+     * @return InlineHockeyClubTeamImportService Configured importer.
+     */
     private function clubTeamImporter(): InlineHockeyClubTeamImportService
     {
         return new InlineHockeyClubTeamImportService($this->database(), new InlineHockeyApiClient());
     }
 
+    /**
+     * Create the match import service for the selected project.
+     * Shares one Joomla database connection between the native project resolver and match importer.
+     * @return InlineHockeyMatchImportService Configured match importer.
+     */
     private function matchImporter(): InlineHockeyMatchImportService
     {
         $db = $this->database();
@@ -228,6 +263,11 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         );
     }
 
+    /**
+     * Create the Inline Hockey club-logo synchronisation service.
+     * Uses the Joomla database and project service with a new remote API client.
+     * @return InlineHockeyClubLogoService Configured logo importer.
+     */
     private function logoImporter(): InlineHockeyClubLogoService
     {
         $db = $this->database();
@@ -239,6 +279,11 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         );
     }
 
+    /**
+     * Get the Joomla 5/6 database service for imports.
+     * Resolves the DatabaseInterface from the active application's service container instead of legacy database factories.
+     * @return DatabaseInterface Active database driver.
+     */
     private function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $db */
@@ -247,6 +292,12 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
         return $db;
     }
 
+    /**
+     * Log a translated message describing a failed upload.
+     * Converts the supplied Joomla language key into a warning used by the upload workflow.
+     * @param string $languageKey Joomla translation key.
+     * @return void
+     */
     private function logUploadWarning(string $languageKey): void
     {
         Log::add(Text::_($languageKey), Log::WARNING, 'jsmerror');

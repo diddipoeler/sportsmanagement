@@ -29,6 +29,11 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
 
     public string $projectlink = '';
 
+    /**
+     * Initialise the selected project's OpenLigaDB preview.
+     * Finds the project ID in request or Joomla state, retrieves the native match preview and summary, and logs remote failures without disclosing details.
+     * @return void Updates the view's preview properties.
+     */
     public function init(): void
     {
         $this->projectid = $this->jinput->getInt('pid', 0);
@@ -55,6 +60,11 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
         }
     }
 
+    /**
+     * Prepare the OpenLigaDB preview administrator toolbar.
+     * Sets the translated title, adds a back link to projects and preserves the parent's toolbar configuration.
+     * @return void
+     */
     protected function addToolbar(): void
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_ADMIN_JSMOPENLIGADB_TITLE');
@@ -62,6 +72,11 @@ class sportsmanagementViewjsmopenligadb extends sportsmanagementView
         parent::addToolbar();
     }
 
+    /**
+     * Create the namespaced OpenLigaDB preview service.
+     * Loads the Joomla DatabaseInterface through dependency injection and passes it to the native preview implementation.
+     * @return OpenLigaDbPreviewService Configured remote preview service.
+     */
     private function previewService(): OpenLigaDbPreviewService
     {
         /** @var DatabaseInterface $db */

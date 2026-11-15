@@ -15,6 +15,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class sportsmanagementViewjsmhandball extends sportsmanagementView
 {
+    /**
+     * Initialise the selected project for the Handball extension view.
+     * Reads the project ID from Joomla input and falls back to the persisted component project selection.
+     * @return void Updates the selected project ID.
+     */
     public function init(): void
     {
         $this->projectid = $this->jinput->getInt('pid', 0);
@@ -24,6 +29,11 @@ class sportsmanagementViewjsmhandball extends sportsmanagementView
         }
     }
 
+    /**
+     * Prepare the Handball extension's administrator toolbar.
+     * Sets the translated title, provides navigation to the projects screen and invokes the parent toolbar setup.
+     * @return void
+     */
     protected function addToolbar(): void
     {
         $this->title = Text::_('COM_SPORTSMANAGEMENT_JSMHANDBALL_TITLE');

@@ -45,6 +45,14 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
     public $matches = [];
     public $projectteams = [];
 
+    /**
+     * Import matches and try to refresh their club logos.
+     * Uses the explicit or request project ID, resolves API credentials and delegates match and logo synchronization to native services.
+     * @param mixed $projectid SportsManagement project ID or zero for input lookup.
+     * @param string $username Optional provider username.
+     * @param string $password Optional provider password.
+     * @return int Imported or updated match count.
+     */
     public function getmatches($projectid = 0, $username = '', $password = ''): int
     {
         $input = $this->application()->getInput();
@@ -80,11 +88,25 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         return $changed;
     }
 
+    /**
+     * Resolve a project's external Inline Hockey match URL.
+     * Uses the native project service with the Joomla database to look up the associated provider link.
+     * @param mixed $projectid SportsManagement project ID.
+     * @return string Matching provider URL.
+     */
     public function getMatchLink($projectid): string
     {
         return (new InlineHockeyProjectService($this->database()))->getMatchLink((int) $projectid);
     }
 
+    /**
+     * Find or create the project-team association for a season.
+     * Delegates association management to the native project service instead of duplicating SQL in the compatibility model.
+     * @param mixed $team_id Local team ID.
+     * @param mixed $project_id Local project ID.
+     * @param mixed $season_id Season ID.
+     * @return int Project-team ID.
+     */
     public function checkProjectTeam($team_id, $project_id, $season_id): int
     {
         return (new InlineHockeyProjectService($this->database()))->ensureProjectTeam(
@@ -94,6 +116,11 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Import clubs, teams or players according to the selected action.
+     * Reads the action from Joomla input, resolves API credentials and forwards the operation to the appropriate native importer.
+     * @return int Number of imported or changed records.
+     */
     public function getClubs(): int
     {
         $input = $this->application()->getInput();
@@ -111,12 +138,23 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         };
     }
 
+    /**
+     * Retain the inactive legacy spreadsheet-processing entry point.
+     * This method intentionally performs no work because Excel parsing was removed from the extension.
+     * @return void
+     */
     public function getdata(): void
     {
         // Excel processing was removed from the extension years ago.
     }
 
-    /** @return array{0:string,1:string} */
+    /**
+     * Select authentication credentials for the Inline Hockey importer.
+     * Prefers explicitly supplied credentials and otherwise reads the component's stored API username and password.
+     * @param string $username Optional username override.
+     * @param string $password Optional password override.
+     * @return array{0:string,1:string} Effective username and password.
+     */
     private function credentials(string $username = '', string $password = ''): array
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -132,6 +170,11 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         return [$username, $password];
     }
 
+    /**
+     * Resolve a typed database service for legacy extension callers.
+     * Retrieves DatabaseInterface from the current Joomla application dependency injection container.
+     * @return DatabaseInterface Joomla database connection.
+     */
     private function database(): DatabaseInterface
     {
         /** @var DatabaseInterface $db */
@@ -140,6 +183,12 @@ class sportsmanagementModeljsminlinehockey extends BaseDatabaseModel
         return $db;
     }
 
+    /**
+     * Retrieve and validate the Joomla frontend application.
+     * Uses the namespaced application resolver and rejects clients other than the Joomla site application.
+     * @return \Joomla\CMS\Application\CMSApplicationInterface Valid site application.
+     * @throws \RuntimeException When the active client is not the frontend.
+     */
     private function application(): \Joomla\CMS\Application\CMSApplicationInterface
     {
         $app = SportsManagementSiteApplicationResolver::resolve();
