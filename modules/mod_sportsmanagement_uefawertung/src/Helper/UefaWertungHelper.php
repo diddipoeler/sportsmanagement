@@ -146,8 +146,9 @@ final class UefaWertungHelper
 
     /**
      * Resolve the human-readable season label for a UEFA ranking query.
-     * Looks up a single season by its bound numeric ID and trims the label
-     * before collecting ranking seasons and country points.
+     * Looks up a single season by its bound numeric ID. Only printable,
+     * bounded text labels are accepted before collecting ranking seasons;
+     * malformed database values cannot cause PHP 8 cast warnings.
      * @param DatabaseInterface $db Active SportsManagement database.
      * @param int $seasonId Requested season identifier.
      * @return string Season label, or an empty string when not found.
@@ -161,12 +162,15 @@ final class UefaWertungHelper
             ->bind(':seasonId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($query, 0, 1);
 
-        return trim((string) $db->loadResult());
+        return self::printableText($db->loadResult());
     }
 
     /**
      * Select up to five ranking seasons ending with the requested season label.
-     * Retrieves distinct available UEFA season names through a bound query, excludes empty values and returns the selected seasons in natural chronological order.
+     * Retrieves distinct available UEFA season names through a bound query.
+     * Skips malformed or oversized rows instead of casting arrays, objects
+     * and booleans to strings. Returns up to five printable season labels in
+     * natural chronological order.
      *
      * @param DatabaseInterface $db Selected SportsManagement database driver.
      * @param string $seasonName Upper season label boundary.
@@ -182,10 +186,25 @@ final class UefaWertungHelper
             ->group($db->quoteName('season'))
             ->order($db->quoteName('season') . ' DESC');
         $db->setQuery($query, 0, 5);
-        $seasons = array_values(array_filter(
-            array_map('strval', $db->loadColumn() ?: []),
-            static fn(string $value): bool => $value !== ''
-        ));
+        $rawSeasons = $db->loadColumn();
+
+        if (!is_array($rawSeasons)) {
+            return [];
+        }
+
+        $seasons = [];
+
+        foreach ($rawSeasons as $rawSeason) {
+            $season = self::printableText($rawSeason);
+
+            if ($season !== '' && !in_array($season, $seasons, true)) {
+                $seasons[] = $season;
+            }
+
+            if (count($seasons) === 5) {
+                break;
+            }
+        }
 
         sort($seasons, SORT_NATURAL);
 
@@ -193,8 +212,38 @@ final class UefaWertungHelper
     }
 
     /**
+     * Extract short, printable season and country labels from database rows.
+     *
+     * Accepts string and integer legacy season names, but not booleans or
+     * nested values. Oversized values and control bytes are discarded before
+     * they can be used as array keys, SQL season selectors or template text.
+     *
+     * @param mixed $value Imported name or season lookup result.
+     * @return string Trimmed printable text, or an empty string if malformed.
+     */
+    private static function printableText(mixed $value): string
+    {
+        if (!is_string($value) && !is_int($value)) {
+            return '';
+        }
+
+        $text = (string) $value;
+
+        if (strlen($text) > 128
+            || preg_match('/[\x00-\x1F\x7F]/', $text) === 1) {
+            return '';
+        }
+
+        return trim($text);
+    }
+
+    /**
      * Aggregate UEFA points by country across all selected ranking seasons.
-     * Loads per-country season scores, ignores countries missing a required season and sorts complete country totals descending with alphabetical ties.
+     * Loads per-country season scores and discards corrupt rows, nested or
+     * oversized labels, nonnumeric points and nonfinite numeric results.
+     * Countries missing a valid season are excluded rather than treating
+     * malformed points as zero. Complete totals are sorted descending with
+     * alphabetical ties.
      *
      * @param DatabaseInterface $db Selected SportsManagement database driver.
      * @param array<int,string> $seasons Chronologically selected UEFA coefficient seasons.
@@ -216,17 +265,36 @@ final class UefaWertungHelper
             ]);
         $db->setQuery($query);
 
+        $rawRows = $db->loadObjectList();
+
+        if (!is_array($rawRows)) {
+            return [];
+        }
+
         $countries = [];
 
-        foreach ($db->loadObjectList() ?: [] as $row) {
-            $country = trim((string) ($row->country ?? ''));
-            $season = trim((string) ($row->season ?? ''));
-
-            if ($country === '' || !in_array($season, $seasons, true)) {
+        foreach ($rawRows as $row) {
+            if (!is_object($row)) {
                 continue;
             }
 
-            $countries[$country][$season] = (float) ($row->points ?? 0);
+            $country = self::printableText($row->country ?? null);
+            $season = self::printableText($row->season ?? null);
+            $rawPoints = $row->points ?? null;
+
+            if ($country === '' || !in_array($season, $seasons, true)
+                || (!is_string($rawPoints) && !is_int($rawPoints) && !is_float($rawPoints))
+                || !is_numeric($rawPoints)) {
+                continue;
+            }
+
+            $points = (float) $rawPoints;
+
+            if (!is_finite($points)) {
+                continue;
+            }
+
+            $countries[$country][$season] = $points;
         }
 
         $rankings = [];

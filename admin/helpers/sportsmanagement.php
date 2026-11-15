@@ -24,7 +24,6 @@ use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -4215,22 +4214,17 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
-	 * return true if mootools upgrade is enabled
+	 * Report the obsolete Joomla 1.5 MooTools compatibility mode.
 	 *
-	 * @return boolean
+	 * Joomla 5 and 6 do not ship the Joomla 1.5 system/mtupgrade plugin.
+	 * Preserve this legacy method for template overrides without loading
+	 * removed frontend JavaScript compatibility plugins.
+	 *
+	 * @return bool Always false on supported Joomla installations.
 	 */
-	function isMootools12()
+	function isMootools12(): bool
 	{
-		$version = new Version;
-
-		if ($version->RELEASE == '1.5' && $version->DEV_LEVEL >= 19 && PluginHelper::isEnabled('system', 'mtupgrade'))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	/**
@@ -4295,35 +4289,75 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
-	 * sportsmanagementHelper::time_to_sec()
+	 * Convert a legacy HH:MM:SS interval to a number of whole seconds.
 	 *
-	 * @param   mixed  $time
+	 * Accepts hours longer than one digit, but requires two-digit minutes
+	 * and seconds from 00 to 59. Nested values, time suffixes, negative
+	 * durations and integer overflows return zero instead of producing
+	 * PHP 8 warnings or misinterpreting imported match-time strings.
 	 *
-	 * @return
+	 * @param mixed $time Legacy elapsed-time value.
+	 * @return int Nonnegative elapsed seconds, or zero if invalid.
 	 */
-	public static function time_to_sec($time)
+	public static function time_to_sec($time): int
 	{
-		$hours   = substr($time, 0, -6);
-		$minutes = substr($time, -5, 2);
-		$seconds = substr($time, -2);
+		if (!is_string($time) || strlen($time) > 64
+			|| preg_match('/^([0-9]+):([0-5][0-9]):([0-5][0-9])$/D', $time, $parts) !== 1) {
+			return 0;
+		}
 
-		return $hours * 3600 + $minutes * 60 + $seconds;
+		$digits = ltrim($parts[1], '0');
+		$digits = $digits === '' ? '0' : $digits;
+		$hours = filter_var($digits, FILTER_VALIDATE_INT, [
+			'options' => ['min_range' => 0, 'max_range' => intdiv(PHP_INT_MAX, 3600)],
+		]);
+
+		if ($hours === false) {
+			return 0;
+		}
+
+		$tail = (int) $parts[2] * 60 + (int) $parts[3];
+
+		if ($hours > intdiv(PHP_INT_MAX - $tail, 3600)) {
+			return 0;
+		}
+
+		return $hours * 3600 + $tail;
 	}
 
 	/**
-	 * sportsmanagementHelper::sec_to_time()
+	 * Format a nonnegative whole-second interval as elapsed HH:MM:SS.
 	 *
-	 * @param   mixed  $seconds
+	 * Preserves historical unbounded hours and zero-padded minutes and
+	 * seconds. Rejects malformed, nested, negative or overflowing values
+	 * with a stable zero interval, rather than using PHP 8 implicit casts.
 	 *
-	 * @return
+	 * @param mixed $seconds Whole seconds as an integer or decimal string.
+	 * @return string Colon-separated hours, minutes and seconds.
 	 */
-	function sec_to_time($seconds)
+	function sec_to_time($seconds): string
 	{
-		$hours   = floor($seconds / 3600);
-		$minutes = floor($seconds % 3600 / 60);
-		$seconds = $seconds % 60;
+		if (!is_int($seconds) && (!is_string($seconds) || strlen($seconds) > 64
+			|| preg_match('/^[0-9]+$/D', $seconds) !== 1)) {
+			return '0:00:00';
+		}
 
-		return sprintf("%d:%02d:%02d", $hours, $minutes, $seconds);
+		if (is_string($seconds)) {
+			$digits = ltrim($seconds, '0');
+			$seconds = filter_var($digits === '' ? '0' : $digits, FILTER_VALIDATE_INT, [
+				'options' => ['min_range' => 0],
+			]);
+		}
+
+		if ($seconds === false || $seconds < 0) {
+			return '0:00:00';
+		}
+
+		return sprintf('%d:%02d:%02d',
+			intdiv($seconds, 3600),
+			intdiv($seconds % 3600, 60),
+			$seconds % 60
+		);
 	}
 
 }

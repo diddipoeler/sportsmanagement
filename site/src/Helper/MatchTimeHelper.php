@@ -30,7 +30,10 @@ final class MatchTimeHelper
      * Non-scalar legacy values and invalid dates fall back to an unavailable
      * time instead of causing PHP 8 conversion errors.
      * Invalid break and live-status text settings also use empty labels
-     * rather than attempting to cast arrays to strings.
+     * rather than attempting to cast arrays to strings. Match period counts,
+     * duration and halftime configuration are bounded before arithmetic:
+     * malformed historical values cannot generate PHP 8 warnings or force
+     * excessive iterations while building live labels.
      * @param object $game Match record with a match_date field.
      * @param array<string,mixed> $config Match time presentation settings.
      * @param array<string,mixed> $overallConfig Global component date options.
@@ -74,16 +77,22 @@ final class MatchTimeHelper
         }
 
         $now = time();
-        $elapsedMinutes = ((int) ($project->halftime ?? 0) * max(0, (int) ($project->game_parts ?? 1) - 1))
-            + (int) ($project->game_regular_time ?? 0);
+        $parts = self::boundedMinutes($project->game_parts ?? 1, 1, 12);
+        $regularTime = self::boundedMinutes($project->game_regular_time ?? 0, 0, 1440);
+        $halftime = self::boundedMinutes($project->halftime ?? 0, 0, 240);
+        $elapsedMinutes = ($halftime * max(0, $parts - 1)) + $regularTime;
+        $homeScore = $game->team1_result ?? null;
+        $awayScore = $game->team2_result ?? null;
 
         if (!empty($project->allow_add_time)
-            && ($game->team1_result ?? null) == ($game->team2_result ?? null)) {
-            $elapsedMinutes += (int) ($project->add_time ?? 0);
+            && is_numeric($homeScore) && is_numeric($awayScore)
+            && (float) $homeScore === (float) $awayScore) {
+            $elapsedMinutes += self::boundedMinutes($project->add_time ?? 0, 0, 240);
         }
 
         $matchStamp = $timestamp;
-        if ($matchStamp === false || $now < $matchStamp || $now > $matchStamp + ($elapsedMinutes * 60)) {
+        if ($regularTime === 0 || $elapsedMinutes === 0
+            || $now < $matchStamp || $now > $matchStamp + ($elapsedMinutes * 60)) {
             return $output;
         }
 
@@ -115,6 +124,40 @@ final class MatchTimeHelper
     }
 
     /**
+     * Validate one bounded, nonnegative match duration configuration value.
+     *
+     * Accepts zero-padded decimal settings from legacy projects and clamps
+     * complete valid integers to the supported maximum. Invalid arrays,
+     * booleans, negative numbers, decimals, partial text and overflows use
+     * the explicit fallback instead of PHP 8 implicit numeric conversion.
+     *
+     * @param mixed $value Raw project duration or part-count setting.
+     * @param int $fallback Value for invalid or absent configuration.
+     * @param int $maximum Maximum supported positive duration or count.
+     * @return int Valid bounded duration or count.
+     */
+    private static function boundedMinutes(mixed $value, int $fallback, int $maximum): int
+    {
+        if (!is_int($value) && (!is_string($value) || $value === ''
+            || strlen($value) > 64 || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return $fallback;
+        }
+
+        if (is_string($value)) {
+            $digits = ltrim($value, '0');
+            $value = filter_var($digits === '' ? '0' : $digits, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 0],
+            ]);
+        }
+
+        if ($value === false || $value < 0) {
+            return $fallback;
+        }
+
+        return min($maximum, $value);
+    }
+
+    /**
      * Extract a plain-text live-match label from optional configuration.
      *
      * Accepts strings only and returns a trimmed label with a maximum length
@@ -143,9 +186,9 @@ final class MatchTimeHelper
     private static function actualTime(int $now, int $matchStamp, array $config, object $project): string
     {
         $goneSinceBegin = intdiv(max(0, $now - $matchStamp), 60);
-        $gameParts = max(1, (int) ($project->game_parts ?? 1));
-        $partsTime = intdiv(max(0, (int) ($project->game_regular_time ?? 0)), $gameParts);
-        $halfTime = max(0, (int) ($project->halftime ?? 0));
+        $gameParts = max(1, self::boundedMinutes($project->game_parts ?? 1, 1, 12));
+        $partsTime = intdiv(self::boundedMinutes($project->game_regular_time ?? 0, 0, 1440), $gameParts);
+        $halfTime = self::boundedMinutes($project->halftime ?? 0, 0, 240);
         $extraPart = !empty($project->allow_add_time) ? 1 : 0;
         $text = Text::_('COM_SPORTSMANAGEMENT_RESULTS_LIVE_WRONG');
 
