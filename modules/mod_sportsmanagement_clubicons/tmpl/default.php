@@ -24,6 +24,45 @@ $escape = static fn (mixed $value): string => htmlspecialchars(
     ENT_QUOTES | ENT_SUBSTITUTE,
     'UTF-8'
 );
+/**
+ * Allow only internal Joomla paths and externally hosted HTTP(S) URLs.
+ *
+ * Ranking rows can include historic or externally supplied club website
+ * fields. Escaping attributes does not protect against javascript: links.
+ *
+ * @param mixed $value Candidate club website or logo URL.
+ * @return string Renderable URL or an empty string if unsafe.
+ */
+$safeUrl = static function (mixed $value): string {
+    if (!is_string($value)) {
+        return '';
+    }
+
+    $url = trim($value);
+
+    if ($url === '' || strlen($url) > 4096
+        || preg_match('/[\x00-\x20\x7F]/', $url)
+        || str_contains($url, '\\')
+        || str_starts_with($url, '//')) {
+        return '';
+    }
+
+    $parts = parse_url($url);
+
+    if (!is_array($parts)) {
+        return '';
+    }
+
+    $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+
+    if ($scheme !== '' && (!in_array($scheme, ['http', 'https'], true)
+        || empty($parts['host']) || isset($parts['user']) || isset($parts['pass']))) {
+        return '';
+    }
+
+    return $url;
+};
+
 $tableClass = $escape($params->get('table_class', 'table'));
 $moduleClass = $escape($params->get('moduleclass_sfx', ''));
 $newWindow = (int) $params->get('teamlink', 0) === 5 && (int) $params->get('newwindow', 0) === 1;
@@ -42,14 +81,14 @@ foreach (is_array($ranking ?? null) ? $ranking : [] as $row) {
         continue;
     }
     $projectTeamId = (int) ($row->projectteamid ?? 0);
-    if ($projectTeamId > 0 && isset($teams[$projectTeamId])) {
+    if ($projectTeamId > 0 && is_array($teams[$projectTeamId] ?? null)) {
         $displayRows[] = $row;
     }
 }
 $displayCount = count($displayRows);
 ?>
 <?php if ($displayCount > 0) : ?>
-<div class="mod-sportsmanagement-clubicons <?php echo $moduleClass; ?>" id="<?php echo $escape(($module->module ?? 'mod_sportsmanagement_clubicons') . '-' . (int) ($module->id ?? 0)); ?>">
+<div class="mod-sportsmanagement-clubicons <?php echo $moduleClass; ?>" id="<?php echo $escape((is_string($module->module ?? null) ? $module->module : 'mod_sportsmanagement_clubicons') . '-' . (int) ($module->id ?? 0)); ?>">
     <table id="clubicons<?php echo (int) $module->id; ?>" class="<?php echo $tableClass; ?>">
         <tbody>
         <tr>
@@ -58,19 +97,19 @@ $displayCount = count($displayRows);
                 <?php
                 $projectTeamId = (int) ($row->projectteamid ?? 0);
                 $team = $teams[$projectTeamId];
-                $link = is_string($team['link'] ?? null) ? $team['link'] : '';
-                $logoUrl = is_string($team['logo_url'] ?? null) ? $team['logo_url'] : '';
+                $link = $safeUrl($team['link'] ?? '');
+                $logoUrl = $safeUrl($team['logo_url'] ?? '');
                 $name = is_string($team['name'] ?? null) ? $team['name'] : '';
                 $column++;
                 ?>
                 <td class="<?php echo $alignment; ?>">
                     <?php if ($link !== '') : ?>
-                        <a href="<?php echo htmlspecialchars($link, ENT_QUOTES, 'UTF-8'); ?>"<?php echo $newWindow ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
+                        <a href="<?php echo $escape($link); ?>"<?php echo $newWindow ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
                     <?php endif; ?>
                     <?php if ($logoUrl !== '') : ?>
-                        <img class="img-zoom" src="<?php echo htmlspecialchars($logoUrl, ENT_QUOTES, 'UTF-8'); ?>"
-                             alt="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>"
-                             title="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>" loading="lazy">
+                        <img class="img-zoom" src="<?php echo $escape($logoUrl); ?>"
+                             alt="<?php echo $escape($name); ?>"
+                             title="<?php echo $escape($name); ?>" loading="lazy">
                     <?php endif; ?>
                     <?php if ($link !== '') : ?></a><?php endif; ?>
                 </td>
