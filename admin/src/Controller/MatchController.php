@@ -140,8 +140,8 @@ final class MatchController extends SportsManagementFormController
 
     /**
      * Copy source fixtures into the selected project and round.
-     * Checks the POST token and create permission and uses the chosen
-     * component database for the selected fixtures.
+     * Checks the POST token and create permission and validates the raw
+     * database selector before copying fixtures from the selected connection.
      * @return bool Whether the copy operation succeeded.
      */
     public function copyfrom()
@@ -172,10 +172,7 @@ final class MatchController extends SportsManagementFormController
         try {
             /** @var DatabaseInterface $joomlaDatabase */
             $joomlaDatabase = self::joomlaDatabase();
-            $databaseSelector = $input->getInt(
-                'cfg_which_database',
-                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-            );
+            $databaseSelector = $this->selectedMatchDatabaseSelector();
             $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
 
             if ($addType === 1) {
@@ -348,7 +345,8 @@ final class MatchController extends SportsManagementFormController
 
     /**
      * Export selected matches to the configured Google Calendar.
-     * Checks the Joomla edit permission and POST token.
+     * Checks Joomla edit permission, the POST token and database selector
+     * before synchronising match data to an external calendar service.
      * @return bool Whether the export operation completed.
      */
     public function insertgooglecalendar()
@@ -375,10 +373,7 @@ final class MatchController extends SportsManagementFormController
         try {
             /** @var DatabaseInterface $joomlaDatabase */
             $joomlaDatabase = self::joomlaDatabase();
-            $databaseSelector = $input->getInt(
-                'cfg_which_database',
-                (int) $app->getUserState('com_sportsmanagement.cfg_which_database', 0)
-            );
+            $databaseSelector = $this->selectedMatchDatabaseSelector();
             $db = SportsManagementDatabaseResolver::resolve($joomlaDatabase, $databaseSelector);
             $synchronizer = new GoogleCalendarMatchSynchronizer($db);
             $synchronizer->synchronize($matchIds, $projectId, $calendarId);
@@ -612,6 +607,40 @@ final class MatchController extends SportsManagementFormController
         if ($identity === null || !$identity->authorise($permission, 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
+    }
+
+    /**
+     * Resolve a validated database choice for privileged match operations.
+     *
+     * Reads the unfiltered request selector, falling back to the stored
+     * administrator preference only when no request choice exists. Joomla's
+     * getInt() would silently convert malformed values such as "1junk" to
+     * external database mode 1. Reject such values before copying fixtures
+     * or synchronising Google Calendar. Only modes 0 and 1 are supported,
+     * including zero-padded legacy radio-button strings.
+     *
+     * @return int Joomla database mode zero or external database mode one.
+     * @throws \InvalidArgumentException When the selected mode is invalid.
+     */
+    private function selectedMatchDatabaseSelector(): int
+    {
+        $input = $this->app->getInput();
+        $requested = $input->get('cfg_which_database', null, 'raw');
+        $value = $requested ?? $this->app->getUserState(
+            'com_sportsmanagement.cfg_which_database',
+            0
+        );
+
+        if (is_int($value) && ($value === 0 || $value === 1)) {
+            return $value;
+        }
+
+        if (is_string($value) && strlen($value) <= 64
+            && preg_match('/^0*([01])$/D', $value, $matches) === 1) {
+            return (int) $matches[1];
+        }
+
+        throw new \InvalidArgumentException('Invalid SportsManagement match database selector.', 400);
     }
 
     /**
