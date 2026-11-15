@@ -34,15 +34,21 @@ final class EditprojectteamController extends FormController
     }
 
     /**
-     * Retain the legacy project-team submit task without writing records.
+     * Validate and acknowledge the legacy project-team submission task.
      *
-     * Actual changes must use save(), which validates the form token and
-     * edit authorisation before calling the project-team model.
+     * Although the task does not itself write records, it remains a public
+     * frontend form entry point. Require Joomla's POST CSRF token and
+     * component edit authorisation before accepting the request. The native
+     * save() task continues to handle all project-team persistence.
      *
-     * @return bool Always true.
+     * @return bool True once both required security checks pass.
+     * @throws \RuntimeException If the current identity cannot edit.
      */
-    public function submit()
+    public function submit(): bool
     {
+        $this->checkToken('post');
+        $this->assertEditorPermission();
+
         return true;
     }
 
@@ -144,15 +150,18 @@ final class EditprojectteamController extends FormController
     /**
      * Check whether the Joomla identity may edit project-team records.
      *
-     * Requires core.edit for com_sportsmanagement independently of
-     * successful CSRF verification so unauthorised users cannot write.
+     * Requires an available Joomla identity with core.edit for
+     * com_sportsmanagement independently of successful CSRF verification.
+     * Denies missing identities instead of calling a method on null.
      *
      * @return void
      * @throws \RuntimeException When component edit permission is missing.
      */
     private function assertEditorPermission(): void
     {
-        if (!$this->app->getIdentity()->authorise('core.edit', 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
     }
