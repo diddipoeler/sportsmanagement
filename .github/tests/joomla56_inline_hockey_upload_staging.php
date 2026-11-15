@@ -114,32 +114,32 @@ namespace {
 
         file_put_contents($target, 'existing source');
         createImportZip($zipPath, ['../escape.php' => '<?php echo 1;', 'fixtures.xls' => 'new data']);
-        assertStageRejected(static fn (): void => $class::stage($zipPath, 'zip', $target), 'path traversal');
+        assertStageRejected(static fn () => $class::stage($zipPath, 'zip', $target), 'path traversal');
 
         if (file_exists($sandbox . '/escape.php') || file_get_contents($target) !== 'existing source') {
             throw new \RuntimeException('ZIP traversal overwrote a file or previous import.');
         }
 
         createImportZip($zipPath, ['one.xls' => 'A', 'two.ics' => 'B']);
-        assertStageRejected(static fn (): void => $class::stage($zipPath, 'zip', $target), 'ambiguous ZIP');
+        assertStageRejected(static fn () => $class::stage($zipPath, 'zip', $target), 'ambiguous ZIP');
 
         if (file_get_contents($target) !== 'existing source') {
             throw new \RuntimeException('Ambiguous ZIP replaced an existing upload.');
         }
 
         createImportZip($zipPath, ['nested/fixtures.ics' => 'NESTED']);
-        assertStageRejected(static fn (): void => $class::stage($zipPath, 'zip', $target), 'nested source');
+        assertStageRejected(static fn () => $class::stage($zipPath, 'zip', $target), 'nested source');
 
         createImportZip($zipPath, ['fixtures.xls' => str_repeat('X', $class::MAX_IMPORT_BYTES + 1)]);
-        assertStageRejected(static fn (): void => $class::stage($zipPath, 'zip', $target), 'ZIP decompression bomb');
+        assertStageRejected(static fn () => $class::stage($zipPath, 'zip', $target), 'ZIP decompression bomb');
 
         if (file_get_contents($target) !== 'existing source') {
             throw new \RuntimeException('Oversized ZIP replaced the previous import.');
         }
 
         file_put_contents($source, 'plain source');
-        assertStageRejected(static fn (): void => $class::stage($source, 'php', $target), 'unsupported type');
-        assertStageRejected(static fn (): void => $class::stage($sandbox . '/missing.zip', 'zip', $target), 'missing file');
+        assertStageRejected(static fn () => $class::stage($source, 'php', $target), 'unsupported type');
+        assertStageRejected(static fn () => $class::stage($sandbox . '/missing.zip', 'zip', $target), 'missing file');
     } finally {
         foreach (glob($sandbox . '/*') ?: [] as $path) {
             if (is_file($path)) {

@@ -174,9 +174,18 @@ namespace {
                 (object) [
                     'flag_html' => '',
                     'display_name' => '<script>alert(1)</script>',
-                    'player_url' => '',
+                    'player_url' => 'javascript:alert(1)',
+                    'image_url' => 'data:image/svg+xml,bad',
                     'position' => '',
                     'minutes_played' => 12,
+                ],
+                (object) [
+                    'flag_html' => '',
+                    'display_name' => 'Valid player',
+                    'player_url' => 'https://example.org/player',
+                    'image_url' => 'images/player.png',
+                    'position' => '',
+                    'minutes_played' => 0,
                 ],
             ],
         ]
@@ -184,8 +193,12 @@ namespace {
 
     assertTemplateSafety(
         !str_contains($teamPlayers, '<script>alert(1)</script>')
-        && str_contains($teamPlayers, '&lt;script&gt;alert(1)&lt;/script&gt;'),
-        'TeamPlayers layout did not safely render malformed module settings or player names.'
+        && str_contains($teamPlayers, '&lt;script&gt;alert(1)&lt;/script&gt;')
+        && !str_contains($teamPlayers, 'javascript:alert')
+        && !str_contains($teamPlayers, 'data:image/svg+xml')
+        && str_contains($teamPlayers, 'https://example.org/player')
+        && str_contains($teamPlayers, 'images/player.png'),
+        'TeamPlayers layout did not safely render legacy player names or URLs.'
     );
 
     $clubIcons = renderModuleFixture(
