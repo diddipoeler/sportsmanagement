@@ -587,6 +587,23 @@ echo '<h2>' . Text::sprintf(
 		'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
 		$version, $updateDescription, $updateFileDate, $updateFileTime
 	) . '</h2>';
+// Never mutate the schema on a plain GET request. Each upgrade stage must
+// be explicitly submitted with a valid Joomla session token.
+if ($app->getInput()->post->getInt('run_update', 0) !== 1) {
+    echo '<form method="post" id="adminForm" action="">';
+    echo '<button class="btn btn-warning" type="submit" name="run_update" value="1">';
+    echo htmlspecialchars(Text::_('COM_SPORTSMANAGEMENT_GLOBAL_UPDATES_DB_TABLES'), ENT_QUOTES, 'UTF-8');
+    echo '</button>';
+    echo HTMLHelper::_('form.token');
+    echo '</form>';
+
+    return;
+}
+
+if (!$app->checkToken('post')) {
+    throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+}
+
 $totalUpdateParts = 2;
 setUpdatePart();
 
