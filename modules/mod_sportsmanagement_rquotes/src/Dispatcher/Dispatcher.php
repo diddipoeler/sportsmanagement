@@ -24,7 +24,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Prepare random quotation data for the frontend template.
      *
-     * Loads component settings and language strings, fetches quotations through the database-backed helper, normalises absent records, and registers the module stylesheet for HTML output.
+     * Loads component settings and translations, resolves the database-backed
+     * quotation helper, and converts missing or malformed output fields into
+     * safe template defaults. In HTML documents the stylesheet is registered
+     * once on the shared Joomla WebAssetManager, even if this module appears
+     * several times on the same page.
      *
      * @return array|false Module layout variables, or false if skipped.
      * @throws \RuntimeException When called outside the Joomla site application.
