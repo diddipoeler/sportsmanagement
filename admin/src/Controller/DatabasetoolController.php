@@ -84,6 +84,9 @@ final class DatabasetoolController extends BaseController
      * Invoke the database-tool model to update stored picture paths.
      * Checks administrator permission and token, rejects missing models
      * and redirects with a message describing the attempted operation.
+     * Verifies that the returned MVC model really exposes the required
+     * picture migration method before attempting a database change.
+     *
      * @return void
      */
     public function picturepath(): void
@@ -91,7 +94,7 @@ final class DatabasetoolController extends BaseController
         $this->authoriseAction();
         $model = $this->getModel('Databasetool', 'Administrator', ['ignore_request' => true]);
 
-        if (!is_object($model)) {
+        if (!is_object($model) || !is_callable([$model, 'setNewPicturePath'])) {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=databasetools',
                 'Datenbankwerkzeug konnte nicht geladen werden',
@@ -129,6 +132,9 @@ final class DatabasetoolController extends BaseController
      * Requires a valid CSRF token and administrator access, resolves the
      * Joomla or JoomLeague table selection, applies a fixed operation to
      * each table and reports empty sets or per-table failures by redirect.
+     * Rejects unexpected MVC models and non-array table results before
+     * iterating, avoiding fatal calls and type errors on PHP 8.
+     *
      * @param string $command Supported maintenance action.
      * @param bool $joomleague Whether to select legacy JoomLeague tables.
      * @param string $successMessage Feedback after all actions succeed.
@@ -139,7 +145,11 @@ final class DatabasetoolController extends BaseController
         $this->authoriseAction();
         $model = $this->getModel();
 
-        if (!is_object($model)) {
+        $tableLoader = $joomleague ? 'getJoomleagueTablesTruncate' : 'getSportsManagementTables';
+
+        if (!is_object($model)
+            || !is_callable([$model, $tableLoader])
+            || !is_callable([$model, 'setSportsManagementTableQuery'])) {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=databasetools',
                 'Datenbankwerkzeug konnte nicht geladen werden',
@@ -152,7 +162,7 @@ final class DatabasetoolController extends BaseController
         $tables = $joomleague
             ? $model->getJoomleagueTablesTruncate()
             : $model->getSportsManagementTables();
-        if ($tables === []) {
+        if (!is_array($tables) || $tables === []) {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=databasetools',
                 'Keine passenden Datenbanktabellen gefunden.',
