@@ -32,13 +32,22 @@ final class EditpersonController extends FormController
     }
 
     /**
-     * Return the legacy submission task's acknowledgement.
-     * Preserves the historical task contract for callers that do not
-     * use this method to perform a person mutation.
-     * @return bool True for a recognised legacy submit task.
+     * Acknowledge the legacy frontend person submission task securely.
+     *
+     * This task does not itself change a person record; actual persistence is
+     * handled by save(). Nevertheless, treat the task as a write entry point:
+     * require Joomla's POST CSRF token and the component's edit permission
+     * before returning the historical success acknowledgement. This prevents
+     * unauthenticated requests from using the legacy controller task.
+     *
+     * @return bool True after the request has passed both security checks.
+     * @throws \RuntimeException When the caller lacks edit permission.
      */
-    public function submit()
+    public function submit(): bool
     {
+        $this->checkToken('post');
+        $this->assertEditorPermission();
+
         return true;
     }
 
