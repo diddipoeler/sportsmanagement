@@ -17,38 +17,37 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\MVC\Controller\AdminController;
 
 /**
- * sportsmanagementController
+ * Keep the historical Inline Hockey extension controller name available.
  *
- * @package
- * @author    Dieter Plöger
- * @copyright 2019
- * @version   $Id$
- * @access    public
+ * This bridge continues to delegate rendering to Joomla's namespaced
+ * controller base while older extension installers still load the file.
  */
 class sportsmanagementController extends AdminController
 {
 
-	/**
-	 * sportsmanagementController::display()
-	 *
-	 * @param   bool  $cachable
-	 * @param   bool  $urlparams
-	 *
-	 * @return void
-	 */
-	public function display($cachable = false, $urlparams = false)
-	{
-
-		parent::display($cachable, $urlparams);
-
-	}
+    /**
+     * Display the selected Inline Hockey administrator view through Joomla MVC.
+     *
+     * Accepts the historical boolean URL argument from old integrations,
+     * converts it to Joomla 5/6's expected array and preserves the parent
+     * controller's result for callers that chain display operations.
+     *
+     * @param bool $cachable Whether Joomla may cache the rendered view.
+     * @param array|bool $urlparams Cacheable URL parameters or legacy false.
+     * @return mixed Parent MVC controller display result.
+     */
+    public function display($cachable = false, $urlparams = [])
+    {
+        return parent::display($cachable, is_array($urlparams) ? $urlparams : []);
+    }
 
 }
 
 /**
- * just to display the cpanel
+ * Retain the legacy Inline Hockey dashboard controller alias.
  *
- * @author
+ * Some installations still reference this original class name when
+ * rendering the extension control panel instead of using Joomla namespaces.
  */
 class sportsmanagementControllerControllersportsmanagementController extends sportsmanagementController
 {

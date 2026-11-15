@@ -10,10 +10,25 @@
 \defined('_JEXEC') or die;
 
 $iconsPerRow = max(1, (int) $params->get('iconsperrow', 20));
-$tableClass = htmlspecialchars((string) $params->get('table_class', 'table'), ENT_QUOTES, 'UTF-8');
-$moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8');
+/**
+ * Encode valid club-icon module classes and labels as UTF-8 HTML.
+ *
+ * Joomla module settings may contain arrays or invalid UTF-8 from older
+ * installations. Unsupported values are ignored instead of casting.
+ *
+ * @param mixed $value Raw module value.
+ * @return string Escaped HTML-safe text or an empty string.
+ */
+$escape = static fn (mixed $value): string => htmlspecialchars(
+    is_string($value) || is_numeric($value) ? (string) $value : '',
+    ENT_QUOTES | ENT_SUBSTITUTE,
+    'UTF-8'
+);
+$tableClass = $escape($params->get('table_class', 'table'));
+$moduleClass = $escape($params->get('moduleclass_sfx', ''));
 $newWindow = (int) $params->get('teamlink', 0) === 5 && (int) $params->get('newwindow', 0) === 1;
-$alignment = match ((string) $params->get('iconpos', 'middle')) {
+$rawAlignment = $params->get('iconpos', 'middle');
+$alignment = match (is_string($rawAlignment) ? $rawAlignment : 'middle') {
     'top' => 'align-top',
     'bottom' => 'align-bottom',
     default => 'align-middle',
@@ -22,7 +37,10 @@ $alignment = match ((string) $params->get('iconpos', 'middle')) {
 // Only render ranked teams that have module data, and calculate row breaks
 // from the actual number of visible cells.
 $displayRows = [];
-foreach ($ranking as $row) {
+foreach (is_array($ranking ?? null) ? $ranking : [] as $row) {
+    if (!is_object($row) || !is_array($teams ?? null)) {
+        continue;
+    }
     $projectTeamId = (int) ($row->projectteamid ?? 0);
     if ($projectTeamId > 0 && isset($teams[$projectTeamId])) {
         $displayRows[] = $row;
@@ -31,7 +49,7 @@ foreach ($ranking as $row) {
 $displayCount = count($displayRows);
 ?>
 <?php if ($displayCount > 0) : ?>
-<div class="mod-sportsmanagement-clubicons <?php echo $moduleClass; ?>" id="<?php echo htmlspecialchars($module->module . '-' . $module->id, ENT_QUOTES, 'UTF-8'); ?>">
+<div class="mod-sportsmanagement-clubicons <?php echo $moduleClass; ?>" id="<?php echo $escape(($module->module ?? 'mod_sportsmanagement_clubicons') . '-' . (int) ($module->id ?? 0)); ?>">
     <table id="clubicons<?php echo (int) $module->id; ?>" class="<?php echo $tableClass; ?>">
         <tbody>
         <tr>
@@ -40,9 +58,9 @@ $displayCount = count($displayRows);
                 <?php
                 $projectTeamId = (int) ($row->projectteamid ?? 0);
                 $team = $teams[$projectTeamId];
-                $link = (string) ($team['link'] ?? '');
-                $logoUrl = (string) ($team['logo_url'] ?? '');
-                $name = (string) ($team['name'] ?? '');
+                $link = is_string($team['link'] ?? null) ? $team['link'] : '';
+                $logoUrl = is_string($team['logo_url'] ?? null) ? $team['logo_url'] : '';
+                $name = is_string($team['name'] ?? null) ? $team['name'] : '';
                 $column++;
                 ?>
                 <td class="<?php echo $alignment; ?>">

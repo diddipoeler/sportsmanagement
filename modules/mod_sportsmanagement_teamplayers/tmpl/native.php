@@ -11,9 +11,24 @@
 
 use Joomla\CMS\Language\Text;
 
-$escape = static fn(mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+/**
+ * Escape one TeamPlayers template value as UTF-8 HTML.
+ *
+ * Roster and module parameters are sourced from legacy records; ignore
+ * non-scalar values and replace malformed UTF-8 instead of casting objects
+ * or arrays into unsafe HTML strings.
+ *
+ * @param mixed $value A roster field or module option.
+ * @return string HTML-escaped scalar value or an empty string.
+ */
+$escape = static fn (mixed $value): string => htmlspecialchars(
+    is_string($value) || is_numeric($value) ? (string) $value : '',
+    ENT_QUOTES | ENT_SUBSTITUTE,
+    'UTF-8'
+);
 $moduleId = (int) $module->id;
-$mode = (string) $params->get('template', 'L');
+$rawMode = $params->get('template', 'L');
+$mode = is_string($rawMode) ? $rawMode : 'L';
 ?>
 <div class="mod-sportsmanagement-teamplayers <?php echo $escape($params->get('moduleclass_sfx', '')); ?>" id="mod-sportsmanagement-teamplayers-<?php echo $moduleId; ?>">
     <?php if (!$project || !$players) : ?>
@@ -28,7 +43,8 @@ $mode = (string) $params->get('template', 'L');
 
         <?php if ($mode === 'C') : ?>
             <?php
-            $sliderMode = match ((string) $params->get('slider_mode', 'H')) {
+            $rawSliderMode = $params->get('slider_mode', 'H');
+            $sliderMode = match (is_string($rawSliderMode) ? $rawSliderMode : 'H') {
                 'V' => 'vertical',
                 'F' => 'fade',
                 default => 'horizontal',
