@@ -25,9 +25,22 @@ namespace Joomla\CMS\MVC\Controller {
         public static ?string $checkedKey = null;
         public static array $checkedData = [];
         public static bool $modelSaved = false;
+        public static int $modelLoads = 0;
+        public static bool $allowWrites = false;
+        public static bool $validToken = true;
+        public static bool $missingModel = false;
 
+        /**
+         * Reject invalid CSRF tokens in the standalone Joomla controller.
+         *
+         * @return void
+         * @throws \RuntimeException When a forged token is simulated.
+         */
         public function checkToken(): void
         {
+            if (!self::$validToken) {
+                throw new \RuntimeException('JINVALID_TOKEN', 403);
+            }
         }
 
         protected function allowSave($data, $key = 'id'): bool
@@ -35,11 +48,25 @@ namespace Joomla\CMS\MVC\Controller {
             self::$checkedData = $data;
             self::$checkedKey = $key;
 
-            return false;
+            return self::$allowWrites;
         }
 
+        /**
+         * Record model resolution and simulate a missing Joomla model.
+         *
+         * @param string $name Form model requested by the controller.
+         * @param string $prefix MVC namespace prefix.
+         * @param array $config Joomla model configuration.
+         * @return object|false Model stub or an unavailable-model result.
+         */
         public function getModel($name = '', $prefix = '', $config = [])
         {
+            ++self::$modelLoads;
+
+            if (self::$missingModel) {
+                return false;
+            }
+
             return new class {
                 public function save(array $data): bool
                 {
@@ -102,6 +129,7 @@ namespace {
         \Joomla\CMS\MVC\Controller\FormController::$checkedKey = null;
         \Joomla\CMS\MVC\Controller\FormController::$checkedData = [];
         \Joomla\CMS\MVC\Controller\FormController::$modelSaved = false;
+        \Joomla\CMS\MVC\Controller\FormController::$modelLoads = 0;
 
         try {
             $controller->save($key);
@@ -109,7 +137,8 @@ namespace {
             if ($exception->getCode() === 403
                 && \Joomla\CMS\MVC\Controller\FormController::$checkedKey === $expectedKey
                 && \Joomla\CMS\MVC\Controller\FormController::$checkedData === $jform
-                && !\Joomla\CMS\MVC\Controller\FormController::$modelSaved) {
+                && !\Joomla\CMS\MVC\Controller\FormController::$modelSaved
+                && \Joomla\CMS\MVC\Controller\FormController::$modelLoads === 0) {
                 continue;
             }
 
@@ -133,6 +162,37 @@ namespace {
             || \Joomla\CMS\MVC\Controller\FormController::$checkedData !== []
             || \Joomla\CMS\MVC\Controller\FormController::$modelSaved) {
             throw new \RuntimeException('Empty round form bypassed ACL or synthesized zero dates.', 0, $exception);
+        }
+    }
+
+    // A missing Joomla form model must fail explicitly without calling
+    // save() on a non-object, which would produce an opaque PHP fatal error.
+    \Joomla\CMS\MVC\Controller\FormController::$allowWrites = true;
+    \Joomla\CMS\MVC\Controller\FormController::$missingModel = true;
+    \Joomla\CMS\MVC\Controller\FormController::$modelLoads = 0;
+    $post->data = ['jform' => ['id' => 5]];
+
+    try {
+        $controller->save();
+        throw new \RuntimeException('Missing administrator model was accepted.');
+    } catch (\RuntimeException $exception) {
+        if ($exception->getCode() !== 500
+            || \Joomla\CMS\MVC\Controller\FormController::$modelLoads !== 1) {
+            throw new \RuntimeException('Missing model did not fail predictably.', 0, $exception);
+        }
+    }
+
+    // Invalid CSRF tokens must not even attempt to resolve the form model.
+    \Joomla\CMS\MVC\Controller\FormController::$validToken = false;
+    \Joomla\CMS\MVC\Controller\FormController::$modelLoads = 0;
+
+    try {
+        $controller->save();
+        throw new \RuntimeException('Invalid token was allowed to load a model.');
+    } catch (\RuntimeException $exception) {
+        if ($exception->getCode() !== 403
+            || \Joomla\CMS\MVC\Controller\FormController::$modelLoads !== 0) {
+            throw new \RuntimeException('Invalid token caused a model lookup.', 0, $exception);
         }
     }
 
