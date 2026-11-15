@@ -22,6 +22,8 @@ final class SportsTypeStatisticsHelper
      * Validates sport and database selectors, resolves the Joomla or external
      * SportsManagement connection and computes project, league, season, venue,
      * team, player and fixture totals for the selected sport only.
+     * Rejects unsupported database selectors, corrupt metadata and invalid
+     * count records rather than turning arbitrary PHP values into numbers.
      * @param Registry $params Sports type statistics module parameters.
      * @param DatabaseInterface $fallbackDatabase Primary Joomla database.
      * @return array Sport metadata and aggregate count values.
@@ -32,7 +34,7 @@ final class SportsTypeStatisticsHelper
         $databaseSelector = self::nonNegativeSelector($params->get('cfg_which_database', 0));
 
         // A malformed selector must never select an unrelated sport or DB.
-        if ($sportTypeId === null || $databaseSelector === null) {
+        if ($sportTypeId === null || $databaseSelector === null || $databaseSelector > 1) {
             return ['sportstype' => null, 'counts' => ['projects' => 0]];
         }
 
@@ -50,10 +52,15 @@ final class SportsTypeStatisticsHelper
                 ->where($db->quoteName('id') . ' = :sportTypeId')
                 ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
-            $sportType = $db->loadObject() ?: null;
+            $record = $db->loadObject();
+            $sportType = is_object($record) ? $record : null;
 
             if ($sportType !== null) {
-                $sportType->icon_url = self::imageUrl((string) ($sportType->icon ?? ''));
+                $icon = $sportType->icon ?? null;
+                $name = $sportType->name ?? null;
+                $sportType->icon_url = is_string($icon) ? self::imageUrl($icon) : '';
+                $sportType->name = is_string($name) && strlen($name) <= 512
+                    ? $name : '';
             }
         }
 
@@ -82,8 +89,8 @@ final class SportsTypeStatisticsHelper
         ];
 
         foreach ($requested as $key => [$parameter, $callback]) {
-            if ((int) $params->get($parameter, 1) === 1) {
-                $counts[$key] = (int) $callback();
+            if (self::enabledFlag($params->get($parameter, 1))) {
+                $counts[$key] = $callback();
             }
         }
 
@@ -160,7 +167,7 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        return self::nonNegativeCount($db->loadResult());
     }
 
     /**
@@ -183,7 +190,7 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        return self::nonNegativeCount($db->loadResult());
     }
 
     /**
@@ -212,9 +219,13 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        foreach ($db->loadColumn() ?: [] as $id) {
-            if ((int) $id > 0) {
-                $grounds[(int) $id] = true;
+        $venueIds = $db->loadColumn();
+
+        foreach (is_array($venueIds) ? $venueIds : [] as $rawId) {
+            $id = self::nonNegativeCount($rawId);
+
+            if ($id > 0) {
+                $grounds[$id] = true;
             }
         }
 
@@ -233,9 +244,13 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        foreach ($db->loadColumn() ?: [] as $id) {
-            if ((int) $id > 0) {
-                $grounds[(int) $id] = true;
+        $venueIds = $db->loadColumn();
+
+        foreach (is_array($venueIds) ? $venueIds : [] as $rawId) {
+            $id = self::nonNegativeCount($rawId);
+
+            if ($id > 0) {
+                $grounds[$id] = true;
             }
         }
 
@@ -265,7 +280,7 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        return self::nonNegativeCount($db->loadResult());
     }
 
     /**
@@ -292,7 +307,7 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        return self::nonNegativeCount($db->loadResult());
     }
 
     /**
@@ -322,7 +337,7 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        return self::nonNegativeCount($db->loadResult());
     }
 
     /**
@@ -348,7 +363,7 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        return self::nonNegativeCount($db->loadResult());
     }
 
     /**
@@ -376,7 +391,41 @@ final class SportsTypeStatisticsHelper
             ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return (int) $db->loadResult();
+        return self::nonNegativeCount($db->loadResult());
+    }
+
+    /**
+     * Validate an untrusted SQL COUNT(*) result or referenced venue ID.
+     *
+     * Accepts complete nonnegative decimal identifiers, including leading
+     * zeros. Nested records, partial numbers and overflows are never cast to
+     * positive counts or inserted into the venue deduplication set.
+     *
+     * @param mixed $value Raw database count or playground identifier.
+     * @return int Nonnegative count or ID; zero for invalid values.
+     */
+    private static function nonNegativeCount(mixed $value): int
+    {
+        return self::nonNegativeSelector($value) ?? 0;
+    }
+
+    /**
+     * Parse a Joomla module show_* toggle without implicit casts.
+     *
+     * Supports true, 1 and zero-padded decimal strings representing 1.
+     * Malformed nested and partial numeric settings fail closed.
+     *
+     * @param mixed $value Configured module display toggle.
+     * @return bool Whether the statistic should be queried.
+     */
+    private static function enabledFlag(mixed $value): bool
+    {
+        if ($value === true || $value === 1) {
+            return true;
+        }
+
+        return is_string($value) && strlen($value) <= 64
+            && preg_match('/^0*1$/D', $value) === 1;
     }
 
     /**
@@ -389,7 +438,8 @@ final class SportsTypeStatisticsHelper
             return $value >= 0 ? $value : null;
         }
 
-        if (!is_string($value) || !preg_match('/^[0-9]+$/D', $value)) {
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
             return null;
         }
 
