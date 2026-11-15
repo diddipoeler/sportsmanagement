@@ -1,0 +1,45 @@
+name: Joomla 5/6 site admin module continuation (geocoder, iCal, seasons)
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/View/Ical/RawView.php'
+      - 'admin/helpers/sportsmanagement.php'
+      - 'modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php'
+      - '.github/tests/joomla56-compat-continuation-*.php'
+      - '.github/workflows/joomla56-compat-continuation.yml'
+  pull_request:
+    branches: [joomla5-6]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-compat:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: none
+      - name: Validate source and regression-test syntax
+        run: |
+          for file in site/src/View/Ical/RawView.php admin/helpers/sportsmanagement.php modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php .github/tests/joomla56-compat-continuation-*.php; do
+            php -l "$file"
+          done
+      - name: Require file metadata and meaningful documentation for every touched function
+        run: |
+          php .github/scripts/check-php-headers.php site/src/View/Ical/RawView.php admin/helpers/sportsmanagement.php modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+          php .github/scripts/check-php-function-docs.php site/src/View/Ical/RawView.php admin/helpers/sportsmanagement.php modules/mod_sportsmanagement_act_season/src/Helper/ActSeasonHelper.php
+      - name: Regression tests without external Joomla or HTTP
+        run: |
+          php .github/tests/joomla56-compat-continuation-admin.php
+          php .github/tests/joomla56-compat-continuation-ical.php
+          php .github/tests/joomla56-compat-continuation-season.php

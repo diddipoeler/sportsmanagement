@@ -100,6 +100,6 @@ jobs:
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$helper"
           grep -Fq 'DatabaseInterface' "$helper"
-          grep -Fq 'Factory::getContainer()->get(SiteApplication::class)' "$legacy_helper"
+          grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$legacy_helper"
           grep -Fq 'new ActSeasonHelper()' "$legacy_helper"
           grep -Fq 'SiteRouteHelper::view' "$layout"
