@@ -25,11 +25,12 @@ namespace Joomla\CMS\Log {
     final class Log
     {
         public const ERROR = 1;
+        public static array $entries = [];
 
-        /** Reject any accidental query error during this standalone test. */
+        /** Record diagnostic information without exposing database secrets. */
         public static function add(string $message, int $type, string $category): void
         {
-            throw new \RuntimeException('Unexpected current-season database error: ' . $message);
+            self::$entries[] = [$message, $type, $category];
         }
     }
 }
@@ -108,10 +109,15 @@ namespace {
     final class ActSeasonDatabaseFixture implements \Joomla\Database\DatabaseInterface
     {
         public ?ActSeasonQueryFixture $query = null;
+        public bool $fail = false;
 
-        /** Return a query spy that records project-scoped joins. */
+        /** Return a query spy or a secret-bearing simulated SQL exception. */
         public function createQuery(): ActSeasonQueryFixture
         {
+            if ($this->fail) {
+                throw new \RuntimeException('SQLSTATE password=private-secret');
+            }
+
             return new ActSeasonQueryFixture();
         }
 
@@ -201,5 +207,34 @@ namespace {
         throw new \RuntimeException('A current-round lookup was not scoped to the selected project.');
     }
 
-    echo "Module current-season query ownership and corrupt-row regression passed.\n";
+    $empty = ['list' => [], 'federations' => [], 'countriesByFederation' => []];
+    $moduleHelper = new \Diddipoeler\Module\SportsManagementActSeason\Site\Helper\ActSeasonHelper();
+
+    // Malformed module settings cannot silently query the default database.
+    foreach ([['1'], true, -1, '1garbage', PHP_INT_MAX . '0'] as $selector) {
+        $database->query = null;
+        $invalid = new \Joomla\Registry\Registry(['cfg_which_database' => $selector]);
+
+        if ($moduleHelper->getData([1], $invalid, $app, $database) !== $empty
+            || $database->query !== null || $app->messages !== []
+            || \Joomla\CMS\Log\Log::$entries !== []) {
+            throw new \RuntimeException('Invalid database selector queried an unexpected connection.');
+        }
+    }
+
+    $database->fail = true;
+    $result = $moduleHelper->getData([1], $params, $app, $database);
+    $logs = \Joomla\CMS\Log\Log::$entries;
+
+    if ($result !== $empty
+        || $app->messages !== [['JERROR_AN_ERROR_HAS_OCCURRED', 'error']]
+        || count($logs) !== 1
+        || !str_contains($logs[0][0], 'RuntimeException')
+        || str_contains($logs[0][0], 'private-secret')
+        || $logs[0][1] !== \Joomla\CMS\Log\Log::ERROR
+        || $logs[0][2] !== 'jsmerror') {
+        throw new \RuntimeException('Database error disclosure or current-season fallback regression.');
+    }
+
+    echo "Module current-season query ownership, input and error privacy passed.\n";
 }

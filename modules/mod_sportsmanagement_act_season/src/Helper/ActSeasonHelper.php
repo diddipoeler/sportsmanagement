@@ -23,8 +23,10 @@ final class ActSeasonHelper
 {
     /**
      * Load current-season projects and group their countries by federation.
-     * Validates selected season IDs, resolves the configured database and
-     * uses bound SQL parameters to load published current-season leagues.
+     * Validates selected season IDs and the database configuration before
+     * accessing the native resolver. An invalid explicit database selector
+     * must not fall back to the default Joomla database. Uses bound SQL
+     * parameters to load published current-season leagues.
      * Builds translated labels, safe flags and project/round route segments.
      * @param mixed $seasonIds Season IDs or legacy selection values.
      * @param Registry $componentParams SportsManagement component options.
@@ -43,10 +45,17 @@ final class ActSeasonHelper
             return ['list' => [], 'federations' => [], 'countriesByFederation' => []];
         }
 
-        $databaseSelector = 0;
+        $rawDatabaseSelector = $componentParams->get('cfg_which_database', 0);
+
+        // A malformed external database selector must not be silently
+        // converted to 0 (Joomla's main connection) and expose other data.
+        if (!self::isValidDatabaseSelector($rawDatabaseSelector)) {
+            return ['list' => [], 'federations' => [], 'countriesByFederation' => []];
+        }
+
+        $databaseSelector = $this->normaliseDatabaseSelector($rawDatabaseSelector);
 
         try {
-            $databaseSelector = $this->normaliseDatabaseSelector($componentParams->get('cfg_which_database', 0));
             $db = $this->database($databaseSelector, $fallbackDatabase);
             $query = $db->createQuery()
                 ->select([
@@ -81,7 +90,7 @@ final class ActSeasonHelper
             $records = $db->loadObjectList();
             $list = is_array($records) ? $records : [];
         } catch (\Throwable $e) {
-            \Joomla\CMS\Log\Log::add(__METHOD__ . ': ' . $e->getMessage(), \Joomla\CMS\Log\Log::ERROR, 'jsmerror');
+            \Joomla\CMS\Log\Log::add(__METHOD__ . ': ' . get_class($e), \Joomla\CMS\Log\Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             $list = [];
         }
@@ -167,6 +176,37 @@ final class ActSeasonHelper
             'federations' => $federations,
             'countriesByFederation' => $countries,
         ];
+    }
+
+    /**
+     * Verify a stored database selector without introducing a default value.
+     *
+     * Accepts nonnegative integer IDs and decimal strings, including
+     * zero-padded historical configuration values. Nested data, booleans,
+     * negative values and overflowing numbers fail closed before any query
+     * touches the default or a remote SportsManagement database.
+     *
+     * @param mixed $value Raw module database configuration.
+     * @return bool Whether the configuration contains a valid selector.
+     */
+    private static function isValidDatabaseSelector(mixed $value): bool
+    {
+        if (is_int($value)) {
+            return $value >= 0;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return false;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return true;
+        }
+
+        return filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) !== false;
     }
 
     /**
