@@ -64,10 +64,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_rquotes',
-                'modules/mod_sportsmanagement_rquotes/assets/rquote.css'
-            );
+            // Several instances may share Joomla's WebAssetManager. Register
+            // the stylesheet only once, but activate it for every render.
+            $assets = $document->getWebAssetManager();
+
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_rquotes')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_rquotes',
+                    'modules/mod_sportsmanagement_rquotes/assets/rquote.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_rquotes');
         }
 
         return $data;
