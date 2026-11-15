@@ -203,7 +203,8 @@ class SportsManagementFormController extends FormController
      *
      * Enforces Joomla CSRF and edit permissions before model loading,
      * reports a missing model as a controlled error, then handles round and
-     * player-specific persistence while preserving save/apply redirects.
+     * player-specific persistence. Preserves the saved project/club context
+     * on Apply and the team-list redirect instead of reusing stale user state.
      *
      * @param string|null $key Optional primary record key name.
      * @param string|null $urlVar Optional record identifier URL variable.
@@ -263,6 +264,13 @@ class SportsManagementFormController extends FormController
         $this->team_id = (int) $this->jsmapp->getUserState($this->jsmoption . '.team_id', 0);
         $this->insert_id = $this->jsmjinput->getInt('insert_id');
 
+        // The club saved with a team can differ from the club selected
+        // before opening the editor. Follow the submitted association rather
+        // than the stale administrator user-state value used at construction.
+        if ($return && $this->view_item === 'team' && array_key_exists('club_id', $data)) {
+            $this->team_club_id = self::positiveFormId($data['club_id']);
+        }
+
         $id = $this->insert_id ?: (int) ($data['id'] ?? 0);
 
         if (empty($data['id'])) {
@@ -313,8 +321,15 @@ class SportsManagementFormController extends FormController
                 }
                 break;
 
+            case 'round':
             case 'rounds':
-                $setRedirect = '&pid=' . (int) ($post['pid'] ?? 0);
+                // Native round editors use the singular item name. Keep the
+                // project context on Apply, including newly created rounds.
+                $roundProjectId = self::positiveFormId(
+                    $data['project_id'] ?? $post['pid']
+                    ?? $this->jsmapp->getUserState($this->jsmoption . '.pid', 0)
+                );
+                $setRedirect = $roundProjectId > 0 ? '&pid=' . $roundProjectId : '';
                 break;
 
             case 'projects':
@@ -322,8 +337,14 @@ class SportsManagementFormController extends FormController
                 break;
 
             case 'project':
-                $id = $this->jsmjinput->getInt('insert_project_id');
-                $setRedirect = '&pid=' . $id;
+                // The native AdminModel writes insert_id, not the obsolete
+                // insert_project_id. Only honour the latter if it exists as
+                // a positive ID; otherwise preserve the actual saved ID.
+                $legacyProjectId = $this->jsmjinput->getInt('insert_project_id', 0);
+                if ($legacyProjectId > 0) {
+                    $id = $legacyProjectId;
+                }
+                $setRedirect = $id > 0 ? '&pid=' . $id : '';
                 break;
 
             case 'projectteam':
@@ -411,6 +432,41 @@ class SportsManagementFormController extends FormController
         }
 
         return true;
+    }
+
+    /**
+     * Parse a positive form relationship identifier without unsafe PHP casts.
+     *
+     * Submitted club and project IDs must be plain decimal integers. Accepts
+     * zero-padded Joomla form values while rejecting arrays, booleans,
+     * negative numbers, trailing text and integer overflow. Invalid values
+     * return zero and are never reflected into navigation URLs.
+     *
+     * @param mixed $value Untrusted record association from a form or state.
+     * @return int Valid positive identifier, or zero when invalid.
+     */
+    private static function positiveFormId(mixed $value): int
+    {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 64
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
+            return 0;
+        }
+
+        if (is_int($value)) {
+            return max(0, $value);
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $valid = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $valid === false ? 0 : $valid;
     }
 
     /**
