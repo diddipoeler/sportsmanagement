@@ -10,13 +10,26 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
-$app = Factory::getApplication();
+// Legacy installer layouts may load before the component PSR-4 namespace.
+// Resolve the active administrator client via Joomla's service container.
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+    if (!is_file($resolverFile)) {
+        throw new \RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+    }
+
+    require_once $resolverFile;
+}
+
+$app = SportsManagementAdministratorApplicationResolver::resolve();
 $app->getDocument()->getWebAssetManager()->registerAndUseScript(
     'plg_installer_webinstaller.client',
     'plg_installer_webinstaller/client.js',
@@ -28,6 +41,7 @@ $app->getDocument()->getWebAssetManager()->registerAndUseScript(
 
 
 $uri = Uri::getInstance();
+$link = $uri->toString(['path', 'query']);
 
 //$table = Factory::getApplication()->input->getVar('table');
 //$uri->delVar('table');
@@ -35,6 +49,12 @@ $uri = Uri::getInstance();
 
 ?>
     <script type="text/javascript">
+    /**
+     * Validate the installer URL field before submitting Joomla's installer form.
+     * Presents a localised warning for blank or scheme-only URLs and activates
+     * the loading element for accepted requests.
+     * @returns {void}
+     */
     function  submitButtonUrl() {
       const form = document.getElementById('adminForm'); // do field validation
 
@@ -54,8 +74,15 @@ $uri = Uri::getInstance();
       }
     }
 
+        /**
+         * Navigate back to the current installer page with a selected table.
+         * Builds the destination from a JSON-encoded URL to avoid introducing
+         * unescaped request values into executable JavaScript.
+         * @param {string} sData Table selector to append to the query.
+         * @returns {void}
+         */
         function sendData(sData) {
-            var oldLocation = '<?PHP echo $link;?>';
+            var oldLocation = <?php echo json_encode($link, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
             window.location = oldLocation + '&table=' + sData;
 //  window.location.search = sData;
 //  window.location.reload(true)

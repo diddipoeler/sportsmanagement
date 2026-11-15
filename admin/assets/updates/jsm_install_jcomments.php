@@ -10,13 +10,25 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die('Restricted access');
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
-$app = Factory::getApplication();
+// Legacy installer layouts may load before the component PSR-4 namespace.
+// Resolve the active administrator client via Joomla's service container.
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+    if (!is_file($resolverFile)) {
+        throw new \RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+    }
+
+    require_once $resolverFile;
+}
+
+$app = SportsManagementAdministratorApplicationResolver::resolve();
 $app->getDocument()->getWebAssetManager()->registerAndUseScript(
     'plg_installer_webinstaller.client',
     'plg_installer_webinstaller/client.js',
@@ -30,6 +42,12 @@ $app->getDocument()->getWebAssetManager()->registerAndUseScript(
 
 ?>
     <script type="text/javascript">
+    /**
+     * Validate the installer URL field before submitting Joomla's installer form.
+     * Presents a localised warning for blank or scheme-only URLs and activates
+     * the loading element for accepted requests.
+     * @returns {void}
+     */
     function  submitButtonUrl() {
       const form = document.getElementById('adminForm'); // do field validation
 
