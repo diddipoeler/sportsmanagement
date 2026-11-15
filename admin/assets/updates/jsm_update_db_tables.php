@@ -19,6 +19,8 @@ use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\InstallSchemaStatementParser;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\SchemaAdditiveMigrationHelper;
+use Joomla\CMS\Log\Log;
 
 // The standalone update entry point can run before component autoloading.
 if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
@@ -38,6 +40,8 @@ foreach ([
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SportsManagementDatabaseResolver.php',
     InstallSchemaStatementParser::class =>
         JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/InstallSchemaStatementParser.php',
+    SchemaAdditiveMigrationHelper::class =>
+        JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/SchemaAdditiveMigrationHelper.php',
 ] as $helperClass => $helperFile) {
     if (!class_exists($helperClass)) {
         if (!is_file($helperFile)) {
@@ -135,15 +139,21 @@ function setUpdatePart(int $val = 1): void
 }
 
 /**
- * Compare and update the SportsManagement SQL table definitions.
+ * Reconcile installed SportsManagement tables without destructive SQL changes.
  *
- * Reads the bundled installation SQL file, checks existing table columns and
- * indexes, executes the required migration statements and renders a Joomla
- * Bootstrap accordion showing the outcome of each database operation.
+ * The validated first-party schema declares tables, columns and indexes.
+ * The Joomla 5/6 helper first creates missing tables and then issues only
+ * ADD COLUMN or ADD INDEX for absent structures; existing fields and keys
+ * are preserved, even when their definitions differ from the bundled SQL.
+ * This update view does not perform DROP, CHANGE or MODIFY operations.
  *
- * @return string Empty string after rendering the migration report.
+ * A failed SQL operation stops processing, records a sanitized Joomla log
+ * entry and leaves the migration stage pending rather than reporting success.
+ *
+ * @return string Escaped report of processed tables and additive operations.
+ * @throws \RuntimeException When schema reading or reconciliation fails.
  */
-function ImportTables()
+function ImportTables(): string
 {
     /** @var DatabaseInterface $defaultDatabase */
     $defaultDatabase = Factory::getContainer()->get(DatabaseInterface::class);
@@ -152,436 +162,47 @@ function ImportTables()
         throw new \RuntimeException('Joomla database service is unavailable.', 500);
     }
 
-    $db = (new SportsManagementDatabaseResolver())->resolve(null, $defaultDatabase);
-    $option = 'com_sportsmanagement';
+    $database = (new SportsManagementDatabaseResolver())->resolve(null, $defaultDatabase);
+    $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/sql/install.mysql.utf8.sql';
+    $source = @file_get_contents($file);
 
-	$imports = file_get_contents(JPATH_ADMINISTRATOR . '/components/' . $option . '/sql/install.mysql.utf8.sql');
-
-    if (!is_string($imports) || trim($imports) === '') {
+    if (!is_string($source) || trim($source) === '') {
         throw new \RuntimeException('SportsManagement SQL installation schema is missing.', 500);
     }
 
-    // Keep quoted SQL defaults and comment contents intact: a semicolon
-    // inside a string must never be interpreted as a second SQL command.
-    $imports = InstallSchemaStatementParser::split($imports);
+    try {
+        // The SQL parser prevents comment markers or quoted semicolons from
+        // becoming unintended statements in this privileged update screen.
+        $statements = InstallSchemaStatementParser::split($source);
+        $summary = SchemaAdditiveMigrationHelper::migrate($database, $statements);
+    } catch (\Throwable $exception) {
+        // Database errors can contain private table names or configuration
+        // data; don't render exception messages directly into administrator HTML.
+        Log::add(
+            'SportsManagement schema upgrade stopped (' . get_class($exception) . ').',
+            Log::ERROR,
+            'jsmerror'
+        );
 
-	$cntPanel = 0;
+        throw new \RuntimeException(
+            'SportsManagement schema upgrade stopped. Check the Joomla error log and database backup.',
+            500,
+            $exception
+        );
+    }
 
-	// $slidesOptions = '';
-	// Define slides options
-	$slidesOptions = array(
-		"active" => "slide1_id" // It is the ID of the active tab.
-	);
-	echo HTMLHelper::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
-
-	$slide_id = 1;
-
-	foreach ($imports as $import)
-	{
-		$import = trim($import);
-
-		if (!empty($import))
-		{
-			$DummyStr = $import;
-			$DummyStr = substr($DummyStr, strpos($DummyStr, '`') + 1);
-          //echo "<span style='color:orange; '>" . __LINE__.' DummyStr<pre>'.print_r($DummyStr,true).'</pre>' . '</span>';
-			$DummyStr = substr($DummyStr, 0, strpos($DummyStr, '`'));
-          //echo "<span style='color:orange; '>" . __LINE__.' DummyStr<pre>'.print_r($DummyStr,true).'</pre>' . '</span>';
-          $jsmtable = $DummyStr;
-          
-			$db->setQuery($import);
-			$panelName = substr(str_replace('sportsmanagement', '', str_replace('_', '', $DummyStr)), 1);
-
-			// Echo HTMLHelper::_('sliders.panel',$DummyStr,'panel-'.$panelName);
-			echo HTMLHelper::_('bootstrap.addSlide', 'slide-group-id', Text::_($panelName), "slide" . $slide_id . "_id");
-
-			echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
-			echo "Checking existence of table [$DummyStr] - <span style='color:";
-
-			if ($db->execute())
-			{
-				echo "green'>" . Text::_('Success');
-			}
-			else
-			{
-				echo "red'>" . Text::_('Failed');
-			}
-
-			echo '</span>';
-			echo '</h3></td></tr></thead><tbody>';
-			$DummyStr  = $import;
-			$DummyStr  = substr($DummyStr, strpos($DummyStr, '`') + 1);
-			$tableName = substr($DummyStr, 0, strpos($DummyStr, '`'));
-
-			$DummyStr    = substr($DummyStr, strpos($DummyStr, '(') + 1);
-			$DummyStr    = substr($DummyStr, 0, strpos($DummyStr, 'ENGINE'));
-          
-          
-          switch ($jsmtable)
-          {
-            case '#__sportsmanagement_person_project_position':
-              $keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'UNIQUE KEY'))), ')');
-              break;
-	 case '#__sportsmanagement_log_entries':
-              $keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'KEY'))), ')');
-              break;
-            default:
-              $keysIndexes = trim(trim(substr($DummyStr, strpos($DummyStr, 'PRIMARY KEY'))), ')');
-              break;
-          }
-          
-			
-          
-          
-          
-          //echo "<span style='color:orange; '>" . __LINE__.' keysIndexes<pre>'.print_r($keysIndexes,true).'</pre>' . '</span>';
-          
-          
-			$indexes     = explode("\r\n", $keysIndexes);
-
-			if ($indexes[0] == $keysIndexes)
-			{
-				$indexes = explode("\n", $keysIndexes);
-
-				if ($indexes[0] == $keysIndexes)
-				{
-					$indexes = explode("\r", $keysIndexes);
-				}
-			}
-
-          switch ($jsmtable)
-          {
-            case '#__sportsmanagement_person_project_position':
-                $DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'UNIQUE KEY'))), ',');
-              break;
-	  case '#__sportsmanagement_log_entries':
-                $DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'KEY'))), ',');
-              break;
-            default:
-              $DummyStr = trim(trim(substr($DummyStr, 0, strpos($DummyStr, 'PRIMARY KEY'))), ',');
-              break;
-          }
-			
-			$fields   = explode("\r\n", $DummyStr);
-// $jsmtable
-          //echo "<span style='color:orange; '>" . __LINE__.' jsmtable<pre>'.print_r($jsmtable,true).'</pre>' . '</span>';
-          //echo "<span style='color:orange; '>" . __LINE__.' DummyStr<pre>'.print_r($DummyStr,true).'</pre>' . '</span>';
-          //echo "<span style='color:orange; '>" . __LINE__.' fields<pre>'.print_r($fields,true).'</pre>' . '</span>';
-          //echo "<span style='color:orange; '>" . __LINE__.' import<pre>'.print_r($import,true).'</pre>' . '</span>';
-          
-			if ($fields[0] == $DummyStr)
-			{
-				$fields = explode("\n", $DummyStr);
-
-				if ($fields[0] == $DummyStr)
-				{
-					$fields = explode("\r", $DummyStr);
-				}
-			}
-
-			$newIndexes = array();
-			$i          = (-1);
-
-			foreach ($indexes AS $index)
-			{
-				$dummy = trim($index, ' ,');
-
-				if (!empty($dummy))
-				{
-					$i++;
-					$newIndexes[$i] = $dummy;
-				}
-			}
-
-			$newFields = array();
-			$i         = (-1);
-
-			foreach ($fields AS $field)
-			{
-				$dummy = trim($field, ' ,');
-
-				if (!empty($dummy))
-				{
-					$i++;
-					$newFields[$i] = $dummy;
-				}
-			}
-
-			$rows = count($newIndexes) + 1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="' . $rows . '">';
-			echo Text::sprintf('Table needs following<br />keys/indexes:', $tableName);
-			echo '</th></tr>';
-			
-			//echo "<span style='color:orange; '>" . __LINE__.' fields<pre>'.print_r($fields,true).'</pre>' . '</span>';
-			
-			$k = 0;
-
-			foreach ($newIndexes AS $index)
-			{
-				$index = trim($index);
-				echo '<tr class="row' . $k . '"><td>';
-
-				if (!empty($index))
-				{
-					echo $index;
-				}
-
-				echo '</td></tr>';
-				$k = (1 - $k);
-			}
-
-			$rows = count($newIndexes) + 1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="' . $rows . '">';
-			echo Text::_('Dropping keys/indexes:');
-			echo '</th></tr>';
-			$keys = $db->getTableKeys($tableName);
-
-			if (sizeof($keys) != 0)
-			{
-				foreach ($newIndexes AS $index)
-				{
-					$query = '';
-					$index = trim($index);
-					echo '<tr class="row' . $k . '"><td>';
-
-					if (substr($index, 0, 11) != 'PRIMARY KEY')
-					{
-						$keyName     = '';
-						$queryDelete = '';
-
-						if (substr($index, 0, 3) == 'KEY')
-						{
-							$keyName     = substr($index, 0, strpos($index, '('));
-							$queryDelete = "ALTER TABLE `$tableName` DROP $keyName";
-						}
-                        elseif (substr($index, 0, 5) == 'INDEX')
-						{
-							$keyName     = substr($index, 0, strpos($index, '('));
-							$queryDelete = "ALTER TABLE `$tableName` DROP $keyName";
-						}
-                        elseif (substr($index, 0, 6) == 'UNIQUE')
-						{
-							$keyName     = trim(substr($index, 6));
-							$keyName     = substr($keyName, 0, strpos($keyName, '('));
-							$queryDelete = "ALTER TABLE `$tableName` DROP $keyName";
-						}
-
-						$skip = false;
-
-						if (sizeof($keys) != 0)
-						{
-							foreach ($keys as $key)
-							{
-								preg_match('/`(.*?)`/', $keyName, $reg);
-
-								if (strcasecmp($key->Key_name, $reg[1]) !== 0)
-								{
-									echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $queryDelete) . '</span>';
-									$skip = true;
-									break;
-								}
-							}
-						}
-
-						if ($skip)
-						{
-							continue;
-						}
-
-						if (!empty($queryDelete))
-						{
-							try
-							{
-								$db->setQuery($queryDelete);
-								$db->execute();
-								echo "$queryDelete - <span style='color:green'" . Text::_('Success') . '</span>';
-							}
-							catch (Exception $e)
-							{
-								echo "$queryDelete - <span style='color:red'" . Text::_('Failed') . '</span>';
-							}
-						}
-					}
-					else
-					{
-						echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $index) . '</span>';
-					}
-
-					echo '&nbsp;</td></tr>';
-					$k = (1 - $k);
-				}
-			}
-
-			$rows = count($newFields) + 1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="' . $rows . '">';
-			echo Text::_('Updating fields:');
-			echo '</th></tr>';
-			$columns = $db->getTableColumns($tableName, false);
-
-			foreach ($newFields AS $field)
-			{
-				$dFfieldName   = substr($field, strpos($field, '`') + 1);
-				$fieldName     = substr($dFfieldName, 0, strpos($dFfieldName, '`'));
-				$dFieldSetting = substr($dFfieldName, strpos($dFfieldName, '`') + 1);
-				echo '<tr class="row' . $k . '"><td>';
-				$add   = true;
-				$query = "ALTER TABLE `$tableName` ADD `$fieldName` $dFieldSetting";
-
-				if (array_key_exists($fieldName, $columns)
-					&& (strcasecmp($fieldName, $columns[$fieldName]->Field) === 0)
-					&& strpos(strtolower($dFieldSetting), $columns[$fieldName]->Type)
-				)
-				{
-					echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $query) . '</span>';
-					continue;
-				}
-				else
-				{
-					if (isset($columns[$fieldName]))
-					{
-						if (strpos(strtolower($dFieldSetting), $columns[$fieldName]->Type))
-						{
-							$add = true;
-						}
-						else
-						{
-							$add = false;
-						}
-					}
-				}
-
-				if ($add)
-				{
-					if ($query)
-					{
-						try
-						{
-							$db->setQuery($query);
-							$db->execute();
-							echo "$query - <span style='color:green'" . Text::_('Success') . '</span>';
-						}
-						catch (Exception $e)
-						{
-							echo "$query - <span style='color:red'" . Text::_('Failed') . '</span>';
-						}
-					}
-				}
-				else
-				{
-					if (array_key_exists($fieldName, $columns))
-					{
-						$query = "ALTER TABLE `$tableName` CHANGE `$fieldName` `$fieldName` $dFieldSetting";
-					}
-
-					if ($query)
-					{
-						try
-						{
-							$db->setQuery($query);
-							$db->execute();
-							echo "$query - <span style='color:green'" . Text::_('Success') . '</span>';
-						}
-						catch (Exception $e)
-						{
-							echo "$query - <span style='color:red'" . Text::_('Failed') . '</span>';
-						}
-					}
-				}
-
-				echo '&nbsp;</td></tr>';
-				$k = (1 - $k);
-			}
-
-			$rows = count($newIndexes) + 1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="' . $rows . '">';
-			echo Text::_('Adding keys/indexes:');
-			echo '</th></tr>';
-			$keys = $db->getTableKeys($tableName);
-
-			foreach ($newIndexes AS $index)
-			{
-				$query = '';
-				$index = trim($index);
-				echo '<tr class="row' . $k . '"><td>';
-
-				if (substr($index, 0, 11) != 'PRIMARY KEY')
-				{
-					$keyName  = '';
-					$queryAdd = '';
-
-					if (substr($index, 0, 3) == 'KEY')
-					{
-						$keyName  = substr($index, 0, strpos($index, '('));
-						$queryAdd = "ALTER TABLE `$tableName` ADD $index";
-					}
-                    elseif (substr($index, 0, 5) == 'INDEX')
-					{
-						$keyName  = substr($index, 0, strpos($index, '('));
-						$queryAdd = "ALTER TABLE `$tableName` ADD $index";
-					}
-                    elseif (substr($index, 0, 6) == 'UNIQUE')
-					{
-						$keyName  = trim(substr($index, 6));
-						$keyName  = substr($keyName, 0, strpos($keyName, '('));
-						$queryAdd = "ALTER TABLE `$tableName` ADD $index";
-					}
-
-					$skip = false;
-
-					foreach ($keys as $key)
-					{
-						preg_match('/`(.*?)`/', $keyName, $reg);
-
-						if (strcasecmp($key->Key_name, $reg[1]) === 0)
-						{
-							echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $queryDelete) . '</span>';
-							$skip = true;
-							break;
-						}
-					}
-
-					if ($skip)
-					{
-						continue;
-					}
-
-					if ($queryAdd)
-					{
-						try
-						{
-							$db->setQuery($queryAdd);
-							$db->execute();
-							echo "$queryAdd - <span style='color:green'" . Text::_('Success') . '</span>';
-						}
-						catch (Exception $e)
-						{
-							echo "$queryAdd - <span style='color:red'" . Text::_('Failed') . '</span>';
-						}
-					}
-				}
-				else
-				{
-					echo "<span style='color:orange; '>" . Text::sprintf('Skipping handling of %1$s', $index) . '</span>';
-				}
-
-				echo '&nbsp;</td></tr>';
-				$k = (1 - $k);
-			}
-
-			echo '</tbody></table>';
-			unset($newIndexes);
-			unset($newFields);
-			$slide_id++;
-		}
-
-		unset($import);
-		echo HTMLHelper::_('bootstrap.endSlide');
-	}
-
-	echo HTMLHelper::_('bootstrap.endAccordion');
-
-	return '';
-
+    return '<div class="alert alert-success" role="status">'
+        . htmlspecialchars(
+            sprintf(
+                'SportsManagement: %d tables checked, %d columns and %d indexes added.',
+                $summary['tables'],
+                $summary['columns'],
+                $summary['indexes']
+            ),
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8'
+        )
+        . '</div>';
 }
 
 ?>
