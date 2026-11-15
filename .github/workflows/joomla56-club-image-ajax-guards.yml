@@ -5,20 +5,28 @@ on:
     branches: [joomla5-6]
     paths:
       - 'site/src/Controller/EditclubController.php'
+      - 'site/src/Controller/ImagehandlerController.php'
       - 'admin/src/Controller/ImagehandlerController.php'
       - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php'
       - '.github/tests/joomla56_editclub_missing_identity.php'
       - '.github/tests/joomla56_image_upload_post_values.php'
+      - '.github/tests/joomla56_image_size_configuration.php'
+      - '.github/tests/joomla56_ajax_navigation_database_service.php'
       - '.github/tests/joomla56_ajax_navigation_layout_ownership.php'
       - '.github/workflows/joomla56-club-image-ajax-guards.yml'
   pull_request:
     branches: [joomla5-6, master]
     paths:
       - 'site/src/Controller/EditclubController.php'
+      - 'site/src/Controller/ImagehandlerController.php'
       - 'admin/src/Controller/ImagehandlerController.php'
       - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php'
       - '.github/tests/joomla56_editclub_missing_identity.php'
       - '.github/tests/joomla56_image_upload_post_values.php'
+      - '.github/tests/joomla56_image_size_configuration.php'
+      - '.github/tests/joomla56_ajax_navigation_database_service.php'
       - '.github/tests/joomla56_ajax_navigation_layout_ownership.php'
       - '.github/workflows/joomla56-club-image-ajax-guards.yml'
   workflow_dispatch:
@@ -42,6 +50,10 @@ jobs:
       - name: Check PHP syntax
         run: |
           php -l site/src/Controller/EditclubController.php
+          php -l site/src/Controller/ImagehandlerController.php
+          php -l modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php
+          php -l .github/tests/joomla56_image_size_configuration.php
+          php -l .github/tests/joomla56_ajax_navigation_database_service.php
           php -l admin/src/Controller/ImagehandlerController.php
           php -l modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php
           php -l .github/tests/joomla56_editclub_missing_identity.php
@@ -51,6 +63,10 @@ jobs:
         run: |
           php .github/tests/phpdoc_metadata.php \
             site/src/Controller/EditclubController.php \
+            site/src/Controller/ImagehandlerController.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php \
+            .github/tests/joomla56_image_size_configuration.php \
+            .github/tests/joomla56_ajax_navigation_database_service.php \
             admin/src/Controller/ImagehandlerController.php \
             modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php \
             .github/tests/joomla56_editclub_missing_identity.php \
@@ -60,6 +76,10 @@ jobs:
         run: |
           php .github/scripts/check-php-function-docs.php \
             site/src/Controller/EditclubController.php \
+            site/src/Controller/ImagehandlerController.php \
+            modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Helper/AjaxTopNavigationHelper.php \
+            .github/tests/joomla56_image_size_configuration.php \
+            .github/tests/joomla56_ajax_navigation_database_service.php \
             admin/src/Controller/ImagehandlerController.php \
             modules/mod_sportsmanagement_ajax_top_navigation_menu/src/Dispatcher/Dispatcher.php \
             .github/tests/joomla56_editclub_missing_identity.php \
@@ -71,3 +91,7 @@ jobs:
         run: php .github/tests/joomla56_image_upload_post_values.php
       - name: Verify AJAX navigation framework layout ownership
         run: php .github/tests/joomla56_ajax_navigation_layout_ownership.php
+      - name: Verify bounded image-size settings in site and admin
+        run: php .github/tests/joomla56_image_size_configuration.php
+      - name: Verify AJAX navigation database service validation
+        run: php .github/tests/joomla56_ajax_navigation_database_service.php
