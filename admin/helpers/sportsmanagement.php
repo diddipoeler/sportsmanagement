@@ -15,6 +15,7 @@
 \defined('_JEXEC') or die;
 use Joomla\Data\DataObject;
 use Joomla\CMS\Application\CMSApplicationInterface;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LocationHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Version;
@@ -4233,43 +4234,64 @@ var <?php echo $placeholder; ?> = new Array;
 	}
 
 	/**
-	 * Fetch a location's geographic coordinates and administrative address.
+	 * Resolve OpenStreetMap coordinates and legacy administrative address fields.
 	 *
-	 * Builds an OpenStreetMap Nominatim lookup for the supplied address and
-	 * maps the first result's latitude, longitude, state, city, district and
-	 * county into the legacy SportsManagement location field names.
-	 * Returns an empty array when the service provides no result.
+	 * Delegates Nominatim requests to the existing Joomla 5/6 LocationHelper,
+	 * which enforces HTTPS, a timeout, response-size limits and validated
+	 * coordinate and address values. Rejects malformed, oversized and control-
+	 * character-containing inputs before contacting the remote service.
+	 * Preserves the historical latitude, longitude, state, city, residential
+	 * and county result keys for older administrator templates.
 	 *
-	 * @function     getOSMGeoCoords
-	 *
-	 * @param        $address  : string
-	 *
-	 * @returns      -
-	 * @description  Gets GeoCoords by calling the OpenStreetMap geoencoding API
+	 * @param mixed $address Untrusted address supplied by the administrator.
+	 * @return array<string,string> Validated location details or an empty array.
+	 * @throws \RuntimeException If the request is not in the administrator client.
 	 */
 	public function getOSMGeoCoords($address)
 	{
-		$app    = self::administratorApplication();
-		$coords = array();
+		self::administratorApplication();
 
-		// Call OSM geoencoding api
-		// limit to one result (limit=1) without address details (addressdetails=0)
-		// output in JSON
-		$geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=" . urlencode($address);
-		$result     = json_decode(file_get_contents($geoCodeURL), true);
-
-		if (isset($result[0]))
-		{
-			$coords['latitude']                                                   = $result[0]["lat"];
-			$coords['longitude']                                                  = $result[0]["lon"];
-			$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME'] = $result[0]["address"]["state"];
-
-			$coords['COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME']                    = $result[0]["address"]["city"];
-			$coords['COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME']                 = $result[0]["address"]["residential"];
-			$coords['COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME'] = $result[0]["address"]["county"];
+		if (!is_string($address) || trim($address) === ''
+			|| strlen($address) > 512 || preg_match('/[\x00-\x1F\x7F]/', $address)) {
+			return [];
 		}
 
-		return $coords;
+		if (!class_exists(LocationHelper::class)) {
+			$nativeHelper = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Helper/LocationHelper.php';
+
+			if (!is_file($nativeHelper)) {
+				return [];
+			}
+
+			require_once $nativeHelper;
+		}
+
+		$data = (new LocationHelper())->resolveDetailed($address);
+
+		if (!isset($data['latitude'], $data['longitude'])) {
+			return [];
+		}
+
+		$coordinates = [
+			'latitude' => $data['latitude'],
+			'longitude' => $data['longitude'],
+		];
+		$addressFields = [
+			'state' => 'COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME',
+			'city' => 'COM_SPORTSMANAGEMENT_LOCALITY_LONG_NAME',
+			'residential' => 'COM_SPORTSMANAGEMENT_SUBLOCALITY_LONG_NAME',
+			'county' => 'COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_2_LONG_NAME',
+		];
+
+		foreach ($addressFields as $source => $target) {
+			$value = $data['address'][$source] ?? null;
+
+			if (is_string($value) && $value !== '') {
+				$coordinates[$target] = $value;
+			}
+		}
+
+		return $coordinates;
 	}
 
 	/**

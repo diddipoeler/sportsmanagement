@@ -67,7 +67,7 @@ final class ActSeasonHelper
                 ])
                 ->from($db->quoteName('#__sportsmanagement_project', 'pro'))
                 ->join('INNER', $db->quoteName('#__sportsmanagement_league', 'le') . ' ON ' . $db->quoteName('le.id') . ' = ' . $db->quoteName('pro.league_id'))
-                ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('pro.current_round'))
+                ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('pro.current_round') . ' AND ' . $db->quoteName('r.project_id') . ' = ' . $db->quoteName('pro.id'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_countries', 'co') . ' ON ' . $db->quoteName('co.alpha3') . ' = ' . $db->quoteName('le.country'))
                 ->join('LEFT', $db->quoteName('#__sportsmanagement_federations', 'fed') . ' ON ' . $db->quoteName('fed.id') . ' = ' . $db->quoteName('co.federation'))
                 ->where($db->quoteName('le.published_act_season') . ' = 1')
@@ -78,7 +78,8 @@ final class ActSeasonHelper
                 ]);
 
             $db->setQuery($query);
-            $list = $db->loadObjectList() ?: [];
+            $records = $db->loadObjectList();
+            $list = is_array($records) ? $records : [];
         } catch (\Throwable $e) {
             \Joomla\CMS\Log\Log::add(__METHOD__ . ': ' . $e->getMessage(), \Joomla\CMS\Log\Log::ERROR, 'jsmerror');
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
@@ -87,22 +88,47 @@ final class ActSeasonHelper
 
         $federations = [];
         $countries = [];
+        $validRows = [];
+
         foreach ($list as $row) {
-            $row->project_slug = $this->slug((int) $row->id, (string) ($row->project_alias ?? ''));
-            $row->roundcode = $this->slug((int) ($row->round_id ?? 0), (string) ($row->round_alias ?? ''));
+            // Older imports can contain incomplete records. Never let nested
+            // values become "Array" in routes, flag markup or translation keys.
+            if (!is_object($row)) {
+                continue;
+            }
+
+            $projectId = self::positiveId($row->id ?? null);
+
+            if ($projectId === 0) {
+                continue;
+            }
+
+            $row->project_slug = $this->slug($projectId, self::plainText($row->project_alias ?? null));
+            $row->roundcode = $this->slug(
+                self::positiveId($row->round_id ?? null),
+                self::plainText($row->round_alias ?? null)
+            );
             $row->database_selector = $databaseSelector;
-            $row->country_label = Text::_((string) (($row->country_name ?? '') ?: ($row->country ?? '')));
+            $row->name = self::plainText($row->name ?? null);
+            $row->country = strtoupper(self::plainText($row->country ?? null));
+            $row->alpha2 = strtolower(self::plainText($row->alpha2 ?? null));
+            $row->country_picture = self::plainText($row->country_picture ?? null);
+            $countryName = self::plainText($row->country_name ?? null);
+            $row->country_label = Text::_($countryName !== '' ? $countryName : $row->country);
             $row->flag_html = $this->flagHtml($row, $componentParams);
-            $fedId = (int) ($row->federation ?? 0);
+            $fedId = self::positiveId($row->federation ?? null);
+            $row->federation = $fedId;
 
             if ($fedId > 0 && !isset($federations[$fedId])) {
+                $name = self::plainText($row->federation_name ?? null);
                 $federations[$fedId] = (object) [
                     'id' => $fedId,
-                    'name' => (string) (($row->federation_name ?? '') ?: $fedId),
+                    'name' => $name !== '' ? $name : (string) $fedId,
                 ];
             }
 
-            $countryCode = (string) ($row->country ?? '');
+            $countryCode = $row->country;
+
             if ($countryCode !== '' && !isset($countries[$fedId][$countryCode])) {
                 $countries[$fedId][$countryCode] = (object) [
                     'alpha3' => $countryCode,
@@ -110,7 +136,11 @@ final class ActSeasonHelper
                     'flag_html' => $row->flag_html,
                 ];
             }
+
+            $validRows[] = $row;
         }
+
+        $list = $validRows;
 
         // Countries without a federation must remain visible in the tab layout.
         if (!empty($countries[0])) {
@@ -137,6 +167,66 @@ final class ActSeasonHelper
             'federations' => $federations,
             'countriesByFederation' => $countries,
         ];
+    }
+
+    /**
+     * Parse a positive SportsManagement record ID from legacy module data.
+     *
+     * Allows integer IDs and zero-padded decimal strings within PHP's range.
+     * Rejects arrays, booleans, negative values, numeric suffixes and large
+     * values instead of making unsafe PHP 8 integer casts in route segments.
+     *
+     * @param mixed $value Raw project, round or federation record ID.
+     * @return int Positive ID, or zero for a malformed value.
+     */
+    private static function positiveId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value > 0 ? $value : 0;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
+     * Convert a bounded legacy text field into safe displayable text.
+     *
+     * Imports sometimes contain nested arrays or objects in nominally text
+     * columns. Only strings and finite numeric scalar values are retained;
+     * oversized values and control characters are discarded before Joomla
+     * translation, flag rendering or URL alias construction.
+     *
+     * @param mixed $value Raw database display field.
+     * @return string Trimmed printable text, or an empty string.
+     */
+    private static function plainText(mixed $value): string
+    {
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            return '';
+        }
+
+        if (is_float($value) && !is_finite($value)) {
+            return '';
+        }
+
+        $value = trim((string) $value);
+
+        return $value !== '' && strlen($value) <= 4096
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $value) !== 1
+            ? $value : '';
     }
 
     /**
