@@ -10,11 +10,38 @@
 
 \defined('_JEXEC') or die;
 
-$summary = $this->previewSummary ?? [
-    'matches' => 0,
-    'teams' => 0,
-    'playgrounds' => 0,
-    'goals' => 0,
+/**
+ * Render a preview counter only when the remote value is a valid integer.
+ *
+ * Legacy view data may include arrays, booleans, negative or overflowing
+ * numbers. Avoid PHP 8 array-cast warnings and implausible preview totals.
+ *
+ * @param mixed $value Untrusted preview summary value.
+ * @return int Valid nonnegative total, otherwise zero.
+ */
+$counter = static function (mixed $value): int {
+    if (is_int($value)) {
+        return max(0, $value);
+    }
+
+    if (!is_string($value) || preg_match('/^[0-9]{1,18}$/D', $value) !== 1) {
+        return 0;
+    }
+
+    $parsed = filter_var($value, FILTER_VALIDATE_INT, [
+        'options' => ['min_range' => 0, 'max_range' => PHP_INT_MAX],
+    ]);
+
+    return $parsed === false ? 0 : $parsed;
+};
+
+$rawSummary = $this->previewSummary ?? [];
+$values = is_array($rawSummary) ? $rawSummary : [];
+$summary = [
+    'matches' => $counter($values['matches'] ?? 0),
+    'teams' => $counter($values['teams'] ?? 0),
+    'playgrounds' => $counter($values['playgrounds'] ?? 0),
+    'goals' => $counter($values['goals'] ?? 0),
 ];
 ?>
 <div class="card">
