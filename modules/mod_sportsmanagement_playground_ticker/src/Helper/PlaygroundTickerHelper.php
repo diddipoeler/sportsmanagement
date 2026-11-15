@@ -12,6 +12,7 @@ namespace Diddipoeler\Module\SportsManagementPlaygroundTicker\Site\Helper;
 use Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -26,7 +27,9 @@ final class PlaygroundTickerHelper
      * selected database, discard malformed records and return a bounded random
      * selection. Invalid project settings never broaden the database query.
      * Caps the database result set at 1000 records and limits the final
-     * random sample to at most 100 playgrounds.
+     * random sample to at most 100 playgrounds. External database lookup
+     * errors return an empty ticker and are logged without SQL credentials
+     * or other private exception details reaching frontend visitors.
      *
      * @param Registry $params Module settings and filters.
      * @param CMSApplicationInterface $app Active application.
@@ -58,10 +61,13 @@ final class PlaygroundTickerHelper
             return [];
         }
 
-        $db = SportsManagementDatabaseResolver::resolve(
-            $fallbackDatabase,
-            $whichDatabase
-        );
+        try {
+            // External connection failures and malformed driver result sets
+            // are recoverable frontend display errors, not public exceptions.
+            $db = SportsManagementDatabaseResolver::resolve(
+                $fallbackDatabase,
+                $whichDatabase
+            );
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('pg.id', 'id_playground'),
@@ -130,6 +136,16 @@ final class PlaygroundTickerHelper
         $keys = is_array($keys) ? $keys : [$keys];
 
         return array_values(array_map(static fn (int $key): object => $playgrounds[$key], $keys));
+        } catch (\Throwable $error) {
+            // Never expose SQL statements, remote hostnames or credentials.
+            Log::add(
+                __METHOD__ . ': playground lookup failed (' . get_class($error) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+
+            return [];
+        }
     }
 
     /**
@@ -289,7 +305,8 @@ final class PlaygroundTickerHelper
             return $raw === 0 || $raw === 1 ? $raw : null;
         }
 
-        if (!is_string($raw) || !preg_match('/^0*(?:0|1)$/D', $raw)) {
+        if (!is_string($raw) || strlen($raw) > 64
+            || preg_match('/^0*(?:0|1)$/D', $raw) !== 1) {
             return null;
         }
 
