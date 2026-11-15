@@ -37,8 +37,10 @@ final class PlaygroundGeocoder
     /**
      * Look up a playground's state and coordinates with OpenStreetMap Nominatim.
      *
-     * Builds an address from the available playground fields, performs a bounded
-     * HTTP lookup and validates external JSON data before returning normalised values.
+     * Builds a bounded, printable address from legacy playground fields,
+     * discards nested imports and never sends malformed values to Nominatim.
+     * Performs a timed HTTP lookup, bounds the JSON response and validates
+     * external data before returning normalised values.
      *
      * @param object $playground Address, city, ZIP code and country of the venue.
      * @return array{state:string, latitude:?float, longitude:?float}|null Geocoded data or null on failure.
@@ -46,25 +48,29 @@ final class PlaygroundGeocoder
     public function geocode(object $playground): ?array
     {
         $parts = [];
-        $address = trim((string) ($playground->address ?? ''));
+        $address = $this->stringValue($playground->address ?? null);
 
         if ($address !== '') {
             $parts[] = $address;
         }
 
-        $city = trim((string) ($playground->city ?? $playground->location ?? ''));
+        $city = $this->stringValue($playground->city ?? null);
+
+        if ($city === '') {
+            $city = $this->stringValue($playground->location ?? null);
+        }
 
         if ($city !== '') {
             $parts[] = $city;
         }
 
-        $zipcode = trim((string) ($playground->zipcode ?? ''));
+        $zipcode = $this->stringValue($playground->zipcode ?? null);
 
         if ($zipcode !== '') {
             $parts[] = $zipcode;
         }
 
-        $country = $this->getCountryName((string) ($playground->country ?? ''));
+        $country = $this->getCountryName($this->stringValue($playground->country ?? null));
 
         if ($country !== '') {
             $parts[] = $country;
@@ -72,7 +78,7 @@ final class PlaygroundGeocoder
 
         $query = implode(', ', $parts);
 
-        if ($query === '') {
+        if ($query === '' || strlen($query) > 512) {
             return null;
         }
 
@@ -100,11 +106,11 @@ final class PlaygroundGeocoder
 
         $body = (string) $response->getBody();
 
-        if ($body === '') {
+        if ($body === '' || strlen($body) > 1048576) {
             return null;
         }
 
-        $data = json_decode($body, true);
+        $data = json_decode($body, true, 32);
 
         if (!is_array($data) || !isset($data[0]) || !is_array($data[0])) {
             return null;
@@ -139,16 +145,18 @@ final class PlaygroundGeocoder
 
     /**
      * Expand a country code into a name suitable for geocoding searches.
-     * Uses a parameter-bound alpha3 lookup and returns the original code if the country is unknown or the database request fails.
+     * Only valid ISO alpha-3 codes are sent to the parameter-bound lookup.
+     * Non-string results are discarded; unknown countries retain their code
+     * without generating PHP 8 array-to-string warnings.
      *
      * @param string $code SportsManagement three-letter country code.
      * @return string Country name, original code or empty string.
      */
     private function getCountryName(string $code): string
     {
-        $code = trim($code);
+        $code = strtoupper(trim($code));
 
-        if ($code === '') {
+        if (preg_match('/^[A-Z]{3}$/D', $code) !== 1) {
             return '';
         }
 
@@ -159,7 +167,7 @@ final class PlaygroundGeocoder
                 ->where($this->database->quoteName('alpha3') . ' = :code')
                 ->bind(':code', $code, ParameterType::STRING);
             $this->database->setQuery($query, 0, 1);
-            $name = trim((string) $this->database->loadResult());
+            $name = $this->stringValue($this->database->loadResult());
 
             return $name !== '' ? $name : $code;
         } catch (\Throwable) {
@@ -168,12 +176,23 @@ final class PlaygroundGeocoder
     }
 
     /**
-     * Untrusted JSON fields can contain arrays or objects, which must not be
-     * coerced into warnings or the literal string "Array" in map records.
+     * Read bounded, printable plain text from an imported or remote field.
+     *
+     * Rejects non-string values, control characters and oversized input
+     * instead of coercing malformed arrays or objects into location data.
+     * Used for both administrator settings and Nominatim JSON responses.
+     *
+     * @param mixed $value Untrusted address or country field.
+     * @return string Safe trimmed text or an empty string.
      */
     private function stringValue(mixed $value): string
     {
-        return is_string($value) ? trim($value) : '';
+        if (!is_string($value) || strlen($value) > 255
+            || preg_match('/[\x00-\x1F\x7F]/', $value) === 1) {
+            return '';
+        }
+
+        return trim($value);
     }
 
     /**
