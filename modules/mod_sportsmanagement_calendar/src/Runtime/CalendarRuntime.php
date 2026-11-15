@@ -223,9 +223,9 @@ class CalendarRuntime extends \PHPCalendar
     /**
      * Parse a calendar month or year without coercing malformed input.
      *
-     * Retains the historic boundary clamping for genuine integers and
-     * leading-zero decimal strings. Unsupported values and overflowing
-     * integers use the supplied valid default.
+     * Retains historic boundary clamping for genuine integers and signed
+     * decimal strings, including leading-zero and explicit plus-sign forms.
+     * Unsupported values and overflowing integers use the valid default.
      *
      * @param mixed $value Module or connector calendar component.
      * @param int $minimum Lowest supported value.
@@ -238,12 +238,13 @@ class CalendarRuntime extends \PHPCalendar
         if (is_string($value)) {
             $value = trim($value);
 
-            if ($value === '' || strlen($value) > 64 || preg_match('/^-?[0-9]+$/D', $value) !== 1) {
+            if ($value === '' || strlen($value) > 64 || preg_match('/^[+-]?[0-9]+$/D', $value) !== 1) {
                 return $fallback;
             }
 
             $negative = str_starts_with($value, '-');
-            $digits = ltrim($negative ? substr($value, 1) : $value, '0');
+            $hasSign = $negative || str_starts_with($value, '+');
+            $digits = ltrim($hasSign ? substr($value, 1) : $value, '0');
             $value = ($negative && $digits !== '' ? '-' : '') . ($digits === '' ? '0' : $digits);
         } elseif (!is_int($value)) {
             return $fallback;
