@@ -1,0 +1,42 @@
+name: Joomla 5/6 OpenLigaDB preview template counters
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php'
+      - '.github/tests/joomla56_openligadb_preview_template.php'
+      - '.github/workflows/joomla56-openligadb-template-counter.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php'
+      - '.github/tests/joomla56_openligadb_preview_template.php'
+      - '.github/workflows/joomla56-openligadb-template-counter.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  preview-counters:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint Joomla OpenLigaDB preview and regression fixture
+        run: |
+          php -l site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php
+          php -l .github/tests/joomla56_openligadb_preview_template.php
+      - name: Render malformed and correct preview counters
+        run: php .github/tests/joomla56_openligadb_preview_template.php
+      - name: Validate header metadata and PHPDoc
+        run: |
+          php .github/scripts/check-php-headers.php site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php
+          php .github/scripts/check-php-function-docs.php site/extensions/jsmopenligadb/admin/views/jsmopenligadb/tmpl/default.php .github/tests/joomla56_openligadb_preview_template.php
