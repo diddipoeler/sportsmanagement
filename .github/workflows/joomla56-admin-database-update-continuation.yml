@@ -1,0 +1,38 @@
+name: Joomla 5/6 administrator database upgrade continuation
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_db_tables.php'
+      - '.github/tests/joomla56_admin_database_update_continuation.php'
+      - '.github/workflows/joomla56-admin-database-update-continuation.yml'
+  pull_request:
+    branches: [master, joomla5-6]
+    paths:
+      - 'admin/assets/updates/jsm_update_db_tables.php'
+      - '.github/tests/joomla56_admin_database_update_continuation.php'
+      - '.github/workflows/joomla56-admin-database-update-continuation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  database-update-guards:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint the migration and its regression fixture
+        run: |
+          php -l admin/assets/updates/jsm_update_db_tables.php
+          php -l .github/tests/joomla56_admin_database_update_continuation.php
+      - name: Verify protected two-stage database update workflow
+        run: php .github/tests/joomla56_admin_database_update_continuation.php
+      - name: Verify PHP metadata and documentation
+        run: |
+          php .github/scripts/check-php-headers.php admin/assets/updates/jsm_update_db_tables.php
+          php .github/scripts/check-php-function-docs.php admin/assets/updates/jsm_update_db_tables.php .github/tests/joomla56_admin_database_update_continuation.php
