@@ -92,8 +92,11 @@ final class ResultsController extends BaseController
     /**
      * Save inline result changes for the selected matches.
      * Rejects malformed or oversized checkbox selections, validates CSRF and
-     * project-specific edit rights, and invokes the native results write model.
-     * Always returns the browser to the results view, reporting failures via Joomla.
+     * project-specific edit rights, and resolves the native results write
+     * model through Joomla's MVC factory. The expected model is type-checked
+     * before use, avoiding a PHP 8 null-method call and ensuring database and
+     * other Joomla services are injected consistently. Always redirects to
+     * the results view and reports failures through Joomla.
      * @return void
      */
     public function saveshort(): void
@@ -127,11 +130,12 @@ final class ResultsController extends BaseController
             return;
         }
 
-        if (!class_exists(ResultsEditModel::class)) {
-            require_once JPATH_SITE . '/components/com_sportsmanagement/src/Model/ResultsEditModel.php';
+        $editModel = $this->getModel('ResultsEdit');
+
+        if (!$editModel instanceof ResultsEditModel) {
+            throw new \RuntimeException('ResultsEditModel is unavailable.', 500);
         }
 
-        $editModel = new ResultsEditModel();
         $editModel->setDatabaseSelector($databaseSelector);
 
         if (!$editModel->saveShort($post, $matchIds)) {
