@@ -14,8 +14,8 @@ use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyApiClient;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubLogoService;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyClubTeamImportService;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyMatchImportService;
+use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyImportStager;
 use Diddipoeler\Component\SportsManagement\Site\Service\InlineHockeyProjectService;
-use Joomla\Archive\Archive;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -34,6 +34,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     public function getmatches(): void
     {
         $this->checkToken();
+        $this->assertImportPermission();
 
         try {
             $input = $this->app->getInput();
@@ -82,6 +83,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     public function getclubs(): void
     {
         $this->checkToken();
+        $this->assertImportPermission();
 
         try {
             $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -106,6 +108,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     public function getteams(): void
     {
         $this->checkToken();
+        $this->assertImportPermission();
 
         try {
             $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -130,6 +133,7 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     public function getplayers(): void
     {
         $this->checkToken();
+        $this->assertImportPermission();
 
         try {
             $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -147,93 +151,94 @@ class sportsmanagementControllerjsminlinehockey extends AdminController
     }
 
     /**
-     * Stage an uploaded XLS, ICS or ZIP import source for processing.
-     * Checks the request token and upload metadata, prepares the Joomla temporary directory and stages a supported import file; errors are logged.
-     * @return void
+     * Stage an uploaded XLS, ICS or ZIP import package for later processing.
+     *
+     * Requires a Joomla POST token and SportsManagement manager rights.
+     * Verifies PHP-upload metadata and a 10 MiB limit before writing to an
+     * unpredictable temporary filename. The native staging service reads at
+     * most one allowed archive member without extracting untrusted ZIP paths
+     * into Joomla's shared tmp directory; old imports are preserved on error.
+     *
+     * @return void Upload is staged or a generic warning is logged.
      */
     public function save(): void
     {
         $this->checkToken();
+        $this->assertImportPermission();
 
         $input = $this->app->getInput();
-        $post = $input->post->getArray();
 
-        if ((int) ($post['sent'] ?? 0) !== 1) {
+        if ($input->post->getInt('sent', 0) !== 1) {
             return;
         }
 
         $upload = $input->files->get('import_package', null, 'array');
+        $extension = is_array($upload)
+            ? InlineHockeyImportStager::extension($upload['name'] ?? null) : '';
+        $size = is_array($upload) ? ($upload['size'] ?? null) : null;
+        $tempFilePath = is_array($upload) ? ($upload['tmp_name'] ?? null) : null;
 
-        if (!is_array($upload) || (int) ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+        if (!is_array($upload)
+            || (int) ($upload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK
+            || $extension === ''
+            || !is_int($size) || $size < 1 || $size > InlineHockeyImportStager::MAX_IMPORT_BYTES
+            || !is_string($tempFilePath) || !is_uploaded_file($tempFilePath)) {
             $this->logUploadWarning('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD');
 
             return;
         }
 
-        $tempFilePath = (string) ($upload['tmp_name'] ?? '');
-        $uploadName = File::makeSafe(basename((string) ($upload['name'] ?? '')));
         $extractDir = JPATH_SITE . '/tmp';
-        $destination = $extractDir . '/' . $uploadName;
-        $importFile = $extractDir . '/ish_bw_import.xls';
-
-        if ($tempFilePath === '' || $uploadName === '' || !File::exists($tempFilePath)) {
-            $this->logUploadWarning('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD');
-
-            return;
-        }
+        $stagingFile = '';
 
         try {
             if (!is_dir($extractDir) && !Folder::create($extractDir)) {
-                throw new \RuntimeException('Inline-Hockey temporary directory could not be created.');
+                throw new \RuntimeException('Inline Hockey temporary directory could not be created.');
             }
 
-            if (File::exists($importFile)) {
-                File::delete($importFile);
+            // Neither a user-supplied filename nor a ZIP entry becomes a
+            // directly accessible destination path.
+            $stagingFile = $extractDir . '/ishd_' . bin2hex(random_bytes(16)) . '.' . $extension;
+
+            if (!File::upload($tempFilePath, $stagingFile)) {
+                throw new \RuntimeException('Inline Hockey upload could not be moved into staging.');
             }
 
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-
-            if (!File::upload($tempFilePath, $destination)) {
-                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD'));
-            }
-
-            $extension = strtolower((string) File::getExt($destination));
-
-            if ($extension === 'zip') {
-                $archive = new Archive();
-
-                if (!$archive->extract($destination, $extractDir)) {
-                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_ERROR'));
-                }
-
-                File::delete($destination);
-                $sourceFiles = Folder::files($extractDir, '\.(?:xls|ics)$', false, true);
-
-                if (!$sourceFiles) {
-                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_EXTRACT_NOJLG'));
-                }
-
-                $source = (string) reset($sourceFiles);
-
-                if (!File::move($source, $importFile)) {
-                    throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_ERROR_RENAME'));
-                }
-
-                return;
-            }
-
-            if (!in_array($extension, ['xls', 'ics'], true)) {
-                File::delete($destination);
-                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_WRONG_EXTENSION'));
-            }
-
-            if (!File::move($destination, $importFile)) {
-                throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_RENAME_FAILED'));
-            }
+            InlineHockeyImportStager::stage(
+                $stagingFile,
+                $extension,
+                $extractDir . '/ish_bw_import.xls'
+            );
         } catch (\Throwable $exception) {
-            Log::add($exception->getMessage(), Log::WARNING, 'jsmerror');
+            Log::add(
+                'Inline Hockey import staging failed (' . get_class($exception) . ').',
+                Log::WARNING,
+                'jsmerror'
+            );
+            $this->logUploadWarning('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_CTRL_CANT_UPLOAD');
+        } finally {
+            if ($stagingFile !== '' && File::exists($stagingFile)) {
+                File::delete($stagingFile);
+            }
+        }
+    }
+
+    /**
+     * Verify that the active Joomla identity may modify component data.
+     *
+     * A valid CSRF token only authenticates the browser session; all match,
+     * club, team, player and file import tasks also require component manager
+     * rights before services are resolved or uploads are written.
+     *
+     * @return void
+     * @throws \RuntimeException For unauthorised import attempts.
+     */
+    private function assertImportPermission(): void
+    {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
     }
 
