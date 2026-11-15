@@ -321,6 +321,50 @@ namespace {
     roundDeleteAssert($queries, $model->database->queries,
         'Invalid round cleanup accessed the database');
 
+    // Authorisation must precede ANY dependent-match write. Joomla's
+    // parent delete() is too late to protect the manual child cleanup.
+    $baselineQueries = $model->database->queries;
+    $baselineWrites = $model->database->writes;
+    $baselineParents = $model->parentDeletes;
+
+    $model->componentDeleteAllowed = false;
+    $deniedKeys = [7];
+    roundDeleteAssert(false, $model->delete($deniedKeys),
+        'Denied component delete removed round dependencies');
+
+    $model->componentDeleteAllowed = true;
+    $model->authenticated = false;
+    $deniedKeys = [7];
+    roundDeleteAssert(false, $model->delete($deniedKeys),
+        'Anonymous request removed round dependencies');
+
+    $model->authenticated = true;
+    $model->deniedRoundIds = [8];
+    $deniedKeys = [7, 8];
+    roundDeleteAssert(false, $model->delete($deniedKeys),
+        'Per-record denied round removed dependencies from earlier records');
+
+    $model->deniedRoundIds = [];
+    \Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable::$missingIds = [8];
+    $missingKeys = [7, 8];
+    roundDeleteAssert(false, $model->delete($missingKeys),
+        'A missing round still deleted dependent match rows');
+    \Diddipoeler\Component\SportsManagement\Administrator\Table\RoundTable::$missingIds = [];
+
+    roundDeleteAssert($baselineQueries, $model->database->queries,
+        'Denied or missing rounds reached a SQL query');
+    roundDeleteAssert($baselineWrites, $model->database->writes,
+        'Denied or missing rounds issued a SQL mutation');
+    roundDeleteAssert($baselineParents, $model->parentDeletes,
+        'Denied or missing rounds reached Joomla parent deletion');
+
+    $model->componentDeleteAllowed = false;
+    roundDeleteAssert(false, $model->deleteRoundMatches([7]),
+        'Direct match cleanup bypassed round deletion permissions');
+    roundDeleteAssert($baselineQueries, $model->database->queries,
+        'Denied direct match cleanup queried a database');
+    $model->componentDeleteAllowed = true;
+
     $model->database->relatedMatches = ['00021', '21junk', 22, -1, [23]];
     RoundDeleteTestQuery::$whereSelections = [];
     roundDeleteAssert(true, $model->deleteRoundMatches([7]),
