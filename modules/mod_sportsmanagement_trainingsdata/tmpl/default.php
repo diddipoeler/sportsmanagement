@@ -11,7 +11,26 @@
 
 use Joomla\CMS\Language\Text;
 
-$showNotes = (int) $params->get('show_training_note', 1) === 1;
+/**
+ * Escape a legacy TrainingsData field for text and HTML attributes.
+ *
+ * Stored fields and module settings can contain arrays or malformed UTF-8.
+ * Reject non-scalar values to avoid PHP 8 conversion warnings.
+ *
+ * @param mixed $value Raw training or Joomla module field.
+ * @return string Safe HTML text or empty output for unsupported values.
+ */
+$escape = static fn (mixed $value): string => htmlspecialchars(
+    is_string($value) || is_numeric($value) ? (string) $value : '',
+    ENT_QUOTES | ENT_SUBSTITUTE,
+    'UTF-8'
+);
+$showNotes = in_array($params->get('show_training_note', 1), [1, '1', true], true);
+$showHeader = in_array($params->get('show_training_modul_header', 1), [1, '1', true], true);
+$trainingRows = array_values(array_filter(
+    is_array($trainingsdata ?? null) ? $trainingsdata : [],
+    'is_object'
+));
 $daysOfWeek = [
     1 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
     2 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_TUESDAY'),
@@ -21,20 +40,40 @@ $daysOfWeek = [
     6 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
     7 => Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY'),
 ];
+/**
+ * Format bounded seconds since midnight as hours and minutes.
+ *
+ * Rejects arrays, negative values, partial numeric strings and overflows,
+ * instead of relying on PHP's permissive legacy integer casts.
+ *
+ * @param mixed $seconds Seconds since midnight from the training record.
+ * @return string HH:MM string, or 00:00 for invalid values.
+ */
 $formatTime = static function (mixed $seconds): string {
-    $value = max(0, (int) $seconds);
+    if (!is_int($seconds) && (!is_string($seconds)
+        || preg_match('/^[0-9]{1,5}$/D', $seconds) !== 1)) {
+        return '00:00';
+    }
+
+    $value = filter_var($seconds, FILTER_VALIDATE_INT, [
+        'options' => ['min_range' => 0, 'max_range' => 86399],
+    ]);
+
+    if ($value === false) {
+        return '00:00';
+    }
 
     return sprintf('%02d:%02d', intdiv($value, 3600), intdiv($value % 3600, 60));
 };
-$moduleClass = htmlspecialchars((string) $params->get('moduleclass_sfx', ''), ENT_QUOTES, 'UTF-8');
-$tableClass = htmlspecialchars((string) $params->get('table_class', 'table'), ENT_QUOTES, 'UTF-8');
+$moduleClass = $escape($params->get('moduleclass_sfx', ''));
+$tableClass = $escape($params->get('table_class', 'table'));
 ?>
-<div class="<?= $moduleClass ?>" id="<?= htmlspecialchars((string) $module->module, ENT_QUOTES, 'UTF-8') ?>-<?= (int) $module->id ?>">
-    <?php if ((int) $params->get('show_training_modul_header', 1) === 1) : ?>
+<div class="<?= $moduleClass ?>" id="<?= $escape($module->module ?? 'mod_sportsmanagement_trainingsdata') ?>-<?= (int) $module->id ?>">
+    <?php if ($showHeader) : ?>
         <h4 class="scheduler-border"><?= Text::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING') ?></h4>
     <?php endif; ?>
 
-    <?php if (!empty($trainingsdata)) : ?>
+    <?php if ($trainingRows) : ?>
         <div class="table-responsive">
             <table class="<?= $tableClass ?>">
                 <thead>
@@ -50,19 +89,19 @@ $tableClass = htmlspecialchars((string) $params->get('table_class', 'table'), EN
                 </thead>
                 <tbody>
                     <?php $noteNumber = 0; ?>
-                    <?php foreach ($trainingsdata as $training) : ?>
+                    <?php foreach ($trainingRows as $training) : ?>
                         <?php
-                        $notes = trim((string) ($training->notes ?? ''));
+                        $notes = (is_string($training->notes ?? null) ? trim($training->notes) : '');
                         $currentNote = null;
                         if ($showNotes && $notes !== '') {
                             $currentNote = ++$noteNumber;
                         }
                         ?>
                         <tr>
-                            <td><?= htmlspecialchars((string) ($daysOfWeek[(int) ($training->dayofweek ?? 0)] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= $escape($daysOfWeek[filter_var($training->dayofweek ?? null, FILTER_VALIDATE_INT) ?: 0] ?? '') ?></td>
                             <td><?= $formatTime($training->time_start ?? 0) ?></td>
                             <td><?= $formatTime($training->time_end ?? 0) ?></td>
-                            <td><?= htmlspecialchars((string) ($training->place ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
+                            <td><?= $escape($training->place ?? '') ?></td>
                             <?php if ($showNotes) : ?>
                                 <td><?= $currentNote !== null ? '*<sup>' . $currentNote . '</sup>' : '' ?></td>
                             <?php endif; ?>
@@ -71,13 +110,13 @@ $tableClass = htmlspecialchars((string) $params->get('table_class', 'table'), EN
 
                     <?php if ($showNotes) : ?>
                         <?php $noteNumber = 0; ?>
-                        <?php foreach ($trainingsdata as $training) : ?>
-                            <?php $notes = trim((string) ($training->notes ?? '')); ?>
+                        <?php foreach ($trainingRows as $training) : ?>
+                            <?php $notes = (is_string($training->notes ?? null) ? trim($training->notes) : ''); ?>
                             <?php if ($notes === '') { continue; } ?>
                             <?php $noteNumber++; ?>
                             <tr class="training-note">
                                 <td class="text-end">*<sup><?= $noteNumber ?></sup></td>
-                                <td colspan="4"><?= nl2br(htmlspecialchars($notes, ENT_QUOTES, 'UTF-8')) ?></td>
+                                <td colspan="4"><?= nl2br($escape($notes)) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
