@@ -1,0 +1,61 @@
+name: Joomla 5/6 source editor and matches slider guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/SmextxmleditorController.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_admin_source_editor_null_identity.php'
+      - '.github/tests/joomla56_matches_slider_helper_failure.php'
+      - '.github/workflows/joomla56-source-editor-slider-guards.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/SmextxmleditorController.php'
+      - 'modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_admin_source_editor_null_identity.php'
+      - '.github/tests/joomla56_matches_slider_helper_failure.php'
+      - '.github/workflows/joomla56-source-editor-slider-guards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guards:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint native PHP and tests
+        run: |
+          php -l admin/src/Controller/SmextxmleditorController.php
+          php -l modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_admin_source_editor_null_identity.php
+          php -l .github/tests/joomla56_matches_slider_helper_failure.php
+      - name: Verify source file attribution
+        run: |
+          php .github/tests/phpdoc_metadata.php \
+            admin/src/Controller/SmextxmleditorController.php \
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_admin_source_editor_null_identity.php \
+            .github/tests/joomla56_matches_slider_helper_failure.php
+      - name: Verify descriptive function PHPDoc
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Controller/SmextxmleditorController.php \
+            modules/mod_sportsmanagement_matchesslider/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_admin_source_editor_null_identity.php \
+            .github/tests/joomla56_matches_slider_helper_failure.php
+      - name: Test source editor guest rejection
+        run: php .github/tests/joomla56_admin_source_editor_null_identity.php
+      - name: Test slider helper outage isolation
+        run: php .github/tests/joomla56_matches_slider_helper_failure.php
