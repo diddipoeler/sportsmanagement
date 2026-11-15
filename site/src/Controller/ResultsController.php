@@ -204,21 +204,21 @@ final class ResultsController extends BaseController
 
     /**
      * Prepare the native access model for a specific project and database.
-     * Loads legacy-compatible model dependencies where necessary and configures
-     * both selectors so permission checks use the same scope as the write.
+     * Resolve the Joomla 5/6 model through the MVC factory, verify its type,
+     * and configure both selectors so permission checks use the same project
+     * and database scope as writes without manually instantiating models.
      * @param int $databaseSelector Selected SportsManagement database.
      * @param int $projectId Project whose matches are being edited.
      * @return ResultsAccessModel Configured access checker.
      */
     private function resultsAccessModel(int $databaseSelector, int $projectId): ResultsAccessModel
     {
-        if (!class_exists(ResultsAccessModel::class)) {
-            require_once dirname(__DIR__) . '/Model/SportsManagementModel.php';
-            require_once dirname(__DIR__) . '/Model/SportsManagementProjectModel.php';
-            require_once dirname(__DIR__) . '/Model/ResultsAccessModel.php';
+        $accessModel = $this->getModel('ResultsAccess');
+
+        if (!$accessModel instanceof ResultsAccessModel) {
+            throw new \RuntimeException('ResultsAccessModel is unavailable.', 500);
         }
 
-        $accessModel = new ResultsAccessModel();
         $accessModel->setDatabaseSelector($databaseSelector);
         $accessModel->setProjectId($projectId);
 
