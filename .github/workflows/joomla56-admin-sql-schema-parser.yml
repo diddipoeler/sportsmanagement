@@ -1,0 +1,43 @@
+name: Joomla 5/6 administrator SQL schema parser
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Helper/InstallSchemaStatementParser.php'
+      - 'admin/assets/updates/jsm_update_db_tables.php'
+      - 'admin/sql/install.mysql.utf8.sql'
+      - '.github/tests/joomla56_admin_install_schema_parser.php'
+      - '.github/workflows/joomla56-admin-sql-schema-parser.yml'
+  pull_request:
+    branches: [master, joomla5-6]
+    paths:
+      - 'admin/src/Helper/InstallSchemaStatementParser.php'
+      - 'admin/assets/updates/jsm_update_db_tables.php'
+      - 'admin/sql/install.mysql.utf8.sql'
+      - '.github/tests/joomla56_admin_install_schema_parser.php'
+      - '.github/workflows/joomla56-admin-sql-schema-parser.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  schema-parser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint schema helper, administrator script and regression fixture
+        run: |
+          php -l admin/src/Helper/InstallSchemaStatementParser.php
+          php -l admin/assets/updates/jsm_update_db_tables.php
+          php -l .github/tests/joomla56_admin_install_schema_parser.php
+      - name: Parse bundled schema and reject malformed SQL fixtures
+        run: php .github/tests/joomla56_admin_install_schema_parser.php
+      - name: Validate attribution headers and descriptive method documentation
+        run: |
+          php .github/scripts/check-php-headers.php admin/src/Helper/InstallSchemaStatementParser.php admin/assets/updates/jsm_update_db_tables.php
+          php .github/scripts/check-php-function-docs.php admin/src/Helper/InstallSchemaStatementParser.php admin/assets/updates/jsm_update_db_tables.php .github/tests/joomla56_admin_install_schema_parser.php
