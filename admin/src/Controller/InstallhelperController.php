@@ -23,7 +23,10 @@ final class InstallhelperController extends SportsManagementFormController
      * Checks the Joomla token and component admin permission, obtains
      * posted form data and delegates persistence to the native installer
      * model. Reports validation warnings and returns to step one, or
-     * advances to step two when the save completes successfully.
+     * advances to step two when the save completes successfully. A missing
+     * or incompatible MVC model is reported through the existing wizard
+     * error redirect rather than causing a PHP 8 call to an absent method.
+     *
      * @return void
      * @throws \RuntimeException If administrator access is missing.
      */
@@ -42,7 +45,7 @@ final class InstallhelperController extends SportsManagementFormController
         $post = $this->app->getInput()->post->getArray();
         $model = $this->getModel('Installhelper', 'Administrator', ['ignore_request' => true]);
 
-        if ($model === false) {
+        if (!is_object($model) || !is_callable([$model, 'saveSportstype'])) {
             $this->setRedirect(
                 'index.php?option=com_sportsmanagement&view=installhelper&step=1',
                 Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
