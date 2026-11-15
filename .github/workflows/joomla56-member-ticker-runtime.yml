@@ -1,0 +1,58 @@
+name: Joomla 5/6 XML member and playground ticker runtime checks
+
+'on':
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/XmlProjectMemberImportService.php'
+      - 'modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php'
+      - '.github/tests/joomla56-member-ticker-runtime.php'
+      - '.github/workflows/joomla56-member-ticker-runtime.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-member-ticker:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Check PHP syntax and required file attribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/src/Service/XmlProjectMemberImportService.php \
+            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php \
+            .github/tests/joomla56-member-ticker-runtime.php; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-headers.php \
+            admin/src/Service/XmlProjectMemberImportService.php \
+            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php \
+            .github/tests/joomla56-member-ticker-runtime.php
+      - name: Verify every named function has meaningful PHPDocs
+        shell: bash
+        run: |
+          set -euo pipefail
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Service/XmlProjectMemberImportService.php \
+            modules/mod_sportsmanagement_playground_ticker/src/Helper/PlaygroundTickerHelper.php \
+            .github/tests/joomla56-member-ticker-runtime.php
+      - name: Run strict member association and ticker privacy fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          php .github/tests/joomla56-member-ticker-runtime.php
+          php .github/tests/joomla56_playground_ticker_images.php
