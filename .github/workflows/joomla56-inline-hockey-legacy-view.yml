@@ -1,0 +1,41 @@
+name: Joomla 5/6 Inline Hockey legacy view migration
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/extensions/jsminlinehockey/admin/controller.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php'
+      - '.github/tests/joomla56_inline_hockey_legacy_view.php'
+      - '.github/workflows/joomla56-inline-hockey-legacy-view.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/extensions/jsminlinehockey/admin/controller.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php'
+      - '.github/tests/joomla56_inline_hockey_legacy_view.php'
+      - '.github/workflows/joomla56-inline-hockey-legacy-view.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inline-hockey:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint legacy view, controller and fixture
+        run: |
+          php -l site/extensions/jsminlinehockey/admin/controller.php
+          php -l site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
+          php -l .github/tests/joomla56_inline_hockey_legacy_view.php
+      - name: Verify native view and legacy display behaviour
+        run: php .github/tests/joomla56_inline_hockey_legacy_view.php
+      - name: Check PHPDocs and required metadata
+        run: |
+          php .github/scripts/check-php-headers.php site/extensions/jsminlinehockey/admin/controller.php site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php
+          php .github/scripts/check-php-function-docs.php site/extensions/jsminlinehockey/admin/controller.php site/extensions/jsminlinehockey/admin/views/jsminlinehockey/view.html.php .github/tests/joomla56_inline_hockey_legacy_view.php
