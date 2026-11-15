@@ -259,5 +259,51 @@ namespace {
     clubSaveAssertSame($beforeDenied, $deniedInput->post->values,
         'Denied club mutated submitted data before checking access');
 
+    // Structured values are not valid address strings. PHP 8 warnings
+    // would otherwise be raised by "(string) $array" before Nominatim.
+    LocationHelper::$requests = [];
+    LocationHelper::$response = [];
+    $badAddress = [
+        'id' => 56,
+        'address' => ['untrusted', 'street'],
+        'zipcode' => (object) ['code' => 9999],
+        'location' => false,
+        'country' => ['DEU'],
+    ];
+    $badInput = new ClubSaveTestInput(new ClubSaveTestPost([
+        'jform' => $badAddress,
+        'extended' => ['custom' => 'unchanged'],
+    ]));
+    $malformed = new ClubController($badInput);
+
+    set_error_handler(
+        static function (int $severity, string $message): never {
+            throw new \ErrorException($message, 0, $severity);
+        }
+    );
+
+    try {
+        clubSaveAssertSame(true, $malformed->save(), 'Structured club address blocked saving');
+    } finally {
+        restore_error_handler();
+    }
+
+    clubSaveAssertSame([], LocationHelper::$requests,
+        'Malformed address values were sent to geocoding');
+    clubSaveAssertSame($badAddress, $malformed->savedValues,
+        'Malformed address fields were silently rewritten');
+
+    // Postal codes can be numeric in older Joomla forms.
+    LocationHelper::$requests = [];
+    $numeric = new ClubController(new ClubSaveTestInput(new ClubSaveTestPost([
+        'jform' => [
+            'id' => 57, 'address' => 'Market Street 1',
+            'zipcode' => 12345, 'location' => 'Exampletown', 'country' => 'DEU',
+        ],
+    ])));
+    clubSaveAssertSame(true, $numeric->save(), 'Numeric postcode prevented club save');
+    clubSaveAssertSame(['Market Street 1, 12345 Exampletown, DEU'],
+        LocationHelper::$requests, 'Valid numeric postcode was not preserved');
+
     echo "Joomla 5/6 administrator club controller save regression OK.\n";
 }
