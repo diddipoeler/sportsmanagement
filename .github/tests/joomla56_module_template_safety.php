@@ -167,7 +167,7 @@ namespace {
     $teamPlayers = renderModuleFixture(
         $root . '/modules/mod_sportsmanagement_teamplayers/tmpl/native.php',
         [
-            'params' => new TemplateFixtureParams(['moduleclass_sfx' => [], 'template' => []]),
+            'params' => new TemplateFixtureParams(['moduleclass_sfx' => [], 'template' => 'C']),
             'module' => $module,
             'project' => (object) ['name' => 'Project'],
             'players' => [
@@ -199,6 +199,41 @@ namespace {
         && str_contains($teamPlayers, 'https://example.org/player')
         && str_contains($teamPlayers, 'images/player.png'),
         'TeamPlayers layout did not safely render legacy player names or URLs.'
+    );
+
+    // Exercise the separate table layout too: links must remain URL-validated
+    // even though this view deliberately does not render roster photographs.
+    $teamPlayersTable = renderModuleFixture(
+        $root . '/modules/mod_sportsmanagement_teamplayers/tmpl/native.php',
+        [
+            'params' => new TemplateFixtureParams(['template' => 'L']),
+            'module' => $module,
+            'project' => (object) ['name' => 'Project'],
+            'players' => [
+                (object) [
+                    'flag_html' => '',
+                    'display_name' => '<b>Unsafe player</b>',
+                    'player_url' => 'javascript:alert(1)',
+                    'position' => '',
+                    'minutes_played' => 0,
+                ],
+                (object) [
+                    'flag_html' => '',
+                    'display_name' => 'Normal player',
+                    'player_url' => 'index.php?option=com_sportsmanagement&view=person',
+                    'position' => '',
+                    'minutes_played' => 4,
+                ],
+            ],
+        ]
+    );
+
+    assertTemplateSafety(
+        !str_contains($teamPlayersTable, 'javascript:alert')
+        && !str_contains($teamPlayersTable, '<b>Unsafe player</b>')
+        && str_contains($teamPlayersTable, '&lt;b&gt;Unsafe player&lt;/b&gt;')
+        && str_contains($teamPlayersTable, 'index.php?option=com_sportsmanagement&amp;view=person'),
+        'TeamPlayers table layout exposed unsafe links or unescaped player text.'
     );
 
     $clubIcons = renderModuleFixture(
