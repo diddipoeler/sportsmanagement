@@ -43,7 +43,8 @@ final class SmextxmleditorController extends FormController
      * Save extended XML/PHP source edited by a component administrator.
      *
      * Requires Joomla's form token and component core.admin permission
-     * because this task can write executable PHP files. Resolves the
+     * because this task can write executable PHP files. Rejects missing
+     * Joomla identities before invoking permission methods, resolves the
      * native editor model, reports persistence failures and redirects
      * to the editor after Apply or the overview after a normal Save.
      *
@@ -56,7 +57,9 @@ final class SmextxmleditorController extends FormController
     {
         $this->checkToken();
 
-        if (!$this->app->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
