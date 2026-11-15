@@ -1,0 +1,44 @@
+name: Joomla 5/6 native module template safety
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_new_project/tmpl/native.php'
+      - 'modules/mod_sportsmanagement_teamplayers/tmpl/native.php'
+      - 'modules/mod_sportsmanagement_clubicons/tmpl/default.php'
+      - '.github/tests/joomla56_module_template_safety.php'
+      - '.github/workflows/joomla56-module-template-safety.yml'
+  pull_request:
+    branches: [master, joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_new_project/tmpl/native.php'
+      - 'modules/mod_sportsmanagement_teamplayers/tmpl/native.php'
+      - 'modules/mod_sportsmanagement_clubicons/tmpl/default.php'
+      - '.github/tests/joomla56_module_template_safety.php'
+      - '.github/workflows/joomla56-module-template-safety.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  native-template-safety:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint native layouts and fixture
+        run: |
+          php -l modules/mod_sportsmanagement_new_project/tmpl/native.php
+          php -l modules/mod_sportsmanagement_teamplayers/tmpl/native.php
+          php -l modules/mod_sportsmanagement_clubicons/tmpl/default.php
+          php -l .github/tests/joomla56_module_template_safety.php
+      - name: Check unsafe legacy module values
+        run: php .github/tests/joomla56_module_template_safety.php
+      - name: Verify file headers and documented functions
+        run: |
+          php .github/scripts/check-php-headers.php modules/mod_sportsmanagement_new_project/tmpl/native.php modules/mod_sportsmanagement_teamplayers/tmpl/native.php modules/mod_sportsmanagement_clubicons/tmpl/default.php
+          php .github/scripts/check-php-function-docs.php modules/mod_sportsmanagement_new_project/tmpl/native.php modules/mod_sportsmanagement_teamplayers/tmpl/native.php modules/mod_sportsmanagement_clubicons/tmpl/default.php .github/tests/joomla56_module_template_safety.php
