@@ -8,6 +8,8 @@ on:
       - 'site/src/Controller/EditteamController.php'
       - 'site/src/Controller/EditprojectteamController.php'
       - 'admin/src/Controller/JsmgcalendarController.php'
+      - 'admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_admin_quickicon_identity.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - '.github/tests/joomla56_editor_submission_guards.php'
       - '.github/tests/joomla56_calendar_signed_selectors.php'
@@ -19,6 +21,8 @@ on:
       - 'site/src/Controller/EditteamController.php'
       - 'site/src/Controller/EditprojectteamController.php'
       - 'admin/src/Controller/JsmgcalendarController.php'
+      - 'admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_admin_quickicon_identity.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php'
       - '.github/tests/joomla56_editor_submission_guards.php'
       - '.github/tests/joomla56_calendar_signed_selectors.php'
@@ -47,6 +51,8 @@ jobs:
           php -l site/src/Controller/EditteamController.php
           php -l site/src/Controller/EditprojectteamController.php
           php -l admin/src/Controller/JsmgcalendarController.php
+          php -l admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_admin_quickicon_identity.php
           php -l modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
           php -l .github/tests/joomla56_editor_submission_guards.php
           php -l .github/tests/joomla56_calendar_signed_selectors.php
@@ -57,8 +63,11 @@ jobs:
             site/src/Controller/EditteamController.php \
             site/src/Controller/EditprojectteamController.php \
             admin/src/Controller/JsmgcalendarController.php \
+            admin/modules/mod_sportsmanagement_quickicon/src/Dispatcher/Dispatcher.php \
             modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRuntime.php
       - name: Test editor identity and POST-token guards
         run: php .github/tests/joomla56_editor_submission_guards.php
       - name: Test signed calendar selectors
         run: php .github/tests/joomla56_calendar_signed_selectors.php
+      - name: Test administrator quickicon identity guards
+        run: php .github/tests/joomla56_admin_quickicon_identity.php
