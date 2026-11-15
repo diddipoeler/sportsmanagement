@@ -1,0 +1,45 @@
+name: Joomla 5/6 Inline Hockey import staging safety
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Service/InlineHockeyImportStager.php'
+      - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php'
+      - '.github/tests/joomla56_inline_hockey_upload_staging.php'
+      - '.github/workflows/joomla56-inline-hockey-upload-staging.yml'
+  pull_request:
+    branches: [master, joomla5-6]
+    paths:
+      - 'site/src/Service/InlineHockeyImportStager.php'
+      - 'site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php'
+      - 'site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php'
+      - '.github/tests/joomla56_inline_hockey_upload_staging.php'
+      - '.github/workflows/joomla56-inline-hockey-upload-staging.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  secure-import:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: zip
+          coverage: none
+      - name: Lint native staging service and legacy entry points
+        run: |
+          php -l site/src/Service/InlineHockeyImportStager.php
+          php -l site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php
+          php -l site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php
+          php -l .github/tests/joomla56_inline_hockey_upload_staging.php
+      - name: Test ZIP traversal and bounded upload handling
+        run: php .github/tests/joomla56_inline_hockey_upload_staging.php
+      - name: Check PHP headers and function documentation
+        run: |
+          php .github/scripts/check-php-headers.php site/src/Service/InlineHockeyImportStager.php site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php
+          php .github/scripts/check-php-function-docs.php site/src/Service/InlineHockeyImportStager.php site/extensions/jsminlinehockey/admin/controllers/jsminlinehockey.php site/extensions/jsminlinehockey/admin/views/jsminlinehockey/tmpl/default.php .github/tests/joomla56_inline_hockey_upload_staging.php
