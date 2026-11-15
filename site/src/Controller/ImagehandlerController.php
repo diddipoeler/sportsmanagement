@@ -27,7 +27,11 @@ final class ImagehandlerController extends BaseController
 {
     /**
      * Handle an authorised frontend image upload or remote-image import.
-     * Checks the POST CSRF token and component upload permissions, selects the configured image directory, validates file or remote URL input, stores the permitted image and reports the filename to the parent Joomla modal.
+     * Checks the POST CSRF token and component upload permissions, selects
+     * the configured image directory, validates file or remote URL input,
+     * and reports stored filenames to the parent Joomla modal. Rejects
+     * nested or malformed upload metadata before PHP 8 string conversion
+     * or filesystem access.
      * @return void
      * @throws \RuntimeException When the request is forged or the user lacks access.
      */
@@ -66,7 +70,9 @@ final class ImagehandlerController extends BaseController
             return;
         }
 
-        if (empty($file['name']) || empty($file['tmp_name'])) {
+        if (!is_array($file)
+            || !is_string($file['name'] ?? null) || $file['name'] === ''
+            || !is_string($file['tmp_name'] ?? null) || $file['tmp_name'] === '') {
             $this->showError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY'));
             return;
         }
