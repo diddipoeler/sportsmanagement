@@ -429,7 +429,10 @@ final class RoundModel extends SportsManagementAdminModel
     }
 
     /**
-     * Delete dependent match rows only for strict round identifiers.
+     * Delete dependent match rows only for authorised round records.
+     *
+     * Validates raw IDs and preflights Joomla's component and per-record
+     * deletion permissions before issuing the first SQL mutation.
      *
      * @param mixed $pks Raw round selection from the administrator interface.
      * @return bool Whether all dependent match records were deleted.
@@ -440,6 +443,13 @@ final class RoundModel extends SportsManagementAdminModel
 
         if (!$roundIds) {
             return true;
+        }
+
+        // This public method is also used without AdminModel::delete().
+        // Joomla normally authorises a record before table deletion, but
+        // here match children would otherwise be removed *first*.
+        if (!$this->mayDeleteRoundRecords($roundIds)) {
+            return false;
         }
 
         $db = $this->getDatabase();
@@ -490,6 +500,54 @@ final class RoundModel extends SportsManagementAdminModel
             }
         } catch (\Throwable $e) {
             $app->enqueueMessage($e->getMessage(), 'error');
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Pre-authorise every round before deleting its dependent match records.
+     *
+     * Native Joomla AdminModel::delete() checks canDelete() per loaded table
+     * record, but SportsManagement must remove match children before that
+     * parent operation. Repeating the Joomla ACL check here prevents a
+     * forbidden or missing round from triggering partial match deletion.
+     * All selected records are checked before the first mutation.
+     *
+     * @param array<int,int> $roundIds Validated positive round record IDs.
+     * @return bool Whether the administrator can delete every selected round.
+     */
+    private function mayDeleteRoundRecords(array $roundIds): bool
+    {
+        try {
+            $identity = $this->administratorApplication()->getIdentity();
+
+            if ($identity === null || (int) ($identity->id ?? 0) <= 0
+                || !$identity->authorise('core.delete', 'com_sportsmanagement')) {
+                $this->setError('Round deletion is not permitted.');
+
+                return false;
+            }
+
+            $table = $this->getTable();
+
+            if (!is_object($table)) {
+                $this->setError('Round deletion table is unavailable.');
+
+                return false;
+            }
+
+            foreach ($roundIds as $roundId) {
+                if (!$table->load($roundId) || !$this->canDelete($table)) {
+                    $this->setError('Round deletion is not permitted.');
+
+                    return false;
+                }
+            }
+        } catch (\Throwable $error) {
+            $this->setError('Unable to authorise round deletion.');
 
             return false;
         }
