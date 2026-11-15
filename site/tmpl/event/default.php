@@ -28,6 +28,14 @@ if (!$event) {
 
 // Imported and cached calendar entries may contain nested data instead of
 // display strings. A passive layout never casts them to "Array" on PHP 8.
+/**
+ * Read bounded printable event text from a cached calendar record.
+ *
+ * Rejects nested or control-character-containing data so that malformed
+ * historical calendar records cannot emit warnings or inject markup.
+ *
+ * @var \Closure(mixed,int):string $readText Event text normaliser.
+ */
 $readText = static function (mixed $value, int $maximum = 8192): string {
     if (!is_string($value) || strlen($value) > $maximum
         || preg_match('/[\x00-\x1F\x7F]/', $value) === 1) {

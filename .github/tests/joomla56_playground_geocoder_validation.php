@@ -51,13 +51,14 @@ namespace {
     final class FakeGeocodeDatabase implements \Joomla\Database\DatabaseInterface
     {
         public ?FakeGeocodeQuery $query = null;
+        public mixed $countryResult = 'Germany';
         public function createQuery(): FakeGeocodeQuery { return new FakeGeocodeQuery(); }
         public function quoteName(string $name): string { return $name; }
         public function setQuery(FakeGeocodeQuery $query, int $offset = 0, int $limit = 0): void
         {
             $this->query = $query;
         }
-        public function loadResult(): string { return 'Germany'; }
+        public function loadResult(): mixed { return $this->countryResult; }
     }
 
     final class FakeGeocodeHttp
@@ -66,8 +67,10 @@ namespace {
         public string $body = '[]';
         public bool $fail = false;
         public ?string $lastUrl = null;
+        public int $requests = 0;
         public function get(string $url, array $headers = [], int $timeout = 0): object
         {
+            ++$this->requests;
             $this->lastUrl = $url;
 
             if ($this->fail) {
@@ -149,6 +152,73 @@ namespace {
         'state' => 'Greater London', 'latitude' => 51.5, 'longitude' => -0.13,
     ]) {
         throw new \RuntimeException('UK county field regression in geocoder.');
+    }
+
+    // Nested values, control bytes and invalid country identifiers should
+    // not leak into network requests or cause PHP 8 conversion notices.
+    $http->body = json_encode([[
+        'lat' => '50.7', 'lon' => '7.1',
+        'address' => ['country_code' => 'de', 'state' => 'NRW'],
+    ]], JSON_THROW_ON_ERROR);
+    $db = $database;
+    $db->query = null;
+    $before = $http->requests;
+
+    set_error_handler(static function (int $severity, string $message): never {
+        throw new \ErrorException($message, 0, $severity);
+    });
+
+    try {
+        $legacy = (object) [
+            'address' => ['bad'], 'city' => ['bad'],
+            'location' => 'Bonn', 'zipcode' => ['bad'],
+            'country' => 'DEU;DROP',
+        ];
+        $safe = $geocoder->geocode($legacy);
+        if ($safe !== ['state' => 'NRW', 'latitude' => 50.7, 'longitude' => 7.1]
+            || $db->query !== null
+            || $http->requests !== $before + 1
+            || !str_contains((string) $http->lastUrl, rawurlencode('Bonn'))
+            || str_contains((string) $http->lastUrl, 'Array')) {
+            throw new \RuntimeException('Malformed address or country initiated an invalid lookup.');
+        }
+
+        $noParts = (object) [
+            'address' => ['bad'], 'city' => "Bad\nCity",
+            'location' => new \stdClass(), 'zipcode' => ['bad'],
+            'country' => ['bad'],
+        ];
+        if ($geocoder->geocode($noParts) !== null || $http->requests !== $before + 1) {
+            throw new \RuntimeException('Empty sanitised address triggered an HTTP request.');
+        }
+
+        $oversized = (object) [
+            'address' => str_repeat('a', 250),
+            'city' => str_repeat('b', 250),
+            'zipcode' => '10115',
+            'country' => 'DEU',
+        ];
+        if ($geocoder->geocode($oversized) !== null || $http->requests !== $before + 1) {
+            throw new \RuntimeException('Oversized constructed geocode query reached the HTTP API.');
+        }
+
+        // Corrupt country-table results must use the ISO code instead of
+        // casting arrays to "Array" in the outbound request.
+        $db->countryResult = ['bad'];
+        $safe = $geocoder->geocode($playground);
+        if ($safe === null
+            || !str_contains((string) $http->lastUrl, rawurlencode('Allee 1, Berlin, 10115, DEU'))
+            || str_contains((string) $http->lastUrl, 'Array')) {
+            throw new \RuntimeException('Corrupt country record generated an invalid geocoding address.');
+        }
+
+        $db->countryResult = 'Germany';
+        $http->body = str_repeat('x', 1048577);
+        if ($geocoder->geocode($playground) !== null) {
+            throw new \RuntimeException('Oversized remote JSON payload was decoded.');
+        }
+    } finally {
+        restore_error_handler();
     }
 
     echo "Joomla 5/6 Nominatim HTTP and location validation OK\n";
