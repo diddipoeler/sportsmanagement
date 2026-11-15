@@ -44,6 +44,28 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
         public array $savedValues = [];
         public array $savedArguments = [];
         public int $saveCalls = 0;
+        public int $accessChecks = 0;
+        public bool $allowAccess = true;
+
+        /**
+         * Simulate the shared Joomla CSRF and form-edit permission guard.
+         *
+         * Records early access checks so denied edits can be verified not
+         * to initiate an address lookup or invoke the parent save method.
+         *
+         * @param array<string,mixed> $data Submitted Joomla form data.
+         * @param string|null $key Record key supplied by the editor.
+         * @return void
+         * @throws \RuntimeException When test access is disabled.
+         */
+        protected function assertFormSaveAccess(array $data, $key = null): void
+        {
+            ++$this->accessChecks;
+
+            if (!$this->allowAccess) {
+                throw new \RuntimeException('JERROR_ALERTNOAUTHOR', 403);
+            }
+        }
 
         /**
          * Emulate the shared form controller's injected Joomla request input.
@@ -179,6 +201,7 @@ namespace {
 
     clubSaveAssertSame(true, $controller->save('id', 'cid'), 'Club controller did not delegate save');
     clubSaveAssertSame(1, $controller->saveCalls, 'Club controller called parent save incorrectly');
+    clubSaveAssertSame(1, $controller->accessChecks, 'Club address lookup lacked a save preflight');
     clubSaveAssertSame(['id', 'cid'], $controller->savedArguments, 'Club form save arguments changed');
     clubSaveAssertSame(
         ['Main Street 4, 12345 Exampletown, DEU'],
@@ -211,6 +234,30 @@ namespace {
         'Saving without geocoding unexpectedly modified club state');
     clubSaveAssertSame(['preserved' => 'yes'], $secondInput->post->get('extended', [], 'array'),
         'Saving without geocoding lost extended club data');
+
+    // Denied edits must never cause external geocoding or update the request.
+    LocationHelper::$requests = [];
+    LocationHelper::$response = ['latitude' => '51.5', 'longitude' => '7.0'];
+    $deniedInput = new ClubSaveTestInput(new ClubSaveTestPost([
+        'jform' => ['id' => 55, 'country' => 'DDR', 'address' => 'Protected Street 5'],
+        'extended' => ['original' => 'value'],
+    ]));
+    $denied = new ClubController($deniedInput);
+    $denied->allowAccess = false;
+    $beforeDenied = $deniedInput->post->values;
+
+    try {
+        $denied->save('id');
+        throw new \RuntimeException('Club without edit permission triggered save.');
+    } catch (\RuntimeException $exception) {
+        clubSaveAssertSame(403, $exception->getCode(), 'Denied club save must use HTTP 403');
+    }
+
+    clubSaveAssertSame(1, $denied->accessChecks, 'Denied club did not check access first');
+    clubSaveAssertSame(0, $denied->saveCalls, 'Denied club reached the parent save');
+    clubSaveAssertSame([], LocationHelper::$requests, 'Denied club triggered external geocoding');
+    clubSaveAssertSame($beforeDenied, $deniedInput->post->values,
+        'Denied club mutated submitted data before checking access');
 
     echo "Joomla 5/6 administrator club controller save regression OK.\n";
 }
