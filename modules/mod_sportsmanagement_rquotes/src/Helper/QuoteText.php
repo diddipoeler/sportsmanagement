@@ -25,7 +25,9 @@ final class QuoteText
      *
      * Accepts strings and numbers, translates br tags to newlines, removes
      * other markup and attributes, decodes entities and escapes final text.
-     * Arrays and objects are never cast into presentation markup.
+     * Arrays, objects and nonfinite numeric values are never cast into
+     * presentation markup. Rejects excessively large imported quote values
+     * before entity decoding or HTML processing to keep rendering bounded.
      *
      * @param mixed $value Stored quote value from the database.
      * @return string Escaped quote with optional safe br elements.
@@ -36,7 +38,15 @@ final class QuoteText
             return '';
         }
 
+        if (is_float($value) && !is_finite($value)) {
+            return '';
+        }
+
         $text = (string) $value;
+
+        if (strlen($text) > 65536) {
+            return '';
+        }
         $text = preg_replace('~<br\s*/?>~i', "\n", $text) ?? $text;
         $text = html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 

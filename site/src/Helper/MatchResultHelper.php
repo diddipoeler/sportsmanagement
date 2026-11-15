@@ -23,8 +23,11 @@ final class MatchResultHelper
      *
      * Rejects cancelled matches and missing scores, handles alternate
      * decision scores where present and compares the home/away values
-     * against the selected team's home or away position. Unrelated teams,
-     * nonnumeric results and nonfinite scores have no known outcome.
+     * against the selected team's home or away position. Project-team IDs
+     * must be complete positive decimal values: malformed imported strings,
+     * arrays, booleans and integer overflows must never cast to a related
+     * team. Unrelated teams, nonnumeric results and nonfinite scores have
+     * no known outcome.
      *
      * @param object $game Match row with results and project team IDs.
      * @param int $projectTeamId Project team whose result is requested.
@@ -40,8 +43,8 @@ final class MatchResultHelper
         $homeProperty = $useDecision ? 'team1_result_decision' : 'team1_result';
         $awayProperty = $useDecision ? 'team2_result_decision' : 'team2_result';
 
-        $isHomeTeam = (int) ($game->projectteam1_id ?? 0) === $projectTeamId;
-        $isAwayTeam = (int) ($game->projectteam2_id ?? 0) === $projectTeamId;
+        $isHomeTeam = self::projectTeamId($game->projectteam1_id ?? null) === $projectTeamId;
+        $isAwayTeam = self::projectTeamId($game->projectteam2_id ?? null) === $projectTeamId;
 
         // A third-party team must not receive a draw for an unrelated match.
         if (!$isHomeTeam && !$isAwayTeam) {
@@ -68,6 +71,39 @@ final class MatchResultHelper
         return $isHomeTeam
             ? ($home > $away ? 1 : -1)
             : ($away > $home ? 1 : -1);
+    }
+
+    /**
+     * Parse one complete, positive project-team identifier from an import.
+     *
+     * Retains historical zero-padded decimal strings, but rejects floats,
+     * booleans, arrays, negative and partially numeric values. Bounds large
+     * input before conversion so malformed project-team IDs cannot match a
+     * different team or trigger PHP 8 array-to-integer warnings.
+     *
+     * @param mixed $value Raw match project-team identifier.
+     * @return int Valid project-team ID, or zero when invalid.
+     */
+    private static function projectTeamId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value > 0 ? $value : 0;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $parsed = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $parsed === false ? 0 : $parsed;
     }
 
     /**
