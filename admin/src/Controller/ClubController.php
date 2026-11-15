@@ -27,8 +27,9 @@ class ClubController extends SportsManagementFormController
      *
      * Reads Joomla POST form values, converts the historic DDR country
      * code, optionally resolves coordinates and administrative address
-     * fields, then delegates storage and token validation to the shared
-     * SportsManagement form controller. Uses the supported Joomla 5/6
+     * fields, then delegates persistence to the shared form controller.
+     * Verifies the CSRF token and edit/create permission before performing
+     * any external geocoding request. Uses the supported Joomla 5/6
      * request input cached by the shared Joomla 5/6 form controller, rather
      * than calling an unavailable getApplication() method.
      *
@@ -40,6 +41,10 @@ class ClubController extends SportsManagementFormController
     {
         $input = $this->jsmjinput;
         $data = $input->post->get('jform', [], 'array');
+
+        // Address lookup is an external HTTP request. Check Joomla's token
+        // and ACL before asking the geocoder to process submitted data.
+        $this->assertFormSaveAccess($data, $key);
         $extended = $input->post->get('extended', [], 'array');
 
         if (($data['country'] ?? '') === 'DDR') {
