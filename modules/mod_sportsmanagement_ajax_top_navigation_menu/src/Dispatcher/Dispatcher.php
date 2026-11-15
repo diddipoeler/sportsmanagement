@@ -24,8 +24,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Prepare the navigation module's data and JavaScript configuration.
      *
      * Validates the stored layout and merges helper data without replacing
-     * Joomla context. Reuses Bootstrap tab and native CSS/JS registrations,
-     * while retaining independently keyed client options for each module.
+     * Joomla's existing framework context or previous layout extensions.
+     * Only new keys from the navigation helper enter the template variables;
+     * a later helper update cannot accidentally replace an existing key.
+     * Reuses Bootstrap and native assets, with separate client options
+     * for each instance of the module on the same document.
      *
      * @return array|false Module layout variables, or false if skipped.
      * @throws \RuntimeException When called outside the Joomla site application.
@@ -68,7 +71,9 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         unset($payload['module'], $payload['params'], $payload['layout']);
 
         foreach ($payload as $key => $value) {
-            $data[$key] = $value;
+            if (!array_key_exists($key, $data)) {
+                $data[$key] = $value;
+            }
         }
 
         $data['legacyLayout'] = $requestedLayout;
