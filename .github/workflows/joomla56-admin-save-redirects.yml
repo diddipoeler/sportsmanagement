@@ -1,0 +1,45 @@
+name: Joomla 5/6 administrator project team and round save redirects
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'admin/src/Controller/ProjectController.php'
+      - '.github/tests/joomla56_admin_save_redirects.php'
+      - '.github/workflows/joomla56-admin-save-redirects.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'admin/src/Controller/ProjectController.php'
+      - '.github/tests/joomla56_admin_save_redirects.php'
+      - '.github/workflows/joomla56-admin-save-redirects.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  save-redirects:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: PHP lint, file headers and function PHPDocs
+        run: |
+          for file in admin/src/Controller/SportsManagementFormController.php admin/src/Controller/ProjectController.php .github/tests/joomla56_admin_save_redirects.php; do
+            php -l "$file"
+            for tag in @version @author @copyright @license; do
+              grep -Fq "$tag" "$file"
+            done
+          done
+          php .github/scripts/check-php-function-docs.php admin/src/Controller/SportsManagementFormController.php admin/src/Controller/ProjectController.php .github/tests/joomla56_admin_save_redirects.php
+      - name: Saved identity and association redirect tests
+        run: |
+          php .github/tests/joomla56_admin_save_redirects.php
+          php .github/tests/joomla56_admin_form_save_acl.php
+          php .github/tests/joomla56_admin_form_database_selector.php
