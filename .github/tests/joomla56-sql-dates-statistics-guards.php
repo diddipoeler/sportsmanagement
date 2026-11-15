@@ -398,10 +398,12 @@ namespace {
         }
 
         $fixture = new StatisticsGuardDatabase();
-        $params = new \Joomla\Registry\Registry($hidden + [
+        // array_replace() deliberately overrides the disabled baseline:
+        // PHP's array union operator would keep show_playgrounds=0.
+        $params = new \Joomla\Registry\Registry(array_replace($hidden, [
             'sportstypes' => '0007', 'cfg_which_database' => '0001',
             'show_leagues' => '0001', 'show_playgrounds' => 1,
-        ]);
+        ]));
         $result = $module->getData($params, $fixture);
 
         if ($result['counts'] !== ['projects' => 5, 'leagues' => 2, 'playgrounds' => 3]
