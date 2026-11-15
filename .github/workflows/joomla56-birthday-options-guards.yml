@@ -1,0 +1,49 @@
+name: Joomla 5/6 birthday module option guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/joomla56_birthday_person_types_sort.php'
+      - '.github/workflows/joomla56-birthday-options-guards.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php'
+      - '.github/tests/joomla56_birthday_person_types_sort.php'
+      - '.github/workflows/joomla56-birthday-options-guards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  birthday-options:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint PHP helper and regression test
+        run: |
+          php -l modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php
+          php -l .github/tests/joomla56_birthday_person_types_sort.php
+      - name: Verify file-level PHPDoc
+        run: |
+          php .github/tests/phpdoc_metadata.php \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php \
+            .github/tests/joomla56_birthday_person_types_sort.php
+      - name: Verify descriptive function PHPDoc
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            modules/mod_sportsmanagement_birthday/src/Helper/BirthdayHelper.php \
+            .github/tests/joomla56_birthday_person_types_sort.php
+      - name: Test birthday type and sorting selections
+        run: php .github/tests/joomla56_birthday_person_types_sort.php
