@@ -412,22 +412,31 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Run a controlled maintenance operation on one component database table.
-     * Accepts only REPAIR, OPTIMIZE or TRUNCATE and validates the table against the selected Joomla database prefix and actual tables.
+     * Accepts only REPAIR, OPTIMIZE or TRUNCATE and validates the table
+     * against the selected Joomla database prefix and the actual table list.
+     * Rejects nested or non-string arguments before accessing the database:
+     * malformed legacy requests must not trigger PHP 8 array-to-string
+     * warnings or accidentally select unrelated maintenance targets.
      *
-     * @param mixed $table Parameter used by the native setSportsManagementTableQuery() operation.
-     * @param mixed $command Parameter used by the native setSportsManagementTableQuery() operation.
-     * @return bool Result of the setSportsManagementTableQuery() operation.
+     * @param mixed $table Untrusted name of a component-owned SQL table.
+     * @param mixed $command Requested maintenance command.
+     * @return bool Whether the validated maintenance statement succeeded.
      */
     public function setSportsManagementTableQuery($table, $command): bool
     {
-        $db = self::sportsDatabase();
-        $action = strtoupper(trim((string) $command));
+        if (!is_string($table) || $table === '' || strlen($table) > 255
+            || !is_string($command) || strlen($command) > 16) {
+            return false;
+        }
+
+        $action = strtoupper(trim($command));
 
         if (!in_array($action, ['REPAIR', 'OPTIMIZE', 'TRUNCATE'], true)) {
             return false;
         }
 
-        $tableName = (string) $table;
+        $db = self::sportsDatabase();
+        $tableName = $table;
         $prefix = (string) $db->getPrefix();
         $allowedPrefix = str_starts_with($tableName, $prefix . 'sportsmanagement_')
             || str_starts_with($tableName, $prefix . 'joomleague_');
