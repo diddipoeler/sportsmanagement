@@ -8,6 +8,7 @@ on:
       - 'admin/**/*.php'
       - 'modules/**/*.php'
       - '.github/scripts/check-php-headers.php'
+      - '.github/scripts/check-php-function-docs.php'
       - '.github/workflows/joomla56-php-quality.yml'
   pull_request:
     paths:
@@ -15,6 +16,7 @@ on:
       - 'admin/**/*.php'
       - 'modules/**/*.php'
       - '.github/scripts/check-php-headers.php'
+      - '.github/scripts/check-php-function-docs.php'
       - '.github/workflows/joomla56-php-quality.yml'
   workflow_dispatch:
 
@@ -77,3 +79,6 @@ jobs:
           done
 
           php .github/scripts/check-php-headers.php "${files[@]}"
+          # Document every named first-party function touched by this change.
+          # The separate full inventory workflow reports existing gaps.
+          php .github/scripts/check-php-function-docs.php "${files[@]}"
