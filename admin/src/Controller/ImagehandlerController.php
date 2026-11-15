@@ -36,7 +36,10 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     /**
      * Process a project-team image upload in the administrator.
-     * Checks the CSRF token and edit permission, resolves the destination and supplied file, and reports the stored image back to the project-team selector.
+     * Checks the CSRF token and edit permission, resolves the destination
+     * and supplied file, and reports the stored image to the project-team
+     * selector. Malformed nested upload metadata and form selectors are
+     * rejected before they can cause PHP 8 conversion warnings.
      * @return void
      */
     public function uploadprojectteams(): void
@@ -47,13 +50,15 @@ final class ImagehandlerController extends SportsManagementAdminController
         $input     = $this->app->getInput();
         $data      = $input->post->getArray();
         $file      = $input->files->get('userfile', [], 'array');
-        $type      = (string) ($data['type'] ?? '');
-        $field     = (string) ($data['field'] ?? '');
-        $fieldId   = (string) ($data['fieldid'] ?? '');
+        $type      = self::postedText($data['type'] ?? null);
+        $field     = self::postedText($data['field'] ?? null);
+        $fieldId   = self::postedText($data['fieldid'] ?? null);
         $imageList = !empty($data['imagelist']);
         $folder    = ImageSelectHelper::getFolder($type);
 
-        if (empty($file['name']) || empty($file['tmp_name'])) {
+        if (!is_array($file)
+            || !is_string($file['name'] ?? null) || $file['name'] === ''
+            || !is_string($file['tmp_name'] ?? null) || $file['tmp_name'] === '') {
             $this->showUploadError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY'));
             return;
         }
@@ -129,7 +134,10 @@ final class ImagehandlerController extends SportsManagementAdminController
 
     /**
      * Upload or import a SportsManagement image through the administrator.
-     * Checks POST and create permission, validates the image category and local or remote source, stores an allowed image and returns its basename to the Joomla modal.
+     * Checks POST and create permission, validates the image category,
+     * project and match subdirectory IDs plus local or remote sources, then
+     * stores an allowed image and returns its basename to the Joomla modal.
+     * Nested legacy form fields are rejected before type conversion.
      * @return void
      */
     public function upload(): void
@@ -140,12 +148,12 @@ final class ImagehandlerController extends SportsManagementAdminController
         $input     = $this->app->getInput();
         $data      = $input->post->getArray();
         $file      = $input->files->get('userfile', [], 'array');
-        $type      = (string) ($data['type'] ?? '');
-        $field     = (string) ($data['field'] ?? '');
-        $fieldId   = (string) ($data['fieldid'] ?? '');
-        $link      = trim((string) ($data['linkaddress'] ?? ''));
-        $pid       = max(0, (int) ($data['pid'] ?? 0));
-        $mid       = max(0, (int) ($data['mid'] ?? 0));
+        $type      = self::postedText($data['type'] ?? null);
+        $field     = self::postedText($data['field'] ?? null);
+        $fieldId   = self::postedText($data['fieldid'] ?? null);
+        $link      = trim(self::postedText($data['linkaddress'] ?? null));
+        $pid       = self::postedPositiveId($data['pid'] ?? null);
+        $mid       = self::postedPositiveId($data['mid'] ?? null);
         $imageList = !empty($data['imagelist']);
         $folder    = ImageSelectHelper::getFolder($type);
 
@@ -176,7 +184,9 @@ final class ImagehandlerController extends SportsManagementAdminController
             return;
         }
 
-        if (empty($file['name']) || empty($file['tmp_name'])) {
+        if (!is_array($file)
+            || !is_string($file['name'] ?? null) || $file['name'] === ''
+            || !is_string($file['tmp_name'] ?? null) || $file['tmp_name'] === '') {
             $this->showUploadError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY'));
             return;
         }
@@ -265,6 +275,55 @@ final class ImagehandlerController extends SportsManagementAdminController
     {
         // Preserve caller-specific MVC options instead of discarding them.
         return parent::getModel($name, $prefix, $config + ['ignore_request' => true]);
+    }
+
+    /**
+     * Read a scalar text selector from a legacy administrator image form.
+     *
+     * Joomla input may contain arrays or objects when a browser submits
+     * manipulated field names. Refuse such values instead of triggering PHP 8
+     * conversion warnings or passing the literal word "Array" to an image
+     * selector, path lookup or parent-window callback. Large values are also
+     * rejected before they reach the filesystem or JavaScript encoder.
+     *
+     * @param mixed $value Raw POST field value.
+     * @return string Bounded text or an empty string for invalid input.
+     */
+    private static function postedText(mixed $value): string
+    {
+        return is_string($value) && strlen($value) <= 4096 ? $value : '';
+    }
+
+    /**
+     * Parse a positive project or match image-directory selector.
+     *
+     * Supports legacy zero-padded decimal IDs but rejects PHP 8 implicit
+     * casts, signed values, booleans, arrays and integer overflow. An
+     * invalid selector cannot choose another record's image subdirectory.
+     *
+     * @param mixed $value Unfiltered POST project or match identifier.
+     * @return int Positive record ID or zero when malformed.
+     */
+    private static function postedPositiveId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return max(0, $value);
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
