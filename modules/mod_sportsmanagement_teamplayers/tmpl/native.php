@@ -26,7 +26,46 @@ $escape = static fn (mixed $value): string => htmlspecialchars(
     ENT_QUOTES | ENT_SUBSTITUTE,
     'UTF-8'
 );
-$moduleId = (int) $module->id;
+/**
+ * Keep player links and image sources limited to relative paths and HTTP(S).
+ *
+ * HTML escaping alone does not prevent a javascript: URI in historical
+ * player records or corrupt cached module presentation fields.
+ *
+ * @param mixed $value Candidate player destination or image URL.
+ * @return string Accepted URL or empty text when unsafe.
+ */
+$safeUrl = static function (mixed $value): string {
+    if (!is_string($value)) {
+        return '';
+    }
+
+    $url = trim($value);
+
+    if ($url === '' || strlen($url) > 4096
+        || preg_match('/[\x00-\x20\x7f]/', $url)
+        || str_contains($url, '\\')
+        || str_starts_with($url, '//')) {
+        return '';
+    }
+
+    $parts = parse_url($url);
+
+    if (!is_array($parts)) {
+        return '';
+    }
+
+    $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+
+    if ($scheme !== '' && (!in_array($scheme, ['http', 'https'], true)
+        || empty($parts['host']) || isset($parts['user']) || isset($parts['pass']))) {
+        return '';
+    }
+
+    return $url;
+};
+
+$moduleId = (int) ($module->id ?? 0);
 $rawMode = $params->get('template', 'L');
 $mode = is_string($rawMode) ? $rawMode : 'L';
 ?>
@@ -58,14 +97,21 @@ $mode = is_string($rawMode) ? $rawMode : 'L';
                  style="--jsm-card-width: <?php echo max(160, (int) $params->get('slider_width', 250)); ?>px; --jsm-visible: <?php echo max(1, (int) $params->get('max_slides', 3)); ?>;">
                 <div class="jsm-teamplayers-track">
                     <?php foreach ($players as $index => $player) : ?>
+                        <?php
+                        if (!is_object($player)) {
+                            continue;
+                        }
+                        $playerUrl = $safeUrl($player->player_url ?? '');
+                        $imageUrl = $safeUrl($player->image_url ?? '');
+                        ?>
                         <article class="jsm-teamplayers-card<?php echo $index === 0 ? ' is-active' : ''; ?>" data-jsm-teamplayers-card>
-                            <?php if (!empty($player->image_url)) : ?>
-                                <img class="jsm-teamplayers-photo" src="<?php echo $escape($player->image_url); ?>" alt="<?php echo $escape($player->display_name); ?>" loading="lazy" />
+                            <?php if ($imageUrl !== '') : ?>
+                                <img class="jsm-teamplayers-photo" src="<?php echo $escape($imageUrl); ?>" alt="<?php echo $escape($player->display_name); ?>" loading="lazy" />
                             <?php endif; ?>
                             <div class="jsm-teamplayers-name">
                                 <?php echo $player->flag_html; ?>
-                                <?php if (!empty($player->player_url)) : ?>
-                                    <a href="<?php echo $escape($player->player_url); ?>"><?php echo nl2br($escape($player->display_name)); ?></a>
+                                <?php if ($playerUrl !== '') : ?>
+                                    <a href="<?php echo $escape($playerUrl); ?>"><?php echo nl2br($escape($player->display_name)); ?></a>
                                 <?php else : ?>
                                     <?php echo nl2br($escape($player->display_name)); ?>
                                 <?php endif; ?>
@@ -105,14 +151,20 @@ $mode = is_string($rawMode) ? $rawMode : 'L';
                     </thead>
                     <tbody>
                         <?php foreach ($players as $player) : ?>
+                                <?php
+                                if (!is_object($player)) {
+                                    continue;
+                                }
+                                $playerUrl = $safeUrl($player->player_url ?? '');
+                                ?>
                             <tr>
                                 <?php if ((int) $params->get('show_positions', 1) === 1) : ?>
                                     <td><?php echo !empty($player->position) ? $escape(Text::_((string) $player->position)) : ''; ?></td>
                                 <?php endif; ?>
                                 <td>
                                     <?php echo $player->flag_html; ?>
-                                    <?php if (!empty($player->player_url)) : ?>
-                                        <a href="<?php echo $escape($player->player_url); ?>"><?php echo nl2br($escape($player->display_name)); ?></a>
+                                    <?php if ($playerUrl !== '') : ?>
+                                        <a href="<?php echo $escape($playerUrl); ?>"><?php echo nl2br($escape($player->display_name)); ?></a>
                                     <?php else : ?>
                                         <?php echo nl2br($escape($player->display_name)); ?>
                                     <?php endif; ?>

@@ -12,7 +12,24 @@
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+/**
+ * Escape legacy Inline Hockey form values without scalar conversion warnings.
+ *
+ * Malformed module options, remote match links and invalid UTF-8 must never
+ * be emitted as raw attributes in the administrator import form.
+ *
+ * @param mixed $value User or project-supplied form value.
+ * @return string HTML-safe scalar text or empty text for invalid input.
+ */
+$escape = static fn (mixed $value): string => htmlspecialchars(
+    is_string($value) || is_numeric($value) ? (string) $value : '',
+    ENT_QUOTES | ENT_SUBSTITUTE,
+    'UTF-8'
+);
+
+// Always post the import to the component itself; do not trust a legacy
+// request_url to redirect an import form or leak its CSRF token elsewhere.
+$formAction = 'index.php?option=com_sportsmanagement&view=jsminlinehockey';
 ?>
 <div id="editcell">
     <?php if (!empty($this->sidebar)) : ?>
@@ -25,7 +42,7 @@ $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, 
     <?php endif; ?>
 
         <form enctype="multipart/form-data"
-              action="<?php echo $escape($this->request_url); ?>"
+              action="<?php echo $escape($formAction); ?>"
               method="post"
               id="adminForm"
               name="adminForm">
@@ -36,7 +53,7 @@ $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, 
                            class="form-control"
                            id="matchlink"
                            name="matchlink"
-                           value="<?php echo $escape($this->matchlink); ?>"
+                           value="<?php echo $escape($this->matchlink ?? ''); ?>"
                            maxlength="500">
                 </div>
 
@@ -47,7 +64,7 @@ $escape = static fn (mixed $value): string => htmlspecialchars((string) $value, 
                 </div>
 
                 <div class="mb-3">
-                    <input class="form-control" id="import_package" name="import_package" type="file">
+                    <input class="form-control" id="import_package" name="import_package" type="file" accept=".xls,.ics,.zip">
                 </div>
 
                 <button class="btn btn-primary" type="submit">
