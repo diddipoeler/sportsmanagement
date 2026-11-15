@@ -1,0 +1,48 @@
+name: Joomla 5/6 module database choices 0 and 1
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - '.github/tests/joomla56_randomplayer_media_database.php'
+      - '.github/tests/joomla56_module_database_choice_01.php'
+      - '.github/workflows/joomla56-module-database-choice-01.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php'
+      - 'modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php'
+      - 'modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php'
+      - '.github/tests/joomla56_randomplayer_media_database.php'
+      - '.github/tests/joomla56_module_database_choice_01.php'
+      - '.github/workflows/joomla56-module-database-choice-01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  database-modes:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: PHP syntax and metadata
+        run: |
+          for file in modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php .github/tests/joomla56_module_database_choice_01.php .github/tests/joomla56_randomplayer_media_database.php; do
+            php -l "$file"
+            for tag in @version @author @copyright @license; do
+              grep -Fq "$tag" "$file"
+            done
+          done
+          php .github/scripts/check-php-function-docs.php modules/mod_sportsmanagement_randomplayer/src/Helper/RandomPlayerHelper.php modules/mod_sportsmanagement_ranking/src/Helper/RankingHelper.php modules/mod_sportsmanagement_eventsranking/src/Helper/EventsRankingHelper.php
+      - name: Strict database choices and existing media regressions
+        run: |
+          php .github/tests/joomla56_module_database_choice_01.php
+          php .github/tests/joomla56_randomplayer_media_database.php
