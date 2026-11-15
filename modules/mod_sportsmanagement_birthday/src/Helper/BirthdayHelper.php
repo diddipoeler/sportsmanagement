@@ -80,11 +80,7 @@ final class BirthdayHelper
                 return $this->emptyData($params);
             }
 
-            $personTypes = match ((int) $params->get('use_which', 0)) {
-                1 => [1],
-                2 => [2],
-                default => [1, 2],
-            };
+            $personTypes = self::personTypes($params->get('use_which', 0));
 
             $query = $db->createQuery()
                 ->select([
@@ -286,13 +282,16 @@ final class BirthdayHelper
      * Sorts first by days to the next birthday, then by age in the requested direction so old module layouts retain predictable ordering.
      *
      * @param array $rows Birthday records containing days_to_birthday and age.
-     * @param mixed $arguments Historical sorting direction.
+     * @param mixed $arguments Historical sorting direction; only '-' selects descending age.
      * @param bool $keys Legacy key-preservation option.
      * @return array Ordered birthday rows.
      */
     public static function sortPersons(array $rows, $arguments = '-', bool $keys = true): array
     {
-        $descendingAge = (string) $arguments === '-';
+        // Legacy callers may pass nested form options or objects. Only a
+        // literal '-' selects descending ages; all other values keep the
+        // original ascending fallback without PHP 8 conversion warnings.
+        $descendingAge = $arguments === '-';
         usort($rows, static function (array $a, array $b) use ($descendingAge): int {
             $days = ((int) ($a['days_to_birthday'] ?? 0)) <=> ((int) ($b['days_to_birthday'] ?? 0));
             return $days !== 0 ? $days : ($descendingAge
@@ -336,6 +335,40 @@ final class BirthdayHelper
         }
 
         return (int) $decimal;
+    }
+
+    /**
+     * Choose player, staff or combined birthdays from a legacy module option.
+     *
+     * Accepts native integer 1/2 and their complete decimal string forms,
+     * including zero-padded values. Arrays, booleans, negative numbers and
+     * partial numeric strings fall back to both person types without PHP 8
+     * implicit array-to-integer conversion warnings.
+     *
+     * @param mixed $value Raw use_which module setting.
+     * @return array<int,int> Selected native person-type identifiers.
+     */
+    private static function personTypes(mixed $value): array
+    {
+        if (is_int($value)) {
+            $selection = $value;
+        } elseif (is_string($value) && $value !== '' && strlen($value) <= 32
+            && preg_match('/^[0-9]+$/D', $value) === 1) {
+            $digits = ltrim($value, '0');
+            $selection = $digits === '' ? 0 : filter_var(
+                $digits,
+                FILTER_VALIDATE_INT,
+                ['options' => ['min_range' => 0]]
+            );
+        } else {
+            $selection = false;
+        }
+
+        return match ($selection) {
+            1 => [1],
+            2 => [2],
+            default => [1, 2],
+        };
     }
 
     /**
