@@ -83,6 +83,8 @@ jobs:
               raise SystemExit('AJAX navigation bypasses centralized Joomla DB access')
           if navigation.count('SportsManagementSiteApplicationResolver::resolve()') != 1:
               raise SystemExit('AJAX navigation should resolve the site application only in its helper')
-          if navigation.count('$application->getContainer()->get(DatabaseInterface::class)') != 1:
-              raise SystemExit('AJAX navigation should have exactly one application-container DB access')
+          if navigation.count('Factory::getContainer()->get(DatabaseInterface::class)') != 1:
+              raise SystemExit('AJAX navigation should use exactly one public Joomla DI database service')
+          if '$application->getContainer()' in navigation:
+              raise SystemExit('AJAX navigation must not access the protected application container')
           PY
