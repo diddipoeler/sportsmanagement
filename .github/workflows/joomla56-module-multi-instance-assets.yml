@@ -1,0 +1,52 @@
+name: Joomla 5/6 multi-instance module styles
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_module_multi_instance_styles.php'
+      - '.github/workflows/joomla56-module-multi-instance-assets.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_module_multi_instance_styles.php'
+      - '.github/workflows/joomla56-module-multi-instance-assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  module-styles:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax checks
+        run: |
+          php -l modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_module_multi_instance_styles.php
+      - name: Verify mandatory file metadata
+        run: |
+          php .github/tests/phpdoc_metadata.php \
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_module_multi_instance_styles.php
+      - name: Verify module styles are registered only once per HTML page
+        run: php .github/tests/joomla56_module_multi_instance_styles.php
