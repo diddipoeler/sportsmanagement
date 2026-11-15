@@ -1,0 +1,47 @@
+name: Joomla 5/6 administrator round deletion ID boundaries
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/RoundModel.php'
+      - '.github/tests/joomla56_admin_round_delete_id_boundaries.php'
+      - '.github/workflows/joomla56-admin-round-delete-id-boundaries.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/RoundModel.php'
+      - '.github/tests/joomla56_admin_round_delete_id_boundaries.php'
+      - '.github/workflows/joomla56-admin-round-delete-id-boundaries.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  round-delete:
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax and function documentation
+        run: |
+          php -l admin/src/Model/RoundModel.php
+          php -l .github/tests/joomla56_admin_round_delete_id_boundaries.php
+          for file in admin/src/Model/RoundModel.php .github/tests/joomla56_admin_round_delete_id_boundaries.php; do
+            for tag in @version @author @copyright @license; do
+              grep -Fq "$tag" "$file"
+            done
+          done
+          php .github/scripts/check-php-function-docs.php admin/src/Model/RoundModel.php .github/tests/joomla56_admin_round_delete_id_boundaries.php
+      - name: Validate destructive round and match selections
+        run: |
+          php .github/tests/joomla56_admin_round_delete_id_boundaries.php
+          php .github/tests/joomla56_round_short_dates.php
