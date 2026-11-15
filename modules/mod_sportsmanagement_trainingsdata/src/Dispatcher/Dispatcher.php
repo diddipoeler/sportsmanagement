@@ -25,7 +25,11 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Retrieve and display the configured training information.
      *
-     * Loads the shared component translations, obtains training records with the database-backed helper and registers the module stylesheet for HTML output.
+     * Loads component translations, obtains training records through the
+     * database-backed helper, and normalises missing records for the layout.
+     * In HTML responses it registers the CSS asset only if needed, then
+     * activates it using the shared WebAssetManager. Repeated instances on
+     * one Joomla page therefore do not register the same asset twice.
      *
      * @return array|false Layout data or false if rendering is skipped.
      * @throws \RuntimeException If the site application or database is unavailable.
