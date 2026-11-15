@@ -20,6 +20,19 @@ use Joomla\CMS\Uri\Uri;
 
 final class Dispatcher extends AbstractModuleDispatcher
 {
+    /**
+     * Build the Joomla 5/6 administrator quickicon layout context.
+     *
+     * Retains the framework's original module parameters and layout data,
+     * loads the module and component translations, and creates links to the
+     * component's management screens. The current user's core.manage
+     * permission controls whether the shortcuts may be displayed. Missing
+     * Joomla identities are treated as unauthorised rather than causing a
+     * PHP 8 method call on null; a skipped module remains skipped.
+     *
+     * @return array|false Prepared quickicon view variables, or false when
+     *                     Joomla decides that the module should not render.
+     */
     protected function getLayoutData(): array|false
     {
         $data = parent::getLayoutData();
@@ -40,7 +53,8 @@ final class Dispatcher extends AbstractModuleDispatcher
         $identity = $app->getIdentity();
 
         $data['componentEnabled'] = ComponentHelper::isEnabled('com_sportsmanagement', true);
-        $data['canManage'] = $identity->authorise('core.manage', 'com_sportsmanagement');
+        $data['canManage'] = $identity !== null
+            && $identity->authorise('core.manage', 'com_sportsmanagement');
 
         $base = rtrim((string) Uri::base(), '/') . '/components/com_sportsmanagement/assets/icons/';
         $data['links'] = [
