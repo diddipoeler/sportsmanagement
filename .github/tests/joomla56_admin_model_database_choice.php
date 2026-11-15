@@ -140,6 +140,7 @@ namespace {
     use Joomla\Database\DatabaseInterface;
 
     define('_JEXEC', 1);
+    require_once dirname(__DIR__, 2) . '/admin/src/Model/SportsManagementAdminModel.php';
 
     class DatabaseChoiceTestModel extends SportsManagementAdminModel {}
 
@@ -206,7 +207,7 @@ namespace {
         }
     }
 
-    require_once dirname(__DIR__, 2) . '/admin/src/Model/SportsManagementAdminModel.php';
+    // The native base class is already loaded before its test subclass.
     $joomla = new DatabaseChoiceTestConnection();
     $external = new DatabaseChoiceTestConnection();
     SportsManagementDatabaseResolver::$external = $external;
