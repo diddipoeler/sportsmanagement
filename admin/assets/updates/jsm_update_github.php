@@ -19,7 +19,7 @@ if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
     $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
 
     if (!is_file($resolverFile)) {
-        throw new \\RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+        throw new \RuntimeException('SportsManagement administrator application resolver is missing.', 500);
     }
 
     require_once $resolverFile;

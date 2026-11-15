@@ -26,7 +26,7 @@ if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
     $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
 
     if (!is_file($resolverFile)) {
-        throw new \\RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+        throw new \RuntimeException('SportsManagement administrator application resolver is missing.', 500);
     }
 
     require_once $resolverFile;
@@ -40,11 +40,11 @@ if ($table !== '') {
     // The button submits a destructive batch update: require BOTH CSRF
     // protection and a Joomla component administrator permission.
     if (!$app->checkToken('post')) {
-        throw new \\RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+        throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
     }
 
     if (!$app->getIdentity()->authorise('core.manage', 'com_sportsmanagement')) {
-        throw new \\RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
     }
 }
 
