@@ -1,0 +1,42 @@
+name: Joomla 5/6 administrator form model database selector
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/SportsManagementAdminModel.php'
+      - '.github/tests/joomla56_admin_model_database_choice.php'
+      - '.github/workflows/joomla56-admin-model-database-choice.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Model/SportsManagementAdminModel.php'
+      - '.github/tests/joomla56_admin_model_database_choice.php'
+      - '.github/workflows/joomla56-admin-model-database-choice.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  model-database-choice:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Syntax, metadata and method PHPDocs
+        run: |
+          php -l admin/src/Model/SportsManagementAdminModel.php
+          php -l .github/tests/joomla56_admin_model_database_choice.php
+          for file in admin/src/Model/SportsManagementAdminModel.php .github/tests/joomla56_admin_model_database_choice.php; do
+            for tag in @version @author @copyright @license; do
+              grep -Fq "$tag" "$file"
+            done
+          done
+          php .github/scripts/check-php-function-docs.php admin/src/Model/SportsManagementAdminModel.php .github/tests/joomla56_admin_model_database_choice.php
+      - name: Validate model database choices and recoverable fallbacks
+        run: |
+          php .github/tests/joomla56_admin_model_database_choice.php
