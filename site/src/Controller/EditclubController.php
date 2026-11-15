@@ -174,10 +174,6 @@ final class EditclubController extends FormController
     }
 
     /**
-     * Convert only complete positive decimal team IDs to the legacy list
-     * format. Never pass nested data or arbitrary text to the table layer.
-     */
-    /**
      * Convert submitted team IDs into a safe legacy comma-separated list.
      * Rejects nested values, non-decimal strings, zero and integer overflow,
      * normalises leading zeros and removes duplicates without expanding
@@ -220,19 +216,23 @@ final class EditclubController extends FormController
 
         return implode(',', $ids);
     }
-    /** Ensure a frontend editor cannot write using a token without component ACL. */
     /**
      * Require frontend permissions for changing club records.
-     * Allows users authorised for core.edit or club.edit on the component
-     * and rejects any other identity even if the form token is valid.
+     *
+     * Allows an existing Joomla identity authorised for core.edit or
+     * club.edit on the component. Missing identities and guests are
+     * rejected with an HTTP 403 error, even with a valid form token, instead
+     * of triggering a null-method call on PHP 8.
      * @return void
      * @throws \RuntimeException When club editing rights are missing.
      */
     private function assertEditorPermission(): void
     {
         $identity = $this->app->getIdentity();
-        $allowed = $identity->authorise('core.edit', 'com_sportsmanagement')
-            || $identity->authorise('club.edit', 'com_sportsmanagement');
+        $allowed = $identity !== null && (
+            $identity->authorise('core.edit', 'com_sportsmanagement')
+            || $identity->authorise('club.edit', 'com_sportsmanagement')
+        );
 
         if (!$allowed) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
