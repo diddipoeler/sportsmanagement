@@ -13,12 +13,40 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\HTML\HTMLHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Language\Text;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Joomla\Database\DatabaseInterface;
 
-$app = Factory::getApplication();
-$table = $app->getInput()->getCmd('table');
+// Resolve the administrator application through Joomla's container, not the
+// removed static application factory. Standalone legacy update pages may run
+// before the component's PSR-4 autoloader has registered its services.
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+    if (!is_file($resolverFile)) {
+        throw new \\RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+    }
+
+    require_once $resolverFile;
+}
+
+$app = SportsManagementAdministratorApplicationResolver::resolve();
+// Never perform mass alias changes from a link or an untrusted GET request.
+$table = $app->getInput()->post->getCmd('table', '');
+
+if ($table !== '') {
+    // The button submits a destructive batch update: require BOTH CSRF
+    // protection and a Joomla component administrator permission.
+    if (!$app->checkToken('post')) {
+        throw new \\RuntimeException(Text::_('JINVALID_TOKEN'), 403);
+    }
+
+    if (!$app->getIdentity()->authorise('core.manage', 'com_sportsmanagement')) {
+        throw new \\RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+    }
+}
 
 
 $version           = '1.0.53';
@@ -134,7 +162,7 @@ if ($table)
 }
 
 
-echo '<form method="get" id="adminForm" action="">';
+echo '<form method="post" id="adminForm" action="">';
 foreach ([
     'person' => 'Personen',
     'league' => 'Ligen',
@@ -148,6 +176,7 @@ foreach ([
 ] as $tableValue => $label) {
     echo '<button type="submit" name="table" value="' . $tableValue . '">' . $label . '</button>';
 }
+echo HTMLHelper::_('form.token');
 echo '</form>';
 
 

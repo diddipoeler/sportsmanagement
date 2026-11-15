@@ -9,11 +9,23 @@
  */
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 
-$app = Factory::getApplication();
+// Resolve the typed administrator application for Joomla 5/6. The updater
+// can be included directly, before the component's namespace is registered.
+if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
+    $resolverFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/src/Service/SportsManagementAdministratorApplicationResolver.php';
+
+    if (!is_file($resolverFile)) {
+        throw new \\RuntimeException('SportsManagement administrator application resolver is missing.', 500);
+    }
+
+    require_once $resolverFile;
+}
+
+$app = SportsManagementAdministratorApplicationResolver::resolve();
 $app->getDocument()->getWebAssetManager()
     ->registerAndUseScript(
         'plg_installer_folderinstaller.folderinstaller',

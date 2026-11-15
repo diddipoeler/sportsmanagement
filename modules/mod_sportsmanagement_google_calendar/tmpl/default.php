@@ -9,6 +9,15 @@
  */
 \defined('_JEXEC') or die;
 
+/**
+ * Escape one Calendar event attribute or display value as UTF-8 HTML.
+ *
+ * Handles malformed cached API fields without converting arrays to strings
+ * and leaves unsupported values empty in the frontend output.
+ *
+ * @param mixed $value Calendar event field from Joomla's callback cache.
+ * @return string Safely encoded HTML text for the module template.
+ */
 $escape = static fn ($value): string => htmlspecialchars(
     is_string($value) || is_numeric($value) ? (string) $value : '',
     ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'
@@ -21,11 +30,15 @@ $escape = static fn ($value): string => htmlspecialchars(
         }
         $rawEventLink = $event->htmlLink ?? '';
         $eventLink = is_string($rawEventLink) ? trim($rawEventLink) : '';
-        $eventScheme = strtolower((string) parse_url($eventLink, PHP_URL_SCHEME));
+        $eventParts = $eventLink !== '' ? parse_url($eventLink) : false;
+        $eventScheme = is_array($eventParts) ? strtolower((string) ($eventParts['scheme'] ?? '')) : '';
         // Escaping href attributes alone cannot block javascript: or data: links.
         $hasEventLink = $params->get('show_link', true)
             && filter_var($eventLink, FILTER_VALIDATE_URL) !== false
-            && in_array($eventScheme, ['http', 'https'], true);
+            && in_array($eventScheme, ['http', 'https'], true)
+            && is_array($eventParts)
+            && !isset($eventParts['user'])
+            && !isset($eventParts['pass']);
     ?>
         <li class="event" itemscope itemtype="https://schema.org/Event">
             <?php if (!empty($event->jsmStartIso)) : ?>

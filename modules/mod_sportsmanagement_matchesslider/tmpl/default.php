@@ -17,7 +17,21 @@ $direction = in_array($direction, ['backwards', 'forwards'], true) ? $direction 
 $showPictures = (int) $params->get('show_picture', 1) === 1;
 $pictureWidth = max(1, (int) $params->get('xsize', 50));
 $moduleClass = trim((string) $params->get('moduleclass_sfx', ''));
-$escape = static fn (mixed $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+/**
+ * Encode a scalar match-slider value for safe HTML output.
+ *
+ * Legacy module fields may contain arrays or objects after invalid settings.
+ * Avoid PHP 8 string conversion warnings while escaping every attribute and
+ * text value with UTF-8 replacement for malformed byte sequences.
+ *
+ * @param mixed $value Raw value supplied by module settings or match rows.
+ * @return string Escaped HTML text, or an empty string for non-scalars.
+ */
+$escape = static fn (mixed $value): string => htmlspecialchars(
+    is_string($value) || is_numeric($value) ? (string) $value : '',
+    ENT_QUOTES | ENT_SUBSTITUTE,
+    'UTF-8'
+);
 ?>
 
 <div
