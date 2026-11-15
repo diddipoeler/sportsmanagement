@@ -395,22 +395,44 @@ final class RoundModel extends SportsManagementAdminModel
     }
 
     /**
-     * Delete rounds after removing dependent match rows.
+     * Delete only validated round IDs after clearing their dependent matches.
      *
-     * @param mixed $pks pks value.
-     * @return mixed
+     * Joomla's underlying table API must never receive raw POST identifiers:
+     * casting "7junk" to 7 could delete the wrong round and its fixtures.
+     * An empty selection is a no-op; malformed-only input fails closed.
+     *
+     * @param mixed $pks Selected round IDs, updated with validated integers.
+     * @return bool Whether the requested round deletion succeeded.
      */
     public function delete(&$pks)
     {
-        if (!$this->deleteRoundMatches((array) $pks)) {
+        $ids = $this->normaliseIds((array) $pks);
+
+        if (!$ids) {
+            if (!empty($pks)) {
+                $this->setError('Invalid round selection.');
+
+                return false;
+            }
+
+            return true;
+        }
+
+        if (!$this->deleteRoundMatches($ids)) {
             return false;
         }
+
+        // Always forward normalised integers, never an untrusted selection.
+        $pks = $ids;
 
         return parent::delete($pks);
     }
 
     /**
-     * Delete dependent match rows before deleting their rounds.
+     * Delete dependent match rows only for strict round identifiers.
+     *
+     * @param mixed $pks Raw round selection from the administrator interface.
+     * @return bool Whether all dependent match records were deleted.
      */
     public function deleteRoundMatches($pks = [])
     {
@@ -476,21 +498,51 @@ final class RoundModel extends SportsManagementAdminModel
     }
 
     /**
-     * Normalise selected round IDs for internal list operations.
+     * Accept only bounded positive decimal IDs for round write operations.
      *
-     * @param array $ids ids value.
-     * @return array
+     * Rejects malformed strings, signed/float IDs, arrays, booleans and
+     * integer overflow. Trims surrounding whitespace and permits leading
+     * zeros for historic Joomla list selections; duplicates are discarded.
+     *
+     * @param array<int,mixed> $ids Untrusted round or match ID values.
+     * @return array<int,int> Unique validated positive integer identifiers.
      */
     private function normaliseIds(array $ids): array
     {
-        return array_values(
-            array_unique(
-                array_filter(
-                    array_map('intval', $ids),
-                    static fn (int $id): bool => $id > 0
-                )
-            )
-        );
+        if (count($ids) > 500) {
+            return [];
+        }
+
+        $valid = [];
+
+        foreach ($ids as $value) {
+            if (!is_int($value) && !is_string($value)) {
+                continue;
+            }
+
+            $raw = trim((string) $value);
+
+            if ($raw === '' || strlen($raw) > 64
+                || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($raw, '0');
+
+            if ($digits === '') {
+                continue;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+
+            if ($id !== false) {
+                $valid[$id] = $id;
+            }
+        }
+
+        return array_values($valid);
     }
 
     /**
