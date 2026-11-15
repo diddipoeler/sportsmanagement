@@ -29,7 +29,8 @@ class ClubController extends SportsManagementFormController
      * code, optionally resolves coordinates and administrative address
      * fields, then delegates persistence to the shared form controller.
      * Verifies the CSRF token and edit/create permission before performing
-     * any external geocoding request. Uses the supported Joomla 5/6
+     * any external geocoding request. Ignores malformed address field types
+     * without PHP 8 conversion notices. Uses the supported Joomla 5/6
      * request input cached by the shared Joomla 5/6 form controller, rather
      * than calling an unavailable getApplication() method.
      *
@@ -52,9 +53,12 @@ class ClubController extends SportsManagementFormController
         }
 
         $addressParts = array_values(array_filter([
-            trim((string) ($data['address'] ?? '')),
-            trim(trim((string) ($data['zipcode'] ?? '')) . ' ' . trim((string) ($data['location'] ?? ''))),
-            trim((string) ($data['country'] ?? '')),
+            self::addressText($data['address'] ?? ''),
+            trim(
+                self::addressText($data['zipcode'] ?? '')
+                . ' ' . self::addressText($data['location'] ?? '')
+            ),
+            self::addressText($data['country'] ?? ''),
         ], static fn (string $value): bool => $value !== ''));
 
         if ($addressParts) {
@@ -90,6 +94,32 @@ class ClubController extends SportsManagementFormController
         $input->post->set('extended', $extended);
 
         return parent::save($key, $urlVar);
+    }
+
+    /**
+     * Convert an address part to safe text without PHP 8 conversion warnings.
+     *
+     * Joomla forms normally submit strings, but malformed or crafted POST
+     * data can also contain arrays, objects or booleans. Excluding those
+     * values avoids leaking the literal word "Array" into external geocoding
+     * requests. Numeric postal codes are retained; non-finite floats are
+     * rejected. The original submitted fields remain unchanged for Joomla's
+     * regular form validation and model processing.
+     *
+     * @param mixed $value Unfiltered street, postal code, city or country.
+     * @return string Trimmed text, or an empty string for an invalid type.
+     */
+    private static function addressText(mixed $value): string
+    {
+        if (is_string($value) || is_int($value)) {
+            return trim((string) $value);
+        }
+
+        if (is_float($value) && is_finite($value)) {
+            return trim((string) $value);
+        }
+
+        return '';
     }
 
     /**
