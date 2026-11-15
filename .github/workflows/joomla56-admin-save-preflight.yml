@@ -1,0 +1,51 @@
+name: Joomla 5/6 administrator save and geocoding preflight
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'admin/src/Controller/ClubController.php'
+      - 'admin/src/Controller/PlaygroundController.php'
+      - '.github/tests/joomla56_admin_form_save_acl.php'
+      - '.github/tests/joomla56_admin_club_controller_save.php'
+      - '.github/tests/joomla56_admin_playground_save_access.php'
+      - '.github/workflows/joomla56-admin-save-preflight.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/SportsManagementFormController.php'
+      - 'admin/src/Controller/ClubController.php'
+      - 'admin/src/Controller/PlaygroundController.php'
+      - '.github/tests/joomla56_admin_form_save_acl.php'
+      - '.github/tests/joomla56_admin_club_controller_save.php'
+      - '.github/tests/joomla56_admin_playground_save_access.php'
+      - '.github/workflows/joomla56-admin-save-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  save-preflight:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+      - name: Lint and metadata
+        run: |
+          for file in admin/src/Controller/SportsManagementFormController.php admin/src/Controller/ClubController.php admin/src/Controller/PlaygroundController.php .github/tests/joomla56_admin_form_save_acl.php .github/tests/joomla56_admin_club_controller_save.php .github/tests/joomla56_admin_playground_save_access.php; do
+            php -l "$file"
+            for tag in @version @author @copyright @license; do
+              grep -Fq "$tag" "$file"
+            done
+          done
+          php .github/scripts/check-php-function-docs.php admin/src/Controller/SportsManagementFormController.php admin/src/Controller/ClubController.php admin/src/Controller/PlaygroundController.php .github/tests/joomla56_admin_club_controller_save.php .github/tests/joomla56_admin_playground_save_access.php
+      - name: Test permission and external geocoding boundaries
+        run: |
+          php .github/tests/joomla56_admin_form_save_acl.php
+          php .github/tests/joomla56_admin_club_controller_save.php
+          php .github/tests/joomla56_admin_playground_save_access.php
