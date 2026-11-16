@@ -92,7 +92,8 @@ final class SportsManagementDateHelper
      * contain a Joomla Date object. Only complete SQL DATE/DATETIME values
      * are accepted, and the project's timezone is applied for backend edits.
      * Invalid date/time or timezone input becomes null instead of causing
-     * PHP 8 exceptions during administration.
+     * PHP 8 exceptions during administration. Impossible calendar days
+     * and invalid clock components are rejected before Joomla Date parses them.
      *
      * @param object $match Match row containing match_date and timezone.
      * @return void Updates match_date and timezone properties in place.
@@ -105,6 +106,25 @@ final class SportsManagementDateHelper
 
         if ($date === '' || str_starts_with($date, '0000-00-00')
             || preg_match('/^\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2}:\d{2})?$/D', $date) !== 1) {
+            $match->match_date = null;
+            return;
+        }
+
+        // DateTime accepts invalid days such as February 30 by rolling them
+        // into another month. Reject malformed stored match dates instead.
+        $year = (int) substr($date, 0, 4);
+        $month = (int) substr($date, 5, 2);
+        $day = (int) substr($date, 8, 2);
+
+        if (!checkdate($month, $day, $year)) {
+            $match->match_date = null;
+            return;
+        }
+
+        if (strlen($date) > 10
+            && ((int) substr($date, 11, 2) > 23
+                || (int) substr($date, 14, 2) > 59
+                || (int) substr($date, 17, 2) > 59)) {
             $match->match_date = null;
             return;
         }
