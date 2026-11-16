@@ -241,13 +241,35 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Validate the discovered JoomLeague tables against supported import mappings.
-     * Checks source/destination tables and builds a status list for the administrator migration interface.
+     * Checks source/destination tables and builds a status list for the
+     * administrator migration interface. Malformed nested names and oversized
+     * table sets are rejected before database access or PHP 8 string casts.
      *
      * @param mixed $tables Parameter used by the native checkImportTablesJlJsm() operation.
      * @return array Result of the checkImportTablesJlJsm() operation.
      */
     public function checkImportTablesJlJsm($tables): array
     {
+        // This legacy method receives table mappings from both Joomla forms
+        // and import integrations. Reject malformed outer input before opening
+        // a database connection, and filter each record before string casts.
+        if (!is_array($tables) || count($tables) > 1000) {
+            return [];
+        }
+
+        $tables = array_values(array_filter(
+            $tables,
+            static fn (mixed $row): bool => is_object($row)
+                && is_string($row->name ?? null)
+                && $row->name !== ''
+                && strlen($row->name) <= 255
+                && preg_match('/^[A-Za-z0-9_]+$/D', $row->name) === 1
+        ));
+
+        if ($tables === []) {
+            return [];
+        }
+
         $db = self::sportsDatabase();
         $available = array_flip($db->getTableList());
         $prefix = (string) $db->getPrefix();
@@ -259,12 +281,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
             'template_config',
         ];
 
-        foreach ((array) $tables as $value) {
-            if (!is_object($value) || empty($value->name)) {
-                continue;
-            }
-
-            $jlTable = (string) $value->name;
+        foreach ($tables as $value) {
+            $jlTable = $value->name;
             $jsmTable = str_replace('joomleague', 'sportsmanagement', $jlTable);
 
             if (!isset($available[$jsmTable])) {
