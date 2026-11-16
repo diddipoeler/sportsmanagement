@@ -47,7 +47,9 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Normalise a database error code and message for legacy consumers.
-     * Recognises MySQL duplicate-column and duplicate-key errors so maintenance actions can distinguish warnings from failures.
+     * Recognises MySQL duplicate-column and duplicate-key errors so maintenance
+     * actions distinguish warnings from failures. Malformed nested data is
+     * rejected without PHP 8 casts and messages are bounded to 4096 bytes.
      *
      * @param mixed $getcode Parameter used by the native getExeptionMessage() operation.
      * @param mixed $getmessage Parameter used by the native getExeptionMessage() operation.
@@ -55,8 +57,12 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public static function getExeptionMessage($getcode = '', $getmessage = ''): array
     {
-        $code = (int) $getcode;
-        $message = trim((string) $getmessage);
+        // Legacy import callers can pass arbitrary option values. Never
+        // convert arrays or objects to strings or numeric error codes.
+        $code = self::safeDiagnosticInteger($getcode);
+        $message = is_string($getmessage)
+            ? trim(substr($getmessage, 0, 4096))
+            : '';
 
         if (preg_match('/(?:SQLSTATE\[[^\]]+\].*?)(?:1060|1062)|(?:^|\D)(1060|1062)(?:\D|$)/', $message, $match)) {
             if (str_contains($message, '1060')) {
@@ -94,6 +100,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
     /**
      * Create start, end and delta memory statistics for the admin interface.
      * Produces legacy display rows containing the measurement label and byte count.
+     * Invalid or overflowing scalar counters become zero instead of raising
+     * PHP 8 conversion warnings.
      *
      * @param mixed $startmemory Parameter used by the native getMemory() operation.
      * @param mixed $endmemory Parameter used by the native getMemory() operation.
@@ -104,9 +112,9 @@ final class DatabasetoolModel extends BaseDatabaseModel
         $rows = [];
 
         foreach ([
-            ['start', (int) $startmemory],
-            ['ende', (int) $endmemory],
-            ['verbrauch', (int) $endmemory - (int) $startmemory],
+            ['start', self::safeDiagnosticInteger($startmemory)],
+            ['ende', self::safeDiagnosticInteger($endmemory)],
+            ['verbrauch', self::safeDiagnosticInteger($endmemory) - self::safeDiagnosticInteger($startmemory)],
         ] as [$name, $memory]) {
             $row = new \stdClass();
             $row->name = $name;
@@ -119,7 +127,9 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Calculate elapsed query time from scalar or legacy microtime values.
-     * Accepts numeric timestamps or space-separated microtime strings and rounds the duration to milliseconds.
+     * Accepts numeric timestamps or space-separated microtime strings and
+     * rounds the duration to milliseconds. Rejects arrays, objects, nonfinite
+     * values and malformed legacy strings without warning-producing casts.
      *
      * @param mixed $starttime Parameter used by the native getQueryTime() operation.
      * @param mixed $endtime Parameter used by the native getQueryTime() operation.
@@ -127,14 +137,80 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public function getQueryTime($starttime, $endtime): float
     {
-        if (is_numeric($starttime) && is_numeric($endtime)) {
-            return round((float) $endtime - (float) $starttime, 3);
+        $start = self::safeDiagnosticTime($starttime);
+        $end = self::safeDiagnosticTime($endtime);
+
+        return round($end - $start, 3);
+    }
+
+    /**
+     * Convert a bounded scalar database diagnostic to a safe native integer.
+     *
+     * Legacy maintenance forms may deliver booleans, arrays, objects or
+     * overflowing decimal strings. These values become zero rather than
+     * triggering PHP 8 conversion warnings or wrapping diagnostic counters.
+     *
+     * @param mixed $value Raw code or byte count.
+     * @return int Valid signed integer diagnostic or zero on malformed input.
+     */
+    private static function safeDiagnosticInteger(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value;
         }
 
-        $start = array_map('floatval', preg_split('/\s+/', trim((string) $starttime)) ?: []);
-        $end = array_map('floatval', preg_split('/\s+/', trim((string) $endtime)) ?: []);
+        if (!is_string($value) || $value === '' || strlen($value) > 32
+            || preg_match('/^-?[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
 
-        return round(($end[0] ?? 0.0) - ($start[0] ?? 0.0) + ($end[1] ?? 0.0) - ($start[1] ?? 0.0), 3);
+        $converted = filter_var($value, FILTER_VALIDATE_INT);
+
+        return $converted === false ? 0 : $converted;
+    }
+
+    /**
+     * Read a numeric timestamp or traditional PHP microtime string safely.
+     *
+     * Historic callers supply either a number of seconds or two decimal
+     * segments separated by whitespace (microseconds and seconds).
+     * Invalid, nested, excessively long, NaN and infinite values resolve
+     * to zero and never generate PHP 8 array-to-string warnings.
+     *
+     * @param mixed $value Legacy query timestamp or microtime string.
+     * @return float Finite time value in seconds, or zero if invalid.
+     */
+    private static function safeDiagnosticTime(mixed $value): float
+    {
+        if (!is_int($value) && !is_float($value) && !is_string($value)) {
+            return 0.0;
+        }
+
+        if (is_string($value)) {
+            if ($value === '' || strlen($value) > 128) {
+                return 0.0;
+            }
+
+            $parts = preg_split('/\\s+/', trim($value));
+
+            if (!is_array($parts) || count($parts) < 1 || count($parts) > 2) {
+                return 0.0;
+            }
+
+            foreach ($parts as $part) {
+                if ($part === '' || !is_numeric($part)) {
+                    return 0.0;
+                }
+            }
+
+            $time = count($parts) === 2
+                ? (float) $parts[0] + (float) $parts[1]
+                : (float) $parts[0];
+        } else {
+            $time = (float) $value;
+        }
+
+        return is_finite($time) ? $time : 0.0;
     }
 
     /**
