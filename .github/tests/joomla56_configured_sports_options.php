@@ -167,6 +167,20 @@ namespace {
         if (!$ok) { throw new \RuntimeException($error); }
     }
 
+    // Both the component and plugin manifests must ship the enabled listener.
+    $package = simplexml_load_file($root . '/sportsmanagement.xml');
+    $declared = $package->xpath('//plugins/plugin[@plugin="jsm_sportbootstrap"]');
+    sportCheck(count($declared) === 1
+        && (string) $declared[0]['group'] === 'extension'
+        && (string) $declared[0]['element'] === 'jsm_sportbootstrap',
+        'Sport bootstrap listener is not declared in the component package.');
+    $pluginManifest = simplexml_load_file($root . '/plugins/jsm_sportbootstrap/jsm_sportbootstrap.xml');
+    sportCheck((string) $pluginManifest['group'] === 'extension',
+        'The configured sports plugin must subscribe as an extension plugin.');
+    sportCheck(str_contains(file_get_contents($root . '/script.joomla56.php'),
+        "setPluginEnabled('extension', 'jsm_sportbootstrap', true)"),
+        'Installer does not enable the configured sports listener.');
+
     // The SQL whitelist must remain exactly aligned with selectable options.
     $options = [];
     $config = simplexml_load_file($root . '/admin/config.xml');
