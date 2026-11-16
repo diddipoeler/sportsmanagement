@@ -26,6 +26,7 @@ final class ClubKmlHelper
      * temporary folder, optionally including a validated picture URL.
      * Rejects invalid XML controls and refuses pre-existing symlink output
      * files to avoid overwriting an unrelated target through the tmp folder.
+     * Malformed UTF-8 is rejected before emitting XML 1.0 content.
      *
      * @param int $clubId Club identifier used in the output filename.
      * @param string $address Club location and description.
@@ -54,6 +55,7 @@ final class ClubKmlHelper
             || $longitude < -180.0
             || $longitude > 180.0
             || preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $name . $address) === 1
+            || preg_match('//u', $name . $address) !== 1
         ) {
             return false;
         }
