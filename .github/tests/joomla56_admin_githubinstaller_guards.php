@@ -457,5 +457,39 @@ namespace {
         rmdir($tmp);
     }
 
+    // Update packages contain executable code. Accept official GitHub ZIP
+    // endpoints only, without private hosts, credentials, ports or traversal.
+    $urlGuard = new \ReflectionMethod($model, 'isAllowedUrl');
+
+    foreach ([
+        'https://github.com/example/repo/archive/refs/heads/main.zip',
+        'https://github.com/example/repo/archive/refs/tags/v5.6.0.zip',
+        'https://codeload.github.com/example/repo/zip/refs/heads/main',
+    ] as $allowed) {
+        if ($urlGuard->invoke($model, $allowed) !== true) {
+            throw new \RuntimeException('Official GitHub archive rejected: ' . $allowed);
+        }
+    }
+
+    foreach ([
+        'http://github.com/example/repo/archive/main.zip',
+        'https://evil.example/repo/archive/main.zip',
+        'https://github.com.evil.example/example/repo/archive/main.zip',
+        'https://127.0.0.1/example/repo/archive/main.zip',
+        'https://github.com:444/example/repo/archive/main.zip',
+        'https://user:secret@github.com/example/repo/archive/main.zip',
+        'https://github.com/example/repo/archive/main.zip?token=private',
+        'https://github.com/example/repo/archive/main.zip#fragment',
+        'https://github.com/example/repo/archive/../secret.zip',
+        'https://github.com/example/repo/archive/%2e%2e/secret.zip',
+        'https://github.com/example/repo/issues',
+        'https://codeload.github.com.evil.example/example/repo/zip/main',
+        'file:///etc/passwd',
+    ] as $rejected) {
+        if ($urlGuard->invoke($model, $rejected) !== false) {
+            throw new \RuntimeException('Unsafe archive URL accepted: ' . $rejected);
+        }
+    }
+
     echo "Joomla 5/6 GitHub installer identity, URL and archive privacy validation OK\n";
 }
