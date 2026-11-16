@@ -132,8 +132,10 @@ final class DatabasetoolController extends BaseController
      * Requires a valid CSRF token and administrator access, resolves the
      * Joomla or JoomLeague table selection, applies a fixed operation to
      * each table and reports empty sets or per-table failures by redirect.
-     * Rejects unexpected MVC models and non-array table results before
-     * iterating, avoiding fatal calls and type errors on PHP 8.
+     * Rejects unexpected MVC models, oversized batches and malformed
+     * table names before executing any maintenance statement. Nested values
+     * cannot cause PHP 8 type errors or partial destructive operations.
+     * Duplicate discovered tables are processed only once.
      *
      * @param string $command Supported maintenance action.
      * @param bool $joomleague Whether to select legacy JoomLeague tables.
@@ -172,9 +174,38 @@ final class DatabasetoolController extends BaseController
             return;
         }
 
-        $failed = [];
+        // Never run a partial maintenance batch when a legacy model
+        // returns nested table data, unrelated names or an unbounded set.
+        // Validate the entire list before issuing REPAIR or TRUNCATE queries.
+        $expected = $joomleague ? 'joomleague_' : 'sportsmanagement_';
+
+        if (count($tables) > 500) {
+            $this->setRedirect(
+                'index.php?option=com_sportsmanagement&view=databasetools',
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
+
+            return;
+        }
 
         foreach ($tables as $table) {
+            if (!is_string($table) || strlen($table) > 255
+                || preg_match('/^[A-Za-z0-9_]+$/D', $table) !== 1
+                || !str_contains($table, $expected)) {
+                $this->setRedirect(
+                    'index.php?option=com_sportsmanagement&view=databasetools',
+                    Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                    'error'
+                );
+
+                return;
+            }
+        }
+
+        $failed = [];
+
+        foreach (array_unique($tables) as $table) {
             if (!$model->setSportsManagementTableQuery($table, $command)) {
                 $failed[] = $table;
             }
