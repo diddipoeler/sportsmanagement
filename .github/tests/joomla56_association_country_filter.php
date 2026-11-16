@@ -160,6 +160,8 @@ namespace {
         public string $table = '';
         public array $conditions = [];
         public array $orders = [];
+        public array $joins = [];
+        public array $params = [];
 
         /**
          * Record DISTINCT SQL expression for the country codes query.
@@ -189,6 +191,29 @@ namespace {
          */
         public function where(string $condition): self {
             $this->conditions[] = $condition;
+            return $this;
+        }
+        /**
+         * Capture Joomla's joined editor column in the association list.
+         *
+         * @param string $type Join type.
+         * @param string $condition Bound JOIN SQL expression.
+         * @return self Fluent query builder.
+         */
+        public function join(string $type, string $condition): self {
+            $this->joins[] = [$type, $condition];
+            return $this;
+        }
+        /**
+         * Record the bound list filter values and declared SQL types.
+         *
+         * @param string $parameter Named SQL placeholder.
+         * @param mixed $value Bound string or integer.
+         * @param mixed $type Declared Joomla database binding type.
+         * @return self Fluent query builder.
+         */
+        public function bind(string $parameter, mixed $value, mixed $type): self {
+            $this->params[$parameter] = [$value, $type];
             return $this;
         }
         /**
@@ -223,7 +248,9 @@ namespace {
          * @param string $identifier Database column or table identifier.
          * @return string Unmodified identifier for query assertions.
          */
-        public function quoteName(string $identifier): string { return $identifier; }
+        public function quoteName(string $identifier, ?string $alias = null): string {
+            return $identifier . ($alias === null ? '' : ' AS ' . $alias);
+        }
         /**
          * Capture the actual table and DISTINCT expression chosen by the model.
          *
@@ -356,6 +383,26 @@ namespace {
         && !str_contains(\Joomla\CMS\Log\Log::$messages[1][0], 'private_sql_password'),
         'Private SQL information must not leak from the parent association filter.');
     $db->throwOnParentRead = false;
+
+    // The country and selected parent ID must reach the SQL query as bound
+    // parameters, not only be visible as selected labels in the template.
+    $model->stateValues['filter.search_nation'] = 'FRA';
+    $model->stateValues['filter.federation'] = 20;
+    $query = (new \ReflectionMethod($model, 'getListQuery'))->invoke($model);
+    associationFilterAssert(
+        $query->params[':filterCountry'] === ['FRA', \Joomla\Database\ParameterType::STRING]
+        && $query->params[':federation'] === [20, \Joomla\Database\ParameterType::INTEGER]
+        && in_array('objassoc.country = :filterCountry', $query->conditions, true)
+        && in_array('objassoc.parent_id = :federation', $query->conditions, true),
+        'Country and parent association filters must be applied to SQL with bound parameters.'
+    );
+
+    $model->stateValues['filter.search_nation'] = '';
+    $model->stateValues['filter.federation'] = 0;
+    $query = (new \ReflectionMethod($model, 'getListQuery'))->invoke($model);
+    associationFilterAssert(!isset($query->params[':filterCountry'])
+        && !isset($query->params[':federation']),
+        'Clearing both filters must remove country and parent restrictions from the list query.');
 
     // Native filter schema must exist where SportsManagementListModel adds
     // its Joomla 5/6 form path, not only at the obsolete models/forms path.
