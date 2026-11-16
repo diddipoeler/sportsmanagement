@@ -33,6 +33,15 @@ if (!class_exists(ResultsDataModel::class) || !class_exists(SportsManagementSite
 if (!class_exists('sportsmanagementModelMatch', false)) {
     final class sportsmanagementModelMatch
     {
+        /**
+         * Provide the legacy match results form with project position options.
+         * Resolves the Joomla site application, applies its selected SportsManagement database and delegates the actual lookup to the native ResultsDataModel.
+         * @param mixed $id Legacy position identifier.
+         * @param mixed $personType Person or official type filter.
+         * @param mixed $projectId Project whose positions are requested.
+         * @return mixed Position options from the native results reader.
+         * @throws \RuntimeException When not running in the frontend application.
+         */
         public static function getProjectPositionsOptions($id = 0, $personType = 1, $projectId = 0)
         {
             $app = SportsManagementSiteApplicationResolver::resolve();
