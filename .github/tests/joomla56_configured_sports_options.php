@@ -34,6 +34,8 @@ namespace Joomla\CMS {
         public static object $container;
         /** Resolve the Joomla dependency container supplying the sports database. */
         public static function getContainer(): object { return self::$container; }
+        /** Return the current fake Joomla application for installer postflight. */
+        public static function getApplication(): object { return \Joomla\CMS\Plugin\CMSPlugin::$app; }
     }
 }
 namespace Joomla\CMS\Language {
@@ -47,12 +49,30 @@ namespace Joomla\CMS\Language {
 namespace Joomla\CMS\Log {
     final class Log {
         public const ERROR = 1;
+        public const WARNING = 2;
         public static array $entries = [];
         /** Capture backend-only diagnostics without rendering them. */
         public static function add(string $message, int $level, string $category): void {
             self::$entries[] = [$message, $level, $category];
         }
     }
+}
+namespace Joomla\CMS\Component {
+    final class ComponentHelper {
+        public static object $params;
+        /** Return the existing persisted component options for installer postflight. */
+        public static function getParams(string $component): object {
+            if ($component !== 'com_sportsmanagement') {
+                throw new \RuntimeException('Wrong component parameters requested.');
+            }
+            return self::$params;
+        }
+    }
+}
+namespace Joomla\CMS\Installer {
+    interface InstallerScriptInterface {}
+    class Installer {}
+    class InstallerAdapter {}
 }
 namespace Joomla\Registry {
     final class Registry {
@@ -260,6 +280,26 @@ namespace {
     sportCheck(end($app->messages) === ['PLG_EXTENSION_JSM_SPORTBOOTSTRAP_INSTALLED:1', 'message'], 'Wrong success notification.');
     $plugin->onExtensionAfterSave($saved(['cfg_sport_types' => ['tennis']]));
     sportCheck($db->inserts === $count + 1, 'Repeated Joomla config save duplicated a sport.');
+
+    // A newly selected sport with bundled XML receives its default records.
+    unset($db->rows['COM_SPORTSMANAGEMENT_ST_SOCCER']);
+    $plugin->onExtensionAfterSave($saved([
+        'cfg_sport_types' => ['soccer'],
+        'install_standard_position' => '1',
+    ]));
+    sportCheck(count($model->seeds) === 1 && $model->seeds[0][2] === 'soccer',
+        'Newly installed XML sport should receive standard position and event data.');
+
+    // Component updates also reconcile options which were saved before the
+    // extension listener existed, without making dashboard reads mutate data.
+    \Joomla\CMS\Component\ComponentHelper::$params = new \Joomla\Registry\Registry(
+        json_encode(['cfg_sport_types' => ['handball'], 'install_standard_position' => '0'])
+    );
+    require_once $root . '/script.joomla56.php';
+    $script = new \com_sportsmanagementInstallerScript();
+    (new \ReflectionMethod($script, 'installConfiguredSportTypes'))->invoke($script);
+    sportCheck(isset($db->rows['COM_SPORTSMANAGEMENT_ST_HANDBALL']),
+        'Existing saved sport options were not reconciled during component update.');
 
     $db->fail = true;
     $plugin->onExtensionAfterSave($saved(['cfg_sport_types' => ['baseball']]));
