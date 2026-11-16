@@ -129,6 +129,113 @@ final class JlextassociationsModel extends SportsManagementListModel
     }
 
     /**
+     * List only existing parent associations for the administrator filter.
+     *
+     * The original filter was a numeric ID box labelled Federation even
+     * though its query tests the association parent_id column. Read the
+     * actual association hierarchy and show only nodes referenced by a
+     * child in the same country. A selected country narrows the choices,
+     * while the unfiltered view prefixes labels with their ISO-3 code.
+     * Invalid row data and cross-country parent references are ignored;
+     * errors are logged privately without breaking the list page.
+     *
+     * @return array<int,object> Distinct parent IDs with escaped-at-render labels.
+     */
+    public function getParentAssociationOptions(): array
+    {
+        $selected = $this->getState('filter.search_nation', '');
+        $countryFilter = is_string($selected) ? strtoupper(trim($selected)) : '';
+
+        if ($countryFilter !== '' && preg_match('/^[A-Z]{3}$/D', $countryFilter) !== 1) {
+            return [];
+        }
+
+        try {
+            $db = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('id'),
+                    $db->quoteName('parent_id'),
+                    $db->quoteName('name'),
+                    $db->quoteName('country'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_associations'))
+                ->order($db->quoteName('name') . ' ASC');
+            $db->setQuery($query);
+            $rows = $db->loadObjectList() ?: [];
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement association parent filter failed (' . get_class($exception) . ').',
+                Log::WARNING,
+                'com_sportsmanagement'
+            );
+
+            return [];
+        }
+
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $associations = [];
+        $childParents = [];
+
+        foreach ($rows as $row) {
+            if (!is_object($row)
+                || !is_string($row->country ?? null)
+                || !is_string($row->name ?? null)) {
+                continue;
+            }
+
+            $country = strtoupper(trim($row->country));
+            $name = trim($row->name);
+            $id = filter_var($row->id ?? null, FILTER_VALIDATE_INT);
+            $parentId = filter_var($row->parent_id ?? null, FILTER_VALIDATE_INT);
+
+            if ($id === false || $id <= 0
+                || $parentId === false || $parentId < 0 || $name === ''
+                || preg_match('/^[A-Z]{3}$/D', $country) !== 1) {
+                continue;
+            }
+
+            $associations[$id] = ['country' => $country, 'name' => $name];
+
+            if ($parentId > 0) {
+                $childParents[] = ['parentId' => $parentId, 'country' => $country];
+            }
+        }
+
+        $options = [];
+        $seen = [];
+
+        foreach ($childParents as $child) {
+            $id = $child['parentId'];
+            $parent = $associations[$id] ?? null;
+
+            if ($parent === null || $parent['country'] !== $child['country']
+                || ($countryFilter !== '' && $parent['country'] !== $countryFilter)
+                || isset($seen[$id])) {
+                continue;
+            }
+
+            $seen[$id] = true;
+            $options[] = (object) [
+                'value' => (string) $id,
+                'text' => $countryFilter === ''
+                    ? '(' . $parent['country'] . ') ' . $parent['name']
+                    : $parent['name'],
+            ];
+        }
+
+        usort(
+            $options,
+            static fn (object $left, object $right): int => strnatcasecmp($left->text, $right->text)
+        );
+
+        return $options;
+    }
+
+    /**
      * Retrieve associations by name and optional parent federation.
      *
      * Applies the selected country as a parameter-bound filter and returns
