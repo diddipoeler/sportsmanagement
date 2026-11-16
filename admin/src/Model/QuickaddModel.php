@@ -27,6 +27,14 @@ final class QuickaddModel extends SportsManagementListModel
 
     private int $quickTotal = 0;
 
+    /**
+     * Find published persons eligible for a new player assignment.
+     * Excludes persons already present in team_player for the specified project team using a bound NOT EXISTS query.
+     * @param mixed $searchterm Name fragment or numeric person ID.
+     * @param mixed $projectteam_id Target project-team identifier.
+     * @param mixed $searchinfo Optional person information filter.
+     * @return array Unassigned player records for the current page.
+     */
     public function getNotAssignedPlayers($searchterm, $projectteam_id, $searchinfo = null): array
     {
         $projectTeamId = (int) $projectteam_id;
@@ -44,6 +52,14 @@ final class QuickaddModel extends SportsManagementListModel
         return $this->loadQuickRows($db, $query, true);
     }
 
+    /**
+     * Find published persons who are not already staff for a project team.
+     * Reuses the parameterised person query and excludes existing team_staff links for the requested project team.
+     * @param mixed $searchterm Name fragment or numeric person ID.
+     * @param mixed $projectteam_id Target project-team identifier.
+     * @param mixed $searchinfo Optional additional information filter.
+     * @return array Unassigned staff records.
+     */
     public function getNotAssignedStaff($searchterm, $projectteam_id, $searchinfo = null): array
     {
         $projectTeamId = (int) $projectteam_id;
@@ -60,6 +76,14 @@ final class QuickaddModel extends SportsManagementListModel
         return $this->loadQuickRows($db, $query, true);
     }
 
+    /**
+     * Find published persons not already registered as project referees.
+     * Applies the common person search and a bound NOT EXISTS condition on project_referee relations.
+     * @param mixed $searchterm Name fragment or numeric person ID.
+     * @param mixed $projectid Target project identifier.
+     * @param mixed $searchinfo Optional additional information filter.
+     * @return array Unassigned referee records.
+     */
     public function getNotAssignedReferees($searchterm, $projectid, $searchinfo = null): array
     {
         $projectId = (int) $projectid;
@@ -76,6 +100,13 @@ final class QuickaddModel extends SportsManagementListModel
         return $this->loadQuickRows($db, $query, true);
     }
 
+    /**
+     * Search for teams that have not yet been added to a project.
+     * Matches name variants and optional numeric team ID with bound parameters, excludes project_team links and sorts by name.
+     * @param mixed $searchterm Name fragment or numeric team ID.
+     * @param mixed $projectid Target project identifier.
+     * @return array Unassigned team records for the requested page.
+     */
     public function getNotAssignedTeams($searchterm, $projectid): array
     {
         $projectId = (int) $projectid;
@@ -179,11 +210,24 @@ final class QuickaddModel extends SportsManagementListModel
         return true;
     }
 
+    /**
+     * Return the unpaginated count of matches from the last quick-add lookup.
+     * The count is calculated before list start/limit are applied and resets to zero when the query fails.
+     * @return int Number of matching records.
+     */
     public function getTotal(): int
     {
         return $this->quickTotal;
     }
 
+    /**
+     * Create the shared bound SQL query for searching published people.
+     * Searches full name, nickname, alias and optional numeric ID, with an additional person-info LIKE filter when provided.
+     * @param DatabaseInterface $db Active Joomla database connection.
+     * @param string $searchterm Person search fragment or ID.
+     * @param mixed $searchinfo Optional SQL LIKE filter value for person information.
+     * @return object Joomla query builder with bound search values.
+     */
     private function personSearchQuery(DatabaseInterface $db, string $searchterm, $searchinfo)
     {
         $needle = '%' . $db->escape(trim($searchterm), true) . '%';
@@ -221,6 +265,14 @@ final class QuickaddModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Load and count a paginated quick-add result set.
+     * Applies validated person ordering if needed, stores the full count, uses Joomla list paging and returns an empty array after query errors.
+     * @param DatabaseInterface $db Active database connection.
+     * @param object $query Parameterised query to execute.
+     * @param bool $personOrdering Whether person-column ordering applies.
+     * @return array Objects for the current page, empty on failure.
+     */
     private function loadQuickRows(DatabaseInterface $db, $query, bool $personOrdering): array
     {
         if ($personOrdering) {
@@ -252,6 +304,11 @@ final class QuickaddModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Resolve the administrator's permitted person-list ordering.
+     * Reads stored sorting preferences, restricts the column to known fields and allows only ASC or DESC direction.
+     * @return array{0:string,1:string} Safe column and direction for SQL ORDER BY.
+     */
     private function personOrdering(): array
     {
         $app = $this->administratorApplication();
