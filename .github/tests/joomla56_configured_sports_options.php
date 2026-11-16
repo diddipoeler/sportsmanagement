@@ -348,6 +348,126 @@ namespace {
     sportCheck(end($app->messages) === ['JERROR_AN_ERROR_HAS_OCCURRED', 'warning'], 'Private SQL error was shown to user.');
     sportCheck(count(\Joomla\CMS\Log\Log::$entries) === 1, 'Private SQL failure was not logged.');
 
+    // Every accepted quote type must correspond exactly to the configured
+    // choice and bundled XML file, with no arbitrary path from user input.
+    $quoteChoices = [];
+    foreach ($config->xpath('//field[@name="cfg_quotes"]/option') as $option) {
+        $quoteChoices[(string) $option['value']] = true;
+    }
+    $quoteSources = (new \ReflectionClass(
+        \Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredQuoteInstaller::class
+    ))->getReflectionConstant('QUOTE_SOURCES')->getValue();
+    sportCheck(array_keys($quoteChoices) === array_keys($quoteSources),
+        'Quote bootstrap whitelist differs from component options.');
+    foreach ($quoteSources as $choice => [$type, $dailyNumber]) {
+        sportCheck($choice === $type . ',' . $dailyNumber,
+            'Quote source selection is not mapped to its daily_number category.');
+    }
+
+    $quoteInstaller = new \Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredQuoteInstaller($db);
+    sportCheck($quoteInstaller->installMissing([null, [], false, 'player,2', '../secrets,9']) === [],
+        'Malformed and unknown quote selections must not access the database.');
+    sportCheck($db->quoteInserts === 0, 'Invalid selections inserted quotes.');
+
+    // If one group already has user-managed quotes, it must never be reset.
+    $preserved = (object) ['quote' => 'User-edited original quote', 'author' => 'Administrator',
+        'notes' => 'do not overwrite', 'daily_number' => 3];
+    $db->quotes[3] = [$preserved];
+    $installedQuotes = $quoteInstaller->installMissing(
+        ['player,1', 'functionaries,3', 'player,1', ['player,1']]
+    );
+    $xmlPlayer = simplexml_load_file($quoteXmlDirectory . '/quote_player.xml');
+    $playerCount = count($xmlPlayer->quotes);
+    sportCheck($installedQuotes === ['player,1' => $playerCount],
+        'Only the missing player quote collection should be installed.');
+    sportCheck($db->quoteInserts === $playerCount, 'Incorrect installed player quote count.');
+    sportCheck($db->quotes[3] === [$preserved], 'Existing functionary quotes were modified.');
+    sportCheck(
+        $db->quotes[1][0]->quote === trim((string) $xmlPlayer->quotes[0]->quote)
+        && $db->quotes[1][0]->author === (string) $xmlPlayer->quotes[0]->quote['author']
+        && $db->quotes[1][0]->notes === (string) $xmlPlayer->quotes[0]->quote['notes'],
+        'Quote text, author or notes were not imported from packaged XML.'
+    );
+    sportCheck($quoteInstaller->installMissing(['player,1']) === [],
+        'Saving the same configured quotes twice must not duplicate them.');
+
+    // A corrupt XML category must fail before *any* row is inserted.
+    $reporterFile = $quoteXmlDirectory . '/quote_reporter.xml';
+    $correctReporterXml = file_get_contents($reporterFile);
+    file_put_contents($reporterFile,
+        '<structur><quotes><quote daily_number="1" author="wrong">Mismatched category</quote></quotes></structur>');
+    $beforeCorrupt = $db->quoteInserts;
+    try {
+        $quoteInstaller->installMissing(['reporter,4']);
+        throw new \RuntimeException('Mismatched quote XML category was accepted.');
+    } catch (\RuntimeException $exception) {
+        sportCheck(str_contains($exception->getMessage(), 'category does not match'),
+            'Wrong XML category must be rejected explicitly.');
+    } finally {
+        file_put_contents($reporterFile, $correctReporterXml);
+    }
+    sportCheck($db->quoteInserts === $beforeCorrupt,
+        'Corrupt XML must never import a partial quote collection.');
+
+    // Joomla's extension after-save event must install quotes even when
+    // cfg_sport_types is empty, using the just-saved cfg_quotes values.
+    $staffCount = count(simplexml_load_file($quoteXmlDirectory . '/quote_staff.xml')->quotes);
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['staff,2']]));
+    sportCheck(count($db->quotes[2] ?? []) === $staffCount,
+        'The Joomla option-save listener did not import staff quotes.');
+    sportCheck(end($app->messages) === [
+        'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_QUOTES_INSTALLED:' . $staffCount . ':1', 'message'
+    ], 'Wrong quote import administrator message.');
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['staff,2']]));
+    sportCheck(count($db->quotes[2]) === $staffCount, 'Option resave duplicated staff quotes.');
+
+    // Foreign components, frontend calls and users without admin rights
+    // cannot import missing quote collections.
+    $beforeDenied = $db->quoteInserts;
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['reporter,4']], 'com_content.article'));
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['reporter,4']], 'com_config.component', 'com_other'));
+    $app->backend = false;
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['reporter,4']]));
+    $app->backend = true;
+    $identity->allowed = false;
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['reporter,4']]));
+    $identity->allowed = true;
+    sportCheck($db->quoteInserts === $beforeDenied,
+        'Unauthorised or unrelated component option saves inserted quotes.');
+
+    // Component update postflight must import collections saved *before* the
+    // extension event listener was installed, without a configuration resave.
+    \Joomla\CMS\Component\ComponentHelper::$params = new \Joomla\Registry\Registry(
+        json_encode(['cfg_quotes' => ['others,5']])
+    );
+    $otherCount = count(simplexml_load_file($quoteXmlDirectory . '/quote_others.xml')->quotes);
+    (new \ReflectionMethod($script, 'installConfiguredQuotes'))->invoke($script);
+    sportCheck(count($db->quotes[5] ?? []) === $otherCount,
+        'Installer postflight did not reconcile previously selected quotes.');
+    (new \ReflectionMethod($script, 'installConfiguredQuotes'))->invoke($script);
+    sportCheck(count($db->quotes[5]) === $otherCount,
+        'Repeated component updates duplicated existing quotes.');
+
+    // SQL failures must be logged privately and never expose credentials to
+    // the administrator's warning message.
+    $db->fail = true;
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['reporter,4']]));
+    sportCheck(!isset($db->quotes[4]), 'Quote insert failure was reported as success.');
+    sportCheck(end($app->messages) === ['JERROR_AN_ERROR_HAS_OCCURRED', 'warning'],
+        'Private quote database exception was shown to the administrator.');
+    sportCheck(count(\Joomla\CMS\Log\Log::$entries) === 2,
+        'Quote import failure must produce one private log entry.');
+
+    $reporterCount = count(simplexml_load_file($quoteXmlDirectory . '/quote_reporter.xml')->quotes);
+    $plugin->onExtensionAfterSave($saved(['cfg_quotes' => ['reporter,4']]));
+    sportCheck(count($db->quotes[4] ?? []) === $reporterCount,
+        'Retry after SQL failure did not install reporter quote collection.');
+
+    foreach (['player', 'staff', 'functionaries', 'reporter', 'others'] as $source) {
+        unlink($quoteXmlDirectory . '/quote_' . $source . '.xml');
+    }
+    rmdir($quoteXmlDirectory);
+
     unlink($xmlDirectory . '/soccer.xml');
     rmdir($xmlDirectory);
     rmdir(dirname($xmlDirectory));
@@ -355,5 +475,5 @@ namespace {
     rmdir(dirname(dirname(dirname($xmlDirectory))));
     rmdir($temporary);
 
-    echo "Joomla 5/6 configuration sport type installation OK\n";
+    echo "Joomla 5/6 configured sports and quote collection installation OK\n";
 }
