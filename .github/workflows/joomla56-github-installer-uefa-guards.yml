@@ -5,6 +5,7 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Model/GithubinstallModel.php'
+      - 'admin/src/Controller/GithubinstallController.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_admin_githubinstaller_guards.php'
       - '.github/tests/joomla56_uefa_ranking_optional_failure.php'
@@ -13,6 +14,7 @@ on:
     branches: [joomla5-6, master]
     paths:
       - 'admin/src/Model/GithubinstallModel.php'
+      - 'admin/src/Controller/GithubinstallController.php'
       - 'modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_admin_githubinstaller_guards.php'
       - '.github/tests/joomla56_uefa_ranking_optional_failure.php'
@@ -38,16 +40,19 @@ jobs:
       - name: Check PHP syntax and file-level metadata
         run: |
           php -l admin/src/Model/GithubinstallModel.php
+          php -l admin/src/Controller/GithubinstallController.php
           php -l modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
           php -l .github/tests/joomla56_admin_githubinstaller_guards.php
           php -l .github/tests/joomla56_uefa_ranking_optional_failure.php
           php .github/tests/phpdoc_metadata.php \
             admin/src/Model/GithubinstallModel.php \
+            admin/src/Controller/GithubinstallController.php \
             modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php
       - name: Check descriptive function PHPDoc
         run: |
           php .github/scripts/check-php-function-docs.php \
             admin/src/Model/GithubinstallModel.php \
+            admin/src/Controller/GithubinstallController.php \
             modules/mod_sportsmanagement_uefawertung/src/Dispatcher/Dispatcher.php \
             .github/tests/joomla56_admin_githubinstaller_guards.php \
             .github/tests/joomla56_uefa_ranking_optional_failure.php
