@@ -195,7 +195,7 @@ final class CalendarFunctions
 
     /**
      * Format the historical event sidebar heading for a given date.
-     * Accepts date strings or integer inputs, falls back to today for unsupported or unparseable values and never casts arrays or objects to strings.
+     * Accepts date strings or Unix timestamps, falls back to today for unsupported, oversized or unparseable values and never casts arrays or objects to strings.
      *
      * @param mixed $date Optional date supplied by a calendar override.
      * @return string Escaped static heading markup with weekday and date.
@@ -203,10 +203,16 @@ final class CalendarFunctions
     public static function events($date = ''): string
     {
         $value = is_string($date) || is_int($date) ? trim((string) $date) : '';
-        $timestamp = $value !== '' ? strtotime($value) : time();
 
-        if ($timestamp === false) {
+        // Unix timestamps are valid legacy calendar inputs. strtotime() does
+        // not interpret plain timestamp integers as epoch seconds.
+        if (is_int($date)) {
+            $timestamp = $date;
+        } elseif ($value === '' || strlen($value) > 128) {
             $timestamp = time();
+        } else {
+            $parsed = strtotime($value);
+            $timestamp = $parsed === false ? time() : $parsed;
         }
 
         return '<h2 class="sidebar__heading">'
