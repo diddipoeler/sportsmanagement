@@ -12,7 +12,6 @@ namespace Diddipoeler\Component\SportsManagement\Site\Helper;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Uri\Uri;
 
 /** Resolve and render team/club logos without legacy team or project models. */
 final class TeamLogoHelper
@@ -79,7 +78,7 @@ final class TeamLogoHelper
             ['logo_small', 'logo_middle', 'logo_big', 'projectteam_picture', 'team_picture'],
             true
         ) ? $property : 'logo_small';
-        $picture = trim((string) ($team->{$property} ?? ''));
+        $picture = self::scalarPicture($team->{$property} ?? null);
 
         if ($picture === '' || !self::pictureExists($picture)) {
             $picture = self::placeholder($property);
@@ -120,17 +119,17 @@ final class TeamLogoHelper
         int $modalHeight,
         int $mode
     ): string {
-        $base = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
-            ? (string) COM_SPORTSMANAGEMENT_PICTURE_SERVER
-            : Uri::root();
-        $url = preg_match('#^https?://#i', $picture)
-            ? $picture
-            : rtrim($base, '/') . '/' . ltrim($picture, '/');
+        // Apply the same URL scheme and encoded traversal checks as player images.
+        $url = PersonImageHelper::url($picture);
+
+        if ($url === '') {
+            return '';
+        }
 
         return ModalImageHelper::render(
             $target,
             $url,
-            (string) ($team->name ?? ''),
+            self::scalarPicture($team->name ?? null),
             $previewHeight,
             '',
             $modalWidth,
@@ -152,7 +151,7 @@ final class TeamLogoHelper
             : ['picture', 'projectteam_picture', 'team_picture', 'logo_big', 'logo_middle', 'logo_small'];
 
         foreach ($candidates as $property) {
-            $value = trim((string) ($team->{$property} ?? ''));
+            $value = self::scalarPicture($team->{$property} ?? null);
 
             if ($value !== '') {
                 return $value;
@@ -171,7 +170,7 @@ final class TeamLogoHelper
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
 
-        return trim((string) match ($property) {
+        return self::scalarPicture(match ($property) {
             'logo_big' => $params->get('ph_logo_big', ''),
             'logo_middle' => $params->get('ph_logo_medium', ''),
             default => $params->get('ph_logo_small', ''),
@@ -179,18 +178,55 @@ final class TeamLogoHelper
     }
 
     /**
-     * Test whether a team picture is local or a remote HTTP(S) URL.
+     * Read one optional picture or display-name field without PHP 8 casts.
+     *
+     * Imported database records and Joomla registry settings may contain
+     * arrays, objects, invalid UTF-8 or unexpectedly large values. Accept
+     * only short, printable scalar strings before building image markup.
+     *
+     * @param mixed $value Raw team image path, placeholder or display name.
+     * @return string Trimmed string or empty text for invalid input.
+     */
+    private static function scalarPicture(mixed $value): string
+    {
+        if (!is_string($value) && !is_int($value)) {
+            return '';
+        }
+
+        $text = trim((string) $value);
+
+        return strlen($text) <= 4096
+            && preg_match('//u', $text) === 1
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $text) !== 1
+                ? $text
+                : '';
+    }
+
+    /**
+     * Test whether a team picture refers to a valid local file or safe HTTP(S) URL.
      * @param string $picture Configured image URL or path.
-     * @return bool Whether the path exists or uses HTTP(S).
+     * Rejects encoded traversal, remote credentials and local paths outside
+     * Joomla's document root before considering a picture available.
+     *
+     * @return bool Whether a safe remote URL or readable local image exists.
      */
     private static function pictureExists(string $picture): bool
     {
-        if ($picture === '' || preg_match('#^https?://#i', $picture)) {
-            return $picture !== '';
+        $safeUrl = PersonImageHelper::url($picture);
+
+        if ($safeUrl === '') {
+            return false;
         }
 
-        $path = JPATH_SITE . '/' . ltrim(str_replace('\\', '/', $picture), '/');
+        if (preg_match('#^https?://#i', $picture) === 1) {
+            return true;
+        }
 
-        return is_file($path);
+        $root = realpath(JPATH_SITE);
+        $path = realpath(JPATH_SITE . '/' . ltrim($picture, '/'));
+
+        return $root !== false && $path !== false
+            && str_starts_with($path, $root . DIRECTORY_SEPARATOR)
+            && is_file($path);
     }
 }
