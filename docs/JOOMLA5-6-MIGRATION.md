@@ -56,7 +56,7 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
   expanded to explain their behaviour.
 - **Modules:** All five missing named-function descriptions in the bundled
   FullCalendar PHP event utility were supplied. The module function inventory
-  now reports no undocumentated named functions.
+  now reports no undocumented named functions.
 - **Error privacy:** The native results reader and administrator quick-add model
   log database exception details privately and display a generic translated
   Joomla error instead of exposing SQL diagnostics to visitors or administrators.
