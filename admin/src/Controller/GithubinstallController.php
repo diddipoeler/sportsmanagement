@@ -28,7 +28,9 @@ final class GithubinstallController extends BaseController
      * Missing identities, guests and malformed URL configuration never
      * trigger an archive download or package installation. The Joomla MVC
      * model must expose both installation actions and return a list of
-     * scalar messages before the installation is attempted.
+     * scalar messages before the installation is attempted. Empty model
+     * responses are treated as failures rather than triggering an install
+     * with no confirmed downloaded archive.
      * @return void
      * @throws \RuntimeException If the current identity lacks admin rights.
      */
@@ -58,7 +60,10 @@ final class GithubinstallController extends BaseController
 
         $messages = $model->CopyGithubLink($url);
 
-        if (!is_array($messages)) {
+        // An empty or malformed model response is not evidence that the
+        // archive was downloaded and extracted. Never run the installer just
+        // because a third-party model happened to return an empty array.
+        if (!is_array($messages) || $messages === []) {
             $this->setRedirect(
                 Route::_('index.php?option=com_sportsmanagement&view=githubinstall', false),
                 '',
