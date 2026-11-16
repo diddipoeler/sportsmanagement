@@ -326,10 +326,10 @@ namespace {
     $allParents = $model->getParentAssociationOptions();
     associationFilterAssert(
         array_map(static fn (object $option): string => $option->value, $allParents)
-            === ['10', '11', '20'],
+            === ['11', '10', '20'],
         'The filter must only offer valid distinct parents with child associations.'
     );
-    associationFilterAssert($allParents[0]->text === '(DEU) Westdeutscher & Verein'
+    associationFilterAssert($allParents[1]->text === '(DEU) Westdeutscher & Verein'
         && $allParents[2]->text === '(FRA) Ligue <France>',
         'Unfiltered parent options need country prefixes and original names.');
     associationFilterAssert($db->query->table === '#__sportsmanagement_associations'
