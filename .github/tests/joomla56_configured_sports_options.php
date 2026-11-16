@@ -255,7 +255,7 @@ namespace {
     sportCheck($count === $db->inserts, 'Unrelated, frontend or unauthorised save wrote sports.');
 
     $plugin->onExtensionAfterSave($saved(['cfg_sport_types' => ['tennis', 'soccer'], 'install_standard_position' => '1']));
-    sportCheck(isset($db->rows['COM_SPORTSMANAGEMENT_ST_TENNIS']), 'Newly saved tennis selection was not installed.');
+    sportCheck(isset($db->rows['COM_SPORTSMANAGEMENT_ST_TENNIS']), 'Newly saved tennis selection was not installed: ' . json_encode(\Joomla\CMS\Log\Log::$entries));
     sportCheck(count($model->seeds) === 0, 'Previously installed soccer was unexpectedly reseeded.');
     sportCheck(end($app->messages) === ['PLG_EXTENSION_JSM_SPORTBOOTSTRAP_INSTALLED:1', 'message'], 'Wrong success notification.');
     $plugin->onExtensionAfterSave($saved(['cfg_sport_types' => ['tennis']]));
