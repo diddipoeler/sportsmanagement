@@ -43,6 +43,42 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 
 `sportsmanagement.xml` installs the component namespace and `admin/services`. Joomla boots `admin/services/provider.php` and the native component extension. The native-first MVC factory and the site/administrator `DisplayController` implementations are already in use. Legacy controller, model and view fallbacks remain deliberately available for workflows that have not yet been migrated; do not remove them without migrating and testing their callers.
 
+## Administrator: safe manual Landesverbände import and editing (16 November 2026)
+
+- The administrator list's manual **Import** task no longer executes the
+  destructive `DELETE country NOT IN (...)` routine. It delegates to
+  `ConfiguredAssociationInstaller::installMissing()` like the component
+  options and upgrade paths, adding only wholly missing selected-country
+  association groups. Existing rows and unselected countries are unchanged.
+  German/English messages report the number of newly installed associations
+  and any selected countries without bundled XML. Database exceptions are
+  logged privately; the administrator sees only a generic warning.
+- `JlextassociationsController::import()` requires a valid Joomla POST token
+  and component `core.create` permission before any import. Its redirect to
+  the native administrator association list is unchanged.
+- The `AssociationslistField` in `admin/forms/jlextassociation.xml` now
+  offers a named parent-association selector **when creating a new record**:
+  previously ID 0 produced only an empty dropdown. With no selected country
+  yet, existing parent candidates are prefixed with ISO-3 country codes;
+  on submitted country selection, the corresponding country's tree is shown.
+  There is an explicit **no parent association** option (ID 0).
+- When editing, the chooser omits the association itself and its descendant
+  subtree. `JlextassociationTable::check()` independently verifies the
+  entire ancestor chain during save, rejecting foreign-country parents,
+  missing records, self-links, circular relationships and invalid IDs. A
+  private warning is logged if the database check itself fails. This server
+  validation remains mandatory even if client form options are manipulated.
+- `.github/tests/joomla56_association_manual_import.php` checks the safe
+  manual importer, CSRF and ACL boundaries, missing XML and private errors.
+  `.github/tests/joomla56_association_edit_parent.php` checks new/edit form
+  candidates, country-scoped selections, self/descendant exclusion, invalid
+  or cyclic parent chains and safe error handling. The dedicated workflow
+  runs both test suites and audits PHPDoc on PHP 8.2, 8.3 and 8.4.
+
+**On-site integration outstanding:** Check the actual Joomla 5.4/6 backend
+new/edit association form and manual Import action on a test installation
+with country hierarchies, including the external-database setting where used.
+
 ## Administrator: country filter in Landesverbände (16 November 2026)
 
 - Fixed the native `Jlextassociations` administrator list layout, which had
@@ -91,10 +127,12 @@ changes and the reset action.
   service `admin/src/Service/ConfiguredAssociationInstaller.php` checks each
   selected country independently and inserts records only when that country
   has **no associations** in `#__sportsmanagement_associations`.
-- Unlike the older maintenance functions `DatabasetoolModel::checkAssociations()`
-  and `JlextassociationsModel::checkAssociations()`, the automatic importer
+- Unlike the older database maintenance task
+  `DatabasetoolModel::checkAssociations()`, the automatic importer
   never deletes associations from deselected countries, never updates existing
-  association records, and never overwrites administrator edits.
+  association records, and never overwrites administrator edits. The native
+  `JlextassociationsModel::checkAssociations()` manual list import now uses
+  the same non-destructive service.
 - The importer checks strict three-letter country codes before filesystem
   access, accepts older comma-delimited configuration values, parses only
   bundled XML with `LIBXML_NONET`, and validates country and hierarchy
