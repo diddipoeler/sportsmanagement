@@ -13,6 +13,8 @@
 
 defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredSportTypeInstaller;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
@@ -102,6 +104,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         try {
             $this->installModules($adapter);
             $this->installPlugins($adapter);
+            $this->installConfiguredSportTypes();
             $this->ensureActionLogConfiguration();
             $this->createImagesFolder();
             $this->deleteInstallFiles();
@@ -244,6 +247,99 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         // com_config imports extension plugins before emitting onExtensionAfterSave.
         // Enable the bundled listener so selected sport types are installed on save.
         $this->setPluginEnabled('extension', 'jsm_sportbootstrap', true);
+    }
+
+    /**
+     * Install sport types already selected in saved options during an upgrade.
+     *
+     * New installs and upgrades run the same idempotent service as the
+     * onExtensionAfterSave listener. This covers configurations where sport
+     * choices were saved before the listener was installed, without requiring
+     * an administrator to resave options or causing writes on dashboard GET.
+     * The selected standard-position setting is honoured when the native
+     * database-tool model is available. A failed optional bootstrap reports a
+     * warning but must not abort the component installation transaction.
+     *
+     * @return void
+     */
+    private function installConfiguredSportTypes(): void
+    {
+        try {
+            $params = ComponentHelper::getParams('com_sportsmanagement');
+            $selected = $params->get('cfg_sport_types', []);
+
+            if ($selected === [] || $selected === '') {
+                return;
+            }
+
+            // During postflight Joomla may not yet have booted the component
+            // namespace, even though all administrator files are installed.
+            if (!class_exists(ConfiguredSportTypeInstaller::class)) {
+                $file = JPATH_ADMINISTRATOR
+                    . '/components/com_sportsmanagement/src/Service/ConfiguredSportTypeInstaller.php';
+
+                if (!is_file($file)) {
+                    throw new \RuntimeException('SportsManagement configured sport installer is missing.');
+                }
+
+                require_once $file;
+            }
+
+            $seed = null;
+
+            if ((string) $params->get('install_standard_position', '0') === '1') {
+                try {
+                    $component = Factory::getApplication()->bootComponent('com_sportsmanagement');
+                    $model = $component->getMVCFactory()->createModel(
+                        'Databasetool',
+                        'Administrator',
+                        ['ignore_request' => true]
+                    );
+
+                    if ($model instanceof DatabasetoolModel) {
+                        $seed = static function (string $name, int $id, string $token) use ($model): void {
+                            $model->addStandardForSportType($name, $id, $token, 0);
+                        };
+                    } else {
+                        Log::add(
+                            'SportsManagement sport standard definitions model is unavailable in postflight.',
+                            Log::WARNING,
+                            'com_sportsmanagement'
+                        );
+                    }
+                } catch (\Throwable $exception) {
+                    Log::add(
+                        'SportsManagement sport standards could not be initialised: ' . $exception->getMessage(),
+                        Log::WARNING,
+                        'com_sportsmanagement'
+                    );
+                }
+            }
+
+            $installed = (new ConfiguredSportTypeInstaller($this->getDatabase()))
+                ->installMissing($selected, $seed);
+
+            if ($installed !== []) {
+                $app = Factory::getApplication();
+                $app->getLanguage()->load(
+                    'plg_extension_jsm_sportbootstrap',
+                    JPATH_ADMINISTRATOR,
+                    $app->getLanguage()->getTag(),
+                    true
+                );
+                $app->enqueueMessage(
+                    Text::sprintf('PLG_EXTENSION_JSM_SPORTBOOTSTRAP_INSTALLED', count($installed)),
+                    'message'
+                );
+            }
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement configured sport upgrade failed: ' . $exception->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            Factory::getApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
+        }
     }
 
     private function setPluginEnabled(string $folder, string $element, bool $enabled): void
