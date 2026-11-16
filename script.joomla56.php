@@ -30,6 +30,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 {
     private string $release = '4.24.00';
 
+    /**
+     * Initialise the component installation lifecycle.
+     * Reads the release version from the incoming manifest; bundled extension installation and media preparation are deferred to postflight.
+     * @param InstallerAdapter $adapter Joomla component installation adapter.
+     * @return bool True to allow installation to continue.
+     */
     public function install(InstallerAdapter $adapter): bool
     {
         $this->syncReleaseFromManifest($adapter);
@@ -37,6 +43,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return true;
     }
 
+    /**
+     * Perform the initial Joomla component update callback.
+     * Uses the incoming manifest version for the update message and leaves bundled modules and plugins to the postflight stage.
+     * @param InstallerAdapter $adapter Joomla component update adapter.
+     * @return bool True to allow the update to continue.
+     */
     public function update(InstallerAdapter $adapter): bool
     {
         $this->syncReleaseFromManifest($adapter);
@@ -49,6 +61,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return true;
     }
 
+    /**
+     * Clean up optional bundled modules and plugins during component removal.
+     * Consults stored component options before uninstalling dependent extensions, and reports the uninstall result via Joomla messages.
+     * @param InstallerAdapter $adapter Installer supplying the bundled extension manifest.
+     * @return bool True after the configured cleanup steps complete.
+     */
     public function uninstall(InstallerAdapter $adapter): bool
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -69,6 +87,13 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return true;
     }
 
+    /**
+     * Check the upgrade version before Joomla mutates component files.
+     * Prevents downgrading from a newer installed release, and displays the source version, target version and operation type.
+     * @param string $type Installer operation such as install or update.
+     * @param InstallerAdapter $adapter Incoming component installation adapter.
+     * @return bool False only for a forbidden downgrade.
+     */
     public function preflight(string $type, InstallerAdapter $adapter): bool
     {
         $this->syncReleaseFromManifest($adapter);
@@ -93,6 +118,13 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return true;
     }
 
+    /**
+     * Finish the SportsManagement package installation or upgrade.
+     * Installs bundled modules and plugins, enables the options listener, creates any missing sports already selected in saved settings, sets up logging and media folders, and cleans installation artifacts.
+     * @param string $type Joomla installer operation.
+     * @param InstallerAdapter $adapter Source manifest and extracted package paths.
+     * @return bool True on success; false for a fatal package setup failure.
+     */
     public function postflight(string $type, InstallerAdapter $adapter): bool
     {
         $this->syncReleaseFromManifest($adapter);
@@ -126,11 +158,21 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return true;
     }
 
+    /**
+     * Resolve Joomla's main database through dependency injection.
+     * The installer must use the same connection as the extension registry and the SportsManagement sports-type tables.
+     * @return DatabaseInterface Active Joomla database connection.
+     */
     private function getDatabase(): DatabaseInterface
     {
         return Factory::getContainer()->get(DatabaseInterface::class);
     }
 
+    /**
+     * Create a Joomla extension installer for packaged dependencies.
+     * Injects the shared database service so module and plugin installation use the parent Joomla installation context.
+     * @return Installer Configured Joomla installer instance.
+     */
     private function getInstaller(): Installer
     {
         $installer = new Installer();
@@ -139,6 +181,11 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return $installer;
     }
 
+    /**
+     * Read the installed SportsManagement component release number.
+     * Looks up the component entry in Joomla's extension registry and extracts the version from its JSON manifest cache.
+     * @return string Existing component version or empty string.
+     */
     private function getInstalledVersion(): string
     {
         $db = $this->getDatabase();
@@ -153,6 +200,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         return is_array($manifest) ? (string) ($manifest['version'] ?? '') : '';
     }
 
+    /**
+     * Update the installer release label from the packaged manifest.
+     * Keeps user-facing installation and upgrade messages aligned with the actual manifest version rather than a hard-coded fallback.
+     * @param InstallerAdapter $adapter Source of the component manifest.
+     * @return void
+     */
     private function syncReleaseFromManifest(InstallerAdapter $adapter): void
     {
         $version = trim((string) ($adapter->getParent()->manifest->version ?? ''));
@@ -162,6 +215,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Install bundled Joomla site and administrator modules.
+     * Iterates the component manifest's module entries, installs extracted module packages and applies necessary administrator module assignments.
+     * @param InstallerAdapter $adapter Component manifest and extracted source location.
+     * @return void
+     */
     private function installModules(InstallerAdapter $adapter): void
     {
         $source = $adapter->getParent()->getPath('source');
@@ -215,6 +274,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Install and activate supported SportsManagement companion plugins.
+     * Installs extension packages declared in the component manifest, records nonfatal failures and enables the mandatory registration and configured-sport listeners.
+     * @param InstallerAdapter $adapter Manifest describing packaged plugin folders.
+     * @return void
+     */
     private function installPlugins(InstallerAdapter $adapter): void
     {
         $source = $adapter->getParent()->getPath('source');
@@ -342,6 +407,14 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Set the activation state of one explicitly identified Joomla plugin.
+     * Updates Joomla's extension registry by the plugin's group, element and type, avoiding unintended changes to similarly named extensions.
+     * @param string $folder Plugin group such as system or extension.
+     * @param string $element Joomla plugin element name.
+     * @param bool $enabled Whether to activate the extension.
+     * @return void
+     */
     private function setPluginEnabled(string $folder, string $element, bool $enabled): void
     {
         $db = $this->getDatabase();
@@ -354,6 +427,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         $db->setQuery($query)->execute();
     }
 
+    /**
+     * Make an installed administrator module visible on all backend pages.
+     * Finds the module by name and administrator client, and adds a default modules_menu assignment only when none exists.
+     * @param string $moduleName Joomla administrator module element.
+     * @return void
+     */
     private function ensureAdministratorModuleAssignment(string $moduleName): void
     {
         $db = $this->getDatabase();
@@ -380,6 +459,14 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Remove bundled extensions selected by the component removal settings.
+     * Resolves installed module or plugin IDs from manifest entries and Joomla's extension registry, then requests the native installer to remove them.
+     * @param InstallerAdapter $adapter Component manifest containing bundled dependencies.
+     * @param string $xpath Manifest path identifying modules or plugins.
+     * @param string $type Joomla extension type to uninstall.
+     * @return void
+     */
     private function uninstallBundledExtensions(
         InstallerAdapter $adapter,
         string $xpath,
@@ -416,6 +503,11 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Register SportsManagement in Joomla's action log configuration.
+     * Creates the required action-logging extension configuration only when no matching component record exists.
+     * @return void
+     */
     private function ensureActionLogConfiguration(): void
     {
         $db = $this->getDatabase();
@@ -458,6 +550,11 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Prepare writable SportsManagement image folders for a Joomla installation.
+     * Creates the component image hierarchy, merges packaged media assets into compatible locations and installs standard placeholder images.
+     * @return void
+     */
     private function createImagesFolder(): void
     {
         $imageRoot = JPATH_ROOT . '/images/com_sportsmanagement';
@@ -489,6 +586,13 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         $this->copyPlaceholderAssets($base);
     }
 
+    /**
+     * Copy existing component media assets into the installation image structure.
+     * Respects the configured list of image subfolders and skips missing package media roots to preserve existing user-managed files.
+     * @param string $targetBase Root target image directory.
+     * @param array $folders Expected image subdirectories.
+     * @return void
+     */
     private function mergeBundledMedia(string $targetBase, array $folders): void
     {
         $sourceBase = JPATH_ROOT . '/media/com_sportsmanagement';
@@ -514,6 +618,13 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Merge one packaged media directory into a component image directory.
+     * Traverses the source tree, creates needed target directories and preserves existing destination files instead of overwriting user assets.
+     * @param string $source Source folder to merge.
+     * @param string $target Destination folder for media assets.
+     * @return void
+     */
     private function mergeFolder(string $source, string $target): void
     {
         $this->ensureDirectory($target);
@@ -539,6 +650,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Populate missing person and general-purpose image placeholders.
+     * Copies the standard placeholder files into the appropriate SportsManagement directories without replacing installed customized images.
+     * @param string $base Root images/com_sportsmanagement database directory.
+     * @return void
+     */
     private function copyPlaceholderAssets(string $base): void
     {
         $placeholderBase = $base . '/placeholders';
@@ -594,6 +711,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Ensure a required component image directory exists.
+     * Uses Joomla's Filesystem Folder service to create the directory only when it is not already available.
+     * @param string $path Absolute directory path to create.
+     * @return void
+     */
     private function ensureDirectory(string $path): void
     {
         if (!is_dir($path)) {
@@ -601,6 +724,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Add an index.html access placeholder to a component image directory.
+     * Copies Joomla's standard index file into directories where no index file exists, reducing casual directory browsing.
+     * @param string $targetDirectory Destination directory to protect.
+     * @return void
+     */
     private function copyIndexFile(string $targetDirectory): void
     {
         $source = JPATH_ROOT . '/images/index.html';
@@ -611,6 +740,11 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Delete obsolete temporary archive files after component installation.
+     * Removes recognised SportsManagement package archives and stale temporary artifacts without affecting unrelated files.
+     * @return void
+     */
     private function deleteInstallFiles(): void
     {
         foreach ([
@@ -639,6 +773,12 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
     }
 
+    /**
+     * Log and display a nonfatal bundled extension installation warning.
+     * Writes diagnostic text at warning severity to Joomla's installer log and notifies the administrator that a companion extension needs attention.
+     * @param string $message Installer failure summary.
+     * @return void
+     */
     private function logInstallerWarning(string $message): void
     {
         Log::add($message, Log::WARNING, 'jsmerror');
