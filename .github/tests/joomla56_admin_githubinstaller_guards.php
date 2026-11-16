@@ -402,7 +402,7 @@ namespace {
         throw new \RuntimeException('Invalid archive configuration reused a stale extraction.');
     }
 
-    \Joomla\CMS\Component\ComponentHelper::$url = 'https://github.com/example/repo/archive.zip';
+    \Joomla\CMS\Component\ComponentHelper::$url = 'https://github.com/example/repo/archive/refs/heads/main.zip';
     $controller->CopyGithubLink();
 
     if (\Joomla\CMS\Installer\InstallerHelper::$downloads !== 1
@@ -421,7 +421,7 @@ namespace {
 
     \Joomla\CMS\Installer\InstallerHelper::$failDownload = true;
     $app->state['com_sportsmanagement.github_update_dir'] = 'stale';
-    $downloadResult = $model->CopyGithubLink('https://github.com/example/repo/archive.zip');
+    $downloadResult = $model->CopyGithubLink('https://github.com/example/repo/archive/refs/heads/main.zip');
     \Joomla\CMS\Installer\InstallerHelper::$failDownload = false;
 
     if ($downloadResult !== false
