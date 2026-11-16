@@ -1,0 +1,54 @@
+name: Joomla 5/6 random quotes and trainingsdata failure isolation
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_quotes_training_failure_isolation.php'
+      - '.github/workflows/joomla56-quotes-training-isolation.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_quotes_training_failure_isolation.php'
+      - '.github/workflows/joomla56-quotes-training-isolation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guards:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint module dispatchers and regression test
+        run: |
+          php -l modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_quotes_training_failure_isolation.php
+      - name: Check mandatory metadata
+        run: |
+          php .github/tests/phpdoc_metadata.php \
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_quotes_training_failure_isolation.php
+      - name: Check descriptive function PHPDoc
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            modules/mod_sportsmanagement_rquotes/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_trainingsdata/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_quotes_training_failure_isolation.php
+      - name: Verify optional quote and training failures
+        run: php .github/tests/joomla56_quotes_training_failure_isolation.php
