@@ -214,6 +214,38 @@ final class DatabasetoolModel extends BaseDatabaseModel
     }
 
     /**
+     * Parse a positive, finite sport or bootstrap record identifier.
+     *
+     * Accepts native positive integers and bounded decimal Joomla form
+     * strings with leading zeros. Rejects arrays, objects, negative values
+     * and integers beyond PHP_INT_MAX before any database or file access.
+     *
+     * @param mixed $value Raw legacy sport-type or record ID.
+     * @return int Positive identifier, or zero for invalid input.
+     */
+    private static function positiveBootstrapId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value > 0 ? $value : 0;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
      * Enumerate tables owned by the SportsManagement component.
      * Restricts discovery to the configured Joomla database prefix and component-specific table names.
      *
@@ -729,7 +761,9 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Import standard age groups for the selected nation and sport.
-     * Sanitises the country token and uses parameter-bound sport-category lookups to determine required defaults.
+     * Validates country tokens and positive sport IDs before database
+     * lookups or file access. Uses parameter-bound sport-category queries to
+     * determine required defaults without PHP 8 array/object casts.
      *
      * @param mixed $search_nation Parameter used by the native insertAgegroup() operation.
      * @param mixed $filter_sports_type Parameter used by the native insertAgegroup() operation.
@@ -737,9 +771,18 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public function insertAgegroup($search_nation, $filter_sports_type): string
     {
+        if (!is_string($search_nation) || $search_nation === ''
+            || strlen($search_nation) > 32
+            || preg_match('/^[A-Za-z0-9_-]+$/D', $search_nation) !== 1
+            || self::positiveBootstrapId($filter_sports_type) === 0) {
+            $this->my_text = Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
+
+            return $this->my_text;
+        }
+
+        $country = strtoupper($search_nation);
+        $sportTypeId = self::positiveBootstrapId($filter_sports_type);
         $db = self::sportsDatabase();
-        $country = strtoupper(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $search_nation) ?? '');
-        $sportTypeId = (int) $filter_sports_type;
         $query = $db->createQuery()
             ->select($db->quoteName('name'))
             ->from($db->quoteName('#__sportsmanagement_sports_type'))
@@ -1021,18 +1064,23 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Read the bundled standard event and position structure for a sport.
-     * Validates the sport type token, parses XML without network access and populates import arrays for later bootstrap writes.
+     * Validates bounded string sport tokens before selecting local XML files,
+     * parses XML without network access and populates the import arrays for
+     * later bootstrap writes. Rejects nested legacy values before file access.
      *
      * @param mixed $type Parameter used by the native checkSportTypeStructur() operation.
      * @return bool Result of the checkSportTypeStructur() operation.
      */
     public function checkSportTypeStructur($type): bool
     {
-        $token = strtolower(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $type) ?? '');
-
-        if ($token === '') {
+        // Reject malformed legacy form values before selecting an XML file.
+        // Never cast nested values or silently strip traversal characters.
+        if (!is_string($type) || $type === '' || strlen($type) > 64
+            || preg_match('/^[A-Za-z0-9_-]+$/D', $type) !== 1) {
             return false;
         }
+
+        $token = strtolower($type);
 
         $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/sp_structur/' . $token . '.xml';
         $xml = $this->loadXml($file);
@@ -1077,7 +1125,9 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Insert missing event and position defaults for an existing sports category.
-     * Uses the cached XML definitions and avoids duplicating named records already linked to the sports-type ID.
+     * Uses cached XML definitions and avoids duplicating named records already
+     * linked to the sport ID. Rejects malformed token and identifier inputs
+     * before attempting filesystem or database operations.
      *
      * @param mixed $name Parameter used by the native addStandardForSportType() operation.
      * @param mixed $id Parameter used by the native addStandardForSportType() operation.
@@ -1087,12 +1137,16 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public function addStandardForSportType($name, $id, $type, $update = 0): void
     {
-        $sportTypeId = (int) $id;
-        $token = strtolower((string) $type);
+        // Validate identifiers and sport tokens before loading XML or SQL.
+        $sportTypeId = self::positiveBootstrapId($id);
 
-        if ($sportTypeId <= 0 || $token === '') {
+        if ($sportTypeId === 0 || !is_string($type) || $type === ''
+            || strlen($type) > 64
+            || preg_match('/^[A-Za-z0-9_-]+$/D', $type) !== 1) {
             return;
         }
+
+        $token = strtolower($type);
 
         if (!isset($this->_sport_types_events[$token]) && !$this->checkSportTypeStructur($token)) {
             return;
