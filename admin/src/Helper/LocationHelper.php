@@ -51,6 +51,7 @@ final class LocationHelper
      * downloaded JSON payload before decoding to avoid excessive allocations.
      * Remote address keys and values are restricted to bounded printable text
      * to avoid propagating malformed geocoder data into administrator forms.
+     * Validates UTF-8 for both submitted addresses and remote address details.
      *
      * @param string $address Address to resolve through the Nominatim API.
      * @return array{latitude:string,longitude:string,address:array<string,string>}|array{}
@@ -63,7 +64,8 @@ final class LocationHelper
         // text. Reject malformed input before allocating an HTTP request.
         if ($address === ''
             || strlen($address) > 512
-            || preg_match('/[\x00-\x1F\x7F]/', $address)) {
+            || preg_match('/[\x00-\x1F\x7F]/', $address)
+            || preg_match('//u', $address) !== 1) {
             return [];
         }
 
@@ -124,7 +126,8 @@ final class LocationHelper
                     $text = trim((string) $value);
 
                     if ($text === '' || strlen($text) > 255
-                        || preg_match('/[\x00-\x1F\x7F]/', $text) === 1) {
+                        || preg_match('/[\x00-\x1F\x7F]/', $text) === 1
+                        || preg_match('//u', $text) !== 1) {
                         continue;
                     }
 
