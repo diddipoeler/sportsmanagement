@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 use Throwable;
@@ -450,14 +451,21 @@ final class ResultsDataModel extends SportsManagementProjectModel
 
     /**
      * Notify the frontend when a results database query fails.
-     * Formats the component's translated error using the caught exception; callers return safe empty results after reporting.
+     * Writes exception diagnostics to Joomla's private log and displays a generic error instead of leaking SQL or connection details to visitors.
      * @param Throwable $e Exception raised while reading results data.
      * @return void
      */
     private function reportDatabaseError(Throwable $e): void
     {
+        Log::add(
+            'SportsManagement results read failed: ' . $e->getMessage(),
+            Log::ERROR,
+            'com_sportsmanagement'
+        );
+
+        // Never send SQL statements, connection details or exception text to visitors.
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
