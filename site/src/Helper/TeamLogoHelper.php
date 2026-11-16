@@ -18,6 +18,11 @@ final class TeamLogoHelper
 {
     /**
      * Render the best available team logo with its configured popup style.
+     *
+     * Selects a nonempty picture in the caller's preferred size order, then
+     * delegates URL validation and safe modal markup to renderPicture().
+     * Malformed legacy properties are skipped without PHP 8 cast warnings.
+     *
      * @param object $team Team or project-team image record.
      * @param string $target Modal element identifier.
      * @param bool $preferSmall Whether to prefer small logo variants.
@@ -55,6 +60,12 @@ final class TeamLogoHelper
 
     /**
      * Render one configured team image variant with placeholder fallback.
+     *
+     * Restricts the property name to known image columns, verifies the
+     * selected local file or remote URL, and falls back to component settings
+     * when the record contains no usable image. Invalid placeholders are
+     * discarded instead of being cast into visible markup.
+     *
      * @param object $team Team record with picture fields.
      * @param string $property Allowed logo property name.
      * @param string $target Modal element identifier.
@@ -101,6 +112,11 @@ final class TeamLogoHelper
 
     /**
      * Render a selected team picture through the shared modal helper.
+     *
+     * Uses the same security checks as the person-image URL resolver for
+     * external hosts and relative paths. Rejects unsupported schemes before
+     * invoking the modal renderer and sanitizes imported alternative text.
+     *
      * @param object $team Team record used for alt text.
      * @param string $target Popup identifier.
      * @param string $picture Picture URL or site path.
@@ -140,6 +156,11 @@ final class TeamLogoHelper
 
     /**
      * Find the first available team picture in preferred priority order.
+     *
+     * Checks the legacy team and project-team picture fields in the existing
+     * configured order. Returns the first nonempty scalar candidate and
+     * ignores malformed, oversized or invalidly encoded imported values.
+     *
      * @param object $team Team or project-team record.
      * @param bool $preferSmall Whether smaller logos take precedence.
      * @return string Picture path or an empty string.
@@ -163,6 +184,11 @@ final class TeamLogoHelper
 
     /**
      * Resolve the configured fallback logo for an image variant.
+     *
+     * Selects the corresponding large, medium or small placeholder from
+     * Joomla's component registry. Unexpected registry values cannot turn
+     * arrays or objects into broken image URLs.
+     *
      * @param string $property Team logo property to render.
      * @return string Configured placeholder image path.
      */
@@ -204,6 +230,11 @@ final class TeamLogoHelper
 
     /**
      * Test whether a team picture refers to a valid local file or safe HTTP(S) URL.
+     *
+     * Normalizes the URL using the common picture resolver and checks
+     * local files using canonical paths under JPATH_SITE. Symlinks outside
+     * the document root and unsafe remote URLs are treated as unavailable.
+     *
      * @param string $picture Configured image URL or path.
      * Rejects encoded traversal, remote credentials and local paths outside
      * Joomla's document root before considering a picture available.
