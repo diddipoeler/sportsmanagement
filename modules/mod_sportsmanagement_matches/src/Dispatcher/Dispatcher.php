@@ -28,7 +28,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Loads frontend and component languages, obtains a typed database service,
      * and requests matches from the module helper. Normalises empty helper
      * results and safely chooses optional per-template CSS without allowing
-     * module parameters to introduce arbitrary filesystem paths. Reuses
+     * module parameters to introduce arbitrary filesystem paths. Rejects
+     * oversized layout identifiers before checking for local CSS. Reuses
      * registered styles across multiple module instances on the same page.
      *
      * @return array|false Matches and layout variables, or false if skipped.
@@ -71,7 +72,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $rawTemplate = $data['params']->get('template', 'default_tableless');
         // Never turn an invalid template name into a different valid directory.
-        $template = is_string($rawTemplate) && preg_match('/^[A-Za-z0-9_-]+$/D', $rawTemplate)
+        $template = is_string($rawTemplate) && strlen($rawTemplate) <= 100
+            && preg_match('/^[A-Za-z0-9_-]+$/D', $rawTemplate)
             ? $rawTemplate
             : 'default_tableless';
         $document = $app->getDocument();
