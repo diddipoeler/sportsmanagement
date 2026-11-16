@@ -29,8 +29,8 @@ final class ExtraSelectOptionsHelper
      * The legacy comma-delimited option collection is capped to avoid
      * excessive rendering work, and blank values are omitted. Excessively
      * long label strings are rejected before parsing to bound memory use.
-     * Invalid field identifiers and label control bytes are rejected before
-     * creating Joomla HTML option objects.
+     * Invalid field identifiers, label control bytes and malformed UTF-8
+     * are rejected before creating Joomla HTML option objects.
      *
      * @param string $view Backend or frontend template identifier.
      * @param string $field Extra-field name whose choices are requested.
@@ -124,7 +124,8 @@ final class ExtraSelectOptionsHelper
             $label = trim($labels[$key] ?? $value);
 
             if ($value === '' || strlen($value) > 255 || strlen($label) > 255
-                || preg_match('/[\x00-\x1F\x7F]/', $value . $label) === 1) {
+                || preg_match('/[\x00-\x1F\x7F]/', $value . $label) === 1
+                || preg_match('//u', $value . $label) !== 1) {
                 continue;
             }
 
