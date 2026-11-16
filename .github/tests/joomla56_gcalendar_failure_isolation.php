@@ -277,7 +277,11 @@ namespace {
     $render = new \ReflectionMethod($dispatcher, 'getLayoutData');
     $data = $render->invoke($dispatcher);
 
-    if (!is_array($data) || $data['events'] !== [] || $data['calendarOptionsKey'] !== 'mod_sportsmanagement_gcalendar.5'
+    if (!is_array($data) || $data['events'] !== []
+        || ($data['calendars'] ?? null) !== []
+        || ($data['calendarIds'] ?? null) !== []
+        || ($data['calendarConfig'] ?? null) !== []
+        || $data['calendarOptionsKey'] !== 'mod_sportsmanagement_gcalendar.5'
         || $data['layout'] !== 'default' || ($document->options['mod_sportsmanagement_gcalendar.5'] ?? null) !== []) {
         throw new \RuntimeException('GCalendar helper failure did not preserve safe Joomla layout data.');
     }
