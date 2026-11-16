@@ -698,7 +698,7 @@ final class DatabasetoolModel extends BaseDatabaseModel
             ? substr($class, 0, 160) : 'unknown';
         $method = is_string($function) && preg_match('/^[A-Za-z0-9_]+$/D', $function) === 1
             ? substr($function, 0, 80) : 'unknown';
-        $fileName = is_string($file) ? basename(str_replace('\\\\', '/', $file)) : '';
+        $fileName = is_string($file) ? basename(str_replace('\\', '/', $file)) : '';
         $fileName = preg_match('/^[A-Za-z0-9_.-]{1,120}$/D', $fileName) === 1 ? $fileName : 'unknown';
         $lineNumber = max(0, self::safeDiagnosticInteger($line));
 
