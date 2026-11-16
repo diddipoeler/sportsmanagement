@@ -43,6 +43,42 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 
 `sportsmanagement.xml` installs the component namespace and `admin/services`. Joomla boots `admin/services/provider.php` and the native component extension. The native-first MVC factory and the site/administrator `DisplayController` implementations are already in use. Legacy controller, model and view fallbacks remain deliberately available for workflows that have not yet been migrated; do not remove them without migrating and testing their callers.
 
+## Administrator: install sports selected in component options (16 November 2026)
+
+- The component's multiple-choice `cfg_sport_types` setting now drives an
+  idempotent backend sport installation. The installer uses exact option labels
+  from `admin/config.xml` and checks old generated language-key variants to
+  avoid duplicate sports, including the historical fistball spelling.
+- A bundled Joomla `extension` plugin (`jsm_sportbootstrap`) subscribes to
+  `onExtensionAfterSave` for `com_config.component`. It operates only on the
+  SportsManagement extension, requires a logged-in component administrator and
+  reads the newly saved `#__extensions.params` through the event's subject
+  instead of potentially stale `ComponentHelper::getParams()` values.
+- Missing sport rows are inserted into `#__sportsmanagement_sports_type`.
+  When `install_standard_position` is selected, bundled XML structures are
+  passed to the existing native database-tool model for standard positions
+  and match events. Four configurable sports without bundled XML still receive
+  their base sport records, rather than failing installation.
+- The component installer installs and enables this companion plugin on
+  installation/update, and postflight also reconciles sport selections which
+  were saved **before** the listener existed. No database mutations were added
+  to the read-only administrator control panel.
+- Malformed, unknown and nested option values are ignored; existing rows are
+  retained. Failed SQL writes are logged privately and produce only generic
+  Joomla warnings in the backend.
+- `.github/tests/joomla56_configured_sports_options.php` exercises option
+  whitelisting, missing rows, idempotency, previous naming, missing XML,
+  XML default seeding, permissions, unrelated events, old saved settings at
+  upgrade, packaging/enablement and error privacy. The workflow
+  `.github/workflows/joomla56-configured-sports-options.yml` runs these
+  regressions on PHP 8.2, 8.3 and 8.4 and audits the required PHP headers.
+  All named methods in `script.joomla56.php` now have descriptive PHPDoc.
+
+**Runtime validation outstanding:** test an actual option save and upgrade on
+installed Joomla 5.4 and Joomla 6, including the sport-type list, event and
+position views. CI mocks and PHP syntax checks are not full CMS integration
+tests.
+
 ## Results, quick-add and legacy documentation hardening (16 November 2026)
 
 - **Site:** Descriptive PHPDoc was added to the native results data reader and
