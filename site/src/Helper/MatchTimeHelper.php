@@ -63,7 +63,8 @@ final class MatchTimeHelper
         // placeholders before formatting the match time in PHP 8, where an
         // unknown conversion or missing argument may throw ValueError.
         if (!is_string($timeSuffix) || strlen($timeSuffix) > 500
-            || preg_match('/%(?!%|(?:1\\$)?s)/', $timeSuffix) === 1) {
+            || preg_match('/%(?!%|(?:1\\$)?s)/', $timeSuffix) === 1
+            || preg_match_all('/%(?:1\\$)?s/', $timeSuffix) !== 1) {
             $timeSuffix = '%1$s&nbsp;h';
         }
 
