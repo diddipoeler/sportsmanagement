@@ -1,0 +1,54 @@
+name: Joomla 5/6 association country filter
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Model/JlextassociationsModel.php'
+      - 'admin/src/View/Jlextassociations/HtmlView.php'
+      - 'admin/tmpl/jlextassociations/default.php'
+      - 'admin/forms/filter_jlextassociations.xml'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - '.github/tests/joomla56_association_country_filter.php'
+      - '.github/workflows/joomla56-association-country-filter.yml'
+  pull_request:
+    branches: [master, joomla5-6]
+    paths:
+      - 'admin/src/Model/JlextassociationsModel.php'
+      - 'admin/src/View/Jlextassociations/HtmlView.php'
+      - 'admin/tmpl/jlextassociations/default.php'
+      - 'admin/forms/filter_jlextassociations.xml'
+      - 'admin/src/Helper/CountryOptionsHelper.php'
+      - '.github/tests/joomla56_association_country_filter.php'
+      - '.github/workflows/joomla56-association-country-filter.yml'
+
+jobs:
+  association-country-filter:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, simplexml
+          coverage: none
+      - name: Lint native model, view, template and test
+        run: |
+          php -l admin/src/Model/JlextassociationsModel.php
+          php -l admin/src/View/Jlextassociations/HtmlView.php
+          php -l admin/tmpl/jlextassociations/default.php
+          php -l .github/tests/joomla56_association_country_filter.php
+      - name: Audit native association functions and test documentation
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Model/JlextassociationsModel.php \
+            admin/src/View/Jlextassociations/HtmlView.php \
+            .github/tests/joomla56_association_country_filter.php
+      - name: Validate rendered native Joomla association country dropdown
+        run: php .github/tests/joomla56_association_country_filter.php
