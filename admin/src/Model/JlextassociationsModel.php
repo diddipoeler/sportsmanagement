@@ -11,9 +11,11 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 
@@ -42,6 +44,82 @@ final class JlextassociationsModel extends SportsManagementListModel
         ];
 
         parent::__construct($config, $factory);
+    }
+
+    /**
+     * Build the native Joomla 5/6 association-country filter choices.
+     *
+     * Uses registered country names from the shared country options helper,
+     * then adds valid three-letter country codes already stored on association
+     * rows. This fallback keeps imported associations filterable when their
+     * country has not yet been registered in the separate countries table.
+     * Excludes malformed codes, removes duplicates and returns sorted, safe
+     * scalar option values without exposing database errors in the backend.
+     *
+     * @return array<int,object> Country options with value and text properties.
+     */
+    public function getCountryOptions(): array
+    {
+        $db = $this->getDatabase();
+        $options = [];
+        $seen = [];
+
+        foreach (CountryOptionsHelper::getOptions($db) as $option) {
+            if (!is_object($option)
+                || !is_string($option->value ?? null)
+                || !is_string($option->text ?? null)) {
+                continue;
+            }
+
+            $code = strtoupper(trim($option->value));
+
+            if (preg_match('/^[A-Z]{3}$/D', $code) !== 1 || isset($seen[$code])) {
+                continue;
+            }
+
+            $seen[$code] = true;
+            $options[] = (object) ['value' => $code, 'text' => $option->text];
+        }
+
+        try {
+            $query = $db->createQuery()
+                ->select('DISTINCT ' . $db->quoteName('country'))
+                ->from($db->quoteName('#__sportsmanagement_associations'))
+                ->where($db->quoteName('country') . ' IS NOT NULL')
+                ->order($db->quoteName('country') . ' ASC');
+            $db->setQuery($query);
+            $countries = $db->loadColumn();
+
+            if (is_array($countries)) {
+                foreach ($countries as $value) {
+                    if (!is_string($value)) {
+                        continue;
+                    }
+
+                    $code = strtoupper(trim($value));
+
+                    if (preg_match('/^[A-Z]{3}$/D', $code) !== 1 || isset($seen[$code])) {
+                        continue;
+                    }
+
+                    $seen[$code] = true;
+                    $options[] = (object) ['value' => $code, 'text' => $code];
+                }
+            }
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement association country filter failed (' . get_class($exception) . ').',
+                Log::WARNING,
+                'com_sportsmanagement'
+            );
+        }
+
+        usort(
+            $options,
+            static fn (object $left, object $right): int => strnatcasecmp($left->text, $right->text)
+        );
+
+        return $options;
     }
 
     public function getAssociations(int $federation = 0): array
