@@ -121,7 +121,7 @@ namespace {
         copy($original, $quoteXmlDirectory . '/quote_' . $source . '.xml');
     }
 
-    foreach (['DEU', 'AUT', 'NZL', 'USA'] as $country) {
+    foreach (['DEU', 'AUT', 'NZL', 'USA', 'FRA'] as $country) {
         $original = $root . '/admin/helpers/xml_files/associations_' . $country . '.xml';
         sportCheck(is_file($original), 'Bundled association XML fixture is missing: ' . $country);
         copy($original, $quoteXmlDirectory . '/associations_' . $country . '.xml');
@@ -537,6 +537,42 @@ namespace {
     sportCheck($db->associationInserts === $beforeInvalid,
         'XML validation failure caused partial association insertion.');
 
+    // France's bundled XML deliberately contains children before parents.
+    // A missing parent must be detected before any country record is stored.
+    $fraFile = $quoteXmlDirectory . '/associations_FRA.xml';
+    $validFraXml = file_get_contents($fraFile);
+    file_put_contents($fraFile,
+        '<structur><associations><assocname country="FRA" main="2" parentmain="888">Orphan</assocname></associations></structur>'
+    );
+    $beforeOrphan = $db->associationInserts;
+    try {
+        $associationInstaller->installMissing(['FRA']);
+        throw new \RuntimeException('Orphan association parent was not rejected.');
+    } catch (\RuntimeException $exception) {
+        sportCheck(str_contains($exception->getMessage(), 'missing or cyclic parents'),
+            'Orphan XML association must be rejected before any inserts.');
+    } finally {
+        file_put_contents($fraFile, $validFraXml);
+    }
+    sportCheck($db->associationInserts === $beforeOrphan,
+        'Missing XML parent must not leave partially inserted country associations.');
+
+    $fraCount = count(simplexml_load_file($fraFile)->associations);
+    $installedFrench = $associationInstaller->installMissing(['FRA']);
+    sportCheck($installedFrench === ['FRA' => $fraCount],
+        'Out-of-order French associations were not fully installed.');
+    $frenchByName = [];
+    foreach ($db->associations['FRA'] ?? [] as $item) {
+        $frenchByName[$item->name] = $item;
+    }
+    sportCheck(
+        isset($frenchByName['Ligue de Auvergne de football'])
+        && isset($frenchByName['Ligue de Auvergne-Rhône-Alpes de football'])
+        && $frenchByName['Ligue de Auvergne de football']->parent_id
+            === $frenchByName['Ligue de Auvergne-Rhône-Alpes de football']->id,
+        'French child association was not linked to a parent listed later in XML.'
+    );
+
     // Component ownership, backend client and component-admin permission are
     // mandatory for automatic country bootstrap from the Joomla options save.
     $beforeDeniedAssociations = $db->associationInserts;
@@ -620,7 +656,7 @@ namespace {
     foreach (['player', 'staff', 'functionaries', 'reporter', 'others'] as $source) {
         unlink($quoteXmlDirectory . '/quote_' . $source . '.xml');
     }
-    foreach (['DEU', 'AUT', 'NZL', 'USA'] as $country) {
+    foreach (['DEU', 'AUT', 'NZL', 'USA', 'FRA'] as $country) {
         unlink($quoteXmlDirectory . '/associations_' . $country . '.xml');
     }
     rmdir($quoteXmlDirectory);
