@@ -611,8 +611,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
     /**
      * Parse bounded legacy quote-import definitions before database access.
      *
-     * Accepts a list of up to 100 comma-delimited quote-type and positive
-     * daily-number values. Nested data, objects, signed or overflowing
+     * Accepts a legacy single CSV string or a list of up to 100
+     * comma-delimited quote-type and positive daily-number values. Nested data, objects, signed or overflowing
      * numbers, path separators and oversized strings are skipped without
      * casting them to text. This also prevents malformed options from
      * selecting arbitrary local XML files or generating PHP 8 warnings.
@@ -622,6 +622,11 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     private static function normaliseQuoteDefinitions(mixed $raw): array
     {
+        // Historic single-select settings may be stored as one CSV string.
+        if (is_string($raw)) {
+            $raw = [$raw];
+        }
+
         if (!is_array($raw) || count($raw) > 100) {
             return [];
         }
