@@ -171,5 +171,6 @@
         <plugin plugin="jsm_ishupdate" element="jsm_ishupdate" group="system" />
         <plugin plugin="jsm_siscron" element="jsm_siscron" group="system" />
         <plugin plugin="jsm_registercomp" element="jsm_registercomp" group="system" />
+        <plugin plugin="jsm_sportbootstrap" element="jsm_sportbootstrap" group="extension" />
     </plugins>
 </extension>
