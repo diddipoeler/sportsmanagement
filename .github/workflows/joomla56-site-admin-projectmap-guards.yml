@@ -15,6 +15,7 @@ on:
       - '.github/tests/joomla56_database_legacy_logger_privacy.php'
       - '.github/tests/joomla56_joomleague_mapping_invalid_inputs.php'
       - '.github/tests/joomla56_bootstrap_sport_input_guards.php'
+      - '.github/tests/joomla56_database_bootstrap_query_inputs.php'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_site_updater_mvc_factory.php'
       - 'site/src/Model/UpdsportsmanagementModel.php'
@@ -36,6 +37,7 @@ on:
       - '.github/tests/joomla56_database_legacy_logger_privacy.php'
       - '.github/tests/joomla56_joomleague_mapping_invalid_inputs.php'
       - '.github/tests/joomla56_bootstrap_sport_input_guards.php'
+      - '.github/tests/joomla56_database_bootstrap_query_inputs.php'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_site_updater_mvc_factory.php'
       - 'site/src/Model/UpdsportsmanagementModel.php'
@@ -76,6 +78,7 @@ jobs:
           php -l .github/tests/joomla56_database_legacy_logger_privacy.php
           php -l .github/tests/joomla56_joomleague_mapping_invalid_inputs.php
           php -l .github/tests/joomla56_bootstrap_sport_input_guards.php
+          php -l .github/tests/joomla56_database_bootstrap_query_inputs.php
           php -l modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
           php -l .github/tests/joomla56_site_updater_mvc_factory.php
           php -l .github/tests/joomla56_admin_database_action_contract.php
@@ -96,6 +99,7 @@ jobs:
             .github/tests/joomla56_database_legacy_logger_privacy.php \
             .github/tests/joomla56_joomleague_mapping_invalid_inputs.php \
             .github/tests/joomla56_bootstrap_sport_input_guards.php \
+            .github/tests/joomla56_database_bootstrap_query_inputs.php \
             modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php \
             .github/tests/joomla56_site_updater_mvc_factory.php \
             .github/tests/joomla56_admin_database_action_contract.php \
@@ -124,3 +128,5 @@ jobs:
         run: php .github/tests/joomla56_joomleague_mapping_invalid_inputs.php
       - name: Reject malformed legacy sport bootstrap inputs
         run: php .github/tests/joomla56_bootstrap_sport_input_guards.php
+      - name: Validate sport bootstrap SQL arguments before database access
+        run: php .github/tests/joomla56_database_bootstrap_query_inputs.php
