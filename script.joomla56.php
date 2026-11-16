@@ -15,6 +15,7 @@ defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredSportTypeInstaller;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredQuoteInstaller;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
@@ -120,7 +121,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
     /**
      * Finish the SportsManagement package installation or upgrade.
-     * Installs bundled modules and plugins, enables the options listener, creates any missing sports already selected in saved settings, sets up logging and media folders, and cleans installation artifacts.
+     * Installs bundled modules and plugins, enables the options listener, creates missing sports and quotes already selected in saved settings, sets up logging and media folders, and cleans installation artifacts.
      * @param string $type Joomla installer operation.
      * @param InstallerAdapter $adapter Source manifest and extracted package paths.
      * @return bool True on success; false for a fatal package setup failure.
@@ -137,6 +138,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
             $this->installModules($adapter);
             $this->installPlugins($adapter);
             $this->installConfiguredSportTypes();
+            $this->installConfiguredQuotes();
             $this->ensureActionLogConfiguration();
             $this->createImagesFolder();
             $this->deleteInstallFiles();
@@ -400,6 +402,71 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         } catch (\Throwable $exception) {
             Log::add(
                 'SportsManagement configured sport upgrade failed: ' . $exception->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            Factory::getApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
+        }
+    }
+
+    /**
+     * Install quote collections already selected before the extension update.
+     *
+     * The options listener only runs when an administrator saves the component
+     * configuration. Reconciling saved quote selections during installer
+     * postflight also fixes earlier installations with empty quote categories.
+     * Each category is imported only if it has no stored quote records.
+     * Read-only administrator pages never insert quotes. Missing XML or SQL
+     * failures are logged and reported generically without aborting upgrades.
+     *
+     * @return void
+     */
+    private function installConfiguredQuotes(): void
+    {
+        try {
+            $selection = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_quotes', []);
+
+            if ($selection === [] || $selection === '') {
+                return;
+            }
+
+            // The component namespace might not be bootstrapped yet in a
+            // Joomla install/update postflight callback.
+            if (!class_exists(ConfiguredQuoteInstaller::class)) {
+                $file = JPATH_ADMINISTRATOR
+                    . '/components/com_sportsmanagement/src/Service/ConfiguredQuoteInstaller.php';
+
+                if (!is_file($file)) {
+                    throw new \RuntimeException('SportsManagement quote installation service is missing.');
+                }
+
+                require_once $file;
+            }
+
+            $installed = (new ConfiguredQuoteInstaller($this->getDatabase()))->installMissing($selection);
+
+            if ($installed === []) {
+                return;
+            }
+
+            $app = Factory::getApplication();
+            $app->getLanguage()->load(
+                'plg_extension_jsm_sportbootstrap',
+                JPATH_ADMINISTRATOR,
+                $app->getLanguage()->getTag(),
+                true
+            );
+            $app->enqueueMessage(
+                Text::sprintf(
+                    'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_QUOTES_INSTALLED',
+                    array_sum($installed),
+                    count($installed)
+                ),
+                'message'
+            );
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement configured quote upgrade failed: ' . $exception->getMessage(),
                 Log::ERROR,
                 'com_sportsmanagement'
             );
