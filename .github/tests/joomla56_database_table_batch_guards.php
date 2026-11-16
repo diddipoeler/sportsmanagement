@@ -179,6 +179,23 @@ namespace {
             }
         }
 
+        // Similar-looking names outside the component namespace are rejected
+        // before the model receives any query, as are invalid SQL identifiers.
+        foreach ([
+            ['sportsmanagementarchive_project'],
+            ['#__sportsmanagement_project;DROP'],
+            ['#__sportsmanagement_project', 'prefix_joomleague_project'],
+            ['#__sportsmanagement_project', 'unrelated_table'],
+        ] as $invalidTables) {
+            $model->tables = $invalidTables;
+            $model->queries = [];
+            $controller->truncate();
+
+            if ($model->queries !== [] || ($controller->redirect[2] ?? null) !== 'error') {
+                throw new \RuntimeException('Unrelated maintenance table passed preflight validation.');
+            }
+        }
+
         $model->tables = ['#__sportsmanagement_project', '#__sportsmanagement_project'];
         $model->queries = [];
         $controller->truncate();
