@@ -26,7 +26,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * Selects an allowed layout, loads club and team data, activates the
      * carousel only when requested and generates icon zoom CSS from strictly
      * bounded numeric settings. Rejects non-finite or excessively large
-     * values before rendering inline styles.
+     * values before rendering inline styles. Registers the shared default
+     * stylesheet only once when multiple module instances share a document.
      *
      * @return array|false Template context, or false when rendering is skipped.
      * @throws \RuntimeException When invoked outside Joomla's site client.
@@ -83,11 +84,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             return $data;
         }
 
-        $wam->registerAndUseStyle(
-            'mod_sportsmanagement_clubicons.default',
-            'modules/mod_sportsmanagement_clubicons/css/default.css',
-            ['version' => 'auto']
-        );
+        $styleName = 'mod_sportsmanagement_clubicons.default';
+
+        // Multiple module instances share one Joomla WebAssetManager.
+        // Register the stylesheet only once, then enable it for each instance.
+        if (!$wam->assetExists('style', $styleName)) {
+            $wam->registerStyle(
+                $styleName,
+                'modules/mod_sportsmanagement_clubicons/css/default.css',
+                ['version' => 'auto']
+            );
+        }
+
+        $wam->useStyle($styleName);
 
         $rawPercent = $params->get('max_width_after_mouse_over', 10);
         $percent = is_numeric($rawPercent) && is_scalar($rawPercent)
