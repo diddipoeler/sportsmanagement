@@ -106,6 +106,19 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Helper {
 
 namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
     class SportsManagementListModel {
+        public array $stateValues = [];
+
+        /**
+         * Return selected country or parent filter state for the model tests.
+         *
+         * @param string $name Joomla state variable name.
+         * @param mixed $default Default when no value is set.
+         * @return mixed Stored state value.
+         */
+        public function getState(string $name, mixed $default = null): mixed {
+            return $this->stateValues[$name] ?? $default;
+        }
+
         /**
          * Permit the native association model to initialise its list fields.
          *
@@ -192,7 +205,9 @@ namespace {
 
     final class AssociationCountryDatabase implements \Joomla\Database\DatabaseInterface {
         public array $associationCountries = [];
+        public array $parentRows = [];
         public bool $throwOnRead = false;
+        public bool $throwOnParentRead = false;
         public int $reads = 0;
         public ?AssociationCountryQuery $query = null;
 
@@ -230,6 +245,17 @@ namespace {
                 throw new \RuntimeException('private_sql_password_should_not_be_rendered');
             }
             return $this->associationCountries;
+        }
+        /**
+         * Supply a realistic association hierarchy for parent dropdown tests.
+         *
+         * @return array<int,mixed> Association data including malformed rows.
+         */
+        public function loadObjectList(): array {
+            if ($this->throwOnParentRead) {
+                throw new \RuntimeException('private_sql_password_should_not_be_rendered');
+            }
+            return $this->parentRows;
         }
     }
 
@@ -302,6 +328,7 @@ namespace {
         public array $items = [];
         public mixed $pagination = null;
         public array $countryOptions = [];
+        public array $parentAssociationOptions = [];
         public object $state;
 
         /**
@@ -325,7 +352,11 @@ namespace {
          * @return mixed Current selected country or supplied default.
          */
         public function get(string $name, mixed $default = ''): mixed {
-            return $name === 'filter.search_nation' ? 'FRA' : $default;
+            return match ($name) {
+                'filter.search_nation' => 'FRA',
+                'filter.federation' => 20,
+                default => $default,
+            };
         }
     };
     $view->countryOptions = [
