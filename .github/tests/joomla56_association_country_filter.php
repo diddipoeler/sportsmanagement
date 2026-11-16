@@ -310,6 +310,53 @@ namespace {
         'Backend error must be private and free of SQL secrets.');
     $db->throwOnRead = false;
 
+    // Federation filter must offer real parent associations by name rather
+    // than require the administrator to know their numeric database IDs.
+    $db->parentRows = [
+        (object) ['id' => 10, 'parent_id' => 0, 'name' => 'Westdeutscher & Verein', 'country' => 'DEU'],
+        (object) ['id' => 11, 'parent_id' => 10, 'name' => 'Region West', 'country' => 'DEU'],
+        (object) ['id' => 12, 'parent_id' => 11, 'name' => 'Bezirk West', 'country' => 'DEU'],
+        (object) ['id' => 20, 'parent_id' => 0, 'name' => 'Ligue <France>', 'country' => 'FRA'],
+        (object) ['id' => 21, 'parent_id' => 20, 'name' => 'Sous-Ligue', 'country' => 'FRA'],
+        (object) ['id' => 22, 'parent_id' => 10, 'name' => 'Cross-country link', 'country' => 'FRA'],
+        (object) ['id' => 23, 'parent_id' => 99, 'name' => 'Missing parent', 'country' => 'DEU'],
+        (object) ['id' => 'bad', 'parent_id' => 10, 'name' => 'Invalid row', 'country' => 'DEU'],
+        (object) ['id' => 24, 'parent_id' => [], 'name' => 'Invalid parent', 'country' => 'DEU'],
+    ];
+    $allParents = $model->getParentAssociationOptions();
+    associationFilterAssert(
+        array_map(static fn (object $option): string => $option->value, $allParents)
+            === ['10', '11', '20'],
+        'The filter must only offer valid distinct parents with child associations.'
+    );
+    associationFilterAssert($allParents[0]->text === '(DEU) Westdeutscher & Verein'
+        && $allParents[2]->text === '(FRA) Ligue <France>',
+        'Unfiltered parent options need country prefixes and original names.');
+    associationFilterAssert($db->query->table === '#__sportsmanagement_associations'
+        && count($db->query->selected[0]) === 4,
+        'Parent options must be selected from the actual associations hierarchy.');
+
+    $model->stateValues['filter.search_nation'] = 'FRA';
+    $frenchParents = $model->getParentAssociationOptions();
+    associationFilterAssert(count($frenchParents) === 1
+        && $frenchParents[0]->value === '20'
+        && $frenchParents[0]->text === 'Ligue <France>',
+        'Selecting France must restrict parent options to French associations.');
+    $model->stateValues['filter.search_nation'] = 'DEU';
+    associationFilterAssert(count($model->getParentAssociationOptions()) === 2,
+        'The German country filter must show only German parents.');
+    $model->stateValues['filter.search_nation'] = 'DE/';
+    associationFilterAssert($model->getParentAssociationOptions() === [],
+        'Malformed country options must not generate parent choices.');
+    $model->stateValues['filter.search_nation'] = 'FRA';
+    $db->throwOnParentRead = true;
+    associationFilterAssert($model->getParentAssociationOptions() === [],
+        'Parent association SQL failure must leave an empty, usable dropdown.');
+    associationFilterAssert(count(\Joomla\CMS\Log\Log::$messages) === 2
+        && !str_contains(\Joomla\CMS\Log\Log::$messages[1][0], 'private_sql_password'),
+        'Private SQL information must not leak from the parent association filter.');
+    $db->throwOnParentRead = false;
+
     // Native filter schema must exist where SportsManagementListModel adds
     // its Joomla 5/6 form path, not only at the obsolete models/forms path.
     $form = simplexml_load_file($root . '/admin/forms/filter_jlextassociations.xml');
@@ -320,6 +367,10 @@ namespace {
         && (string) $fields[0]['type'] === 'Country'
         && str_contains((string) $form->fields['addfieldprefix'], 'Administrator\\Field'),
         'Joomla 5/6 association country filter field is not registered natively.');
+    $parentFields = $form->xpath('//fields[@name="filter"]/field[@name="federation"]');
+    associationFilterAssert(count($parentFields) === 1
+        && (string) $parentFields[0]['type'] === 'Association',
+        'The native form must use an association selection instead of a numeric parent ID.');
 
     // Render the actual Joomla administrator layout with view-owned options.
     // Quotes and angle brackets must be escaped and the current filter value
@@ -364,6 +415,11 @@ namespace {
         (object) ['value' => 'FRA', 'text' => 'Frankreich <script>alert(1)</script>'],
         (object) ['value' => 'BAD/', 'text' => 'Invalid'],
     ];
+    $view->parentAssociationOptions = [
+        (object) ['value' => '20', 'text' => 'Ligue & France <script>alert(1)</script>'],
+        (object) ['value' => '0', 'text' => 'Invalid zero ID'],
+        (object) ['value' => 'INVALID', 'text' => 'Invalid identifier'],
+    ];
     $html = $view->render($root);
     associationFilterAssert(str_contains($html,
         '<select class="form-select" name="filter[search_nation]" id="filter_search_nation"'),
@@ -377,6 +433,15 @@ namespace {
         'Country filter must select the current country and safely escape options.');
     associationFilterAssert(str_contains($html, '&filter[search_nation]='),
         'Clear-filter link must also reset the selected country.');
+    associationFilterAssert(str_contains($html,
+        '<select class="form-select" name="filter[federation]" id="filter_federation"')
+        && str_contains($html, 'value="20" selected')
+        && str_contains($html, 'Ligue &amp; France &lt;script&gt;alert(1)&lt;/script&gt;')
+        && !str_contains($html, 'value="INVALID"')
+        && !str_contains($html, 'type="number" min="0" name="filter_federation"')
+        && str_contains($html, "parent.value='0'")
+        && str_contains($html, '&filter[federation]=0'),
+        'The selected parent dropdown must be escaped and reset when changing country.');
 
     echo "Joomla 5/6 association country filter regression checks passed.\n";
 }
