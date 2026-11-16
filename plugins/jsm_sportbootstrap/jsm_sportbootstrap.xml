@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="extension" method="upgrade">
+    <name>SportsManagement – configured sport installation</name>
+    <author>diddipoeler</author>
+    <creationDate>November 2026</creationDate>
+    <copyright>Copyright (C) diddipoeler</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <version>5.6.0</version>
+    <description>Installs missing sports selected in the SportsManagement component options.</description>
+
+    <namespace path="src">Diddipoeler\Plugin\Extension\SportsmanagementSportbootstrap</namespace>
+
+    <files>
+        <folder plugin="jsm_sportbootstrap">services</folder>
+        <folder>src</folder>
+        <filename>jsm_sportbootstrap.php</filename>
+    </files>
+</extension>
