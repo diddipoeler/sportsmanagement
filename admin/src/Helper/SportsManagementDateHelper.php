@@ -152,7 +152,9 @@ final class SportsManagementDateHelper
      * MySQL/MariaDB strict mode only accepts ISO dates for DATE columns.
      * Empty and historical zero-date values become NULL. Recognized date
      * formats are round-trip checked to reject PHP's silent date rollover;
-     * unknown input is returned unchanged for upstream validation.
+     * unknown input is returned unchanged for upstream validation. Refuses
+     * control characters before calling PHP's date parser to avoid ValueError
+     * exceptions on malformed Joomla form submissions.
      *
      * @param string|null $date Date text from Joomla forms or database fields.
      * @return string|null ISO-formatted date, original unknown input, or null for empty dates.
@@ -163,6 +165,13 @@ final class SportsManagementDateHelper
 
         if ($date === '' || $date === '0000-00-00' || $date === '00-00-0000') {
             return null;
+        }
+
+        // PHP 8 raises ValueError for NUL bytes in createFromFormat().
+        // Reject control bytes instead of letting malformed form input crash
+        // a Joomla administrator save operation.
+        if (preg_match('/[\\x00-\\x1F\\x7F]/', $date) === 1) {
+            return $date;
         }
 
         foreach (['Y-m-d', 'd-m-Y', 'd.m.Y', 'd/m/Y'] as $format) {
