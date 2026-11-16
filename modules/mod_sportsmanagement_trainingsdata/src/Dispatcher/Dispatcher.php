@@ -16,6 +16,7 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -30,6 +31,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * In HTML responses it registers the CSS asset only if needed, then
      * activates it using the shared WebAssetManager. Repeated instances on
      * one Joomla page therefore do not register the same asset twice.
+     * Optional helper failures render an empty training list and log the
+     * exception type without exposing private database error messages.
      *
      * @return array|false Layout data or false if rendering is skipped.
      * @throws \RuntimeException If the site application or database is unavailable.
@@ -50,12 +53,24 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
-        $database = $this->joomlaDatabase();
-        $trainingsdata = $this->getHelperFactory()
-            ->getHelper('TrainingsDataHelper')
-            ->getData($data['params'], $database);
+        $data['trainingsdata'] = [];
 
-        $data['trainingsdata'] = is_array($trainingsdata) ? $trainingsdata : [];
+        try {
+            $database = $this->joomlaDatabase();
+            $trainingsdata = $this->getHelperFactory()
+                ->getHelper('TrainingsDataHelper')
+                ->getData($data['params'], $database);
+
+            $data['trainingsdata'] = is_array($trainingsdata) ? $trainingsdata : [];
+        } catch (\Throwable $exception) {
+            // Training data is optional page content: preserve the Joomla
+            // layout and keep database diagnostics out of public output.
+            Log::add(
+                'SportsManagement TrainingsData unavailable (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+        }
 
         $document = $app->getDocument();
 
