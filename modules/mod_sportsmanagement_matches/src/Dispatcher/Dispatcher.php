@@ -131,13 +131,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Verifies the dependency injection container supplied a compatible
      * Joomla database implementation before any match queries are executed.
+     * Wraps service-container exceptions while keeping the original error
+     * available as the cause for Joomla 5/6 diagnostics.
      *
      * @return DatabaseInterface Database used to fetch match records.
      * @throws \RuntimeException When no compatible database is available.
      */
     private function joomlaDatabase(): DatabaseInterface
     {
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        try {
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException('SportsManagement Matches database service could not be resolved.', 500, $exception);
+        }
 
         if (!$database instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement Matches database service is unavailable.', 500);
