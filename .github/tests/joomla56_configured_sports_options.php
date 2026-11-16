@@ -517,6 +517,14 @@ namespace {
     sportCheck($associationInstaller->getMissingSources() === ['XXX'],
         'Unsupported selected country must be reported once.');
 
+    // Older component settings can store a bounded comma-delimited list
+    // rather than Joomla's modern multi-select array.
+    sportCheck($associationInstaller->installMissing('AUT,CAN') === [],
+        'A saved comma-delimited option must be parsed without replacing existing rows.');
+    sportCheck($associationInstaller->getMissingSources() === ['CAN'],
+        'Legacy CSV country selection did not retain an independently missing source.');
+
+
     // Malformed XML is validated before inserting the first country row.
     $nzlFile = $quoteXmlDirectory . '/associations_NZL.xml';
     $validNzlXml = file_get_contents($nzlFile);
