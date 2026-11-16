@@ -22,6 +22,12 @@ use Joomla\Database\ParameterType;
 /** Native Joomla 5/6 administrator list model for associations. */
 final class JlextassociationsModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the administrator association list's safe sorting fields.
+     *
+     * @param array $config Joomla MVC list-model configuration options.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -122,6 +128,15 @@ final class JlextassociationsModel extends SportsManagementListModel
         return $options;
     }
 
+    /**
+     * Retrieve associations by name and optional parent federation.
+     *
+     * Applies the selected country as a parameter-bound filter and returns
+     * name and text labels suitable for other administrator selectors.
+     *
+     * @param int $federation Optional parent association ID.
+     * @return array<int,object> Matching association select-list entries.
+     */
     public function getAssociations(int $federation = 0): array
     {
         $db = $this->getDatabase();
@@ -337,6 +352,16 @@ final class JlextassociationsModel extends SportsManagementListModel
         return $summary;
     }
 
+    /**
+     * Load the association search, country and parent-federation list filters.
+     *
+     * Preserves the historical flat request keys for existing administrator
+     * links alongside Joomla's standard filter[search_nation] form setting.
+     *
+     * @param string $ordering Default association ordering column.
+     * @param string $direction Default ascending or descending direction.
+     * @return void
+     */
     protected function populateState($ordering = 'objassoc.name', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -354,6 +379,14 @@ final class JlextassociationsModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the filtered native Joomla 5/6 association administrator query.
+     *
+     * Uses parameter binding for name, ISO-country, publication state and
+     * parent association ID, and permits only predefined ORDER BY columns.
+     *
+     * @return mixed Native Joomla database query for the association list.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
