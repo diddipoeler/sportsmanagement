@@ -39,7 +39,7 @@ if (!is_string($extraSource)) {
 
 // Verify that invalid UTF-8 cannot reach the database deletion path.
 $conversion = strpos($extraSource, '$value = (string) $rawValue;');
-$validation = strpos($extraSource, "preg_match('//u', $value)");
+$validation = strpos($extraSource, "preg_match('//u', " . '$value' . ")");
 $delete = strpos($extraSource, '->delete($db->quoteName(');
 
 if ($conversion === false || $validation === false || $delete === false
@@ -52,7 +52,7 @@ $moduleSource = file_get_contents(
 );
 
 if (!is_string($moduleSource)
-    || !str_contains($moduleSource, "assetExists('style', $styleName)")
+    || !str_contains($moduleSource, "assetExists('style', " . '$styleName' . ")")
     || !str_contains($moduleSource, '$wam->registerStyle(')
     || !str_contains($moduleSource, '$wam->useStyle($styleName)')) {
     throw new RuntimeException('Clubicons stylesheet must be registered once and enabled per render.');
