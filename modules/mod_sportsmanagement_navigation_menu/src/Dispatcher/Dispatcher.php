@@ -16,6 +16,7 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -30,6 +31,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * template variables are copied into the Joomla module context, so
      * unexpected helper keys cannot overwrite framework-owned values.
      * Invalid module database selections stop navigation link rendering.
+     * Optional helper failures skip this module and are logged by exception
+     * type only, without exposing database details to site visitors.
      *
      * @return array|false Layout variables, or false if Joomla skips rendering.
      * @throws \RuntimeException When called outside the site or without a database.
@@ -56,11 +59,22 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $language->load('com_sportsmanagement', JPATH_SITE, $tag, true);
         $language->load('com_sportsmanagement_countries', JPATH_ADMINISTRATOR, $tag, true);
 
-        $joomlaDatabase = $this->joomlaDatabase();
+        try {
+            $joomlaDatabase = $this->joomlaDatabase();
+            $payload = $this->getHelperFactory()
+                ->getHelper('NativeNavigationMenuHelper')
+                ->getData($data['params'], $app, $joomlaDatabase);
+        } catch (\Throwable $exception) {
+            // Optional navigation data may depend on remote databases. Avoid
+            // bringing down the complete site or exposing private credentials.
+            Log::add(
+                'SportsManagement Navigation Menu unavailable (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
 
-        $payload = $this->getHelperFactory()
-            ->getHelper('NativeNavigationMenuHelper')
-            ->getData($data['params'], $app, $joomlaDatabase);
+            return false;
+        }
 
         $payload = is_array($payload) ? $payload : [];
 
