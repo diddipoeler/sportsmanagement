@@ -672,24 +672,38 @@ final class DatabasetoolModel extends BaseDatabaseModel
     }
 
     /**
-     * Write a structured database tool error into the Joomla log.
-     * Includes the reporting class, function, source filename and line while ignoring empty error descriptions.
+     * Record a sanitized database-tool failure without private SQL messages.
      *
-     * @param mixed $class Parameter used by the native writeErrorLog() operation.
-     * @param mixed $function Parameter used by the native writeErrorLog() operation.
-     * @param mixed $file Parameter used by the native writeErrorLog() operation.
-     * @param mixed $text Parameter used by the native writeErrorLog() operation.
-     * @param mixed $line Parameter used by the native writeErrorLog() operation.
-     * @return void Result of the writeErrorLog() operation.
+     * Preserves the legacy logger signature but records only bounded source
+     * labels and line numbers. Never converts arbitrary arrays or objects to
+     * strings and never writes the raw error description, which may contain
+     * query parameters, passwords or filesystem paths. Blank descriptions
+     * produce no log entry.
+     *
+     * @param mixed $class Source class identifier.
+     * @param mixed $function Source method identifier.
+     * @param mixed $file Source PHP file path.
+     * @param mixed $text Failure message, used only to detect empty errors.
+     * @param mixed $line Source line number.
+     * @return void
      */
     public static function writeErrorLog($class, $function, $file, $text, $line): void
     {
-        if ((string) $text === '') {
+        if (!is_string($text) || trim($text) === '') {
             return;
         }
 
+        // Drop arbitrary paths and control characters before logging.
+        $className = is_string($class) && preg_match('/^[A-Za-z0-9_\\\\]+$/D', $class) === 1
+            ? substr($class, 0, 160) : 'unknown';
+        $method = is_string($function) && preg_match('/^[A-Za-z0-9_]+$/D', $function) === 1
+            ? substr($function, 0, 80) : 'unknown';
+        $fileName = is_string($file) ? basename(str_replace('\\\\', '/', $file)) : '';
+        $fileName = preg_match('/^[A-Za-z0-9_.-]{1,120}$/D', $fileName) === 1 ? $fileName : 'unknown';
+        $lineNumber = max(0, self::safeDiagnosticInteger($line));
+
         Log::add(
-            sprintf('%s::%s (%s:%d) %s', (string) $class, (string) $function, (string) $file, (int) $line, (string) $text),
+            sprintf('%s::%s (%s:%d) database operation failed', $className, $method, $fileName, $lineNumber),
             Log::ERROR,
             'jsmerror'
         );
