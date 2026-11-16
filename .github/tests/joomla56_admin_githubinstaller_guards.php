@@ -491,5 +491,39 @@ namespace {
         }
     }
 
+    // A model returning an empty array has not confirmed an extracted
+    // update package. The controller must never advance to installfolder().
+    $emptyResultModel = new class {
+        public int $installs = 0;
+
+        /**
+         * Simulate an archive workflow without a success payload.
+         *
+         * @param string $url GitHub ZIP URL.
+         * @return array Empty response despite a valid URL.
+         */
+        public function CopyGithubLink(string $url): array
+        {
+            return [];
+        }
+
+        /**
+         * Count unintended follow-up package installations.
+         *
+         * @return void
+         */
+        public function installfolder(): void
+        {
+            ++$this->installs;
+        }
+    };
+    $controller->testModel = $emptyResultModel;
+    \Joomla\CMS\Component\ComponentHelper::$url = 'https://github.com/example/repo/archive/refs/heads/main.zip';
+    $controller->CopyGithubLink();
+
+    if ($emptyResultModel->installs !== 0 || $controller->redirect['type'] !== 'error') {
+        throw new \RuntimeException('An empty GitHub download result triggered a package install.');
+    }
+
     echo "Joomla 5/6 GitHub installer identity, URL and archive privacy validation OK\n";
 }
