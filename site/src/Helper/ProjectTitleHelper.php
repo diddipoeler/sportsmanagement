@@ -52,8 +52,9 @@ final class ProjectTitleHelper
      * Collects available person, venue, team, club and round labels,
      * combines the project and division, and appends league and season
      * details according to the existing page_title_format option.
-     * Invalid nested legacy values are ignored rather than being cast to
-     * strings, avoiding warnings on PHP 8 and malformed page titles.
+     * Invalid nested legacy values, including club and round names, are
+     * ignored rather than being cast to strings, avoiding warnings on
+     * PHP 8 and malformed page titles.
      *
      * @param object $titleInfo Title components created by createInfo().
      * @param int|string $format Legacy numeric page title format selector.
@@ -78,7 +79,9 @@ final class ProjectTitleHelper
         }
 
         foreach (['clubName', 'roundName'] as $property) {
-            $value = trim((string) ($titleInfo->{$property} ?? ''));
+            // Imported legacy records can contain non-scalar values here.
+            // Treat them like all other optional title fragments.
+            $value = self::titleText($titleInfo->{$property} ?? null);
             if ($value !== '') {
                 $parts[] = $value;
             }
