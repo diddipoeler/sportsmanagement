@@ -7,9 +7,13 @@ on:
       - 'admin/src/Model/JlextassociationsModel.php'
       - 'admin/src/Controller/JlextassociationsController.php'
       - 'admin/src/Service/ConfiguredAssociationInstaller.php'
+      - 'admin/src/Field/AssociationslistField.php'
+      - 'admin/src/Table/JlextassociationTable.php'
+      - 'admin/forms/jlextassociation.xml'
       - 'admin/language/de-DE/de-DE.com_sportsmanagement.ini'
       - 'admin/language/en-GB/en-GB.com_sportsmanagement.ini'
       - '.github/tests/joomla56_association_manual_import.php'
+      - '.github/tests/joomla56_association_edit_parent.php'
       - '.github/workflows/joomla56-association-manual-import.yml'
   pull_request:
     branches: [master, joomla5-6]
@@ -17,7 +21,11 @@ on:
       - 'admin/src/Model/JlextassociationsModel.php'
       - 'admin/src/Controller/JlextassociationsController.php'
       - 'admin/src/Service/ConfiguredAssociationInstaller.php'
+      - 'admin/src/Field/AssociationslistField.php'
+      - 'admin/src/Table/JlextassociationTable.php'
+      - 'admin/forms/jlextassociation.xml'
       - '.github/tests/joomla56_association_manual_import.php'
+      - '.github/tests/joomla56_association_edit_parent.php'
       - '.github/workflows/joomla56-association-manual-import.yml'
 
 jobs:
@@ -42,12 +50,20 @@ jobs:
           php -l admin/src/Controller/JlextassociationsController.php
           php -l admin/src/Service/ConfiguredAssociationInstaller.php
           php -l .github/tests/joomla56_association_manual_import.php
+          php -l admin/src/Field/AssociationslistField.php
+          php -l admin/src/Table/JlextassociationTable.php
+          php -l .github/tests/joomla56_association_edit_parent.php
       - name: Audit function documentation
         run: |
           php .github/scripts/check-php-function-docs.php \
             admin/src/Model/JlextassociationsModel.php \
             admin/src/Controller/JlextassociationsController.php \
             admin/src/Service/ConfiguredAssociationInstaller.php \
-            .github/tests/joomla56_association_manual_import.php
+            .github/tests/joomla56_association_manual_import.php \
+            admin/src/Field/AssociationslistField.php \
+            admin/src/Table/JlextassociationTable.php \
+            .github/tests/joomla56_association_edit_parent.php
       - name: Regression-test safe manual association import and ACL
         run: php .github/tests/joomla56_association_manual_import.php
+      - name: Regression-test association parent selections and hierarchy safety
+        run: php .github/tests/joomla56_association_edit_parent.php
