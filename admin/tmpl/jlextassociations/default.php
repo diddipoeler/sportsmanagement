@@ -32,7 +32,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
             </div>
             <div class="col-6 col-md-2">
                 <label class="form-label" for="filter_search_nation"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></label>
-                <select class="form-select" name="filter[search_nation]" id="filter_search_nation" onchange="this.form.submit();">
+                <select class="form-select" name="filter[search_nation]" id="filter_search_nation" onchange="const parent=document.getElementById('filter_federation');if(parent){parent.value='0';}this.form.submit();">
                     <option value=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></option>
                     <?php foreach ($this->countryOptions ?? [] as $countryOption) : ?>
                         <?php
@@ -53,8 +53,26 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
                 </select>
             </div>
             <div class="col-6 col-md-2">
-                <label class="form-label" for="filter_federation"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION'); ?></label>
-                <input class="form-control" type="number" min="0" name="filter_federation" id="filter_federation" value="<?php echo $federation > 0 ? $federation : ''; ?>">
+                <label class="form-label" for="filter_federation"><?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION'); ?></label>
+                <select class="form-select" name="filter[federation]" id="filter_federation" onchange="this.form.submit();">
+                    <option value="0"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'); ?></option>
+                    <?php foreach ($this->parentAssociationOptions ?? [] as $associationOption) : ?>
+                        <?php
+                        if (!is_object($associationOption)
+                            || !is_string($associationOption->value ?? null)
+                            || !is_string($associationOption->text ?? null)) {
+                            continue;
+                        }
+
+                        $parentId = filter_var($associationOption->value, FILTER_VALIDATE_INT);
+
+                        if ($parentId === false || $parentId <= 0) {
+                            continue;
+                        }
+                        ?>
+                        <option value="<?php echo $parentId; ?>"<?php echo $parentId === $federation ? ' selected' : ''; ?>><?php echo htmlspecialchars($associationOption->text, ENT_QUOTES, 'UTF-8'); ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="col-6 col-md-2">
                 <label class="form-label" for="filter_state"><?php echo Text::_('JSTATUS'); ?></label>
@@ -66,7 +84,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
             </div>
             <div class="col-12 col-md-2 d-flex gap-2">
                 <button class="btn btn-primary" type="submit"><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-                <a class="btn btn-secondary" href="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextassociations&filter[search]=&filter[state]=&filter[search_nation]=&filter_search_nation=&filter_federation=0'); ?>"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></a>
+                <a class="btn btn-secondary" href="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextassociations&filter[search]=&filter[state]=&filter[search_nation]=&filter[federation]=0&filter_search_nation=&filter_federation=0'); ?>"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></a>
             </div>
         </div></div></div>
 
