@@ -23,7 +23,8 @@ final class CalendarDate
      * date strings to Joomla Date. Rejects nested values, booleans and
      * oversized date strings or integer-overflowing timestamps instead of
      * casting them to unexpected values.
-     * Returns null when conversion fails.
+     * Returns null when conversion fails. Rejects surrounding whitespace
+     * and embedded NUL bytes before invoking PHP 8 date parsing functions.
      *
      * @param mixed $value Unix timestamp, numeric timestamp string or date value.
      * @param string $offset Joomla site timezone, defaulting to UTC.
@@ -32,7 +33,8 @@ final class CalendarDate
     public static function fromValue(mixed $value, string $offset): ?Date
     {
         if ((!is_int($value) && !is_string($value))
-            || (is_string($value) && (trim($value) === '' || strlen($value) > 128))) {
+            || (is_string($value) && (trim($value) === '' || strlen($value) > 128
+                || trim($value) !== $value || str_contains($value, "\\0")))) {
             return null;
         }
 
