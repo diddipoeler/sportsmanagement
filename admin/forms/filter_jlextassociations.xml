@@ -13,9 +13,11 @@
             onchange="this.form.submit();">
             <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
         </field>
-        <field name="federation" type="number"
-            label="COM_SPORTSMANAGEMENT_GLOBAL_FEDERATION"
-            min="0" onchange="this.form.submit();" />
+        <field name="federation" type="Association"
+            label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
+            onchange="this.form.submit();">
+            <option value="0">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION</option>
+        </field>
     </fields>
     <fields name="list">
         <field name="limit" type="limitbox" label="JGLOBAL_LIST_LIMIT"
