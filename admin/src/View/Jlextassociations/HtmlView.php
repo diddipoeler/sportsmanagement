@@ -23,9 +23,11 @@ final class HtmlView extends BaseHtmlView
     public $state;
     /** @var array<int,object> Available ISO-3 country choices for the list filter. */
     public $countryOptions = [];
+    /** @var array<int,object> Parent association choices from current country. */
+    public $parentAssociationOptions = [];
 
     /**
-     * Render the administrator association list with country filter options.
+     * Render the administrator association list with country and parent choices.
      *
      * @param string|null $tpl Optional Joomla layout override.
      * @return void
@@ -36,6 +38,7 @@ final class HtmlView extends BaseHtmlView
         $this->pagination = $this->get('Pagination');
         $this->state = $this->get('State');
         $this->countryOptions = $this->get('CountryOptions') ?: [];
+        $this->parentAssociationOptions = $this->get('ParentAssociationOptions') ?: [];
 
         if ($errors = $this->get('Errors')) {
             throw new \RuntimeException(implode("\n", $errors), 500);
