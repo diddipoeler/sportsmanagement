@@ -191,7 +191,7 @@ final class DatabasetoolController extends BaseController
 
         foreach ($tables as $table) {
             if (!is_string($table) || strlen($table) > 255
-                || preg_match('/^[A-Za-z0-9_]+$/D', $table) !== 1
+                || preg_match('/^(?:#__)?[A-Za-z0-9_]+$/D', $table) !== 1
                 || !str_contains($table, $expected)) {
                 $this->setRedirect(
                     'index.php?option=com_sportsmanagement&view=databasetools',
