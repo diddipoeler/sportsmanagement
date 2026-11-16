@@ -13,6 +13,8 @@
 
 declare(strict_types=1);
 
+use Diddipoeler\Module\SportsManagementCalendar\Site\Runtime\CalendarFunctions;
+
 define('_JEXEC', 1);
 
 $root = dirname(__DIR__, 2);
@@ -31,8 +33,6 @@ if (!is_string($admin) || !str_contains($admin, "ajax.json.php")
 }
 
 require_once $root . '/modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php';
-
-use Diddipoeler\Module\SportsManagementCalendar\Site\Runtime\CalendarFunctions;
 
 $oldTimezone = date_default_timezone_get();
 date_default_timezone_set('UTC');
