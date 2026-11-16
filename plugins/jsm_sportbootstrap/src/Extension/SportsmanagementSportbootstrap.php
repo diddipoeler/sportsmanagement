@@ -120,9 +120,14 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
             $installed = (new ConfiguredSportTypeInstaller($db))->installMissing($selected, $seed);
 
             if ($installed !== []) {
-                $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR);
+                $app->getLanguage()->load(
+                    'plg_extension_jsm_sportbootstrap',
+                    JPATH_ADMINISTRATOR,
+                    $app->getLanguage()->getTag(),
+                    true
+                );
                 $app->enqueueMessage(
-                    Text::sprintf('COM_SPORTSMANAGEMENT_CONFIG_SPORTS_INSTALLED', count($installed)),
+                    Text::sprintf('PLG_EXTENSION_JSM_SPORTBOOTSTRAP_INSTALLED', count($installed)),
                     'message'
                 );
             }
