@@ -26,6 +26,9 @@ final class InstallhelperController extends SportsManagementFormController
      * advances to step two when the save completes successfully. A missing
      * or incompatible MVC model is reported through the existing wizard
      * error redirect rather than causing a PHP 8 call to an absent method.
+     * An empty warning array is the only success result; malformed warning
+     * payloads fail closed and non-scalar entries are never sent to Joomla's
+     * user-facing message queue.
      *
      * @return void
      * @throws \RuntimeException If administrator access is missing.
@@ -57,9 +60,24 @@ final class InstallhelperController extends SportsManagementFormController
 
         $warnings = $model->saveSportstype($post);
 
-        if ($warnings) {
+        // An unexpected return value from the legacy wizard model must not
+        // become an iterable PHP 8 warning or be treated as a successful save.
+        // Only an empty array indicates completion without validation errors.
+        if (!is_array($warnings)) {
+            $this->setRedirect(
+                'index.php?option=com_sportsmanagement&view=installhelper&step=1',
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
+
+            return;
+        }
+
+        if ($warnings !== []) {
             foreach ($warnings as $warning) {
-                $this->app->enqueueMessage($warning, 'warning');
+                if (is_scalar($warning) && (string) $warning !== '') {
+                    $this->app->enqueueMessage((string) $warning, 'warning');
+                }
             }
 
             $this->setRedirect(
