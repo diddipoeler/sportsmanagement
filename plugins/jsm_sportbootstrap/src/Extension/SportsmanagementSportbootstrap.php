@@ -1,6 +1,6 @@
 <?php
 /**
- * Install SportsManagement sport types after saving component options.
+ * Install SportsManagement sports and quotes after saving component options.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -14,6 +14,7 @@ namespace Diddipoeler\Plugin\Extension\SportsmanagementSportbootstrap\Extension;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredSportTypeInstaller;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredQuoteInstaller;
 use Joomla\CMS\Event\Model\AfterSaveEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -44,14 +45,16 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
     }
 
     /**
-     * Install selected but missing sport types after a configuration save.
+     * Install selected but missing sport types and quote collections after a configuration save.
      *
      * Checks the exact com_config.component event, component extension and
      * administrator's core.admin permission. Reads the freshly saved params
      * from the Extension table, not ComponentHelper's stale in-request cache.
      * Adds only absent sport types and optionally uses the existing database
      * tool for XML-defined events and positions. Errors are logged privately
-     * and surfaced only as a generic administrator message.
+     * and surfaced only as a generic administrator message. Quote collections
+     * are installed independently when their corresponding daily-number
+     * categories are empty, without overwriting existing quote records.
      *
      * @param AfterSaveEvent $event Joomla extension after-save event.
      * @return void
@@ -86,10 +89,7 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
             $params = new Registry($extension->params);
             $selected = $params->get('cfg_sport_types', []);
 
-            if ($selected === [] || $selected === '') {
-                return;
-            }
-
+            if ($selected !== [] && $selected !== '') {
             $component = $app->bootComponent('com_sportsmanagement');
             $db = Factory::getContainer()->get(DatabaseInterface::class);
 
@@ -131,6 +131,7 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
                     'message'
                 );
             }
+            }
         } catch (\Throwable $exception) {
             Log::add(
                 'SportsManagement configured sport installation failed: ' . $exception->getMessage(),
@@ -139,5 +140,47 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
             );
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
         }
+        // An error in sport bootstrap must not prevent installation of newly
+        // selected quote collections. Both features are independent.
+        try {
+            $quoteSelection = (new Registry($extension->params))->get('cfg_quotes', []);
+
+            if ($quoteSelection === [] || $quoteSelection === '') {
+                return;
+            }
+
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+            if (!$db instanceof DatabaseInterface) {
+                throw new \RuntimeException('SportsManagement database service is unavailable.');
+            }
+
+            $installedQuotes = (new ConfiguredQuoteInstaller($db))->installMissing($quoteSelection);
+
+            if ($installedQuotes !== []) {
+                $app->getLanguage()->load(
+                    'plg_extension_jsm_sportbootstrap',
+                    JPATH_ADMINISTRATOR,
+                    $app->getLanguage()->getTag(),
+                    true
+                );
+                $app->enqueueMessage(
+                    Text::sprintf(
+                        'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_QUOTES_INSTALLED',
+                        array_sum($installedQuotes),
+                        count($installedQuotes)
+                    ),
+                    'message'
+                );
+            }
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement configured quote installation failed: ' . $exception->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
+        }
+
     }
 }
