@@ -1,0 +1,47 @@
+name: Joomla 5/6 configured sport options install
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Service/ConfiguredSportTypeInstaller.php'
+      - 'admin/config.xml'
+      - 'plugins/jsm_sportbootstrap/**'
+      - 'sportsmanagement.xml'
+      - 'script.joomla56.php'
+      - '.github/tests/joomla56_configured_sports_options.php'
+      - '.github/workflows/joomla56-configured-sports-options.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  configuration-sports:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint administrator installer and extension plugin
+        run: |
+          php -l admin/src/Service/ConfiguredSportTypeInstaller.php
+          php -l plugins/jsm_sportbootstrap/src/Extension/SportsmanagementSportbootstrap.php
+          php -l plugins/jsm_sportbootstrap/services/provider.php
+          php -l plugins/jsm_sportbootstrap/jsm_sportbootstrap.php
+          php -l script.joomla56.php
+          php -l .github/tests/joomla56_configured_sports_options.php
+      - name: Validate detailed native installer method descriptions
+        run: php .github/scripts/check-php-function-docs.php admin/src/Service/ConfiguredSportTypeInstaller.php
+      - name: Test saved component options, permissions, duplicates and missing XML
+        run: php .github/tests/joomla56_configured_sports_options.php
+      - name: Audit first-party PHP file metadata
+        run: php .github/tests/phpdoc_metadata.php --all
