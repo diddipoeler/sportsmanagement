@@ -60,6 +60,18 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 - The native view supplies those options to the list template; no extra SQL
   writes or page-load bootstrapping are performed. The existing association
   query continues to use a bound country filter.
+- The adjacent **parent association** filter was also still a bare numeric
+  input labelled Federation, despite the list query filtering
+  `#__sportsmanagement_associations.parent_id`. It is now a dropdown of
+  actual association parents referenced by child rows. Choices are limited
+  to the selected ISO-3 country and labelled with the country code when no
+  country is selected. Invalid and cross-country relationships are excluded.
+- Changing the country explicitly clears the dependent parent-association
+  selection; the reset action clears both nested Joomla filters and legacy
+  flat filter values. The native XML schema uses the namespaced Association
+  field in place of the previous number field. The existing regression tests
+  now cover real parent/child choices, country-dependent values, malformed
+  relationships, escaped selection labels and private SQL error handling.
 - `.github/tests/joomla56_association_country_filter.php` checks country
   lookup, fallback when country master data is missing, invalid codes, private
   SQL errors, native form resolution, selected-value rendering, HTML escaping
