@@ -121,6 +121,12 @@ namespace {
         copy($original, $quoteXmlDirectory . '/quote_' . $source . '.xml');
     }
 
+    foreach (['DEU', 'AUT', 'NZL', 'USA'] as $country) {
+        $original = $root . '/admin/helpers/xml_files/associations_' . $country . '.xml';
+        sportCheck(is_file($original), 'Bundled association XML fixture is missing: ' . $country);
+        copy($original, $quoteXmlDirectory . '/associations_' . $country . '.xml');
+    }
+
     require_once $root . '/admin/src/Service/ConfiguredSportTypeInstaller.php';
     require_once $root . '/admin/src/Service/ConfiguredQuoteInstaller.php';
     require_once $root . '/admin/src/Service/ConfiguredAssociationInstaller.php';
@@ -493,6 +499,9 @@ namespace {
 
     foreach (['player', 'staff', 'functionaries', 'reporter', 'others'] as $source) {
         unlink($quoteXmlDirectory . '/quote_' . $source . '.xml');
+    }
+    foreach (['DEU', 'AUT', 'NZL', 'USA'] as $country) {
+        unlink($quoteXmlDirectory . '/associations_' . $country . '.xml');
     }
     rmdir($quoteXmlDirectory);
 
