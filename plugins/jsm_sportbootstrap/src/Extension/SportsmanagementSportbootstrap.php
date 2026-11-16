@@ -90,47 +90,47 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
             $selected = $params->get('cfg_sport_types', []);
 
             if ($selected !== [] && $selected !== '') {
-            $component = $app->bootComponent('com_sportsmanagement');
-            $db = Factory::getContainer()->get(DatabaseInterface::class);
+                $component = $app->bootComponent('com_sportsmanagement');
+                $db = Factory::getContainer()->get(DatabaseInterface::class);
 
-            if (!$db instanceof DatabaseInterface) {
-                throw new \RuntimeException('SportsManagement database service is unavailable.');
-            }
-
-            $seed = null;
-
-            // Use the *saved* option for standards, not ComponentHelper's
-            // request-local cache (which can still hold the previous value).
-            if ((string) $params->get('install_standard_position', '0') === '1') {
-                $model = $component->getMVCFactory()->createModel(
-                    'Databasetool',
-                    'Administrator',
-                    ['ignore_request' => true]
-                );
-
-                if (!$model instanceof DatabasetoolModel) {
-                    throw new \RuntimeException('SportsManagement sport standards model is unavailable.');
+                if (!$db instanceof DatabaseInterface) {
+                    throw new \RuntimeException('SportsManagement database service is unavailable.');
                 }
 
-                $seed = static function (string $name, int $id, string $token) use ($model): void {
-                    $model->addStandardForSportType($name, $id, $token, 0);
-                };
-            }
+                $seed = null;
 
-            $installed = (new ConfiguredSportTypeInstaller($db))->installMissing($selected, $seed);
+                // Use the *saved* option for standards, not ComponentHelper's
+                // request-local cache (which can still hold the previous value).
+                if ((string) $params->get('install_standard_position', '0') === '1') {
+                    $model = $component->getMVCFactory()->createModel(
+                        'Databasetool',
+                        'Administrator',
+                        ['ignore_request' => true]
+                    );
 
-            if ($installed !== []) {
-                $app->getLanguage()->load(
-                    'plg_extension_jsm_sportbootstrap',
-                    JPATH_ADMINISTRATOR,
-                    $app->getLanguage()->getTag(),
-                    true
-                );
-                $app->enqueueMessage(
-                    Text::sprintf('PLG_EXTENSION_JSM_SPORTBOOTSTRAP_INSTALLED', count($installed)),
-                    'message'
-                );
-            }
+                    if (!$model instanceof DatabasetoolModel) {
+                        throw new \RuntimeException('SportsManagement sport standards model is unavailable.');
+                    }
+
+                    $seed = static function (string $name, int $id, string $token) use ($model): void {
+                        $model->addStandardForSportType($name, $id, $token, 0);
+                    };
+                }
+
+                $installed = (new ConfiguredSportTypeInstaller($db))->installMissing($selected, $seed);
+
+                if ($installed !== []) {
+                    $app->getLanguage()->load(
+                        'plg_extension_jsm_sportbootstrap',
+                        JPATH_ADMINISTRATOR,
+                        $app->getLanguage()->getTag(),
+                        true
+                    );
+                    $app->enqueueMessage(
+                        Text::sprintf('PLG_EXTENSION_JSM_SPORTBOOTSTRAP_INSTALLED', count($installed)),
+                        'message'
+                    );
+                }
             }
         } catch (\Throwable $exception) {
             Log::add(
@@ -140,6 +140,7 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
             );
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
         }
+
         // An error in sport bootstrap must not prevent installation of newly
         // selected quote collections. Both features are independent.
         try {
@@ -154,6 +155,11 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
             if (!$db instanceof DatabaseInterface) {
                 throw new \RuntimeException('SportsManagement database service is unavailable.');
             }
+
+            // Options are saved through com_config, not the component dispatcher.
+            // Boot the component explicitly so its administrator PSR-4 services
+            // are available even when only quotes (and no sports) are selected.
+            $app->bootComponent('com_sportsmanagement');
 
             $installedQuotes = (new ConfiguredQuoteInstaller($db))->installMissing($quoteSelection);
 
@@ -181,6 +187,5 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
             );
             $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
         }
-
     }
 }
