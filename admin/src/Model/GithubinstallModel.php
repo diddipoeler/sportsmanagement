@@ -172,19 +172,52 @@ final class GithubinstallModel extends BaseDatabaseModel
     }
 
     /**
-     * Check a configured package URL for an HTTP or HTTPS scheme.
-     * @param string $url Candidate GitHub archive location.
-     * @return bool Whether the URL uses an allowed scheme.
+     * Accept only official GitHub HTTPS repository archive endpoints.
+     *
+     * A configured update package is executable application code, so generic
+     * HTTP URLs or arbitrary hosts must never be passed to Joomla's
+     * downloader. Reject URL user-info, custom ports, fragments and queries
+     * (including embedded credentials), and require a genuine GitHub archive
+     * path. This also prevents direct requests to local or metadata services.
+     * Network-level redirects still depend on Joomla's installer transport.
+     *
+     * @param string $url Configured update archive URL.
+     * @return bool Whether this is an official GitHub archive endpoint.
      */
     private function isAllowedUrl(string $url): bool
     {
-        if ($url === '' || filter_var($url, FILTER_VALIDATE_URL) === false) {
+        if ($url === '' || strlen($url) > 2048
+            || filter_var($url, FILTER_VALIDATE_URL) === false) {
             return false;
         }
 
-        $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+        $parts = parse_url($url);
 
-        return in_array($scheme, ['http', 'https'], true);
+        if (!is_array($parts) || strtolower((string) ($parts['scheme'] ?? '')) !== 'https'
+            || isset($parts['user'], $parts['pass'])
+            || isset($parts['user']) || isset($parts['port'])
+            || isset($parts['query']) || isset($parts['fragment'])) {
+            return false;
+        }
+
+        $host = strtolower((string) ($parts['host'] ?? ''));
+        $path = (string) ($parts['path'] ?? '');
+
+        if (str_contains($path, '%') || str_contains($path, '\\')) {
+            return false;
+        }
+
+        return match ($host) {
+            'github.com' => preg_match(
+                '~^/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/archive/(?:refs/(?:heads|tags)/)?[A-Za-z0-9_./-]+\\.zip$~D',
+                $path
+            ) === 1,
+            'codeload.github.com' => preg_match(
+                '~^/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/zip/(?:refs/(?:heads|tags)/)?[A-Za-z0-9_./-]+$~D',
+                $path
+            ) === 1,
+            default => false,
+        };
     }
 
     /**
