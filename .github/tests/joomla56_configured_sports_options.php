@@ -29,7 +29,7 @@ namespace Joomla\CMS\Plugin {
         protected function getApplication(): object { return self::$app; }
     }
 }
-namespace Joomla\CMS\Factory {
+namespace Joomla\CMS {
     final class Factory {
         public static object $container;
         /** Resolve the Joomla dependency container supplying the sports database. */
@@ -225,7 +225,7 @@ namespace {
         }
     };
     \Joomla\CMS\Plugin\CMSPlugin::$app = $app;
-    \Joomla\CMS\Factory\Factory::$container = new class($db) {
+    \Joomla\CMS\Factory::$container = new class($db) {
         public function __construct(private SportDb $db) {}
         /** Resolve only the Joomla database interface from the container. */
         public function get(string $service): SportDb {
