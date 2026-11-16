@@ -43,6 +43,39 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 
 `sportsmanagement.xml` installs the component namespace and `admin/services`. Joomla boots `admin/services/provider.php` and the native component extension. The native-first MVC factory and the site/administrator `DisplayController` implementations are already in use. Legacy controller, model and view fallbacks remain deliberately available for workflows that have not yet been migrated; do not remove them without migrating and testing their callers.
 
+## Administrator: install selected quote collections (16 November 2026)
+
+- SportsManagement options store the five selectable quote collections under
+  `cfg_quotes`: `player,1`, `staff,2`, `functionaries,3`, `reporter,4` and
+  `others,5`. Each collection has a trusted bundled source at
+  `admin/helpers/xml_files/quote_<type>.xml` (1,772 original quotations in
+  total across the five sources).
+- The new `admin/src/Service/ConfiguredQuoteInstaller.php` imports only
+  collections selected in saved options and with **zero** records of the
+  matching `daily_number` in `#__sportsmanagement_rquote`. It preserves
+  existing records, copies quote text, author, notes and category number,
+  checks XML category consistency before insertion, and never uses raw
+  option values as filesystem paths or SQL fragments.
+- The existing `jsm_sportbootstrap` extension plugin now also handles quote
+  installation after authorised `com_config.component` saves, using the
+  newly persisted extension parameters. Its quote handling is independent
+  of the sport-type selection and does not require a sport to be selected.
+  Quote and sport failures are logged privately and reported generically.
+- The component installer also calls `installConfiguredQuotes()` during
+  installation/update, so **previously saved quote selections** work without
+  manually resaving the configuration. The administrator dashboard remains
+  read-only. The plugin now explicitly boots the component during quote-only
+  saves so that the native administrator service namespace is available.
+- The German and English plugin translations report the number of imported
+  quotes and collections. The existing PHP 8.2/8.3/8.4 configured-options
+  workflow now covers real packaged XML imports, existing-quote preservation,
+  malformed settings, XML category mismatch, duplicate prevention, event
+  permissions, installation upgrades and private SQL error handling.
+
+**Still required:** Verify the result on actual Joomla 5.4 and Joomla 6
+installations, including an upgrade with preselected `cfg_quotes` and the
+administrator quotes list and random-quotes frontend module.
+
 ## Administrator: install sports selected in component options (16 November 2026)
 
 - The component's multiple-choice `cfg_sport_types` setting now drives an
