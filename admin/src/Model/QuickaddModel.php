@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
@@ -195,7 +196,12 @@ final class QuickaddModel extends SportsManagementListModel
                 $db->insertObject('#__sportsmanagement_person', $record);
                 $personId = (int) $db->insertid();
             } catch (\Throwable $e) {
-                $this->setError($e->getMessage());
+                Log::add(
+                    'SportsManagement quick-add database failure: ' . $e->getMessage(),
+                    Log::ERROR,
+                    'com_sportsmanagement'
+                );
+                $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
                 return false;
             }
@@ -212,7 +218,7 @@ final class QuickaddModel extends SportsManagementListModel
 
     /**
      * Return the unpaginated count of matches from the last quick-add lookup.
-     * The count is calculated before list start/limit are applied and resets to zero when the query fails.
+     * The count is calculated before list paging; SQL exceptions are logged privately and a generic Joomla error is exposed to administrators.
      * @return int Number of matching records.
      */
     public function getTotal(): int
@@ -297,7 +303,12 @@ final class QuickaddModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            Log::add(
+                    'SportsManagement quick-add database failure: ' . $e->getMessage(),
+                    Log::ERROR,
+                    'com_sportsmanagement'
+                );
+                $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             $this->quickTotal = 0;
 
             return [];
