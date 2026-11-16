@@ -169,7 +169,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Controller {
          * @param array $config Factory options.
          * @return object Current association list model.
          */
-        public function getModel($name = '', $prefix = '', $config = []): object {
+        public function getModel($name = '', $prefix = '', $config = []) {
             return $GLOBALS['associationManualModel'];
         }
         /**
