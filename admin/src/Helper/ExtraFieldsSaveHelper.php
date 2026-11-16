@@ -37,6 +37,7 @@ final class ExtraFieldsSaveHelper
      * compatibility, and avoids inserting replacements when deletes fail,
      * including drivers returning false without throwing an exception.
      * Reports silent insert failures instead of treating them as saved rows.
+     * Invalid UTF-8 values are discarded before the existing row is deleted.
      *
      * @param array<string,mixed> $post Submitted extra-field form input.
      * @param int $itemId Identifier of the saved entity.
@@ -71,6 +72,14 @@ final class ExtraFieldsSaveHelper
                 continue;
             }
 
+            // Validate before removing the stored row: invalid UTF-8 must
+            // never erase a legitimate existing extra-field value.
+            $value = (string) $rawValue;
+
+            if (preg_match('//u', $value) !== 1) {
+                continue;
+            }
+
             try {
                 $query = $db->createQuery()
                     ->delete($db->quoteName('#__sportsmanagement_user_extra_fields_values'))
@@ -88,8 +97,6 @@ final class ExtraFieldsSaveHelper
                 // removed; that would create duplicate extra-field values.
                 continue;
             }
-
-            $value = (string) $rawValue;
 
             if ($task === 'save2copy' && $value !== '') {
                 if ($fieldId === 34) {
