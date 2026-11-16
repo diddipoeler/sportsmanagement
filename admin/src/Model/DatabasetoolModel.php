@@ -855,30 +855,46 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Verify or populate country associations configured for the component.
-     * Normalises the configured country list and uses existing SportsManagement records to determine missing associations.
+     * Validates the complete country list before the destructive association
+     * cleanup query, rejects malformed or oversized settings without database
+     * access, and preserves valid legacy single-country configuration values.
      *
      * @return bool Result of the checkAssociations() operation.
      */
     public function checkAssociations(): bool
     {
-        $db = self::sportsDatabase();
-        $app = self::resolveAdministratorApplication();
-        $configured = (array) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_country_associations', []);
+        $configured = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_country_associations', []);
+
+        // Country configuration controls a DELETE statement. Never interpret
+        // nested or truncated values as valid countries and silently remove
+        // legitimate association rows. An empty list means no maintenance.
+        if (is_string($configured)) {
+            $configured = [$configured];
+        }
+
+        if (!is_array($configured) || count($configured) > 300) {
+            return false;
+        }
+
         $countries = [];
 
         foreach ($configured as $country) {
-            $token = strtoupper(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $country) ?? '');
-
-            if ($token !== '') {
-                $countries[] = $token;
+            if (!is_string($country) || $country === '' || strlen($country) > 32
+                || preg_match('/^[A-Za-z0-9_-]+$/D', $country) !== 1) {
+                return false;
             }
+
+            $countries[] = strtoupper($country);
         }
 
         $countries = array_values(array_unique($countries));
 
-        if (!$countries) {
+        if ($countries === []) {
             return true;
         }
+
+        $db = self::sportsDatabase();
+        $app = self::resolveAdministratorApplication();
 
         $query = $db->createQuery()
             ->delete($db->quoteName('#__sportsmanagement_associations'));
@@ -1007,16 +1023,23 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Create a standard sport-type definition from an approved XML structure.
-     * Validates the sport name, reads its built-in XML and populates default events and positions for the new sport.
+     * Validates the sport name without lossy string coercion, reads bundled
+     * XML and populates default events and positions. Malformed form values
+     * cannot trigger filesystem or database access on PHP 8.
      *
      * @param mixed $type Parameter used by the native insertSportType() operation.
      * @return mixed Result of the insertSportType() operation.
      */
     public function insertSportType($type)
     {
-        $token = strtolower(preg_replace('/[^A-Za-z0-9_-]/', '', (string) $type) ?? '');
+        // Use the same strict token contract as checkSportTypeStructur().
+        // Malformed values must not be silently transformed into another
+        // sport before attempting a bootstrap insert.
+        $validType = is_string($type) && $type !== '' && strlen($type) <= 64
+            && preg_match('/^[A-Za-z0-9_-]+$/D', $type) === 1;
+        $token = $validType ? strtolower($type) : '';
 
-        if ($token === '' || !$this->checkSportTypeStructur($token)) {
+        if (!$validType || !$this->checkSportTypeStructur($token)) {
             $this->my_text = '<span style="color:' . $this->storeFailedColor . '"><strong>'
                 . Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR', strtoupper($token))
                 . '</strong></span><br />';
