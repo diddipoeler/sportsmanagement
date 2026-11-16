@@ -13,6 +13,12 @@
     <files>
         <folder plugin="jsm_sportbootstrap">services</folder>
         <folder>src</folder>
+        <folder>language</folder>
         <filename>jsm_sportbootstrap.php</filename>
     </files>
+
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_extension_jsm_sportbootstrap.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_extension_jsm_sportbootstrap.ini</language>
+    </languages>
 </extension>
