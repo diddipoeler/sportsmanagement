@@ -26,6 +26,7 @@ final class PlaygroundKmlHelper
      * Returns false when directory creation or file writing fails.
      * Rejects XML 1.0 forbidden control bytes and existing output symlinks
      * before writing a placemark file into the site's temporary directory.
+     * Malformed UTF-8 strings are rejected to keep the resulting KML valid XML.
      *
      * @param int $playgroundId Positive playground record ID.
      * @param string $address Location address for KML metadata.
@@ -52,6 +53,7 @@ final class PlaygroundKmlHelper
             || $longitude < -180.0
             || $longitude > 180.0
             || preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F]/', $name . $address) === 1
+            || preg_match('//u', $name . $address) !== 1
         ) {
             return false;
         }
