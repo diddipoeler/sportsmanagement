@@ -41,7 +41,7 @@ namespace Joomla\CMS {
 namespace Joomla\CMS\Language {
     final class Text {
         /** Format the count in the translated success message. */
-        public static function sprintf(string $key, int ...$counts): string { return $key . ':' . implode(':', $counts); }
+        public static function sprintf(string $key, int|string ...$counts): string { return $key . ':' . implode(':', $counts); }
         /** Return the Joomla generic error text in the test environment. */
         public static function _(string $key): string { return $key; }
     }
@@ -497,6 +497,126 @@ namespace {
     sportCheck(count($db->quotes[4] ?? []) === $reporterCount,
         'Retry after SQL failure did not install reporter quote collection.');
 
+    // Country selections are ISO alpha-3 values supplied by CountryField.
+    // Reject all other values and never use them to construct filesystem paths.
+    $associationInstaller = new \Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredAssociationInstaller($db);
+    sportCheck($associationInstaller->installMissing([null, [], false, 'DEU/..', 'ZZ123', 'GER\\../../']) === [],
+        'Malformed country codes must not be accepted.');
+    sportCheck($db->associationInserts === 0, 'Invalid country selection inserted an association.');
+    sportCheck($associationInstaller->getMissingSources() === [],
+        'Invalid country codes must not be treated as missing source XML.');
+
+    // A previously maintained country must remain untouched, even when a
+    // bundled source exists for its country code.
+    $manual = (object) ['id' => 994, 'country' => 'AUT', 'name' => 'User-managed association',
+        'short_name' => 'Custom', 'parent_id' => 0];
+    $db->associations['AUT'] = [$manual];
+    $installedAssociations = $associationInstaller->installMissing(['AUT', 'XXX', 'XXX']);
+    sportCheck($installedAssociations === [] && $db->associations['AUT'] === [$manual],
+        'Manual association data must not be updated, deleted or duplicated.');
+    sportCheck($associationInstaller->getMissingSources() === ['XXX'],
+        'Unsupported selected country must be reported once.');
+
+    // Malformed XML is validated before inserting the first country row.
+    $nzlFile = $quoteXmlDirectory . '/associations_NZL.xml';
+    $validNzlXml = file_get_contents($nzlFile);
+    file_put_contents($nzlFile,
+        '<structur><associations><assocname country="NZL" main="1" parentmain="0">Valid</assocname></associations>'
+        . '<associations><assocname country="DEU" main="2" parentmain="1">Wrong country</assocname></associations></structur>'
+    );
+    $beforeInvalid = $db->associationInserts;
+    try {
+        $associationInstaller->installMissing(['NZL']);
+        throw new \RuntimeException('The malformed XML country was incorrectly accepted.');
+    } catch (\RuntimeException $exception) {
+        sportCheck(str_contains($exception->getMessage(), 'invalid hierarchy'),
+            'Malformed association XML must fail pre-validation.');
+    } finally {
+        file_put_contents($nzlFile, $validNzlXml);
+    }
+    sportCheck($db->associationInserts === $beforeInvalid,
+        'XML validation failure caused partial association insertion.');
+
+    // Component ownership, backend client and component-admin permission are
+    // mandatory for automatic country bootstrap from the Joomla options save.
+    $beforeDeniedAssociations = $db->associationInserts;
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['DEU']], 'com_content.article'));
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['DEU']], 'com_config.component', 'com_other'));
+    $app->backend = false;
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['DEU']]));
+    $app->backend = true;
+    $identity->allowed = false;
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['DEU']]));
+    $identity->allowed = true;
+    sportCheck($db->associationInserts === $beforeDeniedAssociations,
+        'Foreign, frontend or unauthorised option save created country associations.');
+
+    // A save with only cfg_country_associations (no quotes/sports selected)
+    // must install the German hierarchy, resolving parent ID references.
+    $deuXml = simplexml_load_file($quoteXmlDirectory . '/associations_DEU.xml');
+    $deuNames = [];
+    foreach ($deuXml->associations as $item) {
+        $deuNames[trim((string) $item->assocname)] = true;
+    }
+    $deuUniqueCount = count($deuNames);
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['DEU', 'AUT']]));
+    sportCheck(count($db->associations['DEU'] ?? []) === $deuUniqueCount,
+        'German associations were not imported from the saved options.');
+    sportCheck($db->associations['AUT'] === [$manual],
+        'Options save unexpectedly changed existing Austrian association data.');
+    $byName = [];
+    foreach ($db->associations['DEU'] as $item) {
+        $byName[$item->name] = $item;
+    }
+    sportCheck(isset($byName['Norddeutscher Fußball-Verband (NFV)'])
+        && isset($byName['Schleswig-Holsteinischer Fußballverband (SHFV)']),
+        'Bundled German parent/child association names were not imported.');
+    sportCheck(
+        $byName['Schleswig-Holsteinischer Fußballverband (SHFV)']->parent_id
+            === $byName['Norddeutscher Fußball-Verband (NFV)']->id,
+        'German association child was not linked to its database parent ID.'
+    );
+    sportCheck(end($app->messages) === [
+        'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_ASSOCIATIONS_INSTALLED:' . $deuUniqueCount . ':1',
+        'message',
+    ], 'Wrong imported-association success feedback.');
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['DEU']]));
+    sportCheck(count($db->associations['DEU']) === $deuUniqueCount,
+        'Re-saving a country option duplicated imported associations.');
+
+    // Unknown selected countries may lack packaged regional association XML.
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['XXX']]));
+    sportCheck(end($app->messages) === [
+        'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_ASSOCIATIONS_XML_MISSING:XXX',
+        'warning',
+    ], 'Unavailable country XML should produce a translated warning.');
+
+    // Updates must also reconcile selections saved before the options plugin
+    // was installed, without an explicit administrator configuration save.
+    \Joomla\CMS\Component\ComponentHelper::$params = new \Joomla\Registry\Registry(
+        json_encode(['cfg_country_associations' => ['NZL']])
+    );
+    $nzlCount = count(simplexml_load_file($nzlFile)->associations);
+    (new \ReflectionMethod($script, 'installConfiguredAssociations'))->invoke($script);
+    sportCheck(count($db->associations['NZL'] ?? []) === $nzlCount,
+        'Installer postflight did not install preselected New Zealand associations.');
+    (new \ReflectionMethod($script, 'installConfiguredAssociations'))->invoke($script);
+    sportCheck(count($db->associations['NZL']) === $nzlCount,
+        'Repeated component upgrade inserted duplicate country associations.');
+
+    // A failed SQL insert must not leak private connection details to the UI.
+    $db->fail = true;
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['USA']]));
+    sportCheck(!isset($db->associations['USA']),
+        'Failed USA association import should not report an installed row.');
+    sportCheck(end($app->messages) === ['JERROR_AN_ERROR_HAS_OCCURRED', 'warning'],
+        'Association SQL exception leaked to the backend notification.');
+    sportCheck(count(\Joomla\CMS\Log\Log::$entries) === 3,
+        'Country SQL import failure should be logged privately once.');
+    $plugin->onExtensionAfterSave($saved(['cfg_country_associations' => ['USA']]));
+    sportCheck(count($db->associations['USA'] ?? []) === 1,
+        'A safe retry after the first SQL failure did not import USA associations.');
+
     foreach (['player', 'staff', 'functionaries', 'reporter', 'others'] as $source) {
         unlink($quoteXmlDirectory . '/quote_' . $source . '.xml');
     }
@@ -512,5 +632,5 @@ namespace {
     rmdir(dirname(dirname(dirname($xmlDirectory))));
     rmdir($temporary);
 
-    echo "Joomla 5/6 configured sports and quote collection installation OK\n";
+    echo "Joomla 5/6 configured sports, quotes and country association installation OK\n";
 }
