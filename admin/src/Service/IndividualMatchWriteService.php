@@ -22,10 +22,24 @@ final class IndividualMatchWriteService
     private const SPORT_TABLE_TENNIS = 'COM_SPORTSMANAGEMENT_ST_TABLETENNIS';
     private const SPORT_TENNIS = 'COM_SPORTSMANAGEMENT_ST_TENNIS';
 
+    /**
+     * Initialise the transactional individual-match writer with Joomla's database.
+     * Retains the injected DatabaseInterface for all scoped match queries, result updates and rollback-safe operations.
+     * @param DatabaseInterface $db Database connection for match result writes.
+     */
     public function __construct(private DatabaseInterface $db)
     {
     }
 
+    /**
+     * Persist individual-match results for the selected parent match and project.
+     * Validates parent/project membership and every selected single-match ID before using stored team IDs, then dispatches sport-specific writes within one transaction.
+     * @param array $post Submitted match results and sport-specific form fields.
+     * @param array $ids Selected single-match record identifiers.
+     * @param int $modifiedBy Joomla user ID recording the change.
+     * @param string $modified Database-compatible modification timestamp.
+     * @return bool Whether the save succeeded or safely performed the legacy no-op.
+     */
     public function saveShort(array $post, array $ids, int $modifiedBy, string $modified): bool
     {
         $ids = array_values(array_unique(array_filter(
@@ -87,6 +101,16 @@ final class IndividualMatchWriteService
         });
     }
 
+    /**
+     * Update individual golf or billiards results and the parent totals.
+     * Aggregates paired split scores for each selected game, saves its person and match metadata, then sums all persisted single-match results into the parent match.
+     * @param array $post Submitted game and split-score fields.
+     * @param array $ids Selected single-match record identifiers.
+     * @param int $matchId Verified parent match identifier.
+     * @param int $modifiedBy Editing user identifier.
+     * @param string $modified Modification timestamp.
+     * @return bool True after successful result updates.
+     */
     private function saveGolfBillard(array $post, array $ids, int $matchId, int $modifiedBy, string $modified): bool
     {
         foreach ($ids as $id) {
@@ -137,6 +161,17 @@ final class IndividualMatchWriteService
         return true;
     }
 
+    /**
+     * Store small-bore shooting scores and match-level ring totals.
+     * Updates each shooter's individual result, creates the relevant first sport event when possible, and accumulates home rings on the parent match.
+     * @param array $post Shooter/result form values.
+     * @param array $ids Selected single-match IDs.
+     * @param int $matchId Verified parent match identifier.
+     * @param int $sportTypeId Selected shooting sport type.
+     * @param int $modifiedBy Editing user identifier.
+     * @param string $modified Modification timestamp.
+     * @return bool True when all individual and parent records were updated.
+     */
     private function saveSmallBore(
         array $post,
         array $ids,
@@ -186,6 +221,20 @@ final class IndividualMatchWriteService
         return true;
     }
 
+    /**
+     * Persist tennis or table-tennis single-match scores and derived outcomes.
+     * Calculates results from split sets or direct scores, records player rating changes, synchronises win/loss events, and recomputes the parent match summary.
+     * @param string $sportName Sport translation key used to select event names.
+     * @param array $post Submitted match, player and set-result fields.
+     * @param array $ids Selected single-match IDs.
+     * @param int $matchId Verified parent match ID.
+     * @param int $sportTypeId Sport type used to find outcome events.
+     * @param bool $useTieBreak Whether the project uses tie breaks.
+     * @param int $gameParts Number of normal game parts for summary aggregation.
+     * @param int $modifiedBy Editing user ID.
+     * @param string $modified Modification timestamp.
+     * @return bool True after successful individual, event and summary updates.
+     */
     private function saveRacketSport(
         string $sportName,
         array $post,
@@ -267,7 +316,16 @@ final class IndividualMatchWriteService
         return true;
     }
 
-    /** @return array{0:int,1:int,2:int,3:int} */
+    /**
+     * Count the won sets and raw rings of two players from paired score parts.
+     *
+     * Ignores incomplete split pairs and returns each side's win count and
+     * numeric totals so the racket-sport writer can save both score formats.
+     *
+     * @param array $homeSplit Home-side per-part scores.
+     * @param array $awaySplit Away-side per-part scores.
+     * @return array{0:int,1:int,2:int,3:int} Home wins, away wins, home rings, away rings.
+     */
     private function setResult(array $homeSplit, array $awaySplit): array
     {
         $home = 0;
@@ -297,6 +355,16 @@ final class IndividualMatchWriteService
         return [$home, $away, $homeRings, $awayRings];
     }
 
+    /**
+     * Populate table-tennis player rating deltas for the match outcome.
+     * Initialises all normal and alternative rating columns, then credits the winner and debits the loser with the computed change amounts.
+     * @param object $row Mutable individual-match database row.
+     * @param int $home Home-side result.
+     * @param int $away Away-side result.
+     * @param int $normal Standard rating delta.
+     * @param int $anormal Alternative rating delta.
+     * @return void
+     */
     private function applyRatingColumns(object $row, int $home, int $away, int $normal, int $anormal): void
     {
         $row->tt_teamplayer1_id_normal_won = 0;
@@ -321,7 +389,15 @@ final class IndividualMatchWriteService
         }
     }
 
-    /** @return array{0:int,1:int} */
+    /**
+     * Select the normal and alternative table-tennis rating adjustments.
+     *
+     * Uses the players' starting-point difference to choose the legacy
+     * rating bracket and returns its standard and alternative deltas.
+     *
+     * @param int $difference Absolute difference between player starting points.
+     * @return array{0:int,1:int} Normal and alternative rating adjustments.
+     */
     private function ratingDelta(int $difference): array
     {
         return match (true) {
@@ -335,6 +411,14 @@ final class IndividualMatchWriteService
         };
     }
 
+    /**
+     * Aggregate individual racket-sport games into one parent match summary.
+     * Counts won singles, match points, sets and game totals, using the configured tie-break location and number of game parts.
+     * @param array $rows Persisted individual-match result records.
+     * @param bool $useTieBreak Whether a tie-break game is configured.
+     * @param int $gameParts Number of configured game parts.
+     * @return object Parent match results and single-match counters.
+     */
     private function aggregateRacketResults(array $rows, bool $useTieBreak, int $gameParts): object
     {
         $summary = (object) [
@@ -395,6 +479,18 @@ final class IndividualMatchWriteService
         return $summary;
     }
 
+    /**
+     * Register the matching win or loss event for an individual player.
+     * Selects the sport-specific event code for singles or doubles and forwards valid match/team/player IDs to the insert-if-missing event writer.
+     * @param array $events Event-name-to-ID map for this sport.
+     * @param string $prefix Sport-specific event key prefix.
+     * @param int $matchId Verified parent match ID.
+     * @param int $projectTeamId Participating project-team ID.
+     * @param int $teamPlayerId Related player assignment ID.
+     * @param string $kind SINGLE or DOUBLE event suffix.
+     * @param bool $won Whether this player won the match.
+     * @return void
+     */
     private function syncOutcomeEvents(
         array $events,
         string $prefix,
@@ -432,6 +528,16 @@ final class IndividualMatchWriteService
         ]);
     }
 
+    /**
+     * Add a sports result event only if the identical event does not exist.
+     * Queries match, project team, player and event type before inserting a new event row, preserving legacy idempotent behaviour.
+     * @param int $matchId Parent match identifier.
+     * @param int $projectTeamId Project-team identifier.
+     * @param int $teamPlayerId Player assignment identifier.
+     * @param int $eventTypeId Sports event type identifier.
+     * @param int $value Result value stored alongside the event.
+     * @return void
+     */
     private function upsertScoreEvent(int $matchId, int $projectTeamId, int $teamPlayerId, int $eventTypeId, int $value): void
     {
         $query = $this->db->createQuery()
@@ -456,7 +562,16 @@ final class IndividualMatchWriteService
         ]);
     }
 
-    /** Ensure this parent match belongs to the selected project. */
+    /**
+     * Verify that the parent match belongs to the requested project.
+     *
+     * Joins the match to its round to check the project ID and reads the
+     * authoritative project-team IDs used by subsequent match event writes.
+     *
+     * @param int $matchId Parent match identifier.
+     * @param int $projectId Expected project identifier.
+     * @return object|null Verified parent match data or null.
+     */
     private function matchForProject(int $matchId, int $projectId): ?object
     {
         $query = $this->db->createQuery()
@@ -501,6 +616,12 @@ final class IndividualMatchWriteService
         return (int) $this->db->loadResult() === count($ids);
     }
 
+    /**
+     * Read the sport and scoring configuration of a parent project.
+     * Selects the tie-break setting, number of game parts and sports-type ID required to choose the correct individual-match writer.
+     * @param int $projectId Project identifier.
+     * @return object|null Project configuration or null when unavailable.
+     */
     private function projectConfig(int $projectId): ?object
     {
         $query = $this->db->createQuery()
@@ -515,6 +636,12 @@ final class IndividualMatchWriteService
         return $this->db->loadObject() ?: null;
     }
 
+    /**
+     * Resolve the stored sport name used for result-writer dispatch.
+     * Reads the name of a sport type by its integer ID so the parent writer can select golf, shooting or racket sport logic.
+     * @param int $sportTypeId Sport type identifier.
+     * @return string Sport name, or empty string when missing.
+     */
     private function sportTypeName(int $sportTypeId): string
     {
         $query = $this->db->createQuery()
@@ -525,6 +652,12 @@ final class IndividualMatchWriteService
         return (string) ($this->db->loadResult() ?: '');
     }
 
+    /**
+     * Find the first available event type for a sport.
+     * Orders the sport's event definitions by ID and returns the lowest matching event ID for small-bore score events.
+     * @param int $sportTypeId Sport type identifier.
+     * @return int First event type ID, or zero when unavailable.
+     */
     private function firstEventTypeId(int $sportTypeId): int
     {
         $query = $this->db->createQuery()
@@ -536,7 +669,15 @@ final class IndividualMatchWriteService
         return (int) ($this->db->loadResult() ?: 0);
     }
 
-    /** @return array<string,int> */
+    /**
+     * Build the event-name-to-ID lookup for the current sport type.
+     *
+     * Reads Joomla event types from the database and indexes the resulting
+     * records by event name for winner and loser event synchronisation.
+     *
+     * @param int $sportTypeId Sport type identifier.
+     * @return array<string,int> Event identifiers keyed by event names.
+     */
     private function eventTypeMap(int $sportTypeId): array
     {
         $query = $this->db->createQuery()
@@ -552,6 +693,12 @@ final class IndividualMatchWriteService
         return $map;
     }
 
+    /**
+     * Read the starting table-tennis rating points for a registered player.
+     * Looks up the stored tt_startpoints for a positive season-team-person assignment, falling back to zero for unknown players.
+     * @param int $teamPlayerId Season-team-person assignment identifier.
+     * @return int Player starting rating or zero.
+     */
     private function startPoints(int $teamPlayerId): int
     {
         if ($teamPlayerId <= 0) {
@@ -565,7 +712,15 @@ final class IndividualMatchWriteService
         return (int) ($this->db->loadResult() ?: 0);
     }
 
-    /** @return array<int,object> */
+    /**
+     * Load all individual matches associated with a parent match.
+     *
+     * Returns the persisted single-match records after sport-specific writes
+     * so the parent match total can be recomputed from saved data.
+     *
+     * @param int $matchId Parent match identifier.
+     * @return array<int,object> Single-match rows.
+     */
     private function singleMatches(int $matchId): array
     {
         $query = $this->db->createQuery()
@@ -576,13 +731,30 @@ final class IndividualMatchWriteService
         return $this->db->loadObjectList() ?: [];
     }
 
-    /** @return array<int,mixed> */
+    /**
+     * Read a posted array field without accepting scalar substitutes.
+     *
+     * Normalises valid array fields to a zero-indexed list, and returns
+     * an empty array for missing or malformed form inputs.
+     *
+     * @param array $post Submitted match form fields.
+     * @param string $key Form field key to read.
+     * @return array<int,mixed> Normalised field values.
+     */
     private function arrayField(array $post, string $key): array
     {
         return isset($post[$key]) && is_array($post[$key]) ? array_values($post[$key]) : [];
     }
 
-    /** @return array<int,int> */
+    /**
+     * Convert a semicolon-delimited split-score value into integers.
+     *
+     * Preserves the legacy empty-string convention and produces a list of
+     * integer score segments for aggregate racket match calculations.
+     *
+     * @param string $value Semicolon-delimited numeric scores.
+     * @return array<int,int> Parsed integer score segments.
+     */
     private function splitString(string $value): array
     {
         if ($value === '') {
@@ -591,6 +763,13 @@ final class IndividualMatchWriteService
         return array_map('intval', explode(';', $value));
     }
 
+    /**
+     * Execute a match-result write callback atomically.
+     * Starts a database transaction, commits on a successful callback result, rolls back on failure and attempts rollback before rethrowing errors.
+     * @param callable $callback Callback implementing the selected sport's database writes.
+     * @return bool Whether the callback completed successfully.
+     * @throws \Throwable Rethrows callback or database exceptions after rollback.
+     */
     private function transaction(callable $callback): bool
     {
         $this->db->transactionStart();
