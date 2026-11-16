@@ -29,6 +29,17 @@ final class ResultsPresentationHelper
         return $dates;
     }
 
+    /**
+     * Render the requested combination of team logo and country flag.
+     * Maps eight legacy display modes to the shared image and country helpers while retaining image targets and modal dimensions.
+     * @param object $team Team record with country and logo fields.
+     * @param int $type Icon display mode from the template settings.
+     * @param string $target Image/modal target identifier.
+     * @param int $modalWidth Modal window width.
+     * @param int $modalHeight Modal window height.
+     * @param int $modalMode Modal rendering mode.
+     * @return string Team icon HTML or empty markup for an unknown mode.
+     */
     public static function renderTeamIcon(
         object $team,
         int $type,
@@ -63,6 +74,18 @@ final class ResultsPresentationHelper
         };
     }
 
+    /**
+     * Format a team label for the current results view.
+     * Delegates to the shared name presenter with favourite highlighting, project/season context and selected SportsManagement database.
+     * @param object $team Team record.
+     * @param string $prefix Template identifier prefix.
+     * @param array $config Name-format configuration.
+     * @param bool $isFavourite Whether the team is a favourite.
+     * @param object|null $project Current project, when available.
+     * @param int $databaseSelector Selected component database.
+     * @param int $seasonId Current season ID.
+     * @return string Formatted team name markup.
+     */
     public static function renderTeamName(
         object $team,
         string $prefix,
@@ -83,6 +106,17 @@ final class ResultsPresentationHelper
         );
     }
 
+    /**
+     * Generate the match result cell and its optional report link.
+     * Handles cancellations, swapped teams, awarded results, partial scores, overtime, shootouts and favourite-dependent link settings.
+     * @param object $match Match data including result and routing fields.
+     * @param array $config Results presentation options.
+     * @param bool $hasFavourite Whether the match features a favourite.
+     * @param int $databaseSelector Selected component database.
+     * @param int $seasonId Current season ID.
+     * @param object|null $project Optional project used to generate links.
+     * @return string HTML-safe score/details markup and optional report link.
+     */
     public static function renderScore(
         object $match,
         array $config,
@@ -162,6 +196,17 @@ final class ResultsPresentationHelper
         );
     }
 
+    /**
+     * Render the officials assigned to the match.
+     * Supports referee teams and persons, translated positions, formatted names, optional profile links and compact tooltip icon mode.
+     * @param array $referees Official or officiating-team records.
+     * @param bool $teamsAsReferees Whether records represent teams.
+     * @param array $config Referee name and link settings.
+     * @param int $databaseSelector Selected component database.
+     * @param int $seasonId Current season ID.
+     * @param object|null $project Optional project for profile URLs.
+     * @return string Official labels, tooltip icon or a non-breaking space.
+     */
     public static function renderReferees(
         array $referees,
         bool $teamsAsReferees,
@@ -227,6 +272,21 @@ final class ResultsPresentationHelper
         return implode('<br>', $labels);
     }
 
+    /**
+     * List project teams that do not appear in published round matches.
+     * Collects the participating project-team IDs, then renders missing teams with configured icons, labels and favourite presentation.
+     * @param array $matches Matches in the selected round.
+     * @param array $teams Project teams to consider.
+     * @param array $config Results display settings.
+     * @param array $favoriteTeamIds Favourite team IDs.
+     * @param object|null $project Optional project context.
+     * @param int $databaseSelector Selected component database.
+     * @param int $seasonId Current season ID.
+     * @param int $modalWidth Team image modal width.
+     * @param int $modalHeight Team image modal height.
+     * @param int $modalMode Modal rendering mode.
+     * @return string Translated non-playing-teams HTML or empty string.
+     */
     public static function renderNotPlayingTeams(
         array $matches,
         array $teams,
@@ -289,17 +349,35 @@ final class ResultsPresentationHelper
             . implode(', ', $missing);
     }
 
+    /**
+     * Format an optional referee position next to the name.
+     * Translates the stored position name, escapes it for HTML and adds parentheses only when a position was supplied.
+     * @param object $referee Record with an optional position_name.
+     * @return string Position suffix or empty string.
+     */
     private static function position(object $referee): string
     {
         $position = trim((string) ($referee->position_name ?? ''));
         return $position !== '' ? ' (' . self::escape(Text::_($position)) . ')' : '';
     }
 
+    /**
+     * Turn a match score field into safe display text.
+     * Uses a dash for missing results and escapes all other scalar score values before combining them with HTML markup.
+     * @param mixed $value Score, decision or other result value.
+     * @return string Safe score value or placeholder.
+     */
     private static function value(mixed $value): string
     {
         return $value === null || $value === '' ? '-' : self::escape((string) $value);
     }
 
+    /**
+     * HTML-encode a results label or user-supplied value.
+     * Encodes both quote types using UTF-8 so generated results markup cannot accidentally interpret the value as HTML.
+     * @param string $value Plain text to encode.
+     * @return string Escaped HTML text.
+     */
     private static function escape(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
