@@ -35,7 +35,9 @@ final class MatchTimeHelper
      * malformed historical values cannot generate PHP 8 warnings or force
      * excessive iterations while building live labels. Validates SQL match
      * dates before calling strtotime(), rejecting relative or impossible
-     * dates that PHP would otherwise silently normalize.
+     * dates that PHP would otherwise silently normalize. Rejects unsupported
+     * printf placeholders in translated suffixes and guards Joomla date
+     * formatting errors rather than crashing a frontend match listing.
      * @param object $game Match record with a match_date field.
      * @param array<string,mixed> $config Match time presentation settings.
      * @param array<string,mixed> $overallConfig Global component date options.
@@ -57,6 +59,14 @@ final class MatchTimeHelper
             $timeSuffix = '%1$s&nbsp;h';
         }
 
+        // Translated strings are configurable. Reject incompatible printf
+        // placeholders before formatting the match time in PHP 8, where an
+        // unknown conversion or missing argument may throw ValueError.
+        if (!is_string($timeSuffix) || strlen($timeSuffix) > 500
+            || preg_match('/%(?!%|(?:1\\$)?s)/', $timeSuffix) === 1) {
+            $timeSuffix = '%1$s&nbsp;h';
+        }
+
         $rawMatchDate = $game->match_date ?? null;
         // Preserve the original SQL value: trimming first would allow
         // trailing control bytes and whitespace past strict validation.
@@ -70,7 +80,11 @@ final class MatchTimeHelper
                 : $matchTime;
         }
 
-        $matchTime = HTMLHelper::date($matchDate, $timeFormat, 'UTC');
+        try {
+            $matchTime = HTMLHelper::date($matchDate, $timeFormat, 'UTC');
+        } catch (\Throwable) {
+            return '--&nbsp;:&nbsp;--';
+        }
         $output = !empty($config['show_time_suffix'])
             ? sprintf($timeSuffix, $matchTime)
             : $matchTime;
