@@ -1222,7 +1222,9 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Construct a name/sport-scoped lookup query for bootstrap records.
-     * Restricts selectable tables to the eventtype and position allowlist and binds the supplied search name and sport ID.
+     * Restricts selectable tables to the eventtype and position allowlist,
+     * validates legacy text and sport IDs before database resolution, and
+     * binds both query parameters through Joomla's native query builder.
      *
      * @param mixed $tablename Parameter used by the native build_SelectQuery() operation.
      * @param mixed $param1 Parameter used by the native build_SelectQuery() operation.
@@ -1231,11 +1233,10 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public function build_SelectQuery($tablename, $param1, $st_id = 0)
     {
-        $table = $this->allowedBootstrapTable((string) $tablename, ['eventtype', 'position']);
+        $table = $this->allowedBootstrapTable(self::bootstrapText($tablename), ['eventtype', 'position']);
+        $name = self::bootstrapText($param1, false);
+        $sportTypeId = self::bootstrapId($st_id, true);
         $db = self::sportsDatabase();
-
-        $name = (string) $param1;
-        $sportTypeId = (int) $st_id;
 
         return $db->createQuery()
             ->select('*')
@@ -1248,7 +1249,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Build a SQL insert for a standard sport event type.
-     * Requires the whitelisted eventtype table and quotes the event name, alias, icon and ordering fields safely.
+     * Validates the whitelisted eventtype table, bounded text and numeric
+     * fields before requesting a database, then quotes the safe insert values.
      *
      * @param mixed $tablename Parameter used by the native build_InsertQuery_Event() operation.
      * @param mixed $param1 Parameter used by the native build_InsertQuery_Event() operation.
@@ -1259,7 +1261,11 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public function build_InsertQuery_Event($tablename, $param1, $param2, $sports_type_id, $order_count)
     {
-        $table = $this->allowedBootstrapTable((string) $tablename, ['eventtype']);
+        $table = $this->allowedBootstrapTable(self::bootstrapText($tablename), ['eventtype']);
+        $name = self::bootstrapText($param1, false);
+        $icon = self::bootstrapText($param2);
+        $sportId = self::bootstrapId($sports_type_id);
+        $ordering = self::bootstrapId($order_count, true);
         $db = self::sportsDatabase();
         $this->ensureImportIdColumn($db, '#__sportsmanagement_' . $table);
 
@@ -1267,19 +1273,20 @@ final class DatabasetoolModel extends BaseDatabaseModel
             ->insert($db->quoteName('#__sportsmanagement_' . $table))
             ->columns($db->quoteName(['name', 'alias', 'icon', 'sports_type_id', 'published', 'ordering', 'import_id']))
             ->values(implode(',', [
-                $db->quote((string) $param1),
-                $db->quote(OutputFilter::stringURLSafe((string) $param1)),
-                $db->quote((string) $param2),
-                (int) $sports_type_id,
+                $db->quote($name),
+                $db->quote(OutputFilter::stringURLSafe($name)),
+                $db->quote($icon),
+                $sportId,
                 1,
-                (int) $order_count,
+                $ordering,
                 0,
             ]));
     }
 
     /**
      * Build an insert query for a standard sport position.
-     * Allows only the position table, validates the configured switch column against the physical schema and safely inserts position details.
+     * Allows only the position table, validates bounded input and the switch
+     * column against the physical schema, and inserts position details safely.
      *
      * @param mixed $tablename Parameter used by the native build_InsertQuery_Position() operation.
      * @param mixed $param1 Parameter used by the native build_InsertQuery_Position() operation.
@@ -1292,11 +1299,21 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public function build_InsertQuery_Position($tablename, $param1, $param2, $param3, $param4, $sports_type_id, $order_count)
     {
-        $table = $this->allowedBootstrapTable((string) $tablename, ['position']);
+        $table = $this->allowedBootstrapTable(self::bootstrapText($tablename), ['position']);
+        $name = self::bootstrapText($param1, false);
+        $switchColumn = self::bootstrapText($param2, false);
+        $parentId = self::bootstrapId($param3, true);
+        $content = self::bootstrapText($param4);
+        $sportId = self::bootstrapId($sports_type_id);
+        $ordering = self::bootstrapId($order_count, true);
+
+        if (preg_match('/^[A-Za-z0-9_]+$/D', $switchColumn) !== 1) {
+            throw new \InvalidArgumentException('Invalid position switch column.');
+        }
+
         $db = self::sportsDatabase();
         $fullTable = '#__sportsmanagement_' . $table;
         $this->ensureImportIdColumn($db, $fullTable);
-        $switchColumn = preg_replace('/[^A-Za-z0-9_]/', '', (string) $param2) ?? '';
         $columns = $db->getTableColumns($fullTable, false);
 
         if ($switchColumn === '' || !array_key_exists($switchColumn, $columns)) {
@@ -1307,20 +1324,21 @@ final class DatabasetoolModel extends BaseDatabaseModel
             ->insert($db->quoteName($fullTable))
             ->columns($db->quoteName(['name', 'alias', $switchColumn, 'parent_id', 'sports_type_id', 'published', 'ordering', 'import_id']))
             ->values(implode(',', [
-                $db->quote((string) $param1),
-                $db->quote(OutputFilter::stringURLSafe((string) $param1)),
-                $db->quote((string) $param4),
-                (int) $param3,
-                (int) $sports_type_id,
+                $db->quote($name),
+                $db->quote(OutputFilter::stringURLSafe($name)),
+                $db->quote($content),
+                $parentId,
+                $sportId,
                 1,
-                (int) $order_count,
+                $ordering,
                 0,
             ]));
     }
 
     /**
      * Create a relation insert for a sport position and event type.
-     * Uses the fixed component relation table, checks import_id support and inserts numeric position/event identifiers.
+     * Validates both positive numeric identifiers before database access,
+     * then checks import_id support and inserts into the fixed relation table.
      *
      * @param mixed $param1 Parameter used by the native build_InsertQuery_PositionEventType() operation.
      * @param mixed $param2 Parameter used by the native build_InsertQuery_PositionEventType() operation.
@@ -1328,6 +1346,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
      */
     public function build_InsertQuery_PositionEventType($param1, $param2)
     {
+        $positionId = self::bootstrapId($param1);
+        $eventId = self::bootstrapId($param2);
         $db = self::sportsDatabase();
         $table = '#__sportsmanagement_position_eventtype';
         $this->ensureImportIdColumn($db, $table);
@@ -1335,7 +1355,65 @@ final class DatabasetoolModel extends BaseDatabaseModel
         return $db->createQuery()
             ->insert($db->quoteName($table))
             ->columns($db->quoteName(['position_id', 'eventtype_id', 'import_id']))
-            ->values(implode(',', [(int) $param1, (int) $param2, 0]));
+            ->values(implode(',', [$positionId, $eventId, 0]));
+    }
+
+    /**
+     * Validate a bounded string for sport bootstrap query construction.
+     *
+     * Rejects arrays, objects and oversized legacy values before the
+     * database service is requested; empty text is accepted only for fields
+     * such as optional icons and position content.
+     *
+     * @param mixed $value Legacy bootstrap text field.
+     * @param bool $allowEmpty Whether an empty field is permitted.
+     * @return string A safe scalar text value.
+     * @throws \InvalidArgumentException When the input is invalid.
+     */
+    private static function bootstrapText(mixed $value, bool $allowEmpty = true): string
+    {
+        if (!is_string($value) || strlen($value) > 255
+            || (!$allowEmpty && $value === '') || str_contains($value, "\0")) {
+            throw new \InvalidArgumentException('Invalid bootstrap text field.');
+        }
+
+        return $value;
+    }
+
+    /**
+     * Parse a bounded decimal bootstrap ID before issuing any SQL queries.
+     *
+     * Accepts positive native integers and zero-padded numeric strings.
+     * Only ordering and parent references may explicitly allow zero.
+     *
+     * @param mixed $value Raw integer or decimal string from legacy XML.
+     * @param bool $allowZero Whether a zero value is valid for this field.
+     * @return int Validated integer identifier.
+     * @throws \InvalidArgumentException For malformed or overflowing values.
+     */
+    private static function bootstrapId(mixed $value, bool $allowZero = false): int
+    {
+        if ($allowZero && ($value === 0 || $value === '0')) {
+            return 0;
+        }
+
+        if (!is_int($value) && !is_string($value)) {
+            throw new \InvalidArgumentException('Invalid bootstrap numeric identifier.');
+        }
+
+        if ($allowZero && is_string($value) && $value !== ''
+            && strlen($value) <= 128 && preg_match('/^[0-9]+$/D', $value) === 1
+            && trim($value, '0') === '') {
+            return 0;
+        }
+
+        $id = self::positiveBootstrapId($value);
+
+        if ($id === 0) {
+            throw new \InvalidArgumentException('Invalid bootstrap numeric identifier.');
+        }
+
+        return $id;
     }
 
     /**
