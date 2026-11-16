@@ -71,6 +71,7 @@ final class LocationAddressHelper
      * so that PHP 8+ does not emit conversion warnings in frontend views.
      * Discard non-finite floats, reject unreasonably large imported values and
      * normalise control bytes before rendering an address or country label.
+     * Reject malformed UTF-8 so translated fields remain safe to display.
      *
      * @param mixed $value Raw address property.
      * @return string Trimmed text, or an empty string for invalid values.
@@ -85,7 +86,8 @@ final class LocationAddressHelper
             return '';
         }
 
-        if (strlen((string) $value) > 4096) {
+        if (strlen((string) $value) > 4096
+            || preg_match('//u', (string) $value) !== 1) {
             return '';
         }
 
