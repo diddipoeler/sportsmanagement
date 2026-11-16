@@ -43,6 +43,33 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 
 `sportsmanagement.xml` installs the component namespace and `admin/services`. Joomla boots `admin/services/provider.php` and the native component extension. The native-first MVC factory and the site/administrator `DisplayController` implementations are already in use. Legacy controller, model and view fallbacks remain deliberately available for workflows that have not yet been migrated; do not remove them without migrating and testing their callers.
 
+## Administrator: country filter in Landesverbände (16 November 2026)
+
+- Fixed the native `Jlextassociations` administrator list layout, which had
+  rendered the country filter as a bare `<input type="text">` rather than an
+  ISO-alpha-3 country dropdown. The filter now renders escaped country
+  selections with a retained current selection and an explicit reset.
+- The native `admin/forms/filter_jlextassociations.xml` now exists in the
+  Joomla 5/6 form search path, with the namespaced Country field and the
+  `search_nation` filter expected by the list model.
+- `JlextassociationsModel::getCountryOptions()` merges translated names from
+  `CountryOptionsHelper::getOptions()` with valid country codes actually
+  stored in `#__sportsmanagement_associations`. The latter remain filterable
+  even when `#__sportsmanagement_countries` is incomplete or unavailable.
+  Options are deduplicated, sorted, validated, HTML-escaped and logged safely.
+- The native view supplies those options to the list template; no extra SQL
+  writes or page-load bootstrapping are performed. The existing association
+  query continues to use a bound country filter.
+- `.github/tests/joomla56_association_country_filter.php` checks country
+  lookup, fallback when country master data is missing, invalid codes, private
+  SQL errors, native form resolution, selected-value rendering, HTML escaping
+  and clear-filter behavior. A dedicated PHP 8.2/8.3/8.4 CI workflow tests
+  the fix and audits named function descriptions.
+
+**Manual Joomla validation still required:** verify the dropdown on a live
+Joomla 5.4 and Joomla 6 backend with real associated country records, filter
+changes and the reset action.
+
 ## Administrator: import selected country associations (16 November 2026)
 
 - The component configuration's `cfg_country_associations` country
