@@ -66,6 +66,11 @@ class JSMparseCSV
     public $titles = [];
     public $data = [];
 
+    /**
+     * Initialize CSV parsing options and optionally parse the supplied source immediately. Retains the legacy constructor parameters so existing importer integrations continue to work.
+     *
+     * @since 5.6.0
+     */
     public function __construct($input = null, $offset = null, $limit = null, $conditions = null)
     {
         $this->initialize($input, $offset, $limit, $conditions);
@@ -81,6 +86,11 @@ class JSMparseCSV
         $this->initialize($input, $offset, $limit, $conditions);
     }
 
+    /**
+     * Parse CSV from a readable path or directly from CSV text. Applies the current filtering, sorting and pagination options and stores the resulting records on the parser instance.
+     *
+     * @since 5.6.0
+     */
     public function parse($input = null, $offset = null, $limit = null, $conditions = null)
     {
         if ($input === null) {
@@ -103,6 +113,11 @@ class JSMparseCSV
         return $this->data !== false;
     }
 
+    /**
+     * Read CSV data from the supplied file or configured default file, then parse the loaded contents into records.
+     *
+     * @since 5.6.0
+     */
     public function parse_file($file = null)
     {
         if ($file === null) {
@@ -116,6 +131,11 @@ class JSMparseCSV
         return $this->parse_string();
     }
 
+    /**
+     * Load and normalize the incoming CSV source, including optional PHP wrapper stripping and character encoding conversion, ready for record parsing.
+     *
+     * @since 5.6.0
+     */
     public function load_data($input = null)
     {
         if ($input === null) {
@@ -154,6 +174,11 @@ class JSMparseCSV
         return true;
     }
 
+    /**
+     * Read the complete contents of a readable source file and return false when the file cannot be opened.
+     *
+     * @since 5.6.0
+     */
     public function _rfile($file = null)
     {
         if (!is_string($file) || !is_readable($file)) {
@@ -165,6 +190,11 @@ class JSMparseCSV
         return $data === false ? false : $data;
     }
 
+    /**
+     * Parse buffered or supplied CSV text into normalized rows, resolving headers, row conditions, sorting and result limits.
+     *
+     * @since 5.6.0
+     */
     public function parse_string($data = null)
     {
         if ($data === null || $data === '') {
@@ -241,6 +271,11 @@ class JSMparseCSV
         return $rows;
     }
 
+    /**
+     * Ensure CSV source data has been loaded into the parser buffer before parsing starts.
+     *
+     * @since 5.6.0
+     */
     public function _check_data($file = null)
     {
         if ($this->file_data === null || $this->file_data === '') {
@@ -250,6 +285,11 @@ class JSMparseCSV
         return true;
     }
 
+    /**
+     * Determine whether the specified row falls within the configured unsorted result offset.
+     *
+     * @since 5.6.0
+     */
     public function _validate_offset($current_row)
     {
         return !(
@@ -259,6 +299,11 @@ class JSMparseCSV
         );
     }
 
+    /**
+     * Evaluate configured AND/OR row filters against the current parsed CSV record.
+     *
+     * @since 5.6.0
+     */
     public function _validate_row_conditions($row = [], $conditions = null)
     {
         if ($row === []) {
@@ -294,6 +339,11 @@ class JSMparseCSV
         return false;
     }
 
+    /**
+     * Compare one CSV row field with a configured condition and translate the comparison into the legacy string result format.
+     *
+     * @since 5.6.0
+     */
     public function _validate_row_condition($row, $condition)
     {
         $operators = [
@@ -352,6 +402,11 @@ class JSMparseCSV
         return $matches ? '1' : '0';
     }
 
+    /**
+     * Serialize CSV records and persist the result to the selected file, optionally appending existing contents.
+     *
+     * @since 5.6.0
+     */
     public function save($file = null, $data = [], $append = false, $fields = [])
     {
         if ($file === null || $file === '') {
@@ -372,6 +427,11 @@ class JSMparseCSV
         );
     }
 
+    /**
+     * Write text to the specified file using the requested write mode and report whether the write and close operations succeeded.
+     *
+     * @since 5.6.0
+     */
     public function _wfile($file, $string = '', $mode = 'wb', $lock = LOCK_EX)
     {
         $fp = @fopen($file, $mode);
@@ -387,6 +447,11 @@ class JSMparseCSV
         return $written !== false && $closed;
     }
 
+    /**
+     * Convert rows into correctly delimited and escaped CSV text, including optional headings and PHP-style output compatibility.
+     *
+     * @since 5.6.0
+     */
     public function unparse($data = [], $fields = [], $append = false, $is_php = false, $delimiter = null)
     {
         $data = is_array($data) && $data !== [] ? $data : $this->data;
@@ -406,6 +471,11 @@ class JSMparseCSV
         return $string;
     }
 
+    /**
+     * Escape a CSV field value according to the active enclosure character so delimiters and quotes round-trip safely.
+     *
+     * @since 5.6.0
+     */
     public function _enclose_value($value = null)
     {
         $value = (string) ($value ?? '');
@@ -434,6 +504,11 @@ class JSMparseCSV
         return (string) $this->enclosure . $escaped . (string) $this->enclosure;
     }
 
+    /**
+     * Produce CSV text and optionally emit a downloadable response using the configured output filename.
+     *
+     * @since 5.6.0
+     */
     public function output($filename = null, $data = [], $fields = [], $delimiter = null)
     {
         $filename = $filename ?: $this->output_filename;
@@ -449,6 +524,11 @@ class JSMparseCSV
         return $output;
     }
 
+    /**
+     * Update the input and output encoding preferences used when converting CSV source text.
+     *
+     * @since 5.6.0
+     */
     public function encoding($input = null, $output = null)
     {
         $this->convert_encoding = true;
@@ -462,6 +542,11 @@ class JSMparseCSV
         }
     }
 
+    /**
+     * Detect a suitable delimiter from the input sample and optionally parse its records with the detected delimiter.
+     *
+     * @since 5.6.0
+     */
     public function auto($file = null, $parse = true, $search_depth = null, $preferred = null, $enclosure = null)
     {
         if ($file !== null && !$this->load_data($file)) {
@@ -519,6 +604,11 @@ class JSMparseCSV
         return $this->delimiter;
     }
 
+    /**
+     * Build the legacy count-based value used to compare or disambiguate CSV data during automatic parsing.
+     *
+     * @since 5.6.0
+     */
     public function _check_count($char, $array, $depth, $preferred)
     {
         if (!is_array($array) || $depth !== count($array)) {
@@ -553,6 +643,11 @@ class JSMparseCSV
         return $pref . $match . '.' . (99999 - (int) str_pad((string) $first, 5, '0', STR_PAD_LEFT));
     }
 
+    /**
+     * Set up the parser from the provided source, offset, limit and row conditions using the shared parsing option helpers.
+     *
+     * @since 5.6.0
+     */
     private function initialize($input, $offset, $limit, $conditions): void
     {
         $this->applyOptions($offset, $limit, $conditions);
@@ -562,6 +657,11 @@ class JSMparseCSV
         }
     }
 
+    /**
+     * Apply optional pagination and row filtering settings without discarding existing parser configuration.
+     *
+     * @since 5.6.0
+     */
     private function applyOptions($offset, $limit, $conditions): void
     {
         if ($offset !== null) {
@@ -577,6 +677,11 @@ class JSMparseCSV
         }
     }
 
+    /**
+     * Convert incoming CSV text between configured encodings while preserving source data if conversion is unavailable.
+     *
+     * @since 5.6.0
+     */
     private function convertInput(string $data): string
     {
         if (!$this->convert_encoding || $data === '' || !function_exists('iconv')) {
@@ -592,6 +697,11 @@ class JSMparseCSV
         return $converted === false ? $data : $converted;
     }
 
+    /**
+     * Parse CSV records from an in-memory stream while respecting separators, enclosure characters and multiline fields.
+     *
+     * @since 5.6.0
+     */
     private function readRecords(
         string $data,
         string $delimiter,
@@ -623,6 +733,11 @@ class JSMparseCSV
         return $records;
     }
 
+    /**
+     * Sort parsed CSV rows when requested and apply the configured offset and maximum record count.
+     *
+     * @since 5.6.0
+     */
     private function sortAndSlice(array $rows): array
     {
         if ($this->sort_by !== null && $this->sort_by !== '') {
@@ -669,6 +784,11 @@ class JSMparseCSV
         );
     }
 
+    /**
+     * Normalize CSV column headings into stable legacy field names for associative row lookups.
+     *
+     * @since 5.6.0
+     */
     private function normalizeHeading(string $heading): string
     {
         return str_replace(
@@ -678,6 +798,11 @@ class JSMparseCSV
         );
     }
 
+    /**
+     * Encode one CSV row using the specified delimiter, correctly quoting or escaping field values as needed.
+     *
+     * @since 5.6.0
+     */
     private function csvLine(array $values, string $delimiter): string
     {
         $stream = fopen('php://temp', 'r+');
