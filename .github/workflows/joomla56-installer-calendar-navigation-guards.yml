@@ -1,0 +1,73 @@
+name: Joomla 5/6 installer calendar navigation regression guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/src/Controller/InstallhelperController.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_installer_warning_payload.php'
+      - '.github/tests/joomla56_navigation_optional_failure.php'
+      - '.github/tests/joomla56_gcalendar_failure_isolation.php'
+      - '.github/workflows/joomla56-installer-calendar-navigation-guards.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/src/Controller/InstallhelperController.php'
+      - 'modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php'
+      - 'modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php'
+      - '.github/tests/joomla56_installer_warning_payload.php'
+      - '.github/tests/joomla56_navigation_optional_failure.php'
+      - '.github/tests/joomla56_gcalendar_failure_isolation.php'
+      - '.github/workflows/joomla56-installer-calendar-navigation-guards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guards:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Lint changed PHP files
+        run: |
+          php -l admin/src/Controller/InstallhelperController.php
+          php -l modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php
+          php -l modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php
+          php -l .github/tests/joomla56_installer_warning_payload.php
+          php -l .github/tests/joomla56_navigation_optional_failure.php
+          php -l .github/tests/joomla56_gcalendar_failure_isolation.php
+      - name: Validate file metadata
+        run: |
+          php .github/tests/phpdoc_metadata.php \
+            admin/src/Controller/InstallhelperController.php \
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_installer_warning_payload.php \
+            .github/tests/joomla56_navigation_optional_failure.php \
+            .github/tests/joomla56_gcalendar_failure_isolation.php
+      - name: Check descriptive PHPDoc for all named functions
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            admin/src/Controller/InstallhelperController.php \
+            modules/mod_sportsmanagement_gcalendar/src/Dispatcher/Dispatcher.php \
+            modules/mod_sportsmanagement_navigation_menu/src/Dispatcher/Dispatcher.php \
+            .github/tests/joomla56_installer_warning_payload.php \
+            .github/tests/joomla56_navigation_optional_failure.php \
+            .github/tests/joomla56_gcalendar_failure_isolation.php
+      - name: Validate installer warning contract
+        run: php .github/tests/joomla56_installer_warning_payload.php
+      - name: Validate optional navigation outage handling
+        run: php .github/tests/joomla56_navigation_optional_failure.php
+      - name: Validate GCalendar layout failure contract
+        run: php .github/tests/joomla56_gcalendar_failure_isolation.php
