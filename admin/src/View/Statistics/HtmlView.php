@@ -22,6 +22,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 /** Native Joomla 5/6 administrator list view for statistic definitions. */
 final class HtmlView extends BaseHtmlView
 {
+    /**
+     * Resolve the Joomla administrator application through the component's service.
+     * Keeps backend filters and toolbar construction bound to the active Joomla 5/6 application rather than a legacy global factory.
+     * @return CMSApplicationInterface Current administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
@@ -32,6 +37,13 @@ final class HtmlView extends BaseHtmlView
     public $state;
     public array $lists = [];
 
+    /**
+     * Prepare and display the native statistics list view.
+     * Ensures the MVC model is a StatisticsModel, loads its records, pagination and state, builds filter controls and toolbar actions, then renders the requested template.
+     * @param string|null $tpl Optional Joomla layout template override.
+     * @return void
+     * @throws \RuntimeException If the statistics model cannot be loaded.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -49,6 +61,11 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Build the sports-type dropdown used to filter statistic definitions.
+     * Obtains the native SportsTypes model through the component MVC factory, prepends a translated all-types option and restores the selected type.
+     * @return void
+     */
     private function buildFilters(): void
     {
         $factory = self::administratorApplication()
@@ -80,6 +97,11 @@ final class HtmlView extends BaseHtmlView
         );
     }
 
+    /**
+     * Register administrator toolbar actions for statistics management.
+     * Adds the translated title and the create, edit, publishing, check-in, trash, import and export tasks via Joomla ToolbarHelper.
+     * @return void
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE'), 'chart');
