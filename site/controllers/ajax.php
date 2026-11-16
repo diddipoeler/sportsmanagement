@@ -15,8 +15,13 @@
 
 $legacyAjaxController = __DIR__ . '/ajax.json.php';
 
-if (!is_file($legacyAjaxController)) {
+if (!is_file($legacyAjaxController) || !is_readable($legacyAjaxController)) {
     throw new \RuntimeException('SportsManagement Ajax compatibility controller could not be loaded.', 500);
 }
 
 require_once $legacyAjaxController;
+
+// A stale namespace cache must never leave the legacy controller name unresolved.
+if (!class_exists('sportsmanagementControllerAjax', false)) {
+    throw new \RuntimeException('SportsManagement Ajax compatibility controller alias was not registered.', 500);
+}
