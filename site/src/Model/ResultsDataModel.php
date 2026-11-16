@@ -25,6 +25,13 @@ use Throwable;
  */
 final class ResultsDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise the native Joomla 5/6 results data reader.
+     * Forwards configuration and the optional MVC factory to the shared project model so reads use its selected component database.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC dependency factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -38,11 +45,23 @@ final class ResultsDataModel extends SportsManagementProjectModel
         $this->projectId = max(0, $projectId);
     }
 
+    /**
+     * Select a division to filter results and their related records.
+     * Normalises negative identifiers to zero, the convention used for an unrestricted division selection.
+     * @param int $divisionId Selected division or zero for all.
+     * @return void
+     */
     public function setDivisionId(int $divisionId): void
     {
         $this->divisionId = max(0, $divisionId);
     }
 
+    /**
+     * Look up a saved round code for the selected project.
+     * Rejects nonpositive round IDs and performs a bound single-row lookup, optionally restricted to the current project.
+     * @param int $roundId Round identifier.
+     * @return string Round code or an empty string when missing or unreadable.
+     */
     public function getRoundCode(int $roundId): string
     {
         if ($roundId <= 0) {
@@ -71,6 +90,12 @@ final class ResultsDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Create the translated round options for the current project.
+     * Fetches rounds by bound project ID, restricts sort direction to ASC/DESC, and populates slug, value and display text.
+     * @param string $ordering Round-code sort direction (ASC or DESC).
+     * @return array Round option records, empty when none are available.
+     */
     public function getRoundOptions(string $ordering = 'ASC'): array
     {
         if ($this->projectId <= 0) {
@@ -161,6 +186,12 @@ final class ResultsDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Index teams in the project by their project-team identifiers.
+     * Uses the division-aware team reader and drops records without a positive project-team ID to avoid invalid array keys.
+     * @param int $divisionId Optional division restriction.
+     * @return array<int, object> Team records keyed by project-team ID.
+     */
     public function getProjectTeamsIndexed(int $divisionId = 0): array
     {
         $teams = [];
@@ -404,11 +435,25 @@ final class ResultsDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Validate a requested SQL field against an explicit allowlist.
+     * Returns the safe fallback when the requested identifier is not one of the permitted field names.
+     * @param string $value Requested field.
+     * @param array $allowed Allowed column identifiers.
+     * @param string $fallback Safe default column identifier.
+     * @return string Allowed field name or fallback.
+     */
     private function normaliseField(string $value, array $allowed, string $fallback): string
     {
         return in_array($value, $allowed, true) ? $value : $fallback;
     }
 
+    /**
+     * Notify the frontend when a results database query fails.
+     * Formats the component's translated error using the caught exception; callers return safe empty results after reporting.
+     * @param Throwable $e Exception raised while reading results data.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
         $this->siteApplication()->enqueueMessage(
