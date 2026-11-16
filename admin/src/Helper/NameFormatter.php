@@ -191,14 +191,15 @@ final class NameFormatter
      * Extract the first Unicode character of a name and append a period.
      *
      * Prefers mbstring where installed, falls back to a Unicode-aware regex,
-     * and retains the original byte fallback only for malformed input.
+     * and returns an empty initial for malformed UTF-8 rather than
+     * emitting a broken byte into administrator display names.
      *
      * @param string $value Given or family name to abbreviate.
      * @return string First character and period, or empty text for no name.
      */
     private static function initial(string $value): string
     {
-        if ($value === '') {
+        if ($value === '' || preg_match('//u', $value) !== 1) {
             return '';
         }
 
