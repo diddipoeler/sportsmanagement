@@ -46,6 +46,15 @@ class JInstallationHelper
 	 *
 	 * @return string
 	 */
+	/**
+	 * Render accumulated SQL import error records as readable diagnostic text.
+	 *
+	 * Preserves each failing statement and its message so the legacy
+	 * installation workflow can display multiple migration failures together.
+	 *
+	 * @param array $errors Collected SQL error entries with msg and sql fields.
+	 * @return string Human-readable SQL error report.
+	 */
 	function errors2string(&$errors)
 	{
 		$buffer = '';
@@ -276,6 +285,22 @@ class JInstallationHelper
 		}
 	}
 
+	/**
+	 * Obtain and cache the database connection for the legacy installer.
+	 *
+	 * Builds the historical Joomla driver options on first use and returns
+	 * the same connection by reference to subsequent migration operations.
+	 * This method is preserved only for compatibility with old import code.
+	 *
+	 * @param string $driver Legacy database driver identifier.
+	 * @param string $host Database hostname.
+	 * @param string $user Database username.
+	 * @param string $password Database password.
+	 * @param string $database Database name.
+	 * @param string $prefix Joomla table prefix.
+	 * @param bool $select Whether to select the configured database.
+	 * @return mixed Legacy database connection by reference.
+	 */
 	function & getDBO($driver, $host, $user, $password, $database, $prefix, $select = true)
 	{
 		static $db;
@@ -601,6 +626,15 @@ class JInstallationHelper
 		return $ret;
 	}
 
+	/**
+	 * Stop the unsupported legacy migration discovery entry point.
+	 *
+	 * The historical implementation deliberately terminates execution;
+	 * callers must not treat this method as an active Joomla 5/6 importer.
+	 *
+	 * @param array $args Legacy migration configuration, accepted by reference.
+	 * @return void This method terminates request execution.
+	 */
 	function findMigration(&$args)
 	{
 		jexit();
@@ -786,6 +820,16 @@ class JInstallationHelper
 	 * @param mixed $path
 	 * @param mixed $mode
 	 * @return
+	 */
+	/**
+	 * Apply permissions to an installer path through FTP or local filesystem.
+	 *
+	 * Uses the legacy FTP configuration when enabled, otherwise falls back
+	 * to PHP filesystem operations and reports whether permission changes work.
+	 *
+	 * @param string $path Filesystem path to update.
+	 * @param int $mode Octal file permission mask.
+	 * @return bool Whether the permission operation succeeded.
 	 */
 	function _chmod($path, $mode)
 	{
@@ -1177,6 +1221,18 @@ class JInstallationHelper
 	 *
 	 * @return error count
 	 * @since  1.5
+	 */
+	/**
+	 * Apply historical schema and account conversions after SQL migration.
+	 *
+	 * Adjusts user groups and other imported Joomla-era database records
+	 * after the legacy migration script has populated destination tables.
+	 * Retained for reading old import implementations, not a native Joomla 6 migration.
+	 *
+	 * @param mixed $db Legacy database connector.
+	 * @param array $errors Migration errors accumulated by reference.
+	 * @param array $args Legacy database and migration configuration by reference.
+	 * @return mixed Historical migration completion result.
 	 */
 	function postMigrate($db, &$errors, &$args)
 	{
