@@ -15,6 +15,7 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -28,7 +29,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * quotation helper, and converts missing or malformed output fields into
      * safe template defaults. In HTML documents the stylesheet is registered
      * once on the shared Joomla WebAssetManager, even if this module appears
-     * several times on the same page.
+     * several times on the same page. Optional query failures produce
+     * empty quote fields and log exception types without leaking SQL data.
      *
      * @return array|false Module layout variables, or false if skipped.
      * @throws \RuntimeException When called outside the Joomla site application.
@@ -49,13 +51,25 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
-        $database = $this->joomlaDatabase();
-        $result = $this->getHelperFactory()->getHelper('RquotesHelper')->getData(
-            $data['params'],
-            ComponentHelper::getParams('com_sportsmanagement'),
-            $app,
-            $database
-        );
+        $result = [];
+
+        try {
+            $database = $this->joomlaDatabase();
+            $result = $this->getHelperFactory()->getHelper('RquotesHelper')->getData(
+                $data['params'],
+                ComponentHelper::getParams('com_sportsmanagement'),
+                $app,
+                $database
+            );
+        } catch (\Throwable $exception) {
+            // Optional quotes must never interrupt the page or publish private
+            // connection details from a third-party database helper.
+            Log::add(
+                'SportsManagement Random Quotes unavailable (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+        }
 
         $result = is_array($result) ? $result : [];
 
