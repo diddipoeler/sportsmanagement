@@ -9,22 +9,16 @@
  */
 \defined('_JEXEC') or die;
 
-use Diddipoeler\Component\SportsManagement\Administrator\Controller\AjaxController;
+// Keep the JSON and regular legacy endpoints on the same native controller bridge.
+// This also ensures both entry points receive identical dependency checks.
+$legacyAjaxController = __DIR__ . '/ajax.json.php';
 
-if (!class_exists(AjaxController::class)) {
-    $nativeController = __DIR__ . '/../src/Controller/AjaxController.php';
-
-    if (!is_file($nativeController)) {
-        throw new \RuntimeException('SportsManagement native administrator Ajax controller file is missing.', 500);
-    }
-
-    require_once $nativeController;
+if (!is_file($legacyAjaxController) || !is_readable($legacyAjaxController)) {
+    throw new \RuntimeException('SportsManagement administrator Ajax compatibility controller is missing or unreadable.', 500);
 }
 
-if (!class_exists(AjaxController::class)) {
-    throw new \RuntimeException('SportsManagement native administrator Ajax controller could not be loaded.', 500);
-}
+require_once $legacyAjaxController;
 
 if (!class_exists('sportsmanagementControllerAjax', false)) {
-    class_alias(AjaxController::class, 'sportsmanagementControllerAjax');
+    throw new \RuntimeException('SportsManagement administrator Ajax controller alias was not registered.', 500);
 }
