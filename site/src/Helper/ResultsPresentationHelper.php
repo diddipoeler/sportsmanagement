@@ -17,7 +17,16 @@ use Joomla\CMS\Language\Text;
 /** Native presentation helpers for the regular results view. */
 final class ResultsPresentationHelper
 {
-    /** @return array<string, array<int, object>> */
+    /**
+     * Group match records by their calendar date for the results display.
+     *
+     * Reads the YYYY-MM-DD portion of each match timestamp and uses a stable
+     * fallback key for records without a usable date, retaining original order
+     * within each day's group for subsequent template rendering.
+     *
+     * @param array $matches Match records with optional match_date fields.
+     * @return array<string, array<int, object>> Matches indexed by date.
+     */
     public static function groupByDate(array $matches): array
     {
         $dates = [];
