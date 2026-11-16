@@ -196,7 +196,8 @@ final class CalendarFunctions
     /**
      * Format the historical event sidebar heading for a given date.
      * Accepts date strings and integer or numeric-string Unix timestamps,
-     * falls back to today for unsupported, overflowing or unparseable values,
+     * accepts leading-zero timestamp strings and falls back to today for
+     * unsupported, overflowing or unparseable values,
      * and never casts arrays or objects to strings.
      *
      * @param mixed $date Optional date supplied by a calendar override.
@@ -215,8 +216,20 @@ final class CalendarFunctions
         } elseif (preg_match('/^[+-]?[0-9]+$/D', $value) === 1) {
             // Legacy overrides may pass Unix seconds as a string. Validate
             // the integer range rather than handing bare digits to strtotime.
-            $parsed = filter_var($value, FILTER_VALIDATE_INT);
-            $timestamp = $parsed === false ? time() : $parsed;
+            $negative = str_starts_with($value, '-');
+            $signed = $negative || str_starts_with($value, '+');
+            $digits = ltrim($signed ? substr($value, 1) : $value, '0');
+            $digits = $digits === '' ? '0' : $digits;
+            $limit = $negative ? substr((string) PHP_INT_MIN, 1) : (string) PHP_INT_MAX;
+
+            if (strlen($digits) > strlen($limit)
+                || (strlen($digits) === strlen($limit) && strcmp($digits, $limit) > 0)) {
+                $timestamp = time();
+            } else {
+                // Numeric strings may carry leading zeroes; FILTER_VALIDATE_INT
+                // rejects them even when their timestamp is in range.
+                $timestamp = (int) $value;
+            }
         } else {
             $parsed = strtotime($value);
             $timestamp = $parsed === false ? time() : $parsed;
