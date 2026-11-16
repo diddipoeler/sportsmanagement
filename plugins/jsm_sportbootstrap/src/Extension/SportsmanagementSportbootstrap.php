@@ -1,6 +1,6 @@
 <?php
 /**
- * Install SportsManagement sports and quotes after saving component options.
+ * Install configured SportsManagement sports, quotes and country associations.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -15,6 +15,7 @@ namespace Diddipoeler\Plugin\Extension\SportsmanagementSportbootstrap\Extension;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredSportTypeInstaller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredQuoteInstaller;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredAssociationInstaller;
 use Joomla\CMS\Event\Model\AfterSaveEvent;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -45,7 +46,7 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
     }
 
     /**
-     * Install selected but missing sport types and quote collections after a configuration save.
+     * Install missing selected sport types, quotes and country associations after an options save.
      *
      * Checks the exact com_config.component event, component extension and
      * administrator's core.admin permission. Reads the freshly saved params
@@ -55,6 +56,8 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
      * and surfaced only as a generic administrator message. Quote collections
      * are installed independently when their corresponding daily-number
      * categories are empty, without overwriting existing quote records.
+     * Country associations are imported independently for selected countries
+     * which have no existing rows, preserving user-managed associations.
      *
      * @param AfterSaveEvent $event Joomla extension after-save event.
      * @return void
@@ -135,6 +138,66 @@ final class SportsmanagementSportbootstrap extends CMSPlugin implements Subscrib
         } catch (\Throwable $exception) {
             Log::add(
                 'SportsManagement configured sport installation failed: ' . $exception->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
+        }
+
+        // Countries are a separate selected option. The existing legacy
+        // association maintenance task can delete rows; only this additive,
+        // non-destructive importer runs automatically on configuration saves.
+        try {
+            $associationSelection = (new Registry($extension->params))->get('cfg_country_associations', []);
+
+            if ($associationSelection !== [] && $associationSelection !== '') {
+                $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+                if (!$db instanceof DatabaseInterface) {
+                    throw new \RuntimeException('SportsManagement database service is unavailable.');
+                }
+
+                // com_config can save just the association option, without a
+                // prior SportsManagement component boot in this request.
+                $app->bootComponent('com_sportsmanagement');
+
+                $associationInstaller = new ConfiguredAssociationInstaller($db);
+                $installedAssociations = $associationInstaller->installMissing($associationSelection);
+                $missingSources = $associationInstaller->getMissingSources();
+
+                if ($installedAssociations !== [] || $missingSources !== []) {
+                    $app->getLanguage()->load(
+                        'plg_extension_jsm_sportbootstrap',
+                        JPATH_ADMINISTRATOR,
+                        $app->getLanguage()->getTag(),
+                        true
+                    );
+                }
+
+                if ($installedAssociations !== []) {
+                    $app->enqueueMessage(
+                        Text::sprintf(
+                            'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_ASSOCIATIONS_INSTALLED',
+                            array_sum($installedAssociations),
+                            count($installedAssociations)
+                        ),
+                        'message'
+                    );
+                }
+
+                if ($missingSources !== []) {
+                    $app->enqueueMessage(
+                        Text::sprintf(
+                            'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_ASSOCIATIONS_XML_MISSING',
+                            implode(', ', $missingSources)
+                        ),
+                        'warning'
+                    );
+                }
+            }
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement configured association installation failed: ' . $exception->getMessage(),
                 Log::ERROR,
                 'com_sportsmanagement'
             );
