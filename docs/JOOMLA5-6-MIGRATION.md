@@ -43,6 +43,38 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 
 `sportsmanagement.xml` installs the component namespace and `admin/services`. Joomla boots `admin/services/provider.php` and the native component extension. The native-first MVC factory and the site/administrator `DisplayController` implementations are already in use. Legacy controller, model and view fallbacks remain deliberately available for workflows that have not yet been migrated; do not remove them without migrating and testing their callers.
 
+## Results, quick-add and legacy documentation hardening (16 November 2026)
+
+- **Site:** Descriptive PHPDoc was added to the native results data reader and
+  presentation helper, the legacy results round/match adapters, and the complete
+  `ResultsLegacyHtmlCompatibility` facade. Existing public method signatures and
+  template override compatibility remain unchanged.
+- **Administrator:** The quick-add model, statistics view and transactional
+  individual-match writer now have detailed descriptions of their database
+  selection, pagination, write boundaries, score aggregation and event updates.
+  Previously annotation-only descriptions in the individual-match service were
+  expanded to explain their behaviour.
+- **Modules:** All five missing named-function descriptions in the bundled
+  FullCalendar PHP event utility were supplied. The module function inventory
+  now reports no undocumentated named functions.
+- **Error privacy:** The native results reader and administrator quick-add model
+  log database exception details privately and display a generic translated
+  Joomla error instead of exposing SQL diagnostics to visitors or administrators.
+  A standalone PHP regression exercises results notification, quick-add search,
+  and quick-add insertion failure paths.
+- **Checks:** The function-docs inventory workflow now requires descriptive
+  PHPDoc for the nine modified PHP sources and executes the new error-privacy
+  test. The repository-wide four-tag PHP metadata audit remains active.
+
+The 16 November 2026 function inventory reports **516** undocumented named
+functions in `site`, **903** in `admin`, and **0** in `modules` (**1,419**
+total), down from 1,481 in the previous inventory. These numbers reflect
+attached PHPDoc blocks, not complete Joomla 5/6 runtime validation.
+
+The component migration remains incomplete; notably, remaining legacy
+controllers, model integrations, installer and update workflows still require
+real Joomla 5.4 and Joomla 6 installation and browser smoke tests.
+
 ## PHPDoc and security progress (8 November 2026)
 
 - All 29 frontend module service providers and the administrator quick-icon provider now document `register()` and its Joomla dependency-injection purpose.
