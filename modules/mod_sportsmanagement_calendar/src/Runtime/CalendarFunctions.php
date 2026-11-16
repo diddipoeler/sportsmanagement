@@ -195,7 +195,9 @@ final class CalendarFunctions
 
     /**
      * Format the historical event sidebar heading for a given date.
-     * Accepts date strings or Unix timestamps, falls back to today for unsupported, oversized or unparseable values and never casts arrays or objects to strings.
+     * Accepts date strings and integer or numeric-string Unix timestamps,
+     * falls back to today for unsupported, overflowing or unparseable values,
+     * and never casts arrays or objects to strings.
      *
      * @param mixed $date Optional date supplied by a calendar override.
      * @return string Escaped static heading markup with weekday and date.
@@ -210,6 +212,11 @@ final class CalendarFunctions
             $timestamp = $date;
         } elseif ($value === '' || strlen($value) > 128) {
             $timestamp = time();
+        } elseif (preg_match('/^[+-]?[0-9]+$/D', $value) === 1) {
+            // Legacy overrides may pass Unix seconds as a string. Validate
+            // the integer range rather than handing bare digits to strtotime.
+            $parsed = filter_var($value, FILTER_VALIDATE_INT);
+            $timestamp = $parsed === false ? time() : $parsed;
         } else {
             $parsed = strtotime($value);
             $timestamp = $parsed === false ? time() : $parsed;
