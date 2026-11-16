@@ -45,7 +45,9 @@ final class ConfiguredAssociationInstaller
      * access. For each valid country, checks whether any association already
      * exists and skips it to preserve edits. XML is parsed without network
      * access and validated fully before any rows are inserted. Parent IDs are
-     * linked to IDs generated during this country's installation; association
+     * linked to IDs generated during this country's installation. Repeated
+     * names within a single source reuse the first record to respect the
+     * legacy unique country/name index; association
      * name, short/middle names, aliases, website, icons and flags are retained.
      *
      * @param mixed $selected Saved cfg_country_associations setting.
@@ -151,9 +153,21 @@ final class ConfiguredAssociationInstaller
             }
 
             $ids = [];
+            $nameIds = [];
             $count = 0;
 
             foreach ($records as $values) {
+                // The legacy schema has a UNIQUE (name,country) index.
+                // Some bundled XML files reuse the same name in different
+                // branches (e.g. several German Kreise). Preserve the first
+                // occurrence and link later XML main IDs to that record.
+                // Without this the import would stop on a duplicate key
+                // after having already inserted hundreds of rows.
+                if (isset($nameIds[$values['name']])) {
+                    $ids[$values['main']] = $nameIds[$values['name']];
+                    continue;
+                }
+
                 $parentId = $values['parentMain'] === '0'
                     ? 0 : (int) ($ids[$values['parentMain']] ?? 0);
 
@@ -184,6 +198,7 @@ final class ConfiguredAssociationInstaller
                 }
 
                 $ids[$values['main']] = $id;
+                $nameIds[$values['name']] = $id;
                 $count++;
             }
 
