@@ -10,6 +10,7 @@ on:
       - '.github/tests/joomla56_database_maintenance_input_types.php'
       - '.github/tests/joomla56_database_table_batch_guards.php'
       - '.github/tests/joomla56_database_exception_privacy.php'
+      - '.github/tests/joomla56_database_diagnostic_inputs.php'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_site_updater_mvc_factory.php'
       - 'site/src/Model/UpdsportsmanagementModel.php'
@@ -26,6 +27,7 @@ on:
       - '.github/tests/joomla56_database_maintenance_input_types.php'
       - '.github/tests/joomla56_database_table_batch_guards.php'
       - '.github/tests/joomla56_database_exception_privacy.php'
+      - '.github/tests/joomla56_database_diagnostic_inputs.php'
       - 'modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php'
       - '.github/tests/joomla56_site_updater_mvc_factory.php'
       - 'site/src/Model/UpdsportsmanagementModel.php'
@@ -61,6 +63,7 @@ jobs:
           php -l .github/tests/joomla56_database_maintenance_input_types.php
           php -l .github/tests/joomla56_database_table_batch_guards.php
           php -l .github/tests/joomla56_database_exception_privacy.php
+          php -l .github/tests/joomla56_database_diagnostic_inputs.php
           php -l modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php
           php -l .github/tests/joomla56_site_updater_mvc_factory.php
           php -l .github/tests/joomla56_admin_database_action_contract.php
@@ -76,6 +79,7 @@ jobs:
             .github/tests/joomla56_database_maintenance_input_types.php \
             .github/tests/joomla56_database_table_batch_guards.php \
             .github/tests/joomla56_database_exception_privacy.php \
+            .github/tests/joomla56_database_diagnostic_inputs.php \
             modules/mod_sportsmanagement_projectmap/src/Dispatcher/Dispatcher.php \
             .github/tests/joomla56_site_updater_mvc_factory.php \
             .github/tests/joomla56_admin_database_action_contract.php \
@@ -94,3 +98,5 @@ jobs:
         run: php .github/tests/joomla56_database_table_batch_guards.php
       - name: Protect administrator SQL exception privacy
         run: php .github/tests/joomla56_database_exception_privacy.php
+      - name: Guard malformed database diagnostics
+        run: php .github/tests/joomla56_database_diagnostic_inputs.php
