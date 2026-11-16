@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Joomla 5/6 sport bootstrapping from component option saves.
+ * Test Joomla 5/6 sport and quote bootstrapping from component option saves.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Joomla\Database {
     interface DatabaseInterface {}
-    final class ParameterType { public const STRING = 'string'; }
+    final class ParameterType { public const STRING = 'string'; public const INTEGER = 'integer'; }
 }
 namespace Joomla\CMS\Event\Model {
     final class AfterSaveEvent {
@@ -41,7 +41,7 @@ namespace Joomla\CMS {
 namespace Joomla\CMS\Language {
     final class Text {
         /** Format the count in the translated success message. */
-        public static function sprintf(string $key, int $count): string { return $key . ':' . $count; }
+        public static function sprintf(string $key, int ...$counts): string { return $key . ':' . implode(':', $counts); }
         /** Return the Joomla generic error text in the test environment. */
         public static function _(string $key): string { return $key; }
     }
@@ -102,12 +102,23 @@ namespace {
         throw new \RuntimeException('Temporary sport XML directory cannot be created.');
     }
     file_put_contents($xmlDirectory . '/soccer.xml', '<sport />');
+    $quoteXmlDirectory = $temporary . '/components/com_sportsmanagement/helpers/xml_files';
+    if (!is_dir($quoteXmlDirectory) && !mkdir($quoteXmlDirectory, 0777, true)) {
+        throw new \RuntimeException('Temporary quote XML directory cannot be created.');
+    }
+    foreach (['player', 'staff', 'functionaries', 'reporter', 'others'] as $source) {
+        $original = $root . '/admin/helpers/xml_files/quote_' . $source . '.xml';
+        sportCheck(is_file($original), 'Bundled quote XML fixture is missing: ' . $source);
+        copy($original, $quoteXmlDirectory . '/quote_' . $source . '.xml');
+    }
 
     require_once $root . '/admin/src/Service/ConfiguredSportTypeInstaller.php';
+    require_once $root . '/admin/src/Service/ConfiguredQuoteInstaller.php';
     require_once $root . '/plugins/jsm_sportbootstrap/src/Extension/SportsmanagementSportbootstrap.php';
 
     final class SportQuery {
         public string $name = '';
+        public ?int $dailyNumber = null;
         /** Retain the query while selecting the sport identifier. */
         public function select(string $field): self { return $this; }
         /** Retain the query while selecting the sports-type table. */
@@ -115,9 +126,13 @@ namespace {
         /** Retain the bound query condition for the sports name. */
         public function where(string $condition): self { return $this; }
         /** Confirm the SQL parameter is bound as a string, not interpolated. */
-        public function bind(string $key, string $value, string $type): self {
-            if ($key !== ':configuredSportName' || $type !== 'string') {
-                throw new \RuntimeException('Sport name was not safely bound.');
+        public function bind(string $key, string|int $value, string $type): self {
+            if ($key === ':quoteDailyNumber' && is_int($value) && $type === 'integer') {
+                $this->dailyNumber = $value;
+                return $this;
+            }
+            if ($key !== ':configuredSportName' || !is_string($value) || $type !== 'string') {
+                throw new \RuntimeException('Sport or quote category was not safely bound.');
             }
             $this->name = $value;
             return $this;
@@ -126,6 +141,8 @@ namespace {
 
     final class SportDb implements \Joomla\Database\DatabaseInterface {
         public array $rows = [];
+        public array $quotes = [];
+        public int $quoteInserts = 0;
         public int $lastId = 0;
         public int $inserts = 0;
         public bool $fail = false;
@@ -140,15 +157,25 @@ namespace {
             return $this;
         }
         /** Resolve the stored sport ID by its bound translation key. */
-        public function loadResult(): ?int { return $this->rows[$this->query->name] ?? null; }
+        public function loadResult(): ?int {
+            if ($this->query->dailyNumber !== null) {
+                return count($this->quotes[$this->query->dailyNumber] ?? []);
+            }
+            return $this->rows[$this->query->name] ?? null;
+        }
         /** Insert only unique sport types into the Joomla table. */
         public function insertObject(string $table, object $record): bool {
-            if ($table !== '#__sportsmanagement_sports_type') {
-                throw new \RuntimeException('Unexpected sport table.');
+            if (!in_array($table, ['#__sportsmanagement_sports_type', '#__sportsmanagement_rquote'], true)) {
+                throw new \RuntimeException('Unexpected component table.');
             }
             if ($this->fail) {
                 $this->fail = false;
                 throw new \RuntimeException('secret-sql-connection-token');
+            }
+            if ($table === '#__sportsmanagement_rquote') {
+                $this->quotes[$record->daily_number][] = clone $record;
+                $this->quoteInserts++;
+                return true;
             }
             if (isset($this->rows[$record->name])) {
                 throw new \RuntimeException('Duplicate sport name.');
