@@ -241,6 +241,9 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         }
 
         $this->setPluginEnabled('system', 'jsm_registercomp', true);
+        // com_config imports extension plugins before emitting onExtensionAfterSave.
+        // Enable the bundled listener so selected sport types are installed on save.
+        $this->setPluginEnabled('extension', 'jsm_sportbootstrap', true);
     }
 
     private function setPluginEnabled(string $folder, string $element, bool $enabled): void
