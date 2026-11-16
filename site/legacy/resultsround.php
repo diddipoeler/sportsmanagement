@@ -30,6 +30,13 @@ if (!class_exists(ResultsDataModel::class)) {
 if (!class_exists('sportsmanagementModelRound', false)) {
     final class sportsmanagementModelRound
     {
+        /**
+         * Load a round code for callers that still use the legacy model class.
+         * Creates the native results reader, applies the historical database selector and looks up the validated integer round ID.
+         * @param mixed $roundId Round identifier to resolve.
+         * @param mixed $cfgWhichDatabase SportsManagement database selector.
+         * @return string Round code, or an empty string if unavailable.
+         */
         public static function getRoundcode($roundId = 0, $cfgWhichDatabase = 0)
         {
             $model = new ResultsDataModel();
