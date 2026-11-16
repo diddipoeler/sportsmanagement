@@ -16,6 +16,7 @@ defined('_JEXEC') or die;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\DatabasetoolModel;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredSportTypeInstaller;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredQuoteInstaller;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredAssociationInstaller;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
@@ -121,7 +122,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
 
     /**
      * Finish the SportsManagement package installation or upgrade.
-     * Installs bundled modules and plugins, enables the options listener, creates missing sports and quotes already selected in saved settings, sets up logging and media folders, and cleans installation artifacts.
+     * Installs bundled modules and plugins, enables the options listener, installs missing sports, quotes and associations already selected in saved settings, and prepares logging/media folders.
      * @param string $type Joomla installer operation.
      * @param InstallerAdapter $adapter Source manifest and extracted package paths.
      * @return bool True on success; false for a fatal package setup failure.
@@ -139,6 +140,7 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
             $this->installPlugins($adapter);
             $this->installConfiguredSportTypes();
             $this->installConfiguredQuotes();
+            $this->installConfiguredAssociations();
             $this->ensureActionLogConfiguration();
             $this->createImagesFolder();
             $this->deleteInstallFiles();
@@ -467,6 +469,87 @@ final class com_sportsmanagementInstallerScript implements InstallerScriptInterf
         } catch (\Throwable $exception) {
             Log::add(
                 'SportsManagement configured quote upgrade failed: ' . $exception->getMessage(),
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            Factory::getApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'warning');
+        }
+    }
+
+    /**
+     * Reconcile configured country associations during component postflight.
+     *
+     * Selected countries can already be saved in the Joomla component options
+     * before the extension listener is installed. Uses the same non-destructive
+     * installer as option saves, bootstrapping only empty country categories
+     * from local XML and keeping all existing association records untouched.
+     * Reports missing bundled country XML as a warning and logs SQL failures
+     * privately instead of interrupting the component upgrade.
+     *
+     * @return void
+     */
+    private function installConfiguredAssociations(): void
+    {
+        try {
+            $selected = ComponentHelper::getParams('com_sportsmanagement')
+                ->get('cfg_country_associations', []);
+
+            if ($selected === [] || $selected === '') {
+                return;
+            }
+
+            // The namespace may be unavailable before the component has been
+            // booted in Joomla's install/update postflight lifecycle.
+            if (!class_exists(ConfiguredAssociationInstaller::class)) {
+                $file = JPATH_ADMINISTRATOR
+                    . '/components/com_sportsmanagement/src/Service/ConfiguredAssociationInstaller.php';
+
+                if (!is_file($file)) {
+                    throw new \RuntimeException('SportsManagement association installer is unavailable.');
+                }
+
+                require_once $file;
+            }
+
+            $importer = new ConfiguredAssociationInstaller($this->getDatabase());
+            $installed = $importer->installMissing($selected);
+            $missing = $importer->getMissingSources();
+
+            if ($installed === [] && $missing === []) {
+                return;
+            }
+
+            $app = Factory::getApplication();
+            $app->getLanguage()->load(
+                'plg_extension_jsm_sportbootstrap',
+                JPATH_ADMINISTRATOR,
+                $app->getLanguage()->getTag(),
+                true
+            );
+
+            if ($installed !== []) {
+                $app->enqueueMessage(
+                    Text::sprintf(
+                        'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_ASSOCIATIONS_INSTALLED',
+                        array_sum($installed),
+                        count($installed)
+                    ),
+                    'message'
+                );
+            }
+
+            if ($missing !== []) {
+                $app->enqueueMessage(
+                    Text::sprintf(
+                        'PLG_EXTENSION_JSM_SPORTBOOTSTRAP_ASSOCIATIONS_XML_MISSING',
+                        implode(', ', $missing)
+                    ),
+                    'warning'
+                );
+            }
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement configured association upgrade failed: ' . $exception->getMessage(),
                 Log::ERROR,
                 'com_sportsmanagement'
             );
