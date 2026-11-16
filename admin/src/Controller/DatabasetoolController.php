@@ -135,7 +135,9 @@ final class DatabasetoolController extends BaseController
      * Rejects unexpected MVC models, oversized batches and malformed
      * table names before executing any maintenance statement. Nested values
      * cannot cause PHP 8 type errors or partial destructive operations.
-     * Duplicate discovered tables are processed only once.
+     * Duplicate discovered tables are processed only once. The expected
+     * component namespace must follow an optional Joomla/database prefix
+     * rather than merely appearing anywhere inside a table name.
      *
      * @param string $command Supported maintenance action.
      * @param bool $joomleague Whether to select legacy JoomLeague tables.
@@ -191,8 +193,10 @@ final class DatabasetoolController extends BaseController
 
         foreach ($tables as $table) {
             if (!is_string($table) || strlen($table) > 255
-                || preg_match('/^(?:#__)?[A-Za-z0-9_]+$/D', $table) !== 1
-                || !str_contains($table, $expected)) {
+                || preg_match(
+                    '/^(?:#__|[A-Za-z0-9_]+_)?' . preg_quote($expected, '/') . '[A-Za-z0-9_]+$/D',
+                    $table
+                ) !== 1) {
                 $this->setRedirect(
                     'index.php?option=com_sportsmanagement&view=databasetools',
                     Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
