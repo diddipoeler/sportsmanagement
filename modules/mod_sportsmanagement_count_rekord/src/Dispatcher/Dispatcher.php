@@ -59,13 +59,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Retrieves the database through Joomla's dependency injection container
      * and validates the interface before executing helper queries.
+     * Converts dependency lookup failures into a descriptive module error
+     * while preserving the original throwable for diagnostics.
      *
      * @return DatabaseInterface Database connection for module queries.
      * @throws \RuntimeException When the database service is unavailable.
      */
     private function joomlaDatabase(): DatabaseInterface
     {
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        try {
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException('SportsManagement CountRekord database service could not be resolved.', 500, $exception);
+        }
 
         if (!$database instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement CountRekord database service is unavailable.', 500);
