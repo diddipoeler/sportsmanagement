@@ -60,7 +60,8 @@ final class ProjectNavigationHelper
      * ID to avoid skipping projects with identical display names.
      * Malformed league selectors cannot be silently truncated by PHP casts.
      * Builds ID:alias slugs in PHP rather than MySQL-only CONCAT_WS, keeping
-     * the query portable to PostgreSQL database drivers.
+     * the query portable to PostgreSQL database drivers. Invalid UTF-8 project
+     * names are rejected before reaching a Joomla database query.
      *
      * @param DatabaseInterface $db Joomla database connection.
      * @param object $project Current project providing league and name.
@@ -74,7 +75,8 @@ final class ProjectNavigationHelper
         $name = is_string($project->name ?? null) ? trim($project->name) : '';
         $projectId = self::positiveId($project->id ?? null);
 
-        if ($leagueId <= 0 || $name === '' || strlen($name) > 255) {
+        if ($leagueId <= 0 || $name === '' || strlen($name) > 255
+            || preg_match('//u', $name) !== 1) {
             return null;
         }
 
