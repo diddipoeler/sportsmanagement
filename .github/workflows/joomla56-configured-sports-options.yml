@@ -1,4 +1,4 @@
-name: Joomla 5/6 configured sports and quotes options install
+name: Joomla 5/6 configured sports quotes and association options
 
 on:
   push:
@@ -6,8 +6,10 @@ on:
     paths:
       - 'admin/src/Service/ConfiguredSportTypeInstaller.php'
       - 'admin/src/Service/ConfiguredQuoteInstaller.php'
+      - 'admin/src/Service/ConfiguredAssociationInstaller.php'
       - 'admin/config.xml'
       - 'admin/helpers/xml_files/quote_*.xml'
+      - 'admin/helpers/xml_files/associations_*.xml'
       - 'plugins/jsm_sportbootstrap/**'
       - 'sportsmanagement.xml'
       - 'script.joomla56.php'
@@ -37,14 +39,15 @@ jobs:
         run: |
           php -l admin/src/Service/ConfiguredSportTypeInstaller.php
           php -l admin/src/Service/ConfiguredQuoteInstaller.php
+          php -l admin/src/Service/ConfiguredAssociationInstaller.php
           php -l plugins/jsm_sportbootstrap/src/Extension/SportsmanagementSportbootstrap.php
           php -l plugins/jsm_sportbootstrap/services/provider.php
           php -l plugins/jsm_sportbootstrap/jsm_sportbootstrap.php
           php -l script.joomla56.php
           php -l .github/tests/joomla56_configured_sports_options.php
       - name: Validate detailed native installer method descriptions
-        run: php .github/scripts/check-php-function-docs.php admin/src/Service/ConfiguredSportTypeInstaller.php admin/src/Service/ConfiguredQuoteInstaller.php
-      - name: Test saved sports and quote options, upgrades, permissions and duplicate protection
+        run: php .github/scripts/check-php-function-docs.php admin/src/Service/ConfiguredSportTypeInstaller.php admin/src/Service/ConfiguredQuoteInstaller.php admin/src/Service/ConfiguredAssociationInstaller.php
+      - name: Test saved sports quotes and associations, upgrades, ACL and duplicates
         run: php .github/tests/joomla56_configured_sports_options.php
       - name: Audit first-party PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
