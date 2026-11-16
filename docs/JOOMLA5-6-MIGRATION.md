@@ -43,6 +43,51 @@ The migration remains incremental. The Joomla 5/6 component namespace, service p
 
 `sportsmanagement.xml` installs the component namespace and `admin/services`. Joomla boots `admin/services/provider.php` and the native component extension. The native-first MVC factory and the site/administrator `DisplayController` implementations are already in use. Legacy controller, model and view fallbacks remain deliberately available for workflows that have not yet been migrated; do not remove them without migrating and testing their callers.
 
+## Administrator: import selected country associations (16 November 2026)
+
+- The component configuration's `cfg_country_associations` country
+  multi-select now installs missing Landesverbände from the packaged
+  `admin/helpers/xml_files/associations_<ISO3>.xml` sources. The repository
+  bundles per-country association data for 23 country codes. The new native
+  service `admin/src/Service/ConfiguredAssociationInstaller.php` checks each
+  selected country independently and inserts records only when that country
+  has **no associations** in `#__sportsmanagement_associations`.
+- Unlike the older maintenance functions `DatabasetoolModel::checkAssociations()`
+  and `JlextassociationsModel::checkAssociations()`, the automatic importer
+  never deletes associations from deselected countries, never updates existing
+  association records, and never overwrites administrator edits.
+- The importer checks strict three-letter country codes before filesystem
+  access, accepts older comma-delimited configuration values, parses only
+  bundled XML with `LIBXML_NONET`, and validates country and hierarchy
+  references **before** database insertion. It preserves association names,
+  aliases, website, images, flags and parent/child relations. Forward parent
+  references (present in France) are ordered before insertion. Duplicate
+  association names (present in German and other country XML) reuse the first
+  row to respect the database's unique `(name,country)` index.
+- The existing enabled `jsm_sportbootstrap` extension plugin runs this
+  installation independently of sport and quote selections after an authorised
+  SportsManagement `com_config.component` save, using freshly saved options.
+  Installer `script.joomla56.php` also reconciles selections saved before
+  the plugin existed during install/update postflight. Nothing was added to
+  read-only dashboard requests.
+- German/English success messages report the number of new associations and
+  countries; selections for which no packaged XML exists receive a translated
+  warning listing the country codes. SQL and XML exceptions are logged
+  privately with generic user-facing warnings.
+- `.github/tests/joomla56_configured_sports_options.php` tests real packaged
+  German and French hierarchies, duplicate names, pre-existing Austrian data,
+  missing/invalid XML and country choices, legacy CSV settings, ACL and event
+  boundaries, option resaves, upgrades and private SQL failures. The existing
+  PHP 8.2/8.3/8.4 workflow lints the service and enforces descriptive method
+  PHPDoc plus required first-party PHP metadata tags.
+
+**Remaining integration check:** After updating on a real Joomla 5.4 or 6
+installation, verify selected countries in the administrator association list,
+including hierarchy and images. The existing MyISAM table cannot roll back a
+mid-import database failure; because the automatic importer deliberately skips
+countries containing user data, an incomplete failed import may require manual
+repair before retrying.
+
 ## Administrator: install selected quote collections (16 November 2026)
 
 - SportsManagement options store the five selectable quote collections under
