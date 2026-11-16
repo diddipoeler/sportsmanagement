@@ -29,6 +29,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      *
      * Queries the helper through Joomla's database service, preserving all
      * framework-owned layout variables and per-instance client options.
+     * Accepts only the documented calendar template fields and initialises
+     * empty calendars and calendar IDs even when optional loading fails.
      * Failures in optional event loading are logged by exception class, not
      * by message, to avoid leaking private API/database details to visitors.
      * On failure the module renders an empty event list rather than breaking
@@ -51,14 +53,27 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
             throw new \RuntimeException('SportsManagement GCalendar requires the Joomla site application.', 500);
         }
 
+        // Establish the template contract even if the optional calendar
+        // service is unavailable. The native helper supplies calendars and
+        // calendarIds; the events key remains for older custom overrides.
+        $data['calendars'] = [];
+        $data['calendarIds'] = [];
+        $data['events'] = [];
+        $data['calendarConfig'] = [];
+
         try {
             $db = $this->joomlaDatabase();
             $payload = $this->getHelperFactory()
                 ->getHelper('GcalendarHelper')
                 ->getData($data['params'], $data['module'], $app, $db);
             $payload = is_array($payload) ? $payload : [];
-            unset($payload['module'], $payload['params'], $payload['layout']);
-            $data = array_merge($data, $payload);
+
+            // Only merge fields defined by the calendar template contract.
+            // Never replace Joomla's module/params/layout or custom context.
+            foreach (['calendars', 'calendarIds', 'events', 'calendarConfig'] as $key) {
+                $value = $payload[$key] ?? null;
+                $data[$key] = is_array($value) ? $value : [];
+            }
         } catch (\Throwable $exception) {
             // Calendar integrations are optional page content. Keep an API or
             // database outage from replacing the complete frontend response.
