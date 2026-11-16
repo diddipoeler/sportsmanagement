@@ -16,6 +16,7 @@ use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
 use Joomla\Database\DatabaseInterface;
 
 final class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareInterface
@@ -29,6 +30,8 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
      * absent season and ranking collections for the frontend template.
      * For HTML output it checks the shared WebAssetManager before registering
      * the module stylesheet, so multiple module instances reuse one asset.
+     * Database or helper failures leave empty collections in the template
+     * and log only the exception class rather than private SQL diagnostics.
      *
      * @return array|false Layout data or false if rendering is skipped.
      * @throws \RuntimeException If the site application or database is unavailable.
@@ -49,15 +52,28 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         $app->getLanguage()->load('com_sportsmanagement', JPATH_SITE, null, true);
 
-        $database = $this->joomlaDatabase();
-        $result = $this->getHelperFactory()
-            ->getHelper('UefaWertungHelper')
-            ->getData($data['params'], $app, $database);
+        $data['seasons'] = [];
+        $data['rankings'] = [];
 
-        $result = is_array($result) ? $result : [];
+        try {
+            $database = $this->joomlaDatabase();
+            $result = $this->getHelperFactory()
+                ->getHelper('UefaWertungHelper')
+                ->getData($data['params'], $app, $database);
 
-        $data['seasons'] = is_array($result['seasons'] ?? null) ? $result['seasons'] : [];
-        $data['rankings'] = is_array($result['rankings'] ?? null) ? $result['rankings'] : [];
+            if (is_array($result)) {
+                $data['seasons'] = is_array($result['seasons'] ?? null) ? $result['seasons'] : [];
+                $data['rankings'] = is_array($result['rankings'] ?? null) ? $result['rankings'] : [];
+            }
+        } catch (\Throwable $exception) {
+            // Optional ranking data must not fail the entire Joomla page.
+            // The public response never includes SQL or database credentials.
+            Log::add(
+                'SportsManagement UEFA ranking unavailable (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+        }
 
         $document = $app->getDocument();
 
