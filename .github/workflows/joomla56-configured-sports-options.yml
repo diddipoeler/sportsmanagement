@@ -1,11 +1,13 @@
-name: Joomla 5/6 configured sport options install
+name: Joomla 5/6 configured sports and quotes options install
 
 on:
   push:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Service/ConfiguredSportTypeInstaller.php'
+      - 'admin/src/Service/ConfiguredQuoteInstaller.php'
       - 'admin/config.xml'
+      - 'admin/helpers/xml_files/quote_*.xml'
       - 'plugins/jsm_sportbootstrap/**'
       - 'sportsmanagement.xml'
       - 'script.joomla56.php'
@@ -31,17 +33,18 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-      - name: Lint administrator installer and extension plugin
+      - name: Lint administrator sport/quote installers and extension plugin
         run: |
           php -l admin/src/Service/ConfiguredSportTypeInstaller.php
+          php -l admin/src/Service/ConfiguredQuoteInstaller.php
           php -l plugins/jsm_sportbootstrap/src/Extension/SportsmanagementSportbootstrap.php
           php -l plugins/jsm_sportbootstrap/services/provider.php
           php -l plugins/jsm_sportbootstrap/jsm_sportbootstrap.php
           php -l script.joomla56.php
           php -l .github/tests/joomla56_configured_sports_options.php
       - name: Validate detailed native installer method descriptions
-        run: php .github/scripts/check-php-function-docs.php admin/src/Service/ConfiguredSportTypeInstaller.php
-      - name: Test saved component options, permissions, duplicates and missing XML
+        run: php .github/scripts/check-php-function-docs.php admin/src/Service/ConfiguredSportTypeInstaller.php admin/src/Service/ConfiguredQuoteInstaller.php
+      - name: Test saved sports and quote options, upgrades, permissions and duplicate protection
         run: php .github/tests/joomla56_configured_sports_options.php
       - name: Audit first-party PHP file metadata
         run: php .github/tests/phpdoc_metadata.php --all
