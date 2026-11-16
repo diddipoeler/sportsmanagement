@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Joomla 5/6 sport and quote bootstrapping from component option saves.
+ * Test Joomla 5/6 sport, quote and association installs from component options.
  *
  * @version    5.6.0
  * @author     diddipoeler
@@ -57,6 +57,14 @@ namespace Joomla\CMS\Log {
         }
     }
 }
+namespace Joomla\CMS\Filter {
+    final class OutputFilter {
+        /** Normalise an association name into a URL-safe alias for the importer. */
+        public static function stringURLSafe(string $value): string {
+            return strtolower(trim(preg_replace('/[^a-z0-9]+/i', '-', $value) ?? '', '-'));
+        }
+    }
+}
 namespace Joomla\CMS\Component {
     final class ComponentHelper {
         public static object $params;
@@ -102,6 +110,7 @@ namespace {
         throw new \RuntimeException('Temporary sport XML directory cannot be created.');
     }
     file_put_contents($xmlDirectory . '/soccer.xml', '<sport />');
+    $associationXmlDirectory = $temporary . '/components/com_sportsmanagement/helpers/xml_files';
     $quoteXmlDirectory = $temporary . '/components/com_sportsmanagement/helpers/xml_files';
     if (!is_dir($quoteXmlDirectory) && !mkdir($quoteXmlDirectory, 0777, true)) {
         throw new \RuntimeException('Temporary quote XML directory cannot be created.');
@@ -114,11 +123,13 @@ namespace {
 
     require_once $root . '/admin/src/Service/ConfiguredSportTypeInstaller.php';
     require_once $root . '/admin/src/Service/ConfiguredQuoteInstaller.php';
+    require_once $root . '/admin/src/Service/ConfiguredAssociationInstaller.php';
     require_once $root . '/plugins/jsm_sportbootstrap/src/Extension/SportsmanagementSportbootstrap.php';
 
     final class SportQuery {
         public string $name = '';
         public ?int $dailyNumber = null;
+        public ?string $associationCountry = null;
         /** Retain the query while selecting the sport identifier. */
         public function select(string $field): self { return $this; }
         /** Retain the query while selecting the sports-type table. */
@@ -129,6 +140,11 @@ namespace {
         public function bind(string $key, string|int $value, string $type): self {
             if ($key === ':quoteDailyNumber' && is_int($value) && $type === 'integer') {
                 $this->dailyNumber = $value;
+                return $this;
+            }
+            if ($key === ':configuredAssociationCountry' && is_string($value)
+                && $type === 'string') {
+                $this->associationCountry = $value;
                 return $this;
             }
             if ($key !== ':configuredSportName' || !is_string($value) || $type !== 'string') {
@@ -142,6 +158,8 @@ namespace {
     final class SportDb implements \Joomla\Database\DatabaseInterface {
         public array $rows = [];
         public array $quotes = [];
+        public array $associations = [];
+        public int $associationInserts = 0;
         public int $quoteInserts = 0;
         public int $lastId = 0;
         public int $inserts = 0;
@@ -161,11 +179,15 @@ namespace {
             if ($this->query->dailyNumber !== null) {
                 return count($this->quotes[$this->query->dailyNumber] ?? []);
             }
+            if ($this->query->associationCountry !== null) {
+                return count($this->associations[$this->query->associationCountry] ?? []);
+            }
             return $this->rows[$this->query->name] ?? null;
         }
         /** Insert only unique sport types into the Joomla table. */
         public function insertObject(string $table, object $record): bool {
-            if (!in_array($table, ['#__sportsmanagement_sports_type', '#__sportsmanagement_rquote'], true)) {
+            if (!in_array($table, ['#__sportsmanagement_sports_type', '#__sportsmanagement_rquote',
+                '#__sportsmanagement_associations'], true)) {
                 throw new \RuntimeException('Unexpected component table.');
             }
             if ($this->fail) {
@@ -175,6 +197,12 @@ namespace {
             if ($table === '#__sportsmanagement_rquote') {
                 $this->quotes[$record->daily_number][] = clone $record;
                 $this->quoteInserts++;
+                return true;
+            }
+            if ($table === '#__sportsmanagement_associations') {
+                $record->id = ++$this->lastId;
+                $this->associations[$record->country][] = clone $record;
+                $this->associationInserts++;
                 return true;
             }
             if (isset($this->rows[$record->name])) {
