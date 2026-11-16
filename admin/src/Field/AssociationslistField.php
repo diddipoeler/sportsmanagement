@@ -20,6 +20,17 @@ final class AssociationslistField extends SportsManagementListField
 {
     protected $type = 'AssociationsList';
 
+    /**
+     * Show valid associations for the active administrator selector.
+     *
+     * The association edit form now includes potential parents even for a new
+     * association with ID 0. Its initial choices include country-prefixed
+     * entries; after a country is submitted only that country's hierarchy is
+     * shown. Editing an existing association excludes itself and descendants
+     * so the form cannot suggest a self-referential parent chain.
+     *
+     * @return array<int,object> Joomla select field options.
+     */
     protected function getOptions(): array
     {
         /** @var AdministratorApplication $app */
@@ -56,7 +67,23 @@ final class AssociationslistField extends SportsManagementListField
         $selectedId = (int) $selectedId;
 
         if ($selectedId <= 0) {
-            return parent::getOptions();
+            if ($view !== 'jlextassociation') {
+                return parent::getOptions();
+            }
+
+            // The Joomla edit form has not saved its own country yet.
+            // Offer existing countries with a visible ISO-3 prefix initially;
+            // on a submitted form use its validated selected country.
+            $form = $input->post->get('jform', [], 'array');
+            $rawCountry = is_array($form) ? ($form['country'] ?? null) : null;
+            $submittedCountry = is_string($rawCountry) ? strtoupper(trim($rawCountry)) : '';
+
+            if ($submittedCountry !== ''
+                && preg_match('/^[A-Z]{3}$/D', $submittedCountry) === 1) {
+                return array_merge(parent::getOptions(), $this->getCountryTreeOptions($submittedCountry));
+            }
+
+            return array_merge(parent::getOptions(), $this->getAllAssociationOptions());
         }
 
         $targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targettable'] ?? ''));
@@ -78,9 +105,68 @@ final class AssociationslistField extends SportsManagementListField
             return parent::getOptions();
         }
 
-        return array_merge(parent::getOptions(), $this->getCountryTreeOptions($country));
+        return array_merge(
+            parent::getOptions(),
+            $this->getCountryTreeOptions($country, $view === 'jlextassociation' ? $selectedId : 0)
+        );
     }
 
+    /**
+     * List country-labelled parent candidates when creating a new association.
+     *
+     * At that point no source row has been inserted, so the existing
+     * getCountryTreeOptions() lookup by row ID cannot work. Only validated
+     * association IDs and three-letter country codes become form choices.
+     *
+     * @return array<int,object> Safe existing associations, labelled by country.
+     */
+    private function getAllAssociationOptions(): array
+    {
+        $db = $this->getSportsManagementDatabase();
+        $query = $db->createQuery()
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('name'),
+                $db->quoteName('country'),
+            ])
+            ->from($db->quoteName('#__sportsmanagement_associations'))
+            ->order([$db->quoteName('country'), $db->quoteName('name')]);
+        $db->setQuery($query);
+
+        $options = [];
+
+        foreach ($db->loadObjectList() ?: [] as $row) {
+            if (!is_object($row)
+                || !is_string($row->country ?? null)
+                || !is_string($row->name ?? null)) {
+                continue;
+            }
+
+            $id = filter_var($row->id ?? null, FILTER_VALIDATE_INT);
+            $code = strtoupper(trim($row->country));
+            $name = trim($row->name);
+
+            if ($id === false || $id <= 0 || $name === ''
+                || preg_match('/^[A-Z]{3}$/D', $code) !== 1) {
+                continue;
+            }
+
+            $options[] = (object) [
+                'value' => (string) $id,
+                'text' => '(' . $code . ') ' . $name,
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * Retrieve association options within an explicitly selected country.
+     *
+     * @param string $country ISO-3 country identifier.
+     * @param bool $topLevelOnly Whether to limit to root-level associations.
+     * @return array<int,object> Matching option records.
+     */
     private function getCountryOptions(string $country, bool $topLevelOnly): array
     {
         if ($country === '') {
@@ -115,7 +201,17 @@ final class AssociationslistField extends SportsManagementListField
         return $options;
     }
 
-    private function getCountryTreeOptions(string $country): array
+    /**
+     * Build the country-specific association tree for form selections.
+     *
+     * The active row and all its children can be omitted from this chooser
+     * when selecting a parent for an already existing association.
+     *
+     * @param string $country ISO-3 country code.
+     * @param int $excludeId Edited association whose subtree must be hidden.
+     * @return array<int,object> Indented parent association options.
+     */
+    private function getCountryTreeOptions(string $country, int $excludeId = 0): array
     {
         $db = $this->getSportsManagementDatabase();
         $query = $db->createQuery()
@@ -140,12 +236,28 @@ final class AssociationslistField extends SportsManagementListField
         }
 
         $options = [];
-        $this->appendChildren($options, $children, 0, 0);
+        $this->appendChildren($options, $children, 0, 0, $excludeId);
 
         return $options;
     }
 
-    private function appendChildren(array &$options, array $children, int $parentId, int $level): void
+    /**
+     * Traverse and indent valid association children without offering cycles.
+     *
+     * @param array<int,object> $options Accumulated Joomla select options.
+     * @param array<int,array<int,object>> $children Country tree indexed by parent ID.
+     * @param int $parentId Parent currently being visited.
+     * @param int $level Depth used for an indented label.
+     * @param int $excludeId Association subtree excluded from parent choices.
+     * @return void
+     */
+    private function appendChildren(
+        array &$options,
+        array $children,
+        int $parentId,
+        int $level,
+        int $excludeId
+    ): void
     {
         if ($level > 10 || empty($children[$parentId])) {
             return;
@@ -153,13 +265,18 @@ final class AssociationslistField extends SportsManagementListField
 
         foreach ($children[$parentId] as $item) {
             $id = (int) $item->id;
+
+            if ($id <= 0 || $id === $excludeId) {
+                continue;
+            }
+
             $indent = str_repeat('...', $level);
             $prefix = $level > 0 ? "\u{00A0}" : '';
             $options[] = (object) [
                 'value' => (string) $id,
                 'text' => $indent . $prefix . (string) $item->name,
             ];
-            $this->appendChildren($options, $children, $id, $level + 1);
+            $this->appendChildren($options, $children, $id, $level + 1, $excludeId);
         }
     }
 }
