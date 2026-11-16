@@ -48,7 +48,9 @@ final class ConfiguredAssociationInstaller
      * linked to IDs generated during this country's installation. Repeated
      * names within a single source reuse the first record to respect the
      * legacy unique country/name index; association
-     * name, short/middle names, aliases, website, icons and flags are retained.
+     * names, short/middle names, aliases, website, icons and flags are
+     * retained. Parent associations can appear after their children in XML;
+     * the import orders dependencies before writing rows.
      *
      * @param mixed $selected Saved cfg_country_associations setting.
      * @return array<string,int> Number of installed associations by country.
@@ -125,8 +127,7 @@ final class ConfiguredAssociationInstaller
 
                 if ($name === '' || $itemCountry !== $country
                     || preg_match('/^[0-9]{1,9}$/D', $main) !== 1
-                    || preg_match('/^[0-9]{1,9}$/D', $parentMain) !== 1
-                    || ($parentMain !== '0' && !isset($seen[$parentMain]))) {
+                    || preg_match('/^[0-9]{1,9}$/D', $parentMain) !== 1) {
                     throw new \RuntimeException('SportsManagement association XML has invalid hierarchy for ' . $country);
                 }
 
@@ -151,6 +152,40 @@ final class ConfiguredAssociationInstaller
             if ($records === []) {
                 throw new \RuntimeException('SportsManagement association XML has no records for ' . $country);
             }
+
+            // Validate and topologically order parent/child references before
+            // writing any rows. Some bundled countries (notably FRA) list a
+            // child before its parent, so source order is not always usable.
+            // Missing parent keys and dependency cycles fail before SQL writes.
+            $pending = $records;
+            $ordered = [];
+            $resolved = ['0' => true];
+
+            while ($pending !== []) {
+                $deferred = [];
+                $progress = false;
+
+                foreach ($pending as $values) {
+                    if (!isset($resolved[$values['parentMain']])) {
+                        $deferred[] = $values;
+                        continue;
+                    }
+
+                    $ordered[] = $values;
+                    $resolved[$values['main']] = true;
+                    $progress = true;
+                }
+
+                if (!$progress) {
+                    throw new \RuntimeException(
+                        'SportsManagement association XML has missing or cyclic parents for ' . $country
+                    );
+                }
+
+                $pending = $deferred;
+            }
+
+            $records = $ordered;
 
             $ids = [];
             $nameIds = [];
