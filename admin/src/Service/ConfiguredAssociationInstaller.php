@@ -40,7 +40,8 @@ final class ConfiguredAssociationInstaller
     /**
      * Import complete association trees for selected, currently empty countries.
      *
-     * Accepts Joomla's multi-select array and the older single-country string.
+     * Accepts Joomla's multi-select array, old single-country strings and
+     * bounded legacy comma-separated country lists.
      * Malformed values are rejected before any database query or filesystem
      * access. For each valid country, checks whether any association already
      * exists and skips it to preserve edits. XML is parsed without network
@@ -62,7 +63,11 @@ final class ConfiguredAssociationInstaller
         $this->missingSources = [];
 
         if (is_string($selected)) {
-            $selected = [$selected];
+            // Old installations can retain comma-separated country choices.
+            // Split only bounded text, then validate every three-letter token.
+            $selected = strlen($selected) <= 1200
+                ? (preg_split('/\\s*,\\s*/', $selected, -1, PREG_SPLIT_NO_EMPTY) ?: [])
+                : [];
         }
 
         if (!is_array($selected) || count($selected) > 300) {
