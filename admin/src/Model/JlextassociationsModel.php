@@ -12,8 +12,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Service\ConfiguredAssociationInstaller;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
@@ -294,7 +294,13 @@ final class JlextassociationsModel extends SportsManagementListModel
     }
 
     /**
-     * Synchronise configured association countries from the bundled XML files.
+     * Import only missing selected-country associations without changing existing rows.
+     *
+     * The administrator's manual Import action now uses the same guarded
+     * importer as component option saves and extension upgrades. In
+     * particular, it never removes records of unselected countries or
+     * updates administrator-edited associations. Reports newly inserted
+     * records and missing bundled XML, with private error diagnostics.
      *
      * @return array{inserted:int,updated:int,deleted:int,missing:array<int,string>,failed:bool}
      */
@@ -307,153 +313,48 @@ final class JlextassociationsModel extends SportsManagementListModel
             'missing' => [],
             'failed' => false,
         ];
-        $app = $this->administratorApplication();
-        $countries = ComponentHelper::getParams('com_sportsmanagement')->get('cfg_country_associations', []);
-
-        if (is_string($countries)) {
-            $countries = preg_split('/\s*,\s*/', $countries, -1, PREG_SPLIT_NO_EMPTY) ?: [];
-        }
-
-        if (!is_array($countries)) {
-            $countries = [];
-        }
-
-        $countries = array_values(array_unique(array_filter(array_map(
-            static fn($country): string => strtoupper(trim((string) $country)),
-            $countries
-        ))));
-
-        if (!$countries) {
-            return $summary;
-        }
-
-        $masterFile = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/xml_files/associations.xml';
-
-        if (!is_file($masterFile)) {
-            $app->enqueueMessage('Association import file associations.xml is missing.', 'error');
-            $summary['failed'] = true;
-
-            return $summary;
-        }
-
-        $db = $this->getDatabase();
-        $db->transactionStart();
 
         try {
-            $delete = $db->createQuery()
-                ->delete($db->quoteName('#__sportsmanagement_associations'))
-                ->whereNotIn($db->quoteName('country'), $countries, ParameterType::STRING);
-            $db->setQuery($delete)->execute();
+            $selected = ComponentHelper::getParams('com_sportsmanagement')
+                ->get('cfg_country_associations', []);
+            $installer = new ConfiguredAssociationInstaller($this->getDatabase());
+            $installed = $installer->installMissing($selected);
+            $summary['inserted'] = array_sum($installed);
+            $summary['missing'] = $installer->getMissingSources();
 
-            if (method_exists($db, 'getAffectedRows')) {
-                $summary['deleted'] = (int) $db->getAffectedRows();
+            $app = $this->administratorApplication();
+
+            if ($installed !== []) {
+                $app->enqueueMessage(
+                    Text::sprintf(
+                        'COM_SPORTSMANAGEMENT_ASSOCIATIONS_IMPORT_INSTALLED',
+                        $summary['inserted'],
+                        count($installed)
+                    ),
+                    'message'
+                );
             }
 
-            foreach ($countries as $configuredCountry) {
-                $file = JPATH_ADMINISTRATOR
-                    . '/components/com_sportsmanagement/helpers/xml_files/associations_'
-                    . $configuredCountry . '.xml';
-
-                if (!is_file($file)) {
-                    $summary['missing'][] = $configuredCountry;
-                    $app->enqueueMessage(
-                        'Für das Land ' . $configuredCountry . ' gibt es keine Datei mit Regionen.',
-                        'error'
-                    );
-                    continue;
-                }
-
-                $xml = @simplexml_load_file($file);
-
-                if ($xml === false) {
-                    $summary['missing'][] = $configuredCountry;
-                    $app->enqueueMessage('Association XML could not be parsed: ' . basename($file), 'error');
-                    continue;
-                }
-
-                $associationIds = [];
-
-                foreach ($xml->associations as $association) {
-                    if (!isset($association->assocname)) {
-                        continue;
-                    }
-
-                    $node = $association->assocname;
-                    $country = strtoupper(trim((string) $node->attributes()->country));
-
-                    if ($country !== $configuredCountry) {
-                        continue;
-                    }
-
-                    $main = trim((string) $node->attributes()->main);
-                    $parentMain = trim((string) $node->attributes()->parentmain);
-                    $name = trim((string) $node);
-
-                    if ($name === '') {
-                        continue;
-                    }
-
-                    $shortName = trim((string) $node->attributes()->shortname);
-                    $shortName = $shortName !== '' ? $shortName : $name;
-                    $website = trim((string) $node->attributes()->website);
-                    $picture = 'images/com_sportsmanagement/database/associations/'
-                        . trim((string) $node->attributes()->icon);
-                    $flag = trim((string) $node->attributes()->flag);
-                    $alias = OutputFilter::stringURLSafe($name);
-                    $parentId = 0;
-
-                    if ($parentMain !== '' && $parentMain !== '0' && isset($associationIds[$parentMain])) {
-                        $parentId = (int) $associationIds[$parentMain];
-                    }
-
-                    $lookup = $db->createQuery()
-                        ->select($db->quoteName('id'))
-                        ->from($db->quoteName('#__sportsmanagement_associations'))
-                        ->where($db->quoteName('country') . ' = :lookupCountry')
-                        ->where($db->quoteName('name') . ' = :lookupName')
-                        ->bind(':lookupCountry', $country, ParameterType::STRING)
-                        ->bind(':lookupName', $name, ParameterType::STRING);
-                    $db->setQuery($lookup, 0, 1);
-                    $id = (int) $db->loadResult();
-
-                    if ($id <= 0) {
-                        $row = (object) [
-                            'country' => $country,
-                            'name' => $name,
-                            'parent_id' => $parentId,
-                            'picture' => $picture,
-                            'assocflag' => $flag,
-                            'website' => $website,
-                            'short_name' => $shortName,
-                            'middle_name' => $name,
-                            'alias' => $alias,
-                        ];
-                        $db->insertObject('#__sportsmanagement_associations', $row);
-                        $id = (int) $db->insertid();
-                        $summary['inserted']++;
-                    } else {
-                        $row = (object) [
-                            'id' => $id,
-                            'website' => $website,
-                            'short_name' => $shortName,
-                            'middle_name' => $name,
-                            'alias' => $alias,
-                        ];
-                        $db->updateObject('#__sportsmanagement_associations', $row, 'id');
-                        $summary['updated']++;
-                    }
-
-                    if ($main !== '') {
-                        $associationIds[$main] = $id;
-                    }
-                }
+            if ($summary['missing'] !== []) {
+                $app->enqueueMessage(
+                    Text::sprintf(
+                        'COM_SPORTSMANAGEMENT_ASSOCIATIONS_IMPORT_XML_MISSING',
+                        implode(', ', $summary['missing'])
+                    ),
+                    'warning'
+                );
             }
-
-            $db->transactionCommit();
-        } catch (\Throwable $e) {
-            $db->transactionRollback();
+        } catch (\Throwable $exception) {
+            Log::add(
+                'SportsManagement association manual import failed (' . get_class($exception) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
             $summary['failed'] = true;
-            $app->enqueueMessage($e->getMessage(), 'error');
+            $this->administratorApplication()->enqueueMessage(
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'warning'
+            );
         }
 
         return $summary;
