@@ -273,7 +273,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
             try {
                 $db->insertObject('#__sportsmanagement_jl_tables', $record);
             } catch (\Throwable $e) {
-                self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
+                Log::add('SportsManagement database maintenance failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+                self::resolveAdministratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             }
         }
 
@@ -358,7 +359,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
             return true;
         } catch (\Throwable $e) {
-            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            Log::add('SportsManagement database maintenance failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+                self::resolveAdministratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return false;
         }
@@ -627,7 +629,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
                     . Text::_('Installierte Altersgruppen') . '</strong></span><br />'
                     . Text::sprintf('Die Altersgruppe %1$s wurde angelegt!!', $name) . '<br />';
             } catch (\Throwable $e) {
-                self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
+                Log::add('SportsManagement database maintenance failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+                self::resolveAdministratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             }
         }
 
@@ -730,7 +733,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
                         $id = (int) $db->insertid();
                     }
                 } catch (\Throwable $e) {
-                    $app->enqueueMessage($e->getMessage(), 'error');
+                    Log::add('SportsManagement database maintenance failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+                    $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
                     continue;
                 }
 
@@ -776,7 +780,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
                 $db->execute();
             }
         } catch (\Throwable $e) {
-            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            Log::add('SportsManagement database maintenance failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+                self::resolveAdministratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return $this->countryStatus(false);
         }
@@ -827,7 +832,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
                     . Text::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS', strtoupper($token))
                     . '</strong></span><br />';
             } catch (\Throwable $e) {
-                self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
+                Log::add('SportsManagement database maintenance failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+                self::resolveAdministratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
                 return false;
             }
@@ -1222,7 +1228,8 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            self::resolveAdministratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            Log::add('SportsManagement database maintenance failed (' . get_class($e) . ').', Log::ERROR, 'com_sportsmanagement');
+                self::resolveAdministratorApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return [];
         }
