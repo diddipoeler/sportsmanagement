@@ -203,13 +203,15 @@ final class GithubinstallModel extends BaseDatabaseModel
         $host = strtolower((string) ($parts['host'] ?? ''));
         $path = (string) ($parts['path'] ?? '');
 
-        if (str_contains($path, '%') || str_contains($path, '\\')) {
+        if (str_contains($path, '%') || str_contains($path, '\\')
+            || preg_match('~(?:^|/)(?:\\.|\\.\\.)(?:/|$)~', $path) === 1
+            || str_contains($path, '//')) {
             return false;
         }
 
         return match ($host) {
             'github.com' => preg_match(
-                '~^/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/archive/(?:refs/(?:heads|tags)/)?[A-Za-z0-9_./-]+\\.zip$~D',
+                '~^/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/archive/(?:refs/(?:heads|tags)/)?[A-Za-z0-9_./-]+\.zip$~D',
                 $path
             ) === 1,
             'codeload.github.com' => preg_match(
