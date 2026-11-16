@@ -530,25 +530,27 @@ final class DatabasetoolModel extends BaseDatabaseModel
 
     /**
      * Validate configured quote imports and load permitted XML quote sources.
-     * Normalises quote type tokens, restricts file locations and builds status output for the administration page.
+     * Validates bounded quote-type and daily-number settings before
+     * obtaining a database, rejects nested or malformed legacy parameters
+     * without PHP 8 conversion warnings, and loads only local XML files
+     * associated with permitted quote tokens.
      *
      * @param mixed $sm_quotes Parameter used by the native checkQuotes() operation.
      * @return string Result of the checkQuotes() operation.
      */
     public function checkQuotes($sm_quotes): string
     {
-        $db = self::sportsDatabase();
         $this->my_text = '';
+        $definitions = self::normaliseQuoteDefinitions($sm_quotes);
 
-        foreach ((array) $sm_quotes as $definition) {
-            [$type, $daily] = array_pad(array_map('trim', explode(',', (string) $definition, 2)), 2, '');
-            $type = preg_replace('/[^A-Za-z0-9_-]/', '', $type) ?? '';
-            $dailyNumber = (int) $daily;
+        if ($definitions === []) {
+            // Never open the database for corrupt or empty import settings.
+            return '';
+        }
 
-            if ($type === '' || $dailyNumber <= 0) {
-                continue;
-            }
+        $db = self::sportsDatabase();
 
+        foreach ($definitions as [$type, $dailyNumber]) {
             $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/xml_files/quote_' . $type . '.xml';
             $xml = $this->loadXml($file);
 
@@ -604,6 +606,64 @@ final class DatabasetoolModel extends BaseDatabaseModel
         }
 
         return $this->my_text;
+    }
+
+    /**
+     * Parse bounded legacy quote-import definitions before database access.
+     *
+     * Accepts a list of up to 100 comma-delimited quote-type and positive
+     * daily-number values. Nested data, objects, signed or overflowing
+     * numbers, path separators and oversized strings are skipped without
+     * casting them to text. This also prevents malformed options from
+     * selecting arbitrary local XML files or generating PHP 8 warnings.
+     *
+     * @param mixed $raw Untrusted Joomla quote-import configuration.
+     * @return array<int,array{0:string,1:int}> Validated quote import pairs.
+     */
+    private static function normaliseQuoteDefinitions(mixed $raw): array
+    {
+        if (!is_array($raw) || count($raw) > 100) {
+            return [];
+        }
+
+        $definitions = [];
+
+        foreach ($raw as $definition) {
+            if (!is_string($definition) || strlen($definition) > 128) {
+                continue;
+            }
+
+            $parts = explode(',', $definition, 2);
+
+            if (count($parts) !== 2) {
+                continue;
+            }
+
+            $type = trim($parts[0]);
+            $days = trim($parts[1]);
+
+            if ($type === '' || strlen($type) > 64
+                || preg_match('/^[A-Za-z0-9_-]+$/D', $type) !== 1
+                || $days === '' || strlen($days) > 32
+                || preg_match('/^[0-9]+$/D', $days) !== 1) {
+                continue;
+            }
+
+            $digits = ltrim($days, '0');
+            $number = filter_var(
+                $digits === '' ? '0' : $digits,
+                FILTER_VALIDATE_INT,
+                ['options' => ['min_range' => 1]]
+            );
+
+            if ($number === false) {
+                continue;
+            }
+
+            $definitions[] = [$type, $number];
+        }
+
+        return $definitions;
     }
 
     /**
