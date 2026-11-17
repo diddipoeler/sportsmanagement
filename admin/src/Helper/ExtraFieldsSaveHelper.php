@@ -168,13 +168,16 @@ final class ExtraFieldsSaveHelper
      * Validate one positive extra-field identifier without lossy coercion.
      *
      * Rejects booleans, nested values, malformed and overflowing numbers.
+     * Caps input length before running the decimal pattern to bound work
+     * on deliberately oversized or corrupted form identifiers.
      *
      * @param mixed $value Raw submitted field ID.
      * @return int Positive field identifier, or zero if invalid.
      */
     private static function positiveFieldId(mixed $value): int
     {
-        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+        if (!is_int($value) && (!is_string($value) || $value === ''
+            || strlen($value) > 64 || preg_match('/^[0-9]+$/D', $value) !== 1)) {
             return 0;
         }
 
