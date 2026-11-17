@@ -18,6 +18,8 @@ final class PersonNameFormatter
      * Supports prefixes, first names, nicknames, last names and initials
      * in the order expected by existing component templates. Rejects oversized
      * numeric selectors before parsing to avoid costly string conversions.
+     * Discards malformed UTF-8, control bytes and oversized text in every
+     * name field, including formats without initials.
      * @param string|null $prefix Optional title or name prefix.
      * @param string $firstName Person's first name.
      * @param string $nickName Optional nickname.
@@ -34,10 +36,13 @@ final class PersonNameFormatter
         int|string $format = 0
     ): string {
         $parts = [];
-        $prefix = trim((string) $prefix);
-        $firstName = trim($firstName);
-        $nickName = trim($nickName);
-        $lastName = trim($lastName);
+        // Names from legacy imports may contain invalid UTF-8 or hidden
+        // control bytes. Reject malformed fields before trim() can conceal
+        // them, including in formats that do not request initials.
+        $prefix = self::safePart($prefix ?? '');
+        $firstName = self::safePart($firstName);
+        $nickName = self::safePart($nickName);
+        $lastName = self::safePart($lastName);
 
         if ($prefix !== '') {
             $parts[] = $prefix;
@@ -159,6 +164,20 @@ final class PersonNameFormatter
         }
 
         return implode(' ', $parts);
+    }
+
+    /**
+     * Normalize a name field without accepting invalid legacy encoding.
+     *
+     * @param string $value Raw prefix, first name, nickname or surname.
+     * @return string Printable, trimmed name part or empty text.
+     */
+    private static function safePart(string $value): string
+    {
+        return strlen($value) <= 1024 && preg_match('//u', $value) === 1
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $value) !== 1
+                ? trim($value)
+                : '';
     }
 
     /**
