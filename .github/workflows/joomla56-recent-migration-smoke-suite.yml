@@ -11,6 +11,7 @@ on:
       - 'admin/src/View/Jlextfederations/HtmlView.php'
       - 'admin/tmpl/jlextfederations/default.php'
       - 'admin/forms/jlextfederation.xml'
+      - 'admin/forms/filter_jlextfederations.xml'
       - 'admin/src/Field/CountryField.php'
       - 'admin/controllers/ajax.php'
       - 'modules/mod_sportsmanagement_calendar/src/**'
@@ -35,6 +36,7 @@ on:
       - '.github/tests/joomla56-names-image-redirect-calendar-labels.php'
       - '.github/tests/joomla56-match-geocoder-calendar-controls.php'
       - '.github/tests/joomla56-federation-country-dropdown.php'
+      - '.github/tests/joomla56-federation-country-filter-query.php'
       - '.github/tests/joomla56-federation-edit-country-fallback.php'
       - '.github/workflows/joomla56-recent-migration-smoke-suite.yml'
   pull_request:
@@ -109,6 +111,7 @@ jobs:
           php -l .github/tests/joomla56-names-image-redirect-calendar-labels.php
           php -l .github/tests/joomla56-match-geocoder-calendar-controls.php
           php -l .github/tests/joomla56-federation-country-dropdown.php
+          php -l .github/tests/joomla56-federation-country-filter-query.php
           php -l .github/tests/joomla56-federation-edit-country-fallback.php
       - name: Run standalone cases with isolated PHP processes
         run: |
@@ -129,4 +132,5 @@ jobs:
           php .github/tests/joomla56-names-image-redirect-calendar-labels.php
           php .github/tests/joomla56-match-geocoder-calendar-controls.php
           php .github/tests/joomla56-federation-country-dropdown.php
+          php .github/tests/joomla56-federation-country-filter-query.php
           php .github/tests/joomla56-federation-edit-country-fallback.php
