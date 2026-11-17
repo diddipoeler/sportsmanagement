@@ -44,7 +44,7 @@ $direction = is_string($rawDirection) && strtoupper($rawDirection) === 'DESC'
             </div>
             <div class="col-6 col-md-2">
                 <label class="form-label" for="filter_search_nation"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></label>
-                <select class="form-select" name="filter[search_nation]" id="filter_search_nation" onchange="this.form.submit();">
+                <select class="form-select" name="filter[search_nation]" id="filter_search_nation" onchange="if(this.form.elements['limitstart']){this.form.elements['limitstart'].value='0';}this.form.submit();">
                     <option value=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></option>
                     <?php foreach ($this->countryOptions ?? [] as $countryOption) : ?>
                         <?php
