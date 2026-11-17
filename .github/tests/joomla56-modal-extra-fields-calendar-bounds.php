@@ -62,6 +62,10 @@ namespace {
         throw new \RuntimeException('Extra-field null-byte validation must precede deletion.');
     }
 
+    if (!str_contains($admin, 'strlen($value) > 65535')) {
+        throw new \RuntimeException('Administrator extra-field size guard is missing.');
+    }
+
     foreach ([
         [1970, 1, '1970', '01', '1970', '02'],
         [9999, 12, '9999', '11', '9999', '12'],
@@ -73,6 +77,14 @@ namespace {
             $html = (string) ob_get_contents();
         } finally {
             ob_end_clean();
+        }
+
+        // January 1970 must still show the final dates of December 1969
+        // in its inactive first-week cells even when previous navigation is
+        // intentionally clamped to the first supported calendar month.
+        if ($year === 1970 && $month === 1
+            && !str_contains($html, '<span class="calendar__date">29</span>')) {
+            throw new \RuntimeException('Calendar previous-month filler lost December 1969.');
         }
 
         if (!preg_match('/class="title-bar__prev"\\s+data-calendar-year="'
