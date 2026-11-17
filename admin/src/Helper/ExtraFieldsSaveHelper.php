@@ -37,8 +37,9 @@ final class ExtraFieldsSaveHelper
      * compatibility, and avoids inserting replacements when deletes fail,
      * including drivers returning false without throwing an exception.
      * Reports silent insert failures instead of treating them as saved rows.
-     * Invalid UTF-8 values and embedded NUL bytes are discarded before the
-     * existing row is deleted, preserving valid historical field data.
+     * Invalid UTF-8 values, embedded NUL bytes and unreasonably long text
+     * are discarded before the existing row is deleted, preserving valid
+     * historical field data and bounding database write allocations.
      *
      * @param array<string,mixed> $post Submitted extra-field form input.
      * @param int $itemId Identifier of the saved entity.
@@ -77,7 +78,9 @@ final class ExtraFieldsSaveHelper
             // never erase a legitimate existing extra-field value.
             $value = (string) $rawValue;
 
-            if (preg_match('//u', $value) !== 1 || str_contains($value, "\\0")) {
+            if (strlen($value) > 65535
+                || preg_match('//u', $value) !== 1
+                || str_contains($value, "\0")) {
                 continue;
             }
 
