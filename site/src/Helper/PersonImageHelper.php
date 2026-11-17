@@ -52,7 +52,8 @@ final class PersonImageHelper
      * Checks candidate paths in priority order so views can prefer
      * personal pictures and fall back to the configured default.
      * Unsafe higher-priority URLs are skipped rather than hiding a valid
-     * later candidate or poisoning the placeholder fallback.
+     * later candidate or poisoning the placeholder fallback. Checks the
+     * original text before trimming, preserving raw control-byte rejection.
      *
      * @param string ...$candidates Possible picture paths in priority order.
      * @return string Selected path or the configured placeholder.
@@ -62,10 +63,15 @@ final class PersonImageHelper
         $placeholder = self::placeholder();
 
         foreach ($candidates as $candidate) {
+            // Inspect the unmodified candidate before trim() can conceal a
+            // trailing newline, NUL or other imported control character.
+            if (!self::safeCandidate($candidate)) {
+                continue;
+            }
+
             $candidate = trim($candidate);
 
-            if ($candidate !== '' && $candidate !== $placeholder
-                && self::safeCandidate($candidate)) {
+            if ($candidate !== '' && $candidate !== $placeholder) {
                 return $candidate;
             }
         }
