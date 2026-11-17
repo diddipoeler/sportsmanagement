@@ -1,0 +1,62 @@
+name: Joomla 5/6 recent migration smoke suite
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - '.github/tests/joomla56-ajax-calendar-bridges.php'
+      - '.github/tests/joomla56-project-title-module-db-guards.php'
+      - '.github/tests/joomla56-date-kml-calendar-inputs.php'
+      - '.github/tests/joomla56-location-utf8-calendar-padded-timestamps.php'
+      - '.github/tests/joomla56-project-navigation-name-matches.php'
+      - '.github/tests/joomla56-name-extrafields-clubicons.php'
+      - '.github/tests/joomla56-team-logos-options-matches.php'
+      - '.github/tests/joomla56-match-time-admin-calendar-date-guards.php'
+      - '.github/workflows/joomla56-recent-migration-smoke-suite.yml'
+  pull_request:
+    paths:
+      - 'site/src/Helper/**'
+      - 'admin/src/Helper/**'
+      - 'modules/**/src/**'
+      - '.github/tests/joomla56-*.php'
+      - '.github/workflows/joomla56-recent-migration-smoke-suite.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: Lint standalone migration test cases
+        run: |
+          php -l .github/tests/joomla56-ajax-calendar-bridges.php
+          php -l .github/tests/joomla56-project-title-module-db-guards.php
+          php -l .github/tests/joomla56-date-kml-calendar-inputs.php
+          php -l .github/tests/joomla56-location-utf8-calendar-padded-timestamps.php
+          php -l .github/tests/joomla56-project-navigation-name-matches.php
+          php -l .github/tests/joomla56-name-extrafields-clubicons.php
+          php -l .github/tests/joomla56-team-logos-options-matches.php
+          php -l .github/tests/joomla56-match-time-admin-calendar-date-guards.php
+      - name: Run standalone cases with isolated PHP processes
+        run: |
+          set -e
+          php .github/tests/joomla56-ajax-calendar-bridges.php
+          php .github/tests/joomla56-project-title-module-db-guards.php
+          php .github/tests/joomla56-date-kml-calendar-inputs.php
+          php .github/tests/joomla56-location-utf8-calendar-padded-timestamps.php
+          php .github/tests/joomla56-project-navigation-name-matches.php
+          php .github/tests/joomla56-name-extrafields-clubicons.php
+          php .github/tests/joomla56-team-logos-options-matches.php
+          php .github/tests/joomla56-match-time-admin-calendar-date-guards.php
