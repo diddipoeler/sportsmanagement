@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fields name="filter" addfieldprefix="Diddipoeler\Component\SportsManagement\Administrator\Field">
+        <field name="search" type="text"
+            label="JGLOBAL_LOOKING_FOR" hint="JSEARCH_FILTER" />
+        <field name="state" type="status" label="JOPTION_SELECT_PUBLISHED">
+            <option value="">JOPTION_SELECT_PUBLISHED</option>
+        </field>
+        <field name="search_nation" type="Country"
+            label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
+            description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC">
+            <option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+        </field>
+    </fields>
+    <fields name="list">
+        <field name="limit" type="limitbox" label="JGLOBAL_LIST_LIMIT" default="25" />
+    </fields>
+</form>
