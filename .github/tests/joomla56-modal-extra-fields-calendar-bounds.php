@@ -132,5 +132,18 @@ namespace {
         }
     }
 
+    // Calendar dropdowns must reject raw control characters instead of
+    // turning "2\n" or "2000\n" into legitimate selected options.
+    if (!str_contains(CalendarFunctions::monthList('2'), 'value="02" selected')
+        || str_contains(CalendarFunctions::monthList("2\n"), ' selected')
+        || str_contains(CalendarFunctions::monthList(str_repeat('9', 100000)), ' selected')) {
+        throw new \RuntimeException('Calendar month selector accepted invalid raw input.');
+    }
+
+    if (!str_contains(CalendarFunctions::yearList('2000'), 'value="2000" selected')
+        || str_contains(CalendarFunctions::yearList("2000\n"), 'value="2000" selected')) {
+        throw new \RuntimeException('Calendar year selector accepted invalid raw input.');
+    }
+
     echo "Joomla 5/6 modal, extra-field and calendar boundary regressions passed.\n";
 }
