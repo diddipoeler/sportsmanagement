@@ -24,6 +24,12 @@ namespace Joomla\Database {
 namespace Joomla\CMS\Application {
     interface CMSApplicationInterface
     {
+        /**
+         * Identify the Joomla frontend client without booting the CMS.
+         *
+         * @param string $client Requested Joomla application context.
+         * @return bool True for the simulated site client.
+         */
         public function isClient(string $client): bool;
     }
 }
