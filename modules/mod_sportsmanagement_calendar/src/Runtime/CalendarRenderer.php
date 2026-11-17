@@ -110,7 +110,9 @@ class CalendarRenderer
         }
 
         foreach ($names as $name) {
-            if (!is_string($name) || trim($name) === '') {
+            if (!is_string($name) || $name === '' || strlen($name) > 100
+                || trim($name) === '' || preg_match('//u', $name) !== 1
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $name) === 1) {
                 return;
             }
         }
