@@ -161,6 +161,7 @@ final class RquotesHelper
      * strings, fragments or control characters. Invalid remote settings
      * disable relative image links instead of falling back to a wrong host.
      * Invalid database selectors must not enable a remote picture server.
+     * Refuses control bytes in the original configuration before trimming.
      *
      * @param mixed $selector Configured SportsManagement database selector.
      * @param mixed $remoteBase Remote image-server URL from component settings.
@@ -179,10 +180,13 @@ final class RquotesHelper
             return $localBase;
         }
 
-        if (!is_string($remoteBase)) {
+        if (!is_string($remoteBase)
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $remoteBase) === 1) {
             return '';
         }
 
+        // Reject malformed raw configuration before trim() can silently
+        // discard trailing newlines and other unsafe control bytes.
         $url = trim($remoteBase);
 
         if (filter_var($url, FILTER_VALIDATE_URL) === false
