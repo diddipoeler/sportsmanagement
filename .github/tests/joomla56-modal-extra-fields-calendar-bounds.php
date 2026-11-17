@@ -87,10 +87,10 @@ namespace {
             throw new \RuntimeException('Calendar previous-month filler lost December 1969.');
         }
 
-        if (!preg_match('/class="title-bar__prev"\\s+data-calendar-year="'
-            . $previousYear . '"\\s+data-calendar-month="' . $previousNumber . '"/', $html)
-            || !preg_match('/class="title-bar__next"\\s+data-calendar-year="'
-                . $nextYear . '"\\s+data-calendar-month="' . $nextNumber . '"/', $html)) {
+        if (!preg_match('/class="title-bar__prev"\s+data-calendar-year="'
+            . $previousYear . '"\s+data-calendar-month="' . $previousNumber . '"/', $html)
+            || !preg_match('/class="title-bar__next"\s+data-calendar-year="'
+                . $nextYear . '"\s+data-calendar-month="' . $nextNumber . '"/', $html)) {
             throw new \RuntimeException('Calendar generated unsupported navigation year: ' . $year);
         }
     }
