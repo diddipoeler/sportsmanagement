@@ -61,6 +61,35 @@ namespace {
     }
 
     $calendar = new CalendarRenderer();
+    // Legacy module parameters must contain complete numeric tokens.
+    $calendar->setStartDay('05');
+
+    if ($calendar->getStartDay() !== 5) {
+        throw new \RuntimeException('Valid zero-padded weekday setting was rejected.');
+    }
+
+    foreach (["5\n", " 5", "5\0", '5suffix', str_repeat('9', 1000), []] as $badDay) {
+        $calendar->setStartDay($badDay);
+
+        if ($calendar->getStartDay() !== 0) {
+            throw new \RuntimeException('Invalid calendar start weekday was accepted.');
+        }
+    }
+
+    $calendar->setStartMonth('09');
+
+    if ($calendar->getStartMonth() !== 9) {
+        throw new \RuntimeException('Valid zero-padded calendar month was rejected.');
+    }
+
+    foreach (["9\n", "\t9", "9\0", '9suffix', str_repeat('9', 1000), []] as $badMonth) {
+        $calendar->setStartMonth($badMonth);
+
+        if ($calendar->getStartMonth() !== 1) {
+            throw new \RuntimeException('Invalid calendar start month was accepted.');
+        }
+    }
+
     $originalDays = $calendar->getDayNames();
     $originalMonths = $calendar->getMonthNames();
 
