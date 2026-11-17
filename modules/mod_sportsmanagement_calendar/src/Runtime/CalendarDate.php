@@ -37,7 +37,7 @@ final class CalendarDate
         if ((!is_int($value) && !is_string($value))
             || (is_string($value) && (trim($value) === '' || strlen($value) > 128
                 || trim($value) !== $value
-                || preg_match('/[\\x00-\\x1F\\x7F]/', $value) === 1)))) {
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $value) === 1))) {
             return null;
         }
 
