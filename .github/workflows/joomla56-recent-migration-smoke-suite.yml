@@ -14,8 +14,6 @@ on:
       - 'modules/mod_sportsmanagement_count_rekord/src/**'
       - 'modules/mod_sportsmanagement_liveticker/src/**'
       - 'modules/mod_sportsmanagement_rquotes/src/**'
-      - 'modules/mod_sportsmanagement_calendar/src/**'
-      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
       - '.github/tests/joomla56-ajax-calendar-bridges.php'
       - '.github/tests/joomla56-project-title-module-db-guards.php'
       - '.github/tests/joomla56-date-kml-calendar-inputs.php'
@@ -58,6 +56,24 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
           tools: none
+      - name: Check native helper and module source syntax and PHPDoc
+        run: |
+          set -e
+          files=(
+            site/src/Helper/PersonNameFormatter.php
+            site/src/Helper/ProjectNavigationHelper.php
+            site/src/Helper/MatchResultHelper.php
+            admin/src/Helper/RemoteImageDownloadHelper.php
+            admin/src/Helper/LocationHelper.php
+            admin/src/Helper/ExtraFieldsSaveHelper.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarDate.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
+            modules/mod_sportsmanagement_calendar/src/Runtime/CalendarRenderer.php
+          )
+          for file in "${files[@]}"; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-function-docs.php "${files[@]}"
       - name: Lint standalone migration test cases
         run: |
           php -l .github/tests/joomla56-ajax-calendar-bridges.php
