@@ -164,17 +164,21 @@ final class CalendarFunctions
 
     /**
      * Create the month selector for the alternative legacy calendar layout.
-     * Generates twelve month options, marks a valid requested month as selected and avoids casting non-scalar filter input into a calendar month.
+     * Generates twelve month options, marks a valid requested month as
+     * selected and avoids non-scalar casts. Invalid raw controls and
+     * oversized numeric strings cannot silently become valid selectors.
      *
      * @param mixed $selected Requested calendar month.
      * @return string Month option HTML.
      */
     public static function monthList($selected = ''): string
     {
-        $selected = (is_int($selected) || is_string($selected))
-            && preg_match('/^[0-9]+$/D', trim((string) $selected)) === 1
-            ? (int) $selected
-            : 0;
+        $rawSelected = is_int($selected) || is_string($selected) ? (string) $selected : '';
+        $selected = $rawSelected !== '' && strlen($rawSelected) <= 64
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $rawSelected) !== 1
+            && preg_match('/^[0-9]+$/D', $rawSelected) === 1
+                ? (int) $rawSelected
+                : 0;
         $options = '';
 
         for ($month = 1; $month <= 12; $month++) {
@@ -191,15 +195,17 @@ final class CalendarFunctions
      * Create a bounded year selector around the requested calendar year.
      * Accepts years between 1970 and 9999, otherwise uses the current
      * year. Renders at most five neighbouring years on either side without
-     * emitting year values outside the supported calendar range.
+     * emitting year values outside the supported calendar range. Only raw
+     * four-digit year strings are accepted; controls are not trimmed away.
      *
      * @param mixed $selected Requested display year.
      * @return string Year option HTML.
      */
     public static function yearList($selected = ''): string
     {
-        $year = is_int($selected) || is_string($selected) ? trim((string) $selected) : '';
-        $selected = preg_match('/^[0-9]{4}$/D', $year) === 1
+        $year = is_int($selected) || is_string($selected) ? (string) $selected : '';
+        $selected = strlen($year) === 4
+            && preg_match('/^[0-9]{4}$/D', $year) === 1
             && (int) $year >= 1970 && (int) $year <= 9999
             ? (int) $year
             : (int) date('Y');
