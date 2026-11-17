@@ -160,14 +160,25 @@ namespace {
 
     $html = $view->render($root . '/admin/tmpl/jlextfederations/default.php');
 
-    if (!str_contains($html, '<select class="form-select" name="filter_search_nation"')
+    if (!str_contains($html, '<select class="form-select" name="filter[search_nation]"')
         || str_contains($html, 'type="text" name="filter_search_nation"')
+        || !str_contains($html, 'name="filter[search]"')
+        || !str_contains($html, 'name="filter[state]"')
         || !str_contains($html, '<option value="DEU" selected>Deutschland</option>')
         || !str_contains($html, '<option value="FRA">France &amp; Europe</option>')
         || str_contains($html, 'value="../unsafe"')
         || str_contains($html, 'value="ESP"')
-        || !str_contains($html, '&filter_search_nation=')) {
+        || !str_contains($html, '&filter[search_nation]=')) {
         throw new \RuntimeException('Federation list failed to render a safe, populated country dropdown.');
+    }
+
+    $filterForm = simplexml_load_file($root . '/admin/forms/filter_jlextfederations.xml');
+
+    if ($filterForm === false
+        || count($filterForm->xpath('//fields[@name="filter"]/field[@name="search_nation" and @type="Country"]')) !== 1
+        || count($filterForm->xpath('//fields[@name="filter"]/field[@name="search"]')) !== 1
+        || count($filterForm->xpath('//fields[@name="filter"]/field[@name="state"]')) !== 1) {
+        throw new \RuntimeException('Native Joomla federation country filter XML is missing.');
     }
 
     $model = file_get_contents($root . '/admin/src/Model/JlextfederationsModel.php');
