@@ -61,7 +61,8 @@ final class ProjectNavigationHelper
      * Malformed league selectors cannot be silently truncated by PHP casts.
      * Builds ID:alias slugs in PHP rather than MySQL-only CONCAT_WS, keeping
      * the query portable to PostgreSQL database drivers. Invalid UTF-8 project
-     * names are rejected before reaching a Joomla database query.
+     * names are rejected before reaching a Joomla database query. Raw
+     * control bytes are checked before whitespace normalization can hide them.
      *
      * @param DatabaseInterface $db Joomla database connection.
      * @param object $project Current project providing league and name.
@@ -72,7 +73,14 @@ final class ProjectNavigationHelper
     {
         $rawLeagueId = $project->league_id ?? null;
         $leagueId = self::positiveId($rawLeagueId);
-        $name = is_string($project->name ?? null) ? trim($project->name) : '';
+        $rawName = $project->name ?? null;
+        // A corrupted name must never become valid merely because trim()
+        // removes a trailing NUL, tab or newline from the database value.
+        if (is_string($rawName) && preg_match('/[\\x00-\\x1F\\x7F]/', $rawName) === 1) {
+            return null;
+        }
+
+        $name = is_string($rawName) ? trim($rawName) : '';
         $projectId = self::positiveId($project->id ?? null);
 
         if ($leagueId <= 0 || $name === '' || strlen($name) > 255
