@@ -11,6 +11,7 @@ on:
       - 'admin/src/View/Jlextfederations/HtmlView.php'
       - 'admin/tmpl/jlextfederations/default.php'
       - 'admin/forms/jlextfederation.xml'
+      - 'admin/models/forms/jlextfederation.xml'
       - 'admin/forms/filter_jlextfederations.xml'
       - 'admin/src/Field/CountryField.php'
       - 'admin/controllers/ajax.php'
