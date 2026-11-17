@@ -94,6 +94,8 @@ final class SportsManagementDateHelper
      * Invalid date/time or timezone input becomes null instead of causing
      * PHP 8 exceptions during administration. Impossible calendar days
      * and invalid clock components are rejected before Joomla Date parses them.
+     * Stored values and timezone identifiers with raw control bytes are
+     * rejected before surrounding whitespace is normalized.
      *
      * @param object $match Match row containing match_date and timezone.
      * @return void Updates match_date and timezone properties in place.
@@ -101,6 +103,12 @@ final class SportsManagementDateHelper
     public static function convertMatchDateToTimezone(object $match): void
     {
         $raw = $match->match_date ?? null;
+        // Never let trim() hide a corrupted stored match timestamp.
+        if (is_string($raw) && preg_match('/[\\x00-\\x1F\\x7F]/', $raw) === 1) {
+            $match->match_date = null;
+            return;
+        }
+
         $date = is_string($raw) ? trim($raw)
             : ($raw instanceof \DateTimeInterface ? $raw->format('Y-m-d H:i:s') : '');
 
@@ -129,7 +137,16 @@ final class SportsManagementDateHelper
             return;
         }
 
-        $timezone = is_string($match->timezone ?? null) ? trim($match->timezone) : '';
+        $rawTimezone = $match->timezone ?? null;
+        // Reject an invalid timezone instead of silently stripping control
+        // bytes or unexpectedly selecting a different project timezone.
+        if (is_string($rawTimezone)
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $rawTimezone) === 1) {
+            $match->match_date = null;
+            return;
+        }
+
+        $timezone = is_string($rawTimezone) ? trim($rawTimezone) : '';
         if ($timezone === '') {
             $timezone = 'UTC';
         }
@@ -154,13 +171,20 @@ final class SportsManagementDateHelper
      * formats are round-trip checked to reject PHP's silent date rollover;
      * unknown input is returned unchanged for upstream validation. Refuses
      * control characters before calling PHP's date parser to avoid ValueError
-     * exceptions on malformed Joomla form submissions.
+     * exceptions on malformed Joomla form submissions. Examines the raw
+     * value before trimming so discarded control bytes cannot bypass checks.
      *
      * @param string|null $date Date text from Joomla forms or database fields.
      * @return string|null ISO-formatted date, original unknown input, or null for empty dates.
      */
     public static function toSqlDate(?string $date): ?string
     {
+        // The original form value must be validated before trim() drops
+        // leading or trailing NUL bytes and other control characters.
+        if ($date !== null && preg_match('/[\\x00-\\x1F\\x7F]/', $date) === 1) {
+            return $date;
+        }
+
         $date = trim((string) $date);
 
         if ($date === '' || $date === '0000-00-00' || $date === '00-00-0000') {
