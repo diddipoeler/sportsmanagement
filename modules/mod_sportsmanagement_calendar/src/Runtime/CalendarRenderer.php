@@ -60,6 +60,8 @@ class CalendarRenderer
      * Replace the weekday labels only when all seven names are valid.
      * Sparse, incomplete or nested legacy settings must not cause missing
      * weekday indexes or PHP array-to-string warnings during rendering.
+     * Rejects oversized, invalidly encoded and control-bearing labels before
+     * replacing the existing list.
      *
      * @param array<int,string> $names Seven nonempty labels in Sunday-to-Saturday order.
      * @return void
@@ -71,7 +73,9 @@ class CalendarRenderer
         }
 
         foreach ($names as $name) {
-            if (!is_string($name) || trim($name) === '') {
+            if (!is_string($name) || $name === '' || strlen($name) > 100
+                || trim($name) === '' || preg_match('//u', $name) !== 1
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $name) === 1) {
                 return;
             }
         }
@@ -94,6 +98,7 @@ class CalendarRenderer
      * Replace the month labels only when all twelve names are valid.
      * Rejects sparse, incomplete or nested imported values instead of
      * leaving the calendar heading with missing indexes or warnings.
+     * Verifies each label's length, UTF-8 encoding and control bytes.
      *
      * @param array<int,string> $names Twelve nonempty names from January to December.
      * @return void
