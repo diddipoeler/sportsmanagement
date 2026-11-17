@@ -163,7 +163,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
          * @param string|null $direction Default direction.
          * @return void
          */
-        protected function populateState($ordering = null, $direction = null): void
+        protected function populateState($ordering = null, $direction = null)
         {
             foreach (($GLOBALS['nativeFederationFilters'] ?? []) as $key => $value) {
                 $this->savedState['filter.' . $key] = $value;
