@@ -180,6 +180,7 @@ namespace {
 
     if (!str_contains($html, '<select class="form-select" name="filter[search_nation]"')
         || str_contains($html, 'type="text" name="filter_search_nation"')
+        || !str_contains($html, "elements['limitstart'].value='0'")
         || !str_contains($html, 'name="filter[search]"')
         || !str_contains($html, 'name="filter[state]"')
         || !str_contains($html, '<option value="DEU" selected>Deutschland</option>')
