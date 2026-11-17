@@ -194,13 +194,20 @@ final class SportsManagementDateHelper
      * including valid HH:MM:SS suffixes, as the current moment. Rejects
      * corrupt clock components instead of turning them into the current time.
      * Parses other values through PHP before producing a Joomla timestamp;
-     * invalid input returns zero.
+     * invalid input returns zero. Raw control characters are rejected
+     * before whitespace trimming to preserve strict database validation.
      *
      * @param string|null $date Date/time value, or null to use the current time.
      * @return int Unix timestamp, or zero when parsing fails.
      */
     public static function getTimestamp(?string $date = null): int
     {
+        // Validate raw input: trim() would silently erase trailing NUL,
+        // tab or newline bytes before strtotime() examines the value.
+        if ($date !== null && preg_match('/[\\x00-\\x1F\\x7F]/', $date) === 1) {
+            return 0;
+        }
+
         $date = trim((string) $date);
 
         // Historical database imports can contain zero dates with different
