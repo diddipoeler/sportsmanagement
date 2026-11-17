@@ -13,71 +13,126 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Table\MatchstatisticTable;
 use Joomla\Database\ParameterType;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 
 final class MatchstatisticModel extends SportsManagementAdminModel
 {
     /**
-     * Read player statistics recorded for the selected match.
+     * Read validated player statistics for the selected match.
      *
-     * Loads match-statistic rows using a bound integer match ID and groups
-     * values by project team, team player and statistic identifier.
-     * Returns the team-keyed empty structure when no match is selected
-     * or the database query fails.
+     * Accepts only full positive decimal identifiers for the match and both
+     * project teams, avoiding PHP 8 warnings and integer truncation. Uses a
+     * Joomla bound query and retains the existing nested team, relation and
+     * statistic keys expected by the administrator editor. Discards malformed
+     * or foreign-team rows before rendering. Logs database failures by
+     * exception class and supplies only a generic error to Joomla forms.
      *
-     * @param int $matchId Match identifier.
-     * @param int $projectTeam1Id First project team ID.
-     * @param int $projectTeam2Id Second project team ID.
-     * @return array<int,array<int,array<int,mixed>>> Match player statistics.
+     * @param mixed $matchId Match ID from the administrator request.
+     * @param mixed $projectTeam1Id First project team ID.
+     * @param mixed $projectTeam2Id Second project team ID.
+     * @return array<int,array<int,array<int,mixed>>> Validated match statistics.
      */
     public function getMatchStatsInput($matchId = 0, $projectTeam1Id = 0, $projectTeam2Id = 0): array
     {
-        $matchId = (int) $matchId;
-        $projectTeam1Id = (int) $projectTeam1Id;
-        $projectTeam2Id = (int) $projectTeam2Id;
+        $matchId = self::positiveStatisticId($matchId);
+        $projectTeam1Id = self::positiveStatisticId($projectTeam1Id);
+        $projectTeam2Id = self::positiveStatisticId($projectTeam2Id);
+        // Preserve the historical team-keyed empty response, including the
+        // placeholder key zero, for Joomla's existing statistic editor.
         $stats = [
-            $projectTeam1Id => [],
-            $projectTeam2Id => [],
+            $projectTeam1Id ?? 0 => [],
+            $projectTeam2Id ?? 0 => [],
         ];
 
-        if ($matchId <= 0) {
+        if ($matchId === null || ($projectTeam1Id === null && $projectTeam2Id === null)) {
             return $stats;
         }
 
-        $db = $this->getDatabase();
-        $query = $db->createQuery()
-            ->select([
-                $db->quoteName('projectteam_id'),
-                $db->quoteName('teamplayer_id'),
-                $db->quoteName('statistic_id'),
-                $db->quoteName('value'),
-            ])
-            ->from($db->quoteName('#__sportsmanagement_match_statistic'))
-            ->where($db->quoteName('match_id') . ' = :matchId')
-            ->bind(':matchId', $matchId, ParameterType::INTEGER);
-
         try {
+            $db = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select([
+                    $db->quoteName('projectteam_id'),
+                    $db->quoteName('teamplayer_id'),
+                    $db->quoteName('statistic_id'),
+                    $db->quoteName('value'),
+                ])
+                ->from($db->quoteName('#__sportsmanagement_match_statistic'))
+                ->where($db->quoteName('match_id') . ' = :matchId')
+                ->bind(':matchId', $matchId, ParameterType::INTEGER);
             $db->setQuery($query);
-            $rows = $db->loadObjectList() ?: [];
-        } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            $rows = $db->loadObjectList();
+        } catch (\Throwable $error) {
+            Log::add(
+                __METHOD__ . ': match statistics read failed (' . get_class($error) . ').',
+                Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+
+            return $stats;
+        }
+
+        if (!is_array($rows)) {
             return $stats;
         }
 
         foreach ($rows as $row) {
-            $projectTeamId = (int) ($row->projectteam_id ?? 0);
-            $teamPlayerId = (int) ($row->teamplayer_id ?? 0);
-            $statisticId = (int) ($row->statistic_id ?? 0);
-
-            if ($projectTeamId <= 0 || $teamPlayerId <= 0 || $statisticId <= 0) {
+            if (!is_object($row)) {
                 continue;
             }
 
-            $stats[$projectTeamId] ??= [];
-            $stats[$projectTeamId][$teamPlayerId] ??= [];
-            $stats[$projectTeamId][$teamPlayerId][$statisticId] = $row->value;
+            $teamId = self::positiveStatisticId($row->projectteam_id ?? null);
+            $relationId = self::positiveStatisticId($row->teamplayer_id ?? null);
+            $statisticId = self::positiveStatisticId($row->statistic_id ?? null);
+            $value = $row->value ?? null;
+
+            if ($teamId === null || !array_key_exists($teamId, $stats)
+                || $relationId === null || $statisticId === null
+                || (!is_string($value) && !is_int($value) && !is_float($value))
+                || (is_float($value) && !is_finite($value))
+                || (is_string($value) && (strlen($value) > 512
+                    || preg_match('/[\\x00-\\x1F\\x7F]/', $value) === 1))) {
+                continue;
+            }
+
+            $stats[$teamId][$relationId][$statisticId] = $value;
         }
 
         return $stats;
+    }
+
+    /**
+     * Parse a positive match, project team or statistic relation ID.
+     *
+     * Supports decimal database IDs and leading-zero strings but rejects
+     * partial strings, arrays, booleans and values exceeding PHP_INT_MAX
+     * before they can become nested array keys or SQL query parameters.
+     *
+     * @param mixed $candidate Raw Joomla form or database identifier.
+     * @return int|null Positive integer ID or null when invalid.
+     */
+    private static function positiveStatisticId(mixed $candidate): ?int
+    {
+        if (is_int($candidate)) {
+            return $candidate > 0 ? $candidate : null;
+        }
+
+        if (!is_string($candidate) || strlen($candidate) > 64
+            || preg_match('/^[0-9]+$/D', $candidate) !== 1) {
+            return null;
+        }
+
+        $digits = ltrim($candidate, '0');
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '' || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return null;
+        }
+
+        return (int) $digits;
     }
 
     /**

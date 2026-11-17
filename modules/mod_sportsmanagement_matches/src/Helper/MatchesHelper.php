@@ -79,6 +79,8 @@ final class MatchesHelper
      * Rejects non-site applications before entering the recoverable query
      * error handler so administrator execution is never silently accepted.
      * Validates legacy display options and avoids logging sensitive SQL text.
+     * Treats the optional legacy-update flag as a strict boolean or 0/1
+     * setting so malformed nonempty arrays cannot activate it.
      *
      * @param Registry $params Joomla Matches module configuration.
      * @param CMSApplicationInterface $app Current Joomla application.
@@ -98,9 +100,12 @@ final class MatchesHelper
             throw new \RuntimeException('SportsManagement Matches requires the Joomla site application.', 500);
         }
 
+        $updateValue = $params->get('ishd_update', 0);
+        $legacyUpdateRequested = $updateValue === true
+            || self::boundedMatchesOption($updateValue, 0, 1) === 1;
         $projects = $this->ids($params->get('p', []));
         if (!$projects) {
-            return ['matches' => [], 'legacy_update_requested' => (bool) $params->get('ishd_update', 0)];
+            return ['matches' => [], 'legacy_update_requested' => $legacyUpdateRequested];
         }
 
         try {
@@ -117,9 +122,11 @@ final class MatchesHelper
                 : [];
             $rawDateFormat = $params->get('dateformat', 'DATE_FORMAT_LC4');
             $dateFormat = is_string($rawDateFormat) && strlen($rawDateFormat) <= 100
+                && preg_match('/[\x00-\x1F\x7F]/', $rawDateFormat) !== 1
                 ? $rawDateFormat : 'DATE_FORMAT_LC4';
             $rawTimeFormat = $params->get('timeformat', 'H:i');
             $timeFormat = is_string($rawTimeFormat) && strlen($rawTimeFormat) <= 100
+                && preg_match('/[\x00-\x1F\x7F]/', $rawTimeFormat) !== 1
                 ? $rawTimeFormat : 'H:i';
             $showNotice = self::boundedMatchesOption($params->get('show_match_notice', 1), 1, 1) === 1;
             $showSpectators = self::boundedMatchesOption($params->get('show_spectators', 0), 0, 1) === 1;
@@ -168,12 +175,12 @@ final class MatchesHelper
                 });
             }
 
-            return ['matches' => $rows, 'legacy_update_requested' => (bool) $params->get('ishd_update', 0)];
+            return ['matches' => $rows, 'legacy_update_requested' => $legacyUpdateRequested];
         } catch (\Throwable $e) {
             // Database errors must be logged server-side, not exposed to site visitors.
             Log::add(__METHOD__ . ' failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
             $app->enqueueMessage('SportsManagement matches could not be loaded.', 'error');
-            return ['matches' => [], 'legacy_update_requested' => (bool) $params->get('ishd_update', 0)];
+            return ['matches' => [], 'legacy_update_requested' => $legacyUpdateRequested];
         }
     }
 }

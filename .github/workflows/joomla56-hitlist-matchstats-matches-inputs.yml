@@ -1,0 +1,63 @@
+name: Joomla 5/6 hitlist match statistics and Matches module inputs
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/HitlistModel.php'
+      - 'admin/src/Model/MatchstatisticModel.php'
+      - 'admin/src/Model/MatchstaffstatisticModel.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/tests/joomla56_hitlist_matchstats_matches_inputs.php'
+      - '.github/workflows/joomla56-hitlist-matchstats-matches-inputs.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Model/HitlistModel.php'
+      - 'admin/src/Model/MatchstatisticModel.php'
+      - 'admin/src/Model/MatchstaffstatisticModel.php'
+      - 'modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php'
+      - '.github/tests/joomla56_hitlist_matchstats_matches_inputs.php'
+      - '.github/workflows/joomla56-hitlist-matchstats-matches-inputs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate PHP syntax in site admin and module changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Model/HitlistModel.php \
+            admin/src/Model/MatchstatisticModel.php \
+            admin/src/Model/MatchstaffstatisticModel.php \
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php \
+            .github/tests/joomla56_hitlist_matchstats_matches_inputs.php; do
+            php -l "$file"
+          done
+      - name: Check PHP metadata and function docblocks
+        shell: bash
+        run: |
+          php .github/scripts/check-php-file-headers.php
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Model/HitlistModel.php \
+            admin/src/Model/MatchstatisticModel.php \
+            admin/src/Model/MatchstaffstatisticModel.php \
+            modules/mod_sportsmanagement_matches/src/Helper/MatchesHelper.php \
+            .github/tests/joomla56_hitlist_matchstats_matches_inputs.php
+      - name: Validate isolated Joomla 5/6 input and database guards
+        run: php .github/tests/joomla56_hitlist_matchstats_matches_inputs.php
