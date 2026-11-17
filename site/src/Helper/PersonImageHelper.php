@@ -22,6 +22,7 @@ final class PersonImageHelper
      * Reads the component's ph_player option using Joomla parameters
      * and returns the trimmed placeholder path for site templates.
      * Malformed registry values are ignored instead of being string-cast.
+     * Invalidly encoded or unsafe placeholder URLs are not returned to views.
      *
      * @return string Placeholder picture path, possibly empty.
      */
@@ -31,9 +32,18 @@ final class PersonImageHelper
 
         // Misconfigured Joomla registry data can contain arrays or objects.
         // Never render those values as "Array" or trigger a PHP 8 warning.
-        return is_string($picture) || is_int($picture)
-            ? trim((string) $picture)
-            : '';
+        if (!is_string($picture) && !is_int($picture)) {
+            return '';
+        }
+
+        $picture = (string) $picture;
+
+        return strlen($picture) <= 4096
+            && preg_match('//u', $picture) === 1
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $picture) !== 1
+            && self::safeCandidate($picture)
+                ? trim($picture)
+                : '';
     }
 
     /**
@@ -41,6 +51,8 @@ final class PersonImageHelper
      *
      * Checks candidate paths in priority order so views can prefer
      * personal pictures and fall back to the configured default.
+     * Unsafe higher-priority URLs are skipped rather than hiding a valid
+     * later candidate or poisoning the placeholder fallback.
      *
      * @param string ...$candidates Possible picture paths in priority order.
      * @return string Selected path or the configured placeholder.
@@ -52,12 +64,30 @@ final class PersonImageHelper
         foreach ($candidates as $candidate) {
             $candidate = trim($candidate);
 
-            if ($candidate !== '' && $candidate !== $placeholder) {
+            if ($candidate !== '' && $candidate !== $placeholder
+                && self::safeCandidate($candidate)) {
                 return $candidate;
             }
         }
 
         return $placeholder;
+    }
+
+    /**
+     * Validate a candidate image path without resolving its site URL.
+     *
+     * Rejects dangerous URL schemes, malformed encoding and control bytes
+     * before selecting a legacy image or its configured placeholder. Uses
+     * url() only for validation while leaving original relative paths intact.
+     *
+     * @param string $candidate Picture path or remote URL to inspect.
+     * @return bool Whether the candidate can be resolved safely.
+     */
+    private static function safeCandidate(string $candidate): bool
+    {
+        return $candidate !== '' && strlen($candidate) <= 4096
+            && preg_match('//u', $candidate) === 1
+            && self::url($candidate) !== '';
     }
 
     /**
