@@ -13,6 +13,7 @@ on:
       - 'modules/mod_sportsmanagement_clubicons/src/**'
       - 'modules/mod_sportsmanagement_count_rekord/src/**'
       - 'modules/mod_sportsmanagement_liveticker/src/**'
+      - 'modules/mod_sportsmanagement_rquotes/src/**'
       - '.github/tests/joomla56-ajax-calendar-bridges.php'
       - '.github/tests/joomla56-project-title-module-db-guards.php'
       - '.github/tests/joomla56-date-kml-calendar-inputs.php'
