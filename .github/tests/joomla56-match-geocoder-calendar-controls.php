@@ -124,7 +124,8 @@ namespace {
         || ($address['longitude'] ?? null) !== '7.2'
         || ($address['address']['city'] ?? null) !== 'Gelsenkirchen'
         || ($address['address']['state'] ?? null) !== 'NRW'
-        || isset($address['address']['road'], $address['address']['postcode'])) {
+        || isset($address['address']['road'])
+        || isset($address['address']['postcode'])) {
         throw new \RuntimeException('Invalid remote geocoder controls survived address normalization.');
     }
 
