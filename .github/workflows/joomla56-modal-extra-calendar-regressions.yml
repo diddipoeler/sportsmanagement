@@ -8,6 +8,7 @@ on:
       - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
       - '.github/tests/joomla56-modal-extra-fields-calendar-bounds.php'
+      - '.github/tests/joomla56-admin-extra-fields-invalid-input-runtime.php'
       - '.github/workflows/joomla56-modal-extra-calendar-regressions.yml'
   pull_request:
     paths:
@@ -15,6 +16,7 @@ on:
       - 'admin/src/Helper/ExtraFieldsSaveHelper.php'
       - 'modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php'
       - '.github/tests/joomla56-modal-extra-fields-calendar-bounds.php'
+      - '.github/tests/joomla56-admin-extra-fields-invalid-input-runtime.php'
       - '.github/workflows/joomla56-modal-extra-calendar-regressions.yml'
   workflow_dispatch:
 
@@ -46,6 +48,7 @@ jobs:
             admin/src/Helper/ExtraFieldsSaveHelper.php
             modules/mod_sportsmanagement_calendar/src/Runtime/CalendarFunctions.php
             .github/tests/joomla56-modal-extra-fields-calendar-bounds.php
+            .github/tests/joomla56-admin-extra-fields-invalid-input-runtime.php
           )
           for file in "${php_files[@]}"; do
             php -l "$file"
@@ -53,4 +56,6 @@ jobs:
           php .github/scripts/check-php-function-docs.php "${php_files[@]}"
           php .github/scripts/check-php-file-headers.php
       - name: Run standalone regression assertions
-        run: php .github/tests/joomla56-modal-extra-fields-calendar-bounds.php
+        run: |
+          php .github/tests/joomla56-modal-extra-fields-calendar-bounds.php
+          php .github/tests/joomla56-admin-extra-fields-invalid-input-runtime.php
