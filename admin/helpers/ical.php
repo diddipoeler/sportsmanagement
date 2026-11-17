@@ -91,11 +91,16 @@ class ical
     }
 
     /**
-     * Prekladac kalendare
+     * Parse an iCalendar file into the historical calendar and event arrays.
      *
-     * @param string $uri
+     * Resets all parser state on every invocation, validates the VCALENDAR
+     * envelope and unfolds RFC 5545 lines beginning with a space or tab
+     * before splitting properties. This preserves colons and separators in
+     * multi-line descriptions without creating spurious calendar fields.
+     * Returns the legacy error string for a missing calendar envelope.
      *
-     * @return array|string
+     * @param string $uri Path or supported stream identifier of an ICS file.
+     * @return array|string Parsed properties or a legacy invalid-calendar message.
      */
     public function parse($uri)
     {
@@ -106,7 +111,21 @@ class ical
 
         // Read the complete calendar first. Keep file_text as text for legacy callers.
         $this->file_text = $this->read_file($uri);
-        $lines = preg_split('/\R/', (string) $this->file_text) ?: [];
+        $physicalLines = preg_split('/\r\n|\n|\r/', (string) $this->file_text) ?: [];
+        $lines = [];
+
+        // RFC 5545 folding: a CRLF followed by one space or tab is not a
+        // new property. Join it before the colon separator is inspected.
+        foreach ($physicalLines as $physicalLine) {
+            if ($physicalLine !== '' && ($physicalLine[0] === ' ' || $physicalLine[0] === "\t")
+                && $lines !== []) {
+                $last = count($lines) - 1;
+                $lines[$last] .= substr($physicalLine, 1);
+                continue;
+            }
+
+            $lines[] = $physicalLine;
+        }
 
         // A valid iCalendar stream starts with BEGIN:VCALENDAR.
         if ($lines === [] || stripos(trim((string) $lines[0]), 'BEGIN:VCALENDAR') === false) {
@@ -162,11 +181,14 @@ class ical
     }
 
     /**
-     * Read text file, icalender text file
+     * Read the complete raw iCalendar source for the legacy import parser.
      *
-     * @param string $file
+     * Retains the original source identifier for callers and normalises
+     * Mozilla's legacy split property separators; standard folded lines
+     * are unfolded by parse() before tokenisation.
      *
-     * @return string
+     * @param string $file ICS source path or stream accepted by PHP.
+     * @return string Raw calendar text or empty text after a read failure.
      */
     public function read_file($file)
     {
@@ -184,21 +206,24 @@ class ical
     }
 
     /**
-     * Parse text "XXXX:value text some with : " and return array($key = "XXXX", $value="value");
+     * Split one unfolded iCalendar content line at its first colon.
      *
-     * @param string $text
+     * Permits empty values such as DESCRIPTION: and preserves subsequent
+     * colons in URLs and text. A line without a valid key returns false so
+     * the legacy continuation handler can decide whether to append it.
      *
-     * @return array
+     * @param string $text Unfolded iCalendar content line.
+     * @return array{0:string|false,1:string} Property name and raw value.
      */
     public function retun_key_value($text)
     {
-        preg_match('/([^:]+):([\w\W]+)/', $text, $matches);
+        $separator = strpos((string) $text, ':');
 
-        if (empty($matches)) {
-            return [false, $text];
+        if ($separator === false || $separator === 0) {
+            return [false, (string) $text];
         }
 
-        return array_splice($matches, 1, 2);
+        return [substr((string) $text, 0, $separator), substr((string) $text, $separator + 1)];
     }
 
     /**
@@ -258,34 +283,41 @@ class ical
     }
 
     /**
-     * Return Unix time from ical date time format (YYYYMMDD[T]HHMMSS[Z] or YYYYMMDD[T]HHMMSS)
+     * Convert a complete iCalendar DATE or DATE-TIME into a Unix timestamp.
      *
-     * @param string $ical_date
+     * Accepts YYYYMMDD and YYYYMMDDTHHMMSS with an optional UTC suffix,
+     * verifying calendar dates and time bounds before calling mktime().
+     * Rejects trailing junk and rollover dates instead of returning an
+     * unrelated timestamp. Preserves the legacy pre-1971 year fallback
+     * for compatibility with historical imports.
      *
-     * @return int|false
+     * @param string $ical_date Raw iCalendar DATE or DATE-TIME property.
+     * @return int|false Parsed Unix timestamp or false for invalid values.
      */
     public function ical_date_to_unix($ical_date)
     {
-        $ical_date = str_replace(['T', 'Z'], '', (string) $ical_date);
-        preg_match('/([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})([0-9]{0,2})/', $ical_date, $date);
-
-        if (count($date) < 7) {
+        if (!is_string($ical_date)
+            || preg_match('/^([0-9]{4})([0-9]{2})([0-9]{2})(?:T([0-9]{2})([0-9]{2})([0-9]{2})Z?)?$/D', $ical_date, $date) !== 1) {
             return false;
         }
 
-        // UNIX timestamps can't deal with pre 1970 dates in the original parser.
-        if ((int) $date[1] <= 1970) {
-            $date[1] = 1971;
+        $year = (int) $date[1];
+        $month = (int) $date[2];
+        $day = (int) $date[3];
+        $hour = (int) ($date[4] ?? 0);
+        $minute = (int) ($date[5] ?? 0);
+        $second = (int) ($date[6] ?? 0);
+
+        if (!checkdate($month, $day, $year) || $hour > 23 || $minute > 59 || $second > 59) {
+            return false;
         }
 
-        return mktime(
-            (int) $date[4],
-            (int) $date[5],
-            (int) $date[6],
-            (int) $date[2],
-            (int) $date[3],
-            (int) $date[1]
-        );
+        // Preserve the year correction of the original calendar parser.
+        if ($year <= 1970) {
+            $year = 1971;
+        }
+
+        return mktime($hour, $minute, $second, $month, $day, $year);
     }
 
     /**

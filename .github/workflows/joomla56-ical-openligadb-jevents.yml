@@ -1,0 +1,59 @@
+name: Joomla 5/6 iCalendar OpenLigaDB and JEvents runtime
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'admin/helpers/ical.php'
+      - 'site/src/Service/OpenLigaDbPreviewService.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - '.github/tests/joomla56_ical_openligadb_jevents_runtime.php'
+      - '.github/workflows/joomla56-ical-openligadb-jevents.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'admin/helpers/ical.php'
+      - 'site/src/Service/OpenLigaDbPreviewService.php'
+      - 'modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php'
+      - '.github/tests/joomla56_ical_openligadb_jevents_runtime.php'
+      - '.github/workflows/joomla56-ical-openligadb-jevents.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: PHP syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            admin/helpers/ical.php \
+            site/src/Service/OpenLigaDbPreviewService.php \
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php \
+            .github/tests/joomla56_ical_openligadb_jevents_runtime.php; do
+            php -l "$file"
+          done
+      - name: Verify mandatory metadata and function PHPDoc
+        shell: bash
+        run: |
+          php .github/scripts/check-php-file-headers.php
+          php .github/scripts/check-php-function-docs.php \
+            admin/helpers/ical.php \
+            site/src/Service/OpenLigaDbPreviewService.php \
+            modules/mod_sportsmanagement_calendar/connectors/jevents_j5.php \
+            .github/tests/joomla56_ical_openligadb_jevents_runtime.php
+      - name: Standalone migration regressions
+        run: php .github/tests/joomla56_ical_openligadb_jevents_runtime.php

@@ -184,6 +184,8 @@ final class JEventsConnector extends JSMCalendar
      *
      * Invalid day records and event entries are ignored rather than causing
      * property-access warnings when optional provider data is malformed.
+     * Validate timestamps and text before formatting: third-party JEvents
+     * providers may return nested or missing values that PHP 8 cannot cast.
      *
      * @param array $rows Date-grouped JEvents data returned by the provider.
      * @param array $matches Shared calendar rows extended in-place.
@@ -203,25 +205,38 @@ final class JEventsConnector extends JSMCalendar
                     continue;
                 }
 
+                $cellDate = self::integerValue($row['cellDate'] ?? null);
+                $start = self::integerValue($event->_dtstart ?? null);
+                $end = self::integerValue($event->_dtend ?? null);
+
+                // A missing date must not turn a provider error into a
+                // seemingly real match from 1 January 1970.
+                if ($cellDate === null) {
+                    continue;
+                }
+
                 $formatted = [
-                    'link' => self::buildLink($event, (int) ($row['year'] ?? 0), (int) ($row['month'] ?? 0)),
-                    'date' => date('Y-m-d', (int) ($row['cellDate'] ?? 0)) . ' ' . date('H:i', (int) ($event->_dtstart ?? 0)),
+                    'link' => self::buildLink(
+                        $event,
+                        self::integerValue($row['year'] ?? null) ?? 0,
+                        self::integerValue($row['month'] ?? null) ?? 0
+                    ),
+                    'date' => date('Y-m-d', $cellDate) . ' ' . date('H:i', $start ?? $cellDate),
                     'type' => 'jevents',
                     'time' => '',
-                    'headingtitle' => (string) self::$xparams->get('jevents_text', 'JEvents'),
+                    'headingtitle' => self::legacyText(self::$xparams->get('jevents_text', 'JEvents')),
                     'name' => '',
-                    'title' => (string) ($event->_title ?? ''),
-                    'location' => (string) ($event->_location ?? ''),
-                    'color' => (string) ($event->_color_bar ?? ''),
+                    'title' => self::legacyText($event->_title ?? ''),
+                    'location' => self::legacyText($event->_location ?? ''),
+                    'color' => self::legacyText($event->_color_bar ?? ''),
                     'matchcode' => 0,
                     'project_id' => 0,
                 ];
 
-                if ((int) ($event->_alldayevent ?? 0) !== 1) {
-                    $start = (int) ($event->_dtstart ?? 0);
-                    $end = (int) ($event->_dtend ?? 0);
+                if ((self::integerValue($event->_alldayevent ?? null) ?? 0) !== 1 && $start !== null) {
                     $formatted['time'] = date('H:i', $start);
-                    if ($start !== $end && (int) ($event->_noendtime ?? 0) === 0) {
+                    if ($end !== null && $start !== $end
+                        && (self::integerValue($event->_noendtime ?? null) ?? 0) === 0) {
                         $formatted['time'] .= '-' . date('H:i', $end);
                     }
                 }
@@ -235,24 +250,86 @@ final class JEventsConnector extends JSMCalendar
     }
 
     /**
+     * Safely convert a third-party event field into bounded display text.
+     *
+     * Arrays and objects are not valid scalar calendar metadata. Ignore them
+     * rather than causing PHP 8 conversion warnings; also reject malformed
+     * UTF-8 and control characters before they reach the module layout.
+     *
+     * @param mixed $value External JEvents text value or module heading.
+     * @return string Printable UTF-8 text or empty text when unsupported.
+     */
+    private static function legacyText(mixed $value): string
+    {
+        if (!is_string($value) && !is_int($value) && !is_float($value)) {
+            return '';
+        }
+
+        $text = (string) $value;
+
+        return strlen($text) <= 4096 && preg_match('//u', $text) === 1
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $text) !== 1
+                ? $text
+                : '';
+    }
+
+    /**
+     * Parse a native integer or complete decimal timestamp from JEvents.
+     *
+     * Prevents arrays, floats, arbitrary text and integer overflow from
+     * silently becoming zero timestamps or incorrect event identifiers.
+     *
+     * @param mixed $value JEvents day, timestamp or identifier.
+     * @return int|null Parsed signed integer, or null when malformed.
+     */
+    private static function integerValue(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value;
+        }
+
+        if (!is_string($value) || strlen($value) > 24
+            || preg_match('/^-?[0-9]+$/D', $value) !== 1) {
+            return null;
+        }
+
+        $integer = filter_var($value, FILTER_VALIDATE_INT);
+
+        return $integer === false ? null : $integer;
+    }
+
+    /**
      * Route a JEvents occurrence to its detail page.
      * Preserves occurrence, year, month and UID information and uses Joomla's routing service so the result fits the active site configuration.
      *
      * @param object $event JEvents event occurrence metadata.
      * @param int $year Event year.
      * @param int $month Event month.
-     * @return string Joomla-routed JEvents event URL.
+     * Rejects missing/invalid event IDs and date parts rather than routing
+     * an accidental event 0. URL-encodes the bounded external occurrence UID.
+     *
+     * @return string Joomla-routed JEvents event URL, or empty when invalid.
      */
     private static function buildLink(object $event, int $year, int $month): string
     {
+        $eventId = self::integerValue($event->_eventdetail_id ?? null);
+        $day = self::integerValue($event->_dup ?? 0) ?? 0;
+
+        if ($eventId === null || $eventId <= 0
+            || $year < 1 || $year > 9999 || $month < 1 || $month > 12
+            || $day < 0 || $day > 31) {
+            return '';
+        }
+
         $router = JPATH_SITE . '/components/com_jevents/router.php';
+
         if (is_file($router)) {
             require_once $router;
         }
 
-        $link = 'index.php?option=com_jevents&task=icalrepeat.detail&evid=' . (int) ($event->_eventdetail_id ?? 0)
-            . '&year=' . $year . '&month=' . $month . '&day=' . (int) ($event->_dup ?? 0)
-            . '&uid=' . rawurlencode((string) ($event->_uid ?? ''));
+        $link = 'index.php?option=com_jevents&task=icalrepeat.detail&evid=' . $eventId
+            . '&year=' . $year . '&month=' . $month . '&day=' . $day
+            . '&uid=' . rawurlencode(self::legacyText($event->_uid ?? ''));
 
         return Route::_($link);
     }

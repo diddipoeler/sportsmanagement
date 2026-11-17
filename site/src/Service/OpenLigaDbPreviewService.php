@@ -76,6 +76,8 @@ final class OpenLigaDbPreviewService
      * Restricts requests to approved HTTPS OpenLigaDB hosts, disables HTTP redirects, enforces a response status check and parses JSON without running arbitrary external endpoint URLs.
      * Limits the HTTP body to 5 MiB and the preview list to 2000 fixtures so
      * corrupt or unexpectedly large API payloads cannot exhaust PHP memory.
+     * Rejects non-object fixture records rather than silently dropping them
+     * and presenting an inaccurate count to the import administrator.
      *
      * @param string $url OpenLigaDB endpoint from the project's custom field.
      * @return list<array<string,mixed>> Match records returned by the service.
@@ -118,12 +120,25 @@ final class OpenLigaDbPreviewService
             throw new \RuntimeException('OpenLigaDB preview contains too many fixtures.');
         }
 
-        return array_values(array_filter($matches, 'is_array'));
+        // Reject a partially corrupt response instead of silently removing
+        // entries and showing an inaccurate fixture count in the preview.
+        foreach ($matches as $match) {
+            if (!is_array($match)) {
+                throw new \RuntimeException('OpenLigaDB preview contains an invalid match record.');
+            }
+        }
+
+        return $matches;
     }
 
     /**
-     * Summarise a fetched set of OpenLigaDB matches for the import preview.
-     * Counts fixtures, distinct team identifiers, distinct venues and the total goal entries without modifying the stored project data.
+     * Summarise a validated OpenLigaDB match list without modifying data.
+     *
+     * Counts fixtures, distinct positive team IDs, venues and goal entries.
+     * Rejects malformed API identifiers (including arrays, negatives,
+     * booleans, decimal strings and numeric overflows) instead of treating
+     * them as separate teams or locations. Zero-padded decimal IDs are
+     * normalised so the same team is counted once across fixtures.
      *
      * @param list<array<string,mixed>> $matches Parsed OpenLigaDB fixture records.
      * @return array{matches:int,teams:int,playgrounds:int,goals:int} Preview counters.
@@ -138,17 +153,21 @@ final class OpenLigaDbPreviewService
             foreach (['Team1', 'Team2'] as $teamKey) {
                 $team = $match[$teamKey] ?? null;
 
-                if (is_array($team) && isset($team['TeamId'])
-                    && (is_int($team['TeamId']) || is_string($team['TeamId']))) {
-                    $teams[(string) $team['TeamId']] = true;
+                $teamId = is_array($team) ? self::positiveApiId($team['TeamId'] ?? null) : null;
+
+                if ($teamId !== null) {
+                    $teams[$teamId] = true;
                 }
             }
 
             $location = $match['Location'] ?? null;
 
-            if (is_array($location) && isset($location['LocationID'])
-                && (is_int($location['LocationID']) || is_string($location['LocationID']))) {
-                $playgrounds[(string) $location['LocationID']] = true;
+            $locationId = is_array($location)
+                ? self::positiveApiId($location['LocationID'] ?? null)
+                : null;
+
+            if ($locationId !== null) {
+                $playgrounds[$locationId] = true;
             }
 
             if (isset($match['Goals']) && is_array($match['Goals'])) {
@@ -162,6 +181,39 @@ final class OpenLigaDbPreviewService
             'playgrounds' => count($playgrounds),
             'goals' => $goals,
         ];
+    }
+
+    /**
+     * Recognise an OpenLigaDB identifier without PHP's lossy numeric casts.
+     *
+     * Allows positive integers and decimal strings with optional leading
+     * zeroes, but rejects malformed API values and IDs larger than the
+     * platform integer range. Returns canonical decimal text as an array
+     * key so differently padded references represent the same record.
+     *
+     * @param mixed $candidate Team or location identifier from API JSON.
+     * @return string|null Canonical positive ID or null if invalid.
+     */
+    private static function positiveApiId(mixed $candidate): ?string
+    {
+        if (is_int($candidate)) {
+            return $candidate > 0 ? (string) $candidate : null;
+        }
+
+        if (!is_string($candidate) || strlen($candidate) > 64
+            || preg_match('/^[0-9]+$/D', $candidate) !== 1) {
+            return null;
+        }
+
+        $digits = ltrim($candidate, '0');
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '' || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return null;
+        }
+
+        return $digits;
     }
 
     /**
