@@ -30,7 +30,8 @@ final class ExtraSelectOptionsHelper
      * excessive rendering work, and blank values are omitted. Excessively
      * long label strings are rejected before parsing to bound memory use.
      * Invalid field identifiers, label control bytes and malformed UTF-8
-     * are rejected before creating Joomla HTML option objects.
+     * are rejected before creating Joomla HTML option objects. Raw option
+     * text is checked before trim() could remove dangerous control bytes.
      *
      * @param string $view Backend or frontend template identifier.
      * @param string $field Extra-field name whose choices are requested.
@@ -120,8 +121,16 @@ final class ExtraSelectOptionsHelper
         $options = [];
 
         foreach ($values as $key => $value) {
+            $rawLabel = $labels[$key] ?? $value;
+
+            // Check raw values first: trim() removes NUL and ASCII whitespace
+            // control bytes which must not become valid option identifiers.
+            if (preg_match('/[\\x00-\\x1F\\x7F]/', $value . $rawLabel) === 1) {
+                continue;
+            }
+
             $value = trim($value);
-            $label = trim($labels[$key] ?? $value);
+            $label = trim($rawLabel);
 
             if ($value === '' || strlen($value) > 255 || strlen($label) > 255
                 || preg_match('/[\x00-\x1F\x7F]/', $value . $label) === 1
