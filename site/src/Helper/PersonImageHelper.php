@@ -99,7 +99,8 @@ final class PersonImageHelper
      * falling back to Joomla's site root when the configured host is invalid.
      * Ignores non-string picture-server constants without triggering a PHP 8
      * array-to-string conversion warning. Validates raw picture text before
-     * trim() can hide control characters.
+     * trim() can hide control characters. Likewise rejects raw control bytes
+     * in a configured media host instead of silently normalizing them.
      *
      * @param string $picture Candidate URL or relative picture path.
      * @return string Validated image URL or an empty string if unsafe.
@@ -178,7 +179,10 @@ final class PersonImageHelper
             : null;
         // A malformed constant may contain nested data on old installations.
         // Never cast arrays or objects into an image host in PHP 8.
-        $base = is_string($configuredBase) ? trim($configuredBase) : Uri::root();
+        $base = is_string($configuredBase)
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $configuredBase) !== 1
+                ? trim($configuredBase)
+                : Uri::root();
 
         // An invalid configured picture host must not become an image link.
         $parts = parse_url($base);
