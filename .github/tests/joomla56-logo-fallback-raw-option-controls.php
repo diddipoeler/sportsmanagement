@@ -133,11 +133,17 @@ namespace {
 
     $admin = file_get_contents($root . '/admin/src/Helper/ExtraSelectOptionsHelper.php');
 
-    if (!is_string($admin)
-        || !str_contains($admin, '$rawLabel = $labels[$key] ?? $value;')
-        || !str_contains($admin, "preg_match('/[\\x00-\\x1F\\x7F]/', " . '$value . $rawLabel' . ")")
-        || strpos($admin, '$rawLabel = $labels[$key] ?? $value;') >
-            strpos($admin, '$value = trim($value);')) {
+    // Find the actual raw-value guard without depending on how many
+    // escaping backslashes are present in the PHP string literal.
+    $optionLoop = strpos($admin, 'foreach ($values as $key => $value)');
+    $rawLabel = strpos($admin, '$rawLabel = $labels[$key] ?? $value;', $optionLoop ?: 0);
+    $rawControl = strpos($admin, '$value . $rawLabel', $rawLabel ?: 0);
+    $trim = strpos($admin, '$value = trim($value);', $optionLoop ?: 0);
+
+    if (!is_string($admin) || $optionLoop === false || $rawLabel === false
+        || $rawControl === false || $trim === false
+        || !($optionLoop < $rawLabel && $rawLabel < $rawControl && $rawControl < $trim)
+        || !str_contains(substr($admin, $rawLabel, $trim - $rawLabel), 'preg_match(')) {
         throw new \RuntimeException('Administrator option control bytes must be checked before trim.');
     }
 
