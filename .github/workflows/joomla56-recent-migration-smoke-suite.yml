@@ -26,6 +26,7 @@ on:
       - '.github/tests/joomla56-logo-fallback-raw-option-controls.php'
       - '.github/tests/joomla56-raw-picture-url-controls.php'
       - '.github/tests/joomla56-image-selection-admin-calendar-controls.php'
+      - '.github/tests/joomla56-admin-raw-date-picture-server.php'
       - '.github/workflows/joomla56-recent-migration-smoke-suite.yml'
   pull_request:
     paths:
@@ -67,6 +68,7 @@ jobs:
           php -l .github/tests/joomla56-logo-fallback-raw-option-controls.php
           php -l .github/tests/joomla56-raw-picture-url-controls.php
           php -l .github/tests/joomla56-image-selection-admin-calendar-controls.php
+          php -l .github/tests/joomla56-admin-raw-date-picture-server.php
       - name: Run standalone cases with isolated PHP processes
         run: |
           set -e
@@ -82,3 +84,4 @@ jobs:
           php .github/tests/joomla56-logo-fallback-raw-option-controls.php
           php .github/tests/joomla56-raw-picture-url-controls.php
           php .github/tests/joomla56-image-selection-admin-calendar-controls.php
+          php .github/tests/joomla56-admin-raw-date-picture-server.php
