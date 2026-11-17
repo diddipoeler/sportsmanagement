@@ -92,6 +92,24 @@ namespace {
         throw new \RuntimeException('Native federation form XML could not be loaded.');
     }
 
+    // Both form paths are still shipped. Keep the fallback XML aligned
+    // so a legacy form loader cannot silently omit the country selector.
+    $legacyForm = simplexml_load_file(
+        $root . '/admin/models/forms/jlextfederation.xml'
+    );
+
+    if ($legacyForm === false) {
+        throw new \RuntimeException('Legacy federation form XML could not be loaded.');
+    }
+
+    $legacyCountries = $legacyForm->xpath('//fieldset[@name="details"]/field[@name="country"]');
+
+    if (!is_array($legacyCountries) || count($legacyCountries) !== 1
+        || strtolower((string) $legacyCountries[0]['type']) !== 'country'
+        || (string) $legacyCountries[0]->option['value'] !== '') {
+        throw new \RuntimeException('Legacy federation form lacks the country dropdown.');
+    }
+
     $countryFields = $form->xpath('//fieldset[@name="details"]/field[@name="country"]');
 
     if (!is_array($countryFields) || count($countryFields) !== 1
