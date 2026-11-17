@@ -231,6 +231,33 @@ namespace {
         throw new \RuntimeException('Federation country SQL is not normalized.');
     }
 
+    // Run the generated country predicate against actual SQL rows wherever
+    // PDO SQLite is installed. Legacy imports may use lowercase/padded ISO
+    // codes; the selected country should retrieve all matching rows.
+    if (in_array('sqlite', \PDO::getAvailableDrivers(), true)) {
+        $sqlite = new \PDO('sqlite::memory:');
+        $sqlite->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $sqlite->exec('CREATE TABLE federations (name TEXT, country TEXT)');
+        $sqlite->exec("INSERT INTO federations (name, country) VALUES
+            ('Germany A', 'DEU'), ('Germany B', 'deu'),
+            ('Germany C', ' DEU '), ('France', 'FRA'),
+            ('Missing country', NULL)");
+
+        $countryPredicate = $db->conditions[0] ?? '';
+        $countrySql = str_replace('"objassoc.country"', '"objassoc"."country"', $countryPredicate);
+        $statement = $sqlite->prepare(
+            'SELECT name FROM federations AS "objassoc" WHERE ' . $countrySql . ' ORDER BY name'
+        );
+        $statement->bindValue(':country', $db->bindings[':country'], \PDO::PARAM_STR);
+        $statement->execute();
+
+        if ($statement->fetchAll(\PDO::FETCH_COLUMN) !== [
+            'Germany A', 'Germany B', 'Germany C',
+        ]) {
+            throw new \RuntimeException('Selected country did not retrieve matching federation rows.');
+        }
+    }
+
     $GLOBALS['nativeFederationFilters'] = ['search_nation' => 'FRA'];
     $populate->invoke($model);
     $db = $query->invoke($model);
