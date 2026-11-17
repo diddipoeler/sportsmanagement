@@ -218,7 +218,8 @@ final class CalendarFunctions
      * Accepts date strings and integer or numeric-string Unix timestamps,
      * accepts leading-zero timestamp strings and falls back to today for
      * unsupported, overflowing or unparseable values,
-     * and never casts arrays or objects to strings.
+     * and never casts arrays or objects to strings. Dates with control bytes
+     * are rejected before trimming, falling back to the current day.
      *
      * @param mixed $date Optional date supplied by a calendar override.
      * @return string Escaped static heading markup with weekday and date.
@@ -226,6 +227,12 @@ final class CalendarFunctions
     public static function events($date = ''): string
     {
         $value = is_string($date) || is_int($date) ? trim((string) $date) : '';
+
+        // Malformed raw dates must not become valid dates after trim() hides
+        // their control bytes. Use today as for other invalid inputs.
+        if (is_string($date) && preg_match('/[\\x00-\\x1F\\x7F]/', $date) === 1) {
+            $value = '';
+        }
 
         // Unix timestamps are valid legacy calendar inputs. strtotime() does
         // not interpret plain timestamp integers as epoch seconds.
