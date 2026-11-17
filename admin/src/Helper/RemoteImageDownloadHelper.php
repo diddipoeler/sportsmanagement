@@ -103,9 +103,11 @@ final class RemoteImageDownloadHelper
                         return null;
                     }
 
+                    // Pass the raw redirect header to the validator; trim()
+                    // would otherwise erase terminal CR, LF and tab bytes.
                     $currentUrl = $this->resolveRedirect(
                         $currentUrl,
-                        trim($response->getHeaderLine('Location'))
+                        $response->getHeaderLine('Location')
                     );
 
                     if ($currentUrl === null) {
@@ -305,7 +307,8 @@ final class RemoteImageDownloadHelper
      * Resolve and validate a redirect from a remote image response.
      *
      * Supports absolute, scheme-relative and path-relative locations while
-     * rejecting control characters and unsafe destinations.
+     * rejecting control characters and unsafe destinations. Validates the
+     * original Location header before any whitespace normalization.
      *
      * @param string $baseUrl Previous verified request URL.
      * @param string $location HTTP Location header from the remote response.
@@ -313,7 +316,11 @@ final class RemoteImageDownloadHelper
      */
     private function resolveRedirect(string $baseUrl, string $location): ?string
     {
-        $location = trim($location);
+        // HTTP Location is untrusted input, including its surrounding bytes.
+        // Do not silently make an invalid redirect valid by trimming it.
+        if (preg_match('/[\\x00-\\x20\\x7F]/', $location) === 1) {
+            return null;
+        }
 
         if ($location === ''
             || str_contains($location, '\\')
