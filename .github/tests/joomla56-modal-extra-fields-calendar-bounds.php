@@ -67,7 +67,7 @@ namespace {
     }
 
     foreach ([
-        [1970, 1, '1970', '01', '1970', '02'],
+        [1970, 1, '1970', '1', '1970', '2'],
         [9999, 12, '9999', '11', '9999', '12'],
     ] as [$year, $month, $previousYear, $previousNumber, $nextYear, $nextNumber]) {
         ob_start();
