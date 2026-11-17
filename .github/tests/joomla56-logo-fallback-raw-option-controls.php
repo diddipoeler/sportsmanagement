@@ -16,6 +16,9 @@ namespace Joomla\CMS\Component {
     /** Provide component placeholders without a Joomla bootstrap. */
     final class ComponentHelper
     {
+        /** @var mixed Configured club logo placeholder fixture. */
+        public static mixed $logoPlaceholder = '';
+
         /**
          * Return a registry-like test object with no configured placeholder.
          *
@@ -34,7 +37,7 @@ namespace Joomla\CMS\Component {
                  */
                 public function get(string $key, mixed $default = ''): mixed
                 {
-                    return $default;
+                    return $key === 'ph_logo_small' ? ComponentHelper::$logoPlaceholder : $default;
                 }
             };
         }
@@ -129,6 +132,28 @@ namespace {
 
     if (ClubLogoHelper::render('images/clubs/safe.png') !== 'images/clubs/safe.png') {
         throw new \RuntimeException('Valid compact club logo was rejected.');
+    }
+
+    $team->picture = "images/clubs/broken.png\n";
+
+    if (TeamLogoHelper::render($team, 'logo') !== 'https://example.test/images/clubs/safe.png') {
+        throw new \RuntimeException('Raw control bytes suppressed a valid team logo fallback.');
+    }
+
+    if (ClubLogoHelper::render("images/clubs/broken.png\n") !== '') {
+        throw new \RuntimeException('Raw club logo control bytes were silently trimmed.');
+    }
+
+    \Joomla\CMS\Component\ComponentHelper::$logoPlaceholder = "images/clubs/fallback.png\n";
+
+    if (ClubLogoHelper::render('') !== '') {
+        throw new \RuntimeException('Malformed component placeholder was silently trimmed.');
+    }
+
+    \Joomla\CMS\Component\ComponentHelper::$logoPlaceholder = 'images/clubs/fallback.png';
+
+    if (ClubLogoHelper::render('') !== 'images/clubs/fallback.png') {
+        throw new \RuntimeException('Valid component logo placeholder was rejected.');
     }
 
     $admin = file_get_contents($root . '/admin/src/Helper/ExtraSelectOptionsHelper.php');
