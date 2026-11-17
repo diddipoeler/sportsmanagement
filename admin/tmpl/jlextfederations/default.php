@@ -16,11 +16,24 @@ use Joomla\CMS\Uri\Uri;
 
 HTMLHelper::_('behavior.multiselect');
 
-$search = (string) $this->state->get('filter.search');
-$state = $this->state->get('filter.state');
-$country = (string) $this->state->get('filter.search_nation');
-$order = (string) $this->state->get('list.ordering', 'objassoc.name');
-$direction = (string) $this->state->get('list.direction', 'ASC');
+// The administrator can retain stale or malformed filter state after an
+// upgrade. Never cast arrays or objects to strings inside the list template.
+$rawSearch = $this->state->get('filter.search');
+$search = is_string($rawSearch) && strlen($rawSearch) <= 255
+    && preg_match('//u', $rawSearch) === 1
+    && preg_match('/[\\x00-\\x1F\\x7F]/', $rawSearch) !== 1 ? $rawSearch : '';
+$rawState = $this->state->get('filter.state');
+$state = is_string($rawState) || is_int($rawState) ? (string) $rawState : '';
+$rawCountry = $this->state->get('filter.search_nation');
+$country = is_string($rawCountry) && preg_match('/^[A-Za-z]{3}$/D', $rawCountry) === 1
+    ? strtoupper($rawCountry) : '';
+$rawOrder = $this->state->get('list.ordering', 'objassoc.name');
+$order = is_string($rawOrder) && strlen($rawOrder) <= 100
+    && preg_match('/^[A-Za-z0-9_.]+$/D', $rawOrder) === 1
+        ? $rawOrder : 'objassoc.name';
+$rawDirection = $this->state->get('list.direction', 'ASC');
+$direction = is_string($rawDirection) && strtoupper($rawDirection) === 'DESC'
+    ? 'DESC' : 'ASC';
 ?>
 <form action="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextfederations'); ?>" method="post" name="adminForm" id="adminForm">
     <div class="container-fluid">
