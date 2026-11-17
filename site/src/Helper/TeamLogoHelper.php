@@ -158,8 +158,9 @@ final class TeamLogoHelper
      * Find the first available team picture in preferred priority order.
      *
      * Checks the legacy team and project-team picture fields in the existing
-     * configured order. Returns the first nonempty scalar candidate and
-     * ignores malformed, oversized or invalidly encoded imported values.
+     * configured order. Returns the first URL-safe scalar candidate and
+     * ignores malformed, oversized, invalidly encoded or unsafe paths.
+     * A rejected higher-priority picture does not hide a later valid logo.
      *
      * @param object $team Team or project-team record.
      * @param bool $preferSmall Whether smaller logos take precedence.
@@ -174,7 +175,9 @@ final class TeamLogoHelper
         foreach ($candidates as $property) {
             $value = self::scalarPicture($team->{$property} ?? null);
 
-            if ($value !== '') {
+            // A broken high-priority logo must not suppress another usable
+            // image stored in a lower-priority legacy team field.
+            if ($value !== '' && PersonImageHelper::url($value) !== '') {
                 return $value;
             }
         }
@@ -235,9 +238,10 @@ final class TeamLogoHelper
      * local files using canonical paths under JPATH_SITE. Symlinks outside
      * the document root and unsafe remote URLs are treated as unavailable.
      *
-     * @param string $picture Configured image URL or path.
      * Rejects encoded traversal, remote credentials and local paths outside
      * Joomla's document root before considering a picture available.
+     *
+     * @param string $picture Configured image URL or path.
      *
      * @return bool Whether a safe remote URL or readable local image exists.
      */
