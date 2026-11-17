@@ -52,7 +52,8 @@ final class LocationHelper
      * Remote address keys and values are restricted to bounded printable text
      * to avoid propagating malformed geocoder data into administrator forms.
      * Validates UTF-8 for both submitted addresses and remote address details.
-     * Rejects control bytes on raw input before trimming can hide them.
+     * Rejects control bytes on both raw request values and remote address
+     * fields before trimming can hide them.
      *
      * @param string $address Address to resolve through the Nominatim API.
      * @return array{latitude:string,longitude:string,address:array<string,string>}|array{}
@@ -130,7 +131,15 @@ final class LocationHelper
                         continue;
                     }
 
-                    $text = trim((string) $value);
+                    $rawText = (string) $value;
+
+                    // A remote address is untrusted data. Reject controls
+                    // before trim() can remove a trailing NUL or newline.
+                    if (preg_match('/[\\x00-\\x1F\\x7F]/', $rawText) === 1) {
+                        continue;
+                    }
+
+                    $text = trim($rawText);
 
                     if ($text === '' || strlen($text) > 255
                         || preg_match('/[\x00-\x1F\x7F]/', $text) === 1
