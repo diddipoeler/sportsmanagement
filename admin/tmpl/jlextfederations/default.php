@@ -61,7 +61,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
             </div>
             <div class="col-12 col-md-3 d-flex gap-2">
                 <button class="btn btn-primary" type="submit"><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-                <a class="btn btn-secondary" href="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextfederations'); ?>"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></a>
+                <a class="btn btn-secondary" href="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextfederations&filter_search_nation='); ?>"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></a>
             </div>
         </div></div></div>
 
