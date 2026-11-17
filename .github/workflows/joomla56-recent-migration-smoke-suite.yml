@@ -4,6 +4,15 @@ on:
   push:
     branches: [joomla5-6]
     paths:
+      - 'site/src/Helper/**'
+      - 'site/controllers/ajax.php'
+      - 'admin/src/Helper/**'
+      - 'admin/controllers/ajax.php'
+      - 'modules/mod_sportsmanagement_calendar/src/**'
+      - 'modules/mod_sportsmanagement_matches/src/**'
+      - 'modules/mod_sportsmanagement_clubicons/src/**'
+      - 'modules/mod_sportsmanagement_count_rekord/src/**'
+      - 'modules/mod_sportsmanagement_liveticker/src/**'
       - '.github/tests/joomla56-ajax-calendar-bridges.php'
       - '.github/tests/joomla56-project-title-module-db-guards.php'
       - '.github/tests/joomla56-date-kml-calendar-inputs.php'
