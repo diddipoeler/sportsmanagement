@@ -253,7 +253,7 @@ namespace {
         $populate->invoke($model);
         $db = $query->invoke($model);
 
-        if (isset($db->bindings[':country'], $db->bindings[':searchToken'])
+        if (isset($db->bindings[':country']) || isset($db->bindings[':searchToken'])
             || isset($db->bindings[':publishedState'])
             || in_array('"objassoc.country" = :country', $db->conditions, true)) {
             throw new \RuntimeException('Malformed native federation filters reached SQL.');
