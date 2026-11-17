@@ -67,6 +67,8 @@ final class PersonImageHelper
      * remote URLs and path traversal (including encoded traversal segments).
      * Prefixes accepted relative paths with a validated picture server URL,
      * falling back to Joomla's site root when the configured host is invalid.
+     * Ignores non-string picture-server constants without triggering a PHP 8
+     * array-to-string conversion warning.
      *
      * @param string $picture Candidate URL or relative picture path.
      * @return string Validated image URL or an empty string if unsafe.
@@ -134,9 +136,12 @@ final class PersonImageHelper
             return '';
         }
 
-        $base = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
-            ? trim((string) COM_SPORTSMANAGEMENT_PICTURE_SERVER)
-            : Uri::root();
+        $configuredBase = \defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER')
+            ? COM_SPORTSMANAGEMENT_PICTURE_SERVER
+            : null;
+        // A malformed constant may contain nested data on old installations.
+        // Never cast arrays or objects into an image host in PHP 8.
+        $base = is_string($configuredBase) ? trim($configuredBase) : Uri::root();
 
         // An invalid configured picture host must not become an image link.
         $parts = parse_url($base);
