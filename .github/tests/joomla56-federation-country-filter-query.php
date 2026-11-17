@@ -221,8 +221,14 @@ namespace {
     $db = $query->invoke($model);
 
     if (($db->bindings[':country'] ?? null) !== 'DEU'
-        || !in_array('"objassoc.country" = :country', $db->conditions, true)) {
+        || !in_array('UPPER(TRIM("objassoc.country")) = :country', $db->conditions, true)) {
         throw new \RuntimeException('Selected federation country did not reach bound SQL WHERE.');
+    }
+
+    // The selected country must match imported values regardless of casing
+    // and spaces around the stored ISO-3 value, not just the dropdown value.
+    if (!in_array('UPPER(TRIM("objassoc.country")) = :country', $db->conditions, true)) {
+        throw new \RuntimeException('Federation country SQL is not normalized.');
     }
 
     $GLOBALS['nativeFederationFilters'] = ['search_nation' => 'FRA'];
@@ -238,7 +244,7 @@ namespace {
     $db = $query->invoke($model);
 
     if (array_key_exists(':country', $db->bindings)
-        || in_array('"objassoc.country" = :country', $db->conditions, true)) {
+        || in_array('UPPER(TRIM("objassoc.country")) = :country', $db->conditions, true)) {
         throw new \RuntimeException('Clearing federation country did not remove SQL filter.');
     }
 
@@ -255,7 +261,7 @@ namespace {
 
         if (isset($db->bindings[':country']) || isset($db->bindings[':searchToken'])
             || isset($db->bindings[':publishedState'])
-            || in_array('"objassoc.country" = :country', $db->conditions, true)) {
+            || in_array('UPPER(TRIM("objassoc.country")) = :country', $db->conditions, true)) {
             throw new \RuntimeException('Malformed native federation filters reached SQL.');
         }
     }
