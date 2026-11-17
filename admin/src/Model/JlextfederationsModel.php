@@ -139,7 +139,9 @@ final class JlextfederationsModel extends SportsManagementListModel
     /**
      * Build the filtered and ordered list of federations.
      * Filters federation name and nation through bound SQL parameters
-     * and restricts sorting to configured fields.
+     * and restricts sorting to configured fields. Rejects structured,
+     * malformed or control-bearing filter state without PHP 8 string casts
+     * or generating SQL conditions from invalid selections.
      * @return mixed Joomla database query for federations.
      */
     protected function getListQuery()
@@ -157,7 +159,13 @@ final class JlextfederationsModel extends SportsManagementListModel
                 . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('objassoc.checked_out')
             );
 
-        $search = trim((string) $this->getState('filter.search'));
+        $rawSearch = $this->getState('filter.search');
+        // Reject structured and control-bearing request values before
+        // generating the bound SQL search expression.
+        $search = is_string($rawSearch) && strlen($rawSearch) <= 255
+            && preg_match('//u', $rawSearch) === 1
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $rawSearch) !== 1
+                ? trim($rawSearch) : '';
 
         if ($search !== '') {
             $searchToken = '%' . $db->escape($search, true) . '%';
@@ -166,9 +174,12 @@ final class JlextfederationsModel extends SportsManagementListModel
                 ->bind(':searchToken', $searchToken, ParameterType::STRING);
         }
 
-        $country = trim((string) $this->getState('filter.search_nation'));
+        $rawCountry = $this->getState('filter.search_nation');
+        $country = is_string($rawCountry) && strlen($rawCountry) === 3
+            && preg_match('/^[A-Za-z]{3}$/D', $rawCountry) === 1
+                ? strtoupper($rawCountry) : '';
 
-        if ($country !== '' && $country !== '0') {
+        if ($country !== '') {
             $query
                 ->where($db->quoteName('objassoc.country') . ' = :country')
                 ->bind(':country', $country, ParameterType::STRING);
@@ -176,7 +187,9 @@ final class JlextfederationsModel extends SportsManagementListModel
 
         $state = $this->getState('filter.state');
 
-        if ($state !== '' && is_numeric($state)) {
+        // Joomla publication filters accept only the real 0/1 values,
+        // not arrays, partial numbers or unexpected numeric strings.
+        if ($state === 0 || $state === 1 || $state === '0' || $state === '1') {
             $publishedState = (int) $state;
             $query
                 ->where($db->quoteName('objassoc.published') . ' = :publishedState')
