@@ -18,8 +18,10 @@ final class ModalImageHelper
 {
     /**
      * Render an image with optional Joomla, JCE or popup linking.
+     *
      * Validates image and target URLs, escapes HTML attributes and limits
-     * modal dimensions to positive values before building markup.
+     * modal dimensions to positive values before building markup. Refuses
+     * unsafe image sources entirely instead of emitting an empty src link.
      * @param string $target Optional modal element identifier.
      * @param string $picture Image URL or site-relative path.
      * @param string $text Image alt text and popup title.
@@ -46,6 +48,12 @@ final class ModalImageHelper
     ): string {
         $targetEscaped = self::escape($target);
         $picture = self::safeUrl($picture);
+
+        // A rejected source must not produce a broken or clickable image.
+        if ($picture === '') {
+            return '';
+        }
+
         $resolvedUrl = self::safeUrl($url !== '' ? $url : $picture);
         $pictureEscaped = self::escape($picture);
         $textEscaped = self::escape($text);
@@ -105,8 +113,14 @@ final class ModalImageHelper
     }
 
     /**
-     * Allow normal site-relative URLs and absolute HTTP(S) URLs. Reject
-     * executable URI schemes, protocol-relative targets and control bytes.
+     * Validate an image or popup destination before including it in markup.
+     *
+     * Accepts ordinary HTTP(S) URLs without embedded credentials and safe
+     * site-relative paths. Rejects executable schemes, control characters,
+     * backslashes, raw and multiply percent-encoded parent-directory traversal.
+     *
+     * @param string $value Proposed media URL or relative path.
+     * @return string Safe URL, or empty text when validation fails.
      */
     private static function safeUrl(string $value): string
     {
@@ -129,11 +143,47 @@ final class ModalImageHelper
                     : '';
         }
 
-        return preg_match('~^[a-z][a-z0-9+.-]*:~i', $value) ? '' : $value;
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $value)) {
+            return '';
+        }
+
+        $decoded = ltrim($value, '/');
+
+        // Apply the same bounded repeated-decoding safety rule as other
+        // SportsManagement picture helpers, without changing public URLs.
+        for ($depth = 0; $depth < 8; $depth++) {
+            if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
+                || str_contains($decoded, chr(92))
+                || str_contains($decoded, '?')
+                || str_contains($decoded, '#')) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+
+            if ($next === $decoded) {
+                break;
+            }
+
+            $decoded = $next;
+        }
+
+        return preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
+            || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
+            || str_contains($decoded, chr(92))
+            || str_contains($decoded, '?')
+            || str_contains($decoded, '#') ? '' : $value;
     }
 
     /**
      * Escape text for safe insertion into HTML attributes.
+     *
+     * Converts quotes and angle brackets to HTML entities while preserving
+     * original Unicode text so image descriptions and popup titles cannot
+     * break out of their surrounding attribute delimiters.
+     *
      * @param string $value Attribute or label text.
      * @return string HTML-escaped text.
      */
