@@ -76,8 +76,9 @@ final class OpenLigaDbPreviewService
      * Restricts requests to approved HTTPS OpenLigaDB hosts, disables HTTP redirects, enforces a response status check and parses JSON without running arbitrary external endpoint URLs.
      * Limits the HTTP body to 5 MiB and the preview list to 2000 fixtures so
      * corrupt or unexpectedly large API payloads cannot exhaust PHP memory.
-     * Rejects non-object fixture records rather than silently dropping them
-     * and presenting an inaccurate count to the import administrator.
+     * Keeps the legacy tolerance of malformed list entries: invalid individual
+     * records are skipped, while a non-list response is rejected completely.
+     * This avoids breaking previews from older OpenLigaDB data sources.
      *
      * @param string $url OpenLigaDB endpoint from the project's custom field.
      * @return list<array<string,mixed>> Match records returned by the service.
@@ -120,15 +121,9 @@ final class OpenLigaDbPreviewService
             throw new \RuntimeException('OpenLigaDB preview contains too many fixtures.');
         }
 
-        // Reject a partially corrupt response instead of silently removing
-        // entries and showing an inaccurate fixture count in the preview.
-        foreach ($matches as $match) {
-            if (!is_array($match)) {
-                throw new \RuntimeException('OpenLigaDB preview contains an invalid match record.');
-            }
-        }
-
-        return $matches;
+        // Historical previews deliberately skip individual non-object
+        // entries while retaining otherwise valid fixtures in their order.
+        return array_values(array_filter($matches, 'is_array'));
     }
 
     /**

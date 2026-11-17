@@ -26,6 +26,8 @@ final class CountryField extends SportsManagementListField
      * selectable in the edit form. Failures in either optional lookup do not
      * hide the inherited placeholder options or other valid country rows.
      * Invalid raw codes and labels are never passed into the select control.
+     * Skip the optional federation query gracefully when a minimal database
+     * adapter does not support Joomla's where() or loadColumn() methods.
      *
      * @return array<int,object> Inherited and validated ISO-3 country options.
      */
@@ -85,9 +87,18 @@ final class CountryField extends SportsManagementListField
         }
 
         // Stored federation codes must remain editable even if the optional
-        // country catalogue has no matching record yet.
+        // country catalogue has no matching record yet. Older or minimal
+        // database adapters may not expose every Joomla query method: retain
+        // the valid country options without raising a second, unrelated
+        // failure from an optional federation query.
         try {
-            $query = $db->createQuery()
+            $query = $db->createQuery();
+
+            if (!is_callable([$query, 'where']) || !is_callable([$db, 'loadColumn'])) {
+                return $options;
+            }
+
+            $query = $query
                 ->select('DISTINCT ' . $db->quoteName('country'))
                 ->from($db->quoteName('#__sportsmanagement_federations'))
                 ->where($db->quoteName('country') . ' IS NOT NULL')
