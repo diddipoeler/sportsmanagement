@@ -122,6 +122,14 @@ namespace {
         ], 17, $database);
     }
 
+    // Oversized and malformed field identifiers must never reach a DELETE.
+    foreach ([str_repeat('9', 100000), "34\n", '34trailing'] as $badId) {
+        $helper->save([
+            'extraf' => [0 => 'valid existing value'],
+            'extra_id' => [0 => $badId],
+        ], 17, $database);
+    }
+
     if ($database->queries !== 0) {
         throw new \RuntimeException('Malformed fields reached database write operations.');
     }
