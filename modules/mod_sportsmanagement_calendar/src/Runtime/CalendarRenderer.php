@@ -135,15 +135,23 @@ class CalendarRenderer
      * Set the configured first weekday of the monthly calendar.
      * Validates legacy settings and bounds the Sunday-based start weekday
      * to values from zero through six. Invalid values use Sunday (zero).
+     * Accepts zero-padded digits, but not surrounding whitespace or controls.
      *
      * @param mixed $day Module value representing the calendar's first weekday.
      * @return void
      */
     public function setStartDay($day): void
     {
-        $valid = (is_int($day) || is_string($day))
-            ? filter_var($day, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => 6]])
-            : false;
+        // Stored module selectors must be complete decimal values. PHP's
+        // integer filter accepts some surrounding whitespace, so validate
+        // strings before any implicit normalization.
+        $rawDay = is_int($day) || is_string($day) ? (string) $day : '';
+        $valid = $rawDay !== '' && strlen($rawDay) <= 32
+            && preg_match('/^[0-9]+$/D', $rawDay) === 1
+                ? filter_var(ltrim($rawDay, '0') ?: '0', FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 0, 'max_range' => 6],
+                ])
+                : false;
         $this->startDay = $valid === false ? 0 : $valid;
     }
 
@@ -162,15 +170,20 @@ class CalendarRenderer
      * Set the default month used by legacy calendar layouts.
      * Accepts valid month numbers from one through twelve; invalid saved
      * values fall back to January without coercing nested settings to integers.
+     * Rejects partial or whitespace-padded numeric strings before filtering.
      *
      * @param mixed $month Legacy module value containing a month number.
      * @return void
      */
     public function setStartMonth($month): void
     {
-        $valid = (is_int($month) || is_string($month))
-            ? filter_var($month, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 12]])
-            : false;
+        $rawMonth = is_int($month) || is_string($month) ? (string) $month : '';
+        $valid = $rawMonth !== '' && strlen($rawMonth) <= 32
+            && preg_match('/^[0-9]+$/D', $rawMonth) === 1
+                ? filter_var(ltrim($rawMonth, '0') ?: '0', FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1, 'max_range' => 12],
+                ])
+                : false;
         $this->startMonth = $valid === false ? 1 : $valid;
     }
 
