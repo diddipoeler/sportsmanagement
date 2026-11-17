@@ -28,6 +28,7 @@ final class ClubLogoHelper
      * Ignores malformed placeholder parameter values and avoids invalid
      * HTML height attributes in Joomla 5/6 templates. Refuses unsafe
      * local paths and unsupported remote URL schemes before rendering HTML.
+     * Examines raw logo and placeholder text before trimming control bytes.
      *
      * @param string $logoSmall Optional club logo path.
      * @param string $country Country code used when rendering a flag.
@@ -49,10 +50,19 @@ final class ClubLogoHelper
             return '';
         }
 
+        // Do not let trim() erase malformed control bytes in either a club
+        // record or its component-level placeholder image setting.
+        if (preg_match('/[\\x00-\\x1F\\x7F]/', $logoSmall) === 1) {
+            return '';
+        }
+
         $logo = trim($logoSmall);
         if ($logo === '') {
             $fallback = ComponentHelper::getParams('com_sportsmanagement')->get('ph_logo_small', '');
-            $logo = is_string($fallback) ? trim($fallback) : '';
+            $logo = is_string($fallback)
+                && preg_match('/[\\x00-\\x1F\\x7F]/', $fallback) !== 1
+                    ? trim($fallback)
+                    : '';
         }
 
         // The compact logo path must be subject to the same URL safety
