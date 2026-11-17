@@ -46,6 +46,27 @@ namespace {
         throw new \RuntimeException('Valid modal image or escaped alt text was lost.');
     }
 
+    // A caller-supplied schema name must not become an executable HTML
+    // event-handler attribute on the resulting image tag.
+    $invalidSchema = ModalImageHelper::render(
+        'team-popup', 'images/clubs/logo.png', 'Club', 20, '', 200, 200, 1,
+        'onerror', 'alert(1)'
+    );
+
+    if (str_contains($invalidSchema, 'onerror=')
+        || !str_contains($invalidSchema, 'itemprop="alert(1)"')) {
+        throw new \RuntimeException('Unsafe HTML schema attribute was rendered.');
+    }
+
+    $allowedSchema = ModalImageHelper::render(
+        'team-popup', 'images/clubs/logo.png', 'Club', 20, '', 200, 200, 1,
+        'property', 'og:image'
+    );
+
+    if (!str_contains($allowedSchema, 'property="og:image"')) {
+        throw new \RuntimeException('Valid image schema metadata attribute was rejected.');
+    }
+
     $invalidDestination = ModalImageHelper::render(
         'team-popup', 'images/clubs/logo.png', 'Club', 20, '../hidden', 200, 200, 1
     );
