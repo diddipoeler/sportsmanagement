@@ -31,7 +31,25 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
             </div>
             <div class="col-6 col-md-2">
                 <label class="form-label" for="filter_search_nation"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></label>
-                <input class="form-control" type="text" name="filter_search_nation" id="filter_search_nation" value="<?php echo htmlspecialchars($country, ENT_QUOTES, 'UTF-8'); ?>">
+                <select class="form-select" name="filter_search_nation" id="filter_search_nation" onchange="this.form.submit();">
+                    <option value=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></option>
+                    <?php foreach ($this->countryOptions ?? [] as $countryOption) : ?>
+                        <?php
+                        if (!is_object($countryOption)
+                            || !is_string($countryOption->value ?? null)
+                            || !is_string($countryOption->text ?? null)) {
+                            continue;
+                        }
+
+                        $countryCode = strtoupper(trim($countryOption->value));
+
+                        if (preg_match('/^[A-Z]{3}$/D', $countryCode) !== 1) {
+                            continue;
+                        }
+                        ?>
+                        <option value="<?php echo htmlspecialchars($countryCode, ENT_QUOTES, 'UTF-8'); ?>"<?php echo strcasecmp($country, $countryCode) === 0 ? ' selected' : ''; ?>><?php echo htmlspecialchars($countryOption->text, ENT_QUOTES, 'UTF-8'); ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="col-6 col-md-2">
                 <label class="form-label" for="filter_state"><?php echo Text::_('JSTATUS'); ?></label>
