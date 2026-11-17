@@ -24,9 +24,9 @@ final class CalendarDate
      * oversized date strings or integer-overflowing timestamps instead of
      * casting them to unexpected values.
      * Returns null when conversion fails. Rejects surrounding whitespace
-     * and actual embedded NUL bytes before invoking PHP 8 date parsing
-     * functions; the check must not confuse literal backslash-zero text
-     * with a byte having the value zero.
+     * and control bytes (including actual embedded NUL bytes) before invoking
+     * PHP 8 date parsing functions. Literal backslash-zero text is distinct
+     * from a NUL byte and remains subject to normal date parsing.
      *
      * @param mixed $value Unix timestamp, numeric timestamp string or date value.
      * @param string $offset Joomla site timezone, defaulting to UTC.
@@ -36,7 +36,8 @@ final class CalendarDate
     {
         if ((!is_int($value) && !is_string($value))
             || (is_string($value) && (trim($value) === '' || strlen($value) > 128
-                || trim($value) !== $value || str_contains($value, "\0")))) {
+                || trim($value) !== $value
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $value) === 1)))) {
             return null;
         }
 
