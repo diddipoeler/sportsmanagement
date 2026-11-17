@@ -141,7 +141,8 @@ final class JlextfederationsModel extends SportsManagementListModel
      * Filters federation name and nation through bound SQL parameters
      * and restricts sorting to configured fields. Rejects structured,
      * malformed or control-bearing filter state without PHP 8 string casts
-     * or generating SQL conditions from invalid selections.
+     * or generating SQL conditions from invalid selections. Normalizes
+     * historical lowercase and whitespace-padded country values in SQL.
      * @return mixed Joomla database query for federations.
      */
     protected function getListQuery()
@@ -180,8 +181,11 @@ final class JlextfederationsModel extends SportsManagementListModel
                 ? strtoupper($rawCountry) : '';
 
         if ($country !== '') {
+            // Imported federation rows can store lowercase or padded ISO-3
+            // values even though the select lists use uppercase codes.
+            // Compare normalized stored values, not just byte-identical text.
             $query
-                ->where($db->quoteName('objassoc.country') . ' = :country')
+                ->where('UPPER(TRIM(' . $db->quoteName('objassoc.country') . ')) = :country')
                 ->bind(':country', $country, ParameterType::STRING);
         }
 
