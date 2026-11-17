@@ -86,6 +86,18 @@ namespace {
         throw new \RuntimeException('Valid image placeholder was lost.');
     }
 
+    // A malformed priority picture must not become valid after trim().
+    if (PersonImageHelper::resolve(
+        "images/players/broken.png\n", 'images/players/good.png'
+    ) !== 'images/players/good.png') {
+        throw new \RuntimeException('Player image selection accepted a trimmed control byte.');
+    }
+
+    if (PersonImageHelper::resolve("images/players/broken.png\0")
+        !== 'images/players/default.png') {
+        throw new \RuntimeException('Player image selection lost its safe placeholder.');
+    }
+
     foreach ([
         "images/default.png\n",
         "../secret.png",
