@@ -22,11 +22,21 @@ final class HtmlView extends BaseHtmlView
     public $pagination;
     public $state;
 
+    /** @var array<int,object> Available country dropdown options. */
+    public $countryOptions = [];
+
+    /**
+     * Render the federation administrator list with available country choices.
+     *
+     * @param string|null $tpl Optional Joomla layout override.
+     * @return void
+     */
     public function display($tpl = null)
     {
         $this->items = $this->get('Items') ?: [];
         $this->pagination = $this->get('Pagination');
         $this->state = $this->get('State');
+        $this->countryOptions = $this->get('CountryOptions') ?: [];
 
         if ($errors = $this->get('Errors')) {
             throw new \RuntimeException(implode("\n", $errors), 500);
