@@ -14,6 +14,8 @@ on:
       - 'modules/mod_sportsmanagement_count_rekord/src/**'
       - 'modules/mod_sportsmanagement_liveticker/src/**'
       - 'modules/mod_sportsmanagement_rquotes/src/**'
+      - 'modules/mod_sportsmanagement_calendar/src/**'
+      - 'admin/src/Helper/RemoteImageDownloadHelper.php'
       - '.github/tests/joomla56-ajax-calendar-bridges.php'
       - '.github/tests/joomla56-project-title-module-db-guards.php'
       - '.github/tests/joomla56-date-kml-calendar-inputs.php'
@@ -27,6 +29,7 @@ on:
       - '.github/tests/joomla56-raw-picture-url-controls.php'
       - '.github/tests/joomla56-image-selection-admin-calendar-controls.php'
       - '.github/tests/joomla56-admin-raw-date-picture-server.php'
+      - '.github/tests/joomla56-names-image-redirect-calendar-labels.php'
       - '.github/tests/joomla56-match-geocoder-calendar-controls.php'
       - '.github/workflows/joomla56-recent-migration-smoke-suite.yml'
   pull_request:
@@ -70,6 +73,7 @@ jobs:
           php -l .github/tests/joomla56-raw-picture-url-controls.php
           php -l .github/tests/joomla56-image-selection-admin-calendar-controls.php
           php -l .github/tests/joomla56-admin-raw-date-picture-server.php
+          php -l .github/tests/joomla56-names-image-redirect-calendar-labels.php
           php -l .github/tests/joomla56-match-geocoder-calendar-controls.php
       - name: Run standalone cases with isolated PHP processes
         run: |
@@ -87,4 +91,5 @@ jobs:
           php .github/tests/joomla56-raw-picture-url-controls.php
           php .github/tests/joomla56-image-selection-admin-calendar-controls.php
           php .github/tests/joomla56-admin-raw-date-picture-server.php
+          php .github/tests/joomla56-names-image-redirect-calendar-labels.php
           php .github/tests/joomla56-match-geocoder-calendar-controls.php
