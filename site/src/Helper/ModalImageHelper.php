@@ -22,6 +22,8 @@ final class ModalImageHelper
      * Validates image and target URLs, escapes HTML attributes and limits
      * modal dimensions to positive values before building markup. Refuses
      * unsafe image sources entirely instead of emitting an empty src link.
+     * Restricts schema attribute names to the supported HTML metadata fields
+     * so untrusted callers cannot produce event-handler attributes.
      * @param string $target Optional modal element identifier.
      * @param string $picture Image URL or site-relative path.
      * @param string $text Image alt text and popup title.
@@ -61,7 +63,10 @@ final class ModalImageHelper
         $width = max(1, (int) $width);
         $height = max(1, (int) $height);
         $pictureHeight = max(1, (int) $pictureHeight);
-        $schemaAttribute = preg_match('/^[A-Za-z_:][A-Za-z0-9:._-]*$/', $schemaAttribute)
+        // Schema metadata names are not arbitrary HTML attributes. In
+        // particular, accepting event handlers such as onerror here could
+        // create executable markup even when their values are HTML-escaped.
+        $schemaAttribute = in_array($schemaAttribute, ['itemprop', 'property'], true)
             ? $schemaAttribute
             : 'itemprop';
         $schemaValueEscaped = self::escape($schemaValue);
