@@ -26,6 +26,7 @@ final class StatsrankingteamsModel extends SportsManagementStatsRankingModel
      * Resolves the requested sort order, ignores invalid statistic objects
      * and nonpositive statistic IDs, and invokes each statistic's native
      * getTeamsRanking() method with the selected project and page limits.
+     * Malformed statistic IDs and nonpublic provider methods are ignored.
      *
      * @param mixed $order Optional ranking order selection.
      * @return array Team ranking rows indexed by statistic identifier.
@@ -37,11 +38,11 @@ final class StatsrankingteamsModel extends SportsManagementStatsRankingModel
         $results = [];
 
         foreach ($stats as $stat) {
-            if (!is_object($stat) || !method_exists($stat, 'getTeamsRanking')) {
+            if (!is_object($stat) || !is_callable([$stat, 'getTeamsRanking'])) {
                 continue;
             }
-            $statId = (int) ($stat->id ?? 0);
-            if ($statId <= 0) {
+            $statId = self::normaliseStatisticId($stat->id ?? null);
+            if ($statId === null || $statId <= 0) {
                 continue;
             }
             $results[$statId] = $stat->getTeamsRanking(
@@ -58,9 +59,10 @@ final class StatsrankingteamsModel extends SportsManagementStatsRankingModel
     /**
      * Combine per-statistic ranking rows into cumulative team totals.
      *
-     * Skips invalid team IDs, sums numeric totals by team, preserves each
-     * statistic's value under its ID and sorts the combined entries by
-     * descending total for display in the team statistics table.
+     * Skips invalid team IDs, malformed statistic keys and nonfinite or
+     * nested totals rather than triggering PHP 8 conversion warnings.
+     * Sums finite numeric totals by team, preserves each statistic's value
+     * under its ID and sorts the combined entries in descending order.
      *
      * @param array $teamsstats Rankings grouped by statistic identifier.
      * @return array Team totals sorted from highest to lowest.
@@ -70,19 +72,50 @@ final class StatsrankingteamsModel extends SportsManagementStatsRankingModel
         $totals = [];
 
         foreach ((array) $teamsstats as $statId => $rows) {
-            foreach ((array) $rows as $row) {
-                $teamId = (int) ($row->team_id ?? 0);
-                if ($teamId <= 0) {
+            $statisticId = self::normaliseStatisticId($statId);
+
+            if ($statisticId === null || $statisticId <= 0 || !is_iterable($rows)) {
+                continue;
+            }
+
+            foreach ($rows as $row) {
+                if (!is_object($row)) {
                     continue;
                 }
 
-                $value = (float) ($row->total ?? 0);
+                $teamId = self::normaliseStatisticId($row->team_id ?? null);
+
+                if ($teamId === null || $teamId <= 0) {
+                    continue;
+                }
+
+                $rawTotal = $row->total ?? null;
+
+                if (!is_int($rawTotal) && !is_float($rawTotal)
+                    && (!is_string($rawTotal) || strlen($rawTotal) > 64
+                        || preg_match('/^-?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]{1,3})?$/D', $rawTotal) !== 1)) {
+                    continue;
+                }
+
+                $value = (float) $rawTotal;
+
+                if (!is_finite($value)) {
+                    continue;
+                }
+
                 $totals[$teamId] ??= [
                     'team_id' => $teamId,
                     'total' => 0.0,
                 ];
+
+                // Do not allow a sequence of individually finite values to
+                // overflow a team's cumulative total to INF.
+                if (!is_finite($totals[$teamId]['total'] + $value)) {
+                    continue;
+                }
+
                 $totals[$teamId]['total'] += $value;
-                $totals[$teamId][$statId] = $value;
+                $totals[$teamId][$statisticId] = $value;
             }
         }
 

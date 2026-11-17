@@ -1,0 +1,63 @@
+name: Joomla 5/6 statistics commentary and training guards
+
+on:
+  push:
+    branches: [joomla5-6]
+    paths:
+      - 'site/src/Model/SportsManagementStatsRankingModel.php'
+      - 'site/src/Model/StatsrankingteamsModel.php'
+      - 'admin/src/Model/MatchcommentaryModel.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php'
+      - '.github/tests/joomla56_stats_commentary_training_data.php'
+      - '.github/workflows/joomla56-stats-commentary-training.yml'
+  pull_request:
+    branches: [joomla5-6, master]
+    paths:
+      - 'site/src/Model/SportsManagementStatsRankingModel.php'
+      - 'site/src/Model/StatsrankingteamsModel.php'
+      - 'admin/src/Model/MatchcommentaryModel.php'
+      - 'modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php'
+      - '.github/tests/joomla56_stats_commentary_training_data.php'
+      - '.github/workflows/joomla56-stats-commentary-training.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Validate Joomla 5/6 PHP syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in \
+            site/src/Model/SportsManagementStatsRankingModel.php \
+            site/src/Model/StatsrankingteamsModel.php \
+            admin/src/Model/MatchcommentaryModel.php \
+            modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php \
+            .github/tests/joomla56_stats_commentary_training_data.php; do
+            php -l "$file"
+          done
+      - name: Verify file metadata and detailed method PHPDoc
+        shell: bash
+        run: |
+          php .github/scripts/check-php-file-headers.php
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Model/SportsManagementStatsRankingModel.php \
+            site/src/Model/StatsrankingteamsModel.php \
+            admin/src/Model/MatchcommentaryModel.php \
+            modules/mod_sportsmanagement_trainingsdata/src/Helper/TrainingsDataHelper.php \
+            .github/tests/joomla56_stats_commentary_training_data.php
+      - name: Verify ranking, administrator and module runtime boundaries
+        run: php .github/tests/joomla56_stats_commentary_training_data.php

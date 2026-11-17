@@ -85,7 +85,9 @@ final class TrainingsDataHelper
      * of training objects. Discard non-object entries and replace nested
      * place/notes fields and malformed weekday/second counts with safe
      * defaults to prevent PHP 8 array-to-string conversion warnings in the
-     * Joomla module layout. Preserve scalar values for valid legacy rows.
+     * Joomla module layout. Accept only days 1 through 7 and seconds 0
+     * through 86399 so invalid persisted values cannot become unrealistic
+     * training times. Normalise decimal strings before template rendering.
      *
      * @param mixed $raw Database result returned by loadObjectList().
      * @return array<int,object> Validated object rows for the module template.
@@ -106,12 +108,14 @@ final class TrainingsDataHelper
             foreach (['place', 'notes'] as $name) {
                 $value = $record->{$name} ?? '';
 
-                if (!is_scalar($value)) {
+                if ((!is_string($value) && !is_int($value) && !is_float($value))
+                    || (is_float($value) && !is_finite($value))
+                    || (is_string($value) && strlen($value) > 65536)) {
                     $record->{$name} = '';
                 }
             }
 
-            foreach (['dayofweek', 'time_start', 'time_end'] as $name) {
+            foreach (['dayofweek' => 7, 'time_start' => 86399, 'time_end' => 86399] as $name => $maximum) {
                 $value = $record->{$name} ?? null;
 
                 if (!is_int($value) && (!is_string($value)
@@ -120,12 +124,14 @@ final class TrainingsDataHelper
                     continue;
                 }
 
-                $digits = is_string($value) ? ltrim($value, '0') : $value;
+                $digits = is_string($value) ? ltrim($value, '0') : (string) $value;
                 $digits = $digits === '' ? '0' : $digits;
+                $minimum = $name === 'dayofweek' ? 1 : 0;
+                $parsed = filter_var($digits, FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => $minimum, 'max_range' => $maximum],
+                ]);
 
-                if (filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) === false) {
-                    $record->{$name} = 0;
-                }
+                $record->{$name} = $parsed === false ? 0 : $parsed;
             }
 
             $rows[] = $record;

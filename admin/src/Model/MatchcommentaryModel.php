@@ -23,34 +23,36 @@ final class MatchcommentaryModel extends SportsManagementAdminModel
     /**
      * Read chronologically ordered commentary for one validated match.
      *
-     * Ignores nonpositive match identifiers and binds the selected match ID
-     * to the native Joomla database query. Database exceptions are logged
-     * server-side while the model receives only a translated generic
-     * message, preventing private SQL or connection details from surfacing
-     * in the administrator view.
+     * Validates positive decimal match identifiers without lossy PHP casts
+     * and binds the selected match ID to a native Joomla database query.
+     * Query construction, execution and result access are handled together
+     * so a failed driver produces a generic administrator error rather than
+     * a fatal exception. Only object rows reach the MVC view.
      *
-     * @param int|string $matchId Requested match identifier.
+     * @param mixed $matchId Requested match identifier from Joomla input.
      * @return array<int, object> Chronological commentary rows or an empty list.
      */
     public function getMatchCommentary($matchId = 0): array
     {
-        $matchId = (int) $matchId;
+        $matchId = self::positiveMatchId($matchId);
 
-        if ($matchId <= 0) {
+        if ($matchId === null) {
             return [];
         }
 
-        $db = $this->getDatabase();
-        $query = $db->createQuery()
-            ->select($db->quoteName('mc') . '.*')
-            ->from($db->quoteName('#__sportsmanagement_match_commentary', 'mc'))
-            ->where($db->quoteName('mc.match_id') . ' = :matchId')
-            ->bind(':matchId', $matchId, ParameterType::INTEGER)
-            ->order($db->quoteName('mc.timelog') . ' ASC');
-
         try {
+            $db = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select($db->quoteName('mc') . '.*')
+                ->from($db->quoteName('#__sportsmanagement_match_commentary', 'mc'))
+                ->where($db->quoteName('mc.match_id') . ' = :matchId')
+                ->bind(':matchId', $matchId, ParameterType::INTEGER)
+                ->order($db->quoteName('mc.timelog') . ' ASC');
             $db->setQuery($query);
-            return $db->loadObjectList() ?: [];
+
+            $records = $db->loadObjectList();
+
+            return is_array($records) ? array_values(array_filter($records, 'is_object')) : [];
         } catch (\Throwable $e) {
             Log::add(
                 'SportsManagement match commentary read failed: ' . $e->getMessage(),
@@ -61,5 +63,36 @@ final class MatchcommentaryModel extends SportsManagementAdminModel
 
             return [];
         }
+    }
+    /**
+     * Parse one positive match identifier without PHP's permissive casts.
+     *
+     * Accepts Joomla integer IDs and zero-padded decimal strings while
+     * rejecting arrays, booleans, suffixes, negative values and numbers
+     * beyond PHP_INT_MAX. Invalid IDs never reach the database driver.
+     *
+     * @param mixed $value Input match ID or historical route parameter.
+     * @return int|null Valid positive ID, or null when malformed.
+     */
+    private static function positiveMatchId(mixed $value): ?int
+    {
+        if (is_int($value)) {
+            return $value > 0 ? $value : null;
+        }
+
+        if (!is_string($value) || strlen($value) > 64
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return null;
+        }
+
+        $digits = ltrim($value, '0');
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '' || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return null;
+        }
+
+        return (int) $digits;
     }
 }
