@@ -22,7 +22,10 @@ final class CalendarFunctions
 {
     /**
      * Render a legacy monthly calendar without relying on removed Joomla helpers.
-     * Validates the requested month and year, lays out up to six complete weeks and includes backward-compatible data attributes for the calendar navigation controls.
+     * Validates the requested month and year, lays out up to six complete
+     * weeks and includes backward-compatible navigation data attributes.
+     * Navigation stays within the supported 1970–9999 year range, avoiding
+     * unusable links at the beginning and end of the calendar period.
      *
      * @param mixed $year Requested calendar year; invalid values use the current year.
      * @param mixed $month Requested calendar month; invalid values use the current month.
@@ -51,6 +54,16 @@ final class CalendarFunctions
 
         $previousMonth = $firstDay->modify('-1 month');
         $nextMonth = $firstDay->modify('+1 month');
+
+        // Navigation must not generate years outside the supported 1970–9999
+        // range: following those links would reset the calendar to today.
+        if ((int) $previousMonth->format('Y') < 1970) {
+            $previousMonth = $firstDay;
+        }
+
+        if ((int) $nextMonth->format('Y') > 9999) {
+            $nextMonth = $firstDay;
+        }
         $totalDaysOfPreviousMonth = (int) $previousMonth->format('t');
         ?>
         <main class="calendar-contain">
