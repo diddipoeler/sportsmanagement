@@ -11,6 +11,8 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\CountryOptionsHelper;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\Database\ParameterType;
 
@@ -42,6 +44,79 @@ final class JlextfederationsModel extends SportsManagementListModel
         ];
 
         parent::__construct($config, $factory);
+    }
+
+    /**
+     * Build country dropdown choices for the native federation list.
+     *
+     * Loads registered ISO-3 countries and includes codes already stored
+     * in federation records, so existing associations remain filterable
+     * when the countries table is incomplete. Ignores malformed records
+     * and duplicate codes without breaking the administrator view.
+     *
+     * @return array<int,object> Sorted ISO-3 country options.
+     */
+    public function getCountryOptions(): array
+    {
+        $db = $this->getDatabase();
+        $options = [];
+        $seen = [];
+
+        foreach (CountryOptionsHelper::getOptions($db) as $option) {
+            if (!is_object($option) || !is_string($option->value ?? null)
+                || !is_string($option->text ?? null)) {
+                continue;
+            }
+
+            $code = strtoupper(trim($option->value));
+
+            if (preg_match('/^[A-Z]{3}$/D', $code) !== 1 || isset($seen[$code])) {
+                continue;
+            }
+
+            $seen[$code] = true;
+            $options[] = (object) ['value' => $code, 'text' => $option->text];
+        }
+
+        try {
+            $query = $db->createQuery()
+                ->select('DISTINCT ' . $db->quoteName('country'))
+                ->from($db->quoteName('#__sportsmanagement_federations'))
+                ->where($db->quoteName('country') . ' IS NOT NULL')
+                ->order($db->quoteName('country') . ' ASC');
+            $db->setQuery($query);
+            $storedCountries = $db->loadColumn();
+
+            if (is_array($storedCountries)) {
+                foreach ($storedCountries as $rawCode) {
+                    if (!is_string($rawCode)) {
+                        continue;
+                    }
+
+                    $code = strtoupper(trim($rawCode));
+
+                    if (preg_match('/^[A-Z]{3}$/D', $code) !== 1 || isset($seen[$code])) {
+                        continue;
+                    }
+
+                    $seen[$code] = true;
+                    $options[] = (object) ['value' => $code, 'text' => $code];
+                }
+            }
+        } catch (\Throwable $exception) {
+            Log::add(
+                __METHOD__ . ': federation country choices failed (' . get_class($exception) . ').',
+                Log::WARNING,
+                'com_sportsmanagement'
+            );
+        }
+
+        usort(
+            $options,
+            static fn (object $left, object $right): int => strnatcasecmp($left->text, $right->text)
+        );
+
+        return $options;
     }
 
     /**
