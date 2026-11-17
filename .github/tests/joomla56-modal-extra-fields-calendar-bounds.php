@@ -87,11 +87,27 @@ namespace {
             throw new \RuntimeException('Calendar previous-month filler lost December 1969.');
         }
 
-        if (!preg_match('/class="title-bar__prev"\s+data-calendar-year="'
-            . $previousYear . '"\s+data-calendar-month="' . $previousNumber . '"/', $html)
-            || !preg_match('/class="title-bar__next"\s+data-calendar-year="'
-                . $nextYear . '"\s+data-calendar-month="' . $nextNumber . '"/', $html)) {
-            throw new \RuntimeException('Calendar generated unsupported navigation year: ' . $year);
+        // Extract the navigation values independently of HTML whitespace and
+        // attribute ordering, then check the exact supported boundary dates.
+        $previous = [];
+        $next = [];
+        preg_match('~<a\\b[^>]*class="title-bar__prev"[^>]*>~s', $html, $previousLink);
+        preg_match('~<a\\b[^>]*class="title-bar__next"[^>]*>~s', $html, $nextLink);
+
+        preg_match('~data-calendar-year="([0-9]+)"~', $previousLink[0] ?? '', $previousYearMatch);
+        preg_match('~data-calendar-month="([0-9]+)"~', $previousLink[0] ?? '', $previousMonthMatch);
+        preg_match('~data-calendar-year="([0-9]+)"~', $nextLink[0] ?? '', $nextYearMatch);
+        preg_match('~data-calendar-month="([0-9]+)"~', $nextLink[0] ?? '', $nextMonthMatch);
+
+        if (($previousYearMatch[1] ?? null) !== $previousYear
+            || ($previousMonthMatch[1] ?? null) !== $previousNumber
+            || ($nextYearMatch[1] ?? null) !== $nextYear
+            || ($nextMonthMatch[1] ?? null) !== $nextNumber) {
+            throw new \RuntimeException(
+                'Unexpected calendar navigation for ' . $year . '-' . $month
+                . ': previous=' . ($previousLink[0] ?? 'missing')
+                . ', next=' . ($nextLink[0] ?? 'missing')
+            );
         }
     }
 
