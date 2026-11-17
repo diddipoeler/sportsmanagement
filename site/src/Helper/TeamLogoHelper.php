@@ -212,6 +212,7 @@ final class TeamLogoHelper
      * Imported database records and Joomla registry settings may contain
      * arrays, objects, invalid UTF-8 or unexpectedly large values. Accept
      * only short, printable scalar strings before building image markup.
+     * Checks control bytes on the original value before any trimming.
      *
      * @param mixed $value Raw team image path, placeholder or display name.
      * @return string Trimmed string or empty text for invalid input.
@@ -222,7 +223,15 @@ final class TeamLogoHelper
             return '';
         }
 
-        $text = trim((string) $value);
+        $raw = (string) $value;
+
+        // Validate the stored value before trim() can remove trailing NUL,
+        // tab or newline bytes from imported team logo fields.
+        if (preg_match('/[\\x00-\\x1F\\x7F]/', $raw) === 1) {
+            return '';
+        }
+
+        $text = trim($raw);
 
         return strlen($text) <= 4096
             && preg_match('//u', $text) === 1
