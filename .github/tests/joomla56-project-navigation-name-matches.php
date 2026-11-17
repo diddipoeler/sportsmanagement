@@ -47,6 +47,17 @@ namespace {
         throw new \RuntimeException('Project navigation accepted invalid UTF-8.');
     }
 
+    // Invalid controls must return before the first query method is called,
+    // including controls that trim() would otherwise remove.
+    foreach (["Project\n", "Project\0", "\tProject"] as $invalidProjectName) {
+        $project->name = $invalidProjectName;
+
+        if (ProjectNavigationHelper::previous($db, $project) !== null
+            || ProjectNavigationHelper::next($db, $project) !== null) {
+            throw new \RuntimeException('Project navigation accepted raw control bytes.');
+        }
+    }
+
     $invalidFirstName = "broken\xC3\x28";
 
     if (NameFormatter::format(null, $invalidFirstName, '', 'Doe', 8) !== 'Doe') {
