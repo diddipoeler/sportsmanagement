@@ -129,9 +129,13 @@ class Event
     public $attendee;
 
     /**
-     * Creates the Event object
+     * Initialise the iCalendar event from its legacy parser properties.
      *
-     * @param  array $data
+     * Converts event keys into historical PHP property names and normalises
+     * strings and repeated values before storing them. Unknown properties
+     * remain supported by the legacy calendar parser on PHP 8.2 and later.
+     *
+     * @param array<string,mixed> $data Incoming iCalendar properties.
      * @return void
      */
     public function __construct(array $data = array())
@@ -143,70 +147,96 @@ class Event
     }
 
     /**
-     * Prepares the data for output
+     * Normalise an iCalendar value, including nested attendee lists.
      *
-     * @param  mixed $value
-     * @return mixed
+     * Converts escaped newline sequences and trims strings recursively.
+     * Static invocation is intentional: PHP 8 does not allow calling an
+     * instance method statically from the event constructor.
+     *
+     * @param mixed $value One parsed property or nested list of properties.
+     * @return mixed Prepared value with its original scalar/array shape.
      */
-    protected function prepareData($value)
+    protected static function prepareData($value)
     {
         if (is_string($value)) {
             return stripslashes(trim(str_replace('\\n', "\n", $value)));
-        } elseif (is_array($value)) {
-            return array_map('self::prepareData', $value);
+        }
+
+        if (is_array($value)) {
+            return array_map(static fn (mixed $item): mixed => self::prepareData($item), $value);
         }
 
         return $value;
     }
 
     /**
-     * Returns Event data excluding anything blank
-     * within an HTML template
+     * Render populated calendar properties with a trusted HTML template.
      *
-     * @param  string $html HTML template to use
-     * @return string
+     * Avoids PHP warnings for absent timezone fields and joins repeated
+     * attendee values into a readable list. Escapes event text before
+     * insertion into the HTML template to prevent calendar-content markup
+     * and attributes from executing in the administrator interface.
+     *
+     * @param string $html Trusted sprintf template with two placeholders.
+     * @return string Escaped HTML for nonempty event properties.
      */
     public function printData($html = self::HTML_TEMPLATE)
     {
-        $data = array(
-            'SUMMARY'       => $this->summary,
-            'DTSTART'       => $this->dtstart,
-            'DTEND'         => $this->dtend,
-            'DTSTART_TZ'    => $this->dtstart_tz,
-            'DTEND_TZ'      => $this->dtend_tz,
-            'DURATION'      => $this->duration,
-            'DTSTAMP'       => $this->dtstamp,
-            'UID'           => $this->uid,
-            'CREATED'       => $this->created,
-            'LAST-MODIFIED' => $this->lastmodified,
-            'DESCRIPTION'   => $this->description,
-            'LOCATION'      => $this->location,
-            'SEQUENCE'      => $this->sequence,
-            'STATUS'        => $this->status,
-            'TRANSP'        => $this->transp,
-            'ORGANISER'     => $this->organizer,
-            'ATTENDEE(S)'   => $this->attendee,
-        );
-
-        // Remove any blank values
-        $data = array_filter($data);
+        $data = [
+            'SUMMARY'       => $this->summary ?? null,
+            'DTSTART'       => $this->dtstart ?? null,
+            'DTEND'         => $this->dtend ?? null,
+            'DTSTART_TZ'    => $this->dtstart_tz ?? null,
+            'DTEND_TZ'      => $this->dtend_tz ?? null,
+            'DURATION'      => $this->duration ?? null,
+            'DTSTAMP'       => $this->dtstamp ?? null,
+            'UID'           => $this->uid ?? null,
+            'CREATED'       => $this->created ?? null,
+            'LAST-MODIFIED' => $this->lastmodified ?? null,
+            'DESCRIPTION'   => $this->description ?? null,
+            'LOCATION'      => $this->location ?? null,
+            'SEQUENCE'      => $this->sequence ?? null,
+            'STATUS'        => $this->status ?? null,
+            'TRANSP'        => $this->transp ?? null,
+            'ORGANISER'     => $this->organizer ?? null,
+            'ATTENDEE(S)'   => $this->attendee ?? null,
+        ];
 
         $output = '';
 
-        foreach ($data as $key => $value) {
-            $output .= sprintf($html, $key, $value);
+        foreach ($data as $label => $value) {
+            if (is_array($value)) {
+                $values = array_map(
+                    static fn (mixed $item): string => is_scalar($item) ? trim((string) $item) : '',
+                    $value
+                );
+                $value = implode(', ', array_filter($values, static fn (string $item): bool => $item !== ''));
+            }
+
+            if (!is_scalar($value) || (string) $value === '') {
+                continue;
+            }
+
+            $output .= sprintf(
+                $html,
+                htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
+                htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+            );
         }
 
         return $output;
     }
 
     /**
-     * Converts the given input to snake_case
+     * Convert an iCalendar field name to the legacy snake_case property.
      *
-     * @param  string $input
-     * @param  string $glue
-     * @param  string $separator
-     * @return string
+     * Inserts word separators before uppercase sections, replaces the
+     * calendar field separator and lowercases the property identifier.
+     *
+     * @param string $input Original calendar property name.
+     * @param string $glue Separator placed between word segments.
+     * @param string $separator Calendar separator to replace.
+     * @return string Lowercase PHP property identifier.
      */
     protected static function snakeCase($input, $glue = '_', $separator = '-')
     {

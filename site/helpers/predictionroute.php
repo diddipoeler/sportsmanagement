@@ -67,7 +67,7 @@ class JSMPredictionHelperRoute
             'uid' => $userID,
         ]);
 
-        return $url . (string) $anchor;
+        return $url . self::fragment($anchor);
     }
 
     /**
@@ -75,17 +75,22 @@ class JSMPredictionHelperRoute
      *
      * Native route methods above intentionally do not force a menu item: Joomla's
      * component router is allowed to choose one that matches the target view.
+     * Explicit or configured Itemid values are validated before encoding
+     * to prevent array-to-integer warnings and malformed menu links.
+     *
+     * @param mixed $parts Legacy route query parameters.
+     * @return string Query string ready for inclusion in a routed URL.
      */
     public static function buildQuery($parts): string
     {
         $parts = (array) $parts;
-        $itemId = (int) ($parts['Itemid'] ?? 0);
+        $itemId = self::positiveMenuId($parts['Itemid'] ?? null);
 
         if ($itemId > 0) {
             $parts['Itemid'] = $itemId;
         } else {
             unset($parts['Itemid']);
-            $defaultItemId = (int) ComponentHelper::getParams('com_sportsmanagement')->get('default_itemid', 0);
+            $defaultItemId = self::positiveMenuId(ComponentHelper::getParams('com_sportsmanagement')->get('default_itemid', 0));
 
             if ($defaultItemId > 0) {
                 $parts['Itemid'] = $defaultItemId;
@@ -102,7 +107,7 @@ class JSMPredictionHelperRoute
      * @param int|string $predictionID Prediction game identifier.
      * @param int|string $projectID Optional related project.
      * @param int|string $roundID Optional round filter.
-     * @param string $anchor Historical fragment argument retained for compatibility.
+     * @param string $anchor Optional safe HTML fragment identifier.
      * @param int|string $groupID Optional prediction group.
      * @param int|string $groupRank Optional group ranking filter.
      * @param int|string $type Ranking display mode.
@@ -133,7 +138,7 @@ class JSMPredictionHelperRoute
             'type' => $type,
             'from' => $from,
             'to' => $to,
-        ]);
+        ]) . self::fragment($anchor);
     }
 
     /**
@@ -160,7 +165,7 @@ class JSMPredictionHelperRoute
      * @param int|string $userID Optional prediction user.
      * @param int|string $roundID Optional round.
      * @param int|string $projectID Optional project.
-     * @param string $anchor Historical fragment argument retained for compatibility.
+     * @param string $anchor Optional safe HTML fragment identifier.
      * @param int|string $groupID Optional prediction group.
      * @param int $cfg_which_database Database selector.
      * @return string Routed entry form URL.
@@ -181,7 +186,7 @@ class JSMPredictionHelperRoute
             'pj' => $projectID,
             'r' => $roundID !== '' ? $roundID : 0,
             'uid' => $userID,
-        ]);
+        ]) . self::fragment($anchor);
     }
 
     /**
@@ -221,5 +226,53 @@ class JSMPredictionHelperRoute
         }
 
         return SiteRouteHelper::view($isEdit ? 'predictionuser' : 'predictionusers', $parameters);
+    }
+    /**
+     * Validate a historical HTML fragment before appending it to a route.
+     *
+     * Allows bounded element IDs such as #ranking_1, but does not permit
+     * query-string suffixes, whitespace or executable URI schemes in a
+     * fragment supplied by a legacy caller or template override.
+     *
+     * @param mixed $anchor Optional legacy route anchor.
+     * @return string Accepted #fragment or an empty string if malformed.
+     */
+    private static function fragment(mixed $anchor): string
+    {
+        return is_string($anchor)
+            && strlen($anchor) <= 128
+            && preg_match('/^#[A-Za-z0-9][A-Za-z0-9_.:-]*$/D', $anchor) === 1
+                ? $anchor
+                : '';
+    }
+
+    /**
+     * Convert an Itemid selector to a positive menu ID without unsafe casts.
+     *
+     * Rejects arrays, booleans, floats, malformed values and integer overflow
+     * so invalid selections can safely fall back to the configured menu item.
+     *
+     * @param mixed $candidate Explicit or default Joomla menu ID.
+     * @return int Positive ID, or zero for an invalid/absent selection.
+     */
+    private static function positiveMenuId(mixed $candidate): int
+    {
+        if (is_int($candidate)) {
+            return max(0, $candidate);
+        }
+
+        if (!is_string($candidate) || preg_match('/^[0-9]+$/D', trim($candidate)) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim(trim($candidate), '0');
+        $max = (string) PHP_INT_MAX;
+
+        if ($digits === '' || strlen($digits) > strlen($max)
+            || (strlen($digits) === strlen($max) && strcmp($digits, $max) > 0)) {
+            return 0;
+        }
+
+        return (int) $digits;
     }
 }
