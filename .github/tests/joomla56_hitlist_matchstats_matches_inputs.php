@@ -330,7 +330,11 @@ namespace {
 
     $db = new LegacyDatabase();
     \Diddipoeler\Component\SportsManagement\Site\Model\SportsManagementModel::$database = $db;
-    $hitlist = new \Diddipoeler\Component\SportsManagement\Site\Model\HitlistModel();
+    // Bypass Joomla's application-aware MVC constructor in the isolated
+    // fixture: the hit-list query itself uses only the injected database.
+    $hitlist = (new \ReflectionClass(
+        \Diddipoeler\Component\SportsManagement\Site\Model\HitlistModel::class
+    ))->newInstanceWithoutConstructor();
     $hitlistClass = \Diddipoeler\Component\SportsManagement\Site\Model\HitlistModel::class;
     $hitlistClass::$_success_text = [];
 
