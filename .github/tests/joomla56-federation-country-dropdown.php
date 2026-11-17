@@ -199,6 +199,40 @@ namespace {
         throw new \RuntimeException('Native Joomla federation country filter XML is missing.');
     }
 
+    // Corrupted stored Joomla filter arrays must not reach string casts
+    // or produce warnings while rendering the country dropdown.
+    $view->state = new class {
+        /**
+         * Simulate stale malformed administrator filter state.
+         *
+         * @param string $key Filter state key.
+         * @param mixed $default Requested fallback.
+         * @return mixed Malformed filter entry or the fallback.
+         */
+        public function get(string $key, mixed $default = ''): mixed
+        {
+            return str_starts_with($key, 'filter.') || str_starts_with($key, 'list.')
+                ? ['malformed', 'state'] : $default;
+        }
+    };
+
+    set_error_handler(static function (int $level, string $message): never {
+        throw new \RuntimeException('Federation template warning: ' . $message);
+    });
+
+    try {
+        $invalidStateHtml = $view->render(
+            $root . '/admin/tmpl/jlextfederations/default.php'
+        );
+    } finally {
+        restore_error_handler();
+    }
+
+    if (str_contains($invalidStateHtml, 'Array')
+        || str_contains($invalidStateHtml, '<option value="DEU" selected>')) {
+        throw new \RuntimeException('Malformed federation list state was rendered as a filter.');
+    }
+
     $model = file_get_contents($root . '/admin/src/Model/JlextfederationsModel.php');
     $controllerView = file_get_contents($root . '/admin/src/View/Jlextfederations/HtmlView.php');
 
