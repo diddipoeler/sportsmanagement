@@ -121,6 +121,7 @@ final class JlextfederationsModel extends SportsManagementListModel
 
     /**
      * Apply federation ordering and the legacy nation filter.
+     * Accept an explicit empty dropdown selection to clear saved filter state.
      * @param string $ordering Default federation sort field.
      * @param string $direction Default sort direction.
      * @return void
@@ -129,9 +130,16 @@ final class JlextfederationsModel extends SportsManagementListModel
     {
         parent::populateState($ordering, $direction);
 
-        $country = $this->administratorApplication()->getInput()->getString('filter_search_nation');
+        $rawCountry = $this->administratorApplication()->getInput()
+            ->get('filter_search_nation', null, 'raw');
 
-        if ($country !== '') {
+        // The native list uses this legacy request parameter. Preserve an
+        // explicit empty selection so clearing the dropdown also clears a
+        // country filter retained in Joomla's administrator user state.
+        if ($rawCountry !== null) {
+            $country = is_string($rawCountry) ? strtoupper(trim($rawCountry)) : '';
+            $country = $country === '' || preg_match('/^[A-Z]{3}$/D', $country) === 1
+                ? $country : '';
             $this->setState('filter.search_nation', $country);
         }
     }
