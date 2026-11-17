@@ -116,6 +116,18 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model {
                 }
 
                 /**
+                 * Escape a Joomla LIKE search fragment for this fake query.
+                 *
+                 * @param string $value Raw search term.
+                 * @param bool $extra Apply extra Joomla LIKE escaping.
+                 * @return string Unchanged safe test term.
+                 */
+                public function escape(string $value, bool $extra = false): string
+                {
+                    return $value;
+                }
+
+                /**
                  * Record each country or state WHERE expression.
                  *
                  * @param string $condition SQL condition.
@@ -228,6 +240,38 @@ namespace {
     if (array_key_exists(':country', $db->bindings)
         || in_array('"objassoc.country" = :country', $db->conditions, true)) {
         throw new \RuntimeException('Clearing federation country did not remove SQL filter.');
+    }
+
+    // Invalid nested values must never cause PHP 8 array-to-string warnings
+    // or produce an unintended SQL country, search or publication predicate.
+    foreach ([
+        ['search_nation' => ['DEU'], 'search' => ['malformed'], 'state' => ['1']],
+        ['search_nation' => "DEU\n", 'search' => "unsafe\0", 'state' => '1trailing'],
+        ['search_nation' => 'DEUtrailing', 'search' => str_repeat('x', 256), 'state' => '2'],
+    ] as $invalidFilters) {
+        $GLOBALS['nativeFederationFilters'] = $invalidFilters;
+        $populate->invoke($model);
+        $db = $query->invoke($model);
+
+        if (isset($db->bindings[':country'], $db->bindings[':searchToken'])
+            || isset($db->bindings[':publishedState'])
+            || in_array('"objassoc.country" = :country', $db->conditions, true)) {
+            throw new \RuntimeException('Malformed native federation filters reached SQL.');
+        }
+    }
+
+    $GLOBALS['nativeFederationFilters'] = [
+        'search_nation' => 'deu',
+        'search' => 'Schalke',
+        'state' => '0',
+    ];
+    $populate->invoke($model);
+    $db = $query->invoke($model);
+
+    if (($db->bindings[':country'] ?? null) !== 'DEU'
+        || ($db->bindings[':searchToken'] ?? null) !== '%Schalke%'
+        || ($db->bindings[':publishedState'] ?? null) !== 0) {
+        throw new \RuntimeException('Valid combined federation filters did not reach SQL.');
     }
 
     echo "Joomla 5/6 federation country SQL filter regression passed.\n";
