@@ -27,11 +27,11 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
         <div class="card mb-3"><div class="card-body"><div class="row g-2 align-items-end">
             <div class="col-12 col-md-5">
                 <label class="form-label" for="filter_search"><?php echo Text::_('JSEARCH_FILTER'); ?></label>
-                <input class="form-control" type="search" name="filter_search" id="filter_search" value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
+                <input class="form-control" type="search" name="filter[search]" id="filter_search" value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
             </div>
             <div class="col-6 col-md-2">
                 <label class="form-label" for="filter_search_nation"><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></label>
-                <select class="form-select" name="filter_search_nation" id="filter_search_nation" onchange="this.form.submit();">
+                <select class="form-select" name="filter[search_nation]" id="filter_search_nation" onchange="this.form.submit();">
                     <option value=""><?php echo Text::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'); ?></option>
                     <?php foreach ($this->countryOptions ?? [] as $countryOption) : ?>
                         <?php
@@ -53,7 +53,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
             </div>
             <div class="col-6 col-md-2">
                 <label class="form-label" for="filter_state"><?php echo Text::_('JSTATUS'); ?></label>
-                <select class="form-select" name="filter_state" id="filter_state">
+                <select class="form-select" name="filter[state]" id="filter_state">
                     <option value=""<?php echo $state === '' ? ' selected' : ''; ?>><?php echo Text::_('JOPTION_SELECT_PUBLISHED'); ?></option>
                     <option value="1"<?php echo (string) $state === '1' ? ' selected' : ''; ?>><?php echo Text::_('JPUBLISHED'); ?></option>
                     <option value="0"<?php echo (string) $state === '0' ? ' selected' : ''; ?>><?php echo Text::_('JUNPUBLISHED'); ?></option>
@@ -61,7 +61,7 @@ $direction = (string) $this->state->get('list.direction', 'ASC');
             </div>
             <div class="col-12 col-md-3 d-flex gap-2">
                 <button class="btn btn-primary" type="submit"><?php echo Text::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-                <a class="btn btn-secondary" href="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextfederations&filter_search_nation='); ?>"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></a>
+                <a class="btn btn-secondary" href="<?php echo Route::_('index.php?option=com_sportsmanagement&view=jlextfederations&filter[search]=&filter[state]=&filter[search_nation]='); ?>"><?php echo Text::_('JSEARCH_FILTER_CLEAR'); ?></a>
             </div>
         </div></div></div>
 
