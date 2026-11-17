@@ -26,6 +26,8 @@ final class CalendarFunctions
      * weeks and includes backward-compatible navigation data attributes.
      * Navigation stays within the supported 1970–9999 year range, avoiding
      * unusable links at the beginning and end of the calendar period.
+     * Boundary clamping does not change the previous month's day count
+     * used to populate the inactive cells in the leading calendar week.
      *
      * @param mixed $year Requested calendar year; invalid values use the current year.
      * @param mixed $month Requested calendar month; invalid values use the current month.
@@ -54,24 +56,29 @@ final class CalendarFunctions
 
         $previousMonth = $firstDay->modify('-1 month');
         $nextMonth = $firstDay->modify('+1 month');
+        $previousNavigation = $previousMonth;
+        $nextNavigation = $nextMonth;
 
         // Navigation must not generate years outside the supported 1970–9999
         // range: following those links would reset the calendar to today.
-        if ((int) $previousMonth->format('Y') < 1970) {
-            $previousMonth = $firstDay;
+        if ((int) $previousNavigation->format('Y') < 1970) {
+            $previousNavigation = $firstDay;
         }
 
-        if ((int) $nextMonth->format('Y') > 9999) {
-            $nextMonth = $firstDay;
+        if ((int) $nextNavigation->format('Y') > 9999) {
+            $nextNavigation = $firstDay;
         }
+
+        // The previous month's day count must remain the actual preceding
+        // month even when navigation is clamped at January 1970.
         $totalDaysOfPreviousMonth = (int) $previousMonth->format('t');
         ?>
         <main class="calendar-contain">
             <section class="title-bar">
                 <a href="javascript:void(0);"
                    class="title-bar__prev"
-                   data-calendar-year="<?php echo (int) $previousMonth->format('Y'); ?>"
-                   data-calendar-month="<?php echo (int) $previousMonth->format('m'); ?>"></a>
+                   data-calendar-year="<?php echo (int) $previousNavigation->format('Y'); ?>"
+                   data-calendar-month="<?php echo (int) $previousNavigation->format('m'); ?>"></a>
                 <div class="title-bar__month">
                     <select class="month-dropdown">
                         <?php echo self::monthList($month); ?>
@@ -84,8 +91,8 @@ final class CalendarFunctions
                 </div>
                 <a href="javascript:void(0);"
                    class="title-bar__next"
-                   data-calendar-year="<?php echo (int) $nextMonth->format('Y'); ?>"
-                   data-calendar-month="<?php echo (int) $nextMonth->format('m'); ?>"></a>
+                   data-calendar-year="<?php echo (int) $nextNavigation->format('Y'); ?>"
+                   data-calendar-month="<?php echo (int) $nextNavigation->format('m'); ?>"></a>
             </section>
 
             <aside class="calendar__sidebar" id="event_list">
