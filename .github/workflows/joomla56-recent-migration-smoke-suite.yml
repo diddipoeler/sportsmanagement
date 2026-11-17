@@ -21,6 +21,7 @@ on:
       - '.github/tests/joomla56-name-extrafields-clubicons.php'
       - '.github/tests/joomla56-team-logos-options-matches.php'
       - '.github/tests/joomla56-match-time-admin-calendar-date-guards.php'
+      - '.github/tests/joomla56-calendar-nul-geocoder-image-base.php'
       - '.github/workflows/joomla56-recent-migration-smoke-suite.yml'
   pull_request:
     paths:
@@ -58,6 +59,7 @@ jobs:
           php -l .github/tests/joomla56-name-extrafields-clubicons.php
           php -l .github/tests/joomla56-team-logos-options-matches.php
           php -l .github/tests/joomla56-match-time-admin-calendar-date-guards.php
+          php -l .github/tests/joomla56-calendar-nul-geocoder-image-base.php
       - name: Run standalone cases with isolated PHP processes
         run: |
           set -e
@@ -69,3 +71,4 @@ jobs:
           php .github/tests/joomla56-name-extrafields-clubicons.php
           php .github/tests/joomla56-team-logos-options-matches.php
           php .github/tests/joomla56-match-time-admin-calendar-date-guards.php
+          php .github/tests/joomla56-calendar-nul-geocoder-image-base.php
