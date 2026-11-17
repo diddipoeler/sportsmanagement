@@ -101,8 +101,11 @@ final class MatchesHelper
         }
 
         $updateValue = $params->get('ishd_update', 0);
-        $legacyUpdateRequested = $updateValue === true
-            || self::boundedMatchesOption($updateValue, 0, 1) === 1;
+        // A boolean flag must be validated, never clamped: converting "2"
+        // to 1 would activate a legacy update on invalid module settings.
+        $legacyUpdateRequested = $updateValue === true || $updateValue === 1
+            || (is_string($updateValue) && strlen($updateValue) <= 64
+                && preg_match('/^0*1$/D', $updateValue) === 1);
         $projects = $this->ids($params->get('p', []));
         if (!$projects) {
             return ['matches' => [], 'legacy_update_requested' => $legacyUpdateRequested];
