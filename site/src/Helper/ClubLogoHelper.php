@@ -26,7 +26,8 @@ final class ClubLogoHelper
      * configured placeholder when a club logo is missing and generates
      * compact image markup via Joomla HTMLHelper in logo mode.
      * Ignores malformed placeholder parameter values and avoids invalid
-     * HTML height attributes in Joomla 5/6 templates.
+     * HTML height attributes in Joomla 5/6 templates. Refuses unsafe
+     * local paths and unsupported remote URL schemes before rendering HTML.
      *
      * @param string $logoSmall Optional club logo path.
      * @param string $country Country code used when rendering a flag.
@@ -54,7 +55,10 @@ final class ClubLogoHelper
             $logo = is_string($fallback) ? trim($fallback) : '';
         }
 
-        if ($logo === '') {
+        // The compact logo path must be subject to the same URL safety
+        // checks as other native SportsManagement frontend image helpers.
+        // Keep the original path for Joomla HTMLHelper's image URL handling.
+        if ($logo === '' || PersonImageHelper::url($logo) === '') {
             return '';
         }
 
