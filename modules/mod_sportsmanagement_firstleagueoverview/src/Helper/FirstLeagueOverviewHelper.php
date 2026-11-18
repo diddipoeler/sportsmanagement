@@ -31,6 +31,8 @@ final class FirstLeagueOverviewHelper
      * and limits federation tabs to those associated with visible projects.
      * Malformed database selectors return empty results instead of selecting
      * a different connection. Exception logs contain no SQL error text.
+     * Country labels from historical databases are normalised before
+     * passing them to Joomla's translation and template services.
      *
      * @param Registry $params Joomla first-league module settings.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -54,7 +56,9 @@ final class FirstLeagueOverviewHelper
 
             foreach ($projects as $project) {
                 $project->ranking_link = $this->rankingLink($project, $params);
-                $project->country_label = Text::_((string) ($project->country_name ?: $project->country));
+                $countryName = self::leagueText($project->country_name ?? null);
+                $countryCode = self::leagueText($project->country ?? null);
+                $project->country_label = Text::_($countryName !== '' ? $countryName : $countryCode);
                 $project->flag_html = $this->flagHtml($project, $componentParams);
             }
 
@@ -122,9 +126,13 @@ final class FirstLeagueOverviewHelper
             ]);
 
         $db->setQuery($query);
-        $rows = $db->loadObjectList() ?: [];
+        $rows = $db->loadObjectList();
         $projects = [];
         $seenLeagues = [];
+
+        if (!is_array($rows)) {
+            return [];
+        }
 
         foreach ($rows as $row) {
             if (!is_object($row)) {
@@ -193,6 +201,7 @@ final class FirstLeagueOverviewHelper
     /**
      * Return only federation tabs which actually contain projects. Unassigned
      * countries and references to deleted federations must not disappear.
+     * Skips nested records and avoids partial numeric federation-ID casts.
      *
      * @param array<int, object> $projects
      * @param array<int, object> $federations
@@ -204,15 +213,26 @@ final class FirstLeagueOverviewHelper
         $usedIds = [];
 
         foreach ($projects as $project) {
-            $id = max(0, (int) ($project->federation ?? 0));
+            if (!is_object($project)) {
+                continue;
+            }
+
+            // Unassigned countries use the historical fallback tab zero.
+            $id = self::nonNegativeId($project->federation ?? null);
             $usedIds[$id] = true;
         }
 
         $visible = [];
 
         foreach ($federations as $id => $federation) {
-            if (isset($usedIds[(int) $id])) {
-                $visible[(int) $id] = $federation;
+            if (!is_object($federation)) {
+                continue;
+            }
+
+            $federationId = self::databaseSelector($id);
+
+            if ($federationId !== null && isset($usedIds[$federationId])) {
+                $visible[$federationId] = $federation;
             }
         }
 
@@ -245,10 +265,15 @@ final class FirstLeagueOverviewHelper
      */
     private function rankingLink(object $project, Registry $params): string
     {
+        $rawSlug = $project->project_slug ?? null;
+        $projectSlug = is_string($rawSlug) && strlen($rawSlug) <= 256
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $rawSlug) !== 1
+            ? $rawSlug : (string) self::nonNegativeId($project->id ?? null);
+
         return SiteRouteHelper::view('ranking', [
             'cfg_which_database' => self::databaseSelector($params->get('cfg_which_database', 0)),
-            's' => (int) ($project->season_id ?? 0),
-            'p' => (string) ($project->project_slug ?? $project->id ?? ''),
+            's' => self::nonNegativeId($project->season_id ?? null),
+            'p' => $projectSlug,
             'type' => 0,
             'r' => 0,
             'from' => 0,
@@ -269,13 +294,17 @@ final class FirstLeagueOverviewHelper
      */
     private function flagHtml(object $row, Registry $componentParams): string
     {
-        $alpha3 = strtoupper((string) ($row->country ?? ''));
-        $alpha2 = strtolower((string) ($row->alpha2 ?? ''));
+        $alpha3 = strtoupper(self::leagueText($row->country ?? null));
+        $alpha2 = strtolower(self::leagueText($row->alpha2 ?? null));
         $alpha3 = preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : '';
         $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
-        $label = htmlspecialchars((string) ($row->country_label ?? $alpha3), ENT_QUOTES, 'UTF-8');
+        $label = htmlspecialchars(
+            self::leagueText($row->country_label ?? $alpha3),
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8'
+        );
 
-        if ((int) $componentParams->get('cfg_flags_css', 0) === 1) {
+        if (self::databaseSelector($componentParams->get('cfg_flags_css', 0)) === 1) {
             $cssCode = match ($alpha3) {
                 'WAL' => 'gb-wls',
                 'SCO' => 'gb-sct',
@@ -290,7 +319,7 @@ final class FirstLeagueOverviewHelper
 
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : (string) ($row->country_picture ?? $componentParams->get('ph_flags', ''));
+            : self::leagueText($row->country_picture ?? $componentParams->get('ph_flags', ''));
 
         if ($path === '') {
             return '';
@@ -308,6 +337,23 @@ final class FirstLeagueOverviewHelper
     }
 
     /**
+     * Validate public country, federation and league labels from old rows.
+     *
+     * Only bounded strings are accepted. Null, nested values, control
+     * characters and overly long imported labels become empty text, never
+     * an array-to-string PHP 8 warning or unsafe HTML attribute.
+     *
+     * @param mixed $value Untrusted row label or configured image path.
+     * @return string Safe label or empty string.
+     */
+    private static function leagueText(mixed $value): string
+    {
+        return is_string($value) && strlen($value) <= 2048
+            && preg_match('/[\x00-\x1F\x7F]/', $value) !== 1
+            ? $value : '';
+    }
+
+    /**
      * Parse the database selector without coercing malformed legacy settings.
      *
      * Accepts nonnegative integers or decimal strings including leading
@@ -319,7 +365,8 @@ final class FirstLeagueOverviewHelper
      */
     private static function databaseSelector(mixed $value): ?int
     {
-        if (!is_int($value) && (!is_string($value) || !preg_match('/^[0-9]+$/D', $value))) {
+        if (!is_int($value) && (!is_string($value) || strlen($value) > 64
+            || preg_match('/^[0-9]+$/D', $value) !== 1)) {
             return null;
         }
 

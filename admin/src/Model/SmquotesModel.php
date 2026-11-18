@@ -66,7 +66,9 @@ final class SmquotesModel extends SportsManagementListModel
     /**
      * Build a filtered and sorted administrator quote query.
      * Uses bound values for search, category and publication filters
-     * and a fixed map of permitted ORDER BY columns.
+     * and a fixed map of permitted ORDER BY columns. Rejects structured
+     * filters, partial numeric values and integer overflow before query
+     * construction instead of relying on PHP's permissive type casts.
      * @return mixed Joomla database query for quotes.
      */
     protected function getListQuery()
@@ -91,7 +93,10 @@ final class SmquotesModel extends SportsManagementListModel
                 . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('obj.catid')
             );
 
-        $search = trim((string) $this->getState('filter.search'));
+        $rawSearch = $this->getState('filter.search');
+        $search = is_string($rawSearch) && strlen($rawSearch) <= 256
+            && preg_match('/[\\x00-\\x1F\\x7F]/', $rawSearch) !== 1
+            ? trim($rawSearch) : '';
 
         if ($search !== '') {
             $token = '%' . $db->escape($search, true) . '%';
@@ -99,18 +104,16 @@ final class SmquotesModel extends SportsManagementListModel
                 ->bind(':quoteSearch', $token, ParameterType::STRING);
         }
 
-        $state = $this->getState('filter.state');
+        $state = self::numericFilter($this->getState('filter.state'), -2);
 
-        if ($state !== '' && is_numeric($state)) {
-            $published = (int) $state;
+        if ($state !== null) {
             $query->where($db->quoteName('obj.published') . ' = :quotePublished')
-                ->bind(':quotePublished', $published, ParameterType::INTEGER);
+                ->bind(':quotePublished', $state, ParameterType::INTEGER);
         }
 
-        $categoryId = $this->getState('filter.catid');
+        $categoryId = self::numericFilter($this->getState('filter.catid'), 0);
 
-        if ($categoryId !== '' && is_numeric($categoryId)) {
-            $categoryId = (int) $categoryId;
+        if ($categoryId !== null) {
             $query->where($db->quoteName('obj.catid') . ' = :quoteCategoryId')
                 ->bind(':quoteCategoryId', $categoryId, ParameterType::INTEGER);
         }
@@ -130,10 +133,51 @@ final class SmquotesModel extends SportsManagementListModel
             'published' => $db->quoteName('obj.published'),
             'state' => $db->quoteName('obj.published'),
         ];
-        $ordering = (string) $this->getState('list.ordering', 'obj.quote');
-        $listDirection = strtoupper((string) $this->getState('list.direction', 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+        $rawOrdering = $this->getState('list.ordering', 'obj.quote');
+        $ordering = is_string($rawOrdering) ? $rawOrdering : 'obj.quote';
+        $rawDirection = $this->getState('list.direction', 'ASC');
+        $listDirection = is_string($rawDirection) && strtoupper($rawDirection) === 'DESC'
+            ? 'DESC' : 'ASC';
         $query->order(($orderMap[$ordering] ?? $orderMap['obj.quote']) . ' ' . $listDirection);
 
         return $query;
+    }
+
+    /**
+     * Validate administrator publication and category filters as integers.
+     *
+     * Accepts signed decimal strings and zero-padded values, but never
+     * arrays, booleans, floats, scientific notation, partial strings or
+     * values outside PHP's integer range. Preserves Joomla's negative
+     * published-state selection down to -2 and category zero.
+     *
+     * @param mixed $raw Filter state from Joomla request or user state.
+     * @param int $minimum Lowest supported filter selection.
+     * @return int|null Validated integer or null when absent or malformed.
+     */
+    private static function numericFilter(mixed $raw, int $minimum): ?int
+    {
+        if (is_int($raw)) {
+            return $raw >= $minimum ? $raw : null;
+        }
+
+        if (!is_string($raw) || strlen($raw) > 64
+            || preg_match('/^-?[0-9]+$/D', $raw) !== 1) {
+            return null;
+        }
+
+        $digits = ltrim(ltrim($raw, '-'), '0');
+        $digits = $digits === '' ? '0' : $digits;
+        $negative = str_starts_with($raw, '-') && $digits !== '0';
+        $maximum = $negative ? substr((string) PHP_INT_MIN, 1) : (string) PHP_INT_MAX;
+
+        if (strlen($digits) > strlen($maximum)
+            || (strlen($digits) === strlen($maximum) && strcmp($digits, $maximum) > 0)) {
+            return null;
+        }
+
+        $value = (int) (($negative ? '-' : '') . $digits);
+
+        return $value >= $minimum ? $value : null;
     }
 }
