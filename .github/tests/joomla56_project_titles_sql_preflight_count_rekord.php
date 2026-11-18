@@ -100,6 +100,13 @@ namespace {
         throw new \RuntimeException('Valid project title segments have regressed.');
     }
 
+    // Malformed and partially numeric title formats must not cast to a
+    // different valid legacy view, while zero-padded stored modes still work.
+    if ($title::format($info, '3invalid') !== 'Fixtures: Season cup - Premier'
+        || $title::format($info, '0001') !== 'Fixtures: Season cup - Premier | League') {
+        throw new \RuntimeException('Malformed project title format was accepted.');
+    }
+
     $database = new class implements \Joomla\Database\DatabaseInterface {
         public array $executed = [];
 

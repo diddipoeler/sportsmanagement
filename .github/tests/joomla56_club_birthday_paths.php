@@ -164,6 +164,21 @@ namespace {
             throw new \RuntimeException('Parent-directory flag path was accepted');
         }
 
+        // These persisted fields can be nested on old Joomla sites.
+        // Reject them without emitting PHP 8 array-to-string warnings.
+        $nestedFlag = $flag->invoke(null, (object) [
+            'country' => ['DEU'],
+            'country_alpha2' => ['de'],
+            'country_picture' => ['../private.png'],
+        ], new \Joomla\Registry\Registry([
+            'cfg_flags_css' => ['bad'],
+            'ph_flags' => ['missing'],
+        ]));
+
+        if ($nestedFlag !== '') {
+            throw new \RuntimeException('Nested country flag settings were accepted');
+        }
+
         echo "Club birthday IDs and image paths OK\n";
     } finally {
         @unlink($testRoot . '/images/outside.png');
