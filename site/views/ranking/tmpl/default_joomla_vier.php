@@ -1,7 +1,8 @@
-<?PHP
+<?php
 /**
+ * Joomla 5/6 legacy-compatible ranking layout.
  * SportsManagement ein Programm zur Verwaltung fűr alle Sportarten
- * @version    1.0.05
+ * @version    5.6.0
  * @package    Sportsmanagement
  * @subpackage ranking
  * @file       deafult_joomla_vier.php
