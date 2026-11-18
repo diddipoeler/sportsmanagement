@@ -138,13 +138,21 @@ namespace {
         throw new \RuntimeException('Valid administrator extra-field select options were altered.');
     }
 
-    // Wildcard characters in configured field names are literal data:
-    // they must never cause a different extra-field definition to match.
-    $helper->getOptions('club%', 'team_1', false, 7);
+    // The current Joomla 5/6 input validator rejects SQL LIKE wildcards
+    // before constructing any query, rather than treating them as field IDs.
+    $previousQueries = $db->queries;
+    if ($helper->getOptions('club%', 'team_1', false, 7) !== []
+        || $db->queries !== $previousQueries) {
+        throw new \RuntimeException('Extra-select wildcard identifier reached the query builder.');
+    }
+
+    // Real underscores remain allowed as literal field-name characters.
+    // The native helper must use exact, bound SQL comparisons for those.
+    $helper->getOptions('club', 'team_1', false, 7);
 
     if ($db->queryLimit !== 1
         || ($db->lastQuery?->bindings ?? []) !== [
-            ':templateName' => ['club%', 'string'],
+            ':templateName' => ['club', 'string'],
             ':fieldName' => ['team_1', 'string'],
             ':fieldType' => [7, 'integer'],
         ]
@@ -173,8 +181,10 @@ namespace {
     if (count($errors) !== 2
         || $errors[0][1] !== \Joomla\CMS\Log\Log::ERROR
         || $errors[0][2] !== 'com_sportsmanagement'
-        || !str_contains($errors[0][0], 'SQLSTATE fake-database-password')
-        || !str_contains($errors[1][0], 'Private connection details')) {
+        || !str_contains($errors[0][0], 'RuntimeException')
+        || !str_contains($errors[1][0], 'RuntimeException')
+        || str_contains($errors[0][0], 'fake-database-password')
+        || str_contains($errors[1][0], 'Private connection details')) {
         throw new \RuntimeException('Administrator extra-select failures were not logged.');
     }
 

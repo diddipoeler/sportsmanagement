@@ -73,11 +73,13 @@ namespace {
         }
     }
 
+    // Invalid selectors must now fail closed (null), not silently switch
+    // to the unrelated Joomla default database selection zero.
     foreach ([
         [0, 0], [1, 1], [7, 7], ['0007', 7],
-        ['000', 0], ['2', 2], [-1, 0], [true, 0],
-        [false, 0], [['1'], 0], ['1bad', 0], ['1.5', 0],
-        ['999999999999999999999', 0],
+        ['000', 0], ['2', 2], [-1, null], [true, null],
+        [false, null], [['1'], null], ['1bad', null], ['1.5', null],
+        ['999999999999999999999', null],
     ] as [$value, $expected]) {
         if ($selector->invoke(null, $value) !== $expected) {
             throw new \RuntimeException('Invalid first-league database selector value.');
