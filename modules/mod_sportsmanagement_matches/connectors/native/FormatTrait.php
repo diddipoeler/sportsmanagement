@@ -370,6 +370,8 @@ trait NativeFormatTrait
      * notations, plus configured per-period results without changing markup.
      * Missing optional score, overtime, penalty and cancellation columns are
      * handled without undefined-property warnings on legacy match records.
+     * Ignores nested, nonfinite and oversized score data, which historically
+     * triggered PHP 8 array-to-string warnings in module rendering.
      * @param array<string,mixed> $row Mutable prepared fixture template row.
      * @param object $match Match row with scores and cancellation flags.
      * @param Registry $params Result and separator display options.
@@ -378,32 +380,45 @@ trait NativeFormatTrait
     private function result(array &$row, object $match, Registry $params): void
     {
         if ($row['cancel']) {
-            $row['result'] = (string) ($match->cancel_reason ?? '');
+            $row['result'] = self::safeMatchesText($match->cancel_reason ?? null) ?? '';
             $row['partresults'] = '';
             return;
         }
-        $home = ($match->team1_result ?? null) === null ? '-' : (string) $match->team1_result;
-        $away = ($match->team2_result ?? null) === null ? '-' : (string) $match->team2_result;
+
+        $home = self::safeMatchesText($match->team1_result ?? null) ?? '-';
+        $away = self::safeMatchesText($match->team2_result ?? null) ?? '-';
         $rawSeparator = $params->get('team_separator', ':');
         $separator = is_string($rawSeparator) && strlen($rawSeparator) <= 20 ? $rawSeparator : ':';
         $row['result'] = $home . $separator . $away;
-        if (self::boundedMatchesOption($params->get('show_text_penalty', 1), 1, 1) === 1 && ($match->team1_result_so ?? null) !== null) {
-            $row['result'] = Text::_('INP') . ' ' . $match->team1_result_so . $separator . ($match->team2_result_so ?? '-');
-        } elseif (self::boundedMatchesOption($params->get('show_text_overtime', 1), 1, 1) === 1 && ($match->team1_result_ot ?? null) !== null) {
-            $row['result'] = Text::_('IET') . ' ' . $match->team1_result_ot . $separator . ($match->team2_result_ot ?? '-');
+        $penaltyHome = self::safeMatchesText($match->team1_result_so ?? null);
+        $penaltyAway = self::safeMatchesText($match->team2_result_so ?? null);
+        $overtimeHome = self::safeMatchesText($match->team1_result_ot ?? null);
+        $overtimeAway = self::safeMatchesText($match->team2_result_ot ?? null);
+
+        if (self::boundedMatchesOption($params->get('show_text_penalty', 1), 1, 1) === 1
+            && $penaltyHome !== null) {
+            $row['result'] = Text::_('INP') . ' ' . $penaltyHome . $separator . ($penaltyAway ?? '-');
+        } elseif (self::boundedMatchesOption($params->get('show_text_overtime', 1), 1, 1) === 1
+            && $overtimeHome !== null) {
+            $row['result'] = Text::_('IET') . ' ' . $overtimeHome . $separator . ($overtimeAway ?? '-');
         }
+
         $row['partresults'] = '';
+
         if (self::boundedMatchesOption($params->get('part_result', 0), 0, 1) === 1) {
-            $h = $this->split((string) ($match->team1_result_split ?? ''));
-            $a = $this->split((string) ($match->team2_result_split ?? ''));
+            $h = $this->split(self::safeMatchesText($match->team1_result_split ?? null) ?? '');
+            $a = $this->split(self::safeMatchesText($match->team2_result_split ?? null) ?? '');
             $pairs = [];
+
             foreach (array_keys($h) as $i) {
                 if (isset($a[$i]) && $h[$i] !== '-' && $a[$i] !== '-') {
                     $pairs[] = $h[$i] . ':' . $a[$i];
                 }
             }
+
             $rawPartSeparator = $params->get('part_results_separator', '-');
-            $partSeparator = is_string($rawPartSeparator) && strlen($rawPartSeparator) <= 20 ? $rawPartSeparator : '-';
+            $partSeparator = is_string($rawPartSeparator) && strlen($rawPartSeparator) <= 20
+                ? $rawPartSeparator : '-';
             $row['partresults'] = $pairs ? '(' . implode($partSeparator, $pairs) . ')' : '';
         }
     }
@@ -411,22 +426,47 @@ trait NativeFormatTrait
     /**
      * Format a referee's name using the configured legacy name variant.
      * Combine optional given name, surname and nickname without creating
-     * extra separators for absent fields.
+     * extra separators for absent fields. Malformed imported name fields
+     * are treated as missing instead of cast to "Array" on PHP 8.
      * @param object $person Referee record with optional name parts.
      * @param int $format Legacy display variant.
      * @return string Referee display name.
      */
     private function formatName(object $person, int $format): string
     {
-        $first = trim((string) ($person->firstname ?? ''));
-        $nick = trim((string) ($person->nickname ?? ''));
-        $last = trim((string) ($person->lastname ?? ''));
+        $first = trim(self::safeMatchesText($person->firstname ?? null) ?? '');
+        $nick = trim(self::safeMatchesText($person->nickname ?? null) ?? '');
+        $last = trim(self::safeMatchesText($person->lastname ?? null) ?? '');
         return match ($format) {
             1, 2, 4, 17, 18 => trim($last . ' ' . $first),
             10 => $last,
             12 => $nick ?: $first ?: $last,
             default => trim($first . ($nick !== '' ? " '$nick'" : '') . ' ' . $last),
         };
+    }
+
+    /**
+     * Convert one optional legacy match field to safe printable scalar text.
+     *
+     * Preserves numeric zero and normal UTF-8 strings, but avoids PHP 8
+     * conversion warnings for nested input and rejects excessively long or
+     * control-character-containing fields. Nonfinite floats are discarded.
+     *
+     * @param mixed $value Stored score, name or cancellation reason.
+     * @return string|null Safe field text or null when unavailable.
+     */
+    private static function safeMatchesText(mixed $value): ?string
+    {
+        if (is_int($value) || (is_float($value) && is_finite($value))) {
+            return (string) $value;
+        }
+
+        if (!is_string($value) || strlen($value) > 4096
+            || preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', $value) === 1) {
+            return null;
+        }
+
+        return $value;
     }
 
     /**
