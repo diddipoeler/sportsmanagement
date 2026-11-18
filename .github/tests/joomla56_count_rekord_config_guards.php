@@ -186,7 +186,7 @@ namespace {
     $rows = $helper->getData(new \Joomla\Registry\Registry([
         'jsm_stat_spielpaarungen' => '1',
         'jsm_stat_paarungen' => '00100',
-        'cfg_which_database' => '0007',
+        'cfg_which_database' => '0001',
     ]), $module, $db);
 
     if (count($rows) !== 1
@@ -195,7 +195,7 @@ namespace {
         || $rows[0]->anzahlbis !== 100
         || $rows[0]->anzahldiff !== 60
         || $rows[0]->image !== 'modules/mod_sportsmanagement_count_rekord/images/matches.png'
-        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 7) {
+        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 1) {
         throw new \RuntimeException('Valid module configuration or fixed icon path regressed.');
     }
 
@@ -213,10 +213,12 @@ namespace {
             'jsm_stat_paarungen' => 5,
         ]), $module, $db);
 
-        if (count($badCount) !== 1
-            || $badCount[0]->anzahl !== 0
-            || $badCount[0]->anzahlbis !== 5
-            || $badCount[0]->anzahldiff !== 5) {
+        // An invalid SQL COUNT(*) is not a genuine zero. The current
+        // module must return no record-count display rather than report a
+        // fabricated remaining-target value.
+        if ($badCount !== []
+            || count(\Joomla\CMS\Log\Log::$errors) !== 1
+            || !str_contains(\Joomla\CMS\Log\Log::$errors[0][0], 'invalid match count')) {
             throw new \RuntimeException('Malformed record count changed frontend target display.');
         }
     } finally {
@@ -226,14 +228,31 @@ namespace {
     $db->result = 40;
 
     $db->fail = true;
+    $queryCount = $db->queries;
+    $logCount = count(\Joomla\CMS\Log\Log::$errors);
 
+    // Unsupported database selectors fail closed and must not open a
+    // different database or create a misleading error entry.
     if ($helper->getData(new \Joomla\Registry\Registry([
         'jsm_stat_spielpaarungen' => 1,
         'cfg_which_database' => 'bad',
     ]), $module, $db) !== []
-        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 0
-        || count(\Joomla\CMS\Log\Log::$errors) !== 1
-        || !str_contains(\Joomla\CMS\Log\Log::$errors[0][0], 'password=secret')) {
+        || $db->queries !== $queryCount
+        || count(\Joomla\CMS\Log\Log::$errors) !== $logCount) {
+        throw new \RuntimeException('Invalid record-counter database selector executed SQL.');
+    }
+
+    // A genuine query failure is logged by exception class only. Passwords
+    // and private SQL text must never appear in Joomla's shared log.
+    if ($helper->getData(new \Joomla\Registry\Registry([
+        'jsm_stat_spielpaarungen' => 1,
+        'cfg_which_database' => '0001',
+    ]), $module, $db) !== []
+        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selector !== 1
+        || count(\Joomla\CMS\Log\Log::$errors) !== $logCount + 1
+        || !str_contains(\Joomla\CMS\Log\Log::$errors[$logCount][0], 'RuntimeException')
+        || str_contains(\Joomla\CMS\Log\Log::$errors[$logCount][0], 'password=secret')
+        || \Joomla\CMS\Log\Log::$errors[$logCount][2] !== 'com_sportsmanagement') {
         throw new \RuntimeException('Record-counter query failure was not handled privately.');
     }
 
