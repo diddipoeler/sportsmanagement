@@ -6,12 +6,15 @@ on:
       - 'modules/mod_sportsmanagement_rquotes/**'
       - '.github/tests/joomla56_rquotes_output_encoding.php'
       - '.github/tests/joomla56_rquotes_media_urls.php'
+      - '.github/tests/joomla56_rquotes_error_privacy.php'
       - '.github/workflows/joomla5-6-rquotes-output-encoding.yml'
   pull_request:
     branches: [joomla5-6]
     paths:
       - 'modules/mod_sportsmanagement_rquotes/**'
       - '.github/tests/joomla56_rquotes_output_encoding.php'
+      - '.github/tests/joomla56_rquotes_media_urls.php'
+      - '.github/tests/joomla56_rquotes_error_privacy.php'
       - '.github/workflows/joomla5-6-rquotes-output-encoding.yml'
 
 jobs:
@@ -19,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['8.3', '8.4']
+        php: ['8.2', '8.3', '8.4']
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
@@ -36,6 +39,7 @@ jobs:
         run: |
           php .github/tests/joomla56_rquotes_output_encoding.php
           php .github/tests/joomla56_rquotes_media_urls.php
+          php .github/tests/joomla56_rquotes_error_privacy.php
           php .github/tests/joomla56_rquotes_text_file_paths.php
       - name: Check Joomla 5/6 file headers and function documentation
         run: |
