@@ -375,6 +375,8 @@ final class ClubBirthdayHelper
      * Resolve the club picture or configured fallback logo safely.
      * Accepts only local media paths beneath the Joomla installation
      * and returns an empty URL when neither candidate is valid.
+     * Nested malformed placeholders are ignored without PHP 8 casting
+     * warnings before checking the local filesystem.
      * @param string $picture Club's configured logo or picture path.
      * @param Registry $params Module placeholder and presentation settings.
      * @return string Safe browser image URL or an empty string.
@@ -387,7 +389,10 @@ final class ClubBirthdayHelper
             return '';
         }
 
-        foreach ([$picture, (string) $params->get('ph_clublogo', '')] as $candidate) {
+        $rawFallback = $params->get('ph_clublogo', '');
+        $fallback = is_string($rawFallback) ? $rawFallback : '';
+
+        foreach ([$picture, $fallback] as $candidate) {
             $path = self::localImagePath($candidate);
 
             if ($path === '') {
@@ -412,12 +417,20 @@ final class ClubBirthdayHelper
     /**
      * Validate a local club image path before using it in HTML.
      * Rejects schemes, protocol-relative paths, path traversal and
-     * control characters in untrusted picture fields.
+     * control characters in untrusted picture fields. Checks original
+     * values before trimming, and rejects encoded traversal across
+     * repeated URL decoding passes.
      * @param string $candidate Raw local media path.
      * @return string Valid relative path, or an empty string.
      */
     private static function localImagePath(string $candidate): string
     {
+        if (strlen($candidate) > 4096
+            || preg_match('/[\x00-\x1F\x7F]/', $candidate) === 1
+            || preg_match('//u', $candidate) !== 1) {
+            return '';
+        }
+
         $candidate = trim($candidate);
 
         if ($candidate === ''
@@ -430,7 +443,39 @@ final class ClubBirthdayHelper
             return '';
         }
 
-        return ltrim($candidate, '/');
+        $path = ltrim($candidate, '/');
+        $decoded = $path;
+
+        // Web servers may decode path segments more often than PHP code.
+        // Reject every decoded layer, including a still-encoded final layer.
+        for ($depth = 0; $depth < 8; ++$depth) {
+            if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
+                || preg_match('/[\x00-\x1F\x7F]/', $decoded)
+                || str_contains($decoded, '\\')
+                || str_contains($decoded, '?')
+                || str_contains($decoded, '#')) {
+                return '';
+            }
+
+            $next = rawurldecode($decoded);
+
+            if ($next === $decoded) {
+                break;
+            }
+
+            $decoded = $next;
+        }
+
+        if (preg_match('/%[0-9a-f]{2}/i', $decoded)
+            || preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
+            || preg_match('/[\x00-\x1F\x7F]/', $decoded)
+            || str_contains($decoded, '\\')
+            || str_contains($decoded, '?')
+            || str_contains($decoded, '#')) {
+            return '';
+        }
+
+        return $path;
     }
 
     /**

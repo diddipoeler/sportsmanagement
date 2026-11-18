@@ -1,5 +1,7 @@
 <?php
 /**
+ * Joomla 5/6 single age-group administrator field.
+ *
  * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -15,6 +17,15 @@ final class AgegroupField extends SportsManagementListField
 {
     protected $type = 'Agegroup';
 
+    /**
+     * Retrieve age group IDs and translated names for administrator forms.
+     *
+     * Queries age groups in display order, adds an optional country label
+     * to each choice and combines the resulting options with those already
+     * supplied by Joomla's list field.
+     *
+     * @return array<int,object> Country-labelled age-group options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();

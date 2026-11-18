@@ -116,12 +116,21 @@ final class ClubKmlHelper
      * traversal and credential-bearing remote URLs, preserving valid
      * HTTP(S) and site-relative images. Repeatedly decodes local paths
      * to reject multi-encoded traversal and URL scheme bypass attempts.
+     * Inspect raw control bytes before trimming and bound the input length
+     * so malformed paths cannot become apparently valid image URLs.
      *
      * @param string $picture Candidate image URL or site path.
      * @return string Valid KML image URL or an empty string.
      */
     private static function pictureUrl(string $picture): string
     {
+        // Never trim away a NUL, newline or tab before validating the input.
+        if (strlen($picture) > 4096
+            || preg_match('/[\x00-\x1F\x7F]/', $picture) === 1
+            || preg_match('//u', $picture) !== 1) {
+            return '';
+        }
+
         $picture = trim($picture);
 
         if ($picture === ''

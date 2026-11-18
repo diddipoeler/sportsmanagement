@@ -17,15 +17,36 @@ final class AgegrouplistField extends SportsManagementListField
 {
     protected $type = 'agegrouplist';
 
+    /**
+     * Render the age-group filter with a default form-submission handler.
+     *
+     * Sets the onchange callback only when the XML field did not provide a
+     * usable handler, preserving custom JavaScript and avoiding nested
+     * value casts in PHP 8.
+     *
+     * @return string Joomla-generated age-group input HTML.
+     */
     protected function getInput(): string
     {
-        if (trim((string) ($this->element['onchange'] ?? '')) === '') {
+        $onchange = $this->element['onchange'] ?? '';
+        $onchange = is_string($onchange) || $onchange instanceof \Stringable
+            ? (string) $onchange : '';
+
+        if (trim($onchange) === '') {
             $this->element['onchange'] = 'this.form.submit();';
         }
 
         return parent::getInput();
     }
 
+    /**
+     * Load translated age groups with optional country suffixes.
+     *
+     * Uses the current component database, orders by group name and appends
+     * the normal Joomla options required by administrator form selectors.
+     *
+     * @return array<int,object> Joomla and age-group select options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();

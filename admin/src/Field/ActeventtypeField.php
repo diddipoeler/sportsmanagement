@@ -20,14 +20,31 @@ final class ActeventtypeField extends SportsManagementListField
 {
     protected $type = 'acteventtype';
 
+    /**
+     * Select event types for the current record's sport in an admin form.
+     *
+     * Validates the XML-defined target table as a short unmodified SQL
+     * identifier. Invalid table names or missing IDs return parent options
+     * without querying an unintended table. Binds the current record ID and
+     * translates the matching sport-specific event types.
+     *
+     * @return array<int,object> Default and matching event selector choices.
+     */
     protected function getOptions(): array
     {
-        $targetTable = preg_replace('/[^A-Za-z0-9_]/', '', (string) ($this->element['targettable'] ?? ''));
+        $rawTarget = $this->element['targettable'] ?? '';
+        $targetTable = is_string($rawTarget) || $rawTarget instanceof \Stringable
+            ? (string) $rawTarget : '';
+
+        if ($targetTable === '' || strlen($targetTable) > 64
+            || preg_match('/^[A-Za-z0-9_]+$/D', $targetTable) !== 1) {
+            return parent::getOptions();
+        }
         /** @var AdministratorApplication $app */
         $app = Factory::getContainer()->get(AdministratorApplication::class);
         $selectedId = $app->getInput()->getInt('id', 0);
 
-        if ($targetTable === '' || $selectedId <= 0) {
+        if ($selectedId <= 0) {
             return parent::getOptions();
         }
 

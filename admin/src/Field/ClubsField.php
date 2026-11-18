@@ -18,6 +18,17 @@ final class ClubsField extends SportsManagementListField
 {
     protected $type = 'clubs';
 
+    /**
+     * Configure a Joomla XML field for ten-row multiple club selection.
+     *
+     * Applies the legacy multi-select attributes before delegating form
+     * initialisation and value handling to Joomla's parent field.
+     *
+     * @param \SimpleXMLElement $element XML form-field definition.
+     * @param mixed $value Selected club IDs from saved form data.
+     * @param string|null $group Optional Joomla form group name.
+     * @return bool Whether field setup succeeded.
+     */
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
         $element['multiple'] = 'true';
@@ -27,14 +38,22 @@ final class ClubsField extends SportsManagementListField
         return parent::setup($element, $value, $group);
     }
 
+    /**
+     * Load ordered clubs from the configured SportsManagement table.
+     *
+     * Only an unmodified bounded identifier is accepted as a table prefix.
+     * Corrupt or nested parameters fall back to the standard component
+     * table, and Joomla's inherited options are preserved.
+     *
+     * @return array<int,object> Club IDs, names and inherited select options.
+     */
     protected function getOptions(): array
     {
-        $databaseTable = preg_replace(
-            '/[^A-Za-z0-9_]/',
-            '',
-            (string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_table', 'sportsmanagement')
-        );
-        $databaseTable = $databaseTable !== '' ? $databaseTable : 'sportsmanagement';
+        $rawPrefix = ComponentHelper::getParams('com_sportsmanagement')
+            ->get('cfg_which_database_table', 'sportsmanagement');
+        $databaseTable = is_string($rawPrefix) && strlen($rawPrefix) <= 64
+            && preg_match('/^[A-Za-z0-9_]+$/D', $rawPrefix) === 1
+                ? $rawPrefix : 'sportsmanagement';
 
         $db = $this->getSportsManagementDatabase();
         $query = $db->createQuery()
