@@ -28,6 +28,8 @@ final class QuoteText
      * Arrays, objects and nonfinite numeric values are never cast into
      * presentation markup. Rejects excessively large imported quote values
      * before entity decoding or HTML processing to keep rendering bounded.
+     * Removes embedded NUL and other nonprintable control bytes after entity
+     * decoding, while retaining legitimate tabs and line breaks.
      *
      * @param mixed $value Stored quote value from the database.
      * @return string Escaped quote with optional safe br elements.
@@ -49,6 +51,8 @@ final class QuoteText
         }
         $text = preg_replace('~<br\s*/?>~i', "\n", $text) ?? $text;
         $text = html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = str_replace(["\r\n", "\r"], "\n", $text);
+        $text = preg_replace('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F\\x7F]/', '', $text) ?? '';
 
         return nl2br(htmlspecialchars($text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'), false);
     }
