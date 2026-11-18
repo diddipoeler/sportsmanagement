@@ -482,19 +482,26 @@ final class ClubBirthdayHelper
      * Create an escaped country flag marker for a club anniversary.
      * Normalises country codes, respects the flag display setting and
      * keeps untrusted country names safe when rendered as HTML.
+     * Rejects nested ISO codes, image paths and malformed flag settings
+     * instead of casting arrays or objects into PHP 8 template output.
      * @param object $row Club and country data from the database.
      * @param Registry $params Module flag presentation preferences.
      * @return string Safe country flag HTML fragment.
      */
     private static function flagHtml(object $row, Registry $params): string
     {
-        $alpha3 = strtoupper((string) ($row->country ?? ''));
-        $alpha2 = strtolower((string) ($row->country_alpha2 ?? ''));
+        $country = $row->country ?? '';
+        $countryAlpha2 = $row->country_alpha2 ?? '';
+        $alpha3 = is_string($country) && strlen($country) === 3
+            ? strtoupper($country) : '';
+        $alpha2 = is_string($countryAlpha2) && strlen($countryAlpha2) === 2
+            ? strtolower($countryAlpha2) : '';
         $alpha3 = preg_match('/^[A-Z]{3}$/D', $alpha3) ? $alpha3 : '';
         $alpha2 = preg_match('/^[a-z]{2}$/D', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars($alpha3, ENT_QUOTES, 'UTF-8');
+        $flagStyle = $params->get('cfg_flags_css', 0);
 
-        if ((int) $params->get('cfg_flags_css', 0) === 1) {
+        if ($flagStyle === 1 || $flagStyle === '1') {
             $css = match ($alpha3) {
                 'WAL' => 'gb-wls',
                 'SCO' => 'gb-sct',
@@ -508,9 +515,10 @@ final class ClubBirthdayHelper
                 : '';
         }
 
+        $rawPicture = $row->country_picture ?? $params->get('ph_flags', '');
         $path = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : self::localImagePath((string) ($row->country_picture ?? $params->get('ph_flags', '')));
+            : self::localImagePath(is_string($rawPicture) ? $rawPicture : '');
 
         return $path === ''
             ? ''

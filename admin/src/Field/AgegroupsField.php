@@ -1,5 +1,7 @@
 <?php
 /**
+ * Joomla 5/6 age-group filter for an administrator team editor.
+ *
  * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -19,6 +21,16 @@ final class AgegroupsField extends SportsManagementListField
 {
     protected $type = 'agegroups';
 
+    /**
+     * Restrict age-group choices to the edited team's configured sport.
+     *
+     * Finds the team's sport through a bound Joomla database query and then
+     * loads age groups for that sport. Invalid team IDs or malformed driver
+     * values leave only inherited options, preventing cross-sport matches
+     * and PHP 8 type conversion warnings.
+     *
+     * @return array<int,object> Sport-matched age-group select choices.
+     */
     protected function getOptions(): array
     {
         $options = parent::getOptions();
@@ -37,7 +49,13 @@ final class AgegroupsField extends SportsManagementListField
             ->where($db->quoteName('id') . ' = :teamId')
             ->bind(':teamId', $teamId, ParameterType::INTEGER);
         $db->setQuery($teamQuery, 0, 1);
-        $sportsTypeId = (int) $db->loadResult();
+        $rawSportsTypeId = $db->loadResult();
+        $sportsTypeId = filter_var(
+            $rawSportsTypeId,
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 1]]
+        );
+        $sportsTypeId = $sportsTypeId === false ? 0 : $sportsTypeId;
 
         if ($sportsTypeId <= 0) {
             return $options;

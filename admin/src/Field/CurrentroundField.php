@@ -14,11 +14,22 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Field;
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\Database\ParameterType;
 
 final class CurrentroundField extends SportsManagementListField
 {
     protected $type = 'Currentround';
 
+    /**
+     * List the current project's rounds for the administrator selector.
+     *
+     * Reads the project ID from Joomla's administrator application, binds
+     * it to the round query and orders available rounds by roundcode and
+     * opening date. Missing or invalid IDs keep inherited field options
+     * without triggering a database query.
+     *
+     * @return array<int,object> Date-labelled round choices and Joomla defaults.
+     */
     protected function getOptions(): array
     {
         $projectId = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->getInt('id', 0);
@@ -35,7 +46,8 @@ final class CurrentroundField extends SportsManagementListField
                 $db->quoteName('round_date_first'),
             ])
             ->from($db->quoteName('#__sportsmanagement_round'))
-            ->where($db->quoteName('project_id') . ' = ' . $projectId)
+            ->where($db->quoteName('project_id') . ' = :projectId')
+            ->bind(':projectId', $projectId, ParameterType::INTEGER)
             ->order([
                 $db->quoteName('roundcode'),
                 $db->quoteName('round_date_first'),

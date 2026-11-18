@@ -19,14 +19,43 @@ final class ClublistField extends SportsManagementListField
 {
     protected $type = 'clublist';
 
+    /**
+     * Query selectable clubs and optional sport/club filters in the backend.
+     *
+     * Reads the target sport from form XML, the current club from request or
+     * user state, and binds both optional filters through Joomla's query
+     * builder. Invalid nested or control-character values fail closed rather
+     * than being coerced into unfiltered SQL under PHP 8.
+     *
+     * @return array<int,object> Filtered club choices and inherited options.
+     */
     protected function getOptions(): array
     {
         /** @var AdministratorApplication $app */
         $app = Factory::getContainer()->get(AdministratorApplication::class);
         $input = $app->getInput();
-        $sportType = trim((string) ($this->element['target'] ?? ''));
-        $clubId = $input->getInt('club_id', 0)
-            ?: (int) $app->getUserState('com_sportsmanagement.club_id', 0);
+        $rawSport = $this->element['target'] ?? '';
+        $sportType = is_string($rawSport) || $rawSport instanceof \Stringable
+            ? (string) $rawSport : '';
+
+        if (strlen($sportType) > 100
+            || preg_match('/[\x00-\x1F\x7F]/', $sportType) === 1
+            || ($sportType === '' && $rawSport !== '')) {
+            return parent::getOptions();
+        }
+
+        $sportType = trim($sportType);
+        $clubId = $input->getInt('club_id', 0);
+
+        if ($clubId <= 0) {
+            $savedClubId = $app->getUserState('com_sportsmanagement.club_id', 0);
+            $clubId = filter_var(
+                $savedClubId,
+                FILTER_VALIDATE_INT,
+                ['options' => ['min_range' => 1]]
+            );
+            $clubId = $clubId === false ? 0 : $clubId;
+        }
 
         $db = $this->getSportsManagementDatabase();
         $query = $db->createQuery()

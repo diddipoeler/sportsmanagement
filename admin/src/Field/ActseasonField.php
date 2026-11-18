@@ -15,6 +15,15 @@ final class ActseasonField extends SportsManagementListField
 {
     protected $type = 'actseason';
 
+    /**
+     * Return sorted season IDs and names for active season selection.
+     *
+     * Uses the SportsManagement database selected by Joomla, appends season
+     * rows to inherited options and preserves historical administrator
+     * season labels for existing form and filter configurations.
+     *
+     * @return array<int,object> Season and inherited select list options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();

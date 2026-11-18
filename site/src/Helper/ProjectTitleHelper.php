@@ -56,6 +56,10 @@ final class ProjectTitleHelper
      * ignored rather than being cast to strings, avoiding warnings on
      * PHP 8 and malformed page titles.
      *
+     * Validates the legacy display format without partial numeric string
+     * coercion, so invalid selectors cannot accidentally activate an
+     * unrelated title arrangement in PHP 8.
+     *
      * @param object $titleInfo Title components created by createInfo().
      * @param int|string $format Legacy numeric page title format selector.
      * @return string Formatted title including the configured prefix.
@@ -96,7 +100,17 @@ final class ProjectTitleHelper
         $league = self::titleText($titleInfo->leagueName ?? null);
         $season = self::titleText($titleInfo->seasonName ?? null);
 
-        switch ((int) $format) {
+        // Keep integer and zero-padded legacy selectors but reject values
+        // such as "3invalid", which PHP would otherwise silently cast to 3.
+        if (is_int($format)) {
+            $formatId = $format >= 0 && $format <= 7 ? $format : 0;
+        } else {
+            $formatId = strlen($format) <= 64
+                && preg_match('/^0*([0-7])$/D', $format, $matches) === 1
+                    ? (int) $matches[1] : 0;
+        }
+
+        switch ($formatId) {
             case 0:
                 self::append($parts, $projectDivision);
                 break;
