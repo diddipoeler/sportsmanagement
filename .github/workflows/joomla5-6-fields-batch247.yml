@@ -61,7 +61,8 @@ jobs:
           ! grep -Fq -- 'getDocument()->getWebAssetManager()' admin/src/Field/GooglecolorchooserField.php
 
           grep -Fq -- 'if (!$document instanceof HtmlDocument)' admin/src/Field/JsmcolorsrankingField.php
-          ! grep -Fq -- "method_exists($document, 'getWebAssetManager')" admin/src/Field/JsmcolorsrankingField.php
+          # Shell nounset must not expand the literal PHP $document symbol.
+          ! grep -Fq -- 'method_exists($document,' admin/src/Field/JsmcolorsrankingField.php
 
           for file in admin/src/Field/LanguagecharacterField.php admin/src/Field/LeagueField.php admin/src/Field/MatchdaylistField.php; do
             grep -Fq -- 'SportsManagementAdministratorApplicationResolver::resolve()' "$file"
