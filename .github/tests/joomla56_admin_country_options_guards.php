@@ -400,8 +400,13 @@ namespace {
         throw new \RuntimeException('Administrator country queries did not recover from failures.');
     }
 
+    // Production logging deliberately records the exception class only.
+    // A historical test expected private SQL credentials in the log, which
+    // conflicts with the current Joomla 5/6 least-disclosure contract.
     foreach (array_slice(\Joomla\CMS\Log\Log::$errors, $before) as $entry) {
-        if (!str_contains($entry[0], 'password=secret') || $entry[2] !== 'com_sportsmanagement') {
+        if (!str_contains($entry[0], 'RuntimeException')
+            || str_contains($entry[0], 'password=secret')
+            || $entry[2] !== 'com_sportsmanagement') {
             throw new \RuntimeException('Failed country queries were not logged privately.');
         }
     }
