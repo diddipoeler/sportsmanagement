@@ -31,6 +31,24 @@ namespace Joomla\CMS\Component {
         }
     }
 }
+namespace Joomla\CMS\Uri {
+    /** Minimal Joomla site URL provider for image URL resolution. */
+    final class Uri
+    {
+        /**
+         * Return the configured public site root in this standalone fixture.
+         *
+         * Allows the native image helper to resolve relative image paths
+         * without a Joomla installation or dependency container.
+         *
+         * @return string Test frontend root URL.
+         */
+        public static function root(): string
+        {
+            return 'https://sports.example/';
+        }
+    }
+}
 namespace Joomla\CMS\HTML {
     /** Standalone Joomla HTML fixture. */
     final class HTMLHelper {
@@ -137,6 +155,7 @@ namespace {
 
     define('_JEXEC', 1);
     $root = dirname(__DIR__, 2);
+    require_once $root . '/site/src/Helper/PersonImageHelper.php';
     require_once $root . '/site/src/Helper/ClubLogoHelper.php';
     require_once $root . '/admin/src/Helper/ExtraSelectOptionsHelper.php';
 

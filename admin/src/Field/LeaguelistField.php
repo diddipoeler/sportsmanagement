@@ -44,9 +44,10 @@ final class LeaguelistField extends SportsManagementListField
      * Build league options for a project or a country-filtered projects list.
      *
      * Reads an existing project's league country from the component database,
-     * or uses a validated posted country selector on the list view. Builds
-     * quoted Joomla SQL conditions and combines league names and IDs with
-     * inherited administrator select options.
+     * or uses a validated posted country selector on the list view. Supports
+     * the old projects_search_nation request filter when no nested POST
+     * filter was supplied. Builds quoted Joomla SQL conditions and combines
+     * league names and IDs with inherited administrator select options.
      *
      * @return array<int,object> Joomla list options including eligible leagues.
      */
@@ -74,6 +75,14 @@ final class LeaguelistField extends SportsManagementListField
         } elseif ($view === 'projects') {
             $post = $input->post->getArray();
             $country = self::postedCountry($post['filter'] ?? null);
+
+            // Older project filters submit a flat request key. Retain that
+            // Joomla 3-era input contract, but inspect the raw value before
+            // using it in a Joomla 5/6 database query.
+            if ($country === '') {
+                $legacyCountry = $input->get('projects_search_nation', null, 'RAW');
+                $country = self::postedCountry(['search_nation' => $legacyCountry]);
+            }
         }
 
         $query = $db->createQuery()
