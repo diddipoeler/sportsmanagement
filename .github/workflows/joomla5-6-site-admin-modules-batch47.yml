@@ -49,7 +49,7 @@ jobs:
             grep -Eq '@license[[:space:]]+GNU General Public License version 2 or later; see LICENSE\.txt' "$file"
           done
 
-          grep -Fq 'SportsManagement native Ajax controller could not be loaded.' site/controllers/ajax.json.php
+          grep -Fq 'SportsManagement Ajax dependency could not be loaded:' site/controllers/ajax.json.php
           grep -Fq 'class_alias(AjaxController::class' site/controllers/ajax.json.php
           grep -Fq '$nativeDependencies = [' site/controllers/ajax.json.php
           # The current compatibility loader checks existence and readability
