@@ -18,6 +18,16 @@ final class ProjectsField extends SportsManagementListField
 {
     protected $type = 'projects';
 
+    /**
+     * Load published project options from the selected component database.
+     *
+     * Reads the active form context and database selector, normalises the
+     * optional table prefix to a bounded identifier, then joins projects
+     * with leagues and seasons. Displays translated labels and combines
+     * results with Joomla's inherited select options.
+     *
+     * @return array<int,object> Published project choices with league and season.
+     */
     protected function getOptions(): array
     {
         $valueField = (string) ($this->element['value_field'] ?? $this->name);
@@ -31,11 +41,11 @@ final class ProjectsField extends SportsManagementListField
 
         $whichDatabase = $this->form->getValue('cfg_which_database', $context);
         $db = $this->getSportsManagementDatabase($whichDatabase);
-        $tablePrefix = preg_replace(
-            '/[^A-Za-z0-9_]/',
-            '',
-            (string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_database_table', 'sportsmanagement')
-        );
+        $rawTablePrefix = ComponentHelper::getParams('com_sportsmanagement')
+            ->get('cfg_which_database_table', 'sportsmanagement');
+        $tablePrefix = is_string($rawTablePrefix) && strlen($rawTablePrefix) <= 64
+            ? (preg_replace('/[^A-Za-z0-9_]/', '', $rawTablePrefix) ?? '')
+            : '';
 
         if ($tablePrefix === '') {
             $tablePrefix = 'sportsmanagement';

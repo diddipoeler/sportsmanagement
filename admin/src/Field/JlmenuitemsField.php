@@ -18,6 +18,15 @@ final class JlmenuitemsField extends ListField
 {
     protected $type = 'JLMenuItems';
 
+    /**
+     * Enumerate translated SportsManagement page targets for module menus.
+     *
+     * Preserves historic route values while resolving user-facing labels via
+     * Joomla's language service, then appends them to the core ListField
+     * options so existing navigation settings remain editable.
+     *
+     * @return array<int,object> Translated navigation-target selector options.
+     */
     protected function getOptions(): array
     {
         $items = [

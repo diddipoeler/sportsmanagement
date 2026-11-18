@@ -18,17 +18,38 @@ final class LeaguelistField extends SportsManagementListField
 {
     protected $type = 'leaguelist';
 
+    /**
+     * Render the league selection control in Joomla administrator forms.
+     *
+     * Enables form submission on project lists only when a valid custom
+     * onchange handler is absent. Retains configured handlers and delegates
+     * input rendering to Joomla's inherited list-field implementation.
+     *
+     * @return string League selector HTML from the parent field.
+     */
     protected function getInput(): string
     {
         $view = $this->administratorApplication()->getInput()->getCmd('view', '');
 
-        if ($view === 'projects' && trim((string) ($this->element['onchange'] ?? '')) === '') {
+        $onchange = $this->element['onchange'] ?? '';
+
+        if ($view === 'projects' && (!is_string($onchange) || trim($onchange) === '')) {
             $this->element['onchange'] = 'this.form.submit();';
         }
 
         return parent::getInput();
     }
 
+    /**
+     * Build league options for a project or a country-filtered projects list.
+     *
+     * Reads an existing project's league country from the component database,
+     * or uses a validated posted country selector on the list view. Builds
+     * quoted Joomla SQL conditions and combines league names and IDs with
+     * inherited administrator select options.
+     *
+     * @return array<int,object> Joomla list options including eligible leagues.
+     */
     protected function getOptions(): array
     {
         $app = $this->administratorApplication();
@@ -52,7 +73,7 @@ final class LeaguelistField extends SportsManagementListField
             $country = (string) ($db->loadResult() ?: '');
         } elseif ($view === 'projects') {
             $post = $input->post->getArray();
-            $country = trim((string) ($post['filter']['search_nation'] ?? ''));
+            $country = self::postedCountry($post['filter'] ?? null);
         }
 
         $query = $db->createQuery()
@@ -81,6 +102,42 @@ final class LeaguelistField extends SportsManagementListField
         return array_merge(parent::getOptions(), $options);
     }
 
+    /**
+     * Parse a posted country search filter without PHP 8 type coercion.
+     *
+     * Rejects non-array containers and nested country values as well as
+     * oversized or control-byte strings. Valid country strings retain
+     * the legacy trimming behaviour used by the administrator list.
+     *
+     * @param mixed $filter Posted Joomla filter settings.
+     * @return string Country code or empty string for malformed input.
+     */
+    private static function postedCountry(mixed $filter): string
+    {
+        if (!is_array($filter)) {
+            return '';
+        }
+
+        $country = $filter['search_nation'] ?? null;
+
+        if (!is_string($country) || strlen($country) > 64
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $country) === 1) {
+            return '';
+        }
+
+        return trim($country);
+    }
+
+    /**
+     * Resolve the administrator application from Joomla dependency injection.
+     *
+     * Obtains the strongly typed administrator application rather than using
+     * the removed legacy Joomla application factory and refuses wrong-client
+     * services before reading request input.
+     *
+     * @return AdministratorApplication Active backend application service.
+     * @throws \\RuntimeException When the service has an unexpected type.
+     */
     private function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */

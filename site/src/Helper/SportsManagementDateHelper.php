@@ -20,15 +20,17 @@ final class SportsManagementDateHelper
      * converting; returns an empty string for invalid input. Compact DDMMYY
      * dates retain the historical current-century convention, while SQL
      * DATETIME values discard valid time components in display mode.
-     * Rejects leading and trailing whitespace rather than silently changing
-     * malformed stored dates before conversion.
+     * Rejects surrounding whitespace, ASCII control bytes and unreasonably
+     * long stored values before parsing, avoiding PHP 8 warnings or expensive
+     * processing of corrupt input.
      * @param string $date Date value in a supported format.
      * @param int $direction One for SQL-to-display, otherwise display-to-SQL.
      * @return string Normalised date or an empty string on invalid input.
      */
     public static function convertDate(string $date, int $direction = 1): string
     {
-        if ($date === '' || trim($date) !== $date) {
+        if ($date === '' || strlen($date) > 32 || trim($date) !== $date
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $date) === 1) {
             return '';
         }
 

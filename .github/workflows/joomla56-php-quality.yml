@@ -9,6 +9,7 @@ on:
       - 'modules/**/*.php'
       - '.github/scripts/check-php-headers.php'
       - '.github/scripts/check-php-function-docs.php'
+      - '.github/tests/joomla56_site_admin_modules_followup.php'
       - '.github/workflows/joomla56-php-quality.yml'
   pull_request:
     paths:
@@ -17,6 +18,7 @@ on:
       - 'modules/**/*.php'
       - '.github/scripts/check-php-headers.php'
       - '.github/scripts/check-php-function-docs.php'
+      - '.github/tests/joomla56_site_admin_modules_followup.php'
       - '.github/workflows/joomla56-php-quality.yml'
   workflow_dispatch:
 
@@ -82,3 +84,6 @@ jobs:
           # Document every named first-party function touched by this change.
           # The separate full inventory workflow reports existing gaps.
           php .github/scripts/check-php-function-docs.php "${files[@]}"
+
+      - name: Regression coverage for strict site, admin and module inputs
+        run: php .github/tests/joomla56_site_admin_modules_followup.php

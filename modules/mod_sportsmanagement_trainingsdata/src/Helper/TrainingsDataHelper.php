@@ -144,6 +144,10 @@ final class TrainingsDataHelper
      * Parse a positive Joomla team identifier or ID:alias slug for training queries.
      * Accepts complete nonnegative decimal IDs with optional URL-safe alias suffixes and rejects unknown types, partial IDs or values beyond PHP's integer range.
      *
+     * Rejects surrounding whitespace, ASCII control bytes and excessively
+     * long selectors before parsing, so malformed Joomla module parameters
+     * cannot silently resolve a different team ID.
+     *
      * @param mixed $value Raw team selector from module settings.
      * @return int Valid positive team ID, or zero for invalid input.
      */
@@ -153,7 +157,13 @@ final class TrainingsDataHelper
             return 0;
         }
 
-        $raw = trim((string) $value);
+        if (is_string($value) && (strlen($value) > 128
+            || trim($value) !== $value
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $value) === 1)) {
+            return 0;
+        }
+
+        $raw = (string) $value;
 
         if (!preg_match('/^([0-9]+)(?::[\pL\pN_-]+)?$/Du', $raw, $matches)) {
             return 0;
