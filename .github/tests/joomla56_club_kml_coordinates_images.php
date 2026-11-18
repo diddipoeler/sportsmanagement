@@ -70,6 +70,8 @@ namespace {
         'images/logo%0A.png' => '',
         'images\\private\\logo.png' => '',
         'https://user:secret@cdn.example/image.png' => '',
+        "images/clubs/team.png\n" => '',
+        "images/clubs/team.png\x00" => '',
     ] as $picture => $expected) {
         $written::$written = '';
         if (!$class::write(5, 'Club & street', 'Club <A>', $picture, 51.3, 7.2)) {

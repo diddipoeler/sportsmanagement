@@ -75,6 +75,10 @@ namespace {
         'https://example.test/image.png' => '',
         '//example.test/image.png' => '',
         'images\backslash.png' => '',
+        "images/allowed.png\n" => '',
+        "images/allowed.png\x00" => '',
+        'images/%2e%2e/private.png' => '',
+        'images/%252e%252e/private.png' => '',
     ] as $candidate => $expected) {
         if ($pathMethod->invoke(null, $candidate) !== $expected) {
             throw new \RuntimeException('Unexpected image path accepted: ' . $candidate);
@@ -99,7 +103,14 @@ namespace {
             ['missing.png', 'https://example.test/images/fallback.png'],
         ];
 
+        $badParams = new \Joomla\Registry\Registry(['ph_clublogo' => ['bad']]);
+        if ($picture->invoke(null, 'missing.png', $badParams) !== '') {
+            throw new \RuntimeException('Nested logo placeholder was accepted.');
+        }
+
         foreach ($cases as [$input, $expected]) {
+            // Malformed Joomla Registry placeholders must not become 'Array'.
+            // The native helper should simply skip them.
             if ($picture->invoke(null, $input, $params) !== $expected) {
                 throw new \RuntimeException('Unexpected image URL for ' . $input);
             }
