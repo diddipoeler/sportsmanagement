@@ -28,6 +28,8 @@ final class CalendarFunctions
      * unusable links at the beginning and end of the calendar period.
      * Boundary clamping does not change the previous month's day count
      * used to populate the inactive cells in the leading calendar week.
+     * Complete zero-padded numeric values remain valid, while malformed
+     * nested, whitespace-padded and overflowing selectors use today's date.
      *
      * @param mixed $year Requested calendar year; invalid values use the current year.
      * @param mixed $month Requested calendar month; invalid values use the current month.
@@ -35,16 +37,8 @@ final class CalendarFunctions
      */
     public static function render($year = '', $month = ''): void
     {
-        $year = filter_var(
-            $year,
-            FILTER_VALIDATE_INT,
-            ['options' => ['min_range' => 1970, 'max_range' => 9999]]
-        ) ?: (int) date('Y');
-        $month = filter_var(
-            $month,
-            FILTER_VALIDATE_INT,
-            ['options' => ['min_range' => 1, 'max_range' => 12]]
-        ) ?: (int) date('m');
+        $year = self::calendarSelection($year, 1970, 9999, (int) date('Y'));
+        $month = self::calendarSelection($month, 1, 12, (int) date('m'));
 
         $firstDay = new \DateTimeImmutable(sprintf('%04d-%02d-01', $year, $month));
         $currentMonthFirstDay = (int) $firstDay->format('N');
@@ -173,12 +167,7 @@ final class CalendarFunctions
      */
     public static function monthList($selected = ''): string
     {
-        $rawSelected = is_int($selected) || is_string($selected) ? (string) $selected : '';
-        $selected = $rawSelected !== '' && strlen($rawSelected) <= 64
-            && preg_match('/[\\x00-\\x1F\\x7F]/', $rawSelected) !== 1
-            && preg_match('/^[0-9]+$/D', $rawSelected) === 1
-                ? (int) $rawSelected
-                : 0;
+        $selected = self::calendarSelection($selected, 1, 12, 0);
         $options = '';
 
         for ($month = 1; $month <= 12; $month++) {
@@ -217,6 +206,40 @@ final class CalendarFunctions
         }
 
         return $options;
+    }
+
+    /**
+     * Parse a complete month or year selector without lossy PHP casts.
+     *
+     * Validates unsigned decimal integers including zero-padded stored
+     * values and bounds the numeric range. Booleans, arrays, signs, spaces,
+     * partial numbers and integer overflow return the supplied fallback.
+     *
+     * @param mixed $value Raw module or request selection.
+     * @param int $min Lowest accepted calendar number.
+     * @param int $max Highest accepted calendar number.
+     * @param int $fallback Result for malformed or out-of-range values.
+     * @return int Valid month/year or fallback.
+     */
+    private static function calendarSelection(mixed $value, int $min, int $max, int $fallback): int
+    {
+        if (!is_int($value) && !is_string($value)) {
+            return $fallback;
+        }
+
+        $raw = (string) $value;
+
+        if ($raw === '' || strlen($raw) > 64
+            || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return $fallback;
+        }
+
+        $digits = ltrim($raw, '0');
+        $number = filter_var($digits === '' ? '0' : $digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => $min, 'max_range' => $max],
+        ]);
+
+        return $number === false ? $fallback : $number;
     }
 
     /**

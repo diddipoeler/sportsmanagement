@@ -2,7 +2,7 @@
 /**
  * Native Joomla 5/6 route helper for SportsManagement prediction views.
  *
- * @version    4.24.00
+ * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -39,7 +39,7 @@ final class PredictionRouteHelper
     ): string {
         $view = $task === 'edit' ? 'predictionuser' : 'predictionusers';
         $parameters = [
-            'cfg_which_database' => max(0, $database),
+            'cfg_which_database' => self::databaseSelector($database),
             'prediction_id' => max(0, $predictionId),
             'pggroup' => max(0, $groupId),
             'pj' => max(0, $projectId),
@@ -78,7 +78,7 @@ final class PredictionRouteHelper
         array $extra = []
     ): string {
         $parameters = [
-            'cfg_which_database' => max(0, $database),
+            'cfg_which_database' => self::databaseSelector($database),
             'prediction_id' => max(0, $predictionId),
             'pggroup' => max(0, $groupId),
             'pj' => max(0, $projectId),
@@ -117,7 +117,7 @@ final class PredictionRouteHelper
         int $database = 0
     ): string {
         return SiteRouteHelper::view('predictionranking', [
-            'cfg_which_database' => max(0, $database),
+            'cfg_which_database' => self::databaseSelector($database),
             'prediction_id' => max(0, $predictionId),
             'pggroup' => max(0, $groupId),
             'pj' => max(0, $projectId),
@@ -151,12 +151,27 @@ final class PredictionRouteHelper
         int $database = 0
     ): string {
         return SiteRouteHelper::view('predictionresults', [
-            'cfg_which_database' => max(0, $database),
+            'cfg_which_database' => self::databaseSelector($database),
             'prediction_id' => max(0, $predictionId),
             'pggroup' => max(0, $groupId),
             'pj' => max(0, $projectId),
             'r' => max(0, $roundId),
             'uid' => max(0, $userId),
         ]);
+    }
+
+    /**
+     * Restrict prediction routes to supported database selections.
+     *
+     * Joomla's SportsManagement database resolver recognises zero for the
+     * default database and one for an authorised external connection.
+     * Unsupported legacy values must never be added to frontend URLs.
+     *
+     * @param int $database Legacy component database selector.
+     * @return int Supported zero or one; invalid choices become zero.
+     */
+    private static function databaseSelector(int $database): int
+    {
+        return $database === 1 ? 1 : 0;
     }
 }
