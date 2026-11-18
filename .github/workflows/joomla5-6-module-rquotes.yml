@@ -90,7 +90,10 @@ jobs:
           grep -Fq "getHelper('RquotesHelper')" "$dispatcher"
           grep -Fq 'Factory::getContainer()->get(DatabaseInterface::class)' "$dispatcher"
           grep -Fq 'getWebAssetManager()' "$dispatcher"
-          grep -Fq 'registerAndUseStyle(' "$dispatcher"
+          # The native dispatcher registers a named asset once and activates
+          # it through Joomla's WebAssetManager instead of a removed shortcut.
+          grep -Fq '$assets->registerStyle(' "$dispatcher"
+          grep -Fq '$assets->useStyle(' "$dispatcher"
 
           grep -Fq 'final class RquotesHelper' "$native_helper"
           grep -Fq 'SportsManagementDatabaseResolver::resolve' "$native_helper"

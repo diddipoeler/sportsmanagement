@@ -19,9 +19,10 @@ $limit = new ReflectionMethod($helper, 'normalisePositiveLimit');
 
 foreach ([
     [0, 0], [1, 1], ['002', 2], ['000', 0], ['7', 7],
-    [-1, 0], ['-1', 0], [true, 0], [false, 0], [[], 0],
-    [['1'], 0], ['2junk', 0], ['3.5', 0], [' 2', 0],
-    ['9999999999999999999999999', 0],
+    // Invalid explicit selectors return null, never the primary database.
+    [-1, null], ['-1', null], [true, null], [false, null], [[], null],
+    [['1'], null], ['2junk', null], ['3.5', null], [' 2', null],
+    ['9999999999999999999999999', null],
 ] as [$input, $expected]) {
     $actual = $selector->invoke($helper, $input);
 
