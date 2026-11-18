@@ -52,15 +52,23 @@ jobs:
           grep -Fq 'SportsManagement native Ajax controller could not be loaded.' site/controllers/ajax.json.php
           grep -Fq 'class_alias(AjaxController::class' site/controllers/ajax.json.php
           grep -Fq '$nativeDependencies = [' site/controllers/ajax.json.php
-          grep -Fq 'if (!class_exists($class, false) && is_file($file))' site/controllers/ajax.json.php
+          # The current compatibility loader checks existence and readability
+          # before requiring each native dependency, rather than relying on
+          # the historical one-line class/file predicate.
+          grep -Fq 'if (class_exists($class))' site/controllers/ajax.json.php
+          grep -Fq 'if (!is_file($file) || !is_readable($file))' site/controllers/ajax.json.php
 
           grep -Fq 'SportsManagement native Clublist field could not be loaded.' admin/models/fields/clublist.php
           grep -Fq 'class_alias(ClublistField::class' admin/models/fields/clublist.php
           grep -Fq 'is_file($nativeField)' admin/models/fields/clublist.php
 
           clubicons='modules/mod_sportsmanagement_clubicons/helper.php'
-          grep -Fq 'SportsManagement native Clubicons module helper could not be loaded.' "$clubicons"
-          grep -Fq 'is_file($nativeHelper)' "$clubicons"
+          # The newer Clubicons facade loads and checks its explicit native
+          # dependency map instead of a single $nativeHelper file path.
+          grep -Fq 'ClubiconsHelper::class => __DIR__' "$clubicons"
+          grep -Fq 'SportsManagement Clubicons dependency file is missing:' "$clubicons"
+          grep -Fq 'if (!is_file($file))' "$clubicons"
+          grep -Fq 'SportsManagement Clubicons dependency could not be loaded:' "$clubicons"
           grep -Fq 'SportsManagementSiteApplicationResolver::resolve()' "$clubicons"
 
           native_clubicons='modules/mod_sportsmanagement_clubicons/src/Helper/ClubiconsHelper.php'
