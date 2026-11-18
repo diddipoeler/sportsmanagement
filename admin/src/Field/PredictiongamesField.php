@@ -15,6 +15,15 @@ final class PredictiongamesField extends SportsManagementListField
 {
     protected $type = 'predictiongames';
 
+    /**
+     * Read prediction game IDs and names for Joomla administrator filters.
+     *
+     * Uses the configured SportsManagement database query builder, orders
+     * games by name and merges the query results with inherited Joomla
+     * select options to retain existing backend form behaviour.
+     *
+     * @return array<int,object> Game ID/name choices and parent options.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();

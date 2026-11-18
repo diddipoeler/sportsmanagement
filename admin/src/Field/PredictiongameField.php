@@ -18,6 +18,15 @@ final class PredictiongameField extends SportsManagementListField
 {
     protected $type = 'predictiongame';
 
+    /**
+     * Load published prediction games as administrator selection options.
+     *
+     * Queries published SportsManagement prediction games in name order,
+     * adds the translated empty-selection option and merges all choices
+     * with Joomla's inherited form-field options.
+     *
+     * @return array<int,object> Published game IDs and translated labels.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
