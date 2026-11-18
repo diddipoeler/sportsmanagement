@@ -17,6 +17,15 @@ final class LeaguelevelField extends SportsManagementListField
 {
     protected $type = 'Leaguelevel';
 
+    /**
+     * Create the legacy league, cup and tournament level choices.
+     *
+     * Builds translated name/number options for league levels 1–20,
+     * cup levels 21–40 and tournament levels 41–50, then merges the
+     * fixed list with the options required by Joomla's list-field base.
+     *
+     * @return array<int,object> Localised competition level options.
+     */
     protected function getOptions(): array
     {
         $options = [];

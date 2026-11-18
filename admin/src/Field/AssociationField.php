@@ -1,5 +1,7 @@
 <?php
 /**
+ * Native Joomla 5/6 association selector for backend form fields.
+ *
  * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -13,6 +15,15 @@ final class AssociationField extends SportsManagementListField
 {
     protected $type = 'Association';
 
+    /**
+     * Build ordered association options for Joomla administrator forms.
+     *
+     * Uses the SportsManagement database selected by the component,
+     * converts association IDs and labels into Joomla select objects, and
+     * preserves the core options inherited from the list-field base.
+     *
+     * @return array<int,object> Available association choices.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();

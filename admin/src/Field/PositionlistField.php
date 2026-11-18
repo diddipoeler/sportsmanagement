@@ -17,6 +17,16 @@ final class PositionlistField extends SportsManagementListField
 {
     protected $type = 'positionlist';
 
+    /**
+     * Retrieve published player positions for native administrator forms.
+     *
+     * Joins positions with the associated sports type, orders published
+     * records by their configured order and translated name, and appends
+     * inherited Joomla list options. Missing optional database tables
+     * leave an empty set rather than interrupting the backend form.
+     *
+     * @return array<int,object> Published position ID/name choices.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();

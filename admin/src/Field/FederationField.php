@@ -1,5 +1,7 @@
 <?php
 /**
+ * Native Joomla 5/6 root federation selector for backend form fields.
+ *
  * @version    5.6.0
  * @author     diddipoeler, stony, svdoldie und donclumsy (diddipoeler@gmx.de)
  * @copyright  Copyright: © 2013-2023 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
@@ -13,6 +15,15 @@ final class FederationField extends SportsManagementListField
 {
     protected $type = 'Federation';
 
+    /**
+     * Query root-level federations for a Joomla administrator field.
+     *
+     * Only federations with parent ID zero are presented; this keeps
+     * the historical top-level selector distinct from the hierarchical
+     * FederationslistField and appends Joomla's inherited options.
+     *
+     * @return array<int,object> Root federation ID/name pairs.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();

@@ -19,19 +19,42 @@ final class SportstypelistField extends SportsManagementListField
 {
     protected $type = 'sportstypelist';
 
+    /**
+     * Render the sport-type filter with an optional form submit handler.
+     *
+     * Resolves Joomla's administrator application and preserves the league
+     * edit view, which does not auto-submit. Other views automatically
+     * submit only when the XML field lacks a usable onchange callback.
+     * Avoids converting nested legacy XML values to strings under PHP 8.
+     *
+     * @return string HTML rendered by Joomla's parent select field.
+     */
     protected function getInput(): string
     {
         /** @var AdministratorApplication $app */
         $app = Factory::getContainer()->get(AdministratorApplication::class);
         $view = $app->getInput()->getCmd('view', '');
 
-        if ($view !== 'league' && trim((string) ($this->element['onchange'] ?? '')) === '') {
+        $onchange = $this->element['onchange'] ?? '';
+        $onchange = is_string($onchange) || $onchange instanceof \Stringable
+            ? (string) $onchange : '';
+
+        if ($view !== 'league' && trim($onchange) === '') {
             $this->element['onchange'] = 'this.form.submit();';
         }
 
         return parent::getInput();
     }
 
+    /**
+     * Load translated sport types for Joomla administrator selection.
+     *
+     * Queries the configured SportsManagement sports-type table in
+     * alphabetical order, translates each label using Joomla's language
+     * service and retains inherited select options for legacy forms.
+     *
+     * @return array<int,object> Sport type IDs and translated labels.
+     */
     protected function getOptions(): array
     {
         $db = $this->getSportsManagementDatabase();
