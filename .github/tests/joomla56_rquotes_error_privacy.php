@@ -25,10 +25,22 @@ namespace Joomla\Database {
 namespace Joomla\Registry {
     final class Registry
     {
+        /**
+         * Store Joomla module and component configuration for the fixture.
+         *
+         * @param array<string,mixed> $params Raw module setting values.
+         */
         public function __construct(private array $params = [])
         {
         }
 
+        /**
+         * Read a simulated Joomla Registry value with its fallback.
+         *
+         * @param string $key Module or component setting.
+         * @param mixed $default Fallback for a missing entry.
+         * @return mixed Saved fixture value or default.
+         */
         public function get(string $key, mixed $default = null): mixed
         {
             return $this->params[$key] ?? $default;
@@ -42,6 +54,14 @@ namespace Joomla\CMS\Log {
         public const ERROR = 1;
         public static array $entries = [];
 
+        /**
+         * Capture a private Joomla error entry without rendering messages.
+         *
+         * @param string $message Log text that must not disclose SQL secrets.
+         * @param int $level Joomla severity constant.
+         * @param string $category Destination component log category.
+         * @return void
+         */
         public static function add(string $message, int $level, string $category): void
         {
             self::$entries[] = [$message, $level, $category];
@@ -52,6 +72,11 @@ namespace Joomla\CMS\Log {
 namespace Joomla\CMS\Uri {
     final class Uri
     {
+        /**
+         * Supply a stable Joomla frontend root for image-server tests.
+         *
+         * @return string Fixture site root URL.
+         */
         public static function root(): string
         {
             return 'https://site.example.test/';
@@ -62,6 +87,17 @@ namespace Joomla\CMS\Uri {
 namespace Diddipoeler\Component\SportsManagement\Site\Service {
     final class SportsManagementDatabaseResolver
     {
+        /**
+         * Simulate an external database failure containing private details.
+         *
+         * The native Rquotes helper must log the failure classification,
+         * not this exception's sensitive connection string or SQL text.
+         *
+         * @param \Joomla\Database\DatabaseInterface $fallback Joomla primary driver.
+         * @param int $selector Requested component database.
+         * @return \Joomla\Database\DatabaseInterface Unreachable database.
+         * @throws \RuntimeException Fixture failure with secret credentials.
+         */
         public static function resolve(
             \Joomla\Database\DatabaseInterface $fallback,
             int $selector = 0
@@ -84,6 +120,13 @@ namespace {
     {
         public array $messages = [];
 
+        /**
+         * Capture browser-facing messages so tests can reject disclosure.
+         *
+         * @param string $message Joomla site notification.
+         * @param string $type Notification type.
+         * @return void
+         */
         public function enqueueMessage(string $message, string $type = 'message'): void
         {
             $this->messages[] = [$message, $type];
@@ -113,9 +156,12 @@ namespace {
     if (count($entries) !== 1
         || $entries[0][1] !== \Joomla\CMS\Log\Log::ERROR
         || $entries[0][2] !== 'com_sportsmanagement'
-        || !str_contains($entries[0][0], 'SQLSTATE private details')
+        || !str_contains($entries[0][0], 'RuntimeException')
+        || str_contains($entries[0][0], 'SQLSTATE')
+        || str_contains($entries[0][0], 'password')
+        || str_contains($entries[0][0], '/private/mysql')
     ) {
-        throw new \RuntimeException('Rquotes database details were not sent to the Joomla log');
+        throw new \RuntimeException('Rquotes logs must retain the failure class without leaking credentials.');
     }
 
     // Private credentials in a configured media server must never be used

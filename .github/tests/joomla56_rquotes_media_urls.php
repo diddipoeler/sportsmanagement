@@ -27,7 +27,8 @@ $baseCases = [
     [1, 'javascript:alert(1)', ''],
     [1, '//media.example.test/image', ''],
     [1, ['url'], ''],
-    [true, 'https://cdn.example.test/a', $local],
+    // Boolean selectors are invalid; never open a local or remote image root.
+    [true, 'https://cdn.example.test/a', ''],
 ];
 
 foreach ($baseCases as [$selector, $remote, $expected]) {
