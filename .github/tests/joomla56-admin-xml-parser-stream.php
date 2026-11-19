@@ -19,6 +19,7 @@ if (!function_exists('xml_parser_create')) {
 }
 
 require_once dirname(__DIR__, 2) . '/admin/helpers/XMLParser.class.php';
+require_once dirname(__DIR__, 2) . '/admin/helpers/parser_php5.php';
 
 $fixture = tempnam(sys_get_temp_dir(), 'jsm-xml-');
 if ($fixture === false) {
@@ -30,7 +31,14 @@ set_error_handler(static function (int $severity, string $message): never {
 });
 
 try {
-    $parser = new XMLParser();
+    // PHP 8's xml extension defines the built-in XMLParser class.
+    // The two bundled adapters must use distinct SportsManagement names.
+    if (!class_exists(SportsManagementLegacyXmlParser::class)
+        || !class_exists(SportsManagementLegacyPhp5XmlParser::class)) {
+        throw new RuntimeException('Legacy XML parser class isolation failed.');
+    }
+
+    $parser = new SportsManagementLegacyXmlParser();
     $xml = '<ROOT><ITEM>Fixture</ITEM></ROOT>';
     file_put_contents($fixture, $xml);
     $result = $parser->parse($fixture);
@@ -39,6 +47,16 @@ try {
         || ($result[0]['child'][0]['name'] ?? null) !== 'ITEM'
         || ($result[0]['child'][0]['content'] ?? null) !== 'Fixture') {
         throw new RuntimeException('XML parser changed the expected legacy element hierarchy.');
+    }
+
+    // Ensure both legacy parsers can coexist with the XML extension's
+    // own XMLParser class without any class redeclaration fatal error.
+    $objectParser = new SportsManagementLegacyPhp5XmlParser('<root><item>Fixture</item></root>');
+    $objectParser->Parse();
+
+    if (($objectParser->document->tagName ?? null) !== 'root'
+        || ($objectParser->document->item[0]->tagData ?? null) !== 'Fixture') {
+        throw new RuntimeException('Legacy PHP5 XML object parser output regressed.');
     }
 
     // Check both exact-chunk EOF and incomplete trailing XML markup.
