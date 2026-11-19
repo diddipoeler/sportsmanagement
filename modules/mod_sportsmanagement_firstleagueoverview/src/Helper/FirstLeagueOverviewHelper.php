@@ -400,7 +400,7 @@ final class FirstLeagueOverviewHelper
      * Construct a safe remote or site-relative media URL.
      *
      * Rejects unsupported schemes, embedded credentials, control bytes,
-     * encoded traversal segments, raw control bytes and malformed paths before producing
+     * multiply encoded traversal, injected schemes and unsafe controls before producing
      * a browser image URL relative to Joomla's frontend root.
      *
      * @param string $path Configured image path or full HTTP(S) URL.
@@ -443,9 +443,14 @@ final class FirstLeagueOverviewHelper
         $local = ltrim($path, '/');
         $decoded = $local;
 
-        for ($depth = 0; $depth < 3; $depth++) {
-            if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
-                || preg_match('/[\x00-\x1F\x7F]/', $decoded)
+        // Decode every supported encoding layer before accepting a local URL.
+        // Do not stop after checking only the first three layers: a fourth
+        // layer could hide "../", a scheme, or a protocol-relative path.
+        for ($depth = 0; $depth < 8; $depth++) {
+            if (preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
+                || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
+                || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
+                || str_starts_with($decoded, '//')
                 || str_contains($decoded, chr(92))
                 || str_contains($decoded, '?')
                 || str_contains($decoded, '#')) {
@@ -459,6 +464,19 @@ final class FirstLeagueOverviewHelper
             }
 
             $decoded = $next;
+        }
+
+        // Reject any outstanding escapes: otherwise a later URL decoding
+        // layer could still turn a seemingly harmless path into traversal.
+        if (preg_match('/%[0-9a-f]{2}/i', $decoded)
+            || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
+            || str_starts_with($decoded, '//')
+            || str_contains($decoded, chr(92))
+            || str_contains($decoded, '?')
+            || str_contains($decoded, '#')) {
+            return '';
         }
 
         return rtrim((string) Uri::root(), '/') . '/' . $local;
