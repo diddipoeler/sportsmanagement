@@ -113,12 +113,9 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 		var $buffer;
 		
         /**
-         * Constructor
-         *
-		 *@example Common use:
-         *@param string $pdf_source Source-Filename
-		 *@param string $fdf_source Source-Filename
-		 *@param boolean $verbose , optional false per default
+         * Initialise the legacy PDF form filler using its historical flexible arguments.
+         * Accepts the PDF source, optional FDF data and optional verbose output flag, or the internal static-mode sentinel used by field rewriting. Prepares parser configuration and loads the requested PDF source.
+         * @return void Initialises the PDF field parser and output settings.
          */
     	function __construct() { 
 		//==============
@@ -304,13 +301,11 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 		}
 		
 		/**
-		*Changes the support
-		*
-		*@access public 
-		*@internal fixes xref table offsets
-		*@note special playskool toy for Christmas dedicated to my impatient fanclub (Grant, Kris, nejck,...)
-		*@param String support Allow to use external support that has more advanced features (ie 'pdftk')	
-		**/
+		 * Select the external PDF toolkit or the built-in PDF support mode.
+		 * Uses pdftk for extended PDF operations when requested; otherwise returns the form filler to its native PDF processing backend.
+		 * @param string $cool Requested backend identifier (pdftk or native).
+		 * @return void Updates the active PDF support mode.
+		 */
 		function Plays($cool) {
 		//----------------------
 			if($cool=='pdftk')  //Use a coolest support as ..
@@ -363,10 +358,13 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 			$this->support="pdftk";
 		}
 		
-		/***
-		*Defines a password type
-		*@param String type , 'owner' or  'user'
-		**/
+		/**
+		 * Configure an owner or user password for encrypted PDF output.
+		 * Stores the supplied password in the security configuration and enables the pdftk output backend for subsequent PDF generation.
+		 * @param string $type Password category, owner or user.
+		 * @param string $code Password to apply to the generated PDF.
+		 * @return void Records the password or invokes the historical error handler.
+		 */
 		function Password($type,$code) {
 		//------------------------------
 			switch($type) {
@@ -2135,9 +2133,10 @@ if (!call_user_func_array('class_exists', $__tmp)) {
         }
         
         /**
-         * Print Error and die
-         *
-         * @param string $msg  Error-Message
+         * Stop PDF form processing when the bundled FPDM parser encounters an error.
+         * Preserves the original terminal error contract and prints the supplied message with the historical PDF error prefix.
+         * @param string $msg Description of the PDF parsing or output error.
+         * @return never Terminates execution.
          */
         function Error($msg) {
         //--------------------
