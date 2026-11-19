@@ -154,6 +154,13 @@ class RRobin
 
 	// Rotate arrays
 
+	/**
+	 * Calculate an upper-row competitor index for the Berger pairing grid.
+	 * Handles even and odd grid positions to generate the initial round-robin rotation.
+	 * @param int $i Zero-based position within the upper row.
+	 * @param int $n Even number of slots including a possible bye.
+	 * @return int Index into the original competitor list or ghost slot.
+	 */
 	private function calcUpperElement($i, $n)
 	{
 		// "i" Even:
@@ -174,6 +181,13 @@ class RRobin
 
 	// Gladiator 20-03-2009
 
+	/**
+	 * Calculate the complementary lower-row index in the Berger grid.
+	 * Alternates the pairing arithmetic between odd and even positions.
+	 * @param int $i Zero-based position within the lower row.
+	 * @param int $n Even number of slots including a possible bye.
+	 * @return int Opposing competitor index or ghost slot.
+	 */
 	private function calcLowerElement($i, $n)
 	{
 		// "i" Even
@@ -194,6 +208,11 @@ class RRobin
 
 	// Gladiator 20-03-2009
 
+	/**
+	 * Advance the pairing grid to the next round-robin round.
+	 * Rotates the two competitor rows around the fixed opponent while maintaining slot order.
+	 * @return void Rotation updates the helper's internal state.
+	 */
 	private function rotate()
 	{
 		array_unshift($this->upper, $this->rot_out);         // insert rot_out at the beginig of upper
@@ -201,6 +220,12 @@ class RRobin
 		$this->rot_out = array_shift($this->lower);         // rot_out = last element of lower
 	}
 
+	/**
+	 * Build a complete competition schedule for the requested number of legs.
+	 * Concatenates each leg's rounds, reversing home/away pairings on alternate legs.
+	 * @param int $nb_legs Number of legs to create (one or more).
+	 * @return array Generated match rounds for all requested legs.
+	 */
 	function getSchedule($nb_legs = 1)
 	{
 		$result = array();
@@ -212,6 +237,12 @@ class RRobin
 		return $result;
 	}
 
+	/**
+	 * Build the match rounds for a single leg of a competition.
+	 * Reverses match direction and round order on odd-numbered return legs.
+	 * @param int $leg_number Zero-based leg index.
+	 * @return array Scheduled rounds for the requested leg.
+	 */
 	function getLeg($leg_number)
 	{
 		$nb_single_rounds = count($this->tour);
