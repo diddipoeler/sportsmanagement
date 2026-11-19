@@ -40,6 +40,7 @@ namespace {
     foreach ([
         '', "\xC3\x28", "images/club.png\n", "\timages/club.png",
         "images/\x00club.png", str_repeat('p', 4097),
+        '%C3%28', 'images/%C3%28',
         'javascript:alert(1)', '//evil.example/logo.png',
         '../private.png', 'images/%2e%2e/private.png'
     ] as $invalid) {
