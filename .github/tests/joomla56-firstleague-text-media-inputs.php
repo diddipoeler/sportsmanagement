@@ -36,4 +36,22 @@ foreach (["images/flags/a.png\n", "\timages/flags/a.png", "images/\x00flag.png",
     }
 }
 
+// Deeply encoded traversal and protocol-relative URLs must not bypass
+// the first-league module's local image URL validation.
+foreach (['../outside.png', '//untrusted.example/flag.png', 'javascript:alert(1)'] as $unsafe) {
+    for ($layers = 1; $layers <= 10; $layers++) {
+        $encoded = $unsafe;
+
+        for ($i = 0; $i < $layers; $i++) {
+            // rawurlencode() does not escape all slashes; encode them too
+            // so each iteration represents a complete new decoding layer.
+            $encoded = str_replace('/', '%2F', rawurlencode($encoded));
+        }
+
+        if ($url->invoke(null, 'images/' . $encoded) !== '') {
+            throw new RuntimeException('Deeply encoded first-league image path was accepted.');
+        }
+    }
+}
+
 echo "Joomla 5/6 first league label and media checks passed.\n";
