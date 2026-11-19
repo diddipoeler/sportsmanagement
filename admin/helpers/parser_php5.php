@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * XML Parser Class (php5)
+ * SportsManagement legacy XML object parser (PHP 8 compatible class name)
  *
  * Parses an XML document into an object structure much like the SimpleXML extension.
  *
@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
  * @copyright Copyright (c) 2005-2007, Adam A. Flynn
  * @version   1.3.0
  */
-class XMLParser
+class SportsManagementLegacyPhp5XmlParser
 {
 	/**
 	 * Document tag
@@ -69,7 +69,7 @@ class XMLParser
 	 *
 	 * @param   string  $xml  The string of the XML document
 	 *
-	 * @return XMLParser
+	 * @return void
 	 */
 	public function __construct($xml = '', $cleanTagNames = true)
 	{
@@ -319,7 +319,7 @@ class XMLTag
 		//Toss up a notice if someone's trying to to use a colon or dash in a tag name
 		elseif (strstr($name, ':') || strstr($name, '-'))
 		{
-			trigger_error('Your tag named "' . $name . '" contains either a dash or a colon. Neither of these characters are friendly with PHP variable names, and, as such, you may have difficulty accessing them. You might want to think about enabling the cleanTagName feature (pass true as the second argument of the XMLParser constructor). For more details, see http://www.criticaldevelopment.net/xml/', E_USER_NOTICE);
+			trigger_error('Your tag named "' . $name . '" contains either a dash or a colon. Neither of these characters are friendly with PHP variable names, and, as such, you may have difficulty accessing them. You might want to think about enabling the cleanTagName feature (pass true as the second argument of the SportsManagementLegacyPhp5XmlParser constructor). For more details, see http://www.criticaldevelopment.net/xml/', E_USER_NOTICE);
 		}
 
 		//If there is no array already set for the tag name being added,
@@ -348,7 +348,7 @@ class XMLTag
 	 * the XML of the entire document.
 	 *
 	 * This function does not, however, return a DTD or an XML version/encoding tag. That should be
-	 * handled by XMLParser::GetXML()
+	 * handled by SportsManagementLegacyPhp5XmlParser::GetXML()
 	 *
 	 * @return string
 	 */
