@@ -38,6 +38,12 @@ foreach (["images/flags/a.png\n", "\timages/flags/a.png", "images/\x00flag.png",
 
 // Deeply encoded traversal and protocol-relative URLs must not bypass
 // the first-league module's local image URL validation.
+foreach (['%C3%28', 'images/%C3%28'] as $invalidEncoding) {
+    if ($url->invoke(null, $invalidEncoding) !== '') {
+        throw new RuntimeException('Encoded invalid UTF-8 image path was accepted.');
+    }
+}
+
 foreach (['../outside.png', '//untrusted.example/flag.png', 'javascript:alert(1)'] as $unsafe) {
     for ($layers = 1; $layers <= 10; $layers++) {
         $encoded = $unsafe;
