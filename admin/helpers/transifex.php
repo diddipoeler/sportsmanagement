@@ -37,9 +37,6 @@ class sportsmanagementHelperTransifex
      */
     public static function updatelanguage($data = null, $folder = 'de-DE')
     {
-        /** @var AdministratorApplication $app */
-        $app = Factory::getContainer()->get(AdministratorApplication::class);
-
         // Reject directory traversal and malformed locale values before
         // any file-system operation or administrator service lookup.
         if (!is_string($folder)
@@ -47,6 +44,9 @@ class sportsmanagementHelperTransifex
             || preg_match('/^[A-Za-z]{2,3}(?:-[A-Za-z]{2,4}){1,2}$/D', $folder) !== 1) {
             return $data;
         }
+
+        /** @var AdministratorApplication $app */
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
 
         if ($folder == 'de-DE' || $folder == 'en-GB')
         {
