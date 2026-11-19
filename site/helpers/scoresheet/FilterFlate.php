@@ -27,6 +27,12 @@ if (!call_user_func_array('class_exists', $__tmp))
 		var $data = null;
 		var $dataLength = 0;
 
+		/**
+		 * Stop PDF stream processing after a Flate stream error.
+		 * Preserves the legacy filter's terminal error handling for invalid PDF content.
+		 * @param string $msg Human-readable decompression error message.
+		 * @return never Terminates execution instead of continuing with bad data.
+		 */
 		function error($msg)
 		{
 			die($msg);
@@ -48,12 +54,18 @@ if (!call_user_func_array('class_exists', $__tmp))
 			// uncompress
 			$data = gzuncompress($data);
 
-			if (!$data) $this->error("FilterFlateDecode: invalid stream data.");
+			if ($data === false) $this->error("FilterFlateDecode: invalid stream data.");
 
 			return $data;
 		}
 
 
+		/**
+		 * Compress raw PDF stream bytes using the zlib Flate format.
+		 * Uses level-nine compression and returns the compressed binary stream.
+		 * @param string $in Uncompressed PDF stream data.
+		 * @return string|false Compressed stream, or false on a zlib failure.
+		 */
 		function encode($in)
 		{
 			return gzcompress($in, 9);
