@@ -145,6 +145,21 @@ if (!defined('SERVICES_JSON_SLICE'))
 		 *                     error, so all return values from encode()
 		 *                     should be checked with isError()
 		 */
+		/**
+		 * Initialise the bundled legacy JSON codec using PHP 8's constructor.
+		 *
+		 * Applies the historical loose-object and error-suppression flags
+		 * before callers encode or decode JSON, preserving the behaviour
+		 * of the original PHP 4-style Services_JSON() initialiser.
+		 *
+		 * @param int $use Bitmask of SERVICES_JSON_LOOSE_TYPE and SERVICES_JSON_SUPPRESS_ERRORS.
+		 * @return void Stores the JSON codec options.
+		 */
+		public function __construct($use = 0)
+		{
+			$this->Services_JSON($use);
+		}
+
 		function Services_JSON($use = 0)
 		{
 			$this->use = $use;
@@ -422,7 +437,7 @@ if (!defined('SERVICES_JSON_SLICE'))
 
 						foreach ($properties as $property)
 						{
-							if (Services_JSON::isError($property))
+							if ($this->isError($property))
 							{
 								return $property;
 							}
@@ -436,7 +451,7 @@ if (!defined('SERVICES_JSON_SLICE'))
 
 					foreach ($elements as $element)
 					{
-						if (Services_JSON::isError($element))
+						if ($this->isError($element))
 						{
 							return $element;
 						}
@@ -455,7 +470,7 @@ if (!defined('SERVICES_JSON_SLICE'))
 
 					foreach ($properties as $property)
 					{
-						if (Services_JSON::isError($property))
+						if ($this->isError($property))
 						{
 							return $property;
 						}
@@ -466,7 +481,7 @@ if (!defined('SERVICES_JSON_SLICE'))
 				default:
 					return ($this->use & SERVICES_JSON_SUPPRESS_ERRORS)
 						? 'null'
-						: new Services_JSON_Error(gettype($var) . " can not be encoded as JSON string");
+						: new JSMServices_JSON_Error(gettype($var) . " can not be encoded as JSON string");
 			}
 		}
 
@@ -483,7 +498,7 @@ if (!defined('SERVICES_JSON_SLICE'))
 		{
 			$encoded_value = $this->encode($value);
 
-			if (Services_JSON::isError($encoded_value))
+			if ($this->isError($encoded_value))
 			{
 				return $encoded_value;
 			}
@@ -866,9 +881,7 @@ if (!defined('SERVICES_JSON_SLICE'))
 			{
 				return PEAR::isError($data, $code);
 			}
-			elseif (is_object($data) && (get_class($data) == 'jsmservices_json_error'
-					|| is_subclass_of($data, 'jsmservices_json_error'))
-			)
+			elseif ($data instanceof JSMServices_JSON_Error)
 			{
 				return true;
 			}
@@ -881,12 +894,38 @@ if (!defined('SERVICES_JSON_SLICE'))
 	{
 		class JSMServices_JSON_Error extends PEAR_Error
 		{
+			/**
+			 * Initialise a PEAR-compatible JSON encoding error under PHP 8.
+			 *
+			 * @param string $message Reason the codec could not encode a value.
+			 * @param mixed $code Optional PEAR error code.
+			 * @param mixed $mode PEAR error reporting mode.
+			 * @param mixed $options PEAR reporting options.
+			 * @param mixed $userinfo Optional metadata accompanying the error.
+			 * @return void Initialises the parent PEAR error value.
+			 */
+			public function __construct($message = 'unknown error', $code = null,
+			    $mode = null, $options = null, $userinfo = null)
+			{
+			    parent::__construct($message, $code, $mode, $options, $userinfo);
+			}
+
+						/**
+			 * Preserve the original PHP 4-style error constructor as a callable alias.
+			 *
+			 * @param string $message Encoding error description.
+			 * @param mixed $code Optional PEAR error code.
+			 * @param mixed $mode Legacy reporting mode.
+			 * @param mixed $options Legacy reporting options.
+			 * @param mixed $userinfo Legacy metadata.
+			 * @return void Delegates to the PHP 8 constructor when supported.
+			 */
 			function Services_JSON_Error($message = 'unknown error', $code = null,
 			                             $mode = null, $options = null, $userinfo = null
 			)
 			{
 
-				parent::PEAR_Error($message, $code, $mode, $options, $userinfo);
+				$this->__construct($message, $code, $mode, $options, $userinfo);
 			}
 		}
 
@@ -898,6 +937,35 @@ if (!defined('SERVICES_JSON_SLICE'))
 		 */
 		class JSMServices_JSON_Error
 		{
+			/**
+			 * Construct the bundled JSON error marker without PEAR installed.
+			 *
+			 * The legacy codec checks this object's class when encoding data
+			 * unsupported by JSON, such as PHP resource handles.
+			 *
+			 * @param string $message Explanation of the failed encoding.
+			 * @param mixed $code Optional legacy error code.
+			 * @param mixed $mode Ignored historical PEAR mode.
+			 * @param mixed $options Ignored historical PEAR options.
+			 * @param mixed $userinfo Ignored historical PEAR metadata.
+			 * @return void Retains the error message for callers.
+			 */
+			public function __construct($message = 'unknown error', $code = null,
+			    $mode = null, $options = null, $userinfo = null)
+			{
+			    $this->message = (string) $message;
+			}
+
+						/**
+			 * Preserve the original PHP 4-style error constructor as a callable alias.
+			 *
+			 * @param string $message Encoding error description.
+			 * @param mixed $code Optional PEAR error code.
+			 * @param mixed $mode Legacy reporting mode.
+			 * @param mixed $options Legacy reporting options.
+			 * @param mixed $userinfo Legacy metadata.
+			 * @return void Delegates to the PHP 8 constructor when supported.
+			 */
 			function Services_JSON_Error($message = 'unknown error', $code = null,
 			                             $mode = null, $options = null, $userinfo = null
 			)
