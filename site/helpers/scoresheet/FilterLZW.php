@@ -26,8 +26,8 @@
 //
 \defined('_JEXEC') or die;
 
-$__tmp = version_compare(phpversion(), "5") == -1 ? array('FilterLZW') : array('FilterLZW', false);
-if (!call_user_func_array('class_exists', $__tmp))
+// Joomla 5/6 runs on PHP 8: no PHP 4/5 compatibility branch is required.
+if (!class_exists('FilterLZW', false))
 {
 
 	if (isset($FPDM_FILTERS)) array_push($FPDM_FILTERS, "LZWDecode");
@@ -58,9 +58,15 @@ if (!call_user_func_array('class_exists', $__tmp))
 		}
 
 		/**
-		 * Method to decode LZW compressed data.
+		 * Decode an LZW-compressed PDF stream into its original bytes.
 		 *
-		 * @param   string data    The compressed data.
+		 * Initialises the dictionary and bit pointers, recognises clear and
+		 * end-of-stream codes, and reconstructs the dictionary entries as the
+		 * compressed stream is consumed. Truncated input is bounded by the
+		 * getNextCode() byte-length checks to avoid PHP 8 offset warnings.
+		 *
+		 * @param string $data Raw LZW-compressed PDF stream.
+		 * @return string Decoded PDF bytes (empty for an empty stream).
 		 */
 		function decode($data)
 		{
@@ -131,7 +137,12 @@ if (!call_user_func_array('class_exists', $__tmp))
 
 
 		/**
-		 * Initialize the string table.
+		 * Reset the LZW string dictionary to its 256 single-byte entries.
+		 *
+		 * Restores the next dictionary slot to 258 and the code width to nine
+		 * bits after the initial stream setup or a dictionary-clear marker.
+		 *
+		 * @return void Dictionary and code-width state are updated in place.
 		 */
 		function initsTable()
 		{
@@ -145,7 +156,14 @@ if (!call_user_func_array('class_exists', $__tmp))
 		}
 
 		/**
-		 * Add a new string to the string table.
+		 * Register a reconstructed dictionary sequence for later LZW codes.
+		 *
+		 * Concatenates the preceding sequence and next byte, adds the new
+		 * entry and advances the code width at the legacy dictionary limits.
+		 *
+		 * @param string $oldString Existing dictionary sequence.
+		 * @param string $newString Optional byte appended to the sequence.
+		 * @return void Mutates the dictionary and active code width.
 		 */
 		function addStringToTable($oldString, $newString = '')
 		{
@@ -215,5 +233,3 @@ if (!call_user_func_array('class_exists', $__tmp))
 		}
 	}
 }
-
-unset($__tmp);
