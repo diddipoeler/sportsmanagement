@@ -38,6 +38,12 @@ try {
     if ($parser->conditions !== ['status' => 'active']) {
         throw new RuntimeException('Legacy CSV conditions were not stored.');
     }
+    // A quoted field followed by whitespace at EOF must not access the
+    // nonexistent next byte, nor need the deprecated Joomla Factory API.
+    $parser = new parseCSV();
+    $parser->heading = false;
+    $parser->parse_string('"fixture"  ');
+
 } finally {
     restore_error_handler();
 }
