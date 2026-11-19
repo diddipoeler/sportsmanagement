@@ -882,7 +882,11 @@ if (!defined('SERVICES_JSON_SLICE'))
 		}
 
 		/**
-		 * @internal Ultimately, this should just call PEAR::isError()
+		 * Identify an error object returned by the legacy JSON encoder.
+		 * Delegates to PEAR when present or recognises this bundled copy's renamed JSON error class so malformed and unencodable values are reported consistently on PHP 8.
+		 * @param mixed $data Value returned from the JSON codec.
+		 * @param mixed $code Optional PEAR-specific error code.
+		 * @return bool True when the supplied value represents a JSON encoding error.
 		 */
 		function isError($data, $code = null)
 		{
