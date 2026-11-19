@@ -55,14 +55,9 @@ class FilterASCIIHex
      **/
     public function encode($str)
     {
-        //----------------------
-        $hex = "";
-        $i = 0;
-        do {
-            $hex .= sprintf("%02x", ord($str[$i]));
-            $i++;
-        } while ($i < strlen($str));
-        return $hex;
+        // bin2hex handles empty streams and all byte values without
+        // accessing an undefined offset (PHP 8 raises a warning for "").
+        return bin2hex($str);
     }
 
 }
