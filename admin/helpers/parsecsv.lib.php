@@ -179,6 +179,24 @@ class parseCSV
 	 *
 	 * @return nothing
 	 */
+	/**
+	 * Initialise the legacy CSV parser using PHP 8's standard constructor.
+	 *
+	 * Delegates to the original parseCSV() initialiser to preserve option
+	 * handling and eager parsing for callers that instantiate this class
+	 * without invoking its historical PHP 4-style constructor manually.
+	 *
+	 * @param mixed $input Optional CSV file path or source content.
+	 * @param mixed $offset Optional initial row offset.
+	 * @param mixed $limit Optional row limit.
+	 * @param mixed $conditions Optional row filter conditions.
+	 * @return void Initialises the parser instance in place.
+	 */
+	public function __construct($input = null, $offset = null, $limit = null, $conditions = null)
+	{
+		$this->parseCSV($input, $offset, $limit, $conditions);
+	}
+
 	function parseCSV($input = null, $offset = null, $limit = null, $conditions = null)
 	{
 		if ($offset !== null)
@@ -189,7 +207,7 @@ class parseCSV
 		{
 			$this->limit = $limit;
 		}
-		if (count($conditions) > 0)
+		if (is_array($conditions) && $conditions !== array())
 		{
 			$this->conditions = $conditions;
 		}
@@ -227,7 +245,7 @@ class parseCSV
 			{
 				$this->limit = $limit;
 			}
-			if (count($conditions) > 0)
+			if (is_array($conditions) && $conditions !== array())
 			{
 				$this->conditions = $conditions;
 			}
