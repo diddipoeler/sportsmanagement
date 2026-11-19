@@ -78,8 +78,6 @@
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-
 class parseCSV
 {
 
@@ -362,15 +360,18 @@ class parseCSV
 	}
 
 	/**
-	 * Parse CSV strings to arrays
+	 * Parse CSV text into rows using the legacy delimiter and filtering options.
 	 *
-	 * @param   data   CSV string
+	 * Loads stored input when omitted, handles quoted fields, applies heading,
+	 * condition and offset rules, and records syntax errors for malformed CSV.
+	 * Avoids deprecated Joomla application access and checks the end of the
+	 * input before looking ahead after an unmatched closing quote on PHP 8.
 	 *
-	 * @return 2D array with CSV data, or false on failure
+	 * @param string|null $data Optional CSV source; null uses previously loaded data.
+	 * @return array|false Parsed two-dimensional rows or false if no input exists.
 	 */
 	function parse_string($data = null)
 	{
-		$app =& Factory::getApplication();
 		if (empty($data))
 		{
 			if ($this->_check_data())
@@ -482,7 +483,7 @@ class parseCSV
 					for ($x = ($i + 1); isset($data[$x]) && ltrim($data[$x], $white_spaces) == ''; $x++)
 					{
 					}
-					if ($data[$x] == $this->delimiter)
+					if (isset($data[$x]) && $data[$x] == $this->delimiter)
 					{
 						$enclosed = false;
 						$i        = $x;
