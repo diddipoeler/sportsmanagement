@@ -72,6 +72,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
     private array $parsedData = [];
 
+    /**
+     * Determine the original import project ID for the currently selected project.
+     * Reads the active project from administrator session state and retrieves its import mapping using a parameter-bound database query.
+     * @return int|false Legacy import project identifier, or false if no project is selected or mapped.
+     */
     public function getDataUpdateImportID(): int|false
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -94,6 +99,12 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $importProjectId === null ? false : (int) $importProjectId;
     }
 
+    /**
+     * Return Joomla users that can be assigned during an XML import.
+     * Loads user IDs and usernames from the modern users table without relying on the removed Joomla usertype column.
+     * @param bool $isAdmin Historical administrator filter retained for API compatibility; the complete list is returned.
+     * @return array<int, object> User records sorted by username.
+     */
     public function getUserList(bool $isAdmin = false): array
     {
         $db = $this->getDatabase();
@@ -113,6 +124,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List existing projects that may be selected as XML import templates.
+     * Queries non-master SportsManagement projects and returns value/text option records sorted by project name.
+     * @return array<int, object> Existing project choices for the import form.
+     */
     public function getTemplateList(): array
     {
         $db = $this->getDatabase();
@@ -129,6 +145,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load available clubs for matching imported records to existing clubs.
+     * Reads club identifiers, display names and countries from the native component database.
+     * @return array<int, object> Existing club records sorted alphabetically.
+     */
     public function getNewClubList(): array
     {
         $db = $this->getDatabase();
@@ -145,6 +166,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build select-box choices from clubs already stored in SportsManagement.
+     * Aliases the club ID and name as value and text and includes the country for import mapping.
+     * @return array<int, object> Club select options with country metadata.
+     */
     public function getNewClubListSelect(): array
     {
         $db = $this->getDatabase();
@@ -161,6 +187,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Collect existing club/team associations for incoming XML records.
+     * Joins club and team records so imports can compare names and countries before linking teams.
+     * @return array<int, object> Club-team records for the import matching interface.
+     */
     public function getClubAndTeamList(): array
     {
         $db = $this->getDatabase();
@@ -183,6 +214,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Build human-readable team selectors for the import wizard.
+     * Joins clubs and teams and formats an option label combining the club, team and team information.
+     * @return array<int, object> Value/text team options and corresponding club data.
+     */
     public function getClubAndTeamListSelect(): array
     {
         $db = $this->getDatabase();
@@ -214,6 +250,12 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Parse the uploaded XML import file into collections of SportsManagement records.
+     * Loads the staged XML file, detects historical export formats, maps record types into collections and normalises media paths and language keys. The previous libxml error-reporting mode is restored on every return path.
+     * @param array $post Optional import form data retained for compatibility with legacy callers.
+     * @return array<string, mixed>|false Parsed import collections or false when the import is invalid.
+     */
     public function getData(array $post = []): mixed
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -222,8 +264,10 @@ final class JlxmlimportModel extends BaseDatabaseModel
 
         $this->parsedData = [];
         $this->import_version = '';
-        libxml_use_internal_errors(true);
+        $previousXmlErrorMode = libxml_use_internal_errors(true);
         libxml_clear_errors();
+
+        try {
         $xmlData = $this->loadXmlImport();
 
         if ($xmlData === false) {
@@ -320,8 +364,19 @@ final class JlxmlimportModel extends BaseDatabaseModel
         }
 
         return $this->parsedData;
+        } finally {
+            // libxml's error mode is process-global; never leak import
+            // settings into unrelated Joomla requests or components.
+            libxml_clear_errors();
+            libxml_use_internal_errors($previousXmlErrorMode);
+        }
     }
 
+    /**
+     * Find existing match records corresponding to incoming XML match IDs.
+     * Loads parsed import records when necessary, looks up existing fixtures and prepares update status messages for the import interface.
+     * @return array<string, string> Match update preview and status messages.
+     */
     public function getDataUpdate(): array
     {
         if ($this->parsedData === []) {
@@ -429,6 +484,12 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return ['Update match data:' => $message];
     }
 
+    /**
+     * Dispatch a validated XML import to the appropriate native data writer.
+     * Selects the club, event, person, playground or position import service when supported and delegates other import formats to the established workflow.
+     * @param array $post Import form settings including the requested record type.
+     * @return mixed Imported data or legacy status/error result.
+     */
     public function importData(array $post): mixed
     {
         $nativeWriter = null;
@@ -514,6 +575,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return false;
     }
 
+    /**
+     * Create the historical country-number to three-letter-code mapping.
+     * Provides ISO-style and legacy football codes required by older XML export formats.
+     * @return array<int, string> Country codes indexed by legacy country identifiers.
+     */
     public function getCountryByOldid(): array
     {
         $countries = explode(
@@ -533,6 +599,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         return $countries;
     }
 
+    /**
+     * Load the staged XML document using SimpleXML without external network access.
+     * Checks that the temporary import file exists and the PHP XML extension is available, then parses the file with entity network access disabled.
+     * @return \SimpleXMLElement|false Parsed XML root or false on validation or parsing failure.
+     */
     private function loadXmlImport(): \SimpleXMLElement|false
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -563,6 +634,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         );
     }
 
+    /**
+     * Remove the temporary XML upload after an import has finished.
+     * Checks for the staged import file and deletes it when present, preserving the legacy cleanup contract.
+     * @return void The temporary import file is removed where possible.
+     */
     private function deleteImportFile(): void
     {
         $path = JPATH_SITE . '/tmp/sportsmanagement_import.jlg';
@@ -572,6 +648,11 @@ final class JlxmlimportModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Report libxml parsing diagnostics through Joomla administrator notifications.
+     * Displays a generic error when no details exist and enumerates parser errors when available.
+     * @return void Messages are queued in the administrator application.
+     */
     private function reportXmlErrors(): void
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -601,6 +682,12 @@ final class JlxmlimportModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Normalise imported record properties before handing them to import writers.
+     * Rewrites image paths and placeholders for people, teams, clubs and grounds, applies default country values, and updates language tokens.
+     * @param string $option Joomla component option used to resolve placeholder settings.
+     * @return void Updates the parsed import record collections in place.
+     */
     private function normaliseParsedData(string $option): void
     {
         $params = ComponentHelper::getParams($option);
@@ -638,6 +725,14 @@ final class JlxmlimportModel extends BaseDatabaseModel
         $this->normaliseLanguageKeys($option);
     }
 
+    /**
+     * Convert one imported image property to the SportsManagement media layout.
+     * Replaces legacy JoomLeague paths, maps old media locations to images and substitutes configured placeholders for missing assets.
+     * @param object $record Import record whose image property is updated.
+     * @param string $property Name of the image property to normalise.
+     * @param string $placeholder Fallback image path from component options.
+     * @return void Mutates the selected record property.
+     */
     private function normaliseImageProperty(object $record, string $property, string $placeholder): void
     {
         $value = (string) ($record->{$property} ?? '');
@@ -651,6 +746,12 @@ final class JlxmlimportModel extends BaseDatabaseModel
         $record->{$property} = $value;
     }
 
+    /**
+     * Rewrite JoomLeague language constants to SportsManagement translation keys.
+     * Derives the sport type, updates event and position names and reconciles imported positions with existing translated names.
+     * @param string $option Component option prefix used for replacement tokens.
+     * @return void Renames imported language keys and corresponding aliases.
+     */
     private function normaliseLanguageKeys(string $option): void
     {
         $prefix = strtoupper($option);
