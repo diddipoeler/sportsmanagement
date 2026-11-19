@@ -63,6 +63,7 @@ jobs:
             site/helpers/scoresheet/FilterStandard.php
             admin/helpers/parsecsv.lib.php
             admin/helpers/XMLParser.class.php
+            admin/helpers/parser_php5.php
             modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
           )
           tests=(
