@@ -815,12 +815,26 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 			return $Shift;
 		}
 
+		/**
+		 * Convert a PDF form field string into the hexadecimal stream representation.
+		 * When the PDF is configured for UTF-8 form input, first writes a UTF-16BE byte-order marker and converts the text to UTF-16BE; then hex-encodes the resulting bytes.
+		 * @param string $str Raw value of a PDF form field.
+		 * @return string Hexadecimal encoded field bytes, including a Unicode BOM when required.
+		 */
 		function _encode_value($str) {
 			if($this->isUTF8)
 				$str="\xFE\xFF".iconv('UTF-8','UTF-16BE',$str);
 			return $this->_bin2hex($str);
 		}
 		
+		/**
+		 * Insert or replace a PDF form field's stored value definition.
+		 * Updates the selected PDF object entry by writing a new /V hexadecimal string, then adjusts the cumulative byte offset used when rewriting the PDF document.
+		 * @param int $line Index of the PDF object entry to change.
+		 * @param string $value New field contents to insert into the document.
+		 * @param bool $append True to add a missing /V definition; false to replace it.
+		 * @return int Change in the PDF entry's byte length after modification.
+		 */
 		function _set_field_value2($line,$value,$append) {
 			$CurLine=$this->pdf_entries[$line];
 			$OldLen=strlen($CurLine);
@@ -1525,6 +1539,14 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 	
         //================================
 		
+		/**
+		 * Extract a named PDF dictionary property using the bundled regex definitions.
+		 * Uses the registered property matcher and falls back to parsing the compact /Name/Value notation used by some PDF producers.
+		 * @param string $name PDF dictionary key to find.
+		 * @param string $line Raw PDF dictionary or object entry.
+		 * @param array $match Receives the regular-expression capture groups by reference.
+		 * @return int|false Number of matches or false on a regular-expression error.
+		 */
 		function _extract_pdf_definition_value($name,$line,&$match) {
 		//-----------------------------------------------------------
 				global $FPDM_REGEXPS;
@@ -1535,6 +1557,14 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 				return $value;
 		}
 
+		/**
+		 * Read a supported PDF dictionary property's value from a document line.
+		 * Checks that the dictionary key has an associated registered pattern, then delegates matching to the lower-level extraction method; unsupported keys follow the historical PDF error path.
+		 * @param string $name Supported PDF dictionary key.
+		 * @param string $line PDF object entry to inspect.
+		 * @param array $match Receives matched tokens and capture groups by reference.
+		 * @return int|false Match count or false if matching fails.
+		 */
 		function extract_pdf_definition_value($name,$line,&$match) {
 		//-----------------------------------------------------------
 				global $FPDM_REGEXPS;
