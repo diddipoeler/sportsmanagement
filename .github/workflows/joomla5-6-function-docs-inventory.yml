@@ -10,6 +10,8 @@ on:
       - '.github/tests/joomla56_function_docs_inventory.php'
       - '.github/tests/joomla56-admin-xml-parser-stream.php'
       - '.github/tests/joomla56-admin-sofee-xml-parser.php'
+      - '.github/tests/joomla56-admin-transifex-locale.php'
+      - '.github/tests/joomla56-site-legacy-json-compat.php'
       - '.github/tests/joomla56-site-person-image-url.php'
       - '.github/tests/joomla56-admin-parsecsv-constructor.php'
       - '.github/tests/joomla56-pdf-lzw-truncated-stream.php'
@@ -46,6 +48,7 @@ jobs:
             admin/src/Model/QuickaddModel.php \
             admin/src/Model/JlxmlimportModel.php \
             admin/src/Model/JoomleagueimportsModel.php \
+            admin/helpers/transifex.php \
             admin/src/Service/IndividualMatchWriteService.php \
             admin/src/View/Statistics/HtmlView.php \
             modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php
@@ -66,6 +69,8 @@ jobs:
             site/helpers/scoresheet/FilterFlate.php
             site/helpers/scoresheet/FilterStandard.php
             site/src/Helper/PersonImageHelper.php
+            site/helpers/JSON.php
+            admin/helpers/transifex.php
             admin/helpers/parsecsv.lib.php
             admin/helpers/XMLParser.class.php
             admin/helpers/parser_php5.php
@@ -80,6 +85,8 @@ jobs:
             .github/tests/joomla56-admin-parsecsv-constructor.php
             .github/tests/joomla56-admin-xml-parser-stream.php
             .github/tests/joomla56-admin-sofee-xml-parser.php
+            .github/tests/joomla56-admin-transifex-locale.php
+            .github/tests/joomla56-site-legacy-json-compat.php
             .github/tests/joomla56-site-person-image-url.php
             .github/tests/joomla56-firstleague-text-media-inputs.php
           )
