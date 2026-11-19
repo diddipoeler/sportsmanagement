@@ -2,6 +2,8 @@
 
 /**
  * Project:     XMLParser: A library for parsing XML feeds
+ * PHP 8 compatibility: the legacy importer is named SportsManagementLegacyXmlParser
+ * to avoid colliding with PHP's built-in XMLParser class.
  * File:        XMLParser.class.php
  *
  * This library is free software; you can redistribute it and/or
@@ -28,7 +30,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class XMLParser
+class SportsManagementLegacyXmlParser
 {
 	/**
 	 * holds the expat object
