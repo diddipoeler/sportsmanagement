@@ -71,43 +71,77 @@ class XMLParser
 
 
 	/**
-	 * parse the XML file (or URL)
+	 * Read and parse one XML document into the legacy nested element array.
 	 *
-	 * @param   string  $path  the XML file path, or URL
+	 * Registers the Expat callbacks used by existing SportsManagement imports,
+	 * feeds the document in bounded chunks and finalises the parser even when
+	 * the file length is an exact multiple of the chunk size. File handles
+	 * are closed on all paths. Invalid or missing files and malformed XML
+	 * raise exceptions instead of terminating the Joomla administrator request.
+	 *
+	 * @param string $path Local path or PHP-supported XML input stream.
+	 * @return array Parsed XML element tree in the original legacy layout.
+	 * @throws \\InvalidArgumentException When the input path is invalid.
+	 * @throws \\RuntimeException When reading or parsing XML fails.
 	 */
 	function parse($path)
 	{
+		if (!is_string($path) || $path === '') {
+			throw new \\InvalidArgumentException('A valid XML input path is required.');
+		}
+
+		$handle = @fopen($path, 'rb');
+
+		if ($handle === false) {
+			throw new \\RuntimeException('Cannot open the XML data source.');
+		}
 
 		$this->output = array();
 
-		$this->xml_obj = xml_parser_create($this->char_set);
-		xml_set_object($this->xml_obj, $this);
-		xml_set_character_data_handler($this->xml_obj, 'dataHandler');
-		xml_set_element_handler($this->xml_obj, "startHandler", "endHandler");
+		try {
+			$parser = xml_parser_create($this->char_set);
+			$this->xml_obj = $parser;
+			xml_set_object($parser, $this);
+			xml_set_character_data_handler($parser, 'dataHandler');
+			xml_set_element_handler($parser, 'startHandler', 'endHandler');
 
-		if (!($fp = fopen($path, "r")))
-		{
-			die("Cannot open XML data file: $path");
+			while (!feof($handle)) {
+				$data = fread($handle, 4096);
 
-			return false;
-		}
+				if ($data === false) {
+					throw new \\RuntimeException('Failed to read the XML data source.');
+				}
 
-		while ($data = fread($fp, 4096))
-		{
-			if (!xml_parse($this->xml_obj, $data, feof($fp)))
-			{
-				die(
-					sprintf(
-						"XML error: %s at line %d",
-						xml_error_string(xml_get_error_code($this->xml_obj)),
-						xml_get_current_line_number($this->xml_obj)
-					)
-				);
-				xml_parser_free($this->xml_obj);
+				if ($data === '') {
+					if (!feof($handle)) {
+						throw new \\RuntimeException('XML input stream made no progress.');
+					}
+
+					break;
+				}
+
+				if (!xml_parse($parser, $data, false)) {
+					throw new \\RuntimeException(
+						'XML parse error: ' . xml_error_string(xml_get_error_code($parser))
+						. ' at line ' . xml_get_current_line_number($parser)
+					);
+				}
 			}
-		}
 
-		return $this->output;
+			// A separate final call is necessary when the last fread() returned
+			// exactly 4096 bytes and feof() was not yet set by the driver.
+			if (!xml_parse($parser, '', true)) {
+				throw new \\RuntimeException(
+					'XML parse error: ' . xml_error_string(xml_get_error_code($parser))
+					. ' at line ' . xml_get_current_line_number($parser)
+				);
+			}
+
+			return $this->output;
+		} finally {
+			fclose($handle);
+			$this->xml_obj = null;
+		}
 	}
 
 	/**
