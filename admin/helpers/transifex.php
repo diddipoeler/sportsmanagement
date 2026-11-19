@@ -28,10 +28,25 @@ class sportsmanagementHelperTransifex
 
     private static $warningShown = false;
 
+    /**
+     * Download translated component and module language files into Joomla language folders.
+     * Creates missing administrator and site language directories, requests translations for completed resources and records per-file status for the caller. Rejects malformed language locale and resource identifiers to avoid writing outside the intended language directories.
+     * @param array<int,object>|null $data Transifex translation resource records to update.
+     * @param string $folder Joomla language tag, such as fr-FR.
+     * @return array<int,object>|null Updated resource records, or the unchanged input for unsupported locales.
+     */
     public static function updatelanguage($data = null, $folder = 'de-DE')
     {
         /** @var AdministratorApplication $app */
         $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        // Reject directory traversal and malformed locale values before
+        // any file-system operation or administrator service lookup.
+        if (!is_string($folder)
+            || strlen($folder) > 24
+            || preg_match('/^[A-Za-z]{2,3}(?:-[A-Za-z]{2,4}){1,2}$/D', $folder) !== 1) {
+            return $data;
+        }
 
         if ($folder == 'de-DE' || $folder == 'en-GB')
         {
@@ -66,7 +81,18 @@ class sportsmanagementHelperTransifex
 
         foreach ((array) $data as $key => $value)
         {
-            if ($value->completed == '')
+            if (!is_object($value)
+                || !isset($value->file, $value->slug, $value->language)
+                || !is_string($value->file)
+                || !is_string($value->slug)
+                || !is_string($value->language)
+                || preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*$/D', $value->file) !== 1
+                || preg_match('/^[A-Za-z0-9][A-Za-z0-9_.-]*$/D', $value->slug) !== 1
+                || preg_match('/^[A-Za-z0-9_-]+$/D', $value->language) !== 1) {
+                continue;
+            }
+
+            if (($value->completed ?? '') == '')
             {
                 continue;
             }
@@ -138,6 +164,12 @@ class sportsmanagementHelperTransifex
         return $data;
     }
 
+    /**
+     * Request a Transifex translation resource using the configured HTTP client.
+     * Uses credentials from environment variables rather than storing them in repository files, returns a predictable result for missing credentials or network failures and warns the administrator on non-successful responses.
+     * @param string $path Relative Transifex API resource and optional query string.
+     * @return array{data:string,info:array{http_code:int,configured:bool}} HTTP response body and status information.
+     */
     public static function getData($path)
     {
         $username = trim((string) getenv('SPORTSMANAGEMENT_TRANSIFEX_USERNAME'));
@@ -196,6 +228,12 @@ class sportsmanagementHelperTransifex
         );
     }
 
+    /**
+     * Notify the Joomla administrator about the first Transifex integration error.
+     * Suppresses duplicate notifications so a batch of failed resource requests does not flood the administrator interface.
+     * @param string $message Description of the configuration or request problem.
+     * @return void Adds at most one warning message during the request.
+     */
     private static function warn(string $message): void
     {
         if (self::$warningShown)
@@ -209,6 +247,14 @@ class sportsmanagementHelperTransifex
         $app->enqueueMessage($message, 'warning');
     }
 
+    /**
+     * Translate a locale between Joomla hyphenated and Transifex underscored codes.
+     * Supports inverse lookups while using an independently cached map for each direction to avoid stale or incorrectly oriented mappings.
+     * @param string $lang Locale code to translate.
+     * @param bool $inverse Look up the source locale by its mapped destination.
+     * @param bool $joomla When true, map Joomla locale tags to Transifex codes; otherwise reverse.
+     * @return string|false Equivalent locale code or false if unknown.
+     */
     public static function getLangCode($lang, $inverse = false, $joomla = true)
     {
         $languages = self::getLangmap($joomla);
@@ -226,9 +272,17 @@ class sportsmanagementHelperTransifex
         return false;
     }
 
+    /**
+     * Build and memoise the historical Joomla/Transifex locale conversion table.
+     * Indexes the static locale list once per mapping orientation so calls in one direction never corrupt subsequent translations in the other.
+     * @param bool $joomla True for Joomla-to-Transifex keys; false for the reverse.
+     * @return array<string,string> Locale translations keyed by the selected source format.
+     */
     private static function getLangmap($joomla = true)
     {
-        if (!count(self::$languages))
+        $direction = $joomla ? 'joomla' : 'transifex';
+
+        if (!isset(self::$languages[$direction]))
         {
             $langMap = explode(
                 ',',
@@ -251,9 +305,9 @@ class sportsmanagementHelperTransifex
                 }
             }
 
-            self::$languages = $languages;
+            self::$languages[$direction] = $languages;
         }
 
-        return self::$languages;
+        return self::$languages[$direction];
     }
 }
