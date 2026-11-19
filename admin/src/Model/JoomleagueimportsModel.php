@@ -137,6 +137,11 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return $errors;
     }
 
+    /**
+     * Load distinct legacy team information and age-group associations.
+     * Queries the native SportsManagement team table for nonempty information fields and groups identical values for the JoomLeague mapping form.
+     * @return array<int, object> Distinct team information and age-group records.
+     */
     public function get_info_fields(): array
     {
         $db = $this->getDatabase();
@@ -157,6 +162,11 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Apply age-group assignments selected in the JoomLeague import form.
+     * Reads submitted age-group mappings and updates corresponding team metadata with parameter-bound database statements.
+     * @return int Number of team records whose age group was updated.
+     */
     public function joomleaguesetagegroup(): int
     {
         $post = SportsManagementAdministratorApplicationResolver::resolve()->getInput()->post->getArray();
@@ -186,6 +196,13 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return $updated;
     }
 
+    /**
+     * Advance the staged JoomLeague-to-SportsManagement migration.
+     * Routes preparation steps zero through nine to native methods while retaining the established legacy engine for subsequent stages.
+     * @param int|string $importstep Current import step requested by the administration interface.
+     * @param int|string $sportsTypeId Sports type used for position associations.
+     * @return mixed Status and progress data returned by the native or legacy importer.
+     */
     public function importjoomleaguenew($importstep = 0, $sportsTypeId = 0)
     {
         $step = (int) $importstep;
@@ -433,6 +450,15 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return $this->finishNativeStep($step, $sportsTypeId, microtime(true), '', 'Tabellenkopie:');
     }
 
+    /**
+     * Resolve the source JoomLeague project-position relationship ID.
+     * Uses the source database, project ID and position ID to find an existing association before importing match participants.
+     * @param DatabaseInterface $database Connection to the JoomLeague source database.
+     * @param string $prefix Source database table prefix.
+     * @param int $projectId Imported project identifier.
+     * @param int $positionId Imported position identifier.
+     * @return int Matched source position relation ID, or zero when absent.
+     */
     private function resolveJoomLeagueProjectPosition(
         DatabaseInterface $database,
         string $prefix,
@@ -455,6 +481,16 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return (int) ($database->loadResult() ?: 0);
     }
 
+    /**
+     * Update the current import progress and produce the legacy status payload.
+     * Records the next preparation step and active sports type in Joomla input and formats elapsed time and feedback for the conversion interface.
+     * @param int $step Preparation step just completed.
+     * @param int $sportsTypeId Sports type selected by the importer.
+     * @param float $started Microtime timestamp when the step started.
+     * @param string $message Status text collected during preparation.
+     * @param string $resultKey Legacy status response key.
+     * @return array<string,string> Duration and status messages for the import wizard.
+     */
     private function finishNativeStep(
         int $step,
         int $sportsTypeId,
@@ -507,6 +543,14 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Render an escaped status line for the JoomLeague conversion interface.
+     * Selects the success or error colour while escaping the source table and message values before interpolating them into HTML.
+     * @param string $table Source table name.
+     * @param bool $success Whether the table update succeeded.
+     * @param string $message Human-readable migration status.
+     * @return string HTML-safe status line for the administrator.
+     */
     private function legacyStatusLine(string $table, bool $success, string $message): string
     {
         $color = $success ? 'green' : 'red';
@@ -517,6 +561,12 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
             . '!</strong></span><br />';
     }
 
+    /**
+     * Create an isolated connection to the configured JoomLeague database.
+     * Reads the external database credentials from component settings, chooses a Joomla-supported driver and builds a database connection for migration steps.
+     * @return DatabaseInterface Configured external database connection.
+     * @throws \Throwable If the database configuration or connection fails.
+     */
     private function createJoomLeagueDatabase(): DatabaseInterface
     {
         $app = SportsManagementAdministratorApplicationResolver::resolve();
@@ -545,6 +595,12 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         ]);
     }
 
+    /**
+     * Release an optional external source database connection after migration.
+     * Calls the database driver's disconnect method when it exists, preserving compatibility with older database drivers.
+     * @param DatabaseInterface $database Source database connection to release.
+     * @return void The connection is closed when supported.
+     */
     private function disconnectDatabase(DatabaseInterface $database): void
     {
         if (method_exists($database, 'disconnect')) {
@@ -552,6 +608,12 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Load and cache the historical JoomLeague import engine.
+     * Bootstraps legacy model support, loads the original class from the administrator component and reuses the created instance across conversion steps.
+     * @return object Legacy JoomLeague import model instance.
+     * @throws \RuntimeException When the historical model cannot be loaded.
+     */
     private function legacy(): object
     {
         if ($this->legacyModel !== null) {
