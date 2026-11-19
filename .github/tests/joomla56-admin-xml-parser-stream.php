@@ -26,7 +26,13 @@ if ($fixture === false) {
     throw new RuntimeException('Could not create XML test fixture.');
 }
 
-set_error_handler(static function (int $severity, string $message): never {
+set_error_handler(static function (int $severity, string $message): void {
+    // Respect intentionally suppressed fopen() warnings. The parser
+    // converts an unreadable path to a controlled RuntimeException.
+    if ((error_reporting() & $severity) === 0) {
+        return;
+    }
+
     throw new ErrorException($message, 0, $severity);
 });
 
