@@ -82,6 +82,12 @@ class roundrobin
         $this->initialize($passed_teams);
     }
 
+    /**
+     * Reset the round-robin scheduler to a new tournament state.
+     * Stores the initial team list, clears previously generated matches and resets iteration cursors.
+     * @param array|null $passed_teams Competitors to use for later fixture generation.
+     * @return void The scheduler state is reset in place.
+     */
     private function initialize($passed_teams = null): void
     {
         $this->teams = $passed_teams;
@@ -98,6 +104,12 @@ class roundrobin
         $this->teams_2 = null;
     }
 
+    /**
+     * Replace the competitors used by subsequent schedule generation.
+     * Updates the internal team list while preserving the legacy boolean-success API.
+     * @param array $passed_teams Replacement list of competitors.
+     * @return bool Always true after assigning the team list.
+     */
     public function pass_teams($passed_teams)
     {
         $this->teams = $passed_teams;
@@ -105,6 +117,11 @@ class roundrobin
         return true;
     }
 
+    /**
+     * Generate a round-robin timetable grouped by matchday.
+     * Validates at least two competitors, inserts a bye for odd team counts, rotates pairings and resets iteration cursors.
+     * @return array|false Matchday-indexed fixtures, or false for an invalid team list.
+     */
     public function create_matches()
     {
         if (!$this->valid_team_array()) {
@@ -138,6 +155,11 @@ class roundrobin
         return $this->matches;
     }
 
+    /**
+     * Check that the scheduler holds a usable team list.
+     * On invalid input, records the error, clears stale matches and resets the iteration position.
+     * @return bool True if at least two teams are present.
+     */
     private function valid_team_array()
     {
         if (!is_array($this->teams) || count($this->teams) < 2) {
@@ -154,6 +176,11 @@ class roundrobin
         return true;
     }
 
+    /**
+     * Reset the current match and matchday traversal positions.
+     * Keeps existing generated fixtures but restarts subsequent next-match and next-matchday reads.
+     * @return bool Always true after resetting both cursors.
+     */
     private function clear_pointer()
     {
         $this->matchday_pointer = 0;
@@ -162,6 +189,11 @@ class roundrobin
         return true;
     }
 
+    /**
+     * Append the current pairing arrangement as one matchday.
+     * Includes or omits the bye pairing according to the free-ticket setting.
+     * @return bool Always true after recording the matchday.
+     */
     private function save_matchday()
     {
         $matches = [];
@@ -181,6 +213,11 @@ class roundrobin
         return true;
     }
 
+    /**
+     * Move the non-fixed competitors to their next pairing positions.
+     * Leaves the first upper-row team fixed and circulates all other teams between halves.
+     * @return bool Always true after updating the internal arrays.
+     */
     private function rotate()
     {
         $temp = $this->teams_1[1];
@@ -200,6 +237,11 @@ class roundrobin
         return true;
     }
 
+    /**
+     * Enumerate all unique pairings without grouping into matchdays.
+     * Checks the team list, generates each unordered pair once and switches the iterator into raw-match mode.
+     * @return array|false Flat fixture list, or false when the team list is invalid.
+     */
     public function create_raw_matches()
     {
         if (!$this->valid_team_array()) {
@@ -222,6 +264,11 @@ class roundrobin
         return $this->matches;
     }
 
+    /**
+     * Return the next fixture from the currently selected traversal mode.
+     * Walks the flat schedule or the last selected matchday, returning false when exhausted or not generated.
+     * @return array|false Next pair of teams, or false when no match remains.
+     */
     public function next_match()
     {
         if ($this->raw_matches_created) {
@@ -249,6 +296,11 @@ class roundrobin
         return false;
     }
 
+    /**
+     * Move to and return the next generated matchday.
+     * Resets the within-round match cursor; rejects traversal when only flat fixtures exist.
+     * @return array|false Next day's fixtures, or false when unavailable.
+     */
     public function next_matchday()
     {
         if ($this->raw_matches_created) {
@@ -273,6 +325,13 @@ class roundrobin
         return false;
     }
 
+    /**
+     * Construct an alternate circle-method round-robin schedule.
+     * Adds a null bye for odd numbers of players and optionally randomises round and fixture order.
+     * @param array $players Competitors to schedule, potentially including a bye.
+     * @param bool $rand Whether to shuffle generated rounds and pairings.
+     * @return array Matchups grouped by round.
+     */
     public function generateRRSchedule(array $players, $rand = false)
     {
         $numPlayers = count($players);
