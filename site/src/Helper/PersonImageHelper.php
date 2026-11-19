@@ -105,17 +105,19 @@ final class PersonImageHelper
      * falling back to Joomla's site root when the configured host is invalid.
      * Ignores non-string picture-server constants without triggering a PHP 8
      * array-to-string conversion warning. Validates raw picture text before
-     * trim() can hide control characters. Likewise rejects raw control bytes
-     * in a configured media host instead of silently normalizing them.
+     * trim() can hide control characters. Rejects invalid UTF-8 and encoded
+     * URL schemes at each decoding layer and validates configured media hosts.
      *
      * @param string $picture Candidate URL or relative picture path.
      * @return string Validated image URL or an empty string if unsafe.
      */
     public static function url(string $picture): string
     {
-        // Reject raw control bytes before trimming can erase trailing NUL,
-        // newline or tab characters from imported image paths.
-        if (preg_match('/[\\x00-\\x1F\\x7F]/', $picture) === 1) {
+        // This public method is also called without safeCandidate().
+        // Validate the original input before trim() can hide bad bytes.
+        if (strlen($picture) > 4096
+            || preg_match('//u', $picture) !== 1
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $picture) === 1) {
             return '';
         }
 
@@ -155,6 +157,8 @@ final class PersonImageHelper
         for ($depth = 0; $depth < 8; $depth++) {
             if (preg_match('~(?:^|/)\.{1,2}(?:/|$)~', $decoded)
                 || preg_match('/[\x00-\x1F\x7F]/', $decoded)
+                || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
+                || str_starts_with($decoded, '//')
                 || str_contains($decoded, chr(92))
                 || str_contains($decoded, '?')
                 || str_contains($decoded, '#')) {
@@ -175,7 +179,9 @@ final class PersonImageHelper
         if (preg_match('/%[0-9a-f]{2}/i', $decoded) === 1
             || preg_match('~(?:^|/)\\.{1,2}(?:/|$)~', $decoded)
             || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
-            || str_contains($decoded, chr(92))
+            || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
+                || str_starts_with($decoded, '//')
+                || str_contains($decoded, chr(92))
             || str_contains($decoded, '?') || str_contains($decoded, '#')) {
             return '';
         }
@@ -186,6 +192,8 @@ final class PersonImageHelper
         // A malformed constant may contain nested data on old installations.
         // Never cast arrays or objects into an image host in PHP 8.
         $base = is_string($configuredBase)
+            && strlen($configuredBase) <= 4096
+            && preg_match('//u', $configuredBase) === 1
             && preg_match('/[\\x00-\\x1F\\x7F]/', $configuredBase) !== 1
                 ? trim($configuredBase)
                 : Uri::root();
