@@ -84,7 +84,14 @@ class SportsManagementLegacyPhp5XmlParser
 	}
 
 	/**
-	 * Initiates and runs PHP's XML parser
+	 * Parse the configured XML string into the legacy XMLTag object tree.
+	 *
+	 * Allocates a native Expat parser, registers the object callbacks and
+	 * fills the document property with the nested tag structure. The
+	 * legacy element helper retains dynamic child properties for templates
+	 * that access XML tags by name.
+	 *
+	 * @return void Populates the document object and parser state.
 	 */
 	public function Parse()
 	{
@@ -223,6 +230,9 @@ class SportsManagementLegacyPhp5XmlParser
  * @copyright Copyright (c) 2005-2007, Adam A. Flynn
  * @version   1.3.0
  */
+// Legacy parser exposes child tags as dynamically named properties.
+// Explicitly permit them under PHP 8.2+ instead of emitting deprecations.
+#[\AllowDynamicProperties]
 class XMLTag
 {
 	/**
