@@ -171,13 +171,6 @@ class parseCSV
 
 
 	/**
-	 * Constructor
-	 *
-	 * @param   input   CSV file or string
-	 *
-	 * @return nothing
-	 */
-	/**
 	 * Initialise the legacy CSV parser using PHP 8's standard constructor.
 	 *
 	 * Delegates to the original parseCSV() initialiser to preserve option
@@ -195,6 +188,20 @@ class parseCSV
 		$this->parseCSV($input, $offset, $limit, $conditions);
 	}
 
+	/**
+	 * Retain the original PHP 4-style CSV parser initialisation method.
+	 *
+	 * Applies optional row offsets, limits and array-based conditions and
+	 * parses a supplied CSV input immediately. Existing code may still call
+	 * this method explicitly; the standard __construct() delegates here on
+	 * Joomla 5/6 and PHP 8 to preserve legacy import behaviour.
+	 *
+	 * @param mixed $input Optional CSV file path or raw CSV text.
+	 * @param mixed $offset Optional number of rows to skip.
+	 * @param mixed $limit Optional maximum number of returned rows.
+	 * @param mixed $conditions Optional array of row filtering criteria.
+	 * @return void Updates parser configuration and any parsed data.
+	 */
 	function parseCSV($input = null, $offset = null, $limit = null, $conditions = null)
 	{
 		if ($offset !== null)
