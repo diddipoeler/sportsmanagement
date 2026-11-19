@@ -45,6 +45,7 @@ jobs:
             site/legacy/resultsround.php \
             admin/src/Model/QuickaddModel.php \
             admin/src/Model/JlxmlimportModel.php \
+            admin/src/Model/JoomleagueimportsModel.php \
             admin/src/Service/IndividualMatchWriteService.php \
             admin/src/View/Statistics/HtmlView.php \
             modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php
@@ -70,6 +71,7 @@ jobs:
             admin/helpers/parser_php5.php
             admin/helpers/SofeeXmlParser.php
             admin/src/Model/JlxmlimportModel.php
+            admin/src/Model/JoomleagueimportsModel.php
             modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
           )
           tests=(
