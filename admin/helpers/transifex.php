@@ -257,6 +257,12 @@ class sportsmanagementHelperTransifex
      */
     public static function getLangCode($lang, $inverse = false, $joomla = true)
     {
+        // Arrays, objects and unreasonably long locale names must not
+        // become invalid array keys or trigger PHP 8 type warnings.
+        if (!is_string($lang) || strlen($lang) > 32) {
+            return false;
+        }
+
         $languages = self::getLangmap($joomla);
 
         if ($inverse)
