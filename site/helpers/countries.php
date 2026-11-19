@@ -37,11 +37,21 @@ if ((int) ini_get('max_execution_time') < $maxImportTime) {
 
 class JSMCountries
 {
+    /**
+     * Resolve the configured SportsManagement country database through Joomla's database service.
+     * Uses the component database resolver so country lookups respect the selected connection.
+     * @return DatabaseInterface Effective connection for country queries.
+     */
     private static function database(): DatabaseInterface
     {
         return SportsManagementDatabaseResolver::resolve(self::joomlaDatabase());
     }
 
+    /**
+     * Obtain Joomla's managed database service and verify its type.
+     * Raises a runtime error rather than using a deprecated Joomla factory fallback.
+     * @return DatabaseInterface The active Joomla database service.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         $database = Factory::getContainer()->get(DatabaseInterface::class);
@@ -53,10 +63,21 @@ class JSMCountries
         return $database;
     }
 
+    /**
+     * Preserve the historical country-list entry point for legacy callers.
+     * This compatibility placeholder does not currently query or return country records.
+     * @return void No value is currently returned.
+     */
     public static function getCountries()
     {
     }
 
+    /**
+     * Load a country record by its three-letter ISO code.
+     * Uses a bound database parameter to avoid interpolating caller input into SQL.
+     * @param string $countrycode Three-letter ISO country code.
+     * @return object|null Matching country record, if available.
+     */
     public static function getCountry($countrycode = '')
     {
         $db = self::database();
@@ -70,6 +91,14 @@ class JSMCountries
         return $db->loadObject();
     }
 
+    /**
+     * Build translated select-list options for available countries.
+     * Loads ISO codes and country names, maps them to Joomla HTML options, and sorts by label.
+     * @param string $value_tag Option value property name.
+     * @param string $text_tag Option label property name.
+     * @param int $useflag Historical flag-display option (currently unused).
+     * @return array Country selection option objects sorted by translated name.
+     */
     public static function getCountryOptions($value_tag = 'value', $text_tag = 'text', $useflag = 0)
     {
         $db = self::database();
@@ -93,6 +122,13 @@ class JSMCountries
         return self::sortCountryArray($options, 'text');
     }
 
+    /**
+     * Sort a list of country option objects by a selected property.
+     * Uses natural case-insensitive ordering while preserving complete option objects.
+     * @param array $array Country option objects to order.
+     * @param string $index Property containing the text used for sorting.
+     * @return array Reordered option objects.
+     */
     public static function sortCountryArray($array, $index)
     {
         $sort = [];
@@ -111,6 +147,12 @@ class JSMCountries
         return $result;
     }
 
+    /**
+     * Look up a three-letter ISO country code from a two-letter code.
+     * Reads the countries table with a bound input value and returns null for missing entries.
+     * @param string $iso_code_2 Two-letter ISO code.
+     * @return string|null Three-letter ISO code if found.
+     */
     public static function convertIso2to3($iso_code_2)
     {
         $db = self::database();
@@ -125,6 +167,12 @@ class JSMCountries
         return $result ?: null;
     }
 
+    /**
+     * Return the translated first segment of a country's display name.
+     * Looks up the ISO-3 country name and removes text after the first comma.
+     * @param string $iso3 Three-letter ISO country code.
+     * @return string|false Short country name or false if unknown.
+     */
     public static function getShortCountryName($iso3)
     {
         $full = self::getCountryName($iso3);
@@ -137,6 +185,12 @@ class JSMCountries
         return Text::_($parts[0]);
     }
 
+    /**
+     * Resolve the SportsManagement ISO-3 country code for a FIFA code.
+     * Queries the configured country database using a bound FIFA identifier.
+     * @param string $fifa FIFA country code.
+     * @return string|null ISO-3 country code when present.
+     */
     public static function getCountryalpha3fifa($fifa = '')
     {
         $db = self::database();
@@ -151,6 +205,12 @@ class JSMCountries
         return $result ?: null;
     }
 
+    /**
+     * Load and translate a country's name using its ISO-3 code.
+     * Returns null for unknown countries and uses the Joomla translation service for labels.
+     * @param string $iso3 Three-letter ISO country code.
+     * @return string|null Translated country name, if found.
+     */
     public static function getCountryName($iso3)
     {
         $db = self::database();
@@ -165,6 +225,18 @@ class JSMCountries
         return $result ? Text::_($result) : null;
     }
 
+    /**
+     * Render legacy structured address markup from a translated template.
+     * Substitutes club, street, region, postal code, locality, country and flag placeholders.
+     * @param string $name Club name.
+     * @param string $address Street address.
+     * @param string $state Region or state.
+     * @param string $zipcode Postal code.
+     * @param string $location Town or locality.
+     * @param string $country ISO-3 country code.
+     * @param string $addressString Joomla language key for the address template.
+     * @return string Generated legacy address HTML.
+     */
     public static function convertAddressString(
         $name = '',
         $address = '',
@@ -195,6 +267,15 @@ class JSMCountries
         return $resultString;
     }
 
+    /**
+     * Create a country flag representation or return a stored picture path.
+     * Resolves ISO-2 icons, database image fallbacks and CSS flag classes according to component settings.
+     * @param string $countrycode ISO-3 country code.
+     * @param string $attributes Legacy additional image HTML attributes.
+     * @param bool $picture Return the stored country image instead of HTML.
+     * @param bool $flag_map Return the map image path instead of HTML.
+     * @return string|null Country flag HTML or selected image path.
+     */
     public static function getCountryFlag($countrycode, $attributes = '', $picture = false, $flag_map = false)
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
@@ -256,6 +337,12 @@ class JSMCountries
         return '<span class="fi fi-' . strtolower($flagCode) . '"></span>';
     }
 
+    /**
+     * Build the local flag image path for a three-letter ISO code.
+     * Resolves the corresponding ISO-2 code first, returning null for unknown countries.
+     * @param string $iso_code_3 Three-letter ISO country code.
+     * @return string|null Local flag image path when available.
+     */
     public static function getIso3Flag($iso_code_3)
     {
         $iso2 = self::convertIso3to2($iso_code_3);
@@ -265,6 +352,12 @@ class JSMCountries
             : null;
     }
 
+    /**
+     * Build the conventional country flag image path from a two-letter ISO code.
+     * Returns null when the code is empty, avoiding a filename without a country identifier.
+     * @param string $iso_code_2 Two-letter ISO country code.
+     * @return string|null Relative flag path or null.
+     */
     public static function getIso2Flag($iso_code_2)
     {
         return $iso_code_2
@@ -272,6 +365,12 @@ class JSMCountries
             : null;
     }
 
+    /**
+     * Resolve the two-letter ISO code belonging to a three-letter country code.
+     * Uses a bound lookup on the configured countries table.
+     * @param string $iso_code_3 Three-letter ISO country code.
+     * @return string|null Two-letter ISO code if known.
+     */
     public static function convertIso3to2($iso_code_3)
     {
         $db = self::database();
@@ -286,6 +385,19 @@ class JSMCountries
         return $result ?: null;
     }
 
+    /**
+     * Remove placeholders for missing address fields from a legacy address string.
+     * Checks club and location values and delegates placeholder removal to checkAddressString.
+     * @param string $name Club name.
+     * @param string $address Street address or template under construction.
+     * @param string $state Region.
+     * @param string $zipcode Postal code.
+     * @param string $location Locality.
+     * @param string $flag Flag markup.
+     * @param string $country Country name.
+     * @param string $addressString Legacy address language key.
+     * @return string Address text after removing placeholders for absent values.
+     */
     public static function removeEmptyFields(
         $name = '',
         $address = '',
@@ -321,6 +433,14 @@ class JSMCountries
         return $address;
     }
 
+    /**
+     * Replace or remove one marker within a legacy address template.
+     * Retains the surrounding percent-delimited placeholder layout when clearing a value.
+     * @param string $find Placeholder to find.
+     * @param string $replace Replacement text; empty removes the marker segment.
+     * @param string $string Source template.
+     * @return string Updated address template.
+     */
     public static function checkAddressString($find, $replace, $string)
     {
         $pos = strpos($string, $find);
@@ -350,6 +470,11 @@ class JSMCountries
         return $string;
     }
 
+    /**
+     * Retain the historical constructor-shaped Countries method.
+     * This legacy no-op exists only for compatibility with older country helper calls.
+     * @return void This method does not perform any action.
+     */
     public function Countries()
     {
     }
