@@ -48,7 +48,9 @@ foreach (['../outside.png', '//untrusted.example/flag.png', 'javascript:alert(1)
             $encoded = str_replace('/', '%2F', rawurlencode($encoded));
         }
 
-        if ($url->invoke(null, 'images/' . $encoded) !== '') {
+        $candidate = $unsafe === '../outside.png' ? 'images/' . $encoded : $encoded;
+
+        if ($url->invoke(null, $candidate) !== '') {
             throw new RuntimeException('Deeply encoded first-league image path was accepted.');
         }
     }
