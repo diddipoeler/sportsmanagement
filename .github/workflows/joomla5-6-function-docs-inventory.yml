@@ -8,6 +8,11 @@ on:
       - 'admin/**/*.php'
       - 'modules/**/*.php'
       - '.github/tests/joomla56_function_docs_inventory.php'
+      - '.github/tests/joomla56-admin-xml-parser-stream.php'
+      - '.github/tests/joomla56-admin-parsecsv-constructor.php'
+      - '.github/tests/joomla56-pdf-lzw-truncated-stream.php'
+      - '.github/tests/joomla56-pdf-empty-stream-filters.php'
+      - '.github/tests/joomla56-firstleague-text-media-inputs.php'
       - '.github/workflows/joomla5-6-function-docs-inventory.yml'
   pull_request:
     branches: [joomla5-6, master]
@@ -46,6 +51,33 @@ jobs:
           php -l admin/src/Model/QuickaddModel.php
           php -l .github/tests/joomla56_results_quickadd_error_privacy.php
           php .github/tests/joomla56_results_quickadd_error_privacy.php
+
+      - name: Verify PHP 8 migration fixes for site admin and modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=(
+            site/helpers/scoresheet/FilterLZW.php
+            site/helpers/scoresheet/FilterFlate.php
+            site/helpers/scoresheet/FilterStandard.php
+            admin/helpers/parsecsv.lib.php
+            admin/helpers/XMLParser.class.php
+            modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
+          )
+          tests=(
+            .github/tests/joomla56-pdf-lzw-truncated-stream.php
+            .github/tests/joomla56-pdf-empty-stream-filters.php
+            .github/tests/joomla56-admin-parsecsv-constructor.php
+            .github/tests/joomla56-admin-xml-parser-stream.php
+            .github/tests/joomla56-firstleague-text-media-inputs.php
+          )
+          for file in "${files[@]}" "${tests[@]}"; do
+            php -l "$file"
+          done
+          php .github/scripts/check-php-file-headers.php
+          for test in "${tests[@]}"; do
+            php "$test"
+          done
 
       - name: Inventory first-party function docs (report-only until fully migrated)
         run: php .github/tests/joomla56_function_docs_inventory.php --json=joomla56-function-docs-inventory.json
