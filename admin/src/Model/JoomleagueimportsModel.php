@@ -226,7 +226,16 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return $this->legacy()->importjoomleaguenew($importstep, $sportsTypeId);
     }
 
-    /** Native equivalent of the historical import step 0. */
+    /**
+     * Prepare the external JoomLeague database for a staged import.
+     *
+     * Adds lookup indexes needed by subsequent conversion steps, adjusts
+     * legacy publication flags and emits per-table status messages while
+     * preserving the administrator's selected sports type.
+     *
+     * @param int $sportsTypeId Selected sport used by the import wizard.
+     * @return array<string,string> Step duration and preparation status.
+     */
     private function prepareJoomLeagueImport(int $sportsTypeId): array
     {
         $started = microtime(true);
@@ -279,8 +288,15 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
     }
 
     /**
-     * Native equivalents of historical steps 1-6 which populate project position
-     * relations in the source JoomLeague database before the table copy starts.
+     * Populate source project-position associations for migration steps one to six.
+     *
+     * Queries the relevant project referee, player and staff tables, resolves
+     * referenced positions and updates the foreign keys before copying source
+     * records into SportsManagement. Records per-table errors as status output.
+     *
+     * @param int $step Current historical preparation step (one through six).
+     * @param int $sportsTypeId Selected sports type to retain in input state.
+     * @return array<string,string> Timing and status feedback for this step.
      */
     private function prepareJoomLeaguePositionRelations(int $step, int $sportsTypeId): array
     {
@@ -410,7 +426,15 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return $this->finishNativeStep($step, $sportsTypeId, $started, $message, $resultKey);
     }
 
-    /** Native equivalent of historical step 7. */
+    /**
+     * Replace missing event times in the JoomLeague source database.
+     *
+     * Updates empty event_time values to a legacy-compatible nonempty
+     * representation and reports the result without blocking later steps.
+     *
+     * @param int $sportsTypeId Selected sports type for continued import.
+     * @return array<string,string> Migration time and table update status.
+     */
     private function repairJoomLeagueEventTimes(int $sportsTypeId): array
     {
         $started = microtime(true);
@@ -444,7 +468,16 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         return $this->finishNativeStep(7, $sportsTypeId, $started, $message, 'Tabellenkopie:');
     }
 
-    /** Historical steps 8 and 9 intentionally performed no data changes. */
+    /**
+     * Advance compatibility-only stages eight and nine without data changes.
+     *
+     * These historical stages are retained to keep old import interfaces
+     * synchronised with the next expected step in Joomla input state.
+     *
+     * @param int $step Requested compatibility step (eight or nine).
+     * @param int $sportsTypeId Selected sport preserved by the importer.
+     * @return array<string,string> Timing and next-step status payload.
+     */
     private function advanceJoomLeaguePreparationStep(int $step, int $sportsTypeId): array
     {
         return $this->finishNativeStep($step, $sportsTypeId, microtime(true), '', 'Tabellenkopie:');
@@ -511,7 +544,18 @@ final class JoomleagueimportsModel extends BaseDatabaseModel
         ];
     }
 
-    /** @return array{success:bool,message:string} */
+    /**
+     * Ensure an index exists on a JoomLeague source table column.
+     *
+     * Examines driver-reported table keys when available, creates a missing
+     * index with quoted identifiers and converts database failures into a
+     * structured success flag and display message.
+     *
+     * @param DatabaseInterface $database JoomLeague source connection.
+     * @param string $table Fully prefixed source table name.
+     * @param string $column Column which requires an index.
+     * @return array{success:bool,message:string} Index creation result.
+     */
     private function ensureIndex(DatabaseInterface $database, string $table, string $column): array
     {
         try {
