@@ -39,10 +39,22 @@ if (!class_exists('FilterASCII85', false)) {
 
     class FilterASCII85 {
         
+        /**
+         * Stop PDF stream processing when an ASCII85 filter error occurs.
+         * Preserves the upstream decoder's historical terminal error handling rather than continuing with malformed PDF data.
+         * @param string $msg Diagnostic message for the invalid PDF stream.
+         * @return never Terminates the current PHP request.
+         */
         function error($msg) {
             die($msg);
         }
         
+        /**
+         * Decode ASCII85-encoded PDF stream contents into raw bytes.
+         * Skips whitespace, expands zero groups, processes five-character blocks and handles the final short group.
+         * @param string $in ASCII85 input data from the PDF stream.
+         * @return string Decoded binary data when the input is valid.
+         */
         function decode($in) {
             $out = '';
             $state = 0;
@@ -103,6 +115,12 @@ if (!class_exists('FilterASCII85', false)) {
             return $out;
         }
         
+        /**
+         * Report that this bundled PDF filter does not support ASCII85 encoding.
+         * Calls the filter error method instead of producing a misleading empty or partial PDF stream.
+         * @param string $in Binary input that would need encoding.
+         * @return never Encoding is not implemented and stops execution.
+         */
         function encode($in) {
             return $this->error("ASCII85 encoding not implemented.");
         }
