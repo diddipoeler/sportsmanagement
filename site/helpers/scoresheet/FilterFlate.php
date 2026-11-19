@@ -14,8 +14,8 @@
 //  NOTE: requires ZLIB >= 1.0.9!
 //
 
-$__tmp = version_compare(phpversion(), "5") == -1 ? array('FilterFlateDecode') : array('FilterFlateDecode', false);
-if (!call_user_func_array('class_exists', $__tmp))
+// Preserve the legacy alias check while avoiding obsolete PHP 4/5 branches.
+if (!class_exists('FilterFlateDecode', false) && !class_exists('FilterFlate', false))
 {
 
 
@@ -39,11 +39,14 @@ if (!call_user_func_array('class_exists', $__tmp))
 		}
 
 		/**
-		 * Method to decode GZIP compressed data.
+		 * Decompress a zlib/Flate-encoded PDF stream.
 		 *
-		 * @param   string data    The compressed data.
+		 * Delegates to gzuncompress(), treating only the boolean false result
+		 * as an error; valid compressed empty streams must decode to an empty
+		 * string rather than triggering a fatal PDF error on PHP 8.
 		 *
-		 * @return uncompressed data
+		 * @param string $data Binary Flate-compressed stream data.
+		 * @return string Decompressed bytes, including a valid empty string.
 		 */
 		function decode($data)
 		{
