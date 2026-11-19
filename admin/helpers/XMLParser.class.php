@@ -83,19 +83,19 @@ class SportsManagementLegacyXmlParser
 	 *
 	 * @param string $path Local path or PHP-supported XML input stream.
 	 * @return array Parsed XML element tree in the original legacy layout.
-	 * @throws \\InvalidArgumentException When the input path is invalid.
-	 * @throws \\RuntimeException When reading or parsing XML fails.
+	 * @throws \InvalidArgumentException When the input path is invalid.
+	 * @throws \RuntimeException When reading or parsing XML fails.
 	 */
 	function parse($path)
 	{
 		if (!is_string($path) || $path === '') {
-			throw new \\InvalidArgumentException('A valid XML input path is required.');
+			throw new \InvalidArgumentException('A valid XML input path is required.');
 		}
 
 		$handle = @fopen($path, 'rb');
 
 		if ($handle === false) {
-			throw new \\RuntimeException('Cannot open the XML data source.');
+			throw new \RuntimeException('Cannot open the XML data source.');
 		}
 
 		$this->output = array();
@@ -111,19 +111,19 @@ class SportsManagementLegacyXmlParser
 				$data = fread($handle, 4096);
 
 				if ($data === false) {
-					throw new \\RuntimeException('Failed to read the XML data source.');
+					throw new \RuntimeException('Failed to read the XML data source.');
 				}
 
 				if ($data === '') {
 					if (!feof($handle)) {
-						throw new \\RuntimeException('XML input stream made no progress.');
+						throw new \RuntimeException('XML input stream made no progress.');
 					}
 
 					break;
 				}
 
 				if (!xml_parse($parser, $data, false)) {
-					throw new \\RuntimeException(
+					throw new \RuntimeException(
 						'XML parse error: ' . xml_error_string(xml_get_error_code($parser))
 						. ' at line ' . xml_get_current_line_number($parser)
 					);
@@ -133,7 +133,7 @@ class SportsManagementLegacyXmlParser
 			// A separate final call is necessary when the last fread() returned
 			// exactly 4096 bytes and feof() was not yet set by the driver.
 			if (!xml_parse($parser, '', true)) {
-				throw new \\RuntimeException(
+				throw new \RuntimeException(
 					'XML parse error: ' . xml_error_string(xml_get_error_code($parser))
 					. ' at line ' . xml_get_current_line_number($parser)
 				);
