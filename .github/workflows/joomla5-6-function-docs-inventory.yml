@@ -9,6 +9,7 @@ on:
       - 'modules/**/*.php'
       - '.github/tests/joomla56_function_docs_inventory.php'
       - '.github/tests/joomla56-admin-xml-parser-stream.php'
+      - '.github/tests/joomla56-admin-sofee-xml-parser.php'
       - '.github/tests/joomla56-admin-parsecsv-constructor.php'
       - '.github/tests/joomla56-pdf-lzw-truncated-stream.php'
       - '.github/tests/joomla56-pdf-empty-stream-filters.php'
@@ -42,6 +43,7 @@ jobs:
             site/legacy/resultsmatch.php \
             site/legacy/resultsround.php \
             admin/src/Model/QuickaddModel.php \
+            admin/src/Model/JlxmlimportModel.php \
             admin/src/Service/IndividualMatchWriteService.php \
             admin/src/View/Statistics/HtmlView.php \
             modules/mod_sportsmanagement_google_calendar/media/fullcalendar/demos/php/utils.php
@@ -64,6 +66,8 @@ jobs:
             admin/helpers/parsecsv.lib.php
             admin/helpers/XMLParser.class.php
             admin/helpers/parser_php5.php
+            admin/helpers/SofeeXmlParser.php
+            admin/src/Model/JlxmlimportModel.php
             modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
           )
           tests=(
@@ -71,6 +75,7 @@ jobs:
             .github/tests/joomla56-pdf-empty-stream-filters.php
             .github/tests/joomla56-admin-parsecsv-constructor.php
             .github/tests/joomla56-admin-xml-parser-stream.php
+            .github/tests/joomla56-admin-sofee-xml-parser.php
             .github/tests/joomla56-firstleague-text-media-inputs.php
           )
           for file in "${files[@]}" "${tests[@]}"; do
