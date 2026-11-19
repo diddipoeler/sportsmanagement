@@ -340,7 +340,8 @@ final class FirstLeagueOverviewHelper
      * Validate public country, federation and league labels from old rows.
      *
      * Only bounded strings are accepted. Null, nested values, control
-     * characters and overly long imported labels become empty text, never
+     * characters, invalid UTF-8 and overly long imported labels become
+     * empty text, never
      * an array-to-string PHP 8 warning or unsafe HTML attribute.
      *
      * @param mixed $value Untrusted row label or configured image path.
@@ -350,6 +351,7 @@ final class FirstLeagueOverviewHelper
     {
         return is_string($value) && strlen($value) <= 2048
             && preg_match('/[\x00-\x1F\x7F]/', $value) !== 1
+            && preg_match('//u', $value) === 1
             ? $value : '';
     }
 
@@ -398,7 +400,7 @@ final class FirstLeagueOverviewHelper
      * Construct a safe remote or site-relative media URL.
      *
      * Rejects unsupported schemes, embedded credentials, control bytes,
-     * encoded traversal segments and malformed paths before producing
+     * encoded traversal segments, raw control bytes and malformed paths before producing
      * a browser image URL relative to Joomla's frontend root.
      *
      * @param string $path Configured image path or full HTTP(S) URL.
@@ -406,6 +408,13 @@ final class FirstLeagueOverviewHelper
      */
     private static function mediaUrl(string $path): string
     {
+        // Validate before trimming so a newline or NUL cannot be hidden.
+        if (strlen($path) > 4096
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $path) === 1
+            || preg_match('//u', $path) !== 1) {
+            return '';
+        }
+
         $path = trim($path);
 
         if ($path === ''
