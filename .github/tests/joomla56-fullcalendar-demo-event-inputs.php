@@ -47,4 +47,9 @@ if ($largeTitle->title !== '') {
     throw new RuntimeException('Malformed FullCalendar title was not normalised.');
 }
 
+$invalidUtf8 = new Event(['title' => "\xC3\x28", 'start' => '2026-11-19']);
+if ($invalidUtf8->title !== '') {
+    throw new RuntimeException('Invalid UTF-8 FullCalendar title was not discarded.');
+}
+
 echo "Joomla 5/6 FullCalendar event input checks passed.\n";
