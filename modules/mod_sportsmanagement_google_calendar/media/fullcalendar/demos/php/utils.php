@@ -25,13 +25,30 @@ class Event
     /**
      * Initialise a FullCalendar event from a payload, including its title, date range and custom properties.
      * Infers all-day events from date-only start/end values unless an explicit flag is set, and parses timed events using the requested timezone.
+     * Rejects malformed date fields before PHP 8 can emit array-to-string
+     * warnings, and bounds event titles and date input lengths.
      * @param array $array Event properties including title, start and optional end/allDay.
      * @param \DateTimeZone|null $timezone Optional timezone for timed events.
      * @return void
      */
     public function __construct(array $array, ?\DateTimeZone $timezone = null)
     {
-        $this->title = (string) ($array['title'] ?? '');
+        // Reject malformed legacy/demo JSON fields before converting them to
+        // strings: PHP 8 warns on array-to-string conversion, and a malformed
+        // date could otherwise be accepted as an unintended relative date.
+        foreach (['start', 'end'] as $dateField) {
+            $value = $array[$dateField] ?? null;
+
+            if (($dateField === 'start' || array_key_exists($dateField, $array))
+                && (!is_string($value) || $value === '' || strlen($value) > 128
+                    || preg_match('/[\\x00-\\x1F\\x7F]/', $value) === 1)) {
+                throw new \\InvalidArgumentException('Invalid FullCalendar event date.');
+            }
+        }
+
+        $rawTitle = $array['title'] ?? '';
+        $this->title = is_string($rawTitle) && strlen($rawTitle) <= 8192
+            ? $rawTitle : '';
 
         if (array_key_exists('allDay', $array)) {
             $this->allDay = (bool) $array['allDay'];
