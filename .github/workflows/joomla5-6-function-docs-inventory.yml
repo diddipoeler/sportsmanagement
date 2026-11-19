@@ -10,6 +10,7 @@ on:
       - '.github/tests/joomla56_function_docs_inventory.php'
       - '.github/tests/joomla56-admin-xml-parser-stream.php'
       - '.github/tests/joomla56-admin-sofee-xml-parser.php'
+      - '.github/tests/joomla56-site-person-image-url.php'
       - '.github/tests/joomla56-admin-parsecsv-constructor.php'
       - '.github/tests/joomla56-pdf-lzw-truncated-stream.php'
       - '.github/tests/joomla56-pdf-empty-stream-filters.php'
@@ -63,6 +64,7 @@ jobs:
             site/helpers/scoresheet/FilterLZW.php
             site/helpers/scoresheet/FilterFlate.php
             site/helpers/scoresheet/FilterStandard.php
+            site/src/Helper/PersonImageHelper.php
             admin/helpers/parsecsv.lib.php
             admin/helpers/XMLParser.class.php
             admin/helpers/parser_php5.php
@@ -76,6 +78,7 @@ jobs:
             .github/tests/joomla56-admin-parsecsv-constructor.php
             .github/tests/joomla56-admin-xml-parser-stream.php
             .github/tests/joomla56-admin-sofee-xml-parser.php
+            .github/tests/joomla56-site-person-image-url.php
             .github/tests/joomla56-firstleague-text-media-inputs.php
           )
           for file in "${files[@]}" "${tests[@]}"; do
