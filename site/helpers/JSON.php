@@ -160,6 +160,15 @@ if (!defined('SERVICES_JSON_SLICE'))
 			$this->Services_JSON($use);
 		}
 
+		/**
+		 * Preserve explicit calls to the original JSON codec constructor.
+		 *
+		 * This PHP 4-era entry point remains available to legacy callers;
+		 * new instances are initialised through __construct() on PHP 8.
+		 *
+		 * @param int $use JSON decoder and error handling option bitmask.
+		 * @return void Updates the codec's active options.
+		 */
 		function Services_JSON($use = 0)
 		{
 			$this->use = $use;
@@ -937,6 +946,9 @@ if (!defined('SERVICES_JSON_SLICE'))
 		 */
 		class JSMServices_JSON_Error
 		{
+			/** @var string Human-readable reason JSON encoding failed. */
+			public string $message = '';
+
 			/**
 			 * Construct the bundled JSON error marker without PEAR installed.
 			 *
@@ -970,7 +982,7 @@ if (!defined('SERVICES_JSON_SLICE'))
 			                             $mode = null, $options = null, $userinfo = null
 			)
 			{
-
+				$this->__construct($message, $code, $mode, $options, $userinfo);
 			}
 		}
 
