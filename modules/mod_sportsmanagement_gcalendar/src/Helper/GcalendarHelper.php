@@ -87,10 +87,8 @@ final class GcalendarHelper
             'calendarConfig' => [
                 'feedUrl' => $feedUrl,
                 'weekStart' => self::boundedOption($params->get('weekstart', 0), 0, 6),
-                'titleFormat' => is_string($params->get('titleformat_month', 'M Y'))
-                    ? $params->get('titleformat_month', 'M Y') : 'M Y',
-                'timeFormat' => is_string($params->get('timeformat_month', 'g:i a'))
-                    ? $params->get('timeformat_month', 'g:i a') : 'g:i a',
+                'titleFormat' => self::safeFormat($params->get('titleformat_month', 'M Y'), 'M Y'),
+                'timeFormat' => self::safeFormat($params->get('timeformat_month', 'g:i a'), 'g:i a'),
                 'calendarHeight' => self::boundedOption($params->get('calendar_height', 0), 0, 4000),
                 'eventColor' => '#' . $color,
                 'compactMode' => $compact,
@@ -102,6 +100,31 @@ final class GcalendarHelper
                 'todayLabel' => Text::_('JTODAY'),
             ],
         ];
+    }
+
+    /**
+     * Accept a bounded Unicode calendar display format from module settings.
+     *
+     * Historical Joomla installations may contain non-string configuration,
+     * invalid UTF-8, control characters or excessively long format strings.
+     * Reject these values rather than passing malformed presentation options
+     * into the JavaScript calendar configuration; preserve valid custom formats.
+     *
+     * @param mixed $configured Raw title or time format module option.
+     * @param string $default Known-safe calendar format to use on invalid input.
+     * @return string Valid configured format or its default.
+     */
+    private static function safeFormat(mixed $configured, string $default): string
+    {
+        if (!is_string($configured)
+            || $configured === ''
+            || strlen($configured) > 128
+            || preg_match('/[\\x00-\\x1F\\x7F]/', $configured) === 1
+            || preg_match('//u', $configured) !== 1) {
+            return $default;
+        }
+
+        return $configured;
     }
 
     /**
