@@ -69,6 +69,18 @@ class TVarDumper
 		}
 	}
 
+	/**
+	 * Recursively append a readable representation of a nested PHP value.
+	 *
+	 * Formats primitive values, array keys and object properties, tracks
+	 * previously seen object references to prevent recursive object loops,
+	 * and truncates nested structures at the configured maximum depth.
+	 * The accumulated output is stored in the dumper's static buffer.
+	 *
+	 * @param mixed $var Current value or collection being rendered.
+	 * @param int $level Current recursion depth, starting at zero.
+	 * @return void Appends the formatted representation to the output buffer.
+	 */
 	private static function dumpInternal($var, $level)
 	{
 		switch (gettype($var))
