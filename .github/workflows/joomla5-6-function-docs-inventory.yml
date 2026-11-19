@@ -45,6 +45,8 @@ jobs:
             site/src/Helper/ResultsLegacyHtmlCompatibility.php \
             site/legacy/resultsmatch.php \
             site/legacy/resultsround.php \
+            site/helpers/JSON.php \
+            site/helpers/scoresheet/fpdm.php \
             admin/src/Model/QuickaddModel.php \
             admin/src/Model/JlxmlimportModel.php \
             admin/src/Model/JoomleagueimportsModel.php \
@@ -70,6 +72,7 @@ jobs:
             site/helpers/scoresheet/FilterStandard.php
             site/src/Helper/PersonImageHelper.php
             site/helpers/JSON.php
+            site/helpers/scoresheet/fpdm.php
             admin/helpers/transifex.php
             admin/helpers/parsecsv.lib.php
             admin/helpers/XMLParser.class.php
