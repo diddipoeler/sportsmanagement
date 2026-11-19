@@ -451,6 +451,7 @@ final class FirstLeagueOverviewHelper
                 || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
                 || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
                 || str_starts_with($decoded, '//')
+                || preg_match('//u', $decoded) !== 1
                 || str_contains($decoded, chr(92))
                 || str_contains($decoded, '?')
                 || str_contains($decoded, '#')) {
@@ -473,7 +474,8 @@ final class FirstLeagueOverviewHelper
             || preg_match('/[\\x00-\\x1F\\x7F]/', $decoded)
             || preg_match('~^[a-z][a-z0-9+.-]*:~i', $decoded)
             || str_starts_with($decoded, '//')
-            || str_contains($decoded, chr(92))
+            || preg_match('//u', $decoded) !== 1
+                || str_contains($decoded, chr(92))
             || str_contains($decoded, '?')
             || str_contains($decoded, '#')) {
             return '';
