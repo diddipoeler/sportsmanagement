@@ -49,7 +49,8 @@ if (!class_exists('modJSMSportsHelper', false)) {
          * statistics data and maps its count and sport-type fields back
          * onto the keys expected by older template overrides. Uses the
          * validated sport record ID rather than loosely casting untrusted
-         * module settings into compatibility array keys.
+         * module settings into compatibility array keys. Empty or malformed
+         * sport selectors return without opening Joomla's database service.
          *
          * @param Registry|array $params Legacy settings passed by reference.
          * @param DatabaseInterface|null $database Optional database override.
@@ -59,8 +60,15 @@ if (!class_exists('modJSMSportsHelper', false)) {
         public static function getData(&$params, ?DatabaseInterface $database = null): array
         {
             $registry = $params instanceof Registry ? $params : new Registry((array) $params);
-            $database = self::joomlaDatabase($database);
 
+            // An unset or invalid sport cannot produce records. Return the
+            // historical empty layout payload without resolving an optional
+            // external or container database service.
+            if (self::selectedSportId($registry->get('sportstypes', 0)) === 0) {
+                return ['sportstype' => [], 'projectscount' => 0];
+            }
+
+            $database = self::joomlaDatabase($database);
             $data = (new SportsTypeStatisticsHelper())->getData($registry, $database);
             $legacy = ['sportstype' => []];
 
@@ -107,6 +115,40 @@ if (!class_exists('modJSMSportsHelper', false)) {
             }
 
             return $legacy;
+        }
+
+        /**
+         * Parse the configured sport ID before opening a legacy database.
+         *
+         * Accepts complete positive decimal IDs from old module settings,
+         * including zero-padded strings, and rejects boolean flags, arrays,
+         * suffixes and numbers exceeding the PHP integer range.
+         *
+         * @param mixed $raw Legacy sport selection value.
+         * @return int Positive sport ID, or zero for missing/invalid input.
+         */
+        private static function selectedSportId(mixed $raw): int
+        {
+            if (is_int($raw)) {
+                return $raw > 0 ? $raw : 0;
+            }
+
+            if (!is_string($raw) || $raw === '' || strlen($raw) > 128
+                || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+                return 0;
+            }
+
+            $digits = ltrim($raw, '0');
+
+            if ($digits === '') {
+                return 0;
+            }
+
+            $id = filter_var($digits, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 1],
+            ]);
+
+            return $id === false ? 0 : $id;
         }
 
         /**
