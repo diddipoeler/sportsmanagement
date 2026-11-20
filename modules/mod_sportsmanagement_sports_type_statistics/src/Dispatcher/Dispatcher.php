@@ -1,5 +1,7 @@
 <?php
 /**
+ * Native Joomla 5/6 dispatcher for sport-type statistics.
+ *
  * @version    5.6.0
  * @author     diddipoeler
  * @copyright  Copyright (C) diddipoeler
@@ -75,15 +77,21 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
     /**
      * Obtain a valid Joomla database service for Sports Type Statistics queries.
      *
-     * Retrieves the registered DatabaseInterface from the service container
-     * and rejects a missing or incompatible instance before helper execution.
+     * Retrieves the registered DatabaseInterface from Joomla's service
+     * container. Converts container lookup failures into a clear module-level
+     * exception, retains their causes for debugging, and rejects incompatible
+     * services before any helper queries are executed.
      *
      * @return DatabaseInterface Database connection used by the module.
      * @throws \RuntimeException When the Joomla database service is unavailable.
      */
     private function joomlaDatabase(): DatabaseInterface
     {
-        $database = Factory::getContainer()->get(DatabaseInterface::class);
+        try {
+            $database = Factory::getContainer()->get(DatabaseInterface::class);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException('SportsManagement database service could not be resolved.', 500, $exception);
+        }
 
         if (!$database instanceof DatabaseInterface) {
             throw new \RuntimeException('SportsManagement database service is unavailable.', 500);
