@@ -11,6 +11,7 @@ on:
       - '.github/tests/joomla56-admin-xml-parser-stream.php'
       - '.github/tests/joomla56-admin-sofee-xml-parser.php'
       - '.github/tests/joomla56-admin-transifex-locale.php'
+      - '.github/tests/joomla56-admin-ajax-error-privacy.php'
       - '.github/tests/joomla56-site-legacy-json-compat.php'
       - '.github/tests/joomla56-site-person-image-url.php'
       - '.github/tests/joomla56-admin-parsecsv-constructor.php'
@@ -52,6 +53,7 @@ jobs:
             admin/src/Model/JlxmlimportModel.php \
             admin/src/Model/JoomleagueimportsModel.php \
             admin/src/Model/UpdatesModel.php \
+            admin/src/Model/AjaxModel.php \
             admin/helpers/transifex.php \
             admin/src/Service/IndividualMatchWriteService.php \
             admin/src/View/Statistics/HtmlView.php \
@@ -83,6 +85,7 @@ jobs:
             admin/src/Model/JlxmlimportModel.php
             admin/src/Model/JoomleagueimportsModel.php
             admin/src/Model/UpdatesModel.php
+            admin/src/Model/AjaxModel.php
             site/src/Model/SportsManagementPredictionModel.php
             modules/mod_sportsmanagement_firstleagueoverview/src/Helper/FirstLeagueOverviewHelper.php
           )
@@ -93,6 +96,7 @@ jobs:
             .github/tests/joomla56-admin-xml-parser-stream.php
             .github/tests/joomla56-admin-sofee-xml-parser.php
             .github/tests/joomla56-admin-transifex-locale.php
+            .github/tests/joomla56-admin-ajax-error-privacy.php
             .github/tests/joomla56-site-legacy-json-compat.php
             .github/tests/joomla56-site-person-image-url.php
             .github/tests/joomla56-firstleague-text-media-inputs.php
