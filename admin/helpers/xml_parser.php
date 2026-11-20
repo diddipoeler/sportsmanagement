@@ -7,8 +7,8 @@
  * @package    Sportsmanagement
  * @subpackage helpers
  * @file       xml_parser.php
- * @author
- * @copyright
+ * @author    Manuel Lemos (upstream XML parser); SportsManagement contributors
+ * @copyright Copyright (C) 1999-2012 Manuel Lemos; existing upstream notices preserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -32,6 +32,14 @@ define('XML_PARSER_VALIDATE_DATA_ERROR', 4);
 
 $xml_parser_handlers = array();
 
+/**
+ * Dispatch a new XML opening tag to the configured parser object.
+ * Resolves the active parser callback and updates the nested element structure.
+ * @param \XMLParser $parser Native Expat parser supplied by PHP.
+ * @param string $name Name of the opening XML tag.
+ * @param array $attrs Attributes of the opening tag.
+ * @return void Updates the legacy XML tree.
+ */
 Function xml_parser_start_element_handler($parser, $name, $attrs)
 {
 	global $xml_parser_handlers;
@@ -42,6 +50,13 @@ Function xml_parser_start_element_handler($parser, $name, $attrs)
 	}
 }
 
+/**
+ * Finish an XML element and restore its parent's path.
+ * Delegates the closing tag to the matching Expat parser handler.
+ * @param \XMLParser $parser Native parser instance.
+ * @param string $name Name of the closing tag.
+ * @return void Advances the tree cursor.
+ */
 Function xml_parser_end_element_handler($parser, $name)
 {
 	global $xml_parser_handlers;
@@ -52,6 +67,13 @@ Function xml_parser_end_element_handler($parser, $name)
 	}
 }
 
+/**
+ * Store character data for an XML element.
+ * Accumulates text for the currently open tag in the parser's element structure.
+ * @param \XMLParser $parser Native parser instance.
+ * @param string $data Text emitted by Expat.
+ * @return void Appends the element content.
+ */
 Function xml_parser_character_data_handler($parser, $data)
 {
 	global $xml_parser_handlers;
@@ -86,6 +108,14 @@ class xml_parser_handler_class
 
 	var $fail_on_non_simplified_xml = 0;
 
+	/**
+	 * Create the nested structure entry for an opening XML tag.
+	 * Normalises the tag and optional namespace information and rejects attributes when simplified XML disallows them.
+	 * @param xml_parser_class $object Parser state updated by reference.
+	 * @param string $name XML tag name.
+	 * @param array $attrs Attributes returned by Expat.
+	 * @return void Adds a new nested element.
+	 */
 	Function StartElement(&$object, $name, &$attrs)
 	{
 		if (strcmp($this->path, ""))
@@ -160,6 +190,14 @@ class xml_parser_handler_class
 		$this->SetElementData($object, $this->path, $data);
 	}
 
+	/**
+	 * Record an XML parsing or validation error on the active parser.
+	 * Stores the error number, message and current input location for the caller.
+	 * @param xml_parser_class $object Parser state or callback target.
+	 * @param int $error_number Legacy XML parser error category.
+	 * @param string $error Descriptive parsing failure.
+	 * @return void Updates public diagnostic fields.
+	 */
 	Function SetError(&$object, $error_number, $error)
 	{
 		$object->error_number     = $error_number;
@@ -169,6 +207,14 @@ class xml_parser_handler_class
 		$object->error_byte_index = xml_get_current_byte_index($object->xml_parser);
 	}
 
+	/**
+	 * Store an XML tag or content segment and optional source position.
+	 * Records line, column and byte offsets when position tracking is enabled.
+	 * @param xml_parser_class $object Active parser state.
+	 * @param string $path Comma-delimited nested element index.
+	 * @param mixed $data Element metadata or content segment.
+	 * @return void Stores element and optional position data.
+	 */
 	Function SetElementData(&$object, $path, &$data)
 	{
 		$object->structure[$path] = $data;
@@ -183,11 +229,25 @@ class xml_parser_handler_class
 		}
 	}
 
+	/**
+	 * Leave the current nested XML element.
+	 * Moves the element-path cursor to its parent when Expat closes a tag.
+	 * @param xml_parser_class $object Parser state retained by reference.
+	 * @param string $name Closing XML tag.
+	 * @return void Updates the current element path.
+	 */
 	Function EndElement(&$object, $name)
 	{
 		$this->path = (($position = strrpos($this->path, ",")) ? substr($this->path, 0, $position) : "");
 	}
 
+	/**
+	 * Append parsed XML character data to the current element.
+	 * Concatenates consecutive text nodes or stores a new string segment in the element hierarchy.
+	 * @param xml_parser_class $object Parser structure to modify.
+	 * @param string $data Decoded XML text.
+	 * @return void Updates the current element data.
+	 */
 	Function CharacterData(&$object, $data)
 	{
 		$element  = $object->structure[$this->path]["Elements"];
@@ -566,6 +626,14 @@ class xml_parser_class
 
 	// Private functions
 
+	/**
+	 * Dispatch a new XML opening tag to the configured parser object.
+	 * Resolves the active parser callback and updates the nested element structure.
+	 * @param \XMLParser $parser Native Expat parser supplied by PHP.
+	 * @param string $name Name of the opening XML tag.
+	 * @param array $attrs Attributes of the opening tag.
+	 * @return void Updates the legacy XML tree.
+	 */
 	Function xml_parser_start_element_handler($parser, $name, $attrs)
 	{
 		if (!strcmp($this->error, ""))
@@ -574,6 +642,13 @@ class xml_parser_class
 		}
 	}
 
+	/**
+	 * Finish an XML element and restore its parent's path.
+	 * Delegates the closing tag to the matching Expat parser handler.
+	 * @param \XMLParser $parser Native parser instance.
+	 * @param string $name Name of the closing tag.
+	 * @return void Advances the tree cursor.
+	 */
 	Function xml_parser_end_element_handler($parser, $name)
 	{
 		if (!strcmp($this->error, ""))
@@ -582,6 +657,13 @@ class xml_parser_class
 		}
 	}
 
+	/**
+	 * Store character data for an XML element.
+	 * Accumulates text for the currently open tag in the parser's element structure.
+	 * @param \XMLParser $parser Native parser instance.
+	 * @param string $data Text emitted by Expat.
+	 * @return void Appends the element content.
+	 */
 	Function xml_parser_character_data_handler($parser, $data)
 	{
 		if (!strcmp($this->error, ""))
@@ -590,6 +672,12 @@ class xml_parser_class
 		}
 	}
 
+	/**
+	 * Read and parse an XML document from a local file path.
+	 * Opens the requested XML file, processes it in bounded chunks and closes the file before returning status.
+	 * @param string $file XML input file path.
+	 * @return string Empty string on success, otherwise an error message.
+	 */
 	Function ParseFile($file)
 	{
 		if (!($definition = @fopen($file, "r")))
@@ -603,6 +691,12 @@ class xml_parser_class
 		return ($error);
 	}
 
+	/**
+	 * Process an already open XML input stream to completion.
+	 * Reads from the stream in configured buffer sizes, forwarding chunks to the incremental parser.
+	 * @param resource $stream Open XML stream handle.
+	 * @return string Empty string on success or parser error text.
+	 */
 	Function ParseStream($stream)
 	{
 		if (strcmp($this->error, ""))
@@ -630,6 +724,14 @@ class xml_parser_class
 		return ($this->error);
 	}
 
+	/**
+	 * Record an XML parsing or validation error on the active parser.
+	 * Stores the error number, message and current input location for the caller.
+	 * @param xml_parser_class $object Parser state or callback target.
+	 * @param int $error_number Legacy XML parser error category.
+	 * @param string $error Descriptive parsing failure.
+	 * @return void Updates public diagnostic fields.
+	 */
 	Function SetError($error_number, $error)
 	{
 		$this->error_number = $error_number;
@@ -650,6 +752,16 @@ class xml_parser_class
 		$this->SetErrorPosition($error_number, $error, $line, $column, $byte_index);
 	}
 
+	/**
+	 * Record a failure and its explicit XML source coordinates.
+	 * Stores the public error code, description, line, column and byte offset.
+	 * @param int $error_number Error category.
+	 * @param string $error Human-readable error description.
+	 * @param int $line Line where the failure occurred.
+	 * @param int $column Column of the failure.
+	 * @param int $byte_index Byte index of the failure.
+	 * @return string Recorded error message.
+	 */
 	Function SetErrorPosition($error_number, $error, $line, $column, $byte_index)
 	{
 		$this->error_number     = $error_number;
@@ -1156,6 +1268,16 @@ class xml_parser_class
 		return '';
 	}
 
+	/**
+	 * Validate one extracted XML data value against the configured type.
+	 * Handles textual and numeric constraints and returns validation failures through the legacy diagnostic helper.
+	 * @param mixed $value Raw XML value to validate.
+	 * @param string $type Expected XML schema value type.
+	 * @param string $path XML element path for diagnostics.
+	 * @param array $parameters Length and range constraints.
+	 * @param mixed $v Receives the converted value by reference.
+	 * @return string Empty success status or a validation error message.
+	 */
 	Function ValidateTypedValue($value, $type, $path, $parameters, &$v)
 	{
 		switch ($type)
@@ -1646,7 +1768,7 @@ Function XMLParseFile(&$parser, $file, $store_positions, $cache = "", $case_fold
 
 				if (!strcmp($error, ""))
 				{
-					if (GetType($parser = unserialize($cache_contents)) == "object"
+					if (GetType($parser = @unserialize($cache_contents, ['allowed_classes' => [xml_parser_class::class]])) == "object"
 						&& IsSet($parser->structure)
 					)
 					{
