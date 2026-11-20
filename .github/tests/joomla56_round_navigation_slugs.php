@@ -124,6 +124,22 @@ namespace {
         }
     }
 
+    // Older callers pass selectors through untyped navigation parameters.
+    // Invalid or partially numeric selectors must never select another DB.
+    $databaseSelector = new \ReflectionMethod($helper, 'databaseSelector');
+    foreach ([
+        [0, 0], [1, 1], ['0', 0], ['1', 1],
+        ['0000', 0], ['00001', 1],
+        [false, null], [true, null], [[], null], [['1'], null],
+        [-1, null], [2, null], [0.0, null], ['2', null],
+        ['-1', null], ['1junk', null], [' 1', null],
+        ['', null], [str_repeat('0', 65), null],
+    ] as [$raw, $expected]) {
+        if ($databaseSelector->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Invalid matchday database selection accepted.');
+        }
+    }
+
     $input = new class {
         public int $currentRound = 2;
 
@@ -171,6 +187,17 @@ namespace {
         throw new \RuntimeException('Second round navigation lost the previous round link.');
     }
     $input->currentRound = 2;
+
+    foreach (['1junk', ['1'], true, 2, -1, ' 0'] as $invalid) {
+        if ($helper::pagenav($project, $invalid) !== ''
+            || $helper::$prevlink !== '' || $helper::$nextlink !== '') {
+            throw new \RuntimeException('Invalid database selector generated round links.');
+        }
+    }
+
+    if ($helper::selectNavigation($project, 2) !== '') {
+        throw new \RuntimeException('Dropdown accepted unsupported database selector.');
+    }
 
     if ($helper::pagenav((object) ['id' => 0]) !== ''
         || $helper::$prevlink !== '' || $helper::$nextlink !== '') {
