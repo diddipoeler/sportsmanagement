@@ -24,6 +24,8 @@ namespace Joomla\CMS\Language {
 namespace Joomla\CMS\HTML {
     final class HTMLHelper
     {
+        public static array $optionLabels = [];
+
         public static function link(string $url, string $label): string
         {
             return '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '">' . $label . '</a>';
@@ -32,6 +34,8 @@ namespace Joomla\CMS\HTML {
         public static function _(string $action, mixed ...$args): mixed
         {
             if ($action === 'select.option') {
+                self::$optionLabels[] = $args[1];
+
                 return (object) ['value' => $args[0], 'text' => $args[1]];
             }
 
@@ -255,6 +259,23 @@ namespace {
         || !str_contains($select, 'r=7%3Afinal')
         || str_contains($select, '8invalid')) {
         throw new \RuntimeException('Results dropdown accepted malformed round IDs.');
+    }
+
+    // Old imported rounds can carry non-string labels or control characters.
+    // Joomla must receive safe fallback strings rather than PHP array casts.
+    $model::$options = [
+        (object) ['value' => '2:opening', 'text' => ['untrusted']],
+        (object) ['value' => '7:final', 'text' => "Label\nInjected"],
+        (object) ['value' => '9:semifinal', 'text' => str_repeat('x', 257)],
+        (object) ['value' => '10:regular', 'text' => 'Regular round'],
+    ];
+    \Joomla\CMS\HTML\HTMLHelper::$optionLabels = [];
+
+    $helper::selectNavigation($project);
+    if (\Joomla\CMS\HTML\HTMLHelper::$optionLabels !== [
+        '2:opening', '7:final', '9:semifinal', 'Regular round',
+    ]) {
+        throw new \RuntimeException('Malformed round option labels were not normalised.');
     }
 
     $model::$options = [(object) ['value' => '7<script>', 'text' => 'Bad']];
