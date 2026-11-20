@@ -165,5 +165,45 @@ namespace {
         }
     }
 
+    // GitHub's successful JSON response must not inject unrelated or
+    // malformed URLs into administrator success notifications.
+    $safeUrl = new \ReflectionMethod($model, 'safeIssueUrl');
+    $issueCases = [
+        ['https://github.com/diddipoeler/sportsmanagement/issues/123', true],
+        ['https://GITHUB.COM/diddipoeler/sportsmanagement/issues/1', true],
+        ['http://github.com/diddipoeler/sportsmanagement/issues/123', false],
+        ['https://github.com.evil.test/diddipoeler/sportsmanagement/issues/123', false],
+        ['https://evil.test/diddipoeler/sportsmanagement/issues/123', false],
+        ['https://github.com/other/sportsmanagement/issues/123', false],
+        ['https://github.com/diddipoeler/other/issues/123', false],
+        ['https://github.com/diddipoeler/sportsmanagement/issues/0', false],
+        ['https://github.com/diddipoeler/sportsmanagement/issues/12?token=private', false],
+        ['https://github.com/diddipoeler/sportsmanagement/issues/12#fragment', false],
+        ['https://github.com/diddipoeler/sportsmanagement/issues/12' . "\n", false],
+        ['https://user:secret@github.com/diddipoeler/sportsmanagement/issues/123', false],
+        [['malformed'], false],
+        [null, false],
+    ];
+
+    foreach ($issueCases as [$candidate, $valid]) {
+        $result = $safeUrl->invoke($model, $candidate, 'diddipoeler', 'sportsmanagement');
+
+        if (($result !== '') !== $valid || ($valid && $result !== $candidate)) {
+            throw new \RuntimeException('Untrusted GitHub issue response URL was accepted.');
+        }
+    }
+
+    $repositoryPart = new \ReflectionMethod($model, 'isRepositoryPart');
+    foreach ([
+        ['sportsmanagement', true], ['org-name', true],
+        ['module.extension', true], ['bad/owner', false],
+        ['bad owner', false], ["bad\n", false], ['', false],
+        [str_repeat('a', 101), false],
+    ] as [$candidate, $expected]) {
+        if ($repositoryPart->invoke($model, $candidate) !== $expected) {
+            throw new \RuntimeException('GitHub repository coordinate was not validated.');
+        }
+    }
+
     echo "Administrator GitHub transport errors do not expose confidential data.\n";
 }
