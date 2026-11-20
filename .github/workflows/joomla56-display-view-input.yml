@@ -11,6 +11,8 @@ on:
       - 'site/src/Helper/RoundPaginationHelper.php'
       - 'admin/src/Controller/ProjectsController.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
+      - '.github/tests/joomla56_round_navigation_slugs.php'
+      - '.github/tests/joomla56_sports_type_statistics_scope.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - '.github/tests/joomla56_display_view_input_contract.php'
       - '.github/workflows/joomla56-display-view-input.yml'
@@ -23,6 +25,8 @@ on:
       - 'site/src/Helper/RoundPaginationHelper.php'
       - 'admin/src/Controller/ProjectsController.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
+      - '.github/tests/joomla56_round_navigation_slugs.php'
+      - '.github/tests/joomla56_sports_type_statistics_scope.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - '.github/tests/joomla56_display_view_input_contract.php'
   workflow_dispatch:
@@ -40,6 +44,8 @@ jobs:
           php -l site/src/Helper/RoundPaginationHelper.php
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
           php -l .github/tests/joomla56_admin_projects_action_feedback.php
+          php -l .github/tests/joomla56_round_navigation_slugs.php
+          php -l .github/tests/joomla56_sports_type_statistics_scope.php
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
           php -l .github/tests/joomla56_display_view_input_contract.php
@@ -56,3 +62,7 @@ jobs:
         run: php .github/tests/joomla56_display_view_input_contract.php
       - name: Verify protected administrator project actions
         run: php .github/tests/joomla56_admin_projects_action_feedback.php
+      - name: Verify navigation database input boundaries
+        run: php .github/tests/joomla56_round_navigation_slugs.php
+      - name: Verify scoped sport statistics and empty module state
+        run: php .github/tests/joomla56_sports_type_statistics_scope.php
