@@ -141,5 +141,29 @@ namespace {
         }
     }
 
+    // Server-side API responses can also echo private issue content or
+    // submitted credentials. Show the HTTP status, never the response body.
+    $report = new \ReflectionMethod($model, 'reportApiError');
+    $report->invoke(
+        $model,
+        422,
+        (object) ['message' => 'Bearer ghp_PRIVATE_API_TOKEN and issue body'],
+        'Bearer ghp_PRIVATE_API_TOKEN and issue body'
+    );
+
+    if (count(\Joomla\CMS\Log\Log::$entries) !== 2
+        || count($app->messages) !== 2) {
+        throw new \RuntimeException('GitHub API error was not reported.');
+    }
+
+    foreach ([\Joomla\CMS\Log\Log::$entries[1][0], $app->messages[1][0]] as $message) {
+        if (!str_contains($message, '422')
+            || str_contains($message, 'ghp_PRIVATE_API_TOKEN')
+            || str_contains($message, 'issue body')
+            || str_contains($message, 'Bearer')) {
+            throw new \RuntimeException('GitHub API response leaked private data.');
+        }
+    }
+
     echo "Administrator GitHub transport errors do not expose confidential data.\n";
 }
