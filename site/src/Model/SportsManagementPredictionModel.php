@@ -34,6 +34,13 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
     protected int $type = 0;
     protected int $page = 1;
 
+    /**
+     * Initialise the prediction model from the active Joomla site request.
+     * Delegates to Joomla's database model constructor, reads prediction game, member, project, round, group and display parameters from the current request, and sets the selected database context.
+     * @param array $config Joomla model configuration settings.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory instance.
+     * @return void Initialises the prediction request state.
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -75,76 +82,151 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         $this->setDatabaseSelector($this->databaseSelector);
     }
 
+    /**
+     * Return the prediction game currently selected by the frontend request.
+     * Exposes the positive or default identifier captured during model initialisation.
+     * @return int Requested prediction game ID, or zero when not selected.
+     */
     public function getPredictionGameId(): int
     {
         return $this->predictionGameId;
     }
 
+    /**
+     * Return the prediction member selected by the current request.
+     * Uses the identifier cached during construction rather than reparsing query parameters.
+     * @return int Selected prediction member ID.
+     */
     public function getPredictionMemberId(): int
     {
         return $this->predictionMemberId;
     }
 
+    /**
+     * Return the sports project selected for prediction statistics.
+     * Exposes the project identifier captured from the frontend request.
+     * @return int Current project ID, or zero when absent.
+     */
     public function getProjectId(): int
     {
         return $this->projectId;
     }
 
+    /**
+     * Return the active prediction round identifier.
+     * Provides the round selected by the current frontend request.
+     * @return int Active round ID.
+     */
     public function getRoundId(): int
     {
         return $this->roundId;
     }
 
+    /**
+     * Return the beginning of the requested prediction round interval.
+     * Uses the active round as a default when no separate start round is supplied.
+     * @return int Starting round ID for prediction summaries.
+     */
     public function getFromRoundId(): int
     {
         return $this->fromRoundId;
     }
 
+    /**
+     * Return the final round of the requested prediction interval.
+     * Exposes the upper round boundary captured from request parameters.
+     * @return int Ending round ID for prediction summaries.
+     */
     public function getToRoundId(): int
     {
         return $this->toRoundId;
     }
 
+    /**
+     * Return the selected prediction-member group identifier.
+     * Reads the group selection stored during prediction model initialisation.
+     * @return int Active prediction group ID.
+     */
     public function getGroupId(): int
     {
         return $this->groupId;
     }
 
+    /**
+     * Return the current prediction group ranking selection.
+     * Exposes the rank filtering or display value cached from the site request.
+     * @return int Selected group rank.
+     */
     public function getGroupRank(): int
     {
         return $this->groupRank;
     }
 
+    /**
+     * Return the Joomla user identifier resolved for the prediction request.
+     * Provides the cached account ID used when looking up the associated prediction membership.
+     * @return int Joomla user ID for the current prediction context.
+     */
     public function getJoomlaUserId(): int
     {
         return $this->joomlaUserId;
     }
 
+    /**
+     * Return the SportsManagement database selected for prediction operations.
+     * Keeps lookups in the database context established by the Joomla site request.
+     * @return int Selected SportsManagement database number.
+     */
     public function getDatabaseSelector(): int
     {
         return $this->databaseSelector;
     }
 
+    /**
+     * Check whether the prediction page is in new-member registration mode.
+     * Recognises the historical integer flag for requesting a new prediction membership.
+     * @return bool True when the request is flagged as a new membership.
+     */
     public function isNewMemberRequest(): bool
     {
         return $this->isNewMember === 1;
     }
 
+    /**
+     * Check whether the prediction entry has been marked as submitted.
+     * Interprets the legacy integer completion state stored in the model.
+     * @return bool True when the prediction entry is marked complete.
+     */
     public function isTippEntryDone(): bool
     {
         return $this->tippEntryDone === 1;
     }
 
+    /**
+     * Return the active prediction display or betting type.
+     * Exposes the legacy type parameter used by prediction templates and views.
+     * @return int Current prediction type selector.
+     */
     public function getPredictionType(): int
     {
         return $this->type;
     }
 
+    /**
+     * Return the requested prediction pagination page.
+     * Exposes the page value captured by the model from the Joomla request.
+     * @return int Current prediction page selection.
+     */
     public function getPage(): int
     {
         return $this->page;
     }
 
+    /**
+     * Load the active prediction game and its URL slug.
+     * Queries the prediction game table using a bound game identifier, returning null when no valid prediction game is selected.
+     * @return object|null Prediction game record including slug, or null.
+     */
     public function getPredictionGame(): ?object
     {
         if ($this->predictionGameId <= 0) {
@@ -165,6 +247,12 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Resolve the effective configuration for one prediction template.
+     * Loads the default template XML configuration and merges saved configuration for the selected prediction game, falling back to its master template when appropriate.
+     * @param string $template Template identifier used for saved settings.
+     * @return array<string,mixed> Effective prediction template configuration.
+     */
     public function getPredictionTemplateConfig(string $template): array
     {
         $defaults = $this->loadDefaultTemplateConfig($template);
@@ -206,6 +294,11 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return $values;
     }
 
+    /**
+     * Load the prediction membership record for the active game and account.
+     * Joins membership and Joomla user data, and supplies an empty member identity object when no prediction game or member record is available.
+     * @return object Member details or an empty member record with zero identifiers.
+     */
     public function getPredictionMember(): object
     {
         $empty = (object) ['id' => 0, 'pmID' => 0, 'user_id' => 0];
@@ -250,6 +343,11 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return $db->loadObject() ?: $empty;
     }
 
+    /**
+     * List sports projects associated with the selected prediction game.
+     * Queries joined prediction-project and project tables for the active prediction game and returns an empty collection when it is not selected.
+     * @return array<int,object> Configured prediction projects and project metadata.
+     */
     public function getPredictionProjects(): array
     {
         if ($this->predictionGameId <= 0) {
@@ -291,6 +389,12 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return $projects;
     }
 
+    /**
+     * Decide whether the current site user may administer a prediction member.
+     * Accepts the member's own account and applicable Joomla administrator group permissions, then checks the prediction game's configured administrators.
+     * @param int $memberUserId Optional Joomla user identifier of the member being edited.
+     * @return bool Whether the current account can administer the requested prediction context.
+     */
     public function isAllowedAdmin(int $memberUserId = 0): bool
     {
         $user = $this->siteApplication()->getIdentity();
@@ -327,6 +431,18 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return (bool) $db->loadResult();
     }
 
+    /**
+     * Calculate the points awarded by the configured prediction scoring rules.
+     * Supports basic match-tendency scoring or exact-result and goal-difference rules, applying separate configured point values when the prediction uses a joker.
+     * @param object $project Prediction project containing scoring configuration.
+     * @param int $home Home team's actual goals.
+     * @param int $away Away team's actual goals.
+     * @param int $tipp Predicted tendency or result category.
+     * @param int $tippHome Predicted home goals.
+     * @param int $tippAway Predicted away goals.
+     * @param bool $joker Whether the bonus scoring rules are enabled.
+     * @return int Points awarded for the submitted prediction.
+     */
     public function scoreRuleExample(object $project, int $home, int $away, int $tipp, int $tippHome, int $tippAway, bool $joker = false): int
     {
         if ((int) ($project->mode ?? 0) !== 0) {
@@ -361,6 +477,13 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return $pointsTip;
     }
 
+    /**
+     * Read a prediction template's persisted JSON or registry settings.
+     * Queries the prediction template table by bound template name and game ID and returns the saved serialized parameter string when available.
+     * @param string $template Prediction template identifier.
+     * @param int $predictionId Prediction game whose settings are requested.
+     * @return string|null Persisted template parameters or null.
+     */
     private function loadSavedTemplateParams(string $template, int $predictionId): ?string
     {
         $db = $this->getDatabase();
@@ -377,6 +500,12 @@ abstract class SportsManagementPredictionModel extends SportsManagementModel
         return $value === null ? null : (string) $value;
     }
 
+    /**
+     * Load the bundled XML defaults for a prediction template.
+     * Reads the template's component default configuration and converts its declared field settings into an array, returning an empty collection for missing or malformed XML.
+     * @param string $template Template name used to locate the bundled XML definition.
+     * @return array<string,mixed> Default template configuration.
+     */
     private function loadDefaultTemplateConfig(string $template): array
     {
         $file = JPATH_SITE . '/components/com_sportsmanagement/settings/default/' . basename($template) . '.xml';
