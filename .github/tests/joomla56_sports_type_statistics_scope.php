@@ -35,6 +35,22 @@ namespace Joomla\Registry {
     }
 }
 
+namespace Joomla\CMS {
+    final class Factory
+    {
+        /**
+         * Simulate a failed Joomla database service with confidential details.
+         *
+         * @return object Unavailable container service.
+         * @throws \RuntimeException Always, to assert safe exception wrapping.
+         */
+        public static function getContainer(): object
+        {
+            throw new \RuntimeException('private-dsn-password-should-not-leak');
+        }
+    }
+}
+
 namespace Joomla\CMS\Uri {
     final class Uri
     {
@@ -373,6 +389,18 @@ namespace {
         if (\modJSMSportsHelper::getData($invalidParams)
             !== ['sportstype' => [], 'projectscount' => 0]) {
             throw new \RuntimeException('Invalid legacy database selector reached Joomla.');
+        }
+    }
+
+    $configured = new \Joomla\Registry\Registry(['sportstypes' => 7]);
+    try {
+        \modJSMSportsHelper::getData($configured);
+        throw new \RuntimeException('Missing legacy database was silently accepted.');
+    } catch (\RuntimeException $exception) {
+        if ($exception->getCode() !== 500
+            || str_contains($exception->getMessage(), 'private-dsn-password')
+            || $exception->getPrevious()?->getMessage() !== 'private-dsn-password-should-not-leak') {
+            throw new \RuntimeException('Legacy statistics container failure leaked credentials.');
         }
     }
 
