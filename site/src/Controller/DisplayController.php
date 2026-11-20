@@ -30,8 +30,9 @@ final class DisplayController extends BaseController
     /**
      * Render the requested frontend view through Joomla's MVC dispatcher.
      *
-     * Reject malformed or filtered selectors, use the historical default
-     * sportsmanagement view for empty requests, and normalise valid view names
+     * Reject malformed, filtered or non-identifier selectors before Joomla
+     * resolves MVC classes. Use the historical sportsmanagement default for
+     * empty requests, and normalise valid view names
      * before delegating rendering to Joomla's base controller.
      *
      * @param bool $cachable Allow caching of the rendered view.
@@ -68,6 +69,12 @@ final class DisplayController extends BaseController
         // selectors must never reach the Joomla 5/6 view factory.
         if (strlen($view) > 100) {
             throw new \InvalidArgumentException('SportsManagement site view name is too long.', 400);
+        }
+
+        // Joomla MVC view class names are PHP identifiers. Reject remaining
+        // punctuation instead of attempting a class lookup for invalid input.
+        if ($view !== '' && preg_match('/^[a-z][a-z0-9_]*$/iD', $view) !== 1) {
+            throw new \InvalidArgumentException('Invalid SportsManagement site view.', 400);
         }
 
         if ($view === '') {
