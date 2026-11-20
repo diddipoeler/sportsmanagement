@@ -50,7 +50,7 @@ if (!class_exists('modJSMSportsHelper', false)) {
          * onto the keys expected by older template overrides. Uses the
          * validated sport record ID rather than loosely casting untrusted
          * module settings into compatibility array keys. Empty or malformed
-         * sport selectors return without opening Joomla's database service.
+         * sport or database selectors return without opening Joomla's database service.
          *
          * @param Registry|array $params Legacy settings passed by reference.
          * @param DatabaseInterface|null $database Optional database override.
@@ -64,7 +64,8 @@ if (!class_exists('modJSMSportsHelper', false)) {
             // An unset or invalid sport cannot produce records. Return the
             // historical empty layout payload without resolving an optional
             // external or container database service.
-            if (self::selectedSportId($registry->get('sportstypes', 0)) === 0) {
+            if (self::selectedSportId($registry->get('sportstypes', 0)) === 0
+                || self::databaseSelector($registry->get('cfg_which_database', 0)) === null) {
                 return ['sportstype' => [], 'projectscount' => 0];
             }
 
@@ -149,6 +150,31 @@ if (!class_exists('modJSMSportsHelper', false)) {
             ]);
 
             return $id === false ? 0 : $id;
+        }
+
+        /**
+         * Validate the configured Joomla or external statistics database.
+         *
+         * Old module overrides may supply zero-padded 0/1 selectors. Reject
+         * any other value before invoking the Joomla database container:
+         * native statistics queries accept only the default connection (0)
+         * or the explicitly configured external connection (1).
+         *
+         * @param mixed $raw Raw cfg_which_database module setting.
+         * @return int|null Supported connection selector, or null if invalid.
+         */
+        private static function databaseSelector(mixed $raw): ?int
+        {
+            if ($raw === 0 || $raw === 1) {
+                return $raw;
+            }
+
+            if (!is_string($raw) || $raw === '' || strlen($raw) > 64
+                || preg_match('/^0*[01]$/D', $raw) !== 1) {
+                return null;
+            }
+
+            return str_ends_with($raw, '1') ? 1 : 0;
         }
 
         /**
