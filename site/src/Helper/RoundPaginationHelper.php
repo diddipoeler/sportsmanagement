@@ -24,6 +24,15 @@ use Joomla\CMS\Uri\Uri;
  */
 final class RoundPaginationHelper
 {
+    /**
+     * Resolve the active Joomla frontend application for matchday navigation.
+     *
+     * Uses the shared site application resolver instead of relying on the
+     * legacy global application; callers use its request input to preserve
+     * the currently selected project, division and menu item.
+     *
+     * @return CMSApplicationInterface Verified site application.
+     */
     private static function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -32,6 +41,19 @@ final class RoundPaginationHelper
     public static string $nextlink = '';
     public static string $prevlink = '';
 
+    /**
+     * Render previous, next, first, last and nearby matchday links.
+     *
+     * Loads ordered project rounds via the native results data model, selects
+     * the current round from Joomla request input and builds SEF links while
+     * retaining the database, season and division context. Clears the public
+     * link cache before every call, including empty or invalid projects.
+     *
+     * @param object|null $project Project record with its ID and current round.
+     * @param int|string $cfgWhichDatabase Selected SportsManagement database.
+     * @param int|string $seasonId Requested season or the project's season.
+     * @return string Escaped HTML navigation, or an empty string without rounds.
+     */
     public static function pagenav($project, $cfgWhichDatabase = 0, $seasonId = 0): string
     {
         // Public static navigation values are shared between render calls.
@@ -147,8 +169,18 @@ final class RoundPaginationHelper
     }
 
     /**
-     * Build the matchday dropdown used by results edit layouts without relying
-     * on sportsmanagementModelProject static state.
+     * Build the matchday dropdown for legacy result-editing layouts.
+     *
+     * Retrieves round options through the native results model, preserves
+     * division, sorting and current menu context in routed option URLs, and
+     * selects the option matching the current request round. Returns no
+     * markup when the project is invalid or no usable rounds are available.
+     *
+     * @param object|null $project Project containing an ID and season metadata.
+     * @param int $cfgWhichDatabase Selected SportsManagement database.
+     * @param int $seasonId Explicit season or zero for the project season.
+     * @param string $layout Joomla results layout to include in option URLs.
+     * @return string Joomla select-list markup or an empty string.
      */
     public static function selectNavigation(
         $project,
@@ -207,11 +239,27 @@ final class RoundPaginationHelper
         );
     }
 
+    /**
+     * Read the most recently generated next-round link.
+     *
+     * Exposes the backward-compatible static navigation cache to legacy
+     * templates without generating new database queries or URLs.
+     *
+     * @return string Routed next-round URL, or an empty string at the last round.
+     */
     public function getnextlink(): string
     {
         return self::$nextlink;
     }
 
+    /**
+     * Read the most recently generated previous-round link.
+     *
+     * Provides compatibility for legacy result views using the shared
+     * navigation cache populated by pagenav().
+     *
+     * @return string Routed previous-round URL, or an empty string at the first round.
+     */
     public function getprevlink(): string
     {
         return self::$prevlink;
@@ -221,7 +269,11 @@ final class RoundPaginationHelper
      * Joomla round selectors can contain ID:alias values, but leading
      * numbers followed by arbitrary text must never turn into valid links.
      *
-     * @return array{id:int,slug:string}|null
+     * Rejects non-numeric or overflowing IDs and malformed aliases before
+     * they can be added to generated matchday routes.
+     *
+     * @param mixed $raw Raw ID or ID:alias value from Joomla round records.
+     * @return array{id:int,slug:string}|null Canonical positive ID and slug, or null.
      */
     private static function roundIdAndSlug(mixed $raw): ?array
     {
@@ -251,6 +303,17 @@ final class RoundPaginationHelper
         ];
     }
 
+    /**
+     * Create a native results model scoped to the requested project.
+     *
+     * Loads the model dependencies when Joomla's legacy class loader has
+     * not registered them, then applies the selected database and project ID
+     * before the caller requests round records.
+     *
+     * @param object $project Project record supplying the numeric ID.
+     * @param int $databaseSelector SportsManagement database configuration.
+     * @return ResultsDataModel Configured Joomla 5/6 results data model.
+     */
     private static function createResultsDataModel($project, int $databaseSelector): ResultsDataModel
     {
         if (!class_exists(ResultsDataModel::class)) {
@@ -265,6 +328,18 @@ final class RoundPaginationHelper
         return $model;
     }
 
+    /**
+     * Assemble the query parameters shared by all matchday navigation links.
+     *
+     * Keeps the active project, season, database choice and requested view
+     * while copying validated task, division-depth, prediction and menu
+     * selectors from Joomla input. These parameters are passed to SEF routing.
+     *
+     * @param object $project Current project record with slug and season.
+     * @param int $databaseSelector Requested Joomla or external database.
+     * @param int $seasonId Explicit season ID or zero to use the project season.
+     * @return array<string,int|string> Query parameters for roundUrl().
+     */
     private static function buildBaseParams($project, int $databaseSelector, int $seasonId): array
     {
         $input = self::siteApplication()->getInput();
@@ -300,6 +375,19 @@ final class RoundPaginationHelper
         return $params;
     }
 
+    /**
+     * Generate a Joomla-routed URL for a particular project matchday.
+     *
+     * Adds the canonical round slug and division to the preserved context,
+     * supplies legacy mode and order defaults, and appends the requested
+     * page anchor after Joomla's routing step.
+     *
+     * @param array<string,mixed> $params Existing project and display context.
+     * @param string $roundSlug Validated round ID with optional alias.
+     * @param int $division Selected project division.
+     * @param string $anchor Optional in-page anchor such as the view top.
+     * @return string Routed matchday URL with its optional anchor.
+     */
     private static function roundUrl(array $params, string $roundSlug, int $division, string $anchor): string
     {
         $params['r'] = $roundSlug;
