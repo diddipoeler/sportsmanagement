@@ -195,6 +195,28 @@ namespace {
         }
     }
 
+    $projectId = new \ReflectionMethod($helper, 'positiveProjectId');
+    foreach ([
+        [11, 11], ['00011', 11], [0, 0], [-1, 0], ['0', 0],
+        ['11junk', 0], ['11:alias', 0], [' 11', 0], [true, 0],
+        [['11'], 0], [new \stdClass(), 0],
+        ['999999999999999999999999999', 0],
+    ] as [$raw, $expected]) {
+        if ($projectId->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Malformed project ID passed pagination validation.');
+        }
+    }
+
+    foreach ([['11'], '11junk', true, '999999999999999999999999999'] as $invalidId) {
+        $invalidProject = (object) ['id' => $invalidId, 'season_id' => 5];
+
+        if ($helper::pagenav($invalidProject) !== ''
+            || $helper::selectNavigation($invalidProject) !== ''
+            || $helper::$prevlink !== '' || $helper::$nextlink !== '') {
+            throw new \RuntimeException('Malformed project ID generated round navigation.');
+        }
+    }
+
     if ($helper::selectNavigation($project, 2) !== '') {
         throw new \RuntimeException('Dropdown accepted unsupported database selector.');
     }
