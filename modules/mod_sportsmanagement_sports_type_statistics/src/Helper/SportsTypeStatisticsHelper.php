@@ -101,8 +101,15 @@ final class SportsTypeStatisticsHelper
     }
 
     /**
-     * Convert configured sports icons to safe URLs. Absolute HTTP(S) icons
-     * must not be prefixed with the Joomla root URL.
+     * Convert a configured sports icon into a validated browser URL.
+     *
+     * Accepts absolute HTTP(S) URLs without credentials or unescaped control
+     * characters, and encodes relative file paths under the Joomla site root.
+     * Rejects other schemes, traversal, encoded separators and URL fragments
+     * so a corrupt icon setting cannot create an unsafe image source.
+     *
+     * @param string $path Absolute image URL or site-relative icon path.
+     * @return string Safe image URL, or an empty string for invalid input.
      */
     public static function imageUrl(string $path): string
     {
@@ -171,9 +178,16 @@ final class SportsTypeStatisticsHelper
     }
 
     /**
-     * League and season totals must describe the chosen sport, not every
-     * league or season stored for unrelated sports. The field name is selected
-     * exclusively from the trusted call sites above.
+     * Count distinct leagues or seasons referenced by the selected sport.
+     *
+     * The caller chooses only the trusted league_id or season_id project
+     * column, and the query filters projects by a bound sport identifier.
+     * Projects without a positive dimension ID do not contribute.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param string $field Trusted project league_id or season_id column.
+     * @param int $sportTypeId Positive sports category identifier.
+     * @return int Number of distinct referenced leagues or seasons.
      */
     private function countProjectDimension(DatabaseInterface $db, string $field, int $sportTypeId): int
     {
@@ -194,9 +208,15 @@ final class SportsTypeStatisticsHelper
     }
 
     /**
-     * Count existing venues connected to projects of the selected sport.
-     * A ground can be both a team's standard venue and a match venue, so
-     * collect distinct IDs from both relationships before counting.
+     * Count distinct playgrounds used by projects in the selected sport.
+     *
+     * Reads both project-team standard venues and match-specific venues,
+     * validates returned IDs, and deduplicates them across both sources.
+     * A missing or invalid sport ID returns zero without issuing queries.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $sportTypeId Positive sports category identifier.
+     * @return int Distinct venue count across project teams and matches.
      */
     private function countSportPlaygrounds(DatabaseInterface $db, int $sportTypeId): int
     {
@@ -284,8 +304,15 @@ final class SportsTypeStatisticsHelper
     }
 
     /**
-     * Count distinct clubs that have at least one team assigned to a project
-     * of this sport. Project-team rows reference season-team IDs, not team IDs.
+     * Count clubs represented by teams participating in the selected sport.
+     *
+     * Traverses the project's season-team association back to the underlying
+     * team and club, and counts distinct club IDs so repeat project
+     * participation does not inflate the result.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $sportTypeId Positive sports category identifier.
+     * @return int Number of participating clubs without duplicates.
      */
     private function countSportClubs(DatabaseInterface $db, int $sportTypeId): int
     {
@@ -311,9 +338,15 @@ final class SportsTypeStatisticsHelper
     }
 
     /**
-     * Count unique players participating in the selected sport. The roster
-     * table identifies the team by team_id and season_id, so both fields must
-     * match the project team season to avoid counting players from other years.
+     * Count distinct players registered for projects in the selected sport.
+     *
+     * Joins project teams to their season-specific person rosters using
+     * both team and season IDs. Filters active player-person relationships
+     * by the sport and excludes unrelated seasons and non-player entries.
+     *
+     * @param DatabaseInterface $db Selected SportsManagement database.
+     * @param int $sportTypeId Positive sports category identifier.
+     * @return int Number of unique registered player persons.
      */
     private function countSportPlayers(DatabaseInterface $db, int $sportTypeId): int
     {
@@ -429,8 +462,14 @@ final class SportsTypeStatisticsHelper
     }
 
     /**
-     * Accept non-negative decimal IDs, including legacy zero-padded values,
-     * but reject partial casts, booleans, arrays and integer overflow.
+     * Normalise a module selector or database count into a safe integer.
+     *
+     * Accepts nonnegative integers and complete decimal strings including
+     * legacy zero-padded values. Rejects partial casts, booleans, arrays,
+     * oversized input and integer overflow before those values reach queries.
+     *
+     * @param mixed $value Raw sport, database or count setting.
+     * @return int|null Nonnegative selector, or null for invalid values.
      */
     private static function nonNegativeSelector(mixed $value): ?int
     {
