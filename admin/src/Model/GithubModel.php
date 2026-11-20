@@ -74,8 +74,15 @@ final class GithubModel extends BaseDatabaseModel
      * Create an issue and return the decoded GitHub response.
      *
      * Optional arguments preserve the historic no-argument method surface.
+     * Validates the returned HTML issue URL before including it in an
+     * administrator success notification.
      *
-     * @return object|false
+     * @param string $title New issue title or empty for submitted form input.
+     * @param string $message New issue body or empty for submitted form input.
+     * @param int $milestone Optional positive GitHub milestone ID.
+     * @param string $label Configured issue label, normalised to known values.
+     * @param string $token Explicit API token or empty for configured token.
+     * @return object|false Decoded issue response or false on failure.
      */
     public function insertissue(
         string $title = '',
@@ -128,13 +135,41 @@ final class GithubModel extends BaseDatabaseModel
             return false;
         }
 
-        $url = isset($decoded->html_url) ? (string) $decoded->html_url : '';
+        // A successful API response is still external input. Display only
+        // HTTPS issue URLs belonging to the exact configured repository.
+        $url = $this->safeIssueUrl($decoded->html_url ?? null, $owner, $repository);
         $app->enqueueMessage(
             $url !== '' ? 'GitHub-Issue erstellt: ' . $url : 'GitHub-Issue erstellt.',
             'message'
         );
 
         return $decoded;
+    }
+
+    /**
+     * Validate an issue URL returned by GitHub before displaying it.
+     *
+     * Accepts only direct HTTPS issue links on github.com within the exact
+     * repository selected in the component configuration. Discards external
+     * hosts, credentialed URLs, additional query parameters, fragments and
+     * malformed issue numbers so API text cannot be injected into messages.
+     *
+     * @param mixed $value Untrusted html_url field from the API response.
+     * @param string $owner Validated configured GitHub account name.
+     * @param string $repository Validated configured repository name.
+     * @return string Confirmed issue URL or an empty string.
+     */
+    private function safeIssueUrl(mixed $value, string $owner, string $repository): string
+    {
+        if (!is_string($value) || $value === '' || strlen($value) > 2048) {
+            return '';
+        }
+
+        $expected = '~^https://github\\.com/'
+            . preg_quote($owner, '~') . '/'
+            . preg_quote($repository, '~') . '/issues/[1-9][0-9]*$~iD';
+
+        return preg_match($expected, $value) === 1 ? $value : '';
     }
 
     /**
@@ -236,13 +271,19 @@ final class GithubModel extends BaseDatabaseModel
 
     /**
      * Validate the configured GitHub account and repository names.
+     *
+     * Rejects non-string, oversized or malformed configuration values before
+     * they can become a GitHub API request path.
+     *
      * @return array{0:string,1:string} Owner and repository or empty values.
      */
     private function repositoryCoordinates(): array
     {
         $params = ComponentHelper::getParams('com_sportsmanagement');
-        $owner = trim((string) $params->get('cfg_github_username', ''));
-        $repository = trim((string) $params->get('cfg_github_repository', ''));
+        $rawOwner = $params->get('cfg_github_username', '');
+        $rawRepository = $params->get('cfg_github_repository', '');
+        $owner = is_string($rawOwner) ? trim($rawOwner) : '';
+        $repository = is_string($rawRepository) ? trim($rawRepository) : '';
 
         if (!$this->isRepositoryPart($owner) || !$this->isRepositoryPart($repository)) {
             $this->administratorApplication()->enqueueMessage('Ungültige GitHub-Repository-Konfiguration.', 'error');
@@ -289,7 +330,8 @@ final class GithubModel extends BaseDatabaseModel
      */
     private function isRepositoryPart(string $value): bool
     {
-        return $value !== '' && preg_match('/^[A-Za-z0-9_.-]+$/', $value) === 1;
+        return $value !== '' && strlen($value) <= 100
+            && preg_match('/^[A-Za-z0-9_.-]+$/D', $value) === 1;
     }
 
     /**
