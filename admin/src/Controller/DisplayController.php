@@ -27,8 +27,9 @@ final class DisplayController extends BaseController
     /**
      * Display an administrator view using Joomla's MVC infrastructure.
      *
-     * Validate the incoming selector, default to the component control panel
-     * for empty requests, and normalise view names for class resolution on
+     * Validate the incoming selector as a PHP-compatible MVC identifier,
+     * default to the component control panel for empty requests, and
+     * normalise view names for class resolution on
      * case-sensitive hosts before invoking the base controller.
      *
      * @param bool $cachable Allow caching of the rendered view.
@@ -64,6 +65,12 @@ final class DisplayController extends BaseController
         // administrator extension-language resolver before class lookup.
         if (strlen($view) > 100) {
             throw new \InvalidArgumentException('SportsManagement administrator view name is too long.', 400);
+        }
+
+        // Only PHP-compatible view identifiers should reach MVC class lookup.
+        // Reject punctuation that the command filter leaves untouched.
+        if ($view !== '' && preg_match('/^[a-z][a-z0-9_]*$/iD', $view) !== 1) {
+            throw new \InvalidArgumentException('Invalid SportsManagement administrator view.', 400);
         }
 
         if ($view === '') {
