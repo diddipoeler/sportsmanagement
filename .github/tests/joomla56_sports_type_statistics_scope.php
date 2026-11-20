@@ -58,10 +58,14 @@ namespace Joomla\CMS\Language {
 namespace Diddipoeler\Component\SportsManagement\Site\Service {
     final class SportsManagementDatabaseResolver
     {
+        public static array $selections = [];
+
         public static function resolve(
             \Joomla\Database\DatabaseInterface $fallback,
             int $selector
         ): \Joomla\Database\DatabaseInterface {
+            self::$selections[] = $selector;
+
             return $fallback;
         }
     }
@@ -268,8 +272,22 @@ namespace {
     );
     if ($unconfigured['counts'] !== ['projects' => 0]
         || $unconfiguredDb->queries !== []
+        || \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::$selections !== [0, 0]
     ) {
         throw new \RuntimeException('Unconfigured sport must not trigger statistics queries');
+    }
+
+    // An unconfigured sport may have an external DB selected. Do not open it
+    // when the widget cannot produce a sport-scoped result.
+    $resolver = \Diddipoeler\Component\SportsManagement\Site\Service\SportsManagementDatabaseResolver::class;
+    $before = count($resolver::$selections);
+    $noSport = $helper->getData(
+        new \Joomla\Registry\Registry(['sportstypes' => '0000', 'cfg_which_database' => 1]),
+        $unconfiguredDb
+    );
+    if ($noSport !== ['sportstype' => null, 'counts' => ['projects' => 0]]
+        || count($resolver::$selections) !== $before) {
+        throw new \RuntimeException('Empty sport opened the external database connection.');
     }
 
     // Malformed Joomla module settings must not issue any database queries.
