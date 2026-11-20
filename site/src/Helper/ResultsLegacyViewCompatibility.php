@@ -44,6 +44,13 @@ final class ResultsLegacyViewCompatibility
      * @param array<int, int> $favteams
      * @param array<int, array<int, object>> $refereesByMatch
      */
+    /**
+     * Synchronise the favourite-team and referee data used by results templates.
+     * Normalises favourite team IDs and stores per-match referee records before legacy result rendering.
+     * @param array<int,int> $favteams Favourite team identifiers.
+     * @param array<int,array<int,object>> $refereesByMatch Referees grouped by match ID.
+     * @return void Updates the facade's request-scoped display data.
+     */
     public static function sync(array $favteams, array $refereesByMatch): void
     {
         self::$favteams = array_values(array_map('intval', $favteams));
@@ -212,6 +219,12 @@ final class ResultsLegacyViewCompatibility
     }
 
     /** @return array<string, array<int, object>> */
+    /**
+     * Group result fixtures by their match dates.
+     * Uses the first ten characters of each match date as a stable calendar grouping key and skips invalid match records.
+     * @param mixed $matches Raw match rows or other iterable fixtures.
+     * @return array<string,array<int,object>> Matches grouped by date.
+     */
     public static function sortByDate($matches): array
     {
         $dates = [];
