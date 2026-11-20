@@ -26,7 +26,14 @@ final class GithubModel extends BaseDatabaseModel
     private const API_VERSION = '2022-11-28';
 
     /**
-     * Validate and create a GitHub issue from the administrator form.
+     * Validate GitHub issue form input and create the issue remotely.
+     *
+     * Uses the administrator application and native request input to read
+     * the issue title, description, optional milestone and label. Requires
+     * a configured or supplied API token and returns false for incomplete
+     * submissions or unsuccessful API writes.
+     *
+     * @return bool Whether GitHub accepted the newly created issue.
      */
     public function addissue(): bool
     {
@@ -131,7 +138,13 @@ final class GithubModel extends BaseDatabaseModel
     }
 
     /**
-     * Return the latest commits in the configured GitHub repository.
+     * Load the latest commits from the configured GitHub repository.
+     *
+     * Validates repository coordinates, requests up to 30 entries through
+     * Joomla's HTTP client and reports unsuccessful API responses using
+     * the administrator message queue.
+     *
+     * @return array<int,mixed> Decoded commit records or an empty array.
      */
     public function getGithubList(): array
     {
@@ -168,7 +181,9 @@ final class GithubModel extends BaseDatabaseModel
     /**
      * Send a GitHub REST API request using Joomla's HTTP client.
      * Constructs request headers and optional bearer authentication,
-     * and returns false when a network or transport error occurs.
+     * and returns false when a network or transport error occurs. Never
+     * logs or displays raw transport exception text, which can contain
+     * authorization tokens and submitted issue content.
      * @param string $method HTTP method such as GET or POST.
      * @param string $path GitHub API path relative to its trusted host.
      * @param array|null $payload Optional JSON request body.
@@ -206,8 +221,14 @@ final class GithubModel extends BaseDatabaseModel
 
             return $http->get($url, $headers, 20);
         } catch (\Throwable $e) {
-            Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            // Transport exceptions can include Authorization headers, tokens,
+            // request bodies or credentials in their text. Do not expose them
+            // in Joomla administrator messages or persistent error logs.
+            Log::add('GitHub API transport failed (' . get_class($e) . ').', Log::ERROR, 'jsmerror');
+            $this->administratorApplication()->enqueueMessage(
+                'Die GitHub-API-Anfrage ist fehlgeschlagen. Bitte Verbindung und Konfiguration prüfen.',
+                'error'
+            );
 
             return false;
         }
