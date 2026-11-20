@@ -398,7 +398,9 @@ final class RoundPaginationHelper
      *
      * Keeps the active project, season, database choice and requested view
      * while copying validated task, division-depth, prediction and menu
-     * selectors from Joomla input. These parameters are passed to SEF routing.
+     * selectors from Joomla input. Validates the project slug against the
+     * project ID and falls back to the canonical numeric ID for corrupt
+     * imported slugs. These parameters are passed to SEF routing.
      *
      * @param object $project Current project record with slug and season.
      * @param int $databaseSelector Requested Joomla or external database.
@@ -408,11 +410,17 @@ final class RoundPaginationHelper
     private static function buildBaseParams($project, int $databaseSelector, int $seasonId): array
     {
         $input = self::siteApplication()->getInput();
+        $projectId = self::positiveProjectId($project->id ?? null);
+        $slug = self::roundIdAndSlug($project->slug ?? null);
+        $projectSlug = $slug !== null && $slug['id'] === $projectId
+            ? $slug['slug']
+            : (string) $projectId;
+
         $params = [
             'option' => $input->getCmd('option', 'com_sportsmanagement'),
             'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
             's' => $seasonId > 0 ? $seasonId : (int) ($project->season_id ?? 0),
-            'p' => (string) ($project->slug ?? $project->id),
+            'p' => $projectSlug,
         ];
 
         foreach (['view', 'layout', 'controller', 'task'] as $name) {
