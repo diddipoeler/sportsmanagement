@@ -16,6 +16,7 @@ use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagement
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -1274,7 +1275,7 @@ final class AjaxModel extends BaseDatabaseModel
     /**
      * Execute a query and load its result records for an AJAX selector.
      *
-     * Returns an empty array on database errors and notifies the administrator.
+     * Returns an empty array on database errors, recording private diagnostics while showing administrators a generic error message.
      * @param mixed $db Database connection used for the options query.
      * @param mixed $query Joomla database query to execute.
      * @return array<int,object> Database rows or an empty array on failure.
@@ -1286,7 +1287,14 @@ final class AjaxModel extends BaseDatabaseModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            self::administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            // Keep query details and connection errors out of AJAX responses.
+            // Administrators receive a generic failure; diagnostics stay in
+            // Joomla's private log for troubleshooting.
+            Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
+            self::administratorApplication()->enqueueMessage(
+                Text::_('COM_SPORTSMANAGEMENT_AJAX_OPTIONS_LOAD_FAILED'),
+                'error'
+            );
 
             return [];
         }
