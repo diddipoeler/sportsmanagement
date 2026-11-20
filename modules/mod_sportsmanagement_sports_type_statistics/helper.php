@@ -47,7 +47,9 @@ if (!class_exists('modJSMSportsHelper', false)) {
          *
          * Converts module settings to Joomla Registry, loads the native
          * statistics data and maps its count and sport-type fields back
-         * onto the keys expected by older template overrides.
+         * onto the keys expected by older template overrides. Uses the
+         * validated sport record ID rather than loosely casting untrusted
+         * module settings into compatibility array keys.
          *
          * @param Registry|array $params Legacy settings passed by reference.
          * @param DatabaseInterface|null $database Optional database override.
@@ -60,11 +62,27 @@ if (!class_exists('modJSMSportsHelper', false)) {
             $database = self::joomlaDatabase($database);
 
             $data = (new SportsTypeStatisticsHelper())->getData($registry, $database);
-            $sportTypeId = (int) $registry->get('sportstypes', 0);
             $legacy = ['sportstype' => []];
 
-            if ($sportTypeId > 0 && !empty($data['sportstype'])) {
-                $legacy['sportstype'][$sportTypeId] = $data['sportstype'];
+            // The native helper validates the requested selector and returns
+            // the actual selected sport. Never cast arbitrary legacy settings
+            // to a new sport ID when building compatibility array keys.
+            $sportType = $data['sportstype'] ?? null;
+            $rawSportTypeId = is_object($sportType) ? ($sportType->id ?? null) : null;
+            $sportTypeId = 0;
+
+            if (is_int($rawSportTypeId) && $rawSportTypeId > 0) {
+                $sportTypeId = $rawSportTypeId;
+            } elseif (is_string($rawSportTypeId) && $rawSportTypeId !== ''
+                && strlen($rawSportTypeId) <= 128
+                && preg_match('/^[0-9]+$/D', $rawSportTypeId) === 1) {
+                $sportTypeId = filter_var(ltrim($rawSportTypeId, '0'), FILTER_VALIDATE_INT, [
+                    'options' => ['min_range' => 1],
+                ]) ?: 0;
+            }
+
+            if ($sportTypeId > 0 && is_object($sportType)) {
+                $legacy['sportstype'][$sportTypeId] = $sportType;
             }
 
             $map = [
