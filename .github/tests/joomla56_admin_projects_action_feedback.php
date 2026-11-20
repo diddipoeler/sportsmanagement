@@ -166,5 +166,21 @@ namespace {
         throw new \RuntimeException('Project save failure lost its error message.');
     }
 
+    $project->result = null;
+    $project->error = '';
+    $controller->copy();
+    if ($controller->redirect['message'] !== 'JERROR_AN_ERROR_HAS_OCCURRED'
+        || $controller->redirect['type'] !== 'warning') {
+        throw new \RuntimeException('Null project save result incorrectly reported success.');
+    }
+
+    $project->result = false;
+    $project->error = '';
+    $controller->saveshort();
+    if ($controller->redirect['message'] !== 'JERROR_AN_ERROR_HAS_OCCURRED'
+        || $controller->redirect['type'] !== 'warning') {
+        throw new \RuntimeException('Empty project model error lost the fallback message.');
+    }
+
     echo "Administrator Projects permissions and action feedback OK\n";
 }
