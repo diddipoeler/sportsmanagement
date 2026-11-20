@@ -48,7 +48,8 @@ final class RoundPaginationHelper
      * the current round from Joomla request input and builds SEF links while
      * retaining the database, season and division context. Clears the public
      * link cache before every call, including empty or invalid projects.
-     * Rejects malformed external database settings before loading a model.
+     * Rejects malformed project IDs and external database settings before
+     * loading a model.
      *
      * @param object|null $project Project record with its ID and current round.
      * @param int|string $cfgWhichDatabase Selected SportsManagement database.
@@ -64,7 +65,8 @@ final class RoundPaginationHelper
 
         $databaseSelector = self::databaseSelector($cfgWhichDatabase);
 
-        if (!is_object($project) || (int) ($project->id ?? 0) <= 0 || $databaseSelector === null) {
+        if (!is_object($project) || self::positiveProjectId($project->id ?? null) === 0
+            || $databaseSelector === null) {
             return '';
         }
 
@@ -177,7 +179,7 @@ final class RoundPaginationHelper
      * Retrieves round options through the native results model, preserves
      * division, sorting and current menu context in routed option URLs, and
      * selects the option matching the current request round. Returns no
-     * markup when the project or database selector is invalid, or no usable
+     * markup when the project ID or database selector is invalid, or no usable
      * rounds are available.
      *
      * @param object|null $project Project containing an ID and season metadata.
@@ -192,7 +194,7 @@ final class RoundPaginationHelper
         int $seasonId = 0,
         string $layout = 'form'
     ): string {
-        if (!is_object($project) || (int) ($project->id ?? 0) <= 0
+        if (!is_object($project) || self::positiveProjectId($project->id ?? null) === 0
             || self::databaseSelector($cfgWhichDatabase) === null) {
             return '';
         }
@@ -309,6 +311,39 @@ final class RoundPaginationHelper
     }
 
     /**
+     * Parse a positive project identifier without PHP's loose integer casts.
+     *
+     * Accepts project IDs stored as integers or zero-padded decimal strings,
+     * including older import records. Rejects arrays, objects, booleans,
+     * decimal fractions, negative numbers and values exceeding PHP_INT_MAX
+     * before querying rounds for a potentially different project.
+     *
+     * @param mixed $raw Raw project ID from an imported project record.
+     * @return int Valid positive ID or zero when invalid.
+     */
+    private static function positiveProjectId(mixed $raw): int
+    {
+        if (is_int($raw)) {
+            return $raw > 0 ? $raw : 0;
+        }
+
+        if (!is_string($raw) || $raw === '' || strlen($raw) > 128
+            || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
      * Validate the legacy SportsManagement database selection.
      *
      * Accepts the two supported database identifiers, either as integers or
@@ -354,7 +389,7 @@ final class RoundPaginationHelper
 
         $model = new ResultsDataModel();
         $model->setDatabaseSelector($databaseSelector);
-        $model->setProjectId((int) ($project->id ?? 0));
+        $model->setProjectId(self::positiveProjectId($project->id ?? null));
         return $model;
     }
 
