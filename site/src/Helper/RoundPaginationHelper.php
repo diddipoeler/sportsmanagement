@@ -48,6 +48,7 @@ final class RoundPaginationHelper
      * the current round from Joomla request input and builds SEF links while
      * retaining the database, season and division context. Clears the public
      * link cache before every call, including empty or invalid projects.
+     * Rejects malformed external database settings before loading a model.
      *
      * @param object|null $project Project record with its ID and current round.
      * @param int|string $cfgWhichDatabase Selected SportsManagement database.
@@ -61,11 +62,13 @@ final class RoundPaginationHelper
         self::$prevlink = '';
         self::$nextlink = '';
 
-        if (!$project || (int) ($project->id ?? 0) <= 0) {
+        $databaseSelector = self::databaseSelector($cfgWhichDatabase);
+
+        if (!is_object($project) || (int) ($project->id ?? 0) <= 0 || $databaseSelector === null) {
             return '';
         }
 
-        $model = self::createResultsDataModel($project, (int) $cfgWhichDatabase);
+        $model = self::createResultsDataModel($project, $databaseSelector);
         $rounds = $model->getRounds('ASC', true);
 
         if (!$rounds) {
@@ -114,7 +117,7 @@ final class RoundPaginationHelper
         $previous = $normalised[max(0, $currentIndex - 1)];
         $next = $normalised[min(count($normalised) - 1, $currentIndex + 1)];
         $division = $input->getInt('division', 0);
-        $params = self::buildBaseParams($project, (int) $cfgWhichDatabase, (int) $seasonId);
+        $params = self::buildBaseParams($project, $databaseSelector, (int) $seasonId);
 
         $spacer2 = '&nbsp;&nbsp;';
         $spacer4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -174,7 +177,8 @@ final class RoundPaginationHelper
      * Retrieves round options through the native results model, preserves
      * division, sorting and current menu context in routed option URLs, and
      * selects the option matching the current request round. Returns no
-     * markup when the project is invalid or no usable rounds are available.
+     * markup when the project or database selector is invalid, or no usable
+     * rounds are available.
      *
      * @param object|null $project Project containing an ID and season metadata.
      * @param int $cfgWhichDatabase Selected SportsManagement database.
@@ -188,7 +192,8 @@ final class RoundPaginationHelper
         int $seasonId = 0,
         string $layout = 'form'
     ): string {
-        if (!$project || (int) ($project->id ?? 0) <= 0) {
+        if (!is_object($project) || (int) ($project->id ?? 0) <= 0
+            || self::databaseSelector($cfgWhichDatabase) === null) {
             return '';
         }
 
@@ -301,6 +306,31 @@ final class RoundPaginationHelper
             'id' => $id,
             'slug' => $id . (isset($matches[2]) ? ':' . $matches[2] : ''),
         ];
+    }
+
+    /**
+     * Validate the legacy SportsManagement database selection.
+     *
+     * Accepts the two supported database identifiers, either as integers or
+     * as zero-padded decimal strings preserved by older module settings.
+     * Rejects booleans, arrays, negative numbers, other values and partial
+     * numeric casts so invalid input cannot silently change databases.
+     *
+     * @param mixed $value Database identifier from a legacy view or module.
+     * @return int|null Validated Joomla (0) or external (1) selector, or null.
+     */
+    private static function databaseSelector(mixed $value): ?int
+    {
+        if ($value === 0 || $value === 1) {
+            return $value;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 64
+            || preg_match('/^0*[01]$/D', $value) !== 1) {
+            return null;
+        }
+
+        return str_ends_with($value, '1') ? 1 : 0;
     }
 
     /**
