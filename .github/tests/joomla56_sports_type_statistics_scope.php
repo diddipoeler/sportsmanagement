@@ -115,6 +115,7 @@ namespace {
     final class SportsStatsDatabase implements \Joomla\Database\DatabaseInterface
     {
         public array $queries = [];
+        public mixed $sportRecordId = 7;
         private ?SportsStatsQuery $current = null;
 
         public function __construct(private int $projectCount = 4)
@@ -140,7 +141,7 @@ namespace {
         public function loadObject(): object
         {
             return (object) [
-                'id' => 7,
+                'id' => $this->sportRecordId,
                 'name' => 'Football & <img>',
                 'icon' => 'https://cdn.example.test/football.png',
             ];
@@ -319,6 +320,34 @@ namespace {
             || $guardData !== ['sportstype' => null, 'counts' => ['projects' => 0]]) {
             throw new \RuntimeException('Invalid sport statistics configuration performed SQL.');
         }
+    }
+
+    // Legacy template overrides should use the validated record ID, not
+    // cast arbitrary raw module settings into an array index.
+    if (!defined('JPATH_SITE')) {
+        define('JPATH_SITE', dirname(__DIR__, 2));
+    }
+    require_once dirname(__DIR__, 2) . '/modules/mod_sportsmanagement_sports_type_statistics/helper.php';
+    $legacyParams = new \Joomla\Registry\Registry($disabled + [
+        'sportstypes' => '0007',
+        'show_leagues' => 1,
+        'show_seasons' => 1,
+    ]);
+    $bridgeDb = new SportsStatsDatabase();
+    $legacy = \modJSMSportsHelper::getData($legacyParams, $bridgeDb);
+
+    if (!isset($legacy['sportstype'][7])
+        || $legacy['projectscount'] !== 4
+        || $legacy['leaguescount'] !== 2) {
+        throw new \RuntimeException('Legacy statistics bridge dropped a valid sport.');
+    }
+
+    $invalidRecordDb = new SportsStatsDatabase();
+    $invalidRecordDb->sportRecordId = '7junk';
+    $invalidRecord = \modJSMSportsHelper::getData($legacyParams, $invalidRecordDb);
+
+    if ($invalidRecord['sportstype'] !== []) {
+        throw new \RuntimeException('Legacy statistics bridge accepted malformed sport ID.');
     }
 
     echo "Sports Type Statistics project dimensions and icon URLs OK\n";
