@@ -293,19 +293,23 @@ final class GithubModel extends BaseDatabaseModel
     }
 
     /**
-     * Log and display a GitHub API failure to the administrator.
+     * Report an unsuccessful GitHub response without exposing its body.
+     *
+     * API errors may echo issue descriptions, repository details or other
+     * sensitive submitted values. Logs and administrator notifications
+     * therefore include only the HTTP status and a generic explanation.
+     *
      * @param int $status HTTP response status.
-     * @param mixed $decoded JSON-decoded error body.
-     * @param string $body Raw response body.
+     * @param mixed $decoded Untrusted decoded API response (never displayed).
+     * @param string $body Untrusted raw API response (never displayed).
      * @return void
      */
     private function reportApiError(int $status, $decoded, string $body): void
     {
-        $message = is_object($decoded) && isset($decoded->message)
-            ? (string) $decoded->message
-            : trim($body);
-        $message = $message !== '' ? $message : 'Unbekannter GitHub-API-Fehler';
-        $safeMessage = sprintf('GitHub API %d: %s', $status, $message);
+        // GitHub may echo submitted issue content or authentication details
+        // in error bodies. Preserve the HTTP status for diagnosis without
+        // rendering or persisting untrusted API response text.
+        $safeMessage = sprintf('GitHub API HTTP %d: Anfrage fehlgeschlagen.', $status);
 
         Log::add($safeMessage, Log::ERROR, 'jsmerror');
         $this->administratorApplication()->enqueueMessage($safeMessage, 'error');
