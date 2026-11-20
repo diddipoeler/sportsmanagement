@@ -328,6 +328,29 @@ namespace {
         define('JPATH_SITE', dirname(__DIR__, 2));
     }
     require_once dirname(__DIR__, 2) . '/modules/mod_sportsmanagement_sports_type_statistics/helper.php';
+    // Invalid sport selectors must return before obtaining the Joomla DB
+    // from the container, which is intentionally unavailable in this test.
+    $legacySelector = new \ReflectionMethod('modJSMSportsHelper', 'selectedSportId');
+
+    foreach ([
+        [7, 7], ['0007', 7], [0, 0], ['000', 0],
+        [false, 0], [true, 0], [['7'], 0],
+        ['7junk', 0], ['7.5', 0], ['-7', 0],
+        ['99999999999999999999999999', 0],
+    ] as [$raw, $expected]) {
+        if ($legacySelector->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Legacy statistics sport ID validation failed.');
+        }
+    }
+
+    foreach ([0, '0000', '7junk', ['7'], true] as $invalid) {
+        $params = new \Joomla\Registry\Registry(['sportstypes' => $invalid]);
+
+        if (\modJSMSportsHelper::getData($params) !== ['sportstype' => [], 'projectscount' => 0]) {
+            throw new \RuntimeException('Invalid legacy sport selection tried to open the database.');
+        }
+    }
+
     $legacyParams = new \Joomla\Registry\Registry($disabled + [
         'sportstypes' => '0007',
         'show_leagues' => 1,
