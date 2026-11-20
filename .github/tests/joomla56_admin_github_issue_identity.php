@@ -172,6 +172,44 @@ namespace {
         }
     }
 
+    // A legacy identity may expose a non-integer ID. Partial casts and
+    // overflow values must not enable external issue creation.
+    $identityId = new \ReflectionMethod($controller, 'authenticatedUserId');
+    foreach ([
+        [42, 42], ['00042', 42], [0, 0], ['0', 0],
+        [true, 0], [['42'], 0], ['42junk', 0],
+        ['42.0', 0], ['-42', 0], [' 42', 0],
+        ['999999999999999999999999999', 0],
+    ] as [$raw, $expected]) {
+        if ($identityId->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Malformed GitHub user ID was accepted.');
+        }
+    }
+
+    foreach (['42junk', '42.0', true, ['42'], '999999999999999999999999999'] as $invalidId) {
+        $app->identity = new class($invalidId) {
+            public function __construct(public mixed $id) {}
+
+            public function authorise(string $action, string $asset): bool
+            {
+                return true;
+            }
+        };
+
+        try {
+            $controller->addissue();
+            throw new \RuntimeException('Malformed GitHub identity was permitted to submit.');
+        } catch (\RuntimeException $exception) {
+            if ($exception->getCode() !== 403) {
+                throw $exception;
+            }
+        }
+
+        if ($controller->modelLookups !== 0 || $issueModel->calls !== 0) {
+            throw new \RuntimeException('Malformed identity reached the GitHub issue writer.');
+        }
+    }
+
     $app->identity = new class {
         public int $id = 42;
 
