@@ -351,6 +351,31 @@ namespace {
         }
     }
 
+    // Invalid legacy database selectors must be rejected even when a sport
+    // has been selected. No container service is installed in this fixture.
+    $legacyDatabase = new \ReflectionMethod('modJSMSportsHelper', 'databaseSelector');
+    foreach ([
+        [0, 0], [1, 1], ['0000', 0], ['0001', 1],
+        [true, null], [false, null], [[], null],
+        [2, null], ['2', null], ['1bad', null],
+        [' 1', null], ['1.0', null], [str_repeat('0', 65), null],
+    ] as [$raw, $expected]) {
+        if ($legacyDatabase->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Legacy statistics database selector guard failed.');
+        }
+    }
+
+    foreach ([true, 2, '2', '1bad', ['1']] as $invalidDatabase) {
+        $invalidParams = new \Joomla\Registry\Registry([
+            'sportstypes' => 7,
+            'cfg_which_database' => $invalidDatabase,
+        ]);
+        if (\modJSMSportsHelper::getData($invalidParams)
+            !== ['sportstype' => [], 'projectscount' => 0]) {
+            throw new \RuntimeException('Invalid legacy database selector reached Joomla.');
+        }
+    }
+
     $legacyParams = new \Joomla\Registry\Registry($disabled + [
         'sportstypes' => '0007',
         'show_leagues' => 1,
