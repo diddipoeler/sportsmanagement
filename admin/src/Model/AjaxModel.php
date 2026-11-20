@@ -1292,7 +1292,7 @@ final class AjaxModel extends BaseDatabaseModel
             // Joomla's private log for troubleshooting.
             Log::add(__METHOD__ . ': ' . $e->getMessage(), Log::ERROR, 'jsmerror');
             self::administratorApplication()->enqueueMessage(
-                Text::_('COM_SPORTSMANAGEMENT_AJAX_OPTIONS_LOAD_FAILED'),
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
                 'error'
             );
 
