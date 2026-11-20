@@ -6,6 +6,7 @@ on:
     paths:
       - 'site/src/Controller/DisplayController.php'
       - 'admin/src/Controller/DisplayController.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - '.github/tests/joomla56_display_view_input_contract.php'
       - '.github/workflows/joomla56-display-view-input.yml'
@@ -26,7 +27,14 @@ jobs:
         run: |
           php -l site/src/Controller/DisplayController.php
           php -l admin/src/Controller/DisplayController.php
+          php -l modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
           php -l modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php
           php -l .github/tests/joomla56_display_view_input_contract.php
+      - name: Document changed Joomla 5/6 controller and module methods
+        run: |
+          php .github/scripts/check-php-function-docs.php \
+            site/src/Controller/DisplayController.php \
+            admin/src/Controller/DisplayController.php \
+            modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php
       - name: View input contracts
         run: php .github/tests/joomla56_display_view_input_contract.php
