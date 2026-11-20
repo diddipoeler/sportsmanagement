@@ -81,16 +81,30 @@ final class ProjectsController extends SportsManagementAdminController
      * Execute a protected administrator project operation and redirect.
      *
      * Validates the Joomla POST token and the requested component ACL
-     * permission, resolves the native ProjectModel, invokes the designated
-     * operation and reports its success or failure on the projects page.
+     * permission, verifies that the operation is one of the supported
+     * project actions, resolves the native ProjectModel and invokes only
+     * that operation. Reports the outcome on the administrator projects page.
      *
      * @param string $permission Joomla ACL action required for the operation.
      * @param string $method Name of the ProjectModel operation to invoke.
      * @return void
+     * @throws \InvalidArgumentException If the action or permission pair is not supported.
      * @throws \RuntimeException If the token, permission or model is invalid.
      */
     private function runProjectAction(string $permission, string $method): void
     {
+        // Keep dynamic model calls restricted to these existing controller
+        // tasks, even if additional callers are introduced in the future.
+        $allowedActions = [
+            'saveshort' => 'core.edit',
+            'setleaguechampion' => 'core.edit',
+            'copy' => 'core.create',
+        ];
+
+        if (!isset($allowedActions[$method]) || $allowedActions[$method] !== $permission) {
+            throw new \InvalidArgumentException('Unsupported SportsManagement project action.', 400);
+        }
+
         if (!Session::checkToken('post')) {
             throw new \RuntimeException(Text::_('JINVALID_TOKEN'), 403);
         }
