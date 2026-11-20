@@ -12,6 +12,8 @@ on:
       - 'site/src/Helper/RoundPaginationHelper.php'
       - 'admin/src/Controller/ProjectsController.php'
       - 'admin/src/Controller/GithubController.php'
+      - 'admin/src/Model/GithubModel.php'
+      - '.github/tests/joomla56_admin_github_transport_privacy.php'
       - '.github/tests/joomla56_admin_github_issue_identity.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
       - '.github/tests/joomla56_round_navigation_slugs.php'
@@ -29,6 +31,8 @@ on:
       - 'site/src/Helper/RoundPaginationHelper.php'
       - 'admin/src/Controller/ProjectsController.php'
       - 'admin/src/Controller/GithubController.php'
+      - 'admin/src/Model/GithubModel.php'
+      - '.github/tests/joomla56_admin_github_transport_privacy.php'
       - '.github/tests/joomla56_admin_github_issue_identity.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
       - '.github/tests/joomla56_round_navigation_slugs.php'
@@ -48,6 +52,8 @@ jobs:
           php -l admin/src/Controller/DisplayController.php
           php -l admin/src/Controller/ProjectsController.php
           php -l admin/src/Controller/GithubController.php
+          php -l admin/src/Model/GithubModel.php
+          php -l .github/tests/joomla56_admin_github_transport_privacy.php
           php -l .github/tests/joomla56_admin_github_issue_identity.php
           php -l site/src/Helper/RoundPaginationHelper.php
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
@@ -68,7 +74,8 @@ jobs:
             modules/mod_sportsmanagement_sports_type_statistics/helper.php \
             site/src/Helper/RoundPaginationHelper.php \
             admin/src/Controller/ProjectsController.php \
-            admin/src/Controller/GithubController.php
+            admin/src/Controller/GithubController.php \
+            admin/src/Model/GithubModel.php
       - name: View input contracts
         run: php .github/tests/joomla56_display_view_input_contract.php
       - name: Verify protected administrator project actions
@@ -79,3 +86,5 @@ jobs:
         run: php .github/tests/joomla56_sports_type_statistics_scope.php
       - name: Verify administrator GitHub issue identity checks
         run: php .github/tests/joomla56_admin_github_issue_identity.php
+      - name: Verify redacted administrator GitHub transport errors
+        run: php .github/tests/joomla56_admin_github_transport_privacy.php
