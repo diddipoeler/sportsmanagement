@@ -813,6 +813,13 @@ class xml_parser_class
     {/metadocument}
     */
 
+	/**
+	 * Incrementally parse XML text into the legacy document structure.
+	 * Initialises Expat callbacks when required, appends each chunk and finalises the native parser after the final chunk.
+	 * @param string $data XML document bytes to parse.
+	 * @param bool $end_of_data Whether this chunk ends the input document.
+	 * @return string Empty string for success or a recorded parser error.
+	 */
 	Function Parse($data, $end_of_data)
 	{
 		global $xml_parser_handlers;
@@ -942,6 +949,13 @@ class xml_parser_class
     {/metadocument}
     */
 
+	/**
+	 * Extract the joined text content of a parsed XML element.
+	 * Resolves the stored element path, rejects non-text children and concatenates the element's data nodes.
+	 * @param string $path Comma-delimited XML element path.
+	 * @param string $value Receives the concatenated element contents.
+	 * @return string Empty string for success or a detailed parse error.
+	 */
 	Function GetTagValue($path, &$value)
 	{
 		if (!IsSet($this->structure[$path]))
@@ -1007,6 +1021,14 @@ class xml_parser_class
     {/metadocument}
     */
 
+	/**
+	 * Record a validation error using the saved element position.
+	 * Uses the original XML line, column and byte offset when available, with a deterministic fallback.
+	 * @param string $path Parsed element path.
+	 * @param int $error_number Legacy parser error category.
+	 * @param string $error Reason the selected element is invalid.
+	 * @return string Recorded error description.
+	 */
 	Function SetPathErrorPosition($path, $error_number, $error)
 	{
 		if ($this->store_positions)
@@ -1031,6 +1053,16 @@ class xml_parser_class
     {/metadocument}
     */
 
+	/**
+	 * Validate and retrieve child elements from the parsed XML document.
+	 * Walks the configured element schema, enforces required and optional element types, and returns converted values by reference.
+	 * @param string $path Parent XML element path.
+	 * @param string $name Logical validated element name.
+	 * @param array $types Expected child elements and their constraints.
+	 * @param bool $hash Whether to store values by their element keys.
+	 * @param array $values Receives validated child data.
+	 * @return string Empty string on success, or an element validation error.
+	 */
 	Function ExtractElementData($path, $name, $types, $hash, &$values)
 	{
 		$values   = array();
@@ -1509,6 +1541,15 @@ class xml_parser_class
     {/metadocument}
     */
 
+	/**
+	 * Check a nested XML value using the historical validation interface.
+	 * Retains the original unsupported-type response for callers requesting custom element validation.
+	 * @param mixed $validation Requested validation rule.
+	 * @param string $path XML element path.
+	 * @param mixed $value Source XML element content.
+	 * @param mixed $result Receives the validation result.
+	 * @return string Unsupported validation message.
+	 */
 	Function ValidateElementData($validation, $path, &$value, &$result)
 	{
 		return ($validation . ' is not a supported type of validation');
@@ -1659,6 +1700,12 @@ class xml_parser_class
     {/metadocument}
     */
 
+	/**
+	 * Check that an XML element contains only permitted whitespace.
+	 * Examines the element's text and uses source-position diagnostics for invalid non-whitespace contents.
+	 * @param string $path Path to the parsed text element.
+	 * @return string Empty string on success or parser validation error.
+	 */
 	Function VerifyWhiteSpace($path)
 	{
 		if (!IsSet($this->structure[$path]))
@@ -1739,6 +1786,19 @@ class xml_parser_class
 
 */
 
+/**
+ * Parse and optionally cache a legacy XML document from a local path.
+ * Reads an existing parser cache only when it is sufficiently recent and its serialized class is the approved legacy parser; otherwise parses the file and writes a new cache.
+ * @param xml_parser_class $parser Receives the loaded parser by reference.
+ * @param string $file XML source file path.
+ * @param bool $store_positions Whether to record source locations.
+ * @param string $cache Optional local serialized cache file.
+ * @param int $case_folding Enable Expat case folding.
+ * @param string $target_encoding Requested decoded output encoding.
+ * @param bool $simplified_xml Whether to parse simplified XML.
+ * @param bool $fail_on_non_simplified_xml Reject unsupported simplified XML constructs.
+ * @return string Empty string on success or a cache/parser error.
+ */
 Function XMLParseFile(&$parser, $file, $store_positions, $cache = "", $case_folding = 0, $target_encoding = "ISO-8859-1", $simplified_xml = 0, $fail_on_non_simplified_xml = 0)
 {
 	if (strcmp($cache, ""))
