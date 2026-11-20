@@ -182,7 +182,8 @@ if (!class_exists('modJSMSportsHelper', false)) {
          *
          * Returns the supplied database or resolves DatabaseInterface
          * through Joomla's dependency injection container, checking
-         * the service before using it for queries.
+         * the service before using it for queries. Wraps container errors
+         * without leaking potentially sensitive exception text.
          *
          * @param DatabaseInterface|null $database Optional database override.
          * @return DatabaseInterface Valid Joomla database service.
@@ -194,7 +195,17 @@ if (!class_exists('modJSMSportsHelper', false)) {
                 return $database;
             }
 
-            $database = Factory::getContainer()->get(DatabaseInterface::class);
+            try {
+                $database = Factory::getContainer()->get(DatabaseInterface::class);
+            } catch (\Throwable $exception) {
+                // Container exceptions may expose credentials and DSN details.
+                // Preserve the cause for debugging, not its text for visitors.
+                throw new \RuntimeException(
+                    'SportsManagement Sports Type Statistics database service is unavailable.',
+                    500,
+                    $exception
+                );
+            }
 
             if (!$database instanceof DatabaseInterface) {
                 throw new \RuntimeException('SportsManagement Sports Type Statistics database service is unavailable.', 500);
