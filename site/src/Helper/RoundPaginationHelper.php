@@ -178,8 +178,10 @@ final class RoundPaginationHelper
      *
      * Retrieves round options through the native results model, preserves
      * division, sorting and current menu context in routed option URLs, and
-     * selects the option matching the current request round. Returns no
-     * markup when the project ID or database selector is invalid, or no usable
+     * selects the option matching the current request round. Invalid or
+     * non-scalar imported round labels fall back to the canonical slug.
+     * Returns no markup when the project ID or database selector is invalid,
+     * or no usable
      * rounds are available.
      *
      * @param object|null $project Project containing an ID and season metadata.
@@ -224,7 +226,13 @@ final class RoundPaginationHelper
             }
 
             $url = self::roundUrl($params, $value['slug'], $params['division'], '');
-            $options[] = HTMLHelper::_('select.option', $url, (string) ($round->text ?? $value['slug']));
+            $rawLabel = $round->text ?? null;
+            $label = is_string($rawLabel) && $rawLabel !== ''
+                && strlen($rawLabel) <= 256
+                && preg_match('/[\\x00-\\x1F\\x7F]/', $rawLabel) !== 1
+                ? $rawLabel
+                : $value['slug'];
+            $options[] = HTMLHelper::_('select.option', $url, $label);
 
             if ($value['id'] === $currentRound) {
                 $currentUrl = $url;
