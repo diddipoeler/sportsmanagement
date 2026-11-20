@@ -28,6 +28,11 @@ final class ResultsLegacyViewCompatibility
     /** @var array<int, array<int, object>> */
     private static array $refereesByMatch = [];
 
+    /**
+     * Register the legacy results-view class alias for Joomla 5/6 templates.
+     * Maintains the historic sportsmanagementViewResults class name while using the namespaced compatibility helper.
+     * @return void The alias is registered only when absent.
+     */
     public static function register(): void
     {
         if (!class_exists('sportsmanagementViewResults', false)) {
@@ -45,6 +50,16 @@ final class ResultsLegacyViewCompatibility
         self::$refereesByMatch = $refereesByMatch;
     }
 
+    /**
+     * Render teams without a published fixture in the selected match collection.
+     * Compares registered teams to participating home and away project teams, then generates the legacy presentation when teams are missing.
+     * @param mixed $games Match records for the active round.
+     * @param mixed $teams Available project team records.
+     * @param mixed $config Results view configuration options.
+     * @param mixed $favteams Identifiers for the current user's favourite teams.
+     * @param mixed $project Current project metadata.
+     * @return string HTML representing nonplaying teams or an empty string.
+     */
     public static function showNotPlayingTeams(&$games, &$teams, &$config, &$favteams, &$project): string
     {
         $playingTeams = [];
@@ -92,6 +107,15 @@ final class ResultsLegacyViewCompatibility
         return $output . implode(', ', $rendered);
     }
 
+    /**
+     * Record the home and away participants of a published fixture.
+     * Avoids inserting duplicate or invalid IDs into the playing team list and skips unpublished matches.
+     * @param array $playingTeams Team identifier list updated by reference.
+     * @param mixed $homeTeam First team identifier.
+     * @param mixed $awayTeam Second team identifier.
+     * @param mixed $published Whether the match is visible.
+     * @return void Updates playing team IDs in place.
+     */
     public static function addPlayingTeams(&$playingTeams, $homeTeam, $awayTeam, $published = false): void
     {
         if (!$published) {
@@ -105,6 +129,19 @@ final class ResultsLegacyViewCompatibility
         }
     }
 
+    /**
+     * Build a club logo for a legacy results team row.
+     * Resolves appropriate logo placeholders, presentation dimensions and schema attributes before rendering the team icon.
+     * @param mixed $team Club/team data containing a name and optional logo paths.
+     * @param mixed $type Requested logo size/type.
+     * @param mixed $attribs Additional rendering attributes.
+     * @param mixed $modalWidth Legacy modal width setting.
+     * @param mixed $modalHeight Legacy modal height setting.
+     * @param mixed $useJqueryModal Whether a jQuery modal should be used.
+     * @param mixed $schemaAttribute HTML schema attribute name.
+     * @param mixed $schemaValue Schema item property value.
+     * @return string Rendered logo markup or an empty string for invalid teams.
+     */
     public static function getTeamClubIcon(
         $team,
         $type = 1,
@@ -192,6 +229,14 @@ final class ResultsLegacyViewCompatibility
         return $dates;
     }
 
+    /**
+     * Display referee names or tooltip markup associated with a match.
+     * Uses referee records previously supplied by sync and follows the project's referee/team display settings.
+     * @param mixed $game Current match object, passed by reference.
+     * @param mixed $project Project settings controlling team referees.
+     * @param mixed $config View options including show_referee.
+     * @return void Outputs legacy referee markup when enabled.
+     */
     public static function showMatchRefereesAsTooltip(&$game, $project = [], $config = []): void
     {
         if (!is_object($game) || empty($config['show_referee'])) {
@@ -235,6 +280,12 @@ final class ResultsLegacyViewCompatibility
             . '</span>';
     }
 
+    /**
+     * Build match-report and match-decision navigation icons.
+     * Uses the site application's current parameters to compose result match links for legacy templates.
+     * @param mixed $game Match whose report or decision icons are displayed.
+     * @return string Safe result-action markup or a nonbreaking-space placeholder.
+     */
     public static function showReportDecisionIcons(&$game): string
     {
         if (!is_object($game)) {
@@ -271,6 +322,17 @@ final class ResultsLegacyViewCompatibility
         );
     }
 
+    /**
+     * Render events and substitutions below the result display.
+     * Delegates the historical result-event container signature to the namespaced HTML compatibility helper.
+     * @param mixed $matchInfo Match details and identifying information.
+     * @param mixed $projectEvents Event definitions available to the project.
+     * @param mixed $matchEvents Events recorded for this match.
+     * @param mixed $substitutions Optional substitution records.
+     * @param mixed $config Results display configuration.
+     * @param mixed $project Project metadata.
+     * @return string HTML container of match events.
+     */
     public static function showEventsContainerInResults(
         $matchInfo,
         $projectEvents,
@@ -289,6 +351,16 @@ final class ResultsLegacyViewCompatibility
         );
     }
 
+    /**
+     * Format one completed or scheduled match for legacy results views.
+     * Combines favourite-team emphasis, report links and configured result presentation while respecting match state.
+     * @param mixed $team1 Home team record.
+     * @param mixed $team2 Away team record.
+     * @param mixed $game Match record containing scores and scheduling.
+     * @param mixed $reportLink Report navigation URL, passed by reference.
+     * @param mixed $config Results view formatting options.
+     * @return string Formatted score and result state markup.
+     */
     public static function formatResult(&$team1, &$team2, &$game, &$reportLink, &$config): string
     {
         if (!is_object($game)) {
@@ -337,6 +409,13 @@ final class ResultsLegacyViewCompatibility
         return $output;
     }
 
+    /**
+     * Show a match cancellation reason or the configured score.
+     * Returns a cancellation explanation when present; otherwise delegates to the inline score formatter.
+     * @param mixed $game Match details and status.
+     * @param mixed $config Legacy results display configuration.
+     * @return string Match state or formatted score.
+     */
     public static function showMatchState(&$game, &$config): string
     {
         if (!is_object($game)) {
@@ -350,6 +429,13 @@ final class ResultsLegacyViewCompatibility
         return self::formatScoreInline($game, $config);
     }
 
+    /**
+     * Format the fixture score according to the selected home/away presentation.
+     * Supports swapping home and guest display, configured score separators and fixtures without recorded results.
+     * @param mixed $game Match record containing home and away result values.
+     * @param mixed $config Configured results formatting options.
+     * @return string Inline match score markup.
+     */
     public static function formatScoreInline($game, &$config): string
     {
         if (!is_object($game)) {
@@ -391,6 +477,12 @@ final class ResultsLegacyViewCompatibility
         return $result;
     }
 
+    /**
+     * Resolve the configured image placeholder for a legacy logo type.
+     * Uses the historical SportsManagement helper when installed, returning an empty string otherwise.
+     * @param string $type Requested default logo or image placeholder category.
+     * @return string Placeholder image path or empty string.
+     */
     private static function defaultPlaceholder(string $type): string
     {
         if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'getDefaultPlaceholder')) {
@@ -400,6 +492,12 @@ final class ResultsLegacyViewCompatibility
         return '';
     }
 
+    /**
+     * Resolve a country flag for legacy result rows.
+     * Uses the existing JSMCountries integration only when its helper class is loaded.
+     * @param string $country Three-letter country code.
+     * @return string Flag HTML or URL supplied by the legacy helper, or empty text.
+     */
     private static function countryFlag(string $country): string
     {
         if ($country !== '' && class_exists('JSMCountries') && method_exists('JSMCountries', 'getCountryFlag')) {
@@ -409,6 +507,14 @@ final class ResultsLegacyViewCompatibility
         return '';
     }
 
+    /**
+     * Format a result-row team name while retaining favourite-team emphasis.
+     * Delegates to the legacy formatter when available and otherwise HTML-escapes the team name safely.
+     * @param object $team Team record containing the display name and ID.
+     * @param array $config Results presentation settings.
+     * @param bool $favorite Whether this team should be highlighted.
+     * @return string Escaped and formatted team display name.
+     */
     private static function formatTeamName(object $team, array $config, bool $favorite): string
     {
         if (class_exists('sportsmanagementHelper') && method_exists('sportsmanagementHelper', 'formatTeamName')) {
