@@ -14,6 +14,7 @@ on:
     paths:
       - 'site/src/Controller/DisplayController.php'
       - 'admin/src/Controller/DisplayController.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_navigation_menu/src/Helper/NativeNavigationMenuHelper.php'
       - '.github/tests/joomla56_display_view_input_contract.php'
   workflow_dispatch:
