@@ -83,7 +83,9 @@ final class ProjectsController extends SportsManagementAdminController
      * Validates the Joomla POST token and the requested component ACL
      * permission, verifies that the operation is one of the supported
      * project actions, resolves the native ProjectModel and invokes only
-     * that operation. Reports the outcome on the administrator projects page.
+     * that operation. Treats false and null write results as failures and
+     * uses a translated fallback when the model supplies no text error.
+     * Reports the outcome on the administrator projects page.
      *
      * @param string $permission Joomla ACL action required for the operation.
      * @param string $method Name of the ProjectModel operation to invoke.
@@ -122,10 +124,14 @@ final class ProjectsController extends SportsManagementAdminController
         }
 
         $result = $model->{$method}();
-        $ok = $result !== false;
+
+        // Legacy model methods may return null on unsuccessful writes.
+        // Treat only a non-null, non-false result as success.
+        $ok = $result !== false && $result !== null;
+        $error = $ok ? '' : $model->getError();
         $message = $ok
-            ? (is_string($result) ? $result : Text::_('JLIB_APPLICATION_SAVE_SUCCESS'))
-            : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
+            ? (is_string($result) && $result !== '' ? $result : Text::_('JLIB_APPLICATION_SAVE_SUCCESS'))
+            : (is_string($error) && $error !== '' ? $error : Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
         $this->setRedirect(
             Route::_('index.php?option=com_sportsmanagement&view=projects', false),
             $message,
