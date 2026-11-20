@@ -28,6 +28,15 @@ use Joomla\Database\ParameterType;
  */
 final class AjaxModel extends BaseDatabaseModel
 {
+    /**
+     * List published prediction games for administrator select controls.
+     *
+     * Builds optionally slugged value/text options using the configured component database.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getPredictionId($dabse = false, $required = false, $slug = false): array
     {
         $db = self::database((bool) $dabse);
@@ -43,6 +52,14 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * Prepend a translated global selection option to AJAX selector rows.
+     *
+     * Preserves supplied options and omits the placeholder when an empty required selector must remain empty.
+     * @param mixed $elements Existing selection options.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function addGlobalSelectElement($elements, $required = false): array
     {
         $rows = is_array($elements) ? $elements : [];
@@ -59,6 +76,16 @@ final class AjaxModel extends BaseDatabaseModel
         return $rows;
     }
 
+    /**
+     * List sports projects associated with a selected prediction game.
+     *
+     * Uses a parameter-bound prediction identifier and includes only published associations.
+     * @param mixed $prediction_id Prediction game identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false): array
     {
         $predictionId = max(0, (int) $prediction_id);
@@ -82,6 +109,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List published prediction groups for administrator select fields.
+     *
+     * Returns group identifiers or slug values together with human-readable names.
+     * @param mixed $prediction_id Prediction game identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getPredictionGroups($prediction_id = 0, $required = false, $slug = false, $dabse = false): array
     {
         $db = self::database((bool) $dabse);
@@ -97,6 +134,14 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List Joomla users or Community Builder contacts for person-contact fields.
+     *
+     * Selects the requested profile source and handles unsupported profile types with an empty selector.
+     * @param mixed $show_user_profile Which contact source should be used.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getpersoncontactid($show_user_profile = 0, $required = false): array
     {
         $profileType = (int) $show_user_profile;
@@ -123,6 +168,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * Find leagues matching the selected country and optional association.
+     *
+     * Uses administrator search state when no country is supplied and binds country and association filters.
+     * @param mixed $country Country code used to limit the options.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getcountryleagueoptions($country = '', $required = false, $slug = false, $dbase = false): array
     {
         $app = self::administratorApplication();
@@ -160,6 +215,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List age-group options associated with an existing club.
+     *
+     * Requires a valid club identifier and returns the component's default selection on empty input.
+     * @param mixed $club_id Club identifier used to filter rows.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false, $dbase = false): array
     {
         $clubId = (int) $club_id;
@@ -189,6 +254,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List association records, optionally restricted to a country.
+     *
+     * Reads association names and IDs from the Joomla database for administrator filters.
+     * @param mixed $country Country code used to limit the options.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getassociationsoptions($country = null, $required = false, $slug = false, $dabse = false): array
     {
         $country = trim((string) $country);
@@ -206,6 +281,15 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List available seasons for SportsManagement administrator forms.
+     *
+     * Returns translated placeholder and season value/text pairs, optionally including slugs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getseasons($dabse = false, $required = false, $slug = false): array
     {
         $db = self::database((bool) $dabse);
@@ -220,6 +304,15 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List available sports type identifiers and names.
+     *
+     * Produces a sorted global-selection list from the sports type lookup table.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getsportstypes($dabse = false, $required = false, $slug = false): array
     {
         $db = self::database((bool) $dabse);
@@ -234,6 +327,17 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * Find geographic location options by postal code and country.
+     *
+     * Searches the location database only when a postcode or country filter was provided.
+     * @param mixed $zipcode Postal code filter.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @param mixed $country Country code used to limit the options.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getlocationzipcodeoptions($zipcode, $required = false, $slug = false, $dabse = false, $country = null): array
     {
         $zipcode = trim((string) $zipcode);
@@ -269,6 +373,13 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * Look up a country's display name from its three-letter code.
+     *
+     * Uses a parameter-bound lookup in the SportsManagement countries table.
+     * @param mixed $country Country code used to limit the options.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getCcountryName($country): array
     {
         $country = trim((string) $country);
@@ -287,6 +398,13 @@ final class AjaxModel extends BaseDatabaseModel
         return $rows;
     }
 
+    /**
+     * Look up a country's two-letter code from its three-letter identifier.
+     *
+     * Uses a parameter-bound lookup of the alpha2 field in the countries table.
+     * @param mixed $country Country code used to limit the options.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getCcountryAlpha2($country): array
     {
         $country = trim((string) $country);
@@ -300,6 +418,17 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadRows($db, $query);
     }
 
+    /**
+     * List postcodes belonging to a selected country.
+     *
+     * Builds postcode selectors from geographic data and handles missing country selection.
+     * @param mixed $country Country code used to limit the options.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @param mixed $project_id Sports project identifier.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getcountryzipcodeoptions($country, $required = false, $slug = false, $dabse = false, $project_id = 0): array
     {
         $country = trim((string) $country);
@@ -330,6 +459,18 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List rounds for the selected sports project.
+     *
+     * Supports slugged values, ascending or descending ordering and optional round ID constraints.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $ordering Requested ASC or DESC round ordering.
+     * @param mixed $round_ids Optional round IDs included in the selector.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectRoundOptions($project_id, $required = false, $slug = false, $ordering = 'ASC', $round_ids = null, $dabse = false): array
     {
         $projectId = max(0, (int) $project_id);
@@ -363,6 +504,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List player or staff positions relevant to a sports type.
+     *
+     * Returns position values and names filtered by the requested sports type.
+     * @param mixed $sports_type_id Sport type identifier for filtering.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
         $sportsTypeId = max(0, (int) $sports_type_id);
@@ -389,6 +540,18 @@ final class AjaxModel extends BaseDatabaseModel
         return self::addGlobalSelectElement($rows, (bool) $required);
     }
 
+    /**
+     * List age groups for the selected sport, project or country.
+     *
+     * Uses the geographic database and component associations to populate a filtered select field.
+     * @param mixed $sports_type_id Sport type identifier for filtering.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $country Country code used to limit the options.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getpersonagegroupoptions($sports_type_id = 0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = ''): array
     {
         $sportsTypeId = max(0, (int) $sports_type_id);
@@ -427,6 +590,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List members of the selected prediction game.
+     *
+     * Joins prediction membership and Joomla user records to display member names and account handles.
+     * @param mixed $prgame_id Prediction game identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getpredictionmembersoptions($prgame_id, $required = false, $slug = false, $dbase = false): array
     {
         $predictionId = max(0, (int) $prgame_id);
@@ -447,6 +620,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List person records for the supported person-type selector.
+     *
+     * Returns the legacy empty option for unsupported types and formatted person names otherwise.
+     * @param mixed $person_art Legacy person type selector.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getpersonlistoptions($person_art, $required = false, $slug = false, $dbase = false): array
     {
         if ((int) $person_art !== 2) {
@@ -463,6 +646,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List people relevant to the currently selected project team.
+     *
+     * Reads the administrator's current project, season and team context and builds matching person options.
+     * @param mixed $person_art Legacy person type selector.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getpersonlistoptionsprojectteam($person_art = 0, $required = false, $slug = false, $dbase = false): array
     {
         $app = self::administratorApplication();
@@ -517,6 +710,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List divisions assigned to a sports project.
+     *
+     * Returns division IDs or slugs alongside display names for administrator selectors.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectDivisionsOptions($project_id, $required = false, $slug = false, $dabse = false): array
     {
         $db = self::database((bool) $dabse);
@@ -538,6 +741,17 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List project teams belonging to a selected division.
+     *
+     * Uses the shared team query and applies project and division filters with bound parameters.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @param mixed $division_id Division identifier used to filter the project teams.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectTeamsByDivisionOptions($project_id, $required = false, $slug = false, $dbase = false, $division_id = 0): array
     {
         $projectId = max(0, (int) $project_id);
@@ -557,6 +771,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List projects containing a selected club.
+     *
+     * When no club is selected, delegates to the general project list; otherwise uses matching club relations.
+     * @param mixed $club_id Club identifier used to filter rows.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectsByClubOptions($club_id, $required = false, $slug = false, $dbase = false): array
     {
         $clubId = max(0, (int) $club_id);
@@ -585,6 +809,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List sports projects optionally filtered by season.
+     *
+     * Creates project value/text options with optionally slugged identifiers.
+     * @param mixed $season_id Season identifier for filtering.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjects($season_id = 0, $required = false, $slug = false, $dabse = false): array
     {
         $db = self::database((bool) $dabse);
@@ -608,6 +842,17 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List teams assigned to a selected sports project.
+     *
+     * Optionally restricts teams to a club and returns the legacy global-select option.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dabse Legacy flag selecting the component database context.
+     * @param mixed $club_id Club identifier used to filter rows.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false, $club_id = null): array
     {
         $db = self::database((bool) $dabse);
@@ -639,16 +884,46 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List player identities associated with a selected project.
+     *
+     * Delegates to the shared project-person query with the player person-type constant.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectPlayerOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         return self::getProjectPersonsOptions($project_id, 1, $required, $dbase);
     }
 
+    /**
+     * List staff identities associated with a selected project.
+     *
+     * Delegates to the shared project-person query with the staff person-type constant.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectStaffOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         return self::getProjectPersonsOptions($project_id, 2, $required, $dbase);
     }
 
+    /**
+     * List clubs participating in the selected project.
+     *
+     * Builds club value/text options from the project-club relationships.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
@@ -673,6 +948,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List match event types configured for a sports project.
+     *
+     * Returns event type labels and slug-form values where required by the legacy AJAX API.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $projectId = max(0, (int) $project_id);
@@ -697,6 +982,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List statistics types available for a sports project.
+     *
+     * Returns project statistics definitions as select options for administrative forms.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectStatsOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
@@ -724,6 +1019,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::getProjectStatsOptions($project_id, $required, $slug, $dbase);
     }
 
+    /**
+     * List fixtures belonging to a project.
+     *
+     * Formats match date and opposing team names for value/text selection options.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getMatchesOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
@@ -745,6 +1050,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List tournament tree nodes for the selected sports project.
+     *
+     * Returns tree node IDs and display labels for match-tree selection forms.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $projectId = max(0, (int) $project_id);
@@ -763,6 +1078,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List projects linked to a requested sports type.
+     *
+     * Filters the project selection through the selected sport identifier.
+     * @param mixed $sports_type_id Sport type identifier for filtering.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
         $sportsTypeId = max(0, (int) $sports_type_id);
@@ -779,6 +1104,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List age groups associated with the chosen sports type.
+     *
+     * Builds value/text age-group rows for sports-specific administrator forms.
+     * @param mixed $sports_type_id Sport type identifier for filtering.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false): array
     {
         $sportsTypeId = max(0, (int) $sports_type_id);
@@ -798,6 +1133,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List project-team relationship records by project.
+     *
+     * Returns project-team ID or slug values rather than standalone team identifiers.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $projectId = max(0, (int) $project_id);
@@ -818,6 +1163,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List available referees associated with a sports project.
+     *
+     * Uses person data and project relations to produce referee options.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     public static function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false): array
     {
         $db = self::database((bool) $dbase);
@@ -839,6 +1194,16 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * List project participants of the requested person type.
+     *
+     * Shared query helper for players and staff, selecting person IDs, names and project membership.
+     * @param mixed $project_id Sports project identifier.
+     * @param mixed $personType Player or staff participant category.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @param mixed $dbase Legacy flag selecting the component database context.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     private static function getProjectPersonsOptions($project_id, int $personType, $required, $dbase): array
     {
         $projectId = max(0, (int) $project_id);
@@ -871,6 +1236,14 @@ final class AjaxModel extends BaseDatabaseModel
         return self::loadOptions($db, $query, (bool) $required);
     }
 
+    /**
+     * Build the common project-team selector query.
+     *
+     * Selects team ID or slug and display name while joining project team relationships.
+     * @param mixed $db Database connection used for the options query.
+     * @param mixed $slug Whether to return legacy ID:alias values instead of numeric IDs.
+     * @return mixed Joomla database query configured for project teams.
+     */
     private static function projectTeamBaseQuery(DatabaseInterface $db, bool $slug)
     {
         return $db->createQuery()
@@ -884,11 +1257,28 @@ final class AjaxModel extends BaseDatabaseModel
             ->join('INNER', $db->quoteName('#__sportsmanagement_project', 'p') . ' ON ' . $db->quoteName('p.id') . ' = ' . $db->quoteName('pt.project_id'));
     }
 
+    /**
+     * Execute an administrator selector query and add the global choice.
+     *
+     * Combines database results with the translated placeholder according to the required flag.
+     * @param mixed $db Database connection used for the options query.
+     * @param mixed $query Joomla database query to execute.
+     * @param mixed $required Whether an empty required selector should omit the global placeholder.
+     * @return array<int,mixed> Select option records, or an empty collection when unavailable.
+     */
     private static function loadOptions(DatabaseInterface $db, $query, bool $required): array
     {
         return self::addGlobalSelectElement(self::loadRows($db, $query), $required);
     }
 
+    /**
+     * Execute a query and load its result records for an AJAX selector.
+     *
+     * Returns an empty array on database errors and notifies the administrator.
+     * @param mixed $db Database connection used for the options query.
+     * @param mixed $query Joomla database query to execute.
+     * @return array<int,object> Database rows or an empty array on failure.
+     */
     private static function loadRows(DatabaseInterface $db, $query): array
     {
         try {
@@ -902,6 +1292,15 @@ final class AjaxModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Restrict a database query to a validated collection of IDs.
+     *
+     * Uses typed integer whereIn parameters or a never-matching predicate when no IDs remain.
+     * @param mixed $query Joomla database query to execute.
+     * @param mixed $column Quoted database column to restrict.
+     * @param mixed $value Raw ID value or collection to normalise.
+     * @return void Mutates the supplied query.
+     */
     private static function applyIdFilter($query, string $column, $value): void
     {
         $ids = self::ids($value);
@@ -913,6 +1312,13 @@ final class AjaxModel extends BaseDatabaseModel
         }
     }
 
+    /**
+     * Normalise legacy comma-separated or array-based ID selections.
+     *
+     * Converts values to unique positive integer identifiers used in bound query filters.
+     * @param mixed $value Raw ID value or collection to normalise.
+     * @return array<int> Unique positive IDs.
+     */
     private static function ids($value): array
     {
         if ($value === null || $value === '' || $value === false) {
@@ -932,11 +1338,23 @@ final class AjaxModel extends BaseDatabaseModel
         return $ids;
     }
 
+    /**
+     * Resolve the Joomla administrator application for AJAX selectors.
+     *
+     * Delegates to the component's application resolver rather than deprecated global app lookups.
+     * @return CMSApplicationInterface Administrator application.
+     */
     private static function administratorApplication(): CMSApplicationInterface
     {
         return SportsManagementAdministratorApplicationResolver::resolve();
     }
 
+    /**
+     * Resolve the Joomla database service from the dependency injection container.
+     *
+     * Provides a consistent base database for selectors that are not component-database-specific.
+     * @return DatabaseInterface Resolved database connection.
+     */
     private static function joomlaDatabase(): DatabaseInterface
     {
         /** @var DatabaseInterface $database */
@@ -945,6 +1363,13 @@ final class AjaxModel extends BaseDatabaseModel
         return $database;
     }
 
+    /**
+     * Select the component or externally configured SportsManagement database.
+     *
+     * Uses the component resolver and the current Joomla database service.
+     * @param mixed $external Whether to use the alternate component database.
+     * @return DatabaseInterface Resolved database connection.
+     */
     private static function database(bool $external): DatabaseInterface
     {
         return (new SportsManagementDatabaseResolver())->resolve(
