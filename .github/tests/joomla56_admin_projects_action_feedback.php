@@ -109,6 +109,31 @@ namespace {
         if ($error->getCode() !== 403) { throw $error; }
     }
 
+    // Even internal dispatch calls must not invoke arbitrary model methods
+    // or pair a write operation with a weaker Joomla ACL permission.
+    $action = new \ReflectionMethod($controller, 'runProjectAction');
+    foreach ([
+        ['getError', 'core.edit'],
+        ['copy', 'core.edit'],
+        ['saveshort', 'core.create'],
+    ] as [$method, $permission]) {
+        $writesBefore = $project->writes;
+        $requestsBefore = $controller->modelRequests;
+
+        try {
+            $action->invoke($controller, $permission, $method);
+            throw new \RuntimeException('Unsupported project action accepted: ' . $method);
+        } catch (\InvalidArgumentException $error) {
+            if ($error->getCode() !== 400) {
+                throw $error;
+            }
+        }
+
+        if ($project->writes !== $writesBefore || $controller->modelRequests !== $requestsBefore) {
+            throw new \RuntimeException('Invalid project action reached the persistence model.');
+        }
+    }
+
     $app->identity->authorized = true;
     \Joomla\CMS\Session\Session::$valid = false;
     try {
