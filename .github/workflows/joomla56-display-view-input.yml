@@ -8,6 +8,7 @@ on:
       - 'admin/src/Controller/DisplayController.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
       - 'site/src/Helper/RoundPaginationHelper.php'
       - 'admin/src/Controller/ProjectsController.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
@@ -22,6 +23,7 @@ on:
       - 'admin/src/Controller/DisplayController.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php'
       - 'modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php'
+      - 'modules/mod_sportsmanagement_sports_type_statistics/helper.php'
       - 'site/src/Helper/RoundPaginationHelper.php'
       - 'admin/src/Controller/ProjectsController.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
@@ -43,6 +45,7 @@ jobs:
           php -l admin/src/Controller/ProjectsController.php
           php -l site/src/Helper/RoundPaginationHelper.php
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
+          php -l modules/mod_sportsmanagement_sports_type_statistics/helper.php
           php -l .github/tests/joomla56_admin_projects_action_feedback.php
           php -l .github/tests/joomla56_round_navigation_slugs.php
           php -l .github/tests/joomla56_sports_type_statistics_scope.php
@@ -56,6 +59,7 @@ jobs:
             admin/src/Controller/DisplayController.php \
             modules/mod_sportsmanagement_sports_type_statistics/src/Dispatcher/Dispatcher.php \
             modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php \
+            modules/mod_sportsmanagement_sports_type_statistics/helper.php \
             site/src/Helper/RoundPaginationHelper.php \
             admin/src/Controller/ProjectsController.php
       - name: View input contracts
