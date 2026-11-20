@@ -24,6 +24,8 @@ final class SportsTypeStatisticsHelper
      * team, player and fixture totals for the selected sport only.
      * Rejects unsupported database selectors, corrupt metadata and invalid
      * count records rather than turning arbitrary PHP values into numbers.
+     * Returns an empty state without opening an external database when no
+     * sport has been selected.
      * @param Registry $params Sports type statistics module parameters.
      * @param DatabaseInterface $fallbackDatabase Primary Joomla database.
      * @return array Sport metadata and aggregate count values.
@@ -34,7 +36,10 @@ final class SportsTypeStatisticsHelper
         $databaseSelector = self::nonNegativeSelector($params->get('cfg_which_database', 0));
 
         // A malformed selector must never select an unrelated sport or DB.
-        if ($sportTypeId === null || $databaseSelector === null || $databaseSelector > 1) {
+        // Without a selected sport there is no useful query to run: do not
+        // resolve a potentially remote connection just for an empty widget.
+        if ($sportTypeId === null || $sportTypeId === 0
+            || $databaseSelector === null || $databaseSelector > 1) {
             return ['sportstype' => null, 'counts' => ['projects' => 0]];
         }
 
