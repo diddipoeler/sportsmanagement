@@ -178,6 +178,24 @@ namespace {
         throw new \RuntimeException('First round navigation includes invalid links.');
     }
 
+    // Project aliases from imported data must correspond to the selected
+    // numeric project ID and must never turn arrays into URL parameters.
+    foreach ([
+        [['id' => 11, 'slug' => '11:team-a'], 'p=11%3Ateam-a'],
+        [['id' => 11, 'slug' => '12:other'], 'p=11'],
+        [['id' => 11, 'slug' => ['11:invalid']], 'p=11'],
+        [['id' => 11, 'slug' => '11:bad<script>'], 'p=11'],
+    ] as [$fields, $expectedParam]) {
+        $projectWithSlug = (object) ($fields + ['season_id' => 5, 'current_round' => 2]);
+        $slugHtml = $helper::pagenav($projectWithSlug);
+
+        if (!str_contains($slugHtml, $expectedParam)
+            || str_contains($slugHtml, 'p%5B')
+            || str_contains($slugHtml, 'Array')) {
+            throw new \RuntimeException('Imported project slug was not normalised.');
+        }
+    }
+
     $input->currentRound = 7;
     $html = $helper::pagenav($project);
 
