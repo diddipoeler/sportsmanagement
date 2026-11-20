@@ -22,7 +22,7 @@ final class GithubController extends BaseController
      *
      * Requires a valid Joomla form token, a real authenticated identity and
      * the core.manage permission for com_sportsmanagement before invoking
-     * the external GitHub issue model. Rejects guests and unavailable identities
+     * the external GitHub issue model. Rejects guests, malformed user IDs and unavailable identities
      * before any issue data is read or sent. Redirects to the result
      * layout with either a success or an error message after the attempt.
      * The resolved model must expose the issue-creation operation before it
@@ -38,7 +38,8 @@ final class GithubController extends BaseController
 
         // Guest identities or a missing Joomla user must never reach the
         // external GitHub issue writer, even if an ACL stub permits manage.
-        if ($identity === null || (int) ($identity->id ?? 0) < 1
+        if (!is_object($identity) || self::authenticatedUserId($identity->id ?? null) === 0
+            || !is_callable([$identity, 'authorise'])
             || !$identity->authorise('core.manage', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
@@ -53,6 +54,39 @@ final class GithubController extends BaseController
             $success ? 'GitHub-Issue wurde erstellt.' : 'GitHub-Issue konnte nicht erstellt werden.',
             $success ? 'message' : 'error'
         );
+    }
+
+    /**
+     * Validate the authenticated Joomla user ID without loose type casting.
+     *
+     * Joomla normally supplies a positive integer identity ID, but older
+     * integrations may expose a decimal string. Accept complete positive
+     * decimal values only, rejecting guest IDs, partial numbers, booleans,
+     * nested input and integer overflow before authorizing an API write.
+     *
+     * @param mixed $raw User ID supplied by Joomla's identity implementation.
+     * @return int Positive authenticated ID, or zero for invalid identities.
+     */
+    private static function authenticatedUserId(mixed $raw): int
+    {
+        if (is_int($raw)) {
+            return $raw > 0 ? $raw : 0;
+        }
+
+        if (!is_string($raw) || $raw === '' || strlen($raw) > 128
+            || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
