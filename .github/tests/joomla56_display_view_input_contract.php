@@ -22,6 +22,7 @@ foreach ($controllers as $relativePath) {
     if ($source === false
         || !str_contains($source, "trim(\$rawView) !== \$rawView")
         || !str_contains($source, "if (\$view === '')")
+        || !str_contains($source, "preg_match('/^[a-z][a-z0-9_]*$/iD', \$view)")
         || !str_contains($source, 'throw new \\InvalidArgumentException')
     ) {
         fwrite(STDERR, $relativePath . ": view input validation contract failed.\n");
