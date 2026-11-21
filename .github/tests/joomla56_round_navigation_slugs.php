@@ -145,7 +145,8 @@ namespace {
     }
 
     $input = new class {
-        public int $currentRound = 2;
+        public ?int $currentRound = 2;
+        public int $lastRoundDefault = -1;
 
         public function getCmd(string $name, string $default = ''): string
         {
@@ -154,7 +155,12 @@ namespace {
 
         public function getInt(string $name, int $default = 0): int
         {
-            return $name === 'r' ? $this->currentRound : $default;
+            if ($name === 'r') {
+                $this->lastRoundDefault = $default;
+                return $this->currentRound ?? $default;
+            }
+
+            return $default;
         }
     };
 
@@ -328,6 +334,45 @@ namespace {
     ]) {
         throw new \RuntimeException('Malformed round option labels were not normalised.');
     }
+
+    // When no explicit round is submitted, corrupt project metadata must
+    // not silently select a different existing round through integer casts.
+    $model::$rounds = [
+        (object) ['id' => '2:opening', 'roundcode' => 1],
+        (object) ['id' => '7:final', 'roundcode' => 2],
+    ];
+    $model::$options = [
+        (object) ['value' => '2:opening', 'text' => 'Opening'],
+        (object) ['value' => '7:final', 'text' => 'Final'],
+    ];
+    $input->currentRound = null;
+    $invalidDefaultRound = (object) [
+        'id' => 11, 'season_id' => 5, 'current_round' => '7junk',
+    ];
+    $helper::pagenav($invalidDefaultRound);
+    if ($input->lastRoundDefault !== 0
+        || $helper::$prevlink !== ''
+        || !str_contains($helper::$nextlink, 'r=7%3Afinal')) {
+        throw new \RuntimeException('Malformed default round selected an unrelated matchday.');
+    }
+
+    $helper::selectNavigation($invalidDefaultRound);
+    if ($input->lastRoundDefault !== 0) {
+        throw new \RuntimeException('Dropdown loosely cast malformed default round.');
+    }
+
+    $validDefaultRound = (object) [
+        'id' => 11, 'season_id' => 5, 'current_round' => '0007',
+    ];
+    $helper::pagenav($validDefaultRound);
+    if ($input->lastRoundDefault !== 7) {
+        throw new \RuntimeException('Valid zero-padded default round was discarded.');
+    }
+    $helper::selectNavigation($validDefaultRound);
+    if ($input->lastRoundDefault !== 7) {
+        throw new \RuntimeException('Dropdown lost valid zero-padded current round.');
+    }
+    $input->currentRound = 2;
 
     // Two imported rows can share a numeric ID with different aliases.
     // Duplicates must neither create a self-referential next link nor yield
