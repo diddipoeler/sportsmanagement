@@ -76,6 +76,36 @@ namespace Joomla\CMS {
     }
 }
 
+namespace Joomla\CMS\Component {
+    final class ComponentHelper
+    {
+        public static mixed $token = '';
+
+        /**
+         * Return isolated GitHub module configuration for credential checks.
+         *
+         * @param string $component Joomla component option name.
+         * @return object Minimal parameter registry with test token.
+         */
+        public static function getParams(string $component): object
+        {
+            return new class {
+                /**
+                 * Retrieve the stored credential without coercing its type.
+                 *
+                 * @param string $key Component configuration key.
+                 * @param mixed $default Fallback for missing settings.
+                 * @return mixed Raw test credential.
+                 */
+                public function get(string $key, mixed $default = null): mixed
+                {
+                    return $key === 'gh_token' ? ComponentHelper::$token : $default;
+                }
+            };
+        }
+    }
+}
+
 namespace Joomla\CMS\Log {
     final class Log
     {
@@ -203,6 +233,39 @@ namespace {
         if ($repositoryPart->invoke($model, $candidate) !== $expected) {
             throw new \RuntimeException('GitHub repository coordinate was not validated.');
         }
+    }
+
+    // Credentials stored by older extensions may be malformed arrays or
+    // strings with embedded control characters. Never coerce these into
+    // an Authorization bearer value or fall back after a bad saved token.
+    $validateToken = new \ReflectionMethod($model, 'validatedGithubToken');
+    foreach ([
+        ['ghp_validTOKEN123', 'ghp_validTOKEN123'],
+        ['github_pat_123.ABC', 'github_pat_123.ABC'],
+        ['', ''], [null, ''], [true, ''], [['ghp_secret'], ''],
+        ['Bearer ghp_secret', ''], ["ghp_value\nOther: header", ''],
+        ["ghp_value\r", ''], ['ghp_ value', ''],
+        [str_repeat('x', 2049), ''],
+    ] as [$raw, $expected]) {
+        if ($validateToken->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Untrusted GitHub bearer token was accepted.');
+        }
+    }
+
+    $tokenMethod = new \ReflectionMethod($model, 'githubToken');
+    \Joomla\CMS\Component\ComponentHelper::$token = ['invalid'];
+    if ($tokenMethod->invoke($model, 'ghp_fallback123') !== '') {
+        throw new \RuntimeException('Malformed saved token silently enabled submitted credentials.');
+    }
+
+    \Joomla\CMS\Component\ComponentHelper::$token = '';
+    if ($tokenMethod->invoke($model, 'ghp_fallback123') !== 'ghp_fallback123') {
+        throw new \RuntimeException('Missing saved token did not allow valid form credential.');
+    }
+
+    \Joomla\CMS\Component\ComponentHelper::$token = 'ghp_configured123';
+    if ($tokenMethod->invoke($model, 'ghp_fallback123') !== 'ghp_configured123') {
+        throw new \RuntimeException('Configured GitHub credential lost precedence.');
     }
 
     echo "Administrator GitHub transport errors do not expose confidential data.\n";
