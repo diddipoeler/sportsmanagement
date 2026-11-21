@@ -223,6 +223,23 @@ namespace {
         }
     }
 
+    // A valid repository URL must also identify the issue from the same
+    // creation response; a different number must not be displayed.
+    $createdIssueUrl = 'https://github.com/diddipoeler/sportsmanagement/issues/123';
+    if ($safeUrl->invoke($model, $createdIssueUrl, 'diddipoeler', 'sportsmanagement', 123)
+        !== $createdIssueUrl
+        || $safeUrl->invoke($model, $createdIssueUrl, 'diddipoeler', 'sportsmanagement', 124)
+        !== ''
+        || $safeUrl->invoke(
+            $model,
+            'https://github.com/diddipoeler/sportsmanagement/issues/9999999999999999999999999',
+            'diddipoeler',
+            'sportsmanagement',
+            123
+        ) !== '') {
+        throw new \RuntimeException('GitHub success link pointed to an unrelated issue number.');
+    }
+
     // A 201 response must contain a complete, positive issue number;
     // otherwise an empty API object could produce a false success message.
     $issueNumber = new \ReflectionMethod($model, 'positiveIssueNumber');
