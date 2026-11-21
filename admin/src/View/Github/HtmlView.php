@@ -32,7 +32,9 @@ final class HtmlView extends BaseHtmlView
 
     /**
      * Prepare and display the native administrator GitHub integration view.
-     * Confirms the Joomla administrator client, normalises the selected layout, builds issue context and configured-token state, loads the component templates and delegates rendering to Joomla.
+     * Confirms the Joomla administrator client, normalises the selected
+     * layout, builds issue context and validates the configured token state
+     * before loading templates and delegating rendering to Joomla.
      * @param string|null $tpl Optional Joomla template override.
      * @return void
      * @throws \RuntimeException If the view is invoked outside the administrator.
@@ -52,9 +54,9 @@ final class HtmlView extends BaseHtmlView
         $this->issuetitle = '';
         $this->message = '';
         $this->milestone = $app->isClient('administrator') ? 1 : 2;
-        $this->hasConfiguredToken = trim(
-            (string) ComponentHelper::getParams('com_sportsmanagement')->get('gh_token', '')
-        ) !== '';
+        $this->hasConfiguredToken = self::hasUsableConfiguredToken(
+            ComponentHelper::getParams('com_sportsmanagement')->get('gh_token', '')
+        );
 
         if ($app->isClient('administrator')) {
             $this->issuetitle = 'Backend-View: ' . $input->getCmd('issueview')
@@ -90,6 +92,25 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::back();
 
         parent::display($tpl);
+    }
+
+    /**
+     * Check that a configured GitHub API credential is usable by the model.
+     *
+     * Legacy component settings may contain arrays, whitespace or control
+     * characters. Such values cannot be sent in the Authorization header and
+     * must not cause the administrator form to claim a token is available.
+     * Uses the same printable ASCII and maximum-length restrictions as the
+     * native GitHub model's bearer-token validation.
+     *
+     * @param mixed $value Raw configured GitHub credential.
+     * @return bool Whether the value is a valid non-empty bearer token.
+     */
+    private static function hasUsableConfiguredToken(mixed $value): bool
+    {
+        return is_string($value) && $value !== ''
+            && strlen($value) <= 2048
+            && preg_match('/^[!-~]+$/D', $value) === 1;
     }
 
     /**
