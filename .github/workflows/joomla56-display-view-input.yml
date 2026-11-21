@@ -14,6 +14,7 @@ on:
       - 'admin/src/Controller/GithubController.php'
       - 'admin/src/Model/GithubModel.php'
       - '.github/tests/joomla56_admin_github_transport_privacy.php'
+      - '.github/tests/joomla56_admin_github_issue_response.php'
       - '.github/tests/joomla56_admin_github_issue_identity.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
       - '.github/tests/joomla56_round_navigation_slugs.php'
@@ -33,6 +34,7 @@ on:
       - 'admin/src/Controller/GithubController.php'
       - 'admin/src/Model/GithubModel.php'
       - '.github/tests/joomla56_admin_github_transport_privacy.php'
+      - '.github/tests/joomla56_admin_github_issue_response.php'
       - '.github/tests/joomla56_admin_github_issue_identity.php'
       - '.github/tests/joomla56_admin_projects_action_feedback.php'
       - '.github/tests/joomla56_round_navigation_slugs.php'
@@ -54,6 +56,7 @@ jobs:
           php -l admin/src/Controller/GithubController.php
           php -l admin/src/Model/GithubModel.php
           php -l .github/tests/joomla56_admin_github_transport_privacy.php
+          php -l .github/tests/joomla56_admin_github_issue_response.php
           php -l .github/tests/joomla56_admin_github_issue_identity.php
           php -l site/src/Helper/RoundPaginationHelper.php
           php -l modules/mod_sportsmanagement_sports_type_statistics/src/Helper/SportsTypeStatisticsHelper.php
@@ -88,3 +91,5 @@ jobs:
         run: php .github/tests/joomla56_admin_github_issue_identity.php
       - name: Verify redacted administrator GitHub transport errors
         run: php .github/tests/joomla56_admin_github_transport_privacy.php
+      - name: Verify real GitHub issue response handling
+        run: php .github/tests/joomla56_admin_github_issue_response.php
