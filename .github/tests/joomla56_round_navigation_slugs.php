@@ -41,7 +41,7 @@ namespace Joomla\CMS\HTML {
             }
 
             if ($action === 'select.genericlist') {
-                self::$selectedValue = $args[6];
+                self::$selectedValue = $args[5];
 
                 return implode('|', array_map(
                     static fn (object $o): string => $o->value,
