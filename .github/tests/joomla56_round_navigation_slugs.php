@@ -117,7 +117,7 @@ namespace {
         ['15:überraschung', ['id' => 15, 'slug' => '15:überraschung']],
         ['8:' . str_repeat('a', 254), ['id' => 8, 'slug' => '8:' . str_repeat('a', 254)]],
         ['8:' . str_repeat('a', 255), null],
-        ['8:' . str_repeat('ü', 127), null],
+        ['8:' . str_repeat('ü', 128), null],
         [str_repeat('0', 257) . '9', null],
         ['0', null],
         ['0000:bad', null],
