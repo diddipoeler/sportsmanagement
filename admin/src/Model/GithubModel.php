@@ -225,7 +225,8 @@ final class GithubModel extends BaseDatabaseModel
      * Validates repository coordinates, requests up to 30 entries through
      * Joomla's HTTP client and reports unsuccessful API responses using
      * the administrator message queue. Caps the decoded list to 30 records
-     * and discards malformed non-commit entries before the template.
+     * and discards malformed non-commit entries before the template. Commit
+     * URLs must match the configured repository and each record's SHA.
      *
      * @return array<int,mixed> Decoded commit records or an empty array.
      */
@@ -267,10 +268,46 @@ final class GithubModel extends BaseDatabaseModel
                 continue;
             }
 
+            // GitHub URLs come from external JSON. Only expose links that
+            // resolve to the configured repository and the row's own SHA.
+            $candidate->html_url = self::safeCommitUrl(
+                $candidate->html_url ?? null,
+                $candidate->sha ?? null,
+                $owner,
+                $repository
+            );
             $commits[] = $candidate;
         }
 
         return $commits;
+    }
+
+    /**
+     * Validate an API commit link against its repository and SHA.
+     *
+     * Discards foreign repositories, unexpected URL components and malformed
+     * commit identifiers before the administrator template can turn an API
+     * response into a clickable link.
+     *
+     * @param mixed $value Raw html_url from an untrusted commit response.
+     * @param mixed $sha Commit's accompanying Git hash value.
+     * @param string $owner Verified configured repository owner.
+     * @param string $repository Verified configured repository name.
+     * @return string Direct HTTPS GitHub commit URL or an empty string.
+     */
+    private static function safeCommitUrl(mixed $value, mixed $sha, string $owner, string $repository): string
+    {
+        if (!is_string($value) || strlen($value) > 2048 || !is_string($sha)
+            || preg_match('/^[a-f0-9]{40}$/iD', $sha) !== 1) {
+            return '';
+        }
+
+        $expected = '~^https://github\\.com/'
+            . preg_quote($owner, '~') . '/'
+            . preg_quote($repository, '~') . '/commit/'
+            . preg_quote($sha, '~') . '$~iD';
+
+        return preg_match($expected, $value) === 1 ? $value : '';
     }
 
     /**
