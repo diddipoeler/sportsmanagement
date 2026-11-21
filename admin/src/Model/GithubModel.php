@@ -297,18 +297,43 @@ final class GithubModel extends BaseDatabaseModel
     /**
      * Resolve the configured or explicitly supplied GitHub API token.
      * Prefers the component's configured token over transient form input.
+     * Rejects malformed configured tokens without falling back to another
+     * credential, and disallows whitespace/control characters in headers.
+     *
      * @param string $submitted Optional submitted token.
      * @return string GitHub token or an empty string.
      */
     private function githubToken(string $submitted = ''): string
     {
-        $configured = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('gh_token', ''));
+        $configured = ComponentHelper::getParams('com_sportsmanagement')->get('gh_token', '');
 
-        if ($configured !== '') {
-            return $configured;
+        // API tokens belong in an HTTP Authorization header. Reject malformed
+        // types, whitespace, control characters and unreasonably long values
+        // instead of coercing arrays or accepting header-breaking newlines.
+        if ($configured !== '' && $configured !== null) {
+            return self::validatedGithubToken($configured);
         }
 
-        return trim($submitted);
+        return self::validatedGithubToken($submitted);
+    }
+
+    /**
+     * Validate a GitHub credential before it enters an HTTP header.
+     *
+     * The administrator can configure classic or fine-grained access tokens.
+     * Both are opaque printable non-whitespace ASCII strings. Invalid types,
+     * line breaks, embedded whitespace and oversized values fail closed.
+     *
+     * @param mixed $candidate Raw configured or submitted GitHub token.
+     * @return string Safe bearer-token text, or empty string if invalid.
+     */
+    private static function validatedGithubToken(mixed $candidate): string
+    {
+        return is_string($candidate)
+            && $candidate !== ''
+            && strlen($candidate) <= 2048
+            && preg_match('/^[!-~]+$/D', $candidate) === 1
+            ? $candidate : '';
     }
 
     /**
