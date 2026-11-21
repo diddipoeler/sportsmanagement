@@ -139,7 +139,12 @@ final class GithubModel extends BaseDatabaseModel
 
         // A successful API response is still external input. Display only
         // HTTPS issue URLs belonging to the exact configured repository.
-        $url = $this->safeIssueUrl($decoded->html_url ?? null, $owner, $repository);
+        $url = $this->safeIssueUrl(
+            $decoded->html_url ?? null,
+            $owner,
+            $repository,
+            self::positiveIssueNumber($decoded->number)
+        );
         $app->enqueueMessage(
             $url !== '' ? 'GitHub-Issue erstellt: ' . $url : 'GitHub-Issue erstellt.',
             'message'
@@ -187,14 +192,16 @@ final class GithubModel extends BaseDatabaseModel
      * Accepts only direct HTTPS issue links on github.com within the exact
      * repository selected in the component configuration. Discards external
      * hosts, credentialed URLs, additional query parameters, fragments and
-     * malformed issue numbers so API text cannot be injected into messages.
+     * malformed issue numbers or links to a different issue than the API
+     * response number, so API text cannot be injected into messages.
      *
      * @param mixed $value Untrusted html_url field from the API response.
      * @param string $owner Validated configured GitHub account name.
      * @param string $repository Validated configured repository name.
+     * @param int $issueNumber Verified numeric ID from the same API response.
      * @return string Confirmed issue URL or an empty string.
      */
-    private function safeIssueUrl(mixed $value, string $owner, string $repository): string
+    private function safeIssueUrl(mixed $value, string $owner, string $repository, int $issueNumber = 0): string
     {
         if (!is_string($value) || $value === '' || strlen($value) > 2048) {
             return '';
@@ -202,9 +209,14 @@ final class GithubModel extends BaseDatabaseModel
 
         $expected = '~^https://github\\.com/'
             . preg_quote($owner, '~') . '/'
-            . preg_quote($repository, '~') . '/issues/[1-9][0-9]*$~iD';
+            . preg_quote($repository, '~') . '/issues/([1-9][0-9]*)$~iD';
 
-        return preg_match($expected, $value) === 1 ? $value : '';
+        if (preg_match($expected, $value, $matches) !== 1) {
+            return '';
+        }
+
+        return $issueNumber === 0 || self::positiveIssueNumber($matches[1]) === $issueNumber
+            ? $value : '';
     }
 
     /**
