@@ -265,7 +265,8 @@ final class GithubModel extends BaseDatabaseModel
      * Constructs request headers and optional bearer authentication,
      * and returns false when a network or transport error occurs. Never
      * logs or displays raw transport exception text, which can contain
-     * authorization tokens and submitted issue content.
+     * authorization tokens and submitted issue content. Encodes POST JSON
+     * strictly before opening the transport and rejects invalid UTF-8 input.
      * @param string $method HTTP method such as GET or POST.
      * @param string $path GitHub API path relative to its trusted host.
      * @param array|null $payload Optional JSON request body.
@@ -289,16 +290,19 @@ final class GithubModel extends BaseDatabaseModel
         }
 
         try {
+            // Encode before opening the HTTP transport. A malformed UTF-8
+            // title or description must never produce a blank request body.
+            $jsonBody = $method === 'POST'
+                ? json_encode(
+                    $payload,
+                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
+                )
+                : null;
             $http = HttpFactory::getHttp();
             $url = self::API_ROOT . $path;
 
             if ($method === 'POST') {
-                return $http->post(
-                    $url,
-                    (string) json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-                    $headers,
-                    20
-                );
+                return $http->post($url, $jsonBody, $headers, 20);
             }
 
             return $http->get($url, $headers, 20);
