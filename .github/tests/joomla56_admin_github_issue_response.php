@@ -347,6 +347,40 @@ namespace {
         throw new \RuntimeException('GitHub commit list ignored page cap or malformed entries.');
     }
 
+    // Only the exact configured repository and matching commit SHA may
+    // appear in a clickable GitHub commit link.
+    $validHash = str_repeat('a', 40);
+    $validCommitUrl = 'https://github.com/diddipoeler/sportsmanagement/commit/' . $validHash;
+    $validateCommitUrl = new \ReflectionMethod($model, 'safeCommitUrl');
+    foreach ([
+        [$validCommitUrl, $validHash, $validCommitUrl],
+        ['https://github.com/other/sportsmanagement/commit/' . $validHash, $validHash, ''],
+        ['https://github.com/diddipoeler/other/commit/' . $validHash, $validHash, ''],
+        [$validCommitUrl . '?token=secret', $validHash, ''],
+        [$validCommitUrl . '#fragment', $validHash, ''],
+        [$validCommitUrl, str_repeat('b', 40), ''],
+        [$validCommitUrl, 'a012junk', ''],
+        [$validCommitUrl, ['invalid'], ''],
+        [['nested'], $validHash, ''],
+    ] as [$url, $sha, $expected]) {
+        if ($validateCommitUrl->invoke(null, $url, $sha, 'diddipoeler', 'sportsmanagement') !== $expected) {
+            throw new \RuntimeException('Foreign or malformed GitHub commit URL was accepted.');
+        }
+    }
+
+    $untrustedCommits = [
+        (object) ['sha' => $validHash, 'commit' => (object) ['message' => 'valid'], 'html_url' => $validCommitUrl],
+        (object) ['sha' => $validHash, 'commit' => (object) ['message' => 'foreign'],
+            'html_url' => 'https://github.com/other/sportsmanagement/commit/' . $validHash],
+    ];
+    \Joomla\Http\HttpFactory::$body = (string) json_encode($untrustedCommits);
+    $sanitizedCommits = $model->getGithubList();
+    if (count($sanitizedCommits) !== 2
+        || $sanitizedCommits[0]->html_url !== $validCommitUrl
+        || $sanitizedCommits[1]->html_url !== '') {
+        throw new \RuntimeException('Native GitHub list did not sanitize untrusted commit links.');
+    }
+
     $lastRequest = \Joomla\Http\HttpFactory::$requests[array_key_last(\Joomla\Http\HttpFactory::$requests)];
     if ($lastRequest['url'] !== 'https://api.github.com/repos/diddipoeler/sportsmanagement/commits?per_page=30'
         || ($lastRequest['headers']['Authorization'] ?? '') !== 'Bearer ghp_TEST_TOKEN'
