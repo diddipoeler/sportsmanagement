@@ -53,7 +53,7 @@ final class RoundPaginationHelper
      *
      * @param object|null $project Project record with its ID and current round.
      * @param int|string $cfgWhichDatabase Selected SportsManagement database.
-     * @param int|string $seasonId Requested season or the project's season.
+     * @param mixed $seasonId Requested season or the project's season.
      * @return string Escaped HTML navigation, or an empty string without rounds.
      */
     public static function pagenav($project, $cfgWhichDatabase = 0, $seasonId = 0): string
@@ -119,7 +119,7 @@ final class RoundPaginationHelper
         $previous = $normalised[max(0, $currentIndex - 1)];
         $next = $normalised[min(count($normalised) - 1, $currentIndex + 1)];
         $division = $input->getInt('division', 0);
-        $params = self::buildBaseParams($project, $databaseSelector, (int) $seasonId);
+        $params = self::buildBaseParams($project, $databaseSelector, self::nonNegativeSeasonId($seasonId));
 
         $spacer2 = '&nbsp;&nbsp;';
         $spacer4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -352,6 +352,40 @@ final class RoundPaginationHelper
     }
 
     /**
+     * Validate a non-negative SportsManagement season identifier.
+     *
+     * Permits the legacy zero sentinel and positive decimal IDs, including
+     * zero-padded imported strings. Rejects partial numeric casts, arrays,
+     * boolean values and integer overflows so malformed season metadata
+     * cannot silently select an unrelated season in generated URLs.
+     *
+     * @param mixed $raw Explicit or project-derived season identifier.
+     * @return int Verified season ID or zero for invalid/missing settings.
+     */
+    private static function nonNegativeSeasonId(mixed $raw): int
+    {
+        if (is_int($raw)) {
+            return $raw >= 0 ? $raw : 0;
+        }
+
+        if (!is_string($raw) || $raw === '' || strlen($raw) > 128
+            || preg_match('/^[0-9]+$/D', $raw) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($raw, '0');
+        if ($digits === '') {
+            return 0;
+        }
+
+        $season = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $season === false ? 0 : $season;
+    }
+
+    /**
      * Validate the legacy SportsManagement database selection.
      *
      * Accepts the two supported database identifiers, either as integers or
@@ -408,7 +442,8 @@ final class RoundPaginationHelper
      * while copying validated task, division-depth, prediction and menu
      * selectors from Joomla input. Validates the project slug against the
      * project ID and falls back to the canonical numeric ID for corrupt
-     * imported slugs. These parameters are passed to SEF routing.
+     * imported slugs. The season is parsed strictly before it reaches
+     * SEF routing, avoiding partial numeric IDs from imported records.
      *
      * @param object $project Current project record with slug and season.
      * @param int $databaseSelector Requested Joomla or external database.
@@ -427,7 +462,7 @@ final class RoundPaginationHelper
         $params = [
             'option' => $input->getCmd('option', 'com_sportsmanagement'),
             'cfg_which_database' => $databaseSelector === 1 ? 1 : 0,
-            's' => $seasonId > 0 ? $seasonId : (int) ($project->season_id ?? 0),
+            's' => $seasonId > 0 ? $seasonId : self::nonNegativeSeasonId($project->season_id ?? 0),
             'p' => $projectSlug,
         ];
 
