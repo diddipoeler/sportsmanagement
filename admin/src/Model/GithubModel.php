@@ -224,7 +224,8 @@ final class GithubModel extends BaseDatabaseModel
      *
      * Validates repository coordinates, requests up to 30 entries through
      * Joomla's HTTP client and reports unsuccessful API responses using
-     * the administrator message queue.
+     * the administrator message queue. Caps the decoded list to 30 records
+     * and discards malformed non-commit entries before the template.
      *
      * @return array<int,mixed> Decoded commit records or an empty array.
      */
@@ -257,7 +258,19 @@ final class GithubModel extends BaseDatabaseModel
             return [];
         }
 
-        return $decoded;
+        // Even if an HTTP proxy ignores the per_page=30 query parameter,
+        // render at most 30 commit records. Discard scalar or incomplete
+        // entries before they reach the administrator HTML view.
+        $commits = [];
+        foreach (array_slice($decoded, 0, 30) as $candidate) {
+            if (!is_object($candidate) || !is_object($candidate->commit ?? null)) {
+                continue;
+            }
+
+            $commits[] = $candidate;
+        }
+
+        return $commits;
     }
 
     /**
