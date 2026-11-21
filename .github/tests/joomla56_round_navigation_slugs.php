@@ -200,6 +200,34 @@ namespace {
         }
     }
 
+    // Older project imports may carry partially numeric seasons. A cast
+    // would silently route a request to an unrelated season.
+    $seasonParser = new \ReflectionMethod($helper, 'nonNegativeSeasonId');
+    foreach ([
+        [0, 0], [11, 11], ['0000', 0], ['00011', 11],
+        [-1, 0], [true, 0], [['11'], 0], ['11junk', 0],
+        ['11:season', 0], [' 11', 0], ['99999999999999999999999', 0],
+    ] as [$value, $expected]) {
+        if ($seasonParser->invoke(null, $value) !== $expected) {
+            throw new \RuntimeException('Malformed navigation season selector was accepted.');
+        }
+    }
+
+    $projectWithInvalidSeason = (object) [
+        'id' => 11, 'season_id' => '9junk', 'current_round' => 2,
+    ];
+    $seasonHtml = $helper::pagenav($projectWithInvalidSeason, 0, ['10']);
+    if (!str_contains($seasonHtml, 's=0')
+        || str_contains($seasonHtml, 's=9')
+        || str_contains($seasonHtml, 's=1')) {
+        throw new \RuntimeException('Invalid project season was loosely cast in round links.');
+    }
+
+    $seasonHtml = $helper::pagenav($projectWithInvalidSeason, 0, '00012');
+    if (!str_contains($seasonHtml, 's=12')) {
+        throw new \RuntimeException('Valid zero-padded season was lost in navigation.');
+    }
+
     $input->currentRound = 7;
     $html = $helper::pagenav($project);
 
