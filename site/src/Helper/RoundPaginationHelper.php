@@ -51,6 +51,8 @@ final class RoundPaginationHelper
      * Rejects malformed project IDs and external database settings before
      * loading a model. Skips imported rounds with invalid positive sequence
      * codes instead of loosely casting them into visible matchday labels.
+     * Deduplicates corrupted round records by ID so navigation never links
+     * a round back to a duplicate of itself.
      *
      * @param object|null $project Project record with its ID and current round.
      * @param int|string $cfgWhichDatabase Selected SportsManagement database.
@@ -89,16 +91,18 @@ final class RoundPaginationHelper
         }
 
         $normalised = [];
+        $seenRoundIds = [];
         foreach ($rounds as $round) {
             $value = self::roundIdAndSlug($round->id ?? null);
             $roundCode = self::positiveProjectId($round->roundcode ?? null);
 
-            // Imported round codes with partial numbers or nested values
-            // must never become misleading navigation labels.
-            if ($value === null || $roundCode === 0) {
+            // Ignore corrupted/duplicated legacy rows so a repeated round
+            // cannot become its own next or previous navigation target.
+            if ($value === null || $roundCode === 0 || isset($seenRoundIds[$value['id']])) {
                 continue;
             }
 
+            $seenRoundIds[$value['id']] = true;
             $normalised[] = (object) [
                 'id' => $value['id'],
                 'slug' => $value['slug'],
@@ -185,6 +189,7 @@ final class RoundPaginationHelper
      * division, sorting and current menu context in routed option URLs, and
      * selects the option matching the current request round. Invalid or
      * non-scalar imported round labels fall back to the canonical slug.
+     * Repeated imported IDs are included only once in the dropdown.
      * Returns no markup when the project ID or database selector is invalid,
      * or no usable
      * rounds are available.
@@ -223,13 +228,15 @@ final class RoundPaginationHelper
         $currentRound = $input->getInt('r', (int) ($project->current_round ?? 0));
         $currentUrl = self::roundUrl($params, (string) max(0, $currentRound), $params['division'], '');
         $options = [];
+        $seenRoundIds = [];
 
         foreach ($rounds as $round) {
             $value = self::roundIdAndSlug($round->slug ?? $round->value ?? null);
-            if ($value === null) {
+            if ($value === null || isset($seenRoundIds[$value['id']])) {
                 continue;
             }
 
+            $seenRoundIds[$value['id']] = true;
             $url = self::roundUrl($params, $value['slug'], $params['division'], '');
             $rawLabel = $round->text ?? null;
             $label = is_string($rawLabel) && $rawLabel !== ''
