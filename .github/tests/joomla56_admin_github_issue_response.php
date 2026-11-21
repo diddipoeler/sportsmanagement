@@ -301,7 +301,7 @@ namespace {
     $requestsBeforeInvalidUtf8 = count(\Joomla\Http\HttpFactory::$requests);
     $app->messages = [];
     \Joomla\CMS\Log\Log::$entries = [];
-    $invalidUtf8Title = "Private issue title: " . "\\xC3\\x28";
+    $invalidUtf8Title = "Private issue title: " . "\xC3\x28";
     if ($model->insertissue($invalidUtf8Title, 'Confidential issue body', 0, 'bug') !== false
         || count(\Joomla\Http\HttpFactory::$requests) !== $requestsBeforeInvalidUtf8
         || count($app->messages) !== 1
