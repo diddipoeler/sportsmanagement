@@ -223,6 +223,19 @@ namespace {
         }
     }
 
+    // A 201 response must contain a complete, positive issue number;
+    // otherwise an empty API object could produce a false success message.
+    $issueNumber = new \ReflectionMethod($model, 'positiveIssueNumber');
+    foreach ([
+        [1, 1], ['00023', 23], [0, 0], [-1, 0], ['0', 0],
+        [true, 0], [['1'], 0], ['1junk', 0],
+        ['1.5', 0], [' 1', 0], ['99999999999999999999999', 0],
+    ] as [$candidate, $expected]) {
+        if ($issueNumber->invoke(null, $candidate) !== $expected) {
+            throw new \RuntimeException('Malformed GitHub issue number passed validation.');
+        }
+    }
+
     $repositoryPart = new \ReflectionMethod($model, 'isRepositoryPart');
     foreach ([
         ['sportsmanagement', true], ['org-name', true],
