@@ -51,7 +51,7 @@ use Joomla\CMS\Router\Route;
         // instead of formatting a different timestamp in the admin list.
         $safeDate = false;
         if (strlen($date) === 20 && preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/D', $date) === 1) {
-            $parsedDate = \\DateTimeImmutable::createFromFormat('!Y-m-d\\TH:i:s\\Z', $date, new \\DateTimeZone('UTC'));
+            $parsedDate = \DateTimeImmutable::createFromFormat('!Y-m-d\\TH:i:s\\Z', $date, new \DateTimeZone('UTC'));
             $safeDate = $parsedDate !== false
                 && $parsedDate->format('Y-m-d\\TH:i:s\\Z') === $date;
         }
