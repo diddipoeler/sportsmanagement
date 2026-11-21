@@ -49,7 +49,8 @@ final class RoundPaginationHelper
      * retaining the database, season and division context. Clears the public
      * link cache before every call, including empty or invalid projects.
      * Rejects malformed project IDs and external database settings before
-     * loading a model.
+     * loading a model. Skips imported rounds with invalid positive sequence
+     * codes instead of loosely casting them into visible matchday labels.
      *
      * @param object|null $project Project record with its ID and current round.
      * @param int|string $cfgWhichDatabase Selected SportsManagement database.
@@ -90,14 +91,18 @@ final class RoundPaginationHelper
         $normalised = [];
         foreach ($rounds as $round) {
             $value = self::roundIdAndSlug($round->id ?? null);
-            if ($value === null) {
+            $roundCode = self::positiveProjectId($round->roundcode ?? null);
+
+            // Imported round codes with partial numbers or nested values
+            // must never become misleading navigation labels.
+            if ($value === null || $roundCode === 0) {
                 continue;
             }
 
             $normalised[] = (object) [
                 'id' => $value['id'],
                 'slug' => $value['slug'],
-                'roundcode' => (int) ($round->roundcode ?? 0),
+                'roundcode' => $roundCode,
             ];
         }
 
