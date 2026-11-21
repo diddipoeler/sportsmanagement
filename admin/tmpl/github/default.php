@@ -23,22 +23,38 @@ use Joomla\CMS\Router\Route;
     <tbody>
     <?php foreach ((array) $this->commitlist as $commit) : ?>
         <?php
+        // Commit API records are external data. Never coerce arrays or
+        // objects into strings when older or malformed responses arrive.
+        if (!is_object($commit)) {
+            continue;
+        }
+
         $details = isset($commit->commit) && is_object($commit->commit) ? $commit->commit : null;
         $author = $details && isset($details->author) && is_object($details->author) ? $details->author : null;
         $account = isset($commit->author) && is_object($commit->author) ? $commit->author : null;
-        $date = $author ? (string) ($author->date ?? '') : '';
-        $name = $author ? (string) ($author->name ?? '') : '';
-        $message = $details ? (string) ($details->message ?? '') : '';
-        $htmlUrl = (string) ($commit->html_url ?? '');
-        $avatarUrl = $account ? (string) ($account->avatar_url ?? '') : '';
+        $date = $author && is_string($author->date ?? null) ? $author->date : '';
+        $name = $author && is_string($author->name ?? null) ? $author->name : '';
+        $message = $details && is_string($details->message ?? null) ? $details->message : '';
+        $htmlUrl = is_string($commit->html_url ?? null) ? $commit->html_url : '';
+        $avatarUrl = $account && is_string($account->avatar_url ?? null) ? $account->avatar_url : '';
+
+        // Only direct GitHub commit links and GitHub's avatar CDN are
+        // rendered as clickable external resources. Reject injected
+        // fragments, URL credentials, unsupported hosts and control bytes.
+        $safeCommitUrl = strlen($htmlUrl) <= 2048
+            && preg_match('~^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/commit/[a-f0-9]{40}$~iD', $htmlUrl) === 1;
+        $safeAvatarUrl = strlen($avatarUrl) <= 2048
+            && preg_match('~^https://avatars\\.githubusercontent\\.com/u/[1-9][0-9]*(?:\\?v=[0-9]+)?$~iD', $avatarUrl) === 1;
         ?>
         <tr>
             <td class="text-nowrap">
-                <?php echo $date !== '' ? HTMLHelper::_('date', $date, 'd.m.Y H:i:s') : ''; ?>
+                <?php echo $date !== '' && strlen($date) <= 64 && strtotime($date) !== false
+                    ? htmlspecialchars((string) HTMLHelper::_('date', $date, 'd.m.Y H:i:s'), ENT_QUOTES, 'UTF-8')
+                    : ''; ?>
             </td>
             <td><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?></td>
             <td>
-                <?php if (str_starts_with($htmlUrl, 'https://github.com/')) : ?>
+                <?php if ($safeCommitUrl) : ?>
                     <a
                         class="btn btn-sm btn-info"
                         href="<?php echo htmlspecialchars($htmlUrl, ENT_QUOTES, 'UTF-8'); ?>"
@@ -53,7 +69,7 @@ use Joomla\CMS\Router\Route;
                 <?php endif; ?>
             </td>
             <td>
-                <?php if (str_starts_with($avatarUrl, 'https://')) : ?>
+                <?php if ($safeAvatarUrl) : ?>
                     <img
                         src="<?php echo htmlspecialchars($avatarUrl, ENT_QUOTES, 'UTF-8'); ?>"
                         alt="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>"
