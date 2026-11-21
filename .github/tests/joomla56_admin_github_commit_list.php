@@ -152,7 +152,7 @@ namespace {
         || str_contains($markup, 'Formatted: tomorrow')
         || str_contains($markup, 'Formatted: 2026-02-30')
         || str_contains($markup, 'Formatted: 2026-11-21T25')
-        || \\Joomla\\CMS\\HTML\\HTMLHelper::$formattedDates !== ['2026-11-21T10:00:00Z']
+        || \Joomla\CMS\HTML\HTMLHelper::$formattedDates !== ['2026-11-21T10:00:00Z']
     ) {
         throw new \RuntimeException('GitHub commit list rendered malformed API fields or unsafe resources.');
     }
