@@ -78,10 +78,44 @@ final class ProjectsController extends SportsManagementAdminController
     }
 
     /**
+     * Validate a positive administrator identity ID before project writes.
+     *
+     * Supports native Joomla integer IDs and complete decimal strings from
+     * legacy identity providers. Rejects guests, negative IDs, booleans,
+     * nested structures, partial numeric strings and integer overflow so
+     * permissive ACL stubs cannot authorize unauthenticated writes.
+     *
+     * @param mixed $value Joomla identity's raw user ID.
+     * @return int Positive authenticated ID or zero for invalid identities.
+     */
+    private static function authenticatedUserId(mixed $value): int
+    {
+        if (is_int($value)) {
+            return $value > 0 ? $value : 0;
+        }
+
+        if (!is_string($value) || $value === '' || strlen($value) > 128
+            || preg_match('/^[0-9]+$/D', $value) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($value, '0');
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
+    }
+
+    /**
      * Execute a protected administrator project operation and redirect.
      *
-     * Validates the Joomla POST token and the requested component ACL
-     * permission, verifies that the operation is one of the supported
+     * Validates the Joomla POST token, a positive authenticated user ID and
+     * the requested component ACL permission. Verifies the operation is one of the supported
      * project actions, resolves the native ProjectModel and invokes only
      * that operation. Treats false and null write results as failures and
      * uses a translated fallback when the model supplies no text error.
@@ -113,7 +147,11 @@ final class ProjectsController extends SportsManagementAdminController
 
         $identity = $this->app->getIdentity();
 
-        if ($identity === null || !$identity->authorise($permission, 'com_sportsmanagement')) {
+        // An ACL shim may grant access for a guest or malformed identity.
+        // Only a real authenticated user can reach project write models.
+        if (!is_object($identity) || self::authenticatedUserId($identity->id ?? null) === 0
+            || !is_callable([$identity, 'authorise'])
+            || !$identity->authorise($permission, 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
