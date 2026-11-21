@@ -296,6 +296,28 @@ namespace {
         }
     }
 
+    // Invalid UTF-8 issue content cannot be JSON-encoded. Reject it
+    // without issuing any HTTP request or exposing submitted content.
+    $requestsBeforeInvalidUtf8 = count(\Joomla\Http\HttpFactory::$requests);
+    $app->messages = [];
+    \Joomla\CMS\Log\Log::$entries = [];
+    $invalidUtf8Title = "Private issue title: " . "\\xC3\\x28";
+    if ($model->insertissue($invalidUtf8Title, 'Confidential issue body', 0, 'bug') !== false
+        || count(\Joomla\Http\HttpFactory::$requests) !== $requestsBeforeInvalidUtf8
+        || count($app->messages) !== 1
+        || $app->messages[0][1] !== 'error'
+        || count(\Joomla\CMS\Log\Log::$entries) !== 1) {
+        throw new \RuntimeException('Malformed JSON issue input reached GitHub transport.');
+    }
+
+    foreach ([$app->messages[0][0], \Joomla\CMS\Log\Log::$entries[0][0]] as $feedback) {
+        if (str_contains($feedback, 'Private issue title')
+            || str_contains($feedback, 'Confidential issue body')
+            || str_contains($feedback, 'ghp_TEST_TOKEN')) {
+            throw new \RuntimeException('Malformed issue error leaked submitted content.');
+        }
+    }
+
     // The administrator view must not claim that malformed legacy
     // credentials can be used to create a GitHub issue.
     $tokenAvailable = new \ReflectionMethod(
