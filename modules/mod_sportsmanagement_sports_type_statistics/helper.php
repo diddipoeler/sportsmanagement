@@ -49,7 +49,8 @@ if (!class_exists('modJSMSportsHelper', false)) {
          * statistics data and maps its count and sport-type fields back
          * onto the keys expected by older template overrides. Uses the
          * validated sport record ID rather than loosely casting untrusted
-         * module settings into compatibility array keys. Empty or malformed
+         * module settings into compatibility array keys. Ignores records whose
+         * ID differs from the requested sport. Empty or malformed
          * sport or database selectors return without opening Joomla's database service.
          *
          * @param Registry|array $params Legacy settings passed by reference.
@@ -90,7 +91,11 @@ if (!class_exists('modJSMSportsHelper', false)) {
                 ]) ?: 0;
             }
 
-            if ($sportTypeId > 0 && is_object($sportType)) {
+            // Never expose an unrelated sport from an inconsistent lookup.
+            // Older template overrides index by the selected sport ID.
+            $selectedSportId = self::selectedSportId($registry->get('sportstypes', 0));
+
+            if ($sportTypeId > 0 && $sportTypeId === $selectedSportId && is_object($sportType)) {
                 $legacy['sportstype'][$sportTypeId] = $sportType;
             }
 
