@@ -329,6 +329,34 @@ namespace {
         throw new \RuntimeException('Malformed round option labels were not normalised.');
     }
 
+    // Two imported rows can share a numeric ID with different aliases.
+    // Duplicates must neither create a self-referential next link nor yield
+    // multiple select entries for one logical round.
+    $model::$rounds = [
+        (object) ['id' => '2:first', 'roundcode' => 1],
+        (object) ['id' => '0002:duplicate', 'roundcode' => 2],
+        (object) ['id' => '7:last', 'roundcode' => 3],
+    ];
+    $input->currentRound = 2;
+    $duplicateNav = $helper::pagenav($project);
+    if (str_contains($duplicateNav, 'duplicate')
+        || !str_contains($helper::$nextlink, 'r=7%3Alast')
+        || str_contains($helper::$nextlink, 'r=2%3Aduplicate')) {
+        throw new \RuntimeException('Duplicate round ID changed pagination neighbour.');
+    }
+
+    $model::$options = [
+        (object) ['value' => '2:first', 'text' => 'First'],
+        (object) ['value' => '0002:duplicate', 'text' => 'Duplicate'],
+        (object) ['value' => '7:last', 'text' => 'Last'],
+    ];
+    \Joomla\CMS\HTML\HTMLHelper::$optionLabels = [];
+    $duplicateSelect = $helper::selectNavigation($project);
+    if (\Joomla\CMS\HTML\HTMLHelper::$optionLabels !== ['First', 'Last']
+        || str_contains($duplicateSelect, 'duplicate')) {
+        throw new \RuntimeException('Duplicate round ID appeared in dropdown.');
+    }
+
     $model::$options = [(object) ['value' => '7<script>', 'text' => 'Bad']];
 
     if ($helper::selectNavigation($project) !== '') {
