@@ -1,0 +1,295 @@
+<?php
+/**
+ * Joomla 5/6 administrator GitHub issue creation response regression.
+ *
+ * @version    5.6.0
+ * @author     SportsManagement contributors
+ * @copyright  Copyright (C) SportsManagement contributors
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+declare(strict_types=1);
+
+namespace Joomla\CMS\MVC\Model {
+    class BaseDatabaseModel {}
+}
+
+namespace Joomla\CMS\Application {
+    final class AdministratorApplication
+    {
+        public array $messages = [];
+
+        /**
+         * Simulate the active Joomla administrator client.
+         *
+         * @param string $name Joomla client name.
+         * @return bool Whether the requested client is administrator.
+         */
+        public function isClient(string $name): bool
+        {
+            return $name === 'administrator';
+        }
+
+        /**
+         * Provide form POST input without a Joomla installation.
+         *
+         * @return object Request input with native getters.
+         */
+        public function getInput(): object
+        {
+            return new class {
+                public object $post;
+
+                /**
+                 * Construct an empty input registry for explicit arguments.
+                 */
+                public function __construct()
+                {
+                    $this->post = new class {
+                        /**
+                         * Return a blank input field.
+                         *
+                         * @param string $name Field name.
+                         * @return string Empty input.
+                         */
+                        public function getString(string $name): string
+                        {
+                            return '';
+                        }
+
+                        /**
+                         * Return a blank integer input field.
+                         *
+                         * @param string $name Field name.
+                         * @return int Unconfigured integer.
+                         */
+                        public function getInt(string $name): int
+                        {
+                            return 0;
+                        }
+
+                        /**
+                         * Return the supplied default command.
+                         *
+                         * @param string $name Field name.
+                         * @param string $default Default value.
+                         * @return string Fallback command.
+                         */
+                        public function getCmd(string $name, string $default = ''): string
+                        {
+                            return $default;
+                        }
+                    };
+                }
+            };
+        }
+
+        /**
+         * Record administrator feedback for response assertions.
+         *
+         * @param string $message Displayed administrator text.
+         * @param string $type Joomla message severity.
+         * @return void
+         */
+        public function enqueueMessage(string $message, string $type = 'message'): void
+        {
+            $this->messages[] = [$message, $type];
+        }
+    }
+}
+
+namespace Joomla\CMS {
+    final class Factory
+    {
+        public static object $application;
+
+        /**
+         * Supply a Joomla-like administrator container.
+         *
+         * @return object Container returning the current application.
+         */
+        public static function getContainer(): object
+        {
+            return new class {
+                /**
+                 * Resolve the administrator application dependency.
+                 *
+                 * @param string $name Requested service identifier.
+                 * @return object Test application.
+                 */
+                public function get(string $name): object
+                {
+                    if ($name !== \Joomla\CMS\Application\AdministratorApplication::class) {
+                        throw new \RuntimeException('Unknown test service.');
+                    }
+
+                    return Factory::$application;
+                }
+            };
+        }
+    }
+}
+
+namespace Joomla\CMS\Component {
+    final class ComponentHelper
+    {
+        /**
+         * Provide a fixed repository and configured GitHub access token.
+         *
+         * @param string $name Component identifier.
+         * @return object Component parameter lookup.
+         */
+        public static function getParams(string $name): object
+        {
+            return new class {
+                /**
+                 * Return configured GitHub parameters.
+                 *
+                 * @param string $key Configuration key.
+                 * @param mixed $default Default setting.
+                 * @return mixed Configured value.
+                 */
+                public function get(string $key, mixed $default = null): mixed
+                {
+                    return match ($key) {
+                        'cfg_github_username' => 'diddipoeler',
+                        'cfg_github_repository' => 'sportsmanagement',
+                        'gh_token' => 'ghp_TEST_TOKEN',
+                        default => $default,
+                    };
+                }
+            };
+        }
+    }
+}
+
+namespace Joomla\CMS\Log {
+    final class Log
+    {
+        public const ERROR = 1;
+        public static array $entries = [];
+
+        /**
+         * Capture GitHub error logs.
+         *
+         * @param string $message Log text.
+         * @param int $level Severity.
+         * @param string $category Log category.
+         * @return void
+         */
+        public static function add(string $message, int $level, string $category): void
+        {
+            self::$entries[] = [$message, $level, $category];
+        }
+    }
+}
+
+namespace Joomla\Http {
+    final class HttpFactory
+    {
+        public static int $status = 201;
+        public static string $body = '';
+        public static array $requests = [];
+
+        /**
+         * Return an in-memory HTTP client for both creation and listing.
+         *
+         * @return object HTTP client observing request headers and JSON.
+         */
+        public static function getHttp(): object
+        {
+            return new class {
+                /**
+                 * Simulate an HTTP issue creation request.
+                 *
+                 * @param string $url GitHub endpoint.
+                 * @param string $body Submitted JSON issue payload.
+                 * @param array $headers HTTP headers.
+                 * @param int $timeout Request deadline.
+                 * @return object Fake GitHub API response.
+                 */
+                public function post(string $url, string $body, array $headers, int $timeout): object
+                {
+                    HttpFactory::$requests[] = compact('url', 'body', 'headers', 'timeout');
+
+                    return new class {
+                        /**
+                         * Return the configured HTTP status code.
+                         *
+                         * @return int Simulated response status.
+                         */
+                        public function getStatusCode(): int
+                        {
+                            return HttpFactory::$status;
+                        }
+
+                        /**
+                         * Return the configured JSON response body.
+                         *
+                         * @return string Simulated API JSON response.
+                         */
+                        public function getBody(): string
+                        {
+                            return HttpFactory::$body;
+                        }
+                    };
+                }
+            };
+        }
+    }
+}
+
+namespace {
+    \define('_JEXEC', 1);
+    require_once dirname(__DIR__, 2) . '/admin/src/Model/GithubModel.php';
+
+    $app = new \Joomla\CMS\Application\AdministratorApplication();
+    \Joomla\CMS\Factory::$application = $app;
+    $model = new \Diddipoeler\Component\SportsManagement\Administrator\Model\GithubModel();
+
+    $cases = [
+        [(object) ['number' => 42, 'html_url' => 'https://github.com/diddipoeler/sportsmanagement/issues/42'], true, true],
+        [(object) ['number' => 42, 'html_url' => 'https://github.com/diddipoeler/sportsmanagement/issues/43'], true, false],
+        [(object) ['number' => 42, 'html_url' => 'https://other.test/issues/42'], true, false],
+        [(object) ['number' => 42], true, false],
+        [(object) ['number' => '42junk'], false, false],
+        [(object) ['number' => 0], false, false],
+        [(object) [], false, false],
+    ];
+
+    foreach ($cases as [$payload, $success, $hasUrl]) {
+        \Joomla\Http\HttpFactory::$body = (string) json_encode($payload);
+        $app->messages = [];
+        $result = $model->insertissue('Regression issue', 'Test details', 0, 'bug');
+
+        if (($result !== false) !== $success || count($app->messages) !== 1) {
+            throw new \RuntimeException('GitHub creation misclassified API response.');
+        }
+
+        $message = $app->messages[0][0];
+        if (($app->messages[0][1] === 'message') !== $success
+            || str_contains($message, 'https://github.com/') !== $hasUrl
+            || str_contains($message, 'other.test')
+            || str_contains($message, '/issues/43')) {
+            throw new \RuntimeException('GitHub issue feedback exposed an invalid URL.');
+        }
+    }
+
+    $requests = \Joomla\Http\HttpFactory::$requests;
+    if (count($requests) !== count($cases)) {
+        throw new \RuntimeException('GitHub response testing missed an HTTP request.');
+    }
+
+    foreach ($requests as $request) {
+        $payload = json_decode($request['body']);
+        if ($request['url'] !== 'https://api.github.com/repos/diddipoeler/sportsmanagement/issues'
+            || ($request['headers']['Authorization'] ?? '') !== 'Bearer ghp_TEST_TOKEN'
+            || $request['timeout'] !== 20
+            || ($payload->title ?? '') !== 'Regression issue'
+            || ($payload->body ?? '') !== 'Test details') {
+            throw new \RuntimeException('GitHub native issue request contract changed.');
+        }
+    }
+
+    echo "Joomla 5/6 GitHub issue creation response contract OK\n";
+}
