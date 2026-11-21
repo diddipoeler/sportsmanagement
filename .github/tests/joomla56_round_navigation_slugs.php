@@ -114,6 +114,11 @@ namespace {
         [7, ['id' => 7, 'slug' => '7']],
         ['0009', ['id' => 9, 'slug' => '9']],
         ['12:zweite-runde', ['id' => 12, 'slug' => '12:zweite-runde']],
+        ['15:überraschung', ['id' => 15, 'slug' => '15:überraschung']],
+        ['8:' . str_repeat('a', 254), ['id' => 8, 'slug' => '8:' . str_repeat('a', 254)]],
+        ['8:' . str_repeat('a', 255), null],
+        ['8:' . str_repeat('ü', 127), null],
+        [str_repeat('0', 257) . '9', null],
         ['0', null],
         ['0000:bad', null],
         ['3junk', null],
@@ -319,6 +324,33 @@ namespace {
         || !str_contains($select, 'r=7%3Afinal')
         || str_contains($select, '8invalid')) {
         throw new \RuntimeException('Results dropdown accepted malformed round IDs.');
+    }
+
+    // Oversized imported round aliases must be ignored by both the matchday
+    // pagination and the dropdown, not merely rejected by the parser.
+    $longRoundAlias = '18:' . str_repeat('x', 255);
+    $model::$rounds = [
+        (object) ['id' => '2:opening', 'roundcode' => 1],
+        (object) ['id' => $longRoundAlias, 'roundcode' => 2],
+        (object) ['id' => '7:final', 'roundcode' => 3],
+    ];
+    $input->currentRound = 2;
+    $longRoundHtml = $helper::pagenav($project);
+    if (str_contains($longRoundHtml, $longRoundAlias)
+        || str_contains($longRoundHtml, 'r=18')
+        || !str_contains($helper::$nextlink, 'r=7%3Afinal')) {
+        throw new \RuntimeException('Oversized imported round alias reached pagination.');
+    }
+
+    $model::$options = [
+        (object) ['value' => '2:opening', 'text' => 'Opening'],
+        (object) ['value' => $longRoundAlias, 'text' => 'Too long'],
+        (object) ['value' => '7:final', 'text' => 'Final'],
+    ];
+    $longRoundOptions = $helper::selectNavigation($project);
+    if (str_contains($longRoundOptions, 'r=18')
+        || !str_contains($longRoundOptions, 'r=7%3Afinal')) {
+        throw new \RuntimeException('Oversized imported round alias reached dropdown.');
     }
 
     // Old imported rounds can carry non-string labels or control characters.
