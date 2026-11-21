@@ -228,6 +228,29 @@ namespace {
         throw new \RuntimeException('Valid zero-padded season was lost in navigation.');
     }
 
+    // Imported round codes must not be loosely cast into adjacent matchdays
+    // or rendered as meaningless zero/negative labels.
+    $model::$rounds = [
+        (object) ['id' => '2:opening', 'roundcode' => '0001'],
+        (object) ['id' => '3:invalid', 'roundcode' => '2junk'],
+        (object) ['id' => '4:nested', 'roundcode' => ['2']],
+        (object) ['id' => '5:zero', 'roundcode' => 0],
+        (object) ['id' => '7:final', 'roundcode' => 2],
+    ];
+    $roundCodeHtml = $helper::pagenav($project);
+    if (!str_contains($roundCodeHtml, 'r=7%3Afinal')
+        || str_contains($roundCodeHtml, 'r=3%3Ainvalid')
+        || str_contains($roundCodeHtml, 'r=4%3Anested')
+        || str_contains($roundCodeHtml, 'r=5%3Azero')) {
+        throw new \RuntimeException('Malformed imported matchday sequence was rendered.');
+    }
+    $model::$rounds = [
+        (object) ['id' => '0002:opening', 'roundcode' => 1],
+        (object) ['id' => '7:final', 'roundcode' => 2],
+        (object) ['id' => '8invalid', 'roundcode' => 3],
+        (object) ['id' => '999999999999999999999999', 'roundcode' => 4],
+    ];
+
     $input->currentRound = 7;
     $html = $helper::pagenav($project);
 
