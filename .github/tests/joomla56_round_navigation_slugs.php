@@ -382,14 +382,14 @@ namespace {
     $input->currentRound = null;
     $helper::selectNavigation($invalidDefaultRound);
     if (!str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=2%3Aopening')
-        || str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=0')) {
+        || str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, '&r=0')) {
         throw new \RuntimeException('Missing current round created a synthetic dropdown URL.');
     }
 
     $input->currentRound = 999;
     $helper::selectNavigation($project);
     if (!str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=2%3Aopening')
-        || str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=999')) {
+        || str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, '&r=999')) {
         throw new \RuntimeException('Deleted current round remained selected in dropdown.');
     }
 
