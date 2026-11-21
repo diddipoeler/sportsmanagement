@@ -307,8 +307,9 @@ final class RoundPaginationHelper
      * Joomla round selectors can contain ID:alias values, but leading
      * numbers followed by arbitrary text must never turn into valid links.
      *
-     * Rejects non-numeric or overflowing IDs and malformed aliases before
-     * they can be added to generated matchday routes.
+     * Rejects non-numeric or overflowing IDs, malformed aliases and
+     * oversized imported selectors (more than 256 bytes) before they can
+     * be added to generated matchday routes.
      *
      * @param mixed $raw Raw ID or ID:alias value from Joomla round records.
      * @return array{id:int,slug:string}|null Canonical positive ID and slug, or null.
@@ -320,6 +321,13 @@ final class RoundPaginationHelper
         }
 
         $value = (string) $raw;
+
+        // Legacy imports may carry extremely long aliases or decimal
+        // prefixes. Limit the entire selector before Unicode matching or
+        // routing so corrupted rows cannot create oversized HTML links.
+        if ($value === '' || strlen($value) > 256) {
+            return null;
+        }
 
         if (!preg_match('/^([0-9]+)(?::([\pL\pN._-]+))?$/Du', $value, $matches)) {
             return null;
