@@ -52,7 +52,8 @@ final class RoundPaginationHelper
      * loading a model. Skips imported rounds with invalid positive sequence
      * codes instead of loosely casting them into visible matchday labels.
      * Deduplicates corrupted round records by ID so navigation never links
-     * a round back to a duplicate of itself.
+     * a round back to a duplicate of itself. Parses imported current-round
+     * defaults strictly rather than accepting partial numeric strings.
      *
      * @param object|null $project Project record with its ID and current round.
      * @param int|string $cfgWhichDatabase Selected SportsManagement database.
@@ -85,9 +86,10 @@ final class RoundPaginationHelper
         $app = self::siteApplication();
         $input = $app->getInput();
         $option = $input->getCmd('option', 'com_sportsmanagement');
-        $currentRoundId = $input->getInt('r', (int) ($project->current_round ?? 0));
+        $fallbackRoundId = self::positiveProjectId($project->current_round ?? null);
+        $currentRoundId = $input->getInt('r', $fallbackRoundId);
         if ($currentRoundId <= 0) {
-            $currentRoundId = (int) ($project->current_round ?? 0);
+            $currentRoundId = $fallbackRoundId;
         }
 
         $normalised = [];
@@ -190,6 +192,7 @@ final class RoundPaginationHelper
      * selects the option matching the current request round. Invalid or
      * non-scalar imported round labels fall back to the canonical slug.
      * Repeated imported IDs are included only once in the dropdown.
+     * Malformed default current-round IDs cannot select another matchday.
      * Returns no markup when the project ID or database selector is invalid,
      * or no usable
      * rounds are available.
@@ -225,7 +228,10 @@ final class RoundPaginationHelper
         $params['mode'] = $input->getInt('mode', 0);
         $params['order'] = $input->getInt('order', 0);
 
-        $currentRound = $input->getInt('r', (int) ($project->current_round ?? 0));
+        $currentRound = $input->getInt(
+            'r',
+            self::positiveProjectId($project->current_round ?? null)
+        );
         $currentUrl = self::roundUrl($params, (string) max(0, $currentRound), $params['division'], '');
         $options = [];
         $seenRoundIds = [];
