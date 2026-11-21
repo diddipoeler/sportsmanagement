@@ -25,6 +25,7 @@ namespace Joomla\CMS\HTML {
     final class HTMLHelper
     {
         public static array $optionLabels = [];
+        public static string $selectedValue = '';
 
         public static function link(string $url, string $label): string
         {
@@ -40,6 +41,8 @@ namespace Joomla\CMS\HTML {
             }
 
             if ($action === 'select.genericlist') {
+                self::$selectedValue = $args[6];
+
                 return implode('|', array_map(
                     static fn (object $o): string => $o->value,
                     $args[0]
@@ -371,6 +374,29 @@ namespace {
     $helper::selectNavigation($validDefaultRound);
     if ($input->lastRoundDefault !== 7) {
         throw new \RuntimeException('Dropdown lost valid zero-padded current round.');
+    }
+    $input->currentRound = 2;
+
+    // A deleted, malformed or missing current round must select an
+    // existing option rather than a synthetic r=0 or stale-ID URL.
+    $input->currentRound = null;
+    $helper::selectNavigation($invalidDefaultRound);
+    if (!str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=2%3Aopening')
+        || str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=0')) {
+        throw new \RuntimeException('Missing current round created a synthetic dropdown URL.');
+    }
+
+    $input->currentRound = 999;
+    $helper::selectNavigation($project);
+    if (!str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=2%3Aopening')
+        || str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=999')) {
+        throw new \RuntimeException('Deleted current round remained selected in dropdown.');
+    }
+
+    $input->currentRound = 7;
+    $helper::selectNavigation($project);
+    if (!str_contains(\Joomla\CMS\HTML\HTMLHelper::$selectedValue, 'r=7%3Afinal')) {
+        throw new \RuntimeException('Valid selected round lost its dropdown selection.');
     }
     $input->currentRound = 2;
 
