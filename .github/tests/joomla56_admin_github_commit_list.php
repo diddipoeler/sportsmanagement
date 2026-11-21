@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Joomla\CMS\HTML {
     final class HTMLHelper
     {
+        public static array $formattedDates = [];
+
         /**
          * Simulate Joomla date formatting for supplied ISO commit dates.
          *
@@ -26,6 +28,8 @@ namespace Joomla\CMS\HTML {
             if ($operation !== 'date' || $format !== 'd.m.Y H:i:s') {
                 throw new \RuntimeException('Unexpected date formatting request.');
             }
+
+            self::$formattedDates[] = $date;
 
             return 'Formatted: ' . $date;
         }
@@ -91,6 +95,10 @@ namespace {
             'https://user:pass@avatars.githubusercontent.com/u/2'),
         $record('Other', 'No external link', null,
             ['url is nested'], ['avatar is nested']),
+        $record('Relative date', 'Should not be formatted', 'tomorrow', null, null),
+        $record('Invalid calendar day', 'Should not be formatted', '2026-02-30T10:00:00Z', null, null),
+        $record('Invalid clock time', 'Should not be formatted', '2026-11-21T25:00:00Z', null, null),
+        $record('ISO offset', 'Should not be formatted', '2026-11-21T10:00:00+01:00', null, null),
         ['not a commit object'],
     ];
 
@@ -141,6 +149,10 @@ namespace {
         || str_contains($markup, 'evil=1')
         || str_contains($markup, 'user:pass@')
         || str_contains($markup, 'Array')
+        || str_contains($markup, 'Formatted: tomorrow')
+        || str_contains($markup, 'Formatted: 2026-02-30')
+        || str_contains($markup, 'Formatted: 2026-11-21T25')
+        || \\Joomla\\CMS\\HTML\\HTMLHelper::$formattedDates !== ['2026-11-21T10:00:00Z']
     ) {
         throw new \RuntimeException('GitHub commit list rendered malformed API fields or unsafe resources.');
     }
