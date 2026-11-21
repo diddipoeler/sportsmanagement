@@ -95,6 +95,7 @@ namespace {
     }
 
     $app->identity = new class {
+        public int $id = 42;
         public bool $authorized = false;
         public function authorise(string $action, string $asset): bool {
             return $this->authorized && $asset === 'com_sportsmanagement'
@@ -134,7 +135,67 @@ namespace {
         }
     }
 
-    $app->identity->authorized = true;
+    // Reject guests, malformed legacy user IDs and identity implementations
+    // without authorise(), even when a fake ACL would allow all writes.
+    $identityId = new \ReflectionMethod($controller, 'authenticatedUserId');
+    foreach ([
+        [42, 42], ['00042', 42], [0, 0], ['0', 0],
+        [true, 0], [false, 0], [['42'], 0],
+        ['42junk', 0], ['42.5', 0], [' 42', 0],
+        ['999999999999999999999999', 0],
+    ] as [$raw, $expected]) {
+        if ($identityId->invoke(null, $raw) !== $expected) {
+            throw new \RuntimeException('Malformed project administrator user ID was accepted.');
+        }
+    }
+
+    foreach ([0, '42junk', true, ['42'], '999999999999999999999999'] as $invalidId) {
+        $app->identity = new class($invalidId) {
+            public function __construct(public mixed $id) {}
+
+            public function authorise(string $action, string $asset): bool
+            {
+                return true;
+            }
+        };
+
+        $writesBefore = $project->writes;
+        $requestsBefore = $controller->modelRequests;
+
+        try {
+            $controller->copy();
+            throw new \RuntimeException('Malformed project identity was accepted.');
+        } catch (\RuntimeException $error) {
+            if ($error->getCode() !== 403) {
+                throw $error;
+            }
+        }
+
+        if ($project->writes !== $writesBefore || $controller->modelRequests !== $requestsBefore) {
+            throw new \RuntimeException('Invalid administrator identity reached project write model.');
+        }
+    }
+
+    $app->identity = new class {
+        public int $id = 42;
+    };
+    try {
+        $controller->saveshort();
+        throw new \RuntimeException('Identity without an ACL method was accepted.');
+    } catch (\RuntimeException $error) {
+        if ($error->getCode() !== 403) {
+            throw $error;
+        }
+    }
+
+    $app->identity = new class {
+        public int $id = 42;
+        public bool $authorized = true;
+        public function authorise(string $action, string $asset): bool {
+            return $this->authorized && $asset === 'com_sportsmanagement'
+                && in_array($action, ['core.create', 'core.edit'], true);
+        }
+    };
     \Joomla\CMS\Session\Session::$valid = false;
     try {
         $controller->copy();
