@@ -45,10 +45,20 @@ use Joomla\CMS\Router\Route;
             && preg_match('~^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/commit/[a-f0-9]{40}$~iD', $htmlUrl) === 1;
         $safeAvatarUrl = strlen($avatarUrl) <= 2048
             && preg_match('~^https://avatars\\.githubusercontent\\.com/u/[1-9][0-9]*(?:\\?v=[0-9]+)?$~iD', $avatarUrl) === 1;
+
+        // GitHub commit dates use UTC ISO 8601. strtotime() also accepts
+        // relative words and normalises impossible dates; reject those
+        // instead of formatting a different timestamp in the admin list.
+        $safeDate = false;
+        if (strlen($date) === 20 && preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/D', $date) === 1) {
+            $parsedDate = \\DateTimeImmutable::createFromFormat('!Y-m-d\\TH:i:s\\Z', $date, new \\DateTimeZone('UTC'));
+            $safeDate = $parsedDate !== false
+                && $parsedDate->format('Y-m-d\\TH:i:s\\Z') === $date;
+        }
         ?>
         <tr>
             <td class="text-nowrap">
-                <?php echo $date !== '' && strlen($date) <= 64 && strtotime($date) !== false
+                <?php echo $safeDate
                     ? htmlspecialchars((string) HTMLHelper::_('date', $date, 'd.m.Y H:i:s'), ENT_QUOTES, 'UTF-8')
                     : ''; ?>
             </td>
