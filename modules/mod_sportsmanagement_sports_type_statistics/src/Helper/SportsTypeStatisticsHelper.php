@@ -22,8 +22,9 @@ final class SportsTypeStatisticsHelper
      * Validates sport and database selectors, resolves the Joomla or external
      * SportsManagement connection and computes project, league, season, venue,
      * team, player and fixture totals for the selected sport only.
-     * Rejects unsupported database selectors, corrupt metadata and invalid
-     * count records rather than turning arbitrary PHP values into numbers.
+     * Rejects unsupported database selectors, corrupt metadata, mismatched
+     * sport records and invalid count values rather than turning arbitrary
+     * PHP values into numbers.
      * Returns an empty state without opening an external database when no
      * sport has been selected.
      * @param Registry $params Sports type statistics module parameters.
@@ -58,7 +59,13 @@ final class SportsTypeStatisticsHelper
                 ->bind(':sportTypeId', $sportTypeId, ParameterType::INTEGER);
             $db->setQuery($query, 0, 1);
             $record = $db->loadObject();
-            $sportType = is_object($record) ? $record : null;
+
+            // Defensive validation for imported records or database adapters
+            // returning an unexpected row. Never display another sport as
+            // the currently selected category.
+            $recordId = is_object($record)
+                ? self::nonNegativeSelector($record->id ?? null) : null;
+            $sportType = $recordId === $sportTypeId ? $record : null;
 
             if ($sportType !== null) {
                 $icon = $sportType->icon ?? null;
