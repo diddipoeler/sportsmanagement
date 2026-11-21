@@ -338,6 +338,26 @@ namespace {
         }
     }
 
+    // Defensive native mapping must not display the name or icon of
+    // another sport even if an adapter returns an unexpected record.
+    foreach ([8, '8', '7junk', ['7'], null] as $wrongRecordId) {
+        $wrongDb = new SportsStatsDatabase();
+        $wrongDb->sportRecordId = $wrongRecordId;
+        $wrongData = $helper->getData($params, $wrongDb);
+
+        if ($wrongData['sportstype'] !== null
+            || ($wrongData['counts']['projects'] ?? null) !== 4) {
+            throw new \RuntimeException('Native statistics displayed another sport record.');
+        }
+    }
+
+    $zeroPaddedDb = new SportsStatsDatabase();
+    $zeroPaddedDb->sportRecordId = '0007';
+    $zeroPaddedData = $helper->getData($params, $zeroPaddedDb);
+    if (($zeroPaddedData['sportstype']->id ?? null) !== '0007') {
+        throw new \RuntimeException('Native statistics rejected valid imported sport ID.');
+    }
+
     // Legacy template overrides should use the validated record ID, not
     // cast arbitrary raw module settings into an array index.
     if (!defined('JPATH_SITE')) {
