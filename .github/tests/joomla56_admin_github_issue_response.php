@@ -14,6 +14,10 @@ namespace Joomla\CMS\MVC\Model {
     class BaseDatabaseModel {}
 }
 
+namespace Joomla\CMS\MVC\View {
+    class HtmlView {}
+}
+
 namespace Joomla\CMS\Application {
     final class AdministratorApplication
     {
@@ -242,6 +246,7 @@ namespace Joomla\Http {
 namespace {
     \define('_JEXEC', 1);
     require_once dirname(__DIR__, 2) . '/admin/src/Model/GithubModel.php';
+    require_once dirname(__DIR__, 2) . '/admin/src/View/Github/HtmlView.php';
 
     $app = new \Joomla\CMS\Application\AdministratorApplication();
     \Joomla\CMS\Factory::$application = $app;
@@ -288,6 +293,24 @@ namespace {
             || ($payload->title ?? '') !== 'Regression issue'
             || ($payload->body ?? '') !== 'Test details') {
             throw new \RuntimeException('GitHub native issue request contract changed.');
+        }
+    }
+
+    // The administrator view must not claim that malformed legacy
+    // credentials can be used to create a GitHub issue.
+    $tokenAvailable = new \ReflectionMethod(
+        \Diddipoeler\Component\SportsManagement\Administrator\View\Github\HtmlView::class,
+        'hasUsableConfiguredToken'
+    );
+    foreach ([
+        ['ghp_VALID123', true],
+        ['github_pat_abc.DEF', true],
+        ['', false], [null, false], [false, false],
+        [['ghp_OLD'], false], ["ghp_injected\nHeader: test", false],
+        ['ghp_ space', false], [str_repeat('x', 2049), false],
+    ] as [$candidate, $expected]) {
+        if ($tokenAvailable->invoke(null, $candidate) !== $expected) {
+            throw new \RuntimeException('GitHub administrator token indicator misclassified configuration.');
         }
     }
 
