@@ -204,6 +204,39 @@ namespace Joomla\Http {
         {
             return new class {
                 /**
+                 * Simulate the GitHub commit listing request.
+                 *
+                 * @param string $url GitHub REST list endpoint.
+                 * @param array $headers HTTP headers.
+                 * @param int $timeout Request deadline.
+                 * @return object Configured fake JSON response.
+                 */
+                public function get(string $url, array $headers, int $timeout): object
+                {
+                    HttpFactory::$requests[] = [
+                        'url' => $url, 'headers' => $headers, 'timeout' => $timeout,
+                    ];
+
+                    return new class {
+                        /**
+                         * @return int Fake API HTTP status.
+                         */
+                        public function getStatusCode(): int
+                        {
+                            return HttpFactory::$status;
+                        }
+
+                        /**
+                         * @return string Fake JSON response body.
+                         */
+                        public function getBody(): string
+                        {
+                            return HttpFactory::$body;
+                        }
+                    };
+                }
+
+                /**
                  * Simulate an HTTP issue creation request.
                  *
                  * @param string $url GitHub endpoint.
@@ -295,6 +328,45 @@ namespace {
             throw new \RuntimeException('GitHub native issue request contract changed.');
         }
     }
+
+    // GitHub's per_page=30 is only a request hint. Do not render more than
+    // 30 responses or records without a native commit object.
+    $completeCommit = (object) [
+        'sha' => str_repeat('a', 40),
+        'commit' => (object) ['message' => 'Valid commit'],
+    ];
+    $oversizedResponse = array_fill(0, 35, $completeCommit);
+    $oversizedResponse[1] = ['not a commit'];
+    $oversizedResponse[2] = (object) ['sha' => 'missing-commit'];
+    \Joomla\Http\HttpFactory::$status = 200;
+    \Joomla\Http\HttpFactory::$body = (string) json_encode($oversizedResponse);
+    $app->messages = [];
+    $list = $model->getGithubList();
+    if (count($list) !== 28 || !isset($list[0]->commit, $list[27]->commit)
+        || $app->messages !== []) {
+        throw new \RuntimeException('GitHub commit list ignored page cap or malformed entries.');
+    }
+
+    $lastRequest = \Joomla\Http\HttpFactory::$requests[array_key_last(\Joomla\Http\HttpFactory::$requests)];
+    if ($lastRequest['url'] !== 'https://api.github.com/repos/diddipoeler/sportsmanagement/commits?per_page=30'
+        || ($lastRequest['headers']['Authorization'] ?? '') !== 'Bearer ghp_TEST_TOKEN'
+        || $lastRequest['timeout'] !== 20) {
+        throw new \RuntimeException('GitHub commit listing transport contract changed.');
+    }
+
+    \Joomla\Http\HttpFactory::$body = (string) json_encode((object) ['message' => 'private api error']);
+    if ($model->getGithubList() !== []) {
+        throw new \RuntimeException('Unexpected GitHub object response appeared as commits.');
+    }
+
+    \Joomla\Http\HttpFactory::$status = 500;
+    \Joomla\Http\HttpFactory::$body = (string) json_encode([$completeCommit]);
+    if ($model->getGithubList() !== []) {
+        throw new \RuntimeException('Failed GitHub commit API response was displayed.');
+    }
+
+    \Joomla\Http\HttpFactory::$status = 201;
+    \Joomla\Http\HttpFactory::$body = (string) json_encode((object) ['number' => 42]);
 
     // Invalid UTF-8 issue content cannot be JSON-encoded. Reject it
     // without issuing any HTTP request or exposing submitted content.
