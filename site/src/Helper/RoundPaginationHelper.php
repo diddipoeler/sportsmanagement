@@ -193,6 +193,8 @@ final class RoundPaginationHelper
      * non-scalar imported round labels fall back to the canonical slug.
      * Repeated imported IDs are included only once in the dropdown.
      * Malformed default current-round IDs cannot select another matchday.
+     * Missing or deleted current rounds select the first valid option instead
+     * of constructing a broken synthetic round URL.
      * Returns no markup when the project ID or database selector is invalid,
      * or no usable
      * rounds are available.
@@ -232,7 +234,9 @@ final class RoundPaginationHelper
             'r',
             self::positiveProjectId($project->current_round ?? null)
         );
-        $currentUrl = self::roundUrl($params, (string) max(0, $currentRound), $params['division'], '');
+        // The requested round may no longer be present after an import.
+        // Prefer the first actual option over a synthetic r=0 or stale ID.
+        $currentUrl = null;
         $options = [];
         $seenRoundIds = [];
 
@@ -244,6 +248,7 @@ final class RoundPaginationHelper
 
             $seenRoundIds[$value['id']] = true;
             $url = self::roundUrl($params, $value['slug'], $params['division'], '');
+            $currentUrl ??= $url;
             $rawLabel = $round->text ?? null;
             $label = is_string($rawLabel) && $rawLabel !== ''
                 && strlen($rawLabel) <= 256
