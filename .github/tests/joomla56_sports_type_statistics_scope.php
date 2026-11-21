@@ -418,6 +418,14 @@ namespace {
         throw new \RuntimeException('Legacy statistics bridge dropped a valid sport.');
     }
 
+    $mismatchedRecordDb = new SportsStatsDatabase();
+    $mismatchedRecordDb->sportRecordId = 8;
+    $mismatchedRecord = \modJSMSportsHelper::getData($legacyParams, $mismatchedRecordDb);
+
+    if ($mismatchedRecord['sportstype'] !== []) {
+        throw new \RuntimeException('Legacy statistics bridge displayed an unselected sport.');
+    }
+
     $invalidRecordDb = new SportsStatsDatabase();
     $invalidRecordDb->sportRecordId = '7junk';
     $invalidRecord = \modJSMSportsHelper::getData($legacyParams, $invalidRecordDb);
