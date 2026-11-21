@@ -75,7 +75,8 @@ final class GithubModel extends BaseDatabaseModel
      *
      * Optional arguments preserve the historic no-argument method surface.
      * Validates the returned HTML issue URL before including it in an
-     * administrator success notification.
+     * administrator success notification. A valid positive issue number
+     * is required before reporting successful issue creation.
      *
      * @param string $title New issue title or empty for submitted form input.
      * @param string $message New issue body or empty for submitted form input.
@@ -129,7 +130,8 @@ final class GithubModel extends BaseDatabaseModel
         $body = (string) $response->getBody();
         $decoded = json_decode($body);
 
-        if ($status !== 201 || !is_object($decoded)) {
+        if ($status !== 201 || !is_object($decoded)
+            || self::positiveIssueNumber($decoded->number ?? null) === 0) {
             $this->reportApiError($status, $decoded, $body);
 
             return false;
@@ -144,6 +146,39 @@ final class GithubModel extends BaseDatabaseModel
         );
 
         return $decoded;
+    }
+
+    /**
+     * Validate the numeric GitHub issue number in a creation response.
+     *
+     * HTTP 201 alone is insufficient: an empty or malformed JSON object
+     * does not establish that a usable issue was created. Supports native
+     * JSON integers and complete decimal strings without loose casts.
+     *
+     * @param mixed $number Untrusted number value returned by GitHub.
+     * @return int Positive issue number or zero for malformed responses.
+     */
+    private static function positiveIssueNumber(mixed $number): int
+    {
+        if (is_int($number)) {
+            return $number > 0 ? $number : 0;
+        }
+
+        if (!is_string($number) || $number === '' || strlen($number) > 128
+            || preg_match('/^[0-9]+$/D', $number) !== 1) {
+            return 0;
+        }
+
+        $digits = ltrim($number, '0');
+        if ($digits === '') {
+            return 0;
+        }
+
+        $id = filter_var($digits, FILTER_VALIDATE_INT, [
+            'options' => ['min_range' => 1],
+        ]);
+
+        return $id === false ? 0 : $id;
     }
 
     /**
