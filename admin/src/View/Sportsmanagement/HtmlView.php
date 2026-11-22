@@ -25,6 +25,17 @@ final class HtmlView extends BaseHtmlView
     public $item;
     public $state;
 
+    /**
+     * Render the SportsManagement editing screen in the Joomla backend.
+     *
+     * Hide the main menu during editing, load form/item/state from the MVC
+     * model, reject model errors, verify the form is available and register
+     * the toolbar before delegating to the inherited Joomla view.
+     *
+     * @param string|null $tpl Optional edit layout suffix.
+     * @return void Joomla's parent view outputs the edit form.
+     * @throws \RuntimeException When required form data is unavailable.
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -47,6 +58,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Build a permission-aware toolbar for an editable SportsManagement item.
+     *
+     * Check create and edit permissions for the selected record, attach
+     * component styling through Joomla's WebAssetManager, and show only
+     * permitted save/copy commands together with the cancel action.
+     *
+     * @return void The administrator toolbar and stylesheet are configured.
+     */
     protected function addToolbar(): void
     {
         $app = self::administratorApplication();
@@ -91,6 +111,15 @@ final class HtmlView extends BaseHtmlView
             $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE'
         );
     }
+    /**
+     * Obtain the active Joomla administrator application.
+     *
+     * Load AdministratorApplication from the dependency injection container
+     * and reject frontend execution to protect backend view state and actions.
+     *
+     * @return AdministratorApplication Validated Joomla backend application.
+     * @throws \RuntimeException If the active client is not administrator.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
