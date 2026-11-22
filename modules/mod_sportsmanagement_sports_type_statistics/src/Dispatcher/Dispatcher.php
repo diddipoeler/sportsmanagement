@@ -65,10 +65,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_sports_type_statistics',
-                'modules/mod_sportsmanagement_sports_type_statistics/css/mod_sportsmanagement_sports_type_statistics.css'
-            );
+            // Joomla renders multiple module instances into one asset registry.
+            $assets = $document->getWebAssetManager();
+
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_sports_type_statistics')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_sports_type_statistics',
+                    'modules/mod_sportsmanagement_sports_type_statistics/css/mod_sportsmanagement_sports_type_statistics.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_sports_type_statistics');
         }
 
         return $data;
