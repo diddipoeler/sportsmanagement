@@ -18,8 +18,9 @@ final class TeamsController extends SportsManagementAdminController
 {
     /**
      * Save shortened team fields from the administrator team list.
-     * Checks component edit access, invokes the team model's saveshort()
-     * method, reports success or failure and redirects to the team overview.
+     * Checks the Joomla POST token and component edit access, validates
+     * the model's save and error methods before invoking saveshort(), and
+     * redirects to the team overview with result feedback.
      *
      * @return void
      */
@@ -28,19 +29,24 @@ final class TeamsController extends SportsManagementAdminController
         $this->assertWritePermission();
 
         $model = $this->getModel();
-        if ($model === false || $model === null) {
+        if (!is_object($model) || !is_callable([$model, 'getError'])) {
             throw new \RuntimeException('SportsManagement team model could not be loaded.', 500);
         }
 
-        $ok = $model->saveshort();
+        if (!is_callable([$model, 'saveshort'])) {
+            throw new \RuntimeException('SportsManagement team quick-save model method is unavailable.', 500);
+        }
+
+        $ok = (bool) $model->saveshort();
         $this->app->enqueueMessage($ok ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')), $ok ? 'message' : 'warning');
         $this->redirectToList();
     }
 
     /**
      * Copy the selected team records through the administrator model.
-     * Checks core.create permission before delegating the copy operation,
-     * then displays a result message and redirects to the current team list.
+     * Requires a valid Joomla POST token and core.create permission,
+     * verifies the required copy and error methods are callable, then
+     * displays a result message and redirects to the current team list.
      *
      * @return void
      */
@@ -48,11 +54,15 @@ final class TeamsController extends SportsManagementAdminController
     {
         $this->assertWritePermission('core.create');
         $model = $this->getModel();
-        if ($model === false || $model === null) {
+        if (!is_object($model) || !is_callable([$model, 'getError'])) {
             throw new \RuntimeException('SportsManagement team model could not be loaded.', 500);
         }
 
-        $ok = $model->copySelected();
+        if (!is_callable([$model, 'copySelected'])) {
+            throw new \RuntimeException('SportsManagement team copy model method is unavailable.', 500);
+        }
+
+        $ok = (bool) $model->copySelected();
         $this->app->enqueueMessage($ok ? Text::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE') : ($model->getError() ?: Text::_('JERROR_AN_ERROR_HAS_OCCURRED')), $ok ? 'message' : 'warning');
         $this->redirectToList();
     }
