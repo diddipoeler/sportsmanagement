@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Githubinstal
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -37,7 +38,15 @@ final class HtmlView extends BaseHtmlView
      */
     public function display($tpl = null)
     {
-        $identity = Factory::getApplication()->getIdentity();
+        // Resolve the current Joomla backend application through the DI
+        // container rather than the legacy static application accessor.
+        $app = Factory::getContainer()->get(AdministratorApplication::class);
+
+        if (!$app instanceof AdministratorApplication || !$app->isClient('administrator')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        $identity = $app->getIdentity();
 
         if ($identity === null || (int) ($identity->id ?? 0) < 1
             || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
