@@ -56,10 +56,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_top_tipper',
-                'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css'
-            );
+            // Reuse a single stylesheet registration across module instances.
+            $assets = $document->getWebAssetManager();
+
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_top_tipper')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_top_tipper',
+                    'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_top_tipper');
         }
 
         $helper = $this->getHelperFactory()->getHelper('TopTipperHelper');
