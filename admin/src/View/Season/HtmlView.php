@@ -15,6 +15,18 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 final class HtmlView extends BaseHtmlView
 {
     public $form; public $item; public $state;
+    /**
+     * Render the season editing form and configure its administrator toolbar.
+     *
+     * Load the editable season, Joomla form and model state, surface reported
+     * model errors, and choose the add or edit title according to the record
+     * identifier. Register save, apply, copy and cancel toolbar actions before
+     * delegating layout rendering to Joomla's base view.
+     *
+     * @param string|null $tpl Optional layout template suffix.
+     * @return void The parent view renders the selected administrator layout.
+     * @throws \RuntimeException When the model reports an error.
+     */
     public function display($tpl = null)
     {
         $this->form = $this->get('Form'); $this->item = $this->get('Item'); $this->state = $this->get('State');
