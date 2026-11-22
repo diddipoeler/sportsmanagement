@@ -55,10 +55,19 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_teamstats_ranking',
-                'modules/mod_sportsmanagement_teamstats_ranking/css/mod_sportsmanagement_teamstats_ranking.css'
-            );
+            // A Joomla page may contain several instances of this module.
+            // Reuse the same registered stylesheet for all of them.
+            $assets = $document->getWebAssetManager();
+
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_teamstats_ranking')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_teamstats_ranking',
+                    'modules/mod_sportsmanagement_teamstats_ranking/css/mod_sportsmanagement_teamstats_ranking.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_teamstats_ranking');
         }
 
         $joomlaDatabase = $this->joomlaDatabase();
