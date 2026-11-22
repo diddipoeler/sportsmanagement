@@ -177,7 +177,12 @@ final class JlextcountryModel extends SportsManagementAdminModel
                 }
             } catch (\Throwable $e) {
                 $success = false;
-                $app->enqueueMessage($e->getMessage(), 'error');
+                \Joomla\CMS\Log\Log::add(
+                'SportsManagement jlextcountry database operation failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $app->enqueueMessage(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
                 $app->enqueueMessage(Text::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_COPY_PLZ_ZIP_ERROR'), 'error');
             } finally {
                 if (File::exists($zipPath)) {
