@@ -24,6 +24,18 @@ final class HtmlView extends BaseHtmlView
     public $activeFilters = [];
     public $parents = [];
 
+    /**
+     * Prepare the administrator list of sports positions and assignments.
+     *
+     * Load position records, list state and filters, obtain parent-position
+     * options for hierarchical ordering, and surface model errors. Set up
+     * the native Joomla toolbar for save-short, publish, import, export and
+     * other position-management tasks before rendering the list.
+     *
+     * @param string|null $tpl Optional Joomla list template suffix.
+     * @return void The inherited view renders the positions list.
+     * @throws \RuntimeException When the model reports loading errors.
+     */
     public function display($tpl = null)
     {
         $this->items = $this->get('Items') ?: [];
