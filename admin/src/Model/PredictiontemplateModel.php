@@ -97,7 +97,15 @@ final class PredictiontemplateModel extends SportsManagementAdminModel
 
             return $db->loadObject();
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement prediction game lookup failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
