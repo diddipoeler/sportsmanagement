@@ -29,6 +29,18 @@ final class HtmlView extends SportsManagementHtmlView
     public int $projectId = 0;
     public int $teamId = 0;
 
+    /**
+     * Prepare and render the frontend project-team editing interface.
+     *
+     * Resolve the native MVC model and a valid team record, enrich an
+     * existing project-team with its team name, obtain the edit form and
+     * optional extended fields, and populate project and team identifiers.
+     * Register Joomla validation and project-team assets for the layout.
+     *
+     * @param string|null $tpl Optional Joomla layout template suffix.
+     * @return void Joomla's base view renders the form.
+     * @throws \RuntimeException If model, record or form data is missing.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -85,6 +97,16 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Load and bind the project-team extended form configuration.
+     *
+     * Read the administrator XML definition for extra project-team fields,
+     * parse stored settings into a Joomla Registry, and bind the saved
+     * values to the resulting form for the frontend editing template.
+     *
+     * @param string $data Serialized extended project-team parameters.
+     * @return Form|false Bound form or false when the XML form cannot load.
+     */
     private function buildExtendedForm(string $data): Form|false
     {
         $xmlFile = JPATH_ADMINISTRATOR
