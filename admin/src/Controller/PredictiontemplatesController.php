@@ -38,15 +38,19 @@ final class PredictiontemplatesController extends SportsManagementAdminControlle
     /**
      * Create an override from the master prediction game's template.
      *
-     * Verifies the submitted Joomla form token, obtains filtered prediction
-     * and template identifiers, and delegates creation to the native model.
+     * Requires the submitted Joomla POST token and component edit permission,
+     * obtains filtered prediction and template identifiers, and delegates
+     * creation to the native model.
      * Redirects back to the selected prediction game with result feedback.
      *
      * @return void
+     * @throws \RuntimeException If the CSRF token or edit access is invalid.
      */
     public function createOverride(): void
     {
-        $this->checkToken();
+        // This task writes an override, not just a list selection.
+        // Require both the Joomla POST token and component edit permission.
+        $this->assertWritePermission('core.edit');
 
         $input = $this->app->getInput();
         $predictionId = $input->post->getInt(
