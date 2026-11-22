@@ -80,6 +80,8 @@ namespace Joomla\CMS\Component {
     final class ComponentHelper
     {
         public static mixed $token = '';
+        public static mixed $owner = 'diddipoeler';
+        public static mixed $repository = 'sportsmanagement';
 
         /**
          * Return isolated GitHub module configuration for credential checks.
@@ -99,7 +101,12 @@ namespace Joomla\CMS\Component {
                  */
                 public function get(string $key, mixed $default = null): mixed
                 {
-                    return $key === 'gh_token' ? ComponentHelper::$token : $default;
+                    return match ($key) {
+                        'gh_token' => ComponentHelper::$token,
+                        'cfg_github_username' => ComponentHelper::$owner,
+                        'cfg_github_repository' => ComponentHelper::$repository,
+                        default => $default,
+                    };
                 }
             };
         }
@@ -254,6 +261,31 @@ namespace {
             throw new \RuntimeException('Malformed GitHub issue number passed validation.');
         }
     }
+
+    // Dot-segment repository configuration must be rejected before the
+    // transport is ever created; a request to getGithubList would otherwise
+    // trigger the simulated private-credential transport exception.
+    foreach ([
+        ['.', 'sportsmanagement'],
+        ['..', 'sportsmanagement'],
+        ['diddipoeler', '.'],
+        ['diddipoeler', '..'],
+    ] as [$owner, $repository]) {
+        \Joomla\CMS\Component\ComponentHelper::$owner = $owner;
+        \Joomla\CMS\Component\ComponentHelper::$repository = $repository;
+        $logsBefore = count(\Joomla\CMS\Log\Log::$entries);
+        $app->messages = [];
+
+        if ($model->getGithubList() !== []
+            || count(\Joomla\CMS\Log\Log::$entries) !== $logsBefore
+            || count($app->messages) !== 1
+            || $app->messages[0][1] !== 'error'
+            || !str_contains($app->messages[0][0], 'Repository')) {
+            throw new \RuntimeException('Dot-segment GitHub repository reached HTTP transport.');
+        }
+    }
+    \Joomla\CMS\Component\ComponentHelper::$owner = 'diddipoeler';
+    \Joomla\CMS\Component\ComponentHelper::$repository = 'sportsmanagement';
 
     $repositoryPart = new \ReflectionMethod($model, 'isRepositoryPart');
     foreach ([
