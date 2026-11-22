@@ -22,11 +22,28 @@ use Throwable;
  */
 final class PlayerMatchDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise the Joomla player match reader through the project model.
+     *
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Retrieve player match records for the selected project and team members.
+     *
+     * Normalise the supplied project-team player IDs and execute the
+     * project's bound match query, returning an empty list when no players
+     * or valid project have been selected.
+     *
+     * @param array<int,object> $teamPlayers Team-player records to include.
+     * @return array<int,object> Player match history records.
+     */
     public function getGames(array $teamPlayers): array
     {
         $teamPlayerIds = $this->teamPlayerIds($teamPlayers);
@@ -101,6 +118,17 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
         return $games;
     }
 
+    /**
+     * Aggregate or count match events for the selected team players.
+     *
+     * Collect the validated player IDs and query Joomla match-event tables.
+     * Use the event quantity when totals are requested, or the number of
+     * event rows when count-based statistics are selected.
+     *
+     * @param array<int,object> $teamPlayers Team-player records to include.
+     * @param bool $showEventsAsSum Sum event values rather than counting rows.
+     * @return array<int,object> Event statistic records for template display.
+     */
     public function getGamesEvents(array $teamPlayers, bool $showEventsAsSum = true): array
     {
         $teamPlayerIds = $this->teamPlayerIds($teamPlayers);
@@ -146,6 +174,19 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
         return $gameEvents;
     }
 
+    /**
+     * Determine participation and substitution details for one player match.
+     *
+     * Return zero-initialised statistics for invalid identifiers, otherwise
+     * retrieve the selected player's starts and substitution activity using
+     * bound Joomla query parameters.
+     *
+     * @param int $projectId Selected SportsManagement project.
+     * @param int $projectTeamId Project-team relation identifier.
+     * @param int $teamPlayerId Team-player relation identifier.
+     * @param int $matchId Match identifier.
+     * @return object Played, started, substituted-in and substituted-out totals.
+     */
     private function getInOutStats(int $projectId, int $projectTeamId, int $teamPlayerId, int $matchId): object
     {
         $stats = new stdClass();
@@ -220,6 +261,15 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
         return $stats;
     }
 
+    /**
+     * Extract distinct positive team-player identifiers from model records.
+     *
+     * Ignore missing or non-positive IDs and preserve a stable numeric list
+     * for the Joomla query builder.
+     *
+     * @param array<int,object> $teamPlayers Source team-player rows.
+     * @return array<int,int> Distinct positive team-player IDs.
+     */
     private function teamPlayerIds(array $teamPlayers): array
     {
         $ids = [];
@@ -234,10 +284,25 @@ final class PlayerMatchDataModel extends SportsManagementProjectModel
         return array_values($ids);
     }
 
+    /**
+     * Record player match database failures without exposing SQL to visitors.
+     *
+     * Log the technical error in Joomla's component log and display a
+     * translated generic message in the frontend. This avoids revealing
+     * database details through exceptions raised by custom SQL drivers.
+     *
+     * @param Throwable $e Original database exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement player match query failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
