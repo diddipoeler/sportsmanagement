@@ -24,6 +24,18 @@ final class HtmlView extends BaseHtmlView
     public $filterForm;
     public $activeFilters = [];
 
+    /**
+     * Load and display the administrator list of custom extra fields.
+     *
+     * Fetch the field records, pagination, filter form, selected filters
+     * and model state. Stop rendering if the model reports errors; otherwise
+     * configure the standard add, edit, publish, check-in and trash
+     * actions and delegate output to Joomla's list template.
+     *
+     * @param string|null $tpl Optional list template suffix.
+     * @return void The extra-fields list is rendered.
+     * @throws \RuntimeException When the model reports loading errors.
+     */
     public function display($tpl = null)
     {
         $this->items = $this->get('Items') ?: [];
