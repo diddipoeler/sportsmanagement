@@ -18,6 +18,17 @@ use Joomla\Database\ParameterType;
 
 final class PredictionmembershipModel extends PredictionentryModel
 {
+    /**
+     * Register the authenticated Joomla user for the selected prediction game.
+     *
+     * Reject guest users and unavailable games, check for an existing
+     * membership using bound query parameters, and insert an initial member
+     * record when needed. Registration confirmation is best-effort so an
+     * SMTP failure cannot undo an already committed membership.
+     *
+     * @return int Existing or newly created membership ID, or zero if insertion fails.
+     * @throws \RuntimeException If no user or prediction game is authorised.
+     */
     public function registerCurrentUser(): int
     {
         $identity = $this->siteApplication()->getIdentity();
@@ -77,6 +88,18 @@ final class PredictionmembershipModel extends PredictionentryModel
         return $memberId;
     }
 
+    /**
+     * Notify the new prediction member and eligible game administrators.
+     *
+     * Query the active unblocked user, collect at most 100 valid deduplicated
+     * administrator email addresses, configure the Joomla mailer factory
+     * and send the configured translated membership confirmation.
+     * Notification errors are handled without affecting persisted membership.
+     *
+     * @param int $memberId Newly created prediction membership record ID.
+     * @param int $userId Authenticated Joomla user ID to notify.
+     * @return bool Whether the Joomla mailer reported successful delivery.
+     */
     private function sendMembershipConfirmation(int $memberId, int $userId): bool
     {
         $predictionGameId = $this->predictionGameId;
