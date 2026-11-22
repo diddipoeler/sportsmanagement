@@ -67,11 +67,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_randomplayer',
-                'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css',
-                ['version' => 'auto']
-            );
+            // Several module instances can share the same Joomla document.
+            $assets = $document->getWebAssetManager();
+
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_randomplayer')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_randomplayer',
+                    'modules/mod_sportsmanagement_randomplayer/css/mod_sportsmanagement_randomplayer.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_randomplayer');
         }
 
         return $data;
