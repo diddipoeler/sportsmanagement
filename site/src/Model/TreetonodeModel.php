@@ -21,6 +21,17 @@ final class TreetonodeModel extends SportsManagementProjectModel
     public int $projectid = 0;
     public int $treetoid = 0;
 
+    /**
+     * Initialise tournament-tree node data through Joomla site MVC.
+     *
+     * Preserve the project model's database and factory configuration,
+     * then read the selected project and tree identifiers from the
+     * validated site application request.
+     *
+     * @param array $config Joomla model configuration options.
+     * @param MVCFactoryInterface|null $factory Optional native Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -30,6 +41,16 @@ final class TreetonodeModel extends SportsManagementProjectModel
         $this->treetoid = max(0, $input->getInt('tnid', 0));
     }
 
+    /**
+     * Fetch the selected tournament tree's nodes and related team information.
+     *
+     * Reject missing project context, resolve the project's tree when no
+     * node tree was selected, and join node, match, team, club and tree data
+     * using a bound tree identifier. Preserve legacy false for invalid
+     * projects and an empty list when the project has no tournament tree.
+     *
+     * @return array<int,object>|false Node rows, or false for a missing project.
+     */
     public function getTreetonode(): array|false
     {
         if ($this->projectid <= 0) {
@@ -89,6 +110,15 @@ final class TreetonodeModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Find the first tournament-tree identifier owned by a project.
+     *
+     * Bind the validated positive project ID to Joomla's query builder
+     * and avoid running the lookup when the project is unselected.
+     *
+     * @param int $projectid Positive SportsManagement project ID.
+     * @return int Tournament-tree ID or zero if none exists.
+     */
     public function getTreeNodeID(int $projectid = 0): int
     {
         if ($projectid <= 0) {
@@ -107,6 +137,16 @@ final class TreetonodeModel extends SportsManagementProjectModel
         return (int) $db->loadResult();
     }
 
+    /**
+     * Load match selection options associated with one tournament-tree node.
+     *
+     * Join project teams, team names and round information to produce
+     * match IDs and descriptive labels. The node ID is bound as an
+     * integer rather than interpolated into the query.
+     *
+     * @param int $ttnid Selected tournament-tree node identifier.
+     * @return array<int,object> Matching Joomla select-option rows.
+     */
     public function getNodeMatches(int $ttnid = 0): array
     {
         if ($ttnid <= 0) {
@@ -137,6 +177,15 @@ final class TreetonodeModel extends SportsManagementProjectModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * List tournament rounds for the currently selected project.
+     *
+     * Filter rounds by the bound project identifier and tournament flag,
+     * then order results by their round code. Unselected projects produce
+     * an empty list without a database query.
+     *
+     * @return array<int,object> Tournament-round records.
+     */
     public function getRoundName(): array
     {
         if ($this->projectid <= 0) {
