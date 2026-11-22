@@ -38,6 +38,18 @@ final class HtmlView extends BaseHtmlView
     /** @var array<int, object> */
     public array $availableStatistics = [];
 
+    /**
+     * Render the position editor and its event/statistic assignment lists.
+     *
+     * Load form, item and state through the MVC model, retrieve assigned
+     * and available events and statistics for the selected sport, and attach
+     * JavaScript for the dual-list controls. Set an add/edit toolbar title
+     * and expose the position controller's save and cancel commands.
+     *
+     * @param string|null $tpl Optional edit layout template suffix.
+     * @return void The Joomla parent view outputs the editor.
+     * @throws \RuntimeException If form loading fails.
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -82,6 +94,16 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Attach JavaScript for editing position event and statistic relations.
+     *
+     * Only HTML documents receive the inline module script. The controls
+     * move selected options between available and assigned lists, reorder
+     * assignments and select submitted options so Joomla includes all
+     * retained relationships in the form request.
+     *
+     * @return void The inline asset is attached when supported.
+     */
     private function registerAssignmentScript(): void
     {
         $document = $this->getDocument();
@@ -173,6 +195,15 @@ document.addEventListener('DOMContentLoaded', () => {
 JS);
     }
 
+    /**
+     * Resolve the Joomla backend application for the position editor.
+     *
+     * Retrieve AdministratorApplication from the Joomla dependency-injection
+     * container and verify the active client before accessing input state.
+     *
+     * @return AdministratorApplication Validated Joomla backend application.
+     * @throws \RuntimeException If the current client is not administrator.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
