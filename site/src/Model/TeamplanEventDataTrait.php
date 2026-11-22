@@ -19,6 +19,15 @@ use Joomla\Utilities\ArrayHelper;
  */
 trait TeamplanEventDataTrait
 {
+    /**
+     * Load published player events for one team-plan match.
+     * Join event types, teams and player records using a bound match ID,
+     * optionally include comments and choose the requested event ordering.
+     * @param int $matchId Selected fixture identifier.
+     * @param bool $showComments Whether to include textual event comments.
+     * @param bool $sortDesc Whether to reverse the event time order.
+     * @return array<int,object> Match event records for presentation.
+     */
     public function getMatchEvents(int $matchId, bool $showComments = false, bool $sortDesc = false): array
     {
         if ($matchId <= 0) {
@@ -115,6 +124,13 @@ trait TeamplanEventDataTrait
         return $events;
     }
 
+    /**
+     * Retrieve player substitutions for a project match.
+     * Reject invalid match or project context, then join the player and
+     * team assignment data required to display substitutions in team plans.
+     * @param int $matchId Selected fixture identifier.
+     * @return array<int,object> Substitute and substituted player records.
+     */
     public function getMatchSubstitutions(int $matchId): array
     {
         if ($matchId <= 0 || $this->projectId <= 0) {
