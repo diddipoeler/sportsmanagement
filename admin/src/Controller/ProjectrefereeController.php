@@ -22,8 +22,9 @@ final class ProjectrefereeController extends SportsManagementFormController
     /**
      * Delete selected project-referee relations and refresh Finder entries.
      *
-     * Validates the Joomla form token and component deletion permission,
-     * resolves the native model and identifies related people before
+     * Validates the Joomla form token, requires an authenticated identity
+     * with component deletion permission, resolves the expected native
+     * model and identifies related people before
      * deleting the selected rows. Notifies the Finder index only when the
      * delete operation succeeds, then returns to the referee overview.
      *
@@ -34,13 +35,16 @@ final class ProjectrefereeController extends SportsManagementFormController
     {
         $this->checkToken();
 
-        if (!$this->app->getIdentity()->authorise('core.delete', 'com_sportsmanagement')) {
+        $identity = $this->app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.delete', 'com_sportsmanagement')) {
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         $pks = $this->app->getInput()->post->get('cid', [], 'array');
         $model = $this->getModel();
-        if (!is_object($model)) {
+
+        if (!$model instanceof \Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectrefereeModel) {
             throw new \RuntimeException('Projectreferee model is unavailable.', 500);
         }
 
