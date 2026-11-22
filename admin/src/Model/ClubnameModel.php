@@ -25,14 +25,24 @@ final class ClubnameModel extends SportsManagementAdminModel
      * Read the bundled SportsManagement XML file, skip records lacking
      * country, club name or long name, and check for an existing alias
      * using bound Joomla query parameters before inserting a new row.
-     * Report malformed input files and database errors to the backend
+     * Require component edit permission even for direct model calls,
+     * then report malformed input files and database errors to the backend
      * message queue while allowing remaining valid aliases to import.
      *
      * @return void Existing aliases are left unchanged.
+     * @throws \RuntimeException If the administrator cannot edit component data.
      */
     public function import(): void
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        // Imported aliases modify component tables. Protect direct model
+        // calls as well as the controller task, which checks its POST token.
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $db = $this->getDatabase();
         $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/xml_files/clubnames.xml';
         $xml = @simplexml_load_file($file);
