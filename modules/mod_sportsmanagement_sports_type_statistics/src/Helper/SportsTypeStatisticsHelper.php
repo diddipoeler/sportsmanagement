@@ -115,8 +115,9 @@ final class SportsTypeStatisticsHelper
     /**
      * Convert a configured sports icon into a validated browser URL.
      *
-     * Accepts absolute HTTP(S) URLs without credentials or unescaped control
-     * characters, and encodes relative file paths under the Joomla site root.
+     * Accepts absolute HTTP(S) URLs without credentials, fragments or
+     * unescaped control characters, and encodes relative paths under the
+     * Joomla site root.
      * Rejects other schemes, traversal, encoded separators and URL fragments
      * so a corrupt icon setting cannot create an unsafe image source.
      *
@@ -146,6 +147,7 @@ final class SportsTypeStatisticsHelper
                 && !empty($parts['host'])
                 && !isset($parts['user'])
                 && !isset($parts['pass'])
+                && !isset($parts['fragment'])
                 ? $path
                 : '';
         }
