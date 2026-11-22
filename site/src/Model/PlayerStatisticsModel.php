@@ -307,8 +307,14 @@ final class PlayerStatisticsModel extends SportsManagementProjectModel
      */
     private function reportDatabaseError(Throwable $e): void
     {
+        // Keep driver errors in Joomla logs rather than exposing SQL to site users.
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement player statistics query failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
