@@ -270,7 +270,18 @@ final class EditclubModel extends AdminModel
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
-    /** Only existing positive decimal club IDs are valid editor targets. */
+    /**
+     * Validate an existing club identifier without lossy PHP type coercion.
+     *
+     * Accept only integer or decimal-string values, reject zero, negative,
+     * partial, floating-point and overflowing identifiers, and compare
+     * decimal digits with PHP_INT_MAX before converting to an integer.
+     * This prevents malformed nested request values from selecting a
+     * different club record during frontend saves.
+     *
+     * @param mixed $value Untrusted club record identifier.
+     * @return int Valid positive club ID or zero if validation fails.
+     */
     private static function positiveId(mixed $value): int
     {
         if (!is_int($value) && !is_string($value)) {
