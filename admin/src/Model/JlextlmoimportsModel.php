@@ -48,13 +48,27 @@ final class JlextlmoimportsModel extends \sportsmanagementModeljlextlmoimports i
     }
 
     /**
-     * Create the historical LMO extension-start marker if missing.
-     * Uses Joomla's current mailer factory to notify the configured legacy
-     * recipient before saving the marker in the site temporary directory.
-     * @return void
+     * Initialise the historical LMO extension only for component admins.
+     *
+     * Verify administrator core.admin permission before this public model
+     * method sends its legacy notification email and writes the startup
+     * marker to Joomla's temporary directory. Skip the notification when
+     * the marker already exists, preserving the established one-time flow.
+     *
+     * @return void No action is taken when the marker already exists.
+     * @throws \RuntimeException If the caller lacks component admin access.
      */
     public function checkStartExtension(): void
     {
+        // This legacy method sends an email and writes an import marker.
+        // Model calls can bypass the administrator controller's ACL checks.
+        $identity = \Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver::resolve()
+            ->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.admin', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $fileextension = JPATH_SITE . '/tmp/lmoimport-2-0.txt';
 
         if (File::exists($fileextension)) {
