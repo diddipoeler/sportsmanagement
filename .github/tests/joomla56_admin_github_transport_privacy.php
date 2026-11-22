@@ -207,6 +207,8 @@ namespace {
         ['https://github.com/other/sportsmanagement/issues/123', false],
         ['https://github.com/diddipoeler/other/issues/123', false],
         ['https://github.com/diddipoeler/sportsmanagement/issues/0', false],
+        ['https://github.com/diddipoeler/sportsmanagement/issues/9999999999999999999999999999999', false],
+        ['https://github.com/diddipoeler/sportsmanagement/issues/0000000000000000000000000000', false],
         ['https://github.com/diddipoeler/sportsmanagement/issues/12?token=private', false],
         ['https://github.com/diddipoeler/sportsmanagement/issues/12#fragment', false],
         ['https://github.com/diddipoeler/sportsmanagement/issues/12' . "\n", false],
