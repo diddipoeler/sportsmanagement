@@ -15,7 +15,6 @@ use Diddipoeler\Component\SportsManagement\Site\Model\EditteamModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Registry\Registry;
 
 /** Joomla 5/6 frontend view for team editing. */
@@ -38,8 +37,19 @@ final class HtmlView extends SportsManagementHtmlView
             throw new \RuntimeException('EditteamModel is unavailable.', 500);
         }
 
-        $this->item = $model->getData();
+        $item = $model->getData();
+
+        if (!is_object($item)) {
+            throw new \RuntimeException('Editteam data is unavailable.', 500);
+        }
+
+        $this->item = $item;
         $this->form = $model->getForm();
+
+        if (!$this->form instanceof Form) {
+            throw new \RuntimeException('Editteam form is unavailable.', 500);
+        }
+
         $this->extended = $this->buildExtendedForm((string) ($this->item->extended ?? ''));
         $this->cfg_which_media_tool = (int) $this->params->get('cfg_which_media_tool', 0);
         $this->projectId = $this->input->getInt('p', 0);
@@ -51,13 +61,17 @@ final class HtmlView extends SportsManagementHtmlView
         if ($document instanceof HtmlDocument) {
             $webAssetManager = $document->getWebAssetManager();
             $webAssetManager->useScript('form.validate');
-            $webAssetManager->registerAndUseScript(
-                'com_sportsmanagement.editteam',
-                Uri::root(true) . '/components/com_sportsmanagement/assets/js/editteam.js',
-                [],
-                ['defer' => true],
-                ['core']
-            );
+            if (!$webAssetManager->assetExists('script', 'com_sportsmanagement.editteam')) {
+                $webAssetManager->registerScript(
+                    'com_sportsmanagement.editteam',
+                    'components/com_sportsmanagement/assets/js/editteam.js',
+                    ['version' => 'auto'],
+                    ['defer' => true],
+                    ['core']
+                );
+            }
+
+            $webAssetManager->useScript('com_sportsmanagement.editteam');
         }
 
         parent::display($tpl);
