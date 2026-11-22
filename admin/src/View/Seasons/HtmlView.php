@@ -25,6 +25,17 @@ final class HtmlView extends BaseHtmlView
     public $filterForm;
     public array $activeFilters = [];
 
+    /**
+     * Populate and render the season administration list.
+     *
+     * Require the native SeasonsModel, collect rows, pagination, filter form
+     * and state, reject reported model errors and prepare the list toolbar.
+     * The inherited view then outputs the current Joomla administrator layout.
+     *
+     * @param string|null $tpl Optional template suffix.
+     * @return void The list is rendered by the parent Joomla view.
+     * @throws \RuntimeException If the model is missing or reports errors.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -47,6 +58,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Register season management actions in the administrator toolbar.
+     *
+     * Display the translated list title and expose add, edit, publish,
+     * unpublish, check-in and trash tasks for the seasons controller.
+     * Individual task permissions remain enforced by Joomla controllers.
+     *
+     * @return void Toolbar buttons are registered as a side effect.
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE'), 'list');
