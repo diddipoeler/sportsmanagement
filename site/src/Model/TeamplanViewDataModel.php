@@ -20,6 +20,17 @@ use Throwable;
  */
 final class TeamplanViewDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise the Joomla 5/6 team-plan presentation reader.
+     *
+     * Delegate the MVC factory and configuration to the project-bound
+     * base model so database selection and current project context are
+     * resolved consistently for view-data queries.
+     *
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
