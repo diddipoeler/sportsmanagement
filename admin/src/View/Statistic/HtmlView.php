@@ -27,6 +27,18 @@ final class HtmlView extends BaseHtmlView
     public $state;
     public ?Form $formparams = null;
 
+    /**
+     * Load the statistic editing form and render its administrator layout.
+     *
+     * Retrieve the statistic record, form and model state; initialise new
+     * records with basic-statistic defaults; map the legacy edit_3 layout
+     * to the native edit layout; and load class-specific XML parameters.
+     * Register statistic editing toolbar commands before rendering.
+     *
+     * @param string|null $tpl Optional Joomla template suffix.
+     * @return void The base view renders the selected edit form.
+     * @throws \RuntimeException If the statistic form cannot be loaded.
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -76,6 +88,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Obtain the Joomla administrator application for statistic editing.
+     *
+     * Resolve the concrete backend application using the service container
+     * and refuse to operate when the current client is not administrator.
+     *
+     * @return AdministratorApplication Active administrator application.
+     * @throws \RuntimeException If the application has the wrong client.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
@@ -88,6 +109,19 @@ final class HtmlView extends BaseHtmlView
         return $app;
     }
 
+    /**
+     * Build the class-specific form for a statistic's stored parameters.
+     *
+     * Restrict the statistic class to a safe XML filename, locate its
+     * administrator form schema, register component form fields and load
+     * JSON or legacy registry parameter values. Bind the decoded values to
+     * the Joomla form. Report missing or invalid XML as a warning while
+     * allowing the edit page to remain available.
+     *
+     * @param string $class Statistic type used to select an XML form.
+     * @param string $stored Saved JSON or Joomla registry configuration.
+     * @return Form|null Prepared parameter form, or null if unavailable.
+     */
     private function loadStatisticParameters(string $class, string $stored): ?Form
     {
         $class = preg_replace('/[^A-Za-z0-9_-]/', '', trim($class)) ?: 'basic';
