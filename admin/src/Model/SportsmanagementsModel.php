@@ -16,6 +16,15 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
  */
 final class SportsmanagementsModel extends SportsManagementListModel
 {
+    /**
+     * Build the Joomla database query for legacy sample records.
+     *
+     * Return a native Joomla query selecting identifiers and greeting text
+     * from the SportsManagement sample table; the administrator list model
+     * applies any remaining pagination and presentation logic.
+     *
+     * @return \Joomla\Database\DatabaseQuery Query for the list model.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
