@@ -25,6 +25,12 @@ final class StaffModel extends SportsManagementProjectModel
     public static $_inproject = null;
     public static int $cfg_which_database = 0;
 
+    /**
+     * Initialise the current staff member and team from the Joomla request.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -43,6 +49,12 @@ final class StaffModel extends SportsManagementProjectModel
         PersonModel::$cfg_which_database = self::$cfg_which_database;
     }
 
+    /**
+     * Count recorded staff appearances for a project and person.
+     * @param mixed $project_id Project identifier.
+     * @param mixed $person_id Staff person identifier.
+     * @return int Number of recorded staff appearances.
+     */
     public function getPresenceStats($project_id, $person_id)
     {
         $projectId = max(0, (int) $project_id);
@@ -86,6 +98,10 @@ final class StaffModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Retrieve configured project statistics for the selected staff position.
+     * @return array Statistic definitions for the staff member.
+     */
     public function getStats(): array
     {
         $staff = $this->getTeamStaff();
@@ -96,6 +112,10 @@ final class StaffModel extends SportsManagementProjectModel
         return $this->getProjectStats(0, (int) ($staff->position_id ?? 0));
     }
 
+    /**
+     * Load and cache the selected staff member's team assignment.
+     * @return object|null Staff assignment or null when not found.
+     */
     public function getTeamStaff()
     {
         if (self::$_inproject !== null) {
@@ -158,6 +178,10 @@ final class StaffModel extends SportsManagementProjectModel
         return self::$_inproject;
     }
 
+    /**
+     * Calculate the current staff member's statistics for each project.
+     * @return array Aggregated staff statistics.
+     */
     public function getStaffStats(): array
     {
         $staff = $this->getTeamStaff();
@@ -197,6 +221,11 @@ final class StaffModel extends SportsManagementProjectModel
         return $result;
     }
 
+    /**
+     * Retrieve and cache staff history with validated ordering.
+     * @param mixed $order Requested chronological ordering.
+     * @return array Historical staff team assignments.
+     */
     public function getStaffHistory($order = 'DESC')
     {
         if (self::$_history !== null) {
@@ -272,6 +301,10 @@ final class StaffModel extends SportsManagementProjectModel
         return self::$_history;
     }
 
+    /**
+     * Calculate historic statistics for the selected staff member.
+     * @return array Staff statistic values indexed by statistic ID.
+     */
     public function getHistoryStaffStats(): array
     {
         $staff = $this->getTeamStaff();
@@ -301,11 +334,21 @@ final class StaffModel extends SportsManagementProjectModel
         return $result;
     }
 
+    /**
+     * Log staff query errors without exposing SQL details to site visitors.
+     * @param \Throwable $e Underlying database exception.
+     * @return void
+     */
     private function enqueueDatabaseError(\Throwable $e): void
     {
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement staff database query failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-            'notice'
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+            'error'
         );
     }
 }
