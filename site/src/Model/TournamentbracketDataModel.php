@@ -23,6 +23,11 @@ use Throwable;
  */
 final class TournamentbracketDataModel extends SportsManagementModel
 {
+    /**
+     * Find the league country associated with the selected tournament project.
+     * @param int $projectId Selected project identifier.
+     * @return string League country code or an empty string.
+     */
     public function getProjectCountry(int $projectId): string
     {
         if ($projectId <= 0) {
@@ -50,6 +55,11 @@ final class TournamentbracketDataModel extends SportsManagementModel
         }
     }
 
+    /**
+     * Load tournament rounds for the selected project in descending order.
+     * @param int $projectId Selected project identifier.
+     * @return array<int,object> Tournament round records.
+     */
     public function getTournamentRounds(int $projectId): array
     {
         if ($projectId <= 0) {
@@ -166,14 +176,20 @@ final class TournamentbracketDataModel extends SportsManagementModel
         }
     }
 
+    /**
+     * Log tournament-bracket query failures without exposing SQL in the frontend.
+     * @param Throwable $e Database or query exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement tournament bracket query failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf(
-                'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                $e->getCode(),
-                $e->getMessage()
-            ),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
