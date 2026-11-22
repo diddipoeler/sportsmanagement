@@ -22,16 +22,32 @@ abstract class SportsManagementModel extends BaseDatabaseModel
 {
     private ?int $databaseSelectorOverride = null;
 
-    /** Resolve the active Joomla frontend application through the shared runtime resolver. */
+    /**
+     * Resolve the active Joomla site application for model requests.
+     *
+     * Use the component's shared Joomla 5/6 application resolver instead
+     * of a legacy static factory accessor, ensuring input and session state
+     * are read from the active site client.
+     *
+     * @return SiteApplication Active Joomla frontend application.
+     * @throws \RuntimeException If the active site application cannot be resolved.
+     */
     protected function siteApplication(): SiteApplication
     {
         return SportsManagementSiteApplicationResolver::resolve();
     }
 
     /**
-     * Explicitly select the SportsManagement database for non-menu consumers
-     * such as modules. Calling this after MVCFactory creation rebinds the model
-     * to the requested connection instead of relying on URL input state.
+     * Set an explicit database connection selection for this site model.
+     *
+     * Accept only the main or alternate SportsManagement database selector,
+     * normalise all other values to the main database, verify the frontend
+     * application and rebind the model to the chosen Joomla database service.
+     * This is useful when a module creates the model outside a menu request.
+     *
+     * @param int $selector Requested component database selector (0 or 1).
+     * @return void The model database binding is updated.
+     * @throws \RuntimeException If the site or database service is unavailable.
      */
     public function setDatabaseSelector(int $selector): void
     {
@@ -42,8 +58,13 @@ abstract class SportsManagementModel extends BaseDatabaseModel
     }
 
     /**
-     * Expose the resolved SportsManagement database to presentation helpers
-     * without leaking Joomla's protected DatabaseAwareTrait API to views.
+     * Expose the resolved Joomla database connection to site consumers.
+     *
+     * Read the database bound to this model using Joomla's native database
+     * interface, allowing views and helpers to query component data without
+     * depending on the protected DatabaseAwareTrait implementation.
+     *
+     * @return DatabaseInterface Database currently assigned to this model.
      */
     public function getSportsManagementDatabase(): DatabaseInterface
     {
