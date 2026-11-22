@@ -20,9 +20,23 @@ if (!$list) {
     return;
 }
 
+/**
+ * Validate hexadecimal CSS colors used by the random-quote sticker layout.
+ *
+ * Accept only the CSS-supported three-, four-, six- or eight-digit
+ * hexadecimal formats so malformed module parameters cannot generate
+ * invalid inline styles. Return the known-safe fallback otherwise.
+ *
+ * @param string $value Color provided by the module configuration.
+ * @param string $fallback Default CSS hexadecimal color.
+ * @return string Valid color value for the inline CSS declaration.
+ */
 $color = static function (string $value, string $fallback): string {
     $value = trim($value);
-    return preg_match('/^#[0-9a-fA-F]{3,8}$/', $value) ? $value : $fallback;
+
+    return preg_match('/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/D', $value) === 1
+        ? $value
+        : $fallback;
 };
 $border = (bool) $params->get('border', 1);
 $borderRounded = (bool) $params->get('border_rounded', 1);
