@@ -59,17 +59,28 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         if ($document instanceof HtmlDocument) {
             $assets = $document->getWebAssetManager();
-            $assets->registerAndUseStyle(
-                'mod_sportsmanagement_new_project',
-                'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css',
-                ['version' => 'auto']
-            );
-            $assets->registerAndUseScript(
-                'mod_sportsmanagement_new_project.native',
-                'modules/mod_sportsmanagement_new_project/js/native.js',
-                ['version' => 'auto'],
-                ['defer' => true]
-            );
+            // Multiple instances share the Joomla WebAssetManager.
+            // Register assets only once, then activate them for each instance.
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_new_project')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_new_project',
+                    'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_new_project');
+
+            if (!$assets->assetExists('script', 'mod_sportsmanagement_new_project.native')) {
+                $assets->registerScript(
+                    'mod_sportsmanagement_new_project.native',
+                    'modules/mod_sportsmanagement_new_project/js/native.js',
+                    ['version' => 'auto'],
+                    ['defer' => true]
+                );
+            }
+
+            $assets->useScript('mod_sportsmanagement_new_project.native');
         }
 
         return $data;
