@@ -25,6 +25,19 @@ final class HtmlView extends BaseHtmlView
     public $item;
     public $state;
 
+    /**
+     * Prepare and render the prediction-group editing interface.
+     *
+     * Resolve the Joomla administrator application, hide the main menu
+     * while editing, obtain the form, record and state from the MVC model,
+     * and report any loading errors. Enable the Joomla form-validation
+     * asset on HTML documents, configure group actions in the toolbar
+     * and delegate rendering to the base administrator view.
+     *
+     * @param string|null $tpl Optional Joomla layout template suffix.
+     * @return void The parent view renders the form.
+     * @throws \RuntimeException If the form or record cannot be loaded.
+     */
     public function display($tpl = null)
     {
         $app = self::administratorApplication();
@@ -51,6 +64,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Add prediction-group editing actions to the Joomla toolbar.
+     *
+     * Select the translated title based on whether the current record
+     * is new, then register apply, save, save-as-new and cancel commands.
+     * Controller permissions are checked when each command is submitted.
+     *
+     * @return void The Joomla administrator toolbar is updated.
+     */
     private function addToolbar(): void
     {
         $isNew = empty($this->item->id);
@@ -65,6 +87,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::save2new('predictiongroup.save2new');
         ToolbarHelper::cancel('predictiongroup.cancel', $isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE');
     }
+    /**
+     * Resolve and verify the currently active administrator application.
+     *
+     * Use Joomla's dependency-injection container to obtain the concrete
+     * administrator client before accessing backend request and document
+     * state; reject execution from the site or another application client.
+     *
+     * @return AdministratorApplication Validated backend application.
+     * @throws \RuntimeException If the current client is not administrator.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
