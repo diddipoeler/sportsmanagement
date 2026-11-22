@@ -43,8 +43,9 @@ final class SmquotetxtController extends FormController
      *
      * Requires a valid Joomla form token and component core.admin
      * permission because the operation can write executable PHP.
-     * Forwards posted form data to the model, encodes the filename in
-     * redirects and distinguishes Apply, Save and failed operations.
+     * Verifies that the resolved model provides the expected save/error
+     * methods, forwards posted data, encodes the filename in redirects
+     * and distinguishes Apply, Save and failed operations.
      *
      * @param string|null $key Optional form record identifier.
      * @param string|null $urlVar Optional URL record identifier.
@@ -66,8 +67,12 @@ final class SmquotetxtController extends FormController
         $data = $this->app->getInput()->post->get('jform', [], 'array');
         $data = is_array($data) ? $data : [];
         $model = $this->getModel();
-        // Joomla may return false or null when a model cannot be resolved.
-        $success = is_object($model) && $model->save($data);
+        // Joomla may return false or an unexpected model type if an
+        // extension is missing. Do not call save() on an incompatible model.
+        $validModel = is_object($model)
+            && is_callable([$model, 'save'])
+            && is_callable([$model, 'getError']);
+        $success = $validModel && (bool) $model->save($data);
         $task = $this->getTask();
         $fileName = rawurlencode(is_string($data['filename'] ?? null) ? $data['filename'] : '');
 
@@ -77,7 +82,7 @@ final class SmquotetxtController extends FormController
                     'index.php?option=com_sportsmanagement&view=smquotetxt&layout=default&file_name=' . $fileName,
                     false
                 ),
-                is_object($model)
+                $validModel
                     ? ($model->getError() ?: Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'))
                     : Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'),
                 'error'
