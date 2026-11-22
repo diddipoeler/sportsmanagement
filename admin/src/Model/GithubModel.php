@@ -192,8 +192,8 @@ final class GithubModel extends BaseDatabaseModel
      * Accepts only direct HTTPS issue links on github.com within the exact
      * repository selected in the component configuration. Discards external
      * hosts, credentialed URLs, additional query parameters, fragments and
-     * malformed issue numbers or links to a different issue than the API
-     * response number, so API text cannot be injected into messages.
+     * malformed or overflowing issue numbers and links to a different
+     * issue than the API response, even when no expected ID is supplied.
      *
      * @param mixed $value Untrusted html_url field from the API response.
      * @param string $owner Validated configured GitHub account name.
@@ -215,7 +215,11 @@ final class GithubModel extends BaseDatabaseModel
             return '';
         }
 
-        return $issueNumber === 0 || self::positiveIssueNumber($matches[1]) === $issueNumber
+        $urlIssueNumber = self::positiveIssueNumber($matches[1]);
+
+        // Even callers without an expected response number must not allow
+        // overflowing or otherwise unusable GitHub issue identifiers.
+        return $urlIssueNumber > 0 && ($issueNumber === 0 || $urlIssueNumber === $issueNumber)
             ? $value : '';
     }
 
