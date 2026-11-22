@@ -18,6 +18,17 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\Model;
  */
 final class DatabasetoolsModel extends SportsManagementListModel
 {
+    /**
+     * Initialise the database-tools list state for the Joomla administrator.
+     *
+     * Delegate ordering and direction to the standard list-model state
+     * loader, then read a nonnegative pagination offset from the
+     * administrator request for the maintenance dashboard.
+     *
+     * @param string|null $ordering Optional column used for list ordering.
+     * @param string|null $direction Optional ASC or DESC direction.
+     * @return void Joomla list state is updated in place.
+     */
     protected function populateState($ordering = null, $direction = null)
     {
         parent::populateState($ordering, $direction);
