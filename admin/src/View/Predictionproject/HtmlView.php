@@ -21,6 +21,17 @@ final class HtmlView extends BaseHtmlView
     public $form;
     public $item;
 
+    /**
+     * Prepare the administrator form for a prediction project.
+     *
+     * Load form and item data, reject missing or invalid model results,
+     * initialise the project-selection state and normalise legacy edit
+     * layout names before rendering the Joomla editing template.
+     *
+     * @param string|null $tpl Optional form layout suffix.
+     * @return void The parent Joomla view renders the project form.
+     * @throws \RuntimeException If the form or item cannot be loaded.
+     */
     public function display($tpl = null)
     {
         $this->form = $this->get('Form');
@@ -49,6 +60,15 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Resolve the administrator application through Joomla's DI container.
+     *
+     * Validate that the active client is the administrator before the
+     * prediction-project editor writes project state to the user session.
+     *
+     * @return AdministratorApplication Active Joomla backend application.
+     * @throws \RuntimeException If executed outside the administrator client.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
