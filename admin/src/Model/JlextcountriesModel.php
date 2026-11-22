@@ -79,7 +79,12 @@ final class JlextcountriesModel extends SportsManagementListModel
 
             return $results;
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement jlextcountries database operation failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $app->enqueueMessage(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return [];
         }
