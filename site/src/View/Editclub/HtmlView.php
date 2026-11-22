@@ -16,7 +16,6 @@ use Diddipoeler\Component\SportsManagement\Site\Model\EditclubModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementHtmlView;
 use Joomla\CMS\Document\HtmlDocument;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Uri\Uri;
 
 /** Joomla 5/6 frontend view for club editing. */
 final class HtmlView extends SportsManagementHtmlView
@@ -56,20 +55,24 @@ final class HtmlView extends SportsManagementHtmlView
         if ($document instanceof HtmlDocument) {
             $webAssetManager = $document->getWebAssetManager();
             $webAssetManager->useScript('form.validate');
-            $webAssetManager->registerAndUseScript(
-                'com_sportsmanagement.editclub',
-                Uri::root(true) . '/components/com_sportsmanagement/assets/js/editclub.js',
-                [],
-                ['defer' => true],
-                ['core']
-            );
-            $webAssetManager->registerAndUseScript(
-                'com_sportsmanagement.editclub-geocode',
-                Uri::root(true) . '/components/com_sportsmanagement/assets/js/editgeocode.js',
-                [],
-                ['defer' => true],
-                ['core']
-            );
+            // Multiple edit forms or layout overrides may share an asset
+            // registry. Register only missing scripts and activate both.
+            foreach ([
+                'com_sportsmanagement.editclub' => 'editclub.js',
+                'com_sportsmanagement.editclub-geocode' => 'editgeocode.js',
+            ] as $assetName => $filename) {
+                if (!$webAssetManager->assetExists('script', $assetName)) {
+                    $webAssetManager->registerScript(
+                        $assetName,
+                        'components/com_sportsmanagement/assets/js/' . $filename,
+                        ['version' => 'auto'],
+                        ['defer' => true],
+                        ['core']
+                    );
+                }
+
+                $webAssetManager->useScript($assetName);
+            }
         }
 
         parent::display($tpl);
