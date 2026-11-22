@@ -27,6 +27,15 @@ final class EditteamModel extends AdminModel
 
     private ?TeamTable $team = null;
 
+    /**
+     * Resolve the current Joomla frontend application.
+     *
+     * Delegate application lookup to the component's native site resolver,
+     * ensuring form state is read from the correct client rather than
+     * using removed global Joomla application accessors.
+     *
+     * @return CMSApplicationInterface Active Joomla site application.
+     */
     private function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -97,6 +106,18 @@ final class EditteamModel extends AdminModel
         return (int) $digits;
     }
 
+    /**
+     * Return the native team database table for the frontend editor.
+     *
+     * Resolve the case-insensitive legacy team table name to the
+     * namespaced TeamTable class, and delegate other table names to
+     * Joomla's base administrator model for compatibility.
+     *
+     * @param string $type Requested table type.
+     * @param string $prefix Historical table class prefix.
+     * @param array $config Table construction options.
+     * @return mixed Resolved Joomla table object.
+     */
     public function getTable($type = 'team', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'team') === 0) {
@@ -106,6 +127,16 @@ final class EditteamModel extends AdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Build the Joomla team form using registered site and admin fields.
+     *
+     * Register the component's form directory and custom field namespace,
+     * load the native XML form and optionally bind saved form data.
+     *
+     * @param array $data Optional form data supplied by the caller.
+     * @param bool $loadData Whether to populate data from model state.
+     * @return \Joomla\CMS\Form\Form|false Prepared form or false on failure.
+     */
     public function getForm($data = [], $loadData = true)
     {
         FormHelper::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
@@ -120,6 +151,15 @@ final class EditteamModel extends AdminModel
         return $form ?: false;
     }
 
+    /**
+     * Load unsaved team editor input or the current team record.
+     *
+     * Prefer Joomla's session-stored form values after validation errors
+     * so edits are not lost, falling back to the selected team record
+     * when there is no pending form state.
+     *
+     * @return mixed Previously posted fields or the current team record.
+     */
     protected function loadFormData()
     {
         $app = $this->siteApplication();
@@ -132,6 +172,15 @@ final class EditteamModel extends AdminModel
         return $data;
     }
 
+    /**
+     * Load and cache the TeamTable selected in the frontend request.
+     *
+     * Read the positive team identifier from Joomla's site input and load
+     * the corresponding row once per model instance. When creating a
+     * team, return a new unpopulated native table object.
+     *
+     * @return TeamTable Cached team record for display or editing.
+     */
     public function getData(): TeamTable
     {
         if ($this->team === null) {
