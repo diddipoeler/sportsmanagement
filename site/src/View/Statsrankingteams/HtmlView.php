@@ -13,7 +13,7 @@ namespace Diddipoeler\Component\SportsManagement\Site\View\Statsrankingteams;
 
 use Diddipoeler\Component\SportsManagement\Site\Model\StatsrankingteamsModel;
 use Diddipoeler\Component\SportsManagement\Site\View\SportsManagementProjectHtmlView;
-use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Document\HtmlDocument;
 
 final class HtmlView extends SportsManagementProjectHtmlView
 {
@@ -48,6 +48,23 @@ final class HtmlView extends SportsManagementProjectHtmlView
         $this->teamsstats = $model->getTeamsStats();
         $this->teamstotal = $model->getTeamsTotal($this->teamsstats);
 
-        $this->getDocument()->addScript(Uri::root(true) . '/components/com_sportsmanagement/assets/js/smsportsmanagement.js');
+        // Register assets with Joomla's WebAssetManager instead of the legacy
+        // document addScript API; multiple view renders share one registry.
+        $document = $this->getDocument();
+
+        if ($document instanceof HtmlDocument) {
+            $assets = $document->getWebAssetManager();
+            $assetName = 'com_sportsmanagement.statsrankingteams';
+
+            if (!$assets->assetExists('script', $assetName)) {
+                $assets->registerScript(
+                    $assetName,
+                    'components/com_sportsmanagement/assets/js/smsportsmanagement.js',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useScript($assetName);
+        }
     }
 }
