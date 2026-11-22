@@ -23,6 +23,16 @@ use Throwable;
  */
 final class PlayerTimeModel extends SportsManagementModel
 {
+    /**
+     * Calculate a player's playing minutes from match participation and cards.
+     * @param int $playerId Team-player ID.
+     * @param int $gameRegularTime Normal match duration in minutes.
+     * @param int|null $matchId Optional selected match.
+     * @param array|null $cards Optional disciplinary card identifiers.
+     * @param int $projectId Project ID.
+     * @param int $addTime Additional time in minutes.
+     * @return int|float Calculated playing duration.
+     */
     public function getTimePlayed(
         int $playerId,
         int $gameRegularTime,
@@ -231,6 +241,15 @@ final class PlayerTimeModel extends SportsManagementModel
         return $stats;
     }
 
+    /**
+     * Aggregate starts or substitutions for a player's selected matches.
+     * @param int $playerId Team-player ID.
+     * @param int $projectId Project filter, or zero for all projects.
+     * @param int|null $matchId Optional match filter.
+     * @param int|null $resultType Optional match result type.
+     * @param string $mode Participation mode (starter or substitution).
+     * @return object Count and minute totals for the selected mode.
+     */
     private function loadParticipationAggregate(
         int $playerId,
         int $projectId,
@@ -290,6 +309,14 @@ final class PlayerTimeModel extends SportsManagementModel
         ];
     }
 
+    /**
+     * Load card events that remove a player from selected matches.
+     * @param int $playerId Team-player ID.
+     * @param int $projectId Optional project filter.
+     * @param int|null $matchId Optional match filter.
+     * @param array<int,int> $cardIds Red-card event type identifiers.
+     * @return array<int,object> Relevant dismissal events.
+     */
     private function loadDismissalEvents(int $playerId, int $projectId, ?int $matchId, array $cardIds): array
     {
         $db = $this->getDatabase();
@@ -321,10 +348,20 @@ final class PlayerTimeModel extends SportsManagementModel
         }
     }
 
+    /**
+     * Log player time database failures without revealing SQL to visitors.
+     * @param Throwable $e Original query or driver exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement player time query failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
