@@ -58,10 +58,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
         $document = $app->getDocument();
 
         if ($document instanceof HtmlDocument) {
-            $document->getWebAssetManager()->registerAndUseStyle(
-                'mod_sportsmanagement_teamstatistics_counter',
-                'modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css'
-            );
+            // Share the stylesheet when several counter modules are rendered.
+            $assets = $document->getWebAssetManager();
+
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_teamstatistics_counter')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_teamstatistics_counter',
+                    'modules/mod_sportsmanagement_teamstatistics_counter/css/mod_sportsmanagement_teamstatistics_counter.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_teamstatistics_counter');
         }
 
         return $data;
