@@ -21,6 +21,17 @@ final class HtmlView extends BaseHtmlView
 {
     public array $extensions = [];
 
+    /**
+     * Load and display installed SportsManagement special extensions.
+     *
+     * Require the native extensions model, map older Joomla 3/4/5 layout
+     * names onto the current default layout, and expose the extension list
+     * to its template after setting the translated administrator title.
+     *
+     * @param string|null $tpl Optional extension layout suffix.
+     * @return void The administrator extension list is rendered.
+     * @throws \RuntimeException If the expected MVC model is missing.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
