@@ -455,12 +455,18 @@ final class GithubModel extends BaseDatabaseModel
 
     /**
      * Check one GitHub repository coordinate for safe characters.
+     *
+     * Rejects dot-only path components to prevent URL path normalisation
+     * from changing the intended /repos/{owner}/{repository} endpoint.
+     * Preserves valid dotted repository names such as module.extension.
+     *
      * @param string $value Owner or repository slug.
      * @return bool Whether the slug is syntactically accepted.
      */
     private function isRepositoryPart(string $value): bool
     {
-        return $value !== '' && strlen($value) <= 100
+        return $value !== '' && $value !== '.' && $value !== '..'
+            && strlen($value) <= 100
             && preg_match('/^[A-Za-z0-9_.-]+$/D', $value) === 1;
     }
 
