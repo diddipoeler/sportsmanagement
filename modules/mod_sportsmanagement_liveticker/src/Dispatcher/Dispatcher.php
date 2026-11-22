@@ -68,12 +68,18 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         if ($document instanceof HtmlDocument) {
             $assets = $document->getWebAssetManager();
-            $assets->registerAndUseScript(
-                'mod_sportsmanagement_liveticker',
-                'modules/mod_sportsmanagement_liveticker/js/turtushout.js',
-                ['version' => 'auto'],
-                ['defer' => true]
-            );
+            // Joomla may render multiple instances of this module on one page.
+            // Register the shared asset once, then enable it for every instance.
+            if (!$assets->assetExists('script', 'mod_sportsmanagement_liveticker')) {
+                $assets->registerScript(
+                    'mod_sportsmanagement_liveticker',
+                    'modules/mod_sportsmanagement_liveticker/js/turtushout.js',
+                    ['version' => 'auto'],
+                    ['defer' => true]
+                );
+            }
+
+            $assets->useScript('mod_sportsmanagement_liveticker');
 
             $rawCssFile = $payload['cssFile'] ?? '';
             $cssFile = is_string($rawCssFile) && strlen($rawCssFile) <= 100
@@ -81,11 +87,15 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
                 ? $rawCssFile
                 : '';
             if ($cssFile !== '') {
-                $assets->registerAndUseStyle(
-                    'mod_sportsmanagement_liveticker',
-                    'modules/mod_sportsmanagement_liveticker/css/' . $cssFile,
-                    ['version' => 'auto']
-                );
+                if (!$assets->assetExists('style', 'mod_sportsmanagement_liveticker')) {
+                    $assets->registerStyle(
+                        'mod_sportsmanagement_liveticker',
+                        'modules/mod_sportsmanagement_liveticker/css/' . $cssFile,
+                        ['version' => 'auto']
+                    );
+                }
+
+                $assets->useStyle('mod_sportsmanagement_liveticker');
             }
         }
 
