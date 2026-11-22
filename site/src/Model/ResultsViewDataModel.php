@@ -24,11 +24,22 @@ use Throwable;
  */
 final class ResultsViewDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise result view-data access with the Joomla MVC project model.
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Select a valid project identifier for batched result queries.
+     * @param int $projectId Selected SportsManagement project ID.
+     * @return void
+     */
     public function setProjectId(int $projectId): void
     {
         $this->projectId = max(0, $projectId);
@@ -275,14 +286,20 @@ final class ResultsViewDataModel extends SportsManagementProjectModel
         return array_values($ids);
     }
 
+    /**
+     * Record result-view query errors without exposing SQL to frontend users.
+     * @param Throwable $e Original database error.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement results view query failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf(
-                'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                $e->getCode(),
-                $e->getMessage()
-            ),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
