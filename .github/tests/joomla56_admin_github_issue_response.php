@@ -329,6 +329,34 @@ namespace {
         }
     }
 
+    // The native HTTP helper must not silently downgrade a mistyped
+    // mutating method to GET, or accept a POST without JSON content.
+    $requestMethod = new \ReflectionMethod($model, 'request');
+    $requestsBeforeInvalidMethod = count(\Joomla\Http\HttpFactory::$requests);
+    foreach ([
+        ['PATCH', null],
+        ['DELETE', null],
+        ['get', null],
+        ['GET', ['title' => 'unexpected']],
+        ['POST', null],
+    ] as [$method, $payload]) {
+        try {
+            $requestMethod->invoke(
+                $model, $method, '/repos/diddipoeler/sportsmanagement/issues',
+                $payload, 'ghp_TEST_TOKEN'
+            );
+            throw new \RuntimeException('Malformed GitHub API method was silently accepted.');
+        } catch (\InvalidArgumentException $error) {
+            if ($error->getCode() !== 400) {
+                throw $error;
+            }
+        }
+    }
+
+    if (count(\Joomla\Http\HttpFactory::$requests) !== $requestsBeforeInvalidMethod) {
+        throw new \RuntimeException('Unsupported GitHub request reached HTTP transport.');
+    }
+
     // GitHub's per_page=30 is only a request hint. Do not render more than
     // 30 responses or records without a native commit object.
     $completeCommit = (object) [
