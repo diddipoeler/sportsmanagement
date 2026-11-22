@@ -23,6 +23,18 @@ final class HtmlView extends BaseHtmlView
     public $pagination;
     public $state;
 
+    /**
+     * Display Google Calendar connections managed by SportsManagement.
+     *
+     * Obtain the native calendar list model and its pagination state,
+     * prepare the translated toolbar and expose explicit tasks to install
+     * the Google API library, create calendars and import calendar data.
+     * Loading the list itself does not download third-party executable code.
+     *
+     * @param string|null $tpl Optional Joomla layout suffix.
+     * @return void Joomla renders the administrator calendar list.
+     * @throws \RuntimeException When the calendar list model is unavailable.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
