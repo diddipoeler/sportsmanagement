@@ -321,14 +321,25 @@ final class GithubModel extends BaseDatabaseModel
      * logs or displays raw transport exception text, which can contain
      * authorization tokens and submitted issue content. Encodes POST JSON
      * strictly before opening the transport and rejects invalid UTF-8 input.
+     * Only GET without payload and POST with payload are supported.
      * @param string $method HTTP method such as GET or POST.
      * @param string $path GitHub API path relative to its trusted host.
      * @param array|null $payload Optional JSON request body.
      * @param string $token Optional GitHub authentication token.
-     * @return mixed Joomla HTTP response or false on failure.
+     * @return mixed Joomla HTTP response or false on transport failure.
+     * @throws \InvalidArgumentException If the method and payload do not match
+     *         the supported GitHub GET/POST request contract.
      */
     private function request(string $method, string $path, ?array $payload = null, string $token = '')
     {
+        // Refuse unsupported methods and accidental writes without a JSON
+        // body. Never silently turn a mistyped write operation into a GET.
+        if (($method !== 'GET' && $method !== 'POST')
+            || ($method === 'GET' && $payload !== null)
+            || ($method === 'POST' && $payload === null)) {
+            throw new \InvalidArgumentException('Unsupported GitHub API request method or payload.', 400);
+        }
+
         $headers = [
             'Accept' => 'application/vnd.github+json',
             'X-GitHub-Api-Version' => self::API_VERSION,
