@@ -48,10 +48,18 @@ foreach ([
 }
 
 $app = SportsManagementSiteApplicationResolver::resolve();
+
+if (!$app->isClient('site')) {
+    throw new \RuntimeException('SportsManagement EventsRanking requires the site application.', 500);
+}
 $app->getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
 
 /** @var DatabaseInterface $database */
 $database = Factory::getContainer()->get(DatabaseInterface::class);
+
+if (!$database instanceof DatabaseInterface) {
+    throw new \RuntimeException('SportsManagement EventsRanking database service is unavailable.', 500);
+}
 $rankingData = (new EventsRankingHelper())->getData($params, $database);
 $style = 'modules/' . $module->module . '/css/' . $module->module . '.css';
 
