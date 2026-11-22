@@ -25,6 +25,18 @@ final class HtmlView extends BaseHtmlView
     public $filterForm;
     public array $activeFilters = [];
 
+    /**
+     * Prepare the event-type administration list and available actions.
+     *
+     * Verify the native event-types model, load events, pagination and
+     * filters, and fail when the model reports errors. Configure Joomla
+     * toolbar commands for editing, publishing, importing and exporting
+     * before rendering the list template.
+     *
+     * @param string|null $tpl Optional Joomla list layout suffix.
+     * @return void The inherited view renders the event-type list.
+     * @throws \RuntimeException If the model is missing or reports errors.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
