@@ -28,6 +28,18 @@ final class HtmlView extends SportsManagementHtmlView
     public int $projectId = 0;
     public int $clubId = 0;
 
+    /**
+     * Prepare and render the frontend club editing form.
+     *
+     * Require the native club model, load and validate the Joomla form,
+     * normalise historic date and team-merge fields, resolve extended
+     * form data and request context, and enable validation and geocoding
+     * scripts using Joomla's WebAssetManager before rendering.
+     *
+     * @param string|null $tpl Optional Joomla layout template suffix.
+     * @return void The parent view outputs the club editor.
+     * @throws \RuntimeException When the club model or form is unavailable.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
@@ -78,6 +90,15 @@ final class HtmlView extends SportsManagementHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Normalise the club foundation and dissolution dates in the edit form.
+     *
+     * Convert legacy zero dates on existing clubs into empty form values,
+     * and clear both date fields for newly created clubs. This prevents
+     * invalid MySQL zero dates from appearing in Joomla date controls.
+     *
+     * @return void The loaded club record and form values are updated.
+     */
     private function normaliseDates(): void
     {
         if ((int) ($this->item->id ?? 0) > 0) {
