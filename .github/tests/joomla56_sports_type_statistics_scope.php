@@ -243,6 +243,9 @@ namespace {
         ['images/./icon.png', ''],
         ['images\..\evil.png', ''],
         ['images/%2e%2e/file.png', ''],
+        ['https://cdn.example.test/icon.png#preview', ''],
+        ['https://cdn.example.test/icon.png#', ''],
+        ['https://cdn.example.test/icon.png?size=20', 'https://cdn.example.test/icon.png?size=20'],
         ['https://user:secret@cdn.example.test/icon.png', ''],
         ["https://cdn.example.test/\nicon.png", ''],
     ];
