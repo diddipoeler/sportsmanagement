@@ -26,6 +26,18 @@ final class HtmlView extends BaseHtmlView
     public $pagination;
     public $state;
 
+    /**
+     * Populate and render the current-season projects administration view.
+     *
+     * Require the native current-seasons model, load its rows, pagination
+     * and filter state, and reject model errors. Enable Joomla's Bootstrap
+     * collapse script for the dashboard, set its translated toolbar title,
+     * and delegate HTML rendering to the base Joomla view.
+     *
+     * @param string|null $tpl Optional dashboard template suffix.
+     * @return void The administrator dashboard is rendered.
+     * @throws \RuntimeException If the MVC model fails to load or reports errors.
+     */
     public function display($tpl = null)
     {
         $model = $this->getModel();
