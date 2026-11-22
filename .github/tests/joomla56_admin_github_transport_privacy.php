@@ -258,7 +258,8 @@ namespace {
     $repositoryPart = new \ReflectionMethod($model, 'isRepositoryPart');
     foreach ([
         ['sportsmanagement', true], ['org-name', true],
-        ['module.extension', true], ['bad/owner', false],
+        ['module.extension', true], ['.github', true],
+        ['.', false], ['..', false], ['bad/owner', false],
         ['bad owner', false], ["bad\n", false], ['', false],
         [str_repeat('a', 101), false],
     ] as [$candidate, $expected]) {
