@@ -20,7 +20,15 @@ use Joomla\Database\ParameterType;
 final class ClubnameModel extends SportsManagementAdminModel
 {
     /**
-     * Import bundled club-name aliases.
+     * Import packaged alternative club names into the administrator database.
+     *
+     * Read the bundled SportsManagement XML file, skip records lacking
+     * country, club name or long name, and check for an existing alias
+     * using bound Joomla query parameters before inserting a new row.
+     * Report malformed input files and database errors to the backend
+     * message queue while allowing remaining valid aliases to import.
+     *
+     * @return void Existing aliases are left unchanged.
      */
     public function import(): void
     {
