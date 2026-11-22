@@ -55,11 +55,16 @@ final class Dispatcher extends AbstractModuleDispatcher implements HelperFactory
 
         if ($document instanceof HtmlDocument) {
             $assets = $document->getWebAssetManager();
-            $assets->registerAndUseStyle(
-                'mod_sportsmanagement_playground_ticker',
-                'modules/mod_sportsmanagement_playground_ticker/css/mod_sportsmanagement_playground_ticker.css',
-                ['version' => 'auto']
-            );
+            // Multiple ticker instances share the same Joomla HTML document.
+            if (!$assets->assetExists('style', 'mod_sportsmanagement_playground_ticker')) {
+                $assets->registerStyle(
+                    'mod_sportsmanagement_playground_ticker',
+                    'modules/mod_sportsmanagement_playground_ticker/css/mod_sportsmanagement_playground_ticker.css',
+                    ['version' => 'auto']
+                );
+            }
+
+            $assets->useStyle('mod_sportsmanagement_playground_ticker');
 
             $rawMode = $data['params']->get('mode', 'L');
             if (is_string($rawMode) && strtoupper($rawMode) === 'B') {
