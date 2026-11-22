@@ -29,6 +29,18 @@ final class HtmlView extends BaseHtmlView
     public string $sortDirection = 'ASC';
     public string $sortColumn = 's.name';
 
+    /**
+     * Load and render the administrator prediction-groups overview.
+     *
+     * Collect group records, pagination, filters and current identity,
+     * resolve ordering from model state, report loading errors and show a
+     * warning if no prediction groups exist. Configure the relevant list
+     * toolbar before delegating output to Joomla's base HTML view.
+     *
+     * @param string|null $tpl Optional Joomla layout suffix.
+     * @return void The list is rendered by Joomla.
+     * @throws \RuntimeException If the view model reports errors.
+     */
     public function display($tpl = null)
     {
         $this->items = $this->get('Items') ?: [];
@@ -55,6 +67,14 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Configure administrator operations for prediction groups.
+     *
+     * Add the translated list title as well as create, edit, delete
+     * and check-in actions mapped to their Joomla controller tasks.
+     *
+     * @return void Toolbar buttons are registered.
+     */
     private function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE'), 'users');
@@ -63,6 +83,16 @@ final class HtmlView extends BaseHtmlView
         ToolbarHelper::deleteList('', 'predictiongroups.delete', 'JTOOLBAR_DELETE');
         ToolbarHelper::checkin('predictiongroups.checkin');
     }
+    /**
+     * Resolve the active Joomla backend application.
+     *
+     * Obtain AdministratorApplication from Joomla's dependency-injection
+     * container and reject non-administrator execution before accessing
+     * the user's identity and notification queue.
+     *
+     * @return AdministratorApplication Valid backend application.
+     * @throws \RuntimeException If not running in the administrator client.
+     */
     private static function administratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
