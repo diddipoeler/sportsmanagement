@@ -29,6 +29,18 @@ final class HtmlView extends BaseHtmlView
     public string $sortColumn = 'dates';
     public string $sortDirection = '';
 
+    /**
+     * Prepare the SportsManagement update overview for administrators.
+     *
+     * Resolve the Joomla administrator application and native UpdatesModel,
+     * store list ordering in the user session, fetch available versions,
+     * update history and local update scripts, and prepare the toolbar.
+     * Rendering is delegated to Joomla's view after all data is ready.
+     *
+     * @param string|null $tpl Optional update layout template suffix.
+     * @return void The update page is rendered by the parent view.
+     * @throws \RuntimeException For a wrong application client or model.
+     */
     public function display($tpl = null)
     {
         /** @var AdministratorApplication $app */
