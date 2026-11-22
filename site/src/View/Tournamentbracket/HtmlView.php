@@ -24,6 +24,17 @@ final class HtmlView extends SportsManagementProjectHtmlView
         'runden' => '[]',
     ];
 
+    /**
+     * Prepare the tournament bracket data before the frontend template renders.
+     *
+     * Require the matching native MVC model, request the bracket for the
+     * selected project and merge incomplete results with safe layout defaults.
+     * Preserve the penalty-shootout array expected by historical templates
+     * when the model returns no valid penalty data.
+     *
+     * @return void The prepared bracket is stored on this view.
+     * @throws \RuntimeException If the assigned MVC model is not supported.
+     */
     protected function prepareView(): void
     {
         $model = $this->getModel();
