@@ -28,6 +28,18 @@ final class HtmlView extends BaseHtmlView
     public string $work_table = '';
     public int $bar_value = 100;
 
+    /**
+     * Render the Joomla administrator database maintenance interface.
+     *
+     * Resolve the backend application from Joomla's DI container and
+     * verify its client, collect the current request URL and filtered task
+     * selection, then initialise the translated database-tools toolbar
+     * before rendering the selected maintenance layout.
+     *
+     * @param string|null $tpl Optional Joomla template suffix.
+     * @return void The parent view renders the database tool.
+     * @throws \RuntimeException When no administrator client is active.
+     */
     public function display($tpl = null)
     {
         /** @var AdministratorApplication $app */
