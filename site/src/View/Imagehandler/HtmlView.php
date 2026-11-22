@@ -41,6 +41,16 @@ final class HtmlView extends BaseHtmlView
     public int $menu = 0;
     public object $_tmp_img;
 
+    /**
+     * Initialise the Joomla 5/6 frontend image selector view.
+     *
+     * Configure the historical imagehandler template directory so existing
+     * layout overrides continue to resolve, delegate initialisation to
+     * Joomla's base view and prepare an empty selected-image placeholder.
+     *
+     * @param array $config Joomla MVC view configuration.
+     * @return void
+     */
     public function __construct($config = [])
     {
         $config['template_path'] = JPATH_SITE . '/components/com_sportsmanagement/views/imagehandler/tmpl';
@@ -48,6 +58,18 @@ final class HtmlView extends BaseHtmlView
         $this->_tmp_img = new \stdClass();
     }
 
+    /**
+     * Render the image browser or upload interface for frontend editors.
+     *
+     * Resolve the native imagehandler model and site request, select the
+     * upload layout when requested, or collect the allowed image folder,
+     * search state, image rows and pagination. When the selected folder
+     * has no images, fall back to the upload layout after logging a notice.
+     *
+     * @param string|null $tpl Optional Joomla layout suffix.
+     * @return void The parent view renders the chosen template.
+     * @throws \RuntimeException If the imagehandler model is missing.
+     */
     public function display($tpl = null): void
     {
         $model = $this->getModel();
@@ -94,12 +116,36 @@ final class HtmlView extends BaseHtmlView
         parent::display($tpl);
     }
 
+    /**
+     * Select the image record used by legacy imagehandler templates.
+     *
+     * Normalise the requested array index to a nonnegative integer and
+     * retain only object-valued image records. Use an empty object when
+     * the index is missing or the data provider returns an invalid row.
+     *
+     * @param int|string $index Index into the prepared image listing.
+     * @return void The temporary image property is updated.
+     */
     public function setImage($index = 0): void
     {
         $index = max(0, (int) $index);
-        $this->_tmp_img = $this->images[$index] ?? new \stdClass();
+        $image = $this->images[$index] ?? null;
+
+        // Imported image lists can contain invalid row types; keep the
+        // view property object-typed to avoid PHP 8 TypeError exceptions.
+        $this->_tmp_img = is_object($image) ? $image : new \stdClass();
     }
 
+    /**
+     * Prepare the Joomla frontend upload form and request context.
+     *
+     * Resolve the permitted image folder and legacy target-field values,
+     * collect component settings and FTP credentials, hide the main menu
+     * and expose the model state required by the upload template.
+     *
+     * @param ImagehandlerModel $model Native frontend imagehandler model.
+     * @return void Upload view properties and Joomla input are updated.
+     */
     private function prepareUpload(ImagehandlerModel $model): void
     {
         $app = $this->siteApplication();
@@ -118,6 +164,16 @@ final class HtmlView extends BaseHtmlView
         $this->state = $model->getState();
     }
 
+    /**
+     * Obtain the concrete Joomla frontend application from the container.
+     *
+     * Resolve the site application through Joomla dependency injection
+     * and reject an unavailable or incompatible service before reading
+     * request input or showing editor layouts.
+     *
+     * @return SiteApplication Active Joomla frontend application.
+     * @throws \RuntimeException If no valid site service is available.
+     */
     private function siteApplication(): SiteApplication
     {
         /** @var SiteApplication $app */
