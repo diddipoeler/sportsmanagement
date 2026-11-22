@@ -23,11 +23,22 @@ use Throwable;
  */
 final class ResultsrankingDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise the Joomla results and ranking reader with project context.
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla model factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Retrieve the round code for a round in the selected project.
+     * @param int $roundId Requested round identifier.
+     * @return string Round code or an empty string when unavailable.
+     */
     public function getRoundCode(int $roundId): string
     {
         if ($roundId <= 0 || $this->projectId <= 0) {
@@ -53,6 +64,11 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Build the Joomla route slug of a round belonging to the project.
+     * @param int $roundId Requested round identifier.
+     * @return string Round ID and alias slug, or an empty string.
+     */
     public function getRoundSlug(int $roundId): string
     {
         if ($roundId <= 0 || $this->projectId <= 0) {
@@ -78,6 +94,11 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * List project rounds with translated labels for a selection field.
+     * @param string $ordering Round-code ordering; ASC or DESC.
+     * @return array<int,object> Select-option records.
+     */
     public function getRoundOptions(string $ordering = 'ASC'): array
     {
         if ($this->projectId <= 0) {
@@ -192,6 +213,11 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Index the selected project's team records by project-team ID.
+     * @param int $divisionId Optional division filter.
+     * @return array<int,object> Project-team rows keyed by project-team ID.
+     */
     public function getProjectTeamsIndexed(int $divisionId = 0): array
     {
         $teams = [];
@@ -235,10 +261,20 @@ final class ResultsrankingDataModel extends SportsManagementProjectModel
         return $colors;
     }
 
+    /**
+     * Log results/ranking database exceptions without disclosing SQL to visitors.
+     * @param Throwable $e Original database query exception.
+     * @return void
+     */
     private function reportDatabaseError(Throwable $e): void
     {
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement results/ranking query failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
         $this->siteApplication()->enqueueMessage(
-            Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+            Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
             'error'
         );
     }
