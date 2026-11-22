@@ -143,6 +143,17 @@ final class EditprojectteamModel extends AdminModel
         return (int) $decimal;
     }
 
+    /**
+     * Load the associated team information for a selected project-team row.
+     *
+     * Join the project-team, season-team and team tables using a bound
+     * positive project-team identifier and return only the team name,
+     * identifiers and image fields required by the frontend edit form.
+     * Invalid or missing project-team records produce a null result.
+     *
+     * @param int $projectTeamId Selected project-team record identifier.
+     * @return object|null Team details or null when no matching team exists.
+     */
     public function getTeamInfo(int $projectTeamId): ?object
     {
         if ($projectTeamId <= 0) {
@@ -176,6 +187,17 @@ final class EditprojectteamModel extends AdminModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Resolve the project-team database table through the native Joomla API.
+     *
+     * Return the namespaced ProjectteamTable for the historical projectteam
+     * name and delegate any other requested table to the parent MVC model.
+     *
+     * @param string $type Requested Joomla table name.
+     * @param string $prefix Historical table class prefix.
+     * @param array $config Table construction configuration.
+     * @return mixed Native Joomla table instance returned by the model.
+     */
     public function getTable($type = 'projectteam', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'projectteam') === 0) {
@@ -185,6 +207,17 @@ final class EditprojectteamModel extends AdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Build the frontend project-team edit form from component XML.
+     *
+     * Register the SportsManagement frontend form directory and custom
+     * administrator field namespace, then load the corresponding Joomla
+     * form with its previously saved data when requested.
+     *
+     * @param array $data Optional form input provided by the caller.
+     * @param bool $loadData Whether Joomla should load stored form values.
+     * @return \Joomla\CMS\Form\Form|false Prepared form or false on failure.
+     */
     public function getForm($data = [], $loadData = true)
     {
         FormHelper::addFormPath(JPATH_SITE . '/components/com_sportsmanagement/models/forms');
@@ -199,6 +232,15 @@ final class EditprojectteamModel extends AdminModel
         return $form ?: false;
     }
 
+    /**
+     * Retrieve posted project-team form values or the persisted record.
+     *
+     * Prefer Joomla's session-stored edit state after failed validation
+     * so users retain their input; otherwise load the selected project-team
+     * row from the model as the initial form dataset.
+     *
+     * @return mixed Previously submitted data or the project-team record.
+     */
     protected function loadFormData()
     {
         $app = $this->siteApplication();
@@ -207,6 +249,15 @@ final class EditprojectteamModel extends AdminModel
         return empty($data) ? $this->getData() : $data;
     }
 
+    /**
+     * Load and cache the project-team row selected by frontend input.
+     *
+     * Read the ptid request parameter as a positive integer, initialise
+     * the native table once and load the existing row when an identifier
+     * was provided. Unselected projects use a new empty table instance.
+     *
+     * @return ProjectteamTable Cached native project-team record.
+     */
     public function getData(): ProjectteamTable
     {
         if ($this->projectTeam === null) {
@@ -221,6 +272,14 @@ final class EditprojectteamModel extends AdminModel
         return $this->projectTeam;
     }
 
+    /**
+     * Resolve the Joomla frontend application for project-team editing.
+     *
+     * Delegate to the component's shared site application resolver,
+     * ensuring model form and request state come from the correct client.
+     *
+     * @return CMSApplicationInterface Active Joomla site application.
+     */
     private function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
