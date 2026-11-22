@@ -27,6 +27,12 @@ final class RivalsModel extends SportsManagementProjectModel
     public int $teamid = 0;
     public ?object $team = null;
 
+    /**
+     * Initialise the rival comparison model from Joomla's selected project.
+     * @param array $config Joomla MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
@@ -38,6 +44,10 @@ final class RivalsModel extends SportsManagementProjectModel
         $this->team = $this->loadTeam();
     }
 
+    /**
+     * Load and cache the currently selected rival comparison team.
+     * @return object|null Selected team record or null when unavailable.
+     */
     public function getTeam(): ?object
     {
         if ($this->team === null && $this->teamid > 0) {
@@ -126,7 +136,15 @@ final class RivalsModel extends SportsManagementProjectModel
             $db->setQuery($query);
             $matches = $db->loadObjectList() ?: [];
         } catch (Throwable $e) {
-            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement rivals database query failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->siteApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
             return [];
         }
 
@@ -202,6 +220,10 @@ final class RivalsModel extends SportsManagementProjectModel
         return $sorted;
     }
 
+    /**
+     * Query the selected team using a bound Joomla database parameter.
+     * @return object|null Team row or null if missing or querying fails.
+     */
     private function loadTeam(): ?object
     {
         if ($this->teamid <= 0) {
@@ -220,7 +242,15 @@ final class RivalsModel extends SportsManagementProjectModel
             $db->setQuery($query, 0, 1);
             return $db->loadObject() ?: null;
         } catch (Throwable $e) {
-            $this->siteApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement rivals database query failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->siteApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
             return null;
         }
     }
@@ -240,6 +270,13 @@ final class RivalsModel extends SportsManagementProjectModel
         ];
     }
 
+    /**
+     * Update an opponent's win, draw or loss counters for a fixture.
+     * @param array<string,mixed> $opponent Aggregated opponent counters, updated in place.
+     * @param mixed $selectedResult Selected team's score.
+     * @param mixed $opponentResult Opponent's score.
+     * @return void
+     */
     private function recordOutcome(array &$opponent, $selectedResult, $opponentResult): void
     {
         if ((float) $selectedResult > (float) $opponentResult) {
