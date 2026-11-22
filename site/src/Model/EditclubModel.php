@@ -30,6 +30,18 @@ final class EditclubModel extends AdminModel
     public $club = null;
     public $name = 'club';
 
+    /**
+     * Initialise the frontend club editor with its Joomla MVC services.
+     *
+     * Delegate model and form factory setup to Joomla's AdminModel, then
+     * read the selected project and club IDs from the resolved site
+     * application for subsequent form and record retrieval.
+     *
+     * @param array $config MVC model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @param FormFactoryInterface|null $formFactory Optional form factory.
+     * @return void
+     */
     public function __construct(
         $config = [],
         ?MVCFactoryInterface $factory = null,
@@ -42,6 +54,17 @@ final class EditclubModel extends AdminModel
         $this->clubid = $input->getInt('cid', 0);
     }
 
+    /**
+     * Persist validated changes to an existing frontend club record.
+     *
+     * Accept native jform fields and historical request fields while keeping
+     * the top-level club ID authoritative. Normalise optional foundation and
+     * dissolution dates, update their companion year/timestamp fields and
+     * save through the native Joomla club table after validation.
+     *
+     * @param mixed $data Submitted club form fields and record identifier.
+     * @return bool True when the existing club was saved successfully.
+     */
     public function updItem($data): bool
     {
         $data = (array) $data;
@@ -114,6 +137,17 @@ final class EditclubModel extends AdminModel
         }
     }
 
+    /**
+     * Resolve the namespaced Joomla club table for frontend edit operations.
+     *
+     * Map the historical case-insensitive club table name to ClubTable and
+     * delegate all other table requests to the native parent model.
+     *
+     * @param string $type Requested table name.
+     * @param string $prefix Historical Joomla table class prefix.
+     * @param array $config Optional table factory configuration.
+     * @return mixed Resolved club table or the parent table instance.
+     */
     public function getTable($type = 'club', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'club') === 0) {
@@ -123,6 +157,17 @@ final class EditclubModel extends AdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Construct the frontend club form with media and community settings.
+     *
+     * Register the component's administrator XML forms and namespaced
+     * fields, hide team merging when disabled, and configure club logos and
+     * kit fields with the selected media widget and default image paths.
+     *
+     * @param array $data Optional form data supplied by the caller.
+     * @param bool $loadData Whether Joomla should load saved form state.
+     * @return \Joomla\CMS\Form\Form|false Configured club form or false.
+     */
     public function getForm($data = [], $loadData = true)
     {
         $option = $this->siteApplication()->getInput()->getCmd('option', 'com_sportsmanagement');
@@ -172,6 +217,15 @@ final class EditclubModel extends AdminModel
         return $form;
     }
 
+    /**
+     * Retrieve retained user input or the selected club record for editing.
+     *
+     * Prefer Joomla's user-state form data after a failed submission to
+     * preserve changes, and fall back to the stored club when no pending
+     * form data exists.
+     *
+     * @return mixed Session form values or the native club table record.
+     */
     protected function loadFormData()
     {
         $app = $this->siteApplication();
@@ -184,6 +238,15 @@ final class EditclubModel extends AdminModel
         return $data;
     }
 
+    /**
+     * Load and cache the club selected by the Joomla frontend request.
+     *
+     * Construct a native ClubTable once and load its row using the club
+     * identifier captured by the model constructor. Subsequent calls
+     * reuse the same table to avoid repeated database queries.
+     *
+     * @return mixed Cached Joomla club table record.
+     */
     public function getData()
     {
         if ($this->club === null) {
@@ -194,6 +257,14 @@ final class EditclubModel extends AdminModel
         return $this->club;
     }
 
+    /**
+     * Resolve the active Joomla frontend application.
+     *
+     * Delegate to SportsManagement's site application resolver so model
+     * input and session state come from the proper Joomla 5/6 client.
+     *
+     * @return CMSApplicationInterface Active frontend application.
+     */
     private function siteApplication(): CMSApplicationInterface
     {
         return SportsManagementSiteApplicationResolver::resolve();
@@ -225,6 +296,16 @@ final class EditclubModel extends AdminModel
         return (int) $digits;
     }
 
+    /**
+     * Convert supported club date formats into ISO year-month-day values.
+     *
+     * Accept Joomla calendar day-first values, compact day/month/year
+     * strings and already-normalised ISO dates. Reject impossible dates
+     * using checkdate rather than relying on strtotime coercion.
+     *
+     * @param string $date Date supplied by a frontend editor.
+     * @return string ISO-formatted valid date or an empty invalid marker.
+     */
     private function normaliseFrontendDate(string $date): string
     {
         $date = trim($date);
@@ -252,6 +333,15 @@ final class EditclubModel extends AdminModel
             : '';
     }
 
+    /**
+     * Convert a validated club date into its Unix timestamp companion.
+     *
+     * Used after normaliseFrontendDate() when preparing the historical
+     * founded and dissolved timestamp fields for persistence.
+     *
+     * @param string $date Previously validated ISO date string.
+     * @return int Parsed Unix timestamp, or zero when conversion fails.
+     */
     private function dateTimestamp(string $date): int
     {
         return (int) strtotime($date);
