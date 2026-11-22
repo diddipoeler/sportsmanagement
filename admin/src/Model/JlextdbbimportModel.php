@@ -38,10 +38,15 @@ if (!class_exists('sportsmanagementModeljlextdbbimport', false)) {
 final class JlextdbbimportModel extends \sportsmanagementModeljlextdbbimport
 {
     /**
-     * Adapt Joomla MVCFactory constructor arguments to the legacy DBB importer.
+     * Adapt the Joomla 5/6 MVC factory to the legacy DBB import engine.
      *
-     * @param array $config config value.
-     * @param ?MVCFactoryInterface $factory factory value.
+     * Accept the current Joomla model configuration and optional MVC factory
+     * without passing unsupported arguments into the historical parameterless
+     * importer constructor. The legacy importer remains responsible for
+     * establishing its own compatibility state until its full migration.
+     *
+     * @param array $config Joomla MVC model configuration supplied by the factory.
+     * @param MVCFactoryInterface|null $factory Optional native Joomla MVC factory.
      * @return void
      */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
