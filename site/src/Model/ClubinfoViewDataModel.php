@@ -24,11 +24,23 @@ use Throwable;
  */
 final class ClubinfoViewDataModel extends SportsManagementProjectModel
 {
+    /**
+     * Initialise the club information reader through Joomla's project model.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Retrieve a club by ID and optionally increment its visit counter.
+     * @param int $clubId Selected club identifier.
+     * @param bool $incrementHits Whether to increment the club's hit count.
+     * @return object|null Club record or null if no matching club exists.
+     */
     public function getClubById(int $clubId, bool $incrementHits = false): ?object
     {
         if ($clubId <= 0) {
@@ -67,6 +79,11 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Find an association record by a bound positive ID.
+     * @param int $associationId Association record identifier.
+     * @return object|null Association row or null when missing.
+     */
     public function getAssociationById(int $associationId): ?object
     {
         if ($associationId <= 0) {
@@ -88,6 +105,12 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Load team information associated with the requested club.
+     * @param int $clubId Club identifier.
+     * @param int $mode Team selection mode.
+     * @return array<int,object> Club team records.
+     */
     public function getTeamsByClub(int $clubId, int $mode = 1): array
     {
         if ($clubId <= 0) {
@@ -190,6 +213,12 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Collect the club's and associated teams' playground identifiers.
+     * @param int $clubId Club record identifier.
+     * @param array $teams Team records supplied by the club information view.
+     * @return array<int,int> Valid playground identifiers.
+     */
     public function getStadiumIds(int $clubId, array $teams): array
     {
         if ($clubId <= 0) {
@@ -251,6 +280,11 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         return array_values($ids);
     }
 
+    /**
+     * Load playground information for a set of stadium IDs.
+     * @param array $stadiumIds Selected playground identifiers.
+     * @return array<int,object> Playground records.
+     */
     public function getPlaygroundsByIds(array $stadiumIds): array
     {
         $ids = [];
@@ -284,6 +318,12 @@ final class ClubinfoViewDataModel extends SportsManagementProjectModel
         }
     }
 
+    /**
+     * Read the first available club news feed with an item limit.
+     * @param string $feedLinks Comma-separated RSS feed URLs.
+     * @param int $limit Maximum number of feed items, or zero for unlimited.
+     * @return mixed RSS feed data or the reader's unavailable result.
+     */
     public function getRssFeeds(string $feedLinks, int $limit): mixed
     {
         $limit = max(0, $limit);
