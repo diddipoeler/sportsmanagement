@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Diddipoeler\Component\SportsManagement\Administrator\Service\SportsManagementAdministratorApplicationResolver;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 // Resolve the typed administrator application for Joomla 5/6. The updater
@@ -26,6 +27,11 @@ if (!class_exists(SportsManagementAdministratorApplicationResolver::class)) {
 }
 
 $app = SportsManagementAdministratorApplicationResolver::resolve();
+
+// Only component administrators may initiate a folder-based installation.
+if (!$app->getIdentity()->authorise('core.admin', 'com_sportsmanagement')) {
+    throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+}
 $app->getDocument()->getWebAssetManager()
     ->registerAndUseScript(
         'plg_installer_folderinstaller.folderinstaller',
