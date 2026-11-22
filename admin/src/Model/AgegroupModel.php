@@ -154,8 +154,15 @@ class AgegroupModel extends SportsManagementAdminModel
                 }
             }
 
-            $this->setError($e->getMessage());
-            $app->enqueueMessage($e->getMessage(), 'error');
+            // Keep transaction and SQL diagnostics in the administrator log.
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement age-group save failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $message = Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
+            $this->setError($message);
+            $app->enqueueMessage($message, 'error');
 
             return false;
         }
