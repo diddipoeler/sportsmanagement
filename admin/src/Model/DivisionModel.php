@@ -53,6 +53,11 @@ final class DivisionModel extends SportsManagementAdminModel
     public function divisiontoproject()
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.create', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
         $post = $app->getInput()->post->getArray();
         $divisionIds = array_values(array_unique(array_filter(array_map('intval', (array) ($post['cid'] ?? [])))));
         $projectId = (int) ($post['pid'] ?? 0);
@@ -106,7 +111,7 @@ final class DivisionModel extends SportsManagementAdminModel
                 $newProject->checked_out = 0;
                 $newProject->checked_out_time = $db->getNullDate();
                 $newProject->modified = $modified;
-                $newProject->modified_by = (int) $app->getIdentity()->id;
+                $newProject->modified_by = (int) $identity->id;
 
                 $db->insertObject('#__sportsmanagement_project', $newProject, 'id');
                 $newProjectId = (int) ($newProject->id ?? 0);
@@ -150,14 +155,12 @@ final class DivisionModel extends SportsManagementAdminModel
                     }
                 }
 
-                $app->enqueueMessage(
-                    Text::sprintf(
-                        'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                        $e->getCode(),
-                        $e->getMessage()
-                    ),
-                    'error'
+                \Joomla\CMS\Log\Log::add(
+                    'SportsManagement division-to-project conversion failed: ' . $e->getMessage(),
+                    \Joomla\CMS\Log\Log::ERROR,
+                    'com_sportsmanagement'
                 );
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             }
         }
 
@@ -171,6 +174,11 @@ final class DivisionModel extends SportsManagementAdminModel
     public function massadd()
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.create', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
         $input = $app->getInput();
         $post = $input->post->getArray();
         $projectId = (int) $app->getUserState(
@@ -197,7 +205,7 @@ final class DivisionModel extends SportsManagementAdminModel
             );
             $table->alias = OutputFilter::stringURLSafe($table->name);
             $table->modified = $modified;
-            $table->modified_by = (int) $app->getIdentity()->id;
+            $table->modified_by = (int) $identity->id;
 
             try {
                 if (!$table->check() || !$table->store()) {
@@ -206,16 +214,14 @@ final class DivisionModel extends SportsManagementAdminModel
 
                 $created++;
             } catch (\Throwable $e) {
-                $app->enqueueMessage(
-                    Text::sprintf(
-                        'COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED',
-                        $e->getCode(),
-                        $e->getMessage()
-                    ),
-                    'notice'
+                \Joomla\CMS\Log\Log::add(
+                    'SportsManagement division mass-add failed: ' . $e->getMessage(),
+                    \Joomla\CMS\Log\Log::ERROR,
+                    'com_sportsmanagement'
                 );
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
-                return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ERROR_ADD') . $e->getMessage();
+                return Text::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_CTRL_ERROR_ADD');
             }
         }
 
@@ -300,6 +306,11 @@ final class DivisionModel extends SportsManagementAdminModel
     public function saveshort()
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
         $input = $app->getInput();
         $ids = array_values(array_unique(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array')))));
         $post = $input->post->getArray();
@@ -320,7 +331,7 @@ final class DivisionModel extends SportsManagementAdminModel
             $table->name = (string) ($post['name' . $id] ?? $table->name);
             $table->alias = OutputFilter::stringURLSafe($table->name);
             $table->modified = $modified;
-            $table->modified_by = (int) $app->getIdentity()->id;
+            $table->modified_by = (int) $identity->id;
 
             if (!$table->check() || !$table->store()) {
                 $this->setError($table->getError());
