@@ -156,6 +156,12 @@ final class QuickaddModel extends SportsManagementListModel
      */
     public function addPlayer($projectteam_id, $personid, $name = null): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.create', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $personId = (int) $personid;
 
         if ($personId <= 0 && trim((string) $name) === '') {
