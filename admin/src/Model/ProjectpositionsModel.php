@@ -85,7 +85,12 @@ final class ProjectpositionsModel extends SportsManagementListModel
             $db->setQuery($query);
             $items = $db->loadObjectList('value') ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement project position lookup failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [];
         }
 
@@ -105,6 +110,12 @@ final class ProjectpositionsModel extends SportsManagementListModel
      */
     public function updateprojectpositions($items = null, $project_id = 0)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $items = is_iterable($items) ? $items : [];
         $projectId = (int) $project_id;
         $db = $this->getDatabase();
@@ -151,7 +162,15 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->setQuery($query)->execute();
             }
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement project position operation 1 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
@@ -168,6 +187,12 @@ final class ProjectpositionsModel extends SportsManagementListModel
      */
     public function insertStandardProjectPositions($project_id = 0, $sports_type_id = 0): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.create', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $projectId = (int) $project_id;
         $sportsTypeId = (int) $sports_type_id;
         $db = $this->getDatabase();
@@ -203,7 +228,15 @@ final class ProjectpositionsModel extends SportsManagementListModel
                 $db->insertObject('#__sportsmanagement_project_position', $assignment);
             }
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement project position operation 2 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
@@ -240,7 +273,15 @@ final class ProjectpositionsModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement project position operation 3 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
