@@ -105,8 +105,13 @@ final class JsmgcalendarsModel extends SportsManagementListModel
 
             return File::exists($composer);
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'error');
+            // Archive paths and HTTP failures belong in the administrator log,
+            // not in a message displayed to the person installing the API.
             Log::add($e->getMessage(), Log::ERROR, 'jsmerror');
+            $app->enqueueMessage(
+                Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         } finally {
