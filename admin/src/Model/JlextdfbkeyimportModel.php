@@ -536,13 +536,25 @@ final class JlextdfbkeyimportModel extends SportsManagementListModel
     }
 
     /**
-     * Report a DFB import database failure to the administrator.
+     * Log DFB schedule import errors without exposing database internals.
      *
-     * @param \Throwable $e e value.
+     * Keep the original exception details in Joomla's component log and
+     * present a generic, translated error to administrators instead of
+     * revealing SQL queries or driver diagnostics.
+     *
+     * @param \Throwable $e Original import database exception.
      * @return void
      */
     private function reportDatabaseError(\Throwable $e): void
     {
-        $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+        \Joomla\CMS\Log\Log::add(
+            'SportsManagement DFB key import failed: ' . $e->getMessage(),
+            \Joomla\CMS\Log\Log::ERROR,
+            'com_sportsmanagement'
+        );
+        $this->administratorApplication()->enqueueMessage(
+            \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+            'error'
+        );
     }
 }
