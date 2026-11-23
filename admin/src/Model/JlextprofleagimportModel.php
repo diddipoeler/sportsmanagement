@@ -41,6 +41,7 @@ final class JlextprofleagimportModel extends \sportsmanagementModeljlextprofleag
      * database, request and debug state setup.
      * @param array $config Joomla model configuration.
      * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
      */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
