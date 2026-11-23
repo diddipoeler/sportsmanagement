@@ -56,6 +56,12 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
      */
     public function addmatch(array $post = []): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.create', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         return (new IndividualMatchAdminService($this->getDatabase()))->addMatch($post);
     }
 
@@ -84,6 +90,12 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
      */
     public function delete(&$pks): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.delete', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         return (new IndividualMatchAdminService($this->getDatabase()))->deleteSingles((array) $pks);
     }
 
@@ -149,8 +161,9 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
     {
         $identity = $app->getIdentity();
 
-        if ($identity === null || (int) $identity->id <= 0) {
-            throw new \RuntimeException('Individual match write requires an authenticated administrator.', 403);
+        if ($identity === null || (int) ($identity->id ?? 0) <= 0
+            || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
         return (int) $identity->id;
