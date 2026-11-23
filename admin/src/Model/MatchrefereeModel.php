@@ -78,7 +78,12 @@ final class MatchrefereeModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadObjectList('value') ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement match-referee lookup failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [];
         }
     }
@@ -146,7 +151,12 @@ final class MatchrefereeModel extends SportsManagementAdminModel
             $db->setQuery($query);
             $items = $db->loadObjectList('value') ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement match-referee lookup failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [];
         }
 
@@ -218,7 +228,12 @@ final class MatchrefereeModel extends SportsManagementAdminModel
             $db->setQuery($query);
             $items = $db->loadObjectList('value') ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement match-referee lookup failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [];
         }
 
