@@ -153,6 +153,12 @@ final class QuickaddModel extends SportsManagementListModel
      * Preserve the historical quick-add behaviour: when only a name is given,
      * create the person record. Team assignment itself was never implemented in
      * the legacy method and therefore remains outside this compatibility API.
+     * Validate one to three name parts before creating a new person.
+     *
+     * @param mixed $projectteam_id Historical project-team identifier (unused).
+     * @param mixed $personid Existing person identifier, or zero to create one.
+     * @param mixed $name Name of a new person when no person ID is provided.
+     * @return bool Whether the selected or newly created person is available.
      */
     public function addPlayer($projectteam_id, $personid, $name = null): bool
     {
@@ -164,14 +170,23 @@ final class QuickaddModel extends SportsManagementListModel
 
         $personId = (int) $personid;
 
-        if ($personId <= 0 && trim((string) $name) === '') {
+        if ($personId <= 0 && (!is_string($name) || trim($name) === '' || strlen($name) > 255)) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
 
             return false;
         }
 
         if ($personId <= 0) {
-            $parts = preg_split('/\s+/', trim((string) $name)) ?: [];
+            $parts = preg_split('/\s+/', trim($name)) ?: [];
+
+            // The legacy field mapping supports one to three name parts only.
+            // Reject unexpected input instead of inserting an empty person.
+            if (count($parts) < 1 || count($parts) > 3) {
+                $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
+
+                return false;
+            }
+
             $firstname = '';
             $nickname = '';
             $lastname = '';
