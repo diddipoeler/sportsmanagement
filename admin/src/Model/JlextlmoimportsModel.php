@@ -41,6 +41,7 @@ final class JlextlmoimportsModel extends \sportsmanagementModeljlextlmoimports i
      * Initialise the legacy LMO importer through Joomla MVC compatibility.
      * @param array $config Joomla model configuration.
      * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
      */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
