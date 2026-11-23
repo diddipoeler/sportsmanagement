@@ -90,6 +90,15 @@ final class PositioneventtypeModel extends SportsManagementAdminModel
             throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
+        // Never clear associations for an absent or malformed position ID.
+        if ((!is_int($position_id) && !is_string($position_id))
+            || !preg_match('/^[1-9][0-9]*$/D', (string) $position_id)
+            || filter_var((string) $position_id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) === false) {
+            $this->setError(\Joomla\CMS\Language\Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
+
+            return false;
+        }
+
         $positionId = (int) $position_id;
         $eventIds = isset($data['position_eventslist']) && is_array($data['position_eventslist'])
             ? $data['position_eventslist']
