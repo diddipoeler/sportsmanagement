@@ -99,7 +99,7 @@ final class SmimageimportsModel extends SportsManagementListModel
             }
 
             $content = (string) $response->body;
-            $xml = @simplexml_load_string($content);
+            $xml = @simplexml_load_string($content, \SimpleXMLElement::class, LIBXML_NONET);
 
             if ($xml === false) {
                 throw new \RuntimeException(Text::_('JLIB_UTIL_ERROR_XML_LOAD'));
@@ -140,7 +140,7 @@ final class SmimageimportsModel extends SportsManagementListModel
             return [];
         }
 
-        $xml = @simplexml_load_file($path);
+        $xml = @simplexml_load_file($path, \SimpleXMLElement::class, LIBXML_NONET);
 
         if ($xml === false) {
             $this->setError(Text::_('JLIB_UTIL_ERROR_XML_LOAD'));
