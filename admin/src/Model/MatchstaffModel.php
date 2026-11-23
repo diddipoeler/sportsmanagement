@@ -142,7 +142,12 @@ final class MatchstaffModel extends SportsManagementAdminModel
             $db->setQuery($query);
             $rows = $db->loadObjectList('team_staff_id') ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement match staff query failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [];
         }
 
@@ -161,6 +166,12 @@ final class MatchstaffModel extends SportsManagementAdminModel
      */
     public function saveorder($pks = null, $order = null)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $pks = array_values((array) $pks);
         $order = array_values((array) $order);
         $row = $this->getTable();
