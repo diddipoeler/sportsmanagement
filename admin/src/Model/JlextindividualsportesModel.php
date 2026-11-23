@@ -24,6 +24,12 @@ use Joomla\Database\ParameterType;
 /** Joomla 5/6 list model for individual-sport match rows. */
 final class JlextindividualsportesModel extends ListModel
 {
+    /**
+     * Initialise list filters and the SportsManagement database connection.
+     * @param array $config Joomla model configuration.
+     * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? ['mc.id', 'id'];
@@ -31,6 +37,15 @@ final class JlextindividualsportesModel extends ListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Ensure the match has the required individual sport participant slots.
+     * @param object $project Current project record.
+     * @param int $matchId Selected match ID.
+     * @param int $roundId Selected round ID.
+     * @param int $projectTeam1Id First project-team ID.
+     * @param int $projectTeam2Id Second project-team ID.
+     * @return bool Whether the participant slots are ready.
+     */
     public function checkGames(object $project, int $matchId, int $roundId, int $projectTeam1Id, int $projectTeam2Id): bool
     {
         return (new IndividualMatchSetupService($this->getDatabase()))->ensureMatchSlots(
@@ -146,6 +161,11 @@ final class JlextindividualsportesModel extends ListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Read a sport type name by its selected ID.
+     * @param int $id Sport type record ID.
+     * @return string Stored sport type name or the default value.
+     */
     public function getSportType(int $id): string
     {
         $db = $this->getDatabase();
@@ -168,6 +188,10 @@ final class JlextindividualsportesModel extends ListModel
         return $sportType;
     }
 
+    /**
+     * Resolve the associated single-match file for the current request.
+     * @return void
+     */
     public function _getSinglefile(): void
     {
         $app = $this->administratorApplication();
@@ -197,6 +221,12 @@ final class JlextindividualsportesModel extends ListModel
         );
     }
 
+    /**
+     * Restore the list filter and ordering state from Joomla's request.
+     * @param string $ordering Default match sort column.
+     * @param string $direction Default sort direction.
+     * @return void
+     */
     protected function populateState($ordering = 'mc.id', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -207,6 +237,10 @@ final class JlextindividualsportesModel extends ListModel
         $this->setState('list.direction', $dir === 'DESC' ? 'DESC' : 'ASC');
     }
 
+    /**
+     * Build the database query for individual-sport match entries.
+     * @return \Joomla\Database\DatabaseQuery Joomla database list query.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
@@ -233,11 +267,19 @@ final class JlextindividualsportesModel extends ListModel
         return $this->getDatabase();
     }
 
+    /**
+     * Resolve the Joomla backend application from its dependency container.
+     * @return AdministratorApplication Current backend application.
+     */
     private function administratorApplication(): AdministratorApplication
     {
         return Factory::getContainer()->get(AdministratorApplication::class);
     }
 
+    /**
+     * Resolve the selected component database for individual-sport lists.
+     * @return DatabaseInterface Selected SportsManagement database connection.
+     */
     private static function resolveDatabase(): DatabaseInterface
     {
         $container = Factory::getContainer();
