@@ -34,6 +34,17 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
     private const MAX_CALENDARS = 500;
     private const MAX_OAUTH_CODE_LENGTH = 4096;
 
+    /**
+     * Import Google calendars through the component's OAuth workflow.
+     *
+     * Restrict this operation to component administrators, validate the
+     * OAuth callback parameters, maintain the session-bound authorization
+     * context and import the bounded set of calendars via Google services.
+     * An invalid callback or failed import returns false.
+     *
+     * @return bool Whether the Google Calendar import completed successfully.
+     * @throws \RuntimeException If the current user lacks component admin rights.
+     */
     public function import(): bool
     {
         $app = $this->administratorApplication();
@@ -325,6 +336,11 @@ final class JsmgcalendarimportModel extends SportsManagementListModel
         }
     }
 
+    /**
+     * Build the native Joomla list query for imported Google calendars.
+     *
+     * @return \Joomla\Database\DatabaseQuery Joomla query selecting calendar IDs.
+     */
     protected function getListQuery()
     {
         $db = $this->getDatabase();
