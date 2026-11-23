@@ -23,6 +23,12 @@ final class SeasonModel extends SportsManagementAdminModel
     public function saveshortpersons()
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $post = $app->getInput()->post->getArray();
         $personIds = array_values(array_unique(array_filter(array_map('intval', (array) ($post['cid'] ?? [])))));
         $seasonId = (int) ($post['season_id'] ?? 0);
@@ -30,7 +36,7 @@ final class SeasonModel extends SportsManagementAdminModel
         $personType = (int) ($post['persontype'] ?? 0);
         $whichView = (string) ($post['whichview'] ?? '');
         $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $modifiedBy = (int) $app->getIdentity()->id;
+        $modifiedBy = (int) $identity->id;
 
         if (!$personIds || $seasonId <= 0) {
             return '';
@@ -114,6 +120,12 @@ final class SeasonModel extends SportsManagementAdminModel
     public function saveshortteams()
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $post = $app->getInput()->post->getArray();
         $teamIds = array_values(array_unique(array_filter(array_map('intval', (array) ($post['cid'] ?? [])))));
         $seasonId = (int) ($post['season_id'] ?? 0);
@@ -124,7 +136,7 @@ final class SeasonModel extends SportsManagementAdminModel
 
         $db = $this->getDatabase();
         $modified = (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $modifiedBy = (int) $app->getIdentity()->id;
+        $modifiedBy = (int) $identity->id;
         $result = true;
 
         foreach ($teamIds as $teamId) {
