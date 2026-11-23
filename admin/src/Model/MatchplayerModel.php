@@ -138,7 +138,12 @@ final class MatchplayerModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return $db->loadObjectList('value') ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement match-player database query 1 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [];
         }
     }
@@ -224,7 +229,12 @@ final class MatchplayerModel extends SportsManagementAdminModel
             $db->setQuery($query);
             return [$teamId => $db->loadObjectList() ?: []];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement match-player database query 2 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [$teamId => false];
         }
     }
@@ -335,7 +345,12 @@ final class MatchplayerModel extends SportsManagementAdminModel
             $db->setQuery($query);
             $rows = $db->loadObjectList('teamplayer_id') ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement match-player database query 3 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return [];
         }
 
