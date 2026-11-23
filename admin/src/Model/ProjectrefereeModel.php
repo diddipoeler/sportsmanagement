@@ -47,6 +47,12 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
      */
     public function saveshort(array $pks = [], array $post = [])
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $app = $this->administratorApplication();
         $input = $app->getInput();
 
@@ -66,7 +72,7 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
 
         $db = $this->getDatabase();
         $modified = (new Date('now', new \DateTimeZone('UTC')))->toSql();
-        $userId = (int) ($app->getIdentity()?->id ?? 0);
+        $userId = (int) $identity->id;
         $transactionStarted = false;
 
         try {
@@ -95,11 +101,14 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
                 }
             }
 
-            $this->setError($e->getMessage());
-            $app->enqueueMessage(
-                Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                'error'
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement project-referee save failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
             );
+            $message = Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
+            $this->setError($message);
+            $app->enqueueMessage($message, 'error');
 
             return false;
         }
@@ -114,6 +123,12 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
      */
     public function delete(&$pks)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $ids = $this->normaliseIds((array) $pks);
 
         if (!$ids) {
@@ -150,8 +165,14 @@ final class ProjectrefereeModel extends SportsManagementAdminModel
                 }
             }
 
-            $this->setError($e->getMessage());
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement project-referee delete failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $message = Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
+            $this->setError($message);
+            $this->administratorApplication()->enqueueMessage($message, 'error');
 
             return false;
         }
