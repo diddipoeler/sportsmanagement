@@ -43,6 +43,12 @@ final class PositionstatisticModel extends SportsManagementAdminModel
      */
     public function saveorder($pks = null, $order = null)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $pks = array_values((array) $pks);
         $order = array_values((array) $order);
         $row = $this->getTable();
@@ -78,6 +84,12 @@ final class PositionstatisticModel extends SportsManagementAdminModel
      */
     public function store($data, $position_id, bool $manageTransaction = true)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $positionId = (int) $position_id;
         $statisticIds = isset($data['position_statistic']) && is_array($data['position_statistic'])
             ? $data['position_statistic']
