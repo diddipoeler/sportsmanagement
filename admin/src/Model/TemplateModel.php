@@ -146,6 +146,7 @@ final class TemplateModel extends SportsManagementAdminModel
     /** Copy one master template configuration to another project. */
     public function import($templateid, $projectid): bool
     {
+        $userId = $this->requireTemplateEditUserId();
         $templateId = (int) $templateid;
         $projectId = (int) $projectid;
 
@@ -171,7 +172,7 @@ final class TemplateModel extends SportsManagementAdminModel
         $row->checked_out = 0;
         $row->checked_out_time = $db->getNullDate();
         $row->modified = Factory::getDate()->toSql();
-        $row->modified_by = (int) self::resolveAdministratorApplication()->getIdentity()->id;
+        $row->modified_by = $userId;
 
         try {
             return (bool) $db->insertObject('#__sportsmanagement_template_config', $row, 'id');
@@ -188,9 +189,10 @@ final class TemplateModel extends SportsManagementAdminModel
      */
     public function update(&$pks): bool
     {
+        $userId = $this->requireTemplateEditUserId();
         $ids = array_values(array_unique(array_filter(array_map('intval', (array) $pks))));
         $db = $this->getDatabase();
-        $userId = (int) self::resolveAdministratorApplication()->getIdentity()->id;
+        $userId = $userId;
 
         foreach ($ids as $id) {
             $query = $db->createQuery()
@@ -265,6 +267,8 @@ final class TemplateModel extends SportsManagementAdminModel
     /** Validate and persist the params[] payload rendered by the dynamic settings form. */
     public function saveTemplateParams(int $id, array $params): bool
     {
+        $userId = $this->requireTemplateEditUserId();
+
         if ($id <= 0) {
             $this->setError(Text::_('JLIB_APPLICATION_ERROR_SAVE_FAILED'));
 
@@ -299,7 +303,7 @@ final class TemplateModel extends SportsManagementAdminModel
             'id' => $id,
             'params' => $encoded,
             'modified' => Factory::getDate()->toSql(),
-            'modified_by' => (int) self::resolveAdministratorApplication()->getIdentity()->id,
+            'modified_by' => $userId,
         ];
 
         try {
@@ -450,6 +454,28 @@ final class TemplateModel extends SportsManagementAdminModel
      * Resolve and validate the Joomla administrator application.
      * @return AdministratorApplication
      */
+    /**
+     * Require Joomla component edit rights before mutating template settings.
+     *
+     * Direct calls to import(), update() and saveTemplateParams() must be
+     * authorised independently of the controller and must never dereference
+     * a missing Joomla identity.
+     *
+     * @return int Authenticated Joomla administrator user ID.
+     * @throws \RuntimeException When component edit permission is absent.
+     */
+    private function requireTemplateEditUserId(): int
+    {
+        $identity = self::resolveAdministratorApplication()->getIdentity();
+
+        if ($identity === null || (int) ($identity->id ?? 0) <= 0
+            || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+        return (int) $identity->id;
+    }
+
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
