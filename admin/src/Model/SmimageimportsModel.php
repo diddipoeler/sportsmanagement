@@ -118,8 +118,14 @@ final class SmimageimportsModel extends SportsManagementListModel
 
             return true;
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
-            $app->enqueueMessage($e->getMessage(), 'warning');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement image package manifest download failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $message = Text::_('JERROR_AN_ERROR_HAS_OCCURRED');
+            $this->setError($message);
+            $app->enqueueMessage($message, 'warning');
 
             return false;
         }
