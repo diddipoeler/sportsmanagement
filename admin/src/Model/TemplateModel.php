@@ -82,7 +82,12 @@ final class TemplateModel extends SportsManagementAdminModel
 
             return $form;
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement template operation 1 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
         }
@@ -177,7 +182,12 @@ final class TemplateModel extends SportsManagementAdminModel
         try {
             return (bool) $db->insertObject('#__sportsmanagement_template_config', $row, 'id');
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement template operation 2 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
         }
@@ -312,7 +322,12 @@ final class TemplateModel extends SportsManagementAdminModel
 
             return true;
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement template operation 3 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
         }
