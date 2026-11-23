@@ -115,6 +115,13 @@ final class TreetonodeModel extends SportsManagementAdminModel
      */
     public function setUnpublishNode(int $nodeId = 0): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+
         if ($nodeId <= 0) {
             $nodeId = $this->administratorApplication()->getInput()->post->getInt('id');
         }
