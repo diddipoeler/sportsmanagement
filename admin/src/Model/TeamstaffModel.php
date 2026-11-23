@@ -184,7 +184,7 @@ final class TeamstaffModel extends SportsManagementAdminModel
     {
         $identity = $this->administratorApplication()->getIdentity();
 
-        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+        if ($identity === null || !$identity->authorise('core.delete', 'com_sportsmanagement')) {
             throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
