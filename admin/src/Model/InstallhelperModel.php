@@ -22,6 +22,7 @@ final class InstallhelperModel extends SportsManagementAdminModel
     /**
      * Create the selected sports type.
      *
+     * @param array $post Installer submission containing filter_sports_type.
      * @return string[] Warning messages; an empty array means success.
      */
     public function saveSportstype(array $post = []): array
