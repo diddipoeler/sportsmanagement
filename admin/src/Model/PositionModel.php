@@ -21,6 +21,13 @@ final class PositionModel extends SportsManagementAdminModel
      */
     public function saveshort(): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
+
         $input = $this->administratorApplication()->getInput();
         $ids = array_values(array_filter(array_map('intval', (array) $input->post->get('cid', [], 'array'))));
         $post = $input->post->getArray();
