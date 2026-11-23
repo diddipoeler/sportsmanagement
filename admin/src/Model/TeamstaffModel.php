@@ -75,6 +75,12 @@ final class TeamstaffModel extends SportsManagementAdminModel
      */
     public function saveshort(): bool
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $input = $this->administratorApplication()->getInput();
         $ids = array_values(array_unique(array_filter(array_map(
             'intval',
@@ -98,7 +104,12 @@ final class TeamstaffModel extends SportsManagementAdminModel
             return true;
         } catch (\Throwable $e) {
             $db->transactionRollback();
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement team staff database write 1 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
         }
@@ -114,6 +125,12 @@ final class TeamstaffModel extends SportsManagementAdminModel
      */
     public function saveorder($pks = null, $order = null)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $ids = array_values(array_map('intval', (array) $pks));
         $ordering = array_values(array_map('intval', (array) $order));
         $count = min(count($ids), count($ordering));
@@ -143,7 +160,12 @@ final class TeamstaffModel extends SportsManagementAdminModel
             return true;
         } catch (\Throwable $e) {
             $db->transactionRollback();
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement team staff database write 2 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
         }
@@ -160,6 +182,12 @@ final class TeamstaffModel extends SportsManagementAdminModel
      */
     public function delete(&$pks)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.edit', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $ids = array_values(array_unique(array_filter(array_map('intval', (array) $pks))));
 
         if (!$ids) {
@@ -187,7 +215,12 @@ final class TeamstaffModel extends SportsManagementAdminModel
             return true;
         } catch (\Throwable $e) {
             $db->transactionRollback();
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement team staff database write 3 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return false;
         }
