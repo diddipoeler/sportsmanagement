@@ -64,7 +64,12 @@ final class SmimageimportsModel extends SportsManagementListModel
 
             return $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement image package database query 1 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return [];
         }
@@ -193,7 +198,12 @@ final class SmimageimportsModel extends SportsManagementListModel
                 }
             }
         } catch (\Throwable $e) {
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement image package database query 2 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
 
             return [];
         }
