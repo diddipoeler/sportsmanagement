@@ -224,7 +224,15 @@ final class LeagueModel extends SportsManagementAdminModel
         try {
             (new ExtraFieldsSaveHelper())->save($post, $id, $this->getDatabase());
         } catch (\Throwable $e) {
-            $app->enqueueMessage($e->getMessage(), 'warning');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement league extra-fields save failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $app->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'warning'
+            );
         }
 
         $app->setUserState('com_sportsmanagement.league_id', $id);
@@ -361,7 +369,15 @@ final class LeagueModel extends SportsManagementAdminModel
                 ];
                 $db->insertObject('#__sportsmanagement_league_logos', $logoHistory);
             } catch (\Throwable $e) {
-                $this->administratorApplication()->enqueueMessage($e->getMessage(), 'warning');
+                \Joomla\CMS\Log\Log::add(
+                    'SportsManagement league logo history update failed: ' . $e->getMessage(),
+                    \Joomla\CMS\Log\Log::ERROR,
+                    'com_sportsmanagement'
+                );
+                $this->administratorApplication()->enqueueMessage(
+                    \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                    'warning'
+                );
             }
         }
     }
