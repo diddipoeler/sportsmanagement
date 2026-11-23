@@ -451,10 +451,6 @@ final class TemplateModel extends SportsManagementAdminModel
         return null;
     }
     /**
-     * Resolve and validate the Joomla administrator application.
-     * @return AdministratorApplication
-     */
-    /**
      * Require Joomla component edit rights before mutating template settings.
      *
      * Direct calls to import(), update() and saveTemplateParams() must be
@@ -476,6 +472,12 @@ final class TemplateModel extends SportsManagementAdminModel
         return (int) $identity->id;
     }
 
+    /**
+     * Resolve and validate the Joomla administrator application.
+     *
+     * @return AdministratorApplication Native Joomla administrator application.
+     * @throws \RuntimeException If the current client is not the administrator.
+     */
     private static function resolveAdministratorApplication(): AdministratorApplication
     {
         /** @var AdministratorApplication $app */
