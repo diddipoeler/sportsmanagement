@@ -151,11 +151,11 @@ final class JlextindividualsportModel extends SportsManagementAdminModel
     }
 
     /**
-     * Require a signed-in administrator for individual match writes.
+     * Require component edit access for individual match writes.
      *
      * @param mixed $app Active Joomla administrator application.
-     * @return int Authenticated user ID.
-     * @throws \RuntimeException If there is no current user identity.
+     * @return int ID of the administrator authorised to edit matches.
+     * @throws \RuntimeException If authentication or component edit access is absent.
      */
     private function requireImportIdentityId($app): int
     {
