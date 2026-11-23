@@ -20,6 +20,12 @@ use Joomla\Database\ParameterType;
  */
 final class MatchplayerModel extends SportsManagementAdminModel
 {
+    /**
+     * Load the match-player form through Joomla's form factory.
+     * @param array $data Submitted match-player values.
+     * @param bool $loadData Whether the model should load saved values.
+     * @return mixed Configured Joomla form or false on failure.
+     */
     public function getForm($data = [], $loadData = true)
     {
         Form::addFormPath(JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/forms');
@@ -340,6 +346,12 @@ final class MatchplayerModel extends SportsManagementAdminModel
         return $rows;
     }
 
+    /**
+     * Persist ordering updates for selected match-player records.
+     * @param array|null $pks Selected match-player primary keys.
+     * @param array|null $order Requested ordering values.
+     * @return bool Whether all eligible ordering changes were saved.
+     */
     public function saveorder($pks = null, $order = null)
     {
         $pks = array_values((array) $pks);
@@ -369,6 +381,13 @@ final class MatchplayerModel extends SportsManagementAdminModel
         return true;
     }
 
+    /**
+     * Resolve the native match-player table through Joomla MVC.
+     * @param string $type Requested table type.
+     * @param string $prefix Legacy table prefix.
+     * @param array $config Additional table options.
+     * @return mixed Native MatchplayerTable or parent fallback.
+     */
     public function getTable($type = 'matchplayer', $prefix = 'sportsmanagementTable', $config = [])
     {
         if (strcasecmp((string) $type, 'matchplayer') === 0) {
@@ -378,16 +397,29 @@ final class MatchplayerModel extends SportsManagementAdminModel
         return parent::getTable($type, $prefix, $config);
     }
 
+    /**
+     * Check Joomla edit access on the selected match-player record.
+     * @param array $data Match-player record fields.
+     * @param string $key Primary-key field name.
+     * @return bool Whether editing is authorised.
+     */
     protected function allowEdit($data = [], $key = 'id')
     {
         $id = (int) ($data[$key] ?? 0);
 
-        return $this->administratorApplication()->getIdentity()->authorise(
+        $identity = $this->administratorApplication()->getIdentity();
+
+        return ($identity !== null && $identity->authorise(
             'core.edit',
             'com_sportsmanagement.message.' . $id
-        ) || parent::allowEdit($data, $key);
+        )) || parent::allowEdit($data, $key);
     }
 
+    /**
+     * Resolve the selected project ID from arguments or administrator state.
+     * @param int $projectId Explicit project ID, if available.
+     * @return int Selected project identifier or zero.
+     */
     private function resolveProjectId(int $projectId): int
     {
         if ($projectId > 0) {
