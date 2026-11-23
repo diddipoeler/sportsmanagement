@@ -224,6 +224,12 @@ final class TeamstaffsModel extends SportsManagementListModel
      */
     public function remove($cids)
     {
+        $identity = $this->administratorApplication()->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.delete', 'com_sportsmanagement')) {
+            throw new \RuntimeException(\Joomla\CMS\Language\Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $ids = [];
 
         foreach (array_slice(is_array($cids) ? $cids : [], 0, 500) as $raw) {
@@ -274,10 +280,14 @@ final class TeamstaffsModel extends SportsManagementListModel
             return $count;
         } catch (\Throwable $e) {
             $db->transactionRollback();
-            $this->setError(Text::sprintf(
-                'COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFFS_MODEL_ERROR_REMOVE_STAFF',
-                $e->getMessage()
-            ));
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement team staff bulk deletion failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED')
+            );
 
             return 0;
         }
