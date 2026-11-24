@@ -16,17 +16,33 @@ use Joomla\Database\DatabaseInterface;
 
 final class PredictionmemberTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native Joomla table for tip game membership records.
+     * Registers the storage table and primary key with the shared table
+     * implementation using the injected Joomla database driver.
+     * @param DatabaseInterface $db Active SportsManagement database connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_prediction_member', 'id', $db);
     }
 
+    /**
+     * Validate the required tip game, user references before saving.
+     * Rejects missing, negative, malformed or overflowing identifiers instead
+     * of coercing them into valid-looking database keys. Records a translated
+     * validation error when any required reference is invalid.
+     * @return bool Whether all required references are positive integer IDs.
+     */
     public function check()
     {
-        if (!(int) ($this->prediction_id ?? 0) || !(int) ($this->user_id ?? 0)) {
-            $this->setError(Text::_('CHECK FAILED'));
+        foreach ([$this->prediction_id ?? null, $this->user_id ?? null] as $id) {
+            if ((!is_int($id) && !is_string($id))
+                || filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) === false) {
+                $this->setError(Text::_('CHECK FAILED'));
 
-            return false;
+                return false;
+            }
         }
 
         return true;

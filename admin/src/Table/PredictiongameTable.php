@@ -17,17 +17,36 @@ use Joomla\Database\DatabaseInterface;
 
 final class PredictiongameTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native Joomla table for tip game definitions.
+     * Registers the storage table and primary key with the shared table
+     * implementation using the injected Joomla database driver.
+     * @param DatabaseInterface $db Active SportsManagement database connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_prediction_game', 'id', $db);
     }
 
+    /**
+     * Validate the tip game name and prepare its Joomla URL alias.
+     * Rejects missing or non-string names and malformed alias values, then
+     * generates a default URL-safe alias while preserving a custom alias.
+     * @return bool Whether the name and alias pass validation.
+     */
     public function check()
     {
-        $name = trim((string) ($this->name ?? ''));
+        $rawName = $this->name ?? '';
+        $name = is_string($rawName) ? trim($rawName) : '';
 
         if ($name === '') {
             $this->setError(Text::_('CHECK FAILED - Empty name of prediction game'));
+
+            return false;
+        }
+
+        if (isset($this->alias) && !is_string($this->alias)) {
+            $this->setError(Text::_('CHECK FAILED'));
 
             return false;
         }
