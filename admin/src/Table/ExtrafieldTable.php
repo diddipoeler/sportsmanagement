@@ -15,6 +15,12 @@ use Joomla\Database\DatabaseInterface;
 
 final class ExtrafieldTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native Joomla table for user-defined extra field definitions.
+     * Registers the underlying storage table and its primary key with the
+     * shared table implementation using the injected database service.
+     * @param DatabaseInterface $db Active SportsManagement database driver.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_user_extra_fields', 'id', $db);

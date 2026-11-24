@@ -15,6 +15,12 @@ use Joomla\Database\DatabaseInterface;
 
 final class TeamplayerTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native Joomla table for player roster assignments stored in the season-team-person relation.
+     * Registers the underlying storage table and its primary key with the
+     * shared table implementation using the injected database service.
+     * @param DatabaseInterface $db Active SportsManagement database driver.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_season_team_person_id', 'id', $db);
