@@ -20,11 +20,23 @@ use Joomla\Database\DatabaseInterface;
 
 final class StatisticTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native Joomla table for statistic definitions used for match and season reporting.
+     * Registers the storage table and its primary key with the shared table
+     * implementation using the injected Joomla database connection.
+     * @param DatabaseInterface $db Active SportsManagement database driver.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_statistic', 'id', $db);
     }
 
+    /**
+     * Validate the statistic name and prepare its abbreviation and alias.
+     * Derives a four-character uppercase abbreviation when missing and
+     * generates a Joomla-compatible URL alias from the supplied alias or name.
+     * @return bool False for a missing name, otherwise true.
+     */
     public function check()
     {
         if (trim((string) $this->name) === '') {

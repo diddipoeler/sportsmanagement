@@ -16,11 +16,22 @@ use Joomla\Database\DatabaseInterface;
 
 final class EventtypeTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native Joomla table for match event type definitions.
+     * Registers the storage table and its primary key with the shared table
+     * implementation using the injected Joomla database connection.
+     * @param DatabaseInterface $db Active SportsManagement database driver.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_eventtype', 'id', $db);
     }
 
+    /**
+     * Prepare the event type alias from the existing alias or event name.
+     * Uses Joomla's URL-safe filter and delegates remaining table checks.
+     * @return bool Whether the shared table validation succeeds.
+     */
     public function check()
     {
         $this->alias = OutputFilter::stringURLSafe($this->alias ?: $this->name);
