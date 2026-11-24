@@ -98,9 +98,12 @@ final class SportsManagementDatabaseResolver
      */
     private static function hasExternalAccess(DatabaseInterface $db, Registry $params): bool
     {
-        $userId = (int) $params->get('jsm_server_user', 0);
+        $rawUserId = $params->get('jsm_server_user', 0);
+        $userId = is_int($rawUserId) || is_string($rawUserId)
+            ? filter_var($rawUserId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+            : false;
 
-        if ($userId <= 0) {
+        if ($userId === false) {
             return false;
         }
 
@@ -120,8 +123,16 @@ final class SportsManagementDatabaseResolver
         $profiles = $db->loadAssocList('profile_key') ?: [];
 
         // Joomla stores profile values as JSON, including quoted strings.
+        /**
+         * Decode one stored Joomla profile value for entitlement validation.
+         * Rejects malformed driver values before trimming and preserves
+         * historical plain-text and JSON-encoded scalar profile settings.
+         * @param string $key Profile field identifier.
+         * @return string Decoded value or an empty string when missing.
+         */
         $profileValue = static function (string $key) use ($profiles): string {
-            $raw = trim((string) ($profiles[$key]['profile_value'] ?? ''));
+            $value = $profiles[$key]['profile_value'] ?? '';
+            $raw = is_string($value) || is_int($value) ? trim((string) $value) : '';
 
             if ($raw === '') {
                 return '';
@@ -142,7 +153,8 @@ final class SportsManagementDatabaseResolver
             return false;
         }
 
-        $expectedSerial = trim((string) $params->get('jsm_user_serialnumber', ''));
+        $serial = $params->get('jsm_user_serialnumber', '');
+        $expectedSerial = is_string($serial) || is_int($serial) ? trim((string) $serial) : '';
         $actualSerial = $profileValue('jsmprofile.serialnumber');
 
         // Two missing serial numbers must never grant external database access.

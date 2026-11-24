@@ -170,6 +170,12 @@ final class ClubBirthdayHelper
 
         usort(
             $clubs,
+            /**
+             * Compare two club anniversaries by remaining days and then age.
+             * @param object $a First club anniversary record.
+             * @param object $b Second club anniversary record.
+             * @return int Ordering result in the configured age direction.
+             */
             static function (object $a, object $b) use ($ageDirection): int {
                 $days = (int) ($a->days_to_birthday ?? 0) <=> (int) ($b->days_to_birthday ?? 0);
 
@@ -188,6 +194,7 @@ final class ClubBirthdayHelper
      * Retrieve eligible clubs and calculate upcoming anniversaries.
      * Filters by configured seasons, computes date differences in the
      * site timezone and limits results before returning display records.
+     * Skips malformed rows, invalid identifiers and future founding dates.
      * @param int $limit Maximum number of clubs to return.
      * @param int $maxDays Maximum days until the next anniversary.
      * @param mixed $seasonIds Requested season IDs.
@@ -266,9 +273,17 @@ final class ClubBirthdayHelper
         $clubs = [];
 
         foreach ($rows as $row) {
-            $id = (int) $row->id;
+            if (!is_object($row) || !is_string($row->founded ?? null)
+                || str_contains($row->founded, "\0")) {
+                continue;
+            }
 
-            if ($id <= 0 || isset($clubs[$id])) {
+            $rawId = $row->id ?? null;
+            $id = is_int($rawId) || is_string($rawId)
+                ? filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+                : false;
+
+            if ($id === false || isset($clubs[$id])) {
                 continue;
             }
 
@@ -277,6 +292,7 @@ final class ClubBirthdayHelper
             // DateTimeImmutable normalises impossible dates instead of rejecting them.
             if (!$birth instanceof DateTimeImmutable
                 || $birth->format('Y-m-d') !== (string) $row->founded
+                || $birth > $today
                 || (int) $birth->format('Y') <= 0) {
                 continue;
             }
