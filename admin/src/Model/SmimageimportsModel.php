@@ -83,6 +83,12 @@ final class SmimageimportsModel extends SportsManagementListModel
     public function getimagesxml(): bool
     {
         $app = $this->administratorApplication();
+        $identity = $app->getIdentity();
+
+        if ($identity === null || !$identity->authorise('core.create', 'com_sportsmanagement')) {
+            throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
+        }
+
         $url = trim((string) ComponentHelper::getParams('com_sportsmanagement')->get('cfg_images_server', ''));
 
         if ($url === '') {
@@ -154,6 +160,9 @@ final class SmimageimportsModel extends SportsManagementListModel
         }
 
         $db = $this->getDatabase();
+        $identity = $this->administratorApplication()->getIdentity();
+        $canCreatePictures = $identity !== null
+            && $identity->authorise('core.create', 'com_sportsmanagement');
         $files = [];
         $index = 0;
 
@@ -184,7 +193,7 @@ final class SmimageimportsModel extends SportsManagementListModel
                     ->bind(':pictureName', $name, ParameterType::STRING);
                 $db->setQuery($query, 0, 1);
 
-                if ((int) $db->loadResult() === 0) {
+                if ($canCreatePictures && (int) $db->loadResult() === 0) {
                     $db->insertObject(
                         '#__sportsmanagement_pictures',
                         (object) [
