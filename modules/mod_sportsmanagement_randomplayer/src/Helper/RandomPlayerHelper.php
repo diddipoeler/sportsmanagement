@@ -343,7 +343,7 @@ final class RandomPlayerHelper
     /**
      * Select a safe player image or configured fallback.
      *
-     * Checks that the player image resolves to a valid media URL and, for local paths, exists inside the Joomla site root; rejects malformed placeholder settings.
+     * Checks that the player image resolves to a valid media URL and, for local paths, exists inside the Joomla site root after resolving symbolic links; rejects malformed placeholder settings.
      *
      * @param string $path Player or roster picture path.
      * @return string Valid player image URL or safe placeholder.
@@ -352,11 +352,19 @@ final class RandomPlayerHelper
     {
         $url = $this->mediaUrl($path);
 
-        // Never inspect arbitrary paths outside JPATH_ROOT. The URL
-        // validation also rejects unexpected schemes and traversal.
-        if ($url !== '' && (preg_match('#^https?://#i', $path)
-            || is_file(JPATH_ROOT . '/' . ltrim(trim($path), '/')))) {
-            return $url;
+        if ($url !== '') {
+            if (preg_match('#^https?://#i', trim($path))) {
+                return $url;
+            }
+
+            // Resolve symlinks before accepting a local portrait.
+            $root = realpath(JPATH_ROOT);
+            $absolute = $root === false ? false : realpath($root . '/' . ltrim(trim($path), '/'));
+
+            if ($absolute !== false && str_starts_with($absolute, $root . DIRECTORY_SEPARATOR)
+                && is_file($absolute)) {
+                return $url;
+            }
         }
 
         $placeholder = ComponentHelper::getParams('com_sportsmanagement')->get('ph_player', '');
@@ -374,6 +382,10 @@ final class RandomPlayerHelper
      */
     private function mediaUrl(string $path): string
     {
+        if (preg_match('/[\x00-\x1F\x7F]/', $path)) {
+            return '';
+        }
+
         $path = trim($path);
 
         if ($path === ''

@@ -103,6 +103,8 @@ namespace {
         ['images/%2e%2e/private.png', ''],
         ['images/player.png?redirect=x', ''],
         ['images/player.png#fragment', ''],
+        ["images/player.png\0", ''],
+        ["\nimages/player.png", ''],
         ['images\\player.png', ''],
     ] as [$raw, $expected]) {
         if ($media->invoke($helper, $raw) !== $expected) {
