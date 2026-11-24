@@ -89,9 +89,9 @@ final class RandomPlayerHelper
             self::textValue($row->lastname ?? null),
             $nameFormat
         );
-        $row->project_slug = $row->project_id . ':' . $row->project_alias;
-        $row->person_slug = $row->person_id . ':' . $row->person_alias;
-        $row->team_slug = $row->team_id . ':' . $row->team_alias;
+        $row->project_slug = $row->project_id . ':' . self::textValue($row->project_alias ?? null);
+        $row->person_slug = $row->person_id . ':' . self::textValue($row->person_alias ?? null);
+        $row->team_slug = $row->team_id . ':' . self::textValue($row->team_alias ?? null);
         // LEFT JOINs and older databases may omit optional images. A null
         // team-player picture falls back to the person's own portrait rather
         // than triggering undefined-property notices under PHP 8.
@@ -175,7 +175,7 @@ final class RandomPlayerHelper
 
         $db->setQuery($query);
 
-        return $db->loadObjectList() ?: [];
+        return self::validRows($db->loadObjectList(), ['projectteam_id', 'project_id']);
     }
 
     /**
@@ -276,7 +276,39 @@ final class RandomPlayerHelper
             ->bind(':teamSeasonId', $seasonId, ParameterType::INTEGER);
         $db->setQuery($query);
 
-        return $db->loadObjectList() ?: [];
+        return self::validRows($db->loadObjectList(), ['projectteam_id', 'project_id', 'person_id', 'team_id', 'season_id']);
+    }
+
+    /**
+     * Filter database results before random selection and route construction.
+     * Discards non-object rows and rows without positive integer references,
+     * preventing malformed legacy data from producing unrelated player URLs.
+     * @param mixed $rows Database result list.
+     * @param array<int,string> $requiredIds Required record identifier fields.
+     * @return array<int,object> Validated rows with contiguous numeric indexes.
+     */
+    private static function validRows(mixed $rows, array $requiredIds): array
+    {
+        if (!is_array($rows)) {
+            return [];
+        }
+
+        $valid = [];
+        foreach ($rows as $row) {
+            if (!is_object($row)) {
+                continue;
+            }
+            foreach ($requiredIds as $field) {
+                $id = $row->{$field} ?? null;
+                if ((!is_int($id) && !is_string($id))
+                    || filter_var($id, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) === false) {
+                    continue 2;
+                }
+            }
+            $valid[] = $row;
+        }
+
+        return $valid;
     }
 
     /**

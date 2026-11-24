@@ -169,6 +169,8 @@ final class PersonNameFormatter
     /**
      * Normalize a name field without accepting invalid legacy encoding.
      *
+     * Rejects oversized input, invalid UTF-8 and ASCII control characters
+     * before trimming so imported names cannot contain hidden line breaks.
      * @param string $value Raw prefix, first name, nickname or surname.
      * @return string Printable, trimmed name part or empty text.
      */

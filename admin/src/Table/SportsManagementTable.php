@@ -23,6 +23,14 @@ use Throwable;
  */
 abstract class SportsManagementTable extends Table
 {
+    /**
+     * Initialise a native Joomla table on the effective SportsManagement database.
+     * Resolves the configured component connection and retains the injected
+     * Joomla driver when resolution fails, before registering the table and key.
+     * @param string $table Database table name, including the Joomla prefix token.
+     * @param string|array $key Primary key column or composite key columns.
+     * @param DatabaseInterface $db Joomla database service used as fallback.
+     */
     public function __construct($table, $key, DatabaseInterface $db)
     {
         try {
@@ -38,6 +46,11 @@ abstract class SportsManagementTable extends Table
     /**
      * Preserve SportsManagement's array-to-registry conversion behaviour while
      * accepting the array|object input supported by Joomla's Table API.
+     * Rejects structured season identifiers before serialising the list to
+     * avoid PHP conversion warnings and accidentally persisted array labels.
+     * @param array|object $src Submitted record fields.
+     * @param array|string $ignore Fields excluded from binding.
+     * @return bool Whether the parent table successfully binds the record.
      */
     public function bind($src, $ignore = [])
     {
@@ -58,6 +71,14 @@ abstract class SportsManagementTable extends Table
         }
 
         if (isset($src['season_ids']) && is_array($src['season_ids'])) {
+            foreach ($src['season_ids'] as $seasonId) {
+                if (!is_int($seasonId) && !is_string($seasonId)) {
+                    $this->setError('Invalid season identifier list.');
+
+                    return false;
+                }
+            }
+
             $src['season_ids'] = implode(',', $src['season_ids']);
         }
 
