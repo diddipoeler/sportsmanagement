@@ -280,7 +280,15 @@ final class JlextassociationsModel extends SportsManagementListModel
             $db->setQuery($query);
             $result = $db->loadObjectList() ?: [];
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement JlextassociationsModel query or operation 1 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return [];
         }
