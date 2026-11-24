@@ -38,6 +38,8 @@ final class BirthdayHelper
      * Malformed database choices cannot silently select the Joomla database.
      * Unexpected types for name format, sorting or display mode use safe
      * defaults rather than causing PHP 8 array-to-string conversion warnings.
+     * Invalid age-group selectors and malformed birthday rows are rejected
+     * before they can expand a filter or interrupt frontend rendering.
      * @param Registry $params Birthday module configuration.
      * @param Registry $componentParams SportsManagement component defaults.
      * @param CMSApplicationInterface $app Active Joomla site application.
@@ -127,7 +129,14 @@ final class BirthdayHelper
             $position->setLimit(1);
             $query->select('(' . $position . ') AS ' . $db->quoteName('position_name'));
 
-            $ageGroupId = max(0, (int) $params->get('agegrouplist', 0));
+            $rawAgeGroup = $params->get('agegrouplist', 0);
+            $ageGroupId = is_int($rawAgeGroup) || is_string($rawAgeGroup)
+                ? filter_var($rawAgeGroup, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]])
+                : false;
+
+            if ($ageGroupId === false) {
+                return $this->emptyData($params);
+            }
             if ($ageGroupId > 0) {
                 $query->where($db->quoteName('p.agegroup_id') . ' = :ageGroupId')
                     ->bind(':ageGroupId', $ageGroupId, ParameterType::INTEGER);
@@ -157,7 +166,21 @@ final class BirthdayHelper
         $people = [];
 
         foreach ($rows as $row) {
-            $birth = $this->date((string) $row->birthday, $today->getTimezone());
+            if (!is_object($row) || !is_string($row->birthday ?? null)
+                || str_contains($row->birthday, "\0")) {
+                continue;
+            }
+
+            $rawId = $row->id ?? null;
+            $key = is_int($rawId) || is_string($rawId)
+                ? filter_var($rawId, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]])
+                : false;
+
+            if ($key === false || isset($people[$key])) {
+                continue;
+            }
+
+            $birth = $this->date($row->birthday, $today->getTimezone());
             // Ignore invalid or future dates of birth rather than displaying
             // negative ages from inconsistent legacy records.
             if (!$birth || $birth > $today) {
@@ -167,11 +190,6 @@ final class BirthdayHelper
             $birthday = $this->nextBirthday($birth, $today);
             $days = (int) $today->diff($birthday)->format('%a');
             if ($maxDays !== null && $days > $maxDays) {
-                continue;
-            }
-
-            $key = (int) $row->id;
-            if (isset($people[$key])) {
                 continue;
             }
 
@@ -292,7 +310,14 @@ final class BirthdayHelper
         // literal '-' selects descending ages; all other values keep the
         // original ascending fallback without PHP 8 conversion warnings.
         $descendingAge = $arguments === '-';
-        usort($rows, static function (array $a, array $b) use ($descendingAge): int {
+        usort($rows,
+            /**
+             * Compare birthday records by remaining days and configured age order.
+             * @param array $a First birthday record.
+             * @param array $b Second birthday record.
+             * @return int Ordering result for the birthday list.
+             */
+            static function (array $a, array $b) use ($descendingAge): int {
             $days = ((int) ($a['days_to_birthday'] ?? 0)) <=> ((int) ($b['days_to_birthday'] ?? 0));
             return $days !== 0 ? $days : ($descendingAge
                 ? ((int) ($b['age'] ?? 0) <=> (int) ($a['age'] ?? 0))

@@ -75,14 +75,40 @@ final class SportsManagementDatabaseResolver
     {
         $factory = new DatabaseFactory();
 
-        return $factory->getDriver(self::normaliseDriver((string) $params->get('jsm_dbtype', '')), [
-            'host' => (string) $params->get('jsm_host', ''),
-            'user' => (string) $params->get('jsm_user', ''),
-            'password' => (string) $params->get('jsm_password', ''),
-            'database' => (string) $params->get('jsm_db', ''),
-            'prefix' => (string) $params->get('jsm_dbprefix', ''),
-            'select' => true,
-        ]);
+        $options = ['select' => true];
+
+        foreach ([
+            'host' => 'jsm_host',
+            'user' => 'jsm_user',
+            'password' => 'jsm_password',
+            'database' => 'jsm_db',
+            'prefix' => 'jsm_dbprefix',
+        ] as $option => $key) {
+            $options[$option] = self::connectionSetting($params, $key);
+        }
+
+        return $factory->getDriver(self::normaliseDriver(self::connectionSetting($params, 'jsm_dbtype')), $options);
+    }
+
+    /**
+     * Read a textual external database connection setting without coercion.
+     * Accepts missing settings as empty strings but rejects nested values and
+     * booleans before they can become unintended connection credentials.
+     * Does not include the setting value in exception messages.
+     * @param Registry $params Component configuration registry.
+     * @param string $key External database configuration key.
+     * @return string Unmodified connection setting.
+     * @throws \UnexpectedValueException If the setting is not text.
+     */
+    private static function connectionSetting(Registry $params, string $key): string
+    {
+        $value = $params->get($key, '');
+
+        if (!is_string($value)) {
+            throw new \UnexpectedValueException('Invalid external database connection setting.');
+        }
+
+        return $value;
     }
 
     /**
