@@ -23,6 +23,12 @@ final class TreetomatchsModel extends SportsManagementListModel
     private int $treeId = 0;
     private int $projectId = 0;
 
+    /**
+     * Configure the tournament-tree match list and allowed ordering fields.
+     * @param array $config Joomla list model configuration.
+     * @param MVCFactoryInterface|null $factory Optional MVC factory.
+     * @return void
+     */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         $config['filter_fields'] = $config['filter_fields'] ?? [
@@ -34,6 +40,12 @@ final class TreetomatchsModel extends SportsManagementListModel
         parent::__construct($config, $factory);
     }
 
+    /**
+     * Restore the active tree, node and project IDs from administrator filters.
+     * @param string $ordering Default sorting column.
+     * @param string $direction Default sorting direction.
+     * @return void
+     */
     protected function populateState($ordering = 'r.roundcode', $direction = 'ASC')
     {
         parent::populateState($ordering, $direction);
@@ -176,7 +188,12 @@ final class TreetomatchsModel extends SportsManagementListModel
                 $db->transactionRollback();
             }
 
-            $this->setError($e->getMessage());
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement tournament tree match assignment failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->setError(\Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'));
             return false;
         }
     }
@@ -233,6 +250,11 @@ final class TreetomatchsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Load the matches already assigned to a tournament-tree node.
+     * @param int $nodeId Explicit node ID or zero to use the current state.
+     * @return array<int,object> Matches belonging to the node.
+     */
     public function getNodeMatches(int $nodeId = 0): array
     {
         $this->getState();
@@ -261,6 +283,11 @@ final class TreetomatchsModel extends SportsManagementListModel
         return $db->loadObjectList() ?: [];
     }
 
+    /**
+     * Look up the project owning the selected tournament tree.
+     * @param int $projectId Project identifier.
+     * @return object|null Project metadata or null when not found.
+     */
     public function getProject(int $projectId): ?object
     {
         if ($projectId <= 0) {
@@ -282,6 +309,11 @@ final class TreetomatchsModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Load a tournament-tree node by its database ID.
+     * @param int $nodeId Tournament-tree node identifier.
+     * @return object|null Node record or null when unavailable.
+     */
     public function getNode(int $nodeId): ?object
     {
         if ($nodeId <= 0) {
@@ -299,6 +331,10 @@ final class TreetomatchsModel extends SportsManagementListModel
         return $db->loadObject() ?: null;
     }
 
+    /**
+     * Build the list query for matches assigned to the current node.
+     * @return \Joomla\Database\DatabaseQuery Database query for the node match list.
+     */
     protected function getListQuery()
     {
         $this->getState();
@@ -318,6 +354,11 @@ final class TreetomatchsModel extends SportsManagementListModel
         return $query;
     }
 
+    /**
+     * Include node, tree and project scope in the list cache identifier.
+     * @param string $id Original list cache identifier.
+     * @return string Scoped list cache key.
+     */
     protected function getStoreId($id = '')
     {
         $id .= ':' . (int) $this->getState('context.node_id');
@@ -327,6 +368,10 @@ final class TreetomatchsModel extends SportsManagementListModel
         return parent::getStoreId($id);
     }
 
+    /**
+     * Build the reusable query for available tournament matches.
+     * @return \Joomla\Database\DatabaseQuery Database query for candidate matches.
+     */
     private function buildMatchQuery()
     {
         $db = $this->getDatabase();
@@ -348,6 +393,10 @@ final class TreetomatchsModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('mc.round_id'));
     }
 
+    /**
+     * Build the query for displaying matches and their team names.
+     * @return \Joomla\Database\DatabaseQuery Database query for match presentation.
+     */
     private function buildDisplayQuery()
     {
         $db = $this->getDatabase();
@@ -375,6 +424,11 @@ final class TreetomatchsModel extends SportsManagementListModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_round', 'r') . ' ON ' . $db->quoteName('r.id') . ' = ' . $db->quoteName('mc.round_id'));
     }
 
+    /**
+     * Accept only strictly positive, in-range integer identifiers.
+     * @param mixed $raw Untrusted request identifier.
+     * @return int Valid identifier or zero for invalid input.
+     */
     private function strictPositiveId(mixed $raw): int
     {
         if (!is_string($raw) && !is_int($raw)) {
@@ -394,6 +448,12 @@ final class TreetomatchsModel extends SportsManagementListModel
         return $id === false ? 0 : $id;
     }
 
+    /**
+     * Validate and deduplicate submitted tournament match IDs.
+     * @param array $ids Submitted match identifiers.
+     * @return array<int,int> Unique positive IDs.
+     * @throws \UnexpectedValueException If any supplied ID is invalid.
+     */
     private function normaliseIds(array $ids): array
     {
         $valid = [];
