@@ -17,6 +17,12 @@ use Joomla\Database\DatabaseInterface;
 /** Native table for SportsManagement image-package metadata. */
 final class PicturesTable extends Table
 {
+    /**
+     * Initialise the native Joomla table for image-package metadata.
+     * Registers the database table and its primary key with the Joomla
+     * table implementation using the injected database driver.
+     * @param DatabaseInterface $db Active database connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_pictures', 'id', $db);

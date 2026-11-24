@@ -15,6 +15,12 @@ use Joomla\Database\DatabaseInterface;
 
 final class PredictiontemplateTable extends SportsManagementTable
 {
+    /**
+     * Initialise the native Joomla table for tip game template configurations.
+     * Registers the database table and its primary key with the shared SportsManagement
+     * table implementation using the injected database driver.
+     * @param DatabaseInterface $db Active database connection.
+     */
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__sportsmanagement_prediction_template', 'id', $db);
