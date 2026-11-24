@@ -91,14 +91,34 @@ abstract class SportsManagementModel extends BaseDatabaseModel
      * Bind this model to the configured SportsManagement connection.
      * Honours an explicit database selection or the current frontend request
      * and delegates database resolution to the native Joomla 5/6 service.
+     * Rejects malformed raw request selectors rather than allowing Joomla's
+     * integer input filter to reinterpret partial numeric strings.
      * @param DatabaseInterface $db Primary Joomla database connection.
      * @return void
      */
     public function setDatabase(DatabaseInterface $db): void
     {
-        $selector = $this->databaseSelectorOverride
-            ?? ($this->siteApplication()->getInput()->getInt('cfg_which_database', 0) === 1 ? 1 : 0);
+        $selector = $this->databaseSelectorOverride;
+
+        if ($selector === null) {
+            $raw = $this->siteApplication()->getInput()->get('cfg_which_database', 0, 'raw');
+            $selector = self::requestDatabaseSelector($raw);
+        }
 
         parent::setDatabase(SportsManagementDatabaseResolver::resolve($db, $selector));
+    }
+
+    /**
+     * Interpret the unfiltered frontend database selector.
+     * Accepts only an explicit integer one or a bounded decimal string
+     * representing one, including legacy zero padding. Malformed values
+     * leave the selector at zero, preserving the component-wide defaults.
+     * @param mixed $value Raw Joomla input parameter.
+     * @return int Supported selector zero or one.
+     */
+    private static function requestDatabaseSelector(mixed $value): int
+    {
+        return $value === 1 || (is_string($value) && strlen($value) <= 64
+            && preg_match('/^0*1$/D', $value) === 1) ? 1 : 0;
     }
 }

@@ -24,12 +24,17 @@ final class PositionsController extends SportsManagementAdminController
      * standard positions overview using Joomla's router.
      *
      * @return void Redirects to the positions administrator list.
-     * @throws \RuntimeException If the token or edit permission is invalid.
+     * @throws \RuntimeException If the token or edit permission is invalid,
+     *     or the required position model cannot be loaded.
      */
     public function saveshort(): void
     {
         $this->assertWritePermission('core.edit');
         $model = $this->getModel();
+
+        if (!is_object($model) || !is_callable([$model, 'saveshort'])) {
+            throw new \RuntimeException('SportsManagement position model is unavailable.', 500);
+        }
 
         if (!$model->saveshort()) {
             $this->app->enqueueMessage('Position parent changes could not be saved completely.', 'warning');

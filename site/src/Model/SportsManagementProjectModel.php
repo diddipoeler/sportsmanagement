@@ -22,7 +22,7 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
 
     /**
      * Initialize the project-scoped native frontend model from Joomla request state.
-     * Calls the base Joomla model constructor and reads the selected project and division as filtered integers, so later lookups share the same scope.
+     * Calls the base Joomla model constructor and reads the selected project and division as filtered integers, so later lookups share the same scope. Normalises negative identifiers to zero consistently with the explicit project setter.
      *
      * @param array $config Joomla MVC model configuration.
      * @param MVCFactoryInterface|null $factory Optional Joomla MVC factory.
@@ -31,8 +31,8 @@ abstract class SportsManagementProjectModel extends SportsManagementModel
     {
         parent::__construct($config, $factory);
         $input = $this->siteApplication()->getInput();
-        $this->projectId = $input->getInt('p', 0);
-        $this->divisionId = $input->getInt('division', 0);
+        $this->projectId = max(0, $input->getInt('p', 0));
+        $this->divisionId = max(0, $input->getInt('division', 0));
     }
 
     /**
