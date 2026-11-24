@@ -168,7 +168,28 @@ final class QuickaddModel extends SportsManagementListModel
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $personId = (int) $personid;
+        // Reject malformed IDs rather than truncating strings or casting
+        // array input to integers (which may silently select another person).
+        if ($personid === null || $personid === '') {
+            $personId = 0;
+        } elseif ((is_int($personid) || is_string($personid))
+            && preg_match('/^[0-9]+$/D', (string) $personid)) {
+            $validatedId = filter_var((string) $personid, FILTER_VALIDATE_INT, [
+                'options' => ['min_range' => 0],
+            ]);
+
+            if ($validatedId === false) {
+                $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
+
+                return false;
+            }
+
+            $personId = $validatedId;
+        } else {
+            $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
+
+            return false;
+        }
 
         if ($personId <= 0 && (!is_string($name) || trim($name) === '' || strlen($name) > 255)) {
             $this->setError(Text::_('COM_SPORTSMANAGEMENT_ADMIN_QUICKADD_CTRL_ADD_PLAYER_REQUIRES_ID_OR_NAME'));
