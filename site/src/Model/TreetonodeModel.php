@@ -46,7 +46,8 @@ final class TreetonodeModel extends SportsManagementProjectModel
      *
      * Reject missing project context, resolve the project's tree when no
      * node tree was selected, and join node, match, team, club and tree data
-     * using a bound tree identifier. Preserve legacy false for invalid
+     * using bound tree and project identifiers so a foreign tree cannot be
+     * selected by changing the request's tnid parameter. Preserve legacy false for invalid
      * projects and an empty list when the project has no tournament tree.
      *
      * @return array<int,object>|false Node rows, or false for a missing project.
@@ -76,6 +77,7 @@ final class TreetonodeModel extends SportsManagementProjectModel
 
         $db = $this->getDatabase();
         $treeToId = $this->treetoid;
+        $projectId = $this->projectid;
         $query = $db->createQuery()
             ->select([
                 $db->quoteName('ttn') . '.*',
@@ -102,6 +104,8 @@ final class TreetonodeModel extends SportsManagementProjectModel
             ->join('LEFT', $db->quoteName('#__sportsmanagement_treeto', 'tt') . ' ON ' . $db->quoteName('tt.id') . ' = ' . $db->quoteName('ttn.treeto_id'))
             ->join('LEFT', $db->quoteName('#__sportsmanagement_treeto_match', 'ttm') . ' ON ' . $db->quoteName('ttm.node_id') . ' = ' . $db->quoteName('ttn.id'))
             ->where($db->quoteName('ttn.treeto_id') . ' = :treeToId')
+            ->where($db->quoteName('tt.project_id') . ' = :treeOwnerProjectId')
+            ->bind(':treeOwnerProjectId', $projectId, ParameterType::INTEGER)
             ->bind(':treeToId', $treeToId, ParameterType::INTEGER)
             ->order($db->quoteName('ttn.row'));
 
@@ -114,7 +118,8 @@ final class TreetonodeModel extends SportsManagementProjectModel
      * Find the first tournament-tree identifier owned by a project.
      *
      * Bind the validated positive project ID to Joomla's query builder
-     * and avoid running the lookup when the project is unselected.
+     * and avoid running the lookup when the project is unselected. Select the
+     * lowest tree ID deterministically when several trees exist.
      *
      * @param int $projectid Positive SportsManagement project ID.
      * @return int Tournament-tree ID or zero if none exists.
@@ -130,7 +135,8 @@ final class TreetonodeModel extends SportsManagementProjectModel
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__sportsmanagement_treeto'))
             ->where($db->quoteName('project_id') . ' = :treeProjectId')
-            ->bind(':treeProjectId', $projectid, ParameterType::INTEGER);
+            ->bind(':treeProjectId', $projectid, ParameterType::INTEGER)
+            ->order($db->quoteName('id') . ' ASC');
 
         $db->setQuery($query, 0, 1);
 

@@ -24,7 +24,7 @@ final class RandomPlayerHelper
     /**
      * Select a random eligible player for the Joomla module.
      *
-     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings. Invalid display-format settings fall back to the standard name order.
+     * Validates the season, project and database selectors, chooses a project team with players, and enriches the selected person with safe links, display names and images. Missing or non-string optional names and image fields are treated as empty values to support legacy database rows without PHP 8 property warnings. Invalid display-format settings fall back to the standard name order.
      *
      * @param Registry $params Module filters and display options.
      * @param DatabaseInterface $fallbackDatabase Default Joomla connection.
@@ -84,9 +84,9 @@ final class RandomPlayerHelper
         $row = $players[random_int(0, count($players) - 1)];
         $nameFormat = self::nonNegativeSelector($params->get('name_format', 0)) ?? 0;
         $row->display_name = $this->formatName(
-            (string) ($row->firstname ?? ''),
-            (string) ($row->nickname ?? ''),
-            (string) ($row->lastname ?? ''),
+            self::textValue($row->firstname ?? null),
+            self::textValue($row->nickname ?? null),
+            self::textValue($row->lastname ?? null),
             $nameFormat
         );
         $row->project_slug = $row->project_id . ':' . $row->project_alias;
@@ -95,9 +95,9 @@ final class RandomPlayerHelper
         // LEFT JOINs and older databases may omit optional images. A null
         // team-player picture falls back to the person's own portrait rather
         // than triggering undefined-property notices under PHP 8.
-        $row->picture_url = $this->picture((string) (($row->teamplayer_picture ?? '') ?: ($row->person_picture ?? '')));
-        $row->team_picture_url = $this->mediaUrl((string) ($row->team_picture ?? ''));
-        $row->flag_url = $this->mediaUrl((string) ($row->country_picture ?? ''));
+        $row->picture_url = $this->picture(self::textValue($row->teamplayer_picture ?? null) ?: self::textValue($row->person_picture ?? null));
+        $row->team_picture_url = $this->mediaUrl(self::textValue($row->team_picture ?? null));
+        $row->flag_url = $this->mediaUrl(self::textValue($row->country_picture ?? null));
 
         $base = [
             'cfg_which_database' => $databaseSelector,
@@ -277,6 +277,21 @@ final class RandomPlayerHelper
         $db->setQuery($query);
 
         return $db->loadObjectList() ?: [];
+    }
+
+    /**
+     * Normalise optional player names and media references from database rows.
+     *
+     * Only string values are accepted. Missing fields, arrays and objects
+     * become empty strings so legacy imports cannot trigger PHP 8 conversion
+     * warnings or accidentally produce invalid image paths.
+     *
+     * @param mixed $value Raw optional player field.
+     * @return string Original text or an empty string for invalid values.
+     */
+    private static function textValue(mixed $value): string
+    {
+        return is_string($value) ? $value : '';
     }
 
     /**

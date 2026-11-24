@@ -66,14 +66,25 @@ final class SeasonTable extends SportsManagementTable
 
     /**
      * Generate a URL-safe alias for the season record.
+     * Rejects malformed non-string values before calling Joomla's output
+     * filter, avoiding PHP 8 array conversion warnings. Uses the season
+     * name when no alias is supplied and delegates remaining validation
+     * to the shared native table implementation.
      *
      * @return bool Whether the underlying Joomla table passes validation.
      */
     public function check()
     {
-        $aliasSource = trim((string) $this->alias) === ''
-            ? (string) $this->name
-            : (string) $this->alias;
+        $alias = $this->alias ?? '';
+        $name = $this->name ?? '';
+
+        if (!is_string($alias) || !is_string($name)) {
+            $this->setError('Invalid season name or alias.');
+
+            return false;
+        }
+
+        $aliasSource = trim($alias) === '' ? $name : $alias;
         $this->alias = OutputFilter::stringURLSafe($aliasSource);
 
         return parent::check();
