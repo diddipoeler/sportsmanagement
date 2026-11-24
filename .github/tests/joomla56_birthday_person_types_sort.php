@@ -50,6 +50,16 @@ namespace {
     );
 
     try {
+        $textValue = new \ReflectionMethod($class, 'textValue');
+        foreach ([null, false, true, 42, [], new \stdClass()] as $invalidText) {
+            if ($textValue->invoke(null, $invalidText) !== '') {
+                throw new \RuntimeException('Malformed birthday display text was accepted.');
+            }
+        }
+        if ($textValue->invoke(null, 'Müller') !== 'Müller') {
+            throw new \RuntimeException('Valid birthday display text was not retained.');
+        }
+
         assertBirthdayPersonTypes(1, [1]);
         assertBirthdayPersonTypes(2, [2]);
         assertBirthdayPersonTypes('0001', [1]);

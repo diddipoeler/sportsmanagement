@@ -699,6 +699,8 @@ final class BirthdayHelper
      * Build the localized text shown beside an upcoming birthday.
      * Chooses today, tomorrow or days-remaining wording and combines it
      * with date and age information according to configured message options.
+     * Malformed non-string message settings become empty text; invalid date
+     * format types use the default day-month-year format.
      * @param object $row Person row containing computed remaining days.
      * @param \DateTimeImmutable $birthday Upcoming birthday occurrence.
      * @param \DateTimeImmutable $birth Original birth date.
@@ -708,17 +710,17 @@ final class BirthdayHelper
     private function birthdayText(object $row, \DateTimeImmutable $birthday, \DateTimeImmutable $birth, Registry $params): string
     {
         $when = match ((int) $row->days_to_birthday) {
-            0 => (string) $params->get('todaymessage', ''),
-            1 => (string) $params->get('tomorrowmessage', ''),
-            default => str_replace('%DAYS_TO%', (string) $row->days_to_birthday, trim((string) $params->get('futuremessage', ''))),
+            0 => self::textValue($params->get('todaymessage', '')),
+            1 => self::textValue($params->get('tomorrowmessage', '')),
+            default => str_replace('%DAYS_TO%', (string) $row->days_to_birthday, trim(self::textValue($params->get('futuremessage', '')))),
         };
         return strtr(
-            htmlspecialchars(trim(Text::_((string) $params->get('birthdaytext', ''))), ENT_QUOTES, 'UTF-8'),
+            htmlspecialchars(trim(Text::_(self::textValue($params->get('birthdaytext', '')))), ENT_QUOTES, 'UTF-8'),
             [
                 '%WHEN%' => htmlspecialchars($when, ENT_QUOTES, 'UTF-8'),
                 '%AGE%' => (string) $row->age,
-                '%DATE%' => htmlspecialchars($birthday->format((string) $params->get('dayformat', 'd.m.Y')), ENT_QUOTES, 'UTF-8'),
-                '%DATE_OF_BIRTH%' => htmlspecialchars($birth->format((string) $params->get('birthdayformat', 'd.m.Y')), ENT_QUOTES, 'UTF-8'),
+                '%DATE%' => htmlspecialchars($birthday->format((self::textValue($params->get('dayformat', 'd.m.Y')) ?: 'd.m.Y')), ENT_QUOTES, 'UTF-8'),
+                '%DATE_OF_BIRTH%' => htmlspecialchars($birth->format((self::textValue($params->get('birthdayformat', 'd.m.Y')) ?: 'd.m.Y')), ENT_QUOTES, 'UTF-8'),
                 '%BR%' => '<br />',
                 '%BOLD%' => '<strong>',
                 '%BOLDEND%' => '</strong>',

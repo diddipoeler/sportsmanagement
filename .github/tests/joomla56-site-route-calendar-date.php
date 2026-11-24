@@ -115,6 +115,22 @@ namespace {
         throw new \RuntimeException('Authoritative component/view route contract broken: ' . $route);
     }
 
+    foreach ([true, [], '42junk', ' 42', "42\0", str_repeat('0', 128) . '1', (string) PHP_INT_MAX . '0'] as $invalidItemId) {
+        $route = SiteRouteHelper::view('nextmatch', ['Itemid' => $invalidItemId]);
+        parse_str((string) parse_url($route, PHP_URL_QUERY), $query);
+
+        if (array_key_exists('Itemid', $query)) {
+            throw new \RuntimeException('Invalid menu identifier was retained.');
+        }
+    }
+
+    $route = SiteRouteHelper::view('nextmatch', ['Itemid' => '0042']);
+    parse_str((string) parse_url($route, PHP_URL_QUERY), $query);
+
+    if (($query['Itemid'] ?? null) !== '42') {
+        throw new \RuntimeException('Valid legacy menu identifier was not retained.');
+    }
+
     foreach (['', '../admin', 'nextmatch?option=com_users', 'a/b', 'a-b', str_repeat('x', 101)] as $invalidView) {
         smCheckInvalidView($invalidView);
     }

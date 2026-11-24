@@ -55,7 +55,8 @@ final class SiteRouteHelper
      * an exception rather than producing nested view[] query parameters or
      * an unintended route. Explicit null or malformed component options
      * also fail closed rather than silently switching the destination.
-     * Oversized menu identifiers are discarded before numeric parsing.
+     * Oversized menu identifiers and identifiers containing whitespace or
+     * control bytes are discarded before numeric parsing.
      * Other component route parameters remain unchanged.
      *
      * @param array<string,mixed> $parameters Route query components.
@@ -95,8 +96,8 @@ final class SiteRouteHelper
                 $itemId = max(0, $requestedItemId);
             } elseif (is_string($requestedItemId)
                 && strlen($requestedItemId) <= 128
-                && preg_match('/^[0-9]+$/D', trim($requestedItemId))) {
-                $digits = ltrim(trim($requestedItemId), '0');
+                && preg_match('/^[0-9]+$/D', $requestedItemId)) {
+                $digits = ltrim($requestedItemId, '0');
 
                 if ($digits !== '') {
                     $validated = filter_var($digits, FILTER_VALIDATE_INT, [
