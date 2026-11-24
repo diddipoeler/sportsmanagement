@@ -186,7 +186,7 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
 
     /**
      * Determine whether an existing menu item can serve this view and language.
-     * Rejects non-object or foreign-component menu entries, verifies the requested view, and accepts only the active language or a language-neutral wildcard.
+     * Rejects non-object, unpublished, inaccessible or foreign-component menu entries, verifies the requested view, and accepts only the active language or a language-neutral wildcard.
      * @param mixed $item Menu item returned by Joomla's menu service.
      * @param string $view Normalised SportsManagement view name.
      * @return bool True if the menu entry is suitable for routing.
@@ -201,7 +201,15 @@ class SportsmanagementRouter extends SportsManagementRouterService implements Ro
         $component = (string) ($item->component ?? ($menuQuery['option'] ?? ''));
         $menuView = (string) preg_replace('/[^a-z0-9_]/i', '', strtolower((string) ($menuQuery['view'] ?? '')));
 
-        if ($component !== self::COMPONENT || $menuView !== $view) {
+        if ($component !== self::COMPONENT || $menuView !== $view
+            || (isset($item->published) && (int) $item->published !== 1)) {
+            return false;
+        }
+
+        $identity = $this->app->getIdentity();
+
+        if ($identity !== null && isset($item->access)
+            && !in_array((int) $item->access, array_map('intval', $identity->getAuthorisedViewLevels()), true)) {
             return false;
         }
 
@@ -357,7 +365,10 @@ function sportsmanagementGetRouter(): RouterInterface
 }
 
 /**
- * Legacy build proxy.
+ * Build URL segments for callers using the historical component routing API.
+ * Normalises the route query through the compatibility router, then delegates
+ * segment generation to the native Joomla 5/6 router. The query is passed by
+ * reference so the router can remove variables encoded in the URL path.
  *
  * @param   array  $query  URL query variables.
  *

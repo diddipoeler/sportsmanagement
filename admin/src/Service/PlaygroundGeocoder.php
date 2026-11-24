@@ -197,7 +197,7 @@ final class PlaygroundGeocoder
 
     /**
      * Validate a numeric coordinate returned by the external geocoding service.
-     * Rejects nonnumeric and out-of-range latitude or longitude values rather than storing invalid coordinates.
+     * Rejects nonnumeric, nonfinite and out-of-range latitude or longitude values rather than storing invalid coordinates.
      *
      * @param mixed $value External coordinate value.
      * @param float $minimum Allowed lower boundary.
@@ -206,12 +206,15 @@ final class PlaygroundGeocoder
      */
     private function coordinate(mixed $value, float $minimum, float $maximum): ?float
     {
-        if (!is_numeric($value)) {
+        if ((!is_int($value) && !is_float($value) && !is_string($value))
+            || !is_numeric($value)) {
             return null;
         }
 
         $coordinate = (float) $value;
 
-        return $coordinate >= $minimum && $coordinate <= $maximum ? $coordinate : null;
+        return is_finite($coordinate) && $coordinate >= $minimum && $coordinate <= $maximum
+            ? $coordinate
+            : null;
     }
 }

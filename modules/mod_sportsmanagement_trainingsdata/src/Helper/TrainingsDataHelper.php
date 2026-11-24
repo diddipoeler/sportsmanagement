@@ -84,7 +84,8 @@ final class TrainingsDataHelper
      * Some older drivers can return false or mixed arrays instead of a list
      * of training objects. Discard non-object entries and replace nested
      * place/notes fields and malformed weekday/second counts with safe
-     * defaults to prevent PHP 8 array-to-string conversion warnings in the
+     * defaults (including absent fields) and converts valid text values to
+     * strings to prevent PHP 8 undefined-property and conversion warnings in the
      * Joomla module layout. Accept only days 1 through 7 and seconds 0
      * through 86399 so invalid persisted values cannot become unrealistic
      * training times. Normalise decimal strings before template rendering.
@@ -111,8 +112,10 @@ final class TrainingsDataHelper
                 if ((!is_string($value) && !is_int($value) && !is_float($value))
                     || (is_float($value) && !is_finite($value))
                     || (is_string($value) && strlen($value) > 65536)) {
-                    $record->{$name} = '';
+                    $value = '';
                 }
+
+                $record->{$name} = (string) $value;
             }
 
             foreach (['dayofweek' => 7, 'time_start' => 86399, 'time_end' => 86399] as $name => $maximum) {

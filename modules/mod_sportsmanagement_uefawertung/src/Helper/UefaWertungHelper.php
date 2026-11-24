@@ -242,7 +242,9 @@ final class UefaWertungHelper
      * Loads per-country season scores and discards corrupt rows, nested or
      * oversized labels, nonnumeric points and nonfinite numeric results.
      * Countries missing a valid season are excluded rather than treating
-     * malformed points as zero. Complete totals are sorted descending with
+     * malformed points as zero. Nonfinite totals are discarded and numeric
+     * country keys are converted back to strings for the layout.
+     * Complete totals are sorted descending with
      * alphabetical ties.
      *
      * @param DatabaseInterface $db Selected SportsManagement database driver.
@@ -313,8 +315,12 @@ final class UefaWertungHelper
                 $total += $value;
             }
 
+            if (!is_finite($total)) {
+                continue;
+            }
+
             $rankings[] = [
-                'country' => $country,
+                'country' => (string) $country,
                 'points' => $orderedPoints,
                 'total' => $total,
             ];
@@ -322,6 +328,13 @@ final class UefaWertungHelper
 
         usort(
             $rankings,
+            /**
+             * Sort countries by descending total points and then by name.
+             * Uses a case-insensitive alphabetical comparison for tied totals.
+             * @param array $left First ranking row.
+             * @param array $right Second ranking row.
+             * @return int Comparison result for usort().
+             */
             static function (array $left, array $right): int {
                 $total = $right['total'] <=> $left['total'];
 
