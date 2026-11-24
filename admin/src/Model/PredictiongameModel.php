@@ -177,7 +177,15 @@ final class PredictiongameModel extends SportsManagementAdminModel
 
             return $db->loadObject() ?: false;
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement PredictiongameModel query or operation 1 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
@@ -223,7 +231,15 @@ final class PredictiongameModel extends SportsManagementAdminModel
 
             return $projectIds;
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement PredictiongameModel query or operation 2 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return [];
         }
@@ -342,7 +358,15 @@ final class PredictiongameModel extends SportsManagementAdminModel
                 }
             }
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement PredictiongameModel query or operation 3 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
@@ -400,7 +424,15 @@ final class PredictiongameModel extends SportsManagementAdminModel
                 $db->insertObject($table, $record);
             }
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement PredictiongameModel query or operation 4 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
@@ -433,7 +465,15 @@ final class PredictiongameModel extends SportsManagementAdminModel
 
             return true;
         } catch (\Throwable $e) {
-            $this->administratorApplication()->enqueueMessage($e->getMessage(), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement PredictiongameModel query or operation 5 failed: ' . $e->getMessage(),
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $this->administratorApplication()->enqueueMessage(
+                \Joomla\CMS\Language\Text::_('JERROR_AN_ERROR_HAS_OCCURRED'),
+                'error'
+            );
 
             return false;
         }
