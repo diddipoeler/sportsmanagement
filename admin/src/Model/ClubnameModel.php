@@ -45,10 +45,15 @@ final class ClubnameModel extends SportsManagementAdminModel
 
         $db = $this->getDatabase();
         $file = JPATH_ADMINISTRATOR . '/components/com_sportsmanagement/helpers/xml_files/clubnames.xml';
-        $xml = @simplexml_load_file($file);
+        $xml = @simplexml_load_file($file, \SimpleXMLElement::class, LIBXML_NONET);
 
         if ($xml === false) {
-            $app->enqueueMessage(Text::sprintf('COM_SPORTSMANAGEMENT_FILE_ERROR_FUNCTION_FAILED', $file, __LINE__), 'error');
+            \Joomla\CMS\Log\Log::add(
+                'SportsManagement clubname import XML file could not be loaded: ' . $file,
+                \Joomla\CMS\Log\Log::ERROR,
+                'com_sportsmanagement'
+            );
+            $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
             return;
         }
@@ -95,10 +100,12 @@ final class ClubnameModel extends SportsManagementAdminModel
                 $db->setQuery($query);
                 $db->execute();
             } catch (\RuntimeException $e) {
-                $app->enqueueMessage(
-                    Text::sprintf('COM_SPORTSMANAGEMENT_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                    'error'
+                \Joomla\CMS\Log\Log::add(
+                    'SportsManagement clubname import database query failed: ' . $e->getMessage(),
+                    \Joomla\CMS\Log\Log::ERROR,
+                    'com_sportsmanagement'
                 );
+                $app->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
             }
         }
     }
