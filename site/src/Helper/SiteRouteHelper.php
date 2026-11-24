@@ -28,6 +28,7 @@ final class SiteRouteHelper
      * @param string $view Target SportsManagement view.
      * @param array<string,mixed> $parameters Optional route query parameters.
      * @return string Routed frontend URL.
+     * @throws \InvalidArgumentException If the view identifier is invalid.
      */
     public static function view(string $view, array $parameters = []): string
     {
@@ -54,6 +55,7 @@ final class SiteRouteHelper
      * an exception rather than producing nested view[] query parameters or
      * an unintended route. Explicit null or malformed component options
      * also fail closed rather than silently switching the destination.
+     * Oversized menu identifiers are discarded before numeric parsing.
      * Other component route parameters remain unchanged.
      *
      * @param array<string,mixed> $parameters Route query components.
@@ -92,6 +94,7 @@ final class SiteRouteHelper
             if (is_int($requestedItemId)) {
                 $itemId = max(0, $requestedItemId);
             } elseif (is_string($requestedItemId)
+                && strlen($requestedItemId) <= 128
                 && preg_match('/^[0-9]+$/D', trim($requestedItemId))) {
                 $digits = ltrim(trim($requestedItemId), '0');
 

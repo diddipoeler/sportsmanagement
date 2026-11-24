@@ -536,7 +536,8 @@ final class BirthdayHelper
     /**
      * Format a person's name according to the module's display preference.
      * Delegates firstname, nickname and lastname ordering to the shared
-     * SportsManagement person-name formatter.
+     * SportsManagement person-name formatter. Missing or malformed name
+     * fields are converted to empty text before formatting.
      * @param object $row Person database record.
      * @param int $format Configured name display format.
      * @return string Display name for the birthday list.
@@ -545,11 +546,24 @@ final class BirthdayHelper
     {
         return PersonNameFormatter::format(
             null,
-            (string) $row->firstname,
-            (string) $row->nickname,
-            (string) $row->lastname,
+            self::textValue($row->firstname ?? null),
+            self::textValue($row->nickname ?? null),
+            self::textValue($row->lastname ?? null),
             $format
         );
+    }
+
+    /**
+     * Read an optional text field from a legacy birthday record or setting.
+     * Rejects nested objects, arrays and other non-string values before they
+     * reach name formatting, routing or image-path validation. Missing fields
+     * are treated as empty text without PHP 8 conversion warnings.
+     * @param mixed $value Raw database field or module setting.
+     * @return string Text value or an empty string for unsupported types.
+     */
+    private static function textValue(mixed $value): string
+    {
+        return is_string($value) ? $value : '';
     }
 
     /**
@@ -565,12 +579,12 @@ final class BirthdayHelper
         $view = match ((int) $row->type) { 2 => 'staff', 3 => 'referee', default => 'player' };
         $query = [
             'cfg_which_database' => $databaseSelector,
-            's' => $this->slug((int) ($row->season_id ?? 0), (string) ($row->season_alias ?? '')),
-            'p' => $this->slug((int) ($row->project_id ?? 0), (string) ($row->project_alias ?? '')),
-            'pid' => $this->slug((int) ($row->id ?? 0), (string) ($row->person_alias ?? '')),
+            's' => $this->slug((int) ($row->season_id ?? 0), self::textValue($row->season_alias ?? null)),
+            'p' => $this->slug((int) ($row->project_id ?? 0), self::textValue($row->project_alias ?? null)),
+            'pid' => $this->slug((int) ($row->id ?? 0), self::textValue($row->person_alias ?? null)),
         ];
         if ((int) $row->type !== 3) {
-            $query['tid'] = $this->slug((int) ($row->team_id ?? 0), (string) ($row->team_alias ?? ''));
+            $query['tid'] = $this->slug((int) ($row->team_id ?? 0), self::textValue($row->team_alias ?? null));
         }
 
         return SiteRouteHelper::view($view, $query);
@@ -608,7 +622,7 @@ final class BirthdayHelper
             return '';
         }
 
-        foreach ([(string) ($row->picture ?? ''), (string) ($row->default_picture ?? '')] as $candidate) {
+        foreach ([self::textValue($row->picture ?? null), self::textValue($row->default_picture ?? null)] as $candidate) {
             $path = $this->localImagePath($candidate);
 
             if ($path === '') {
@@ -665,8 +679,8 @@ final class BirthdayHelper
      */
     private function flagHtml(object $row, Registry $params): string
     {
-        $alpha3 = strtoupper((string) ($row->country ?? ''));
-        $alpha2 = strtolower((string) ($row->country_alpha2 ?? ''));
+        $alpha3 = strtoupper(self::textValue($row->country ?? null));
+        $alpha2 = strtolower(self::textValue($row->country_alpha2 ?? null));
         $alpha2 = preg_match('/^[a-z]{2}$/', $alpha2) ? $alpha2 : '';
         $label = htmlspecialchars($alpha3, ENT_QUOTES, 'UTF-8');
         if ((int) $params->get('cfg_flags_css', 0) === 1) {
@@ -675,7 +689,7 @@ final class BirthdayHelper
         }
         $candidate = $alpha2 !== ''
             ? 'images/com_sportsmanagement/database/flags/' . $alpha2 . '.png'
-            : (string) ($row->country_picture ?? $params->get('ph_flags', ''));
+            : self::textValue($row->country_picture ?? $params->get('ph_flags', ''));
         $path = $this->localImagePath($candidate);
 
         return $path === '' ? '' : '<img src="' . htmlspecialchars(Uri::root() . $path, ENT_QUOTES, 'UTF-8') . '" alt="' . $label . '" />';
