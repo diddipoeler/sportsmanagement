@@ -110,6 +110,23 @@ namespace {
         }
     }
 
+    $validRows = new \ReflectionMethod($class, 'validRows');
+    $valid = (object) ['projectteam_id' => '42', 'project_id' => 7];
+    $rows = [
+        null,
+        ['projectteam_id' => 1, 'project_id' => 2],
+        (object) ['projectteam_id' => -1, 'project_id' => 2],
+        (object) ['projectteam_id' => true, 'project_id' => 2],
+        (object) ['projectteam_id' => '1junk', 'project_id' => 2],
+        (object) ['projectteam_id' => PHP_INT_MAX . '0', 'project_id' => 2],
+        (object) ['projectteam_id' => 1],
+        $valid,
+    ];
+    if ($validRows->invoke(null, $rows, ['projectteam_id', 'project_id']) !== [$valid]
+        || $validRows->invoke(null, false, ['projectteam_id']) !== []) {
+        throw new \RuntimeException('Random Player accepted malformed database rows.');
+    }
+
     \Joomla\CMS\Component\ComponentHelper::$placeholder = ['invalid'];
     if ($picture->invoke($helper, '') !== '') {
         throw new \RuntimeException('Random Player invalid image placeholder was accepted.');
