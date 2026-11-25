@@ -43,6 +43,13 @@ JLoader::import('components.com_sportsmanagement.models.rounds', JPATH_ADMINISTR
  */
 class sportsmanagementModelPrediction extends BaseDatabaseModel
 {
+	/**
+	 * Per-request cache for the champion / final4 project settings.
+	 *
+	 * @var array
+	 */
+	private static $settingsCache = array();
+
 	static $_predictionGame = null;
 
 	static $predictionGameID = 0;
@@ -230,10 +237,16 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$query->where('prediction_id = ' . (int) self::$predictionGameID);
 		$query->where('project_id = ' . (int) self::$pjID);
 		$query->where('champ = 1');
-		$db->setQuery($query);
-		$result = $db->loadObject();
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		// The project settings are identical for every member; read them once per request.
+		$cacheKey = 'champ:' . (int) self::$predictionGameID . ':' . (int) self::$pjID;
+		if (!array_key_exists($cacheKey, self::$settingsCache))
+		{
+			$db->setQuery($query);
+			self::$settingsCache[$cacheKey] = $db->loadObject();
+		}
+		$result = self::$settingsCache[$cacheKey];
+
 
 		if ($result)
 		{
@@ -307,10 +320,16 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 		$query->where('prediction_id = ' . (int) self::$predictionGameID);
 		$query->where('project_id = ' . (int) self::$pjID);
 		$query->where('final4 = 1');
-		$db->setQuery($query);
-		$result = $db->loadObject();
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		// The project settings are identical for every member; read them once per request.
+		$cacheKey = 'final4:' . (int) self::$predictionGameID . ':' . (int) self::$pjID;
+		if (!array_key_exists($cacheKey, self::$settingsCache))
+		{
+			$db->setQuery($query);
+			self::$settingsCache[$cacheKey] = $db->loadObject();
+		}
+		$result = self::$settingsCache[$cacheKey];
+
 
 		if ($result)
 		{
@@ -446,7 +465,6 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			self::$_predictionMember->picture = self::getPredictionMemberAvatar(self::$_predictionMember->user_id, $configavatar['show_image_from']);
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$_predictionMember;
 	}
@@ -536,13 +554,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 				{
 					$db->setQuery($query);
 					$picture = $db->loadResult();
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 				}
 				catch (Exception $e)
 				{
 					$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 					$code = $e->getCode(); // Returns
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 					Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
 					return false;
@@ -554,13 +570,11 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 					$db->setQuery($query);
 					$results = $db->loadResult();
 					$picture = 'media/kunena/avatars/' . $results;
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 				}
 				catch (Exception $e)
 				{
 					$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 					$code = $e->getCode(); // Returns
-					$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 					Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
 					return false;
@@ -568,7 +582,6 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 				break;
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $picture;
 
@@ -961,7 +974,6 @@ class sportsmanagementModelPrediction extends BaseDatabaseModel
 			}
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$_predictionGame;
 	}
@@ -1452,7 +1464,6 @@ $recipient = array();
 			}
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $configvalues;
 	}
@@ -1574,7 +1585,6 @@ $recipient = array();
 			}
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return self::$_predictionProjectS;
 	}
@@ -2175,7 +2185,6 @@ $recipient = array();
 
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $results;
 	}
@@ -2418,7 +2427,6 @@ $recipient = array();
 			return $memberResult;
 		}
 
-		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $result;
 	}
@@ -2650,13 +2658,11 @@ $recipient = array();
 			{
 				$db->setQuery($query);
 				$results = $db->loadObjectList();
-				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 			}
 			catch (Exception $e)
 			{
 				$msg  = $e->getMessage(); // Returns "Normally you would have other code...
 				$code = $e->getCode(); // Returns
-				$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 				Factory::getApplication()->enqueueMessage(__METHOD__ . ' ' . __LINE__ . ' ' . $msg, 'error');
 
 				return false;
