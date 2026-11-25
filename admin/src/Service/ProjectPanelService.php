@@ -30,9 +30,9 @@ final class ProjectPanelService
 
     /**
      * Build project panel counters for divisions, teams, referees, positions and rounds.
-     * Returns zeros for an invalid project and can initialise missing sport-specific positions for non-exempt project types before returning the final totals.
-     * Malformed imported project fields cannot select a different project,
-     * and unavailable counts are never interpreted as missing positions.
+     * This read-only method returns zeros for invalid project IDs. It never
+     * creates standard positions when a dashboard is opened or refreshed.
+     * An unavailable database count is not interpreted as a genuine zero.
      *
      * @param object $project Project record containing id, sport type and project kind.
      * @return array{divisions:int,positions:int,referees:int,teams:int,rounds:int} Panel counts.
@@ -40,8 +40,6 @@ final class ProjectPanelService
     public function getCounts(object $project): array
     {
         $projectId = self::nonNegativeInteger($project->id ?? null) ?? 0;
-        $sportsTypeId = self::nonNegativeInteger($project->sports_type_id ?? null) ?? 0;
-        $projectArtId = self::nonNegativeInteger($project->project_art_id ?? null);
 
         if ($projectId <= 0) {
             return [
@@ -55,11 +53,6 @@ final class ProjectPanelService
 
         $positions = $this->count('#__sportsmanagement_project_position', 'project_id', $projectId);
 
-        if ($projectArtId !== null && $projectArtId !== 3 && $positions === 0 && $sportsTypeId > 0) {
-            $this->ensureStandardPositions($projectId, $sportsTypeId);
-            $positions = $this->count('#__sportsmanagement_project_position', 'project_id', $projectId);
-        }
-
         return [
             'divisions' => $this->count('#__sportsmanagement_division', 'project_id', $projectId),
             'positions' => $positions,
@@ -67,6 +60,60 @@ final class ProjectPanelService
             'teams' => $this->count('#__sportsmanagement_project_team', 'project_id', $projectId),
             'rounds' => $this->count('#__sportsmanagement_round', 'project_id', $projectId),
         ];
+    }
+
+    /**
+     * Determine whether the project can be offered its initial standard positions.
+     *
+     * Individual-sport projects (kind 3), malformed records and projects that
+     * already have positions must retain their existing configuration.
+     *
+     * @param object $project Persisted project metadata.
+     * @param int $positions Current count of assigned positions.
+     * @return bool Whether the explicit setup action is appropriate.
+     */
+    public static function canInitialize(object $project, int $positions): bool
+    {
+        $projectId = self::nonNegativeInteger($project->id ?? null) ?? 0;
+        $sport = self::nonNegativeInteger($project->sports_type_id ?? null) ?? 0;
+        $kind = self::nonNegativeInteger($project->project_art_id ?? null);
+
+        return $projectId > 0 && $sport > 0 && $kind !== null && $kind !== 3 && $positions === 0;
+    }
+
+    /**
+     * Initialise standard positions after an authorised explicit administrator action.
+     *
+     * Reloads the project from the same selected database, rather than
+     * trusting posted sport or project-kind fields, and repeats the count
+     * check before making any changes. Existing custom positions remain
+     * untouched. The caller must enforce the POST token and edit ACL.
+     *
+     * @param int $projectId Validated project identifier.
+     * @return bool True when an eligible project was processed.
+     */
+    public function initializeForProject(int $projectId): bool
+    {
+        if ($projectId <= 0) {
+            return false;
+        }
+
+        $query = $this->db->createQuery()
+            ->select($this->db->quoteName(['id', 'sports_type_id', 'project_art_id']))
+            ->from($this->db->quoteName('#__sportsmanagement_project'))
+            ->where($this->db->quoteName('id') . ' = :panelProject')
+            ->bind(':panelProject', $projectId, ParameterType::INTEGER);
+        $this->db->setQuery($query);
+        $project = $this->db->loadObject();
+
+        if (!is_object($project) || self::nonNegativeInteger($project->id ?? null) !== $projectId
+            || !self::canInitialize($project, $this->count('#__sportsmanagement_project_position', 'project_id', $projectId))) {
+            return false;
+        }
+
+        $this->ensureStandardPositions($projectId, self::nonNegativeInteger($project->sports_type_id));
+
+        return true;
     }
 
     /**

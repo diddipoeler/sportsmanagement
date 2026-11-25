@@ -138,19 +138,26 @@ namespace Joomla\CMS\Plugin {
     final class PluginHelper
     {
         public static bool $failImport = false;
+        public static bool $enabled = true;
 
         /**
          * Simulate a transient plugin loader failure before event dispatch.
          * @param string $type Joomla plugin group.
          * @param string $name Plugin element to import.
-         * @return void
+         * @param bool $autocreate Whether to register the listener.
+         * @param object|null $dispatcher Native dispatcher to receive the plugin.
+         * @return bool Whether the simulated plugin is enabled.
          * @throws \RuntimeException When the fixture enables import failure.
          */
-        public static function importPlugin(string $type, string $name): void
+        public static function importPlugin(string $type, string $name, bool $autocreate = true, ?object $dispatcher = null): bool
         {
             if (self::$failImport) {
                 throw new \RuntimeException('Plugin import private path');
             }
+            if (!$autocreate || !is_object($dispatcher) || !method_exists($dispatcher, 'dispatch')) {
+                throw new \RuntimeException('Plugin was not registered with the native dispatcher.');
+            }
+            return self::$enabled;
         }
         public static function getPlugin(string $type, string $name): object
         {

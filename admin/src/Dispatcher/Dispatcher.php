@@ -48,6 +48,7 @@ final class Dispatcher extends ComponentDispatcher
         'players.saveshort', 'players.assign', 'players.importupload', 'players.close', 'players.delete', 'player.import',
         'teamplayers.saveshort', 'teamplayers.publish', 'teamplayers.unpublish', 'teamplayers.archive', 'teamplayers.trash',
         'teamplayers.delete', 'teamplayers.assignplayerscountry',
+        'project.initializestandardpositions',
         'projectteam.storechangeteams',
         'projectteams.saveshort', 'projectteams.addteam', 'projectteams.assign', 'projectteams.matchgroups', 'projectteams.setseasonid',
         'projectteams.delete', 'projectteams.copy', 'projectteams.storecopy', 'projectteams.set_playground', 'projectteams.set_playground_match',

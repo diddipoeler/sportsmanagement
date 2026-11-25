@@ -178,7 +178,8 @@ final class NewProjectHelper
      *
      * Validates the POST CSRF token, strict positive module identifier, published
      * module, configured category, valid author ID and current permissions.
-     * Malformed project records are skipped rather than written as articles. Reuses Joomla's content model to save bounded project articles and returns generic errors. Logs only the exception class and validated project ID to avoid exposing SQL statements, paths or credentials.
+     * Malformed project records are skipped rather than written as articles.
+     * Article-save diagnostics contain the exception type and project ID only. Reuses Joomla's content model to save bounded project articles and returns generic errors. Logs only the exception class and validated project ID to avoid exposing SQL statements, paths or credentials.
      *
      * @param DatabaseInterface|null $joomlaDatabase Optional injected database service.
      * @return array<string, mixed> Created/skipped counts, errors and module ID.
@@ -385,7 +386,10 @@ final class NewProjectHelper
     /**
      * Validate the database connection selector without unsafe PHP casts.
      *
-     * Accepts nonnegative integers and zero-padded decimal strings within the platform integer range; rejects malformed and overflow values rather than silently selecting another database.
+     * Accepts nonnegative integers and zero-padded decimal strings of at
+     * most 64 bytes within the platform integer range. Rejects malformed,
+     * oversized or overflowing values before parsing. This shared legacy
+     * parser also validates content category, module, project and round IDs.
      *
      * @param mixed $value Configured database selector.
      * @return int|null Valid selector or null when invalid.
@@ -396,7 +400,7 @@ final class NewProjectHelper
             return $value >= 0 ? $value : null;
         }
 
-        if (!is_string($value) || !preg_match('/^[0-9]+$/D', $value)) {
+        if (!is_string($value) || strlen($value) > 64 || !preg_match('/^[0-9]+$/D', $value)) {
             return null;
         }
 

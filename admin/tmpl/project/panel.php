@@ -10,6 +10,7 @@
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -56,6 +57,18 @@ $items = [
             </div>
         </div>
     </div>
+
+    <?php if ($this->canInitializeStandardPositions) : ?>
+        <form method="post" action="<?php echo Route::_('index.php?option=com_sportsmanagement'); ?>" class="mb-3">
+            <input type="hidden" name="task" value="project.initializestandardpositions">
+            <input type="hidden" name="id" value="<?php echo $projectId; ?>">
+            <input type="hidden" name="cfg_which_database" value="<?php echo $this->panelDatabaseSelector; ?>">
+            <?php echo HTMLHelper::_('form.token'); ?>
+            <button type="submit" class="btn btn-primary">
+                <?php echo Text::_('COM_SPORTSMANAGEMENT_SETTINGS_INSTALL_STANDARD_POSITION'); ?>
+            </button>
+        </form>
+    <?php endif; ?>
 
     <div class="alert alert-info">
         <?php echo Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_HINT'); ?>

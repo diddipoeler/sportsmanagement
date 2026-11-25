@@ -241,6 +241,9 @@ final class MatchCommentsHelper
      * Reuses the preparation result during subsequent match renders in the
      * same request rather than importing the extension repeatedly. A failed
      * plugin import is not cached as a successful preparation attempt.
+     * The plugin is registered with the application event dispatcher used
+     * by match rendering; disabled plugins and malformed configuration
+     * cannot be marked as available.
      *
      * @return bool Whether the comments integration can be used.
      */
@@ -256,10 +259,21 @@ final class MatchCommentsHelper
             return false;
         }
 
-        PluginHelper::importPlugin('content', 'sportsmanagement_comments');
+        if (!PluginHelper::importPlugin('content', 'sportsmanagement_comments', true, self::siteApplication()->getDispatcher())) {
+            self::$jcommentsPrepared = true;
+            return false;
+        }
+
         $plugin = PluginHelper::getPlugin('content', 'sportsmanagement_comments');
-        $params = new Registry(is_object($plugin) ? (string) ($plugin->params ?? '') : '');
-        self::$separateComments = (bool) $params->get('separate_comments', 0);
+        if (!is_object($plugin)) {
+            self::$jcommentsPrepared = true;
+            return false;
+        }
+
+        $rawParams = $plugin->params ?? '';
+        $params = new Registry(is_string($rawParams) ? $rawParams : '');
+        $separate = $params->get('separate_comments', 0);
+        self::$separateComments = in_array($separate, [1, '1', true], true);
         self::$jcommentsAvailable = true;
         self::$jcommentsPrepared = true;
 

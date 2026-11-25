@@ -231,7 +231,10 @@ namespace {
         $root . '/modules/mod_sportsmanagement_new_project/src/Helper/NewProjectHelper.php'
     );
     assertExpected(true, $ajaxSource !== false
-        && str_contains($ajaxSource, "Log::add(__METHOD__ . ': ' . \$e->getMessage()")
+        && str_contains($ajaxSource, 'self::logArticleSaveFailure($e, $projectId)')
+        && str_contains($ajaxSource, 'get_class($error)')
+        && !str_contains($ajaxSource, '$error->getMessage()')
+        && !str_contains($ajaxSource, '$e->getMessage()')
         && str_contains($ajaxSource, "'message' => 'Content article could not be saved.'")
         && !str_contains($ajaxSource, "'message' => \$e->getMessage()"),
         'AJAX article creation must log internal exceptions without leaking them to users');

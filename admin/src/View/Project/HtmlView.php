@@ -12,6 +12,7 @@ namespace Diddipoeler\Component\SportsManagement\Administrator\View\Project;
 \defined('_JEXEC') or die;
 
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtendedFormHelper;
+use Diddipoeler\Component\SportsManagement\Administrator\Helper\LegacyModelDatabaseHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\ExtraFieldsReadHelper;
 use Diddipoeler\Component\SportsManagement\Administrator\Helper\SportsManagementDatabaseResolver;
 use Diddipoeler\Component\SportsManagement\Administrator\Model\ProjectModel;
@@ -44,6 +45,8 @@ final class HtmlView extends BaseHtmlView
     public int $count_projectreferees = 0;
     public int $count_projectteams = 0;
     public int $count_matchdays = 0;
+    public bool $canInitializeStandardPositions = false;
+    public int $panelDatabaseSelector = 0;
     public string $view = 'project';
     public string $tmpl = '';
 
@@ -79,7 +82,9 @@ final class HtmlView extends BaseHtmlView
     }
 
     /**
-     * Prepare the project control panel for display.
+     * Prepare read-only project counters and the optional setup form.
+     * Uses the validated database choice and exposes the setup action only
+     * for an eligible project and an authenticated component editor.
      *
      * @param ProjectModel $model model value.
      * @return void
@@ -100,10 +105,8 @@ final class HtmlView extends BaseHtmlView
             throw new \RuntimeException(Text::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ERROR'), 404);
         }
 
-        $sportsManagementDatabase = $this->resolveDatabase($input->getInt(
-            'cfg_which_database',
-            (int) $app->getUserState($this->option . '.cfg_which_database', 0)
-        ));
+        $this->panelDatabaseSelector = LegacyModelDatabaseHelper::selector();
+        $sportsManagementDatabase = $this->resolveDatabase($this->panelDatabaseSelector);
         $counts = (new ProjectPanelService($sportsManagementDatabase))->getCounts($this->item);
 
         $this->count_projectdivisions = (int) $counts['divisions'];
@@ -111,6 +114,11 @@ final class HtmlView extends BaseHtmlView
         $this->count_projectreferees = (int) $counts['referees'];
         $this->count_projectteams = (int) $counts['teams'];
         $this->count_matchdays = (int) $counts['rounds'];
+        $this->canInitializeStandardPositions = $this->user !== null
+            && (int) ($this->user->id ?? 0) > 0
+            && $this->user->authorise('core.edit', 'com_sportsmanagement')
+            && ($this->panelDatabaseSelector === 0 || $sportsManagementDatabase !== self::joomlaDatabase())
+            && ProjectPanelService::canInitialize($this->item, $this->count_projectpositions);
 
         $app->setUserState($this->option . '.pid', (int) $this->item->id);
         $app->setUserState($this->option . '.season_id', (int) ($this->item->season_id ?? 0));

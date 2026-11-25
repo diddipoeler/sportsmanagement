@@ -55,6 +55,7 @@ namespace {
     {
         public array $counts = [];
         public mixed $positions = [];
+        public ?object $project = null;
         public array $queries = [];
         public array $inserted = [];
 
@@ -62,7 +63,7 @@ namespace {
         public function createQuery(): PanelQuery { return new PanelQuery(); }
 
         /** Preserve a trusted SQL name. @param string $name Table or column name. @return string Same name. */
-        public function quoteName(string $name): string { return $name; }
+        public function quoteName(string|array $name): string|array { return $name; }
 
         /**
          * Record each prepared query for binding assertions.
@@ -73,6 +74,12 @@ namespace {
 
         /** Return the next simulated COUNT result. @return mixed Raw count. */
         public function loadResult(): mixed { return array_shift($this->counts); }
+
+        /**
+         * Load the stored project metadata for the explicit initialization action.
+         * @return object|null Project record, or null when missing.
+         */
+        public function loadObject(): ?object { return $this->project; }
 
         /** Return simulated sport position IDs. @return mixed Raw position list. */
         public function loadColumn(): mixed { return $this->positions; }
@@ -113,16 +120,56 @@ namespace {
         throw new \RuntimeException('Malformed project ID reached SQL.');
     }
 
-    $db->positions = ['0007', 7, '8junk', ['9'], 8, false, 0];
-    $db->counts = ['0', '0', 1, 2, 0, 0, 3, 4];
+    $db->counts = [0, 0, 0, 3, 4];
     $counts = $panel->getCounts($project);
-    if ($counts !== ['divisions' => 0, 'positions' => 2, 'referees' => 0, 'teams' => 3, 'rounds' => 4]
-        || $db->inserted !== [['#__sportsmanagement_project_position', 5, 7]]
+    if ($counts !== ['divisions' => 0, 'positions' => 0, 'referees' => 0, 'teams' => 3, 'rounds' => 4]
+        || $db->inserted !== [] || count($db->queries) !== 5
         || $db->queries[0]->bindings !== [':panelId' => 5]
-        || $db->queries[1]->bindings !== [':panelSport' => 2]
-        || $db->queries[2]->bindings !== [':panelProject' => 5, ':panelPosition' => 7]) {
-        throw new \RuntimeException('Standard position initialization or native query bindings regressed.');
+        || !$panel::canInitialize($project, 0) || $panel::canInitialize($project, 1)) {
+        throw new \RuntimeException('Passive panel display must not initialize standard positions.');
     }
 
-    echo "Joomla 5/6 project panel count and position checks passed.\n";
+    $db->queries = [];
+    $db->project = $project;
+    $db->counts = [0, 0, 1];
+    $db->positions = ['0007', 7, '8junk', ['9'], 8, false, 0];
+
+    if (!$panel->initializeForProject(5)
+        || $db->inserted !== [['#__sportsmanagement_project_position', 5, 7]]
+        || $db->queries[0]->bindings !== [':panelProject' => 5]
+        || $db->queries[1]->bindings !== [':panelId' => 5]
+        || $db->queries[2]->bindings !== [':panelSport' => 2]
+        || $db->queries[3]->bindings !== [':panelProject' => 5, ':panelPosition' => 7]) {
+        throw new \RuntimeException('Explicit standard position initialization or bound parameters regressed.');
+    }
+
+    $db->inserted = [];
+    $db->counts = [1];
+    if ($panel->initializeForProject(5) || $db->inserted !== []) {
+        throw new \RuntimeException('Existing project positions were not preserved.');
+    }
+
+    $db->project = null;
+    if ($panel->initializeForProject(5)) {
+        throw new \RuntimeException('Missing project was initialized.');
+    }
+
+    $db->project = (object) ['id' => 5, 'sports_type_id' => 2, 'project_art_id' => 3];
+    $db->counts = [0];
+    if ($panel->initializeForProject(5) || $db->inserted !== []) {
+        throw new \RuntimeException('Exempt project type was initialized.');
+    }
+
+    $controller = file_get_contents(dirname(__DIR__, 2) . '/admin/src/Controller/ProjectController.php');
+    $layout = file_get_contents(dirname(__DIR__, 2) . '/admin/tmpl/project/panel.php');
+    $dispatcher = file_get_contents(dirname(__DIR__, 2) . '/admin/src/Dispatcher/Dispatcher.php');
+    if (!str_contains($controller, "Session::checkToken('post')")
+        || !str_contains($controller, "authorise('core.edit', 'com_sportsmanagement')")
+        || !str_contains($layout, "HTMLHelper::_('form.token')")
+        || !str_contains($layout, 'method="post"')
+        || !str_contains($dispatcher, "'project.initializestandardpositions'")) {
+        throw new \RuntimeException('Standard position action must use the protected native POST path.');
+    }
+
+    echo "Joomla 5/6 read-only project panel and explicit position checks passed.\n";
 }

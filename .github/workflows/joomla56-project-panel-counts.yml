@@ -4,6 +4,10 @@ on:
     branches: [joomla5-6]
     paths:
       - 'admin/src/Service/ProjectPanelService.php'
+      - 'admin/src/Controller/ProjectController.php'
+      - 'admin/src/Dispatcher/Dispatcher.php'
+      - 'admin/src/View/Project/HtmlView.php'
+      - 'admin/tmpl/project/panel.php'
       - '.github/tests/joomla56_project_panel_counts.php'
       - '.github/workflows/joomla56-project-panel-counts.yml'
   pull_request:
@@ -26,6 +30,10 @@ jobs:
           coverage: none
       - run: |
           php -l admin/src/Service/ProjectPanelService.php
+          php -l admin/src/Controller/ProjectController.php
+          php -l admin/src/Dispatcher/Dispatcher.php
+          php -l admin/src/View/Project/HtmlView.php
+          php -l admin/tmpl/project/panel.php
           php -l .github/tests/joomla56_project_panel_counts.php
           php .github/scripts/check-php-function-docs.php admin/src/Service/ProjectPanelService.php
           php .github/tests/joomla56_project_panel_counts.php

@@ -92,6 +92,8 @@ namespace {
         [-1, null], ['-1', null], ['5junk', null], [true, null],
         [['5'], null], [' 5', null], ['5.0', null],
         ['9999999999999999999999999999', null],
+        [str_repeat('0', 64) . '5', null],
+        [str_repeat('0', 63) . '5', 5],
     ] as [$raw, $expected]) {
         if ($selector->invoke($helper, $raw) !== $expected) {
             throw new \RuntimeException('Malformed database selector was accepted.');

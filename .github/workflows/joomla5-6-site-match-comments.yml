@@ -40,7 +40,7 @@ jobs:
               "ComponentHelper::isEnabled('com_kunena')",
               "ComponentHelper::isEnabled('com_jcomments')",
               'Factory::getContainer()->get(DatabaseInterface::class)',
-              "PluginHelper::importPlugin('content', 'sportsmanagement_comments')",
+              "PluginHelper::importPlugin('content', 'sportsmanagement_comments', true, self::siteApplication()->getDispatcher())",
               'new Event($eventName',
               'getDispatcher()->dispatch($eventName, $event)',
               "getArgument('result', [])",
